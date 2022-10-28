@@ -46,6 +46,7 @@
 #include <BRepLProp_SLProps.hxx>
 #include <BRepTools.hxx>
 #include <GCPnts_AbscissaPoint.hxx>
+#include <GeomAPI_ExtremaCurveCurve.hxx>
 #include <gp_Ax3.hxx>
 #include <gp_Dir.hxx>
 #include <gp_Elips.hxx>
@@ -343,6 +344,25 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawUtil::boxIntersect2d(Base::Vector3
     }
 
     return result;
+}
+
+//find the apparent intersection of 2 3d curves. We are only interested in curves that are lines, so we will have either 0 or 1
+//apparent intersection.  The intersection is "apparent" because the curve's progenator is a trimmed curve (line segment)
+bool DrawUtil::apparentIntersection(const Handle(Geom_Curve) curve1,
+                                    const Handle(Geom_Curve) curve2,
+                                    Base::Vector3d& result)
+{
+    GeomAPI_ExtremaCurveCurve intersector(curve1, curve2);
+    if (intersector.NbExtrema() == 0 ||
+        intersector.LowerDistance() > EWTOLERANCE ) {
+        //no intersection
+        return false;
+    }
+    //for our purposes, only one intersection point is required.
+    gp_Pnt p1, p2;
+    intersector.Points(1, p1, p2);
+    result = toVector3d(p1);
+    return true;
 }
 
 Base::Vector3d DrawUtil::vertex2Vector(const TopoDS_Vertex& v)

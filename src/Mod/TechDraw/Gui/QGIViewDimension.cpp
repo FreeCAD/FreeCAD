@@ -2097,7 +2097,7 @@ void QGIViewDimension::drawDistance(TechDraw::DrawViewDimension* dimension,
         lineAngle = M_PI_2;
     }
     else {
-        lineAngle = (fromQtApp(linePoints.second) - fromQtApp(linePoints.first)).Angle();
+        lineAngle = (fromQtApp(linePoints.second()) - fromQtApp(linePoints.first())).Angle();
     }
 
     int standardStyle = viewProvider->StandardAndStyle.getValue();
@@ -2106,14 +2106,14 @@ void QGIViewDimension::drawDistance(TechDraw::DrawViewDimension* dimension,
 
 
     if (dimension->AngleOverride.getValue()) {
-        drawDistanceOverride(fromQtApp(linePoints.first), fromQtApp(linePoints.second),
+        drawDistanceOverride(fromQtApp(linePoints.first()), fromQtApp(linePoints.second()),
                              dimension->LineAngle.getValue() * M_PI / 180.0, labelRectangle,
                              standardStyle, renderExtent, flipArrows,
                              dimension->ExtensionAngle.getValue() * M_PI / 180.0);
     }
     else {
-        drawDistanceExecutive(fromQtApp(linePoints.first), fromQtApp(linePoints.second), lineAngle,
-                              labelRectangle, standardStyle, renderExtent, flipArrows);
+        drawDistanceExecutive(fromQtApp(linePoints.first()), fromQtApp(linePoints.second()),
+                              lineAngle, labelRectangle, standardStyle, renderExtent, flipArrows);
     }
 }
 
@@ -2127,10 +2127,12 @@ void QGIViewDimension::drawRadius(TechDraw::DrawViewDimension* dimension,
     double endAngle;
     double startRotation;
     if (curvePoints.isArc) {
-        endAngle = (fromQtApp(curvePoints.arcEnds.second) - fromQtApp(curvePoints.center)).Angle();
+        endAngle =
+            (fromQtApp(curvePoints.arcEnds.second()) - fromQtApp(curvePoints.center)).Angle();
         startRotation =
-            (fromQtApp(curvePoints.arcEnds.first) - fromQtApp(curvePoints.center)).Angle()
+            (fromQtApp(curvePoints.arcEnds.first()) - fromQtApp(curvePoints.center)).Angle()
             - endAngle;
+
         if (startRotation != 0.0 && ((startRotation > 0.0) != curvePoints.arcCW)) {
             startRotation += curvePoints.arcCW ? +M_2PI : -M_2PI;
         }
@@ -2323,9 +2325,9 @@ void QGIViewDimension::drawAngle(TechDraw::DrawViewDimension* dimension,
 
     anglePoints anglePoints = dimension->getAnglePoints();
 
-    Base::Vector2d angleVertex = fromQtApp(anglePoints.vertex);
-    Base::Vector2d startPoint = fromQtApp(anglePoints.ends.first);
-    Base::Vector2d endPoint = fromQtApp(anglePoints.ends.second);
+    Base::Vector2d angleVertex = fromQtApp(anglePoints.vertex());
+    Base::Vector2d startPoint = fromQtApp(anglePoints.first());
+    Base::Vector2d endPoint = fromQtApp(anglePoints.second());
 
     double endAngle = (endPoint - angleVertex).Angle();
     double startAngle = (startPoint - angleVertex).Angle();

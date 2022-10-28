@@ -264,7 +264,6 @@ App::DocumentObjectExecReturn* DrawViewPart::execute(void)
         XDirection.purgeTouched();//don't trigger updates!
     }
 
-    m_saveShape = shape;
     partExec(shape);
 
     return DrawView::execute();
@@ -319,27 +318,37 @@ void DrawViewPart::partExec(TopoDS_Shape& shape)
 //prepare the shape for HLR processing by centering, scaling and rotating it
 GeometryObjectPtr DrawViewPart::makeGeometryForShape(TopoDS_Shape& shape)
 {
-    //    Base::Console().Message("DVP::makeGeometryForShape() - %s\n", getNameInDocument());
-    gp_Pnt inputCenter;
-    Base::Vector3d stdOrg(0.0, 0.0, 0.0);
-    gp_Ax2 viewAxis = getProjectionCS(stdOrg);
-    inputCenter = TechDraw::findCentroid(shape, viewAxis);
-    Base::Vector3d centroid(inputCenter.X(), inputCenter.Y(), inputCenter.Z());
-
-    //center shape on origin
-    TopoDS_Shape centeredShape = TechDraw::moveShape(shape, centroid * -1.0);
-    m_saveCentroid = centroid;
-    m_saveShape = centeredShape;
-
-    TopoDS_Shape scaledShape = TechDraw::scaleShape(centeredShape, getScale());
-    if (!DrawUtil::fpCompare(Rotation.getValue(), 0.0)) {
-        scaledShape = TechDraw::rotateShape(scaledShape, viewAxis,
-                                            Rotation.getValue());//conventional rotation
-    }
-
-    GeometryObjectPtr go = buildGeometryObject(scaledShape, viewAxis);
+//    Base::Console().Message("DVP::makeGeometryForShape() - %s\n", getNameInDocument());
+    gp_Pnt inputCenter = TechDraw::findCentroid(shape,
+                                                getProjectionCS());
+    m_saveCentroid = DU::toVector3d(inputCenter);
+    m_saveShape = centerScaleRotate(this, shape, m_saveCentroid);
+    GeometryObjectPtr go =  buildGeometryObject(shape, getProjectionCS());
     return go;
 }
+
+//Modify a shape by centering, scaling and rotating and return the centered (but not rotated) shape
+TopoDS_Shape DrawViewPart::centerScaleRotate(DrawViewPart* dvp,
+                                             TopoDS_Shape& inOutShape,
+                                             Base::Vector3d centroid)
+{
+//    Base::Console().Message("DVP::centerScaleRotate() - %s\n", dvp->getNameInDocument());
+    gp_Ax2 viewAxis = dvp->getProjectionCS();
+
+    //center shape on origin
+    TopoDS_Shape centeredShape = TechDraw::moveShape(inOutShape,
+                                                     centroid * -1.0);
+
+    inOutShape = TechDraw::scaleShape(centeredShape, dvp->getScale());
+    if (!DrawUtil::fpCompare(dvp->Rotation.getValue(), 0.0)) {
+        inOutShape = TechDraw::rotateShape(inOutShape,
+                                            viewAxis,
+                                            dvp->Rotation.getValue());  //conventional rotation
+     }
+//    BRepTools::Write(inOutShape, "DVPScaled.brep");            //debug
+    return centeredShape;
+}
+
 
 //create a geometry object and trigger the HLR process in another thread
 TechDraw::GeometryObjectPtr DrawViewPart::buildGeometryObject(TopoDS_Shape& shape,
@@ -769,6 +778,53 @@ const std::vector<TechDraw::VertexPtr> DrawViewPart::getVertexGeometry() const
     }
     return result;
 }
+
+TechDraw::VertexPtr DrawViewPart::getVertex(std::string vertexName) const
+{
+    const std::vector<TechDraw::VertexPtr> allVertex(DrawViewPart::getVertexGeometry());
+    size_t iTarget = DrawUtil::getIndexFromName(vertexName);
+    if (allVertex.empty()) {
+        //should not happen
+        throw Base::IndexError("DVP::getVertex - No vertices found.");
+    }
+    if (iTarget > allVertex.size()) {
+        //should not happen
+        throw Base::IndexError("DVP::getVertex - Vertex not found.");
+    }
+
+    return allVertex.at(iTarget);
+}
+
+//! returns existing BaseGeom of 2D Edge
+TechDraw::BaseGeomPtr DrawViewPart::getEdge(std::string edgeName) const
+{
+    const std::vector<TechDraw::BaseGeomPtr> &geoms = getEdgeGeometry();
+    if (geoms.empty()) {
+        //should not happen
+        throw Base::IndexError("DVP::getEdge - No edges found.");
+    }
+    size_t iEdge = DrawUtil::getIndexFromName(edgeName);
+    if ((unsigned)iEdge >= geoms.size()) {
+        throw Base::IndexError("DVP::getEdge - Edge not found.");
+    }
+    return geoms.at(iEdge);
+}
+
+//! returns existing 2d Face
+TechDraw::FacePtr DrawViewPart::getFace(std::string faceName) const
+{
+    const std::vector<TechDraw::FacePtr> &faces = getFaceGeometry();
+    if (faces.empty()) {
+        //should not happen
+        throw Base::IndexError("DVP::getFace - No faces found.");
+    }
+    size_t iFace = DrawUtil::getIndexFromName(faceName);
+    if (iFace >= faces.size()) {
+        throw Base::IndexError("DVP::getFace - Face not found.");
+    }
+    return faces.at(iFace);
+}
+
 
 const std::vector<TechDraw::FacePtr> DrawViewPart::getFaceGeometry() const
 {

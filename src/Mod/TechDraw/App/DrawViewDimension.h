@@ -25,13 +25,22 @@
 
 #include <tuple>
 
+#include <gp_Ax3.hxx>
+
 #include <App/DocumentObject.h>
+#include <Base/Console.h>
 #include <Base/UnitsApi.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
+#include "DrawViewPart.h"
+#include "DimensionGeometry.h"
+#include "DimensionReferences.h"
+
+#include "Geometry.h"
 #include "DrawView.h"
+#include "DrawUtil.h"
 
-
+using DU = TechDraw::DrawUtil;
 class TopoDS_Shape;
 
 namespace Measure {
@@ -40,94 +49,26 @@ class Measurement;
 namespace TechDraw
 {
 class DrawViewPart;
-
-struct DimRef {
-    DrawViewPart* part;
-    std::string   sub;
-};
-
-using pointPair = std::pair<Base::Vector3d,Base::Vector3d>;
-
-struct anglePoints
-{
-    pointPair ends;
-    Base::Vector3d vertex;
-
-    anglePoints()
-    {
-        ends.first  = Base::Vector3d(0.0, 0.0, 0.0);
-        ends.second = Base::Vector3d(0.0, 0.0, 0.0);
-        vertex      = Base::Vector3d(0.0, 0.0, 0.0);
-    }
-
-    anglePoints(const anglePoints& ap)
-        : ends(ap.ends)
-        , vertex(ap.vertex)
-    {
-
-    }
-
-    anglePoints& operator= (const anglePoints& ap)
-    {
-        ends = ap.ends;
-        vertex = ap.vertex;
-        return *this;
-    }
-};
-
-struct arcPoints
-{
-    bool isArc;
-    double radius;
-    Base::Vector3d center;
-    pointPair onCurve;
-    pointPair arcEnds;
-    Base::Vector3d midArc;
-    bool arcCW;
-
-    arcPoints()
-    {
-         isArc = false;
-         radius = 0.0;
-         center         = Base::Vector3d(0.0, 0.0, 0.0);
-         onCurve.first  = Base::Vector3d(0.0, 0.0, 0.0);
-         onCurve.second = Base::Vector3d(0.0, 0.0, 0.0);
-         arcEnds.first  = Base::Vector3d(0.0, 0.0, 0.0);
-         arcEnds.second = Base::Vector3d(0.0, 0.0, 0.0);
-         midArc         = Base::Vector3d(0.0, 0.0, 0.0);
-         arcCW = false;
-    }
-
-    arcPoints(const arcPoints& ap)
-        : isArc(ap.isArc)
-        , radius(ap.radius)
-        , center(ap.center)
-        , onCurve(ap.onCurve)
-        , arcEnds(ap.arcEnds)
-        , midArc(ap.midArc)
-        , arcCW(ap.arcCW)
-    {
-
-    }
-
-    arcPoints& operator= (const arcPoints& ap)
-    {
-        isArc = ap.isArc;
-        radius = ap.radius;
-        center = ap.center;
-        onCurve = ap.onCurve;
-        arcEnds = ap.arcEnds;
-        midArc = ap.midArc;
-        arcCW = ap.arcCW;
-        return *this;
-    }
-};
+class DimensionFormatter;
 
 class TechDrawExport DrawViewDimension : public TechDraw::DrawView
 {
     PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawViewDimension);
 
 public:
+
+// keep this enum synchronized with TypeEnums
+enum DimensionType {
+    Distance,
+    DistanceX,
+    DistanceY,
+    DistanceZ,
+    Radius,
+    Diameter,
+    Angle,
+    Angle3Pt
+};
+
     /// Constructor
     DrawViewDimension();
     ~DrawViewDimension() override;
@@ -158,7 +99,8 @@ public:
             twoEdge,
             twoVertex,
             vertexEdge,
-            threeVertex
+            threeVertex,
+            extent
         };
 
 
@@ -194,35 +136,49 @@ public:
     QRectF getRect() const override { return {0, 0, 1, 1}; }          //pretend dimensions always fit!
     virtual int getRefType() const;             //Vertex-Vertex, Edge, Edge-Edge
     static int getRefTypeSubElements(const std::vector<std::string> &);             //Vertex-Vertex, Edge, Edge-Edge
+
+    void setReferences2d(ReferenceVector refs);
+    void setReferences3d(ReferenceVector refs);
+
     void setAll3DMeasurement();
     void clear3DMeasurements();
     virtual bool checkReferences2D() const;
-    virtual pointPair getLinearPoints() {return m_linearPoints; }
+    virtual pointPair getLinearPoints() const {return m_linearPoints; }
+    virtual void setLinearPoints(Base::Vector3d point0, Base::Vector3d point1) { m_linearPoints.first(point0);
+                                                                                 m_linearPoints.second(point1); };
+    virtual void setLinearPoints(pointPair newPair) { m_linearPoints = newPair; }
     arcPoints getArcPoints() {return m_arcPoints; }
     anglePoints getAnglePoints() {return m_anglePoints; }
     bool leaderIntersectsArc(Base::Vector3d s, Base::Vector3d pointOnCircle);
 
     bool isMultiValueSchema() const;
 
-    std::string getBaseLengthUnit(Base::UnitSystem system);
-
     pointPair getArrowPositions();
     void saveArrowPositions(const Base::Vector2d positions[]);
 
     bool showUnits() const;
     bool useDecimals() const;
+    bool isExtentDim() const;
+    virtual ReferenceVector getEffectiveReferences() const;
 
 protected:
     void handleChangedPropertyType(Base::XMLReader &, const char * , App::Property * ) override;
     void Restore(Base::XMLReader& reader) override;
     void onChanged(const App::Property* prop) override;
     void onDocumentRestored() override;
-    std::string getPrefix() const;
+    std::string getPrefixForDimType() const;
     std::string getDefaultFormatSpec(bool isToleranceFormat = false) const;
-    virtual pointPair getPointsOneEdge();
-    virtual pointPair getPointsTwoEdges();
-    virtual pointPair getPointsTwoVerts();
-    virtual pointPair getPointsEdgeVert();
+    virtual pointPair getPointsOneEdge(ReferenceVector references);
+    virtual pointPair getPointsTwoEdges(ReferenceVector references);
+    virtual pointPair getPointsTwoVerts(ReferenceVector references);
+    virtual pointPair getPointsEdgeVert(ReferenceVector references);
+
+    virtual arcPoints getArcParameters(ReferenceVector references);
+    virtual arcPoints arcPointsFromBaseGeom(TechDraw::BaseGeomPtr base);
+    virtual arcPoints arcPointsFromEdge(TopoDS_Edge occEdge);
+
+    virtual anglePoints getAnglePointsTwoEdges(ReferenceVector references);
+    virtual anglePoints getAnglePointsThreeVerts(ReferenceVector references);
 
 protected:
     Measure::Measurement *measurement;
@@ -232,8 +188,6 @@ protected:
                      Base::Vector3d e2) const;
     pointPair closestPoints(TopoDS_Shape s1,
                             TopoDS_Shape s2) const;
-    pointPair   m_linearPoints;
-    pointPair   m_arrowPositions;
 
     void resetLinear();
     void resetAngular();
@@ -244,10 +198,14 @@ private:
     static const char* MeasureTypeEnums[];
     void dumpRefs2D(const char* text) const;
     //Dimension "geometry"
-/*    pointPair   m_linearPoints;*/
+    pointPair   m_linearPoints;
+    pointPair   m_arrowPositions;
     arcPoints   m_arcPoints;
     anglePoints m_anglePoints;
     bool        m_hasGeometry;
+
+    friend class DimensionFormatter;
+    DimensionFormatter* m_formatter;
 };
 
 } //namespace TechDraw
