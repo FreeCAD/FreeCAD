@@ -321,7 +321,7 @@ class CommandDressupDogboneII(object):
     def GetResources(self):
         return {
             "Pixmap": "Path_Dressup",
-            "MenuText": QT_TRANSLATE_NOOP("Path_DressupDogbone", "Dress-up Dogbone "),
+            "MenuText": QT_TRANSLATE_NOOP("Path_DressupDogbone", "Dogbone Dress-up"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "Path_DressupDogbone",
                 "Creates a Dogbone Dress-up object from a selected path",

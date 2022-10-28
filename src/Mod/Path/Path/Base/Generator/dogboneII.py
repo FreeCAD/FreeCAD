@@ -122,43 +122,17 @@ def bone_to_path(bone, g0=False):
         cmds.append(PathLanguage.instruction_to_command(instr))
     return Path.Path(cmds)
 
-def generate_tbone(kink, length, dim):
-    def getAxisX(v):
-        return v.x
-    def getAxisY(v):
-        return v.y
-    axis = getAxisY if dim == 'Y' else getAxisX
-    angle = 0 if dim == 'X' else PI/2
-
-    d0 = axis(kink.position())
-    dd = axis(kink.m0.positionEnd()) - axis(kink.m0.positionBegin())
-    if dd < 0 or (Path.Geom.isRoughly(dd, 0) and (axis(kink.m1.positionEnd()) > axis(kink.m1.positionBegin()))):
-        length = -length
-        angle = angle - PI
-
-    d1 = d0 + length
-
-    moveIn = PathLanguage.MoveStraight(kink.position(), 'G1', {dim: d1})
-    moveOut = PathLanguage.MoveStraight(moveIn.positionEnd(), 'G1', {dim: d0})
-    return Bone(kink, angle, length, [moveIn, moveOut])
-
 def generate_bone(kink, length, angle):
-    # These two special cases could be removed, they are more efficient though because they
-    # don't require trigonometric function calls. They are also a gentle introduction into
-    # the dog/t/bone world, so we'll leave them here for now
-    #if Path.Geom.isRoughly(0, angle) or Path.Geom.isRoughly(abs(angle), PI):
-    #    return generate_tbone(kink, length, 'X')
-    #if Path.Geom.isRoughly(abs(angle), PI/2):
-    #    return generate_tbone(kink, length, 'Y')
-
     dx = length * math.cos(angle)
     dy = length * math.sin(angle)
     p0 = kink.position()
 
     if Path.Geom.isRoughly(0, dx):
+        # vertical bone
         moveIn = PathLanguage.MoveStraight(kink.position(), 'G1', {'Y': p0.y + dy})
         moveOut = PathLanguage.MoveStraight(moveIn.positionEnd(), 'G1', {'Y': p0.y})
     elif Path.Geom.isRoughly(0, dy):
+        # horizontal bone
         moveIn = PathLanguage.MoveStraight(kink.position(), 'G1', {'X': p0.x + dx})
         moveOut = PathLanguage.MoveStraight(moveIn.positionEnd(), 'G1', {'X': p0.x})
     else:
