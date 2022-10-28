@@ -62,6 +62,7 @@ void DlgPrefsTechDrawAnnotationImp::saveSettings()
     ui->cbPrintCenterMarks->onSave();
     ui->cbPyramidOrtho->onSave();
     ui->cbSectionLineStd->onSave();
+    ui->cbComplexMarks->onSave();
     ui->cbShowCenterMarks->onSave();
     ui->pcbLineGroup->onSave();
     ui->pcbBalloonArrow->onSave();
@@ -100,6 +101,7 @@ void DlgPrefsTechDrawAnnotationImp::loadSettings()
     ui->cbPrintCenterMarks->onRestore();
     ui->cbPyramidOrtho->onRestore();
     ui->cbSectionLineStd->onRestore();
+    ui->cbComplexMarks->onRestore();
     ui->cbShowCenterMarks->onRestore();
     ui->pcbLineGroup->onRestore();
     ui->pcbBalloonArrow->onRestore();

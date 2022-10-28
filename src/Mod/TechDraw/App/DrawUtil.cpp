@@ -23,36 +23,38 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <cmath>
-# include <cstdlib>
-# include <cstring>
-# include <sstream>
+#include <cmath>
+#include <cstdlib>
+#include <cstring>
+#include <sstream>
 
-# include <boost/regex.hpp>
+#include <boost/regex.hpp>
 
-# include <QChar>
-# include <QPointF>
-# include <QString>
+#include <QChar>
+#include <QPointF>
+#include <QString>
 
-# include <BRep_Builder.hxx>
-# include <BRep_Tool.hxx>
-# include <BRepAdaptor_Curve.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <BRepExtrema_DistShapeShape.hxx>
-# include <BRepLProp_CLProps.hxx>
-# include <BRepLProp_CurveTool.hxx>
-# include <BRepLProp_SLProps.hxx>
-# include <BRepTools.hxx>
-# include <GCPnts_AbscissaPoint.hxx>
-# include <gp_Ax3.hxx>
-# include <gp_Dir.hxx>
-# include <gp_Elips.hxx>
-# include <gp_Pnt.hxx>
-# include <gp_Vec.hxx>
-# include <Precision.hxx>
-# include <TopExp.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
+#include <BRepBndLib.hxx>
+#include <BRep_Builder.hxx>
+#include <BRep_Tool.hxx>
+#include <BRepAdaptor_Curve.hxx>
+#include <BRepAdaptor_Surface.hxx>
+#include <BRepBuilderAPI_MakeEdge.hxx>
+#include <BRepExtrema_DistShapeShape.hxx>
+#include <BRepLProp_CLProps.hxx>
+#include <BRepLProp_CurveTool.hxx>
+#include <BRepLProp_SLProps.hxx>
+#include <BRepTools.hxx>
+#include <GCPnts_AbscissaPoint.hxx>
+#include <gp_Ax3.hxx>
+#include <gp_Dir.hxx>
+#include <gp_Elips.hxx>
+#include <gp_Pnt.hxx>
+#include <gp_Vec.hxx>
+#include <Precision.hxx>
+#include <TopExp.hxx>
+#include <TopExp_Explorer.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
 #endif
 
 #include <App/Application.h>
@@ -60,6 +62,7 @@
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
 #include <Base/Stream.h>
+#include <Base/UnitsApi.h>
 #include <Base/Vector3D.h>
 
 #include "DrawUtil.h"
@@ -348,19 +351,19 @@ Base::Vector3d DrawUtil::vertex2Vector(const TopoDS_Vertex& v)
     return Base::Vector3d(gp.X(), gp.Y(), gp.Z());
 }
 
+//TODO: make formatVector using toVector3d
 std::string DrawUtil::formatVector(const Base::Vector3d& v)
 {
     std::stringstream builder;
-    builder << std::fixed << std::setprecision(3) ;
+    builder << std::fixed << std::setprecision(Base::UnitsApi::getDecimals()) ;
     builder << " (" << v.x  << ", " << v.y << ", " << v.z << ") ";
-//    builder << " (" << setw(6) << v.x  << ", " << setw(6) << v.y << ", " << setw(6) << v.z << ") ";
     return builder.str();
 }
 
 std::string DrawUtil::formatVector(const gp_Dir& v)
 {
     std::stringstream builder;
-    builder << std::fixed << std::setprecision(3) ;
+    builder << std::fixed << std::setprecision(Base::UnitsApi::getDecimals()) ;
     builder << " (" << v.X()  << ", " << v.Y() << ", " << v.Z() << ") ";
     return builder.str();
 }
@@ -368,14 +371,14 @@ std::string DrawUtil::formatVector(const gp_Dir& v)
 std::string DrawUtil::formatVector(const gp_Dir2d& v)
 {
     std::stringstream builder;
-    builder << std::fixed << std::setprecision(3) ;
+    builder << std::fixed << std::setprecision(Base::UnitsApi::getDecimals()) ;
     builder << " (" << v.X()  << ", " << v.Y() <<  ") ";
     return builder.str();
 }
 std::string DrawUtil::formatVector(const gp_Vec& v)
 {
     std::stringstream builder;
-    builder << std::fixed << std::setprecision(3) ;
+    builder << std::fixed << std::setprecision(Base::UnitsApi::getDecimals()) ;
     builder << " (" << v.X()  << ", " << v.Y() << ", " << v.Z() << ") ";
     return builder.str();
 }
@@ -383,7 +386,7 @@ std::string DrawUtil::formatVector(const gp_Vec& v)
 std::string DrawUtil::formatVector(const gp_Pnt& v)
 {
     std::stringstream builder;
-    builder << std::fixed << std::setprecision(3) ;
+    builder << std::fixed << std::setprecision(Base::UnitsApi::getDecimals()) ;
     builder << " (" << v.X()  << ", " << v.Y() << ", " << v.Z() << ") ";
     return builder.str();
 }
@@ -391,7 +394,7 @@ std::string DrawUtil::formatVector(const gp_Pnt& v)
 std::string DrawUtil::formatVector(const gp_Pnt2d& v)
 {
     std::stringstream builder;
-    builder << std::fixed << std::setprecision(3) ;
+    builder << std::fixed << std::setprecision(Base::UnitsApi::getDecimals()) ;
     builder << " (" << v.X()  << ", " << v.Y() << ") ";
     return builder.str();
 }
@@ -399,7 +402,7 @@ std::string DrawUtil::formatVector(const gp_Pnt2d& v)
 std::string DrawUtil::formatVector(const QPointF& v)
 {
     std::stringstream builder;
-    builder << std::fixed << std::setprecision(3) ;
+    builder << std::fixed << std::setprecision(Base::UnitsApi::getDecimals()) ;
     builder << " (" << v.x()  << ", " << v.y() << ") ";
     return builder.str();
 }
@@ -511,6 +514,11 @@ Base::Vector3d DrawUtil::vecRotate(Base::Vector3d vec,
     return Base::Vector3d(xForm * (vec));
 }
 
+gp_Vec DrawUtil::closestBasis(gp_Vec inVec)
+{
+    return gp_Vec(togp_Dir(closestBasis(toVector3d(inVec))));
+}
+
 Base::Vector3d  DrawUtil::closestBasis(Base::Vector3d v)
 {
     Base::Vector3d result(0.0, -1, 0);
@@ -522,10 +530,15 @@ Base::Vector3d  DrawUtil::closestBasis(Base::Vector3d v)
     Base::Vector3d  stdZr(0.0, 0.0, -1.0);
 
     //first check if already a basis
-    if (checkParallel(v, stdZ) ||
-        checkParallel(v, stdY) ||
-        checkParallel(v, stdX)) {
+    if (v.Dot(stdX) == 1.0 ||
+        v.Dot(stdY) == 1.0 ||
+        v.Dot(stdZ) == 1.0) {
         return v;
+    }
+    if (v.Dot(stdX) == -1.0 ||
+        v.Dot(stdY) == -1.0 ||
+        v.Dot(stdZ) == -1.0) {
+        return -v;
     }
 
     //not a basis. find smallest angle with a basis.
@@ -537,23 +550,139 @@ Base::Vector3d  DrawUtil::closestBasis(Base::Vector3d v)
     angleYr = stdYr.GetAngle(v);
     angleZr = stdZr.GetAngle(v);
 
-    angleMin = angleX;
-    if (angleY < angleMin) {
-        return stdY;
+    angleMin = std::min({angleX, angleY, angleZ, angleXr, angleYr, angleZr});
+    if (angleX == angleMin) {
+        return Base::Vector3d(1.0, 0.0, 0.0);
     }
-    if (angleZ < angleMin) {
-        return stdZ;
+
+    if (angleY == angleMin) {
+        return Base::Vector3d(0.0, 1.0, 0.0);
     }
-    if (angleXr < angleMin) {
-        return stdXr;
+
+    if (angleZ == angleMin) {
+        return Base::Vector3d(0.0, 0.0, 1.0);
     }
-    if (angleYr < angleMin) {
-        return stdYr;
+
+    if (angleXr == angleMin) {
+        return Base::Vector3d(1.0, 0.0, 0.0);
     }
-    if (angleZr < angleMin) {
-        return stdZr;
+
+    if (angleYr == angleMin) {
+        return Base::Vector3d(0.0, 1.0, 0.0);
     }
-    return stdX;
+
+    if (angleZr == angleMin) {
+        return Base::Vector3d(0.0, 0.0, 1.0);
+    }
+
+    //should not get to here
+    return Base::Vector3d(1.0, 0.0, 0.0);
+
+}
+
+Base::Vector3d  DrawUtil::closestBasis(Base::Vector3d vDir, gp_Ax2 coordSys)
+{
+    gp_Dir gDir(vDir.x, vDir.y, vDir.z);
+    return closestBasis(gDir, coordSys);
+}
+
+Base::Vector3d  DrawUtil::closestBasis(gp_Dir gDir, gp_Ax2 coordSys)
+{
+    gp_Dir xCS = coordSys.XDirection();
+    gp_Dir yCS = coordSys.YDirection();
+    gp_Dir zCS = coordSys.Direction();
+
+    //first check if already a basis
+    if (gDir.Dot(xCS) == 1.0 ||
+        gDir.Dot(yCS) == 1.0 ||
+        gDir.Dot(zCS) == 1.0 ) {
+        //gDir is parallel with a basis
+        return Base::Vector3d( gDir.X(), gDir.Y(), gDir.Z()) ;
+    }
+
+    if (gDir.Dot(xCS.Reversed()) == 1.0 ||
+        gDir.Dot(yCS.Reversed()) == 1.0 ||
+        gDir.Dot(zCS.Reversed()) == 1.0 ) {
+        //gDir is anti-parallel with a basis
+        return Base::Vector3d( -gDir.X(), -gDir.Y(), -gDir.Z());
+    }
+
+    //not a basis. find smallest angle with a basis.
+    double angleX, angleY, angleZ, angleXr, angleYr, angleZr, angleMin;
+    angleX = gDir.Angle(xCS);
+    angleY = gDir.Angle(yCS);
+    angleZ = gDir.Angle(zCS);
+    angleXr = gDir.Angle(xCS.Reversed());
+    angleYr = gDir.Angle(yCS.Reversed());
+    angleZr = gDir.Angle(zCS.Reversed());
+
+    angleMin = std::min({angleX, angleY, angleZ, angleXr, angleYr, angleZr});
+    if (angleX == angleMin) {
+        return Base::Vector3d(xCS.X(), xCS.Y(), xCS.Z());
+    }
+
+    if (angleY == angleMin) {
+        return Base::Vector3d(yCS.X(), yCS.Y(), yCS.Z());
+    }
+
+    if (angleZ == angleMin) {
+        return Base::Vector3d(zCS.X(), zCS.Y(), zCS.Z()) ;
+    }
+
+    if (angleXr == angleMin) {
+        return Base::Vector3d(-xCS.X(), -xCS.Y(), -xCS.Z());
+    }
+
+    if (angleYr == angleMin) {
+        return Base::Vector3d(-yCS.X(), -yCS.Y(), -yCS.Z());
+    }
+
+    if (angleZr == angleMin) {
+        return Base::Vector3d(-zCS.X(), -zCS.Y(), -zCS.Z());
+    }
+
+    //should not get to here
+    return Base::Vector3d(xCS.X(), xCS.Y(), xCS.Z());
+}
+
+double DrawUtil::getWidthInDirection(gp_Dir direction, TopoDS_Shape& shape)
+{
+    Base::Vector3d  stdX(1.0, 0.0, 0.0);
+    Base::Vector3d  stdY(0.0, 1.0, 0.0);
+    Base::Vector3d  stdZ(0.0, 0.0, 1.0);
+    Base::Vector3d  stdXr(-1.0, 0.0, 0.0);
+    Base::Vector3d  stdYr(0.0, -1.0, 0.0);
+    Base::Vector3d  stdZr(0.0, 0.0, -1.0);
+    Base::Vector3d vClosestBasis = closestBasis(toVector3d(direction));
+
+    Bnd_Box shapeBox;
+    shapeBox.SetGap(0.0);
+    BRepBndLib::AddOptimal(shape, shapeBox);
+    double xMin = 0, xMax = 0, yMin = 0, yMax = 0, zMin = 0, zMax = 0;
+    if (shapeBox.IsVoid()) {
+        //this really shouldn't happen here as null shapes should have been caught
+        //long before this
+        Base::Console().Error("DU::getWidthInDirection - shapeBox is void\n");
+        return 0.0;
+    }
+    shapeBox.Get(xMin, yMin, zMin, xMax, yMax, zMax);
+
+    if (vClosestBasis.IsEqual(stdX, EWTOLERANCE) ||
+        vClosestBasis.IsEqual(stdXr, EWTOLERANCE) ) {
+        return xMax - xMin;
+    }
+
+    if (vClosestBasis.IsEqual(stdY, EWTOLERANCE) ||
+        vClosestBasis.IsEqual(stdYr, EWTOLERANCE) ) {
+        return yMax - yMin;
+    }
+
+    if (vClosestBasis.IsEqual(stdZ, EWTOLERANCE) ||
+        vClosestBasis.IsEqual(stdZr, EWTOLERANCE) ) {
+        return zMax - zMin;
+    }
+
+    return 0.0;
 }
 
 //based on Function provided by Joe Dowsett, 2014
@@ -871,6 +1000,102 @@ void DrawUtil::encodeXmlSpecialChars(std::string& inoutText)
         }
     }
     inoutText.swap(buffer);
+}
+
+//Sort edges into nose to tail order. From Part/App/AppPartPy.cpp.  gives back a sequence
+//of nose to tail edges and a shrunken input sequence of edges (the unconnected left overs)
+//struct EdgePoints {
+//    gp_Pnt v1, v2;
+//    std::list<TopoDS_Edge>::iterator it;
+//    TopoDS_Edge edge;
+//};
+std::list<TopoDS_Edge> DrawUtil::sort_Edges(double tol3d, std::list<TopoDS_Edge>& edges)
+{
+    tol3d = tol3d * tol3d;
+    std::list<EdgePoints>  edge_points;
+    TopExp_Explorer xp;
+    for (std::list<TopoDS_Edge>::iterator it = edges.begin(); it != edges.end(); ++it) {
+        EdgePoints ep;
+        xp.Init(*it,TopAbs_VERTEX);
+        ep.v1 = BRep_Tool::Pnt(TopoDS::Vertex(xp.Current()));
+        xp.Next();
+        ep.v2 = BRep_Tool::Pnt(TopoDS::Vertex(xp.Current()));
+        ep.it = it;
+        ep.edge = *it;
+        edge_points.push_back(ep);
+    }
+
+    if (edge_points.empty())
+        return std::list<TopoDS_Edge>();
+
+    std::list<TopoDS_Edge> sorted;
+    gp_Pnt gpChainFirst, gpChainLast;
+    gpChainFirst = edge_points.front().v1;
+    gpChainLast  = edge_points.front().v2;
+
+    sorted.push_back(edge_points.front().edge);
+    edges.erase(edge_points.front().it);
+    edge_points.erase(edge_points.begin());
+
+    while (!edge_points.empty()) {
+        // search for adjacent edge
+        std::list<EdgePoints>::iterator itEdgePoint;
+        for (itEdgePoint = edge_points.begin(); itEdgePoint != edge_points.end(); ++itEdgePoint) {
+            if (itEdgePoint->v1.SquareDistance(gpChainLast) <= tol3d) {
+                //found a connection from end of chain to start of edge
+                gpChainLast = itEdgePoint->v2;
+                sorted.push_back(itEdgePoint->edge);
+                edges.erase(itEdgePoint->it);
+                edge_points.erase(itEdgePoint);
+                itEdgePoint = edge_points.begin();
+                break;
+            }
+            else if (itEdgePoint->v2.SquareDistance(gpChainFirst) <= tol3d) {
+                //found a connection from start of chain to end of edge
+                gpChainFirst = itEdgePoint->v1;
+                sorted.push_front(itEdgePoint->edge);
+                edges.erase(itEdgePoint->it);
+                edge_points.erase(itEdgePoint);
+                itEdgePoint = edge_points.begin();
+                break;
+            }
+            else if (itEdgePoint->v2.SquareDistance(gpChainLast) <= tol3d) {
+                //found a connection from end of chain to end of edge
+                gpChainLast = itEdgePoint->v1;
+                Standard_Real firstParam, lastParam;
+                const Handle(Geom_Curve) & curve = BRep_Tool::Curve(itEdgePoint->edge, firstParam, lastParam);
+                firstParam = curve->ReversedParameter(firstParam);
+                lastParam = curve->ReversedParameter(lastParam);
+                TopoDS_Edge edgeReversed = BRepBuilderAPI_MakeEdge(curve->Reversed(), firstParam, lastParam);
+                sorted.push_back(edgeReversed);
+                edges.erase(itEdgePoint->it);
+                edge_points.erase(itEdgePoint);
+                itEdgePoint = edge_points.begin();
+                break;
+            }
+            else if (itEdgePoint->v1.SquareDistance(gpChainFirst) <= tol3d) {
+                //found a connection from start of chain to start of edge
+                gpChainFirst = itEdgePoint->v2;
+                Standard_Real firstParam, lastParam;
+                const Handle(Geom_Curve) & curve = BRep_Tool::Curve(itEdgePoint->edge, firstParam, lastParam);
+                firstParam = curve->ReversedParameter(firstParam);
+                lastParam = curve->ReversedParameter(lastParam);
+                TopoDS_Edge edgeReversed = BRepBuilderAPI_MakeEdge(curve->Reversed(), firstParam, lastParam);
+                sorted.push_front(edgeReversed);
+                edges.erase(itEdgePoint->it);
+                edge_points.erase(itEdgePoint);
+                itEdgePoint = edge_points.begin();
+                break;
+            }
+        }
+
+        if ((itEdgePoint == edge_points.end()) || (gpChainLast.SquareDistance(gpChainFirst) <= tol3d)) {
+            // no adjacent edge found or polyline is closed
+            return sorted;
+        }
+    }
+
+    return sorted;
 }
 
 // Supplementary mathematical functions
@@ -1367,7 +1592,7 @@ void DrawUtil::dumpCS3(const char* text,
     gp_Dir baseX    = CS.XDirection();
     gp_Dir baseY    = CS.YDirection();
     gp_Pnt baseOrg  = CS.Location();
-    Base::Console().Message("DU::dumpCSF - %s Loc: %s Axis: %s X: %s Y: %s\n", text,
+    Base::Console().Message("DU::dumpCS3 - %s Loc: %s Axis: %s X: %s Y: %s\n", text,
                             DrawUtil::formatVector(baseOrg).c_str(),
                             DrawUtil::formatVector(baseAxis).c_str(),
                             DrawUtil::formatVector(baseX).c_str(),

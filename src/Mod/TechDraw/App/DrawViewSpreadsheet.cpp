@@ -24,9 +24,9 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <iomanip>
-# include <sstream>
-# include <boost/regex.hpp>
+#include <iomanip>
+#include <sstream>
+#include <boost/regex.hpp>
 #endif
 
 #include <App/Property.h>
@@ -34,10 +34,10 @@
 #include <Mod/Spreadsheet/App/Cell.h>
 #include <Mod/Spreadsheet/App/Sheet.h>
 
-#include "DrawViewSpreadsheet.h"
 #include "DrawUtil.h"
 #include "Preferences.h"
 
+#include "DrawViewSpreadsheet.h"
 
 using namespace TechDraw;
 

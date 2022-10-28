@@ -70,6 +70,13 @@
 namespace TechDraw
 {
 
+//used by sort_Edges
+struct EdgePoints {
+    gp_Pnt v1, v2;
+    std::list<TopoDS_Edge>::iterator it;
+    TopoDS_Edge edge;
+};
+
 /// Convenient utility functions for TechDraw Module
 class TechDrawExport DrawUtil {
     public:
@@ -122,10 +129,15 @@ class TechDrawExport DrawUtil {
                                         double angle,
                                         Base::Vector3d axis,
                                         Base::Vector3d org = Base::Vector3d(0.0, 0.0, 0.0));
+
         static Base::Vector3d closestBasis(Base::Vector3d v);
+        static gp_Vec closestBasis(gp_Vec inVec);
+        static Base::Vector3d closestBasis(Base::Vector3d vDir, gp_Ax2 coordSys);
+        static Base::Vector3d closestBasis(gp_Dir gDir, gp_Ax2 coordSys);
+
+        static double         getWidthInDirection(gp_Dir direction, TopoDS_Shape& shape);
+
         static double getDefaultLineWeight(std::string s);
-/*        static Base::Vector3d vector23(const Base::Vector3d& v2) { return Base::Vector3d(v2.x, v2.y, 0.0); }*/
-/*        static Base::Vector3d vector32(const Base::Vector3d& v3) { return Base::Vector3d(v3.x, v3.y); }*/
         //! is pt between end1 and end2?
         static bool isBetween(const Base::Vector3d pt, const Base::Vector3d end1, const Base::Vector3d end2);
         //! find intersection in 2d for 2 lines in point+direction form
@@ -133,8 +145,10 @@ class TechDrawExport DrawUtil {
                                    Base::Vector3d p2, Base::Vector3d d2);
         static Base::Vector2d Intersect2d(Base::Vector2d p1, Base::Vector2d d1,
                                    Base::Vector2d p2, Base::Vector2d d2);
-        static Base::Vector3d gpPnt2V3(const gp_Pnt gp) { return Base::Vector3d(gp.X(), gp.Y(), gp.Z()); }
-        static gp_Pnt         V32gpPnt(const Base::Vector3d v)  { return gp_Pnt(v.x, v.y, v.z); }
+        static Base::Vector3d toVector3d(const gp_Pnt gp) { return Base::Vector3d(gp.X(), gp.Y(), gp.Z()); }
+        static Base::Vector3d toVector3d(const gp_Dir gp) { return Base::Vector3d(gp.X(), gp.Y(), gp.Z()); }
+        static gp_Pnt         togp_Pnt(const Base::Vector3d v)  { return gp_Pnt(v.x, v.y, v.z); }
+        static gp_Dir         togp_Dir(const Base::Vector3d v)  { return gp_Dir(v.x, v.y, v.z); }
         static std::string shapeToString(TopoDS_Shape s);
         static TopoDS_Shape shapeFromString(std::string s);
         static Base::Vector3d invertY(Base::Vector3d v);
@@ -148,7 +162,7 @@ class TechDrawExport DrawUtil {
         static bool circulation(Base::Vector3d A, Base::Vector3d B, Base::Vector3d C);
         static int countSubShapes(TopoDS_Shape shape, TopAbs_ShapeEnum subShape);
         static void encodeXmlSpecialChars(std::string& inoutText);
-
+        static std::list<TopoDS_Edge> sort_Edges(double tol3d, std::list<TopoDS_Edge>& edges);
 
         // Supplementary mathematical functions
         static int sgn(double x);

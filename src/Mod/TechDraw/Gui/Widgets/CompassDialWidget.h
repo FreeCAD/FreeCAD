@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2022 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,66 +20,52 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGIDECORATION_H
-#define DRAWINGGUI_QGIDECORATION_H
+//based on a python widget from: 
+//https://github.com/tcalmant/demo-ipopo-qt/blob/master/pc/details/compass.py
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
+#ifndef COMPASSDIALWIDGET_H
+#define COMPASSDIALWIDGET_H
 
-#include <QBrush>
-#include <QGraphicsItemGroup>
-#include <QPen>
+#include <QWidget>
+#include <QSize>
 
+namespace TechDrawGui {
 
-QT_BEGIN_NAMESPACE
-class QPainter;
-class QStyleOptionGraphicsItem;
-QT_END_NAMESPACE
-
-#include <Base/Parameter.h>
-#include <Base/Console.h>
-#include <Base/Vector3D.h>
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
-namespace TechDrawGui
+class CompassDialWidget : public QWidget
 {
+    Q_OBJECT
 
-class TechDrawGuiExport QGIDecoration : public QGraphicsItemGroup
-{
 public:
-    explicit QGIDecoration(void);
-    ~QGIDecoration() {}
-    enum {Type = QGraphicsItem::UserType + 173};
-    int type() const { return Type;}
+    CompassDialWidget(QWidget* parent = 0);
+    ~CompassDialWidget() = default;
 
-    virtual QRectF boundingRect() const;
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr );
-    virtual void draw();
-    void setWidth(double w);
-    double getWidth() { return m_width; }
-    void setStyle(Qt::PenStyle s);
-    void setColor(QColor c);
-    QColor getColor(void) { return m_colNormal; }
-    void setFill(Qt::BrushStyle bs) { m_brushCurrent = bs; }
-    void makeMark(double x, double y);
-    void makeMark(Base::Vector3d v);
+    QSize sizeHint() const override;
+    QSize minimumSizeHint() const override;
+    double angle() const { return m_angle; }
+    void setAngle(double newAngle);
+    void setSize(int newSize);
+
+public Q_SLOTS:
+    void slotChangeAngle(double angle) { setAngle(angle); }
+    void resetAngle() { setAngle(0.0); }
 
 protected:
-    void setPrettyNormal();
-    void setPrettyPre();
-    void setPrettySel();
-    virtual QColor prefNormalColor(void);
-    virtual QColor prefPreColor(void);
-    virtual QColor prefSelectColor(void);
-    QPen m_pen;
-    QBrush m_brush;
-    QColor m_colCurrent;
-    QColor m_colNormal;
-    double m_width;
-    Qt::PenStyle m_styleCurrent;
-    Qt::BrushStyle m_brushCurrent;
+    void paintEvent(QPaintEvent* event) override;
+    void drawWidget(QPainter& painter);
+    void drawNeedle(QPainter& painter);
+    void drawMarkings(QPainter& painter);
+    void drawBackground(QPainter& painter);
 
 private:
+    QRect m_rect;
+    double m_angle;
+    double m_margin;
+    double m_markInterval;
+    int m_defaultSize;
+    int m_defaultMargin;
+    int m_designRadius;
+    int m_designDiameter;
 };
 
-}
-#endif
+} //namespace TechDrawGui
+#endif // COMPASSDIALWIDGET_H

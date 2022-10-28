@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2022 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,36 +20,50 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TASKSECTIONVIEW_H
-#define GUI_TASKVIEW_TASKSECTIONVIEW_H
+#ifndef TECHDRAWGUI_TASKCOMPLEXSECTION_H
+#define TECHDRAWGUI_TASKCOMPLEXSECTION_H
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
+#include <QString>
+
+#include <Base/Vector3D.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 
+namespace App
+{
+class DocumentObject;
+}
 
-class Ui_TaskSectionView;
-
-namespace TechDraw {
-    class DrawViewPart;
-    class DrawViewSection;
+namespace TechDraw
+{
+class DrawPage;
+class DrawView;
+class DrawViewPart;
+class DrawComplexSection;
 }
 
 namespace TechDrawGui
 {
-
 class CompassWidget;
 class VectorEditWidget;
 
-class TaskSectionView : public QWidget
+class Ui_TaskComplexSection;
+
+class TaskComplexSection : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit TaskSectionView(TechDraw::DrawViewPart* base);
-    explicit TaskSectionView(TechDraw::DrawViewSection* section);
-    ~TaskSectionView() = default;
+    TaskComplexSection(TechDraw::DrawPage* page,
+                       TechDraw::DrawViewPart* baseView,
+                       std::vector<App::DocumentObject*> shapes,
+                       std::vector<App::DocumentObject*> xShapes,
+                       App::DocumentObject* profileObject,
+                       std::vector<std::string> profileSubs);
+    TaskComplexSection(TechDraw::DrawComplexSection* complexSection);
+    ~TaskComplexSection() = default;
 
     virtual bool accept();
     virtual bool reject();
@@ -63,12 +77,9 @@ protected:
     void applyQuick(std::string dir);
     void applyAligned(Base::Vector3d localUnit);
 
-    TechDraw::DrawViewSection* createSectionView();
-    void updateSectionView();
-
     void setUiPrimary();
     void setUiEdit();
-    void setUiCommon(Base::Vector3d origin);
+    void setUiCommon();
 
     void checkAll(bool check);
     void enableAll(bool enable);
@@ -77,16 +88,17 @@ protected:
     bool isBaseValid();
     bool isSectionValid();
 
+    void updateUi();
+
 protected Q_SLOTS:
+    void onSectionObjectsUseSelectionClicked();
+    void onProfileObjectsUseSelectionClicked();
     void onUpClicked();
     void onDownClicked();
     void onLeftClicked();
     void onRightClicked();
     void onIdentifierChanged();
     void onScaleChanged();
-    void onXChanged();
-    void onYChanged();
-    void onZChanged();
     void scaleTypeChanged(int index);
     void liveUpdateClicked();
     void updateNowClicked();
@@ -94,72 +106,78 @@ protected Q_SLOTS:
     void slotViewDirectionChanged(Base::Vector3d newDirection);
 
 private:
-    std::unique_ptr<Ui_TaskSectionView> ui;
-    TechDraw::DrawViewPart* m_base;
-    TechDraw::DrawViewSection* m_section;
-    std::string m_symbol;
-    Base::Vector3d m_normal;
-    Base::Vector3d m_direction;
-    Base::Vector3d m_origin;
+    void createComplexSection();
+    void updateComplexSection();
 
+    QString sourcesToString();
+    std::unique_ptr<Ui_TaskComplexSection> ui;
+
+    TechDraw::DrawPage* m_page;
+    App::Document* m_doc;
+    TechDraw::DrawViewPart* m_baseView;
+    TechDraw::DrawComplexSection* m_section;
+    std::vector<App::DocumentObject*> m_shapes;
+    std::vector<App::DocumentObject*> m_xShapes;
+    App::DocumentObject* m_profileObject;
+    std::vector<std::string> m_profileSubs;
+    std::string m_dirName;
+    std::string m_sectionName;
+    Base::Vector3d m_saveNormal;
+    Base::Vector3d m_saveXDir;
+    std::string m_saveBaseName;
+    std::string m_savePageName;
     std::string m_saveSymbol;
     std::string m_saveDirName;
-    Base::Vector3d m_saveNormal;
     Base::Vector3d m_saveDirection;
     Base::Vector3d m_saveOrigin;
     double m_saveScale;
     int m_saveScaleType;
-
-    std::string m_dirName;
-    std::string m_sectionName;
-    std::string m_baseName;
-    App::Document* m_doc;
-
-    bool m_createMode;
     bool m_saved;
-
-    std::string m_saveBaseName;
-    std::string m_savePageName;
+    bool m_createMode;
+    Base::Vector3d m_normal;
 
     int m_applyDeferred;
     Base::Vector3d m_localUnit;
     CompassWidget* m_compass;
+    double m_angle;
     VectorEditWidget* m_viewDirectionWidget;
+
 };
 
-class TaskDlgSectionView : public Gui::TaskView::TaskDialog
+class TaskDlgComplexSection : public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
 public:
-    explicit TaskDlgSectionView(TechDraw::DrawViewPart* base);
-    explicit TaskDlgSectionView(TechDraw::DrawViewSection* section);
-    ~TaskDlgSectionView() override;
+    TaskDlgComplexSection(TechDraw::DrawPage* page,
+                          TechDraw::DrawViewPart* baseView,
+                          std::vector<App::DocumentObject*> shapes,
+                          std::vector<App::DocumentObject*> xShapes,
+                          App::DocumentObject* profileObject,
+                          std::vector<std::string> profileSubs);
+    TaskDlgComplexSection(TechDraw::DrawComplexSection* page);
+    ~TaskDlgComplexSection() override;
 
+public:
     /// is called the TaskView when the dialog is opened
     void open() override;
     /// is called by the framework if an button is clicked which has no accept or reject role
-/*    virtual void clicked(int);*/
     /// is called by the framework if the dialog is accepted (Ok)
     bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
     bool reject() override;
-
-    QDialogButtonBox::StandardButtons getStandardButtons() const override
-    { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel; }
-
+    /// is called by the framework if the user presses the help button
+    bool isAllowedAlterDocument() const override
+                        { return false; }
     void update();
 
-    bool isAllowedAlterSelection() const override
-    { return false; }
-    bool isAllowedAlterDocument() const override
-    { return false; }
+protected:
 
 private:
-    TaskSectionView * widget;
+    TaskComplexSection * widget;
     Gui::TaskView::TaskBox* taskbox;
 };
 
 } //namespace TechDrawGui
 
-#endif // #ifndef GUI_TASKVIEW_TASKSECTIONVIEW_H
+#endif // #ifndef TECHDRAWGUI_TASKCOMPLEXSECTION_H

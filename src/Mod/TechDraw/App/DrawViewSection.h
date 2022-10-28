@@ -69,8 +69,10 @@ public:
     App::PropertyLink   BaseView;
     App::PropertyVector SectionNormal;
     App::PropertyVector SectionOrigin;
-    App::PropertyEnumeration SectionDirection;
+    App::PropertyString SectionSymbol;
 
+
+    App::PropertyEnumeration SectionDirection;      //to be made obsolete eventually
     App::PropertyEnumeration CutSurfaceDisplay;        //new v019
     App::PropertyFile   FileHatchPattern;
     App::PropertyFile   FileGeomPattern;               //new v019
@@ -79,8 +81,8 @@ public:
     App::PropertyString NameGeomPattern;
     App::PropertyFloat  HatchScale;
 
-    App::PropertyString SectionSymbol;
     App::PropertyBool   FuseBeforeCut;
+    App::PropertyBool   TrimAfterCut;                   //new v021
 
     bool isReallyInBox (const Base::Vector3d v, const Base::BoundBox3d bb) const;
     bool isReallyInBox (const gp_Pnt p, const Bnd_Box& bb) const;
@@ -94,26 +96,41 @@ public:
     short mustExecute() const override;
 
     void sectionExec(TopoDS_Shape& s);
-    void makeSectionCut(TopoDS_Shape &baseShape);
+    virtual void makeSectionCut(TopoDS_Shape &baseShape);
     void postHlrTasks(void) override;
     virtual void postSectionCutTasks();
     void waitingForCut(bool s) { m_waitingForCut = s; }
     bool waitingForCut(void) const { return m_waitingForCut; }
     bool waitingForResult() const override;
 
-    std::vector<TechDraw::FacePtr> getTDFaceGeometry() {return tdSectionFaces;}
+    virtual TopoDS_Shape makeCuttingTool(double shapeSize);
+    virtual TopoDS_Shape getShapeToCut();
+    virtual bool isBaseValid() const;
+    virtual TopoDS_Shape  prepareShape(const TopoDS_Shape& rawShape,
+                                       double shapeSize);
+    virtual TopoDS_Shape getShapeToPrepare() const { return m_cutPieces; }
 
+    //CS related methods
+    gp_Ax2 getProjectionCS(Base::Vector3d pt = Base::Vector3d(0.0, 0.0, 0.0)) const override;
     void setCSFromBase(const std::string sectionName);
-    gp_Ax2 getCSFromBase(const std::string sectionName) const;
-
+    void setCSFromBase(Base::Vector3d localUnit);
+    void setCSFromLocalUnit(const Base::Vector3d localUnit);
+    virtual gp_Ax2 getCSFromBase(const std::string sectionName) const;
     gp_Ax2 getSectionCS() const;
     Base::Vector3d getXDirection() const override;       //don't use XDirection.getValue()
 
     TechDraw::DrawViewPart* getBaseDVP() const;
     TechDraw::DrawProjGroupItem* getBaseDPGI() const;
 
-    TopoDS_Compound getSectionTFaces() { return sectionTopoDSFaces;}
+    //section face related methods
+    TopoDS_Compound getSectionTFaces() { return m_sectionTopoDSFaces;}
+    std::vector<TechDraw::FacePtr> getTDFaceGeometry() {return m_tdSectionFaces;}
     TopoDS_Face getSectionTopoDSFace(int i);
+    virtual TopoDS_Compound alignSectionFaces(TopoDS_Shape faceIntersections);
+    TopoDS_Compound mapToPage(TopoDS_Shape& shapeToAlign);
+    virtual std::vector<TechDraw::FacePtr> makeTDSectionFaces(TopoDS_Compound topoDSFaces);
+    virtual TopoDS_Shape getShapeToIntersect() { return m_cutPieces; }
+
     void makeLineSets(void) ;
     std::vector<LineSet> getDrawableLines(int i = 0);
     std::vector<PATLineSpec> getDecodedSpecsFromFile(std::string fileSpec, std::string myPattern);
@@ -123,7 +140,7 @@ public:
     static const char* SectionDirEnums[];
     static const char* CutSurfaceEnums[];
 
-    std::pair<Base::Vector3d, Base::Vector3d> sectionLineEnds();
+    virtual std::pair<Base::Vector3d, Base::Vector3d> sectionLineEnds();
 
     bool showSectionEdges(void);
 
@@ -131,16 +148,17 @@ public Q_SLOTS:
     void onSectionCutFinished(void);
 
 protected:
-    TopoDS_Compound sectionTopoDSFaces;       //needed for hatching
+    TopoDS_Compound m_sectionTopoDSFaces;       //needed for hatching
     std::vector<LineSet> m_lineSets;
-    std::vector<TechDraw::FacePtr> tdSectionFaces;
+    std::vector<TechDraw::FacePtr> m_tdSectionFaces;
 
 
-    gp_Pln getSectionPlane() const;
-    TopoDS_Compound findSectionPlaneIntersections(const TopoDS_Shape& shape);
+    virtual gp_Pln getSectionPlane() const;
+    virtual TopoDS_Compound findSectionPlaneIntersections(const TopoDS_Shape& shape);
     void getParameters();
     bool debugSection() const;
     int prefCutSurface() const;
+    bool trimAfterCut() const;
 
     TopoDS_Shape m_cutShape;
 
@@ -151,15 +169,16 @@ protected:
     void replaceSvgIncluded(std::string newSvgFile);
     void replacePatIncluded(std::string newPatFile);
 
-    TopoDS_Shape m_rawShape;
-    gp_Ax2 m_viewAxis;
-    TopoDS_Shape m_scaledShape;
+    TopoDS_Shape m_cutPieces;                //the shape after cutting, but before centering & scaling
+    gp_Ax2 m_projectionCS;
+    TopoDS_Shape m_preparedShape;             //the shape after cutting, centering, scaling etc
 
     QMetaObject::Connection connectCutWatcher;
     QFutureWatcher<void> m_cutWatcher;
     QFuture<void> m_cutFuture;
     bool m_waitingForCut;
-
+    TopoDS_Shape m_cuttingTool;
+    double m_shapeSize;
 };
 
 using DrawViewSectionPython = App::FeaturePythonT<DrawViewSection>;

@@ -52,7 +52,8 @@ static App::Color  selectColor();
 static App::Color  preselectColor();
 static App::Color  vertexColor();
 static double      vertexScale();
-
+static int         scaleType();
+static double      scale();
 static bool        useGlobalDecimals();
 static bool        keepPagesUpToDate();
 

@@ -55,6 +55,7 @@ public:
     App::PropertyBool   ShowSectionLine;
     App::PropertyEnumeration   SectionLineStyle;
     App::PropertyColor  SectionLineColor;
+    App::PropertyBool   SectionLineMarks;
     App::PropertyEnumeration   HighlightLineStyle;
     App::PropertyColor  HighlightLineColor;
     App::PropertyFloat  HighlightAdjust;

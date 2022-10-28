@@ -25,29 +25,32 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <sstream>
-# include <QtConcurrentRun>
-# include <Bnd_Box.hxx>
-# include <BRep_Tool.hxx>
-# include <BRepAlgo_NormalProjection.hxx>
-# include <BRepBndLib.hxx>
-# include <BRepBuilderAPI_Copy.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <BRepBuilderAPI_MakeWire.hxx>
-# include <BRepTools.hxx>
-# include <gp_Ax2.hxx>
-# include <gp_Dir.hxx>
-# include <gp_Pln.hxx>
-# include <gp_Pnt.hxx>
-# include <HLRAlgo_Projector.hxx>
-# include <ShapeAnalysis.hxx>
-# include <TopExp.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Edge.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopoDS_Shape.hxx>
-# include <TopoDS_Vertex.hxx>
-# include <TopoDS_Wire.hxx>
+#include <sstream>
+#include <QtConcurrentRun>
+#include <Bnd_Box.hxx>
+#include <BRep_Tool.hxx>
+#include <BRepAlgo_NormalProjection.hxx>
+#include <BRepBndLib.hxx>
+#include <BRep_Builder.hxx>
+#include <BRepBuilderAPI_Copy.hxx>
+#include <BRepBuilderAPI_MakeFace.hxx>
+#include <BRepBuilderAPI_Transform.hxx>
+#include <BRepBuilderAPI_MakeWire.hxx>
+#include <BRepTools.hxx>
+#include <gp_Ax2.hxx>
+#include <gp_Dir.hxx>
+#include <gp_Pln.hxx>
+#include <gp_Pnt.hxx>
+#include <HLRAlgo_Projector.hxx>
+#include <ShapeAnalysis.hxx>
+#include <TopExp.hxx>
+#include <TopExp_Explorer.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS_Face.hxx>
+#include <TopoDS_Shape.hxx>
+#include <TopoDS_Vertex.hxx>
+#include <TopoDS_Wire.hxx>
 #endif
 
 #include <App/Application.h>
@@ -237,7 +240,7 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
 
     TopoDS_Shape shape = getSourceShape();
     if (shape.IsNull()) {
-        Base::Console().Log("DVP::execute - %s - Source shape is Null.\n",
+        Base::Console().Message("DVP::execute - %s - Source shape is Null.\n",
                             getNameInDocument());
         return DrawView::execute();
     }
@@ -345,7 +348,7 @@ GeometryObject* DrawViewPart::makeGeometryForShape(TopoDS_Shape& shape)
 }
 
 //create a geometry object and trigger the HLR process in another thread
-TechDraw::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape& shape, gp_Ax2& viewAxis)
+TechDraw::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape& shape, const gp_Ax2 &viewAxis)
 {
 //    Base::Console().Message("DVP::buildGeometryObject() - %s\n", getNameInDocument());
     showProgressMessage(getNameInDocument(), "is finding hidden lines");
@@ -381,11 +384,17 @@ void DrawViewPart::onHlrFinished(void)
 //    Base::Console().Message("DVP::onHlrFinished() - %s\n", getNameInDocument());
 
     //now that the new GeometryObject is fully populated, we can replace the old one
-    if (geometryObject) {
-        delete geometryObject;
+    if (geometryObject &&
+            m_tempGeometryObject) {
+        delete geometryObject;      //remove the old
     }
-    geometryObject = m_tempGeometryObject;
-    m_tempGeometryObject = nullptr;     //superfluous
+    if (m_tempGeometryObject) {
+        geometryObject = m_tempGeometryObject;  //replace with new
+        m_tempGeometryObject = nullptr;     //superfluous?
+    }
+    if (!geometryObject) {
+        throw Base::RuntimeError("DrawViewPart has lost its geometry");
+    }
 
     //the last hlr related task is to make a bbox of the results
     bbox = geometryObject->calcBoundingBox();
@@ -468,13 +477,20 @@ void DrawViewPart::extractFaces()
                        geometryObject->getVisibleFaceEdges(SmoothVisible.getValue(),SeamVisible.getValue());
 
     if (goEdges.empty()) {
-        Base::Console().Message("DVP::extractFaces - %s - no face edges available!\n", getNameInDocument());
+//        Base::Console().Message("DVP::extractFaces - %s - no face edges available!\n", getNameInDocument());    //debug
         return;
     }
 
     if (newFaceFinder()) {
         std::vector<TopoDS_Edge> closedEdges;
         std::vector<TopoDS_Edge> cleanEdges = DrawProjectSplit::scrubEdges(goEdges, closedEdges);
+
+        if (cleanEdges.empty() &&
+            closedEdges.empty()) {
+            //how does this happen?  something wrong somewhere
+//            Base::Console().Message("DVP::extractFaces - no clean or closed wires\n");    //debug
+            return;
+        }
 
         //use EdgeWalker to make wires from edges
         EdgeWalker eWalker;
@@ -861,10 +877,55 @@ QRectF DrawViewPart::getRect() const
     return result;
 }
 
+//returns a compound of all the visible projected edges
+TopoDS_Shape DrawViewPart::getShape() const
+{
+    BRep_Builder builder;
+    TopoDS_Compound result;
+    builder.MakeCompound(result);
+    if (geometryObject) {
+        if (!geometryObject->getVisHard().IsNull()) {
+            builder.Add(result, geometryObject->getVisHard());
+        }
+        if (!geometryObject->getVisOutline().IsNull()) {
+            builder.Add(result, geometryObject->getVisOutline());
+        }
+        if (!geometryObject->getVisSeam().IsNull()) {
+            builder.Add(result, geometryObject->getVisSeam());
+        }
+        if (!geometryObject->getVisSmooth().IsNull()) {
+            builder.Add(result, geometryObject->getVisSmooth());
+        }
+    }
+    return result;
+}
+
+//returns the (unscaled) size of the visible lines along the alignment vector
+double DrawViewPart::getSizeAlongVector(Base::Vector3d alignmentVector)
+{
+    gp_Ax3 projectedCS3(getProjectionCS());
+    projectedCS3.SetXDirection(DrawUtil::togp_Dir(alignmentVector));
+    gp_Ax3 stdCS;   //OXYZ
+
+    gp_Trsf xPieceAlign;
+    xPieceAlign.SetTransformation(stdCS, projectedCS3);
+    BRepBuilderAPI_Transform mkTransAlign(getShape(), xPieceAlign);
+    TopoDS_Shape shapeAligned = mkTransAlign.Shape();
+
+    Bnd_Box shapeBox;
+    shapeBox.SetGap(0.0);
+    BRepBndLib::AddOptimal(shapeAligned, shapeBox);
+    double xMin = 0, xMax = 0, yMin = 0, yMax = 0, zMin = 0, zMax = 0;
+    shapeBox.Get(xMin, yMin, zMin, xMax, yMax, zMax);
+    double shapeWidth((xMax - xMin) / getScale());
+    return shapeWidth;
+}
+
 //used to project a pt (ex SectionOrigin) onto paper plane
 Base::Vector3d DrawViewPart::projectPoint(const Base::Vector3d& pt, bool invert) const
 {
-//    Base::Console().Message("DVP::projectPoint()\n");
+//    Base::Console().Message("DVP::projectPoint(%s, %d\n",
+//                            DrawUtil::formatVector(pt).c_str(), invert);
     Base::Vector3d stdOrg(0.0, 0.0, 0.0);
     gp_Ax2 viewAxis = getProjectionCS(stdOrg);
     gp_Pnt gPt(pt.x, pt.y, pt.z);
@@ -892,8 +953,27 @@ BaseGeomPtr DrawViewPart::projectEdge(const TopoDS_Edge& e) const
     projector.Add(e);
     projector.Build();
     TopoDS_Shape s = projector.Projection();
-//    Base::Console().Message("DVP::projectEdge - s.IsNull: %d\n", s.IsNull());
-    BaseGeomPtr result;
+    return BaseGeom::baseFactory(TopoDS::Edge(s));
+}
+
+//simple projection of inWire with conversion of the result to TD geometry
+BaseGeomPtrVector DrawViewPart::projectWire(const TopoDS_Wire& inWire) const
+{
+//    Base::Console().Message("DVP::projectWire() - inWire.IsNull: %d\n", inWire.IsNull());
+    BaseGeomPtrVector result;
+    Base::Vector3d stdOrg(0.0, 0.0, 0.0);
+
+    TopoDS_Face paper = BRepBuilderAPI_MakeFace(gp_Pln(getProjectionCS(stdOrg)));
+    BRepAlgo_NormalProjection projector(paper);
+    projector.Add(inWire);
+    projector.Build();
+    BRepTools::Write(projector.Projection(), "DVPprojectedWire.brep");            //debug
+
+    TopExp_Explorer expShape(projector.Projection(), TopAbs_EDGE);
+    for (; expShape.More(); expShape.Next()) {
+        BaseGeomPtr edge = BaseGeom::baseFactory(TopoDS::Edge(expShape.Current()));
+        result.push_back(edge);
+    }
     return result;
 }
 
@@ -924,6 +1004,27 @@ bool DrawViewPart::hasGeometry(void) const
         return true;
     }
     return false;
+}
+
+//convert a vector in local XY coords into a coordinate sytem in global
+//coordinates aligned to the vector.
+//Note that this CS may not have the ideal XDirection for the derived view
+//(likely a DrawViewSection) and the user may need to adjust the XDirection
+//in the derived view.
+gp_Ax2 DrawViewPart::localVectorToCS(const Base::Vector3d localUnit) const
+{
+    gp_Pnt stdOrigin(0.0, 0.0, 0.0);
+    gp_Ax2 dvpCS = getProjectionCS(DrawUtil::toVector3d(stdOrigin));
+    gp_Vec gLocalUnit = DrawUtil::togp_Dir(localUnit);
+    gp_Vec gLocalX(-gLocalUnit.Y(), gLocalUnit.X(), 0.0);    //clockwise perp for 2d
+
+    gp_Ax3 OXYZ;
+    gp_Trsf xLocalOXYZ;
+    xLocalOXYZ.SetTransformation(OXYZ, gp_Ax3(dvpCS));
+    gp_Vec gLocalUnitOXYZ = gLocalUnit.Transformed(xLocalOXYZ);
+    gp_Vec gLocalXOXYZ = gLocalX.Transformed(xLocalOXYZ);
+
+    return { stdOrigin, gp_Dir(gLocalUnitOXYZ), gp_Dir(gLocalXOXYZ) };
 }
 
 gp_Ax2 DrawViewPart::getProjectionCS(const Base::Vector3d pt) const

@@ -24,32 +24,39 @@
 
 #ifndef _PreComp_
 #include <Bnd_Box.hxx>
-#include <BRep_Builder.hxx>
+#include <BRepAlgo_NormalProjection.hxx>
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
+#include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
+#include <BRep_Builder.hxx>
+#include <BRep_Builder.hxx>
 #include <BRepLib.hxx>
+#include <BRepLib.hxx>
+#include <BRepLProp_CLProps.hxx>
+#include <BRepLProp_CurveTool.hxx>
 #include <BRepMesh_IncrementalMesh.hxx>
+#include <BRep_Tool.hxx>
 #include <BRepTools.hxx>
 #include <gp_Ax1.hxx>
 #include <gp_Ax2.hxx>
 #include <gp_Ax3.hxx>
 #include <gp_Dir.hxx>
-#include <gp_Pnt.hxx>
+#include <gp_Pln.hxx>
 #include <gp_Trsf.hxx>
 #include <gp_Vec.hxx>
-#include <HLRBRep.hxx>
+#include <HLRAlgo_Projector.hxx>
 #include <HLRBRep_Algo.hxx>
 #include <HLRBRep_HLRToShape.hxx>
+#include <HLRBRep.hxx>
 #include <HLRBRep_PolyAlgo.hxx>
-#include <HLRAlgo_Projector.hxx>
 #include <HLRBRep_PolyHLRToShape.hxx>
-#include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
-#include <TopoDS.hxx>
+#include <TopExp.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Face.hxx>
+#include <TopoDS.hxx>
 #include <TopoDS_Shape.hxx>
 #include <TopoDS_Vertex.hxx>
 #endif  // #ifndef _PreComp_
@@ -69,6 +76,8 @@
 
 using namespace TechDraw;
 using namespace std;
+
+using DU = DrawUtil;
 
 struct EdgePoints {
     gp_Pnt v1, v2;
@@ -180,6 +189,7 @@ void GeometryObject::projectShape(const TopoDS_Shape& inShape,
             visHard    = hlrToShape.VCompound();
             BRepLib::BuildCurves3d(visHard);
             visHard = invertGeometry(visHard);
+//            BRepTools::Write(visHard, "GOvisHard.brep");            //debug
         }
 
         if (!hlrToShape.Rg1LineVCompound().IsNull()) {
@@ -417,6 +427,46 @@ void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input,
     makeTDGeometry();
 }
 
+//project the edges in shape onto XY.mirrored plane of CS.  mimics the projection
+//of the main hlr routine. Only the visible hard edges are returned, so this method
+//is only suitable for simple shapes that have no hidden edges, like faces or wires.
+//TODO: allow use of perspective projector
+TopoDS_Shape GeometryObject::projectSimpleShape(const TopoDS_Shape &shape,
+                                                const gp_Ax2 &CS)
+{
+//    Base::Console().Message("GO::()\n");
+    if(shape.IsNull()) {
+        throw Base::ValueError("GO::projectSimpleShape - input shape is NULL");
+    }
+
+    HLRBRep_Algo *brep_hlr = new HLRBRep_Algo();
+    brep_hlr->Add(shape);
+    HLRAlgo_Projector projector( CS );
+    brep_hlr->Projector(projector);
+    brep_hlr->Update();
+    brep_hlr->Hide();
+
+    HLRBRep_HLRToShape hlrToShape(brep_hlr);
+    TopoDS_Shape hardEdges = hlrToShape.VCompound();
+    BRepLib::BuildCurves3d(hardEdges);
+    hardEdges = invertGeometry(hardEdges);
+
+    return hardEdges;
+}
+
+//project the edges of a shape onto the XY plane of projCS. This does not give
+//the same result as the hlr projections
+TopoDS_Shape GeometryObject::simpleProjection(const TopoDS_Shape& shape,
+                                              const gp_Ax2& projCS)
+{
+    gp_Pln plane(projCS);
+    TopoDS_Face paper = BRepBuilderAPI_MakeFace(plane);
+    BRepAlgo_NormalProjection projector(paper);
+    projector.Add(shape);
+    projector.Build();
+    return projector.Projection();
+}
+
 TopoDS_Shape GeometryObject::projectFace(const TopoDS_Shape &face,
                                          const gp_Ax2 &CS)
 {
@@ -510,11 +560,11 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
             Base::Console().Log("GO::addGeomFromCompound - edge: %d is NULL\n", i);
             continue;
         }
-        if (DrawUtil::isZeroEdge(edge)) {
+        if (DU::isZeroEdge(edge)) {
             Base::Console().Log("GO::addGeomFromCompound - edge: %d is zeroEdge\n", i);
             continue;
         }
-        if (DrawUtil::isCrazy(edge))  {
+        if (DU::isCrazy(edge))  {
             Base::Console().Log("GO::addGeomFromCompound - edge: %d is crazy\n", i);
             continue;
         }
@@ -860,7 +910,7 @@ gp_Ax2 TechDraw::getViewAxis(const Base::Vector3d origin,
     Base::Vector3d stdZ(0.0, 0.0, 1.0);
     Base::Vector3d stdOrg(0.0, 0.0, 0.0);
     Base::Vector3d cross = direction;
-    if (TechDraw::DrawUtil::checkParallel(direction, stdZ)) {
+    if (DU::checkParallel(direction, stdZ)) {
         cross = Base::Vector3d(1.0, 0.0, 0.0);
     } else {
         cross.Normalize();
@@ -913,7 +963,7 @@ gp_Ax2 TechDraw::legacyViewAxis1(const Base::Vector3d origin,
     }
     Base::Vector3d cross = flipDirection;
 //    //special case
-    if (TechDraw::DrawUtil::checkParallel(flipDirection, stdZ)) {
+    if (DU::checkParallel(flipDirection, stdZ)) {
         cross = Base::Vector3d(1.0, 0.0, 0.0);
     } else {
         cross.Normalize();
@@ -940,6 +990,23 @@ gp_Ax2 TechDraw::legacyViewAxis1(const Base::Vector3d origin,
     return viewAxis;
 }
 
+//! Returns the centroid of shape based on R3
+gp_Pnt TechDraw::findCentroid(const TopoDS_Shape& shape)
+{
+    Bnd_Box tBounds;
+    tBounds.SetGap(0.0);
+    BRepBndLib::AddOptimal(shape, tBounds, true, false);
+
+    Standard_Real xMin, yMin, zMin, xMax, yMax, zMax;
+    tBounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
+
+    Standard_Real x = (xMin + xMax) / 2.0,
+                  y = (yMin + yMax) / 2.0,
+                  z = (zMin + zMax) / 2.0;
+
+    return gp_Pnt(x, y, z);
+}
+
 //! Returns the centroid of shape, as viewed according to direction
 gp_Pnt TechDraw::findCentroid(const TopoDS_Shape &shape,
                                     const Base::Vector3d &direction)
@@ -955,8 +1022,6 @@ gp_Pnt TechDraw::findCentroid(const TopoDS_Shape &shape,
                                       const gp_Ax2 &viewAxis)
 {
 //    Base::Console().Message("GO::findCentroid() - 2\n");
-//    Base::Vector3d origin(0.0, 0.0, 0.0);
-//    gp_Ax2 viewAxis = getViewAxis(origin, direction);
 
     gp_Trsf tempTransform;
     tempTransform.SetTransformation(viewAxis);
@@ -1020,7 +1085,7 @@ TopoDS_Shape TechDraw::mirrorShape(const TopoDS_Shape &input,
         // mirror about the Y axis
         gp_Trsf tempTransform;
         //BRepBuilderAPI_Transform will loop forever if asked to use 0.0 as scale
-        if (!(scale > 0.0)) {
+        if (scale <= 0.0) {
             tempTransform.SetScale(inputCenter, 1.0);
         } else {
             tempTransform.SetScale(inputCenter, scale);
@@ -1042,8 +1107,8 @@ TopoDS_Shape TechDraw::mirrorShape(const TopoDS_Shape &input,
 
 //!rotates a shape about a viewAxis
 TopoDS_Shape TechDraw::rotateShape(const TopoDS_Shape &input,
-                             gp_Ax2& viewAxis,
-                             double rotAngle)
+                                   const gp_Ax2 &viewAxis,
+                                   double rotAngle)
 {
     TopoDS_Shape transShape;
     if (input.IsNull()) {
@@ -1102,4 +1167,63 @@ TopoDS_Shape TechDraw::moveShape(const TopoDS_Shape &input,
         return transShape;
     }
     return transShape;
+}
+
+
+//!moves a shape with restricts on directions
+TopoDS_Shape TechDraw::moveShapeRestricted(const TopoDS_Shape &input,
+                                           const Base::Vector3d& motion,
+                                           bool allowX,
+                                           bool allowY,
+                                           bool allowZ)
+{
+    gp_Vec gMotion(allowX ? motion.x : 0.0,
+                   allowY ? motion.y : 0.0,
+                   allowZ ? motion.z : 0.0);
+    TopoDS_Shape transShape;
+    try {
+        gp_Trsf xlate;
+        xlate.SetTranslation(gMotion);
+
+        BRepBuilderAPI_Transform mkTrf(input, xlate);
+        transShape = mkTrf.Shape();
+    }
+    catch (...) {
+        Base::Console().Log("GeometryObject::moveShapeRestricted - move failed.\n");
+        return transShape;
+    }
+    return transShape;
+}
+
+//!moves a shape with restricts on directions
+TopoDS_Shape TechDraw::moveShapeRestricted(const TopoDS_Shape &input,
+                                           const Base::Vector3d& motion,
+                                           const Base::Vector3d& mask)
+{
+    gp_Vec gMotion(mask.x ? motion.x : 0.0,
+                   mask.y ? motion.y : 0.0,
+                   mask.z ? motion.z : 0.0);
+
+    TopoDS_Shape transShape;
+    try {
+        gp_Trsf xlate;
+        xlate.SetTranslation(gMotion);
+
+        BRepBuilderAPI_Transform mkTrf(input, xlate);
+        transShape = mkTrf.Shape();
+    }
+    catch (...) {
+        Base::Console().Log("GeometryObject::moveShapeRestricted - move failed.\n");
+        return transShape;
+    }
+    return transShape;
+}
+
+TopoDS_Shape TechDraw::moveShapeRestricted(const TopoDS_Shape &input,
+                                           const gp_Vec& motion,
+                                           const gp_Vec& mask)
+{
+    return moveShapeRestricted(input,
+                               DU::toVector3d(motion),
+                               DU::toVector3d(mask));
 }

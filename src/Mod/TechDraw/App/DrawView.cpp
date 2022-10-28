@@ -118,6 +118,15 @@ void DrawView::onChanged(const App::Property* prop)
 //Coding note: calling execute, recompute or recomputeFeature inside an onChanged
 //method can create infinite loops if the called method changes a property.  In general
 //don't do this!  There are situations where it is OK, but careful analysis is a must.
+
+    if (prop == &Scale &&
+        Scale.getValue() < Precision::Confusion()) {
+        //this is not supposed to happen since Scale has constraints, but it may
+        //happen during changes made in PropertyEditor?
+        Scale.setValue(1.0);
+        return;
+    }
+
     if (isRestoring()) {
         App::DocumentObject::onChanged(prop);
         return;

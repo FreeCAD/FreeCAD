@@ -512,6 +512,12 @@ std::vector<TopoDS_Edge> DrawProjectSplit::scrubEdges(const std::vector<TechDraw
 std::vector<TopoDS_Edge> DrawProjectSplit::scrubEdges(std::vector<TopoDS_Edge>& origEdges,
                                                       std::vector<TopoDS_Edge> &closedEdges)
 {
+    if (origEdges.empty()) {
+        //how did this happen? if Scale is zero, all the edges will be zero length,
+        //but Scale property has constraint, so this shouldn't happen!
+//        Base::Console().Message("DPS::scrubEdges(2) - origEdges is empty\n");     //debug
+        return std::vector<TopoDS_Edge>();
+    }
     //HLR usually delivers overlapping edges. We need to refine edge overlaps
     //into non-overlapping pieces
     std::vector<TopoDS_Edge> noOverlaps;

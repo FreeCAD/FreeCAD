@@ -181,6 +181,13 @@ Qt::PenStyle PreferencesGui::sectionLineStyle()
     return sectStyle;
 }
 
+bool PreferencesGui::sectionLineMarks()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
+                                         GetGroup("BaseApp")->GetGroup("Preferences")->
+                                         GetGroup("Mod/TechDraw/Decorations");
+    return hGrp->GetBool("SectionLineMarks", true);
+}
 
 QString PreferencesGui::weldingDirectory()
 {
