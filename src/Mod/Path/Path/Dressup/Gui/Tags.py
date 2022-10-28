@@ -561,7 +561,7 @@ class CommandPathDressupTag:
     def GetResources(self):
         return {
             "Pixmap": "Path_Dressup",
-            "MenuText": QT_TRANSLATE_NOOP("Path_DressupTag", "Tag Dress-up"),
+            "MenuText": QT_TRANSLATE_NOOP("Path_DressupTag", "Tag"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "Path_DressupTag", "Creates a Tag Dress-up object from a selected path"
             ),

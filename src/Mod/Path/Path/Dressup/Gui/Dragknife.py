@@ -600,7 +600,7 @@ class CommandDressupDragknife:
         return {
             "Pixmap": "Path_Dressup",
             "MenuText": QT_TRANSLATE_NOOP(
-                "Path_DressupDragKnife", "DragKnife Dress-up"
+                "Path_DressupDragKnife", "DragKnife"
             ),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "Path_DressupDragKnife",

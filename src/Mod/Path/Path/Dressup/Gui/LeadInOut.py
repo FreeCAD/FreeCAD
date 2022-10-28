@@ -711,7 +711,7 @@ class CommandPathDressupLeadInOut:
     def GetResources(self):
         return {
             "Pixmap": "Path_Dressup",
-            "MenuText": QT_TRANSLATE_NOOP("Path_DressupLeadInOut", "LeadInOut Dressup"),
+            "MenuText": QT_TRANSLATE_NOOP("Path_DressupLeadInOut", "LeadInOut"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "Path_DressupLeadInOut",
                 "Creates a Cutter Radius Compensation G41/G42 Entry Dressup object from a selected path",

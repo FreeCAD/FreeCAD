@@ -896,7 +896,7 @@ class CommandPathDressupRampEntry:
         return {
             "Pixmap": "Path_Dressup",
             "MenuText": QT_TRANSLATE_NOOP(
-                "Path_DressupRampEntry", "RampEntry Dress-up"
+                "Path_DressupRampEntry", "RampEntry"
             ),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "Path_DressupRampEntry",

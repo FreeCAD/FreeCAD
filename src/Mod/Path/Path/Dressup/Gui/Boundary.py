@@ -261,7 +261,7 @@ class CommandPathDressupPathBoundary:
         return {
             "Pixmap": "Path_Dressup",
             "MenuText": QT_TRANSLATE_NOOP(
-                "Path_DressupPathBoundary", "Boundary Dress-up"
+                "Path_DressupPathBoundary", "Boundary"
             ),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "Path_DressupPathBoundary",
