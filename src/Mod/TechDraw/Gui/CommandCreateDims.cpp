@@ -1,5 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2014 Luke Parry <l.parry@warwick.ac.uk>                 *
+ *   Copyright (c) 2022 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -22,15 +23,17 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QApplication>
-# include <QMessageBox>
-# include <sstream>
-#endif
+#include <QApplication>
+#include <QMessageBox>
+#include <sstream>
+#include <cstdlib>
+#include <exception>
+#endif  //#ifndef _PreComp_
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <Base/Exception.h>
 #include <Base/Console.h>
-#include <Base/Type.h>
 #include <Gui/Action.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -41,34 +44,24 @@
 #include <Gui/Selection.h>
 #include <Gui/SelectionObject.h>
 
-# include <Mod/TechDraw/App/DrawDimHelper.h>
-# include <Mod/TechDraw/App/DrawPage.h>
-# include <Mod/TechDraw/App/DrawUtil.h>
-# include <Mod/TechDraw/App/DrawViewDimension.h>
-# include <Mod/TechDraw/App/DrawViewPart.h>
-# include <Mod/TechDraw/App/Geometry.h>
-# include <Mod/TechDraw/App/LandmarkDimension.h>
-# include <Mod/TechDraw/App/Preferences.h>
+#include <Mod/TechDraw/App/DrawDimHelper.h>
+#include <Mod/TechDraw/App/DrawPage.h>
+#include <Mod/TechDraw/App/DrawUtil.h>
+#include <Mod/TechDraw/App/DrawViewDimension.h>
+#include <Mod/TechDraw/App/DrawViewPart.h>
+#include <Mod/TechDraw/App/Geometry.h>
+#include <Mod/TechDraw/App/LandmarkDimension.h>
+#include <Mod/TechDraw/App/Preferences.h>
 
 #include "DrawGuiUtil.h"
 #include "TaskLinkDim.h"
-
+#include "TaskDimRepair.h"
+#include "DimensionValidators.h"
 
 using namespace TechDrawGui;
 using namespace TechDraw;
+using namespace std;
 
-enum EdgeType{
-        isInvalid,
-        isHorizontal,
-        isVertical,
-        isDiagonal,
-        isCircle,
-        isEllipse,
-        isBSplineCircle,
-        isBSpline,
-        isAngle,
-        isAngle3Pt
-    };
 
 //===========================================================================
 // utility routines
@@ -77,17 +70,23 @@ enum EdgeType{
 //internal functions
 bool _checkSelection(Gui::Command* cmd, unsigned maxObjs = 2);
 bool _checkDrawViewPart(Gui::Command* cmd);
-bool _checkPartFeature(Gui::Command* cmd);
-int _isValidSingleEdge(Gui::Command* cmd);
-bool _isValidVertexes(Gui::Command* cmd, int count = 2);
-int _isValidEdgeToEdge(Gui::Command* cmd);
-bool _isValidVertexToEdge(Gui::Command* cmd);
-char* _edgeTypeToText(int e);
-//bool _checkActive(Gui::Command* cmd, Base::Type classType, bool needSubs);
 
-void execHExtent(Gui::Command* cmd);
-void execVExtent(Gui::Command* cmd);
+void execDistance(Gui::Command* cmd);
+void execDistanceX(Gui::Command* cmd);
+void execDistanceY(Gui::Command* cmd);
+void execAngle(Gui::Command* cmd);
+void execAngle3Pt(Gui::Command* cmd);
+void execRadius(Gui::Command* cmd);
+void execDiameter(Gui::Command* cmd);
 
+void execExtent(Gui::Command* cmd, int direction);
+
+DrawViewDimension* dimensionMaker(TechDraw::DrawViewPart* dvp,
+                                  std::string dimType,
+                                  ReferenceVector references2d,
+                                  ReferenceVector references3d);
+
+void positionDimText(DrawViewDimension* dim);
 
 //NOTE: this is not shown in toolbar and doesn't always work right in the menu.
 //      should be removed.
@@ -114,109 +113,104 @@ CmdTechDrawDimension::CmdTechDrawDimension()
 void CmdTechDrawDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-//    bool result = _checkSelection(this, 2);
-//    if (!result)
-//        return;
-//    result = _checkDrawViewPart(this);
-//    if (!result)
-//        return;
-
-////do we still need to pick DVPs out of selection? or should we complain about junk?
-//    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-//    TechDraw::DrawViewPart* objFeat = 0;
-//    std::vector<std::string> SubNames;
-//    std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
-//    for (; itSel != selection.end(); itSel++)  {
-//        if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
-//            objFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
-//            SubNames = (*itSel).getSubNames();
-//        }
-//    }
-//    TechDraw::DrawPage* page = objFeat->findParentPage();
-//    std::string PageName = page->getNameInDocument();
-
-//    TechDraw::DrawViewDimension *dim = 0;
-//    std::string FeatName = getUniqueObjectName("Dimension");
-//    std::string dimType;
-
-//    std::vector<App::DocumentObject *> objs;
-//    std::vector<std::string> subs;
-
-//    int edgeType = _isValidSingleEdge(this);
-
-//    if (edgeType) {
-//        if (edgeType < isCircle) {
-//            dimType = "Distance";
-//            objs.push_back(objFeat);
-//            subs.push_back(SubNames[0]);
-//        } else if (edgeType == isCircle) {
-//            dimType = "Radius";
-//        } else {
-//            dimType = "Radius";
-//        }
-//    } else if (_isValidVertexes(this)) {
-//        dimType = "Distance";
-//        objs.push_back(objFeat);
-//        objs.push_back(objFeat);
-//        subs.push_back(SubNames[0]);
-//        subs.push_back(SubNames[1]);
-//    } else if (_isValidEdgeToEdge(this)) {
-//        int edgeCase = _isValidEdgeToEdge(this);
-//        objs.push_back(objFeat);
-//        objs.push_back(objFeat);
-//        subs.push_back(SubNames[0]);
-//        subs.push_back(SubNames[1]);
-//        switch (edgeCase) {
-//             case isHorizontal:
-//                dimType = "DistanceX";
-//                break;
-//             case isVertical:
-//                dimType = "DistanceY";
-//                break;
-//            case isDiagonal:
-//                dimType = "Distance";
-//                break;
-//            case isAngle:
-//                dimType = "Angle";
-//            default:
-//                break;
-//        }
-//    } else if (_isValidVertexToEdge(this)) {
-//        dimType = "Distance";
-//        objs.push_back(objFeat);
-//        objs.push_back(objFeat);
-//        subs.push_back(SubNames[0]);
-//        subs.push_back(SubNames[1]);
-//    } else {
-//        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
-//                                                   QObject::tr("Can not make a Dimension from this selection"));
-//        return;
-//    }
-
-//    openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
-//    doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewDimension', '%s')", FeatName.c_str());
-//    doCommand(Doc, "App.activeDocument().%s.Type = '%s'", FeatName.c_str()
-//                                                       ,dimType.c_str());
-
-//    dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
-//    if (!dim) {
-//        throw Base::TypeError("CmdTechDrawNewDimension - dim not found\n");
-//    }
-//    dim->References2D.setValues(objs, subs);
-
-//    doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
-//    commitCommand();
-//    dim->recomputeFeature();
-
-//    //Horrible hack to force Tree update
-//    double x = objFeat->X.getValue();
-//    objFeat->X.setValue(x);
 }
 
 bool CmdTechDrawDimension::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
+    return (havePage && haveView);
+}
+
+//===========================================================================
+// TechDraw_RadialGroup
+//===========================================================================
+
+DEF_STD_CMD_ACL(CmdTechDrawRadialGroup)
+
+CmdTechDrawRadialGroup::CmdTechDrawRadialGroup()
+    : Command("TechDraw_RadialGroup")
+{
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
+    sMenuText       = QT_TR_NOOP("Insert Radius Dimension");
+    sToolTipText    = sMenuText;
+    sWhatsThis      = "TechDraw_RadialGroup";
+    sStatusTip      = sToolTipText;
+}
+
+void CmdTechDrawRadialGroup::activated(int iMsg)
+{
+    //    Base::Console().Message("CMD::LinearGrp - activated(%d)\n", iMsg);
+    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
+    if (dlg) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
+                             QObject::tr("Close active task dialog and try again."));
+        return;
+    }
+
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    pcAction->setIcon(pcAction->actions().at(iMsg)->icon());
+    switch(iMsg) {
+        case 0:
+            execRadius(this);
+            break;
+        case 1:
+            execDiameter(this);
+            break;
+        default:
+            Base::Console().Message("CMD::RadialGrp - invalid iMsg: %d\n", iMsg);
+    };
+}
+
+Gui::Action * CmdTechDrawRadialGroup::createAction()
+{
+    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
+    pcAction->setDropDownMenu(true);
+    applyCommandData(this->className(), pcAction);
+
+    QAction* p0 = pcAction->addAction(QString());
+    p0->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_RadiusDimension"));
+    p0->setObjectName(QString::fromLatin1("TechDraw_RadiusDimension"));
+    p0->setWhatsThis(QString::fromLatin1("TechDraw_RadiusDimension"));
+    QAction* p1 = pcAction->addAction(QString());
+    p1->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_DiameterDimension"));
+    p1->setObjectName(QString::fromLatin1("TechDraw_DiameterDimension"));
+    p1->setWhatsThis(QString::fromLatin1("TechDraw_DiameterDimension"));
+
+    _pcAction = pcAction;
+    languageChange();
+
+    pcAction->setIcon(p0->icon());
+    int defaultId = 0;
+    pcAction->setProperty("defaultAction", QVariant(defaultId));
+
+    return pcAction;
+}
+
+void CmdTechDrawRadialGroup::languageChange()
+{
+    Command::languageChange();
+
+    if (!_pcAction)
+        return;
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    QAction* arc0 = a[0];
+    arc0->setText(QApplication::translate("CmdTechDrawRadialGroup", "Radius Dimension"));
+    arc0->setToolTip(QApplication::translate("TechDraw_RadiusDimension", "Insert Radius Dimension"));
+    arc0->setStatusTip(arc0->toolTip());
+    QAction* arc1 = a[1];
+    arc1->setText(QApplication::translate("CmdTechDrawRadialGroup", "Diameter Linear"));
+    arc1->setToolTip(QApplication::translate("TechDraw_DiameterDimension", "Insert Diameter Dimension"));
+    arc1->setStatusTip(arc1->toolTip());
+}
+
+bool CmdTechDrawRadialGroup::isActive()
+{
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this, false);
     return (havePage && haveView);
 }
 
@@ -241,92 +235,7 @@ CmdTechDrawRadiusDimension::CmdTechDrawRadiusDimension()
 void CmdTechDrawRadiusDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    bool result = _checkSelection(this, 1);
-    if (!result)
-        return;
-    result = _checkDrawViewPart(this);
-    if (!result)
-        return;
-
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    TechDraw::DrawViewPart * objFeat = nullptr;
-    std::vector<std::string> SubNames;
-
-    std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
-    for (; itSel != selection.end(); itSel++)  {
-        if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
-            objFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
-            SubNames = (*itSel).getSubNames();
-        }
-    }
-    TechDraw::DrawPage* page = objFeat->findParentPage();
-    std::string PageName = page->getNameInDocument();
-
-    TechDraw::DrawViewDimension *dim = nullptr;
-    std::string FeatName = getUniqueObjectName("Dimension");
-
-    std::vector<App::DocumentObject *> objs;
-    std::vector<std::string> subs;
-
-    int edgeType = _isValidSingleEdge(this);
-    if (edgeType == isCircle) {
-        objs.push_back(objFeat);
-        subs.push_back(SubNames[0]);
-    } else if (edgeType == isEllipse) {
-        QMessageBox::StandardButton result =
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Ellipse Curve Warning"),
-                             QObject::tr("Selected edge is an Ellipse.  Radius will be approximate. Continue?"),
-                             QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel);
-        if (result == QMessageBox::Ok) {
-            objs.push_back(objFeat);
-            subs.push_back(SubNames[0]);
-        } else {
-            return;
-        }
-    } else if (edgeType == isBSplineCircle) {
-        QMessageBox::StandardButton result =
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("BSpline Curve Warning"),
-                             QObject::tr("Selected edge is a BSpline.  Radius will be approximate. Continue?"),
-                             QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel);
-        if (result == QMessageBox::Ok) {
-            objs.push_back(objFeat);
-            subs.push_back(SubNames[0]);
-        } else {
-            return;
-        }
-    } else if (edgeType == isBSpline) {
-        QMessageBox::critical(Gui::getMainWindow(), QObject::tr("BSpline Curve Error"),
-                             QObject::tr("Selected edge is a BSpline and a radius can not be calculated."));
-        return;
-    } else {
-        QMessageBox::warning(
-            Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
-            QObject::tr("Selection for Radius does not contain a circular edge "
-                        "(edge type: %1)")
-                .arg(QString::fromStdString(_edgeTypeToText(edgeType))));
-        return;
-    }
-
-    openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
-    doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewDimension', '%s')", FeatName.c_str());
-    doCommand(Doc, "App.activeDocument().%s.Type = '%s'", FeatName.c_str()
-                                                       ,"Radius");
-
-    dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
-    if (!dim) {
-        throw Base::TypeError("CmdTechDrawNewRadiusDimension - dim not found\n");
-    }
-    dim->References2D.setValues(objs, subs);
-
-    doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
-
-    commitCommand();
-
-    dim->recomputeFeature();
-
-    //Horrible hack to force Tree update
-    double x = objFeat->X.getValue();
-    objFeat->X.setValue(x);
+    execRadius(this);
 }
 
 bool CmdTechDrawRadiusDimension::isActive()
@@ -335,6 +244,96 @@ bool CmdTechDrawRadiusDimension::isActive()
     bool haveView = DrawGuiUtil::needView(this);
     return (havePage && haveView);
 }
+
+void execRadius(Gui::Command* cmd)
+{
+    bool result = _checkDrawViewPart(cmd);
+    if (!result) {
+        QMessageBox::warning( Gui::getMainWindow(),
+                             QObject::tr("Incorrect selection"),
+                             QObject::tr("No View of a Part in selection.") );
+        return;
+    }
+
+    ReferenceVector references2d;
+    ReferenceVector references3d;
+    TechDraw::DrawViewPart* partFeat = TechDraw::getReferencesFromSelection(references2d, references3d);
+
+    //Define the geometric configuration required for a radius dimension
+    StringVector acceptableGeometry( { "Edge" } );
+    std::vector<int> minimumCounts( { 1 } );
+    std::vector<DimensionGeometryType> acceptableDimensionGeometrys( { isCircle, isEllipse, isBSplineCircle } );
+
+    //what 2d geometry configuration did we receive?
+    DimensionGeometryType geometryRefs2d = validateDimSelection(references2d,
+                                                                      acceptableGeometry,
+                                                                      minimumCounts,
+                                                                      acceptableDimensionGeometrys);
+    if ( geometryRefs2d == TechDraw::isInvalid ) {
+        QMessageBox::warning(Gui::getMainWindow(),
+                             QObject::tr("Incorrect Selection"),
+                             QObject::tr("Can not make 2d radius dimension from selection"));
+        return;
+    }
+
+    //what 3d geometry configuration did we receive?
+    DimensionGeometryType geometryRefs3d(isInvalid);
+    if (geometryRefs2d == TechDraw::isViewReference  &&
+        !references3d.empty()) {
+        geometryRefs3d = validateDimSelection3d(partFeat,
+                                                      references3d,
+                                                      acceptableGeometry,
+                                                      minimumCounts,
+                                                      acceptableDimensionGeometrys);
+        if ( geometryRefs3d == TechDraw::isInvalid ) {
+            QMessageBox::warning(Gui::getMainWindow(),
+                                 QObject::tr("Incorrect Selection"),
+                                 QObject::tr("Can not make 3d radius dimension from selection"));
+            return;
+        }
+
+    }
+
+    //errors and warnings
+    if (geometryRefs2d == isEllipse ||
+        geometryRefs3d == isEllipse) {
+        QMessageBox::StandardButton result =
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Ellipse Curve Warning"),
+                                 QObject::tr("Selected edge is an Ellipse.  Radius will be approximate. Continue?"),
+                                 QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel);
+        if (result != QMessageBox::Ok) {
+            return;
+        }
+    }
+    if (geometryRefs2d == isBSplineCircle ||
+        geometryRefs3d == isBSplineCircle) {
+        QMessageBox::StandardButton result =
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("BSpline Curve Warning"),
+                                 QObject::tr("Selected edge is a BSpline.  Radius will be approximate. Continue?"),
+                                 QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel);
+        if (result != QMessageBox::Ok) {
+            return;
+        }
+    }
+    if (geometryRefs2d == isBSpline ||
+        geometryRefs3d == isBSpline) {
+        QMessageBox::critical(Gui::getMainWindow(), QObject::tr("BSpline Curve Error"),
+                              QObject::tr("Selected edge is a BSpline and a radius can not be calculated."));
+        return;
+    }
+
+    //build the dimension
+    //    DrawViewDimension* dim =
+    dimensionMaker(partFeat,
+                   "Radius",
+                   references2d,
+                   references3d);
+
+    //Horrible hack to force Tree update
+    double x = partFeat->X.getValue();
+    partFeat->X.setValue(x);
+}
+
 
 //===========================================================================
 // TechDraw_DiameterDimension
@@ -357,93 +356,204 @@ CmdTechDrawDiameterDimension::CmdTechDrawDiameterDimension()
 void CmdTechDrawDiameterDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    bool result = _checkSelection(this, 1);
-    if (!result)
-        return;
-    result = _checkDrawViewPart(this);
-    if (!result)
-        return;
-
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    TechDraw::DrawViewPart * objFeat = nullptr;
-    std::vector<std::string> SubNames;
-
-    std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
-    for (; itSel != selection.end(); itSel++)  {
-        if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
-            objFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
-            SubNames = (*itSel).getSubNames();
-        }
-    }
-    TechDraw::DrawPage* page = objFeat->findParentPage();
-    std::string PageName = page->getNameInDocument();
-
-    TechDraw::DrawViewDimension *dim = nullptr;
-    std::string FeatName = getUniqueObjectName("Dimension");
-
-    std::vector<App::DocumentObject *> objs;
-    std::vector<std::string> subs;
-
-    int edgeType = _isValidSingleEdge(this);
-    if (edgeType == isCircle) {
-            // nothing to do
-    } else if (edgeType == isEllipse) {
-        QMessageBox::StandardButton result =
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Ellipse Curve Warning"),
-                             QObject::tr("Selected edge is an Ellipse.  Diameter will be approximate. Continue?"),
-                             QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel);
-        if (result != QMessageBox::Ok) {
-            return;
-        }
-    } else if (edgeType == isBSplineCircle) {
-        QMessageBox::StandardButton result =
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("BSpline Curve Warning"),
-                             QObject::tr("Selected edge is a BSpline.  Diameter will be approximate. Continue?"),
-                             QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel);
-        if (result != QMessageBox::Ok) {
-            return;
-        }
-    } else if (edgeType == isBSpline) {
-        QMessageBox::critical(Gui::getMainWindow(), QObject::tr("BSpline Curve Error"),
-                             QObject::tr("Selected edge is a BSpline and a diameter can not be calculated."));
-        return;
-    } else {
-        QMessageBox::warning(
-          Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
-          QObject::tr("Selection for Diameter does not contain a circular edge "
-                      "(edge type: %1)")
-              .arg(QString::fromStdString(_edgeTypeToText(edgeType))));
-      return;
-    }
-
-    objs.push_back(objFeat);
-    subs.push_back(SubNames[0]);
-
-    openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
-    doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewDimension', '%s')", FeatName.c_str());
-    doCommand(Doc, "App.activeDocument().%s.Type = '%s'", FeatName.c_str()
-                                                       ,"Diameter");
-
-    dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
-    if (!dim) {
-        throw Base::TypeError("CmdTechDrawNewDiameterDimension - dim not found\n");
-    }
-    dim->References2D.setValues(objs, subs);
-
-    doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
-
-    commitCommand();
-    dim->recomputeFeature();
-
-    //Horrible hack to force Tree update
-    double x = objFeat->X.getValue();
-    objFeat->X.setValue(x);
+    execDiameter(this);
 }
 
 bool CmdTechDrawDiameterDimension::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
+    return (havePage && haveView);
+}
+
+void execDiameter(Gui::Command* cmd)
+{
+    bool result = _checkDrawViewPart(cmd);
+    if (!result) {
+        QMessageBox::warning( Gui::getMainWindow(),
+                             QObject::tr("Incorrect selection"),
+                             QObject::tr("No View of a Part in selection.") );
+        return;
+    }
+
+    ReferenceVector references2d;
+    ReferenceVector references3d;
+    TechDraw::DrawViewPart* partFeat = TechDraw::getReferencesFromSelection(references2d, references3d);
+
+    //Define the geometric configuration required for a diameter dimension
+    StringVector acceptableGeometry( { "Edge" } );
+    std::vector<int> minimumCounts( { 1 } );
+    std::vector<DimensionGeometryType> acceptableDimensionGeometrys( { isCircle, isEllipse, isBSplineCircle } );
+
+    //what 2d geometry configuration did we receive?
+    DimensionGeometryType geometryRefs2d = validateDimSelection(references2d,
+                                                                      acceptableGeometry,
+                                                                      minimumCounts,
+                                                                      acceptableDimensionGeometrys);
+    if ( geometryRefs2d == TechDraw::isInvalid ) {
+        QMessageBox::warning(Gui::getMainWindow(),
+                             QObject::tr("Incorrect Selection"),
+                             QObject::tr("Can not make 2d diameter dimension from selection"));
+        return;
+    }
+
+    //what 3d geometry configuration did we receive?
+    DimensionGeometryType geometryRefs3d(isInvalid);
+    if (geometryRefs2d == TechDraw::isViewReference  &&
+        !references3d.empty()) {
+        geometryRefs3d = validateDimSelection3d(partFeat,
+                                                      references3d,
+                                                      acceptableGeometry,
+                                                      minimumCounts,
+                                                      acceptableDimensionGeometrys);
+        if ( geometryRefs3d == TechDraw::isInvalid ) {
+            QMessageBox::warning(Gui::getMainWindow(),
+                                 QObject::tr("Incorrect Selection"),
+                                 QObject::tr("Can not make 3d diameter dimension from selection"));
+            return;
+        }
+
+    }
+
+    //errors and warnings
+    if (geometryRefs2d == isEllipse ||
+        geometryRefs3d == isEllipse) {
+        QMessageBox::StandardButton result =
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Ellipse Curve Warning"),
+                                 QObject::tr("Selected edge is an Ellipse.  Diameter will be approximate. Continue?"),
+                                 QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel);
+        if (result != QMessageBox::Ok) {
+            return;
+        }
+    }
+    if (geometryRefs2d == isBSplineCircle ||
+        geometryRefs3d == isBSplineCircle) {
+        QMessageBox::StandardButton result =
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("BSpline Curve Warning"),
+                                 QObject::tr("Selected edge is a BSpline.  Diameter will be approximate. Continue?"),
+                                 QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel);
+        if (result != QMessageBox::Ok) {
+            return;
+        }
+    }
+    if (geometryRefs2d == isBSpline ||
+        geometryRefs3d == isBSpline) {
+        QMessageBox::critical(Gui::getMainWindow(), QObject::tr("BSpline Curve Error"),
+                              QObject::tr("Selected edge is a BSpline and a diameter can not be calculated."));
+        return;
+    }
+
+    //build the dimension
+    //    DrawViewDimension* dim =
+    dimensionMaker(partFeat,
+                   "Diameter",
+                   references2d,
+                   references3d);
+
+    //Horrible hack to force Tree update
+    double x = partFeat->X.getValue();
+    partFeat->X.setValue(x);
+}
+
+//===========================================================================
+// TechDraw_LinearGroup
+//===========================================================================
+
+DEF_STD_CMD_ACL(CmdTechDrawLinearGroup)
+
+CmdTechDrawLinearGroup::CmdTechDrawLinearGroup()
+    : Command("TechDraw_LinearGroup")
+{
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
+    sMenuText       = QT_TR_NOOP("Insert Linear Dimension");
+    sToolTipText    = sMenuText;
+    sWhatsThis      = "TechDraw_LinearGroup";
+    sStatusTip      = sToolTipText;
+}
+
+void CmdTechDrawLinearGroup::activated(int iMsg)
+{
+    //    Base::Console().Message("CMD::LinearGrp - activated(%d)\n", iMsg);
+    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
+    if (dlg) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
+                             QObject::tr("Close active task dialog and try again."));
+        return;
+    }
+
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    pcAction->setIcon(pcAction->actions().at(iMsg)->icon());
+    switch(iMsg) {
+        case 0:
+            execDistance(this);
+            break;
+        case 1:
+            execDistanceX(this);
+            break;
+        case 2:
+            execDistanceY(this);
+            break;
+        default:
+            Base::Console().Message("CMD::LinearGrp - invalid iMsg: %d\n", iMsg);
+    };
+}
+
+Gui::Action * CmdTechDrawLinearGroup::createAction()
+{
+    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
+    pcAction->setDropDownMenu(true);
+    applyCommandData(this->className(), pcAction);
+
+    QAction* p0 = pcAction->addAction(QString());
+    p0->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_LengthDimension"));
+    p0->setObjectName(QString::fromLatin1("TechDraw_LengthDimension"));
+    p0->setWhatsThis(QString::fromLatin1("TechDraw_LengthDimension"));
+    QAction* p1 = pcAction->addAction(QString());
+    p1->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_HorizontalDimension"));
+    p1->setObjectName(QString::fromLatin1("TechDraw_HorizontalDimension"));
+    p1->setWhatsThis(QString::fromLatin1("TechDraw_HorizontalDimension"));
+    QAction* p2 = pcAction->addAction(QString());
+    p2->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_VerticalDimension"));
+    p2->setObjectName(QString::fromLatin1("TechDraw_VerticalDimension"));
+    p2->setWhatsThis(QString::fromLatin1("TechDraw_VerticalDimension"));
+
+    _pcAction = pcAction;
+    languageChange();
+
+    pcAction->setIcon(p0->icon());
+    int defaultId = 0;
+    pcAction->setProperty("defaultAction", QVariant(defaultId));
+
+    return pcAction;
+}
+
+void CmdTechDrawLinearGroup::languageChange()
+{
+    Command::languageChange();
+
+    if (!_pcAction)
+        return;
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    QAction* arc0 = a[0];
+    arc0->setText(QApplication::translate("CmdTechDrawLinearGroup", "Linear Dimension"));
+    arc0->setToolTip(QApplication::translate("TechDraw_LengthDimension", "Insert Linear Dimension"));
+    arc0->setStatusTip(arc0->toolTip());    QAction* arc1 = a[1];
+    arc1->setText(QApplication::translate("CmdTechDrawLinearGroup", "Horizontal Linear"));
+    arc1->setToolTip(QApplication::translate("TechDraw_HorizontalLinear", "Insert Horizontal Linear Dimension"));
+    arc1->setStatusTip(arc1->toolTip());
+    QAction* arc2 = a[2];
+    arc2->setText(QApplication::translate("CmdTechDrawLinearGroup", "Vertical Linear"));
+    arc2->setToolTip(QApplication::translate("TechDraw_VerticalDimension", "Insert Vertical Linear Dimension"));
+    arc2->setStatusTip(arc2->toolTip());
+}
+
+bool CmdTechDrawLinearGroup::isActive()
+{
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this, false);
     return (havePage && haveView);
 }
 
@@ -468,80 +578,7 @@ CmdTechDrawLengthDimension::CmdTechDrawLengthDimension()
 void CmdTechDrawLengthDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    bool result = _checkSelection(this, 2);
-    if (!result)
-        return;
-    result = _checkDrawViewPart(this);
-    if (!result)
-        return;
 
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    TechDraw::DrawViewPart * objFeat = nullptr;
-    std::vector<std::string> SubNames;
-
-    std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
-    for (; itSel != selection.end(); itSel++)  {
-        if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
-            objFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
-            SubNames = (*itSel).getSubNames();
-        }
-    }
-    TechDraw::DrawPage* page = objFeat->findParentPage();
-    std::string PageName = page->getNameInDocument();
-
-    TechDraw::DrawViewDimension *dim = nullptr;
-    std::string FeatName = getUniqueObjectName("Dimension");
-    std::string dimType;
-
-    std::vector<App::DocumentObject *> objs;
-    std::vector<std::string> subs;
-
-    if ( (_isValidSingleEdge(this) == isVertical) ||
-         (_isValidSingleEdge(this) == isHorizontal) ||
-         (_isValidSingleEdge(this) == isDiagonal) ) {
-        objs.push_back(objFeat);
-        subs.push_back(SubNames[0]);
-    } else if (  _isValidVertexes(this) ||
-                (_isValidEdgeToEdge(this) == isVertical)   ||
-                (_isValidEdgeToEdge(this) == isHorizontal) ||
-                (_isValidEdgeToEdge(this) == isDiagonal) ||
-                (_isValidVertexToEdge(this)) ) {
-        objs.push_back(objFeat);
-        objs.push_back(objFeat);
-        subs.push_back(SubNames[0]);
-        subs.push_back(SubNames[1]);
-    } else {
-      QMessageBox::warning(Gui::getMainWindow(),
-                           QObject::tr("Incorrect Selection"),
-                           QObject::tr("Need 1 straight Edge, 2 Vertexes, 2 Edges or "
-                                       "1 Vertex and 1 Edge for Distance Dimension"));
-      return;
-    }
-
-    openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
-    doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewDimension', '%s')", FeatName.c_str());
-    doCommand(Doc, "App.activeDocument().%s.Type = '%s'", FeatName.c_str()
-                                                       , "Distance");
-    dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
-    if (!dim) {
-        throw Base::TypeError("CmdTechDrawNewLengthDimension - dim not found\n");
-    }
-    dim->References2D.setValues(objs, subs);
-
-    doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
-
-    commitCommand();
-    dim->recomputeFeature();
-
-    TechDraw::pointPair pp = dim->getLinearPoints();
-    Base::Vector3d mid = (pp.first + pp.second)/2.0;
-    dim->X.setValue(mid.x);
-    double fontSize = Preferences::dimFontSizeMM();
-    dim->Y.setValue(-mid.y + 0.5 * fontSize);
-
-    //Horrible hack to force Tree update (claimChildren)
-    double x = objFeat->X.getValue();
-    objFeat->X.setValue(x);
 }
 
 bool CmdTechDrawLengthDimension::isActive()
@@ -549,6 +586,68 @@ bool CmdTechDrawLengthDimension::isActive()
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
     return (havePage && haveView);
+}
+
+void execDistance(Gui::Command* cmd)
+{
+    bool result = _checkDrawViewPart(cmd);
+    if (!result) {
+        QMessageBox::warning( Gui::getMainWindow(),
+                             QObject::tr("Incorrect selection"),
+                             QObject::tr("No View of a Part in selection.") );
+        return;
+    }
+
+    ReferenceVector references2d;
+    ReferenceVector references3d;
+    TechDraw::DrawViewPart* partFeat = TechDraw::getReferencesFromSelection(references2d, references3d);
+
+    //Define the geometric configuration required for a length dimension
+    StringVector acceptableGeometry( { "Edge", "Vertex" } );
+    std::vector<int> minimumCounts( { 1, 2 } );
+    std::vector<DimensionGeometryType> acceptableDimensionGeometrys( { isVertical, isHorizontal, isDiagonal } );
+
+    //what 2d geometry configuration did we receive?
+    DimensionGeometryType geometryRefs2d = validateDimSelection(references2d,
+                                                                      acceptableGeometry,
+                                                                      minimumCounts,
+                                                                      acceptableDimensionGeometrys);
+    if ( geometryRefs2d == TechDraw::isInvalid ) {
+        QMessageBox::warning(Gui::getMainWindow(),
+                             QObject::tr("Incorrect Selection"),
+                             QObject::tr("Can not make 2d linear dimension from selection"));
+        return;
+    }
+
+    //what 3d geometry configuration did we receive?
+    DimensionGeometryType geometryRefs3d;
+    if (geometryRefs2d == TechDraw::isViewReference  &&
+        !references3d.empty()) {
+        geometryRefs3d = validateDimSelection3d(partFeat,
+                                                      references3d,
+                                                      acceptableGeometry,
+                                                      minimumCounts,
+                                                      acceptableDimensionGeometrys);
+        if (  geometryRefs3d == TechDraw::isInvalid ) {
+            QMessageBox::warning(Gui::getMainWindow(),
+                                 QObject::tr("Incorrect Selection"),
+                                 QObject::tr("Can not make 3d linear dimension from selection"));
+            return;
+        }
+    }
+
+    //build the dimension
+    DrawViewDimension* dim = dimensionMaker(partFeat,
+                                            "Distance",
+                                            references2d,
+                                            references3d);
+
+    //position the Dimension text on the view
+    positionDimText(dim);
+
+    //Horrible hack to force Tree update (claimChildren)
+    double x = partFeat->X.getValue();
+    partFeat->X.setValue(x);
 }
 
 //===========================================================================
@@ -573,80 +672,7 @@ CmdTechDrawHorizontalDimension::CmdTechDrawHorizontalDimension()
 void CmdTechDrawHorizontalDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    bool result = _checkSelection(this, 2);
-    if (!result)
-        return;
-    result = _checkDrawViewPart(this);
-    if (!result)
-        return;
-
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    TechDraw::DrawViewPart * objFeat = nullptr;
-    std::vector<std::string> SubNames;
-
-    std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
-    for (; itSel != selection.end(); itSel++)  {
-        if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
-            objFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
-            SubNames = (*itSel).getSubNames();
-        }
-    }
-    TechDraw::DrawPage* page = objFeat->findParentPage();
-    std::string PageName = page->getNameInDocument();
-
-    TechDraw::DrawViewDimension *dim = nullptr;
-    std::string FeatName = getUniqueObjectName("Dimension");
-    std::string dimType;
-
-    std::vector<App::DocumentObject *> objs;
-    std::vector<std::string> subs;
-
-    if ( (_isValidSingleEdge(this) == isVertical) ||
-         (_isValidSingleEdge(this) == isHorizontal) ||
-         (_isValidSingleEdge(this) == isDiagonal) ) {
-        objs.push_back(objFeat);
-        subs.push_back(SubNames[0]);
-    } else if (  _isValidVertexes(this) ||
-                (_isValidEdgeToEdge(this) == isVertical)   ||
-                (_isValidEdgeToEdge(this) == isHorizontal) ||
-                (_isValidEdgeToEdge(this) == isDiagonal) ||
-                (_isValidVertexToEdge(this)) ) {
-        objs.push_back(objFeat);
-        objs.push_back(objFeat);
-        subs.push_back(SubNames[0]);
-        subs.push_back(SubNames[1]);
-    } else {
-      QMessageBox::warning(Gui::getMainWindow(),
-                           QObject::tr("Incorrect Selection"),
-                           QObject::tr("Need 1 straight Edge, 2 Vertexes, 2 Edges or "
-                                       "1 Vertex and 1 Edge for Horizontal Dimension"));
-      return;
-    }
-
-    openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
-    doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewDimension', '%s')", FeatName.c_str());
-    doCommand(Doc, "App.activeDocument().%s.Type = '%s'", FeatName.c_str()
-                                                       ,"DistanceX");
-
-    dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
-    if (!dim) {
-        throw Base::TypeError("CmdTechDrawNewDistanceXDimension - dim not found\n");
-    }
-    dim->References2D.setValues(objs, subs);
-
-    doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
-
-    commitCommand();
-    dim->recomputeFeature();
-    TechDraw::pointPair pp = dim->getLinearPoints();
-    Base::Vector3d mid = (pp.first + pp.second)/2.0;
-    dim->X.setValue(mid.x);
-    double fontSize = Preferences::dimFontSizeMM();
-    dim->Y.setValue(-mid.y + 0.5 * fontSize);
-
-    //Horrible hack to force Tree update
-    double x = objFeat->X.getValue();
-    objFeat->X.setValue(x);
+    execDistanceX(this);
 }
 
 bool CmdTechDrawHorizontalDimension::isActive()
@@ -654,6 +680,69 @@ bool CmdTechDrawHorizontalDimension::isActive()
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
     return (havePage && haveView);
+}
+
+void execDistanceX(Gui::Command* cmd)
+{
+    bool result = _checkDrawViewPart(cmd);
+    if (!result) {
+        QMessageBox::warning( Gui::getMainWindow(),
+                             QObject::tr("Incorrect selection"),
+                             QObject::tr("No View of a Part in selection.") );
+        return;
+    }
+
+    ReferenceVector references2d;
+    ReferenceVector references3d;
+    TechDraw::DrawViewPart* partFeat = TechDraw::getReferencesFromSelection(references2d, references3d);
+
+    //Define the geometric configuration required for a length dimension
+    StringVector acceptableGeometry( { "Edge", "Vertex" } );
+    std::vector<int> minimumCounts( { 1, 2 } );
+    std::vector<DimensionGeometryType> acceptableDimensionGeometrys( { isHorizontal } );
+
+    //what 2d geometry configuration did we receive?
+    DimensionGeometryType geometryRefs2d = validateDimSelection(references2d,
+                                                                      acceptableGeometry,
+                                                                      minimumCounts,
+                                                                      acceptableDimensionGeometrys);
+    if ( geometryRefs2d == TechDraw::isInvalid ) {
+        QMessageBox::warning(Gui::getMainWindow(),
+                             QObject::tr("Incorrect Selection"),
+                             QObject::tr("Can not make 2d horizontal dimension from selection"));
+        return;
+    }
+
+    //what 3d geometry configuration did we receive?
+    DimensionGeometryType geometryRefs3d;
+    if (geometryRefs2d == TechDraw::isViewReference  &&
+        !references3d.empty()) {
+        geometryRefs3d = validateDimSelection3d(partFeat,
+                                                      references3d,
+                                                      acceptableGeometry,
+                                                      minimumCounts,
+                                                      acceptableDimensionGeometrys);
+        if (geometryRefs3d == TechDraw::isInvalid) {
+            QMessageBox::warning(Gui::getMainWindow(),
+                                 QObject::tr("Incorrect Selection"),
+                                 QObject::tr("Can not make 3d horizontal dimension from selection"));
+            return;
+        }
+    }
+
+    //build the dimension
+    DrawViewDimension* dim = dimensionMaker(partFeat,
+                                            "DistanceX",
+                                            references2d,
+                                            references3d);
+
+
+    //position the Dimension text on the view
+    positionDimText(dim);
+
+    //Horrible hack to force Tree update (claimChildren)
+    double x = partFeat->X.getValue();
+    partFeat->X.setValue(x);
 }
 
 //===========================================================================
@@ -678,79 +767,7 @@ CmdTechDrawVerticalDimension::CmdTechDrawVerticalDimension()
 void CmdTechDrawVerticalDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    bool result = _checkSelection(this, 2);
-    if (!result)
-        return;
-    result = _checkDrawViewPart(this);
-    if (!result)
-        return;
-
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    TechDraw::DrawViewPart * objFeat = nullptr;
-    std::vector<std::string> SubNames;
-
-    std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
-    for (; itSel != selection.end(); itSel++)  {
-        if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
-            objFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
-            SubNames = (*itSel).getSubNames();
-        }
-    }
-    TechDraw::DrawPage* page = objFeat->findParentPage();
-    std::string PageName = page->getNameInDocument();
-
-    TechDraw::DrawViewDimension *dim = nullptr;
-    std::string FeatName = getUniqueObjectName("Dimension");
-    std::string dimType;
-
-    std::vector<App::DocumentObject *> objs;
-    std::vector<std::string> subs;
-
-    if ( (_isValidSingleEdge(this) == isVertical) ||
-         (_isValidSingleEdge(this) == isHorizontal) ||
-         (_isValidSingleEdge(this) == isDiagonal) ) {
-        objs.push_back(objFeat);
-        subs.push_back(SubNames[0]);
-    } else if (  _isValidVertexes(this) ||
-                (_isValidEdgeToEdge(this) == isVertical)   ||
-                (_isValidEdgeToEdge(this) == isHorizontal) ||
-                (_isValidEdgeToEdge(this) == isDiagonal) ||
-                (_isValidVertexToEdge(this)) ) {
-        objs.push_back(objFeat);
-        objs.push_back(objFeat);
-        subs.push_back(SubNames[0]);
-        subs.push_back(SubNames[1]);
-    } else {
-      QMessageBox::warning(Gui::getMainWindow(),
-                           QObject::tr("Incorrect Selection"),
-                           QObject::tr("Need 1 straight Edge, 2 Vertexes, 2 Edges or "
-                                       "1 Vertex and 1 Edge for Vertical Dimension"));
-      return;
-    }
-
-    openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
-    doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewDimension', '%s')", FeatName.c_str());
-    doCommand(Doc, "App.activeDocument().%s.Type = '%s'", FeatName.c_str()
-                                                       ,"DistanceY");
-    dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
-    if (!dim) {
-        throw Base::TypeError("CmdTechDrawNewDistanceYDimension - dim not found\n");
-    }
-    dim->References2D.setValues(objs, subs);
-
-    doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
-
-    commitCommand();
-    dim->recomputeFeature();
-    TechDraw::pointPair pp = dim->getLinearPoints();
-    Base::Vector3d mid = (pp.first + pp.second)/2.0;
-    dim->X.setValue(mid.x);
-    double fontSize = Preferences::dimFontSizeMM();
-    dim->Y.setValue(-mid.y + 0.5 * fontSize);
-
-    //Horrible hack to force Tree update
-    double x = objFeat->X.getValue();
-    objFeat->X.setValue(x);
+    execDistanceY(this);
 }
 
 bool CmdTechDrawVerticalDimension::isActive()
@@ -760,6 +777,158 @@ bool CmdTechDrawVerticalDimension::isActive()
     return (havePage && haveView);
 }
 
+void execDistanceY(Gui::Command* cmd)
+{
+    bool result = _checkDrawViewPart(cmd);
+    if (!result) {
+        QMessageBox::warning( Gui::getMainWindow(),
+                             QObject::tr("Incorrect selection"),
+                             QObject::tr("No View of a Part in selection.") );
+        return;
+    }
+
+    ReferenceVector references2d;
+    ReferenceVector references3d;
+    TechDraw::DrawViewPart* partFeat = TechDraw::getReferencesFromSelection(references2d, references3d);
+
+    //Define the geometric configuration required for a length dimension
+    StringVector acceptableGeometry( { "Edge", "Vertex" } );
+    std::vector<int> minimumCounts( { 1, 2 } );
+    std::vector<DimensionGeometryType> acceptableDimensionGeometrys( { isVertical } );
+
+    //what 2d geometry configuration did we receive?
+    DimensionGeometryType geometryRefs2d = validateDimSelection(references2d,
+                                                                      acceptableGeometry,
+                                                                      minimumCounts,
+                                                                      acceptableDimensionGeometrys);
+    if ( geometryRefs2d == TechDraw::isInvalid ) {
+        QMessageBox::warning(Gui::getMainWindow(),
+                             QObject::tr("Incorrect Selection"),
+                             QObject::tr("Can not make 2d vertical dimension from selection"));
+        return;
+    }
+
+    //what 3d geometry configuration did we receive?
+    DimensionGeometryType geometryRefs3d;
+    if (geometryRefs2d == TechDraw::isViewReference  &&
+        !references3d.empty()) {
+        geometryRefs3d = validateDimSelection3d(partFeat,
+                                                      references3d,
+                                                      acceptableGeometry,
+                                                      minimumCounts,
+                                                      acceptableDimensionGeometrys);
+        if ( geometryRefs3d == TechDraw::isVertical) {
+            QMessageBox::warning(Gui::getMainWindow(),
+                                 QObject::tr("Incorrect Selection"),
+                                 QObject::tr("Can not make 3d vertical dimension from selection"));
+            return;
+        }
+    }
+
+    //build the dimension
+    DrawViewDimension* dim = dimensionMaker(partFeat,
+                                            "DistanceY",
+                                            references2d,
+                                            references3d);
+
+    //position the Dimension text on the view
+    positionDimText(dim);
+
+    //Horrible hack to force Tree update (claimChildren)
+    double x = partFeat->X.getValue();
+    partFeat->X.setValue(x);
+}
+
+//===========================================================================
+// TechDraw_AngularGroup
+//===========================================================================
+
+DEF_STD_CMD_ACL(CmdTechDrawAngularGroup)
+
+CmdTechDrawAngularGroup::CmdTechDrawAngularGroup()
+    : Command("TechDraw_AngularGroup")
+{
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
+    sMenuText       = QT_TR_NOOP("Insert Angular Dimension");
+    sToolTipText    = sMenuText;
+    sWhatsThis      = "TechDraw_AngularGroup";
+    sStatusTip      = sToolTipText;
+}
+
+void CmdTechDrawAngularGroup::activated(int iMsg)
+{
+    //    Base::Console().Message("CMD::LinearGrp - activated(%d)\n", iMsg);
+    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
+    if (dlg) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
+                             QObject::tr("Close active task dialog and try again."));
+        return;
+    }
+
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    pcAction->setIcon(pcAction->actions().at(iMsg)->icon());
+    switch(iMsg) {
+        case 0:
+            execAngle(this);
+            break;
+        case 1:
+            execAngle3Pt(this);
+            break;
+        default:
+            Base::Console().Message("CMD::AngularGrp - invalid iMsg: %d\n", iMsg);
+    };
+}
+
+Gui::Action * CmdTechDrawAngularGroup::createAction()
+{
+    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
+    pcAction->setDropDownMenu(true);
+    applyCommandData(this->className(), pcAction);
+
+    QAction* p0 = pcAction->addAction(QString());
+    p0->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_AngleDimension"));
+    p0->setObjectName(QString::fromLatin1("TechDraw_AngleDimension"));
+    p0->setWhatsThis(QString::fromLatin1("TechDraw_AngleDimension"));
+    QAction* p1 = pcAction->addAction(QString());
+    p1->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_3PtAngleDimension"));
+    p1->setObjectName(QString::fromLatin1("TechDraw_3PtAngleDimension"));
+    p1->setWhatsThis(QString::fromLatin1("TechDraw_3PtAngleDimension"));
+
+    _pcAction = pcAction;
+    languageChange();
+
+    pcAction->setIcon(p0->icon());
+    int defaultId = 0;
+    pcAction->setProperty("defaultAction", QVariant(defaultId));
+
+    return pcAction;
+}
+
+void CmdTechDrawAngularGroup::languageChange()
+{
+    Command::languageChange();
+
+    if (!_pcAction)
+        return;
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    QAction* arc0 = a[0];
+    arc0->setText(QApplication::translate("CmdTechDrawAngularGroup", "Angular Dimension"));
+    arc0->setToolTip(QApplication::translate("TechDraw_AngleDimension", "Insert Angle Dimension"));
+    arc0->setStatusTip(arc0->toolTip());    QAction* arc1 = a[1];
+    arc1->setText(QApplication::translate("CmdTechDrawAngularGroup", "3Pt Angular Dimension"));
+    arc1->setToolTip(QApplication::translate("TechDraw_3PtAngleDimension", "Insert 3-Point Angle Dimension"));
+    arc1->setStatusTip(arc1->toolTip());
+}
+
+bool CmdTechDrawAngularGroup::isActive()
+{
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this, false);
+    return (havePage && haveView);
+}
 //===========================================================================
 // TechDraw_AngleDimension
 //===========================================================================
@@ -781,64 +950,7 @@ CmdTechDrawAngleDimension::CmdTechDrawAngleDimension()
 void CmdTechDrawAngleDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    bool result = _checkSelection(this, 2);
-    if (!result)
-        return;
-    result = _checkDrawViewPart(this);
-    if (!result)
-        return;
-
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    TechDraw::DrawViewPart * objFeat = nullptr;
-    std::vector<std::string> SubNames;
-
-    std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
-    for (; itSel != selection.end(); itSel++)  {
-        if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
-            objFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
-            SubNames = (*itSel).getSubNames();
-        }
-    }
-    TechDraw::DrawPage* page = objFeat->findParentPage();
-    std::string PageName = page->getNameInDocument();
-
-    TechDraw::DrawViewDimension *dim = nullptr;
-    std::string FeatName = getUniqueObjectName("Dimension");
-
-    std::vector<App::DocumentObject *> objs;
-    std::vector<std::string> subs;
-
-    int edgeType = _isValidEdgeToEdge(this);
-    if (edgeType != isAngle) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
-                                                   QObject::tr("Need two straight edges to make an Angle Dimension"));
-        return;
-    }
-
-    objs.push_back(objFeat);
-    objs.push_back(objFeat);
-    subs.push_back(SubNames[0]);
-    subs.push_back(SubNames[1]);
-
-    openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
-    doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewDimension', '%s')", FeatName.c_str());
-    doCommand(Doc, "App.activeDocument().%s.Type = '%s'", FeatName.c_str()
-                                                       ,"Angle");
-
-    dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
-    if (!dim) {
-        throw Base::TypeError("CmdTechDrawAngleDimension - dim not found\n");
-    }
-    dim->References2D.setValues(objs, subs);
-
-    doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
-
-    commitCommand();
-    dim->recomputeFeature();
-
-    //Horrible hack to force Tree update
-    double x = objFeat->X.getValue();
-    objFeat->X.setValue(x);
+    execAngle(this);
 }
 
 bool CmdTechDrawAngleDimension::isActive()
@@ -846,6 +958,68 @@ bool CmdTechDrawAngleDimension::isActive()
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
     return (havePage && haveView);
+}
+
+void execAngle(Gui::Command* cmd)
+{
+    bool result = _checkDrawViewPart(cmd);
+    if (!result) {
+        QMessageBox::warning( Gui::getMainWindow(),
+                             QObject::tr("Incorrect selection"),
+                             QObject::tr("No View of a Part in selection.") );
+        return;
+    }
+
+    ReferenceVector references2d;
+    ReferenceVector references3d;
+    TechDraw::DrawViewPart* partFeat = TechDraw::getReferencesFromSelection(references2d, references3d);
+
+    //Define the geometric configuration required for a length dimension
+    StringVector acceptableGeometry( { "Edge" } );
+    std::vector<int> minimumCounts( { 2 } );
+    std::vector<DimensionGeometryType> acceptableDimensionGeometrys( { isAngle } );
+
+    //what 2d geometry configuration did we receive?
+    DimensionGeometryType geometryRefs2d = validateDimSelection(references2d,
+                                                                      acceptableGeometry,
+                                                                      minimumCounts,
+                                                                      acceptableDimensionGeometrys);
+    if ( geometryRefs2d == TechDraw::isInvalid ) {
+        QMessageBox::warning(Gui::getMainWindow(),
+                             QObject::tr("Incorrect Selection"),
+                             QObject::tr("Can not make 2d angle dimension from selection"));
+        return;
+    }
+
+    //what 3d geometry configuration did we receive?
+    DimensionGeometryType geometryRefs3d;
+    if (geometryRefs2d == TechDraw::isViewReference  &&
+        !references3d.empty()) {
+        geometryRefs3d = validateDimSelection3d(partFeat,
+                                                      references3d,
+                                                      acceptableGeometry,
+                                                      minimumCounts,
+                                                      acceptableDimensionGeometrys);
+        if ( geometryRefs3d == TechDraw::isInvalid ) {
+            QMessageBox::warning(Gui::getMainWindow(),
+                                 QObject::tr("Incorrect Selection"),
+                                 QObject::tr("Can not make 3d angle dimension from selection"));
+            return;
+        }
+    }
+
+    //build the dimension
+    DrawViewDimension* dim = dimensionMaker(partFeat,
+                                            "Angle",
+                                            references2d,
+                                            references3d);
+
+    //position the Dimension text on the view
+    positionDimText(dim);
+
+    //Horrible hack to force Tree update (claimChildren)
+    double x = partFeat->X.getValue();
+    partFeat->X.setValue(x);
 }
 
 //===========================================================================
@@ -869,65 +1043,7 @@ CmdTechDraw3PtAngleDimension::CmdTechDraw3PtAngleDimension()
 void CmdTechDraw3PtAngleDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    bool result = _checkSelection(this, 3);
-    if (!result)
-        return;
-    result = _checkDrawViewPart(this);
-    if (!result)
-        return;
-
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    TechDraw::DrawViewPart * objFeat = nullptr;
-    std::vector<std::string> SubNames;
-
-    std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
-    for (; itSel != selection.end(); itSel++)  {
-        if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
-            objFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
-            SubNames = (*itSel).getSubNames();
-        }
-    }
-    TechDraw::DrawPage* page = objFeat->findParentPage();
-    std::string PageName = page->getNameInDocument();
-
-    TechDraw::DrawViewDimension *dim = nullptr;
-    std::string FeatName = getUniqueObjectName("Dimension");
-
-    std::vector<App::DocumentObject *> objs;
-    std::vector<std::string> subs;
-
-    if (!_isValidVertexes(this, 3))  {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
-                                                   QObject::tr("Need three points to make a 3 point Angle Dimension"));
-        return;
-    }
-
-    objs.push_back(objFeat);
-    objs.push_back(objFeat);
-    objs.push_back(objFeat);
-    subs.push_back(SubNames[0]);
-    subs.push_back(SubNames[1]);
-    subs.push_back(SubNames[2]);
-
-    openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
-    doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewDimension', '%s')", FeatName.c_str());
-    doCommand(Doc, "App.activeDocument().%s.Type = '%s'", FeatName.c_str()
-                                                       ,"Angle3Pt");
-
-    dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
-    if (!dim) {
-        throw Base::TypeError("CmdTechDrawNewAngle3PtDimension - dim not found\n");
-    }
-    dim->References2D.setValues(objs, subs);
-
-    doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
-
-    commitCommand();
-    dim->recomputeFeature();
-
-    //Horrible hack to force Tree update
-    double x = objFeat->X.getValue();
-    objFeat->X.setValue(x);
+    execAngle3Pt(this);
 }
 
 bool CmdTechDraw3PtAngleDimension::isActive()
@@ -935,6 +1051,67 @@ bool CmdTechDraw3PtAngleDimension::isActive()
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
     return (havePage && haveView);
+}
+
+void execAngle3Pt(Gui::Command* cmd)
+{
+    bool result = _checkDrawViewPart(cmd);
+    if (!result) {
+        QMessageBox::warning( Gui::getMainWindow(),
+                             QObject::tr("Incorrect selection"),
+                             QObject::tr("No View of a Part in selection.") );
+        return;
+    }
+
+    ReferenceVector references2d;
+    ReferenceVector references3d;
+    TechDraw::DrawViewPart* partFeat = TechDraw::getReferencesFromSelection(references2d, references3d);
+
+    //Define the geometric configuration required for a length dimension
+    StringVector acceptableGeometry( { "Vertex" } );
+    std::vector<int> minimumCounts( { 3 } );
+    std::vector<DimensionGeometryType> acceptableDimensionGeometrys( { isAngle3Pt } );
+
+    //what 2d geometry configuration did we receive?
+    DimensionGeometryType geometryRefs2d = validateDimSelection(references2d,
+                                                                      acceptableGeometry,
+                                                                      minimumCounts,
+                                                                      acceptableDimensionGeometrys);
+    if ( geometryRefs2d == TechDraw::isInvalid ) {
+        QMessageBox::warning(Gui::getMainWindow(),
+                             QObject::tr("Incorrect Selection"),
+                             QObject::tr("Can not make 2d angle dimension from selection"));
+        return;
+    }
+
+    //what 3d geometry configuration did we receive?
+    DimensionGeometryType geometryRefs3d;
+    if (geometryRefs2d == TechDraw::isViewReference  &&
+        !references3d.empty()) {
+        geometryRefs3d = validateDimSelection3d(partFeat,
+                                                      references3d,
+                                                      acceptableGeometry,
+                                                      minimumCounts,
+                                                      acceptableDimensionGeometrys);
+        if ( geometryRefs3d == TechDraw::isInvalid ) {
+            QMessageBox::warning(Gui::getMainWindow(),
+                                 QObject::tr("Incorrect Selection"),
+                                 QObject::tr("Can not make 3d angle dimension from selection"));
+            return;
+        }
+    }
+
+    //build the dimension
+    DrawViewDimension* dim = dimensionMaker(partFeat,
+                                            "Angle3Pt",
+                                            references2d,
+                                            references3d);
+    //position the Dimension text on the view
+    positionDimText(dim);
+
+    //Horrible hack to force Tree update (claimChildren)
+    double x = partFeat->X.getValue();
+    partFeat->X.setValue(x);
 }
 
 
@@ -1049,10 +1226,10 @@ void CmdTechDrawExtentGroup::activated(int iMsg)
     pcAction->setIcon(pcAction->actions().at(iMsg)->icon());
     switch(iMsg) {
         case 0:
-            execHExtent(this);
+            execExtent(this, 0);
             break;
         case 1:
-            execVExtent(this);
+            execExtent(this, 1);
             break;
         default:
             Base::Console().Message("CMD::ExtGrp - invalid iMsg: %d\n", iMsg);
@@ -1139,7 +1316,7 @@ void CmdTechDrawHorizontalExtentDimension::activated(int iMsg)
         return;
     }
 
-    execHExtent(this);
+    execExtent(this, 0);
 }
 
 bool CmdTechDrawHorizontalExtentDimension::isActive()
@@ -1149,48 +1326,80 @@ bool CmdTechDrawHorizontalExtentDimension::isActive()
     return (havePage && haveView);
 }
 
-void execHExtent(Gui::Command* cmd)
+void execExtent(Gui::Command* cmd, int direction)
 {
-    TechDraw::DrawPage* page = DrawGuiUtil::findPage(cmd);
-    if (!page) {
+    bool result = _checkDrawViewPart(cmd);
+    if (!result) {
+        QMessageBox::warning( Gui::getMainWindow(),
+                             QObject::tr("Incorrect selection"),
+                             QObject::tr("No View of a Part in selection.") );
         return;
     }
 
-    std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-    TechDraw::DrawViewPart* baseFeat = nullptr;
-    if (selection.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
-                                QObject::tr("Please select a View [and Edges]."));
+    ReferenceVector references2d;
+    ReferenceVector references3d;
+    TechDraw::DrawViewPart* partFeat = TechDraw::getReferencesFromSelection(references2d, references3d);
+
+    //Define the geometric configuration required for a extent dimension
+    StringVector acceptableGeometry( { "Edge" } );
+    std::vector<int> minimumCounts( { 1 } );
+    std::vector<DimensionGeometryType> acceptableDimensionGeometrys( { isMultiEdge,
+                                                                     isHorizontal,
+                                                                     isVertical,
+                                                                     isDiagonal,
+                                                                     isCircle,
+                                                                     isEllipse,
+                                                                     isBSplineCircle,
+                                                                     isBSpline,
+                                                                     isZLimited } );
+
+    //what 2d geometry configuration did we receive?
+    DimensionGeometryType geometryRefs2d = validateDimSelection(references2d,
+                                                                      acceptableGeometry,
+                                                                      minimumCounts,
+                                                                      acceptableDimensionGeometrys);
+    if ( geometryRefs2d == TechDraw::isInvalid) {
+        QMessageBox::warning(Gui::getMainWindow(),
+                             QObject::tr("Incorrect Selection"),
+                             QObject::tr("Can not make 2d extent dimension from selection"));
         return;
     }
-
-    baseFeat =  dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
-    if (!baseFeat) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
-                                QObject::tr("No base View in Selection."));
-        return;
-    }
-
-    std::vector<std::string> SubNames;
-
-    std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
-    for (; itSel != selection.end(); itSel++)  {
-        if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
-            SubNames = (*itSel).getSubNames();
+    //what 3d geometry configuration did we receive?
+    DimensionGeometryType geometryRefs3d;
+    if (geometryRefs2d == TechDraw::isViewReference  &&
+        !references3d.empty()) {
+        geometryRefs3d = validateDimSelection3d(partFeat,
+                                                      references3d,
+                                                      acceptableGeometry,
+                                                      minimumCounts,
+                                                      acceptableDimensionGeometrys);
+        if ( geometryRefs3d == isInvalid ) {
+            QMessageBox::warning(Gui::getMainWindow(),
+                                 QObject::tr("Incorrect Selection"),
+                                 QObject::tr("Can not make 3d extent dimension from selection"));
+            return;
         }
     }
 
-    std::vector<std::string> edgeNames;
-    for (auto& s: SubNames) {
-        std::string geomType = DrawUtil::getGeomTypeFromName(s);
-        if (geomType == "Edge") {
-            edgeNames.push_back(s);
+    if (references3d.empty()) {
+        std::vector<std::string> edgeNames;
+        for (auto& ref : references2d) {
+            if (ref.getSubName().empty()) {
+                continue;
+            }
+            std::string geomType = DrawUtil::getGeomTypeFromName(ref.getSubName());
+            if (geomType == "Edge") {
+                edgeNames.push_back(ref.getSubName());
+            }
         }
+        DrawDimHelper::makeExtentDim(partFeat,
+                                     edgeNames,
+                                     direction);     //0 - horizontal, 1 - vertical
+    } else {
+        DrawDimHelper::makeExtentDim3d(partFeat,
+                                       references3d,
+                                       direction);   //0 - horizontal, 1 - vertical
     }
-
-    DrawDimHelper::makeExtentDim(baseFeat,
-                                 edgeNames,
-                                 0);
 }
 
 //===========================================================================
@@ -1222,7 +1431,7 @@ void CmdTechDrawVerticalExtentDimension::activated(int iMsg)
         return;
     }
 
-    execVExtent(this);
+    execExtent(this, 1);
 }
 
 bool CmdTechDrawVerticalExtentDimension::isActive()
@@ -1232,51 +1441,58 @@ bool CmdTechDrawVerticalExtentDimension::isActive()
     return (havePage && haveView);
 }
 
-void execVExtent(Gui::Command* cmd)
+//===========================================================================
+// TechDraw_DimensionRepair
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawDimensionRepair)
+
+CmdTechDrawDimensionRepair::CmdTechDrawDimensionRepair()
+    : Command("TechDraw_DimensionRepair")
 {
-    TechDraw::DrawPage* page = DrawGuiUtil::findPage(cmd);
-    if (!page) {
-        return;
-    }
-
-    std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-    TechDraw::DrawViewPart* baseFeat = nullptr;
-    if (selection.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
-                                QObject::tr("Please select a View [and Edges]."));
-        return;
-    }
-
-
-    baseFeat =  dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
-    if (!baseFeat) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
-                                QObject::tr("No base View in Selection."));
-        return;
-    }
-
-    std::vector<std::string> SubNames;
-
-    std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
-    for (; itSel != selection.end(); itSel++)  {
-        if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
-            baseFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
-            SubNames = (*itSel).getSubNames();
-        }
-    }
-    std::vector<std::string> edgeNames;
-    for (auto& s: SubNames) {
-        std::string geomType = DrawUtil::getGeomTypeFromName(s);
-        if (geomType == "Edge") {
-            edgeNames.push_back(s);
-        }
-    }
-
-    DrawDimHelper::makeExtentDim(baseFeat,
-                                 edgeNames,
-                                 1);
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
+    sMenuText       = QT_TR_NOOP("Repair Dimension References");
+    sToolTipText    = sMenuText;
+    sWhatsThis      = "TechDraw_DimensionRepair";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "TechDraw_DimensionRepair";
 }
 
+void CmdTechDrawDimensionRepair::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    std::vector<App::DocumentObject*> dimObjs = getSelection().getObjectsOfType(TechDraw::DrawViewDimension::getClassTypeId());
+    TechDraw::DrawViewDimension* dim = nullptr;
+    if (dimObjs.empty()) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
+                             QObject::tr("There is no Dimension in your selection"));
+        return;
+    } else {
+        dim = static_cast<TechDraw::DrawViewDimension*>(dimObjs.at(0));
+    }
+
+    ReferenceVector references2d;
+    ReferenceVector references3d;
+    //TechDraw::DrawViewPart* partFeat =
+    TechDraw::getReferencesFromSelection(references2d, references3d);
+
+    Gui::Control().showDialog(new TaskDlgDimReference(dim, references2d, references3d));
+}
+
+bool CmdTechDrawDimensionRepair::isActive(void)
+{
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this);
+    bool taskInProgress = false;
+    if (havePage) {
+        taskInProgress = Gui::Control().activeDialog();
+    }
+    return (havePage && haveView && !taskInProgress);
+}
+
+//NOTE: to be deprecated.  revisions to the basic dimension allows it to handle
+//everything that the Landmark Dimension was created to handle.
 //===========================================================================
 // TechDraw_LandmarkDimension
 //===========================================================================
@@ -1334,7 +1550,6 @@ void CmdTechDrawLandmarkDimension::activated(int iMsg)
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
     doCommand(Doc, "App.activeDocument().addObject('TechDraw::LandmarkDimension', '%s')", FeatName.c_str());
-    doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
     if (objects.size() == 2) {
         //what about distanceX and distanceY??
         doCommand(Doc, "App.activeDocument().%s.Type = '%s'", FeatName.c_str(), "Distance");
@@ -1357,6 +1572,7 @@ void CmdTechDrawLandmarkDimension::activated(int iMsg)
     }
     dim->References2D.setValues(refs2d, subs);
     dim->References3D.setValues(objects, subs);
+    doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
 
     commitCommand();
     dim->recomputeFeature();
@@ -1373,18 +1589,21 @@ bool CmdTechDrawLandmarkDimension::isActive()
     return (havePage && haveView);
 }
 
-
 //------------------------------------------------------------------------------
+
 void CreateTechDrawCommandsDims()
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 
+    rcCmdMgr.addCommand(new CmdTechDrawRadialGroup());
     rcCmdMgr.addCommand(new CmdTechDrawDimension());
     rcCmdMgr.addCommand(new CmdTechDrawRadiusDimension());
     rcCmdMgr.addCommand(new CmdTechDrawDiameterDimension());
+    rcCmdMgr.addCommand(new CmdTechDrawLinearGroup());
     rcCmdMgr.addCommand(new CmdTechDrawLengthDimension());
     rcCmdMgr.addCommand(new CmdTechDrawHorizontalDimension());
     rcCmdMgr.addCommand(new CmdTechDrawVerticalDimension());
+    rcCmdMgr.addCommand(new CmdTechDrawAngularGroup());
     rcCmdMgr.addCommand(new CmdTechDrawAngleDimension());
     rcCmdMgr.addCommand(new CmdTechDraw3PtAngleDimension());
     rcCmdMgr.addCommand(new CmdTechDrawExtentGroup());
@@ -1392,8 +1611,59 @@ void CreateTechDrawCommandsDims()
     rcCmdMgr.addCommand(new CmdTechDrawHorizontalExtentDimension());
     rcCmdMgr.addCommand(new CmdTechDrawLinkDimension());
     rcCmdMgr.addCommand(new CmdTechDrawLandmarkDimension());
+    rcCmdMgr.addCommand(new CmdTechDrawDimensionRepair());
 }
 
+//------------------------------------------------------------------------------
+
+//Common code to build a dimension feature
+DrawViewDimension* dimensionMaker(TechDraw::DrawViewPart* dvp,
+                                  std::string dimType,
+                                  ReferenceVector references2d,
+                                  ReferenceVector references3d)
+{
+    TechDraw::DrawPage* page = dvp->findParentPage();
+    std::string PageName = page->getNameInDocument();
+
+    TechDraw::DrawViewDimension *dim = nullptr;
+    std::string dimName = dvp->getDocument()->getUniqueObjectName("Dimension");
+
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
+    Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().addObject('TechDraw::DrawViewDimension', '%s')", dimName.c_str());
+    Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.Type = '%s'", dimName.c_str()
+                                                                                    ,dimType.c_str());
+    std::string measureType("True");
+    if (references3d.empty()) {
+        measureType = "Projected";
+    }
+    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.MeasureType = '%s'", dimName.c_str(),
+                                                                                            measureType.c_str());
+
+    dim = dynamic_cast<TechDraw::DrawViewDimension *>(dvp->getDocument()->getObject(dimName.c_str()));
+    if (!dim) {
+        throw Base::TypeError("CmdTechDrawNewDiameterDimension - dim not found\n");
+    }
+
+    //always have References2D, even if only for the parent DVP
+    dim->setReferences2d(references2d);
+    dim->setReferences3d(references3d);
+
+    Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), dimName.c_str());
+
+    Gui::Command::commitCommand();
+    dim->recomputeFeature();
+    return dim;
+}
+
+//position the Dimension text on the view
+void positionDimText(DrawViewDimension* dim)
+{
+    TechDraw::pointPair pp = dim->getLinearPoints();
+    Base::Vector3d mid = (pp.first() + pp.second())/2.0;
+    dim->X.setValue(mid.x);
+    double fontSize = Preferences::dimFontSizeMM();
+    dim->Y.setValue(-mid.y + 0.5 * fontSize);
+}
 //===========================================================================
 // Selection Validation Helpers
 //===========================================================================
@@ -1426,223 +1696,12 @@ bool _checkSelection(Gui::Command* cmd, unsigned maxObjs) {
 
 bool _checkDrawViewPart(Gui::Command* cmd) {
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-    auto objFeat( dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject()) );
-    if( !objFeat ) {
-        QMessageBox::warning( Gui::getMainWindow(),
-                              QObject::tr("Incorrect selection"),
-                              QObject::tr("No View of a Part in selection.") );
-        return false;
-    }
-    return true;
-}
-
-bool _checkPartFeature(Gui::Command* cmd) {
-    bool result = false;
-    std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-    std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
-    for (; itSel != selection.end(); itSel++) {
-        if (itSel->isDerivedFrom(Part::Feature::getClassTypeId())) {
-            result = true;
+    for (auto& sel : selection) {
+        auto dvp = dynamic_cast<TechDraw::DrawViewPart *>( sel.getObject() );
+        if( dvp ) {
+            return true;
         }
     }
-    if(!result) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect selection"),
-                             QObject::tr("No Feature with Shape in selection."));
-    }
-    return result;
+    return false;
 }
-
-//! verify that Selection contains a valid Geometry for a single Edge Dimension
-int _isValidSingleEdge(Gui::Command* cmd) {
-    auto selection( cmd->getSelection().getSelectionEx() );
-
-    auto objFeat( dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject()) );
-    if (!objFeat)
-        return isInvalid;
-
-    const std::vector<std::string> SubNames = selection[0].getSubNames();
-    if (SubNames.size() != 1 ||
-        TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) != "Edge") {
-        return isInvalid;
-    }
-
-
-    //only 1 subshape selected
-    //the Name starts with "Edge"
-    int GeoId( TechDraw::DrawUtil::getIndexFromName(SubNames[0]) );
-    TechDraw::BaseGeomPtr geom = objFeat->getGeomByIndex(GeoId);
-    if (!geom) {
-        Base::Console().Error("Logic Error: no geometry for GeoId: %d\n", GeoId);
-        return isInvalid;
-    }
-
-    if(geom->geomType == TechDraw::GENERIC) {
-        TechDraw::GenericPtr gen1 = std::static_pointer_cast<TechDraw::Generic>(geom);
-        if(gen1->points.size() > 2) {                                   //the edge is a polyline
-            return isInvalid;
-        }
-        Base::Vector3d line = gen1->points.at(1) - gen1->points.at(0);
-        if(fabs(line.y) < FLT_EPSILON ) {
-            return isHorizontal;
-        } else if(fabs(line.x) < FLT_EPSILON) {
-            return isVertical;
-        } else {
-            return isDiagonal;
-        }
-    } else if (geom->geomType == TechDraw::CIRCLE ||
-                geom->geomType == TechDraw::ARCOFCIRCLE ) {
-        return isCircle;
-    } else if (geom->geomType == TechDraw::ELLIPSE ||
-                geom->geomType == TechDraw::ARCOFELLIPSE) {
-        return isEllipse;
-    } else if (geom->geomType == TechDraw::BSPLINE) {
-        TechDraw::BSplinePtr  spline = std::static_pointer_cast<TechDraw::BSpline> (geom);
-        if (spline->isCircle()) {
-            return isBSplineCircle;
-        } else {
-            return isBSpline;
-        }
-    }
-
-    return isInvalid;
-}
-
-//! verify that Selection contains valid geometries for a Vertex based Dimensions
-bool _isValidVertexes(Gui::Command* cmd, int count) {
-    std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-    const std::vector<std::string> SubNames = selection[0].getSubNames();
-
-    if(SubNames.size() != (unsigned) count) {
-        return false;
-    }
-
-    for (auto& s: SubNames) {
-        if (TechDraw::DrawUtil::getGeomTypeFromName(s) != "Vertex") {
-            return false;
-        }
-    }
-
-    return true;
-}
-
-//! verify that the Selection contains valid geometries for an Edge to Edge Dimension
-int _isValidEdgeToEdge(Gui::Command* cmd) {
-    std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-
-    auto objFeat0( dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject()) );
-    // getObject() can return null pointer, or dynamic_cast can fail
-    if ( !objFeat0 ) {
-        Base::Console().Error("Logic error in _isValidEdgeToEdge()\n");
-        return isInvalid;
-    }
-
-    const std::vector<std::string> SubNames = selection[0].getSubNames();
-
-    //there has to be 2
-    if(SubNames.size() != 2) {
-        return isInvalid;
-    }
-
-    //they both must start with "Edge"
-    if(TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) != "Edge" ||
-        TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]) != "Edge") {
-        return isInvalid;
-    }
-
-    int GeoId0( TechDraw::DrawUtil::getIndexFromName(SubNames[0]) );
-    int GeoId1( TechDraw::DrawUtil::getIndexFromName(SubNames[1]) );
-    TechDraw::BaseGeomPtr geom0 = objFeat0->getGeomByIndex(GeoId0);
-    TechDraw::BaseGeomPtr geom1 = objFeat0->getGeomByIndex(GeoId1);
-
-    if (!geom0 || !geom1) {                                         // missing gometry
-        Base::Console().Error("Logic Error: no geometry for GeoId: %d or GeoId: %d\n", GeoId0, GeoId1);
-        return isInvalid;
-    }
-
-    if(geom0->geomType == TechDraw::GENERIC &&
-        geom1->geomType == TechDraw::GENERIC) {
-        TechDraw::GenericPtr gen0 = std::static_pointer_cast<TechDraw::Generic> (geom0);
-        TechDraw::GenericPtr gen1 = std::static_pointer_cast<TechDraw::Generic> (geom1);
-        if(gen0->points.size() > 2 ||
-            gen1->points.size() > 2) {                          //the edge is a polyline
-            return isInvalid;                                  //not supported yet
-        }
-        Base::Vector3d line0 = gen0->points.at(1) - gen0->points.at(0);
-        Base::Vector3d line1 = gen1->points.at(1) - gen1->points.at(0);
-        double xprod = fabs(line0.x * line1.y - line0.y * line1.x);
-        if (xprod > FLT_EPSILON) {                              //edges are not parallel
-            return isAngle;                                 //angle or distance
-        } else {
-            return isDiagonal;                              //distance || line
-        }
-    } else {
-        return isDiagonal;                                  //two edges, not both straight lines
-    }
-
-    return isInvalid;
-}
-
-//! verify that the Selection contains valid geometries for a Vertex to Edge Dimension
-bool _isValidVertexToEdge(Gui::Command* cmd) {
-    std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-    TechDraw::DrawViewPart* objFeat0 = static_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
-    const std::vector<std::string> SubNames = selection[0].getSubNames();
-
-    //there has to be 2
-    if(SubNames.size() != 2) {
-        return false;
-    }
-
-    int eId, vId;
-    TechDraw::BaseGeomPtr e;
-    TechDraw::VertexPtr v;
-    if (TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge" &&
-        TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]) == "Vertex") {
-        eId = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);
-        vId = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
-    } else if (TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]) == "Edge" &&
-        TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Vertex") {
-        eId = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
-        vId = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);
-    } else {
-        return false;
-    }
-    e = objFeat0->getGeomByIndex(eId);
-    v = objFeat0->getProjVertexByIndex(vId);
-    if (!e || !v) {
-        Base::Console().Error("Logic Error: no geometry for GeoId: %d or GeoId: %d\n", eId, vId);
-        return false;
-    }
-
-    return true;
-}
-
-char* _edgeTypeToText(int e)
-{
-    switch(e) {
-        case isInvalid:
-            return "invalid";
-        case isHorizontal:
-            return "horizontal";
-        case isVertical:
-            return "vertical";
-        case isDiagonal:
-            return "diagonal";
-        case isCircle:
-            return "circle";
-        case isEllipse:
-            return "ellipse";
-        case isBSpline:
-            return "bspline";
-        case isBSplineCircle:
-            return "circular bspline";
-        case isAngle:
-            return "angle";
-        case isAngle3Pt:
-            return "angle3";
-        default:
-            return "unknown";
-    }
-}
-
 

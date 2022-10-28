@@ -86,6 +86,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *dimensions << "TechDraw_VerticalExtentDimension";
     *dimensions << "TechDraw_LinkDimension";
     *dimensions << "TechDraw_LandmarkDimension";
+    *dimensions << "TechDraw_DimensionRepair";
 
     // extension: attributes and modifications
     Gui::MenuItem* toolattrib = new Gui::MenuItem;
@@ -269,13 +270,16 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 
     Gui::ToolBarItem *dims = new Gui::ToolBarItem(root);
     dims->setCommand("TechDraw Dimensions");
-    *dims << "TechDraw_LengthDimension";
-    *dims << "TechDraw_HorizontalDimension";
-    *dims << "TechDraw_VerticalDimension";
-    *dims << "TechDraw_RadiusDimension";
-    *dims << "TechDraw_DiameterDimension";
-    *dims << "TechDraw_AngleDimension";
-    *dims << "TechDraw_3PtAngleDimension";
+    *dims << "TechDraw_LinearGroup";
+//    *dims << "TechDraw_LengthDimension";
+//    *dims << "TechDraw_HorizontalDimension";
+//    *dims << "TechDraw_VerticalDimension";
+    *dims << "TechDraw_RadialGroup";
+//    *dims << "TechDraw_RadiusDimension";
+//    *dims << "TechDraw_DiameterDimension";
+    *dims << "TechDraw_AngularGroup";
+//    *dims << "TechDraw_AngleDimension";
+//    *dims << "TechDraw_3PtAngleDimension";
     *dims << "TechDraw_ExtentGroup";
 //    *dims << "TechDraw_HorizontalExtentDimension";
 //    *dims << "TechDraw_VerticalExtentDimension";
@@ -283,6 +287,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *dims << "TechDraw_Balloon";
     *dims << "TechDraw_LandmarkDimension";
 //    *dims << "TechDraw_Dimension"
+    *dims << "TechDraw_DimensionRepair";
 
     Gui::ToolBarItem *extattribs = new Gui::ToolBarItem(root);
     extattribs->setCommand("TechDraw Attributes");
@@ -416,13 +421,16 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
 
     Gui::ToolBarItem *dims = new Gui::ToolBarItem(root);
     dims->setCommand("TechDraw Dimensions");
-    *dims << "TechDraw_LengthDimension";
-    *dims << "TechDraw_HorizontalDimension";
-    *dims << "TechDraw_VerticalDimension";
-    *dims << "TechDraw_RadiusDimension";
-    *dims << "TechDraw_DiameterDimension";
-    *dims << "TechDraw_AngleDimension";
-    *dims << "TechDraw_3PtAngleDimension";
+    *dims << "TechDraw_LinearGroup";
+//    *dims << "TechDraw_LengthDimension";
+//    *dims << "TechDraw_HorizontalDimension";
+//    *dims << "TechDraw_VerticalDimension";
+    *dims << "TechDraw_RadialGroup";
+//    *dims << "TechDraw_RadiusDimension";
+//    *dims << "TechDraw_DiameterDimension";
+    *dims << "TechDraw_AngularGroup";
+//    *dims << "TechDraw_AngleDimension";
+//    *dims << "TechDraw_3PtAngleDimension";
     *dims << "TechDraw_ExtentGroup";
 //    *dims << "TechDraw_HorizontalExtentDimension";
 //    *dims << "TechDraw_VerticalExtentDimension";
@@ -430,6 +438,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *dims << "TechDraw_Balloon";
     *dims << "TechDraw_LandmarkDimension";
 //    *dims << "TechDraw_Dimension";
+    *dims << "TechDraw_DimensionRepair";
 
     Gui::ToolBarItem *extattribs = new Gui::ToolBarItem(root);
     extattribs->setCommand("TechDraw Attributes");
