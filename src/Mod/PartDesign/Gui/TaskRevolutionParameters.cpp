@@ -250,6 +250,10 @@ void TaskRevolutionParameters::onAxisChanged(int num)
     App::PropertyLinkSub &lnk = *(axesInList[num]);
     if (!lnk.getValue()) {
         // enter reference selection mode
+        auto sketch = dynamic_cast<Part::Part2DObject*>(pcRevolution->Profile.getValue());
+        if (sketch) {
+            FCMD_OBJ_SHOW(sketch);
+        }
         TaskSketchBasedParameters::onSelectReference(AllowSelection::EDGE |
                                                      AllowSelection::PLANAR |
                                                      AllowSelection::CIRCLE);
