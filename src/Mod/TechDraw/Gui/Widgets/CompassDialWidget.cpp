@@ -23,12 +23,12 @@
 //largely based on a python widget from:
 //https://github.com/tcalmant/demo-ipopo-qt/blob/master/pc/details/compass.py
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <QtGui>
 #endif
+
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <Base/Console.h>
 #include <Base/Tools.h>

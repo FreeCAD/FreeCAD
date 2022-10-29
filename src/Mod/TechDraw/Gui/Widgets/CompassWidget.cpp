@@ -23,6 +23,7 @@
 // The CompassWidget has several children widgets - a CompassDialWidget, a fine
 // adjustment QDoubleSpinBox and a QPushButton that acts as an enter key
 // for the spin box.
+
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <QApplication>
