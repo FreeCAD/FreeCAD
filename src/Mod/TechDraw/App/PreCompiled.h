@@ -25,25 +25,6 @@
 
 #include <FCConfig.h>
 
-// Exporting of App classes
-#ifdef FC_OS_WIN32
-# define TechDrawExport  __declspec(dllexport)
-# define DrawingExport   __declspec(dllexport)
-# define PartExport      __declspec(dllimport)
-# define MeasureExport   __declspec(dllimport)
-# define MeshExport      __declspec(dllimport)
-# define SpreadsheetExport     __declspec(dllimport)
-# define ImportExport    __declspec(dllimport)
-#else // for Linux
-# define TechDrawExport
-# define DrawingExport
-# define MeasureExport
-# define PartExport
-# define MeshExport
-# define SpreadsheetExport
-# define ImportExport
-#endif
-
 #ifdef _MSC_VER
 # pragma warning( disable : 4275 )
 #endif
