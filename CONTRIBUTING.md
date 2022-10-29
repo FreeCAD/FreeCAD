@@ -93,7 +93,7 @@ The FreeCAD Contribution Process is expressed here with the following specific g
 ## 8. Project Administration
 
 1. The project Administrators will manage the set of project Maintainers.  They SHALL maintain a sufficiently large pool of Maintainers to ensure their succession and permit timely review of contributions.
-2. A new Contributor who has had more than one PR accepted and who clearly understands the project goals and this process SHOULD be invited to become a Maintainer.
+2. Contributors who have a history of successful PRs and have demonstrated continued professionalism should be invited to be Maintainers.
 3. Administrators SHOULD remove Maintainers who are inactive for an extended period, or who repeatedly fail to apply this process accurately.
 4. The list of Maintainers SHALL be publicly accessible and reflective of current activity on the project.
 5. Administrators SHOULD block or ban “bad actors” who cause stress, animosity, or confusion to others in the project. This SHOULD be done after public discussion, with a chance for all parties to speak. A bad actor is someone who repeatedly ignores the rules and culture of the project, who is hostile or offensive, who impedes the productive exchange of information, and who is unable to self-correct their behavior when asked to do so by others.
