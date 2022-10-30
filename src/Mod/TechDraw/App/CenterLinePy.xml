@@ -47,7 +47,7 @@
       <Documentation>
         <UserDocu>The appearance attributes (style, color, weight, visible) for this CenterLine.</UserDocu>
       </Documentation>
-      <Parameter Name="Format" Type="Object"/>
+      <Parameter Name="Format" Type="Dict"/>
     </Attribute>
     <Attribute Name="HorizShift">
       <Documentation>
@@ -83,19 +83,19 @@
       <Documentation>
         <UserDocu>The names of source edges for this CenterLine.</UserDocu>
       </Documentation>
-      <Parameter Name="Edges" Type="Object"/>
+      <Parameter Name="Edges" Type="List"/>
     </Attribute>
     <Attribute Name="Faces">
       <Documentation>
         <UserDocu>The names of source Faces for this CenterLine.</UserDocu>
       </Documentation>
-      <Parameter Name="Faces" Type="Object"/>
+      <Parameter Name="Faces" Type="List"/>
     </Attribute>
     <Attribute Name="Points">
       <Documentation>
         <UserDocu>The names of source Points for this CenterLine.</UserDocu>
       </Documentation>
-      <Parameter Name="Points" Type="Object"/>
+      <Parameter Name="Points" Type="List"/>
     </Attribute>
   </PythonExport>
 </GenerateModel>
