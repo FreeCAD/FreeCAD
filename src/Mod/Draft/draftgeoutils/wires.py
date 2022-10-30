@@ -270,9 +270,15 @@ def isReallyClosed(wire):
             return False
 
     # If more than 1 edge, further test below
-    v1 = wire.Edges[0].Vertexes[0].Point   # v1 = wire.Vertexes[0].Point
-    v2 = wire.Edges[length-1].Vertexes[1].Point  # v2 = wire.Vertexes[-1].Point
-    if DraftVecUtils.equals(v1, v2):
+    e1 = wire.Edges[0]
+    e2 = wire.Edges[length-1]
+    if DraftVecUtils.equals(e1.Vertexes[0].Point, e2.Vertexes[0].Point):
+        return True
+    if DraftVecUtils.equals(e1.Vertexes[0].Point, e2.Vertexes[1].Point):
+        return True
+    if DraftVecUtils.equals(e1.Vertexes[1].Point, e2.Vertexes[0].Point):
+        return True
+    if DraftVecUtils.equals(e1.Vertexes[1].Point, e2.Vertexes[1].Point):
         return True
 
     return False
