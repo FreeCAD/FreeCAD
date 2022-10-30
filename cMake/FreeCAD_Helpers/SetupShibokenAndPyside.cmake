@@ -43,7 +43,12 @@ macro(SetupShibokenAndPyside)
     endif(NOT SHIBOKEN_INCLUDE_DIR AND TARGET Shiboken${SHIBOKEN_MAJOR_VERSION}::libshiboken)
 
     if(NOT SHIBOKEN_INCLUDE_DIR)
-        find_pip_include_dir(Shiboken${SHIBOKEN_MAJOR_VERSION} SHIBOKEN_INCLUDE_DIR)
+        find_pip_package(Shiboken${SHIBOKEN_MAJOR_VERSION})
+        if (Shiboken${SHIBOKEN_MAJOR_VERSION}_FOUND)
+            set(Shiboken_INCLUDE_DIR ${Shiboken${SHIBOKEN_MAJOR_VERSION}_INCLUDE_DIRS})
+            set(Shiboken_LIBRARY ${Shiboken${SHIBOKEN_MAJOR_VERSION}_LIBRARIES})
+            set(Shiboken_FOUND TRUE)
+        endif()
     endif()
 
     find_package(PySide${PYSIDE_MAJOR_VERSION} QUIET)
@@ -53,7 +58,12 @@ macro(SetupShibokenAndPyside)
     endif(NOT PYSIDE_INCLUDE_DIR AND TARGET PySide${PYSIDE_MAJOR_VERSION}::pyside${PYSIDE_MAJOR_VERSION})
 
     if(NOT PYSIDE_INCLUDE_DIR)
-        find_pip_include_dir(PySide${PYSIDE_MAJOR_VERSION} PYSIDE_INCLUDE_DIR)
+        find_pip_package(PySide${PYSIDE_MAJOR_VERSION})
+        if (PySide${PYSIDE_MAJOR_VERSION}_FOUND)
+            set(PySide_INCLUDE_DIR ${PySide${PYSIDE_MAJOR_VERSION}_INCLUDE_DIRS})
+            set(PySide_LIBRARY ${PySide${PYSIDE_MAJOR_VERSION}_LIBRARIES})
+            set(PySide_FOUND TRUE)
+        endif()
     endif()
 
     find_package(PySide${PYSIDE_MAJOR_VERSION}Tools QUIET) # PySide utilities (uic & rcc executables)
@@ -70,14 +80,16 @@ macro(SetupShibokenAndPyside)
     file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtCore.py "from PySide${PYSIDE_MAJOR_VERSION}.QtCore import *\n\n"
                                 "#QCoreApplication.CodecForTr=0\n"
                                 "#QCoreApplication.UnicodeUTF8=1\n")
-    file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtGui.py  "from PySide${PYSIDE_MAJOR_VERSION}.QtGui import *\n"
-                                "from PySide${PYSIDE_MAJOR_VERSION}.QtWidgets import *\n"
-                                "QHeaderView.setResizeMode = QHeaderView.setSectionResizeMode\n")
-    file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtSvg.py  "from PySide${PYSIDE_MAJOR_VERSION}.QtSvg import *\n")
-    file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtUiTools.py  "from PySide${PYSIDE_MAJOR_VERSION}.QtUiTools import *\n")
-    file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtWidgets.py  "from PySide${PYSIDE_MAJOR_VERSION}.QtWidgets import *\n")
     file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtNetwork.py  "from PySide${PYSIDE_MAJOR_VERSION}.QtNetwork import *\n")
-    file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtWebEngineWidgets.py  "from PySide${PYSIDE_MAJOR_VERSION}.QtWebEngineWidgets import *\n")
+    if(BUILD_GUI)
+        file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtGui.py  "from PySide${PYSIDE_MAJOR_VERSION}.QtGui import *\n"
+                                    "from PySide${PYSIDE_MAJOR_VERSION}.QtWidgets import *\n"
+                                    "QHeaderView.setResizeMode = QHeaderView.setSectionResizeMode\n")
+        file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtSvg.py  "from PySide${PYSIDE_MAJOR_VERSION}.QtSvg import *\n")
+        file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtUiTools.py  "from PySide${PYSIDE_MAJOR_VERSION}.QtUiTools import *\n")
+        file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtWidgets.py  "from PySide${PYSIDE_MAJOR_VERSION}.QtWidgets import *\n")
+        file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtWebEngineWidgets.py  "from PySide${PYSIDE_MAJOR_VERSION}.QtWebEngineWidgets import *\n")
+    endif()
 
     if(APPLE AND NOT BUILD_WITH_CONDA)
         install(
@@ -103,7 +115,7 @@ macro(SetupShibokenAndPyside)
         option(FREECAD_USE_SHIBOKEN "Links to the shiboken library at build time. If OFF its Python module is imported at runtime" OFF)
     endif()
 
-    # Now try to import the shiboken Python module and print a warning if it can't be loaded
+    # Now try to import the shiboken Python module and print an error if it can't be loaded
     execute_process(
         COMMAND ${PYTHON_EXECUTABLE} -c "import shiboken${SHIBOKEN_MAJOR_VERSION}"
         RESULT_VARIABLE FAILURE
@@ -131,7 +143,7 @@ macro(SetupShibokenAndPyside)
         option(FREECAD_USE_PYSIDE "Links to the PySide libraries at build time." OFF)
     endif()
 
-    # Independent of the build option PySide modules must be loaded at runtime. Print a warning if it fails.
+    # Independent of the build option PySide modules must be loaded at runtime. Print an error if it fails.
     execute_process(
         COMMAND ${PYTHON_EXECUTABLE} -c "import PySide${PYSIDE_MAJOR_VERSION};import os;print(os.path.dirname(PySide${PYSIDE_MAJOR_VERSION}.__file__), end='')"
         RESULT_VARIABLE FAILURE
@@ -155,7 +167,7 @@ endmacro(SetupShibokenAndPyside)
 
 # Locate the include directory for a pip-installed package -- uses pip show to find the base pip
 # install directory, and then appends the package name and  "/include" to the end
-macro(find_pip_include_dir PACKAGE OUTPUT_VARIABLE)
+macro(find_pip_package PACKAGE)
     execute_process(
         COMMAND ${PYTHON_EXECUTABLE} -m pip show ${PACKAGE}
         RESULT_VARIABLE FAILURE
@@ -173,8 +185,12 @@ macro(find_pip_include_dir PACKAGE OUTPUT_VARIABLE)
                 STRING(SUBSTRING "${LINE}" 9 -1 PIP_PACKAGE_LOCATION)
             endif()
         endforeach()
-        file(TO_NATIVE_PATH "${PIP_PACKAGE_LOCATION}/${PIP_PACKAGE_NAME}/include" ${OUTPUT_VARIABLE}) 
-        message(STATUS "Looking for pip-installed ${PACKAGE} include files in ${${OUTPUT_VARIABLE}}")
+        file(TO_NATIVE_PATH "${PIP_PACKAGE_LOCATION}/${PIP_PACKAGE_NAME}/include" INCLUDE_DIR) 
+        file(TO_NATIVE_PATH "${PIP_PACKAGE_LOCATION}/${PIP_PACKAGE_NAME}/lib" LIBRARY)
+        set(${PACKAGE}_INCLUDE_DIRS ${INCLUDE_DIR} PARENT_SCOPE)
+        set(${PACKAGE}_LIBRARIES ${LIBRARY} PARENT_SCOPE)
+        set(${PACKAGE}_FOUND ${LIBRARY} TRUE)
+        message(STATUS "Found pip-installed ${PACKAGE} in ${PIP_PACKAGE_LOCATION}/${PIP_PACKAGE_NAME}")
     endif()
 endmacro()
 
