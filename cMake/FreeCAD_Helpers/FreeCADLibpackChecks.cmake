@@ -18,24 +18,24 @@ macro(FreeCADLibpackChecks)
         endif(FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
 # -------------------------------- PyCXX --------------------------------
 
-    find_package(PyCXX REQUIRED)
+        find_package(PyCXX REQUIRED)
 
 # -------------------------------- Swig ----------------------------------
 
-    find_package(SWIG)
+        find_package(SWIG)
 
-    if(NOT SWIG_FOUND)
-        message("==================================================\n"
-                "SWIG not found, don't build SWIG binding for pivy.\n"
-                "==================================================\n")
-    endif(NOT SWIG_FOUND)
+        if(NOT SWIG_FOUND)
+            message("==================================================\n"
+                    "SWIG not found, don't build SWIG binding for pivy.\n"
+                    "==================================================\n")
+        endif(NOT SWIG_FOUND)
 
 # -------------------------------- Salome SMESH --------------------------
 
-    if(NOT FREECAD_USE_EXTERNAL_SMESH)
-        set(SMESH_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/salomesmesh/inc)
-    endif()
+        if(NOT FREECAD_USE_EXTERNAL_SMESH)
+            set(SMESH_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/salomesmesh/inc)
+        endif()
 
-endif(FREECAD_LIBPACK_USE)
+    endif(FREECAD_LIBPACK_USE)
 
 endmacro(FreeCADLibpackChecks)

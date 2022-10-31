@@ -29,11 +29,7 @@ set(PartDesignGui_LIBS
     FreeCADGui
 )
 
-if(BUILD_QT5)
-    qt5_add_resources(PartDesignGui_SRCS Resources/PartDesign.qrc)
-else()
-    qt4_add_resources(PartDesignGui_SRCS Resources/PartDesign.qrc)
-endif()
+qt_add_resources(PartDesignGui_SRCS Resources/PartDesign.qrc)
 
 set(PartDesignGui_UIC_SRCS
     TaskFeaturePick.ui
@@ -61,12 +57,6 @@ set(PartDesignGui_UIC_SRCS
     DlgActiveBody.ui
     TaskHelixParameters.ui
 )
-
-if(BUILD_QT5)
-    qt5_wrap_ui(PartDesignGui_UIC_HDRS ${PartDesignGui_UIC_SRCS})
-else()
-    qt4_wrap_ui(PartDesignGui_UIC_HDRS ${PartDesignGui_UIC_SRCS})
-endif()
 
 SET(PartDesignGuiViewProvider_SRCS
     ViewProvider.cpp

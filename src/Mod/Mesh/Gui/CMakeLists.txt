@@ -94,13 +94,7 @@ SET(Inventor_SRCS
 )
 SOURCE_GROUP("Inventor" FILES ${Inventor_SRCS})
 
-if (BUILD_QT5)
-    qt5_wrap_ui(Dialogs_UIC_HDRS ${Dialogs_UIC_SRCS})
-    qt5_add_resources(resource_SRCS Resources/Mesh.qrc)
-else()
-    qt4_wrap_ui(Dialogs_UIC_HDRS ${Dialogs_UIC_SRCS})
-    qt4_add_resources(resource_SRCS Resources/Mesh.qrc)
-endif()
+qt_add_resources(resource_SRCS Resources/Mesh.qrc)
 
 SET(resource_SRCS
     ${resource_SRCS}

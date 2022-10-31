@@ -25,12 +25,7 @@ set(RobotGui_LIBS
     FreeCADGui
 )
 
-if(BUILD_QT5)
-    qt5_add_resources(RobotResource_SRCS Resources/Robot.qrc)
-else()
-    qt4_add_resources(RobotResource_SRCS Resources/Robot.qrc)
-endif()
-
+qt_add_resources(RobotResource_SRCS Resources/Robot.qrc)
 SOURCE_GROUP("Resources" FILES ${RobotResource_SRCS})
 
 set(RobotGui_UIC_SRCS
@@ -42,12 +37,6 @@ set(RobotGui_UIC_SRCS
     TaskEdge2TracParameter.ui
     TaskTrajectoryDressUpParameter.ui
 )
-
-if(BUILD_QT5)
-    qt5_wrap_ui(RobotGui_UIC_HDRS ${RobotGui_UIC_SRCS})
-else()
-    qt4_wrap_ui(RobotGui_UIC_HDRS ${RobotGui_UIC_SRCS})
-endif()
 
 SET(RobotGui_SRCS_Module
     AppRobotGui.cpp
