@@ -257,7 +257,10 @@ public:
             QObject::connect(obj, &QObject::destroyed, this, &WrapperManager::destroyed);
         }
 
-        wrappers[obj].emplace_back(pyobj);
+        auto& pylist = wrappers[obj];
+        if (std::find_if(pylist.cbegin(), pylist.cend(), [pyobj](const Py::Object& py) { return py.ptr() == pyobj; }) == pylist.end()) {
+            pylist.emplace_back(pyobj);
+        }
     }
 
 private:
@@ -283,8 +286,17 @@ private:
 #endif
         }
     }
+    void clear()
+    {
+        Base::PyGILStateLocker lock;
+        wrappers.clear();
+    }
 
-    WrapperManager() = default;
+    WrapperManager()
+    {
+        connect(QApplication::instance(), &QCoreApplication::aboutToQuit,
+                this, &WrapperManager::clear);
+    }
     ~WrapperManager() = default;
 };
 
