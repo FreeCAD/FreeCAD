@@ -25,6 +25,7 @@
 # include <limits>
 # include <unordered_map>
 # include <list>
+# include <QApplication>
 # include <QDir>
 # include <QIcon>
 # include <QWidget>
