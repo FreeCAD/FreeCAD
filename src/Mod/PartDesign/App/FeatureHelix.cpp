@@ -243,7 +243,7 @@ App::DocumentObjectExecReturn* Helix::execute()
 
             if (Angle.getValue() == 0) {
                 mkPS.SetMode(true);  //This is for frenet
-            }else{
+            } else {
                 mkPS.SetMode(TopoDS::Wire(auxpath), true);  // this is for auxiliary
             }
 
