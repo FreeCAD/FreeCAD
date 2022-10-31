@@ -1015,8 +1015,29 @@ void PythonConsole::dropEvent (QDropEvent * e)
         e->accept();
     }
     else {
-        // this will call insertFromMimeData
-        QPlainTextEdit::dropEvent(e);
+        // always copy text when doing drag and drop
+        if (mimeData->hasText()) {
+            QTextCursor cursor = this->cursorForPosition(e->pos());
+            QTextCursor inputLineBegin = this->inputBegin();
+
+            if (!cursorBeyond( cursor, inputLineBegin )) {
+                this->moveCursor(QTextCursor::End);
+
+                QRect newPos = this->cursorRect();
+
+                QDropEvent newEv(QPoint(newPos.x(), newPos.y()), Qt::CopyAction, mimeData, e->mouseButtons(), e->keyboardModifiers());
+                e->accept();
+                QPlainTextEdit::dropEvent(&newEv);
+            }
+            else {
+                e->setDropAction(Qt::CopyAction);
+                QPlainTextEdit::dropEvent(e);
+            }
+        }
+        else {
+            // this will call insertFromMimeData
+            QPlainTextEdit::dropEvent(e);
+        }
     }
 }
 
