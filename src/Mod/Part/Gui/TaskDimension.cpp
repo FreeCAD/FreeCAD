@@ -668,7 +668,7 @@ void PartGui::TaskMeasureLinear::setUpGui()
   controlTaskBox->groupLayout()->addLayout(controlLayout);
   QObject::connect(control->resetButton, SIGNAL(clicked(bool)), this, SLOT(resetDialogSlot(bool)));
 
-  this->setButtonPosition(TaskDialog::South);
+  this->setButtonPosition(TaskDialog::North);
   Content.push_back(selectionTaskBox);
   Content.push_back(controlTaskBox);
 
