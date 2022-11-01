@@ -237,7 +237,7 @@ void Extrusion::extrudeShape(TopoShape &result, const TopoShape &source, const E
 {
     gp_Vec vec = gp_Vec(params.dir).Multiplied(params.lengthFwd + params.lengthRev);//total vector of extrusion
 
-#if 1
+#ifdef FC_NO_ELEMENT_MAP
     if (std::fabs(params.taperAngleFwd) >= Precision::Angular() ||
         std::fabs(params.taperAngleRev) >= Precision::Angular()) {
         //Tapered extrusion!
@@ -311,6 +311,9 @@ void Extrusion::extrudeShape(TopoShape &result, const TopoShape &source, const E
     }
 #else // FC_NO_ELEMENT_MAP
 
+    // #0000910: Circles Extrude Only Surfaces, thus use BRepBuilderAPI_Copy
+    TopoShape myShape(source.makECopy());
+
     if (std::fabs(params.taperAngleFwd) >= Precision::Angular() ||
         std::fabs(params.taperAngleRev) >= Precision::Angular()) {
         //Tapered extrusion!
@@ -328,9 +331,6 @@ void Extrusion::extrudeShape(TopoShape &result, const TopoShape &source, const E
         //Regular (non-tapered) extrusion!
         if (source.isNull())
             Standard_Failure::Raise("Cannot extrude empty shape");
-
-        // #0000910: Circles Extrude Only Surfaces, thus use BRepBuilderAPI_Copy
-        TopoShape myShape(source.makECopy());
 
         //apply reverse part of extrusion by shifting the source shape
         if (fabs(params.lengthRev) > Precision::Confusion()) {
