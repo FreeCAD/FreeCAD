@@ -636,7 +636,7 @@ std::vector<Gui::ViewProvider*> DlgDisplayPropertiesImp::getSelection() const
 
 TaskDisplayProperties::TaskDisplayProperties()
 {
-    this->setButtonPosition(TaskDisplayProperties::South);
+    this->setButtonPosition(TaskDisplayProperties::North);
     widget = new DlgDisplayPropertiesImp(false);
     widget->showDefaultButtons(false);
     taskbox = new Gui::TaskView::TaskBox(QPixmap(), widget->windowTitle(),true, nullptr);
