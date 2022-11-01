@@ -971,10 +971,15 @@ Base::Placement AttachEngine::calculateAttachedPlacement(
         if(pla.getPosition().IsEqual(origPlacement.getPosition(),1e-7)
             && pla.getRotation().isSame(origPlacement.getRotation(),1e-12))
         {
-            if(subChanged) *subChanged = true;
-            subnames = std::move(subs);
-            for(auto &v : subChanges)
-                shadowSubs[v.first] = v.second.first;
+            // Only make changes if the caller supplies 'subChanged', because
+            // otherwise it means the caller just want to do an immutable test.
+            // See AttachExtension::isAttacherActive().
+            if(subChanged) {
+                *subChanged = true;
+                subnames = std::move(subs);
+                for(auto &v : subChanges)
+                    shadowSubs[v.first] = v.second.first;
+            }
             return pla;
         }
     }
