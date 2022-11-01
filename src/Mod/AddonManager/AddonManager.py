@@ -915,6 +915,7 @@ class CommandAddonManager:
 
     def check_python_updates(self) -> None:
         self.update_allowed_packages_list()  # Not really the best place for it...
+        PythonPackageManager.migrate_old_am_installations()  # Migrate 0.20 to 0.21
         self.do_next_startup_phase()
 
     def show_python_updates_dialog(self) -> None:
