@@ -425,9 +425,7 @@ class DependencyInstallationWorker(QtCore.QThread):
         if self.location:
             vendor_path = os.path.join(self.location, "AdditionalPythonPackages")
         else:
-            vendor_path = os.path.join(
-                FreeCAD.getUserAppDataDir(), "AdditionalPythonPackages"
-            )
+            vendor_path = utils.get_pip_target_directory()
         if not os.path.exists(vendor_path):
             os.makedirs(vendor_path)
 
