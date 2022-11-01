@@ -695,7 +695,7 @@ void Placement::onResetButtonClicked()
  * Sets the array of selection objects.
  * \param selection
  */
-void Placement::setSelection(const std::vector<SelectionObject>& selection)
+void Placement::setSelection(const std::vector<Gui::SelectionObject>& selection)
 {
     selectionObjects = selection;
 }
@@ -915,7 +915,7 @@ TaskPlacement::~TaskPlacement()
  * Sets the array of selection objects.
  * \param selection
  */
-void TaskPlacement::setSelection(const std::vector<SelectionObject>& selection)
+void TaskPlacement::setSelection(const std::vector<Gui::SelectionObject>& selection)
 {
     widget->setSelection(selection);
 }
