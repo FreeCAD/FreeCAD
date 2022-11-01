@@ -246,6 +246,18 @@ const std::string TaskFemConstraintRigidBody::getReferences() const
     return TaskFemConstraint::getReferences(items);
 }
 
+double TaskFemConstraintRigidBody::get_xRefNode() const { return ui->if_ref_node_x->rawValue(); }
+double TaskFemConstraintRigidBody::get_yRefNode() const { return ui->if_ref_node_y->rawValue(); }
+double TaskFemConstraintRigidBody::get_zRefNode() const { return ui->if_ref_node_z->rawValue(); }
+double TaskFemConstraintRigidBody::get_xLoad() const { return ui->if_ref_load_x->rawValue(); }
+double TaskFemConstraintRigidBody::get_yLoad() const { return ui->if_ref_load_y->rawValue(); }
+double TaskFemConstraintRigidBody::get_zLoad() const { return ui->if_ref_load_z->rawValue(); }
+double TaskFemConstraintRigidBody::get_xMoment() const { return ui->if_rot_load_x->rawValue(); }
+double TaskFemConstraintRigidBody::get_yMoment() const { return ui->if_rot_load_y->rawValue(); }
+double TaskFemConstraintRigidBody::get_zMoment() const { return ui->if_rot_load_z->rawValue(); }
+// TODO: This needs to be implemented
+bool TaskFemConstraintRigidBody::get_DefineRefNode() const { return true; }
+
 bool TaskFemConstraintRigidBody::event(QEvent* e)
 {
     return TaskFemConstraint::KeyEvent(e);
@@ -293,8 +305,25 @@ bool TaskDlgFemConstraintRigidBody::accept()
 {
     std::string name = ConstraintView->getObject()->getNameInDocument();
     const TaskFemConstraintRigidBody* parameters = static_cast<const TaskFemConstraintRigidBody*>(parameter);
-    std::string scale = parameters->getScale();  //OvG: determine modified scale
-    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Scale = %s", name.c_str(), scale.c_str()); //OvG: implement modified scale
+    try {
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.xRefNode = %f", name.c_str(), parameters->get_xRefNode());
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.yRefNode = %f", name.c_str(), parameters->get_yRefNode());
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.zRefNode = %f", name.c_str(), parameters->get_zRefNode());
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.xLoad = %f", name.c_str(), parameters->get_xLoad());
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.yLoad = %f", name.c_str(), parameters->get_yLoad());
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.zLoad = %f", name.c_str(), parameters->get_zLoad());
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.xMoment = %f", name.c_str(), parameters->get_xMoment());
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.yMoment = %f", name.c_str(), parameters->get_yMoment());
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.zMoment = %f", name.c_str(), parameters->get_zMoment());
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.DefineRefNode = %s", name.c_str(), parameters->get_DefineRefNode() ? "True" : "False");
+
+        std::string scale = parameters->getScale();  //OvG: determine modified scale
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Scale = %s", name.c_str(), scale.c_str()); //OvG: implement modified scale
+    }
+    catch (const Base::Exception& e) {
+        QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
+        return false;
+    }
     return TaskDlgFemConstraint::accept();
 }
 
