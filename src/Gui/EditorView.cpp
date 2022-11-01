@@ -113,7 +113,7 @@ EditorView::EditorView(QPlainTextEdit* editor, QWidget* parent)
     hbox->setFrameShape(QFrame::StyledPanel);
     hbox->setFrameShadow(QFrame::Sunken);
     auto layout = new QVBoxLayout();
-    layout->setMargin(1);
+    layout->setContentsMargins(1, 1, 1, 1);
     layout->addWidget(d->textEdit);
     layout->addWidget(d->searchBar);
     d->textEdit->setParent(hbox);

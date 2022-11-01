@@ -60,7 +60,7 @@ ReportView::ReportView( QWidget* parent )
     resize( 529, 162 );
     auto tabLayout = new QGridLayout( this );
     tabLayout->setSpacing( 0 );
-    tabLayout->setMargin( 0 );
+    tabLayout->setContentsMargins( 0, 0, 0, 0 );
 
     tabWidget = new QTabWidget( this );
     tabWidget->setObjectName(QString::fromUtf8("tabWidget"));

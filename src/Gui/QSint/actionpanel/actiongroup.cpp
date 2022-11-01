@@ -45,7 +45,7 @@ void ActionGroup::init(bool header)
   myScheme = ActionPanelScheme::defaultScheme();
 
   QVBoxLayout *vbl = new QVBoxLayout();
-  vbl->setMargin(0);
+  vbl->setContentsMargins(0, 0, 0, 0);
   vbl->setSpacing(0);
   setLayout(vbl);
 

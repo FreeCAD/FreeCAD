@@ -40,7 +40,7 @@ TaskHeader::TaskHeader(const QIcon &icon, const QString &title, bool expandable,
     connect(myTitle, SIGNAL(clicked()), this, SLOT(fold()));
 
     QHBoxLayout *hbl = new QHBoxLayout();
-    hbl->setMargin(2);
+    hbl->setContentsMargins(2, 2, 2, 2);
     setLayout(hbl);
 
     hbl->addWidget(myTitle);

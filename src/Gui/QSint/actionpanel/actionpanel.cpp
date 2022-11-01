@@ -26,7 +26,7 @@ ActionPanel::ActionPanel(QWidget *parent) :
     setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Preferred);
 
     QVBoxLayout *vbl = new QVBoxLayout();
-    vbl->setMargin(8);
+    vbl->setContentsMargins(8, 8, 8, 8);
     vbl->setSpacing(8);
     setLayout(vbl);
 }

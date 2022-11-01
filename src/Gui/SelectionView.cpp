@@ -62,7 +62,7 @@ SelectionView::SelectionView(Gui::Document* pcDocument, QWidget *parent)
 
     QVBoxLayout* vLayout = new QVBoxLayout(this);
     vLayout->setSpacing(0);
-    vLayout->setMargin (0);
+    vLayout->setContentsMargins(0, 0, 0, 0);
 
     QLineEdit* searchBox = new QLineEdit(this);
     searchBox->setPlaceholderText(tr("Search"));

@@ -39,13 +39,13 @@
 # include <QAction>
 # include <QApplication>
 # include <QColor>
-# include <QDesktopWidget>
 # include <QDialog>
 # include <QFont>
 # include <QKeyEvent>
 # include <QMenu>
 # include <QMessageBox>
 # include <QPainter>
+# include <QScreen>
 # include <QTextStream>
 #endif
 
@@ -3629,7 +3629,7 @@ int ViewProviderSketch::defaultFontSizePixels() const
 }
 
 int ViewProviderSketch::getApplicationLogicalDPIX() const {
-    return QApplication::desktop()->logicalDpiX();
+    return int(QApplication::primaryScreen()->logicalDotsPerInchX());
 }
 
 int ViewProviderSketch::getViewOrientationFactor() const {

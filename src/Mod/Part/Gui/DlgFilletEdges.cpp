@@ -429,7 +429,7 @@ void DlgFilletEdges::onSelectEdge(const QString& subelement, int type)
 void DlgFilletEdges::onSelectEdgesOfFace(const QString& subelement, int type)
 {
     bool ok;
-    int index = subelement.midRef(4).toInt(&ok);
+    int index = subelement.mid(4).toInt(&ok);
     if (ok) {
         try {
             const TopoDS_Shape& face = d->all_faces.FindKey(index);

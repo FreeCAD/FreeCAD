@@ -145,7 +145,9 @@ void AutoSaver::saveDocument(const std::string& name, AutoSaveProperty& saver)
             .arg(QString::fromUtf8(doc->TransientDir.getValue())));
         if (file.open(QFile::WriteOnly)) {
             QTextStream str(&file);
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
             str.setCodec("UTF-8");
+#endif
             str << "<?xml version='1.0' encoding='utf-8'?>\n"
                 << "<AutoRecovery SchemaVersion=\"1\">\n";
             str << "  <Status>Created</Status>\n";

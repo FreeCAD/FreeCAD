@@ -62,7 +62,9 @@ GUIApplication::GUIApplication(int & argc, char ** argv)
 {
     connect(this, SIGNAL(commitDataRequest(QSessionManager &)),
             SLOT(commitData(QSessionManager &)), Qt::DirectConnection);
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
     setFallbackSessionManagementEnabled(false);
+#endif
 }
 
 GUIApplication::~GUIApplication()

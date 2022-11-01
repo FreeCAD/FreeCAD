@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <algorithm>
 # include <Bnd_Box.hxx>
 # include <BRep_Builder.hxx>
 # include <BRep_Tool.hxx>

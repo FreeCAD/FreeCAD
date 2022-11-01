@@ -394,7 +394,7 @@ public:
 
         auto vbox = new QFrame(this);
         auto layout = new QVBoxLayout();
-        layout->setMargin(0);
+        layout->setContentsMargins(0, 0, 0, 0);
         layout->setSpacing(0);
         vbox->setLayout(layout);
 

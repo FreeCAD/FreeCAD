@@ -50,7 +50,7 @@ ComboView::ComboView(bool showModel, Gui::Document* pcDocument, QWidget *parent)
 
     auto pLayout = new QGridLayout(this);
     pLayout->setSpacing( 0 );
-    pLayout->setMargin ( 0 );
+    pLayout->setContentsMargins ( 0, 0, 0, 0 );
 
     // tabs to switch between Tree/Properties and TaskPanel
     tabs = new QTabWidget ();

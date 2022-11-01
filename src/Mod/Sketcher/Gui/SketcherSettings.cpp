@@ -51,7 +51,7 @@ SketcherSettings::SketcherSettings(QWidget* parent)
     ui->setupUi(this);
     QGridLayout* gridLayout = new QGridLayout(ui->placeholder);
     gridLayout->setSpacing(0);
-    gridLayout->setMargin(0);
+    gridLayout->setContentsMargins(0, 0, 0, 0);
     form = new SketcherGeneralWidget(ui->placeholder);
     gridLayout->addWidget(form, 0, 0, 1, 1);
 }

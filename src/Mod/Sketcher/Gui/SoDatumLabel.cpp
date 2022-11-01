@@ -36,7 +36,6 @@
 # include <cfloat>
 # include <algorithm>
 # include <QFontMetrics>
-# include <QGLWidget>
 # include <QPainter>
 # include <QPen>
 # include <Inventor/SoPrimitiveVertex.h>
@@ -113,7 +112,7 @@ void SoDatumLabel::drawImage()
         return;
     }
 
-    QFont font(QString::fromLatin1(name.getValue()), size.getValue());
+    QFont font(QString::fromLatin1(name.getValue(), -1), size.getValue());
     QFontMetrics fm(font);
     QString str = QString::fromUtf8(s[0].getString());
 

@@ -1489,11 +1489,6 @@ void TreeWidget::startDrag(Qt::DropActions supportedActions)
     }
 }
 
-QMimeData* TreeWidget::mimeData(const QList<QTreeWidgetItem*> items) const
-{
-    return QTreeWidget::mimeData(items);
-}
-
 bool TreeWidget::dropMimeData(QTreeWidgetItem* parent, int index,
     const QMimeData* data, Qt::DropAction action)
 {
@@ -3028,7 +3023,7 @@ TreePanel::TreePanel(const char* name, QWidget* parent)
 
     auto pLayout = new QVBoxLayout(this);
     pLayout->setSpacing(0);
-    pLayout->setMargin(0);
+    pLayout->setContentsMargins(0, 0, 0, 0);
     pLayout->addWidget(this->treeWidget);
     connect(this->treeWidget, SIGNAL(emitSearchObjects()),
         this, SLOT(showEditor()));
@@ -3116,7 +3111,7 @@ TreeDockWidget::TreeDockWidget(Gui::Document* pcDocument, QWidget* parent)
     auto panel = new TreePanel("TreeView", this);
     auto pLayout = new QGridLayout(this);
     pLayout->setSpacing(0);
-    pLayout->setMargin(0);
+    pLayout->setContentsMargins(0, 0, 0, 0);
     pLayout->addWidget(panel, 0, 0);
 }
 
