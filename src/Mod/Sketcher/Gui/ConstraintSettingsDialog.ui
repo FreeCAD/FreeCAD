@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>SketcherGui::ConstraintSettingsDialog</class>
- <widget class="QWidget" name="SketcherGui::ConstraintSettingsDialog">
+ <widget class="QDialog" name="SketcherGui::ConstraintSettingsDialog">
   <property name="windowModality">
    <enum>Qt::WindowModal</enum>
   </property>

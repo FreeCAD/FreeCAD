@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>SketcherGui::ConstraintMultiFilterDialog</class>
- <widget class="QWidget" name="SketcherGui::ConstraintMultiFilterDialog">
+ <widget class="QDialog" name="SketcherGui::ConstraintMultiFilterDialog">
   <property name="windowModality">
    <enum>Qt::WindowModal</enum>
   </property>
