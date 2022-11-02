@@ -363,9 +363,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         self.assertRoughly(33, edge.Curve.Radius)
 
         # the other way around everything's the same except the axis is negative
-        wire = PathOpUtil.offsetWire(
-            getWire(obj.Tool), getPositiveShape(obj), 3, False
-        )
+        wire = PathOpUtil.offsetWire(getWire(obj.Tool), getPositiveShape(obj), 3, False)
         self.assertEqual(1, len(wire.Edges))
         edge = wire.Edges[0]
         self.assertCoincide(Vector(), edge.Curve.Center)
@@ -394,9 +392,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         self.assertTrue(PathOpUtil.isWireClockwise(wire))
 
         # change offset orientation
-        wire = PathOpUtil.offsetWire(
-            getWire(obj.Tool), getPositiveShape(obj), 3, False
-        )
+        wire = PathOpUtil.offsetWire(getWire(obj.Tool), getPositiveShape(obj), 3, False)
         self.assertEqual(8, len(wire.Edges))
         self.assertEqual(4, len([e for e in wire.Edges if Part.Line == type(e.Curve)]))
         self.assertEqual(
@@ -432,9 +428,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
                 self.assertCoincide(Vector(0, 0, -1), e.Curve.Axis)
 
         # change offset orientation
-        wire = PathOpUtil.offsetWire(
-            getWire(obj.Tool), getPositiveShape(obj), 3, False
-        )
+        wire = PathOpUtil.offsetWire(getWire(obj.Tool), getPositiveShape(obj), 3, False)
         self.assertEqual(6, len(wire.Edges))
         self.assertEqual(3, len([e for e in wire.Edges if Part.Line == type(e.Curve)]))
         self.assertEqual(
@@ -467,9 +461,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
                 self.assertCoincide(Vector(0, 0, -1), e.Curve.Axis)
 
         # change offset orientation
-        wire = PathOpUtil.offsetWire(
-            getWire(obj.Tool), getPositiveShape(obj), 3, False
-        )
+        wire = PathOpUtil.offsetWire(getWire(obj.Tool), getPositiveShape(obj), 3, False)
         self.assertEqual(6, len(wire.Edges))
         self.assertEqual(3, len([e for e in wire.Edges if Part.Line == type(e.Curve)]))
         self.assertEqual(
@@ -494,9 +486,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         self.assertRoughly(27, edge.Curve.Radius)
 
         # the other way around everything's the same except the axis is negative
-        wire = PathOpUtil.offsetWire(
-            getWire(obj.Tool), getNegativeShape(obj), 3, False
-        )
+        wire = PathOpUtil.offsetWire(getWire(obj.Tool), getNegativeShape(obj), 3, False)
         self.assertEqual(1, len(wire.Edges))
         edge = wire.Edges[0]
         self.assertCoincide(Vector(), edge.Curve.Center)
@@ -518,9 +508,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         self.assertFalse(PathOpUtil.isWireClockwise(wire))
 
         # change offset orientation
-        wire = PathOpUtil.offsetWire(
-            getWire(obj.Tool), getNegativeShape(obj), 3, False
-        )
+        wire = PathOpUtil.offsetWire(getWire(obj.Tool), getNegativeShape(obj), 3, False)
         self.assertEqual(4, len(wire.Edges))
         self.assertEqual(4, len([e for e in wire.Edges if Part.Line == type(e.Curve)]))
         for e in wire.Edges:
@@ -543,9 +531,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         self.assertFalse(PathOpUtil.isWireClockwise(wire))
 
         # change offset orientation
-        wire = PathOpUtil.offsetWire(
-            getWire(obj.Tool), getNegativeShape(obj), 3, False
-        )
+        wire = PathOpUtil.offsetWire(getWire(obj.Tool), getNegativeShape(obj), 3, False)
         self.assertEqual(3, len(wire.Edges))
         self.assertEqual(3, len([e for e in wire.Edges if Part.Line == type(e.Curve)]))
         for e in wire.Edges:
@@ -572,9 +558,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
                 self.assertCoincide(Vector(0, 0, +1), e.Curve.Axis)
 
         # change offset orientation
-        wire = PathOpUtil.offsetWire(
-            getWire(obj.Tool), getNegativeShape(obj), 3, False
-        )
+        wire = PathOpUtil.offsetWire(getWire(obj.Tool), getNegativeShape(obj), 3, False)
         self.assertEqual(6, len(wire.Edges))
         self.assertEqual(3, len([e for e in wire.Edges if Part.Line == type(e.Curve)]))
         self.assertEqual(

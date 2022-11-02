@@ -127,6 +127,15 @@ def edgeConnectsTo(edge, vector, error=Tolerance):
     ) or pointsCoincide(edge.valueAt(edge.LastParameter), vector, error)
 
 
+def normalizeAngle(a):
+    """normalizeAngle(a) ... return angle shifted into interval -pi <= a <= pi"""
+    while a > math.pi:
+        a = a - 2 * math.pi
+    while a < -math.pi:
+        a = a + 2 * math.pi
+    return a
+
+
 def getAngle(vector):
     """getAngle(vector)
     Returns the angle [-pi,pi] of a vector using the X-axis as the reference.

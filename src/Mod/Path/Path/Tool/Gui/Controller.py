@@ -190,8 +190,12 @@ class ToolControllerEditor(object):
 
         PathGuiUtil.populateCombobox(self.form, enumTups, comboToPropertyMap)
         self.vertFeed = PathGuiUtil.QuantitySpinBox(self.form.vertFeed, obj, "VertFeed")
-        self.horizFeed = PathGuiUtil.QuantitySpinBox(self.form.horizFeed, obj, "HorizFeed")
-        self.vertRapid = PathGuiUtil.QuantitySpinBox(self.form.vertRapid, obj, "VertRapid")
+        self.horizFeed = PathGuiUtil.QuantitySpinBox(
+            self.form.horizFeed, obj, "HorizFeed"
+        )
+        self.vertRapid = PathGuiUtil.QuantitySpinBox(
+            self.form.vertRapid, obj, "VertRapid"
+        )
         self.horizRapid = PathGuiUtil.QuantitySpinBox(
             self.form.horizRapid, obj, "HorizRapid"
         )

@@ -93,9 +93,7 @@ class TestPathDrillable(PathTestUtils.PathTestBase):
         self.assertFalse(Drillable.isDrillable(self.obj.Shape, candidate))
 
         # Passing None as vector
-        self.assertTrue(
-            Drillable.isDrillable(self.obj.Shape, candidate, vector=None)
-        )
+        self.assertTrue(Drillable.isDrillable(self.obj.Shape, candidate, vector=None))
 
         # Passing explicit vector
         self.assertTrue(
@@ -125,9 +123,7 @@ class TestPathDrillable(PathTestUtils.PathTestBase):
         self.assertFalse(Drillable.isDrillable(self.obj.Shape, candidate))
 
         # Passing None as vector
-        self.assertFalse(
-            Drillable.isDrillable(self.obj.Shape, candidate, vector=None)
-        )
+        self.assertFalse(Drillable.isDrillable(self.obj.Shape, candidate, vector=None))
 
         # raised cylinder
         candidate = self.obj.getSubObject("Face32")
@@ -136,9 +132,7 @@ class TestPathDrillable(PathTestUtils.PathTestBase):
         self.assertFalse(Drillable.isDrillable(self.obj.Shape, candidate))
 
         # Passing None as vector
-        self.assertFalse(
-            Drillable.isDrillable(self.obj.Shape, candidate, vector=None)
-        )
+        self.assertFalse(Drillable.isDrillable(self.obj.Shape, candidate, vector=None))
 
         # cylinder on slope
         candidate = self.obj.getSubObject("Face24")
@@ -146,9 +140,7 @@ class TestPathDrillable(PathTestUtils.PathTestBase):
         self.assertTrue(Drillable.isDrillable(self.obj.Shape, candidate))
 
         # Passing None as vector
-        self.assertTrue(
-            Drillable.isDrillable(self.obj.Shape, candidate, vector=None)
-        )
+        self.assertTrue(Drillable.isDrillable(self.obj.Shape, candidate, vector=None))
 
         # Circular Faces
         candidate = self.obj.getSubObject("Face54")
@@ -157,15 +149,11 @@ class TestPathDrillable(PathTestUtils.PathTestBase):
         self.assertTrue(Drillable.isDrillable(self.obj.Shape, candidate))
 
         # Passing None as vector
-        self.assertTrue(
-            Drillable.isDrillable(self.obj.Shape, candidate, vector=None)
-        )
+        self.assertTrue(Drillable.isDrillable(self.obj.Shape, candidate, vector=None))
 
         # Passing explicit vector
         self.assertTrue(
-            Drillable.isDrillable(
-                self.obj.Shape, candidate, vector=App.Vector(0, 0, 1)
-            )
+            Drillable.isDrillable(self.obj.Shape, candidate, vector=App.Vector(0, 0, 1))
         )
 
         # Drilling with smaller bit
@@ -185,9 +173,7 @@ class TestPathDrillable(PathTestUtils.PathTestBase):
         self.assertFalse(Drillable.isDrillable(self.obj.Shape, candidate))
 
         # Passing None as vector
-        self.assertTrue(
-            Drillable.isDrillable(self.obj.Shape, candidate, vector=None)
-        )
+        self.assertTrue(Drillable.isDrillable(self.obj.Shape, candidate, vector=None))
 
         # Passing explicit vector
         self.assertTrue(
@@ -202,9 +188,7 @@ class TestPathDrillable(PathTestUtils.PathTestBase):
         self.assertTrue(Drillable.isDrillable(self.obj.Shape, candidate))
 
         # Passing None as vector
-        self.assertTrue(
-            Drillable.isDrillable(self.obj.Shape, candidate, vector=None)
-        )
+        self.assertTrue(Drillable.isDrillable(self.obj.Shape, candidate, vector=None))
 
         # interrupted Face
         candidate = self.obj.getSubObject("Face50")
@@ -212,9 +196,7 @@ class TestPathDrillable(PathTestUtils.PathTestBase):
         self.assertFalse(Drillable.isDrillable(self.obj.Shape, candidate))
 
         # Passing None as vector
-        self.assertFalse(
-            Drillable.isDrillable(self.obj.Shape, candidate, vector=None)
-        )
+        self.assertFalse(Drillable.isDrillable(self.obj.Shape, candidate, vector=None))
 
         # donut face
         candidate = self.obj.getSubObject("Face48")
@@ -222,9 +204,7 @@ class TestPathDrillable(PathTestUtils.PathTestBase):
         self.assertTrue(Drillable.isDrillable(self.obj.Shape, candidate))
 
         # Passing None as vector
-        self.assertTrue(
-            Drillable.isDrillable(self.obj.Shape, candidate, vector=None)
-        )
+        self.assertTrue(Drillable.isDrillable(self.obj.Shape, candidate, vector=None))
 
         # Test edges
         # circular edge
@@ -234,15 +214,11 @@ class TestPathDrillable(PathTestUtils.PathTestBase):
         self.assertTrue(Drillable.isDrillable(self.obj.Shape, candidate))
 
         # Passing None as vector
-        self.assertTrue(
-            Drillable.isDrillable(self.obj.Shape, candidate, vector=None)
-        )
+        self.assertTrue(Drillable.isDrillable(self.obj.Shape, candidate, vector=None))
 
         # Passing explicit vector
         self.assertTrue(
-            Drillable.isDrillable(
-                self.obj.Shape, candidate, vector=App.Vector(0, 0, 1)
-            )
+            Drillable.isDrillable(self.obj.Shape, candidate, vector=App.Vector(0, 0, 1))
         )
 
         # Drilling with smaller bit
@@ -264,15 +240,11 @@ class TestPathDrillable(PathTestUtils.PathTestBase):
         self.assertFalse(Drillable.isDrillable(self.obj.Shape, candidate))
 
         # Passing None as vector
-        self.assertTrue(
-            Drillable.isDrillable(self.obj.Shape, candidate, vector=None)
-        )
+        self.assertTrue(Drillable.isDrillable(self.obj.Shape, candidate, vector=None))
 
         # Passing explicit vector
         self.assertTrue(
-            Drillable.isDrillable(
-                self.obj.Shape, candidate, vector=App.Vector(0, 1, 0)
-            )
+            Drillable.isDrillable(self.obj.Shape, candidate, vector=App.Vector(0, 1, 0))
         )
 
         # incomplete circular edge
@@ -281,9 +253,7 @@ class TestPathDrillable(PathTestUtils.PathTestBase):
         self.assertFalse(Drillable.isDrillable(self.obj.Shape, candidate))
 
         # Passing None as vector
-        self.assertFalse(
-            Drillable.isDrillable(self.obj.Shape, candidate, vector=None)
-        )
+        self.assertFalse(Drillable.isDrillable(self.obj.Shape, candidate, vector=None))
 
         # elliptical edge
         candidate = self.obj.getSubObject("Edge56")
@@ -291,9 +261,7 @@ class TestPathDrillable(PathTestUtils.PathTestBase):
         self.assertFalse(Drillable.isDrillable(self.obj.Shape, candidate))
 
         # Passing None as vector
-        self.assertFalse(
-            Drillable.isDrillable(self.obj.Shape, candidate, vector=None)
-        )
+        self.assertFalse(Drillable.isDrillable(self.obj.Shape, candidate, vector=None))
 
     def test20(self):
         """Test getDrillableTargets"""
@@ -303,7 +271,5 @@ class TestPathDrillable(PathTestUtils.PathTestBase):
         results = Drillable.getDrillableTargets(self.obj, vector=None)
         self.assertEqual(len(results), 20)
 
-        results = Drillable.getDrillableTargets(
-            self.obj, ToolDiameter=20, vector=None
-        )
+        results = Drillable.getDrillableTargets(self.obj, ToolDiameter=20, vector=None)
         self.assertEqual(len(results), 5)

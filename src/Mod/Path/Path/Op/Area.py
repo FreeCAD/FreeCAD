@@ -227,7 +227,7 @@ class ObjectOp(PathOp.ObjectOp):
         area.add(baseobject)
 
         areaParams = self.areaOpAreaParams(obj, isHole)
-        areaParams['SectionTolerance'] = 1e-07
+        areaParams["SectionTolerance"] = 1e-07
 
         heights = [i for i in self.depthparams]
         Path.Log.debug("depths: {}".format(heights))

@@ -108,13 +108,16 @@ def drill_translate(values, outstring, cmd, params):
 
     strG0_RETRACT_Z = (
         "G0 Z"
-        + format(float(RETRACT_Z.getValueAs(values["UNIT_FORMAT"])), axis_precision_string)
+        + format(
+            float(RETRACT_Z.getValueAs(values["UNIT_FORMAT"])), axis_precision_string
+        )
         + "\n"
     )
     strF_Feedrate = (
         " F"
         + format(
-            float(drill_feedrate.getValueAs(values["UNIT_SPEED_FORMAT"])), feed_precision_string
+            float(drill_feedrate.getValueAs(values["UNIT_SPEED_FORMAT"])),
+            feed_precision_string,
         )
         + "\n"
     )
@@ -126,9 +129,13 @@ def drill_translate(values, outstring, cmd, params):
     trBuff += (
         linenumber(values)
         + "G0 X"
-        + format(float(drill_X.getValueAs(values["UNIT_FORMAT"])), axis_precision_string)
+        + format(
+            float(drill_X.getValueAs(values["UNIT_FORMAT"])), axis_precision_string
+        )
         + " Y"
-        + format(float(drill_Y.getValueAs(values["UNIT_FORMAT"])), axis_precision_string)
+        + format(
+            float(drill_Y.getValueAs(values["UNIT_FORMAT"])), axis_precision_string
+        )
         + "\n"
     )
     if values["CURRENT_Z"] > RETRACT_Z:
@@ -137,7 +144,10 @@ def drill_translate(values, outstring, cmd, params):
         trBuff += (
             linenumber(values)
             + "G1 Z"
-            + format(float(RETRACT_Z.getValueAs(values["UNIT_FORMAT"])), axis_precision_string)
+            + format(
+                float(RETRACT_Z.getValueAs(values["UNIT_FORMAT"])),
+                axis_precision_string,
+            )
             + strF_Feedrate
         )
     last_Stop_Z = RETRACT_Z
@@ -147,7 +157,9 @@ def drill_translate(values, outstring, cmd, params):
         trBuff += (
             linenumber(values)
             + "G1 Z"
-            + format(float(drill_Z.getValueAs(values["UNIT_FORMAT"])), axis_precision_string)
+            + format(
+                float(drill_Z.getValueAs(values["UNIT_FORMAT"])), axis_precision_string
+            )
             + strF_Feedrate
         )
         # pause where applicable
@@ -182,12 +194,18 @@ def drill_translate(values, outstring, cmd, params):
                     )
                     if cmd == "G73":
                         # Rapid up "a small amount".
-                        chip_breaker_height = next_Stop_Z + values["CHIPBREAKING_AMOUNT"]
+                        chip_breaker_height = (
+                            next_Stop_Z + values["CHIPBREAKING_AMOUNT"]
+                        )
                         trBuff += (
                             linenumber(values)
                             + "G0 Z"
                             + format(
-                                float(chip_breaker_height.getValueAs(values["UNIT_FORMAT"])),
+                                float(
+                                    chip_breaker_height.getValueAs(
+                                        values["UNIT_FORMAT"]
+                                    )
+                                ),
                                 axis_precision_string,
                             )
                             + "\n"
@@ -210,8 +228,8 @@ def drill_translate(values, outstring, cmd, params):
                     break
 
     # except Exception:
-        # print("exception occurred")
-        # pass
+    # print("exception occurred")
+    # pass
 
     if values["MOTION_MODE"] == "G91":
         trBuff += linenumber(values) + "G91\n"  # Restore if changed
@@ -365,7 +383,9 @@ def parse(values, pathobj):
                         if command in ("G41", "G42"):
                             outstring.append(param + str(int(c.Parameters[param])))
                         elif command in ("G41.1", "G42.1"):
-                            pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
+                            pos = Units.Quantity(
+                                c.Parameters[param], FreeCAD.Units.Length
+                            )
                             outstring.append(
                                 param
                                 + format(
@@ -400,7 +420,9 @@ def parse(values, pathobj):
                         elif command in ("G4", "G04", "G76", "G82", "G86", "G89"):
                             outstring.append(param + str(float(c.Parameters[param])))
                         elif command in ("G5", "G05", "G64"):
-                            pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
+                            pos = Units.Quantity(
+                                c.Parameters[param], FreeCAD.Units.Length
+                            )
                             outstring.append(
                                 param
                                 + format(
@@ -414,7 +436,9 @@ def parse(values, pathobj):
                         if command == "G10":
                             outstring.append(param + str(int(c.Parameters[param])))
                         elif command in ("G64", "G73", "G83"):
-                            pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
+                            pos = Units.Quantity(
+                                c.Parameters[param], FreeCAD.Units.Length
+                            )
                             outstring.append(
                                 param
                                 + format(

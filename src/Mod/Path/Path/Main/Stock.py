@@ -325,6 +325,7 @@ class StockCreateCylinder(Stock):
         if prop in ["Radius", "Height"] and not "Restore" in obj.State:
             self.execute(obj)
 
+
 def SetupStockObject(obj, stockType):
     Path.Log.track(obj.Label, stockType)
     if FreeCAD.GuiUp and obj.ViewObject:

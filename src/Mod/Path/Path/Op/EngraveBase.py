@@ -137,7 +137,9 @@ class ObjectOp(PathOp.ObjectOp):
                         )
                     first = False
 
-                    if Path.Geom.pointsCoincide(last, edge.valueAt(edge.FirstParameter)):
+                    if Path.Geom.pointsCoincide(
+                        last, edge.valueAt(edge.FirstParameter)
+                    ):
                         # if Path.Geom.pointsCoincide(last, edge.Vertexes[0].Point):
                         for cmd in Path.Geom.cmdsForEdge(edge):
                             self.appendCommand(cmd, z, relZ, self.horizFeed)

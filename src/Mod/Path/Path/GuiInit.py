@@ -42,6 +42,7 @@ def Startup():
         from Path.Base.Gui import SetupSheet
         from Path.Dressup.Gui import AxisMap
         from Path.Dressup.Gui import Dogbone
+        from Path.Dressup.Gui import DogboneII
         from Path.Dressup.Gui import Dragknife
         from Path.Dressup.Gui import LeadInOut
         from Path.Dressup.Gui import Boundary

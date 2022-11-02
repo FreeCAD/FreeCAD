@@ -41,6 +41,7 @@ def createTool(name="t1", diameter=1.75):
     }
     return PathToolBit.Factory.CreateFromAttrs(attrs, name)
 
+
 class TestPathHelpers(PathTestBase):
     def setUp(self):
         self.doc = FreeCAD.newDocument("TestPathUtils")
@@ -133,7 +134,9 @@ class TestPathHelpers(PathTestBase):
         self.assertTrue(len(results) == 2)
         e1 = results[0]
         self.assertTrue(isinstance(e1.Curve, Part.Circle))
-        self.assertTrue(Path.Geom.pointsCoincide(edge.Curve.Location, e1.Curve.Location))
+        self.assertTrue(
+            Path.Geom.pointsCoincide(edge.Curve.Location, e1.Curve.Location)
+        )
         self.assertTrue(edge.Curve.Radius == e1.Curve.Radius)
 
         # filter a 180 degree arc

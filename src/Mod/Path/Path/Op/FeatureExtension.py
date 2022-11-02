@@ -411,7 +411,9 @@ class Extension(object):
 
             else:
                 Path.Log.debug("else is NOT Part.Circle")
-                Path.Log.track(self.feature, self.sub, type(edge.Curve), endPoints(edge))
+                Path.Log.track(
+                    self.feature, self.sub, type(edge.Curve), endPoints(edge)
+                )
                 direction = self._getDirection(sub)
                 if direction is None:
                     return None

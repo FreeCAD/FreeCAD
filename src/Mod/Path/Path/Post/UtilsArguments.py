@@ -602,14 +602,18 @@ def process_shared_arguments(values, parser, argstring, all_visible, filename):
         if args.output_all_arguments:
             argument_text = all_visible.format_help()
             if not filename == "-":
-                gfile = pythonopen(filename, "w", newline=values["END_OF_LINE_CHARACTERS"])
+                gfile = pythonopen(
+                    filename, "w", newline=values["END_OF_LINE_CHARACTERS"]
+                )
                 gfile.write(argument_text)
                 gfile.close()
             return (False, argument_text)
         if args.output_visible_arguments:
             argument_text = parser.format_help()
             if not filename == "-":
-                gfile = pythonopen(filename, "w", newline=values["END_OF_LINE_CHARACTERS"])
+                gfile = pythonopen(
+                    filename, "w", newline=values["END_OF_LINE_CHARACTERS"]
+                )
                 gfile.write(argument_text)
                 gfile.close()
             return (False, argument_text)
@@ -707,6 +711,7 @@ def process_shared_arguments(values, parser, argstring, all_visible, filename):
         return (False, "")
 
     return (True, args)
+
 
 #
 # LinuxCNC (and GRBL) G-Code Parameter/word Patterns

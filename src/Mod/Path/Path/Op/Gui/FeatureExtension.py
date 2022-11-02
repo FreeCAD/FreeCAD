@@ -369,7 +369,9 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
                     return Path.Geom.edgesMatch(e0, e1)
 
             self.extensionEdges = extensionEdges
-            Path.Log.debug("extensionEdges.values(): {}".format(extensionEdges.values()))
+            Path.Log.debug(
+                "extensionEdges.values(): {}".format(extensionEdges.values())
+            )
             for edgeList in Part.sortEdges(
                 list(extensionEdges.keys())
             ):  # Identify connected edges that form wires

@@ -27,10 +27,13 @@ from PathTests.TestPathCore import TestPathCore
 from PathTests.TestPathDeburr import TestPathDeburr
 from PathTests.TestPathDepthParams import depthTestCases
 from PathTests.TestPathDressupDogbone import TestDressupDogbone
+from PathTests.TestPathDressupDogboneII import TestDressupDogboneII
 from PathTests.TestPathDressupHoldingTags import TestHoldingTags
 from PathTests.TestPathDrillable import TestPathDrillable
 from PathTests.TestPathDrillGenerator import TestPathDrillGenerator
+from PathTests.TestPathGeneratorDogboneII import TestGeneratorDogboneII
 from PathTests.TestPathGeom import TestPathGeom
+from PathTests.TestPathLanguage import TestPathLanguage
 
 # from PathTests.TestPathHelix import TestPathHelix
 from PathTests.TestPathHelpers import TestPathHelpers
@@ -72,7 +75,10 @@ False if depthTestCases.__name__ else True
 False if TestApp.__name__ else True
 False if TestBuildPostList.__name__ else True
 False if TestDressupDogbone.__name__ else True
+False if TestDressupDogboneII.__name__ else True
+False if TestGeneratorDogboneII.__name__ else True
 False if TestHoldingTags.__name__ else True
+False if TestPathLanguage.__name__ else True
 False if TestOutputNameSubstitution.__name__ else True
 False if TestPathAdaptive.__name__ else True
 False if TestPathCore.__name__ else True

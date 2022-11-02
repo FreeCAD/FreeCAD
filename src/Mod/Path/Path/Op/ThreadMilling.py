@@ -100,8 +100,10 @@ ThreadTypesMetric = [
 ThreadTypes = ThreadTypesInternal + ThreadTypesExternal
 Directions = [DirectionClimb, DirectionConventional]
 
+
 def _isThreadInternal(obj):
     return obj.ThreadType in ThreadTypesInternal
+
 
 def threadSetupInternal(obj, zTop, zBottom):
     Path.Log.track()
@@ -118,6 +120,7 @@ def threadSetupInternal(obj, zTop, zBottom):
     # for conventional milling, cut bottom up with G2
     return ("G2", zBottom, zTop)
 
+
 def threadSetupExternal(obj, zTop, zBottom):
     Path.Log.track()
     if obj.ThreadOrientation == RightHand:
@@ -131,6 +134,7 @@ def threadSetupExternal(obj, zTop, zBottom):
         return ("G3", zTop, zBottom)
     # for climb milling need to go bottom up and the other way
     return ("G2", zBottom, zTop)
+
 
 def threadSetup(obj):
     """Return (cmd, zbegin, zend) of thread milling operation"""
@@ -442,11 +446,7 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
             float(self.tool.Diameter),
             float(self.tool.Crest),
         ):
-            if (
-                not start is None
-                and not _isThreadInternal(obj)
-                and not obj.LeadInOut
-            ):
+            if not start is None and not _isThreadInternal(obj) and not obj.LeadInOut:
                 # external thread without lead in/out have to go up and over
                 # in other words we need a move to clearance and not take any
                 # shortcuts when moving to the elevator position
