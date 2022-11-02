@@ -31,7 +31,6 @@ macro(SetupShibokenAndPyside)
             get_filename_component(SHIBOKEN_CONFIG_SUFFIX ${SHIBOKEN_CONFIG} NAME)
             string(SUBSTRING ${SHIBOKEN_CONFIG_SUFFIX} 15 -1 SHIBOKEN_CONFIG_SUFFIX)
             string(REPLACE ".cmake" "" PYTHON_CONFIG_SUFFIX ${SHIBOKEN_CONFIG_SUFFIX})
-            message(STATUS "PYTHON_CONFIG_SUFFIX: ${PYTHON_CONFIG_SUFFIX}")
             find_package(Shiboken${SHIBOKEN_MAJOR_VERSION} QUIET)
         endif()
     endif()
@@ -43,12 +42,7 @@ macro(SetupShibokenAndPyside)
     endif(NOT SHIBOKEN_INCLUDE_DIR AND TARGET Shiboken${SHIBOKEN_MAJOR_VERSION}::libshiboken)
 
     if(NOT SHIBOKEN_INCLUDE_DIR)
-        find_pip_package(Shiboken${SHIBOKEN_MAJOR_VERSION})
-        if (Shiboken${SHIBOKEN_MAJOR_VERSION}_FOUND)
-            set(Shiboken_INCLUDE_DIR ${Shiboken${SHIBOKEN_MAJOR_VERSION}_INCLUDE_DIRS})
-            set(Shiboken_LIBRARY ${Shiboken${SHIBOKEN_MAJOR_VERSION}_LIBRARIES})
-            set(Shiboken_FOUND TRUE)
-        endif()
+        find_pip_package("SHIBOKEN", ${SHIBOKEN_MAJOR_VERSION})
     endif()
 
     find_package(PySide${PYSIDE_MAJOR_VERSION} QUIET)
@@ -58,12 +52,7 @@ macro(SetupShibokenAndPyside)
     endif(NOT PYSIDE_INCLUDE_DIR AND TARGET PySide${PYSIDE_MAJOR_VERSION}::pyside${PYSIDE_MAJOR_VERSION})
 
     if(NOT PYSIDE_INCLUDE_DIR)
-        find_pip_package(PySide${PYSIDE_MAJOR_VERSION})
-        if (PySide${PYSIDE_MAJOR_VERSION}_FOUND)
-            set(PySide_INCLUDE_DIR ${PySide${PYSIDE_MAJOR_VERSION}_INCLUDE_DIRS})
-            set(PySide_LIBRARY ${PySide${PYSIDE_MAJOR_VERSION}_LIBRARIES})
-            set(PySide_FOUND TRUE)
-        endif()
+        find_pip_package("PYSIDE", ${PYSIDE_MAJOR_VERSION})
     endif()
 
     find_package(PySide${PYSIDE_MAJOR_VERSION}Tools QUIET) # PySide utilities (uic & rcc executables)
@@ -170,34 +159,37 @@ macro(SetupShibokenAndPyside)
 
 endmacro(SetupShibokenAndPyside)
 
-# Locate the include directory for a pip-installed package -- uses pip show to find the base pip
-# install directory, and then appends the package name and  "/include" to the end
-macro(find_pip_package PACKAGE)
+# Find a pip-installed package and get details
+function(find_pip_package pkg_name pkg_version)
     execute_process(
-        COMMAND ${PYTHON_EXECUTABLE} -m pip show ${PACKAGE}
+        COMMAND ${PYTHON_EXECUTABLE} -m pip show ${pkg_name}${ARGN}
         RESULT_VARIABLE FAILURE
         OUTPUT_VARIABLE PRINT_OUTPUT
     )
-    if(NOT FAILURE)
-        # Extract Name: and Location: lines and use them to construct the include directory
-        string(REPLACE "\n" ";" PIP_OUTPUT_LINES ${PRINT_OUTPUT})
-        foreach(LINE IN LISTS PIP_OUTPUT_LINES)
-            STRING(FIND "${LINE}" "Name: " NAME_STRING_LOCATION)
-            STRING(FIND "${LINE}" "Location: " LOCATION_STRING_LOCATION)
-            if(${NAME_STRING_LOCATION} EQUAL 0)
-                STRING(SUBSTRING "${LINE}" 6 -1 PIP_PACKAGE_NAME)
-            elseif(${LOCATION_STRING_LOCATION} EQUAL 0)
-                STRING(SUBSTRING "${LINE}" 9 -1 PIP_PACKAGE_LOCATION)
-            endif()
-        endforeach()
-        file(TO_NATIVE_PATH "${PIP_PACKAGE_LOCATION}/${PIP_PACKAGE_NAME}/include" INCLUDE_DIR) 
-        file(TO_NATIVE_PATH "${PIP_PACKAGE_LOCATION}/${PIP_PACKAGE_NAME}/lib" LIBRARY)
-        set(${PACKAGE}_INCLUDE_DIRS ${INCLUDE_DIR} PARENT_SCOPE)
-        set(${PACKAGE}_LIBRARIES ${LIBRARY} PARENT_SCOPE)
-        set(${PACKAGE}_FOUND ${LIBRARY} TRUE)
-        message(STATUS "Found pip-installed ${PACKAGE} in ${PIP_PACKAGE_LOCATION}/${PIP_PACKAGE_NAME}")
+    if(FAILURE)
+        return()
     endif()
-endmacro()
+    # Use Name: and Location: lines to find lib and include locations
+    string(REPLACE "\n" ";" PIP_OUTPUT_LINES ${PRINT_OUTPUT})
+    foreach(LINE IN LISTS PIP_OUTPUT_LINES)
+        STRING(FIND "${LINE}" "Name: " NAME_STRING_LOCATION)
+        STRING(FIND "${LINE}" "Location: " LOCATION_STRING_LOCATION)
+        if(${NAME_STRING_LOCATION} EQUAL 0)
+            STRING(SUBSTRING "${LINE}" 6 -1 PIP_PACKAGE_NAME)
+        elseif(${LOCATION_STRING_LOCATION} EQUAL 0)
+            STRING(SUBSTRING "${LINE}" 10 -1 PIP_PACKAGE_LOCATION)
+        endif()
+    endforeach()
+
+    file(TO_NATIVE_PATH "${PIP_PACKAGE_LOCATION}/${PIP_PACKAGE_NAME}/include" INCLUDE_DIR)
+    file(TO_NATIVE_PATH "${PIP_PACKAGE_LOCATION}/${PIP_PACKAGE_NAME}/lib" LIBRARY)
+
+    set(${pkg_name}_INCLUDE_DIR ${INCLUDE_DIR} PARENT_SCOPE)
+    set(${pkg_name}_LIBRARY ${LIBRARY} PARENT_SCOPE)
+    set(${pkg_name}_FOUND ${LIBRARY} PARENT_SCOPE)
+
+    message(STATUS "Found pip-installed ${pkg_name} in ${PIP_PACKAGE_LOCATION}/${PIP_PACKAGE_NAME}")
+endfunction()
 
 
 # Macros similar to FindQt4.cmake's WRAP_UI and WRAP_RC, for the automatic generation of Python 
