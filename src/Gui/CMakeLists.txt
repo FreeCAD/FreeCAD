@@ -88,6 +88,7 @@ include_directories(
     ${QtOpenGL_INCLUDE_DIRS}
     ${QtPrintSupport_INCLUDE_DIRS}
     ${QtSvg_INCLUDE_DIRS}
+    ${QtSvgWidgets_INCLUDE_DIRS}
     ${QtNetwork_INCLUDE_DIRS}
     ${QtUiTools_INCLUDE_DIRS}
 )
@@ -97,6 +98,7 @@ list(APPEND FreeCADGui_LIBS
     ${QtOpenGL_LIBRARIES}
     ${QtPrintSupport_LIBRARIES}
     ${QtSvg_LIBRARIES}
+    ${QtSvgWidgets_LIBRARIES}
     ${QtNetwork_LIBRARIES}
     ${QtUiTools_LIBRARIES}
 )
