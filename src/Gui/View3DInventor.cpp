@@ -872,7 +872,7 @@ void View3DInventor::windowStateChanged(MDIView* view)
         // must be hidden, hence we can start the timer.
         // Note: If view is top-level or fullscreen it doesn't necessarily hide the other view
         // e.g. if it is on a second monitor.
-        canStartTimer = (!this->isTopLevel() && !view->isTopLevel() && view->isMaximized());
+        canStartTimer = (!this->isWindow() && !view->isWindow() && view->isMaximized());
     } else if (isMinimized()) {
         // I am the active view but minimized
         canStartTimer = true;

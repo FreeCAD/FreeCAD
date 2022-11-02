@@ -144,7 +144,7 @@ private:
 	SbRotation rotateView(SbRotation, int axis, float rotAngle, SbVec3f customAxis = SbVec3f(0, 0, 0)) const;
 	void rotateView(const SbRotation&);
 
-	QString str(char* str);
+	QString str(const char* str);
 	char* enum2str(int);
 	QMenu* createNaviCubeMenu();
 public:
@@ -1674,7 +1674,7 @@ bool NaviCubeImplementation::processSoEvent(const SoEvent* ev) {
 }
 
 
-QString NaviCubeImplementation::str(char* str) {
+QString NaviCubeImplementation::str(const char* str) {
 	return QString::fromLatin1(str);
 }
 

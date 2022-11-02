@@ -79,7 +79,7 @@ void DlgRevertToBackupConfigImp::showEvent(QShowEvent* event)
     const auto& backups = Application::Instance->prefPackManager()->configBackups();
     for (const auto& backup : backups) {
         auto filename = backup.filename().string();
-        auto modification_date = QDateTime::fromTime_t(fs::last_write_time(backup));
+        auto modification_date = QDateTime::fromSecsSinceEpoch(fs::last_write_time(backup));
         auto item = new QListWidgetItem(QLocale().toString(modification_date));
         item->setData(Qt::UserRole, QString::fromStdString(backup.string()));
         ui->listWidget->addItem(item);

@@ -65,7 +65,7 @@ public:
     QString fileName;
     EditorView::DisplayName displayName;
     QTimer*  activityTimer;
-    uint timeStamp;
+    qint64 timeStamp;
     bool lock;
     bool aboutToClose;
     QStringList undos;
@@ -191,7 +191,7 @@ void EditorView::OnChange(Base::Subject<const char*> &rCaller,const char* rcReas
 void EditorView::checkTimestamp()
 {
     QFileInfo fi(d->fileName);
-    uint timeStamp =  fi.lastModified().toTime_t();
+    qint64 timeStamp =  fi.lastModified().toSecsSinceEpoch();
     if (timeStamp != d->timeStamp) {
         switch( QMessageBox::question( this, tr("Modified file"),
                 tr("%1.\n\nThis has been modified outside of the source editor. Do you want to reload it?").arg(d->fileName),
@@ -369,7 +369,7 @@ bool EditorView::open(const QString& fileName)
     file.close();
 
     QFileInfo fi(fileName);
-    d->timeStamp =  fi.lastModified().toTime_t();
+    d->timeStamp =  fi.lastModified().toSecsSinceEpoch();
     d->activityTimer->setSingleShot(true);
     d->activityTimer->start(3000);
 
@@ -530,7 +530,7 @@ bool EditorView::saveFile()
     d->textEdit->document()->setModified(false);
 
     QFileInfo fi(d->fileName);
-    d->timeStamp =  fi.lastModified().toTime_t();
+    d->timeStamp =  fi.lastModified().toSecsSinceEpoch();
     return true;
 }
 

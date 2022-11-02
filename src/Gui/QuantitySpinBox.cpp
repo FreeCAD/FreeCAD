@@ -720,8 +720,7 @@ QSize QuantitySpinBox::sizeForText(const QString& txt) const
     QStyleOptionSpinBox opt;
     initStyleOption(&opt);
     QSize hint(w, h);
-    QSize size = style()->sizeFromContents(QStyle::CT_SpinBox, &opt, hint, this)
-                        .expandedTo(QApplication::globalStrut());
+    QSize size = style()->sizeFromContents(QStyle::CT_SpinBox, &opt, hint, this);
     return size;
 }
 
@@ -750,8 +749,7 @@ QSize QuantitySpinBox::sizeHint() const
     QStyleOptionSpinBox opt;
     initStyleOption(&opt);
     QSize hint(w, h);
-    QSize size = style()->sizeFromContents(QStyle::CT_SpinBox, &opt, hint, this)
-                        .expandedTo(QApplication::globalStrut());
+    QSize size = style()->sizeFromContents(QStyle::CT_SpinBox, &opt, hint, this);
     return size;
 }
 
@@ -781,8 +779,7 @@ QSize QuantitySpinBox::minimumSizeHint() const
     initStyleOption(&opt);
     QSize hint(w, h);
 
-    QSize size = style()->sizeFromContents(QStyle::CT_SpinBox, &opt, hint, this)
-                               .expandedTo(QApplication::globalStrut());
+    QSize size = style()->sizeFromContents(QStyle::CT_SpinBox, &opt, hint, this);
     return size;
 }
 

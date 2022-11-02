@@ -38,6 +38,7 @@
 #include "QuarterWidget.h"
 #include "eventhandlers/EventFilter.h"
 
+#include <QActionGroup>
 #include <QApplication>
 #include <QCursor>
 #include <QMenu>

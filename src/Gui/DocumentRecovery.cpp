@@ -331,7 +331,7 @@ void DocumentRecovery::accept()
                             << docs[i]->Label.getValue() << "'");
                 }
                 else {
-                    DocumentRecoveryCleaner().clearDirectory(xfi.absolutePath());
+                    DocumentRecoveryCleaner().clearDirectory(QFileInfo(xfi.absolutePath()));
                     QDir().rmdir(xfi.absolutePath());
                 }
 

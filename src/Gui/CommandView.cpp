@@ -2852,7 +2852,7 @@ void StdBoxSelection::activated(int iMsg)
 // Std_BoxElementSelection
 //===========================================================================
 /* XPM */
-static char * cursor_box_element_select[] = {
+static const char * cursor_box_element_select[] = {
 "32 32 6 1",
 " 	c None",
 ".	c #FFFFFF",
