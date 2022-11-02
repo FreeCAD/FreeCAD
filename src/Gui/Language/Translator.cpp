@@ -33,6 +33,7 @@
 #endif
 
 #include <App/Application.h>
+#include <Gui/TextEdit.h>
 #include "Translator.h"
 
 
@@ -376,6 +377,11 @@ bool Translator::eventFilter(QObject* obj, QEvent* ev)
                     qApp->sendEvent(obj, &modifiedKeyEvent);
                     return true;
                 }
+            }
+            if (dynamic_cast<Gui::TextEdit*>(obj) && key != Qt::Key_Period) {
+                QKeyEvent modifiedKeyEvent(kev->type(), Qt::Key_Period, mod, QChar::fromLatin1('.'), kev->isAutoRepeat(), kev->count());
+                qApp->sendEvent(obj, &modifiedKeyEvent);
+                return true;
             }
         }
     }
