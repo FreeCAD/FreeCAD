@@ -35,6 +35,7 @@
 # include <QToolBar>
 # include <QToolButton>
 # include <QToolTip>
+# include <QMenuBar>
 #endif
 
 #include <Base/Exception.h>
@@ -529,16 +530,27 @@ WorkbenchGroup::~WorkbenchGroup()
 void WorkbenchGroup::addTo(QWidget *w)
 {
     refreshWorkbenchList();
-    if (w->inherits("QToolBar")) {
-        auto bar = qobject_cast<QToolBar*>(w);
-        QComboBox* box = new WorkbenchComboBox(this, w);
+
+    auto setupBox = [&](QComboBox* box) {
         box->setIconSize(QSize(16, 16));
         box->setToolTip(_action->toolTip());
         box->setStatusTip(_action->statusTip());
         box->setWhatsThis(_action->whatsThis());
         box->addActions(_group->actions());
-        connect(_group, SIGNAL(triggered(QAction*)), box, SLOT(onActivated (QAction*)));
-        bar->addWidget(box);
+        connect(_group, SIGNAL(triggered(QAction*)), box, SLOT(onActivated(QAction*)));
+    };
+    if (w->inherits("QToolBar")) {
+        QComboBox* box = new WorkbenchComboBox(this, w);
+        setupBox(box);
+
+        qobject_cast<QToolBar*>(w)->addWidget(box);
+    }
+    else if (w->inherits("QMenuBar")) {
+        QComboBox* box = new WorkbenchComboBox(this, w);
+        setupBox(box);
+
+        bool left = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")->GetBool("WSLeftCorner", true);
+        qobject_cast<QMenuBar*>(w)->setCornerWidget(box, left ? Qt::TopLeftCorner : Qt::TopRightCorner);
     }
     else if (w->inherits("QMenu")) {
         auto menu = qobject_cast<QMenu*>(w);

@@ -768,9 +768,12 @@ ToolBarItem* StdWorkbench::setupToolBars() const
           << "Std_Refresh" << "Separator" << "Std_WhatsThis";
 
     // Workbench switcher
-    auto wb = new ToolBarItem( root );
-    wb->setCommand("Workbench");
-    *wb << "Std_Workbench";
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
+    if (hGrp->GetBool("WSToolbar", true)) {
+        auto wb = new ToolBarItem(root);
+        wb->setCommand("Workbench");
+        *wb << "Std_Workbench";
+    }
 
     // Macro
     auto macro = new ToolBarItem( root );
