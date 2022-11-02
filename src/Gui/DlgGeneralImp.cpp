@@ -210,6 +210,25 @@ void DlgGeneralImp::saveSettings()
     hGrp->GetGroup("TreeView")->SetBool("Enabled",treeView);
     hGrp->GetGroup("PropertyView")->SetBool("Enabled",propertyView);
 
+    //save workbench selector position
+    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
+    bool WSToolbar = false, WSLeftCorner = false, WSRightCorner = false;
+
+    switch (ui->WorkbenchSelectorPosition->currentIndex()) {
+    case 0:
+        WSToolbar = true;
+        break;
+    case 1:
+        WSLeftCorner = true;
+        break;
+    case 2:
+        WSRightCorner = true;
+        break;
+    }
+    hGrp->SetBool("WSToolbar", WSToolbar);
+    hGrp->SetBool("WSLeftCorner", WSLeftCorner);
+    hGrp->SetBool("WSRightCorner", WSRightCorner);
+
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
     hGrp->SetBool("TiledBackground", ui->tiledBackground->isChecked());
 
@@ -279,6 +298,7 @@ void DlgGeneralImp::loadSettings()
     }
     ui->toolbarIconSize->setCurrentIndex(index);
 
+    //TreeMode combobox setup.
     ui->treeMode->clear();
     ui->treeMode->addItem(tr("Combo View"));
     ui->treeMode->addItem(tr("TreeView and PropertyView"));
@@ -293,6 +313,23 @@ void DlgGeneralImp::loadSettings()
         index = comboView?2:1;
     }
     ui->treeMode->setCurrentIndex(index);
+
+    //workbench selector position combobox setup
+    ui->WorkbenchSelectorPosition->clear();
+    ui->WorkbenchSelectorPosition->addItem(tr("Toolbar"));
+    ui->WorkbenchSelectorPosition->addItem(tr("Left corner"));
+    ui->WorkbenchSelectorPosition->addItem(tr("Right corner"));
+
+    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
+    //bool WSToolbar = hGrp->GetBool("WSToolbar", true);
+    bool WSLeftCorner = hGrp->GetBool("WSLeftCorner", false);
+    bool WSRightCorner = hGrp->GetBool("WSRightCorner", false);
+    index = 0;
+    if (WSLeftCorner)
+        index = 1;
+    else if (WSRightCorner)
+        index = 2;
+    ui->WorkbenchSelectorPosition->setCurrentIndex(index);
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
     ui->tiledBackground->setChecked(hGrp->GetBool("TiledBackground", false));

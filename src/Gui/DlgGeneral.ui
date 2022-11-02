@@ -505,6 +505,43 @@ this according to your screen size or personal taste</string>
            </item>
           </layout>
          </item>
+         <item>
+          <layout class="QHBoxLayout">
+           <property name="spacing">
+            <number>6</number>
+           </property>
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="WorkbenchSelectorPositionLabel">
+             <property name="text">
+              <string>Workbench selector position :</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="WorkbenchSelectorPosition">
+             <property name="toolTip">
+              <string>Customize where the workbench selector appears (restart required).
+
+'Toolbar': In the toolbars, as a movable toolbar.
+'Left Corner': In the menu bar, on the left corner.
+'Right Corner': In the menu bar, on the right corner.</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
         </layout>
        </widget>
       </item>
