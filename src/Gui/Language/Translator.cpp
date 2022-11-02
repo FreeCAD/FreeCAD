@@ -367,13 +367,15 @@ bool Translator::eventFilter(QObject* obj, QEvent* ev)
         QKeyEvent *kev = static_cast<QKeyEvent *>(ev);
         Qt::KeyboardModifiers mod = kev->modifiers();
         int key = kev->key();
-        if ((mod & Qt::KeypadModifier) && (key == Qt::Key_Period || key == Qt::Key_Comma))
-        {
-            QChar dp = QLocale().decimalPoint();
-            if (key != dp) {
-                QKeyEvent modifiedKeyEvent(kev->type(), dp.digitValue(), mod, QString(dp), kev->isAutoRepeat(), kev->count());
-                qApp->sendEvent(obj, &modifiedKeyEvent);
-                return true;
+        if ((mod & Qt::KeypadModifier) && (key == Qt::Key_Period || key == Qt::Key_Comma)) {
+            if (ev->spontaneous()) {
+                QChar dp = QLocale().decimalPoint();
+                int dpcode = QKeySequence(dp)[0];
+                if (key != dp) {
+                    QKeyEvent modifiedKeyEvent(kev->type(), dpcode, mod, dp, kev->isAutoRepeat(), kev->count());
+                    qApp->sendEvent(obj, &modifiedKeyEvent);
+                    return true;
+                }
             }
         }
     }
