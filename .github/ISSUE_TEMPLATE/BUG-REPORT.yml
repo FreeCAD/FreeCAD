@@ -1,17 +1,13 @@
-name: 🐛 Report a Bug
-description: File a bug report
-title: "[Bug] <title>"
-labels: ["🐛 bug", "needs triage"]
+name: Report an Issue
+description: File an issue report
+title: ""
+labels: ["needs triage"]
 body:
-  - type: markdown
-    attributes:
-      value: |
-        Thank you for taking the time to file a bug report! Please make sure you've posted about your issue in the FreeCAD Forums before submitting here.
   - type: checkboxes
     id: existing_issue
     attributes:
       label: Is there an existing issue for this?
-      description: Please search to see if an issue already exists for the bug you encountered.
+      description: Please search to see if an issue already exists for the problem you encountered.
       options:
       - label: I have searched the existing issues
         required: true
@@ -20,11 +16,8 @@ body:
     attributes:
       label: Forums discussion
       description: |
-        Please start a discussion about your issue at [the FreeCAD Forum](https://forum.freecad.org) and wait for confirmation there before creating an issue.
-        **Note:** Bug reports without a prior forum discussion will most likely not be accepted.
+        If there is a discussion at [the FreeCAD Forum](https://forum.freecad.org) about this issue, please add the link here.
       placeholder: Paste link to forum discussion here
-    validations:
-      required: true
   - type: dropdown
     id: version
     attributes:
@@ -69,7 +62,7 @@ body:
     id: description
     attributes:
       label: Issue description
-      description: Please include as much detail as possible so that testers can reproduce the bug
+      description: Please include as much detail as possible so that testers can reproduce the issue
       placeholder: Description of the problem
     validations:
       required: true
