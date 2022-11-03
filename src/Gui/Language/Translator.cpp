@@ -44,7 +44,7 @@ using namespace Gui;
  *
  * The internationalization of FreeCAD makes heavy use of the internationalization
  * support of Qt. For more details refer to your Qt documentation.
- * 
+ *
  * \section stepbystep Step by step
  * To integrate a new language into FreeCAD or one of its application modules
  * you have to perform the following steps:
@@ -52,13 +52,13 @@ using namespace Gui;
  * \subsection tsfile Creation of a .ts file
  * First you have to generate a .ts file for the language to be translated. You can do this
  * by running the \a lupdate tool in the \a bin path of your Qt installation. As argument
- * you can specify either all related source files and the .ts output file or a Qt project 
+ * you can specify either all related source files and the .ts output file or a Qt project
  * file (.pro) which contains all relevant source files.
  *
  * \subsection translate Translation into your language
  * To translate the english string literals into the language you want to support you can open your
  * .ts file with \a QtLinguist and translate all literals by hand. Another way
- * for translation is to use the tool \a tsauto from Sebastien Fricker.This tool uses the 
+ * for translation is to use the tool \a tsauto from Sebastien Fricker.This tool uses the
  * engine from Google web page (www.google.com). tsauto supports the languages
  * \li english
  * \li french
@@ -69,7 +69,7 @@ using namespace Gui;
  *
  * \remark To get most of the literals translated you should have removed all
  * special characters (like &, !, ?, ...). Otherwise the translation could fail.
- * After having translated all literals you can load the .ts file into QtLinguist and 
+ * After having translated all literals you can load the .ts file into QtLinguist and
  * invoke the menu item \a Release which generates the binary .qm file.
  *
  * \subsection usets Integration of the .qm file
@@ -85,13 +85,13 @@ using namespace Gui;
  *
  * Command Line: rcc.exe -name $(InputName) $(InputPath) -o "$(InputDir)qrc_$(InputName).cpp"
  * Outputs:      $(InputDir)qrc_$(InputName).cpp
- * 
+ *
  * For the gcc build system you just have to add the line \<resourcefile\>.qrc to the BUILT_SOURCES
  * sources section of the Makefile.am, run automake and configure (or ./confog.status) afterwards.
  *
  * Finally, you have to add a the line
  * \code
- * 
+ *
  * Q_INIT_RESOURCE(resource);
  *
  * \endcode
@@ -285,7 +285,7 @@ void Translator::updateLocaleChange() const
 
 QStringList Translator::directories() const
 {
-    QStringList list; 
+    QStringList list;
     auto dir = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
         GetASCII("AdditionalTranslationsDirectory", "");
     if (!dir.empty())
@@ -295,7 +295,7 @@ QStringList Translator::directories() const
     QDir resc(QString::fromUtf8(App::Application::getResourceDir().c_str()));
     list.push_back(resc.absoluteFilePath(QLatin1String("translations")));
     list.push_back(QLatin1String(":/translations"));
-    
+
     return list;
 }
 
@@ -335,7 +335,7 @@ void Translator::installQMFiles(const QDir& dir, const char* locale)
 
 /**
  * This method checks for newly added (internal) .qm files which might be added at runtime. This e.g. happens if a plugin
- * gets loaded at runtime. For each newly added files that supports the currently set language a new translator object is created 
+ * gets loaded at runtime. For each newly added files that supports the currently set language a new translator object is created
  * to load the file.
  */
 void Translator::refresh()

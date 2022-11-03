@@ -27,6 +27,7 @@
 #include <list>
 #include <map>
 #include <string>
+#include <FCGlobal.h>
 
 
 class QDir;

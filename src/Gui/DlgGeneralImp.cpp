@@ -308,14 +308,13 @@ void DlgGeneralImp::loadSettings()
     QStringList filter;
     filter << QString::fromLatin1("*.qss");
     filter << QString::fromLatin1("*.css");
-    QFileInfoList fileNames;
 
     // read from user, resource and built-in directory
     QStringList qssPaths = QDir::searchPaths(QString::fromLatin1("qss"));
     for (const auto & qssPath : qssPaths) {
         dir.setPath(qssPath);
-        fileNames = dir.entryInfoList(filter, QDir::Files, QDir::Name);
-        for (const auto & fileName : fileNames) {
+        QFileInfoList fileNames = dir.entryInfoList(filter, QDir::Files, QDir::Name);
+        for (const auto & fileName : qAsConst(fileNames)) {
             if (cssFiles.find(fileName.baseName()) == cssFiles.end()) {
                 cssFiles[fileName.baseName()] = fileName.fileName();
             }
@@ -353,15 +352,15 @@ void DlgGeneralImp::loadSettings()
         ui->StyleSheets->setCurrentIndex(index);
 }
 
-void DlgGeneralImp::changeEvent(QEvent *e)
+void DlgGeneralImp::changeEvent(QEvent *event)
 {
-    if (e->type() == QEvent::LanguageChange) {
+    if (event->type() == QEvent::LanguageChange) {
         int index = ui->UseLocaleFormatting->currentIndex();
         ui->retranslateUi(this);
         ui->UseLocaleFormatting->setCurrentIndex(index);
     }
     else {
-        QWidget::changeEvent(e);
+        QWidget::changeEvent(event);
     }
 }
 
