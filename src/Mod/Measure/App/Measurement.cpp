@@ -195,9 +195,14 @@ MeasureType Measurement::getType()
 TopoDS_Shape Measurement::getShape(App::DocumentObject *obj , const char *subName) const
 {
     try {
-        auto shape = Part::Feature::getShape(obj,subName,true);
+        Part::TopoShape partShape = Part::Feature::getTopoShape(obj);
+        App::GeoFeature* geoFeat = dynamic_cast<App::GeoFeature*>(obj);
+        if (geoFeat) {
+            partShape.setPlacement(geoFeat->globalPlacement());
+        }
+        TopoDS_Shape shape = partShape.getSubShape(subName);
         if(shape.IsNull())
-            throw Part::NullShapeException("null shape");
+            throw Part::NullShapeException("null shape in measurement");
         return shape;
     } catch (Standard_Failure& e) {
         throw Base::CADKernelError(e.GetMessageString());
