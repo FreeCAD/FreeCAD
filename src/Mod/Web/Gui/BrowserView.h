@@ -115,7 +115,11 @@ protected Q_SLOTS:
     bool chckHostAllowed(const QString& host);
     void urlFilter(const QUrl &url);
 #ifdef QTWEBENGINE
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
     void onDownloadRequested(QWebEngineDownloadItem *request);
+#else
+    void onDownloadRequested(QWebEngineDownloadRequest *request);
+#endif
     void onLinkHovered(const QString& url);
 #else
     void onDownloadRequested(const QNetworkRequest& request);

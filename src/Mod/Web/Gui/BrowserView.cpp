@@ -40,7 +40,11 @@
 #endif
 
 #if defined(QTWEBENGINE)
+# if QT_VERSION < QT_VERSION_CHECK(6,0,0)
 # include <QWebEngineContextMenuData>
+# else
+# include <QWebEngineContextMenuRequest>
+# endif
 # include <QWebEnginePage>
 # include <QWebEngineProfile>
 # include <QWebEngineSettings>
@@ -337,16 +341,23 @@ void WebView::wheelEvent(QWheelEvent *event)
 void WebView::contextMenuEvent(QContextMenuEvent *event)
 {
 #ifdef QTWEBENGINE
+# if QT_VERSION < QT_VERSION_CHECK(6,0,0)
     const QWebEngineContextMenuData r = page()->contextMenuData();
+    QUrl linkUrl = r.linkUrl();
+# else
+    const QWebEngineContextMenuRequest* r = this->lastContextMenuRequest();
+    QUrl linkUrl = r->linkUrl();
+# endif
 #else
     QWebHitTestResult r = page()->mainFrame()->hitTestContent(event->pos());
+    QUrl linkUrl = r.linkUrl();
 #endif
-    if (!r.linkUrl().isEmpty()) {
+    if (!linkUrl.isEmpty()) {
         QMenu menu(this);
 
         // building a custom signal for external browser action
         QSignalMapper* signalMapper = new QSignalMapper (&menu);
-        signalMapper->setProperty("url", QVariant(r.linkUrl()));
+        signalMapper->setProperty("url", QVariant(linkUrl));
         connect(signalMapper, SIGNAL(mapped(int)),
                 this, SLOT(triggerContextMenuAction(int)));
 
@@ -369,12 +380,16 @@ void WebView::contextMenuEvent(QContextMenuEvent *event)
         static bool firstRun = true;
         if (firstRun) {
             firstRun = false;
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
             QMenu *menu = page()->createStandardContextMenu();
+#else
+            QMenu *menu = this->createStandardContextMenu();
+#endif
             QList<QAction *> actions = menu->actions();
             for(QAction *ac : actions) {
                 if (ac->data().toInt() == WebAction::ViewSource) {
                     QSignalMapper* signalMapper = new QSignalMapper (this);
-                    signalMapper->setProperty("url", QVariant(r.linkUrl()));
+                    signalMapper->setProperty("url", QVariant(linkUrl));
                     signalMapper->setMapping(ac, WebAction::ViewSource);
                     connect(signalMapper, SIGNAL(mapped(int)),
                             this, SLOT(triggerContextMenuAction(int)));
@@ -389,7 +404,7 @@ void WebView::contextMenuEvent(QContextMenuEvent *event)
         QAction *ac = menu->addAction(tr("View source"));
         ac->setData(WebAction::ViewSource);
         QSignalMapper* signalMapper = new QSignalMapper (this);
-        signalMapper->setProperty("url", QVariant(r.linkUrl()));
+        signalMapper->setProperty("url", QVariant(linkUrl));
         signalMapper->setMapping(ac, WebAction::ViewSource);
         connect(signalMapper, SIGNAL(mapped(int)),
                 this, SLOT(triggerContextMenuAction(int)));
@@ -494,8 +509,8 @@ BrowserView::BrowserView(QWidget* parent)
     view->settings()->setAttribute(QWebEngineSettings::AutoLoadIconsForPage, true);
     view->settings()->setAttribute(QWebEngineSettings::FocusOnNavigationEnabled,false);
 
-    connect(view->page()->profile(), SIGNAL(downloadRequested(QWebEngineDownloadItem*)),
-            this, SLOT(onDownloadRequested(QWebEngineDownloadItem*)));
+    connect(view->page()->profile(), &QWebEngineProfile::downloadRequested,
+            this, &BrowserView::onDownloadRequested);
     connect(view->page(), SIGNAL(iconChanged(const QIcon &)),
             this, SLOT(setWindowIcon(const QIcon &)));
     connect(view->page(), SIGNAL(linkHovered(const QString &)),
@@ -608,7 +623,11 @@ bool BrowserView::chckHostAllowed(const QString& host)
 }
 
 #ifdef QTWEBENGINE
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
 void BrowserView::onDownloadRequested(QWebEngineDownloadItem *request)
+#else
+void BrowserView::onDownloadRequested(QWebEngineDownloadRequest *request)
+#endif
 {
     QUrl url = request->url();
     if (!url.isLocalFile()) {
