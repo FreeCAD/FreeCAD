@@ -64,6 +64,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/Expression.h>
+#include <App/ExpressionParser.h>
 #include <App/FeaturePythonPyImp.h>
 #include <App/ObjectIdentifier.h>
 #include <App/OriginFeature.h>
@@ -6151,25 +6152,26 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
     int sourceid = 0;
     for (std::vector< Sketcher::Constraint * >::const_iterator it= scvals.begin(); it != scvals.end(); ++it, nextcid++, sourceid++) {
 
-        if ((*it)->Type == Sketcher::Distance   ||
-            (*it)->Type == Sketcher::Radius     ||
-            (*it)->Type == Sketcher::Diameter   ||
-            (*it)->Type == Sketcher::Weight     ||
-            (*it)->Type == Sketcher::Angle      ||
-            (*it)->Type == Sketcher::SnellsLaw  ||
-            (*it)->Type == Sketcher::DistanceX  ||
-            (*it)->Type == Sketcher::DistanceY ) {
+        if ((*it)->isDimensional()) {
             // then we link its value to the parent
-            // (there is a plausible alternative for a slightly different use case to copy the expression of the parent if one is existing)
             if ((*it)->isDriving) {
-                App::ObjectIdentifier spath = psObj->Constraints.createPath(sourceid);
+                App::ObjectIdentifier spath;
+                std::shared_ptr<App::Expression> expr;
+                std::string scname = (*it)->Name;
+                if ( App::ExpressionParser::isTokenAnIndentifier(scname) ) {
+                    spath = App::ObjectIdentifier(psObj->Constraints) << App::ObjectIdentifier::SimpleComponent(scname);
+                    expr = std::shared_ptr<App::Expression>(App::Expression::parse(this, spath.getDocumentObjectName().getString() + spath.toString()));
+                }
+                else {
+                    spath = psObj->Constraints.createPath(sourceid);
+                    expr = std::shared_ptr<App::Expression>(App::Expression::parse(this, spath.getDocumentObjectName().getString() +std::string(1,'.') + spath.toString()));
+                }
+                // (there is a plausible alternative for a slightly different use case to copy the expression of the parent if one is existing)
                 /*
                  *           App::PropertyExpressionEngine::ExpressionInfo expr_info = psObj->getExpression(path);
                  *
                  *           if (expr_info.expression)*/
                 //App::Expression * expr = parse(this, const std::string& buffer);
-
-                std::shared_ptr<App::Expression> expr(App::Expression::parse(this, spath.getDocumentObjectName().getString() +std::string(1,'.') + spath.toString()));
                 setExpression(Constraints.createPath(nextcid), expr);
             }
         }
