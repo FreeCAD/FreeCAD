@@ -74,7 +74,12 @@ PropertyEditor::PropertyEditor(QWidget *parent)
     setRootIsDecorated(false);
     setExpandsOnDoubleClick(true);
 
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
     QStyleOptionViewItem opt = viewOptions();
+#else
+    QStyleOptionViewItem opt;
+    initViewItemOption(&opt);
+#endif
     this->background = opt.palette.dark();
     this->groupColor = opt.palette.color(QPalette::BrightText);
 
@@ -151,12 +156,20 @@ void PropertyEditor::setGroupTextColor(const QColor& c)
     this->groupColor = c;
 }
 
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
 QStyleOptionViewItem PropertyEditor::viewOptions() const
 {
     QStyleOptionViewItem option = QTreeView::viewOptions();
     option.showDecorationSelected = true;
     return option;
 }
+#else
+void PropertyEditor::initViewItemOption(QStyleOptionViewItem *option) const
+{
+    QTreeView::initViewItemOption(option);
+    option->showDecorationSelected = true;
+}
+#endif
 
 bool PropertyEditor::event(QEvent* event)
 {
@@ -498,7 +511,12 @@ void PropertyEditor::drawBranches(QPainter *painter, const QRect &rect, const QM
 {
     QTreeView::drawBranches(painter, rect, index);
 
-    QStyleOptionViewItem opt = viewOptions();
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
+    //QStyleOptionViewItem opt = viewOptions();
+#else
+    //QStyleOptionViewItem opt;
+    //initViewItemOption(&opt);
+#endif
     auto property = static_cast<PropertyItem*>(index.internalPointer());
     if (property && property->isSeparator()) {
         painter->fillRect(rect, this->background);
