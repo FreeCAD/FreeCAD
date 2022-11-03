@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>330</width>
+    <width>371</width>
     <height>698</height>
    </rect>
   </property>
@@ -35,7 +35,7 @@
         <item row="1" column="0">
          <widget class="QCheckBox" name="cbEqualTolerance">
           <property name="toolTip">
-           <string>Reverses usual direction of dimension line terminators</string>
+           <string>Assign same value to over and under tolerance</string>
           </property>
           <property name="text">
            <string>Equal Tolerance</string>
@@ -173,8 +173,7 @@ be used instead if the dimension value</string>
         <item row="4" column="0">
          <widget class="QCheckBox" name="cbArbitraryTolerances">
           <property name="toolTip">
-           <string>If checked the content of 'Format Spec' will
-be used instead if the dimension value</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked the content of tolerance format spec  will&lt;/p&gt;&lt;p&gt;be used instead if the tolerance value&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Arbitrary Tolerance Text</string>
@@ -399,7 +398,7 @@ be used instead if the dimension value</string>
           </property>
          </widget>
         </item>
-       <item row="4" column="1">
+        <item row="4" column="1">
          <widget class="QPushButton" name="pbExtUseSelection">
           <property name="toolTip">
            <string>Set extension line angle to match selected edge or vertices.</string>
@@ -409,7 +408,7 @@ be used instead if the dimension value</string>
           </property>
          </widget>
         </item>
-        </layout>
+       </layout>
       </item>
      </layout>
     </widget>
