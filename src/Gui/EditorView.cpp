@@ -195,7 +195,7 @@ void EditorView::checkTimestamp()
     if (timeStamp != d->timeStamp) {
         switch( QMessageBox::question( this, tr("Modified file"),
                 tr("%1.\n\nThis has been modified outside of the source editor. Do you want to reload it?").arg(d->fileName),
-                QMessageBox::Yes|QMessageBox::Default, QMessageBox::No|QMessageBox::Escape) )
+                QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes) )
         {
             case QMessageBox::Yes:
                 // updates time stamp and timer
@@ -203,6 +203,8 @@ void EditorView::checkTimestamp()
                 return;
             case QMessageBox::No:
                 d->timeStamp = timeStamp;
+                break;
+            default:
                 break;
         }
     }
@@ -318,8 +320,7 @@ bool EditorView::canClose()
     switch( QMessageBox::question(this, tr("Unsaved document"),
                                     tr("The document has been modified.\n"
                                        "Do you want to save your changes?"),
-                                     QMessageBox::Yes|QMessageBox::Default, QMessageBox::No,
-                                     QMessageBox::Cancel|QMessageBox::Escape))
+                                     QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel, QMessageBox::Cancel))
     {
         case QMessageBox::Yes:
             return saveFile();

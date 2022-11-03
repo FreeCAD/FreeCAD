@@ -415,11 +415,10 @@ void DlgMacroExecuteImp::on_deleteButton_clicked()
     }
 
     QString fn = item->text(0);
-    int ret = QMessageBox::question(this, tr("Delete macro"),
+    auto ret = QMessageBox::question(this, tr("Delete macro"),
         tr("Do you really want to delete the macro '%1'?").arg( fn ),
-        QMessageBox::Yes, QMessageBox::No|QMessageBox::Default|QMessageBox::Escape);
-    if (ret == QMessageBox::Yes)
-    {
+        QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
+    if (ret == QMessageBox::Yes) {
         QDir dir(this->macroPath);
         dir.remove(fn);
         int index = ui->userMacroListBox->indexOfTopLevelItem(item);

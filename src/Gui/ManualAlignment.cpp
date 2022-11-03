@@ -999,13 +999,13 @@ void ManualAlignment::align()
         }
         else {
             // Inform user that alignment failed
-            int ret = QMessageBox::critical(myViewer, tr("Manual alignment"),
+            auto ret = QMessageBox::critical(myViewer, tr("Manual alignment"),
                 tr("The alignment failed.\nHow do you want to proceed?"),
-                tr("Retry"), tr("Ignore"), tr("Abort"));
-            if ( ret == 1 ) {
+                QMessageBox::Retry | QMessageBox::Ignore | QMessageBox::Abort);
+            if ( ret == QMessageBox::Ignore ) {
                 myAlignModel.continueAlignment();
             }
-            else if ( ret == 2 ) {
+            else if ( ret == QMessageBox::Abort ) {
                 finish();
                 return;
             }

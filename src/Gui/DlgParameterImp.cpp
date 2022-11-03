@@ -504,7 +504,7 @@ void ParameterGroup::onDeleteSelectedItem()
     if (sel && sel->isSelected() && sel->parent())
     {
         if ( QMessageBox::question(this, tr("Remove group"), tr("Do you really want to remove this parameter group?"),
-                               QMessageBox::Yes, QMessageBox::No|QMessageBox::Default|QMessageBox::Escape) ==
+                               QMessageBox::Yes | QMessageBox::No, QMessageBox::No) ==
                                QMessageBox::Yes )
         {
             QTreeWidgetItem* parent = sel->parent();

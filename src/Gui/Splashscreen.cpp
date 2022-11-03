@@ -25,6 +25,7 @@
 # include <cstdlib>
 # include <QApplication>
 # include <QClipboard>
+# include <QFile>
 # include <QLocale>
 # include <QMutex>
 # include <QProcessEnvironment>
