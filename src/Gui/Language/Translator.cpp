@@ -370,9 +370,9 @@ bool Translator::eventFilter(QObject* obj, QEvent* ev)
         int key = kev->key();
         if ((mod & Qt::KeypadModifier) && (key == Qt::Key_Period || key == Qt::Key_Comma)) {
             if (ev->spontaneous()) {
-                QChar dp = QLocale().decimalPoint();
+                auto dp = QString(QLocale().decimalPoint());
                 int dpcode = QKeySequence(dp)[0];
-                if (key != dp) {
+                if (kev->text() != dp) {
                     QKeyEvent modifiedKeyEvent(kev->type(), dpcode, mod, dp, kev->isAutoRepeat(), kev->count());
                     qApp->sendEvent(obj, &modifiedKeyEvent);
                     return true;
