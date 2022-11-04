@@ -115,7 +115,11 @@ public:
 
     std::vector<App::CellAddress> getUsedCells() const;
 
+    std::tuple<App::CellAddress, App::CellAddress> getUsedRange() const;
+
     std::vector<App::CellAddress> getNonEmptyCells() const;
+
+    std::tuple<App::CellAddress, App::CellAddress> getNonEmptyRange() const;
 
     Sheet * sheet() const { return owner; }
 
