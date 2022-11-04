@@ -88,7 +88,7 @@ public:
                                    double extrudeDistance);
     TopoDS_Shape distributeAlignedPieces(std::vector<TopoDS_Shape> pieces);
     TopoDS_Compound singleToolIntersections(const TopoDS_Shape &cutShape);
-    TopoDS_Compound piecewiseToolIntersections(const TopoDS_Shape &cutShape);
+    TopoDS_Compound alignedToolIntersections(const TopoDS_Shape &cutShape);
 
     BaseGeomPtrVector makeSectionLineGeometry();
     std::pair<Base::Vector3d, Base::Vector3d> sectionArrowDirs();
@@ -106,6 +106,7 @@ public:
     static bool isProfileObject(App::DocumentObject *obj);
     static bool isMultiSegmentProfile(App::DocumentObject *obj);
     static bool isLinearProfile(App::DocumentObject *obj);
+    static bool isTrulyEmpty(TopoDS_Shape inShape);
 
 private:
     gp_Dir getFaceNormal(TopoDS_Face &face);

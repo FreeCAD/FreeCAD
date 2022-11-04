@@ -299,7 +299,7 @@ TopoDS_Shape DrawComplexSection::getShapeToPrepare() const
 //get the shape ready for projection and cut surface finding
 TopoDS_Shape DrawComplexSection::prepareShape(const TopoDS_Shape &cutShape, double shapeSize)
 {
-    //    Base::Console().Message("DCS::prepareShape() - strat: %d\n", ProjectionStrategy.getValue());
+//    Base::Console().Message("DCS::prepareShape() - strat: %d\n", ProjectionStrategy.getValue());
     if (ProjectionStrategy.getValue() == 0) {
         //Offset. Use regular section behaviour
         return DrawViewSection::prepareShape(cutShape, shapeSize);
@@ -321,7 +321,7 @@ TopoDS_Shape DrawComplexSection::makeAlignedPieces(const TopoDS_Shape &rawShape,
                                                    const TopoDS_Shape &toolFaceShape,
                                                    double extrudeDistance)
 {
-    //    Base::Console().Message("DCS::makeAlignedPieces()\n");
+//    Base::Console().Message("DCS::makeAlignedPieces()\n");
     std::vector<TopoDS_Shape> pieces;
     std::vector<double> pieceXSize;//size in sectionCS.XDirection (width)
     std::vector<double> pieceYSize;//size in sectionCS.Direction (depth)
@@ -369,7 +369,6 @@ TopoDS_Shape DrawComplexSection::makeAlignedPieces(const TopoDS_Shape &rawShape,
 
     gp_Vec rotateAxis = getSectionCS().Direction().Crossed(gProfileVec);
 
-
     //make a tool for each segment of the toolFaceShape and intersect it with the
     //raw shape
     TopExp_Explorer expFaces(toolFaceShape, TopAbs_FACE);
@@ -390,8 +389,9 @@ TopoDS_Shape DrawComplexSection::makeAlignedPieces(const TopoDS_Shape &rawShape,
         BRepPrimAPI_MakePrism mkPrism(face, extrudeDir);
         TopoDS_Shape segmentTool = mkPrism.Shape();
         TopoDS_Shape intersect = shapeShapeIntersect(segmentTool, rawShape);
-
-        gp_Pnt pieceCentroid = findCentroid(intersect);
+        if (intersect.IsNull()) {
+            continue;
+        }
         double faceAngle =
             gp_Vec(getSectionCS().Direction().Reversed()).AngleWithRef(segmentNormal, rotateAxis);
 
@@ -402,7 +402,6 @@ TopoDS_Shape DrawComplexSection::makeAlignedPieces(const TopoDS_Shape &rawShape,
         TopoDS_Shape pieceCentered = mkTransXLate.Shape();
 
         //rotate the intersection so interesting face is aligned with paper plane
-        pieceCentroid = findCentroid(pieceCentered);
         gp_Ax1 faceAxis(gp_Pnt(0.0, 0.0, 0.0), rotateAxis);
         gp_Ax3 pieceCS;//XYZ tipped so face is aligned with sectionCS
         pieceCS.Rotate(faceAxis, faceAngle);
@@ -516,7 +515,7 @@ TopoDS_Shape DrawComplexSection::makeAlignedPieces(const TopoDS_Shape &rawShape,
 TopoDS_Compound
 DrawComplexSection::findSectionPlaneIntersections(const TopoDS_Shape &shapeToIntersect)
 {
-    //    Base::Console().Message("DCS::findSectionPlaneIntersections() - %s\n", getNameInDocument());
+//    Base::Console().Message("DCS::findSectionPlaneIntersections() - %s\n", getNameInDocument());
     if (shapeToIntersect.IsNull()) {
         // this shouldn't happen
         Base::Console().Warning("DCS::findSectionPlaneInter - %s - cut shape is Null\n",
@@ -527,7 +526,7 @@ DrawComplexSection::findSectionPlaneIntersections(const TopoDS_Shape &shapeToInt
         return singleToolIntersections(shapeToIntersect);
     }
 
-    return piecewiseToolIntersections(shapeToIntersect);
+    return alignedToolIntersections(shapeToIntersect);
 }
 
 //Intersect cutShape with each segment of the cutting tool
@@ -566,9 +565,9 @@ TopoDS_Compound DrawComplexSection::singleToolIntersections(const TopoDS_Shape &
 }
 
 //Intersect cutShape with the effective (flattened) cutting plane to generate cut surface faces
-TopoDS_Compound DrawComplexSection::piecewiseToolIntersections(const TopoDS_Shape &cutShape)
+TopoDS_Compound DrawComplexSection::alignedToolIntersections(const TopoDS_Shape &cutShape)
 {
-    //    Base::Console().Message("DCS::piecewiseToolIntersections()\n");
+//    Base::Console().Message("DCS::alignedToolIntersections()\n");
     BRep_Builder builder;
     TopoDS_Compound result;
     builder.MakeCompound(result);
@@ -576,11 +575,11 @@ TopoDS_Compound DrawComplexSection::piecewiseToolIntersections(const TopoDS_Shap
     App::DocumentObject *toolObj = CuttingToolWireObject.getValue();
     if (!isLinearProfile(toolObj)) {
         //TODO: special handling here
-        //        Base::Console().Message("DCS::pieceWiseToolIntersection - profile has curves\n");
+        //        Base::Console().Message("DCS::alignedToolIntersection - profile has curves\n");
     }
 
     gp_Pln effectivePlane = getSectionPlane();
-    //piecewise result can be much wider than the shape itself, so we use an
+    //aligned result can be much wider than the shape itself, so we use an
     //infinite face.
     BRepBuilderAPI_MakeFace mkFace(effectivePlane, -Precision::Infinite(), Precision::Infinite(),
                                    -Precision::Infinite(), Precision::Infinite());
@@ -1037,7 +1036,11 @@ TopoDS_Shape DrawComplexSection::shapeShapeIntersect(const TopoDS_Shape &shape0,
     anOp.SetArguments(anArg1);
     anOp.SetTools(anArg2);
     anOp.Build();
-    return anOp.Shape();//always a compound
+    TopoDS_Shape result = anOp.Shape();//always a compound
+    if (isTrulyEmpty(result)) {
+        return TopoDS_Shape();
+    }
+    return result;
 }
 
 //find all the intersecting regions of face and shape
@@ -1160,6 +1163,17 @@ bool DrawComplexSection::isLinearProfile(App::DocumentObject *obj)
 
     //this shouldn't happen
     return false;
+}
+
+//a compound with no content is not considered IsNull by OCC.  A more thorough check
+//is required.
+//https://dev.opencascade.org/content/compound-empty
+bool DrawComplexSection::isTrulyEmpty(TopoDS_Shape inShape)
+{
+    if (!inShape.IsNull() && TopoDS_Iterator(inShape).More()) {
+        return false;
+    }
+    return true;
 }
 
 // Python Drawing feature ---------------------------------------------------------
