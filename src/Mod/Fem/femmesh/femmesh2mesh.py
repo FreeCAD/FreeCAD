@@ -34,12 +34,14 @@ import FreeCAD
 
 
 """
-from femexamples.manager import *
-doc = run_ccx_cantileverfaceload()
-fem_mesh = doc.getObject("Mesh").FemMesh  # do not remove the _
-result = doc.getObject("CCX_Results")
+from os.path import join
+the_file = join(FreeCAD.getResourceDir(), "examples", "FemCalculixCantilever3D.FCStd")
+fc_file = FreeCAD.openDocument(the_file)
+fem_mesh = fc_file.getObject("Box_Mesh").FemMesh  # do not remove the _
+result = fc_file.getObject("CCX_Results")
+scale = 1  # displacement scale factor
 from femmesh import femmesh2mesh
-out_mesh = femmesh2mesh.femmesh_2_mesh(fem_mesh, result)
+out_mesh = femmesh2mesh.femmesh_2_mesh(fem_mesh, result, scale)
 import Mesh
 Mesh.show(Mesh.Mesh(out_mesh))
 
@@ -86,7 +88,7 @@ face_dicts = {
     20: hexaFaces}
 
 
-def femmesh_2_mesh(myFemMesh, myResults=None):
+def femmesh_2_mesh(myFemMesh, myResults=None, myDispScale=1):
     shiftBits = 20  # allows a million nodes, needs to be higher for more nodes in a FemMesh
 
     # This code generates a dict and a faceCode for each face of all elements
@@ -168,16 +170,16 @@ def femmesh_2_mesh(myFemMesh, myResults=None):
             dispVec0 = myResults.DisplacementVectors[myResults.NodeNumbers.index(face_nodes[0])]
             dispVec1 = myResults.DisplacementVectors[myResults.NodeNumbers.index(face_nodes[1])]
             dispVec2 = myResults.DisplacementVectors[myResults.NodeNumbers.index(face_nodes[2])]
-            triangle = [myFemMesh.getNodeById(face_nodes[0]) + dispVec0,
-                        myFemMesh.getNodeById(face_nodes[1]) + dispVec1,
-                        myFemMesh.getNodeById(face_nodes[2]) + dispVec2]
+            triangle = [myFemMesh.getNodeById(face_nodes[0]) + dispVec0 * myDispScale,
+                        myFemMesh.getNodeById(face_nodes[1]) + dispVec1 * myDispScale,
+                        myFemMesh.getNodeById(face_nodes[2]) + dispVec2 * myDispScale]
             output_mesh.extend(triangle)
             # print("my triangle: ", triangle)
             if len(face_nodes) == 4:
                 dispVec3 = myResults.DisplacementVectors[myResults.NodeNumbers.index(face_nodes[3])]
-                triangle = [myFemMesh.getNodeById(face_nodes[2]) + dispVec2,
-                            myFemMesh.getNodeById(face_nodes[3]) + dispVec3,
-                            myFemMesh.getNodeById(face_nodes[0]) + dispVec0]
+                triangle = [myFemMesh.getNodeById(face_nodes[2]) + dispVec2 * myDispScale,
+                            myFemMesh.getNodeById(face_nodes[3]) + dispVec3 * myDispScale,
+                            myFemMesh.getNodeById(face_nodes[0]) + dispVec0 * myDispScale]
                 output_mesh.extend(triangle)
                 # print("my 2. triangle: ", triangle)
 
