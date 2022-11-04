@@ -75,6 +75,7 @@ DlgDisplayPropertiesImp::DlgDisplayPropertiesImp(bool floating, QWidget* parent,
     d->ui.textLabel1_3->hide();
     d->ui.changePlot->hide();
     d->ui.buttonLineColor->setModal(false);
+    d->ui.buttonPointColor->setModal(false);
     d->ui.buttonColor->setModal(false);
     d->floating = floating;
 
@@ -85,6 +86,7 @@ DlgDisplayPropertiesImp::DlgDisplayPropertiesImp(bool floating, QWidget* parent,
     setColorPlot(views);
     setShapeColor(views);
     setLineColor(views);
+    setPointColor(views);
     setPointSize(views);
     setLineWidth(views);
     setTransparency(views);
@@ -144,6 +146,7 @@ void DlgDisplayPropertiesImp::OnChange(Gui::SelectionSingleton::SubjectType &rCa
         setColorPlot(views);
         setShapeColor(views);
         setLineColor(views);
+        setPointColor(views);
         setPointSize(views);
         setLineWidth(views);
         setTransparency(views);
@@ -172,17 +175,24 @@ void DlgDisplayPropertiesImp::slotChangedObject(const Gui::ViewProvider& obj,
             App::Color value = static_cast<const App::PropertyColor&>(prop).getValue();
             if (prop_name == "ShapeColor") {
                 bool blocked = d->ui.buttonColor->blockSignals(true);
-                d->ui.buttonColor->setColor(QColor((int)(255.0f*value.r),
-                                                   (int)(255.0f*value.g),
-                                                   (int)(255.0f*value.b)));
+                d->ui.buttonColor->setColor(QColor((int)(255.0f * value.r),
+                                                   (int)(255.0f * value.g),
+                                                   (int)(255.0f * value.b)));
                 d->ui.buttonColor->blockSignals(blocked);
             }
             else if (prop_name == "LineColor") {
                 bool blocked = d->ui.buttonLineColor->blockSignals(true);
-                d->ui.buttonLineColor->setColor(QColor((int)(255.0f*value.r),
-                                                       (int)(255.0f*value.g),
-                                                       (int)(255.0f*value.b)));
+                d->ui.buttonLineColor->setColor(QColor((int)(255.0f * value.r),
+                                                       (int)(255.0f * value.g),
+                                                       (int)(255.0f * value.b)));
                 d->ui.buttonLineColor->blockSignals(blocked);
+            }
+            else if (prop_name == "PointColor") {
+                bool blocked = d->ui.buttonPointColor->blockSignals(true);
+                d->ui.buttonPointColor->setColor(QColor((int)(255.0f * value.r),
+                                                       (int)(255.0f * value.g),
+                                                       (int)(255.0f * value.b)));
+                d->ui.buttonPointColor->blockSignals(blocked);
             }
         }
         else if (prop.getTypeId().isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
@@ -311,7 +321,7 @@ void DlgDisplayPropertiesImp::on_buttonColor_changed()
 {
     std::vector<Gui::ViewProvider*> Provider = getSelection();
     QColor s = d->ui.buttonColor->color();
-    App::Color c(s.red()/255.0,s.green()/255.0,s.blue()/255.0);
+    App::Color c(s.red() / 255.0, s.green() / 255.0, s.blue() / 255.0);
     for (auto It= Provider.begin();It!=Provider.end();++It) {
         App::Property* prop = (*It)->getPropertyByName("ShapeColor");
         if (prop && prop->getTypeId() == App::PropertyColor::getClassTypeId()) {
@@ -370,12 +380,26 @@ void DlgDisplayPropertiesImp::on_buttonLineColor_changed()
 {
     std::vector<Gui::ViewProvider*> Provider = getSelection();
     QColor s = d->ui.buttonLineColor->color();
-    App::Color c(s.red()/255.0,s.green()/255.0,s.blue()/255.0);
+    App::Color c(s.red() / 255.0, s.green() / 255.0, s.blue() / 255.0);
     for (const auto & It : Provider) {
         App::Property* prop = It->getPropertyByName("LineColor");
         if (prop && prop->getTypeId() == App::PropertyColor::getClassTypeId()) {
-            auto ShapeColor = static_cast<App::PropertyColor*>(prop);
-            ShapeColor->setValue(c);
+            auto LineColor = static_cast<App::PropertyColor*>(prop);
+            LineColor->setValue(c);
+        }
+    }
+}
+
+void DlgDisplayPropertiesImp::on_buttonPointColor_changed()
+{
+    std::vector<Gui::ViewProvider*> Provider = getSelection();
+    QColor s = d->ui.buttonPointColor->color();
+    App::Color c(s.red() / 255.0, s.green() / 255.0, s.blue() / 255.0);
+    for (const auto & It : Provider) {
+        App::Property* prop = It->getPropertyByName("PointColor");
+        if (prop && prop->getTypeId() == App::PropertyColor::getClassTypeId()) {
+            auto PointColor = static_cast<App::PropertyColor*>(prop);
+            PointColor->setValue(c);
         }
     }
 }
@@ -506,7 +530,7 @@ void DlgDisplayPropertiesImp::setShapeColor(const std::vector<Gui::ViewProvider*
         if (prop && prop->getTypeId() == App::PropertyColor::getClassTypeId()) {
             App::Color c = static_cast<App::PropertyColor*>(prop)->getValue();
             QColor shape;
-            shape.setRgb((int)(c.r*255.0f), (int)(c.g*255.0f),(int)(c.b*255.0f));
+            shape.setRgb((int)(c.r * 255.0f), (int)(c.g * 255.0f), (int)(c.b * 255.0f));
             bool blocked = d->ui.buttonColor->blockSignals(true);
             d->ui.buttonColor->setColor(shape);
             d->ui.buttonColor->blockSignals(blocked);
@@ -520,22 +544,42 @@ void DlgDisplayPropertiesImp::setShapeColor(const std::vector<Gui::ViewProvider*
 
 void DlgDisplayPropertiesImp::setLineColor(const std::vector<Gui::ViewProvider*>& views)
 {
-    bool shapeColor = false;
+    bool lineColor = false;
     for (const auto & view : views) {
         App::Property* prop = view->getPropertyByName("LineColor");
         if (prop && prop->getTypeId() == App::PropertyColor::getClassTypeId()) {
             App::Color c = static_cast<App::PropertyColor*>(prop)->getValue();
-            QColor shape;
-            shape.setRgb((int)(c.r*255.0f), (int)(c.g*255.0f),(int)(c.b*255.0f));
+            QColor line;
+            line.setRgb((int)(c.r * 255.0f), (int)(c.g * 255.0f), (int)(c.b * 255.0f));
             bool blocked = d->ui.buttonLineColor->blockSignals(true);
-            d->ui.buttonLineColor->setColor(shape);
+            d->ui.buttonLineColor->setColor(line);
             d->ui.buttonLineColor->blockSignals(blocked);
-            shapeColor = true;
+            lineColor = true;
             break;
         }
     }
 
-    d->ui.buttonLineColor->setEnabled(shapeColor);
+    d->ui.buttonLineColor->setEnabled(lineColor);
+}
+
+void DlgDisplayPropertiesImp::setPointColor(const std::vector<Gui::ViewProvider*>& views)
+{
+    bool pointColor = false;
+    for (const auto & view : views) {
+        App::Property* prop = view->getPropertyByName("PointColor");
+        if (prop && prop->getTypeId() == App::PropertyColor::getClassTypeId()) {
+            App::Color c = static_cast<App::PropertyColor*>(prop)->getValue();
+            QColor point;
+            point.setRgb((int)(c.r * 255.0f), (int)(c.g * 255.0f), (int)(c.b * 255.0f));
+            bool blocked = d->ui.buttonPointColor->blockSignals(true);
+            d->ui.buttonPointColor->setColor(point);
+            d->ui.buttonPointColor->blockSignals(blocked);
+            pointColor = true;
+            break;
+        }
+    }
+
+    d->ui.buttonPointColor->setEnabled(pointColor);
 }
 
 void DlgDisplayPropertiesImp::setPointSize(const std::vector<Gui::ViewProvider*>& views)
