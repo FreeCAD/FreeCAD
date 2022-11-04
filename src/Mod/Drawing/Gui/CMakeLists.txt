@@ -27,7 +27,6 @@ set(DrawingGui_UIC_SRCS
 )
 
 qt_add_resources(DrawingGui_SRCS Resources/Drawing.qrc)
-qt_wrap_ui(DrawingGui_UIC_HDRS ${DrawingGui_UIC_SRCS})
 
 SET(DrawingGui_SRCS
     ${DrawingGui_SRCS}
