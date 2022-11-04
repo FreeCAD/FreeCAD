@@ -18,7 +18,6 @@ if(BUILD_TEMPLATE)
     add_subdirectory(Tools/_TEMPLATE_)
 endif(BUILD_TEMPLATE)
 
+# "if" clause moved into local CMakeLists.txt file to support Conda and Homebrew builds
+add_subdirectory(MacAppBundle)
 
-if(FREECAD_CREATE_MAC_APP)
-    add_subdirectory(MacAppBundle)
-endif(FREECAD_CREATE_MAC_APP)
