@@ -36,11 +36,11 @@
 
 using namespace Gui;
 
-ToolBarItem::ToolBarItem()
+ToolBarItem::ToolBarItem() : forceHide(HideStyle::VISIBLE)
 {
 }
 
-ToolBarItem::ToolBarItem(ToolBarItem* item)
+ToolBarItem::ToolBarItem(ToolBarItem* item, HideStyle forcehide) : forceHide(forcehide)
 {
     if ( item )
         item->appendItem(this);
@@ -196,7 +196,6 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
         this->toolbarNames << name;
         QToolBar* toolbar = findToolBar(toolbars, name);
         std::string toolbarName = (*it)->command();
-        bool visible = hPref->GetBool(toolbarName.c_str(), true);
         bool toolbar_added = false;
 
         if (!toolbar) {
@@ -210,15 +209,16 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
                     + QChar::fromLatin1(']');
                 toolbar->setToolTip(tooltip);
             }
-            toolbar->setVisible(visible);
             toolbar_added = true;
         }
         else {
-            toolbar->setVisible(visible);
-            toolbar->toggleViewAction()->setVisible(true);
             int index = toolbars.indexOf(toolbar);
             toolbars.removeAt(index);
         }
+
+        bool visible = hPref->GetBool(toolbarName.c_str(), true) && (*it)->forceHide == ToolBarItem::HideStyle::VISIBLE;
+        toolbar->setVisible(visible);
+        toolbar->toggleViewAction()->setVisible((*it)->forceHide == ToolBarItem::HideStyle::VISIBLE);
 
         // setup the toolbar
         setup(*it, toolbar);
@@ -254,7 +254,7 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
         QByteArray toolbarName = (*it)->objectName().toUtf8();
         if (!(*it)->toggleViewAction()->isVisible())
             continue;
-        hPref->SetBool(toolbarName.constData(), (*it)->isVisible());
+        //hPref->SetBool(toolbarName.constData(), (*it)->isVisible());
         (*it)->hide();
         (*it)->toggleViewAction()->setVisible(false);
     }
@@ -308,6 +308,8 @@ void ToolBarManager::saveState() const
     for (QStringList::ConstIterator it = this->toolbarNames.begin(); it != this->toolbarNames.end(); ++it) {
         QToolBar* toolbar = findToolBar(toolbars, *it);
         if (toolbar) {
+            if (!toolbar->toggleViewAction()->isVisible())
+                continue; //if toggleViewAction is not visible it means that the toolbar is forceHide. In which case we do not save settings.
             QByteArray toolbarName = toolbar->objectName().toUtf8();
             hPref->SetBool(toolbarName.constData(), toolbar->isVisible());
         }
@@ -384,4 +386,28 @@ QList<QToolBar*> ToolBarManager::toolBars() const
     }
 
     return tb;
+}
+
+void ToolBarManager::setToolbarVisibility(bool show, const QList<QString>& names) {
+    for (auto& name : names) {
+        setToolbarVisibility(show, name);
+    }
+}
+
+void ToolBarManager::setToolbarVisibility(bool show, const QString& name) {
+
+    ParameterGrp::handle hPref = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("MainWindow")->GetGroup("Toolbars");
+
+    QToolBar* tb = findToolBar(toolBars(), name);
+    if (tb) {
+        if (show) {
+            if(hPref->GetBool(name.toStdString().c_str(), true))
+                tb->show();
+            tb->toggleViewAction()->setVisible(true);
+        }
+        else {
+            tb->hide();
+            tb->toggleViewAction()->setVisible(false);
+        }
+    }
 }

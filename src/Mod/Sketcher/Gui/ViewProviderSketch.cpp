@@ -66,6 +66,7 @@
 #include <Gui/Utilities.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
+#include "Gui/ToolBarManager.h"
 
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Sketcher/App/GeoList.h>
@@ -82,6 +83,7 @@
 #include "TaskSketcherValidation.h"
 #include "Utils.h"
 #include "ViewProviderSketchGeometryExtension.h"
+
 
 
 FC_LOG_LEVEL_INIT("Sketch",true,true)
@@ -314,7 +316,6 @@ ViewProviderSketch::ViewProviderSketch()
     rubberband = std::make_unique<Gui::Rubberband>();
 
     cameraSensor.setFunction(&ViewProviderSketch::camSensCB);
-
 }
 
 ViewProviderSketch::~ViewProviderSketch()
@@ -2749,6 +2750,25 @@ void ViewProviderSketch::setupContextMenu(QMenu *menu, QObject *receiver, const 
     Gui::ViewProvider::setupContextMenu(menu, receiver, member);
 }
 
+namespace
+{
+    inline const QStringList editModeToolbarNames()
+    {
+        return QStringList{ QString::fromLatin1("Sketcher Edit Mode"),
+                            QString::fromLatin1("Sketcher geometries"),
+                            QString::fromLatin1("Sketcher constraints"),
+                            QString::fromLatin1("Sketcher tools"),
+                            QString::fromLatin1("Sketcher B-spline tools"),
+                            QString::fromLatin1("Sketcher virtual space") };
+    }
+
+    inline const QStringList nonEditModeToolbarNames()
+    {
+        return QStringList{ QString::fromLatin1("Structure"),
+                            QString::fromLatin1("Sketcher") };
+    }
+}
+
 bool ViewProviderSketch::setEdit(int ModNum)
 {
     // When double-clicking on the item for this sketch the
@@ -2891,6 +2911,14 @@ bool ViewProviderSketch::setEdit(int ModNum)
 
     Gui::getMainWindow()->installEventFilter(listener);
 
+    /*Modify toolbars dynamically.
+    First save state of toolbars in case user changed visibility of a toolbar but he's not changing the wb.
+    This happens in someone works directly from sketcher, changing from edit mode to not-edit-mode*/
+    Gui::ToolBarManager::getInstance()->saveState();
+
+    Gui::ToolBarManager::getInstance()->setToolbarVisibility(true, editModeToolbarNames());
+    Gui::ToolBarManager::getInstance()->setToolbarVisibility(false, nonEditModeToolbarNames());
+
     return true;
 }
 
@@ -3021,6 +3049,15 @@ void ViewProviderSketch::UpdateSolverInformation()
 void ViewProviderSketch::unsetEdit(int ModNum)
 {
     Q_UNUSED(ModNum);
+
+    /*Modify toolbars dynamically.
+    First save state of toolbars in case user changed visibility of a toolbar but he's not changing the wb.
+    This happens in someone works directly from sketcher, changing from edit mode to not-edit-mode*/
+    Gui::ToolBarManager::getInstance()->saveState();
+
+    Gui::ToolBarManager::getInstance()->setToolbarVisibility(false, editModeToolbarNames());
+    Gui::ToolBarManager::getInstance()->setToolbarVisibility(true, nonEditModeToolbarNames());
+
     TightGrid.setValue(true);
 
     if(listener) {

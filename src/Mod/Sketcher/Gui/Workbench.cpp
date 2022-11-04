@@ -114,27 +114,27 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     sketcher->setCommand("Sketcher");
     addSketcherWorkbenchSketchActions(*sketcher);
 
-    Gui::ToolBarItem* sketcherEditMode = new Gui::ToolBarItem(root);
-    sketcherEditMode->setCommand("Sketcher");
+    Gui::ToolBarItem* sketcherEditMode = new Gui::ToolBarItem(root, Gui::ToolBarItem::HideStyle::FORCE_HIDE);
+    sketcherEditMode->setCommand("Sketcher Edit Mode");
     addSketcherWorkbenchSketchEditModeActions(*sketcherEditMode);
 
-    Gui::ToolBarItem* geom = new Gui::ToolBarItem(root);
+    Gui::ToolBarItem* geom = new Gui::ToolBarItem(root, Gui::ToolBarItem::HideStyle::FORCE_HIDE);
     geom->setCommand("Sketcher geometries");
     addSketcherWorkbenchGeometries(*geom);
 
-    Gui::ToolBarItem* cons = new Gui::ToolBarItem(root);
+    Gui::ToolBarItem* cons = new Gui::ToolBarItem(root, Gui::ToolBarItem::HideStyle::FORCE_HIDE);
     cons->setCommand("Sketcher constraints");
     addSketcherWorkbenchConstraints(*cons);
 
-    Gui::ToolBarItem* consaccel = new Gui::ToolBarItem(root);
+    Gui::ToolBarItem* consaccel = new Gui::ToolBarItem(root, Gui::ToolBarItem::HideStyle::FORCE_HIDE);
     consaccel->setCommand("Sketcher tools");
     addSketcherWorkbenchTools(*consaccel);
 
-    Gui::ToolBarItem* bspline = new Gui::ToolBarItem(root);
+    Gui::ToolBarItem* bspline = new Gui::ToolBarItem(root, Gui::ToolBarItem::HideStyle::FORCE_HIDE);
     bspline->setCommand("Sketcher B-spline tools");
     addSketcherWorkbenchBSplines(*bspline);
 
-    Gui::ToolBarItem* virtualspace = new Gui::ToolBarItem(root);
+    Gui::ToolBarItem* virtualspace = new Gui::ToolBarItem(root, Gui::ToolBarItem::HideStyle::FORCE_HIDE);
     virtualspace->setCommand("Sketcher virtual space");
     addSketcherWorkbenchVirtualSpace(*virtualspace);
 
