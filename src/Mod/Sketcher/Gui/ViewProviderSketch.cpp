@@ -889,9 +889,10 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     }
                     Mode = STATUS_NONE;
                     return true;
-                case STATUS_SKETCH_StartRubberBand: // a single click happened, so clear selection
+                case STATUS_SKETCH_StartRubberBand: // a single click happened, so clear selection unless user hold control.
+                    if (!(QApplication::keyboardModifiers() == Qt::ControlModifier))
+                        Gui::Selection().clearSelection();
                     Mode = STATUS_NONE;
-                    Gui::Selection().clearSelection();
                     return true;
                 case STATUS_SKETCH_UseRubberBand:
                     doBoxSelection(DoubleClick::prvCursorPos, cursorPos, viewer);
