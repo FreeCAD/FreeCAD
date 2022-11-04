@@ -180,5 +180,26 @@ following dependency order.
         </UserDocu>
       </Documentation>
     </Methode>
+	  
+    <Methode Name="getUsedCells">
+      <Documentation>
+        <UserDocu>
+getUsedCells()
+
+Get a list of the names of all cells that are marked as used. These cells may
+or may not have a non-empty string content.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+	  
+    <Methode Name="getNonEmptyCells">
+      <Documentation>
+        <UserDocu>
+getNonEmptyCells()
+
+Get a list of the names of all cells with data in them.
+        </UserDocu>
+      </Documentation>
+    </Methode>
   </PythonExport>
 </GenerateModel>

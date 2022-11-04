@@ -980,6 +980,27 @@ PyObject *SheetPy::recomputeCells(PyObject *args) {
     }PY_CATCH;
 }
 
+PyObject *SheetPy::getUsedCells(PyObject *args)
+{
+    auto usedCells = getSheetPtr()->getCells()->getUsedCells();
+    Py::List pyCellList;
+    for (const auto &cell : usedCells) { 
+        pyCellList.append(Py::String(cell.toString()));
+    }
+    return Py::new_reference_to(pyCellList);
+}
+
+PyObject *SheetPy::getNonEmptyCells(PyObject *args)
+{
+    auto usedCells = getSheetPtr()->getCells()->getNonEmptyCells();
+    Py::List pyCellList;
+    for (const auto &cell : usedCells) { 
+        pyCellList.append(Py::String(cell.toString())); 
+    }
+    return Py::new_reference_to(pyCellList);
+}
+
+
 // +++ custom attributes implementer ++++++++++++++++++++++++++++++++++++++++
 
 PyObject *SheetPy::getCustomAttributes(const char*) const

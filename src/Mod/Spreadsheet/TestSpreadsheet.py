@@ -1345,6 +1345,40 @@ class SpreadsheetCases(unittest.TestCase):
         with self.assertRaises(AttributeError):
             self.assertEqual(ss1.B1, "fail")
 
+    def testGetUsedCells(self):
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+        test_cells = ['B13','C14','D15']
+        for i,cell in enumerate(test_cells):
+            sheet.set(cell,str(i))
+
+        used_cells = sheet.getUsedCells()
+        self.assertEqual(len(used_cells), len(test_cells))
+        for cell in test_cells:
+            self.assertTrue(cell in used_cells)
+
+        for cell in test_cells:
+            sheet.set(cell,"")
+            sheet.setAlignment(cell,"center")
+        non_empty_cells = sheet.getUsedCells()
+        self.assertEqual(len(non_empty_cells), len(test_cells)) # Alignment counts as "used"
+
+    def testGetNonEmptyCells(self):
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+        test_cells = ['B13','C14','D15']
+        for i,cell in enumerate(test_cells):
+            sheet.set(cell,str(i))
+
+        non_empty_cells = sheet.getNonEmptyCells()
+        self.assertEqual(len(non_empty_cells), len(test_cells))
+        for cell in test_cells:
+            self.assertTrue(cell in non_empty_cells)
+
+        for cell in test_cells:
+            sheet.set(cell,"")
+            sheet.setAlignment(cell,"center")
+        non_empty_cells = sheet.getNonEmptyCells()
+        self.assertEqual(len(non_empty_cells), 0) # Alignment does not count as "non-empty"
+
     def tearDown(self):
         #closing doc
         FreeCAD.closeDocument(self.doc.Name)
