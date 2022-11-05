@@ -31,13 +31,15 @@
 
 class Ui_TaskFemConstraintRigidBody;
 
-namespace FemGui {
-class TaskFemConstraintRigidBody : public TaskFemConstraintOnBoundary
+namespace FemGui
+{
+class TaskFemConstraintRigidBody: public TaskFemConstraintOnBoundary
 {
     Q_OBJECT
 
 public:
-    explicit TaskFemConstraintRigidBody(ViewProviderFemConstraintRigidBody *ConstraintView,QWidget *parent = nullptr);
+    explicit TaskFemConstraintRigidBody(ViewProviderFemConstraintRigidBody* ConstraintView,
+                                        QWidget* parent = nullptr);
     ~TaskFemConstraintRigidBody() override;
     const std::string getReferences() const override;
     double get_xRefNode() const;
@@ -57,27 +59,26 @@ private Q_SLOTS:
     void removeFromSelection() override;
 
 protected:
-    bool event(QEvent *e) override;
-    void changeEvent(QEvent *e) override;
+    bool event(QEvent* e) override;
+    void changeEvent(QEvent* e) override;
     void clearButtons(const SelectionChangeModes notThis) override;
 
 private:
     void updateUI();
     Ui_TaskFemConstraintRigidBody* ui;
-
 };
 
-class TaskDlgFemConstraintRigidBody : public TaskDlgFemConstraint
+class TaskDlgFemConstraintRigidBody: public TaskDlgFemConstraint
 {
     Q_OBJECT
 
 public:
-    explicit TaskDlgFemConstraintRigidBody(ViewProviderFemConstraintRigidBody *ConstraintView);
+    explicit TaskDlgFemConstraintRigidBody(ViewProviderFemConstraintRigidBody* ConstraintView);
     void open() override;
     bool accept() override;
     bool reject() override;
 };
 
-} //namespace FemGui
+}  // namespace FemGui
 
-#endif // GUI_TASKVIEW_TaskFemConstraintRigidBody_H
+#endif  // GUI_TASKVIEW_TaskFemConstraintRigidBody_H
