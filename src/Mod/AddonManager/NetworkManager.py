@@ -74,10 +74,10 @@ except ImportError:
     # For standalone testing support working without the FreeCAD import
     HAVE_FREECAD = False
 
-from PySide2 import QtCore
+from PySide import QtCore
 
 if FreeCAD.GuiUp:
-    from PySide2 import QtWidgets
+    from PySide import QtWidgets
 
 
 # This is the global instance of the NetworkManager that outside code
@@ -86,20 +86,18 @@ AM_NETWORK_MANAGER = None
 
 HAVE_QTNETWORK = True
 try:
-    from PySide2 import QtNetwork
+    from PySide import QtNetwork
 except ImportError:
     if HAVE_FREECAD:
         FreeCAD.Console.PrintError(
             translate(
                 "AddonsInstaller",
-                "Could not import QtNetwork -- it does not appear to be installed on your system. Please install the package 'python3-pyside2.qtnetwork' on your system and if possible contact your FreeCAD package maintainer to alert them to the missing dependency. The Addon Manager will not be available.",
+                'Could not import QtNetwork -- it does not appear to be installed on your system. Your provider may have a package for this dependency (often called e.g. "python3-pyside2.qtnetwork", for example)',
             )
             + "\n"
         )
     else:
-        print(
-            "Could not import QtNetwork, unable to test this file. Try installing the python3-pyside2.qtnetwork package."
-        )
+        print("Could not import QtNetwork, unable to test this file.")
         sys.exit(1)
     HAVE_QTNETWORK = False
 

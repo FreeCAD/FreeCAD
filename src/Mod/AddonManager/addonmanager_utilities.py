@@ -32,7 +32,7 @@ from typing import Optional, Any
 
 from urllib.parse import urlparse
 
-from PySide2 import QtCore, QtWidgets
+from PySide import QtCore, QtWidgets
 
 import FreeCAD
 import FreeCADGui

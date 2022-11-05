@@ -34,7 +34,7 @@ import zipfile
 from typing import Dict, List
 from enum import Enum, auto
 
-from PySide2 import QtCore
+from PySide import QtCore
 
 import FreeCAD
 import addonmanager_utilities as utils

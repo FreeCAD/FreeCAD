@@ -24,7 +24,7 @@
 from typing import Optional
 
 import FreeCAD
-from PySide2 import QtCore
+from PySide import QtCore
 import NetworkManager
 
 translate = FreeCAD.Qt.translate

@@ -29,22 +29,22 @@ from typing import Optional, Tuple
 import FreeCAD
 import FreeCADGui
 
-from PySide2.QtWidgets import QFileDialog, QDialog
-from PySide2.QtGui import QDesktopServices
-from PySide2.QtCore import QUrl, QFile, QIODevice
+from PySide.QtWidgets import QFileDialog, QDialog
+from PySide.QtGui import QDesktopServices
+from PySide.QtCore import QUrl, QFile, QIODevice
 
 try:
-    from PySide2.QtGui import (
+    from PySide.QtGui import (
         QRegularExpressionValidator,
     )
-    from PySide2.QtCore import QRegularExpression
+    from PySide.QtCore import QRegularExpression
     RegexWrapper = QRegularExpression
     RegexValidatorWrapper = QRegularExpressionValidator
 except ImportError:
-    from PySide2.QtGui import (
+    from PySide.QtGui import (
         QRegExpValidator,
     )
-    from PySide2.QtCore import QRegExp
+    from PySide.QtCore import QRegExp
     RegexWrapper = QRegExp
     RegexValidatorWrapper = QRegExpValidator
 

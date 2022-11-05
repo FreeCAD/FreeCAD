@@ -37,7 +37,7 @@ import re  # Needed for py 3.6 and earlier, can remove later, search for "re."
 from datetime import date, timedelta
 from typing import Dict, List
 
-from PySide2 import QtGui, QtCore, QtWidgets
+from PySide import QtGui, QtCore, QtWidgets
 import FreeCAD
 import FreeCADGui
 

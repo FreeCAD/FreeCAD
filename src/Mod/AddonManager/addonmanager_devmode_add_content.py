@@ -31,15 +31,15 @@ import FreeCADGui
 
 from Addon import INTERNAL_WORKBENCHES
 
-from PySide2.QtWidgets import (
+from PySide.QtWidgets import (
     QDialog,
     QLayout,
     QFileDialog,
     QTableWidgetItem,
     QSizePolicy,
 )
-from PySide2.QtGui import QIcon
-from PySide2.QtCore import Qt
+from PySide.QtGui import QIcon
+from PySide.QtCore import Qt
 
 from addonmanager_devmode_validators import (
     VersionValidator,

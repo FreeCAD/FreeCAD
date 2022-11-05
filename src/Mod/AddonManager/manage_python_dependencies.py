@@ -31,7 +31,7 @@ from functools import partial
 
 import FreeCAD
 import FreeCADGui
-from PySide2 import QtCore, QtGui, QtWidgets
+from PySide import QtCore, QtGui, QtWidgets
 
 import addonmanager_utilities as utils
 
