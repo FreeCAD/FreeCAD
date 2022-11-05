@@ -1480,8 +1480,9 @@ SbBool NavigationStyle::processEvent(const SoEvent * const ev)
     if ((curmode == NavigationStyle::SELECTION || curmode == NavigationStyle::IDLE)
             && !processed) {
         if (SoMouseButtonEvent::isButtonReleaseEvent(ev, SoMouseButtonEvent::BUTTON1)) {
-            if (!(QApplication::keyboardModifiers() == Qt::ControlModifier))
+            if (!ev->wasCtrlDown()) {
                 Gui::Selection().clearSelection();
+            }
         }
     }
 
