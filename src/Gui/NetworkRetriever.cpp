@@ -495,7 +495,7 @@ void StdCmdDownloadOnlineHelp::activated(int iMsg)
                 if (QMessageBox::critical(getMainWindow(), tr("Non-existing directory"),
                      tr("The directory '%1' does not exist.\n\n"
                         "Do you want to specify an existing directory?").arg(fi.filePath()),
-                     QMessageBox::Yes|QMessageBox::Default, QMessageBox::No|QMessageBox::Escape) !=
+                     QMessageBox::Yes | QMessageBox::No) !=
                      QMessageBox::Yes)
                 {
                     // exit the command
@@ -513,7 +513,7 @@ void StdCmdDownloadOnlineHelp::activated(int iMsg)
                 if (QMessageBox::critical(getMainWindow(), tr("Missing permission"),
                      tr("You don't have write permission to '%1'\n\n"
                         "Do you want to specify another directory?").arg(fi.filePath()),
-                     QMessageBox::Yes|QMessageBox::Default, QMessageBox::No|QMessageBox::Escape) !=
+                     QMessageBox::Yes | QMessageBox::No) !=
                      QMessageBox::Yes)
                 {
                     // exit the command

@@ -319,9 +319,9 @@ void ProgressDialog::onCancel()
 
 bool ProgressDialog::canAbort() const
 {
-    int ret = QMessageBox::question(getMainWindow(),tr("Aborting"),
-    tr("Do you really want to abort the operation?"),  QMessageBox::Yes,
-    QMessageBox::No|QMessageBox::Default);
+    auto ret = QMessageBox::question(getMainWindow(),tr("Aborting"),
+    tr("Do you really want to abort the operation?"),  QMessageBox::Yes | QMessageBox::No,
+    QMessageBox::No);
 
     return (ret == QMessageBox::Yes) ? true : false;
 }

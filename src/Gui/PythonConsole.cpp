@@ -852,7 +852,7 @@ void PythonConsole::runSource(const QString& line)
         if (check) {
             ret = QMessageBox::question(this, tr("System exit"),
                 tr("The application is still running.\nDo you want to exit without saving your data?"),
-                QMessageBox::Yes, QMessageBox::No|QMessageBox::Escape|QMessageBox::Default);
+                QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
         }
         if (ret == QMessageBox::Yes) {
             PyErr_Clear();
@@ -1017,7 +1017,11 @@ void PythonConsole::dropEvent (QDropEvent * e)
     else {
         // always copy text when doing drag and drop
         if (mimeData->hasText()) {
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
             QTextCursor cursor = this->cursorForPosition(e->pos());
+#else
+            QTextCursor cursor = this->cursorForPosition(e->position().toPoint());
+#endif
             QTextCursor inputLineBegin = this->inputBegin();
 
             if (!cursorBeyond( cursor, inputLineBegin )) {
@@ -1025,7 +1029,11 @@ void PythonConsole::dropEvent (QDropEvent * e)
 
                 QRect newPos = this->cursorRect();
 
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
                 QDropEvent newEv(QPoint(newPos.x(), newPos.y()), Qt::CopyAction, mimeData, e->mouseButtons(), e->keyboardModifiers());
+#else
+                QDropEvent newEv(QPoint(newPos.x(), newPos.y()), Qt::CopyAction, mimeData, e->buttons(), e->modifiers());
+#endif
                 e->accept();
                 QPlainTextEdit::dropEvent(&newEv);
             }

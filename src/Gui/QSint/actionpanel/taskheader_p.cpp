@@ -168,7 +168,11 @@ void TaskHeader::animate()
   update();
 }
 
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
 void TaskHeader::enterEvent ( QEvent * /*event*/ )
+#else
+void TaskHeader::enterEvent ( QEnterEvent * /*event*/ )
+#endif
 {
   m_over = true;
 

@@ -1493,7 +1493,11 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent* event)
         return;
 
     auto modifier = QApplication::queryKeyboardModifiers();
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
     QTreeWidgetItem* targetItem = itemAt(event->pos());
+#else
+    QTreeWidgetItem* targetItem = itemAt(event->position().toPoint());
+#endif
     if (!targetItem || targetItem->isSelected()) {
         leaveEvent(nullptr);
         event->ignore();
@@ -1634,7 +1638,11 @@ void TreeWidget::dropEvent(QDropEvent* event)
     //FIXME: This should actually be done inside dropMimeData
 
     bool touched = false;
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
     QTreeWidgetItem* targetItem = itemAt(event->pos());
+#else
+    QTreeWidgetItem* targetItem = itemAt(event->position().toPoint());
+#endif
     // not dropped onto an item
     if (!targetItem)
         return;
