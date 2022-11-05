@@ -639,7 +639,7 @@ void AboutDialog::showLibraryInformation()
     out << "</ul>\n</body>\n</html>";
     textField->setHtml(html);
 
-    connect(textField, SIGNAL(anchorClicked(QUrl)), this, SLOT(linkActivated(QUrl)));
+    connect(textField, &QTextBrowser::anchorClicked, this, &AboutDialog::linkActivated);
 }
 
 void AboutDialog::showCollectionInformation()
