@@ -70,7 +70,6 @@ private Q_SLOTS:
 protected:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     void changeEvent(QEvent *e) override;
-    bool updateView() const;
     void getReferenceAxis(App::DocumentObject *&obj, std::vector<std::string> &sub) const;
     double getAngle(void) const;
     bool getMidplane(void) const;
@@ -88,8 +87,8 @@ private:
     void updateUI();
 
 private:
-    QWidget* proxy;
     std::unique_ptr<Ui_TaskRevolutionParameters> ui;
+    QWidget *proxy;
 
     /**
      * @brief axesInList is the list of links corresponding to axis combo; must
@@ -99,7 +98,7 @@ private:
      * It is a list of pointers, because properties prohibit assignment. Use new
      * when adding stuff, and delete when removing stuff.
      */
-    std::vector<App::PropertyLinkSub*> axesInList;
+    std::vector<std::unique_ptr<App::PropertyLinkSub>> axesInList;
 };
 
 /// simulation dialog for the TaskView
