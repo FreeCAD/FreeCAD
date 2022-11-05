@@ -349,8 +349,13 @@ void ImageView::mousePressEvent(QMouseEvent* cEvent)
       // Mouse event coordinates are relative to top-left of image view (including toolbar!)
       // Get current cursor position relative to top-left of image box
       QPoint offset = _pGLImageBox->pos();
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
       int box_x = cEvent->x() - offset.x();
       int box_y = cEvent->y() - offset.y();
+#else
+      int box_x = cEvent->position().x() - offset.x();
+      int box_y = cEvent->position().y() - offset.y();
+#endif
       _currX = box_x;
       _currY = box_y;
       switch(cEvent->buttons())
@@ -370,7 +375,11 @@ void ImageView::mousePressEvent(QMouseEvent* cEvent)
                 _currMode = selection;
               break;
           case Qt::RightButton:
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
                _pContextMenu->exec(cEvent->globalPos());
+#else
+               _pContextMenu->exec(cEvent->globalPosition().toPoint());
+#endif
               break;
           default:
               _currMode = nothing;
@@ -385,8 +394,13 @@ void ImageView::mouseDoubleClickEvent(QMouseEvent* cEvent)
        // Mouse event coordinates are relative to top-left of image view (including toolbar!)
        // Get current cursor position relative to top-left of image box
        QPoint offset = _pGLImageBox->pos();
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
        int box_x = cEvent->x() - offset.x();
        int box_y = cEvent->y() - offset.y();
+#else
+       int box_x = cEvent->position().x() - offset.x();
+       int box_y = cEvent->position().y() - offset.y();
+#endif
        _currX = box_x;
        _currY = box_y;
        if(cEvent->button() == Qt::MiddleButton)
@@ -412,8 +426,13 @@ void ImageView::mouseMoveEvent(QMouseEvent* cEvent)
    // Mouse event coordinates are relative to top-left of image view (including toolbar!)
    // Get current cursor position relative to top-left of image box
    QPoint offset = _pGLImageBox->pos();
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
    int box_x = cEvent->x() - offset.x();
    int box_y = cEvent->y() - offset.y();
+#else
+   int box_x = cEvent->position().x() - offset.x();
+   int box_y = cEvent->position().y() - offset.y();
+#endif
    if (_mouseEventsEnabled)
    {
        switch(_currMode)
@@ -445,8 +464,13 @@ void ImageView::mouseReleaseEvent(QMouseEvent* cEvent)
        // Mouse event coordinates are relative to top-left of image view (including toolbar!)
        // Get current cursor position relative to top-left of image box
        QPoint offset = _pGLImageBox->pos();
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
        int box_x = cEvent->x() - offset.x();
        int box_y = cEvent->y() - offset.y();
+#else
+       int box_x = cEvent->position().x() - offset.x();
+       int box_y = cEvent->position().y() - offset.y();
+#endif
        switch(_currMode)
        {
            case selection:
