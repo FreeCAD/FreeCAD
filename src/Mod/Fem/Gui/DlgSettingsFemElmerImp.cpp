@@ -115,13 +115,9 @@ void DlgSettingsFemElmerImp::onfileNameChangedMT(QString FileName)
     if (ui->sb_elmer_num_cores->value() == 1)
         return;
 
-    auto strName = FileName.toStdString();
-
-    // strName can be empty if there was once a valid Elmer installation but Elmer was meanwhile
-    // removed. That strName is shorter than 9 can only happen if the user.cfg file is corrupted.
 #if defined(FC_OS_WIN32)
     // name ends with "_mpi.exe"
-    if (strName.length() < 9 || strName.substr(strName.length() - 8) != "_mpi.exe") {
+    if (!FileName.endsWith(QLatin1String("_mpi.exe"))) {
         QMessageBox::warning(this, tr("FEM Elmer: Not suitable for multithreading"),
             tr("Wrong Elmer setting: You use more than one CPU core.\n"
                 "Therefore an executable with the suffix '_mpi.exe' is required."));
@@ -131,7 +127,7 @@ void DlgSettingsFemElmerImp::onfileNameChangedMT(QString FileName)
     }
 #elif defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
     // name ends with "_mpi"
-    if (strName.length() < 9 || strName.substr(strName.length() - 4) != "_mpi") {
+    if (!FileName.endsWith(QLatin1String("_mpi"))) {
         QMessageBox::warning(this, tr("FEM Elmer: Not suitable for multithreading"),
             tr("Wrong Elmer setting: You use more than one CPU core.\n"
                 "Therefore an executable with the suffix '_mpi' is required."));
