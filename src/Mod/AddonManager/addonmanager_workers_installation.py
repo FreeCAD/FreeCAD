@@ -675,6 +675,38 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
         self.requests[index] = (repo, UpdateMetadataCacheWorker.RequestType.ICON)
         self.total_requests += 1
 
+    def _decode_data(self, byte_data, addon_name, file_name) -> str:
+        """UTF-8 decode data, and print an error message if that fails"""
+
+        # For review and debugging purposes, store the file locally
+        package_cache_directory = os.path.join(self.store, addon_name)
+        if not os.path.exists(package_cache_directory):
+            os.makedirs(package_cache_directory)
+        new_xml_file = os.path.join(package_cache_directory, file_name)
+        with open(new_xml_file, "wb") as f:
+            f.write(byte_data)
+
+        f = ""
+        try:
+            f = byte_data.decode("utf-8")
+        except UnicodeDecodeError as e:
+            FreeCAD.Console.PrintWarning(
+                translate(
+                    "AddonsInstaller",
+                    "Failed to decode {} file for Addon '{}'",
+                ).format(file_name, addon_name)
+                + "\n"
+            )
+            FreeCAD.Console.PrintWarning(str(e) + "\n")
+            FreeCAD.Console.PrintWarning(
+                translate(
+                    "AddonsInstaller",
+                    "Any dependency information in this file will be ignored",
+                )
+                + "\n"
+            )
+        return f
+
     def process_metadata_txt(self, repo: Addon, data: QtCore.QByteArray):
         """Process the metadata.txt metadata file"""
         self.status_message.emit(
@@ -682,11 +714,10 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
                 repo.display_name
             )
         )
-        f = io.StringIO(data.data().decode("utf8"))
-        while True:
-            line = f.readline()
-            if not line:
-                break
+
+        f = self._decode_data(data.data(), repo.name, "metadata.txt")
+        lines = f.splitlines()
+        for line in lines:
             if line.startswith("workbenches="):
                 depswb = line.split("=")[1].split(",")
                 for wb in depswb:
@@ -717,13 +748,6 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
                             f"{repo.display_name} optionally imports python package"
                             + f" '{pl.strip()}'\n"
                         )
-        # For review and debugging purposes, store the file locally
-        package_cache_directory = os.path.join(self.store, repo.name)
-        if not os.path.exists(package_cache_directory):
-            os.makedirs(package_cache_directory)
-        new_xml_file = os.path.join(package_cache_directory, "metadata.txt")
-        with open(new_xml_file, "wb") as f:
-            f.write(data.data())
 
     def process_requirements_txt(self, repo: Addon, data: QtCore.QByteArray):
         """Process the requirements.txt metadata file"""
@@ -733,8 +757,9 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
                 "Downloaded requirements.txt for {}",
             ).format(repo.display_name)
         )
-        f = io.StringIO(data.data().decode("utf8"))
-        lines = f.readlines()
+
+        f = self._decode_data(data.data(), repo.name, "requirements.txt")
+        lines = f.splitlines()
         for line in lines:
             break_chars = " <>=~!+#"
             package = line
@@ -744,13 +769,6 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
                     break
             if package:
                 repo.python_requires.add(package)
-        # For review and debugging purposes, store the file locally
-        package_cache_directory = os.path.join(self.store, repo.name)
-        if not os.path.exists(package_cache_directory):
-            os.makedirs(package_cache_directory)
-        new_xml_file = os.path.join(package_cache_directory, "requirements.txt")
-        with open(new_xml_file, "wb") as f:
-            f.write(data.data())
 
     def process_icon(self, repo: Addon, data: QtCore.QByteArray):
         """Convert icon data into a valid icon file and store it"""
