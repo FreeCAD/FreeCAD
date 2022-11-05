@@ -303,6 +303,7 @@ private:
         // mw.style()
         // import gc
         // gc.collect()
+#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
         PyTypeObject * type = getPyTypeObjectForTypeName<QApplication>();
         if (type) {
             auto sbk_type = reinterpret_cast<SbkObjectType*>(type);
@@ -310,6 +311,7 @@ private:
             PyObject* pyobj = Shiboken::Object::newObject(sbk_type, qApp, false, false, typeName.c_str());
             addQObject(qApp, pyobj);
         }
+#endif
     }
 
     WrapperManager()
