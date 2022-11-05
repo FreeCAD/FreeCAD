@@ -29,18 +29,18 @@ import subprocess
 import FreeCAD
 import FreeCADGui
 
-from PySide2.QtWidgets import (
+from PySide.QtWidgets import (
     QFileDialog,
     QListWidgetItem,
     QDialog,
     QSizePolicy,
     QMessageBox,
 )
-from PySide2.QtGui import (
+from PySide.QtGui import (
     QIcon,
     QPixmap,
 )
-from PySide2.QtCore import Qt
+from PySide.QtCore import Qt
 from addonmanager_git import GitManager, NoGitFound
 
 from addonmanager_devmode_add_content import AddContent

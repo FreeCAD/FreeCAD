@@ -24,8 +24,8 @@
 
 import os
 
-from PySide2.QtWidgets import QTableWidgetItem
-from PySide2.QtGui import QIcon
+from PySide.QtWidgets import QTableWidgetItem
+from PySide.QtGui import QIcon
 
 import FreeCAD
 import FreeCADGui

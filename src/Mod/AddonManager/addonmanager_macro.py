@@ -33,7 +33,7 @@ from typing import Dict, Tuple, List, Union, Optional
 
 import FreeCAD
 import NetworkManager
-from PySide2 import QtCore
+from PySide import QtCore
 
 from addonmanager_utilities import remove_directory_if_empty, is_float
 

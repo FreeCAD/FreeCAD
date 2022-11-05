@@ -27,9 +27,9 @@ import os
 import FreeCAD
 import FreeCADGui
 
-from PySide2 import QtCore
-from PySide2.QtGui import QIcon
-from PySide2.QtWidgets import (
+from PySide import QtCore
+from PySide.QtGui import QIcon
+from PySide.QtWidgets import (
     QWidget,
     QCheckBox,
     QComboBox,
