@@ -1554,7 +1554,12 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
                 repo.display_name
             )
         )
-        f = io.StringIO(data.data().decode("utf8"))
+        try:
+            f = io.StringIO(data.data().decode("utf8"))
+        except UnicodeDecodeError as e:
+            FreeCAD.Console.PrintWarning(str(e))
+            FreeCAD.Console.PrintWarning(f" in package {repo.name}\n")
+            return
         while True:
             line = f.readline()
             if not line:
@@ -1603,7 +1608,12 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
                 "Downloaded requirements.txt for {}",
             ).format(repo.display_name)
         )
-        f = io.StringIO(data.data().decode("utf8"))
+        try:
+            f = io.StringIO(data.data().decode("utf8"))
+        except UnicodeDecodeError as e:
+            FreeCAD.Console.PrintWarning(str(e))
+            FreeCAD.Console.PrintWarning(f" in package {repo.name}\n")
+            return
         lines = f.readlines()
         for line in lines:
             break_chars = " <>=~!+#"
