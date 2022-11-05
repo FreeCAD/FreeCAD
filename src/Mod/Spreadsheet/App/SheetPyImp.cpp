@@ -982,6 +982,9 @@ PyObject *SheetPy::recomputeCells(PyObject *args) {
 
 PyObject *SheetPy::getUsedCells(PyObject *args)
 {
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
     auto usedCells = getSheetPtr()->getCells()->getUsedCells();
     Py::List pyCellList;
     for (const auto &cell : usedCells) { 
@@ -992,6 +995,9 @@ PyObject *SheetPy::getUsedCells(PyObject *args)
 
 PyObject *SheetPy::getUsedRange(PyObject *args)
 {
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
     auto usedRange = getSheetPtr()->getCells()->getUsedRange();
     Py::Tuple pyTuple(2);
     pyTuple[0] = Py::String(std::get<0>(usedRange).toString());
@@ -1001,6 +1007,9 @@ PyObject *SheetPy::getUsedRange(PyObject *args)
 
 PyObject *SheetPy::getNonEmptyCells(PyObject *args)
 {
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
     auto nonEmptyCells = getSheetPtr()->getCells()->getNonEmptyCells();
     Py::List pyCellList;
     for (const auto &cell : nonEmptyCells) { 
@@ -1011,6 +1020,9 @@ PyObject *SheetPy::getNonEmptyCells(PyObject *args)
 
 PyObject *SheetPy::getNonEmptyRange(PyObject *args)
 {
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
     auto nonEmptyRange = getSheetPtr()->getCells()->getNonEmptyRange();
     Py::Tuple pyTuple(2);
     pyTuple[0] = Py::String(std::get<0>(nonEmptyRange).toString());
