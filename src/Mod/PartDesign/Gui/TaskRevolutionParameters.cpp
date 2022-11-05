@@ -28,7 +28,7 @@
 #include <App/Origin.h>
 #include <Base/Console.h>
 #include <Gui/Application.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/Selection.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/ViewProviderOrigin.h>
@@ -250,6 +250,9 @@ void TaskRevolutionParameters::onAxisChanged(int num)
     App::PropertyLinkSub &lnk = *(axesInList[num]);
     if (lnk.getValue() == nullptr) {
         // enter reference selection mode
+        if (auto sketch = dynamic_cast<Part::Part2DObject*>(pcRevolution->Profile.getValue())) {
+            Gui::cmdAppObjectShow(sketch);
+        }
         TaskSketchBasedParameters::onSelectReference(AllowSelection::EDGE |
                                                      AllowSelection::PLANAR |
                                                      AllowSelection::CIRCLE);
