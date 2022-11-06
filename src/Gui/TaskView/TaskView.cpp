@@ -402,7 +402,7 @@ void TaskView::keyPressEvent(QKeyEvent* ke)
             Gui::Document* doc = Gui::Application::Instance->getDocument(ActiveDialog->getDocumentName().c_str());
             if (doc) {
                 func->setFunction(std::bind(&Document::resetEdit, doc));
-                QTimer::singleShot(0, func, SLOT(timeout()));
+                func->singleShot(0);
             }
         }
     }

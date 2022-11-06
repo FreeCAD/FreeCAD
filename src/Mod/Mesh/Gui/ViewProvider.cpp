@@ -1012,7 +1012,7 @@ void ViewProviderMesh::clipMeshCallback(void * ud, SoEventCallback * n)
                     func->setAutoDelete(true);
                     MeshSplit* split = new MeshSplit(self, clPoly, proj);
                     func->setFunction(std::bind(&MeshSplit::cutMesh, split));
-                    QTimer::singleShot(0, func, SLOT(timeout()));
+                    func->singleShot(0);
                 }
             }
         }
@@ -1073,7 +1073,7 @@ void ViewProviderMesh::trimMeshCallback(void * ud, SoEventCallback * n)
                     func->setAutoDelete(true);
                     MeshSplit* split = new MeshSplit(self, clPoly, proj);
                     func->setFunction(std::bind(&MeshSplit::trimMesh, split));
-                    QTimer::singleShot(0, func, SLOT(timeout()));
+                    func->singleShot(0);
                 }
             }
         }
