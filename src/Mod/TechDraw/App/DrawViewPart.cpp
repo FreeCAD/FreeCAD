@@ -1027,6 +1027,13 @@ gp_Ax2 DrawViewPart::localVectorToCS(const Base::Vector3d localUnit) const
     return { stdOrigin, gp_Dir(gLocalUnitOXYZ), gp_Dir(gLocalXOXYZ) };
 }
 
+Base::Vector3d DrawViewPart::localVectorToDirection(const Base::Vector3d localUnit) const
+{
+    Base::Console().Message("DVP::localVectorToDirection() - localUnit: %s\n", DrawUtil::formatVector(localUnit).c_str());
+    gp_Ax2 cs = localVectorToCS(localUnit);
+    return DrawUtil::toVector3d(cs.Direction());
+}
+
 gp_Ax2 DrawViewPart::getProjectionCS(const Base::Vector3d pt) const
 {
 //    Base::Console().Message("DVP::getProjectionCS() - %s - %s\n", getNameInDocument(), Label.getValue());

@@ -638,7 +638,7 @@ TopoDS_Compound DrawViewSection::mapToPage(TopoDS_Shape& shapeToAlign)
     // needs to be aligned to paper plane (origin, stdZ);
     //project the faces in the shapeToAlign, build new faces from the resulting wires and
     //combine everything into a compound of faces
-
+//    Base::Console().Message("DVS::mapToPage() - shapeToAlign.null: %d\n", shapeToAlign.IsNull());
     BRep_Builder builder;
     TopoDS_Compound result;
     builder.MakeCompound(result);
