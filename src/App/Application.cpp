@@ -2313,7 +2313,9 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
             str << "Python   " << PY_VERSION << '\n';
             str << "PySide   " << FC_PYSIDE_VERSION << '\n';
             str << "shiboken " << FC_SHIBOKEN_VERSION << '\n';
+#ifdef SMESH_VERSION_STR
             str << "SMESH    " << SMESH_VERSION_STR << '\n';
+#endif
             str << "VTK      " << FC_VTK_VERSION << '\n';
             str << "xerces-c " << FC_XERCESC_VERSION << '\n';
         }
@@ -2606,7 +2608,9 @@ void Application::initConfig(int argc, char ** argv)
     mConfig["QT_VERSION"] = QT_VERSION_STR;
     mConfig["EIGEN_VERSION"] = FC_EIGEN3_VERSION;
     mConfig["PYSIDE_VERSION"] = FC_PYSIDE_VERSION;
+#ifdef SMESH_VERSION_STR
     mConfig["SMESH_VERSION"] = SMESH_VERSION_STR;
+#endif
     mConfig["XERCESC_VERSION"] = FC_XERCESC_VERSION;
 
 

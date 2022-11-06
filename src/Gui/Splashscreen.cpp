@@ -605,7 +605,11 @@ void AboutDialog::showLibraryInformation()
     li.name = QLatin1String("Salome SMESH");
     li.href = baseurl + QLatin1String("#_TocSalomeSMESH");
     li.url = QLatin1String("https://salome-platform.org");
+#ifdef SMESH_VERSION_STR
     li.version = QLatin1String(SMESH_VERSION_STR);
+#else
+    li.version.clear();
+#endif
     libInfo << li;
 
     // Shiboken
