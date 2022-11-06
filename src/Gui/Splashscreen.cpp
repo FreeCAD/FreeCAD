@@ -65,30 +65,43 @@ namespace Gui {
 class SplashObserver : public Base::ILogger
 {
 public:
-    SplashObserver(QSplashScreen* splasher=nullptr)
-      : splash(splasher), alignment(Qt::AlignBottom|Qt::AlignLeft), textColor(Qt::black)
+    SplashObserver(const SplashObserver&) = delete;
+    SplashObserver(SplashObserver&&) = delete;
+    SplashObserver& operator= (const SplashObserver&) = delete;
+    SplashObserver& operator= (SplashObserver&&) = delete;
+
+    explicit SplashObserver(QSplashScreen* splasher=nullptr)
+      : splash(splasher)
+      , alignment(Qt::AlignBottom|Qt::AlignLeft)
+      , textColor(Qt::black)
     {
         Base::Console().AttachObserver(this);
 
         // allow to customize text position and color
-        const std::map<std::string,std::string>& cfg = App::GetApplication().Config();
+        const std::map<std::string,std::string>& cfg = App::Application::Config();
         auto al = cfg.find("SplashAlignment");
         if (al != cfg.end()) {
             QString alt = QString::fromLatin1(al->second.c_str());
             int align=0;
-            if (alt.startsWith(QLatin1String("VCenter")))
+            if (alt.startsWith(QLatin1String("VCenter"))) {
                 align = Qt::AlignVCenter;
-            else if (alt.startsWith(QLatin1String("Top")))
+            }
+            else if (alt.startsWith(QLatin1String("Top"))) {
                 align = Qt::AlignTop;
-            else
+            }
+            else {
                 align = Qt::AlignBottom;
+            }
 
-            if (alt.endsWith(QLatin1String("HCenter")))
+            if (alt.endsWith(QLatin1String("HCenter"))) {
                 align += Qt::AlignHCenter;
-            else if (alt.endsWith(QLatin1String("Right")))
+            }
+            else if (alt.endsWith(QLatin1String("Right"))) {
                 align += Qt::AlignRight;
-            else
+            }
+            else {
                 align += Qt::AlignLeft;
+            }
 
             alignment = align;
         }
@@ -97,8 +110,9 @@ public:
         auto tc = cfg.find("SplashTextColor");
         if (tc != cfg.end()) {
             QColor col; col.setNamedColor(QString::fromLatin1(tc->second.c_str()));
-            if (col.isValid())
+            if (col.isValid()) {
                 textColor = col;
+            }
         }
     }
     ~SplashObserver() override
@@ -120,9 +134,9 @@ public:
         }
 #endif
     }
-    void Log (const char * s)
+    void Log (const char * text)
     {
-        QString msg(QString::fromUtf8(s));
+        QString msg(QString::fromUtf8(text));
         QRegularExpression rx;
         // ignore 'Init:' and 'Mod:' prefixes
         rx.setPattern(QLatin1String("^\\s*(Init:|Mod:)\\s*"));
