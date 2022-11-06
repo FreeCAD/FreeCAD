@@ -7,7 +7,7 @@ class RegressionTests(unittest.TestCase):
 
     def test_issue_4456(self):
         """
-        0004456: Regression : Part.Plane.Intersect do not accept plane as argument
+        0004456: Regression : Part.Plane.Intersect does not accept plane as argument
         """
         p1 = Part.Plane()
         p2 = Part.Plane(Vector(0, 0, 0), Vector(1, 0, 0))
