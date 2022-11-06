@@ -712,7 +712,7 @@ BSpline* BSpline::Copy()
     return crv;
 }
 
-double BSpline::getLinCombFactor(double x, size_t k, size_t i, size_t p)
+double BSpline::getLinCombFactor(double x, size_t k, size_t i, unsigned int p)
 {
     // Adapted to C++ from the python implementation in the Wikipedia page for de Boor algorithm
     // https://en.wikipedia.org/wiki/De_Boor%27s_algorithm.
@@ -734,7 +734,7 @@ double BSpline::getLinCombFactor(double x, size_t k, size_t i, size_t p)
         return 0.0;
     d[idxOfPole] = 1.0;
 
-    for (size_t r = 1; static_cast<int>(r) < p + 1; ++r) {
+    for (size_t r = 1; r < p + 1; ++r) {
         for (size_t j = p; j > r - 1; --j) {
             double alpha =
                 (x - flattenedknots[j + k - p]) /
@@ -746,7 +746,7 @@ double BSpline::getLinCombFactor(double x, size_t k, size_t i, size_t p)
     return d[p];
 }
 
-double BSpline::splineValue(double x, size_t k, size_t p, VEC_D& d, const VEC_D& flatknots)
+double BSpline::splineValue(double x, size_t k, unsigned int p, VEC_D& d, const VEC_D& flatknots)
 {
     for (size_t r = 1; r < p + 1; ++r) {
         for (size_t j = p; j > r - 1; --j) {
