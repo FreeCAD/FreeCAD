@@ -234,7 +234,7 @@ QIcon ViewProviderExport::getIcon() const
 
 App::PropertyFloatConstraint::Constraints ViewProviderMesh::floatRange = {1.0f, 64.0f, 1.0f};
 App::PropertyFloatConstraint::Constraints ViewProviderMesh::angleRange = {0.0f, 180.0f, 1.0f};
-App::PropertyIntegerConstraint::Constraints ViewProviderMesh::intPercent = {0, 100, 1};
+App::PropertyIntegerConstraint::Constraints ViewProviderMesh::intPercent = {0, 100, 5};
 const char* ViewProviderMesh::LightingEnums[]= {"One side", "Two side", nullptr};
 
 PROPERTY_SOURCE(MeshGui::ViewProviderMesh, Gui::ViewProviderGeometryObject)
