@@ -120,7 +120,7 @@ Py::Object PySideUicModule::loadUiType(const Py::Tuple& args)
     QTextStream str(&cmd);
     // https://github.com/albop/dolo/blob/master/bin/load_ui.py
     str << "import pyside2uic\n"
-        << "from PySide2 import QtCore, QtGui, QtWidgets\n"
+        << "from PySide import QtCore, QtGui, QtWidgets\n"
         << "import xml.etree.ElementTree as xml\n"
         << "try:\n"
         << "    from cStringIO import StringIO\n"
@@ -173,7 +173,7 @@ Py::Object PySideUicModule::loadUi(const Py::Tuple& args)
     QString cmd;
     QTextStream str(&cmd);
 
-    str << "from PySide2 import QtCore, QtGui, QtWidgets\n"
+    str << "from PySide import QtCore, QtGui, QtWidgets\n"
         << "import FreeCADGui"
         << "\n"
         << "loader = FreeCADGui.UiLoader()\n"
