@@ -218,6 +218,8 @@ class PartTestNormals(unittest.TestCase):
 
 class PartTestShapeRotate(unittest.TestCase):
     def testPlacement(self):
+        tol = 1e-12
+
         box = Part.makeBox(1, 1, 1)
         box.Placement.Base = Base.Vector(10, 10, 10)
         box.rotate((0, 0, 0), (0, 0, 1), 90)
@@ -227,17 +229,17 @@ class PartTestShapeRotate(unittest.TestCase):
 
         p2 = Base.Placement()
         p2.Rotation.Angle = math.radians(90)
-        self.assertTrue(box.Placement.isSame(p2 * p1))
+        self.assertTrue(box.Placement.isSame(p2 * p1, tol))
 
-        p5 = p1.copy()
-        p5.rotate((0, 0, 0), (0, 0, 1), 90)
-        self.assertTrue(p5.isSame(p1 * p2))
-        self.assertFalse(box.Placement.isSame(p5))
+        p3 = p1.copy()
+        p3.rotate((0, 0, 0), (0, 0, 1), 90)
+        self.assertTrue(p3.isSame(p1 * p2, tol))
+        self.assertFalse(box.Placement.isSame(p3, tol))
 
-        p5 = p1.copy()
-        p5.rotate((0, 0, 0), (0, 0, 1), 90, True)
-        self.assertTrue(p5.isSame(p2 * p1))
-        self.assertTrue(box.Placement.isSame(p5))
+        p4 = p1.copy()
+        p4.rotate((0, 0, 0), (0, 0, 1), 90, True)
+        self.assertTrue(p4.isSame(p2 * p1, tol))
+        self.assertTrue(box.Placement.isSame(p4, tol))
 
 class PartTestCircle2D(unittest.TestCase):
     def testValidCircle(self):
