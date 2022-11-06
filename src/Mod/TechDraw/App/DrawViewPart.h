@@ -155,7 +155,7 @@ public:
                                       const Base::Vector3d& axis,
                                       const bool flip = true)  const;
     gp_Ax2 localVectorToCS(const Base::Vector3d localUnit) const;
-
+    Base::Vector3d localVectorToDirection(const Base::Vector3d localUnit) const;
 
     bool handleFaces();
     bool newFaceFinder();

@@ -141,6 +141,7 @@ private:
     CompassWidget* m_compass;
     double m_angle;
     VectorEditWidget* m_viewDirectionWidget;
+    bool m_directionIsSet;
 
 };
 

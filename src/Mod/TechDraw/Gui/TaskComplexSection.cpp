@@ -87,14 +87,14 @@ TaskComplexSection::TaskComplexSection(TechDraw::DrawPage* page,
     m_dirName("Aligned"),
     m_createMode(true),
     m_applyDeferred(0),
-    m_angle(0.0)
+    m_angle(0.0),
+    m_directionIsSet(false)
 {
     m_sectionName = std::string();
     m_doc         = m_baseView->getDocument();
 
     m_saveBaseName = m_baseView->getNameInDocument();
     m_savePageName = m_baseView->findParentPage()->getNameInDocument();
-    m_localUnit = Base::Vector3d(0.0, 1.0, 0.0);
 
     ui->setupUi(this);
 
@@ -103,7 +103,6 @@ TaskComplexSection::TaskComplexSection(TechDraw::DrawPage* page,
 
     m_applyDeferred = 0;  //setting the direction widgets causes an increment of the deferred count,
                           //so we reset the counter and the message.
-    ui->lPendingUpdates->setText(QString());
 }
 
 //ctor for edit
@@ -116,7 +115,8 @@ TaskComplexSection::TaskComplexSection(TechDraw::DrawComplexSection* complexSect
     m_dirName("Aligned"),
     m_createMode(false),
     m_applyDeferred(0),
-    m_angle(0.0)
+    m_angle(0.0),
+    m_directionIsSet(true)
 {
     m_sectionName = m_section->getNameInDocument();
     m_doc         = m_section->getDocument();
@@ -128,7 +128,6 @@ TaskComplexSection::TaskComplexSection(TechDraw::DrawComplexSection* complexSect
     m_shapes = m_section->Source.getValues();
     m_xShapes = m_section->XSource.getValues();
     m_profileObject = m_section->CuttingToolWireObject.getValue();
-    m_localUnit = Base::Vector3d(0.0, 1.0, 0.0);
 
     ui->setupUi(this);
 
@@ -163,7 +162,7 @@ void TaskComplexSection::setUiPrimary()
         m_localUnit = defaultNormal;
         m_saveXDir = Base::Vector3d(0.0, 1.0, 0.0);
         ui->leBaseView->setText(Base::Tools::fromStdString(m_baseView->getNameInDocument()));
-        m_viewDirectionWidget->setValue(defaultNormal * -1.0);
+        m_viewDirectionWidget->setValue(Base::Vector3d(0.0, 0.0, 0.0));
     } else {
         //if there is no baseView, we use the 3d view to determine the SectionNormal
         //and XDirection.
@@ -173,6 +172,12 @@ void TaskComplexSection::setUiPrimary()
         m_saveXDir = dirs.second;
         m_viewDirectionWidget->setValue(m_saveNormal * -1.0);   //this will propogate to m_compass
     }
+
+    //don't allow updates until a direction is picked
+    ui->pbUpdateNow->setEnabled(false);
+    ui->cbLiveUpdate->setEnabled(false);
+    QString msgLiteral = QString::fromUtf8(QT_TRANSLATE_NOOP("TaskPojGroup", "No direction set"));
+    ui->lPendingUpdates->setText(msgLiteral);
 }
 
 void TaskComplexSection::setUiEdit()
@@ -219,10 +224,6 @@ void TaskComplexSection::setUiCommon()
     auto editLayout = ui->viewDirectionLayout;
     editLayout->addWidget(m_viewDirectionWidget);
 
-    connect(ui->pbRight, SIGNAL(clicked(bool)), m_compass, SLOT(setToEast()));
-    connect(ui->pbLeft, SIGNAL(clicked(bool)), m_compass, SLOT(setToWest()));
-    connect(ui->pbUp, SIGNAL(clicked(bool)), m_compass, SLOT(setToNorth()));
-    connect(ui->pbDown, SIGNAL(clicked(bool)), m_compass, SLOT(setToSouth()));
     connect(m_compass, SIGNAL(angleChanged(double)), this, SLOT(slotChangeAngle(double)));
 
     connect(ui->pbUp, SIGNAL(clicked(bool)), this, SLOT(onUpClicked()));
@@ -319,22 +320,20 @@ void TaskComplexSection::slotChangeAngle(double newAngle)
 {
 //    Base::Console().Message("TCS::slotAngleChanged(%.3f)\n", newAngle);
     double angleRadians = newAngle * M_PI / 180.0;
-    if (m_baseView) {
-        double unitX = cos(angleRadians);
-        double unitY = sin(angleRadians);
-        Base::Vector3d localUnit(unitX, unitY, 0.0);
-        m_viewDirectionWidget->setValue(localUnit);
-        checkAll(false);
-        applyAligned(localUnit);
-    } else {
-        //save the angle for later use
-        m_angle = angleRadians;
-    }
+    double unitX = cos(angleRadians);
+    double unitY = sin(angleRadians);
+    Base::Vector3d localUnit(unitX, unitY, 0.0);
+    m_viewDirectionWidget->setValue(localUnit);
+    checkAll(false);
+    applyAligned(localUnit);
 }
+
 void TaskComplexSection::onUpClicked()
 {
 //    Base::Console().Message("TCS::onUpClicked()\n");
     checkAll(false);
+    m_compass->setToNorth();
+    m_viewDirectionWidget->setValueNoNotify(Base::Vector3d(0.0, 1.0, 0.0));
     applyAligned(Base::Vector3d(0.0, 1.0, 0.0));
 }
 
@@ -342,6 +341,8 @@ void TaskComplexSection::onDownClicked()
 {
 //    Base::Console().Message("TCS::onDownClicked()\n");
     checkAll(false);
+    m_compass->setToSouth();
+    m_viewDirectionWidget->setValueNoNotify(Base::Vector3d(0.0, -1.0, 0.0));
     applyAligned(Base::Vector3d(0.0, -1.0, 0.0));
 }
 
@@ -349,6 +350,8 @@ void TaskComplexSection::onLeftClicked()
 {
 //    Base::Console().Message("TCS::onLeftClicked()\n");
     checkAll(false);
+    m_compass->setToWest();
+    m_viewDirectionWidget->setValueNoNotify(Base::Vector3d(-1.0, 0.0, 0.0));
     applyAligned(Base::Vector3d(-1.0, 0.0, 0.0));
 }
 
@@ -356,6 +359,8 @@ void TaskComplexSection::onRightClicked()
 {
 //    Base::Console().Message("TCS::onRightClicked()\n");
     checkAll(false);
+    m_compass->setToEast();
+    m_viewDirectionWidget->setValueNoNotify(Base::Vector3d(1.0, 0.0, 0.0));
     applyAligned(Base::Vector3d(1.0, 0.0, 0.0));
 }
 
@@ -431,6 +436,7 @@ void TaskComplexSection::enableAll(bool enable)
     else {
         ui->sbScale->setEnabled(false);
     }
+
 }
 
 void TaskComplexSection::liveUpdateClicked() {
@@ -493,6 +499,19 @@ bool TaskComplexSection::apply(bool forceUpdate)
         ui->lPendingUpdates->setText(msgNumber + msgLiteral);
         return false;
     }
+    if (m_baseView) {
+        if (!DrawComplexSection::canBuild(m_baseView->localVectorToCS(m_localUnit), m_profileObject)) {
+            Base::Console().Error("Can not build Complex Section with this profile and direction\n");
+            return false;
+        }
+    } else {
+        gp_Pnt stdOrigin(0.0, 0.0, 0.0);
+        gp_Ax2 sectionCS(stdOrigin, DrawUtil::togp_Dir(m_saveNormal), DrawUtil::togp_Dir(m_saveXDir));
+        if (!DrawComplexSection::canBuild(sectionCS, m_profileObject)) {
+            Base::Console().Error("Can not build Complex Section with this profile and direction\n");
+            return false;
+        }
+    }
 
     Gui::WaitCursor wc;
     if (!m_section) {
@@ -526,6 +545,9 @@ void TaskComplexSection::applyAligned(Base::Vector3d localUnit)
     m_dirName = "Aligned";
     m_localUnit = localUnit;
     enableAll(true);
+    m_directionIsSet = true;
+    ui->pbUpdateNow->setEnabled(true);
+    ui->cbLiveUpdate->setEnabled(true);
     apply();
 }
 
@@ -582,9 +604,7 @@ void TaskComplexSection::createComplexSection()
         if (m_baseView) {
             Command::doCommand(Command::Doc, "App.ActiveDocument.%s.BaseView = App.ActiveDocument.%s",
                                m_sectionName.c_str(), m_baseView->getNameInDocument());
-            if (m_localUnit.Length() != 0.0) {
-                m_section->setCSFromBase(m_localUnit * -1.0);
-            }
+            m_section->setCSFromBase(m_localUnit * -1.0);
             m_section->Source.setValues(m_baseView->Source.getValues());
             m_section->XSource.setValues(m_baseView->XSource.getValues());
         } else {
@@ -596,7 +616,6 @@ void TaskComplexSection::createComplexSection()
             } else {
                 //if we have changed the direction, use the local unit to create a CS
                 m_section->setCSFromLocalUnit(m_localUnit * -1.0);
-                m_localUnit = m_saveNormal;  //don't repeat this work next time through
             }
             m_section->Source.setValues(m_shapes);
             m_section->XSource.setValues(m_xShapes);
@@ -645,26 +664,12 @@ void TaskComplexSection::updateComplexSection()
                                           m_sectionName.c_str());
         m_section->CuttingToolWireObject.setValue(m_profileObject);
         m_section->SectionDirection.setValue("Aligned");
+        m_section->setCSFromBase(m_localUnit * -1.0);
         if (m_baseView) {
-            if (!m_localUnit.IsEqual(m_saveNormal, EWTOLERANCE) &&
-                    m_localUnit.Length() != 0.0) {
-                //if we have changed the view direction (and by extension the
-                //section normal, update the feature with the new value.
-                //m_localUnit should always be valid, but will cause an exception
-                //if it is null.
-                m_section->setCSFromBase(m_localUnit * -1.0);
-            }
             m_section->Source.setValues(m_baseView->Source.getValues());
             m_section->XSource.setValues(m_baseView->XSource.getValues());
         } else {
             //without a baseView, our choice of SectionNormal and XDirection may well be wrong
-            //if we have not changed the direction, we leave things as they are
-            if (!m_localUnit.IsEqual(m_saveNormal, EWTOLERANCE)) {
-                //just do our best.
-                m_section->setCSFromLocalUnit(m_localUnit * -1.0);
-                m_localUnit = m_saveNormal;  //don't repeat this work next time through
-            }
-
             m_section->Source.setValues(m_shapes);
             m_section->XSource.setValues(m_xShapes);
         }

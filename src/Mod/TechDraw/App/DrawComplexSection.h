@@ -94,19 +94,22 @@ public:
     std::pair<Base::Vector3d, Base::Vector3d> sectionArrowDirs();
     TopoDS_Wire makeSectionLineWire();
 
-    TopoDS_Wire makeProfileWire(App::DocumentObject *toolObj);
-    TopoDS_Wire makeNoseToTailWire(TopoDS_Wire inWire);
-    gp_Dir projectProfileWire(TopoDS_Wire profileWire, gp_Ax3 paperCS);
     ChangePointVector getChangePointsFromSectionLine();
 
     bool validateProfilePosition(TopoDS_Wire profileWire, gp_Ax2 sectionCS,
                                  gp_Dir &gClosestBasis) const;
     bool showSegment(gp_Dir segmentNormal) const;
+    gp_Vec projectVector(const gp_Vec& vec) const;
 
+    static TopoDS_Wire makeProfileWire(App::DocumentObject *toolObj);
+    static TopoDS_Wire makeNoseToTailWire(TopoDS_Wire inWire);
+    static gp_Vec makeProfileVector(TopoDS_Wire profileWire);
     static bool isProfileObject(App::DocumentObject *obj);
     static bool isMultiSegmentProfile(App::DocumentObject *obj);
     static bool isLinearProfile(App::DocumentObject *obj);
     static bool isTrulyEmpty(TopoDS_Shape inShape);
+    static bool canBuild(gp_Ax2 sectionCS, App::DocumentObject* profileObject);
+    static gp_Vec projectVector(const gp_Vec& vec, gp_Ax2 sectionCS);
 
 private:
     gp_Dir getFaceNormal(TopoDS_Face &face);
