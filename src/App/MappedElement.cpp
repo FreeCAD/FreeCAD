@@ -107,7 +107,7 @@ void IndexedName::set(const char *name,
         for (const char *n=name, *t=type; *n; ++n) {
             if (*n != *t || j >= i)
                 break;
-            ++i;
+            ++j;
             ++t;
             if (!*t) {
                 this->type = type;
@@ -118,8 +118,8 @@ void IndexedName::set(const char *name,
 
     if (allowOthers) {
         auto res = NameSet.insert(QByteArray::fromRawData(name, i));
-        if (res.second) 
-            res.first->mutate();
+        if (res.second)
+           res.first->mutate();
         this->type = res.first->bytes.constData();
     } else
         this->type = "";
