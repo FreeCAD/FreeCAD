@@ -933,7 +933,7 @@ class ToolBitLibrary(object):
 
             if not bit:
                 continue
-            
+
             Path.Log.track(bit)
 
             toolitem = tooltemplate.copy()

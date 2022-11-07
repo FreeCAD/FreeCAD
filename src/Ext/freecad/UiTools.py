@@ -1,6 +1,6 @@
 # (c) 2021 Werner Mayer LGPL
 
-from PySide2 import QtUiTools
+from PySide import QtUiTools
 import FreeCADGui as Gui
 
 

@@ -21,10 +21,12 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+
 #ifndef _PreComp_
 # include <cstdlib>
 # include <QApplication>
 # include <QClipboard>
+# include <QFile>
 # include <QLocale>
 # include <QMutex>
 # include <QProcessEnvironment>
@@ -63,30 +65,43 @@ namespace Gui {
 class SplashObserver : public Base::ILogger
 {
 public:
-    SplashObserver(QSplashScreen* splasher=nullptr)
-      : splash(splasher), alignment(Qt::AlignBottom|Qt::AlignLeft), textColor(Qt::black)
+    SplashObserver(const SplashObserver&) = delete;
+    SplashObserver(SplashObserver&&) = delete;
+    SplashObserver& operator= (const SplashObserver&) = delete;
+    SplashObserver& operator= (SplashObserver&&) = delete;
+
+    explicit SplashObserver(QSplashScreen* splasher=nullptr)
+      : splash(splasher)
+      , alignment(Qt::AlignBottom|Qt::AlignLeft)
+      , textColor(Qt::black)
     {
         Base::Console().AttachObserver(this);
 
         // allow to customize text position and color
-        const std::map<std::string,std::string>& cfg = App::GetApplication().Config();
+        const std::map<std::string,std::string>& cfg = App::Application::Config();
         auto al = cfg.find("SplashAlignment");
         if (al != cfg.end()) {
             QString alt = QString::fromLatin1(al->second.c_str());
             int align=0;
-            if (alt.startsWith(QLatin1String("VCenter")))
+            if (alt.startsWith(QLatin1String("VCenter"))) {
                 align = Qt::AlignVCenter;
-            else if (alt.startsWith(QLatin1String("Top")))
+            }
+            else if (alt.startsWith(QLatin1String("Top"))) {
                 align = Qt::AlignTop;
-            else
+            }
+            else {
                 align = Qt::AlignBottom;
+            }
 
-            if (alt.endsWith(QLatin1String("HCenter")))
+            if (alt.endsWith(QLatin1String("HCenter"))) {
                 align += Qt::AlignHCenter;
-            else if (alt.endsWith(QLatin1String("Right")))
+            }
+            else if (alt.endsWith(QLatin1String("Right"))) {
                 align += Qt::AlignRight;
-            else
+            }
+            else {
                 align += Qt::AlignLeft;
+            }
 
             alignment = align;
         }
@@ -95,8 +110,9 @@ public:
         auto tc = cfg.find("SplashTextColor");
         if (tc != cfg.end()) {
             QColor col; col.setNamedColor(QString::fromLatin1(tc->second.c_str()));
-            if (col.isValid())
+            if (col.isValid()) {
                 textColor = col;
+            }
         }
     }
     ~SplashObserver() override
@@ -118,9 +134,9 @@ public:
         }
 #endif
     }
-    void Log (const char * s)
+    void Log (const char * text)
     {
-        QString msg(QString::fromUtf8(s));
+        QString msg(QString::fromUtf8(text));
         QRegularExpression rx;
         // ignore 'Init:' and 'Mod:' prefixes
         rx.setPattern(QLatin1String("^\\s*(Init:|Mod:)\\s*"));
@@ -378,9 +394,9 @@ void AboutDialog::setupLabels()
 class AboutDialog::LibraryInfo {
 public:
     QString name;
-    QString version;
     QString href;
     QString url;
+    QString version;
 };
 
 void AboutDialog::showCredits()
@@ -412,7 +428,9 @@ void AboutDialog::showCredits()
     creditsHTML += QString::fromLatin1("</h2><ul>");
 
     QTextStream stream(&creditsFile);
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
     stream.setCodec("UTF-8");
+#endif
     QString line;
     while (stream.readLineInto(&line)) {
         if (!line.isEmpty()) {
@@ -493,137 +511,158 @@ void AboutDialog::showLibraryInformation()
     hlayout->addWidget(textField);
 
     QList<LibraryInfo> libInfo;
-    LibraryInfo li;
     QString baseurl = QString::fromLatin1("file:///%1/ThirdPartyLibraries.html")
             .arg(QString::fromUtf8(App::Application::getHelpDir().c_str()));
 
     // Boost
-    li.name = QLatin1String("Boost");
-    li.href = baseurl + QLatin1String("#_TocBoost");
-    li.url = QLatin1String("https://www.boost.org");
-    li.version = QLatin1String(BOOST_LIB_VERSION);
-    libInfo << li;
+    libInfo << LibraryInfo {
+        QLatin1String("Boost"),
+        baseurl + QLatin1String("#_TocBoost"),
+        QLatin1String("https://www.boost.org"),
+        QLatin1String(BOOST_LIB_VERSION)
+    };
 
     // Coin3D
-    li.name = QLatin1String("Coin3D");
-    li.href = baseurl + QLatin1String("#_TocCoin3D");
-    li.url = QLatin1String("https://coin3d.github.io");
-    li.version = QLatin1String(COIN_VERSION);
-    libInfo << li;
+    libInfo << LibraryInfo {
+        QLatin1String("Coin3D"),
+        baseurl + QLatin1String("#_TocCoin3D"),
+        QLatin1String("https://coin3d.github.io"),
+        QLatin1String(COIN_VERSION)
+    };
 
     // Eigen3
-    li.name = QLatin1String("Eigen");
-    li.href = baseurl + QLatin1String("#_TocEigen");
-    li.url = QLatin1String("https://eigen.tuxfamily.org");
-    li.version = QString::fromLatin1(FC_EIGEN3_VERSION);
-    libInfo << li;
+    libInfo << LibraryInfo {
+        QLatin1String("Eigen"),
+        baseurl + QLatin1String("#_TocEigen"),
+        QLatin1String("https://eigen.tuxfamily.org"),
+        QString::fromLatin1(FC_EIGEN3_VERSION)
+    };
 
     // FreeType
-    li.name = QLatin1String("FreeType");
-    li.href = baseurl + QLatin1String("#_TocFreeType");
-    li.url = QLatin1String("https://freetype.org");
-    li.version = QString::fromLatin1(FC_FREETYPE_VERSION);
-    libInfo << li;
+    libInfo << LibraryInfo {
+        QLatin1String("FreeType"),
+        baseurl + QLatin1String("#_TocFreeType"),
+        QLatin1String("https://freetype.org"),
+        QString::fromLatin1(FC_FREETYPE_VERSION)
+    };
 
     // KDL
-    li.name = QLatin1String("KDL");
-    li.href = baseurl + QLatin1String("#_TocKDL");
-    li.url = QLatin1String("https://www.orocos.org/kdl");
-    li.version.clear();
-    libInfo << li;
+    libInfo << LibraryInfo {
+        QLatin1String("KDL"),
+        baseurl + QLatin1String("#_TocKDL"),
+        QLatin1String("https://www.orocos.org/kdl"),
+        QString()
+    };
 
     // libarea
-    li.name = QLatin1String("libarea");
-    li.href = baseurl + QLatin1String("#_TocLibArea");
-    li.url = QLatin1String("https://github.com/danielfalck/libarea");
-    li.version.clear();
-    libInfo << li;
+    libInfo << LibraryInfo {
+        QLatin1String("libarea"),
+        baseurl + QLatin1String("#_TocLibArea"),
+        QLatin1String("https://github.com/danielfalck/libarea"),
+        QString()
+    };
 
     // OCCT
 #if defined(HAVE_OCC_VERSION)
-    li.name = QLatin1String("Open CASCADE Technology");
-    li.href = baseurl + QLatin1String("#_TocOCCT");
-    li.url = QLatin1String("https://www.opencascade.com/open-cascade-technology/");
-    li.version = QLatin1String(OCC_VERSION_STRING_EXT);
-    libInfo << li;
+    libInfo << LibraryInfo {
+        QLatin1String("Open CASCADE Technology"),
+        baseurl + QLatin1String("#_TocOCCT"),
+        QLatin1String("https://www.opencascade.com/open-cascade-technology/"),
+        QLatin1String(OCC_VERSION_STRING_EXT)
+    };
 #endif
 
     // pcl
-    li.name = QLatin1String("Point Cloud Library");
-    li.href = baseurl + QLatin1String("#_TocPcl");
-    li.url = QLatin1String("https://www.pointclouds.org");
-    li.version = QString::fromLatin1(FC_PCL_VERSION);
-    libInfo << li;
+    libInfo << LibraryInfo {
+        QLatin1String("Point Cloud Library"),
+        baseurl + QLatin1String("#_TocPcl"),
+        QLatin1String("https://www.pointclouds.org"),
+        QString::fromLatin1(FC_PCL_VERSION)
+    };
 
     // PyCXX
-    li.name = QLatin1String("PyCXX");
-    li.href = baseurl + QLatin1String("#_TocPyCXX");
-    li.url = QLatin1String("http://cxx.sourceforge.net");
-    li.version = QString::fromLatin1(FC_PYCXX_VERSION);
-    libInfo << li;
+    libInfo << LibraryInfo {
+        QLatin1String("PyCXX"),
+        baseurl + QLatin1String("#_TocPyCXX"),
+        QLatin1String("http://cxx.sourceforge.net"),
+        QString::fromLatin1(FC_PYCXX_VERSION)
+    };
 
     // Python
-    li.name = QLatin1String("Python");
-    li.href = baseurl + QLatin1String("#_TocPython");
-    li.url = QLatin1String("https://www.python.org");
-    li.version = QLatin1String(PY_VERSION);
-    libInfo << li;
+    libInfo << LibraryInfo {
+        QLatin1String("Python"),
+        baseurl + QLatin1String("#_TocPython"),
+        QLatin1String("https://www.python.org"),
+        QLatin1String(PY_VERSION)
+    };
 
     // PySide
-    li.name = QLatin1String("Qt for Python (PySide)");
-    li.href = baseurl + QLatin1String("#_TocPySide");
-    li.url = QLatin1String("https://wiki.qt.io/Qt_for_Python");
-    li.version = QString::fromLatin1(FC_PYSIDE_VERSION);
-    libInfo << li;
+    libInfo << LibraryInfo {
+        QLatin1String("Qt for Python (PySide)"),
+        baseurl + QLatin1String("#_TocPySide"),
+        QLatin1String("https://wiki.qt.io/Qt_for_Python"),
+        QString::fromLatin1(FC_PYSIDE_VERSION)
+    };
 
     // Qt
-    li.name = QLatin1String("Qt");
-    li.href = baseurl + QLatin1String("#_TocQt");
-    li.url = QLatin1String("https://www.qt.io");
-    li.version = QLatin1String(QT_VERSION_STR);
-    libInfo << li;
+    libInfo << LibraryInfo {
+        QLatin1String("Qt"),
+        baseurl + QLatin1String("#_TocQt"),
+        QLatin1String("https://www.qt.io"),
+        QLatin1String(QT_VERSION_STR)
+    };
 
     // Salome SMESH
-    li.name = QLatin1String("Salome SMESH");
-    li.href = baseurl + QLatin1String("#_TocSalomeSMESH");
-    li.url = QLatin1String("https://salome-platform.org");
-    li.version.clear();
-    libInfo << li;
+    libInfo << LibraryInfo {
+        QLatin1String("Salome SMESH"),
+        baseurl + QLatin1String("#_TocSalomeSMESH"),
+        QLatin1String("https://salome-platform.org"),
+#ifdef SMESH_VERSION_STR
+        QLatin1String(SMESH_VERSION_STR)
+#else
+        QString()
+#endif
+    };
 
     // Shiboken
-    li.name = QLatin1String("Qt for Python (Shiboken)");
-    li.href = baseurl + QLatin1String("#_TocPySide");
-    li.url = QLatin1String("https://wiki.qt.io/Qt_for_Python");
-    li.version = QString::fromLatin1(FC_SHIBOKEN_VERSION);
-    libInfo << li;
+    libInfo << LibraryInfo {
+        QLatin1String("Qt for Python (Shiboken)"),
+        baseurl + QLatin1String("#_TocPySide"),
+        QLatin1String("https://wiki.qt.io/Qt_for_Python"),
+        QString::fromLatin1(FC_SHIBOKEN_VERSION)
+    };
 
     // vtk
-    li.name = QLatin1String("vtk");
-    li.href = baseurl + QLatin1String("#_TocVtk");
-    li.url = QLatin1String("https://www.vtk.org");
-    li.version = QString::fromLatin1(FC_VTK_VERSION);
-    libInfo << li;
+    libInfo << LibraryInfo {
+        QLatin1String("vtk"),
+        baseurl + QLatin1String("#_TocVtk"),
+        QLatin1String("https://www.vtk.org"),
+        QString::fromLatin1(FC_VTK_VERSION)
+    };
 
     // Xerces-C
-    li.name = QLatin1String("Xerces-C");
-    li.href = baseurl + QLatin1String("#_TocXercesC");
-    li.url = QLatin1String("https://xerces.apache.org/xerces-c");
-    li.version = QString::fromLatin1(FC_XERCESC_VERSION);
-    libInfo << li;
+    libInfo << LibraryInfo {
+        QLatin1String("Xerces-C"),
+        baseurl + QLatin1String("#_TocXercesC"),
+        QLatin1String("https://xerces.apache.org/xerces-c"),
+        QString::fromLatin1(FC_XERCESC_VERSION)
+    };
 
     // Zipios++
-    li.name = QLatin1String("Zipios++");
-    li.href = baseurl + QLatin1String("#_TocZipios");
-    li.url = QLatin1String("http://zipios.sourceforge.net");
-    li.version.clear();
-    libInfo << li;
+    libInfo << LibraryInfo {
+        QLatin1String("Zipios++"),
+        baseurl + QLatin1String("#_TocZipios"),
+        QLatin1String("http://zipios.sourceforge.net"),
+        QString()
+    };
 
     // zlib
-    li.name = QLatin1String("zlib");
-    li.href = baseurl + QLatin1String("#_TocZlib");
-    li.url = QLatin1String("https://zlib.net");
-    li.version = QLatin1String(ZLIB_VERSION);
-    libInfo << li;
+    libInfo << LibraryInfo {
+        QLatin1String("zlib"),
+        baseurl + QLatin1String("#_TocZlib"),
+        QLatin1String("https://zlib.net"),
+        QLatin1String(ZLIB_VERSION)
+    };
 
 
     QString msg = tr("This software uses open source components whose copyright and other "
@@ -640,7 +679,7 @@ void AboutDialog::showLibraryInformation()
     out << "</ul>\n</body>\n</html>";
     textField->setHtml(html);
 
-    connect(textField, SIGNAL(anchorClicked(QUrl)), this, SLOT(linkActivated(QUrl)));
+    connect(textField, &QTextBrowser::anchorClicked, this, &AboutDialog::linkActivated);
 }
 
 void AboutDialog::showCollectionInformation()

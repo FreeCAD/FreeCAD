@@ -82,7 +82,9 @@ def __getCRotation(normalVector, cMin=-360, cMax=360):
     with either the +y or -y axis.
     multiple poses may be possible.  Returns a list of all valid poses
     """
-    Path.Log.debug("normalVector: {} cMin: {} cMax: {}".format(normalVector, cMin, cMax))
+    Path.Log.debug(
+        "normalVector: {} cMin: {} cMax: {}".format(normalVector, cMin, cMax)
+    )
 
     angle = relAngle(normalVector, refAxis.y)
 

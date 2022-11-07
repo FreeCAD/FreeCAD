@@ -26,6 +26,7 @@
 # include <QAction>
 # include <QMap>
 # include <QPointer>
+# include <QTimer>
 #endif
 
 #include "ActionFunction.h"
@@ -58,7 +59,7 @@ void ActionFunction::trigger(QAction* action, std::function<void()> func)
     Q_D(ActionFunction);
 
     d->triggerMap[action] = func;
-    connect(action, SIGNAL(triggered()), this, SLOT(triggered()));
+    connect(action, &QAction::triggered, this, &ActionFunction::triggered);
 }
 
 void ActionFunction::triggered()
@@ -175,6 +176,11 @@ void TimerFunction::timeout()
         d->timeoutFuncQVariant(d->argQVariant);
     if (d->autoDelete)
         deleteLater();
+}
+
+void TimerFunction::singleShot(int ms)
+{
+    QTimer::singleShot(ms, this, &Gui::TimerFunction::timeout);
 }
 
 #include "moc_ActionFunction.cpp"

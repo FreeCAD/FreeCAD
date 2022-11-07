@@ -83,9 +83,7 @@ class CommandToolBitSave:
 
     def selectedTool(self):
         sel = FreeCADGui.Selection.getSelectionEx()
-        if 1 == len(sel) and isinstance(
-            sel[0].Object.Proxy, Path.Tool.Bit.ToolBit
-        ):
+        if 1 == len(sel) and isinstance(sel[0].Object.Proxy, Path.Tool.Bit.ToolBit):
             return sel[0].Object
         return None
 
@@ -145,9 +143,7 @@ class CommandToolBitLoad:
 
     def selectedTool(self):
         sel = FreeCADGui.Selection.getSelectionEx()
-        if 1 == len(sel) and isinstance(
-            sel[0].Object.Proxy, Path.Tool.Bit.ToolBit
-        ):
+        if 1 == len(sel) and isinstance(sel[0].Object.Proxy, Path.Tool.Bit.ToolBit):
             return sel[0].Object
         return None
 

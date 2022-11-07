@@ -198,9 +198,13 @@ class ToolController:
                     else:
                         obj.Tool = None
                         if toolVersion == 1:
-                            Path.Log.error(f"{obj.Name} - legacy Tools no longer supported - ignoring")
+                            Path.Log.error(
+                                f"{obj.Name} - legacy Tools no longer supported - ignoring"
+                            )
                         else:
-                            Path.Log.error(f"{obj.Name} - unknown Tool version {toolVersion} - ignoring")
+                            Path.Log.error(
+                                f"{obj.Name} - unknown Tool version {toolVersion} - ignoring"
+                            )
                     if (
                         obj.Tool
                         and obj.Tool.ViewObject
@@ -297,9 +301,7 @@ class ToolController:
                 "App::PropertyLink",
                 "Tool",
                 "Base",
-                QT_TRANSLATE_NOOP(
-                    "App::Property", "The tool used by this controller"
-                ),
+                QT_TRANSLATE_NOOP("App::Property", "The tool used by this controller"),
             )
 
 
@@ -319,6 +321,7 @@ def Create(
 
     if FreeCAD.GuiUp and assignViewProvider:
         from Path.Tool.Gui.Controller import ViewProvider
+
         ViewProvider(obj.ViewObject)
 
     if assignTool:
@@ -345,5 +348,6 @@ def FromTemplate(template, assignViewProvider=True):
         return obj
     FreeCAD.ActiveDocument.removeObject(obj.Name)
     return None
+
 
 FreeCAD.Console.PrintLog("Loading Path.Tool.Gui.Controller... done\n")

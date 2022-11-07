@@ -887,7 +887,7 @@ void QGIViewPart::drawComplexSectionLine(TechDraw::DrawViewSection* viewSection,
     wirePath.connectPath(firstSeg);
     int edgeCount = edges.size();
     //NOTE: if the edges are not in nose to tail order, Qt will insert extra segments
-    //that will overlap the segments we add. for interupted line styles, this
+    //that will overlap the segments we add. for interrupted line styles, this
     //will make the line look continuous.  This is prevented in
     //DrawComplexSection::makeSectionLineGeometry by calling makeNoseToTailWire
     for (int i = 1; i < edgeCount; i++) {

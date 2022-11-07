@@ -97,8 +97,6 @@ class ObjectOp(PathOp.ObjectOp):
             QT_TRANSLATE_NOOP("App::Property", "Split Arcs into discrete segments"),
         )
 
-        # obj.Proxy = self
-
         self.initAreaOp(obj)
 
     def initAreaOp(self, obj):
@@ -196,8 +194,6 @@ class ObjectOp(PathOp.ObjectOp):
                 startDepth = bb.ZMax
                 finalDepth = bb.ZMin
 
-            # obj.StartDepth.Value = startDepth
-            # obj.FinalDepth.Value = finalDepth
             obj.OpStartDepth.Value = startDepth
             obj.OpFinalDepth.Value = finalDepth
 
@@ -227,7 +223,7 @@ class ObjectOp(PathOp.ObjectOp):
         area.add(baseobject)
 
         areaParams = self.areaOpAreaParams(obj, isHole)
-        areaParams['SectionTolerance'] = 1e-07
+        areaParams["SectionTolerance"] = 1e-07
 
         heights = [i for i in self.depthparams]
         Path.Log.debug("depths: {}".format(heights))
@@ -362,11 +358,9 @@ class ObjectOp(PathOp.ObjectOp):
         else:
             start = None
 
-        aOS = self.areaOpShapes(obj)
-
         # Adjust tuples length received from other PathWB tools/operations
         shapes = []
-        for shp in aOS:
+        for shp in self.areaOpShapes(obj):
             if len(shp) == 2:
                 (fc, iH) = shp
                 #     fc, iH,  sub or description
@@ -421,15 +415,10 @@ class ObjectOp(PathOp.ObjectOp):
                 )
                 raise e
             else:
-                if profileEdgesIsOpen:
-                    ppCmds = pp
-                else:
-                    ppCmds = pp.Commands
+                ppCmds = pp if profileEdgesIsOpen else pp.Commands
 
-                # Save gcode commands to object command list
                 self.commandlist.extend(ppCmds)
                 sims.append(sim)
-            # Eif
 
             if (
                 self.areaOpRetractTool(obj)
@@ -475,7 +464,7 @@ class ObjectOp(PathOp.ObjectOp):
     # Support methods
     def _customDepthParams(self, obj, strDep, finDep):
         finish_step = obj.FinishDepth.Value if hasattr(obj, "FinishDepth") else 0.0
-        cdp = PathUtils.depth_params(
+        return PathUtils.depth_params(
             clearance_height=obj.ClearanceHeight.Value,
             safe_height=obj.SafeHeight.Value,
             start_depth=strDep,
@@ -484,10 +473,6 @@ class ObjectOp(PathOp.ObjectOp):
             final_depth=finDep,
             user_depths=None,
         )
-        return cdp
-
-
-# Eclass
 
 
 def SetupProperties():

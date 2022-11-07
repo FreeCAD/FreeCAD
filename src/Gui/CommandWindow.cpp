@@ -376,7 +376,8 @@ protected:
     Action * action;
     bool eventFilter(QObject *obj, QEvent *event) override
     {
-        if (getMainWindow()->findChild<QStatusBar *>() && obj == getMainWindow()->statusBar() && ((event->type() == QEvent::Hide) || (event->type() == QEvent::Show))) {
+        if (getMainWindow() && getMainWindow()->findChild<QStatusBar *>() && obj == getMainWindow()->statusBar() &&
+            ((event->type() == QEvent::Hide) || (event->type() == QEvent::Show))) {
             this->action->setChecked(getMainWindow()->statusBar()->isVisible());
         }
         return false;

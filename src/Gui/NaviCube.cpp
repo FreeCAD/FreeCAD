@@ -144,7 +144,7 @@ private:
 	SbRotation rotateView(SbRotation, int axis, float rotAngle, SbVec3f customAxis = SbVec3f(0, 0, 0)) const;
 	void rotateView(const SbRotation&);
 
-	QString str(char* str);
+	QString str(const char* str);
 	char* enum2str(int);
 	QMenu* createNaviCubeMenu();
 public:
@@ -362,6 +362,26 @@ char* NaviCubeImplementation::enum2str(int e) {
 	}
 }
 
+auto convertWeights = [](int weight) -> QFont::Weight {
+    if (weight >= 87)
+        return QFont::Black;
+    if (weight >= 81)
+        return QFont::ExtraBold;
+    if (weight >= 75)
+        return QFont::Bold;
+    if (weight >= 63)
+        return QFont::DemiBold;
+    if (weight >= 57)
+        return QFont::Medium;
+    if (weight >= 50)
+        return QFont::Normal;
+    if (weight >= 25)
+        return QFont::Light;
+    if (weight >= 12)
+        return QFont::ExtraLight;
+    return QFont::Thin;
+};
+
 GLuint NaviCubeImplementation::createCubeFaceTex(QtGLWidget* gl, float gap, const char* text, int shape) {
 	int texSize = m_CubeWidgetSize * m_OverSample;
 	float gapi = texSize * gap;
@@ -379,7 +399,7 @@ GLuint NaviCubeImplementation::createCubeFaceTex(QtGLWidget* gl, float gap, cons
 		QString fontString = QString::fromUtf8((hGrp->GetASCII("FontString")).c_str());
 		if (fontString.isEmpty()) {
 			// Improving readability
-			sansFont.setWeight(hGrp->GetInt("FontWeight", 87));
+			sansFont.setWeight(convertWeights(hGrp->GetInt("FontWeight", 87)));
 			sansFont.setStretch(hGrp->GetInt("FontStretch", 62));
 		}
 		else {
@@ -387,7 +407,7 @@ GLuint NaviCubeImplementation::createCubeFaceTex(QtGLWidget* gl, float gap, cons
 		}
 		// Override fromString
 		if (hGrp->GetInt("FontWeight") > 0) {
-			sansFont.setWeight(hGrp->GetInt("FontWeight"));
+			sansFont.setWeight(convertWeights(hGrp->GetInt("FontWeight")));
 		}
 		if (hGrp->GetInt("FontStretch") > 0) {
 			sansFont.setStretch(hGrp->GetInt("FontStretch"));
@@ -1674,7 +1694,7 @@ bool NaviCubeImplementation::processSoEvent(const SoEvent* ev) {
 }
 
 
-QString NaviCubeImplementation::str(char* str) {
+QString NaviCubeImplementation::str(const char* str) {
 	return QString::fromLatin1(str);
 }
 

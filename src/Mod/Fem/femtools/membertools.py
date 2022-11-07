@@ -40,7 +40,7 @@ def get_member(analysis, t):
     """ Return list of all members of *analysis* of type *t*.
 
     Search *analysis* for members of type *t*. This method checks the custom
-    python typesytem (BaseType class property) used by the Fem module if
+    python typesystem (BaseType class property) used by the Fem module if
     possible. If the object does not use the python typesystem the usual
     isDerivedFrom from the C++ dynamic type system is used.
 
@@ -68,7 +68,7 @@ def get_single_member(analysis, t):
     """ Return one object of type *t* and part of *analysis*.
 
     Search *analysis* for members of type *t* and return the first one that's
-    found. This method checks the custom python typesytem (BaseType class
+    found. This method checks the custom python typesystem (BaseType class
     property) used by the Fem module if possible. If the object doesn't use the
     python typesystem the usual isDerivedFrom from the C++ dynamic type system
     is used.

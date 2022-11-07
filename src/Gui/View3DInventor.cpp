@@ -422,10 +422,10 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         }
     }
     else {
-        unsigned long col1 = rGrp.GetUnsigned("BackgroundColor", 3940932863UL);
-        unsigned long col2 = rGrp.GetUnsigned("BackgroundColor2", 2526456575UL); // default color (blue/grey)
-        unsigned long col3 = rGrp.GetUnsigned("BackgroundColor3", 3570714879UL); // default color (light yellow/bluey)
-        unsigned long col4 = rGrp.GetUnsigned("BackgroundColor4", 1869583359UL); // default color (blue/grey)
+        unsigned long col1 = rGrp.GetUnsigned("BackgroundColor",3940932863UL);
+        unsigned long col2 = rGrp.GetUnsigned("BackgroundColor2",859006463UL); // default color (dark blue)
+        unsigned long col3 = rGrp.GetUnsigned("BackgroundColor3",2880160255UL); // default color (blue/grey)
+        unsigned long col4 = rGrp.GetUnsigned("BackgroundColor4",1869583359UL); // default color (blue/grey)
         float r1,g1,b1,r2,g2,b2,r3,g3,b3,r4,g4,b4;
         r1 = ((col1 >> 24) & 0xff) / 255.0; g1 = ((col1 >> 16) & 0xff) / 255.0; b1 = ((col1 >> 8) & 0xff) / 255.0;
         r2 = ((col2 >> 24) & 0xff) / 255.0; g2 = ((col2 >> 16) & 0xff) / 255.0; b2 = ((col2 >> 8) & 0xff) / 255.0;
@@ -872,7 +872,7 @@ void View3DInventor::windowStateChanged(MDIView* view)
         // must be hidden, hence we can start the timer.
         // Note: If view is top-level or fullscreen it doesn't necessarily hide the other view
         // e.g. if it is on a second monitor.
-        canStartTimer = (!this->isTopLevel() && !view->isTopLevel() && view->isMaximized());
+        canStartTimer = (!this->isWindow() && !view->isWindow() && view->isMaximized());
     } else if (isMinimized()) {
         // I am the active view but minimized
         canStartTimer = true;

@@ -446,11 +446,11 @@ void StdCmdFreezeViews::onRestoreViews()
 {
     // Should we clear the already saved views
     if (savedViews > 0) {
-        int ret = QMessageBox::question(getMainWindow(), QObject::tr("Restore views"),
+        auto ret = QMessageBox::question(getMainWindow(), QObject::tr("Restore views"),
             QObject::tr("Importing the restored views would clear the already stored views.\n"
-                        "Do you want to continue?"), QMessageBox::Yes|QMessageBox::Default,
-                                                     QMessageBox::No|QMessageBox::Escape);
-        if (ret!=QMessageBox::Yes)
+                        "Do you want to continue?"), QMessageBox::Yes | QMessageBox::No,
+                                                     QMessageBox::Yes);
+        if (ret != QMessageBox::Yes)
             return;
     }
 
@@ -2852,7 +2852,7 @@ void StdBoxSelection::activated(int iMsg)
 // Std_BoxElementSelection
 //===========================================================================
 /* XPM */
-static char * cursor_box_element_select[] = {
+static const char * cursor_box_element_select[] = {
 "32 32 6 1",
 " 	c None",
 ".	c #FFFFFF",

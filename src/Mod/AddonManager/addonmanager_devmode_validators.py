@@ -24,24 +24,24 @@
 
 import keyword
 
-from PySide2.QtGui import (
+from PySide.QtGui import (
     QValidator,
 )
 
-# QRegularExpressionValidator was only added at the very end of the PySide2
+# QRegularExpressionValidator was only added at the very end of the PySide
 # development cycle, so make sure to support the older QRegExp version as well.
 try:
-    from PySide2.QtGui import (
+    from PySide.QtGui import (
         QRegularExpressionValidator,
     )
-    from PySide2.QtCore import QRegularExpression
+    from PySide.QtCore import QRegularExpression
     RegexWrapper = QRegularExpression
     RegexValidatorWrapper = QRegularExpressionValidator
 except ImportError:
-    from PySide2.QtGui import (
+    from PySide.QtGui import (
         QRegExpValidator,
     )
-    from PySide2.QtCore import QRegExp
+    from PySide.QtCore import QRegExp
     RegexWrapper = QRegExp
     RegexValidatorWrapper = QRegExpValidator
 

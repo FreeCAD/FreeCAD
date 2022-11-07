@@ -253,7 +253,9 @@ G21
 """
         self.docobj.Path = Path.Path([])
         postables = [self.docobj]
-        gcode: str = postprocessor.export(postables, "gcode.tmp", "--output_all_arguments")
+        gcode: str = postprocessor.export(
+            postables, "gcode.tmp", "--output_all_arguments"
+        )
         # The argparse help routine turns out to be sensitive to the
         # number of columns in the terminal window that the tests
         # are run from.  This affects the indenting in the output.
@@ -315,7 +317,9 @@ G21
 
     def test00120(self):
         """Test axis-precision."""
-        self.compare_third_line("G0 X10 Y20 Z30", "G0 X10.00 Y20.00 Z30.00", "--axis-precision=2")
+        self.compare_third_line(
+            "G0 X10 Y20 Z30", "G0 X10.00 Y20.00 Z30.00", "--axis-precision=2"
+        )
 
     def test00130(self):
         """Test comments."""
@@ -605,26 +609,42 @@ G21
         """Test G10 command Generation."""
         self.compare_third_line("G10 L1 P2 Z1.23456", "G10 L1 Z1.235 P2", "")
         self.compare_third_line(
-            "G10 L1 P2 R1.23456 I2.34567 J3.456789 Q3", "G10 L1 I2.346 J3.457 R1.235 P2 Q3", ""
+            "G10 L1 P2 R1.23456 I2.34567 J3.456789 Q3",
+            "G10 L1 I2.346 J3.457 R1.235 P2 Q3",
+            "",
         )
         self.compare_third_line(
-            "G10 L2 P3 X1.23456 Y2.34567 Z3.456789", "G10 L2 X1.235 Y2.346 Z3.457 P3", ""
-        )
-        self.compare_third_line("G10 L2 P0 X0 Y0 Z0", "G10 L2 X0.000 Y0.000 Z0.000 P0", "")
-        self.compare_third_line(
-            "G10 L10 P1 X1.23456 Y2.34567 Z3.456789", "G10 L10 X1.235 Y2.346 Z3.457 P1", ""
+            "G10 L2 P3 X1.23456 Y2.34567 Z3.456789",
+            "G10 L2 X1.235 Y2.346 Z3.457 P3",
+            "",
         )
         self.compare_third_line(
-            "G10 L10 P2 R1.23456 I2.34567 J3.456789 Q3", "G10 L10 I2.346 J3.457 R1.235 P2 Q3", ""
+            "G10 L2 P0 X0 Y0 Z0", "G10 L2 X0.000 Y0.000 Z0.000 P0", ""
         )
         self.compare_third_line(
-            "G10 L11 P1 X1.23456 Y2.34567 Z3.456789", "G10 L11 X1.235 Y2.346 Z3.457 P1", ""
+            "G10 L10 P1 X1.23456 Y2.34567 Z3.456789",
+            "G10 L10 X1.235 Y2.346 Z3.457 P1",
+            "",
         )
         self.compare_third_line(
-            "G10 L11 P2 R1.23456 I2.34567 J3.456789 Q3", "G10 L11 I2.346 J3.457 R1.235 P2 Q3", ""
+            "G10 L10 P2 R1.23456 I2.34567 J3.456789 Q3",
+            "G10 L10 I2.346 J3.457 R1.235 P2 Q3",
+            "",
         )
         self.compare_third_line(
-            "G10 L20 P9 X1.23456 Y2.34567 Z3.456789", "G10 L20 X1.235 Y2.346 Z3.457 P9", ""
+            "G10 L11 P1 X1.23456 Y2.34567 Z3.456789",
+            "G10 L11 X1.235 Y2.346 Z3.457 P1",
+            "",
+        )
+        self.compare_third_line(
+            "G10 L11 P2 R1.23456 I2.34567 J3.456789 Q3",
+            "G10 L11 I2.346 J3.457 R1.235 P2 Q3",
+            "",
+        )
+        self.compare_third_line(
+            "G10 L20 P9 X1.23456 Y2.34567 Z3.456789",
+            "G10 L20 X1.235 Y2.346 Z3.457 P9",
+            "",
         )
 
     def test01170(self):
@@ -779,7 +799,9 @@ G21
                 Path.Command(
                     "G52 X1.234567 Y2.345678 Z3.456789 A4.567891 B5.678912 C6.789123 U7.891234 V8.912345 W9.123456"
                 ),
-                Path.Command("G52 X0 Y0.0 Z0.00 A0.000 B0.0000 C0.00000 U0.000000 V0 W0"),
+                Path.Command(
+                    "G52 X0 Y0.0 Z0.00 A0.000 B0.0000 C0.00000 U0.000000 V0 W0"
+                ),
             ],
             """G90
 G21
@@ -793,7 +815,9 @@ G52 X0.000 Y0.000 Z0.000 A0.000 B0.000 C0.000 U0.000 V0.000 W0.000
                 Path.Command(
                     "G52 X1.234567 Y2.345678 Z3.456789 A4.567891 B5.678912 C6.789123 U7.891234 V8.912345 W9.123456"
                 ),
-                Path.Command("G52 X0 Y0.0 Z0.00 A0.000 B0.0000 C0.00000 U0.000000 V0 W0"),
+                Path.Command(
+                    "G52 X0 Y0.0 Z0.00 A0.000 B0.0000 C0.00000 U0.000000 V0 W0"
+                ),
             ],
             """G90
 G20
@@ -916,7 +940,9 @@ G52 X0.0000 Y0.0000 Z0.0000 A0.0000 B0.0000 C0.0000 U0.0000 V0.0000 W0.0000
         self.compare_third_line("G64", "G64", "")
         self.compare_third_line("G64 P3.456789", "G64 P3.457", "")
         self.compare_third_line("G64 P3.456789 Q4.567891", "G64 P3.457 Q4.568", "")
-        self.compare_third_line("G64 P3.456789 Q4.567891", "G64 P0.1361 Q0.1798", "--inches")
+        self.compare_third_line(
+            "G64 P3.456789 Q4.567891", "G64 P0.1361 Q0.1798", "--inches"
+        )
 
     def test01730(self):
         """Test G73 command Generation."""

@@ -460,6 +460,61 @@ bool ViewProviderPage::canDelete(App::DocumentObject *obj) const
     return true;
 }
 
+bool ViewProviderPage::canDragObjects() const
+{
+//    Base::Console().Message("VPP:canDragObjects()\n");
+    return ViewProviderDocumentObject::canDragObjects();
+}
+
+bool ViewProviderPage::canDragObject(App::DocumentObject* docObj) const
+{
+//    Base::Console().Message("VPP:canDragObject()\n");
+    if (docObj->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
+        //DPGI can not be dragged from the Page as it belongs to DPG, not Page
+        return false;
+    }
+
+    if (docObj->isDerivedFrom(TechDraw::DrawView::getClassTypeId()) ) {
+        return true;
+    }
+    return false;
+}
+
+
+bool ViewProviderPage::canDropObject(App::DocumentObject* docObj) const
+{
+//    Base::Console().Message("VPP:canDropObject()\n");
+    if (docObj->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
+        //DPGI can not be dropped onto the Page as it belongs to DPG, not Page
+        return false;
+    }
+
+    if (docObj->isDerivedFrom(TechDraw::DrawView::getClassTypeId()) ) {
+        return true;
+    }
+    return false;
+}
+
+void ViewProviderPage::dropObject(App::DocumentObject* docObj)
+{
+//    Base::Console().Message("VPP:dropObject()\n");
+    if (docObj->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
+        //DPGI can not be dropped onto the Page as it belongs to DPG, not Page
+        ViewProviderDocumentObject::dropObject(docObj);
+        return;
+    }
+    if (docObj->isDerivedFrom(TechDraw::DrawView::getClassTypeId()) ) {
+        auto dv = static_cast<TechDraw::DrawView*>(docObj);
+        if (dv->findParentPage()) {
+            dv->findParentPage()->removeView(dv);
+        }
+        getDrawPage()->addView(dv);
+        //don't run ancestor's method as addView does everything we need
+        return;
+    }
+    ViewProviderDocumentObject::dropObject(docObj);
+}
+
 //! Redo the whole visual page
 void ViewProviderPage::onGuiRepaint(const TechDraw::DrawPage* dp)
 {

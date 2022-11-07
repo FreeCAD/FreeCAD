@@ -27,9 +27,9 @@
 import os
 from typing import Optional
 
-from PySide2.QtCore import *
-from PySide2.QtGui import *
-from PySide2.QtWidgets import *
+from PySide.QtCore import *
+from PySide.QtGui import *
+from PySide.QtWidgets import *
 
 import FreeCAD
 import FreeCADGui
@@ -55,14 +55,14 @@ translate = FreeCAD.Qt.translate
 show_javascript_console_output = False
 
 try:
-    from PySide2.QtWebEngineWidgets import *
+    from PySide.QtWebEngineWidgets import *
 
     HAS_QTWEBENGINE = True
 except ImportError:
     FreeCAD.Console.PrintWarning(
         translate(
             "AddonsInstaller",
-            "Addon Manager Warning: Could not import QtWebEngineWidgets, it seems to be missing from your system. Please use your system's package manager to install the python3-pyside2.qtwebengine* and python3-pyside2.qtwebchannel packages, and if possible alert your package creator to the missing dependency. Display of package README will be limited until this dependency is resolved.",
+            "Addon Manager Warning: Could not import QtWebEngineWidgets. Your system's package manager may provide a package for this dependency, search the package manager for possible resolutions. Display of package README will be limited until this dependency is resolved.",
         )
         + "\n"
     )

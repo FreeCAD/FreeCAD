@@ -45,9 +45,7 @@ class PathUtilsUserInput(object):
         # Return the first one and remove all from selection
         for sel in FreeCADGui.Selection.getSelectionEx():
             if hasattr(sel.Object, "Proxy"):
-                if isinstance(
-                    sel.Object.Proxy, PathToolController.ToolController
-                ):
+                if isinstance(sel.Object.Proxy, PathToolController.ToolController):
                     if tc is None:
                         tc = sel.Object
                     FreeCADGui.Selection.removeSelection(sel.Object)

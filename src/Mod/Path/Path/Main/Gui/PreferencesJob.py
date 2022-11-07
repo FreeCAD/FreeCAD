@@ -145,9 +145,7 @@ class JobPreferencesPage:
             Path.Preferences.setDefaultStockTemplate("")
 
     def saveToolsSettings(self):
-        Path.Preferences.setToolsSettings(
-            self.form.toolsAbsolutePaths.isChecked()
-        )
+        Path.Preferences.setToolsSettings(self.form.toolsAbsolutePaths.isChecked())
 
     def selectComboEntry(self, widget, text):
         index = widget.findText(text, QtCore.Qt.MatchFixedString)

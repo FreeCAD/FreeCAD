@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <QActionEvent>
+# include <QActionGroup>
 # include <QApplication>
 # include <QEvent>
 # include <QMenu>

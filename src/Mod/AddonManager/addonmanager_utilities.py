@@ -32,7 +32,7 @@ from typing import Optional, Any
 
 from urllib.parse import urlparse
 
-from PySide2 import QtCore, QtWidgets
+from PySide import QtCore, QtWidgets
 
 import FreeCAD
 import FreeCADGui
@@ -339,9 +339,18 @@ def get_python_exe() -> str:
     if not python_exe or not os.path.exists(python_exe):
         return ""
 
-    python_exe = python_exe.replace("/",os.path.sep)
+    python_exe = python_exe.replace("/", os.path.sep)
     prefs.SetString("PythonExecutableForPip", python_exe)
     return python_exe
+
+
+def get_pip_target_directory():
+    # Get the default location to install new pip packages
+    major, minor, _ = platform.python_version_tuple()
+    vendor_path = os.path.join(
+        FreeCAD.getUserAppDataDir(), "AdditionalPythonPackages", f"py{major}{minor}"
+    )
+    return vendor_path
 
 
 def get_cache_file_name(file: str) -> str:

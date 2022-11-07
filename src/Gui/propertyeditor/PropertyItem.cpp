@@ -1506,7 +1506,7 @@ PropertyEditorWidget::PropertyEditorWidget (QWidget * parent)
   : QWidget(parent)
 {
     auto layout = new QHBoxLayout(this);
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
     layout->setSpacing(2);
 
     lineEdit = new QLineEdit(this);
@@ -3065,7 +3065,9 @@ void PropertyStringListItem::setValue(const QVariant& value)
     QStringList values = value.toStringList();
     QString data;
     QTextStream str(&data);
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
     str.setCodec("UTF-8");
+#endif
 
     str << "[";
     for (QStringList::Iterator it = values.begin(); it != values.end(); ++it) {
@@ -4284,7 +4286,7 @@ LinkLabel::LinkLabel (QWidget * parent, const App::Property *prop)
     : QWidget(parent), objProp(prop), dlg(nullptr)
 {   
     auto layout = new QHBoxLayout(this);
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
     layout->setSpacing(1);
 
     label = new QLabel(this);

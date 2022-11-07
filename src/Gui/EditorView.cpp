@@ -65,7 +65,7 @@ public:
     QString fileName;
     EditorView::DisplayName displayName;
     QTimer*  activityTimer;
-    uint timeStamp;
+    qint64 timeStamp;
     bool lock;
     bool aboutToClose;
     QStringList undos;
@@ -113,7 +113,7 @@ EditorView::EditorView(QPlainTextEdit* editor, QWidget* parent)
     hbox->setFrameShape(QFrame::StyledPanel);
     hbox->setFrameShadow(QFrame::Sunken);
     auto layout = new QVBoxLayout();
-    layout->setMargin(1);
+    layout->setContentsMargins(1, 1, 1, 1);
     layout->addWidget(d->textEdit);
     layout->addWidget(d->searchBar);
     d->textEdit->setParent(hbox);
@@ -191,11 +191,11 @@ void EditorView::OnChange(Base::Subject<const char*> &rCaller,const char* rcReas
 void EditorView::checkTimestamp()
 {
     QFileInfo fi(d->fileName);
-    uint timeStamp =  fi.lastModified().toTime_t();
+    qint64 timeStamp =  fi.lastModified().toSecsSinceEpoch();
     if (timeStamp != d->timeStamp) {
         switch( QMessageBox::question( this, tr("Modified file"),
                 tr("%1.\n\nThis has been modified outside of the source editor. Do you want to reload it?").arg(d->fileName),
-                QMessageBox::Yes|QMessageBox::Default, QMessageBox::No|QMessageBox::Escape) )
+                QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes) )
         {
             case QMessageBox::Yes:
                 // updates time stamp and timer
@@ -203,6 +203,8 @@ void EditorView::checkTimestamp()
                 return;
             case QMessageBox::No:
                 d->timeStamp = timeStamp;
+                break;
+            default:
                 break;
         }
     }
@@ -318,8 +320,7 @@ bool EditorView::canClose()
     switch( QMessageBox::question(this, tr("Unsaved document"),
                                     tr("The document has been modified.\n"
                                        "Do you want to save your changes?"),
-                                     QMessageBox::Yes|QMessageBox::Default, QMessageBox::No,
-                                     QMessageBox::Cancel|QMessageBox::Escape))
+                                     QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel, QMessageBox::Cancel))
     {
         case QMessageBox::Yes:
             return saveFile();
@@ -369,7 +370,7 @@ bool EditorView::open(const QString& fileName)
     file.close();
 
     QFileInfo fi(fileName);
-    d->timeStamp =  fi.lastModified().toTime_t();
+    d->timeStamp =  fi.lastModified().toSecsSinceEpoch();
     d->activityTimer->setSingleShot(true);
     d->activityTimer->start(3000);
 
@@ -530,7 +531,7 @@ bool EditorView::saveFile()
     d->textEdit->document()->setModified(false);
 
     QFileInfo fi(d->fileName);
-    d->timeStamp =  fi.lastModified().toTime_t();
+    d->timeStamp =  fi.lastModified().toSecsSinceEpoch();
     return true;
 }
 

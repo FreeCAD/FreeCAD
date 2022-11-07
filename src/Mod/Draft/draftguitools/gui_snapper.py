@@ -51,8 +51,7 @@ import DraftGeomUtils
 import draftguitools.gui_trackers as trackers
 
 from draftutils.init_tools import get_draft_snap_commands
-from draftutils.init_tools import get_draft_snap_tooltips
-from draftutils.messages import _msg, _wrn
+from draftutils.messages import _wrn
 from draftutils.translate import translate
 
 __title__ = "FreeCAD Draft Snap tools"
@@ -237,20 +236,12 @@ class Snapper:
 
         self.running = True
 
-        global Part, DraftGeomUtils
-        import Part, DraftGeomUtils
-
         self.spoint = None
 
-        if not hasattr(self, "toolbar"):
-            self.makeSnapToolBar()
-        mw = Gui.getMainWindow()
-        bt = mw.findChild(QtGui.QToolBar,"Draft Snap")
-        if not bt:
-            mw.addToolBar(self.toolbar)
-        else:
-            if Draft.getParam("showSnapBar", True):
-                bt.show()
+        if Draft.getParam("showSnapBar", True):
+            toolbar = self.get_snap_toolbar()
+            if toolbar:
+                toolbar.show()
 
         self.snapInfo = None
 
@@ -1031,7 +1022,6 @@ class Snapper:
                 if obj:
                     if obj.isDerivedFrom("Part::Feature") or (Draft.getType(obj) == "Axis"):
                         if (not self.maxEdges) or (len(obj.Shape.Edges) <= self.maxEdges):
-                            import Part
                             for e in obj.Shape.Edges:
                                 # get the intersection points
                                 try:
@@ -1250,8 +1240,9 @@ class Snapper:
         self.radius = 0
         self.setCursor()
         if hideSnapBar or Draft.getParam("hideSnapBar", False):
-            if hasattr(self, "toolbar") and self.toolbar:
-                self.toolbar.hide()
+            toolbar = self.get_snap_toolbar()
+            if toolbar:
+                toolbar.hide()
         self.mask = None
         self.selectMode = False
         self.running = False
@@ -1488,92 +1479,32 @@ class Snapper:
             self.callbackMove = self.view.addEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(),move)
 
 
-    def makeSnapToolBar(self):
-        """Build the Snap toolbar."""
-        mw = Gui.getMainWindow()
+    def get_snap_toolbar(self):
+        """Get the snap toolbar."""
+
+        if not (hasattr(self, "toolbar") and self.toolbar):
+            mw = Gui.getMainWindow()
+            self.toolbar = mw.findChild(QtGui.QToolBar, "Draft snap")
+        if self.toolbar:
+            # Make sure the Python generated BIM snap toolbar shows up in the
+            # toolbar area context menu after switching back to that workbench:
+            self.toolbar.toggleViewAction().setVisible(True)
+            return self.toolbar
+
+        # Code required for the BIM workbench which has to work with FC0.20
+        # and FC0.21/1.0. The code relies on the Snapping menu in the BIM WB
+        # to create the actions.
         self.toolbar = QtGui.QToolBar(mw)
         mw.addToolBar(QtCore.Qt.TopToolBarArea, self.toolbar)
-        self.toolbar.setObjectName("Draft Snap")
-        self.toolbar.setWindowTitle(translate("Workbench", "Draft Snap"))
-
-        # make snap buttons
-        snap_gui_commands = get_draft_snap_commands()
-        self.init_draft_snap_buttons(snap_gui_commands, self.toolbar, "_Button")
-        self.restore_snap_buttons_state(self.toolbar,"_Button")
-
-        if not Draft.getParam("showSnapBar",True):
-            self.toolbar.hide()
-
-
-    def init_draft_snap_buttons(self, commands, context, button_suffix):
-        """
-        Init Draft Snap toolbar buttons.
-
-        Parameters:
-        commands        Snap command list,
-                        use: get_draft_snap_commands():
-        context         The toolbar or action group the buttons have
-                        to be added to
-        button_suffix   The suffix that have to be applied to the command name
-                        to define the button name
-        """
-        tooltips_dict = get_draft_snap_tooltips()
-        for gc in commands:
-            if gc == "Separator":
-                continue
-            # setup toolbar buttons
-            b = QtGui.QAction(context)
-            if gc == "Draft_ToggleGrid":
-                b.setIcon(QtGui.QIcon(":/icons/Draft_Grid.svg"))
+        self.toolbar.setObjectName("Draft snap")
+        self.toolbar.setWindowTitle(translate("Workbench", "Draft snap"))
+        for cmd in get_draft_snap_commands():
+            if cmd == "Separator":
+                self.toolbar.addSeparator()
             else:
-                b.setIcon(QtGui.QIcon(":/icons/" + gc[6:] + ".svg"))
-                b.setCheckable(True)
-                b.setChecked(True)
-            b.setText(tooltips_dict[gc])
-            b.setToolTip(tooltips_dict[gc])
-            b.setObjectName(gc + button_suffix)
-            b.setWhatsThis(gc)
-            context.addAction(b)
-            command = 'Gui.runCommand("' + gc + '")'
-            QtCore.QObject.connect(b,
-                                   QtCore.SIGNAL("triggered()"),
-                                   lambda f=Gui.doCommand,
-                                   arg=command:f(arg))
-
-        for b in context.actions():
-            if len(b.statusTip()) == 0:
-                b.setStatusTip(b.toolTip())
-
-
-    def restore_snap_buttons_state(self, toolbar, button_suffix):
-        """
-        Restore toolbar button's checked state according to
-        "snapModes" saved in preferences
-        """
-        # set status tip where needed
-        for button in toolbar.actions():
-            if len(button.statusTip()) == 0:
-                button.setStatusTip(button.toolTip())
-
-        # restore toolbar buttons state
-        for action in toolbar.findChildren(QtGui.QAction):
-            snap = action.objectName()[11:].replace(button_suffix, "")
-            if snap in self.active_snaps:
-                action.setChecked(True)
-                action.setToolTip(action.toolTip() + " " + (translate("draft", "(ON)")))
-            elif snap in Gui.Snapper.snaps: # required: the toolbar has more children than the buttons
-                action.setChecked(False)
-                action.setToolTip(action.toolTip() + " " + (translate("draft", "(OFF)")))
-
-
-    def get_snap_toolbar(self):
-        """Returns snap toolbar object."""
-        mw = Gui.getMainWindow()
-        if mw:
-            toolbar = mw.findChild(QtGui.QToolBar, "Draft Snap")
-            if toolbar:
-                return toolbar
-        return None
+                action = Gui.Command.get(cmd).getAction()[0]
+                self.toolbar.addAction(action)
+        return self.toolbar
 
 
     def toggleGrid(self):
@@ -1636,15 +1567,13 @@ class Snapper:
 
     def show(self):
         """Show the toolbar and the grid."""
-        if not hasattr(self, "toolbar"):
-            self.makeSnapToolBar()
-        bt = self.get_snap_toolbar()
-        if not bt:
-            mw = Gui.getMainWindow()
-            mw.addToolBar(self.toolbar)
-            self.toolbar.setParent(mw)
-        self.toolbar.show()
-        self.toolbar.toggleViewAction().setVisible(True)
+        toolbar = self.get_snap_toolbar()
+        if toolbar:
+            if Draft.getParam("showSnapBar", True):
+                toolbar.show()
+            else:
+                toolbar.hide()
+
         if Gui.ActiveDocument:
             self.setTrackers()
             if not App.ActiveDocument.Objects:
@@ -1660,9 +1589,9 @@ class Snapper:
 
     def hide(self):
         """Hide the toolbar."""
-        if hasattr(self, "toolbar"):
-            self.toolbar.hide()
-            self.toolbar.toggleViewAction().setVisible(True)
+        toolbar = self.get_snap_toolbar()
+        if toolbar:
+            toolbar.hide()
 
 
     def setGrid(self):

@@ -26,6 +26,8 @@
 # include <QContextMenuEvent>
 # include <QMenu>
 # include <QPixmapCache>
+# include <QRegularExpression>
+# include <QRegularExpressionMatch>
 #endif
 
 #include <App/Application.h>
@@ -597,30 +599,16 @@ void InputField::setHistorySize(int i)
 
 void InputField::selectNumber()
 {
-    QString str = text();
-    unsigned int i = 0;
-
-    QChar d = locale().decimalPoint();
-    QChar g = locale().groupSeparator();
-    QChar n = locale().negativeSign();
-    QChar e = locale().exponential();
-
-    for (const auto & it : str) {
-        if (it.isDigit())
-            i++;
-        else if (it == d)
-            i++;
-        else if (it == g)
-            i++;
-        else if (it == n)
-            i++;
-        else if (it == e && actQuantity.getFormat().format != Base::QuantityFormat::Fixed)
-            i++;
-        else // any non-number character
-            break;
+    QString expr = QString::fromLatin1("^([%1%2]?[0-9\\%3]*)\\%4?([0-9]+(%5[%1%2]?[0-9]+)?)")
+                   .arg(locale().negativeSign())
+                   .arg(locale().positiveSign())
+                   .arg(locale().groupSeparator())
+                   .arg(locale().decimalPoint())
+                   .arg(locale().exponential());
+    auto rmatch = QRegularExpression(expr).match(text());
+    if (rmatch.hasMatch()) {
+        setSelection(0, rmatch.capturedLength());
     }
-
-    setSelection(0, i);
 }
 
 void InputField::showEvent(QShowEvent * event)
@@ -732,10 +720,18 @@ void InputField::wheelEvent (QWheelEvent * event)
 void InputField::fixup(QString& input) const
 {
     input.remove(locale().groupSeparator());
-    if (locale().negativeSign() != QLatin1Char('-'))
-        input.replace(locale().negativeSign(), QLatin1Char('-'));
-    if (locale().positiveSign() != QLatin1Char('+'))
-        input.replace(locale().positiveSign(), QLatin1Char('+'));
+
+    QString asciiMinus(QStringLiteral("-"));
+    QString localeMinus(locale().negativeSign());
+    if (localeMinus != asciiMinus) {
+        input.replace(localeMinus, asciiMinus);
+    }
+
+    QString asciiPlus(QStringLiteral("+"));
+    QString localePlus(locale().positiveSign());
+    if (localePlus != asciiPlus) {
+        input.replace(localePlus, asciiPlus);
+    }
 }
 
 QValidator::State InputField::validate(QString& input, int& pos) const

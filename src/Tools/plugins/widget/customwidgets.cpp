@@ -28,6 +28,8 @@
 #include <QFileDialog>
 #include <QHeaderView>
 #include <QMessageBox>
+#include <QRegularExpression>
+#include <QRegularExpressionMatch>
 #include <QStyleOptionButton>
 #include <QStylePainter>
 #include <QToolTip>
@@ -143,7 +145,7 @@ FileChooser::FileChooser( QWidget *parent )
   : QWidget( parent ), md( File ), _filter( QString() )
 {
     QHBoxLayout *layout = new QHBoxLayout( this );
-    layout->setMargin( 0 );
+    layout->setContentsMargins( 0, 0, 0, 0 );
     layout->setSpacing( 6 );
 
     lineEdit = new QLineEdit( this );
@@ -1167,8 +1169,7 @@ QSize QuantitySpinBox::sizeHint() const
     QStyleOptionSpinBox opt;
     initStyleOption(&opt);
     QSize hint(w, h);
-    QSize size = style()->sizeFromContents(QStyle::CT_SpinBox, &opt, hint, this)
-                        .expandedTo(QApplication::globalStrut());
+    QSize size = style()->sizeFromContents(QStyle::CT_SpinBox, &opt, hint, this);
     return size;
 }
 
@@ -1198,8 +1199,7 @@ QSize QuantitySpinBox::minimumSizeHint() const
     QStyleOptionSpinBox opt;
     initStyleOption(&opt);
     QSize hint(w, h);
-    QSize size = style()->sizeFromContents(QStyle::CT_SpinBox, &opt, hint, this)
-                        .expandedTo(QApplication::globalStrut());
+    QSize size = style()->sizeFromContents(QStyle::CT_SpinBox, &opt, hint, this);
     return size;
 }
 
@@ -1292,27 +1292,16 @@ void QuantitySpinBox::clear()
 
 void QuantitySpinBox::selectNumber()
 {
-    QString str = lineEdit()->text();
-    unsigned int i = 0;
-
-    QChar d = locale().decimalPoint();
-    QChar g = locale().groupSeparator();
-    QChar n = locale().negativeSign();
-
-    for (QString::iterator it = str.begin(); it != str.end(); ++it) {
-        if (it->isDigit())
-            i++;
-        else if (*it == d)
-            i++;
-        else if (*it == g)
-            i++;
-        else if (*it == n)
-            i++;
-        else // any non-number character
-            break;
+    QString expr = QString::fromLatin1("^([%1%2]?[0-9\\%3]*)\\%4?([0-9]+(%5[%1%2]?[0-9]+)?)")
+                   .arg(locale().negativeSign())
+                   .arg(locale().positiveSign())
+                   .arg(locale().groupSeparator())
+                   .arg(locale().decimalPoint())
+                   .arg(locale().exponential());
+    auto rmatch = QRegularExpression(expr).match(lineEdit()->text());
+    if (rmatch.hasMatch()) {
+        lineEdit()->setSelection(0, rmatch.capturedLength());
     }
-
-    lineEdit()->setSelection(0, i);
 }
 
 QString QuantitySpinBox::textFromValue(const Base::Quantity& value) const

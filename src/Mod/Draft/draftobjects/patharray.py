@@ -488,7 +488,7 @@ def calculate_placement(globalRotation,
     # Default Placement:
     placement = App.Placement()
     placement.Rotation = globalRotation
-    placement.Base = RefPt + xlate
+    placement.Base = RefPt + placement.Rotation.multVec(xlate)
 
     if not align:
         return placement
@@ -549,9 +549,8 @@ def calculate_placement(globalRotation,
         _msg(translate("draft", "AlignMode {} is not implemented").format(mode))
         return placement
 
-    newGRot = newRot.multiply(globalRotation)
-    placement.Rotation = newGRot
-    placement.Base = RefPt + newRot.multVec(xlate)
+    placement.Rotation = newRot.multiply(globalRotation)
+    placement.Base = RefPt + placement.Rotation.multVec(xlate)
     return placement
 
 

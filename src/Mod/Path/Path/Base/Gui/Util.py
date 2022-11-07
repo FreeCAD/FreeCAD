@@ -160,7 +160,9 @@ class QuantitySpinBox(QtCore.QObject):
                 self.widget.setProperty("binding", "%s.%s" % (obj.Name, prop))
                 self.valid = True
             else:
-                Path.Log.warning("Cannot find property {} of {}".format(prop, obj.Label))
+                Path.Log.warning(
+                    "Cannot find property {} of {}".format(prop, obj.Label)
+                )
                 self.valid = False
         else:
             self.valid = False

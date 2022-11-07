@@ -74,9 +74,7 @@ class CommandPathSimpleCopy:
         FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.addModule("Path.Op.Custom")
         FreeCADGui.doCommand(
-            'obj = Path.Op.Custom.Create("'
-            + selection[0].Name
-            + '_SimpleCopy")'
+            'obj = Path.Op.Custom.Create("' + selection[0].Name + '_SimpleCopy")'
         )
         FreeCADGui.doCommand("obj.ViewObject.Proxy = 0")
         FreeCADGui.doCommand("obj.Gcode = [c.toGCode() for c in srcpath.Commands]")

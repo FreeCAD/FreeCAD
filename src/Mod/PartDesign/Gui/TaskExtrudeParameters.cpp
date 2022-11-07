@@ -735,9 +735,7 @@ void TaskExtrudeParameters::translateFaceName()
 
         if (ok) {
             ui->lineFaceName->setText(QString::fromLatin1("%1:%2%3")
-                                      .arg(parts[0],
-                                           tr("Face"),
-                                           QString(faceId)));
+                                      .arg(parts[0], tr("Face")).arg(faceId));
         }
         else {
             ui->lineFaceName->setText(parts[0]);

@@ -25,6 +25,7 @@
 # include <limits>
 # include <unordered_map>
 # include <list>
+# include <QApplication>
 # include <QDir>
 # include <QIcon>
 # include <QWidget>
@@ -220,6 +221,8 @@ void registerTypes()
 // --------------------------------------------------------
 
 namespace Gui {
+template<typename qttype>
+PyTypeObject *getPyTypeObjectForTypeName();
 
 /*!
  * \brief The WrapperManager class
@@ -257,7 +260,10 @@ public:
             QObject::connect(obj, &QObject::destroyed, this, &WrapperManager::destroyed);
         }
 
-        wrappers[obj].emplace_back(pyobj);
+        auto& pylist = wrappers[obj];
+        if (std::find_if(pylist.cbegin(), pylist.cend(), [pyobj](const Py::Object& py) { return py.ptr() == pyobj; }) == pylist.end()) {
+            pylist.emplace_back(pyobj);
+        }
     }
 
 private:
@@ -283,8 +289,37 @@ private:
 #endif
         }
     }
+    void clear()
+    {
+        Base::PyGILStateLocker lock;
+        wrappers.clear();
+    }
+    void wrapQApplication()
+    {
+        // We have to explicitly hold a reference to the wrapper of the QApplication
+        // as otherwise it can happen that when running the gc the program crashes
+        // The code snippet below caused a crash on older versions:
+        // mw = Gui.getMainWindow()
+        // mw.style()
+        // import gc
+        // gc.collect()
+#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
+        PyTypeObject * type = getPyTypeObjectForTypeName<QApplication>();
+        if (type) {
+            auto sbk_type = reinterpret_cast<SbkObjectType*>(type);
+            std::string typeName = "QApplication";
+            PyObject* pyobj = Shiboken::Object::newObject(sbk_type, qApp, false, false, typeName.c_str());
+            addQObject(qApp, pyobj);
+        }
+#endif
+    }
 
-    WrapperManager() = default;
+    WrapperManager()
+    {
+        connect(QApplication::instance(), &QCoreApplication::aboutToQuit,
+                this, &WrapperManager::clear);
+        wrapQApplication();
+    }
     ~WrapperManager() = default;
 };
 

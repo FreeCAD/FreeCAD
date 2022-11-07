@@ -1006,7 +1006,7 @@ bool DrawViewPart::hasGeometry(void) const
     return false;
 }
 
-//convert a vector in local XY coords into a coordinate sytem in global
+//convert a vector in local XY coords into a coordinate system in global
 //coordinates aligned to the vector.
 //Note that this CS may not have the ideal XDirection for the derived view
 //(likely a DrawViewSection) and the user may need to adjust the XDirection
@@ -1025,6 +1025,13 @@ gp_Ax2 DrawViewPart::localVectorToCS(const Base::Vector3d localUnit) const
     gp_Vec gLocalXOXYZ = gLocalX.Transformed(xLocalOXYZ);
 
     return { stdOrigin, gp_Dir(gLocalUnitOXYZ), gp_Dir(gLocalXOXYZ) };
+}
+
+Base::Vector3d DrawViewPart::localVectorToDirection(const Base::Vector3d localUnit) const
+{
+    Base::Console().Message("DVP::localVectorToDirection() - localUnit: %s\n", DrawUtil::formatVector(localUnit).c_str());
+    gp_Ax2 cs = localVectorToCS(localUnit);
+    return DrawUtil::toVector3d(cs.Direction());
 }
 
 gp_Ax2 DrawViewPart::getProjectionCS(const Base::Vector3d pt) const

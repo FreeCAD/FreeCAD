@@ -247,8 +247,11 @@ void DlgSettingsEditorImp::loadSettings()
 
     QByteArray fontName = this->font().family().toLatin1();
 
-    QFontDatabase fdb;
-    QStringList familyNames = fdb.families( QFontDatabase::Any );
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
+    QStringList familyNames = QFontDatabase().families(QFontDatabase::Any);
+#else
+    QStringList familyNames = QFontDatabase::families(QFontDatabase::Any);
+#endif
     ui->fontFamily->addItems(familyNames);
     int index = familyNames.indexOf(QString::fromLatin1(hGrp->GetASCII("Font", fontName).c_str()));
     if (index < 0) index = 0;

@@ -260,7 +260,7 @@ class CommandPathDressup:
     def GetResources(self):
         return {
             "Pixmap": "Path_Dressup",
-            "MenuText": QT_TRANSLATE_NOOP("Path_DressupAxisMap", "Axis Map Dress-up"),
+            "MenuText": QT_TRANSLATE_NOOP("Path_DressupAxisMap", "Axis Map"),
             "Accel": "",
             "ToolTip": QT_TRANSLATE_NOOP(
                 "Path_DressupAxisMap", "Remap one axis to another."

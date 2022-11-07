@@ -23,21 +23,25 @@
 Python library dependencies. No support is provided for uninstalling those dependencies
 because pip's uninstall function does not support the target directory argument. """
 
-from typing import List, Dict
-
+import json
 import os
+import platform
+import shutil
 import subprocess
+import sys
 from functools import partial
+from typing import Dict, List, Tuple
 
 import FreeCAD
 import FreeCADGui
-from PySide2 import QtCore, QtGui, QtWidgets
+from PySide import QtCore, QtGui, QtWidgets
 
 import addonmanager_utilities as utils
 
 translate = FreeCAD.Qt.translate
 
-#pylint: disable=too-few-public-methods
+# pylint: disable=too-few-public-methods
+
 
 class PipFailed(Exception):
     """Exception thrown when pip times out or otherwise fails to return valid results"""
@@ -91,8 +95,8 @@ def call_pip(args) -> List[str]:
         proc = None
         try:
             no_window_flag = 0
-            if hasattr(subprocess,"CREATE_NO_WINDOW"):
-                no_window_flag = subprocess.CREATE_NO_WINDOW # Added in Python 3.7
+            if hasattr(subprocess, "CREATE_NO_WINDOW"):
+                no_window_flag = subprocess.CREATE_NO_WINDOW  # Added in Python 3.7
             proc = subprocess.run(
                 call_args,
                 stdout=subprocess.PIPE,
@@ -103,8 +107,9 @@ def call_pip(args) -> List[str]:
             )
             if proc.returncode != 0:
                 pip_failed = True
-        except subprocess.CalledProcessError:
+        except subprocess.CalledProcessError as e:
             pip_failed = True
+            print(e)
         except subprocess.TimeoutExpired:
             FreeCAD.Console.PrintWarning(
                 translate(
@@ -135,7 +140,7 @@ class PythonPackageManager:
     once."""
 
     class PipRunner(QtCore.QObject):
-        """ Run pip in a separate thread so the UI doesn't block while it runs """
+        """Run pip in a separate thread so the UI doesn't block while it runs"""
 
         finished = QtCore.Signal()
         error = QtCore.Signal(str)
@@ -145,11 +150,14 @@ class PythonPackageManager:
             self.all_packages_stdout = []
             self.outdated_packages_stdout = []
             self.vendor_path = vendor_path
+            self.package_list = {}
 
         def process(self):
-            """ Execute this object. """
+            """Execute this object."""
             try:
-                self.all_packages_stdout = call_pip(["list", "--path", self.vendor_path])
+                self.all_packages_stdout = call_pip(
+                    ["list", "--path", self.vendor_path]
+                )
                 self.outdated_packages_stdout = call_pip(
                     ["list", "-o", "--path", self.vendor_path]
                 )
@@ -158,21 +166,35 @@ class PythonPackageManager:
                 self.error.emit(str(e))
             self.finished.emit()
 
-
     def __init__(self, addons):
         self.dlg = FreeCADGui.PySideUic.loadUi(
             os.path.join(os.path.dirname(__file__), "PythonDependencyUpdateDialog.ui")
         )
         self.addons = addons
-        self.vendor_path = os.path.join(
-            FreeCAD.getUserAppDataDir(), "AdditionalPythonPackages"
-        )
+        self.vendor_path = utils.get_pip_target_directory()
         self.worker_thread = None
         self.worker_object = None
+        self.package_list = []
 
     def show(self):
         """Run the modal dialog"""
 
+        known_python_versions = self.get_known_python_versions()
+        if self._current_python_version_is_new() and known_python_versions:
+            # pylint: disable=line-too-long
+            result = QtWidgets.QMessageBox.question(
+                None,
+                translate("AddonsInstaller", "New Python Version Detected"),
+                translate(
+                    "AddonsInstaller",
+                    "This appears to be the first time this version of Python has been used with the Addon Manager. Would you like to install the same auto-installed dependencies for it?",
+                ),
+                QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+            )
+            if result == QtWidgets.QMessageBox.Yes:
+                self._reinstall_all_packages()
+
+        self._add_current_python_version()
         self._create_list_from_pip()
         self.dlg.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
         self.dlg.tableWidget.setSortingEnabled(False)
@@ -182,7 +204,7 @@ class PythonPackageManager:
     def _create_list_from_pip(self):
         """Uses pip and pip -o to generate a list of installed packages, and creates the user
         interface elements for those packages. Asynchronous, will complete AFTER the window is
-        showing in most cases. """
+        showing in most cases."""
 
         self.worker_thread = QtCore.QThread()
         self.worker_object = PythonPackageManager.PipRunner(self.vendor_path)
@@ -194,30 +216,34 @@ class PythonPackageManager:
 
         self.dlg.tableWidget.setRowCount(1)
         self.dlg.tableWidget.setItem(
-            0, 0, QtWidgets.QTableWidgetItem(translate("AddonsInstaller","Processing, please wait..."))
+            0,
+            0,
+            QtWidgets.QTableWidgetItem(
+                translate("AddonsInstaller", "Processing, please wait...")
+            ),
         )
         self.dlg.tableWidget.horizontalHeader().setSectionResizeMode(
             0, QtWidgets.QHeaderView.ResizeToContents
         )
 
     def _worker_finished(self):
-        """ Callback for when the worker process has completed """
+        """Callback for when the worker process has completed"""
         all_packages_stdout = self.worker_object.all_packages_stdout
         outdated_packages_stdout = self.worker_object.outdated_packages_stdout
 
-        package_list = self._parse_pip_list_output(
+        self.package_list = self._parse_pip_list_output(
             all_packages_stdout, outdated_packages_stdout
         )
         self.dlg.buttonUpdateAll.clicked.connect(
-            partial(self._update_all_packages, package_list)
+            partial(self._update_all_packages, self.package_list)
         )
 
-        self.dlg.tableWidget.setRowCount(len(package_list))
+        self.dlg.tableWidget.setRowCount(len(self.package_list))
         updateButtons = []
         counter = 0
         update_counter = 0
         self.dlg.tableWidget.setSortingEnabled(False)
-        for package_name, package_details in package_list.items():
+        for package_name, package_details in self.package_list.items():
             dependent_addons = self._get_dependent_addons(package_name)
             dependencies = []
             for addon in dependent_addons:
@@ -375,3 +401,117 @@ class PythonPackageManager:
 
         for package_name in updates:
             self._update_package(package_name)
+
+    @classmethod
+    def migrate_old_am_installations(cls) -> bool:
+        """Move packages installed before the Addon Manager switched to a versioned directory
+        structure into the versioned structure. Returns True if a migration was done, or false
+        if no migration was needed."""
+
+        migrated = False
+
+        old_directory = os.path.join(
+            FreeCAD.getUserAppDataDir(), "AdditionalPythonPackages"
+        )
+
+        new_directory = utils.get_pip_target_directory()
+        new_directory_name = new_directory.rsplit(os.path.sep, 1)[1]
+
+        if not os.path.exists(old_directory) or os.path.exists(
+            os.path.join(old_directory, "MIGRATION_COMPLETE")
+        ):
+            # Nothing to migrate
+            return False
+
+        if not os.path.exists(new_directory):
+            os.makedirs(new_directory)
+
+        for content_item in os.listdir(old_directory):
+            if content_item == new_directory_name:
+                continue
+            old_path = os.path.join(old_directory, content_item)
+            new_path = os.path.join(new_directory, content_item)
+            FreeCAD.Console.PrintLog(
+                f"Moving {content_item} into the new (versioned) directory structure\n"
+            )
+            FreeCAD.Console.PrintLog(f"   {old_path} --> {new_path}\n")
+            shutil.move(old_path, new_path)
+            migrated = True
+
+        sys.path.append(new_directory)
+        cls._add_current_python_version()
+
+        with open(
+            os.path.join(old_directory, "MIGRATION_COMPLETE"), "w", encoding="utf-8"
+        ) as f:
+            f.write(
+                "Files originally installed in this directory have been migrated to:\n"
+            )
+            f.write(new_directory)
+            f.write(
+                "\nThe existence of this file prevents the Addon Manager from "
+                "attempting the migration again.\n"
+            )
+        return migrated
+
+    @classmethod
+    def get_known_python_versions(cls) -> List[Tuple[int, int, int]]:
+        """Get the list of Python versions that the Addon Manager has seen before."""
+        pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
+        known_python_versions_string = pref.GetString("KnownPythonVersions", "[]")
+        known_python_versions = json.loads(known_python_versions_string)
+        print(json.dumps(known_python_versions, indent=4))
+        return known_python_versions
+
+    @classmethod
+    def _add_current_python_version(cls) -> None:
+        known_python_versions = cls.get_known_python_versions()
+        major, minor, _ = platform.python_version_tuple()
+        if not [major, minor] in known_python_versions:
+            known_python_versions.append((major, minor))
+        pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
+        pref.SetString("KnownPythonVersions", json.dumps(known_python_versions))
+
+    @classmethod
+    def _current_python_version_is_new(cls) -> bool:
+        """Returns True if this is the first time the Addon Manager has seen this version of
+        Python"""
+        known_python_versions = cls.get_known_python_versions()
+        major, minor, _ = platform.python_version_tuple()
+        if not [major, minor] in known_python_versions:
+            return True
+        return False
+
+    def _load_old_package_list(self) -> List[str]:
+        """Gets the list of packages from the package installation manifest"""
+
+        known_python_versions = self.get_known_python_versions()
+        if not known_python_versions:
+            return []
+        last_version = known_python_versions[-1]
+        expected_directory = f"py{last_version[0]}{last_version[1]}"
+        expected_directory = os.path.join(
+            FreeCAD.getUserAppDataDir(), "AdditionalPythonPackages", expected_directory
+        )
+        # For now just do this synchronously
+        worker_object = PythonPackageManager.PipRunner(expected_directory)
+        worker_object.process()
+        packages = self._parse_pip_list_output(
+            worker_object.all_packages_stdout, worker_object.outdated_packages_stdout
+        )
+        return packages.keys()
+
+    def _reinstall_all_packages(self) -> None:
+        """Loads the package manifest from another Python version, and installs the same packages
+        for the current (presumably new) version of Python."""
+
+        packages = self._load_old_package_list()
+        args = ["install"]
+        args.extend(packages)
+        args.extend(["--target", self.vendor_path])
+
+        try:
+            call_pip(args)
+        except PipFailed as e:
+            FreeCAD.Console.PrintError(str(e) + "\n")
+            return

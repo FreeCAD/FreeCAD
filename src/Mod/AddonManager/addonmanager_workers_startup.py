@@ -33,7 +33,7 @@ import threading
 import time
 from typing import List
 
-from PySide2 import QtCore
+from PySide import QtCore
 
 import FreeCAD
 import addonmanager_utilities as utils

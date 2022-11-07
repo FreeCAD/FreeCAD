@@ -29,12 +29,12 @@ from PathTests.PathTestUtils import PathTestBase
 
 
 class TestObject(object):
-
     def __init__(self, orientation, direction, zTop, zBottom):
         self.ThreadOrientation = orientation
         self.Direction = direction
         self.StartDepth = FreeCAD.Units.Quantity(zTop, FreeCAD.Units.Length)
         self.FinalDepth = FreeCAD.Units.Quantity(zBottom, FreeCAD.Units.Length)
+
 
 def radii(internal, major, minor, toolDia, toolCrest):
     """test radii function for simple testing"""
@@ -56,13 +56,17 @@ class TestPathThreadMilling(PathTestBase):
             self.assertRoughly(have[i], want[i])
 
     def assertSetupInternal(self, obj, c, begin, end):
-        cmd, zBegin, zEnd = PathThreadMilling.threadSetupInternal(obj, obj.StartDepth.Value, obj.FinalDepth.Value)
+        cmd, zBegin, zEnd = PathThreadMilling.threadSetupInternal(
+            obj, obj.StartDepth.Value, obj.FinalDepth.Value
+        )
         self.assertEqual(cmd, c)
         self.assertEqual(zBegin, begin)
         self.assertEqual(zEnd, end)
 
     def assertSetupExternal(self, obj, c, begin, end):
-        cmd, zBegin, zEnd = PathThreadMilling.threadSetupExternal(obj, obj.StartDepth.Value, obj.FinalDepth.Value)
+        cmd, zBegin, zEnd = PathThreadMilling.threadSetupExternal(
+            obj, obj.StartDepth.Value, obj.FinalDepth.Value
+        )
         self.assertEqual(cmd, c)
         self.assertEqual(zBegin, begin)
         self.assertEqual(zEnd, end)
@@ -120,30 +124,45 @@ class TestPathThreadMilling(PathTestBase):
 
         hand = PathThreadMilling.RightHand
 
-        self.assertSetupInternal(TestObject(hand, PathThreadMilling.DirectionConventional, 1, 0), "G2", 1, 0)
-        self.assertSetupInternal(TestObject(hand, PathThreadMilling.DirectionClimb, 1, 0), "G3", 0, 1)
+        self.assertSetupInternal(
+            TestObject(hand, PathThreadMilling.DirectionConventional, 1, 0), "G2", 1, 0
+        )
+        self.assertSetupInternal(
+            TestObject(hand, PathThreadMilling.DirectionClimb, 1, 0), "G3", 0, 1
+        )
 
     def test41(self):
         """Verify internal left hand thread setup."""
 
         hand = PathThreadMilling.LeftHand
 
-        self.assertSetupInternal(TestObject(hand, PathThreadMilling.DirectionConventional, 1, 0), "G2", 0, 1)
-        self.assertSetupInternal(TestObject(hand, PathThreadMilling.DirectionClimb, 1, 0), "G3", 1, 0)
+        self.assertSetupInternal(
+            TestObject(hand, PathThreadMilling.DirectionConventional, 1, 0), "G2", 0, 1
+        )
+        self.assertSetupInternal(
+            TestObject(hand, PathThreadMilling.DirectionClimb, 1, 0), "G3", 1, 0
+        )
 
     def test50(self):
         """Verify exteranl right hand thread setup."""
 
         hand = PathThreadMilling.RightHand
 
-        self.assertSetupExternal(TestObject(hand, PathThreadMilling.DirectionClimb, 1, 0), "G2", 1, 0)
-        self.assertSetupExternal(TestObject(hand, PathThreadMilling.DirectionConventional, 1, 0), "G3", 0, 1)
+        self.assertSetupExternal(
+            TestObject(hand, PathThreadMilling.DirectionClimb, 1, 0), "G2", 1, 0
+        )
+        self.assertSetupExternal(
+            TestObject(hand, PathThreadMilling.DirectionConventional, 1, 0), "G3", 0, 1
+        )
 
     def test51(self):
         """Verify exteranl left hand thread setup."""
 
         hand = PathThreadMilling.LeftHand
 
-        self.assertSetupExternal(TestObject(hand, PathThreadMilling.DirectionClimb, 1, 0), "G2", 0, 1)
-        self.assertSetupExternal(TestObject(hand, PathThreadMilling.DirectionConventional, 1, 0), "G3", 1, 0)
-
+        self.assertSetupExternal(
+            TestObject(hand, PathThreadMilling.DirectionClimb, 1, 0), "G2", 0, 1
+        )
+        self.assertSetupExternal(
+            TestObject(hand, PathThreadMilling.DirectionConventional, 1, 0), "G3", 1, 0
+        )

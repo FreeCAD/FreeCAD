@@ -72,7 +72,7 @@ PropertyView::PropertyView(QWidget *parent)
 {
     auto pLayout = new QGridLayout( this );
     pLayout->setSpacing(0);
-    pLayout->setMargin (0);
+    pLayout->setContentsMargins(0, 0, 0, 0);
 
     timer = new QTimer(this);
     timer->setSingleShot(true);
@@ -560,7 +560,7 @@ PropertyDockView::PropertyDockView(Gui::Document* pcDocument, QWidget *parent)
     auto view = new PropertyView(this);
     auto pLayout = new QGridLayout(this);
     pLayout->setSpacing(0);
-    pLayout->setMargin (0);
+    pLayout->setContentsMargins(0, 0, 0, 0);
     pLayout->addWidget(view, 0, 0);
 
     resize( 200, 400 );

@@ -39,7 +39,9 @@ class TestPathPreferences(PathTestUtils.PathTestBase):
     def test02(self):
         """Path/Post/scripts is part of the posts search path."""
         paths = Path.Preferences.searchPathsPost()
-        self.assertEqual(len([p for p in paths if p.endswith("/Path/Post/scripts/")]), 1)
+        self.assertEqual(
+            len([p for p in paths if p.endswith("/Path/Post/scripts/")]), 1
+        )
 
     def test03(self):
         """Available post processors include linuxcnc, grbl and opensbp."""
@@ -51,7 +53,9 @@ class TestPathPreferences(PathTestUtils.PathTestBase):
     def test10(self):
         """Default paths for tools are resolved correctly"""
 
-        self.assertTrue(Path.Preferences.pathDefaultToolsPath().endswith("/Path/Tools/"))
+        self.assertTrue(
+            Path.Preferences.pathDefaultToolsPath().endswith("/Path/Tools/")
+        )
         self.assertTrue(
             Path.Preferences.pathDefaultToolsPath("Bit").endswith("/Path/Tools/Bit")
         )

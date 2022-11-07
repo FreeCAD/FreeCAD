@@ -27,8 +27,9 @@
 #include <App/DocumentObject.h>
 #include <App/Origin.h>
 #include <Base/Console.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/Selection.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/ViewProviderOrigin.h>
@@ -103,8 +104,7 @@ TaskRevolutionParameters::TaskRevolutionParameters(PartDesignGui::ViewProvider* 
 
 void TaskRevolutionParameters::fillAxisCombo(bool forceRefill)
 {
-    bool oldVal_blockUpdate = blockUpdate;
-    blockUpdate = true;
+    Base::StateLocker lock(blockUpdate, true);
 
     if (axesInList.empty())
         forceRefill = true;//not filled yet, full refill
@@ -169,8 +169,6 @@ void TaskRevolutionParameters::fillAxisCombo(bool forceRefill)
     //highlight current.
     if (indexOfCurrent != -1)
         ui->axis->setCurrentIndex(indexOfCurrent);
-
-    blockUpdate = oldVal_blockUpdate;
 }
 
 void TaskRevolutionParameters::addAxisToCombo(App::DocumentObject* linkObj,
@@ -201,11 +199,8 @@ void TaskRevolutionParameters::updateUI()
 {
     if (blockUpdate)
         return;
-    blockUpdate = true;
-
+    Base::StateLocker lock(blockUpdate, true);
     fillAxisCombo();
-
-    blockUpdate = false;
 }
 
 void TaskRevolutionParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -250,6 +245,9 @@ void TaskRevolutionParameters::onAxisChanged(int num)
     App::PropertyLinkSub &lnk = *(axesInList[num]);
     if (!lnk.getValue()) {
         // enter reference selection mode
+        if (auto sketch = dynamic_cast<Part::Part2DObject*>(pcRevolution->Profile.getValue())) {
+            Gui::cmdAppObjectShow(sketch);
+        }
         TaskSketchBasedParameters::onSelectReference(AllowSelection::EDGE |
                                                      AllowSelection::PLANAR |
                                                      AllowSelection::CIRCLE);

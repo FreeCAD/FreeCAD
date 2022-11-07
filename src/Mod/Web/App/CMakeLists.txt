@@ -7,20 +7,13 @@ include_directories(
     ${ZLIB_INCLUDE_DIR}
 )
 
-if(BUILD_QT5)
-    include_directories(
-        ${Qt5Network_INCLUDE_DIRS}
-    )
-    set(Web_LIBS
-         FreeCADApp
-         ${Qt5Network_LIBRARIES}
-    )
-else()
-    set(Web_LIBS
-         FreeCADApp
-         ${QT_LIBRARIES}
-    )
-endif()
+include_directories(
+    ${QtNetwork_INCLUDE_DIRS}
+)
+set(Web_LIBS
+    FreeCADApp
+    ${QtNetwork_LIBRARIES}
+)
 
 SET(Web_SRCS
     AppWeb.cpp

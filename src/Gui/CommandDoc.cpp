@@ -154,11 +154,15 @@ void StdCmdOpen::activated(int iMsg)
 
             App::Document *doc = App::GetApplication().getActiveDocument();
 
-            if(doc && doc->testStatus(App::Document::PartialRestore))
-                QMessageBox::critical(getMainWindow(), QObject::tr("Error"), QObject::tr("There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved."));
+            if(doc && doc->testStatus(App::Document::PartialRestore)) {
+                QMessageBox::critical(getMainWindow(), QObject::tr("Error"),
+                                      QObject::tr("There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved."));
+            }
 
-            if(doc && doc->testStatus(App::Document::RestoreError))
-                QMessageBox::critical(getMainWindow(), QObject::tr("Error"), QObject::tr("There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data."));
+            if(doc && doc->testStatus(App::Document::RestoreError)) {
+                QMessageBox::critical(getMainWindow(), QObject::tr("Error"),
+                                      QObject::tr("There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data."));
+            }
         }
     }
 }
@@ -1193,7 +1197,7 @@ void StdCmdDuplicateSelection::activated(int iMsg)
     if (doc) {
         bool proceed = true;
         if(hasXLink && !doc->isSaved()) {
-            int ret = QMessageBox::question(getMainWindow(),
+            auto ret = QMessageBox::question(getMainWindow(),
                 qApp->translate("Std_DuplicateSelection","Object dependencies"),
                 qApp->translate("Std_DuplicateSelection",
                 "To link to external objects, the document must be saved at least once.\n"
@@ -1342,7 +1346,7 @@ void StdCmdDelete::activated(int iMsg)
                 if(more)
                     bodyMessageStream << "\n...";
 
-                int ret = QMessageBox::warning(Gui::getMainWindow(),
+                auto ret = QMessageBox::warning(Gui::getMainWindow(),
                     qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
                     QMessageBox::Yes, QMessageBox::No);
                 if (ret == QMessageBox::Yes)
@@ -1432,7 +1436,7 @@ void StdCmdRefresh::activated(int iMsg)
             doCommand(Doc,"App.activeDocument().recompute(None,True,True)");
         }
         catch (Base::Exception& /*e*/) {
-            int ret = QMessageBox::warning(getMainWindow(), QObject::tr("Dependency error"),
+            auto ret = QMessageBox::warning(getMainWindow(), QObject::tr("Dependency error"),
                 qApp->translate("Std_Refresh", "The document contains dependency cycles.\n"
                             "Please check the Report View for more details.\n\n"
                             "Do you still want to proceed?"),

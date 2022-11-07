@@ -33,9 +33,10 @@ SET(PathPython_SRCS
 
 SET(PathPythonBase_SRCS
     Path/Base/__init__.py
-    Path/Base//Drillable.py
-    Path/Base/MachineState.py
+    Path/Base/Drillable.py
     Path/Base/FeedRate.py
+    Path/Base/Language.py
+    Path/Base/MachineState.py
     Path/Base/Property.py
     Path/Base/PropertyBag.py
     Path/Base/SetupSheet.py
@@ -59,6 +60,7 @@ SET(PathPythonDressup_SRCS
     Path/Dressup/__init__.py
     Path/Dressup/Utils.py
     Path/Dressup/Boundary.py
+    Path/Dressup/DogboneII.py
     Path/Dressup/Tags.py
 )
 
@@ -66,6 +68,7 @@ SET(PathPythonDressupGui_SRCS
     Path/Dressup/Gui/__init__.py
     Path/Dressup/Gui/AxisMap.py
     Path/Dressup/Gui/Dogbone.py
+    Path/Dressup/Gui/DogboneII.py
     Path/Dressup/Gui/Dragknife.py
     Path/Dressup/Gui/LeadInOut.py
     Path/Dressup/Gui/Boundary.py
@@ -222,6 +225,7 @@ SET(PathScripts_SRCS
 )
 
 SET(PathPythonBaseGenerator_SRCS
+    Path/Base/Generator/dogboneII.py
     Path/Base/Generator/drill.py
     Path/Base/Generator/helix.py
     Path/Base/Generator/rotation.py
@@ -287,19 +291,22 @@ SET(PathTests_SRCS
     PathTests/TestPathDeburr.py
     PathTests/TestPathDepthParams.py
     PathTests/TestPathDressupDogbone.py
+    PathTests/TestPathDressupDogboneII.py
     PathTests/TestPathDressupHoldingTags.py
     PathTests/TestPathDrillGenerator.py
     PathTests/TestPathDrillable.py
-    PathTests/TestPathRotationGenerator.py
+    PathTests/TestPathGeneratorDogboneII.py
     PathTests/TestPathGeom.py
     PathTests/TestPathHelix.py
     PathTests/TestPathHelpers.py
     PathTests/TestPathHelixGenerator.py
+    PathTests/TestPathLanguage.py
     PathTests/TestPathLog.py
     PathTests/TestPathOpUtil.py
     PathTests/TestPathPost.py
     PathTests/TestPathPreferences.py
     PathTests/TestPathPropertyBag.py
+    PathTests/TestPathRotationGenerator.py
     PathTests/TestPathSetupSheet.py
     PathTests/TestPathStock.py
     PathTests/TestPathToolChangeGenerator.py

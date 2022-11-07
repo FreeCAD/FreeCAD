@@ -331,7 +331,7 @@ void DocumentRecovery::accept()
                             << docs[i]->Label.getValue() << "'");
                 }
                 else {
-                    DocumentRecoveryCleaner().clearDirectory(xfi.absolutePath());
+                    DocumentRecoveryCleaner().clearDirectory(QFileInfo(xfi.absolutePath()));
                     QDir().rmdir(xfi.absolutePath());
                 }
 
@@ -355,7 +355,9 @@ void DocumentRecoveryPrivate::writeRecoveryInfo(const DocumentRecoveryPrivate::I
     QFile file(info.xmlFile);
     if (file.open(QFile::WriteOnly)) {
         QTextStream str(&file);
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
         str.setCodec("UTF-8");
+#endif
         str << "<?xml version='1.0' encoding='utf-8'?>\n"
             << "<AutoRecovery SchemaVersion=\"1\">\n";
         switch (info.status) {

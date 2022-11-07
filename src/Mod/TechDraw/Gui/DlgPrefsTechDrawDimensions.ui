@@ -465,6 +465,11 @@ Multiplier of 'Font Size'</string>
         </item>
         <item row="2" column="0">
          <widget class="QLabel" name="label_11">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
           <property name="text">
            <string>Alternate Decimals</string>
           </property>

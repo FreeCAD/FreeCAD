@@ -245,7 +245,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             dwelltime = obj.DwellTime if obj.DwellEnabled else 0.0
             peckdepth = obj.PeckDepth.Value if obj.PeckEnabled else 0.0
             repeat = 1  # technical debt:  Add a repeat property for user control
-            chipBreak = (obj.chipBreakEnabled and obj.PeckEnabled)
+            chipBreak = obj.chipBreakEnabled and obj.PeckEnabled
 
             try:
                 drillcommands = drill.generate(
@@ -254,7 +254,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                     peckdepth,
                     repeat,
                     obj.RetractHeight.Value,
-                    chipBreak=chipBreak
+                    chipBreak=chipBreak,
                 )
 
             except ValueError as e:  # any targets that fail the generator are ignored
