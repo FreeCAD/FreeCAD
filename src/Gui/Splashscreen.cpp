@@ -328,7 +328,7 @@ void AboutDialog::setupLabels()
     ui->labelAuthor->setUrl(mturl);
 
     if (qApp->styleSheet().isEmpty()) {
-        ui->labelAuthor->setStyleSheet(QString::fromLatin1("Gui--UrlLabel {color: #0000FF;text-decoration: underline;font-weight: 600;font-family: MS Shell Dlg 2;}"));
+        ui->labelAuthor->setStyleSheet(QString::fromLatin1("Gui--UrlLabel {color: #0000FF;text-decoration: underline;font-weight: 600;}"));
     }
 
     QString version = ui->labelBuildVersion->text();
@@ -669,7 +669,7 @@ void AboutDialog::showLibraryInformation()
                      "proprietary rights belong to their respective owners:");
     QString html;
     QTextStream out(&html);
-    out << "<html><head/><body style=\" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;\">"
+    out << "<html><head/><body style=\" font-size:8.25pt; font-weight:400; font-style:normal;\">"
         << "<p>" << msg << "<br/></p>\n<ul>\n";
     for (QList<LibraryInfo>::iterator it = libInfo.begin(); it != libInfo.end(); ++it) {
         out << "<li><p>" << it->name << " " << it->version << "</p>"
