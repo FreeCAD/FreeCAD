@@ -242,49 +242,62 @@ void DlgSettingsEditorImp::loadSettings()
     ui->radioSpaces->onRestore();
 
     setEditorTabWidth(ui->tabSize->value());
-    ui->textEdit1->setPlainText(QString::fromLatin1(
-        "# Short Python sample\n"
-        "import sys\n"
-        "\n"
-        "def foo(begin, end):\n"
-        "	i = begin\n"
-        "	while i < end:\n"
-        "		print(i)\n"
-        "		i = i + 1\n"
-        "		print(\"Text\")\n"
-        "	return None\n"
-        "\n"
-        "foo(0, 20)\n"));
+    ui->textEdit1->setPlainText(QString::fromLatin1("# Short Python sample\n"
+                                                    "import sys\n"
+                                                    "\n"
+                                                    "def foo(begin, end):\n"
+                                                    "	i = begin\n"
+                                                    "	while i < end:\n"
+                                                    "		print(i)\n"
+                                                    "		i = i + 1\n"
+                                                    "		print(\"Text\")\n"
+                                                    "	return None\n"
+                                                    "\n"
+                                                    "foo(0, 20)\n"));
 
     // Restores the color map
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Editor");
-    for (QVector<QPair<QString, unsigned int> >::Iterator it = d->colormap.begin(); it != d->colormap.end(); ++it){
+    for (QVector<QPair<QString, unsigned int>>::Iterator it = d->colormap.begin();
+         it != d->colormap.end(); ++it) {
         auto col = static_cast<unsigned long>((*it).second);
         col = hGrp->GetUnsigned((*it).first.toLatin1(), col);
         (*it).second = static_cast<unsigned int>(col);
         QColor color;
         color.setRgb((col >> 24) & 0xff, (col >> 16) & 0xff, (col >> 8) & 0xff);
-        pythonSyntax->setColor( (*it).first, color );
+        pythonSyntax->setColor((*it).first, color);
     }
 
     // fill up font styles
     //
     ui->fontSize->setValue(10);
-    ui->fontSize->setValue( hGrp->GetInt("FontSize", ui->fontSize->value()) );
+    ui->fontSize->setValue(hGrp->GetInt("FontSize", ui->fontSize->value()));
 
-    QByteArray fontName = getMonospaceFont().family().toLatin1();
+    QByteArray defaultMonospaceFont = getMonospaceFont().family().toLatin1();
 
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QStringList familyNames = QFontDatabase().families(QFontDatabase::Any);
+    QStringList fixedFamilyNames;
+    for (const auto &name : familyNames) {
+        if (QFontDatabase().isFixedPitch(name)) {
+            fixedFamilyNames.append(name);
+        }
+    }
 #else
     QStringList familyNames = QFontDatabase::families(QFontDatabase::Any);
+    QStringList fixedFamilyNames;
+    for (const auto &name : familyNames) {
+        if (QFontDatabase::isFixedPitch(name)) {
+            fixedFamilyNames.append(name);
+        }
+    }
 #endif
-    ui->fontFamily->addItems(familyNames);
-    int index = familyNames.indexOf(QString::fromLatin1(hGrp->GetASCII("Font", fontName).c_str()));
-    if (index < 0) index = 0;
+    ui->fontFamily->addItems(fixedFamilyNames);
+    int index = fixedFamilyNames.indexOf(
+        QString::fromLatin1(hGrp->GetASCII("Font", defaultMonospaceFont).c_str()));
+    if (index < 0)
+        index = 0;
     ui->fontFamily->setCurrentIndex(index);
     on_fontFamily_activated(ui->fontFamily->currentText());
-
     ui->displayItems->setCurrentItem(ui->displayItems->topLevelItem(0));
 }
 
