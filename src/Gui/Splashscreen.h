@@ -44,11 +44,21 @@ public:
     explicit SplashScreen(  const QPixmap & pixmap = QPixmap ( ), Qt::WindowFlags f = Qt::WindowFlags() );
     ~SplashScreen() override;
 
+    void showMessage(const QString &message);
 protected:
     void drawContents ( QPainter * painter ) override;
 
 private:
-    SplashObserver* messages;
+    // these three functions can, and likely should, be put someplace else
+    // this is not stuff a splash screen should care about
+    static int alignStrToInt(std::string str);
+    static std::string fromConfig(const std::map<std::string, std::string>& config, std::string
+                                                                                      value);
+    static QColor colorFromString(const std::string str);
+
+    SplashObserver* splashObserver;
+    int alignment {Qt::AlignBottom | Qt::AlignLeft};
+    QColor textColor {Qt::black};
 };
 
 namespace Dialog {
@@ -66,7 +76,7 @@ public:
     static void setDefaultFactory(AboutDialogFactory *factory);
 
 private:
-    static AboutDialogFactory* factory;
+    static AboutDialogFactory* factory {};
 };
 
 class GuiExport LicenseView : public Gui::MDIView
@@ -84,6 +94,17 @@ public:
 
 private:
     QTextBrowser* browser;
+};
+
+class SummaryReport{
+public:
+    SummaryReport();
+    ~SummaryReport();
+    void addItem(const std::string item);
+    std::string asStdString();
+    std::string codeWrap(std::string wrappee);
+private:
+    std::vector<std::string> items {};
 };
 
 /** This widget provides the "About dialog" of an application.
@@ -113,7 +134,14 @@ protected Q_SLOTS:
 
 private:
     Ui_AboutApplication* ui;
-    class LibraryInfo;
+    QString libraryInfoAsHtml();
+    QTextBrowser *showCommon(const char *name,
+                             const char *tabName,
+                             const bool openExternalLinks = false,
+                             const bool openLinks = true);
+    std::string makeSummaryReport();
+
+    SummaryReport summaryReport {};
 };
 
 } // namespace Dialog
