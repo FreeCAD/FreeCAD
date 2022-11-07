@@ -1,6 +1,6 @@
 name: Report an Issue
 description: File an issue report
-title: ""
+title: "[Issue] "
 labels: ["needs triage"]
 body:
   - type: checkboxes
