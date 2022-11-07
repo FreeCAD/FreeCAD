@@ -240,7 +240,17 @@ if HAVE_QTNETWORK:
                     )  # This may still be QNetworkProxy.NoProxy
             elif userProxyCheck:
                 host, _, port_string = proxy_string.rpartition(":")
-                port = 0 if not port_string else int(port_string)
+                try:
+                    port = 0 if not port_string else int(port_string)
+                except ValueError:
+                    FreeCAD.Console.PrintError(
+                        translate(
+                            "AddonsInstaller",
+                            "Failed to convert the specified proxy port '{}' to a port number",
+                        ).format(port_string)
+                        + "\n"
+                    )
+                    port = 0
                 # For now assume an HttpProxy, but eventually this should be a parameter
                 proxy = QtNetwork.QNetworkProxy(
                     QtNetwork.QNetworkProxy.HttpProxy, host, port
