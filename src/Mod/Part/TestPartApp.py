@@ -207,31 +207,6 @@ class PartTestNormals(unittest.TestCase):
     def tearDown(self):
         pass
 
-class PartTestShapeRotate(unittest.TestCase):
-    def testPlacement(self):
-        tol = 1e-12
-
-        box = Part.makeBox(1, 1, 1)
-        box.Placement.Base = Base.Vector(10, 10, 10)
-        box.rotate((0, 0, 0), (0, 0, 1), 90)
-
-        p1 = Base.Placement()
-        p1.Base = Base.Vector(10, 10, 10)
-
-        p2 = Base.Placement()
-        p2.Rotation.Angle = math.radians(90)
-        self.assertTrue(box.Placement.isSame(p2 * p1, tol))
-
-        p3 = p1.copy()
-        p3.rotate((0, 0, 0), (0, 0, 1), 90)
-        self.assertTrue(p3.isSame(p1 * p2, tol))
-        self.assertFalse(box.Placement.isSame(p3, tol))
-
-        p4 = p1.copy()
-        p4.rotate((0, 0, 0), (0, 0, 1), 90, True)
-        self.assertTrue(p4.isSame(p2 * p1, tol))
-        self.assertTrue(box.Placement.isSame(p4, tol))
-
 class PartTestCircle2D(unittest.TestCase):
     def testValidCircle(self):
         p1 = App.Base.Vector2d(0.01, 0.01)
