@@ -412,7 +412,7 @@ TopoDS_Shape DrawComplexSection::makeAlignedPieces(const TopoDS_Shape &rawShape,
         TopoDS_Shape pieceRotated = mkTransRotate.Shape();
 
         //align a copy of the piece with OXYZ so we can use bounding box to get
-        //width, depth, height of the piece. We copy the piece so the tranformation
+        //width, depth, height of the piece. We copy the piece so the transformation
         //does not affect the original.
         BRepBuilderAPI_Copy BuilderPieceCopy(pieceRotated);
         TopoDS_Shape copyPieceRotatedShape = BuilderPieceCopy.Shape();

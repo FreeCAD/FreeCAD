@@ -1006,7 +1006,7 @@ bool DrawViewPart::hasGeometry(void) const
     return false;
 }
 
-//convert a vector in local XY coords into a coordinate sytem in global
+//convert a vector in local XY coords into a coordinate system in global
 //coordinates aligned to the vector.
 //Note that this CS may not have the ideal XDirection for the derived view
 //(likely a DrawViewSection) and the user may need to adjust the XDirection
