@@ -333,6 +333,7 @@ def retranslateUi():
     aCompact.setText(translate("NavigationIndicator", "Compact"))
     aTooltip.setText(translate("NavigationIndicator", "Tooltip"))
     aTurntable.setText(translate("NavigationIndicator", "Turntable"))
+    aFreeTurntable.setText(translate("NavigationIndicator", "FreeTurntable"))
     aTrackball.setText(translate("NavigationIndicator", "Trackball"))
     a0.setText(translate("NavigationIndicator", "Undefined"))
 
@@ -358,12 +359,17 @@ gOrbit = QtGui.QActionGroup(menuSettings)
 aTurntable = QtGui.QAction(gOrbit)
 aTurntable.setObjectName("NavigationIndicator_Turntable")
 aTurntable.setCheckable(True)
+aFreeTurntable = QtGui.QAction(gOrbit)
+aFreeTurntable.setObjectName("NavigationIndicator_FreeTurntable")
+aFreeTurntable.setCheckable(True)
 aTrackball = QtGui.QAction(gOrbit)
 aTrackball.setObjectName("NavigationIndicator_Trackball")
 aTrackball.setCheckable(True)
 
+menuOrbit.addAction(aFreeTurntable)
 menuOrbit.addAction(aTurntable)
 menuOrbit.addAction(aTrackball)
+
 
 menuSettings.addMenu(menuOrbit)
 menuSettings.addSeparator()
@@ -504,8 +510,10 @@ def onOrbit():
 
     if aTurntable.isChecked():
         pView.SetInt("OrbitStyle", 0)
-    else:
+    elif aTrackball.isChecked():
         pView.SetInt("OrbitStyle", 1)
+    else:
+        pView.SetInt("OrbitStyle", 2)
 
 
 def onOrbitShow():
@@ -514,8 +522,10 @@ def onOrbitShow():
     gOrbit.blockSignals(True)
     if pView.GetInt("OrbitStyle", 1):
         aTrackball.setChecked(True)
-    else:
+    elif pView.GetInt("OrbitStyle", 0):
         aTurntable.setChecked(True)
+    else:
+        aFreeTurntable.setChecked(True)
     gOrbit.blockSignals(False)
 
 
