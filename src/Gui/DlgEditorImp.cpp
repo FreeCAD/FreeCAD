@@ -44,6 +44,33 @@ struct DlgSettingsEditorP
 } // namespace Dialog
 } // namespace Gui
 
+namespace
+{
+
+/**
+ * Get some kind of font that is monospaced, suitable for coding.
+ *
+ * Based on 
+ * https://stackoverflow.com/questions/18896933/qt-qfont-selection-of-a-monospace-font-doesnt-work
+ */
+QFont getMonospaceFont()
+{
+    QFont font(QString::fromLatin1("monospace"));
+    if (font.fixedPitch())
+        return font;
+    font.setStyleHint(QFont::Monospace);
+    if (font.fixedPitch())
+        return font;
+    font.setStyleHint(QFont::TypeWriter);
+    if (font.fixedPitch())
+        return font;
+    font.setFamily(QString::fromLatin1("courier"));
+    if (font.fixedPitch())
+        return font;
+    return font; // We failed, but return whatever we have anyway
+}
+}
+
 /* TRANSLATOR Gui::Dialog::DlgSettingsEditorImp */
 
 /**
@@ -245,7 +272,7 @@ void DlgSettingsEditorImp::loadSettings()
     ui->fontSize->setValue(10);
     ui->fontSize->setValue( hGrp->GetInt("FontSize", ui->fontSize->value()) );
 
-    QByteArray fontName = this->font().family().toLatin1();
+    QByteArray fontName = getMonospaceFont().family().toLatin1();
 
 #if QT_VERSION < QT_VERSION_CHECK(6,0,0)
     QStringList familyNames = QFontDatabase().families(QFontDatabase::Any);
