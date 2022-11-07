@@ -170,7 +170,7 @@ void TaskComplexSection::setUiPrimary()
         m_saveNormal = dirs.first;
         m_localUnit = dirs.first;
         m_saveXDir = dirs.second;
-        m_viewDirectionWidget->setValue(m_saveNormal * -1.0);   //this will propogate to m_compass
+        m_viewDirectionWidget->setValue(m_saveNormal * -1.0);   //this will propagate to m_compass
     }
 
     //don't allow updates until a direction is picked
