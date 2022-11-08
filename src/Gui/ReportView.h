@@ -59,7 +59,7 @@ protected:
 
 private:
     QTabWidget* tabWidget;
-    ReportOutput* tabOutput; /**< Output window */
+    ReportOutput* tabOutput; /**< Output 'Report view' window */
     PythonConsole* tabPython; /**< Python console */
 };
 
@@ -118,7 +118,7 @@ private:
     //@}
 };
 
-/** Output window to show messages.
+/** Output window 'Report view' to show messages.
  * @see Base::ILogger
  * @see QTextEdit
  * \author Werner Mayer

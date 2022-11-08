@@ -32,7 +32,7 @@ namespace Dialog {
 class Ui_DlgReportView;
 
 /** The DlgReportViewImp class implements the available settings for the
- * report output window to change.
+ * Report View to change.
  * \author Werner Mayer
  */
 class DlgReportViewImp : public PreferencePage
