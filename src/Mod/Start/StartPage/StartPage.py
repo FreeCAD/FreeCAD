@@ -580,15 +580,6 @@ def handle():
     Start.iconbank = iconbank
     Start.tempfolder = tempfolder
 
-    # make sure we are always returning unicode
-    # HTML should be a str-object and therefore:
-    # - for py2 HTML is a bytes object and has to be decoded to unicode
-    # - for py3 HTML is already a unicode object and the next 2 lines can be removed
-    #    once py2-support is removed.
-
-    if isinstance(HTML, bytes):
-        HTML = HTML.decode("utf8")
-
     return HTML
 
 
