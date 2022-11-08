@@ -55,6 +55,7 @@
 #include "Macro.h"
 #include "MainWindow.h"
 #include "PythonEditor.h"
+#include "UserSettings.h"
 #include "WhatsThis.h"
 #include "Widgets.h"
 #include "Workbench.h"
@@ -725,8 +726,7 @@ void WorkbenchGroup::addTo(QWidget *widget)
         auto* box = new WorkbenchComboBox(this, widget);
         setupBox(box);
 
-        std::string pos = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")->GetASCII("WSPosition", "WSToolbar");
-        bool left = (pos == "WSLeftCorner");
+        bool left = WorkbenchSwitcher::isLeftCorner(WorkbenchSwitcher::getValue());
         qobject_cast<QMenuBar*>(widget)->setCornerWidget(box, left ? Qt::TopLeftCorner : Qt::TopRightCorner);
     }
     else if (widget->inherits("QMenu")) {

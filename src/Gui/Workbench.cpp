@@ -40,6 +40,7 @@
 #include "Selection.h"
 #include "ToolBarManager.h"
 #include "ToolBoxManager.h"
+#include "UserSettings.h"
 #include "Window.h"
 
 #include <App/Application.h>
@@ -751,9 +752,7 @@ ToolBarItem* StdWorkbench::setupToolBars() const
           << "Std_Refresh" << "Separator" << "Std_WhatsThis";
 
     // Workbench switcher
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
-    std::string defaultPos = "WSToolbar";
-    if (hGrp->GetASCII("WSPosition", defaultPos.c_str()) == defaultPos) {
+    if (WorkbenchSwitcher::isToolbar(WorkbenchSwitcher::getValue())) {
         auto wb = new ToolBarItem(root);
         wb->setCommand("Workbench");
         *wb << "Std_Workbench";

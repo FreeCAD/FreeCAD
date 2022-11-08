@@ -31,6 +31,7 @@
 #include "Application.h"
 #include "Command.h"
 #include "MainWindow.h"
+#include "UserSettings.h"
 
 
 using namespace Gui;
@@ -370,13 +371,13 @@ void MenuManager::setupMenuBarCornerWidgets() const
 {
     /*Note: currently only workbench selector uses corner widget.*/
     QMenuBar* menuBar = getMainWindow()->menuBar();
-    std::string pos = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")->GetASCII("WSPosition", "WSToolbar");
+    std::string pos = WorkbenchSwitcher::getValue();
 
     bool showLeftWidget = false;
     bool showRightWidget = false;
 
     //Right corner widget
-    if (pos == "WSRightCorner") {
+    if (WorkbenchSwitcher::isRightCorner(pos)) {
         //add workbench selector to menubar right corner widget.
         if (!menuBar->cornerWidget(Qt::TopRightCorner)) {
             Application::Instance->commandManager().addTo("Std_Workbench", menuBar);
@@ -384,7 +385,7 @@ void MenuManager::setupMenuBarCornerWidgets() const
         showRightWidget = true;
     }
     //Left corner widget
-    else if (pos == "WSLeftCorner") {
+    else if (WorkbenchSwitcher::isLeftCorner(pos)) {
         //add workbench selector to menubar left corner widget.
         if (!menuBar->cornerWidget(Qt::TopLeftCorner)) {
             Application::Instance->commandManager().addTo("Std_Workbench", menuBar);
