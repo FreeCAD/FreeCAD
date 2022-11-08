@@ -142,7 +142,7 @@ Py::Dict CosmeticEdgePy::getFormat() const
 
     dict.setItem("style", Py::Long(format->m_style));
     dict.setItem("weight", Py::Float(format->m_weight));
-    dict.setItem("color", Py::Tuple(DrawUtil::colorToPyTuple(format->m_color)));
+    dict.setItem("color", Py::Tuple(DrawUtil::colorToPyTuple(format->m_color), true));
     dict.setItem("visible", Py::Boolean(format->m_visible));
 
     return dict;
