@@ -54,6 +54,7 @@ DrawViewSymbol::DrawViewSymbol()
     ADD_PROPERTY_TYPE(Symbol, (""), vgroup, App::Prop_None, "The SVG code defining this symbol");
     ADD_PROPERTY_TYPE(EditableTexts, (""), vgroup, App::Prop_None, "Substitution values for the editable strings in this symbol");
     ScaleType.setValue("Custom");
+    Scale.setStatus(App::Property::ReadOnly, false);
     Symbol.setStatus(App::Property::Hidden, true);
 }
 
