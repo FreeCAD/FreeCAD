@@ -35,44 +35,31 @@ namespace TechDraw
 
 class TechDrawExport DrawSVGTemplate: public TechDraw::DrawTemplate
 {
-    PROPERTY_HEADER(TechDraw::DrawSVGTemplate);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawSVGTemplate);
 
 public:
     DrawSVGTemplate();
-    ~DrawSVGTemplate();
+    ~DrawSVGTemplate() override;
 
     App::PropertyFileIncluded PageResult;
     App::PropertyFile Template;
 
-    /** @name methods override Feature */
-    //@{
-    /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute(void);
-    //@}
-
-    short mustExecute() const;
-
-    /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    void onChanged(const App::Property* prop) override;
+   /// returns the type name of the ViewProvider
+    const char* getViewProviderName(void) const override {
         return "TechDrawGui::ViewProviderTemplate";
     }
 
-    virtual PyObject *getPyObject(void);
-    virtual unsigned int getMemSize(void) const;
+    PyObject *getPyObject(void) override;
 
-    double getWidth() const;
-    double getHeight() const;
+    double getWidth() const override;
+    double getHeight() const override;
+
+    QString processTemplate();
 
 protected:
-    void onChanged(const App::Property* prop);
-
-    /// Returns map with <editable name, default text>
-    /*!
-     * Also populates editableSvgIds
-     */
+    void replaceFileIncluded(std::string newTemplateFileName);
     std::map<std::string, std::string> getEditableTextsFromTemplate();
-
-	QString processTemplate(QString fileSpec);
 
 };
 

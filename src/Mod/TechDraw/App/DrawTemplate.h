@@ -36,17 +36,16 @@ class DrawPage;
 
 class TechDrawExport DrawTemplate : public App::DocumentObject
 {
-    PROPERTY_HEADER(TechDraw::DrawTemplate);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawTemplate);
 
 public:
     DrawTemplate(); /// Constructor
-    ~DrawTemplate();
+    ~DrawTemplate() override;
 
     // Page Physical Properties
     App::PropertyLength Width;
     App::PropertyLength Height;
     App::PropertyEnumeration Orientation;
-    //App::PropertyString PaperSize;
 
     App::PropertyMap EditableTexts;
 
@@ -62,23 +61,17 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute(void) override;
     //@}
 
 
-    virtual short mustExecute() const;
-
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    const char* getViewProviderName(void) const override{
         return "TechDrawGui::ViewProviderTemplate";
     }
 
     // from base class
-    virtual PyObject *getPyObject(void);
-    virtual unsigned int getMemSize(void) const;
-
-protected:
-    void onChanged(const App::Property* prop);
+    virtual PyObject *getPyObject(void) override;
 
 private:
     static const char* OrientationEnums[];

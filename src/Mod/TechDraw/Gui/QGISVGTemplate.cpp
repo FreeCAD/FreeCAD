@@ -84,17 +84,9 @@ void QGISVGTemplate::openFile(const QFile &file)
     Q_UNUSED(file);
 }
 
-void QGISVGTemplate::load(const QString &fileName)
+void QGISVGTemplate::load(const QByteArray &svgCode)
 {
-    if (fileName.isEmpty()){
-        return;
-    }
-
-    QFile file(fileName);
-    if (!file.exists()) {
-        return;
-    }
-    m_svgRender->load(file.fileName());
+     m_svgRender->load(svgCode);
 
     QSize size = m_svgRender->defaultSize();
     m_svgItem->setSharedRenderer(m_svgRender);
@@ -107,11 +99,11 @@ void QGISVGTemplate::load(const QString &fileName)
     //convert from pixels or mm or inches in svg file to mm page size
     TechDraw::DrawSVGTemplate *tmplte = getSVGTemplate();
     double xaspect, yaspect;
-    xaspect = tmplte->getWidth() / (double) size.width();
-    yaspect = tmplte->getHeight() / (double) size.height();
+    xaspect = tmplte->getWidth() / static_cast<double>(size.width());
+    yaspect = tmplte->getHeight() / static_cast<double>(size.height());
 
     QTransform qtrans;
-    qtrans.translate(0.f, Rez::guiX(-tmplte->getHeight()));
+    qtrans.translate(0.0, Rez::guiX(-tmplte->getHeight()));
     qtrans.scale(Rez::guiX(xaspect) , Rez::guiX(yaspect));
     m_svgItem->setTransform(qtrans);
 }
@@ -129,7 +121,7 @@ void QGISVGTemplate::draw()
     TechDraw::DrawSVGTemplate *tmplte = getSVGTemplate();
     if(!tmplte)
         throw Base::RuntimeError("Template Feature not set for QGISVGTemplate");
-    load(QString::fromUtf8(tmplte->PageResult.getValue()));
+    load(tmplte->processTemplate().toUtf8());
 }
 
 void QGISVGTemplate::updateView(bool update)
@@ -141,6 +133,11 @@ void QGISVGTemplate::updateView(bool update)
 void QGISVGTemplate::createClickHandles()
 {
     TechDraw::DrawSVGTemplate *svgTemplate = getSVGTemplate();
+    if (svgTemplate->isRestoring()) {
+        //the embedded file is not available yet, so just return
+        return;
+    }
+
     QString templateFilename(QString::fromUtf8(svgTemplate->PageResult.getValue()));
 
     if (templateFilename.isEmpty()) {
