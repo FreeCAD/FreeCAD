@@ -625,7 +625,7 @@ TopoDS_Compound DrawViewSection::alignSectionFaces(TopoDS_Shape faceIntersection
                                                       getScale());
     if (!DrawUtil::fpCompare(Rotation.getValue(), 0.0)) {
         scaledSection = TechDraw::rotateShape(scaledSection,
-                                              getSectionCS(),
+                                              getProjectionCS(),
                                               Rotation.getValue());
     }
 
