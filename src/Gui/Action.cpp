@@ -74,7 +74,7 @@ Action::Action (Command* pcCmd, QObject * parent)
   : QObject(parent), _action(new QAction( this )), _pcCmd(pcCmd)
 {
     _action->setObjectName(QString::fromLatin1(_pcCmd->getName()));
-    connect(_action, SIGNAL(triggered(bool)), this, SLOT(onActivated()));
+    _connection = connect(_action, &QAction::triggered, this, &Action::onActivated);
 }
 
 Action::Action (Command* pcCmd, QAction* action, QObject * parent)
@@ -82,7 +82,7 @@ Action::Action (Command* pcCmd, QAction* action, QObject * parent)
 {
     _action->setParent(this);
     _action->setObjectName(QString::fromLatin1(_pcCmd->getName()));
-    connect(_action, SIGNAL(triggered(bool)), this, SLOT(onActivated()));
+    _connection = connect(_action, &QAction::triggered, this, &Action::onActivated);
 }
 
 Action::~Action()
@@ -120,12 +120,12 @@ void Action::setCheckable(bool b)
         return;
     _action->setCheckable(b);
     if (b) {
-        disconnect(_action, SIGNAL(triggered(bool)), this, SLOT(onActivated()));
-        connect(_action, SIGNAL(toggled(bool)), this, SLOT(onToggled(bool)));
+        disconnect(_connection);
+        _connection = connect(_action, &QAction::toggled, this, &Action::onToggled);
     }
     else {
-        connect(_action, SIGNAL(triggered(bool)), this, SLOT(onActivated()));
-        disconnect(_action, SIGNAL(toggled(bool)), this, SLOT(onToggled(bool)));
+        disconnect(_connection);
+        _connection = connect(_action, &QAction::triggered, this, &Action::onActivated);
     }
 }
 
@@ -404,8 +404,8 @@ ActionGroup::ActionGroup ( Command* pcCmd,QObject * parent)
   : Action(pcCmd, parent), _group(nullptr), _dropDown(false),_external(false),_toggle(false),_isMode(false)
 {
     _group = new QActionGroup(this);
-    connect(_group, SIGNAL(triggered(QAction*)), this, SLOT(onActivated (QAction*)));
-    connect(_group, SIGNAL(hovered(QAction*)), this, SLOT(onHovered(QAction*)));
+    connect(_group, &QActionGroup::triggered, this, qOverload<QAction*>(&ActionGroup::onActivated));
+    connect(_group, &QActionGroup::hovered, this, &ActionGroup::onHovered);
 }
 
 ActionGroup::~ActionGroup()
@@ -575,9 +575,10 @@ private:
 
 WorkbenchComboBox::WorkbenchComboBox(WorkbenchGroup* wb, QWidget* parent) : QComboBox(parent), group(wb)
 {
-    connect(this, SIGNAL(activated(int)), this, SLOT(onActivated(int)));
-    connect(getMainWindow(), SIGNAL(workbenchActivated(const QString&)),
-            this, SLOT(onWorkbenchActivated(const QString&)));
+    connect(this, qOverload<int>(&WorkbenchComboBox::activated),
+            this, qOverload<int>(&WorkbenchComboBox::onActivated));
+    connect(getMainWindow(), &MainWindow::workbenchActivated,
+            this, &WorkbenchComboBox::onWorkbenchActivated);
 }
 
 WorkbenchComboBox::~WorkbenchComboBox()
@@ -706,22 +707,22 @@ void WorkbenchGroup::addTo(QWidget *w)
 {
     refreshWorkbenchList();
 
-    auto setupBox = [&](QComboBox* box) {
+    auto setupBox = [&](WorkbenchComboBox* box) {
         box->setIconSize(QSize(16, 16));
         box->setToolTip(_tooltip);
         box->setStatusTip(_action->statusTip());
         box->setWhatsThis(_action->whatsThis());
         box->addActions(_group->actions());
-        connect(_group, SIGNAL(triggered(QAction*)), box, SLOT(onActivated(QAction*)));
+        connect(_group, &QActionGroup::triggered, box, qOverload<QAction*>(&WorkbenchComboBox::onActivated));
     };
     if (w->inherits("QToolBar")) {
-        QComboBox* box = new WorkbenchComboBox(this, w);
+        auto* box = new WorkbenchComboBox(this, w);
         setupBox(box);
 
         qobject_cast<QToolBar*>(w)->addWidget(box);
     }
     else if (w->inherits("QMenuBar")) {
-        QComboBox* box = new WorkbenchComboBox(this, w);
+        auto* box = new WorkbenchComboBox(this, w);
         setupBox(box);
 
         bool left = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")->GetBool("WSLeftCorner", true);
@@ -1242,7 +1243,7 @@ UndoAction::UndoAction (Command* pcCmd,QObject * parent)
 {
     _toolAction = new QAction(this);
     _toolAction->setMenu(new UndoDialog());
-    connect(_toolAction, SIGNAL(triggered(bool)), this, SLOT(onActivated()));
+    connect(_toolAction, &QAction::triggered, this, &UndoAction::onActivated);
 }
 
 UndoAction::~UndoAction()
@@ -1256,7 +1257,7 @@ void UndoAction::addTo (QWidget * w)
 {
     if (w->inherits("QToolBar")) {
         actionChanged();
-        connect(_action, SIGNAL(changed()), this, SLOT(actionChanged()));
+        connect(_action, &QAction::changed, this, &UndoAction::actionChanged);
         w->addAction(_toolAction);
     }
     else {
@@ -1295,7 +1296,7 @@ RedoAction::RedoAction ( Command* pcCmd,QObject * parent )
 {
     _toolAction = new QAction(this);
     _toolAction->setMenu(new RedoDialog());
-    connect(_toolAction, SIGNAL(triggered(bool)), this, SLOT(onActivated()));
+    connect(_toolAction, &QAction::triggered, this, &RedoAction::onActivated);
 }
 
 RedoAction::~RedoAction()
@@ -1309,7 +1310,7 @@ void RedoAction::addTo ( QWidget * w )
 {
     if (w->inherits("QToolBar")) {
         actionChanged();
-        connect(_action, SIGNAL(changed()), this, SLOT(actionChanged()));
+        connect(_action, &QAction::changed, this, &RedoAction::actionChanged);
         w->addAction(_toolAction);
     }
     else {
