@@ -359,8 +359,6 @@ class FCADLogger(object):
         build.
     '''
 
-    _string_type = str if sys.version_info[0] >= 3 else basestring
-
     _levels = { 'Error':0, 'error':0,
                 'Warning':1, 'warn':1,
                 'Message':2, 'msg':2, 'info':2,
@@ -529,7 +527,7 @@ class FCADLogger(object):
                      string.format()
         '''
 
-        if (args or kargs) and isinstance(msg,self.__class__._string_type):
+        if (args or kargs) and isinstance(msg,str):
             if not kargs:
                 msg = msg.format(*args)
             else:
