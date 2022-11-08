@@ -41,6 +41,7 @@
 #include "DlgRevertToBackupConfigImp.h"
 #include "MainWindow.h"
 #include "PreferencePackManager.h"
+#include "UserSettings.h"
 #include "Language/Translator.h"
 
 using namespace Gui::Dialog;
@@ -104,8 +105,6 @@ DlgGeneralImp::DlgGeneralImp( QWidget* parent )
     else
         ui->RevertToSavedConfig->setEnabled(true);
     connect(ui->RevertToSavedConfig, &QPushButton::clicked, this, &DlgGeneralImp::revertToSavedConfig);
-
-    wsPositions << "WSToolbar" << "WSLeftCorner" << "WSRightCorner";
 }
 
 /**
@@ -502,10 +501,7 @@ void DlgGeneralImp::saveWorkbenchSelector()
 {
     //save workbench selector position
     auto index = ui->WorkbenchSelectorPosition->currentIndex();
-    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
-    if (index >= 0 && index < wsPositions.size()) {
-        hGrp->SetASCII("WSPosition", wsPositions[index].c_str());
-    }
+    WorkbenchSwitcher::setIndex(index);
 }
 
 void DlgGeneralImp::loadWorkbenchSelector()
@@ -515,11 +511,7 @@ void DlgGeneralImp::loadWorkbenchSelector()
     ui->WorkbenchSelectorPosition->addItem(tr("Toolbar"));
     ui->WorkbenchSelectorPosition->addItem(tr("Left corner"));
     ui->WorkbenchSelectorPosition->addItem(tr("Right corner"));
-
-    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
-    std::string pos = hGrp->GetASCII("WSPosition", "WSToolbar");
-    int index = std::max(0, wsPositions.indexOf(pos));
-    ui->WorkbenchSelectorPosition->setCurrentIndex(index);
+    ui->WorkbenchSelectorPosition->setCurrentIndex(WorkbenchSwitcher::getIndex());
 }
 
 #include "moc_DlgGeneralImp.cpp"

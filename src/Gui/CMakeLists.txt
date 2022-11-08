@@ -1127,6 +1127,7 @@ SET(FreeCADGui_CPP_SRCS
     WaitCursor.cpp
     ManualAlignment.cpp
     TransactionObject.cpp
+    UserSettings.cpp
 )
 SET(FreeCADGui_SRCS
     Application.h
@@ -1161,6 +1162,7 @@ SET(FreeCADGui_SRCS
     WaitCursor.h
     ManualAlignment.h
     TransactionObject.h
+    UserSettings.h
     ${FreeCADGui_SDK_MOC_HDRS}
 )
 
