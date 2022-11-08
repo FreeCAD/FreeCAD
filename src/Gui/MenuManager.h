@@ -24,6 +24,8 @@
 #define GUI_MENUMANAGER_H
 
 #include <string>
+#include <QList>
+#include <QString>
 #include <FCGlobal.h>
 
 

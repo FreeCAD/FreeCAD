@@ -91,11 +91,11 @@ Action::~Action()
 }
 
 /**
- * Adds this action to widget \a w.
+ * Adds this action to widget \a widget.
  */
-void Action::addTo(QWidget *w)
+void Action::addTo(QWidget *widget)
 {
-    w->addAction(_action);
+    widget->addAction(_action);
 }
 
 /**
@@ -103,23 +103,23 @@ void Action::addTo(QWidget *w)
  */
 void Action::onActivated ()
 {
-    _pcCmd->invoke(0,Command::TriggerAction);
+    _pcCmd->invoke(0, Command::TriggerAction);
 }
 
 /**
  * Sets whether the command is toggled.
  */
-void Action::onToggled(bool b)
+void Action::onToggled(bool toggle)
 {
-    _pcCmd->invoke( b ? 1 : 0 , Command::TriggerAction);
+    _pcCmd->invoke(toggle ? 1 : 0, Command::TriggerAction);
 }
 
-void Action::setCheckable(bool b)
+void Action::setCheckable(bool check)
 {
-    if(b == _action->isCheckable())
+    if (check == _action->isCheckable())
         return;
-    _action->setCheckable(b);
-    if (b) {
+    _action->setCheckable(check);
+    if (check) {
         disconnect(_connection);
         _connection = connect(_action, &QAction::toggled, this, &Action::onToggled);
     }
@@ -129,13 +129,13 @@ void Action::setCheckable(bool b)
     }
 }
 
-void Action::setChecked(bool b, bool no_signal)
+void Action::setChecked(bool check, bool no_signal)
 {
-    bool blocked;
-    if(no_signal)
+    bool blocked = false;
+    if (no_signal)
         blocked = _action->blockSignals(true);
-    _action->setChecked(b);
-    if(no_signal)
+    _action->setChecked(check);
+    if (no_signal)
         _action->blockSignals(blocked);
 }
 
@@ -147,9 +147,9 @@ bool Action::isChecked() const
 /**
  * Sets whether the action is enabled.
  */
-void Action::setEnabled(bool b)
+void Action::setEnabled(bool enable)
 {
-    _action->setEnabled(b);
+    _action->setEnabled(enable);
 }
 
 bool Action::isEnabled() const
@@ -157,9 +157,9 @@ bool Action::isEnabled() const
     return _action->isEnabled();
 }
 
-void Action::setVisible(bool b)
+void Action::setVisible(bool visible)
 {
-    _action->setVisible(b);
+    _action->setVisible(visible);
 }
 
 void Action::setShortcut(const QString & key)
@@ -1207,7 +1207,7 @@ void RecentMacrosAction::restore()
 
     std::vector<std::string> MRU = hGrp->GetASCIIs("MRU");
     QStringList files;
-    for (auto& filename: MRU)
+    for (auto& filename : MRU)
         files.append(QString::fromUtf8(filename.c_str()));
     setFiles(files);
 }
