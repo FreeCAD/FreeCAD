@@ -752,7 +752,8 @@ ToolBarItem* StdWorkbench::setupToolBars() const
 
     // Workbench switcher
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
-    if (hGrp->GetBool("WSToolbar", true)) {
+    std::string defaultPos = "WSToolbar";
+    if (hGrp->GetASCII("WSPosition", defaultPos.c_str()) == defaultPos) {
         auto wb = new ToolBarItem(root);
         wb->setCommand("Workbench");
         *wb << "Std_Workbench";

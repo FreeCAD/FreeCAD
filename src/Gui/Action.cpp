@@ -703,7 +703,7 @@ WorkbenchGroup::~WorkbenchGroup()
 {
 }
 
-void WorkbenchGroup::addTo(QWidget *w)
+void WorkbenchGroup::addTo(QWidget *widget)
 {
     refreshWorkbenchList();
 
@@ -715,21 +715,22 @@ void WorkbenchGroup::addTo(QWidget *w)
         box->addActions(_group->actions());
         connect(_group, &QActionGroup::triggered, box, qOverload<QAction*>(&WorkbenchComboBox::onActivated));
     };
-    if (w->inherits("QToolBar")) {
-        auto* box = new WorkbenchComboBox(this, w);
+    if (widget->inherits("QToolBar")) {
+        auto* box = new WorkbenchComboBox(this, widget);
         setupBox(box);
 
-        qobject_cast<QToolBar*>(w)->addWidget(box);
+        qobject_cast<QToolBar*>(widget)->addWidget(box);
     }
-    else if (w->inherits("QMenuBar")) {
-        auto* box = new WorkbenchComboBox(this, w);
+    else if (widget->inherits("QMenuBar")) {
+        auto* box = new WorkbenchComboBox(this, widget);
         setupBox(box);
 
-        bool left = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")->GetBool("WSLeftCorner", true);
-        qobject_cast<QMenuBar*>(w)->setCornerWidget(box, left ? Qt::TopLeftCorner : Qt::TopRightCorner);
+        std::string pos = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")->GetASCII("WSPosition", "WSToolbar");
+        bool left = (pos == "WSLeftCorner");
+        qobject_cast<QMenuBar*>(widget)->setCornerWidget(box, left ? Qt::TopLeftCorner : Qt::TopRightCorner);
     }
-    else if (w->inherits("QMenu")) {
-        auto menu = qobject_cast<QMenu*>(w);
+    else if (widget->inherits("QMenu")) {
+        auto menu = qobject_cast<QMenu*>(widget);
         menu = menu->addMenu(_action->text());
         menu->addActions(_group->actions());
     }
