@@ -366,21 +366,38 @@ void MenuManager::setup(MenuItem* item, QMenu* menu) const
     }
 }
 
-void MenuManager::setupMenuBarCornerWidgets() const {
+void MenuManager::setupMenuBarCornerWidgets() const
+{
     /*Note: currently only workbench selector uses corner widget.*/
     QMenuBar* menuBar = getMainWindow()->menuBar();
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
+    std::string pos = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")->GetASCII("WSPosition", "WSToolbar");
+
+    bool showLeftWidget = false;
+    bool showRightWidget = false;
 
     //Right corner widget
-    if (hGrp->GetBool("WSRightCorner", false)) { //add workbench selector to menubar right corner widget.
-        if (!menuBar->cornerWidget(Qt::TopRightCorner))
+    if (pos == "WSRightCorner") {
+        //add workbench selector to menubar right corner widget.
+        if (!menuBar->cornerWidget(Qt::TopRightCorner)) {
             Application::Instance->commandManager().addTo("Std_Workbench", menuBar);
+        }
+        showRightWidget = true;
+    }
+    //Left corner widget
+    else if (pos == "WSLeftCorner") {
+        //add workbench selector to menubar left corner widget.
+        if (!menuBar->cornerWidget(Qt::TopLeftCorner)) {
+            Application::Instance->commandManager().addTo("Std_Workbench", menuBar);
+        }
+        showLeftWidget = true;
     }
 
-    //Left corner widget
-    if (hGrp->GetBool("WSLeftCorner", false)) { //add workbench selector to menubar left corner widget.
-        if (!menuBar->cornerWidget(Qt::TopLeftCorner))
-            Application::Instance->commandManager().addTo("Std_Workbench", menuBar);
+    // Set visibility of corner widget
+    if (QWidget* right = menuBar->cornerWidget(Qt::TopRightCorner)) {
+        right->setVisible(showRightWidget);
+    }
+    if (QWidget* left = menuBar->cornerWidget(Qt::TopLeftCorner)) {
+        left->setVisible(showLeftWidget);
     }
 }
 

@@ -26,6 +26,8 @@
 
 #include "PropertyPage.h"
 #include <memory>
+#include <string>
+#include <QVector>
 
 class QTabWidget;
 
@@ -68,8 +70,11 @@ private:
     bool setLanguage(); //Returns true if language has been changed
     void setNumberLocale(bool force = false);
     void setDecimalPointConversion(bool on);
+    void saveWorkbenchSelector();
+    void loadWorkbenchSelector();
 
 private:
+    QVector<std::string> wsPositions;
     int localeIndex;
     std::unique_ptr<Ui_DlgGeneral> ui;
     std::unique_ptr<DlgCreateNewPreferencePackImp> newPreferencePackDialog;
