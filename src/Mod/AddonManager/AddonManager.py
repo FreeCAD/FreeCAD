@@ -68,6 +68,7 @@ from manage_python_dependencies import (
     PythonPackageManager,
 )
 from addonmanager_devmode import DeveloperMode
+from addonmanager_firstrun import FirstRunDialog
 
 import NetworkManager
 
@@ -182,70 +183,11 @@ class CommandAddonManager:
 
         NetworkManager.InitializeNetworkManager()
 
-        # display first use dialog if needed
+        firstRunDialog = FirstRunDialog()
+        readWarning = firstRunDialog.exec()
+
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
-        readWarning = pref.GetBool("readWarning2022", False)
-
         dev_mode_active = pref.GetBool("developerMode", False)
-
-        if not readWarning:
-            warning_dialog = FreeCADGui.PySideUic.loadUi(
-                os.path.join(os.path.dirname(__file__), "first_run.ui")
-            )
-            warning_dialog.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
-            autocheck = pref.GetBool("AutoCheck", False)
-            download_macros = pref.GetBool("DownloadMacros", False)
-            proxy_string = pref.GetString("ProxyUrl", "")
-            if pref.GetBool("NoProxyCheck", True):
-                proxy_option = 0
-            elif pref.GetBool("SystemProxyCheck", False):
-                proxy_option = 1
-            elif pref.GetBool("UserProxyCheck", False):
-                proxy_option = 2
-
-            def toggle_proxy_list(option: int):
-                if option == 2:
-                    warning_dialog.lineEditProxy.show()
-                else:
-                    warning_dialog.lineEditProxy.hide()
-
-            warning_dialog.checkBoxAutoCheck.setChecked(autocheck)
-            warning_dialog.checkBoxDownloadMacroMetadata.setChecked(download_macros)
-            warning_dialog.comboBoxProxy.setCurrentIndex(proxy_option)
-            toggle_proxy_list(proxy_option)
-            if proxy_option == 2:
-                warning_dialog.lineEditProxy.setText(proxy_string)
-
-            warning_dialog.comboBoxProxy.currentIndexChanged.connect(toggle_proxy_list)
-
-            warning_dialog.labelWarning.setStyleSheet(
-                f"color:{utils.warning_color_string()};font-weight:bold;"
-            )
-
-            if warning_dialog.exec() == QtWidgets.QDialog.Accepted:
-                readWarning = True
-                pref.SetBool("readWarning2022", True)
-                pref.SetBool("AutoCheck", warning_dialog.checkBoxAutoCheck.isChecked())
-                pref.SetBool(
-                    "DownloadMacros",
-                    warning_dialog.checkBoxDownloadMacroMetadata.isChecked(),
-                )
-                if warning_dialog.checkBoxDownloadMacroMetadata.isChecked():
-                    self.trigger_recache = True
-                selected_proxy_option = warning_dialog.comboBoxProxy.currentIndex()
-                if selected_proxy_option == 0:
-                    pref.SetBool("NoProxyCheck", True)
-                    pref.SetBool("SystemProxyCheck", False)
-                    pref.SetBool("UserProxyCheck", False)
-                elif selected_proxy_option == 1:
-                    pref.SetBool("NoProxyCheck", False)
-                    pref.SetBool("SystemProxyCheck", True)
-                    pref.SetBool("UserProxyCheck", False)
-                else:
-                    pref.SetBool("NoProxyCheck", False)
-                    pref.SetBool("SystemProxyCheck", False)
-                    pref.SetBool("UserProxyCheck", True)
-                    pref.SetString("ProxyUrl", warning_dialog.lineEditProxy.text())
 
         if readWarning:
             # Check the connection in a new thread, so FreeCAD stays responsive
