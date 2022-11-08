@@ -24,7 +24,6 @@ from __future__ import print_function
 
 import os
 import FreeCAD
-import importIFCHelper
 translate = FreeCAD.Qt.translate
 
 if open.__module__ in ['__builtin__','io']:
@@ -35,7 +34,6 @@ def open(filename):
     """opens a SHP/SHX/DBF file in a new FreeCAD document"""
 
     docname = os.path.splitext(os.path.basename(filename))[0]
-    docname = importIFCHelper.decode(docname,utf=True)
     doc = FreeCAD.newDocument(docname)
     doc.Label = docname
     doc = insert(filename,doc.Name)
