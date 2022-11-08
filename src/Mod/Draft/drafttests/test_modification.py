@@ -171,6 +171,7 @@ class DraftModification(unittest.TestCase):
         _msg("  Offset")
         _msg("  vector={}".format(offset))
         obj = Draft.offset(rect, offset, copy=True)
+        App.ActiveDocument.recompute()
         obj_is_ok = (obj.Shape.CenterOfGravity == Vector(5, 2, 0)
                      and obj.Length == 12
                      and obj.Height == 6)
