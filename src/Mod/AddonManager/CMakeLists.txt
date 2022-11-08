@@ -15,6 +15,7 @@ SET(AddonManager_SRCS
     addonmanager_devmode_people_table.py
     addonmanager_devmode_predictor.py
     addonmanager_devmode_validators.py
+    addonmanager_firstrun.py
     addonmanager_git.py
     addonmanager_macro.py
     addonmanager_utilities.py
