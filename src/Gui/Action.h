@@ -112,6 +112,7 @@ protected:
     Command *_pcCmd;
     QString _tooltip;
     QString _title;
+    QMetaObject::Connection _connection;
 };
 
 // --------------------------------------------------------------------
