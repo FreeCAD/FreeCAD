@@ -67,56 +67,25 @@
 using namespace TechDraw;
 using DU = DrawUtil;
 
-//TopoDS_Shape ReferenceEntry::getGeometry() const
-//{
-//    if ( getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId()) ) {
-//        TechDraw::DrawViewPart* dvp = static_cast<TechDraw::DrawViewPart*>(getObject());
-//        std::string gType = geomType();
-//        if (gType == "Vertex") {
-//            auto vgeom = dvp->getVertex(getSubName());
-//            return vgeom->occVertex;
-//        } else if (gType == "Edge") {
-//            auto egeom = dvp->getEdge(getSubName());
-//            return egeom->occEdge;
-//        } else if (gType == "Face") {
-//            auto fgeom = dvp->getFace(getSubName());
-//            return fgeom->toOccFace();
-//        }
-//        return TopoDS_Shape();
-//    }
-
-//    Part::TopoShape shape = Part::Feature::getTopoShape(getObject());
-//    App::GeoFeature* geoFeat = dynamic_cast<App::GeoFeature*>(getObject());
-//    if (geoFeat) {
-//        shape.setPlacement(geoFeat->globalPlacement());
-//    }
-//    return shape.getSubShape(getSubName().c_str());
-//}
-
-//std::string ReferenceEntry::geomType() const
-//{
-//    return DrawUtil::getGeomTypeFromName(getSubName());
-//}
-
 //===========================================================================
 // DrawViewDimension
 //===========================================================================
 
 PROPERTY_SOURCE(TechDraw::DrawViewDimension, TechDraw::DrawView)
 
-namespace {
-    // keep this enum synchronized with TypeEnums
-    enum DimensionType {
-        Distance,
-        DistanceX,
-        DistanceY,
-        DistanceZ,
-        Radius,
-        Diameter,
-        Angle,
-        Angle3Pt
-    };
-}
+//namespace {
+//    // keep this enum synchronized with TypeEnums
+//    enum DimensionType {
+//        Distance,
+//        DistanceX,
+//        DistanceY,
+//        DistanceZ,
+//        Radius,
+//        Diameter,
+//        Angle,
+//        Angle3Pt
+//    };
+//}
 
 const char* DrawViewDimension::TypeEnums[]= {"Distance",
                                              "DistanceX",

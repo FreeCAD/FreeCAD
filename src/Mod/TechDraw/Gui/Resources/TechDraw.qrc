@@ -83,6 +83,7 @@
         <file>icons/TechDraw_Balloon.svg</file>
         <file>icons/TechDraw_DiameterDimension.svg</file>
         <file>icons/TechDraw_Dimension.svg</file>
+        <file>icons/TechDraw_DimensionRepair.svg</file>
         <file>icons/TechDraw_ExtensionAreaAnnotation.svg</file>
         <file>icons/TechDraw_ExtensionCascadeHorizDimension.svg</file>
         <file>icons/TechDraw_ExtensionCascadeObliqueDimension.svg</file>

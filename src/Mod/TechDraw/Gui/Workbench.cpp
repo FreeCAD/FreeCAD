@@ -86,6 +86,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *dimensions << "TechDraw_VerticalExtentDimension";
     *dimensions << "TechDraw_LinkDimension";
     *dimensions << "TechDraw_LandmarkDimension";
+    *dimensions << "TechDraw_DimensionRepair";
 
     // extension: attributes and modifications
     Gui::MenuItem* toolattrib = new Gui::MenuItem;
@@ -286,6 +287,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *dims << "TechDraw_Balloon";
     *dims << "TechDraw_LandmarkDimension";
 //    *dims << "TechDraw_Dimension"
+    *dims << "TechDraw_DimensionRepair";
 
     Gui::ToolBarItem *extattribs = new Gui::ToolBarItem(root);
     extattribs->setCommand("TechDraw Attributes");
@@ -436,6 +438,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *dims << "TechDraw_Balloon";
     *dims << "TechDraw_LandmarkDimension";
 //    *dims << "TechDraw_Dimension";
+    *dims << "TechDraw_DimensionRepair";
 
     Gui::ToolBarItem *extattribs = new Gui::ToolBarItem(root);
     extattribs->setCommand("TechDraw Attributes");

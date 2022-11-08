@@ -49,36 +49,26 @@ namespace TechDraw
 {
 class DrawViewPart;
 
-//a convenient way of handling object+subName references
-//class TechDrawExport ReferenceEntry
-//{
-//public:
-//    ReferenceEntry( App::DocumentObject* docObject, std::string subName ) {
-//        setObject(docObject);
-//        setSubName(subName);
-//    }
-////    ReferenceEntry( std::pair<App::DocumentObject*, std::string> referencePair );
-//    ~ReferenceEntry() = default;
 
-//    App::DocumentObject* getObject() const { return m_object; }
-//    void setObject(App::DocumentObject* docObj) { m_object = docObj; }
-//    std::string getSubName() const { return m_subName; }
-//    void setSubName(std::string subName) { m_subName = subName; }
-//    TopoDS_Shape getGeometry() const;
-//    std::string geomType() const;
-
-//private:
-//    bool is3d();
-//    App::DocumentObject* m_object;
-//    std::string m_subName;
-//};
-//using ReferenceVector = std::vector<ReferenceEntry>;
 
 class TechDrawExport DrawViewDimension : public TechDraw::DrawView
 {
     PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawViewDimension);
 
 public:
+
+// keep this enum synchronized with TypeEnums
+enum DimensionType {
+    Distance,
+    DistanceX,
+    DistanceY,
+    DistanceZ,
+    Radius,
+    Diameter,
+    Angle,
+    Angle3Pt
+};
+
     /// Constructor
     DrawViewDimension();
     ~DrawViewDimension() override;
@@ -171,6 +161,7 @@ public:
     bool showUnits() const;
     bool useDecimals() const;
     bool isExtentDim() const;
+    virtual ReferenceVector getEffectiveReferences() const;
 
 protected:
     void handleChangedPropertyType(Base::XMLReader &, const char * , App::Property * ) override;
@@ -190,8 +181,6 @@ protected:
 
     virtual anglePoints getAnglePointsTwoEdges(ReferenceVector references);
     virtual anglePoints getAnglePointsThreeVerts(ReferenceVector references);
-
-    virtual ReferenceVector getEffectiveReferences() const;
 
 protected:
     Measure::Measurement *measurement;

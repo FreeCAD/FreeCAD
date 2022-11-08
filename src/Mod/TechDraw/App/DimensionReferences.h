@@ -23,7 +23,10 @@
 #ifndef TECHDRAW_DIMENSIONREFERENCES_H
 #define TECHDRAW_DIMENSIONREFERENCES_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <string>
+#include <vector>
 
 #include <TopoDS_Shape.hxx>
 
@@ -42,6 +45,10 @@ public:
     ReferenceEntry( App::DocumentObject* docObject, std::string subName ) {
         setObject(docObject);
         setSubName(subName);
+    }
+    ReferenceEntry(const ReferenceEntry& other) {
+        setObject(other.getObject());
+        setSubName(other.getSubName());
     }
     ~ReferenceEntry() = default;
 

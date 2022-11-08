@@ -1,5 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2014 Luke Parry <l.parry@warwick.ac.uk>                 *
+ *   Copyright (c) 2022 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -54,6 +55,7 @@
 
 #include "DrawGuiUtil.h"
 #include "TaskLinkDim.h"
+#include "TaskDimRepair.h"
 #include "DimensionValidators.h"
 
 using namespace TechDrawGui;
@@ -1462,6 +1464,56 @@ bool CmdTechDrawVerticalExtentDimension::isActive()
     return (havePage && haveView);
 }
 
+//===========================================================================
+// TechDraw_DimensionRepair
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawDimensionRepair)
+
+CmdTechDrawDimensionRepair::CmdTechDrawDimensionRepair()
+    : Command("TechDraw_DimensionRepair")
+{
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
+    sMenuText       = QT_TR_NOOP("Repair Dimension References");
+    sToolTipText    = sMenuText;
+    sWhatsThis      = "TechDraw_DimensionRepair";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "TechDraw_DimensionRepair";
+}
+
+void CmdTechDrawDimensionRepair::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    std::vector<App::DocumentObject*> dimObjs = getSelection().getObjectsOfType(TechDraw::DrawViewDimension::getClassTypeId());
+    TechDraw::DrawViewDimension* dim = nullptr;
+    if (dimObjs.empty()) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
+                             QObject::tr("There is no Dimension in your selection"));
+        return;
+    } else {
+        dim = static_cast<TechDraw::DrawViewDimension*>(dimObjs.at(0));
+    }
+
+    ReferenceVector references2d;
+    ReferenceVector references3d;
+    //TechDraw::DrawViewPart* partFeat =
+    TechDraw::getReferencesFromSelection(references2d, references3d);
+
+    Gui::Control().showDialog(new TaskDlgDimReference(dim, references2d, references3d));
+}
+
+bool CmdTechDrawDimensionRepair::isActive(void)
+{
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this);
+    bool taskInProgress = false;
+    if (havePage) {
+        taskInProgress = Gui::Control().activeDialog();
+    }
+    return (havePage && haveView && !taskInProgress);
+}
+
 //NOTE: to be deprecated.  revisions to the basic dimension allows it to handle
 //everything that the Landmark Dimension was created to handle.
 //===========================================================================
@@ -1561,6 +1613,7 @@ bool CmdTechDrawLandmarkDimension::isActive()
 }
 
 //------------------------------------------------------------------------------
+
 void CreateTechDrawCommandsDims()
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -1581,8 +1634,10 @@ void CreateTechDrawCommandsDims()
     rcCmdMgr.addCommand(new CmdTechDrawHorizontalExtentDimension());
     rcCmdMgr.addCommand(new CmdTechDrawLinkDimension());
     rcCmdMgr.addCommand(new CmdTechDrawLandmarkDimension());
+    rcCmdMgr.addCommand(new CmdTechDrawDimensionRepair());
 }
 
+//------------------------------------------------------------------------------
 
 //Common code to build a dimension feature
 DrawViewDimension* dimensionMaker(TechDraw::DrawViewPart* dvp,

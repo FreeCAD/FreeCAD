@@ -83,6 +83,8 @@ set(TechDrawGui_UIC_SRCS
     TaskMoveView.ui
     TaskProjection.ui
     TaskComplexSection.ui
+    TaskDimRepair.ui
+
 )
 
 SET(MRTE_SRCS
@@ -207,9 +209,9 @@ SET(TechDrawGui_SRCS
     TaskDetail.h
     PreferencesGui.cpp
     PreferencesGui.h
-    TaskCosmeticLine.ui
     TaskCosmeticLine.cpp
     TaskCosmeticLine.h
+    TaskCosmeticLine.ui
     TaskMoveView.ui
     TaskProjection.cpp
     TaskProjection.h
@@ -217,6 +219,9 @@ SET(TechDrawGui_SRCS
     TaskComplexSection.cpp
     TaskComplexSection.h
     TaskComplexSection.ui
+    TaskDimRepair.cpp
+    TaskDimRepair.h
+    TaskDimRepair.ui
     Widgets/CompassDialWidget.cpp
     Widgets/CompassDialWidget.h
     Widgets/CompassWidget.cpp
@@ -421,6 +426,7 @@ SET(TechDrawGuiTaskDlgs_SRCS
     TaskMoveView.ui
     TaskProjection.ui
     TaskComplexSection.ui
+    TaskDimRepair.ui
 )
 
 SOURCE_GROUP("MRTE" FILES ${MRTE_SRCS})

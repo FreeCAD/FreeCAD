@@ -95,6 +95,10 @@ enum DimensionGeometryEnum {
     DimensionGeometryType        TechDrawExport isValidMultiEdge3d(TechDraw::DrawViewPart* dvp, TechDraw::ReferenceVector refs);
     DimensionGeometryType        TechDrawExport isValidSingleEdge3d(TechDraw::DrawViewPart* dvp, TechDraw::ReferenceEntry ref);
     DimensionGeometryType        TechDrawExport isValidHybrid3d(TechDraw::DrawViewPart* dvp, TechDraw::ReferenceVector refs);
+
+    long int                     TechDrawExport mapGeometryTypeToDimType(long int dimType,
+                                                           DimensionGeometryType geometry2d,
+                                                           DimensionGeometryType geometry3d);
 }
 #endif //TECHDRAW_DIMENSIONVALIDATORS_H
 

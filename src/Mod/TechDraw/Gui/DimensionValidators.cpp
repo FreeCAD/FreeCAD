@@ -45,28 +45,30 @@ using DU = DrawUtil;
 
 TechDraw::DrawViewPart* TechDraw::getReferencesFromSelection( ReferenceVector& references2d, ReferenceVector& references3d )
 {
-    TechDraw::DrawViewPart* partFeat(nullptr);
+    TechDraw::DrawViewPart* dvp(nullptr);
+    TechDraw::DrawViewDimension* dim(nullptr);
     std::vector<Gui::SelectionObject> selectionAll = Gui::Selection().getSelectionEx();
     for (auto& selItem : selectionAll) {
-        if (selItem.getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+        if (selItem.getObject()->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) {
+            //we are probably repairing a dimension, but we will check later
+            dim = static_cast<TechDraw::DrawViewDimension*> (selItem.getObject());
+        } else if (selItem.getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
             //this could be a 2d geometry selection or just a DrawViewPart for context in
             //a 3d selection
-            partFeat = static_cast<TechDraw::DrawViewPart*> (selItem.getObject());
+            dvp = static_cast<TechDraw::DrawViewPart*> (selItem.getObject());
             if (selItem.getSubNames().empty()) {
                 //there are no subNames, so we think this is a 3d case,
                 //and we only need to select the view. We set the reference
                 //subName to a null string to avoid later misunderstandings.
-                ReferenceEntry ref(partFeat, std::string());
+                ReferenceEntry ref(dvp, std::string());
                 references2d.push_back(ref);
             }
             for (auto& sub : selItem.getSubNames()) {
-                ReferenceEntry ref(partFeat, sub);
+                ReferenceEntry ref(dvp, sub);
                 references2d.push_back(ref);
             }
-        } else {
-            //this is not a TechDraw object with geometry, so we check to see
-            //if it has 3d geometry
-            //TODO: check if 3d references come in obj+sub pairs or as obj+[subs]
+        } else if ( !selItem.getObject()->isDerivedFrom(TechDraw::DrawView::getClassTypeId()) )  {
+            //this is not a TechDraw object, so we check to see if it has 3d geometry
             std::vector<App::DocumentObject*> links;
             links.push_back(selItem.getObject());
             if (!ShapeExtractor::getShapes(links).IsNull()) {
@@ -74,7 +76,7 @@ TechDraw::DrawViewPart* TechDraw::getReferencesFromSelection( ReferenceVector& r
                 App::DocumentObject* obj3d = selItem.getObject();
                 if (selItem.getSubNames().empty() &&
                     ShapeExtractor::isPointType(obj3d)) {
-                    //a point object may not have e a subName when selected,
+                    //a point object may not have a subName when selected,
                     //so we need to perform some special handling.
                     if (ShapeExtractor::isPointType(obj3d)) {
                         ReferenceEntry ref(obj3d, "Vertex1");
@@ -88,8 +90,16 @@ TechDraw::DrawViewPart* TechDraw::getReferencesFromSelection( ReferenceVector& r
             }
         }
     }
-    return partFeat;
+    if (dim) {
+        if (!dvp) {
+            ReferenceEntry ref(dim->getViewPart(), std::string());
+            references2d.push_back(ref);
+            return dim->getViewPart();
+        }
+    }
+    return dvp;
 }
+
 //! verify that the proposed references contains valid geometries from a 2d DrawViewPart.
 DimensionGeometryType TechDraw::validateDimSelection(ReferenceVector references,                      //[(dvp*, std::string),...,(dvp*, std::string)]
                                 StringVector acceptableGeometry,                     //"Edge", "Vertex", etc
@@ -142,6 +152,10 @@ DimensionGeometryType TechDraw::validateDimSelection(ReferenceVector references,
     }
 
     DimensionGeometryType foundGeometry = getGeometryConfiguration(valid2dReferences);
+    if (acceptableDimensionGeometrys.empty()) {
+        //if the list is empty, we are accepting anything
+        return foundGeometry;
+    }
     for (auto& acceptable : acceptableDimensionGeometrys) {
         if (foundGeometry == acceptable) {
             return foundGeometry;
@@ -181,6 +195,10 @@ DimensionGeometryType TechDraw::validateDimSelection3d(TechDraw::DrawViewPart* d
 
     //we have a (potentially valid collection of 3d geometry
     DimensionGeometryType foundGeometry = getGeometryConfiguration3d(dvp, references);
+    if (acceptableDimensionGeometrys.empty()) {
+        //if the list is empty, we are accepting anything
+        return foundGeometry;
+    }
     for (auto& acceptable : acceptableDimensionGeometrys) {
         if (foundGeometry == acceptable) {
             return foundGeometry;
@@ -612,4 +630,48 @@ DimensionGeometryType TechDraw::isValidHybrid3d(DrawViewPart *dvp, ReferenceVect
     (void) dvp;
     //we don't have a special check for 3d in this case
     return isValidHybrid(refs);
+}
+
+//handle situations where revised geometry type is valid but not suitable for existing dimType
+long int TechDraw::mapGeometryTypeToDimType(long int dimType,
+                                            DimensionGeometryType geometry2d,
+                                            DimensionGeometryType geometry3d)
+{
+    if (geometry2d == isInvalid && geometry3d == isInvalid) {
+        //probably an error, but we can't do anything with this
+        return dimType;
+    }
+
+    if (geometry2d == isViewReference && geometry3d != isInvalid) {
+        switch (geometry3d) {
+            case isDiagonal:
+                return DrawViewDimension::Distance;
+            case isHorizontal:
+                return DrawViewDimension::DistanceX;
+            case isVertical:
+                return DrawViewDimension::DistanceY;
+            case isAngle:
+                return DrawViewDimension::Angle;
+            case isAngle3Pt:
+                return DrawViewDimension::Angle3Pt;
+            default:
+                return dimType;
+        }
+    } else if (geometry2d != isViewReference) {
+        switch (geometry2d) {
+            case isDiagonal:
+                return DrawViewDimension::Distance;
+            case isHorizontal:
+                return DrawViewDimension::DistanceX;
+            case isVertical:
+                return DrawViewDimension::DistanceY;
+            case isAngle:
+                return DrawViewDimension::Angle;
+            case isAngle3Pt:
+                return DrawViewDimension::Angle3Pt;
+            default:
+                return dimType;
+        }
+    }
+    return dimType;
 }
