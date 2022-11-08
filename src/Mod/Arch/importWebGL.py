@@ -864,10 +864,7 @@ def export( exportList, filename, colors = None, camera = None ):
     
     html = html.replace('$data', json.dumps(data, separators=(',', ':')) ) # Shape Data
     
-    if six.PY2:
-        outfile = pythonopen(filename, "wb")
-    else:
-        outfile = pythonopen(filename, "w")
+    outfile = pythonopen(filename, "w")
     outfile.write( html )
     outfile.close()
     FreeCAD.Console.PrintMessage( translate("Arch", "Successfully written") + ' ' + filename + "\n" )

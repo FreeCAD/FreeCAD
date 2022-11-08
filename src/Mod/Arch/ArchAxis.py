@@ -533,8 +533,6 @@ class _ViewProviderAxis:
                                 tx = coin.SoAsciiText()
                                 tx.justification = coin.SoText2.LEFT
                                 t = vobj.Object.Labels[i]
-                                if six.PY2 and isinstance(t,six.text_type):
-                                    t = t.encode("utf8")
                                 tx.string.setValue(t)
                                 if hasattr(vobj,"FontSize"):
                                     fs = vobj.FontSize.Value
@@ -566,10 +564,7 @@ class _ViewProviderAxis:
                ('C',100),('XC',90),('L',50),('XL',40),
                ('X',10),('IX',9),('V',5),('IV',4),('I',1))
         if hasattr(vobj.Object,"CustomNumber") and vobj.Object.CustomNumber:
-            if six.PY2:
-                return vobj.Object.CustomNumber.encode("utf8")
-            else:
-                return vobj.Object.CustomNumber
+            return vobj.Object.CustomNumber
         elif hasattr(vobj,"NumberingStyle"):
             if vobj.NumberingStyle == "1,2,3":
                 return str(num+1)
