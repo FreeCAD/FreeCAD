@@ -74,7 +74,7 @@ DrawGeomHatch::DrawGeomHatch()
 {
     static const char *vgroup = "GeomHatch";
 
-    ADD_PROPERTY_TYPE(Source, (nullptr), vgroup, (App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(Source, (nullptr), vgroup, App::PropertyType::Prop_None,
                       "The View + Face to be crosshatched");
     Source.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(FilePattern, (prefGeomHatchFile()), vgroup, App::Prop_None,
@@ -92,56 +92,34 @@ DrawGeomHatch::DrawGeomHatch()
 
     std::string patFilter("pat files (*.pat *.PAT);;All files (*)");
     FilePattern.setFilter(patFilter);
-
 }
 
 void DrawGeomHatch::onChanged(const App::Property* prop)
 {
-    if (!isRestoring()) {
-        if (prop == &Source) {
-            DrawGeomHatch::execute();
-        }
-        App::Document* doc = getDocument();
-        if ((prop == &FilePattern) && doc) {
-            if (!FilePattern.isEmpty()) {
-                replacePatIncluded(FilePattern.getValue());
-                DrawGeomHatch::execute();   //remake the line sets
-            }
-        }
-        if ((prop == &NamePattern) && doc) {
-            DrawGeomHatch::execute();       //remake the line sets
-        }
-    } else {
-        if ((prop == &FilePattern) ||       //make sure right pattern gets loaded at start up
-            (prop == &NamePattern))   {
-            DrawGeomHatch::execute();
-        }
+    if (isRestoring()) {
+        App::DocumentObject::onChanged(prop);
+        return;
+    }
+
+    if (prop == &Source) {
+        //rebuild the linesets
+        makeLineSets();
+    }
+    if (prop == &FilePattern) {
+        replacePatIncluded(FilePattern.getValue());
+        makeLineSets();
+    }
+    if (prop == &NamePattern) {
+        makeLineSets();
     }
 
     App::DocumentObject::onChanged(prop);
 }
 
-short DrawGeomHatch::mustExecute() const
-{
-    short result = 0;
-    if (!isRestoring()) {
-        result  =  (Source.isTouched()  ||
-                    FilePattern.isTouched() ||
-                    NamePattern.isTouched() ||
-                    ScalePattern.isTouched());
-    }
-
-    if (result) {
-        return result;
-    }
-    return App::DocumentObject::mustExecute();
-}
-
-
 App::DocumentObjectExecReturn *DrawGeomHatch::execute()
 {
 //    Base::Console().Message("DGH::execute()\n");
-    makeLineSets();
+    //does execute even need to exist? Its all about the property value changes
     DrawViewPart* parent = getSourceView();
     if (parent) {
         parent->requestPaint();
@@ -149,6 +127,47 @@ App::DocumentObjectExecReturn *DrawGeomHatch::execute()
     return App::DocumentObject::StdReturn;
 }
 
+void DrawGeomHatch::onDocumentRestored()
+{
+    //rebuild the linesets
+    makeLineSets();
+
+    App::DocumentObject::onDocumentRestored();
+}
+
+void DrawGeomHatch::replacePatIncluded(std::string newHatchFileName)
+{
+//    Base::Console().Message("DGH::replaceFileIncluded(%s)\n", newHatchFileName.c_str());
+    if (newHatchFileName.empty()) {
+        return;
+    }
+
+    Base::FileInfo tfi(newHatchFileName);
+    if (tfi.isReadable()) {
+        PatIncluded.setValue(newHatchFileName.c_str());
+    } else {
+        throw Base::RuntimeError("Could not read the new PAT file");
+    }
+}
+
+void DrawGeomHatch::setupObject()
+{
+//    Base::Console().Message("DGH::setupObject()\n");
+    replacePatIncluded(FilePattern.getValue());
+}
+
+void DrawGeomHatch::unsetupObject()
+{
+//    Base::Console().Message("DGH::unsetupObject() - status: %lu  removing: %d \n", getStatus(), isRemoving());
+    App::DocumentObject* source = Source.getValue();
+    DrawView* dv = dynamic_cast<DrawView*>(source);
+    if (dv) {
+        dv->requestPaint();
+    }
+    App::DocumentObject::unsetupObject();
+}
+
+//-----------------------------------------------------------------------------------
 
 void DrawGeomHatch::makeLineSets()
 {
@@ -212,6 +231,10 @@ std::vector<PATLineSpec> DrawGeomHatch::getDecodedSpecsFromFile(std::string file
 
 std::vector<LineSet>  DrawGeomHatch::getTrimmedLines(int i)   //get the trimmed hatch lines for face i
 {
+    if (m_lineSets.empty()) {
+        makeLineSets();
+    }
+
     std::vector<LineSet> result;
     DrawViewPart* source = getSourceView();
     if (!source ||
@@ -467,6 +490,10 @@ std::vector<LineSet> DrawGeomHatch::getFaceOverlay(int fdx)
     BRepBndLib::AddOptimal(face, bBox);
     bBox.SetGap(0.0);
 
+    if (m_lineSets.empty()) {
+        makeLineSets();
+    }
+
     for (auto& ls: m_lineSets) {
         PATLineSpec hl = ls.getPATLineSpec();
         std::vector<TopoDS_Edge> candidates = DrawGeomHatch::makeEdgeOverlay(hl, bBox, ScalePattern.getValue());
@@ -491,6 +518,7 @@ std::vector<LineSet> DrawGeomHatch::getFaceOverlay(int fdx)
 
 /* static */
 //! get TopoDS_Face(iface) from DVP
+//! TODO: DVP can serve these up ready to use
 TopoDS_Face DrawGeomHatch::extractFace(DrawViewPart* source, int iface )
 {
     TopoDS_Face result;
@@ -529,80 +557,14 @@ TopoDS_Face DrawGeomHatch::extractFace(DrawViewPart* source, int iface )
     return result;
 }
 
+//--------------------------------------------------------------------------------------------------
+
 PyObject *DrawGeomHatch::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         PythonObject = Py::Object(new DrawGeomHatchPy(this), true);
     }
     return Py::new_reference_to(PythonObject);
-}
-
-void DrawGeomHatch::replacePatIncluded(std::string newPatFile)
-{
-//    Base::Console().Message("DGH::replacePatHatch(%s)\n", newPatFile.c_str());
-    if (PatIncluded.isEmpty()) {
-        setupPatIncluded();
-    } else {
-        std::string tempName = PatIncluded.getExchangeTempFile();
-        DrawUtil::copyFile(newPatFile, tempName);
-        PatIncluded.setValue(tempName.c_str());
-    }
-}
-
-void DrawGeomHatch::onDocumentRestored()
-{
-//    Base::Console().Message("DGH::onDocumentRestored()\n");
-    if (PatIncluded.isEmpty()) {
-        if (!FilePattern.isEmpty()) {
-            std::string patFileName = FilePattern.getValue();
-            Base::FileInfo tfi(patFileName);
-            if (tfi.isReadable()) {
-                setupPatIncluded();
-            }
-        }
-    }
-    execute();
-    App::DocumentObject::onDocumentRestored();
-}
-
-void DrawGeomHatch::setupObject()
-{
-    //by this point DGH should have a name and belong to a document
-    setupPatIncluded();
-
-    App::DocumentObject::setupObject();
-}
-
-void DrawGeomHatch::setupPatIncluded()
-{
-//    Base::Console().Message("DGH::setupPatIncluded()\n");
-    App::Document* doc = getDocument();
-    std::string special = getNameInDocument();
-    special += "PatHatch.pat";
-    std::string dir = doc->TransientDir.getValue();
-    std::string patName = dir + special;
-
-    if (PatIncluded.isEmpty()) {
-        DrawUtil::copyFile(std::string(), patName);
-        PatIncluded.setValue(patName.c_str());
-    }
-
-    if (!FilePattern.isEmpty()) {
-        std::string exchName = PatIncluded.getExchangeTempFile();
-        DrawUtil::copyFile(FilePattern.getValue(), exchName);
-        PatIncluded.setValue(exchName.c_str(), special.c_str());
-    }
-}
-
-void DrawGeomHatch::unsetupObject()
-{
-//    Base::Console().Message("DGH::unsetupObject() - status: %lu  removing: %d \n", getStatus(), isRemoving());
-    App::DocumentObject* source = Source.getValue();
-    DrawView* dv = dynamic_cast<DrawView*>(source);
-    if (dv) {
-        dv->requestPaint();
-    }
-    App::DocumentObject::unsetupObject();
 }
 
 std::string DrawGeomHatch::prefGeomHatchFile()
