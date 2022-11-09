@@ -128,6 +128,8 @@ DlgDisplayPropertiesImp::DlgDisplayPropertiesImp(bool floating, QWidget* parent,
   , d(new Private)
 {
     d->ui.setupUi(this);
+    setupConnections();
+
     d->ui.textLabel1_3->hide();
     d->ui.changePlot->hide();
     d->ui.buttonLineColor->setModal(false);
@@ -172,6 +174,22 @@ DlgDisplayPropertiesImp::~DlgDisplayPropertiesImp()
     // no need to delete child widgets, Qt does it all for us
     d->connectChangedObject.disconnect();
     Gui::Selection().Detach(this);
+}
+
+void DlgDisplayPropertiesImp::setupConnections()
+{
+    connect(d->ui.changeMaterial, qOverload<int>(&QComboBox::activated), this, &DlgDisplayPropertiesImp::onChangeMaterialActivated);
+    connect(d->ui.changeMode, qOverload<const QString&>(&QComboBox::activated), this, &DlgDisplayPropertiesImp::onChangeModeActivated);
+    connect(d->ui.changePlot, qOverload<const QString&>(&QComboBox::activated), this, &DlgDisplayPropertiesImp::onChangePlotActivated);
+    connect(d->ui.buttonColor, &ColorButton::changed, this, &DlgDisplayPropertiesImp::onButtonColorChanged);
+    connect(d->ui.spinTransparency, qOverload<int>(&QSpinBox::valueChanged), this, &DlgDisplayPropertiesImp::onSpinTransparencyValueChanged);
+    connect(d->ui.spinPointSize, qOverload<int>(&QSpinBox::valueChanged), this, &DlgDisplayPropertiesImp::onSpinPointSizeValueChanged);
+    connect(d->ui.buttonLineColor, &ColorButton::changed, this, &DlgDisplayPropertiesImp::onButtonLineColorChanged);
+    connect(d->ui.buttonPointColor, &ColorButton::changed, this, &DlgDisplayPropertiesImp::onButtonPointColorChanged);
+    connect(d->ui.spinLineWidth, qOverload<int>(&QSpinBox::valueChanged), this, &DlgDisplayPropertiesImp::onSpinLineWidthValueChanged);
+    connect(d->ui.spinLineTransparency, qOverload<int>(&QSpinBox::valueChanged), this, &DlgDisplayPropertiesImp::onSpinLineTransparencyValueChanged);
+    connect(d->ui.buttonUserDefinedMaterial, &ColorButton::clicked, this, &DlgDisplayPropertiesImp::onButtonUserDefinedMaterialClicked);
+    connect(d->ui.buttonColorPlot, &ColorButton::clicked, this, &DlgDisplayPropertiesImp::onButtonColorPlotClicked);
 }
 
 void DlgDisplayPropertiesImp::showDefaultButtons(bool ok)
@@ -302,7 +320,7 @@ void DlgDisplayPropertiesImp::reject()
 /**
  * Opens a dialog that allows to modify the 'ShapeMaterial' property of all selected view providers.
  */
-void DlgDisplayPropertiesImp::on_buttonUserDefinedMaterial_clicked()
+void DlgDisplayPropertiesImp::onButtonUserDefinedMaterialClicked()
 {
     std::vector<Gui::ViewProvider*> Provider = getSelection();
     DlgMaterialPropertiesImp dlg("ShapeMaterial", this);
@@ -315,7 +333,7 @@ void DlgDisplayPropertiesImp::on_buttonUserDefinedMaterial_clicked()
 /**
  * Opens a dialog that allows to modify the 'ShapeMaterial' property of all selected view providers.
  */
-void DlgDisplayPropertiesImp::on_buttonColorPlot_clicked()
+void DlgDisplayPropertiesImp::onButtonColorPlotClicked()
 {
     std::vector<Gui::ViewProvider*> Provider = getSelection();
     static QPointer<DlgMaterialPropertiesImp> dlg = nullptr;
@@ -330,7 +348,7 @@ void DlgDisplayPropertiesImp::on_buttonColorPlot_clicked()
 /**
  * Sets the 'ShapeMaterial' property of all selected view providers.
  */
-void DlgDisplayPropertiesImp::on_changeMaterial_activated(int index)
+void DlgDisplayPropertiesImp::onChangeMaterialActivated(int index)
 {
     std::vector<Gui::ViewProvider*> Provider = getSelection();
     App::Material::MaterialType matType = static_cast<App::Material::MaterialType>(d->ui.changeMaterial->itemData(index).toInt());
@@ -352,7 +370,7 @@ void DlgDisplayPropertiesImp::on_changeMaterial_activated(int index)
 /**
  * Sets the 'Display' property of all selected view providers.
  */
-void DlgDisplayPropertiesImp::on_changeMode_activated(const QString& s)
+void DlgDisplayPropertiesImp::onChangeModeActivated(const QString& s)
 {
     Gui::WaitCursor wc;
     std::vector<Gui::ViewProvider*> Provider = getSelection();
@@ -365,7 +383,7 @@ void DlgDisplayPropertiesImp::on_changeMode_activated(const QString& s)
     }
 }
 
-void DlgDisplayPropertiesImp::on_changePlot_activated(const QString&s)
+void DlgDisplayPropertiesImp::onChangePlotActivated(const QString&s)
 {
     Base::Console().Log("Plot = %s\n",(const char*)s.toLatin1());
 }
@@ -373,7 +391,7 @@ void DlgDisplayPropertiesImp::on_changePlot_activated(const QString&s)
 /**
  * Sets the 'ShapeColor' property of all selected view providers.
  */
-void DlgDisplayPropertiesImp::on_buttonColor_changed()
+void DlgDisplayPropertiesImp::onButtonColorChanged()
 {
     std::vector<Gui::ViewProvider*> Provider = getSelection();
     QColor s = d->ui.buttonColor->color();
@@ -390,7 +408,7 @@ void DlgDisplayPropertiesImp::on_buttonColor_changed()
 /**
  * Sets the 'Transparency' property of all selected view providers.
  */
-void DlgDisplayPropertiesImp::on_spinTransparency_valueChanged(int transparency)
+void DlgDisplayPropertiesImp::onSpinTransparencyValueChanged(int transparency)
 {
     std::vector<Gui::ViewProvider*> Provider = getSelection();
     for (auto It= Provider.begin();It!=Provider.end();++It) {
@@ -405,7 +423,7 @@ void DlgDisplayPropertiesImp::on_spinTransparency_valueChanged(int transparency)
 /**
  * Sets the 'PointSize' property of all selected view providers.
  */
-void DlgDisplayPropertiesImp::on_spinPointSize_valueChanged(int pointsize)
+void DlgDisplayPropertiesImp::onSpinPointSizeValueChanged(int pointsize)
 {
     std::vector<Gui::ViewProvider*> Provider = getSelection();
     for (const auto & It : Provider) {
@@ -420,7 +438,7 @@ void DlgDisplayPropertiesImp::on_spinPointSize_valueChanged(int pointsize)
 /**
  * Sets the 'LineWidth' property of all selected view providers.
  */
-void DlgDisplayPropertiesImp::on_spinLineWidth_valueChanged(int linewidth)
+void DlgDisplayPropertiesImp::onSpinLineWidthValueChanged(int linewidth)
 {
     std::vector<Gui::ViewProvider*> Provider = getSelection();
     for (const auto & It : Provider) {
@@ -432,7 +450,7 @@ void DlgDisplayPropertiesImp::on_spinLineWidth_valueChanged(int linewidth)
     }
 }
 
-void DlgDisplayPropertiesImp::on_buttonLineColor_changed()
+void DlgDisplayPropertiesImp::onButtonLineColorChanged()
 {
     std::vector<Gui::ViewProvider*> Provider = getSelection();
     QColor s = d->ui.buttonLineColor->color();
@@ -446,7 +464,7 @@ void DlgDisplayPropertiesImp::on_buttonLineColor_changed()
     }
 }
 
-void DlgDisplayPropertiesImp::on_buttonPointColor_changed()
+void DlgDisplayPropertiesImp::onButtonPointColorChanged()
 {
     std::vector<Gui::ViewProvider*> Provider = getSelection();
     QColor s = d->ui.buttonPointColor->color();
@@ -460,7 +478,7 @@ void DlgDisplayPropertiesImp::on_buttonPointColor_changed()
     }
 }
 
-void DlgDisplayPropertiesImp::on_spinLineTransparency_valueChanged(int transparency)
+void DlgDisplayPropertiesImp::onSpinLineTransparencyValueChanged(int transparency)
 {
     std::vector<Gui::ViewProvider*> Provider = getSelection();
     for (const auto & It : Provider) {
