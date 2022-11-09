@@ -25,6 +25,7 @@
 # include <algorithm>
 # include <boost_signals2.hpp>
 # include <QDockWidget>
+# include <QSignalBlocker>
 #endif
 
 #include <Base/Console.h>
@@ -68,9 +69,8 @@ public:
                 App::Color c = static_cast<App::PropertyColor*>(prop)->getValue();
                 QColor shape;
                 shape.setRgb((int)(c.r * 255.0f), (int)(c.g * 255.0f), (int)(c.b * 255.0f));
-                bool blocked = buttonColor->blockSignals(true);
+                QSignalBlocker block(buttonColor);
                 buttonColor->setColor(shape);
-                buttonColor->blockSignals(blocked);
                 hasElementColor = true;
                 break;
             }
@@ -85,9 +85,8 @@ public:
         for (const auto & view : views) {
             App::Property* prop = view->getPropertyByName(property);
             if (prop && prop->getTypeId().isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
-                bool blocked = spinbox->blockSignals(true);
+                QSignalBlocker block(spinbox);
                 spinbox->setValue((int)static_cast<App::PropertyFloat*>(prop)->getValue());
-                spinbox->blockSignals(blocked);
                 hasDrawStyle = true;
                 break;
             }
@@ -102,13 +101,11 @@ public:
         for (const auto & view : views) {
             App::Property* prop = view->getPropertyByName(property);
             if (prop && prop->getTypeId().isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
-                bool blocked = spinbox->blockSignals(true);
+                QSignalBlocker blockSpinBox(spinbox);
                 spinbox->setValue(static_cast<App::PropertyInteger*>(prop)->getValue());
-                spinbox->blockSignals(blocked);
 
-                blocked = slider->blockSignals(true);
+                QSignalBlocker blockSlider(slider);
                 slider->setValue(static_cast<App::PropertyInteger*>(prop)->getValue());
-                slider->blockSignals(blocked);
                 hasTransparency = true;
                 break;
             }
