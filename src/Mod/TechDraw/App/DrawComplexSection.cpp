@@ -319,7 +319,14 @@ TopoDS_Shape DrawComplexSection::prepareShape(const TopoDS_Shape &cutShape, doub
         return TopoDS_Shape();
     }
 
-    return scaleShape(alignedResult, getScale());
+    TopoDS_Shape preparedShape = scaleShape(alignedResult, getScale());
+    if (!DrawUtil::fpCompare(Rotation.getValue(), 0.0)) {
+        preparedShape = TechDraw::rotateShape(preparedShape,
+                                              getProjectionCS(),
+                                              Rotation.getValue());
+    }
+
+    return preparedShape;
 }
 
 //for Aligned strategy, cut the rawShape by each segment of the tool

@@ -185,7 +185,8 @@ short DrawViewSection::mustExecute() const
         Direction.isTouched()     ||
         BaseView.isTouched()  ||
         SectionNormal.isTouched() ||
-        SectionOrigin.isTouched() ) {
+        SectionOrigin.isTouched() ||
+        Rotation.isTouched() ) {
         return 1;
     }
 
