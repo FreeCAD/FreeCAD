@@ -55,7 +55,7 @@ body:
     id: description
     attributes:
       label: Problem description
-      description: Describe the problem and how it impacts user experience, workflow, maintainability or speed of the code. If the problem appears to be a bug with the current functionality, provide as test case or recipe that reproduces the errof.  
+      description: Describe the problem and how it impacts user experience, workflow, maintainability or speed of the code. If the problem appears to be a bug with the current functionality, provide as test case or recipe that reproduces the error.  
       placeholder: Description of the problem
     validations:
       required: true
