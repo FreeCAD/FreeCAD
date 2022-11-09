@@ -54,8 +54,6 @@ DrawTileWeld::DrawTileWeld()
     ADD_PROPERTY_TYPE(SymbolIncluded, (""), group, App::Prop_None,
                                             "Embedded Symbol. System use only.");   // n/a to end users
 
-//    SymbolFile.setStatus(App::Property::ReadOnly, true);
-
     std::string svgFilter("Symbol files (*.svg *.SVG);;All files (*)");
     SymbolFile.setFilter(svgFilter);
 }
@@ -66,92 +64,39 @@ DrawTileWeld::~DrawTileWeld()
 
 void DrawTileWeld::onChanged(const App::Property* prop)
 {
-    if (!isRestoring()) {
-        App::Document* doc = getDocument();
-        if ((prop == &SymbolFile) && doc) {
-            if (!SymbolFile.isEmpty()) {
-                Base::FileInfo fi(SymbolFile.getValue());
-                if (fi.isReadable()) {
-                    replaceSymbolIncluded(SymbolFile.getValue());
-                }
-            }
-        }
+    if (isRestoring()) {
+        DrawTile::onChanged(prop);
+        return;
     }
+
+    if (prop == &SymbolFile) {
+        replaceFileIncluded(SymbolFile.getValue());
+    }
+
     DrawTile::onChanged(prop);
-
 }
 
-short DrawTileWeld::mustExecute() const
+void DrawTileWeld::replaceFileIncluded(std::string newSymbolFile)
 {
-    return DrawTile::mustExecute();
-}
+//    Base::Console().Message("DTW::replaceFileIncluded(%s)\n", newSymbolFile.c_str());
+    if (newSymbolFile.empty()) {
+        return;
+    }
 
-App::DocumentObjectExecReturn *DrawTileWeld::execute()
-{
-//    Base::Console().Message("DTW::execute()\n");
-    return DrawTile::execute();
-}
-
-void DrawTileWeld::replaceSymbolIncluded(std::string newSymbolFile)
-{
-//    Base::Console().Message("DTW::replaceSymbolIncluded(%s)\n", newSymbolFile.c_str());
-    if (SymbolIncluded.isEmpty()) {
-        setupSymbolIncluded();
+    Base::FileInfo tfi(newSymbolFile);
+    if (tfi.isReadable()) {
+        SymbolIncluded.setValue(newSymbolFile.c_str());
     } else {
-        std::string tempName = SymbolIncluded.getExchangeTempFile();
-        DrawUtil::copyFile(newSymbolFile, tempName);
-        SymbolIncluded.setValue(tempName.c_str());
+        throw Base::RuntimeError("Could not read the new symbol file");
     }
-}
-
-void DrawTileWeld::onDocumentRestored()
-{
-//    Base::Console().Message("DTW::onDocumentRestored()\n");
-    if (SymbolIncluded.isEmpty()) {
-        if (!SymbolFile.isEmpty()) {
-            std::string symbolFileName = SymbolFile.getValue();
-            Base::FileInfo tfi(symbolFileName);
-            if (tfi.isReadable()) {
-                if (SymbolIncluded.isEmpty()) {
-                    setupSymbolIncluded();
-                }
-            }
-        }
-    }
-    DrawTile::onDocumentRestored();
 }
 
 void DrawTileWeld::setupObject()
 {
     //by this point DTW should have a name and belong to a document
-    setupSymbolIncluded();
+    replaceFileIncluded(SymbolFile.getValue());
 
     DrawTile::setupObject();
-}
-
-void DrawTileWeld::setupSymbolIncluded()
-{
-//    Base::Console().Message("DTW::setupSymbolIncluded()\n");
-    App::Document* doc = getDocument();
-    std::string special = getNameInDocument();
-    special += "Symbol.svg";
-    std::string dir = doc->TransientDir.getValue();
-    std::string symbolName = dir + special;
-
-    //first Time
-    std::string symbolIncluded = SymbolIncluded.getValue();
-    if (symbolIncluded.empty()) {
-        DrawUtil::copyFile(std::string(), symbolName);
-        SymbolIncluded.setValue(symbolName.c_str());
-    }
-
-    std::string symbolFile = SymbolFile.getValue();
-    if (!symbolFile.empty()) {
-        std::string exchName = SymbolIncluded.getExchangeTempFile();
-        DrawUtil::copyFile(symbolFile, exchName);
-        Base::FileInfo fi(exchName);
-        SymbolIncluded.setValue(exchName.c_str(), special.c_str());
-    }
 }
 
 //standard preference getter (really a default in this case)
