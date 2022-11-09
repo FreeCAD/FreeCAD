@@ -164,8 +164,6 @@ protected:
 
     void onDocumentRestored() override;
     void setupObject() override;
-    void setupSvgIncluded();
-    void setupPatIncluded();
     void replaceSvgIncluded(std::string newSvgFile);
     void replacePatIncluded(std::string newPatFile);
 

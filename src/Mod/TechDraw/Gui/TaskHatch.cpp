@@ -208,7 +208,7 @@ void TaskHatch::createHatch()
 
 void TaskHatch::updateHatch()
 {
-    Base::Console().Message("TH::updateHatch()\n");
+//    Base::Console().Message("TH::updateHatch()\n");
     std::string FeatName = m_hatch->getNameInDocument();
 
     Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update Hatch"));
