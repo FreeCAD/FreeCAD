@@ -31,7 +31,7 @@ import Path
 import Path.Post.Command as PathPost
 import Path.Post.Utils as PostUtils
 
-import Path.Post.Processor as PostProcessor
+from Path.Post.Processor import PostProcessor
 
 # If KEEP_DEBUG_OUTPUT is False, remove the gcode file after the test succeeds.
 # If KEEP_DEBUG_OUTPUT is True or the test fails leave the gcode file behind
