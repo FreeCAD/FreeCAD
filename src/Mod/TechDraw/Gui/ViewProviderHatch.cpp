@@ -105,6 +105,17 @@ void ViewProviderHatch::onChanged(const App::Property* prop)
     }
 }
 
+void ViewProviderHatch::updateData(const App::Property* prop)
+{
+    if (prop == &(getViewObject()->HatchPattern)) {
+        TechDraw::DrawViewPart* parent = getViewObject()->getSourceView();
+        if (parent) {
+            parent->requestPaint();
+        }
+    }
+    Gui::ViewProviderDocumentObject::updateData(prop);
+}
+
 TechDraw::DrawHatch* ViewProviderHatch::getViewObject() const
 {
     return dynamic_cast<TechDraw::DrawHatch*>(pcObject);
