@@ -367,15 +367,16 @@ Action * StdCmdToolBarMenu::createAction()
 
 class FilterStatusBar : public QObject
 {
-//    Q_OBJECT
+    //    Q_OBJECT
 
 public:
-    FilterStatusBar(Action * action):QObject(action) {this->action = action;}
-//    virtual ~FilterStatusBar() {}
+    FilterStatusBar(Action* action) :QObject(action) { this->action = action; }
+    //    virtual ~FilterStatusBar() {}
 protected:
-    Action * action;
+    Action* action;
+    bool eventFilter(QObject* obj, QEvent* event) override
     {
-        if (getMainWindow() && getMainWindow()->findChild<QStatusBar *>() && obj == getMainWindow()->statusBar() &&
+        if (getMainWindow() && getMainWindow()->findChild<QStatusBar*>() && obj == getMainWindow()->statusBar() &&
             ((event->type() == QEvent::Hide) || (event->type() == QEvent::Show))) {
             this->action->setChecked(getMainWindow()->statusBar()->isVisible());
         }
