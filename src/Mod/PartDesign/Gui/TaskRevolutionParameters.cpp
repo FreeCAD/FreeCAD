@@ -48,7 +48,8 @@ using namespace Gui;
 
 TaskRevolutionParameters::TaskRevolutionParameters(PartDesignGui::ViewProvider* RevolutionView, QWidget *parent)
     : TaskSketchBasedParameters(RevolutionView, parent, "PartDesign_Revolution", tr("Revolution parameters")),
-      ui(new Ui_TaskRevolutionParameters), proxy(new QWidget(this))
+      ui(new Ui_TaskRevolutionParameters),
+      proxy(new QWidget(this))
 {
     // we need a separate container widget to add all controls to
     ui->setupUi(proxy);
@@ -71,7 +72,7 @@ TaskRevolutionParameters::TaskRevolutionParameters(PartDesignGui::ViewProvider* 
         ui->revolveAngle->bind(rev->Angle);
     }
     else {
-        throw Base::TypeError("The ViewProvider is not a Groove or a Revolution.");
+        throw Base::TypeError("The object is neither a Groove nor a Revolution.");
     }
 
     ui->checkBoxMidplane->setChecked(propMidPlane->getValue());
@@ -116,7 +117,7 @@ void TaskRevolutionParameters::fillAxisCombo(bool forceRefill)
         //add sketch axes
         auto *pcFeat = dynamic_cast<PartDesign::ProfileBased*>(vp->getObject());
         if (!pcFeat)
-            throw Base::TypeError("The ViewProvider is not ProfileBased.");
+            throw Base::TypeError("The object is not ProfileBased.");
         auto *pcSketch = static_cast<Part::Part2DObject*>(pcFeat->Profile.getValue());
         if (pcSketch){
             addAxisToCombo(pcSketch,"V_Axis",QObject::tr("Vertical sketch axis"));
