@@ -69,7 +69,7 @@ private Q_SLOTS:
 
 protected:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent *event) override;
     void getReferenceAxis(App::DocumentObject *&obj, std::vector<std::string> &sub) const;
     double getAngle(void) const;
     bool getMidplane(void) const;

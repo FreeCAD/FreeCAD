@@ -120,8 +120,8 @@ void TaskRevolutionParameters::fillAxisCombo(bool forceRefill)
             throw Base::TypeError("The object is not ProfileBased.");
         auto *pcSketch = static_cast<Part::Part2DObject*>(pcFeat->Profile.getValue());
         if (pcSketch){
-            addAxisToCombo(pcSketch,"V_Axis",QObject::tr("Vertical sketch axis"));
-            addAxisToCombo(pcSketch,"H_Axis",QObject::tr("Horizontal sketch axis"));
+            addAxisToCombo(pcSketch, "V_Axis", QObject::tr("Vertical sketch axis"));
+            addAxisToCombo(pcSketch, "H_Axis", QObject::tr("Horizontal sketch axis"));
             for (int i=0; i < pcSketch->getAxisCount(); i++) {
                 QString itemText = QObject::tr("Construction line %1").arg(i+1);
                 std::stringstream sub;
@@ -135,16 +135,16 @@ void TaskRevolutionParameters::fillAxisCombo(bool forceRefill)
         if (body) {
             try {
                 App::Origin* orig = body->getOrigin();
-                addAxisToCombo(orig->getX(),"",tr("Base X axis"));
-                addAxisToCombo(orig->getY(),"",tr("Base Y axis"));
-                addAxisToCombo(orig->getZ(),"",tr("Base Z axis"));
+                addAxisToCombo(orig->getX(), std::string(), tr("Base X axis"));
+                addAxisToCombo(orig->getY(), std::string(), tr("Base Y axis"));
+                addAxisToCombo(orig->getZ(), std::string(), tr("Base Z axis"));
             } catch (const Base::Exception &ex) {
                 ex.ReportException();
             }
         }
 
         //add "Select reference"
-        addAxisToCombo(nullptr,std::string(),tr("Select reference..."));
+        addAxisToCombo(nullptr, std::string(), tr("Select reference..."));
     }//endif forceRefill
 
     //add current link, if not in list
@@ -175,7 +175,7 @@ void TaskRevolutionParameters::addAxisToCombo(App::DocumentObject* linkObj,
                                               QString itemText)
 {
     this->ui->axis->addItem(itemText);
-    this->axesInList.emplace_back();
+    this->axesInList.emplace_back(new App::PropertyLinkSub());
     App::PropertyLinkSub &lnk = *(axesInList[axesInList.size()-1]);
     lnk.setValue(linkObj,std::vector<std::string>(1,linkSubname));
 }
@@ -187,7 +187,7 @@ void TaskRevolutionParameters::connectSignals()
     connect(ui->axis, qOverload<int>(&QComboBox::activated), this,
             &TaskRevolutionParameters::onAxisChanged);
     connect(ui->checkBoxMidplane, &QCheckBox::toggled, this,
-        &TaskRevolutionParameters::onMidplane);
+            &TaskRevolutionParameters::onMidplane);
     connect(ui->checkBoxReversed, &QCheckBox::toggled, this,
             &TaskRevolutionParameters::onReversed);
     connect(ui->checkBoxUpdateView, &QCheckBox::toggled, this,
@@ -355,10 +355,10 @@ TaskRevolutionParameters::~TaskRevolutionParameters()
     axesInList.clear();
 }
 
-void TaskRevolutionParameters::changeEvent(QEvent *e)
+void TaskRevolutionParameters::changeEvent(QEvent *event)
 {
-    TaskBox::changeEvent(e);
-    if (e->type() == QEvent::LanguageChange) {
+    TaskBox::changeEvent(event);
+    if (event->type() == QEvent::LanguageChange) {
         ui->retranslateUi(proxy);
     }
 }
