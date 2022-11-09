@@ -58,6 +58,65 @@ public:
     Ui::DlgDisplayProperties ui;
     bool floating;
     DlgDisplayPropertiesImp_Connection connectChangedObject;
+
+    static void setElementColor(const std::vector<Gui::ViewProvider*>& views, const char* property, Gui::ColorButton* buttonColor)
+    {
+        bool hasElementColor = false;
+        for (const auto & view : views) {
+            App::Property* prop = view->getPropertyByName(property);
+            if (prop && prop->getTypeId() == App::PropertyColor::getClassTypeId()) {
+                App::Color c = static_cast<App::PropertyColor*>(prop)->getValue();
+                QColor shape;
+                shape.setRgb((int)(c.r * 255.0f), (int)(c.g * 255.0f), (int)(c.b * 255.0f));
+                bool blocked = buttonColor->blockSignals(true);
+                buttonColor->setColor(shape);
+                buttonColor->blockSignals(blocked);
+                hasElementColor = true;
+                break;
+            }
+        }
+
+        buttonColor->setEnabled(hasElementColor);
+    }
+
+    static void setDrawStyle(const std::vector<Gui::ViewProvider*>& views, const char* property, QSpinBox* spinbox)
+    {
+        bool hasDrawStyle = false;
+        for (const auto & view : views) {
+            App::Property* prop = view->getPropertyByName(property);
+            if (prop && prop->getTypeId().isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
+                bool blocked = spinbox->blockSignals(true);
+                spinbox->setValue((int)static_cast<App::PropertyFloat*>(prop)->getValue());
+                spinbox->blockSignals(blocked);
+                hasDrawStyle = true;
+                break;
+            }
+        }
+
+        spinbox->setEnabled(hasDrawStyle);
+    }
+
+    static void setTransparency(const std::vector<Gui::ViewProvider*>& views, const char* property, QSpinBox* spinbox, QSlider* slider)
+    {
+        bool hasTransparency = false;
+        for (const auto & view : views) {
+            App::Property* prop = view->getPropertyByName(property);
+            if (prop && prop->getTypeId().isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
+                bool blocked = spinbox->blockSignals(true);
+                spinbox->setValue(static_cast<App::PropertyInteger*>(prop)->getValue());
+                spinbox->blockSignals(blocked);
+
+                blocked = slider->blockSignals(true);
+                slider->setValue(static_cast<App::PropertyInteger*>(prop)->getValue());
+                slider->blockSignals(blocked);
+                hasTransparency = true;
+                break;
+            }
+        }
+
+        spinbox->setEnabled(hasTransparency);
+        slider->setEnabled(hasTransparency);
+    }
 };
 
 /**
@@ -524,140 +583,37 @@ void DlgDisplayPropertiesImp::fillupMaterials()
 
 void DlgDisplayPropertiesImp::setShapeColor(const std::vector<Gui::ViewProvider*>& views)
 {
-    bool shapeColor = false;
-    for (const auto & view : views) {
-        App::Property* prop = view->getPropertyByName("ShapeColor");
-        if (prop && prop->getTypeId() == App::PropertyColor::getClassTypeId()) {
-            App::Color c = static_cast<App::PropertyColor*>(prop)->getValue();
-            QColor shape;
-            shape.setRgb((int)(c.r * 255.0f), (int)(c.g * 255.0f), (int)(c.b * 255.0f));
-            bool blocked = d->ui.buttonColor->blockSignals(true);
-            d->ui.buttonColor->setColor(shape);
-            d->ui.buttonColor->blockSignals(blocked);
-            shapeColor = true;
-            break;
-        }
-    }
-
-    d->ui.buttonColor->setEnabled(shapeColor);
+    Private::setElementColor(views, "ShapeColor", d->ui.buttonColor);
 }
 
 void DlgDisplayPropertiesImp::setLineColor(const std::vector<Gui::ViewProvider*>& views)
 {
-    bool lineColor = false;
-    for (const auto & view : views) {
-        App::Property* prop = view->getPropertyByName("LineColor");
-        if (prop && prop->getTypeId() == App::PropertyColor::getClassTypeId()) {
-            App::Color c = static_cast<App::PropertyColor*>(prop)->getValue();
-            QColor line;
-            line.setRgb((int)(c.r * 255.0f), (int)(c.g * 255.0f), (int)(c.b * 255.0f));
-            bool blocked = d->ui.buttonLineColor->blockSignals(true);
-            d->ui.buttonLineColor->setColor(line);
-            d->ui.buttonLineColor->blockSignals(blocked);
-            lineColor = true;
-            break;
-        }
-    }
-
-    d->ui.buttonLineColor->setEnabled(lineColor);
+    Private::setElementColor(views, "LineColor", d->ui.buttonLineColor);
 }
 
 void DlgDisplayPropertiesImp::setPointColor(const std::vector<Gui::ViewProvider*>& views)
 {
-    bool pointColor = false;
-    for (const auto & view : views) {
-        App::Property* prop = view->getPropertyByName("PointColor");
-        if (prop && prop->getTypeId() == App::PropertyColor::getClassTypeId()) {
-            App::Color c = static_cast<App::PropertyColor*>(prop)->getValue();
-            QColor point;
-            point.setRgb((int)(c.r * 255.0f), (int)(c.g * 255.0f), (int)(c.b * 255.0f));
-            bool blocked = d->ui.buttonPointColor->blockSignals(true);
-            d->ui.buttonPointColor->setColor(point);
-            d->ui.buttonPointColor->blockSignals(blocked);
-            pointColor = true;
-            break;
-        }
-    }
-
-    d->ui.buttonPointColor->setEnabled(pointColor);
+    Private::setElementColor(views, "PointColor", d->ui.buttonPointColor);
 }
 
 void DlgDisplayPropertiesImp::setPointSize(const std::vector<Gui::ViewProvider*>& views)
 {
-    bool pointSize = false;
-    for (const auto & view : views) {
-        App::Property* prop = view->getPropertyByName("PointSize");
-        if (prop && prop->getTypeId().isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
-            bool blocked = d->ui.spinPointSize->blockSignals(true);
-            d->ui.spinPointSize->setValue((int)static_cast<App::PropertyFloat*>(prop)->getValue());
-            d->ui.spinPointSize->blockSignals(blocked);
-            pointSize = true;
-            break;
-        }
-    }
-
-    d->ui.spinPointSize->setEnabled(pointSize);
+    Private::setDrawStyle(views, "PointSize", d->ui.spinPointSize);
 }
 
 void DlgDisplayPropertiesImp::setLineWidth(const std::vector<Gui::ViewProvider*>& views)
 {
-    bool lineWidth = false;
-    for (const auto & view : views) {
-        App::Property* prop = view->getPropertyByName("LineWidth");
-        if (prop && prop->getTypeId().isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
-            bool blocked = d->ui.spinLineWidth->blockSignals(true);
-            d->ui.spinLineWidth->setValue((int)static_cast<App::PropertyFloat*>(prop)->getValue());
-            d->ui.spinLineWidth->blockSignals(blocked);
-            lineWidth = true;
-            break;
-        }
-    }
-
-    d->ui.spinLineWidth->setEnabled(lineWidth);
+    Private::setDrawStyle(views, "LineWidth", d->ui.spinLineWidth);
 }
 
 void DlgDisplayPropertiesImp::setTransparency(const std::vector<Gui::ViewProvider*>& views)
 {
-    bool transparency = false;
-    for (const auto & view : views) {
-        App::Property* prop = view->getPropertyByName("Transparency");
-        if (prop && prop->getTypeId().isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
-            bool blocked = d->ui.spinTransparency->blockSignals(true);
-            d->ui.spinTransparency->setValue(static_cast<App::PropertyInteger*>(prop)->getValue());
-            d->ui.spinTransparency->blockSignals(blocked);
-
-            blocked = d->ui.horizontalSlider->blockSignals(true);
-            d->ui.horizontalSlider->setValue(static_cast<App::PropertyInteger*>(prop)->getValue());
-            d->ui.horizontalSlider->blockSignals(blocked);
-            transparency = true;
-            break;
-        }
-    }
-
-    d->ui.spinTransparency->setEnabled(transparency);
-    d->ui.horizontalSlider->setEnabled(transparency);
+    Private::setTransparency(views, "Transparency", d->ui.spinTransparency, d->ui.horizontalSlider);
 }
 
 void DlgDisplayPropertiesImp::setLineTransparency(const std::vector<Gui::ViewProvider*>& views)
 {
-    bool transparency = false;
-    for (const auto & view : views) {
-        App::Property* prop = view->getPropertyByName("LineTransparency");
-        if (prop && prop->getTypeId().isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
-            bool blocked = d->ui.spinLineTransparency->blockSignals(true);
-            d->ui.spinLineTransparency->setValue(static_cast<App::PropertyInteger*>(prop)->getValue());
-            d->ui.spinLineTransparency->blockSignals(blocked);
-
-            blocked = d->ui.sliderLineTransparency->blockSignals(true);
-            d->ui.sliderLineTransparency->setValue(static_cast<App::PropertyInteger*>(prop)->getValue());
-            d->ui.sliderLineTransparency->blockSignals(blocked);
-            transparency = true;
-            break;
-        }
-    }
-
-    d->ui.spinLineTransparency->setEnabled(transparency);
-    d->ui.sliderLineTransparency->setEnabled(transparency);
+    Private::setTransparency(views, "LineTransparency", d->ui.spinLineTransparency, d->ui.sliderLineTransparency);
 }
 
 std::vector<Gui::ViewProvider*> DlgDisplayPropertiesImp::getSelection() const
