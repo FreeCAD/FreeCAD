@@ -31,7 +31,6 @@
 
 #include "DrawView.h"
 
-
 namespace TechDraw
 {
 
@@ -42,7 +41,7 @@ class TechDrawExport DrawViewImage : public TechDraw::DrawView
 public:
     /// Constructor
     DrawViewImage();
-    ~DrawViewImage() = default;
+    ~DrawViewImage() override = default;
 
     App::PropertyFile         ImageFile;
     App::PropertyFileIncluded ImageIncluded;
@@ -55,17 +54,15 @@ public:
     App::DocumentObjectExecReturn *execute() override;
     //@}
 
-    short mustExecute() const override;
-
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override {
         return "TechDrawGui::ViewProviderImage";
     }
     QRectF getRect() const override;
+    void setupObject() override;
 
 protected:
-    void setupImageIncluded();
-    void replaceImageIncluded(std::string newFileName);
+    void replaceImageIncluded(std::string newImageFile);
 
     void onChanged(const App::Property* prop) override;
     Base::BoundBox3d bbox;
