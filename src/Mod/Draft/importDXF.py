@@ -2717,7 +2717,6 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
     FCC.PrintMessage("successfully imported " + filename + "\n")
     if badobjects:
         print("dxf: ", len(badobjects), " objects were not imported")
-    del doc
 
 
 def warn(dxfobject, num=None):
