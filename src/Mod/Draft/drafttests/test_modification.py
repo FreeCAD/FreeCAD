@@ -112,13 +112,13 @@ class DraftModification(unittest.TestCase):
                         "'{}' failed".format(operation))
 
     def test_offset_open(self):
-        """Create a wire, then produce an offset copy."""
+        """Create an open wire, then produce an offset copy."""
         operation = "Draft Offset"
         _msg("  Test '{}'".format(operation))
         a = Vector(0, 2, 0)
         b = Vector(2, 4, 0)
         c = Vector(5, 2, 0)
-        _msg("  Wire")
+        _msg("  Open wire")
         _msg("  a={0}, b={1}".format(a, b))
         _msg("  c={0}".format(c))
         wire = Draft.make_wire([a, b, c])
@@ -130,22 +130,52 @@ class DraftModification(unittest.TestCase):
         obj = Draft.offset(wire, offset, copy=True)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
-    def test_offset_closed(self):
-        """Create a rectangle, then produce an offset copy."""
+    def test_offset_closed_with_reversed_edge(self):
+        """Create a closed wire with a reversed edge, then produce an offset copy."""
+        # Regression test for:
+        # https://github.com/FreeCAD/FreeCAD/pull/5496
         operation = "Draft Offset"
         _msg("  Test '{}'".format(operation))
-        length = 4
-        width = 2
-        _msg("  Rectangle")
+        _msg("  Closed wire with reversed edge")
+        a = Vector(0, 0, 0)
+        b = Vector(10, 0, 0)
+        c = Vector(10, 4, 0)
+        d = Vector(0, 4, 0)
+        edges = [Part.makeLine(a, b),
+                 Part.makeLine(b, c),
+                 Part.makeLine(c, d),
+                 Part.makeLine(a, d)]
+        wire = Part.Wire(edges)
+        obj = App.ActiveDocument.addObject("Part::Feature")
+        obj.Shape = wire
+
+        offset = Vector(0, -1, 0)
+        new = Draft.offset(obj, offset, copy=True)
+        self.assertTrue(len(new.Points) == 4, "'{}' failed".format(operation))
+
+    def test_offset_rectangle_with_face(self):
+        """Create a rectangle with a face, then produce an offset copy."""
+        # Regression test for:
+        # https://github.com/FreeCAD/FreeCAD/pull/7670
+        operation = "Draft Offset"
+        _msg("  Test '{}'".format(operation))
+        length = 10
+        width = 4
+        _msg("  Rectangle with face")
         _msg("  length={0}, width={1}".format(length, width))
         rect = Draft.make_rectangle(length, width)
+        rect.MakeFace = True
         App.ActiveDocument.recompute()
 
-        offset = Vector(-1, -1, 0)
+        offset = Vector(0, -1, 0)
         _msg("  Offset")
         _msg("  vector={}".format(offset))
         obj = Draft.offset(rect, offset, copy=True)
-        self.assertTrue(obj, "'{}' failed".format(operation))
+        App.ActiveDocument.recompute()
+        obj_is_ok = (obj.Shape.CenterOfGravity == Vector(5, 2, 0)
+                     and obj.Length == 12
+                     and obj.Height == 6)
+        self.assertTrue(obj_is_ok, "'{}' failed".format(operation))
 
     def test_trim(self):
         """Trim a line. NOT IMPLEMENTED."""
