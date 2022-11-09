@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>290</width>
-    <height>680</height>
+    <height>503</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -194,10 +194,10 @@
           </property>
          </widget>
         </item>
-       <item row="3" column="1">
+        <item row="3" column="1">
          <widget class="Gui::ColorButton" name="buttonPointColor"/>
         </item>
-        </layout>
+       </layout>
       </item>
      </layout>
     </widget>
@@ -255,7 +255,7 @@
           <property name="sizeType">
            <enum>QSizePolicy::Expanding</enum>
           </property>
-          <property name="sizeHint">
+          <property name="sizeHint" stdset="0">
            <size>
             <width>71</width>
             <height>20</height>
@@ -310,7 +310,7 @@
           <property name="sizeType">
            <enum>QSizePolicy::Expanding</enum>
           </property>
-          <property name="sizeHint">
+          <property name="sizeHint" stdset="0">
            <size>
             <width>71</width>
             <height>20</height>
