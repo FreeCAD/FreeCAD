@@ -209,7 +209,7 @@ void DlgCustomToolbars::importCustomToolbars(const QByteArray& name)
                     auto* item = new QTreeWidgetItem(toplevel);
                     item->setText(0, Action::commandMenuText(pCmd));
                     item->setToolTip(0, Action::commandToolTip(pCmd));
-                    item->setData(0, Qt::UserRole, QByteArray(it2->first.c_str()));
+                    item->setData(0, Qt::UserRole, QByteArray(it2.first.c_str()));
                     if (pCmd->getPixmap())
                         item->setIcon(0, BitmapFactory().iconFromTheme(pCmd->getPixmap()));
                     item->setSizeHint(0, QSize(32, 32));

@@ -33,8 +33,8 @@
        <property name="bottomMargin">
         <number>0</number>
        </property>
-       <item row="2" column="1">
-        <widget class="QComboBox" name="categoryBox"/>
+       <item row="1" column="0" colspan="2">
+        <widget class="QLineEdit" name="editCommand"/>
        </item>
        <item row="2" column="0">
         <widget class="QLabel" name="TextLabelCategory">
@@ -52,8 +52,8 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="0" colspan="2">
-        <widget class="QLineEdit" name="editCommand"/>
+       <item row="2" column="1">
+        <widget class="QComboBox" name="categoryBox"/>
        </item>
        <item row="3" column="0" colspan="2">
         <widget class="QTreeWidget" name="commandTreeWidget">
@@ -94,6 +94,37 @@
          <property name="bottomMargin">
           <number>0</number>
          </property>
+         <item row="1" column="1">
+          <widget class="QLabel" name="textLabelShortcut">
+           <property name="text">
+            <string>Current shortcut:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2" colspan="2">
+          <widget class="Gui::AccelLineEdit" name="accelLineEditShortcut">
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1" colspan="3">
+          <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <item>
+            <widget class="QLabel" name="textLabelNewShortcut">
+             <property name="text">
+              <string>&amp;New shortcut:</string>
+             </property>
+             <property name="buddy">
+              <cstring>editShortcut</cstring>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="Gui::AccelLineEdit" name="editShortcut"/>
+           </item>
+          </layout>
+         </item>
          <item row="4" column="1" colspan="2">
           <widget class="QLabel" name="label">
            <property name="toolTip">
@@ -101,13 +132,6 @@
            </property>
            <property name="text">
             <string>Multi-key sequence delay: </string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QLabel" name="textLabelShortcut">
-           <property name="text">
-            <string>Current shortcut:</string>
            </property>
           </widget>
          </item>
@@ -147,6 +171,24 @@ be treated as shorctcut key sequence 'F, F'.</string>
            </property>
           </widget>
          </item>
+         <item row="5" column="1" colspan="3">
+          <widget class="QLabel" name="textLabelAssigned">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string>This list shows commands having the same shortcut in the priority from high
+to low. If more than one command with the same shortcut are active at the
+same time. The one with the highest prioirty will be triggered.</string>
+           </property>
+           <property name="text">
+            <string>Shorcut priority list:</string>
+           </property>
+          </widget>
+         </item>
          <item row="6" column="1" colspan="3">
           <widget class="QTreeWidget" name="assignedTreeWidget">
            <property name="minimumSize">
@@ -166,48 +208,6 @@ be treated as shorctcut key sequence 'F, F'.</string>
              <string notr="true">1</string>
             </property>
            </column>
-          </widget>
-         </item>
-         <item row="1" column="2" colspan="2">
-          <widget class="Gui::AccelLineEdit" name="accelLineEditShortcut">
-           <property name="readOnly">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="1" colspan="3">
-          <layout class="QHBoxLayout" name="horizontalLayout_4">
-           <item>
-            <widget class="QLabel" name="textLabelNewShortcut">
-             <property name="text">
-              <string>&amp;New shortcut:</string>
-             </property>
-             <property name="buddy">
-              <cstring>editShortcut</cstring>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="Gui::AccelLineEdit" name="editShortcut"/>
-           </item>
-          </layout>
-         </item>
-         <item row="5" column="1" colspan="3">
-          <widget class="QLabel" name="textLabelAssigned">
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>20</height>
-            </size>
-           </property>
-           <property name="toolTip">
-            <string>This list shows commands having the same shortcut in the priority from high
-to low. If more than one command with the same shortcut are active at the
-same time. The one with the highest prioirty will be triggered.</string>
-           </property>
-           <property name="text">
-            <string>Shorcut priority list:</string>
-           </property>
           </widget>
          </item>
         </layout>
@@ -328,11 +328,12 @@ same time. The one with the highest prioirty will be triggered.</string>
   <tabstop>categoryBox</tabstop>
   <tabstop>commandTreeWidget</tabstop>
   <tabstop>accelLineEditShortcut</tabstop>
+  <tabstop>editShortcut</tabstop>
+  <tabstop>shortcutTimeout</tabstop>
   <tabstop>buttonAssign</tabstop>
   <tabstop>buttonClear</tabstop>
   <tabstop>buttonReset</tabstop>
   <tabstop>buttonResetAll</tabstop>
-  <tabstop>shortcutTimeout</tabstop>
   <tabstop>assignedTreeWidget</tabstop>
   <tabstop>buttonUp</tabstop>
   <tabstop>buttonDown</tabstop>
