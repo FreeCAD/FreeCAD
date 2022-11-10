@@ -492,7 +492,7 @@ void DrawViewSection::onSectionCutFinished()
     postSectionCutTasks();
 
     //display geometry for cut shape is in geometryObject as in DVP
-    m_tempGeometryObject = buildGeometryObject(m_preparedShape, getSectionCS());
+    m_tempGeometryObject = buildGeometryObject(m_preparedShape, getProjectionCS());
 }
 
 //activities that depend on updated geometry object
@@ -651,7 +651,7 @@ TopoDS_Compound DrawViewSection::mapToPage(TopoDS_Shape& shapeToAlign)
         TopExp_Explorer expWires(face, TopAbs_WIRE);
         for ( ; expWires.More(); expWires.Next()) {
             const TopoDS_Wire& wire = TopoDS::Wire(expWires.Current());
-            TopoDS_Shape projectedShape = GeometryObject::projectSimpleShape(wire, getSectionCS());
+            TopoDS_Shape projectedShape = GeometryObject::projectSimpleShape(wire, getProjectionCS());
             std::vector<TopoDS_Edge> wireEdges;
             //projectedShape is just a bunch of edges. we have to rebuild the wire.
             TopExp_Explorer expEdges(projectedShape, TopAbs_EDGE);
@@ -814,7 +814,7 @@ void DrawViewSection::setCSFromBase(const Base::Vector3d localUnit)
     Base::Vector3d vXDir(newSectionCS.XDirection().X(),
                          newSectionCS.XDirection().Y(),
                          newSectionCS.XDirection().Z());
-    XDirection.setValue(vXDir);
+    XDirection.setValue(vXDir);         //XDir is for projection
 }
 
 //reset the section CS based on an XY vector in current section CS
@@ -858,8 +858,8 @@ gp_Ax2 DrawViewSection::getCSFromBase(const std::string sectionName) const
         dvsDir  = dvpUp;
         dvsXDir = dvpRight;
     } else if (sectionName == "Left") {
-        dvsDir = dvpRight;
-        dvsXDir = dvpDir.Reversed();
+        dvsDir = dvpRight;   //dvpX
+        dvsXDir = dvpDir.Reversed();  //-dvpZ
     } else if (sectionName == "Right") {
         dvsDir = dvpRight.Reversed();
         dvsXDir = dvpDir;
