@@ -25,7 +25,7 @@
 #include <Base/Console.h>
 #include <Base/PyObjectBase.h>
 #include <Base/Interpreter.h>
- 
+
 
 namespace MeshPart {
 extern PyObject* initModule();

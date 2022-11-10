@@ -108,7 +108,7 @@ std::function<double(double)> get_basis_derivative(int order, int degree, int i,
     // Return the derivation of the basis function
     // order of basis function
     // degree of basis function
-    // 
+    //
     // knots sequence
 {
     if (order == 1)
@@ -127,11 +127,11 @@ std::function<double(double)> get_basis_derivative(int order, int degree, int i,
                 out -=  get_basis(degree - 1, i + 1, knots)(t) *
                         degree / (knots[i + degree + 1] - knots[i + 1]);
             }
-            return out; 
+            return out;
         };
     }
     else
-    {   
+    {
         return [degree, i, knots, order](double t)
         {
             double out = 0;
@@ -145,7 +145,7 @@ std::function<double(double)> get_basis_derivative(int order, int degree, int i,
                 out -=  get_basis_derivative(order - 1, degree - 1, i + 1, knots)(t) *
                         degree / (knots[i + degree + 1] - knots[i + 1]);
             }
-            return out; 
+            return out;
         };
     }
 }
@@ -244,7 +244,7 @@ Eigen::VectorXd NurbsBase2D::getDuVector(Eigen::Vector2d u)
     n_v.resize(this->v_functions.size());
     for (unsigned int u_i=0; u_i < this->u_functions.size(); u_i++)
     {
-        // std::cout << "u_i: " << u_i << " , n_u: " << n_u.size() 
+        // std::cout << "u_i: " << u_i << " , n_u: " << n_u.size()
         //           << " , Dn_u: " << Dn_u.size() << std::endl;
         n_u[u_i] = this->u_functions[u_i](u.x());
         Dn_u[u_i] = this->Du_functions[u_i](u.x());
@@ -300,9 +300,9 @@ Eigen::VectorXd NurbsBase2D::getDvVector(Eigen::Vector2d u)
         {
             C1 = weights[i] * Dn_v[v_i] * n_u[u_i];
             C2 = weights[i] * n_v[v_i] * n_u[u_i];
-            A1[i] = C1; 
+            A1[i] = C1;
             A2[i] = C2;
-            A3 += C2; 
+            A3 += C2;
             A5 += C1;
             i ++;
         }
@@ -348,7 +348,7 @@ std::tuple<NurbsBase2D, Eigen::MatrixXd> NurbsBase2D::interpolateUBS(
     Eigen::VectorXd weights, u_knots, v_knots;
     u_knots = NurbsBase1D::getKnotSequence(u_min, u_max, degree_u, num_u_poles);
     v_knots = NurbsBase1D::getKnotSequence(v_min, v_max, degree_v, num_v_poles);
-    
+
     weights.resize((u_knots.rows() - degree_u - 1) * (v_knots.rows() - degree_v - 1));
     weights.setOnes();
     NurbsBase2D new_base(u_knots, v_knots, weights, degree_u, degree_v);
@@ -378,7 +378,7 @@ Eigen::Matrix<double, Eigen::Dynamic, 2> NurbsBase2D::getUVMesh(int num_u_points
             uv_points(i, 1) = v_min + (v_max - v_min) * v / (num_v_points - 1);
             i++;
         }
-        
+
     }
     return uv_points;
 }
@@ -458,10 +458,10 @@ Eigen::VectorXd NurbsBase1D::getDuVector(double u)
     {
         C1 = weights[i] * Dn_u[u_i];
         C2 = weights[i] * n_u[u_i];
-        C3 += C1; 
+        C3 += C1;
         C4 += C2;
 
-        A1[i] = C1; 
+        A1[i] = C1;
         A2[i] = C2;
         i ++;
     }
@@ -508,7 +508,7 @@ Eigen::VectorXd NurbsBase1D::getUMesh(int num_u_points)
     double u_max = this->u_knots(this->u_knots.size() - 1);
     Eigen::Matrix<double, Eigen::Dynamic, 1> u_points;
     u_points.setLinSpaced(num_u_points, u_min, u_max);
-    return u_points;    
+    return u_points;
 }
 
 

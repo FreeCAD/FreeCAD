@@ -84,7 +84,7 @@ using namespace MeshPart;
 SMESH_Gen* Mesher::_mesh_gen = nullptr;
 
 
-MeshingOutput::MeshingOutput() 
+MeshingOutput::MeshingOutput()
 {
     buffer.reserve(80);
 }

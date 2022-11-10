@@ -48,7 +48,7 @@ std::vector<ColMat<double, 3>> getBoundaries(ColMat<double, 3> vertices, ColMat<
     std::map<long, std::vector<long>> neighbour_map;
     std::vector<long> edge_vector_0;
     std::vector<std::vector<long>> edge_vector;
-    
+
 
     for (long i=0; i<tris.rows(); i++)
     {
@@ -109,7 +109,7 @@ std::vector<ColMat<double, 3>> getBoundaries(ColMat<double, 3> vertices, ColMat<
             }
             neighbour_map.erase(start_index);
             edge_vector_0.push_back(next_index);
-            
+
         }
         edge_vector.push_back(edge_vector_0);
     }
@@ -134,7 +134,7 @@ FaceUnwrapper::FaceUnwrapper(const TopoDS_Face& face)
     long i = 0;
 //  transform to nurbs:
     TopLoc_Location location;
-    
+
 //  triangulate:
     const Handle(Poly_Triangulation) &triangulation = BRep_Tool::Triangulation(face, location);
 
@@ -156,7 +156,7 @@ FaceUnwrapper::FaceUnwrapper(const TopoDS_Face& face)
             i++;
         }
     }
-// 
+//
     this->xyz_nodes.resize(numNodes, 3);
     i = 0;
     for (Standard_Integer index = 1; index <= numNodes; ++index)
@@ -192,7 +192,7 @@ ColMat<double, 3> FaceUnwrapper::interpolateFlatFace(const TopoDS_Face& face)
 {
     if (this->uv_nodes.size() == 0)
         throw(std::runtime_error("no uv-coordinates found, interpolating with nurbs is only possible if the Flattener was constructed with a nurbs."));
-    
+
     // extract xyz poles, knots, weights, degree
     const Handle(Geom_Surface) &_surface = BRep_Tool::Surface(face);
     const Handle(Geom_BSplineSurface) &_bspline = Handle(Geom_BSplineSurface)::DownCast(_surface);
@@ -224,11 +224,11 @@ ColMat<double, 3> FaceUnwrapper::interpolateFlatFace(const TopoDS_Face& face)
     {
         v_knots[v - 1] = _vknots.Value(v);
     }
-    
+
 
     nu = nurbs::NurbsBase2D(u_knots, v_knots, weights, _bspline->UDegree(), _bspline->VDegree());
     A = nu.getInfluenceMatrix(this->uv_nodes);
-    
+
     Eigen::LeastSquaresConjugateGradient<spMat > solver;
     solver.compute(A);
     ColMat<double, 2> ze_poles;
@@ -239,7 +239,7 @@ ColMat<double, 3> FaceUnwrapper::interpolateFlatFace(const TopoDS_Face& face)
     ze_poles = solver.solve(ze_nodes);
     flat_poles.col(0) << ze_poles.col(0);
     flat_poles.col(1) << ze_poles.col(1);
-    return flat_poles;    
+    return flat_poles;
 }
 
 
@@ -247,7 +247,7 @@ FaceUnwrapper::FaceUnwrapper(ColMat< double, int(3) > xyz_nodes, ColMat< long in
 {
     this->tris = tris;
     this->xyz_nodes = xyz_nodes;
-    
+
 }
 
 std::vector<ColMat<double, 3>> FaceUnwrapper::getFlatBoundaryNodes()

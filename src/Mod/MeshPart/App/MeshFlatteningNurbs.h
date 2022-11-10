@@ -68,9 +68,9 @@ struct NurbsBase2D
 
     Eigen::VectorXd getDvVector(Eigen::Vector2d u);
     spMat getDvMatrix(Eigen::Matrix<double, Eigen::Dynamic, 2> U);
-    
+
     Eigen::Matrix<double, Eigen::Dynamic, 2> getUVMesh(int num_u_points, int num_v_points);
-    
+
     std::tuple<NurbsBase2D, Eigen::MatrixXd> interpolateUBS(
         Eigen::Matrix<double, Eigen::Dynamic, 3> poles,
         int degree_u,
@@ -100,14 +100,14 @@ struct NurbsBase1D
 
     Eigen::VectorXd getDuVector(double u);
     spMat getDuMatrix(Eigen::VectorXd u);
-    
+
     static Eigen::VectorXd getKnotSequence(double u_min, double u_max, int deg, int num_poles);
     static Eigen::VectorXd getWeightList(Eigen::VectorXd knots, int u_deg);
-    
+
     Eigen::VectorXd getUMesh(int num_u_points);
-    
+
     std::tuple<NurbsBase1D, Eigen::Matrix<double, Eigen::Dynamic, 3>> interpolateUBS(
-        Eigen::Matrix<double, Eigen::Dynamic, 3> poles, 
+        Eigen::Matrix<double, Eigen::Dynamic, 3> poles,
         int degree,
         int num_u_poles,
         int num_u_points);

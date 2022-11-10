@@ -110,7 +110,7 @@ ColMat<double, 3> interpolateFlatFacePy(FaceUnwrapper& instance, py::object* fac
 PYBIND11_MODULE(flatmesh, m)
 {
     m.doc() = "functions to unwrapp faces/ meshes";
-    
+
     py::class_<lscmrelax::LscmRelax>(m, "LscmRelax")
         .def(py::init<ColMat<double, 3>, ColMat<long, 3>, std::vector<long>>())
         .def("lscm", &lscmrelax::LscmRelax::lscm)
@@ -167,5 +167,5 @@ PYBIND11_MODULE(flatmesh, m)
         .def_readonly("ze_nodes", &FaceUnwrapper::ze_nodes)
         .def_readonly("ze_poles", &FaceUnwrapper::ze_poles)
         .def_readonly("A", &FaceUnwrapper::A);
-        
+
 };
