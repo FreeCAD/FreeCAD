@@ -900,21 +900,19 @@ TopoDS_Shape DrawViewPart::getShape() const
     return result;
 }
 
-//returns the (unscaled) size of the visible lines along the alignment vector
+//returns the (unscaled) size of the visible lines along the alignment vector.
+//alignment vector is already projected onto our CS, so only has X,Y components
 double DrawViewPart::getSizeAlongVector(Base::Vector3d alignmentVector)
 {
-    gp_Ax3 projectedCS3(getProjectionCS());
-    projectedCS3.SetXDirection(DrawUtil::togp_Dir(alignmentVector));
-    gp_Ax3 stdCS;   //OXYZ
-
-    gp_Trsf xPieceAlign;
-    xPieceAlign.SetTransformation(stdCS, projectedCS3);
-    BRepBuilderAPI_Transform mkTransAlign(getShape(), xPieceAlign);
-    TopoDS_Shape shapeAligned = mkTransAlign.Shape();
-
+//    Base::Console().Message("DVP::GetSizeAlongVector(%s)\n", DrawUtil::formatVector(alignmentVector).c_str());
+    double alignmentAngle = atan2(alignmentVector.y, alignmentVector.x) * -1.0;
+    gp_Ax2 OXYZ;        //shape has already been projected and we will rotate around Z
+    TopoDS_Shape rotatedShape = rotateShape(getShape(),
+                                            OXYZ,
+                                            alignmentAngle * 180.0 / M_PI);
     Bnd_Box shapeBox;
     shapeBox.SetGap(0.0);
-    BRepBndLib::AddOptimal(shapeAligned, shapeBox);
+    BRepBndLib::AddOptimal(rotatedShape, shapeBox);
     double xMin = 0, xMax = 0, yMin = 0, yMax = 0, zMin = 0, zMax = 0;
     shapeBox.Get(xMin, yMin, zMin, xMax, yMax, zMax);
     double shapeWidth((xMax - xMin) / getScale());
