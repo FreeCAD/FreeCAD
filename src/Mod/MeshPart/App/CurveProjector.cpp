@@ -121,11 +121,11 @@ void CurveProjectorShape::projectCurve( const TopoDS_Edge& aEdge,
 {
   Standard_Real fFirst, fLast;
   Handle(Geom_Curve) hCurve = BRep_Tool::Curve( aEdge,fFirst,fLast );
-  
+
   // getting start point
   gp_Pnt gpPt = hCurve->Value(fFirst);
 
-  // projection of the first point 
+  // projection of the first point
   Base::Vector3f cStartPoint = Base::Vector3f((float)gpPt.X(),
                                               (float)gpPt.Y(),
                                               (float)gpPt.Z());
@@ -134,7 +134,7 @@ void CurveProjectorShape::projectCurve( const TopoDS_Edge& aEdge,
   MeshCore::FacetIndex uLastFacetIdx=MeshCore::FACET_INDEX_MAX-1; // use another value as FACET_INDEX_MAX
   MeshCore::FacetIndex auNeighboursIdx[3];
   bool GoOn;
-  
+
   if( !findStartPoint(_Mesh,cStartPoint,cResultPoint,uStartFacetIdx) )
     return;
 
@@ -146,11 +146,11 @@ void CurveProjectorShape::projectCurve( const TopoDS_Edge& aEdge,
 
     GoOn = false;
     int NbrOfHits = 0,HitIdx=0;
-    
+
     for(int i=0; i<3; i++)
     {
       // ignore last visited facet
-      if ( auNeighboursIdx[i] == uLastFacetIdx ) 
+      if ( auNeighboursIdx[i] == uLastFacetIdx )
         continue;
 
       // get points of the edge i
@@ -169,10 +169,10 @@ void CurveProjectorShape::projectCurve( const TopoDS_Edge& aEdge,
         cPlanePnt    = cP0;
       }
 
-      Handle(Geom_Plane) hPlane = new Geom_Plane(gp_Pln(gp_Pnt(cPlanePnt.x,cPlanePnt.y,cPlanePnt.z), 
+      Handle(Geom_Plane) hPlane = new Geom_Plane(gp_Pln(gp_Pnt(cPlanePnt.x,cPlanePnt.y,cPlanePnt.z),
                                                         gp_Dir(cPlaneNormal.x,cPlaneNormal.y,cPlaneNormal.z)));
- 
-      GeomAPI_IntCS Alg(hCurve,hPlane); 
+
+      GeomAPI_IntCS Alg(hCurve,hPlane);
 
       if ( Alg.IsDone() )
       {
@@ -312,13 +312,13 @@ void CurveProjectorSimple::projectCurve( const TopoDS_Edge& aEdge,
   bool bFirst = true;
   //unsigned long auNeighboursIdx[3];
   //std::map<unsigned long,std::vector<Base::Vector3f> >::iterator N1,N2,N3;
-  
+
   Standard_Real fBegin, fEnd;
   Handle(Geom_Curve) hCurve = BRep_Tool::Curve(aEdge,fBegin,fEnd);
   float fLen   = float(fEnd - fBegin);
-  
+
   unsigned long ulNbOfPoints = 1000,PointCount=0;
-  
+
   MeshFacetIterator It(_Mesh);
 
   Base::SequencerLauncher seq("Building up projection map...", ulNbOfPoints+1);
@@ -328,7 +328,7 @@ void CurveProjectorSimple::projectCurve( const TopoDS_Edge& aEdge,
   str.setf(std::ios::fixed | std::ios::showpoint);
 
   std::map<MeshCore::FacetIndex,std::vector<Base::Vector3f> > FaceProjctMap;
- 
+
   for (unsigned long i = 0; i <= ulNbOfPoints; i++)
   {
     seq.next();
@@ -338,12 +338,12 @@ void CurveProjectorSimple::projectCurve( const TopoDS_Edge& aEdge,
     for(It.Init();It.More();It.Next())
     {
       // try to project (with angle) to the face
-      if (It->IntersectWithLine (Base::Vector3f((float)gpPt.X(),(float)gpPt.Y(),(float)gpPt.Z()), 
+      if (It->IntersectWithLine (Base::Vector3f((float)gpPt.X(),(float)gpPt.Y(),(float)gpPt.Z()),
           It->GetNormal(), TempResultPoint))
       {
         FaceProjctMap[It.Position()].push_back(TempResultPoint);
-        str << TempResultPoint.x << " " 
-            << TempResultPoint.y << " " 
+        str << TempResultPoint.x << " "
+            << TempResultPoint.y << " "
             << TempResultPoint.z << std::endl;
         Base::Console().Log("IDX %d\n",It.Position());
 
@@ -375,13 +375,13 @@ void CurveProjectorSimple::projectCurve( const TopoDS_Edge& aEdge,
 
 
     }
-  
+
     FaceProjctMap.erase(uCurFacetIdx);
 
     // estimate next facet
     MeshGeomFacet cCurFacet= MeshK.GetFacet(uCurFacetIdx);
     MeshK.GetFacetNeighbours ( uCurFacetIdx, auNeighboursIdx[0], auNeighboursIdx[1], auNeighboursIdx[2]);
-    
+
     uCurFacetIdx = MeshCore::FACET_INDEX_MAX;
     PointCount = 0;
 
@@ -413,11 +413,11 @@ void CurveProjectorSimple::projectCurve( const TopoDS_Edge& aEdge,
 
   Standard_Real fFirst, fLast, fAct;
   Handle(Geom_Curve) hCurve = BRep_Tool::Curve( aEdge,fFirst,fLast );
-  
+
   // getting start point
   gp_Pnt gpPt = hCurve->Value(fFirst);
   fAct = fFirst;
-  // projection of the first point 
+  // projection of the first point
   Base::Vector3f cStartPoint = Base::Vector3f(gpPt.X(),gpPt.Y(),gpPt.Z());
   Base::Vector3f cResultPoint, cSplitPoint, cPlanePnt, cPlaneNormal,TempResultPoint;
   MeshCore::FacetIndex uStartFacetIdx,uCurFacetIdx;
@@ -479,7 +479,7 @@ void CurveProjectorSimple::projectCurve( const TopoDS_Edge& aEdge,
 
         }
       }
-  
+
       Sentinel++;
 
     }while(HitCount!=1 && Sentinel < 20);
@@ -499,23 +499,23 @@ void CurveProjectorSimple::projectCurve( const TopoDS_Edge& aEdge,
 
   Standard_Real fFirst, fLast;
   Handle(Geom_Curve) hCurve = BRep_Tool::Curve( aEdge,fFirst,fLast );
-  
+
   // getting start point
   gp_Pnt gpPt = hCurve->Value(fFirst);
 
-  // projection of the first point 
+  // projection of the first point
   Base::Vector3f cStartPoint = Base::Vector3f(gpPt.X(),gpPt.Y(),gpPt.Z());
   Base::Vector3f cResultPoint, cSplitPoint, cPlanePnt, cPlaneNormal;
   MeshCore::FacetIndex uStartFacetIdx,uCurFacetIdx;
   MeshCore::FacetIndex uLastFacetIdx=MeshCore::FACET_INDEX_MAX-1; // use another value as FACET_INDEX_MAX
   MeshCore::FacetIndex auNeighboursIdx[3];
   bool GoOn;
-  
+
   if( !findStartPoint(MeshK,cStartPoint,cResultPoint,uStartFacetIdx) )
     return;
 
   FILE* file = fopen("projected.asc", "w");
-    
+
   // go through the whole Mesh
   MeshFacetIterator It1(MeshK);
   for(It1.Init();It1.More();It1.Next())
@@ -607,10 +607,10 @@ void CurveProjectorWithToolMesh::makeToolMesh( const TopoDS_Edge& aEdge,std::vec
 
   MeshFacetIterator It(_Mesh);
 
-  Base::SequencerLauncher seq("Building up tool mesh...", ulNbOfPoints+1);  
+  Base::SequencerLauncher seq("Building up tool mesh...", ulNbOfPoints+1);
 
   std::map<MeshCore::FacetIndex,std::vector<Base::Vector3f> > FaceProjctMap;
- 
+
   for (unsigned long i = 0; i < ulNbOfPoints; i++)
   {
     seq.next();

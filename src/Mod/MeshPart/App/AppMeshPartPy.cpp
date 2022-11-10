@@ -221,7 +221,7 @@ private:
         }
 
         TopoDS_Shape aShape = pcObject->getTopoShapePtr()->getShape();
-        // use the MeshAlgos 
+        // use the MeshAlgos
         MeshPart::MeshAlgos::LoftOnCurve(M,aShape,poly,Base::Vector3f(x,y,z),size);
         return Py::asObject(new Mesh::MeshPy(new Mesh::MeshObject(M)));
     }

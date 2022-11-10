@@ -23,7 +23,7 @@
 
 // LeastSquareConformalMapping + fem relaxing
 // ------------------------------------------
-// 
+//
 #ifndef UNWRAP_H
 #define UNWRAP_H
 
@@ -54,9 +54,9 @@ class NullSpaceProjector: public Eigen::IdentityPreconditioner
   public:
     Eigen::MatrixXd null_space_1;
     Eigen::MatrixXd null_space_2;
-    
+
     template<typename Rhs>
-    inline Rhs solve(Rhs& b) const { 
+    inline Rhs solve(Rhs& b) const {
         return b - this->null_space_1 * (this->null_space_2 * b);
     }
 
@@ -66,7 +66,7 @@ class NullSpaceProjector: public Eigen::IdentityPreconditioner
         this->null_space_2 = null_space.transpose();
     }
 };
-    
+
 using Vector3 = Eigen::Vector3d;
 using Vector2 = Eigen::Vector2d;
 
@@ -93,7 +93,7 @@ private:
 public:
     LscmRelax() {}
     LscmRelax(
-        RowMat<double, 3> vertices, 
+        RowMat<double, 3> vertices,
         RowMat<long, 3> triangles,
         std::vector<long> fixed_pins);
 
@@ -116,7 +116,7 @@ public:
 
     void rotate_by_min_bound_area();
     void transform(bool scale=false);
-    
+
     double get_area();
     double get_flat_area();
 

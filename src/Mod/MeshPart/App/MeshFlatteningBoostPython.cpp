@@ -199,7 +199,7 @@ struct eigen_matrix
 BOOST_PYTHON_MODULE(flatmesh)
 {
     //m.doc() = "functions to unwrapp faces/ meshes";
-    
+
     py::class_<lscmrelax::LscmRelax>("LscmRelax")
         .def(py::init<ColMat<double, 3>, ColMat<long, 3>, std::vector<long>>())
         .def("lscm", &lscmrelax::LscmRelax::lscm)
