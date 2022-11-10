@@ -283,12 +283,9 @@ ConstraintSlopeAtBSplineKnot::ConstraintSlopeAtBSplineKnot(BSpline& b, Line& l, 
     factors.resize(numpoles);
     slopefactors.resize(numpoles);
     for (size_t i = 0; i < numpoles + 1; ++i) {
-        // FIXME: `getLinCombFactor` seg-faults for the last knot so this safeguard exists
-        if (numpoles > 2) {
-            tempfactors[i] =
-                b.getLinCombFactor(*(b.knots[knotindex]), startpole + b.degree, startpole + i, b.degree - 1) /
-                (b.flattenedknots[startpole + b.degree + i] - b.flattenedknots[startpole + i]);
-        }
+        tempfactors[i] =
+            b.getLinCombFactor(*(b.knots[knotindex]), startpole + b.degree, startpole + i, b.degree - 1) /
+            (b.flattenedknots[startpole + b.degree + i] - b.flattenedknots[startpole + i]);
     }
     for (size_t i = 0; i < numpoles; ++i) {
         factors[i] =
