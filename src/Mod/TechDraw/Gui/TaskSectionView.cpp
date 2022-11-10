@@ -75,7 +75,8 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewPart* base) :
     m_doc(nullptr),
     m_createMode(true),
     m_saved(false),
-    m_applyDeferred(0)
+    m_applyDeferred(0),
+    m_directionIsSet(false)
 {
     //existence of base is guaranteed by CmdTechDrawSectionView (Command.cpp)
 
@@ -90,7 +91,6 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewPart* base) :
 
     m_applyDeferred = 0;  //setting the direction widgets causes an increment of the deferred count,
                           //so we reset the counter and the message.
-    ui->lPendingUpdates->setText(QString());
 }
 
 //ctor for edit
@@ -102,7 +102,8 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewSection* section) :
     m_doc(nullptr),
     m_createMode(false),
     m_saved(false),
-    m_applyDeferred(0)
+    m_applyDeferred(0),
+    m_directionIsSet(true)
 {
     //existence of section is guaranteed by ViewProviderViewSection.setEdit
 
@@ -148,6 +149,12 @@ void TaskSectionView::setUiPrimary()
     setUiCommon(origin);
 
     m_viewDirectionWidget->setValue(Base::Vector3d(1.0, 0.0, 0.0));
+
+    //don't allow updates until a direction is picked
+    ui->pbUpdateNow->setEnabled(false);
+    ui->cbLiveUpdate->setEnabled(false);
+    QString msgLiteral = QString::fromUtf8(QT_TRANSLATE_NOOP("TaskSectionView", "No direction set"));
+    ui->lPendingUpdates->setText(msgLiteral);
 }
 
 void TaskSectionView::setUiEdit()
@@ -294,41 +301,36 @@ void TaskSectionView::slotChangeAngle(double newAngle)
 void TaskSectionView::onUpClicked()
 {
 //    Base::Console().Message("TSV::onUpClicked()\n");
-    m_compass->setToNorth();
-    Base::Vector3d localUnit(0.0, 1.0, 0.0);
-    m_viewDirectionWidget->setValue(localUnit);
     checkAll(false);
-    applyAligned(localUnit);
-}
+    m_compass->setToNorth();
+    m_viewDirectionWidget->setValueNoNotify(Base::Vector3d(0.0, 1.0, 0.0));
+    applyAligned(Base::Vector3d(0.0, 1.0, 0.0));}
 
 void TaskSectionView::onDownClicked()
 {
 //    Base::Console().Message("TSV::onDownClicked()\n");
-    m_compass->setToSouth();
-    Base::Vector3d localUnit(0.0, -1.0, 0.0);
-    m_viewDirectionWidget->setValue(localUnit);
     checkAll(false);
-    applyAligned(localUnit);
+    m_compass->setToSouth();
+    m_viewDirectionWidget->setValueNoNotify(Base::Vector3d(0.0, -1.0, 0.0));
+    applyAligned(Base::Vector3d(0.0, -1.0, 0.0));
 }
 
 void TaskSectionView::onLeftClicked()
 {
 //    Base::Console().Message("TSV::onLeftClicked()\n");
-    m_compass->setToWest();
-    Base::Vector3d localUnit(-1.0, 0.0, 0.0);
-    m_viewDirectionWidget->setValue(localUnit);
     checkAll(false);
-    applyAligned(localUnit);
+    m_compass->setToWest();
+    m_viewDirectionWidget->setValueNoNotify(Base::Vector3d(-1.0, 0.0, 0.0));
+    applyAligned(Base::Vector3d(-1.0, 0.0, 0.0));
 }
 
 void TaskSectionView::onRightClicked()
 {
 //    Base::Console().Message("TSV::onRightClicked()\n");
-    m_compass->setToEast();
-    Base::Vector3d localUnit(1.0, 0.0, 0.0);
-    m_viewDirectionWidget->setValue(localUnit);
     checkAll(false);
-    applyAligned(localUnit);
+    m_compass->setToEast();
+    m_viewDirectionWidget->setValueNoNotify(Base::Vector3d(1.0, 0.0, 0.0));
+    applyAligned(Base::Vector3d(1.0, 0.0, 0.0));
 }
 
 void TaskSectionView::onIdentifierChanged()
@@ -483,6 +485,9 @@ void TaskSectionView::applyAligned(Base::Vector3d localUnit)
     m_dirName = "Aligned";
     m_localUnit = localUnit;
     enableAll(true);
+    m_directionIsSet = true;
+    ui->pbUpdateNow->setEnabled(true);
+    ui->cbLiveUpdate->setEnabled(true);
     apply();
 }
 
