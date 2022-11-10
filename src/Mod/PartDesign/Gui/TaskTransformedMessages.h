@@ -33,7 +33,7 @@ namespace App {
 class Property;
 }
 
-namespace PartDesignGui { 
+namespace PartDesignGui {
 
 class ViewProviderTransformed;
 
@@ -48,7 +48,7 @@ public:
     void slotDiagnosis(QString msg);
 
 private Q_SLOTS:
-    
+
 protected:
     ViewProviderTransformed *transformedView;
     Connection connectionDiagnosis;

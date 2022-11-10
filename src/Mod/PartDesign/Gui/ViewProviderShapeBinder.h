@@ -40,11 +40,11 @@ public:
 
     void setupContextMenu(QMenu*, QObject*, const char*) override;
     void highlightReferences(bool on);
-    
+
 protected:
     bool setEdit(int ModNum) override;
     void unsetEdit(int ModNum) override;
-    
+
 private:
     std::vector<App::Color> originalLineColors;
     std::vector<App::Color> originalFaceColors;
@@ -63,9 +63,9 @@ public:
 
     bool canDropObjects() const override {return true;}
     bool canDragAndDropObject(App::DocumentObject*) const override {return false;}
-    bool canDropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner, 
+    bool canDropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner,
             const char *subname, const std::vector<std::string> &elements) const override;
-    std::string dropObjectEx(App::DocumentObject*, App::DocumentObject*, const char *, 
+    std::string dropObjectEx(App::DocumentObject*, App::DocumentObject*, const char *,
             const std::vector<std::string> &) override;
     std::vector<App::DocumentObject*> claimChildren() const override;
 

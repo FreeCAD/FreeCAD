@@ -905,7 +905,7 @@ void Hole::updateHoleCutParams()
                 }
             }
         }
-            
+
     }
     else { // we have an UTS profile or none
 

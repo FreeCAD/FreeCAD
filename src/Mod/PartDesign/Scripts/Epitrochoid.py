@@ -30,7 +30,7 @@ class Epitrochoid:
         d=fp.Distance
         ang=0
         z=0
-        
+
         if r2 == 0:
             raise ValueError("Exterior radius must not be zero")
 

@@ -228,7 +228,7 @@ void TaskFilletParameters::onLengthChanged(double len)
     pcFillet->Radius.setValue(len);
     pcFillet->getDocument()->recomputeFeature(pcFillet);
     // hide the fillet if there was a computation error
-    hideOnError();   
+    hideOnError();
 }
 
 double TaskFilletParameters::getLength() const

@@ -53,7 +53,7 @@ public:
     ~ViewProviderBody() override;
 
     App::PropertyEnumeration DisplayModeBody;
-    
+
     void attach(App::DocumentObject *) override;
 
     bool doubleClicked(void) override;
@@ -72,7 +72,7 @@ public:
 
     /// Update the sizes of origin and datums
     void updateOriginDatumSize ();
-    
+
     /**
      * Return the bounding box of visible features
      * @note datums are counted as their base point only

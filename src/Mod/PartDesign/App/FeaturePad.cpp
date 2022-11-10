@@ -253,5 +253,5 @@ App::DocumentObjectExecReturn *Pad::execute()
     catch (Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
-    
+
 }

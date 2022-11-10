@@ -515,7 +515,7 @@ void TaskBoxPrimitives::onEllipsoidRadius3Changed(double v) {
 
 void TaskBoxPrimitives::onTorusAngle1Changed(double v) {
     PartDesign::Torus* sph = static_cast<PartDesign::Torus*>(vp->getObject());
-    ui->torusAngle2->setMinimum(v); // Angle1 must geometrically be <= than Angle2  
+    ui->torusAngle2->setMinimum(v); // Angle1 must geometrically be <= than Angle2
     sph->Angle1.setValue(v);
     vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
 }

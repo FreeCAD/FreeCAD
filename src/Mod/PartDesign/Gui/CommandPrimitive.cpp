@@ -133,7 +133,7 @@ void CmdPrimtiveCompAdditive::activated(int iMsg)
     copyVisual(prm, "PointColor", base);
     copyVisual(prm, "Transparency", base);
     copyVisual(prm, "DisplayMode", base);
-    
+
     PartDesignGui::setEdit(prm,pcActiveBody);
 }
 

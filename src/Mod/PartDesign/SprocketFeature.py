@@ -62,21 +62,21 @@ class CommandSprocket:
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("PartDesign_Sprocket","Sprocket..."),
                 'Accel': "",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("PartDesign_Sprocket","Creates or edit the sprocket definition.")}
-        
+
     def Activated(self):
 
         FreeCAD.ActiveDocument.openTransaction("Create Sprocket")
         FreeCADGui.addModule("SprocketFeature")
         FreeCADGui.doCommand("SprocketFeature.makeSprocket('Sprocket')")
         FreeCADGui.doCommand("Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name,0)")
-        
+
     def IsActive(self):
         if FreeCAD.ActiveDocument:
             return True
         else:
             return False
 
-       
+
 class Sprocket:
     """
     The Sprocket object
@@ -126,16 +126,16 @@ class Sprocket:
         obj.addProperty("App::PropertyLength","Thickness","Sprocket","Thickness as stated in the reference specification")
 
         obj.SprocketReference = list(self.SprocketReferenceRollerTable.keys())
-        
+
         obj.NumberOfTeeth = 50
-        obj.Pitch = "0.375 in" 
+        obj.Pitch = "0.375 in"
         obj.RollerDiameter = "0.20 in"
         obj.SprocketReference = "ANSI 35"
         obj.Thickness = "0.11 in"
 
         obj.Proxy = self
-        
-        
+
+
     def execute(self,obj):
         w = fcsprocket.FCWireBuilder()
         sprocket.CreateSprocket(w, obj.Pitch.Value, obj.NumberOfTeeth, obj.RollerDiameter.Value)
@@ -144,8 +144,8 @@ class Sprocket:
         obj.Shape = sprocketw
         obj.positionBySupport();
         return
-        
-        
+
+
 class ViewProviderSprocket:
     """
     A View Provider for the Sprocket object
@@ -153,7 +153,7 @@ class ViewProviderSprocket:
 
     def __init__(self,vobj):
         vobj.Proxy = self
-       
+
     def getIcon(self):
         return ":/icons/PartDesign_Sprocket.svg"
 
@@ -167,7 +167,7 @@ class ViewProviderSprocket:
         taskd.update()
         FreeCADGui.Control.showDialog(taskd)
         return True
-    
+
     def unsetEdit(self,vobj,mode):
         FreeCADGui.Control.closeDialog()
         return
@@ -186,32 +186,32 @@ class SprocketTaskPanel:
 
     def __init__(self,obj,mode):
         self.obj = obj
-        
+
         self.form=FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/PartDesign/SprocketFeature.ui")
         self.form.setWindowIcon(QtGui.QIcon(":/icons/PartDesign_Sprocket.svg"))
-        
+
         QtCore.QObject.connect(self.form.Quantity_Pitch, QtCore.SIGNAL("valueChanged(double)"), self.pitchChanged)
         QtCore.QObject.connect(self.form.Quantity_RollerDiameter, QtCore.SIGNAL("valueChanged(double)"), self.rollerDiameterChanged)
         QtCore.QObject.connect(self.form.spinBox_NumberOfTeeth, QtCore.SIGNAL("valueChanged(int)"), self.numTeethChanged)
         QtCore.QObject.connect(self.form.comboBox_SprocketReference, QtCore.SIGNAL("currentTextChanged(const QString)"), self.sprocketReferenceChanged)
         QtCore.QObject.connect(self.form.Quantity_Thickness, QtCore.SIGNAL("valueChanged(double)"), self.thicknessChanged)
-        
+
         self.update()
-        
+
         if mode == 0: # fresh created
-            self.obj.Proxy.execute(self.obj)  # calculate once 
+            self.obj.Proxy.execute(self.obj)  # calculate once
             FreeCAD.Gui.SendMsgToActiveView("ViewFit")
-        
+
     def transferTo(self):
         """
         Transfer from the dialog to the object
-        """ 
+        """
         self.obj.NumberOfTeeth = self.form.spinBox_NumberOfTeeth.value()
         self.obj.Pitch = self.form.Quantity_Pitch.text()
         self.obj.RollerDiameter = self.form.Quantity_RollerDiameter.text()
         self.obj.SprocketReference = self.form.comboBox_SprocketReference.currentText()
         self.obj.Thickness = self.form.Quantity_Thickness.text()
-    
+
     def transferFrom(self):
         """
         Transfer from the object to the dialog
@@ -221,7 +221,7 @@ class SprocketTaskPanel:
         self.form.Quantity_RollerDiameter.setText(self.obj.RollerDiameter.UserString)
         self.form.comboBox_SprocketReference.setCurrentText(self.obj.SprocketReference)
         self.form.Quantity_Thickness.setText(self.obj.Thickness.UserString)
-                                                    
+
     def pitchChanged(self, value):
         self.obj.Pitch = value
         self.obj.Proxy.execute(self.obj)
@@ -235,10 +235,10 @@ class SprocketTaskPanel:
         self.form.Quantity_Pitch.setText(self.obj.Pitch.UserString)
         self.form.Quantity_RollerDiameter.setText(self.obj.RollerDiameter.UserString)
         self.form.Quantity_Thickness.setText(self.obj.Thickness.UserString)
-            
+
         self.obj.Proxy.execute(self.obj)
         FreeCAD.Gui.SendMsgToActiveView("ViewFit")
-        
+
     def rollerDiameterChanged(self, value):
         self.obj.RollerDiameter = value
         self.obj.Proxy.execute(self.obj)
@@ -251,23 +251,23 @@ class SprocketTaskPanel:
     def thicknessChanged(self, value):
         self.obj.Thickness = str(value)
         self.obj.Proxy.execute(self.obj)
-        
+
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Ok) | int(QtGui.QDialogButtonBox.Cancel)| int(QtGui.QDialogButtonBox.Apply)
-    
+
     def clicked(self,button):
         if button == QtGui.QDialogButtonBox.Apply:
             self.transferTo()
-            self.obj.Proxy.execute(self.obj) 
-        
+            self.obj.Proxy.execute(self.obj)
+
     def update(self):
         self.transferFrom()
-                
+
     def accept(self):
         self.transferTo()
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.ActiveDocument.resetEdit()
-        
+
     def reject(self):
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCAD.ActiveDocument.abortTransaction()

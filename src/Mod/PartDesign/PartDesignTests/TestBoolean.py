@@ -52,7 +52,7 @@ class TestBoolean(unittest.TestCase):
         self.BooleanFuse.Type = 0
         self.Doc.recompute()
         self.assertAlmostEqual(self.BooleanFuse.Shape.Volume, 1500)
-        
+
     def testBooleanCutCase(self):
         self.Body = self.Doc.addObject('PartDesign::Body','Body')
         self.Box = self.Doc.addObject('PartDesign::AdditiveBox','Box')

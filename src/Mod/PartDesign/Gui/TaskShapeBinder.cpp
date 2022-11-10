@@ -289,7 +289,7 @@ bool TaskShapeBinder::referenceSelected(const SelectionChanges& msg) const
         if (strcmp(msg.pObjectName, fname) == 0)
             return false;
 
-        //change the references 
+        //change the references
         std::string subName(msg.pSubName);
 
         Part::Feature* selectedObj = nullptr;

@@ -71,7 +71,7 @@ App::DocumentObjectExecReturn *Fillet::execute()
     } catch (Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
-    std::vector<std::string> SubNames = std::vector<std::string>(Base.getSubValues());  
+    std::vector<std::string> SubNames = std::vector<std::string>(Base.getSubValues());
 
     if (UseAllEdges.getValue()){
         SubNames.clear();
@@ -88,9 +88,9 @@ App::DocumentObjectExecReturn *Fillet::execute()
 
     if (SubNames.empty())
         return new App::DocumentObjectExecReturn("Fillet not possible on selected shapes");
-    
+
     double radius = Radius.getValue();
-    
+
     if(radius <= 0)
         return new App::DocumentObjectExecReturn("Fillet radius must be greater than zero");
 
