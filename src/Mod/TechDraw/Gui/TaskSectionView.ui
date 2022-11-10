@@ -118,7 +118,7 @@
       </widget>
      </item>
      <item row="3" column="2">
-      <widget class="Gui::QuantitySpinBox" name="sbScale">
+      <widget class="Gui::QuantitySpinBox" name="sbScale" native="true">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -140,19 +140,16 @@
        <property name="toolTip">
         <string>Scale factor for the section view</string>
        </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-       <property name="keyboardTracking">
+       <property name="keyboardTracking" stdset="0">
         <bool>false</bool>
        </property>
-       <property name="minimum">
+       <property name="minimum" stdset="0">
         <double>0.000000000000000</double>
        </property>
-       <property name="maximum">
+       <property name="maximum" stdset="0">
         <double>999.000000000000000</double>
        </property>
-       <property name="value">
+       <property name="value" stdset="0">
         <double>1.000000000000000</double>
        </property>
        <property name="decimals" stdset="0">
@@ -365,7 +362,7 @@
          </spacer>
         </item>
         <item row="0" column="2">
-         <widget class="Gui::QuantitySpinBox" name="sbOrgX">
+         <widget class="Gui::QuantitySpinBox" name="sbOrgX" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -378,10 +375,7 @@
             <height>22</height>
            </size>
           </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="keyboardTracking">
+          <property name="keyboardTracking" stdset="0">
            <bool>false</bool>
           </property>
           <property name="unit" stdset="0">
@@ -409,7 +403,7 @@
          </widget>
         </item>
         <item row="1" column="2">
-         <widget class="Gui::QuantitySpinBox" name="sbOrgY">
+         <widget class="Gui::QuantitySpinBox" name="sbOrgY" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -422,10 +416,7 @@
             <height>22</height>
            </size>
           </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="keyboardTracking">
+          <property name="keyboardTracking" stdset="0">
            <bool>false</bool>
           </property>
           <property name="unit" stdset="0">
@@ -453,7 +444,7 @@
          </widget>
         </item>
         <item row="2" column="2">
-         <widget class="Gui::QuantitySpinBox" name="sbOrgZ">
+         <widget class="Gui::QuantitySpinBox" name="sbOrgZ" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -466,10 +457,7 @@
             <height>22</height>
            </size>
           </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="keyboardTracking">
+          <property name="keyboardTracking" stdset="0">
            <bool>false</bool>
           </property>
           <property name="unit" stdset="0">
@@ -520,7 +508,7 @@
         <item row="1" column="0">
          <widget class="QLabel" name="lPendingUpdates">
           <property name="enabled">
-           <bool>false</bool>
+           <bool>true</bool>
           </property>
           <property name="text">
            <string/>
