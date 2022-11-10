@@ -837,23 +837,23 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
         sectionLine->setSectionStyle(vp->SectionLineStyle.getValue());
         sectionLine->setSectionColor(vp->SectionLineColor.getValue().asValue<QColor>());
         sectionLine->setPathMode(false);
+
         //find the ends of the section line
         double scale = viewPart->getScale();
         std::pair<Base::Vector3d, Base::Vector3d> sLineEnds = viewSection->sectionLineEnds();
         Base::Vector3d l1 = Rez::guiX(sLineEnds.first) * scale;
         Base::Vector3d l2 = Rez::guiX(sLineEnds.second) * scale;
-
-        //which way to the arrows point?
-        Base::Vector3d lineDir = l2 - l1;
-        lineDir.Normalize();
-        Base::Vector3d arrowDir = viewSection->SectionNormal.getValue();
-        arrowDir = - viewPart->projectPoint(arrowDir);  //arrows point reverse of sectionNormal
-        sectionLine->setDirection(arrowDir.x, -arrowDir.y);           //invert Y
-
         //make the section line a little longer
         double fudge = Rez::guiX(2.0 * Preferences::dimFontSizeMM());
+        Base::Vector3d lineDir = l2 - l1;
+        lineDir.Normalize();
         sectionLine->setEnds(l1 - lineDir * fudge,
                              l2 + lineDir * fudge);
+
+        //which way do the arrows point?
+        Base::Vector3d arrowDir = viewSection->SectionNormal.getValue();
+        arrowDir = - viewPart->projectPoint(arrowDir);  //arrows point reverse of sectionNormal
+        sectionLine->setDirection(arrowDir.x, - arrowDir.y);    //3d direction needs Y inversion
 
         //set the general parameters
         sectionLine->setPos(0.0, 0.0);
