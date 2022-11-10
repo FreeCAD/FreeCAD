@@ -22,26 +22,27 @@
 
 #include "PreCompiled.h"
 
+#include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
-#include <App/Application.h>
 
-#include "Exporter.h"
-#include "Mesh.h"
-#include "MeshPy.h"
-#include "MeshPointPy.h"
 #include "EdgePy.h"
+#include "Exporter.h"
 #include "FacetPy.h"
-#include "MeshFeaturePy.h"
-#include "FeatureMeshImport.h"
-#include "FeatureMeshExport.h"
-#include "FeatureMeshTransform.h"
-#include "FeatureMeshTransformDemolding.h"
 #include "FeatureMeshCurvature.h"
+#include "FeatureMeshDefects.h"
+#include "FeatureMeshExport.h"
+#include "FeatureMeshImport.h"
 #include "FeatureMeshSegmentByMesh.h"
 #include "FeatureMeshSetOperations.h"
-#include "FeatureMeshDefects.h"
 #include "FeatureMeshSolid.h"
+#include "FeatureMeshTransform.h"
+#include "FeatureMeshTransformDemolding.h"
+#include "Mesh.h"
+#include "MeshFeaturePy.h"
+#include "MeshPointPy.h"
+#include "MeshPy.h"
+
 
 namespace Mesh {
 extern PyObject* initModule();
