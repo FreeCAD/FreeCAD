@@ -33,7 +33,7 @@
 
 using namespace MeshCore;
 
-struct Point3d 
+struct Point3d
 {
    using value_type = float;
 
@@ -181,7 +181,7 @@ PointIndex MeshKDTree::FindNearest(const Base::Vector3f& p, float max_dist,
 
 PointIndex MeshKDTree::FindExact(const Base::Vector3f& p) const
 {
-    MyKDTree::const_iterator it = 
+    MyKDTree::const_iterator it =
         d->kd_tree.find_exact(Point3d(p,0));
     if (it == d->kd_tree.end())
         return POINT_INDEX_MAX;

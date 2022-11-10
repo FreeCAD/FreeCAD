@@ -1526,7 +1526,7 @@ std::vector<Mesh::FacetIndex> ViewProviderMesh::getVisibleFacets(const SbViewpor
 #endif
 }
 
-void ViewProviderMesh::cutMesh(const std::vector<SbVec2f>& picked, 
+void ViewProviderMesh::cutMesh(const std::vector<SbVec2f>& picked,
                                const Base::ViewProjMethod& proj, SbBool inner)
 {
     // Get the facet indices inside the tool mesh
@@ -1535,7 +1535,7 @@ void ViewProviderMesh::cutMesh(const std::vector<SbVec2f>& picked,
     removeFacets(indices);
 }
 
-void ViewProviderMesh::trimMesh(const std::vector<SbVec2f>& polygon, 
+void ViewProviderMesh::trimMesh(const std::vector<SbVec2f>& polygon,
                                 const Base::ViewProjMethod& proj, SbBool inner)
 {
     Mesh::MeshObject* mesh = static_cast<Mesh::Feature*>(pcObject)->Mesh.startEditing();
@@ -1815,8 +1815,8 @@ void ViewProviderMesh::faceInfo(Mesh::FacetIndex uFacet)
         MeshCore::MeshFacet face = facets[uFacet];
         MeshCore::MeshGeomFacet tria = rKernel.GetFacet(face);
         Base::Console().Message("Mesh: %s Facet %lu: Points: <%lu, %lu, %lu>, Neighbours: <%lu, %lu, %lu>\n"
-            "Triangle: <[%.6f, %.6f, %.6f], [%.6f, %.6f, %.6f], [%.6f, %.6f, %.6f]>\n", fea->getNameInDocument(), uFacet, 
-            face._aulPoints[0], face._aulPoints[1], face._aulPoints[2], 
+            "Triangle: <[%.6f, %.6f, %.6f], [%.6f, %.6f, %.6f], [%.6f, %.6f, %.6f]>\n", fea->getNameInDocument(), uFacet,
+            face._aulPoints[0], face._aulPoints[1], face._aulPoints[2],
             face._aulNeighbours[0], face._aulNeighbours[1], face._aulNeighbours[2],
             tria._aclPoints[0].x, tria._aclPoints[0].y, tria._aclPoints[0].z,
             tria._aclPoints[1].x, tria._aclPoints[1].y, tria._aclPoints[1].z,
@@ -2355,9 +2355,9 @@ ViewProviderIndexedFaceSet::~ViewProviderIndexedFaceSet()
 {
 }
 
-/** 
+/**
  * Extracts the mesh data from the feature \a pcFeature and creates
- * an Inventor node \a SoNode with these data. 
+ * an Inventor node \a SoNode with these data.
  */
 void ViewProviderIndexedFaceSet::attach(App::DocumentObject *pcFeat)
 {

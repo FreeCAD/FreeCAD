@@ -38,7 +38,7 @@ namespace MeshCore {
  * The passed mesh kernel is read-only and cannot be modified.
  * @see MeshEvalTopology
  * @see MeshEvalGeometry
- * The class itself is abstract, hence the method Evaluate() must be implemented 
+ * The class itself is abstract, hence the method Evaluate() must be implemented
  * by subclasses.
  */
 class MeshExport MeshEvaluation
@@ -48,9 +48,9 @@ public:
   virtual ~MeshEvaluation () {}
 
   /**
-   * Evaluates the mesh kernel with respect to certain criteria. Must be reimplemented by every 
+   * Evaluates the mesh kernel with respect to certain criteria. Must be reimplemented by every
    * subclass. This pure virtual function returns false if the mesh kernel is invalid according
-   * to this criterion and true if the mesh kernel is correct. 
+   * to this criterion and true if the mesh kernel is correct.
    */
   virtual bool Evaluate () = 0;
 
@@ -64,7 +64,7 @@ protected:
  * The MeshValidation class tries to make a mesh kernel valid with respect to a
  * certain criterion, such as manifoldness, self-intersections, etc.
  * The passed mesh kernel can be modified to fix the errors.
- * The class itself is abstract, hence the method Fixup() must be implemented 
+ * The class itself is abstract, hence the method Fixup() must be implemented
  * by subclasses.
  */
 class MeshExport MeshValidation
@@ -74,8 +74,8 @@ public:
   virtual ~MeshValidation () {}
 
   /**
-   * This function attempts to change the mesh kernel to be valid according to the checked 
-   * criterion: True is returned if the errors could be fixed, false otherwise. 
+   * This function attempts to change the mesh kernel to be valid according to the checked
+   * criterion: True is returned if the errors could be fixed, false otherwise.
    */
   virtual bool Fixup() = 0;
 
@@ -350,7 +350,7 @@ public:
  * The MeshEigensystem class actually does not try to check for or fix errors but
  * it provides methods to calculate the mesh's local coordinate system with the center
  * of gravity as origin.
- * The local coordinate system is computed this way that u has minimum and w has maximum 
+ * The local coordinate system is computed this way that u has minimum and w has maximum
  * expansion. The local coordinate system is right-handed.
  * @author Werner Mayer
  */
@@ -368,9 +368,9 @@ public:
   Base::Vector3f GetBoundings() const;
 
   bool Evaluate() override;
-  /** 
+  /**
    * Calculates the local coordinate system defined by \a u, \a v, \a w
-   * and \a c. 
+   * and \a c.
    */
 protected:
   void CalculateLocalSystem();

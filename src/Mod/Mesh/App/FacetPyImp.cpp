@@ -52,13 +52,13 @@ std::string FacetPy::representation() const
         str << "(" << ptr->_aclPoints[2].x << ", " << ptr->_aclPoints[2].y << ", " << ptr->_aclPoints[2].z << ")";
     }
     str << ")";
- 
+
     return str.str();
 }
 
 PyObject *FacetPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of FacetPy and the Twin object 
+    // create a new instance of FacetPy and the Twin object
     return new FacetPy(new Facet);
 }
 
@@ -309,7 +309,7 @@ PyObject *FacetPy::getCustomAttributes(const char* /*attr*/) const
 
 int FacetPy::setCustomAttributes(const char* /*attr*/, PyObject * /*obj*/)
 {
-    return 0; 
+    return 0;
 }
 
 

@@ -289,8 +289,8 @@ bool ViewProviderMeshNode::handleEvent(const SoEvent * const ev,Gui::View3DInven
     SbVec3f b,n;
     Viewer.getNearPlane(b, n);
     Base::Vector3f cPoint(b[0],b[1],b[2]), cNormal(n[0],n[1],n[2]);
-    SoCamera* pCam = Viewer.getCamera();  
-    SbViewVolume  vol = pCam->getViewVolume (); 
+    SoCamera* pCam = Viewer.getCamera();
+    SbViewVolume  vol = pCam->getViewVolume ();
 
     // create a tool shape from these points
     std::vector<MeshCore::MeshGeomFacet> aFaces;
@@ -309,7 +309,7 @@ bool ViewProviderMeshNode::handleEvent(const SoEvent * const ev,Gui::View3DInven
     meshProp.deleteFacetIndices( indices );
 
       // update open edge display if needed
-//      if ( pcOpenEdge ) 
+//      if ( pcOpenEdge )
 //      {
 //        showOpenEdges(false);
 //        showOpenEdges(true);
@@ -336,7 +336,7 @@ void ViewProviderMeshNode::showOpenEdges(bool show)
     MeshGui::SoFCMeshOpenEdge* mesh = new MeshGui::SoFCMeshOpenEdge();
     mesh->setMesh(meshFeature->Mesh.getValuePtr());
     pcOpenEdge->addChild(mesh);
-    
+
     // add to the highlight node
     pcHighlight->addChild(pcOpenEdge);
   } else if (pcOpenEdge) {

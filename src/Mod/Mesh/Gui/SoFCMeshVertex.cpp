@@ -149,7 +149,7 @@ SbBool SoSFMeshPointArray::readValue(SoInput *in)
   // can be used on a node in a scene graph in any state -- not only
   // during initial scene graph import.
   this->valueChanged();
-  
+
   return TRUE;
 }
 

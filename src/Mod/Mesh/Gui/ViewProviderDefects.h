@@ -60,7 +60,7 @@ protected:
     SoDrawStyle   * pcDrawStyle;
 };
 
-/** The ViewProviderMeshOrientation class displays wrong oriented facets (i.e. flipped normals) in orange. 
+/** The ViewProviderMeshOrientation class displays wrong oriented facets (i.e. flipped normals) in orange.
  * @author Werner Mayer
  */
 class MeshGuiExport ViewProviderMeshOrientation : public ViewProviderMeshDefects
@@ -78,7 +78,7 @@ protected:
     SoFaceSet* pcFaces;
 };
 
-/** The ViewProviderMeshNonManifolds class displays edges with more than two faces attached in red. 
+/** The ViewProviderMeshNonManifolds class displays edges with more than two faces attached in red.
  * @author Werner Mayer
  */
 class MeshGuiExport ViewProviderMeshNonManifolds : public ViewProviderMeshDefects
@@ -96,7 +96,7 @@ protected:
     SoLineSet* pcLines;
 };
 
-/** The ViewProviderMeshNonManifoldPoints class displays non-manifold vertexes in red. 
+/** The ViewProviderMeshNonManifoldPoints class displays non-manifold vertexes in red.
  * @author Werner Mayer
  */
 class MeshGuiExport ViewProviderMeshNonManifoldPoints : public ViewProviderMeshDefects
@@ -114,7 +114,7 @@ protected:
     SoPointSet* pcPoints;
 };
 
-/** The ViewProviderMeshDuplicatedFaces class displays duplicated faces in red. 
+/** The ViewProviderMeshDuplicatedFaces class displays duplicated faces in red.
  * @author Werner Mayer
  */
 class MeshGuiExport ViewProviderMeshDuplicatedFaces : public ViewProviderMeshDefects
@@ -132,7 +132,7 @@ protected:
     SoFaceSet* pcFaces;
 };
 
-/** The ViewProviderMeshDegenerations class displays degenerated faces to a line or even a point in orange. 
+/** The ViewProviderMeshDegenerations class displays degenerated faces to a line or even a point in orange.
  * @author Werner Mayer
  */
 class MeshGuiExport ViewProviderMeshDegenerations : public ViewProviderMeshDefects
@@ -180,7 +180,7 @@ protected:
     SoFaceSet* pcFaces;
 };
 
-/** The ViewProviderMeshSelfIntersections class displays lines of self-intersections. 
+/** The ViewProviderMeshSelfIntersections class displays lines of self-intersections.
  * @author Werner Mayer
  */
 class MeshGuiExport ViewProviderMeshSelfIntersections : public ViewProviderMeshDefects

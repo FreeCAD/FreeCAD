@@ -41,7 +41,7 @@ class MeshGeomFacet;
 
 /**
  * Class for creating the mesh structure by adding facets. Building the structure needs 3 steps:
- * 1. initializing  
+ * 1. initializing
  * 2. adding the facets
  * 3. finishing
  * \code
@@ -110,7 +110,7 @@ private:
     size_t _ptIdx;
 
     void SetNeighbourhood  ();
-    // As it's forbidden to insert a degenerated facet but insert its vertices anyway we must remove them 
+    // As it's forbidden to insert a degenerated facet but insert its vertices anyway we must remove them
     void RemoveUnreferencedPoints();
 
 public:
@@ -122,8 +122,8 @@ public:
      */
     void SetTolerance(float);
 
-    /** Initializes the class. Must be done before adding facets 
-     * @param ctFacets count of facets. 
+    /** Initializes the class. Must be done before adding facets
+     * @param ctFacets count of facets.
      * @param deletion if true (default) the mesh-kernel will be cleared
      *     otherwise you can add new facets on an existing mesh-kernel
      * @remarks To be efficient you should add exactly \a ctFacets with
@@ -168,7 +168,7 @@ private:
 
 /**
  * Class for creating the mesh structure by adding facets. Building the structure needs 3 steps:
- * 1. initializing  
+ * 1. initializing
  * 2. adding the facets
  * 3. finishing
  * \code
@@ -193,7 +193,7 @@ public:
     explicit MeshFastBuilder(MeshKernel &rclM);
     ~MeshFastBuilder();
 
-    /** Initializes the class. Must be done before adding facets 
+    /** Initializes the class. Must be done before adding facets
      * @param ctFacets count of facets.
      */
     void Initialize (size_type ctFacets);
@@ -215,4 +215,4 @@ private:
 
 } // namespace MeshCore
 
-#endif 
+#endif

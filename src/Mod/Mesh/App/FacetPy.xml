@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-  <PythonExport 
-      Father="PyObjectBase" 
-      Name="FacetPy" 
-      Twin="Facet" 
-      TwinPointer="Facet" 
-      Include="Mod/Mesh/App/Facet.h" 
-      FatherInclude="Base/PyObjectBase.h" 
-      Namespace="Mesh" 
+  <PythonExport
+      Father="PyObjectBase"
+      Name="FacetPy"
+      Twin="Facet"
+      TwinPointer="Facet"
+      Include="Mod/Mesh/App/Facet.h"
+      FatherInclude="Base/PyObjectBase.h"
+      Namespace="Mesh"
       Constructor="true"
       Delete="true"
       FatherNamespace="Base">
@@ -34,7 +34,7 @@ work!
 	  </Methode>
 	  <Methode Name="intersect">
 		  <Documentation>
-			  <UserDocu>intersect(Facet) -> list 
+			  <UserDocu>intersect(Facet) -> list
 Get a list of intersection points with another triangle.
 			  </UserDocu>
 		  </Documentation>

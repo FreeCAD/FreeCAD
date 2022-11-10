@@ -67,7 +67,7 @@ void Segment::removeIndices(const std::vector<FacetIndex>& inds)
     std::set<FacetIndex> s2(inds.begin(), inds.end());
     std::set_difference(s1.begin(), s1.end(), s2.begin(), s2.end(),
         std::back_insert_iterator<std::vector<FacetIndex> >(result));
-  
+
     _indices = result;
     if (_modifykernel)
         _mesh->updateMesh();
@@ -161,7 +161,7 @@ bool Segment::const_facet_iterator::operator==(const Segment::const_facet_iterat
     return (this->_segment == fi._segment) && (this->_it == fi._it);
 }
 
-bool Segment::const_facet_iterator::operator!=(const Segment::const_facet_iterator& fi) const 
+bool Segment::const_facet_iterator::operator!=(const Segment::const_facet_iterator& fi) const
 {
     return !operator==(fi);
 }

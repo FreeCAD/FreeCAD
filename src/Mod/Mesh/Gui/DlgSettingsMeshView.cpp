@@ -42,7 +42,7 @@ DlgSettingsMeshView::DlgSettingsMeshView(QWidget* parent)
     ui->buttonBackfaceColor->hide();
 }
 
-/** 
+/**
  *  Destroys the object and frees any allocated resources
  */
 DlgSettingsMeshView::~DlgSettingsMeshView()

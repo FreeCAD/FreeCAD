@@ -30,7 +30,7 @@
 
 using namespace MeshCore;
 
-MeshTrimming::MeshTrimming(MeshKernel &rclM, const Base::ViewProjMethod* pclProj, 
+MeshTrimming::MeshTrimming(MeshKernel &rclM, const Base::ViewProjMethod* pclProj,
                            const Base::Polygon2d& rclPoly)
   : myMesh(rclM), myInner(true), myProj(pclProj), myPoly(rclPoly)
 {
@@ -72,12 +72,12 @@ void MeshTrimming::CheckFacets(const MeshFacetGrid& rclGrid, std::vector<FacetIn
             clBBox3d = clGridIter.GetBoundBox();
             clViewBBox = clBBox3d.ProjectBox(myProj);
             if (clViewBBox.Intersect(clPolyBBox)) {
-                // save all elements in AllElements 
+                // save all elements in AllElements
                 clGridIter.GetElements(aulAllElements);
             }
         }
-    
-        // remove double elements 
+
+        // remove double elements
         std::sort(aulAllElements.begin(), aulAllElements.end());
         aulAllElements.erase(std::unique(aulAllElements.begin(), aulAllElements.end()), aulAllElements.end());
 
@@ -120,7 +120,7 @@ bool MeshTrimming::HasIntersection(const MeshGeomFacet& rclFacet) const
         if (clPoly.Contains(myPoly[j]))
             return true;
     }
-  
+
     // check for other intersections
     for (size_t j=0; j<myPoly.GetCtVectors(); j++) {
         clPolyLine.clV1 = myPoly[j];
@@ -158,7 +158,7 @@ bool MeshTrimming::IsPolygonPointInFacet(FacetIndex ulIndex, Base::Vector3f& clP
     float u,v,w, fDetPAC, fDetPBC, fDetPAB, fDetABC;
     Base::Polygon2d clFacPoly;
     const MeshGeomFacet &rclFacet = myMesh.GetFacet(ulIndex);
-  
+
     for (int i=0; i<3; i++) {
         Base::Vector3f clPt = (*myProj)(rclFacet._aclPoints[i]);
         clFacPoly.Add(Base::Vector2d(clPt.x, clPt.y));
@@ -179,7 +179,7 @@ bool MeshTrimming::IsPolygonPointInFacet(FacetIndex ulIndex, Base::Vector3f& clP
             u = fDetPBC / fDetABC;
             v = fDetPAC / fDetABC;
             w = fDetPAB / fDetABC;
-      
+
             // point is on edge or no valid convex combination
             if (u == 0.0f || v == 0.0f || w == 0.0f || fabs(u+v+w-1.0f) >= 0.001f)
                 return false;
@@ -214,7 +214,7 @@ bool MeshTrimming::GetIntersectionPointsOfPolygonAndFacet(FacetIndex ulIndex, in
         clPolyLine.clV2 = P4;
 
         for (int j=0; j<3; j++) {
-            Base::Vector3f clP1((*myProj)(clFac._aclPoints[j])); 
+            Base::Vector3f clP1((*myProj)(clFac._aclPoints[j]));
             Base::Vector3f clP2((*myProj)(clFac._aclPoints[(j+1)%3]));
             Base::Vector2d P1(clP1.x, clP1.y);
             Base::Vector2d P2(clP2.x, clP2.y);
@@ -244,7 +244,7 @@ bool MeshTrimming::GetIntersectionPointsOfPolygonAndFacet(FacetIndex ulIndex, in
 
                 float r = fSP3 / fP3P4;
                 float s = fSP4 / fP3P4;
- 
+
                 // is intersection point convex combination?
                 if ((fabs(l+m-1.0f) < 0.001f) && (fabs(r+s-1.0f) < 0.001f)) {
                     Base::Vector3f clIntersection(m*clFac._aclPoints[j]+l*clFac._aclPoints[(j+1)%3]);
@@ -371,7 +371,7 @@ bool MeshTrimming::CreateFacets(FacetIndex ulFacetPos, int iSide, const std::vec
         // determine the edge containing the intersection point
         Base::Line2d clFacLine;
         for (int j=0; j<3; j++) {
-            Base::Vector3f clP1((*myProj)(clFac._aclPoints[j])); 
+            Base::Vector3f clP1((*myProj)(clFac._aclPoints[j]));
             Base::Vector3f clP2((*myProj)(clFac._aclPoints[(j+1)%3]));
             Base::Vector2d P1(clP1.x, clP1.y);
             Base::Vector2d P2(clP2.x, clP2.y);
@@ -403,7 +403,7 @@ bool MeshTrimming::CreateFacets(FacetIndex ulFacetPos, int iSide, const std::vec
         MeshFacet& facet = myMesh._aclFacetArray[ulFacetPos];
         AdjustFacet(facet, iSide);
         Base::Vector3f clP1(raclPoints[0]), clP2(raclPoints[1]);
-    
+
         if (iSide == 1) {
             // swap P1 and P2
             clP1 = raclPoints[1];
@@ -493,48 +493,48 @@ bool MeshTrimming::CreateFacets(FacetIndex ulFacetPos, int iSide, const std::vec
                 MeshGeomFacet clTmpFac; clTmpFac._aclPoints[0] = clFac._aclPoints[1];
                 clTmpFac._aclPoints[1] = clP2; clTmpFac._aclPoints[2] = clP1;
                 if (clTmpFac.GetNormal() * clNormal > 0) {
-                    Base::Vector3f tmp(clP1); 
-                    clP1 = clP2; 
+                    Base::Vector3f tmp(clP1);
+                    clP1 = clP2;
                     clP2 = tmp;
                 }
                 else {
-                    Base::Vector3f tmp(clP1); 
-                    clP1 = clP4; 
-                    clP4 = clP2; 
-                    clP2 = clP3; 
+                    Base::Vector3f tmp(clP1);
+                    clP1 = clP4;
+                    clP4 = clP2;
+                    clP2 = clP3;
                     clP3 = tmp;
                 }
             }
             else if (iSide == 1) {
                 if ((clP2-clFac._aclPoints[1]).Length() > (clP4-clFac._aclPoints[1]).Length()) {
-                    Base::Vector3f tmp(clP1); 
-                    clP1 = clP4; 
+                    Base::Vector3f tmp(clP1);
+                    clP1 = clP4;
                     clP4 = tmp;
-                    tmp = clP2;          
-                    clP2 = clP3; 
+                    tmp = clP2;
+                    clP2 = clP3;
                     clP3 = tmp;
                 }
                 else {
-                    Base::Vector3f tmp(clP1); 
-                    clP1 = clP2; 
+                    Base::Vector3f tmp(clP1);
+                    clP1 = clP2;
                     clP2 = tmp;
-                    tmp = clP3;          
-                    clP3 = clP4; 
+                    tmp = clP3;
+                    clP3 = clP4;
                     clP4 = tmp;
                 }
             }
             else {
                 if ((clP1-clFac._aclPoints[1]).Length() > (clP3-clFac._aclPoints[1]).Length()) {
-                    Base::Vector3f tmp(clP1); 
-                    clP1 = clP3; 
+                    Base::Vector3f tmp(clP1);
+                    clP1 = clP3;
                     clP3 = tmp;
-                    tmp = clP2;          
-                    clP2 = clP4; 
+                    tmp = clP2;
+                    clP2 = clP4;
                     clP4 = tmp;
                 }
             }
         }
-  
+
         // now create the new facets
         if (iCtPts == 0) {
             // insert first facet

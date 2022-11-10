@@ -32,8 +32,8 @@ namespace Mesh
 {
 
 /**
- * The SegmentByMesh class creates a mesh segment from two meshes whereat 
- * the facets of the first mesh that lie inside the second mesh build up the segment.  
+ * The SegmentByMesh class creates a mesh segment from two meshes whereat
+ * the facets of the first mesh that lie inside the second mesh build up the segment.
  * @author Werner Mayer
  */
 class SegmentByMesh : public Mesh::Feature
@@ -59,4 +59,4 @@ public:
 
 }
 
-#endif // FEATURE_MESH_SEGMENTBYMESH_H 
+#endif // FEATURE_MESH_SEGMENTBYMESH_H

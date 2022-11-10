@@ -93,8 +93,8 @@ Ellipsoid::Ellipsoid()
 
 short Ellipsoid::mustExecute() const
 {
-    if (Radius1.isTouched() || 
-        Radius2.isTouched() || 
+    if (Radius1.isTouched() ||
+        Radius2.isTouched() ||
         Sampling.isTouched())
         return 1;
     return Feature::mustExecute();
@@ -145,7 +145,7 @@ Cylinder::Cylinder()
 
 short Cylinder::mustExecute() const
 {
-    if (Radius.isTouched() || 
+    if (Radius.isTouched() ||
         Length.isTouched() ||
         EdgeLength.isTouched() ||
         Closed.isTouched() ||
@@ -202,8 +202,8 @@ Cone::Cone()
 
 short Cone::mustExecute() const
 {
-    if (Radius1.isTouched() || 
-        Radius2.isTouched() || 
+    if (Radius1.isTouched() ||
+        Radius2.isTouched() ||
         Length.isTouched()  ||
         EdgeLength.isTouched() ||
         Closed.isTouched()  ||
@@ -255,8 +255,8 @@ Torus::Torus()
 
 short Torus::mustExecute() const
 {
-    if (Radius1.isTouched() || 
-        Radius2.isTouched() || 
+    if (Radius1.isTouched() ||
+        Radius2.isTouched() ||
         Sampling.isTouched())
         return 1;
     return Feature::mustExecute();
@@ -304,8 +304,8 @@ Cube::Cube()
 
 short Cube::mustExecute() const
 {
-    if (Length.isTouched() || 
-        Width.isTouched() || 
+    if (Length.isTouched() ||
+        Width.isTouched() ||
         Height.isTouched())
         return 1;
     return Feature::mustExecute();

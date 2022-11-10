@@ -520,7 +520,7 @@ MeshSurfaceVisitor::~MeshSurfaceVisitor ()
 {
 }
 
-bool MeshSurfaceVisitor::AllowVisit (const MeshFacet& face, const MeshFacet&, 
+bool MeshSurfaceVisitor::AllowVisit (const MeshFacet& face, const MeshFacet&,
                                      FacetIndex, unsigned long, unsigned short)
 {
     return segm.TestFacet(face);

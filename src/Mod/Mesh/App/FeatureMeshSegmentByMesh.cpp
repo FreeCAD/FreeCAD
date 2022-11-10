@@ -108,8 +108,8 @@ App::DocumentObjectExecReturn *SegmentByMesh::execute()
         cAlg.GetFacetsFromToolMesh(rToolMesh, Base::Vector3f(0.0, 1.0f, 0.0f), faces);
 
     // if the clipping plane was set then we want only the visible facets
-    if ( cNormal.Length() > 0.1f ) { // not a null vector 
-        // now we have too many facets since we have (invisible) facets near to the back clipping plane, 
+    if ( cNormal.Length() > 0.1f ) { // not a null vector
+        // now we have too many facets since we have (invisible) facets near to the back clipping plane,
         // so we need the nearest facet to the front clipping plane
         //
         float fDist = FLOAT_MAX;

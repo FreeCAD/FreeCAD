@@ -57,4 +57,4 @@ public:
 
 }
 
-#endif // FEATURE_MESH_SEGMENT_H 
+#endif // FEATURE_MESH_SEGMENT_H

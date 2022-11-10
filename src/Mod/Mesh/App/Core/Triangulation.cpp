@@ -539,7 +539,7 @@ bool QuasiDelaunayTriangulator::Triangulate()
         float fMax12 = std::max<float>(fMax1, fMax2);
         float fMax34 = std::max<float>(fMax3, fMax4);
 
-        // We must make sure that the two adjacent triangles builds a convex polygon, otherwise 
+        // We must make sure that the two adjacent triangles builds a convex polygon, otherwise
         // the swap edge operation is illegal
         Base::Vector3f cU = cP2-cP1;
         Base::Vector3f cV = cP4-cP3;
@@ -642,7 +642,7 @@ DelaunayTriangulator::~DelaunayTriangulator()
 
 bool DelaunayTriangulator::Triangulate()
 {
-    // before starting the triangulation we must make sure that all polygon 
+    // before starting the triangulation we must make sure that all polygon
     // points are different
     std::vector<Base::Vector3f> aPoints = _points;
     // sort the points ascending x,y coordinates
@@ -715,7 +715,7 @@ FlatTriangulator::~FlatTriangulator()
 bool FlatTriangulator::Triangulate()
 {
     _newpoints.clear();
-    // before starting the triangulation we must make sure that all polygon 
+    // before starting the triangulation we must make sure that all polygon
     // points are different
     std::vector<Base::Vector3f> aPoints = ProjectToFitPlane();
     std::vector<Base::Vector3f> tmp = aPoints;
@@ -759,7 +759,7 @@ ConstraintDelaunayTriangulator::~ConstraintDelaunayTriangulator()
 bool ConstraintDelaunayTriangulator::Triangulate()
 {
     _newpoints.clear();
-    // before starting the triangulation we must make sure that all polygon 
+    // before starting the triangulation we must make sure that all polygon
     // points are different
     std::vector<Base::Vector3f> aPoints = ProjectToFitPlane();
     std::vector<Base::Vector3f> tmp = aPoints;

@@ -50,7 +50,7 @@ void DlgSettingsImportExport::saveSettings()
         ("User parameter:BaseApp/Preferences/Mod/Mesh");
     double value = ui->maxDeviationExport->value().getValue();
     handle->SetFloat("MaxDeviationExport", value);
-    
+
     ui->exportAmfCompressed->onSave();
 
     ParameterGrp::handle asy = handle->GetGroup("Asymptote");
@@ -68,7 +68,7 @@ void DlgSettingsImportExport::loadSettings()
     double value = ui->maxDeviationExport->value().getValue();
     value = handle->GetFloat("MaxDeviationExport", value);
     ui->maxDeviationExport->setValue(value);
-    
+
     ui->exportAmfCompressed->onRestore();
 
     ParameterGrp::handle asy = handle->GetGroup("Asymptote");

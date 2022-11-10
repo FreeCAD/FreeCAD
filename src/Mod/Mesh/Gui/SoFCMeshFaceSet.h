@@ -108,13 +108,13 @@ protected:
 
 /**
  * \brief The SoFCMeshFaceSet class renders the mesh data structure.
- * It does basically the same as SoFCMeshNode by rendering directly the FreeCAD mesh  structure whereas this class follows more the Inventor way. 
- * While SoFCMeshFaceSet has a pointer to the mesh structure as a whole for SoFCMeshFaceSet the mesh is split into two nodes: 
+ * It does basically the same as SoFCMeshNode by rendering directly the FreeCAD mesh  structure whereas this class follows more the Inventor way.
+ * While SoFCMeshFaceSet has a pointer to the mesh structure as a whole for SoFCMeshFaceSet the mesh is split into two nodes:
  * an SoFCMeshVertex has a field that holds a pointer to vertex array and SoFCMeshFacet has a field that holds a pointer to the face array.
  *
- * The advantage of separating the mesh structure is higher flexibility. E.g. to render open edges the class SoFCMeshOpenEdgeSet just takes the 
- * SoFCMeshVertex and SoFCMeshFaceSet nodes from the stack and does the rendering. The client programmer just has to add the an SoFCMeshOpenEdgeSet 
- * instance to the Inventor tree -- nothing more. Another advantage is that memory is saved when writing the scene to a file. 
+ * The advantage of separating the mesh structure is higher flexibility. E.g. to render open edges the class SoFCMeshOpenEdgeSet just takes the
+ * SoFCMeshVertex and SoFCMeshFaceSet nodes from the stack and does the rendering. The client programmer just has to add the an SoFCMeshOpenEdgeSet
+ * instance to the Inventor tree -- nothing more. Another advantage is that memory is saved when writing the scene to a file.
  * The actual data is only hold and written by SoFCMeshVertex and SoFCMeshFaceSet. Normally, no shape nodes have to save further data to the file.
  * @author Werner Mayer
  */
@@ -122,7 +122,7 @@ class MeshGuiExport SoFCMeshFaceSet : public SoShape {
   using inherited = SoShape;
 
   SO_NODE_HEADER(SoFCMeshFaceSet);
-    
+
 public:
   static void initClass();
   SoFCMeshFaceSet();
@@ -155,7 +155,7 @@ private:
   virtual void notify(SoNotList * list);
   Binding findMaterialBinding(SoState * const state) const;
   // Draw faces
-  void drawFaces(const MeshCore::MeshPointArray *, const MeshCore::MeshFacetArray*, SoMaterialBundle* mb, Binding bind, 
+  void drawFaces(const MeshCore::MeshPointArray *, const MeshCore::MeshFacetArray*, SoMaterialBundle* mb, Binding bind,
                  SbBool needNormals, SbBool ccw) const;
   void drawPoints(const MeshCore::MeshPointArray *, const MeshCore::MeshFacetArray*, SbBool needNormals, SbBool ccw) const;
   unsigned int countTriangles(SoAction * action) const;
@@ -173,7 +173,7 @@ class MeshGuiExport SoFCMeshOpenEdgeSet : public SoShape {
   using inherited = SoShape;
 
   SO_NODE_HEADER(SoFCMeshOpenEdgeSet);
-    
+
 public:
   static void initClass();
   SoFCMeshOpenEdgeSet();

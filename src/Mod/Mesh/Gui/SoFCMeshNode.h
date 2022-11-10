@@ -83,7 +83,7 @@ class MeshGuiExport SoFCMeshOpenEdge : public SoShape {
     using inherited = SoShape;
 
     SO_NODE_HEADER(SoFCMeshOpenEdge);
-    
+
 public:
     static void initClass();
     SoFCMeshOpenEdge();

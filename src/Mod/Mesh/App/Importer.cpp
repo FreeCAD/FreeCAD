@@ -47,13 +47,13 @@ void Importer::load(const std::string& fileName)
         if (segmct > 1) {
             createMeshFromSegments(file.fileNamePure(), mat, mesh);
         }
-        else if (mat.binding == MeshCore::MeshIO::PER_VERTEX && 
+        else if (mat.binding == MeshCore::MeshIO::PER_VERTEX &&
                  mat.diffuseColor.size() == mesh.countPoints()) {
             Feature* feature = createMesh(file.fileNamePure(), mesh);
             addVertexColors(feature, mat.diffuseColor);
             feature->purgeTouched();
         }
-        else if (mat.binding == MeshCore::MeshIO::PER_FACE && 
+        else if (mat.binding == MeshCore::MeshIO::PER_FACE &&
                  mat.diffuseColor.size() == mesh.countFacets()) {
             Feature* feature = createMesh(file.fileNamePure(), mesh);
             addFaceColors(feature, mat.diffuseColor);

@@ -55,7 +55,7 @@ unsigned long MeshKernel::VisitNeighbourFacets (MeshFacetVisitor &rclFVisitor, F
                 if (j == FACET_INDEX_MAX)
                     continue;      // no neighbour facet
 
-                if (j >= ulCount) 
+                if (j >= ulCount)
                     continue;      // error in data structure
 
                 clNBFacet = _aclFacetArray.begin() + j;
@@ -194,7 +194,7 @@ MeshPlaneVisitor::~MeshPlaneVisitor ()
     delete fitter;
 }
 
-bool MeshPlaneVisitor::AllowVisit (const MeshFacet& face, const MeshFacet&, 
+bool MeshPlaneVisitor::AllowVisit (const MeshFacet& face, const MeshFacet&,
                                    FacetIndex, unsigned long, unsigned short)
 {
     if (!fitter->Done())

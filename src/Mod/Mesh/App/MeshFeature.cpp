@@ -58,7 +58,7 @@ PyObject *Feature::getPyObject()
         // ref counter is set to 1
         PythonObject = Py::Object(new MeshFeaturePy(this),true);
     }
-    return Py::new_reference_to(PythonObject); 
+    return Py::new_reference_to(PythonObject);
 }
 
 void Feature::onChanged(const App::Property* prop)
@@ -77,9 +77,9 @@ void Feature::onChanged(const App::Property* prop)
 
     // Note: If the Mesh property has changed the property and this object are marked as 'touched'
     // but no recomputation of this objects needs to be done because the Mesh property is regarded
-    // as output of a previous recomputation The mustExecute() method returns 0 in that case. 
+    // as output of a previous recomputation The mustExecute() method returns 0 in that case.
     // However, objects that reference this object the Mesh property can be an input parameter.
-    // As this object and the property are touched such objects can check this and return a value 1 
+    // As this object and the property are touched such objects can check this and return a value 1
     // (or -1) in their mustExecute() to be recomputed the next time the document recomputes itself.
     DocumentObject::onChanged(prop);
 }

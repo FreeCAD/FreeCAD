@@ -49,7 +49,7 @@ class MeshGuiExport ViewProviderMeshNode : public Gui::ViewProviderGeometryObjec
 public:
   ViewProviderMeshNode();
   virtual ~ViewProviderMeshNode();
-  
+
   // Display properties
   App::PropertyFloatConstraint LineWidth;
   App::PropertyFloatConstraint PointSize;

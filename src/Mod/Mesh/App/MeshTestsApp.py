@@ -30,7 +30,7 @@ class MeshTopoTestCases(unittest.TestCase):
         self.planarMesh = []
         for x in range(3):
             for y in range(3):
-                self.planarMesh.append( [0.0 + x, 0.0 + y,0.0000] ) 
+                self.planarMesh.append( [0.0 + x, 0.0 + y,0.0000] )
                 self.planarMesh.append( [1.0 + x, 1.0 + y,0.0000] )
                 self.planarMesh.append( [0.0 + x, 1.0 + y,0.0000] )
                 self.planarMesh.append( [0.0 + x, 0.0 + y,0.0000] )
@@ -255,7 +255,7 @@ class MeshGeoTestCases(unittest.TestCase):
 
 
     def testIntersection(self):
-        self.planarMesh.append( [0.9961,1.5413,4.3943] ) 
+        self.planarMesh.append( [0.9961,1.5413,4.3943] )
         self.planarMesh.append( [9.4796,10.024,-3.0937] )
         self.planarMesh.append( [1.4308,11.3841,2.6829] )
         self.planarMesh.append( [2.6493,2.2536,3.0679] )
@@ -269,7 +269,7 @@ class MeshGeoTestCases(unittest.TestCase):
 
 
     def testIntersection2(self):
-        self.planarMesh.append( [-16.097176,-29.891157,15.987688] ) 
+        self.planarMesh.append( [-16.097176,-29.891157,15.987688] )
         self.planarMesh.append( [-16.176304,-29.859991,15.947966] )
         self.planarMesh.append( [-16.071451,-29.900553,15.912505] )
         self.planarMesh.append( [-16.092241,-29.893408,16.020439] )
@@ -473,7 +473,7 @@ class PivyTestCases(unittest.TestCase):
     def testRayPick(self):
         if not FreeCAD.GuiUp:
             return
-        self.planarMesh.append( [-16.097176,-29.891157,15.987688] ) 
+        self.planarMesh.append( [-16.097176,-29.891157,15.987688] )
         self.planarMesh.append( [-16.176304,-29.859991,15.947966] )
         self.planarMesh.append( [-16.071451,-29.900553,15.912505] )
         self.planarMesh.append( [-16.092241,-29.893408,16.020439] )
@@ -497,7 +497,7 @@ class PivyTestCases(unittest.TestCase):
     def testPrimitiveCount(self):
         if not FreeCAD.GuiUp:
             return
-        self.planarMesh.append( [-16.097176,-29.891157,15.987688] ) 
+        self.planarMesh.append( [-16.097176,-29.891157,15.987688] )
         self.planarMesh.append( [-16.176304,-29.859991,15.947966] )
         self.planarMesh.append( [-16.071451,-29.900553,15.912505] )
         self.planarMesh.append( [-16.092241,-29.893408,16.020439] )

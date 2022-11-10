@@ -67,7 +67,7 @@ public:
   virtual ~MeshGrid () { }
 
 public:
-  /** Attaches the mesh kernel to this grid, an already attached mesh gets detached. The grid gets rebuilt 
+  /** Attaches the mesh kernel to this grid, an already attached mesh gets detached. The grid gets rebuilt
    * automatically. */
   virtual void Attach (const MeshKernel &rclM);
   /** Rebuilds the grid structure. */
@@ -113,13 +113,13 @@ public:
   /** Returns an extended bounding box of the mesh object. */
   inline Base::BoundBox3f  GetMeshBoundBox () const;
   //@}
-  /** Returns an index for the given grid position. If the specified triple is not a valid grid position ULONG_MAX is returned. 
+  /** Returns an index for the given grid position. If the specified triple is not a valid grid position ULONG_MAX is returned.
    * If the index is valid than its value is between zero and the number of grid elements. For each different grid position
    * a different index is returned.
    */
   unsigned long GetIndexToPosition(unsigned long ulX, unsigned long ulY, unsigned long ulZ) const;
   /** Returns the grid position to the given index. If the index is equal to or higher than the number of grid elements false is returned
-   * and the triple is set to ULONG_MAX. 
+   * and the triple is set to ULONG_MAX.
    */
   bool GetPositionToIndex(unsigned long id, unsigned long& ulX, unsigned long& ulY, unsigned long& ulZ) const;
   /** Returns the number of elements in a given grid. */
@@ -133,7 +133,7 @@ public:
    * otherwise false is returned and the grid position is undefined.
    */
   bool CheckPosition (const Base::Vector3f &rclPoint, unsigned long &rulX, unsigned long &rulY, unsigned long &rulZ) const;
-  /** Returns the indices of the grid this point lies in. If the point is outside the grid the indices of 
+  /** Returns the indices of the grid this point lies in. If the point is outside the grid the indices of
    * the nearest grid element are taken.*/
   virtual void Position (const Base::Vector3f &rclPoint, unsigned long &rulX, unsigned long &rulY, unsigned long &rulZ) const;
   /** Checks if this is a valid grid position. */
@@ -166,7 +166,7 @@ protected:
   float             _fGridLenY;   /**< Length of grid elements in y. */
   float             _fGridLenZ;   /**< Length of grid elements in z. */
   float             _fMinX;       /**< Grid null position in x. */
-  float             _fMinY;       /**< Grid null position in y. */ 
+  float             _fMinY;       /**< Grid null position in y. */
   float             _fMinZ;       /**< Grid null position in z. */
 
   // friends
@@ -195,7 +195,7 @@ public:
   /// Destruction
   ~MeshFacetGrid () override { }
   //@}
- 
+
   /** @name Search */
   //@{
   /** Searches for the nearest facet from a point. */
@@ -207,7 +207,7 @@ public:
                                 float &rfMinDist, ElementIndex &rulFacetInd) const;
   /** Does basically the same as the method above unless that grid neighbours up to the order of \a ulDistance
    * are introduced into the search. */
-  void SearchNearestFacetInHull (unsigned long ulX, unsigned long ulY, unsigned long ulZ, unsigned long ulDistance, 
+  void SearchNearestFacetInHull (unsigned long ulX, unsigned long ulY, unsigned long ulZ, unsigned long ulDistance,
                                  const Base::Vector3f &rclPt, ElementIndex &rulFacetInd, float &rfMinDist) const;
   //@}
 
@@ -223,8 +223,8 @@ protected:
   inline void Pos (const Base::Vector3f &rclPoint, unsigned long &rulX, unsigned long &rulY, unsigned long &rulZ) const;
   /** Returns the grid numbers to the given point \a rclPoint. */
   inline void PosWithCheck (const Base::Vector3f &rclPoint, unsigned long &rulX, unsigned long &rulY, unsigned long &rulZ) const;
-  /** Adds a new facet element to the grid structure. \a rclFacet is the geometric facet and \a ulFacetIndex 
-   * the corresponding index in the mesh kernel. The facet is added to each grid element that intersects 
+  /** Adds a new facet element to the grid structure. \a rclFacet is the geometric facet and \a ulFacetIndex
+   * the corresponding index in the mesh kernel. The facet is added to each grid element that intersects
    * the facet. */
   inline void AddFacet (const MeshGeomFacet &rclFacet, ElementIndex ulFacetIndex, float fEpsilon = 0.0f);
   /** Returns the number of stored elements. */
@@ -267,7 +267,7 @@ public:
   bool Verify() const override;
 
 protected:
-  /** Adds a new point element to the grid structure. \a rclPt is the geometric point and \a ulPtIndex 
+  /** Adds a new point element to the grid structure. \a rclPt is the geometric point and \a ulPtIndex
    * the corresponding index in the mesh kernel. */
   void AddPoint (const MeshPoint &rclPt, ElementIndex ulPtIndex, float fEpsilon = 0.0f);
   /** Returns the grid numbers to the given point \a rclPoint. */
@@ -306,7 +306,7 @@ public:
   /** Sets the iterator to the first element*/
   void  Init ()
   { _ulX = _ulY = _ulZ = 0; }
-  /** Checks if the iterator has not yet reached the end position. */  
+  /** Checks if the iterator has not yet reached the end position. */
   bool  More () const
   { return (_ulZ < _rclGrid._ulCtGridsZ); }
   /** Go to the next grid. */
@@ -326,7 +326,7 @@ public:
   /** Searches for facets around the ray. */
   bool NextOnRay (std::vector<ElementIndex> &raulElements);
   //@}
-  
+
   /** Returns the grid number of the current position. */
   void GetGridPos (unsigned long &rulX, unsigned long &rulY, unsigned long &rulZ) const
   { rulX = _ulX; rulY = _ulY; rulZ = _ulZ; }
@@ -335,13 +335,13 @@ protected:
   const MeshGrid& _rclGrid; /**< The mesh kernel. */
   unsigned long   _ulX;     /**< Number of grids in x. */
   unsigned long   _ulY;     /**< Number of grids in y. */
-  unsigned long   _ulZ;     /**< Number of grids in z. */ 
+  unsigned long   _ulZ;     /**< Number of grids in z. */
   Base::Vector3f        _clPt;    /**< Base point of search ray. */
   Base::Vector3f        _clDir;   /**< Direction of search ray. */
   bool            _bValidRay; /**< Search ray ok? */
   float           _fMaxSearchArea;
   /** Checks if a grid position is already visited by NextOnRay(). */
-  struct GridElement 
+  struct GridElement
   {
     GridElement( unsigned long x, unsigned long y, unsigned long z)
     { this->x = x; this->y = y; this->z = z; }
@@ -349,7 +349,7 @@ protected:
     {
       if ( x == pos.x)
       { if ( y == pos.y) return z < pos.z; else return y < pos.y; }
-      else 
+      else
       { return x < pos.x; }
     }
   private:
@@ -363,7 +363,7 @@ protected:
 inline Base::BoundBox3f  MeshGrid::GetBoundBox (unsigned long ulX, unsigned long ulY, unsigned long ulZ) const
 {
   float fX, fY, fZ;
-  
+
   fX = _fMinX + (float(ulX) * _fGridLenX);
   fY = _fMinY + (float(ulY) * _fGridLenY);
   fZ = _fMinZ + (float(ulZ) * _fGridLenZ);
@@ -451,12 +451,12 @@ inline void MeshFacetGrid::AddFacet (const MeshGeomFacet &rclFacet, ElementIndex
 
   Pos(Base::Vector3f(clBB.MinX,clBB.MinY,clBB.MinZ), ulX1, ulY1, ulZ1);
   Pos(Base::Vector3f(clBB.MaxX,clBB.MaxY,clBB.MaxZ), ulX2, ulY2, ulZ2);
-  
+
   /*
   if (ulX1 > 0) ulX1--;
   if (ulY1 > 0) ulY1--;
   if (ulZ1 > 0) ulZ1--;
-  
+
   if (ulX2 < (_ulCtGridsX-1)) ulX2++;
   if (ulY2 < (_ulCtGridsY-1)) ulY2++;
   if (ulZ2 < (_ulCtGridsZ-1)) ulZ2++;

@@ -110,10 +110,10 @@ class MeshExport PropertyCurvatureList: public App::PropertyLists
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    enum { 
+    enum {
         MeanCurvature  = 0,  /**< Mean curvature */
         GaussCurvature = 1,  /**< Gaussian curvature */
-        MaxCurvature   = 2,  /**< Maximum curvature */ 
+        MaxCurvature   = 2,  /**< Maximum curvature */
         MinCurvature   = 3,  /**< Minimum curvature */
         AbsCurvature   = 4   /**< Absolute curvature */
     };
@@ -242,7 +242,7 @@ public:
     void swapMesh(MeshObject&);
     /** Swaps the mesh data structure. */
     void swapMesh(MeshCore::MeshKernel&);
-    /** Returns a the attached mesh object by reference. It cannot be modified 
+    /** Returns a the attached mesh object by reference. It cannot be modified
      * from outside.
      */
     const MeshObject &getValue() const;
@@ -270,12 +270,12 @@ public:
 
     /** @name Python interface */
     //@{
-    /** Returns a Python wrapper for the referenced mesh object. It does NOT 
+    /** Returns a Python wrapper for the referenced mesh object. It does NOT
      * create a copy. However, the Python wrapper is marked as \a immutable so
      * that the mesh object cannot be modified from outside.
      */
     PyObject* getPyObject() override;
-    /** This method copies the content, hence creates an new mesh object 
+    /** This method copies the content, hence creates an new mesh object
      * to copy the data. The passed argument can be an instance of the Python
      * wrapper for the mesh object or simply a list of triangles, i.e. a list
      * of lists of three floats.

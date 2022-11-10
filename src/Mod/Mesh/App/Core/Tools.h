@@ -40,7 +40,7 @@ namespace MeshCore {
  * The MeshSearchNeighbours class provides methods to get all points
  * in the neighbourhood of a given facet.
  */
-class MeshSearchNeighbours 
+class MeshSearchNeighbours
 {
 public:
   explicit MeshSearchNeighbours ( const MeshKernel &rclM, float fSampleDistance = 1.0f);
@@ -48,7 +48,7 @@ public:
   /** Re-initilaizes internal structures. */
   void Reinit (float fSampleDistance);
   /** Collects all neighbour points from the facet (by index), the result are the points of the facets lying
-   * inside a sphere of radius \a fDistance, center \a center of the original facet. This method uses the 
+   * inside a sphere of radius \a fDistance, center \a center of the original facet. This method uses the
    * MARKED flags.
    */
   unsigned long  NeighboursFromFacet (FacetIndex ulFacetIdx, float fDistance, unsigned long ulMinPoints, std::vector<Base::Vector3f> &raclResultPoints);
@@ -79,7 +79,7 @@ protected:
   const MeshFacetArray &_rclFAry;
   const MeshPointArray &_rclPAry;
   MeshRefPointToFacets _clPt2Fa;
-  float _fMaxDistanceP2;   // square distance 
+  float _fMaxDistanceP2;   // square distance
   Base::Vector3f _clCenter;         // center points of start facet
   std::set<PointIndex> _aclResult;        // result container (point indices)
   std::set<PointIndex> _aclOuter;         // next searching points
@@ -87,7 +87,7 @@ protected:
   std::vector<std::vector<Base::Vector3f> > _aclSampledFacets; // sample points from each facet
   float _fSampleDistance;  // distance between two sampled points
   Wm4::Sphere3<float> _akSphere;
-  bool _bTooFewPoints;    
+  bool _bTooFewPoints;
 
 private:
   MeshSearchNeighbours (const MeshSearchNeighbours&);
