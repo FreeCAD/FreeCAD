@@ -37,28 +37,21 @@ namespace Fem
 class FemExport FemSetElementNodesObject : public FemSetObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemSetElementNodesObject);
-//    PROPERTY_HEADER(Fem::FemSetElementNodesObject);
 
 public:
     /// Constructor
     FemSetElementNodesObject();
     ~FemSetElementNodesObject() override;
-//    virtual ~FemSetElementNodesObject();
 
     App::PropertyIntegerSet Elements;
-//    App::PropertyFloatList FloatNodes;
 
     // returns the type name of the ViewProvider
-//    virtual const char* getViewProviderName(void) const {
     const char* getViewProviderName() const override {
         return "FemGui::ViewProviderSetElementNodes";
     }
-//    virtual App::DocumentObjectExecReturn *execute(void) {
     App::DocumentObjectExecReturn *execute() override {
         return App::DocumentObject::StdReturn;
     }
-//    virtual short mustExecute(void) const;
-//    virtual PyObject *getPyObject(void);
     short mustExecute() const override;
     PyObject *getPyObject() override;
     static std::string elementsName; //  = "ElementsSet"; 

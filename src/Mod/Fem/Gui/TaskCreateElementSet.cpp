@@ -35,7 +35,6 @@
 #include <SMESHDS_Mesh.hxx>
 #include <Standard_math.hxx>
 #include <SMESH_MeshEditor.hxx>
-//#include <SMDSAbs_ElementType.hxx>
 #endif
 
 #include <Base/Console.h>
@@ -62,21 +61,16 @@
 #include <QMessageBox>
 #include <Gui/MainWindow.h>
 
-//#include <QString>
-//#include <QSlider>
 
 using namespace FemGui;
 using namespace Gui;
 using namespace Fem;
-//using namespace Base;
-//using namespace boost;
 
 std::string inp_file = "abaqusOutputFileEraseElements.inp";
 
 std::string createdMesh = "cDUMMY";
 std::string startResultMesh = "StartResultMesh"; // StartResultMesh";
 std::string newResultMesh = "NewResultMesh";
-//std::string resultMeshName = "ResultMesh";
 std::string newFemMesh = "NewFemMesh";
 
 std::string TaskCreateElementSet::currentProject = "";
@@ -513,22 +507,6 @@ void TaskCreateElementSet::Restore(void)
     return;
 } // restore
 
-//void TaskCreateElementSet::SwitchMethod(int Value)
-//{
-//    if (Value == 1)
-//    {
-//        ui->toolButton_Restore->setEnabled(true);
-//        ui->toolButton_Rename->setEnabled(true);
-//        ui->toolButton_Poly->setEnabled(false);
-//    }
-//    else
-//    {
-//        ui->toolButton_Restore->setEnabled(false);
-//        ui->toolButton_Rename->setEnabled(false);
-//        ui->toolButton_Poly->setEnabled(true);
-//    }
-////}
-
 void TaskCreateElementSet::DefineElementsCallback(void *ud, SoEventCallback *n)
 {
     Gui::WaitCursor wc;
@@ -577,8 +555,6 @@ void TaskCreateElementSet::DefineNodes(const Base::Polygon2d &polygon,
     }
 
     elementTempSet.clear();
-//    int nNodes =
-//        srcMeshDS->GetMeshInfo().NbNodes();
     int nElements =
         srcMeshDS->GetMeshInfo().NbElements();
     int nVolumes =
@@ -608,7 +584,6 @@ void TaskCreateElementSet::DefineNodes(const Base::Polygon2d &polygon,
             maxNode = aNode->GetID();
         }
     }
-//    int nodesList[twenty + 1]; // no element has more than 20 nodes
 
     nodeNumbers = new int[maxNode + 2];
     nodeCoords = new double *[maxNode + 2]; // these are node coords
@@ -660,8 +635,6 @@ void TaskCreateElementSet::DefineNodes(const Base::Polygon2d &polygon,
             nSrc = static_cast<const SMDS_MeshNode *>(nIt->next());
             nTgt = srcMeshDS->FindNode(nSrc->GetID());
             nodes[iN] = nTgt;
-//            nodesList[iN] = nSrc->GetID();
-//            nodesList[iN + 1] = -1;
             newMeshDS->AddNodeWithID(nSrc->X(), nSrc->Y(), nSrc->Z(), nSrc->GetID());
             if (nodeNumbers[nSrc->GetID()] == 0)
             {

@@ -25,13 +25,9 @@
 
 #include "PreCompiled.h"
 
-//#ifndef _PreComp_
-//#endif
-
 #include <App/DocumentObjectPy.h>
 
 #include "FemSetElementNodesObject.h"
-//#include <Base/Placement.h>
 
 using namespace Fem;
 using namespace App;
@@ -41,8 +37,6 @@ PROPERTY_SOURCE(Fem::FemSetElementNodesObject, Fem::FemSetObject)
 FemSetElementNodesObject::FemSetElementNodesObject()
 {
     ADD_PROPERTY_TYPE(Elements, (), "Element Indexes", Prop_None, "Elements belonging to the ElementsSet");
-//    ADD_PROPERTY_TYPE(FloatNodes, (), "Node Float Indexes", Prop_None, "Elements belonging to the ElementsSet");
-// also add in FemSetElementNodesObject.h
 }
 
 FemSetElementNodesObject::~FemSetElementNodesObject()

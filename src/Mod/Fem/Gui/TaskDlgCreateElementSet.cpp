@@ -35,9 +35,6 @@
 #include "TaskDlgCreateElementSet.h"
 #include "ViewProviderFemMesh.h"
 
-//#include <Gui/TaskView/TaskSelectLinkProperty.h>
-//#include <Mod/Fem/App/FemMeshObject.h>
-
 using namespace FemGui;
 
 

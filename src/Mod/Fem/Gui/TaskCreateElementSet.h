@@ -28,7 +28,6 @@
 
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/Fem/App/FemSetElementNodesObject.h>
-//#include <Gui/Selection.h>
 
 
 class Ui_TaskCreateElementSet;
@@ -68,7 +67,6 @@ private Q_SLOTS:
     void Poly(void);
     void Restore(void);
     void CopyResultsMesh(void);
-//    void SwitchMethod(int Value);
 
 protected:
     Fem::FemSetElementNodesObject *pcObject;
@@ -76,7 +74,6 @@ protected:
     void DefineNodes(const Base::Polygon2d &polygon,const Gui::ViewVolumeProjection &proj, bool);
 
 protected:
-//    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     enum selectionModes {
             none,
