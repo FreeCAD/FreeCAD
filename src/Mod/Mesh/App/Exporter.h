@@ -24,17 +24,13 @@
 #define MESH_EXPORTER_H
 
 #include <map>
-#include <vector>
 #include <ostream>
-
-#include <Base/Type.h>
-
-#include <App/Property.h>
+#include <vector>
 
 #include "MeshFeature.h"
 #include "Core/MeshIO.h"
-#include "Core/MeshKernel.h"
 #include "Core/IO/Writer3MF.h"
+
 
 namespace Mesh
 {

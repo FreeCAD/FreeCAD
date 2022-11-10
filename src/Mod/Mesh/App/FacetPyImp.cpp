@@ -20,17 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#include "Mesh.h"
-#include "Facet.h"
-#include <Mod/Mesh/App/FacetPy.h>
-#include <Mod/Mesh/App/FacetPy.cpp>
-#include <Mod/Mesh/App/EdgePy.h>
-
-#include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
+#include <Base/VectorPy.h>
+
+#include "Facet.h"
+#include "FacetPy.h"
+#include "FacetPy.cpp"
+#include "EdgePy.h"
+#include "Mesh.h"
+
 
 using namespace Mesh;
 

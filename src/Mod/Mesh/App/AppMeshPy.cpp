@@ -23,38 +23,29 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <algorithm>
-# include <memory>
 # include <map>
+# include <memory>
 #endif
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
-
-#include <Base/Interpreter.h>
-#include <Base/FileInfo.h>
-#include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
-#include <App/Property.h>
-#include <Base/PlacementPy.h>
-
 #include <Base/GeometryPyCXX.h>
+#include <Base/Interpreter.h>
+#include <Base/PlacementPy.h>
 #include <Base/VectorPy.h>
-
-#include "Core/MeshKernel.h"
-#include "Core/MeshIO.h"
+#include "Core/Approximation.h"
 #include "Core/Evaluation.h"
 #include "Core/Iterator.h"
-#include "Core/Approximation.h"
-
+#include "Core/MeshIO.h"
+#include "Core/MeshKernel.h"
 #include "WildMagic4/Wm4ContBox3.h"
 
-#include "Mesh.h"
+#include "MeshPy.h"
 #include "Exporter.h"
 #include "Importer.h"
-#include "FeatureMeshImport.h"
-#include <Mod/Mesh/App/MeshPy.h>
+#include "Mesh.h"
+
 
 using namespace Mesh;
 using namespace MeshCore;
