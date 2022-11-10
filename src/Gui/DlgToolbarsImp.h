@@ -102,6 +102,7 @@ public:
     ~DlgCustomToolbarsImp() override;
 
 protected:
+    void showEvent(QShowEvent* e) override;
     void changeEvent(QEvent *e) override;
     void addCustomToolbar(const QString&) override;
     void removeCustomToolbar(const QString&) override;
@@ -114,6 +115,7 @@ protected:
 private:
     QList<QAction*> getActionGroup(QAction*);
     void setActionGroup(QAction*, const QList<QAction*>& group);
+    bool firstShow = true;
 };
 
 /** This class implements the creation of user defined toolbox bars.

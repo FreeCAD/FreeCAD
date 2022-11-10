@@ -782,6 +782,17 @@ void DlgCustomToolbarsImp::moveDownCustomCommand(const QString& name, const QByt
     }
 }
 
+void DlgCustomToolbarsImp::showEvent(QShowEvent* event)
+{
+    Q_UNUSED(event);
+    // If we did this already in the constructor we wouldn't get the vertical scrollbar if needed.
+    // The problem was noticed with Qt 4.1.4 but may arise with any later version.
+    if (firstShow) {
+        ui->categoryBox->activated(ui->categoryBox->currentIndex());
+        firstShow = false;
+    }
+}
+
 void DlgCustomToolbarsImp::changeEvent(QEvent *e)
 {
     DlgCustomToolbars::changeEvent(e);
