@@ -1368,6 +1368,7 @@ int System::addConstraintInternalAlignmentKnotPoint(BSpline &b, Point &p, unsign
     Constraint *constr = new ConstraintWeightedLinearCombination(numpoles, pvec, weights);
     constr->setTag(tagId);
     constr->setDriving(driving);
+    constr->setInternalAlignment(Constraint::Alignment::InternalAlignment);
     addConstraint(constr);
 
     pvec.clear();
@@ -1380,6 +1381,7 @@ int System::addConstraintInternalAlignmentKnotPoint(BSpline &b, Point &p, unsign
     constr = new ConstraintWeightedLinearCombination(numpoles, pvec, weights);
     constr->setTag(tagId);
     constr->setDriving(driving);
+    constr->setInternalAlignment(Constraint::Alignment::InternalAlignment);
     return addConstraint(constr);
 }
 
