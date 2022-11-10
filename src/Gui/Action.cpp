@@ -30,6 +30,7 @@
 # include <QEvent>
 # include <QMenu>
 # include <QMessageBox>
+# include <QRegularExpression>
 # include <QScreen>
 # include <QTimer>
 # include <QToolBar>
@@ -37,8 +38,6 @@
 # include <QToolTip>
 # include <QMenuBar>
 #endif
-
-#include <QRegularExpression>
 
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
@@ -60,6 +59,7 @@
 #include "Widgets.h"
 #include "Workbench.h"
 #include "ShortcutManager.h"
+#include "Tools.h"
 
 
 using namespace Gui;
@@ -318,11 +318,11 @@ QString Action::createToolTip(QString _tooltip,
             if (auto act = pcCmd->getAction()) {
                 int idx = act->property("defaultAction").toInt();
                 auto cmd = groupcmd->getCommand(idx);
-                if (cmd && cmd->getName())
+                if (cmd && cmd->getName()) {
                     cmdName = QStringLiteral("%1 (%2:%3)")
-                        .arg(QString::fromLatin1(cmd->getName()))
-                        .arg(cmdName)
+                        .arg(QString::fromLatin1(cmd->getName()), cmdName)
                         .arg(idx);
+                }
             }
         }
         cmdName = QStringLiteral("<p style='white-space:pre; margin-top:0.5em;'><i>%1</i></p>")
@@ -354,9 +354,10 @@ QString Action::createToolTip(QString _tooltip,
         // width, so that the following text can wrap at that width.
         float tipWidth = 400;
         QFontMetrics fm(font);
-        int width = fm.width(_tooltip);
-        if (width <= tipWidth)
+        int width = QtTools::horizontalAdvance(fm, _tooltip);
+        if (width <= tipWidth) {
             tooltip += _tooltip.toHtmlEscaped() + QString::fromLatin1("</p>") ;
+        }
         else {
             int index = tipWidth / width * _tooltip.size();
             // Try to only break at white space

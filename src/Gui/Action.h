@@ -28,7 +28,7 @@
 #include <QAction>
 #include <QComboBox>
 #include <QKeySequence>
-#include <QCompleter>
+#include <FCGlobal.h>
 
 namespace Gui
 {
