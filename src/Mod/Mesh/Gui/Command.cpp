@@ -112,8 +112,8 @@ void CmdMeshTransform::activated(int)
   doCommand(Doc,"App.activeDocument().addObject(\"Mesh::Transform\",\"%s\")",fName.c_str());
   doCommand(Doc,"App.activeDocument().%s.Source = App.activeDocument().%s",fName.c_str(),cSel[0].FeatName);
   doCommand(Gui,"Gui.hide(\"%s\")",cSel[0].FeatName);
-  commitCommand(); 
- 
+  commitCommand();
+
   updateActive();
 }
 
@@ -152,8 +152,8 @@ void CmdMeshDemolding::activated(int)
   doCommand(Doc,"App.activeDocument().addObject(\"Mesh::TransformDemolding\",\"%s\")",fName.c_str());
   doCommand(Doc,"App.activeDocument().%s.Source = App.activeDocument().%s",fName.c_str(),cSel[0].FeatName);
   doCommand(Gui,"Gui.hide(\"%s\")",cSel[0].FeatName);
-  commitCommand(); 
- 
+  commitCommand();
+
   updateActive();
 }
 

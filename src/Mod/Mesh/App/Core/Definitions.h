@@ -40,7 +40,7 @@
 /*
  * general constant definitions
  */
-#define FLOAT_EPS   1.0e-4f 
+#define FLOAT_EPS   1.0e-4f
 
 #ifndef  FLOAT_MAX
 # define FLOAT_MAX 1e30f
@@ -99,4 +99,4 @@ public:
 
 } // namespace MeshCore
 
-#endif // MESH_DEFINITIONS_H 
+#endif // MESH_DEFINITIONS_H

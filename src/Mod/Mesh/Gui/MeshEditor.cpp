@@ -289,7 +289,7 @@ void MeshFaceAddition::showMarker(SoPickedPoint* pp)
             int face_index = fd->getFaceIndex();
             if (face_index >= (int)facets.size())
                 return;
-            // is a border facet picked? 
+            // is a border facet picked?
             MeshCore::MeshFacet f = facets[face_index];
             if (!f.HasOpenEdge()) {
                 // check if a neighbour facet is at the border

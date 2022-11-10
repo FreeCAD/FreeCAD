@@ -135,7 +135,7 @@ void MeshFacetArray::TransposeIndices (PointIndex ulOrig, PointIndex ulNew)
   while (pIter < pEnd)
   {
     pIter->Transpose(ulOrig, ulNew);
-    ++pIter;  
+    ++pIter;
   }
 }
 
@@ -146,7 +146,7 @@ void MeshFacetArray::DecrementIndices (PointIndex ulIndex)
   while (pIter < pEnd)
   {
     pIter->Decrement(ulIndex);
-    ++pIter;  
+    ++pIter;
   }
 }
 
@@ -453,16 +453,16 @@ bool MeshGeomEdge::IsProjectionPointOf(const Base::Vector3f& point) const
 
 // -----------------------------------------------------------------
 
-MeshGeomFacet::MeshGeomFacet () 
+MeshGeomFacet::MeshGeomFacet ()
   : _bNormalCalculated(false),
     _ucFlag(0), _ulProp(0)
-{ 
+{
 
 }
 
 
 MeshGeomFacet::MeshGeomFacet (const Base::Vector3f &v1,const Base::Vector3f &v2,const Base::Vector3f &v3)
-  : _bNormalCalculated(false), 
+  : _bNormalCalculated(false),
     _ucFlag(0),
     _ulProp(0)
 {
@@ -486,10 +486,10 @@ bool MeshGeomFacet::IsPointOf (const Base::Vector3f &rclPoint, float fDistance) 
   clNorm.Normalize();
   clProjPt.ProjectToPlane(_aclPoints[0], clNorm);
 
-    
+
   // Edge P0 --> P1
   clEdge = clP1 - clP0;
-  fLP = clProjPt.DistanceToLine(clP0, clEdge); 
+  fLP = clProjPt.DistanceToLine(clP0, clEdge);
   if (fLP > 0.0f)
   {
     fLE = clP2.DistanceToLine(clP0, clEdge);
@@ -504,13 +504,13 @@ bool MeshGeomFacet::IsPointOf (const Base::Vector3f &rclPoint, float fDistance) 
 
   // Edge P0 --> P2
   clEdge = clP2 - clP0;
-  fLP = clProjPt.DistanceToLine(clP0, clEdge); 
+  fLP = clProjPt.DistanceToLine(clP0, clEdge);
   if (fLP > 0.0f)
   {
     fLE = clP1.DistanceToLine(clP0, clEdge);
     if (fLP <= fLE)
     {
-      if (clProjPt.DistanceToLine(clP1, clEdge) > fLE) 
+      if (clProjPt.DistanceToLine(clP1, clEdge) > fLE)
         return false;
     }
     else
@@ -519,18 +519,18 @@ bool MeshGeomFacet::IsPointOf (const Base::Vector3f &rclPoint, float fDistance) 
 
   // Edge P1 --> P2
   clEdge = clP2 - clP1;
-  fLP = clProjPt.DistanceToLine(clP1, clEdge); 
+  fLP = clProjPt.DistanceToLine(clP1, clEdge);
   if (fLP > 0.0f)
   {
     fLE = clP0.DistanceToLine(clP1, clEdge);
     if (fLP <= fLE)
     {
-      if (clProjPt.DistanceToLine(clP0, clEdge) > fLE) 
+      if (clProjPt.DistanceToLine(clP0, clEdge) > fLE)
         return false;
     }
     else
       return false;
-  }      
+  }
 
   return true;
 }
@@ -625,7 +625,7 @@ bool MeshGeomFacet::IsDegenerated(float epsilon) const
     // The triangle has the points A,B,C where we can define the vector u and v
     // u = b-a and v = c-a. Then we define the line g: r = a+t*u and the plane
     // E: (x-c)*u=0. The intersection point of g and E is S.
-    // The vector to S can be computed with a+(uv)/(uu)*u. The difference of 
+    // The vector to S can be computed with a+(uv)/(uu)*u. The difference of
     // C and S then is v-(u*v)/(u*u)*u. The square distance leads to the formula
     // (v-(u*v)/(u*u)*u)^2 < eps which means that C and S is considered equal if
     // the square distance is less than an epsilon and thus the triangle is de-
@@ -911,7 +911,7 @@ bool MeshGeomFacet::IntersectPlaneWithLine (const Base::Vector3f &rclPt, const B
   if ( fabs(rclDir * GetNormal()) < 1e-3f )
     return false; // line and plane are parallel
 
-  float s = ( ( GetGravityPoint() - rclPt ) * GetNormal() ) 
+  float s = ( ( GetGravityPoint() - rclPt ) * GetNormal() )
             / ( rclDir * GetNormal() );
   rclRes = rclPt + s * rclDir;
 
@@ -959,7 +959,7 @@ float MeshGeomFacet::DistanceToPoint (const Base::Vector3f &rclPt, Base::Vector3
 
   Triangle3<float> akTria(akF0, akF1, akF2);
   DistVector3Triangle3<float> akDistPtTria(akPt, akTria);
-  
+
   float fDist = akDistPtTria.Get();
 
   // get nearest point of the facet
@@ -1003,10 +1003,10 @@ void MeshGeomFacet::SubSample (float fStep, std::vector<Base::Vector3f> &rclPoin
   clVecABNorm.Normalize();
   clVecHNorm.Normalize();
 
-  float bx = fLenAB;                
+  float bx = fLenAB;
   float cy = float(sin(clVecAB.GetAngle(clVecAC)) * fLenAC);
   float cx = float(sqrt(fabs(fLenAC * fLenAC - cy * cy)));
- 
+
   float fDetABC = bx*cy;
 
   for (float px = (fStep / 2.0f); px < fLenAB; px += fStep)
@@ -1024,7 +1024,7 @@ void MeshGeomFacet::SubSample (float fStep, std::vector<Base::Vector3f> &rclPoin
         clPoints.push_back(clV);
 
       }
-      else 
+      else
         break;
     }
   }
@@ -1073,8 +1073,8 @@ bool MeshGeomFacet::IntersectWithFacet(const MeshGeomFacet &rclFacet) const
  * http://www.acm.org/jgt/papers/Moller97/tritri.html
  * http://www.cs.lth.se/home/Tomas_Akenine_Moller/code/
  */
-int MeshGeomFacet::IntersectWithFacet (const MeshGeomFacet& rclFacet, 
-                                       Base::Vector3f& rclPt0, 
+int MeshGeomFacet::IntersectWithFacet (const MeshGeomFacet& rclFacet,
+                                       Base::Vector3f& rclPt0,
                                        Base::Vector3f& rclPt1) const
 {
     // Note: tri_tri_intersect_with_isection() does not return line of
@@ -1124,7 +1124,7 @@ int MeshGeomFacet::IntersectWithFacet (const MeshGeomFacet& rclFacet,
         U[i][2] = rclFacet._aclPoints[i].z;
     }
 
-    if (tri_tri_intersect_with_isectline(V[0], V[1], V[2], U[0], U[1], U[2], 
+    if (tri_tri_intersect_with_isectline(V[0], V[1], V[2], U[0], U[1], U[2],
                                          &coplanar, isectpt1, isectpt2) == 0)
         return 0; // no intersections
 
@@ -1214,7 +1214,7 @@ float MeshGeomFacet::CenterOfInscribedCircle(Base::Vector3f& rclCenter) const
 
   // radius of the circle
   float fRadius = Area();
-  fRadius *= 2.0f/(a + b + c); 
+  fRadius *= 2.0f/(a + b + c);
 
   // center of the circle
   float w = a + b + c;
@@ -1452,7 +1452,7 @@ float MeshGeomFacet::VolumeOfPrism (const MeshGeomFacet& rclF1) const
 float MeshGeomFacet::MaximumAngle () const
 {
   float fMaxAngle = 0.0f;
-  
+
   for ( int i=0; i<3; i++ ) {
     Base::Vector3f dir1(_aclPoints[(i+1)%3]-_aclPoints[i]);
     Base::Vector3f dir2(_aclPoints[(i+2)%3]-_aclPoints[i]);

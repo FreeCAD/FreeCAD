@@ -173,14 +173,14 @@ SbBool SoSFMeshFacetArray::readValue(SoInput *in)
   MeshCore::MeshKernel mesh;
   // Let the mesh kernel restore the neighbourhoods of the facets for us
   mesh.Adopt(vertex, *value, true);
-  // Give us back the face data 
+  // Give us back the face data
   mesh.Adopt(vertex, *value, false);
 
   // We need to trigger the notification chain here, as this function
   // can be used on a node in a scene graph in any state -- not only
   // during initial scene graph import.
   this->valueChanged();
-  
+
   return TRUE;
 }
 
@@ -384,7 +384,7 @@ void SoFCMeshFacet::getPrimitiveCount(SoGetPrimitiveCountAction * action)
  * \brief The SoFCMeshNode class is designed to render huge meshes.
  *
  * The SoFCMeshNode is an Inventor shape node that is designed to render huge meshes. If the mesh exceeds a certain number of triangles
- * and the user does some intersections (e.g. moving, rotating, zooming, spinning, etc.) with the mesh then the GLRender() method renders 
+ * and the user does some intersections (e.g. moving, rotating, zooming, spinning, etc.) with the mesh then the GLRender() method renders
  * only the gravity points of a subset of the triangles.
  * If there is no user interaction with the mesh then all triangles are rendered.
  * The limit of maximum allowed triangles can be specified in \a MaximumTriangles, the default value is set to 100.000.
@@ -397,30 +397,30 @@ void SoFCMeshFacet::getPrimitiveCount(SoGetPrimitiveCountAction * action)
  */
 
 // Helper functions: draw vertices
-inline void glVertex(const MeshCore::MeshPoint& _v)  
-{ 
+inline void glVertex(const MeshCore::MeshPoint& _v)
+{
   float v[3];
   v[0]=_v.x; v[1]=_v.y;v[2]=_v.z;
-  glVertex3fv(v); 
+  glVertex3fv(v);
 }
 
 // Helper functions: draw normal
 inline void glNormal(const Base::Vector3f& _n)
-{ 
+{
   float n[3];
   n[0]=_n.x; n[1]=_n.y;n[2]=_n.z;
-  glNormal3fv(n); 
+  glNormal3fv(n);
 }
 
 // Helper functions: draw normal
 inline void glNormal(float* n)
-{ 
-  glNormal3fv(n); 
+{
+  glNormal3fv(n);
 }
 
 // Helper function: convert Vec to SbVec3f
 inline SbVec3f sbvec3f(const Base::Vector3f& _v) {
-  return SbVec3f(_v.x, _v.y, _v.z); 
+  return SbVec3f(_v.x, _v.y, _v.z);
 }
 
 SO_NODE_SOURCE(SoFCMeshFaceSet);
@@ -442,13 +442,13 @@ void SoFCMeshFaceSet::notify(SoNotList * node)
 }
 
 /**
- * Creates a rough proxy mesh model from the original data attached to a grid in case \a simplest is false. The number of grids 
+ * Creates a rough proxy mesh model from the original data attached to a grid in case \a simplest is false. The number of grids
  * in each direction doesn't exceed 50.
  * If \a simplest is true then the model is built from the bounding box instead.
  *
- * For every move event the complete data set must be iterated to refresh internal Inventor data @see generatePrimitives(). 
- * Doing this very often for very huge data sets slows down the system noticeably. Using a rough model as proxy instead of the original 
- * data set can speed up the user interaction extremely. 
+ * For every move event the complete data set must be iterated to refresh internal Inventor data @see generatePrimitives().
+ * Doing this very often for very huge data sets slows down the system noticeably. Using a rough model as proxy instead of the original
+ * data set can speed up the user interaction extremely.
  * @note The proxy will never be displayed. It's just used for the picking mechanism.
  * @note The usage of the proxy might be confusing a little bit due to the fact that some details get lost. So it'll be possible
  * to pick the data set where no data seem to be.
@@ -490,7 +490,7 @@ void SoFCMeshFaceSet::createProxyModel(const MeshCore::MeshPointArray* rPoints, 
     // Check the boundings and the average edge length
     float fAvgLen = 5.0f * MeshCore::MeshAlgorithm(mesh).GetAverageEdgeLength();
 
-    // create maximum 50 grids in each direction 
+    // create maximum 50 grids in each direction
     fAvgLen = std::max<float>(fAvgLen, (cBox.MaxX-cBox.MinX)/50.0f);
     fAvgLen = std::max<float>(fAvgLen, (cBox.MaxY-cBox.MinY)/50.0f);
     fAvgLen = std::max<float>(fAvgLen, (cBox.MaxZ-cBox.MinZ)/50.0f);
@@ -624,9 +624,9 @@ void SoFCMeshFaceSet::GLRender(SoGLRenderAction *action)
 
     SbBool needNormals = !mb.isColorOnly()/* || tb.isFunction()*/;
     mb.sendFirst();  // make sure we have the correct material
-    
+
     SbBool ccw = TRUE;
-    if (SoShapeHintsElement::getVertexOrdering(state) == SoShapeHintsElement::CLOCKWISE) 
+    if (SoShapeHintsElement::getVertexOrdering(state) == SoShapeHintsElement::CLOCKWISE)
       ccw = FALSE;
 
     if ( mode == false || index->size() <= this->MaximumTriangles ) {
@@ -680,7 +680,7 @@ SoFCMeshFaceSet::Binding SoFCMeshFaceSet::findMaterialBinding(SoState * const st
  * FIXME: Do it the same way as Coin did to have only one implementation which is controlled by defines
  * FIXME: Implement using different values of transparency for each vertex or face
  */
-void SoFCMeshFaceSet::drawFaces(const MeshCore::MeshPointArray * rPoints, const MeshCore::MeshFacetArray* rFacets, 
+void SoFCMeshFaceSet::drawFaces(const MeshCore::MeshPointArray * rPoints, const MeshCore::MeshFacetArray* rFacets,
                                 SoMaterialBundle* mb, Binding bind, SbBool needNormals, SbBool ccw) const
 {
   bool perVertex = (mb && bind == PER_VERTEX_INDEXED);
@@ -702,7 +702,7 @@ void SoFCMeshFaceSet::drawFaces(const MeshCore::MeshPointArray * rPoints, const 
         n[0] = (v1.y-v0.y)*(v2.z-v0.z)-(v1.z-v0.z)*(v2.y-v0.y);
         n[1] = (v1.z-v0.z)*(v2.x-v0.x)-(v1.x-v0.x)*(v2.z-v0.z);
         n[2] = (v1.x-v0.x)*(v2.y-v0.y)-(v1.y-v0.y)*(v2.x-v0.x);
-    
+
         if(perFace)
         mb->send(it-rFacets->begin(), TRUE);
         glNormal(n);
@@ -729,7 +729,7 @@ void SoFCMeshFaceSet::drawFaces(const MeshCore::MeshPointArray * rPoints, const 
         n[0] = -((v1.y-v0.y)*(v2.z-v0.z)-(v1.z-v0.z)*(v2.y-v0.y));
         n[1] = -((v1.z-v0.z)*(v2.x-v0.x)-(v1.x-v0.x)*(v2.z-v0.z));
         n[2] = -((v1.x-v0.x)*(v2.y-v0.y)-(v1.y-v0.y)*(v2.x-v0.x));
-    
+
         glNormal(n);
         glVertex(v0);
         glVertex(v1);
@@ -738,7 +738,7 @@ void SoFCMeshFaceSet::drawFaces(const MeshCore::MeshPointArray * rPoints, const 
     }
     glEnd();
   }
-  else 
+  else
   {
     glBegin(GL_TRIANGLES);
     for ( MeshCore::MeshFacetArray::_TConstIterator it = rFacets->begin(); it != rFacets->end(); ++it )
@@ -754,7 +754,7 @@ void SoFCMeshFaceSet::drawFaces(const MeshCore::MeshPointArray * rPoints, const 
 /**
  * Renders the gravity points of a subset of triangles.
  */
-void SoFCMeshFaceSet::drawPoints(const MeshCore::MeshPointArray * rPoints, 
+void SoFCMeshFaceSet::drawPoints(const MeshCore::MeshPointArray * rPoints,
                                  const MeshCore::MeshFacetArray* rFacets, SbBool needNormals, SbBool ccw) const
 {
   int mod = rFacets->size()/MaximumTriangles+1;
@@ -779,7 +779,7 @@ void SoFCMeshFaceSet::drawPoints(const MeshCore::MeshPointArray * rPoints,
           n[0] = (v1.y-v0.y)*(v2.z-v0.z)-(v1.z-v0.z)*(v2.y-v0.y);
           n[1] = (v1.z-v0.z)*(v2.x-v0.x)-(v1.x-v0.x)*(v2.z-v0.z);
           n[2] = (v1.x-v0.x)*(v2.y-v0.y)-(v1.y-v0.y)*(v2.x-v0.x);
-      
+
           // Calculate the center point p=(v0+v1+v2)/3
           float p[3];
           p[0] = (v0.x+v1.x+v2.x)/3.0f;
@@ -802,7 +802,7 @@ void SoFCMeshFaceSet::drawPoints(const MeshCore::MeshPointArray * rPoints,
           n[0] = -((v1.y-v0.y)*(v2.z-v0.z)-(v1.z-v0.z)*(v2.y-v0.y));
           n[1] = -((v1.z-v0.z)*(v2.x-v0.x)-(v1.x-v0.x)*(v2.z-v0.z));
           n[2] = -((v1.x-v0.x)*(v2.y-v0.y)-(v1.y-v0.y)*(v2.x-v0.x));
-      
+
           // Calculate the center point p=(v0+v1+v2)/3
           float p[3];
           p[0] = (v0.x+v1.x+v2.x)/3.0f;
@@ -815,7 +815,7 @@ void SoFCMeshFaceSet::drawPoints(const MeshCore::MeshPointArray * rPoints,
     }
     glEnd();
   }
-  else 
+  else
   {
     glBegin(GL_POINTS);
     int ct=0;
@@ -882,7 +882,7 @@ void SoFCMeshFaceSet::generatePrimitives(SoAction* action)
   // In case we have too many triangles we just create a rough model of the original mesh
   if ( this->MaximumTriangles < rFacets->size() ) {
     // We notify this shape when the data has changed because just counting the number of triangles won't always work.
-    // 
+    //
     if ( meshChanged ) {
       try {
         createProxyModel(rPoints, rFacets, FALSE);
@@ -901,14 +901,14 @@ void SoFCMeshFaceSet::generatePrimitives(SoAction* action)
     }
     SoPrimitiveVertex vertex;
     beginShape(action, TRIANGLES, 0);
-    try 
+    try
     {
         int i=0;
         while ( i<coordIndex.getNum() )
         {
-          const SbVec3f& v0 = point[coordIndex[i++]]; 
-          const SbVec3f& v1 = point[coordIndex[i++]]; 
-          const SbVec3f& v2 = point[coordIndex[i++]]; 
+          const SbVec3f& v0 = point[coordIndex[i++]];
+          const SbVec3f& v1 = point[coordIndex[i++]];
+          const SbVec3f& v2 = point[coordIndex[i++]];
 
           // Calculate the normal n = (v1-v0)x(v2-v0)
           SbVec3f n;
@@ -943,7 +943,7 @@ void SoFCMeshFaceSet::generatePrimitives(SoAction* action)
     vertex.setDetail(&pointDetail);
 
     beginShape(action, TRIANGLES, &faceDetail);
-    try 
+    try
     {
         for ( MeshCore::MeshFacetArray::_TConstIterator it = rFacets->begin(); it != rFacets->end(); ++it )
         {
@@ -1107,10 +1107,10 @@ void SoFCMeshOpenEdgeSet::GLRender(SoGLRenderAction *action)
 /**
  * Renders the triangles of the complete mesh.
  */
-void SoFCMeshOpenEdgeSet::drawLines(const MeshCore::MeshPointArray * rPoints, 
+void SoFCMeshOpenEdgeSet::drawLines(const MeshCore::MeshPointArray * rPoints,
                                     const MeshCore::MeshFacetArray* rFacets) const
 {
-  // When rendering open edges use the given line width * 3 
+  // When rendering open edges use the given line width * 3
   GLfloat lineWidth;
   glGetFloatv(GL_LINE_WIDTH, &lineWidth);
   glLineWidth(3.0f*lineWidth);
@@ -1202,7 +1202,7 @@ void SoFCMeshOpenEdgeSet::getPrimitiveCount(SoGetPrimitiveCountAction * action)
       return;
   SoState*  state = action->getState();
   const MeshCore::MeshFacetArray * rFaces = SoFCMeshFacetElement::get(state);
-  
+
   // Count number of open edges first
   int ctEdges=0;
   for ( MeshCore::MeshFacetArray::_TConstIterator jt = rFaces->begin(); jt != rFaces->end(); ++jt ) {

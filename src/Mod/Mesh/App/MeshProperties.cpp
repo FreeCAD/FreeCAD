@@ -301,7 +301,7 @@ void PropertyCurvatureList::transformGeometry(const Base::Matrix4D &mat)
 {
     // The principal direction is only a vector with unit length, so we only need to rotate it
     // (no translations or scaling)
-    
+
     // Extract scale factors (assumes an orthogonal rotation matrix)
     // Use the fact that the length of the row vectors of R are all equal to 1
     // And that scaling is applied after rotating
@@ -309,7 +309,7 @@ void PropertyCurvatureList::transformGeometry(const Base::Matrix4D &mat)
     s[0] = sqrt(mat[0][0] * mat[0][0] + mat[0][1] * mat[0][1] + mat[0][2] * mat[0][2]);
     s[1] = sqrt(mat[1][0] * mat[1][0] + mat[1][1] * mat[1][1] + mat[1][2] * mat[1][2]);
     s[2] = sqrt(mat[2][0] * mat[2][0] + mat[2][1] * mat[2][1] + mat[2][2] * mat[2][2]);
-    
+
     // Set up the rotation matrix: zero the translations and make the scale factors = 1
     Base::Matrix4D rot;
     rot.setToUnity();
@@ -336,7 +336,7 @@ void PropertyCurvatureList::transformGeometry(const Base::Matrix4D &mat)
 void PropertyCurvatureList::Save (Base::Writer &writer) const
 {
     if (!writer.isForceXML()) {
-        writer.Stream() << writer.ind() << "<CurvatureList file=\"" << 
+        writer.Stream() << writer.ind() << "<CurvatureList file=\"" <<
         writer.addFile(getName(), this) << "\"/>" << std::endl;
     }
 }
@@ -345,7 +345,7 @@ void PropertyCurvatureList::Restore(Base::XMLReader &reader)
 {
     reader.readElement("CurvatureList");
     std::string file (reader.getAttribute("file") );
-    
+
     if (!file.empty()) {
         // initiate a file read
         reader.addFile(file.c_str(),this);
@@ -745,14 +745,14 @@ PropertyMeshKernel::PropertyMeshKernel()
 {
     // Note: Normally this property is a member of a document object, i.e. the setValue()
     // method gets called in the constructor of a sublcass of DocumentObject, e.g. Mesh::Feature.
-    // This means that the created MeshObject here will be replaced and deleted immediately. 
+    // This means that the created MeshObject here will be replaced and deleted immediately.
     // However, we anyway create this object in case we use this class in another context.
 }
 
 PropertyMeshKernel::~PropertyMeshKernel()
 {
     if (meshPyObject) {
-        // Note: Do not call setInvalid() of the Python binding 
+        // Note: Do not call setInvalid() of the Python binding
         // because the mesh should still be accessible afterwards.
         meshPyObject->parentProperty = nullptr;
         Py_DECREF(meshPyObject);
@@ -797,12 +797,12 @@ void PropertyMeshKernel::swapMesh(MeshCore::MeshKernel& mesh)
     hasSetValue();
 }
 
-const MeshObject& PropertyMeshKernel::getValue()const 
+const MeshObject& PropertyMeshKernel::getValue()const
 {
     return *_meshObject;
 }
 
-const MeshObject* PropertyMeshKernel::getValuePtr()const 
+const MeshObject* PropertyMeshKernel::getValuePtr()const
 {
     return static_cast<MeshObject*>(_meshObject);
 }
@@ -821,7 +821,7 @@ unsigned int PropertyMeshKernel::getMemSize () const
 {
     unsigned int size = 0;
     size += _meshObject->getMemSize();
-    
+
     return size;
 }
 
@@ -905,7 +905,7 @@ void PropertyMeshKernel::Save (Base::Writer &writer) const
         saver.SaveXML(writer);
     }
     else {
-        writer.Stream() << writer.ind() << "<Mesh file=\"" << 
+        writer.Stream() << writer.ind() << "<Mesh file=\"" <<
         writer.addFile("MeshKernel.bms", this) << "\"/>" << std::endl;
     }
 }
@@ -914,7 +914,7 @@ void PropertyMeshKernel::Restore(Base::XMLReader &reader)
 {
     reader.readElement("Mesh");
     std::string file (reader.getAttribute("file") );
-    
+
     if (file.empty()) {
         // read XML
         MeshCore::MeshKernel kernel;
@@ -929,7 +929,7 @@ void PropertyMeshKernel::Restore(Base::XMLReader &reader)
         aboutToSetValue();
         _meshObject->getKernel().Adopt(points, facets);
         hasSetValue();
-    } 
+    }
     else {
         // initiate a file read
         reader.addFile(file.c_str(),this);

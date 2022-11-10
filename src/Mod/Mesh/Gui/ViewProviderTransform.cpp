@@ -54,7 +54,7 @@ using Mesh::Feature;
 
 PROPERTY_SOURCE(MeshGui::ViewProviderMeshTransform, MeshGui::ViewProviderMesh)
 
- 
+
 ViewProviderMeshTransform::ViewProviderMeshTransform()
 {
   pcTransformerDragger = new SoTransformerManip();

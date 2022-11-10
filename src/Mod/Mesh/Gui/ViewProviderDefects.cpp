@@ -477,7 +477,7 @@ void ViewProviderMeshDegenerations::showDefects(const std::vector<Mesh::ElementI
     int j=0;
     for (std::vector<Mesh::ElementIndex>::const_iterator it = inds.begin(); it != inds.end(); ++it) {
         cF.Set(*it);
-        const MeshCore::MeshPoint& rE0 = cF->_aclPoints[0]; 
+        const MeshCore::MeshPoint& rE0 = cF->_aclPoints[0];
         const MeshCore::MeshPoint& rE1 = cF->_aclPoints[1];
         const MeshCore::MeshPoint& rE2 = cF->_aclPoints[2];
 
@@ -645,7 +645,7 @@ void ViewProviderMeshSelfIntersections::showDefects(const std::vector<Mesh::Elem
     Mesh::Feature* f = static_cast<Mesh::Feature*>(pcObject);
     const MeshCore::MeshKernel & rMesh = f->Mesh.getValue().getKernel();
     MeshCore::MeshEvalSelfIntersection eval(rMesh);
-  
+
     std::vector<std::pair<Mesh::ElementIndex, Mesh::ElementIndex> > intersection;
     std::vector<Mesh::ElementIndex>::const_iterator it;
     for (it = indices.begin(); it != indices.end(); ) {

@@ -81,7 +81,7 @@ public:
      * IsSwapEdgeLegal() or ShouldSwapEdge() before.
      * An illegal swap edge operation can produce non-manifolds, degenerated
      * facets or it might create a fold on the surface, i.e. geometric overlaps
-     * of several triangles. 
+     * of several triangles.
      */
     void SwapEdge(FacetIndex ulFacetPos, FacetIndex ulNeighbour);
     /**
@@ -126,7 +126,7 @@ public:
      * Collapses the common edge of two adjacent facets. This operation removes
      * one common point of the collapsed edge and the facets \a ulFacetPos and
      * \a ulNeighbour from the data structure.
-     * @note If \a ulNeighbour is the neighbour facet on the i-th side of 
+     * @note If \a ulNeighbour is the neighbour facet on the i-th side of
      * \a ulFacetPos then the i-th point is removed whereas i is 0, 1 or 2.
      * If the other common point should be removed then CollapseEdge()
      * should be invoked with swapped arguments of \a ulFacetPos and
@@ -152,14 +152,14 @@ public:
     /**
      * Removes the facet with index \a ulFacetPos and all its neighbour facets.
      * The three vertices that are referenced by this facet are replaced by its
-     * gravity point. 
+     * gravity point.
      *
      * @note The client programmer must make sure that this is a legal operation.
      *
      * @note This method marks the facets and the point as 'invalid' but does not
      * remove them from the mesh structure, i.e. the mesh structure gets into an
      * inconsistent stage. To make the structure consistent again Cleanup() should
-     * be called. 
+     * be called.
      * The reason why this cannot be done automatically is that it would become
      * quite slow if a lot of facets should be collapsed.
      *
@@ -173,7 +173,7 @@ public:
     //@{
     /**
      * Tries to make a more beautiful mesh by swapping the common edge of two
-     * adjacent facets where needed. 
+     * adjacent facets where needed.
      * \a fMaxAngle is the maximum allowed angle between the normals of two
      * adjacent facets to allow swapping the common edge. A too high value might
      * result into folds on the surface.
@@ -221,7 +221,7 @@ public:
      * Checks whether the swap edge operation is legal and whether it makes
      * sense. This operation only makes sense if the maximum angle of both
      * facets is decreased and if the angle between the facet normals does
-     * not exceed \a fMaxAngle.  
+     * not exceed \a fMaxAngle.
      */
     bool ShouldSwapEdge(FacetIndex ulFacetPos, FacetIndex ulNeighbour,
                         float fMaxAngle) const;
@@ -242,7 +242,7 @@ public:
      */
     bool RemoveCorruptedFacet(FacetIndex index);
     /**
-     * Closes holes in the mesh that consists of up to \a length edges. In case a fit 
+     * Closes holes in the mesh that consists of up to \a length edges. In case a fit
      * needs to be done then the points of the neighbours of \a level rings will be used.
      * Holes for which the triangulation failed are returned in \a aFailed.
      */
@@ -274,7 +274,7 @@ public:
      * Harmonizes the normals.
      */
     void HarmonizeNormals ();
-    /** 
+    /**
      * Flips the normals.
      */
     void FlipNormals ();
@@ -326,8 +326,8 @@ private:
 };
 
 /**
- * The MeshComponents class searches for topologic independent segments of the 
- * given mesh structure. 
+ * The MeshComponents class searches for topologic independent segments of the
+ * given mesh structure.
  *
  * @author Werner Mayer
  */
@@ -343,7 +343,7 @@ public:
      * Searches for 'isles' of the mesh. If \a tMode is \a OverEdge then facets
      * sharing the same edge are regarded as connected, if \a tMode is \a OverPoint
      * then facets sharing a common point are regarded as connected.
-     */ 
+     */
     void SearchForComponents(TMode tMode, std::vector<std::vector<FacetIndex> >& aclT) const;
 
     /**

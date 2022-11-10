@@ -121,7 +121,7 @@ SmoothingDialog::SmoothingDialog(QWidget* parent, Qt::WindowFlags fl)
     QVBoxLayout* hboxLayout = new QVBoxLayout(this);
     QDialogButtonBox* buttonBox = new QDialogButtonBox(this);
     buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
-    
+
     connect(buttonBox, SIGNAL(accepted()),
             this, SLOT(accept()));
     connect(buttonBox, SIGNAL(rejected()),

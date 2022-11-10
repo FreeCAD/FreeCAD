@@ -60,11 +60,11 @@ void MeshBuilder::Initialize (size_t ctFacets, bool deletion)
     {
         // Clear the mesh structure and free all memory
         _meshKernel.Clear();
-    
+
         // Allocate new memory that is needed later on. If AddFacet() gets called exactly ctFacets times there is no wastage of memory
         // otherwise the vector reallocates ~50% of its future memory usage.
         // Note: A feature of the std::vector implementation is that it can hold more memory (capacity) than it actually needs (size).
-        //       This usually happens if its elements are added without specifying its final size. Later on it's a bit tricky to free the wasted 
+        //       This usually happens if its elements are added without specifying its final size. Later on it's a bit tricky to free the wasted
         //       memory. So we're strived to avoid the wastage of memory.
         _meshKernel._aclFacetArray.reserve(ctFacets);
 

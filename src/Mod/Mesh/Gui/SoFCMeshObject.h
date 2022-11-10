@@ -201,7 +201,7 @@ private:
     void notify(SoNotList * list) override;
     Binding findMaterialBinding(SoState * const state) const;
     // Draw faces
-    void drawFaces(const Mesh::MeshObject *, SoMaterialBundle* mb, Binding bind, 
+    void drawFaces(const Mesh::MeshObject *, SoMaterialBundle* mb, Binding bind,
                    SbBool needNormals, SbBool ccw) const;
     void drawPoints(const Mesh::MeshObject *, SbBool needNormals, SbBool ccw) const;
     unsigned int countTriangles(SoAction * action) const;
@@ -255,7 +255,7 @@ private:
     ~SoFCMeshSegmentShape() override {}
     Binding findMaterialBinding(SoState * const state) const;
     // Draw faces
-    void drawFaces(const Mesh::MeshObject *, SoMaterialBundle* mb, Binding bind, 
+    void drawFaces(const Mesh::MeshObject *, SoMaterialBundle* mb, Binding bind,
                    SbBool needNormals, SbBool ccw) const;
     void drawPoints(const Mesh::MeshObject *, SbBool needNormals, SbBool ccw) const;
 };

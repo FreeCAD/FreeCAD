@@ -66,7 +66,7 @@ public Q_SLOTS:
  * \author Werner Mayer
  */
 class DlgEvaluateMeshImp : public QDialog, public App::DocumentObserver
-{ 
+{
     Q_OBJECT
 
 public:
@@ -144,7 +144,7 @@ private:
  * \author Werner Mayer
  */
 class DockEvaluateMeshImp : public DlgEvaluateMeshImp
-{ 
+{
     Q_OBJECT
 
 protected:
@@ -156,7 +156,7 @@ public:
     static DockEvaluateMeshImp* instance();
     static void destruct();
     static bool hasInstance();
-  
+
     QSize sizeHint () const override;
 
 private:

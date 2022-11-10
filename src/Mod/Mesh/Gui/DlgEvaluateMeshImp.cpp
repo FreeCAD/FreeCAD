@@ -249,7 +249,7 @@ void DlgEvaluateMeshImp::slotDeletedDocument(const App::Document& Doc)
             delete it->second;
         }
 
-        d->vp.clear();    
+        d->vp.clear();
 
         // try to attach to the active document
         this->detachDocument();
@@ -263,7 +263,7 @@ void DlgEvaluateMeshImp::setMesh(Mesh::Feature* m)
     App::Document* doc = m->getDocument();
     if (doc != getDocument())
         attachDocument(doc);
-  
+
     refreshList();
 
     int ct = d->ui.meshNameButton->count();
@@ -493,7 +493,7 @@ void DlgEvaluateMeshImp::on_repairOrientationButton_clicked()
 
         doc->commitCommand();
         doc->getDocument()->recompute();
-    
+
         d->ui.repairOrientationButton->setEnabled(false);
         d->ui.checkOrientationButton->setChecked(false);
         removeViewProvider( "MeshGui::ViewProviderMeshOrientation" );
@@ -595,7 +595,7 @@ void DlgEvaluateMeshImp::on_repairNonmanifoldsButton_clicked()
                         , "App.getDocument(\"%s\").getObject(\"%s\").removeNonManifoldPoints()"
                         , docName, objName);
             }
-        } 
+        }
         catch (const Base::Exception& e) {
             QMessageBox::warning(this, tr("Non-manifolds"), QString::fromLatin1(e.what()));
         }
@@ -605,7 +605,7 @@ void DlgEvaluateMeshImp::on_repairNonmanifoldsButton_clicked()
 
         doc->commitCommand();
         doc->getDocument()->recompute();
-    
+
         d->ui.repairNonmanifoldsButton->setEnabled(false);
         d->ui.checkNonmanifoldsButton->setChecked(false);
         removeViewProvider("MeshGui::ViewProviderMeshNonManifolds");
@@ -636,7 +636,7 @@ void DlgEvaluateMeshImp::on_analyzeIndicesButton_clicked()
         MeshEvalRangePoint rp(rMesh);
         MeshEvalCorruptedFacets cf(rMesh);
         MeshEvalNeighbourhood nb(rMesh);
-        
+
         if (!rf.Evaluate()) {
             d->ui.checkIndicesButton->setText(tr("Invalid face indices"));
             d->ui.checkIndicesButton->setChecked(true);
@@ -695,7 +695,7 @@ void DlgEvaluateMeshImp::on_repairIndicesButton_clicked()
 
         doc->commitCommand();
         doc->getDocument()->recompute();
-    
+
         d->ui.repairIndicesButton->setEnabled(false);
         d->ui.checkIndicesButton->setChecked(false);
         removeViewProvider("MeshGui::ViewProviderMeshIndices");
@@ -723,7 +723,7 @@ void DlgEvaluateMeshImp::on_analyzeDegeneratedButton_clicked()
         const MeshKernel& rMesh = d->meshFeature->Mesh.getValue().getKernel();
         MeshEvalDegeneratedFacets eval(rMesh, d->epsilonDegenerated);
         std::vector<Mesh::FacetIndex> degen = eval.GetIndices();
-        
+
         if (degen.empty()) {
             d->ui.checkDegenerationButton->setText(tr("No degenerations"));
             d->ui.checkDegenerationButton->setChecked(false);
@@ -789,7 +789,7 @@ void DlgEvaluateMeshImp::on_analyzeDuplicatedFacesButton_clicked()
         const MeshKernel& rMesh = d->meshFeature->Mesh.getValue().getKernel();
         MeshEvalDuplicateFacets eval(rMesh);
         std::vector<Mesh::FacetIndex> dupl = eval.GetIndices();
-    
+
         if (dupl.empty()) {
             d->ui.checkDuplicatedFacesButton->setText(tr("No duplicated faces"));
             d->ui.checkDuplicatedFacesButton->setChecked(false);
@@ -828,7 +828,7 @@ void DlgEvaluateMeshImp::on_repairDuplicatedFacesButton_clicked()
 
         doc->commitCommand();
         doc->getDocument()->recompute();
-    
+
         d->ui.repairDuplicatedFacesButton->setEnabled(false);
         d->ui.checkDuplicatedFacesButton->setChecked(false);
         removeViewProvider("MeshGui::ViewProviderMeshDuplicatedFaces");
@@ -855,7 +855,7 @@ void DlgEvaluateMeshImp::on_analyzeDuplicatedPointsButton_clicked()
 
         const MeshKernel& rMesh = d->meshFeature->Mesh.getValue().getKernel();
         MeshEvalDuplicatePoints eval(rMesh);
-    
+
         if (eval.Evaluate()) {
             d->ui.checkDuplicatedPointsButton->setText(tr("No duplicated points"));
             d->ui.checkDuplicatedPointsButton->setChecked(false);
@@ -893,7 +893,7 @@ void DlgEvaluateMeshImp::on_repairDuplicatedPointsButton_clicked()
 
         doc->commitCommand();
         doc->getDocument()->recompute();
-    
+
         d->ui.repairDuplicatedPointsButton->setEnabled(false);
         d->ui.checkDuplicatedPointsButton->setChecked(false);
         removeViewProvider("MeshGui::ViewProviderMeshDuplicatedPoints");
@@ -983,7 +983,7 @@ void DlgEvaluateMeshImp::on_repairSelfIntersectionButton_clicked()
 
         doc->commitCommand();
         doc->getDocument()->recompute();
-    
+
         d->ui.repairSelfIntersectionButton->setEnabled(false);
         d->ui.checkSelfIntersectionButton->setChecked(false);
         removeViewProvider("MeshGui::ViewProviderMeshSelfIntersections");
@@ -1015,7 +1015,7 @@ void DlgEvaluateMeshImp::on_analyzeFoldsButton_clicked()
         bool ok1 = s_eval.Evaluate();
         bool ok2 = b_eval.Evaluate();
         bool ok3 = f_eval.Evaluate();
-    
+
         if (ok1 && ok2 && ok3) {
             d->ui.checkFoldsButton->setText(tr("No folds on surface"));
             d->ui.checkFoldsButton->setChecked(false);
@@ -1032,7 +1032,7 @@ void DlgEvaluateMeshImp::on_analyzeFoldsButton_clicked()
             // remove duplicates
             std::sort(inds.begin(), inds.end());
             inds.erase(std::unique(inds.begin(), inds.end()), inds.end());
-            
+
             d->ui.checkFoldsButton->setText(tr("%1 folds on surface").arg(inds.size()));
             d->ui.checkFoldsButton->setChecked(true);
             d->ui.repairFoldsButton->setEnabled(true);
@@ -1064,7 +1064,7 @@ void DlgEvaluateMeshImp::on_repairFoldsButton_clicked()
 
         doc->commitCommand();
         doc->getDocument()->recompute();
-    
+
         qApp->restoreOverrideCursor();
         d->ui.repairFoldsButton->setEnabled(false);
         d->ui.checkFoldsButton->setChecked(false);

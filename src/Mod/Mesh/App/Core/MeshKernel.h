@@ -51,10 +51,10 @@ class MeshPointVisitor;
 class MeshFacetGrid;
 
 
-/** 
+/**
  * The MeshKernel class is the basic class that holds the data points,
  * the edges and the facets describing a mesh object.
- * 
+ *
  * The bounding box is calculated during the buildup of the data
  * structure and gets only re-caclulated after insertion of new facets
  * but not after removal of facets.
@@ -198,10 +198,10 @@ public:
     //@}
 
     /** @name Facet visitors
-     * The MeshKernel class provides different methods to visit "topologic connected" facets 
-     * to a given start facet. Two facets are regarded as "topologic connected" if they share 
+     * The MeshKernel class provides different methods to visit "topologic connected" facets
+     * to a given start facet. Two facets are regarded as "topologic connected" if they share
      * a common edge or a common point.
-     * All methods expect a MeshFacetVisitor as argument that can decide to continue or to stop. 
+     * All methods expect a MeshFacetVisitor as argument that can decide to continue or to stop.
      * If there is no topologic neighbour facet any more being not marked as "VISIT" the algorithm
      * stops anyway.
      * @see MeshFacetVisitor, MeshOrientationVisitor, MeshSearchNeighbourFacetsVisitor
@@ -209,12 +209,12 @@ public:
      */
     //@{
     /**
-     * This method visits all neighbour facets, i.e facets that share a common edge 
-     * starting from the facet associated to index \a ulStartFacet. All facets having set the VISIT 
+     * This method visits all neighbour facets, i.e facets that share a common edge
+     * starting from the facet associated to index \a ulStartFacet. All facets having set the VISIT
      * flag are ignored. Therefore the user have to set or unset this flag if needed.
      * All facets that get visited during this algorithm are marked as VISIT and the Visit() method
-     * of the given MeshFacetVisitor gets invoked. 
-     * If there are no unvisited neighbours any more the algorithms returns immediately and returns 
+     * of the given MeshFacetVisitor gets invoked.
+     * If there are no unvisited neighbours any more the algorithms returns immediately and returns
      * the number of visited facets.
      * \note For the start facet \a ulStartFacet MeshFacetVisitor::Visit() does not get invoked though
      * the facet gets marked as VISIT.
@@ -230,18 +230,18 @@ public:
     /** @name Point visitors
      * The MeshKernel class provides a method to visit neighbour points to a given start point.
      * Two points are regarded as neighbours if they share an edge.
-     * The method expects a MeshPointVisitor as argument that can decide to continue or to stop. 
+     * The method expects a MeshPointVisitor as argument that can decide to continue or to stop.
      * If there is no topologic neighbour point any more being not marked as "VISIT" the algorithm
      * stops anyway.
      */
     //@{
     /**
-     * This method visits all neighbour points starting from the point associated to index \a ulStartPoint. 
-     * All points having set the VISIT flag are ignored. Therefore the user have to set or unset this flag 
+     * This method visits all neighbour points starting from the point associated to index \a ulStartPoint.
+     * All points having set the VISIT flag are ignored. Therefore the user have to set or unset this flag
      * if needed before the algorithm starts.
      * All points that get visited during this algorithm are marked as VISIT and the Visit() method
-     * of the given MeshPointVisitor gets invoked. 
-     * If there are no unvisited neighbours any more the algorithms returns immediately and returns 
+     * of the given MeshPointVisitor gets invoked.
+     * If there are no unvisited neighbours any more the algorithms returns immediately and returns
      * the number of visited points.
      * \note For the start facet \a ulStartPoint MeshPointVisitor::Visit() does not get invoked though
      * the point gets marked as VISIT.
@@ -249,7 +249,7 @@ public:
     unsigned long VisitNeighbourPoints (MeshPointVisitor &rclPVisitor, PointIndex ulStartPoint) const;
     //@}
 
-    /** @name Iterators 
+    /** @name Iterators
      * The iterator methods are provided for convenience. They return an iterator object that
      * points to the first element in the appropriate list.
      * \code
@@ -284,11 +284,11 @@ public:
      * be called occasionally only. This does the same as the += operator above.
      */
     void AddFacet(const MeshGeomFacet &rclSFacet);
-    /** Adds an array of facets to the data structure. This method keeps temporarily 
-     * set properties and flags. 
+    /** Adds an array of facets to the data structure. This method keeps temporarily
+     * set properties and flags.
      */
     MeshKernel& operator += (const std::vector<MeshGeomFacet> &rclFAry);
-    /** Adds an array of facets to the data structure. This method keeps temporarily 
+    /** Adds an array of facets to the data structure. This method keeps temporarily
      * set properties and flags. This does the same as the += operator above.
      */
     void AddFacets(const std::vector<MeshGeomFacet> &rclFAry);
@@ -342,7 +342,7 @@ public:
      * \li If there is no neighbour facet check if the points can be deleted.
      * True is returned if the facet could be deleted.
      * @note This method is very slow and should only be called occasionally.
-     * @note After deletion of the facet \a rclIter becomes invalid and must not 
+     * @note After deletion of the facet \a rclIter becomes invalid and must not
      * be used before setting to a new position.
      */
     bool DeleteFacet (const MeshFacetIterator &rclIter);
@@ -350,7 +350,7 @@ public:
      * Does basically the same as the method above unless that the index of the facet is given.
      */
     bool DeleteFacet (FacetIndex ulInd);
-    /** Removes several facets from the data structure. 
+    /** Removes several facets from the data structure.
      * @note This method overwrites the free usable property of each mesh point.
      * @note This method also removes points from the structure that are no longer
      * referenced by the facets.
@@ -362,7 +362,7 @@ public:
      * \li Delete these facets.
      * True is returned if the point could be deleted.
      * @note This method is very slow and should only be called occasionally.
-     * @note After deletion of the point \a rclIter becomes invalid and must not 
+     * @note After deletion of the point \a rclIter becomes invalid and must not
      * be used before setting to a new position.
      */
     bool DeletePoint (const MeshPointIterator &rclIter);
@@ -370,7 +370,7 @@ public:
      * Does basically the same as the method above unless that the index of the facet is given.
      */
     bool DeletePoint (PointIndex ulInd);
-    /** Removes several points from the data structure. 
+    /** Removes several points from the data structure.
      * @note This method overwrites the free usable property of each mesh point.
      */
     void DeletePoints (const std::vector<PointIndex> &raulPoints);
@@ -382,7 +382,7 @@ public:
     void Cleanup();
     /** Clears the whole data structure. */
     void Clear ();
-    /** Replaces the current data structure with the structure built up of the array 
+    /** Replaces the current data structure with the structure built up of the array
      * of triangles given in \a rclFAry.
      */
     MeshKernel& operator = (const std::vector<MeshGeomFacet> &rclFAry);
@@ -415,7 +415,7 @@ public:
     /** Smoothes the mesh kernel. */
     void Smooth(int iterations, float d_max);
     /**
-     * CheckFacets() is invoked within this method and all found facets get deleted from the mesh structure. 
+     * CheckFacets() is invoked within this method and all found facets get deleted from the mesh structure.
      * The facets to be deleted are returned with their geometric representation.
      * @see CheckFacets().
      */
@@ -576,4 +576,4 @@ inline void MeshKernel::SetFacetPoints (FacetIndex ulFaIndex, PointIndex rclP0,
 
 } // namespace MeshCore
 
-#endif // MESH_KERNEL_H 
+#endif // MESH_KERNEL_H

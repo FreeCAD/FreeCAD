@@ -59,7 +59,7 @@ bool MeshProjection::bboxInsideRectangle(const Base::BoundBox3f& bbox,
 {
     Base::Vector3f dir(p2 - p1);
     Base::Vector3f base(p1), normal(view % dir);
-    normal.Normalize(); 
+    normal.Normalize();
 
     if (bbox.IsCutPlane(base, normal)) {
         dir.Normalize();
@@ -132,7 +132,7 @@ bool MeshProjection::connectLines(std::list< std::pair<Base::Vector3f, Base::Vec
             return false;  // abort because no line was found
         }
 
-        cutLines.erase(pCurr); 
+        cutLines.erase(pCurr);
     }
 
     return true;

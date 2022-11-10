@@ -386,7 +386,7 @@ void MeshRenderer::generateGLArrays(SoGLRenderAction* action, SoMaterialBindingE
 // ================================================
 // drawCoords (every 4th vertex)             | 20.0
 // renderCoordsGLArray (all vertexes)        | 20.0
-// 
+//
 void MeshRenderer::renderCoordsGLArray(SoGLRenderAction *action)
 {
     p->renderCoordsGLArray(action);

@@ -62,4 +62,4 @@ private:
 } // namespace MeshCore
 
 
-#endif  // MESH_KDTREE_H 
+#endif  // MESH_KDTREE_H

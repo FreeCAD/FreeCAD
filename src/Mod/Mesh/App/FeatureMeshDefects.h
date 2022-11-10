@@ -271,4 +271,4 @@ public:
 } //namespace Mesh
 
 
-#endif // MESH_FEATURE_MESH_DEFECTS_H 
+#endif // MESH_FEATURE_MESH_DEFECTS_H

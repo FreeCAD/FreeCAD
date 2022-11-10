@@ -179,13 +179,13 @@ public:
   inline MeshPointIterator (const MeshKernel &rclM, PointIndex ulPos);
   inline MeshPointIterator (const MeshPointIterator &rclI);
   //@}
- 
+
   /** @name Transformation */
   //@{
   /// Transforms the returned points with the current transformation
   inline void Transform( const Base::Matrix4D& rclTrf );
   //@}
- 
+
   /** @name Access methods */
   //@{
   /// Access to the element the iterator points to.
@@ -410,7 +410,7 @@ inline void MeshFacetIterator::GetNeighbours (MeshFacetIterator &rclN0, MeshFace
 }
 
 inline void MeshFacetIterator::SetToNeighbour (unsigned short usN)
-{ 
+{
   if (_clIter->_aulNeighbours[usN] != FACET_INDEX_MAX)
     _clIter = _rclFAry.begin() + _clIter->_aulNeighbours[usN];
   else
@@ -448,7 +448,7 @@ inline const MeshPoint& MeshPointIterator::Dereference () const
   _clPoint = *_clIter;
   if ( _bApply )
     _clPoint = _clTrf * _clPoint;
-  return _clPoint; 
+  return _clPoint;
 }
 
 inline bool MeshPointIterator::Set (PointIndex ulIndex)
@@ -477,4 +477,4 @@ inline MeshPointIterator& MeshPointIterator::operator = (const MeshPointIterator
 } // namespace MeshCore
 
 
-#endif // MESH_ITERATOR_H 
+#endif // MESH_ITERATOR_H

@@ -64,4 +64,4 @@ private:
 
 } // namespace MeshCore
 
-#endif  // MESH_PROJECTION_H 
+#endif  // MESH_PROJECTION_H

@@ -936,7 +936,7 @@ void MeshObject::offset(float fSize)
 
 void MeshObject::offsetSpecial2(float fSize)
 {
-    Base::Builder3D builder;  
+    Base::Builder3D builder;
     std::vector<Base::Vector3f> PointNormals= _kernel.CalcVertexNormals();
     std::vector<Base::Vector3f> FaceNormals;
     std::set<FacetIndex> fliped;
@@ -968,12 +968,12 @@ void MeshObject::offsetSpecial2(float fSize)
                 fliped.insert(it.Position());
             }
         }
-        
+
         // if there are no flipped triangles -> stop
         //int f =fliped.size();
         if (fliped.empty())
             break;
-      
+
         for( std::set<FacetIndex>::iterator It= fliped.begin();It!=fliped.end();++It)
             alg.CollapseFacet(*It);
         fliped.clear();
@@ -2078,7 +2078,7 @@ bool MeshObject::const_point_iterator::operator==(const MeshObject::const_point_
     return (this->_mesh == pi._mesh) && (this->_p_it == pi._p_it);
 }
 
-bool MeshObject::const_point_iterator::operator!=(const MeshObject::const_point_iterator& pi) const 
+bool MeshObject::const_point_iterator::operator!=(const MeshObject::const_point_iterator& pi) const
 {
     return !operator==(pi);
 }
@@ -2150,7 +2150,7 @@ bool MeshObject::const_facet_iterator::operator==(const MeshObject::const_facet_
     return (this->_mesh == fi._mesh) && (this->_f_it == fi._f_it);
 }
 
-bool MeshObject::const_facet_iterator::operator!=(const MeshObject::const_facet_iterator& fi) const 
+bool MeshObject::const_facet_iterator::operator!=(const MeshObject::const_facet_iterator& fi) const
 {
     return !operator==(fi);
 }

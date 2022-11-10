@@ -19,7 +19,7 @@
 
 using vec3f = Base::Vector3f;
 
-class SymmetricMatrix { 
+class SymmetricMatrix {
 
 public:
 
@@ -27,12 +27,12 @@ public:
 
     SymmetricMatrix(double c=0) { for (std::size_t i=0;i<10;++i ) m[i] = c; }
 
-    SymmetricMatrix(double m11, double m12, double m13, double m14, 
+    SymmetricMatrix(double m11, double m12, double m13, double m14,
                                double m22, double m23, double m24,
                                            double m33, double m34,
                                                        double m44) {
-            m[0] = m11;  m[1] = m12;  m[2] = m13;  m[3] = m14; 
-                         m[4] = m22;  m[5] = m23;  m[6] = m24; 
+            m[0] = m11;  m[1] = m12;  m[2] = m13;  m[3] = m14;
+                         m[4] = m22;  m[5] = m23;  m[6] = m24;
                                       m[7] = m33;  m[8] = m34;
                                                    m[9] = m44;
     }
@@ -41,8 +41,8 @@ public:
 
     SymmetricMatrix(double a,double b,double c,double d)
     {
-        m[0] = a*a;  m[1] = a*b;  m[2] = a*c;  m[3] = a*d; 
-                     m[4] = b*b;  m[5] = b*c;  m[6] = b*d; 
+        m[0] = a*a;  m[1] = a*b;  m[2] = a*c;  m[3] = a*d;
+                     m[4] = b*b;  m[5] = b*c;  m[6] = b*d;
                                   m[7 ] =c*c;  m[8 ] = c*d;
                                                m[9 ] = d*d;
     }
@@ -61,7 +61,7 @@ public:
     }
 
     const SymmetricMatrix operator+(const SymmetricMatrix& n) const
-    { 
+    {
         return SymmetricMatrix( m[0]+n[0],    m[1]+n[1],   m[2]+n[2],   m[3]+n[3],
                                               m[4]+n[4],   m[5]+n[5],   m[6]+n[6],
                                                            m[7]+n[7],   m[8]+n[8],
@@ -70,10 +70,10 @@ public:
 
     SymmetricMatrix& operator+=(const SymmetricMatrix& n)
     {
-        m[0]+=n[0];   m[1]+=n[1];   m[2]+=n[2];   m[3]+=n[3]; 
-        m[4]+=n[4];   m[5]+=n[5];   m[6]+=n[6];   m[7]+=n[7]; 
+        m[0]+=n[0];   m[1]+=n[1];   m[2]+=n[2];   m[3]+=n[3];
+        m[4]+=n[4];   m[5]+=n[5];   m[6]+=n[6];   m[7]+=n[7];
         m[8]+=n[8];   m[9]+=n[9];
-        return *this; 
+        return *this;
     }
 
     double m[10];
@@ -85,7 +85,7 @@ class Simplify
 public:
     struct Triangle { int v[3];double err[4];int deleted,dirty;vec3f n; };
     struct Vertex { vec3f p;int tstart,tcount;SymmetricMatrix q;int border;};
-    struct Ref { int tid,tvertex; }; 
+    struct Ref { int tid,tvertex; };
     std::vector<Triangle> triangles;
     std::vector<Vertex> vertices;
     std::vector<Ref> refs;
@@ -104,7 +104,7 @@ private:
 };
 
 //
-// Main simplification function 
+// Main simplification function
 //
 // target_count   : target nr. of triangles
 // tolerance      : tolerance for the quadratic errors
@@ -125,9 +125,9 @@ void Simplify::simplify_mesh(int target_count, double tolerance, double aggressi
     for (std::size_t i=0;i<triangles.size();++i)
         triangles[i].deleted=0;
 
-    // main iteration loop 
+    // main iteration loop
 
-    int deleted_triangles=0; 
+    int deleted_triangles=0;
     std::vector<int> deleted0,deleted1;
     int triangle_count=triangles.size();
 
@@ -139,7 +139,7 @@ void Simplify::simplify_mesh(int target_count, double tolerance, double aggressi
             break;
 
         // update mesh once in a while
-        if (iteration%5==0) 
+        if (iteration%5==0)
         {
             update_mesh(iteration);
         }
@@ -191,7 +191,7 @@ void Simplify::simplify_mesh(int target_count, double tolerance, double aggressi
             {
                 if (t.err[j]<threshold)
                 {
-                    int i0=t.v[ j     ]; Vertex &v0 = vertices[i0]; 
+                    int i0=t.v[ j     ]; Vertex &v0 = vertices[i0];
                     int i1=t.v[(j+1)%3]; Vertex &v1 = vertices[i1];
 
                     // Border check
@@ -267,7 +267,7 @@ bool Simplify::flipped(vec3f p, int i0, int i1,
     int bordercount=0;
     for (int k=0;k<v0.tcount;++k)
     {
-        Triangle &t=triangles[refs[v0.tstart+k].tid]; 
+        Triangle &t=triangles[refs[v0.tstart+k].tid];
         if (t.deleted)
             continue;
 
@@ -282,7 +282,7 @@ bool Simplify::flipped(vec3f p, int i0, int i1,
             continue;
         }
         vec3f d1 = vertices[id1].p-p; d1.Normalize();
-        vec3f d2 = vertices[id2].p-p; d2.Normalize(); 
+        vec3f d2 = vertices[id2].p-p; d2.Normalize();
         if (fabs(d1.Dot(d2))>0.999)
             return true;
         vec3f n;
@@ -303,10 +303,10 @@ void Simplify::update_triangles(int i0,Vertex &v,std::vector<int> &deleted,int &
     for (int k=0;k<v.tcount;++k)
     {
         Ref &r=refs[v.tstart+k];
-        Triangle &t=triangles[r.tid]; 
+        Triangle &t=triangles[r.tid];
         if (t.deleted)
             continue;
-        if (deleted[k]) 
+        if (deleted[k])
         {
             t.deleted=1;
             deleted_triangles++;
@@ -352,7 +352,7 @@ void Simplify::update_mesh(int iteration)
 
         for (std::size_t i=0;i<triangles.size();++i)
         {
-            Triangle &t=triangles[i]; 
+            Triangle &t=triangles[i];
             vec3f n,p[3];
             for (std::size_t j=0;j<3;++j)
                 p[j]=vertices[t.v[j]].p;
@@ -407,7 +407,7 @@ void Simplify::update_mesh(int iteration)
         }
     }
 
-    // Identify boundary : vertices[].border=0,1 
+    // Identify boundary : vertices[].border=0,1
     if (iteration == 0)
     {
         std::vector<int> vcount,vids;
@@ -504,7 +504,7 @@ double Simplify::vertex_error(const SymmetricMatrix& q, double x, double y, doub
 
 double Simplify::calculate_error(int id_v1, int id_v2, vec3f &p_result)
 {
-    // compute interpolated vertex 
+    // compute interpolated vertex
 
     SymmetricMatrix q = vertices[id_v1].q + vertices[id_v2].q;
     bool   border = vertices[id_v1].border & vertices[id_v2].border;
@@ -514,9 +514,9 @@ double Simplify::calculate_error(int id_v1, int id_v2, vec3f &p_result)
     if (det != 0 && !border)
     {
         // q_delta is invertible
-        p_result.x = -1/det*(q.det(1, 2, 3, 4, 5, 6, 5, 7 , 8));    // vx = A41/det(q_delta) 
-        p_result.y =  1/det*(q.det(0, 2, 3, 1, 5, 6, 2, 7 , 8));    // vy = A42/det(q_delta) 
-        p_result.z = -1/det*(q.det(0, 1, 3, 1, 4, 6, 2, 5,  8));    // vz = A43/det(q_delta) 
+        p_result.x = -1/det*(q.det(1, 2, 3, 4, 5, 6, 5, 7 , 8));    // vx = A41/det(q_delta)
+        p_result.y =  1/det*(q.det(0, 2, 3, 1, 5, 6, 2, 7 , 8));    // vy = A42/det(q_delta)
+        p_result.z = -1/det*(q.det(0, 1, 3, 1, 4, 6, 2, 5,  8));    // vz = A43/det(q_delta)
         error = vertex_error(q, p_result.x, p_result.y, p_result.z);
     }
     else

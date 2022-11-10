@@ -341,7 +341,7 @@ private:
         if (!PyArg_ParseTuple(args.ptr(), "|fff",&x,&y,&z))
             throw Py::Exception();
 
-        if (y==0) 
+        if (y==0)
             y=x;
 
         float hx = x/2.0f;

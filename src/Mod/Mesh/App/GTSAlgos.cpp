@@ -60,9 +60,9 @@ void GTSAlgos::coarsen(float f)
   gdouble fold = 3.1415 / 180.;
 
   try{
-    gts_surface_coarsen (surface, 
-                         NULL, NULL, 
-                         NULL, NULL, 
+    gts_surface_coarsen (surface,
+                         NULL, NULL,
+                         NULL, NULL,
                          (GtsStopFunc)gts_coarsen_stop_number,
                          &stop_number, fold);
   } catch (...)
@@ -137,7 +137,7 @@ void GTSAlgos::boolean(const Mesh::MeshObject& ToolMesh, int Type)
   tree1 = gts_bb_tree_surface (s1);
   is_open1 = gts_surface_volume (s1) < 0. ? TRUE : FALSE;
 
-  // build bounding box tree for second surface 
+  // build bounding box tree for second surface
   tree2 = gts_bb_tree_surface (s2);
   is_open2 = gts_surface_volume (s2) < 0. ? TRUE : FALSE;
 
@@ -148,14 +148,14 @@ void GTSAlgos::boolean(const Mesh::MeshObject& ToolMesh, int Type)
     gts_object_destroy (GTS_OBJECT (s1));
     gts_object_destroy (GTS_OBJECT (s2));
     gts_bb_tree_destroy (tree1, TRUE);
-    gts_bb_tree_destroy (tree2, TRUE);  
+    gts_bb_tree_destroy (tree2, TRUE);
     throw Base::RuntimeError("the intersection of 1 and  2 is not a closed curve\n");
   }
 
   s3 = gts_surface_new (gts_surface_class (),
 			gts_face_class (),
 			gts_edge_class (),
-			gts_vertex_class ());  
+			gts_vertex_class ());
   if (Type==0) { // union
     gts_surface_inter_boolean (si, s3, GTS_1_OUT_2);
     gts_surface_inter_boolean (si, s3, GTS_2_OUT_1);
@@ -176,7 +176,7 @@ void GTSAlgos::boolean(const Mesh::MeshObject& ToolMesh, int Type)
   else if (Type==4) { // cut outer
     gts_surface_inter_boolean (si, s3, GTS_1_OUT_2);
   }
-   
+
   // check that the resulting surface is not self-intersecting
   if (check_self_intersection) {
     GtsSurface * self_intersects;
@@ -206,7 +206,7 @@ void GTSAlgos::boolean(const Mesh::MeshObject& ToolMesh, int Type)
   fillMeshFromGTSSurface(_Mesh,s3);
 
 
-  // destroy surfaces 
+  // destroy surfaces
   gts_object_destroy (GTS_OBJECT (s1));
   gts_object_destroy (GTS_OBJECT (s2));
   gts_object_destroy (GTS_OBJECT (s3));
@@ -215,7 +215,7 @@ void GTSAlgos::boolean(const Mesh::MeshObject& ToolMesh, int Type)
   // destroy bounding box trees (including bounding boxes)
   gts_bb_tree_destroy (tree1, TRUE);
   gts_bb_tree_destroy (tree2, TRUE);
-  
+
 
 }
 
@@ -227,7 +227,7 @@ void GTSAlgos::boolean(const Mesh::MeshObject& ToolMesh, int Type)
 static GtsEdge * new_edge (GtsVertex * v1, GtsVertex * v2)
 {
   GtsSegment * s = gts_vertices_are_connected (v1, v2);
-  if( s == NULL ) 
+  if( s == NULL )
     return gts_edge_new (gts_edge_class (), v1, v2);
   else
     return GTS_EDGE (s);
@@ -260,9 +260,9 @@ GtsSurface* GTSAlgos::createGTSSurface(const Mesh::MeshObject& Mesh)
   {
     // getting the three points of the facet
     Mesh.getKernel().GetFacetPoints(pFIter,p1,p2,p3);
-    
+
     // creating the edges and add the face to the surface
-    gts_surface_add_face (Surf, 
+    gts_surface_add_face (Surf,
   	    gts_face_new (Surf->face_class,
           new_edge (aVertex[p1],aVertex[p2]),
           new_edge (aVertex[p2],aVertex[p3]),

@@ -43,12 +43,12 @@ std::string MeshFeaturePy::representation() const
 
 PyObject*  MeshFeaturePy::countPoints(PyObject * /*args*/)
 {
-    return Py_BuildValue("i",getFeaturePtr()->Mesh.getValue().countPoints()); 
+    return Py_BuildValue("i",getFeaturePtr()->Mesh.getValue().countPoints());
 }
 
 PyObject*  MeshFeaturePy::countFacets(PyObject * /*args*/)
 {
-    return Py_BuildValue("i",getFeaturePtr()->Mesh.getValue().countFacets()); 
+    return Py_BuildValue("i",getFeaturePtr()->Mesh.getValue().countFacets());
 }
 
 PyObject*  MeshFeaturePy::harmonizeNormals(PyObject *args)
@@ -62,7 +62,7 @@ PyObject*  MeshFeaturePy::harmonizeNormals(PyObject *args)
         getFeaturePtr()->Mesh.finishEditing();
     } PY_CATCH;
 
-    Py_Return; 
+    Py_Return;
 }
 
 PyObject*  MeshFeaturePy::smooth(PyObject *args)
@@ -79,7 +79,7 @@ PyObject*  MeshFeaturePy::smooth(PyObject *args)
         obj->Mesh.finishEditing();
     } PY_CATCH;
 
-    Py_Return; 
+    Py_Return;
 }
 
 PyObject*  MeshFeaturePy::removeNonManifolds(PyObject *args)
@@ -116,7 +116,7 @@ PyObject*  MeshFeaturePy::fixIndices(PyObject *args)
         obj->Mesh.finishEditing();
     } PY_CATCH;
 
-    Py_Return; 
+    Py_Return;
 }
 
 PyObject*  MeshFeaturePy::fixDegenerations(PyObject *args)
@@ -132,7 +132,7 @@ PyObject*  MeshFeaturePy::fixDegenerations(PyObject *args)
         obj->Mesh.finishEditing();
     } PY_CATCH;
 
-    Py_Return; 
+    Py_Return;
 }
 
 PyObject*  MeshFeaturePy::removeDuplicatedFacets(PyObject *args)
@@ -147,7 +147,7 @@ PyObject*  MeshFeaturePy::removeDuplicatedFacets(PyObject *args)
         obj->Mesh.finishEditing();
     } PY_CATCH;
 
-    Py_Return; 
+    Py_Return;
 }
 
 PyObject*  MeshFeaturePy::removeDuplicatedPoints(PyObject *args)
@@ -162,7 +162,7 @@ PyObject*  MeshFeaturePy::removeDuplicatedPoints(PyObject *args)
         obj->Mesh.finishEditing();
     } PY_CATCH;
 
-    Py_Return; 
+    Py_Return;
 }
 
 PyObject*  MeshFeaturePy::fixSelfIntersections(PyObject *args)
@@ -223,5 +223,5 @@ PyObject *MeshFeaturePy::getCustomAttributes(const char* /*attr*/) const
 
 int MeshFeaturePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

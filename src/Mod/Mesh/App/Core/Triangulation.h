@@ -160,7 +160,7 @@ private:
     * The original code snippet was submitted to FlipCode.com by John W. Ratcliff
     * (jratcliff@verant.com) on July 22, 2000.
     * The original vector of 2d points is replaced by a vector of 3d points where the
-    * z-coordinate is ignored. This is because the algorithm is often used for 3d points 
+    * z-coordinate is ignored. This is because the algorithm is often used for 3d points
     * projected to a common plane. The result vector of 2d points is replaced by an
     * array of indices to the points of the polygon.
     */

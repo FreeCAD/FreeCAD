@@ -38,7 +38,7 @@ class Ui_DlgSettingsMeshView;
  * @author Werner Mayer
  */
 class DlgSettingsMeshView : public Gui::Dialog::PreferencePage
-{ 
+{
     Q_OBJECT
 
 public:

@@ -256,7 +256,7 @@ class MeshExport MeshSurfaceVisitor : public MeshFacetVisitor
 public:
     MeshSurfaceVisitor (MeshSurfaceSegment& segm, std::vector<FacetIndex> &indices);
     ~MeshSurfaceVisitor () override;
-    bool AllowVisit (const MeshFacet& face, const MeshFacet&, 
+    bool AllowVisit (const MeshFacet& face, const MeshFacet&,
                      FacetIndex, unsigned long, unsigned short neighbourIndex) override;
     bool Visit (const MeshFacet & face, const MeshFacet &,
                 FacetIndex ulFInd, unsigned long) override;

@@ -476,7 +476,7 @@ void MeshTopoAlgorithm::AdjustEdgesToCurvatureDirection()
       uPt3 = rFace1._aulPoints[(side+2)%3];
       side = rFace2.Side(uPt1, uPt2);
       uPt4 = rFace2._aulPoints[(side+2)%3];
-      
+
       Wm4::Vector3<float> dir;
       float fActCurvature;
       if ( fabs(aMinCurv[uPt1]) > fabs(aMaxCurv[uPt1]) ) {
@@ -491,7 +491,7 @@ void MeshTopoAlgorithm::AdjustEdgesToCurvatureDirection()
       Base::Vector3f cEdgeDir1 = raPts[uPt1] - raPts[uPt2];
       Base::Vector3f cEdgeDir2 = raPts[uPt3] - raPts[uPt4];
       cMinDir.Normalize(); cEdgeDir1.Normalize(); cEdgeDir2.Normalize();
-    
+
       // get the plane and calculate the distance to the fourth point
       MeshGeomFacet cPlane(raPts[uPt1], raPts[uPt2], raPts[uPt3]);
       // positive or negative distance
@@ -588,7 +588,7 @@ bool MeshTopoAlgorithm::IsSwapEdgeLegal(FacetIndex ulFacetPos, FacetIndex ulNeig
     if (cT4.IsDegenerated(MeshDefinitions::_fMinPointDistanceP2))
         return false;
 
-    // We must make sure that the two adjacent triangles builds a convex polygon, otherwise 
+    // We must make sure that the two adjacent triangles builds a convex polygon, otherwise
     // the swap edge operation is illegal
     Base::Vector3f cU = cP2-cP1;
     Base::Vector3f cV = cP4-cP3;
@@ -645,7 +645,7 @@ void MeshTopoAlgorithm::SwapEdge(FacetIndex ulFacetPos, FacetIndex ulNeighbour)
     unsigned short uFSide = rclF.Side(rclN);
     unsigned short uNSide = rclN.Side(rclF);
 
-    if (uFSide == USHRT_MAX || uNSide == USHRT_MAX) 
+    if (uFSide == USHRT_MAX || uNSide == USHRT_MAX)
         return; // not neighbours
 
     // adjust the neighbourhood
@@ -671,7 +671,7 @@ bool MeshTopoAlgorithm::SplitEdge(FacetIndex ulFacetPos, FacetIndex ulNeighbour,
     unsigned short uFSide = rclF.Side(rclN);
     unsigned short uNSide = rclN.Side(rclF);
 
-    if (uFSide == USHRT_MAX || uNSide == USHRT_MAX) 
+    if (uFSide == USHRT_MAX || uNSide == USHRT_MAX)
         return false; // not neighbours
 
     PointIndex uPtCnt = _rclMesh._aclPointArray.size();
@@ -908,7 +908,7 @@ bool MeshTopoAlgorithm::CollapseEdge(FacetIndex ulFacetPos, FacetIndex ulNeighbo
   unsigned short uFSide = rclF.Side(rclN);
   unsigned short uNSide = rclN.Side(rclF);
 
-  if (uFSide == USHRT_MAX || uNSide == USHRT_MAX) 
+  if (uFSide == USHRT_MAX || uNSide == USHRT_MAX)
     return false; // not neighbours
 
   if (!rclF.IsValid() || !rclN.IsValid())
@@ -1064,7 +1064,7 @@ bool MeshTopoAlgorithm::CollapseFacet(FacetIndex ulFacetPos)
         MeshFacet& rFace = _rclMesh._aclFacetArray[*it];
         rFace.Transpose(ulPointInd1, ulPointInd0);
     }
-    
+
     aRefs = GetFacetsToPoint(ulFacetPos, ulPointInd2);
     for (std::vector<FacetIndex>::iterator it = aRefs.begin(); it != aRefs.end(); ++it) {
         MeshFacet& rFace = _rclMesh._aclFacetArray[*it];
@@ -1580,10 +1580,10 @@ void MeshTopoAlgorithm::FillupHoles(int level, AbstractPolygonTriangulator& cTri
         addFacets.reserve(newFacets.size());
         unsigned long ctPoints = _rclMesh.CountPoints();
         for (MeshFacetArray::_TIterator it = newFacets.begin(); it != newFacets.end(); ++it) {
-            if (it->_aulPoints[0] >= ctPoints || 
-                it->_aulPoints[1] >= ctPoints || 
+            if (it->_aulPoints[0] >= ctPoints ||
+                it->_aulPoints[1] >= ctPoints ||
                 it->_aulPoints[2] >= ctPoints) {
-                Base::Console().Log("Ignore invalid face <%d, %d, %d> (%d vertices)\n", 
+                Base::Console().Log("Ignore invalid face <%d, %d, %d> (%d vertices)\n",
                     it->_aulPoints[0], it->_aulPoints[1], it->_aulPoints[2], ctPoints);
             }
             else {
@@ -1695,7 +1695,7 @@ void MeshComponents::SearchForComponents(TMode tMode, const std::vector<FacetInd
   MeshAlgorithm cAlgo(_rclMesh);
   cAlgo.SetFacetFlag(MeshFacet::VISIT);
   cAlgo.ResetFacetsFlag(aSegment, MeshFacet::VISIT);
-  
+
   const MeshFacetArray& rFAry = _rclMesh.GetFacets();
   MeshFacetArray::_TConstIterator iTri = rFAry.begin();
   MeshFacetArray::_TConstIterator iBeg = rFAry.begin();
@@ -1741,6 +1741,6 @@ void MeshComponents::SearchForComponents(TMode tMode, const std::vector<FacetInd
   }
 
   // sort components by size (descending order)
-  std::sort(aclConnectComp.begin(), aclConnectComp.end(), CNofFacetsCompare());  
+  std::sort(aclConnectComp.begin(), aclConnectComp.end(), CNofFacetsCompare());
   aclT = aclConnectComp;
 }

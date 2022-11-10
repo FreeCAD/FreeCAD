@@ -54,7 +54,7 @@ App::DocumentObjectExecReturn *Curvature::execute()
     if(!pcFeat || pcFeat->isError()) {
         return new App::DocumentObjectExecReturn("No mesh object attached.");
     }
- 
+
     // get all points
     const MeshCore::MeshKernel& rMesh = pcFeat->Mesh.getValue().getKernel();
     MeshCore::MeshCurvature meshCurv(rMesh);

@@ -153,7 +153,7 @@ PyMOD_INIT_FUNC(MeshGui)
     if (qApp) {
         (void)new MeshGui::CleanupHandler;
     }
-    
+
     // try to instantiate flat-mesh commands
     try{
         Base::Interpreter().runString("import MeshFlatteningCommand");

@@ -103,7 +103,7 @@ void SetOperations::Do ()
             break;
           }
     }
-    
+
     MeshDefinitions::SetMinPointDistance(saveMinMeshDistance);
     return;
   }
@@ -179,7 +179,7 @@ void SetOperations::Cut (std::set<FacetIndex>& facetsCuttingEdge0, std::set<Face
   grid1.GetCtGrids(ctGx1, ctGy1, ctGz1);
 
   unsigned long gx1;
-  for (gx1 = 0; gx1 < ctGx1; gx1++)  
+  for (gx1 = 0; gx1 < ctGx1; gx1++)
   {
     unsigned long gy1;
     for (gy1 = 0; gy1 < ctGy1; gy1++)
@@ -191,18 +191,18 @@ void SetOperations::Cut (std::set<FacetIndex>& facetsCuttingEdge0, std::set<Face
         {
           std::vector<FacetIndex> vecFacets2;
           grid2.Inside(grid1.GetBoundBox(gx1, gy1, gz1), vecFacets2);
-      
+
           if (!vecFacets2.empty())
           {
             std::set<FacetIndex> vecFacets1;
             grid1.GetElements(gx1, gy1, gz1, vecFacets1);
-            
+
             std::set<FacetIndex>::iterator it1;
             for (it1 = vecFacets1.begin(); it1 != vecFacets1.end(); ++it1)
             {
               FacetIndex fidx1 = *it1;
               MeshGeomFacet f1 = _cutMesh0.GetFacet(*it1);
-              
+
               std::vector<FacetIndex>::iterator it2;
               for (it2 = vecFacets2.begin(); it2 != vecFacets2.end(); ++it2)
               {
@@ -213,7 +213,7 @@ void SetOperations::Cut (std::set<FacetIndex>& facetsCuttingEdge0, std::set<Face
 
                 int isect = f1.IntersectWithFacet(f2, p0, p1);
                 if (isect > 0)
-                { 
+                {
                    // optimize cut line if distance to nearest point is too small
                   float minDist1 = _minDistanceToPoint, minDist2 = _minDistanceToPoint;
                   MeshPoint np0 = p0, np1 = p1;
@@ -298,12 +298,12 @@ void SetOperations::Cut (std::set<FacetIndex>& facetsCuttingEdge0, std::set<Face
         } // if (grid1.GetCtElements(gx1, gy1, gz1) > 0)
       } // for (gz1 = 0; gz1 < ctGz1; gz1++)
     } // for (gy1 = 0; gy1 < ctGy1; gy1++)
-  } // for (gx1 = 0; gx1 < ctGx1; gx1++)  
+  } // for (gx1 = 0; gx1 < ctGx1; gx1++)
 }
 
 void SetOperations::TriangulateMesh (const MeshKernel &cutMesh, int side)
 {
-  // Triangulate Mesh 
+  // Triangulate Mesh
   std::map<FacetIndex, std::list<std::set<MeshPoint>::iterator> >::iterator it1;
   for (it1 = _facet2points[side].begin(); it1 != _facet2points[side].end(); ++it1)
   {
@@ -324,7 +324,7 @@ void SetOperations::TriangulateMesh (const MeshKernel &cutMesh, int side)
       pointsSet.insert(f._aclPoints[i]);
       points.push_back(f._aclPoints[i]);
     }
-    
+
     // triangulated facets
     std::list<std::set<MeshPoint>::iterator>::iterator it2;
     for (it2 = it1->second.begin(); it2 != it1->second.end(); ++it2)
@@ -366,7 +366,7 @@ void SetOperations::TriangulateMesh (const MeshKernel &cutMesh, int side)
       { // two same triangle corner points
         continue;
       }
-  
+
       MeshGeomFacet facet(points[it->_aulPoints[0]],
                           points[it->_aulPoints[1]],
                           points[it->_aulPoints[2]]);
@@ -470,9 +470,9 @@ void SetOperations::CollectFacets (int side, float mult)
     { // Facet found, visit neighbours
       std::vector<FacetIndex> facets;
       facets.push_back(itf - rFacets.begin()); // add seed facet
-      CollectFacetVisitor visitor(mesh, facets, _edges, side, mult, _builder); 
+      CollectFacetVisitor visitor(mesh, facets, _edges, side, mult, _builder);
       mesh.VisitNeighbourFacets(visitor, itf - rFacets.begin());
-      
+
       if (visitor._addFacets == 0)
       { // mark all facets to add it to the result
         algo.SetFacetsFlag(facets, MeshFacet::TMP0);
