@@ -44,7 +44,7 @@ public:
     /// destructor
     ~ViewProviderLoft() override;
 
-    /// grouping handling 
+    /// grouping handling
     std::vector<App::DocumentObject*> claimChildren(void)const override;
     void setupContextMenu(QMenu*, QObject*, const char*) override;
 
@@ -52,7 +52,7 @@ public:
     void highlightProfile(bool on);
     void highlightSection(bool on);
     void highlightReferences(Reference mode, bool on);
-    
+
 protected:
     QIcon getIcon(void) const override;
     bool setEdit(int ModNum) override;

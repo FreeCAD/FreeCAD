@@ -42,7 +42,7 @@ class ButtonGroup;
 class ViewProvider;
 }
 
-namespace PartDesignGui { 
+namespace PartDesignGui {
 
 
 
@@ -60,7 +60,7 @@ protected:
     enum selectionModes { none, refAdd, refRemove, refObjAdd };
     void changeEvent(QEvent *e) override;
     selectionModes selectionMode = none;
-    
+
     void removeFromListWidget(QListWidget *w, QString name);
     bool referenceSelected(const Gui::SelectionChanges& msg) const;
 

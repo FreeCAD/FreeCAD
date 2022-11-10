@@ -205,7 +205,7 @@ void TaskMirroredParameters::onSelectionChanged(const Gui::SelectionChanges& msg
             getReferencedSelection(pcMirrored, msg, selObj, mirrorPlanes);
             if (!selObj)
                     return;
-            
+
             if ( selectionMode == reference || selObj->isDerivedFrom ( App::Plane::getClassTypeId () ) ) {
                 setupTransaction();
                 pcMirrored->MirrorPlane.setValue(selObj, mirrorPlanes);

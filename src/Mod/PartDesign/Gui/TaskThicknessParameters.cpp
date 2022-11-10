@@ -153,7 +153,7 @@ void TaskThicknessParameters::onSelectionChanged(const Gui::SelectionChanges& ms
             }
             // highlight existing references for possible further selections
             DressUpView->highlightReferences(true);
-        } 
+        }
     }
 }
 
@@ -284,7 +284,7 @@ bool TaskThicknessParameters::getIntersection(void) const
 }
 
 int TaskThicknessParameters::getJoinType(void) const {
-    
+
     return ui->joinComboBox->currentIndex();
 }
 

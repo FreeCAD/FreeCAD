@@ -43,50 +43,50 @@ FeatureBase::FeatureBase()
 }
 
 Part::Feature* FeatureBase::getBaseObject(bool) const {
-    
+
     return nullptr;
 }
 
 short int FeatureBase::mustExecute() const {
-        
+
     if(BaseFeature.isTouched())
         return 1;
-    
+
     return Part::Feature::mustExecute();
 }
 
 
 App::DocumentObjectExecReturn* FeatureBase::execute() {
-       
+
     if(!BaseFeature.getValue())
         return new App::DocumentObjectExecReturn("BaseFeature link is not set");
-    
+
     if(!BaseFeature.getValue()->isDerivedFrom(Part::Feature::getClassTypeId()))
         return new App::DocumentObjectExecReturn("BaseFeature must be a Part::Feature");
-    
+
     auto shape = static_cast<Part::Feature*>(BaseFeature.getValue())->Shape.getValue();
     if (shape.IsNull())
         return new App::DocumentObjectExecReturn("BaseFeature has an empty shape");
-    
+
     Shape.setValue(shape);
-    
+
     return StdReturn;
 }
 
 void FeatureBase::onChanged(const App::Property* prop) {
-    
+
     // the BaseFeature property should track the Body BaseFeature and vice-versa
     if (prop == &BaseFeature) {
-        
+
         auto body = getFeatureBody();
         if(!body)
             return;
-    
+
         if (BaseFeature.getValue() && body->BaseFeature.getValue() != BaseFeature.getValue()) {
             body->BaseFeature.setValue(BaseFeature.getValue());
         }
     }
-    
+
     Part::Feature::onChanged(prop);
 }
 

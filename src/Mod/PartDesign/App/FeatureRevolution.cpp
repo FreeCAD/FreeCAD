@@ -50,7 +50,7 @@ const App::PropertyAngle::Constraints Revolution::floatAngle = { Base::toDegrees
 Revolution::Revolution()
 {
     addSubType = FeatureAddSub::Additive;
-    
+
     ADD_PROPERTY_TYPE(Base,(Base::Vector3d(0.0,0.0,0.0)),"Revolution", App::Prop_ReadOnly, "Base");
     ADD_PROPERTY_TYPE(Axis,(Base::Vector3d(0.0,1.0,0.0)),"Revolution", App::Prop_ReadOnly, "Axis");
     ADD_PROPERTY_TYPE(Angle,(360.0),"Revolution", App::Prop_None, "Angle");
@@ -138,7 +138,7 @@ App::DocumentObjectExecReturn *Revolution::execute()
         for (;xp.More(); xp.Next()) {
             if (checkLineCrossesFace(gp_Lin(pnt, dir), TopoDS::Face(xp.Current())))
                 return new App::DocumentObjectExecReturn("Revolve axis intersects the sketch");
-        }        
+        }
 
         // revolve the face to a solid
         BRepPrimAPI_MakeRevol RevolMaker(sketchshape, gp_Ax1(pnt, dir), angle);
@@ -147,7 +147,7 @@ App::DocumentObjectExecReturn *Revolution::execute()
             TopoDS_Shape result = RevolMaker.Shape();
             result = refineShapeIfActive(result);
             // set the additive shape property for later usage in e.g. pattern
-            this->AddSubShape.setValue(result);            
+            this->AddSubShape.setValue(result);
 
             if (!base.IsNull()) {
                 // Let's call algorithm computing a fuse operation:

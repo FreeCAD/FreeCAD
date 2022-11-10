@@ -43,7 +43,7 @@ public:
     Solid();
 
 protected:
- 
+
 };
 
 } //namespace PartDesign

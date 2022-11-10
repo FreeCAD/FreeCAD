@@ -36,15 +36,15 @@ class PartDesignExport FeatureBase : public PartDesign::Feature
 
 public:
     FeatureBase();
-      
+
     short int mustExecute() const override;
-    
+
     Part::Feature* getBaseObject(bool silent=false) const override;
-        
+
     const char* getViewProviderName() const override {
         return "PartDesignGui::ViewProviderBase";
     }
-    
+
     void onChanged(const App::Property* prop) override;
     App::DocumentObjectExecReturn* execute() override;
     void onDocumentRestored() override;

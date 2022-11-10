@@ -41,7 +41,7 @@ namespace Gui {
 class ViewProvider;
 }
 
-namespace PartDesignGui { 
+namespace PartDesignGui {
 
 
 
@@ -62,7 +62,7 @@ class TaskDlgDatumParameters : public PartGui::TaskDlgAttacher
 public:
     explicit TaskDlgDatumParameters(ViewProviderDatum *DatumView);
     ~TaskDlgDatumParameters() override;
-    
+
     bool accept() override;
     bool reject() override;
 };

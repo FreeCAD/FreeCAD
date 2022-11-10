@@ -10,7 +10,7 @@ to ANSI standards from the methods outlined in:
   handling. Boca Raton: Taylor & Francis, 2006. Print.
 
   AND
-  
+
   Oberg, Erik, et al. Machinery's handbook : a reference book for the
   mechanical engineer, designer, manufacturing engineer, draftsman,
   toolmaker, and machinist. New York: Industrial Press, 2016. Print.

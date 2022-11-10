@@ -70,7 +70,7 @@ App::DocumentObjectExecReturn *Boolean::execute()
 {
     // Get the operation type
     std::string type = Type.getValueAsString();
-   
+
     // Check the parameters
     const Part::Feature* baseFeature = this->getBaseObject(/* silent = */ true);
 
@@ -90,11 +90,11 @@ App::DocumentObjectExecReturn *Boolean::execute()
         auto feature = tools.back();
         if(!feature->isDerivedFrom(Part::Feature::getClassTypeId()))
             return new App::DocumentObjectExecReturn("Cannot do boolean with anything but Part::Feature and its derivatives");
-        
+
         baseTopShape = static_cast<Part::Feature*>(feature)->Shape.getShape();
         tools.pop_back();
     }
-        
+
     if (baseTopShape.getShape().IsNull())
         return new App::DocumentObjectExecReturn("Cannot do boolean operation with invalid base shape");
 
@@ -157,7 +157,7 @@ App::DocumentObjectExecReturn *Boolean::execute()
 }
 
 void Boolean::onChanged(const App::Property* prop) {
-    
+
     if(strcmp(prop->getName(), "Group") == 0)
         touch();
 
