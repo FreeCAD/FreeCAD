@@ -7,6 +7,7 @@ SET(AddonManager_SRCS
     Addon.py
     AddonManager.py
     AddonManager.ui
+    addonmanager_connection_checker.py
     addonmanager_devmode.py
     addonmanager_devmode_add_content.py
     addonmanager_devmode_license_selector.py

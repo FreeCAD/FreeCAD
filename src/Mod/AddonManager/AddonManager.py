@@ -54,7 +54,6 @@ from addonmanager_workers_installation import (
     UpdateMetadataCacheWorker,
     UpdateAllWorker,
 )
-from addonmanager_workers_utility import ConnectionChecker
 import addonmanager_utilities as utils
 import AddonManager_rc
 from package_list import PackageList, PackageListItemModel
@@ -69,6 +68,7 @@ from manage_python_dependencies import (
 )
 from addonmanager_devmode import DeveloperMode
 from addonmanager_firstrun import FirstRunDialog
+from addonmanager_connection_checker import ConnectionCheckerGUI
 
 import NetworkManager
 
@@ -111,7 +111,6 @@ class CommandAddonManager:
     """The main Addon Manager class and FreeCAD command"""
 
     workers = [
-        "connection_checker",
         "create_addon_list_worker",
         "check_worker",
         "show_worker",
@@ -164,6 +163,10 @@ class CommandAddonManager:
         self.update_all_worker = None
         self.developer_mode = None
 
+        # Set up the connection checker
+        self.connection_checker = ConnectionCheckerGUI()
+        self.connection_checker.connection_available.connect(self.launch)
+
         # Give other parts of the AM access to the current instance
         global INSTANCE
         INSTANCE = self
@@ -184,61 +187,11 @@ class CommandAddonManager:
         NetworkManager.InitializeNetworkManager()
 
         firstRunDialog = FirstRunDialog()
-        readWarning = firstRunDialog.exec()
+        if not firstRunDialog.exec():
+            return
+        
+        self.connection_checker.start()
 
-        pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
-        dev_mode_active = pref.GetBool("developerMode", False)
-
-        if readWarning:
-            # Check the connection in a new thread, so FreeCAD stays responsive
-            self.connection_checker = ConnectionChecker()
-            self.connection_checker.success.connect(self.launch)
-            self.connection_checker.failure.connect(self.network_connection_failed)
-            self.connection_checker.start()
-
-            # If it takes longer than a half second to check the connection, show a message:
-            self.connection_message_timer = QtCore.QTimer.singleShot(
-                500, self.show_connection_check_message
-            )
-
-    def show_connection_check_message(self):
-        if not self.connection_checker.isFinished():
-            self.connection_check_message = QtWidgets.QMessageBox(
-                QtWidgets.QMessageBox.Information,
-                translate("AddonsInstaller", "Checking connection"),
-                translate("AddonsInstaller", "Checking for connection to GitHub..."),
-                QtWidgets.QMessageBox.Cancel,
-            )
-            self.connection_check_message.buttonClicked.connect(
-                self.cancel_network_check
-            )
-            self.connection_check_message.show()
-
-    def cancel_network_check(self, _):
-        if not self.connection_checker.isFinished():
-            self.connection_checker.success.disconnect(self.launch)
-            self.connection_checker.failure.disconnect(self.network_connection_failed)
-            self.connection_checker.requestInterruption()
-            self.connection_checker.wait(500)
-            self.connection_check_message.close()
-
-    def network_connection_failed(self, message: str) -> None:
-        # This must run on the main GUI thread
-        if hasattr(self, "connection_check_message") and self.connection_check_message:
-            self.connection_check_message.close()
-        if NetworkManager.HAVE_QTNETWORK:
-            QtWidgets.QMessageBox.critical(
-                None, translate("AddonsInstaller", "Connection failed"), message
-            )
-        else:
-            QtWidgets.QMessageBox.critical(
-                None,
-                translate("AddonsInstaller", "Missing dependency"),
-                translate(
-                    "AddonsInstaller",
-                    "Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.",
-                ),
-            )
 
     def launch(self) -> None:
         """Shows the Addon Manager UI"""
