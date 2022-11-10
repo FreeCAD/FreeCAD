@@ -1,6 +1,11 @@
 # ***************************************************************************
+# *   Copyright (c) 2022 Peter McB                                          *
+# *   added the function, mesh_2_femmesh, to convert the MESH               *
+# *                     into a triangular FEMMESH                           *
 # *                                                                         *
 # *   Copyright (c) 2016 Frantisek Loeffelmann <LoffF@email.cz>             *
+# *   extension to the work of:                                             *
+#         Frantisek Loeffelmann, Ulrich Brammer, Bernd Hahnebach            *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -21,7 +26,7 @@
 # ***************************************************************************
 
 __title__ = "FemMesh to Mesh converter"
-__author__ = "Frantisek Loeffelmann, Ulrich Brammer, Bernd Hahnebach"
+__author__ = "Frantisek Loeffelmann, Ulrich Brammer, Bernd Hahnebach, Peter McB"
 __url__ = "https://www.freecadweb.org"
 
 ## @package FwmMesh2Mesh
@@ -30,6 +35,7 @@ __url__ = "https://www.freecadweb.org"
 import time
 
 import FreeCAD
+import Fem
 # import Mesh
 
 
@@ -200,4 +206,52 @@ def femmesh_2_mesh(myFemMesh, myResults=None):
     FreeCAD.Console.PrintMessage(
         "Mesh by surface search method: {}\n".format(end_time - start_time)
     )
+    mesh2femmesh = mesh_2_femmesh(myFemMesh, singleFaces, faceCodeDict)
     return output_mesh
+
+# additional function to convert mesh to femmesh
+def mesh_2_femmesh(myFemMesh, singleFaces, faceCodeDict):
+    start_time = time.process_time()
+    femmesh = Fem.FemMesh()
+    myfemmesh = myFemMesh.Nodes
+# nodes contains the nodes that are used
+    nodes = {}
+    for myFace in singleFaces:
+        face_nodes = faceCodeDict[myFace]
+        for j in (0, 1, 2):
+          try:
+            nodes[face_nodes[j]] += 1
+          except:
+            nodes[face_nodes[j]] = 0
+        if len(face_nodes) == 4:
+          j = 3
+          try:
+              nodes[face_nodes[j]] += 1
+          except:
+              nodes[face_nodes[j]] = 0
+    sfNode = femmesh.addNode
+    sfFace = femmesh.addFace
+    for key in myFemMesh.Nodes:
+        mynode = myfemmesh[key]
+        try:
+          if(nodes[key] >= 0):
+              sfNode(mynode[0], mynode[1], mynode[2], key)
+        except:
+         pass
+
+    output_mesh = []
+
+    for myFace in singleFaces:
+        face_nodes = faceCodeDict[myFace]
+        sfFace(face_nodes[0], face_nodes[1], face_nodes[2])
+        if len(face_nodes) == 4:
+          sfFace(face_nodes[2], face_nodes[3], face_nodes[0])
+    obj = FreeCAD.ActiveDocument.addObject(
+        "Fem::FemMeshObject", "Mesh2Fem")
+    obj.FemMesh = femmesh
+    end_time = time.process_time()
+    FreeCAD.Console.PrintMessage(
+        "Convert to FemMesh: {}\n".format(end_time - start_time)
+    )
+    return obj
+# end of file

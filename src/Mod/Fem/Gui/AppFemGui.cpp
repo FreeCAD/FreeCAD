@@ -1,4 +1,8 @@
 /***************************************************************************
+ *   Copyright (c) 2022 Peter McB                                          *
+ *   additional statement(s) for element sets                              *         
+ *                                                                         *
+ *   added to: AppFemGui.cpp                                               *
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
@@ -43,6 +47,7 @@
 #include "ViewProviderFemMeshShape.h"
 #include "ViewProviderFemMeshShapeNetgen.h"
 #include "ViewProviderSetElements.h"
+#include "ViewProviderSetElementNodes.h" 
 #include "ViewProviderSetFaces.h"
 #include "ViewProviderSetGeometry.h"
 #include "ViewProviderSetNodes.h"
@@ -137,6 +142,7 @@ PyMOD_INIT_FUNC(FemGui)
     FemGui::PropertyFemMeshItem                                 ::init();
 
     FemGui::ViewProviderSetElements                             ::init();
+    FemGui::ViewProviderSetElementNodes                         ::init();
     FemGui::ViewProviderSetFaces                                ::init();
     FemGui::ViewProviderSetGeometry                             ::init();
     FemGui::ViewProviderSetNodes                                ::init();

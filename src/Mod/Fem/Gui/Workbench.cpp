@@ -1,4 +1,9 @@
 /***************************************************************************
+ *   Copyright (c) 2022 Peter McB                                          *
+ *   additional statement(s) for element sets:                             *         
+ *   added entry to Gui::MenuItem* mesh                                    *
+ *                                                                         *
+ *   added to: Workbench.cpp                                               *
  *   Copyright (c) 2008 Werner Mayer <werner.wm.mayer@gmx.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
@@ -333,6 +338,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
         << "FEM_MeshGroup"
         << "Separator"
         << "FEM_CreateNodesSet"
+        << "FEM_CreateElementsSet"
         << "FEM_FEMMesh2Mesh";
 
     Gui::MenuItem* solve = new Gui::MenuItem;
