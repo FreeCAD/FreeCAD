@@ -41,7 +41,10 @@ std::string DrawViewDimensionPy::representation() const
 
 PyObject* DrawViewDimensionPy::getRawValue(PyObject* args)
 {
-    (void) args;
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
     DrawViewDimension* dvd = getDrawViewDimensionPtr();
     double val = dvd->getDimValue();
     PyObject* pyVal = PyFloat_FromDouble(val);
@@ -50,12 +53,10 @@ PyObject* DrawViewDimensionPy::getRawValue(PyObject* args)
 
 PyObject* DrawViewDimensionPy::getText(PyObject* args)
 {
-    (void) args;
-//    PyObject* asShape = Py_False;
-//    PyObject* pagePos = Py_False;
-//    if (!PyArg_ParseTuple(args, "|OO", &asShape, &pagePos)) {
-//        return 0;
-//    }
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
     DrawViewDimension* dvd = getDrawViewDimensionPtr();
     std::string  textString = dvd->getFormattedDimensionValue();
 //TODO: check multiversion code!
@@ -65,7 +66,10 @@ PyObject* DrawViewDimensionPy::getText(PyObject* args)
 
 PyObject* DrawViewDimensionPy::getLinearPoints(PyObject* args)
 {
-    (void) args;
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
     DrawViewDimension* dvd = getDrawViewDimensionPtr();
     pointPair pts = dvd->getLinearPoints();
     Py::List ret;
@@ -76,7 +80,10 @@ PyObject* DrawViewDimensionPy::getLinearPoints(PyObject* args)
 
 PyObject* DrawViewDimensionPy::getArcPoints(PyObject* args)
 {
-    (void) args;
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
     DrawViewDimension* dvd = getDrawViewDimensionPtr();
     arcPoints pts = dvd->getArcPoints();
     Py::List ret;
@@ -91,7 +98,10 @@ PyObject* DrawViewDimensionPy::getArcPoints(PyObject* args)
 
 PyObject* DrawViewDimensionPy::getAnglePoints(PyObject* args)
 {
-    (void) args;
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
     DrawViewDimension* dvd = getDrawViewDimensionPtr();
     anglePoints pts = dvd->getAnglePoints();
     Py::List ret;
@@ -103,7 +113,10 @@ PyObject* DrawViewDimensionPy::getAnglePoints(PyObject* args)
 
 PyObject* DrawViewDimensionPy::getArrowPositions(PyObject* args)
 {
-    (void) args;
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
     DrawViewDimension* dvd = getDrawViewDimensionPtr();
     pointPair pts = dvd->getArrowPositions();
     Py::List ret;

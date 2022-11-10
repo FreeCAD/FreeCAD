@@ -37,11 +37,14 @@ std::string DrawProjGroupItemPy::representation() const
 
 PyObject* DrawProjGroupItemPy::autoPosition(PyObject *args)
 {
-    (void) args;
+    if (!PyArg_ParseTuple(args, "")) {
+    return nullptr;
+    }
+
     DrawProjGroupItem* item = getDrawProjGroupItemPtr();
     item->autoPosition();
-    Py_INCREF(Py_None);
-    return Py_None;
+
+    Py_Return;
 }
 
 PyObject *DrawProjGroupItemPy::getCustomAttributes(const char* /*attr*/) const
