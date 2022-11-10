@@ -85,8 +85,6 @@ public:
                            AccelLineEdit *currentShortcut = nullptr);
 
 protected:
-    void showEvent(QShowEvent* e) override;
-
     /** @name Internal helper function for handling command list widgets
      */
     //@{
@@ -115,6 +113,7 @@ protected Q_SLOTS:
     void onModifyMacroAction(const QByteArray&) override;
 
 protected:
+    void showEvent(QShowEvent* e) override;
     void changeEvent(QEvent *e) override;
     void setShortcutOfCurrentAction(const QString&);
 
