@@ -23,6 +23,7 @@
 #ifndef GUI_COMMAND_COMPLETER_H
 #define GUI_COMMAND_COMPLETER_H
 
+#include <FCGlobal.h>
 #include <QCompleter>
 
 class QLineEdit;

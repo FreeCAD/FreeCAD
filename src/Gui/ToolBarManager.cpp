@@ -180,8 +180,9 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
         return; // empty menu bar
 
     static QPointer<QWidget> _ActionWidget;
-    if (!_ActionWidget)
+    if (!_ActionWidget) {
         _ActionWidget = new QWidget(getMainWindow());
+    }
     else {
         for (auto action : _ActionWidget->actions())
             _ActionWidget->removeAction(action);
@@ -231,8 +232,9 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
 
         // setup the toolbar
         setup(*it, toolbar);
-        for (auto action : toolbar->actions())
+        for (auto action : toolbar->actions()) {
             _ActionWidget->addAction(action);
+        }
 
         // try to add some breaks to avoid to have all toolbars in one line
         if (toolbar_added) {
@@ -287,15 +289,19 @@ void ToolBarManager::setup(ToolBarItem* item, QToolBar* toolbar) const
         if (!action) {
             if ((*it)->command() == "Separator") {
                 action = toolbar->addSeparator();
-            } else {
+            }
+            else {
                 // Check if action was added successfully
                 if (mgr.addTo((*it)->command().c_str(), toolbar))
                     action = toolbar->actions().constLast();
             }
 
             // set the tool button user data
-            if (action) action->setData(QString::fromLatin1((*it)->command().c_str()));
-        } else {
+            if (action) {
+                action->setData(QString::fromLatin1((*it)->command().c_str()));
+            }
+        }
+        else {
             // Note: For toolbars we do not remove and re-add the actions
             // because this causes flicker effects. So, it could happen that the order of
             // buttons doesn't match with the order of commands in the workbench.
