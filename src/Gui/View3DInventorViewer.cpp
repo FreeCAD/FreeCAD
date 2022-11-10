@@ -2381,25 +2381,35 @@ void View3DInventorViewer::setSeekMode(SbBool on)
 
 void View3DInventorViewer::printDimension()
 {
-    SoCamera* cam = getSoRenderManager()->getCamera();
-    if (!cam) // no camera there
+    SoCamera* camera = getSoRenderManager()->getCamera();
+    if (!camera) // no camera there
         return;
 
-    SoType t = getSoRenderManager()->getCamera()->getTypeId();
-    if (t.isDerivedFrom(SoOrthographicCamera::getClassTypeId())) {
-        const SbViewportRegion& vp = getSoRenderManager()->getViewportRegion();
-        const SbVec2s& size = vp.getWindowSize();
-        short dimX, dimY;
-        size.getValue(dimX, dimY);
+    float aspectRatio = getViewportRegion().getViewportAspectRatio();
+    float fHeight = -1.0;
+    float fWidth = -1.0;
 
-        float fHeight = static_cast<SoOrthographicCamera*>(getSoRenderManager()->getCamera())->height.getValue();
-        float fWidth = fHeight;
+    SoType type = camera->getTypeId();
+    if (type.isDerivedFrom(SoOrthographicCamera::getClassTypeId())) {
+        fHeight = static_cast<SoOrthographicCamera*>(camera)->height.getValue();
+        fWidth = fHeight;
+    }
+    else if (type.isDerivedFrom(SoPerspectiveCamera::getClassTypeId())) {
+        float fHeightAngle = static_cast<SoPerspectiveCamera*>(camera)->heightAngle.getValue();
+        fHeight = std::tan(fHeightAngle / 2.0) * 2.0 * camera->focalDistance.getValue();
+        fWidth = fHeight;
+    }
 
-        if (dimX > dimY)
-            fWidth *= ((float)dimX)/((float)dimY);
-        else if (dimX < dimY)
-            fHeight *= ((float)dimY)/((float)dimX);
+    if (aspectRatio > 1.0) {
+        fWidth *= aspectRatio;
+    }
+    else {
+        fHeight *= aspectRatio;
+    }
 
+    QString dim;
+
+    if (fWidth >= 0.0 && fHeight >= 0.0) {
         // Translate screen units into user's unit schema
         Base::Quantity qWidth(Base::Quantity::MilliMetre);
         Base::Quantity qHeight(Base::Quantity::MilliMetre);
@@ -2409,12 +2419,10 @@ void View3DInventorViewer::printDimension()
         QString hStr = Base::UnitsApi::schemaTranslate(qHeight);
 
         // Create final string and update window
-        QString dim = QString::fromLatin1("%1 x %2")
-                      .arg(wStr, hStr);
-        getMainWindow()->setPaneText(2, dim);
+        dim = QString::fromLatin1("%1 x %2").arg(wStr, hStr);
     }
-    else
-        getMainWindow()->setPaneText(2, QLatin1String(""));
+
+    getMainWindow()->setPaneText(2, dim);
 }
 
 void View3DInventorViewer::selectAll()
