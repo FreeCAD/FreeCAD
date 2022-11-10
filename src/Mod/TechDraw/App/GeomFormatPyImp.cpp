@@ -63,7 +63,7 @@ PyObject* GeomFormatPy::clone(PyObject *args)
     if (type->tp_new)
         cpy = type->tp_new(type, this, nullptr);
     if (!cpy) {
-        PyErr_SetString(PyExc_TypeError, "failed to create clone of GeomFormat");
+        PyErr_SetString(PyExc_RuntimeError, "failed to create clone of GeomFormat");
         return nullptr;
     }
 
@@ -90,7 +90,7 @@ PyObject* GeomFormatPy::copy(PyObject *args)
     if (type->tp_new)
         cpy = type->tp_new(type, this, nullptr);
     if (!cpy) {
-        PyErr_SetString(PyExc_TypeError, "failed to create copy of GeomFormat");
+        PyErr_SetString(PyExc_RuntimeError, "failed to create copy of GeomFormat");
         return nullptr;
     }
 

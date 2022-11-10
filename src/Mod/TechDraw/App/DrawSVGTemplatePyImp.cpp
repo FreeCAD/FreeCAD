@@ -63,35 +63,26 @@ int DrawSVGTemplatePy::setCustomAttributes(const char* attr, PyObject* obj)
 
 PyObject* DrawSVGTemplatePy::getEditFieldContent(PyObject* args)
 {
-    PyObject* result = nullptr;
     char* fieldName;
     if (!PyArg_ParseTuple(args, "s", &fieldName)) {
-        Base::Console().Error("Error: DrawSVGTemplatePy::getEditFieldNames - Bad Arg\n");
         return nullptr;
     }
     std::string content = getDrawSVGTemplatePtr()->EditableTexts[fieldName];
     if (!content.empty()) {
-        result = PyUnicode_FromString(content.c_str());
+        return PyUnicode_FromString(content.c_str());
     }
-    return result;
+    Py_Return;
 }
 
 PyObject* DrawSVGTemplatePy::setEditFieldContent(PyObject* args)
 {
-    PyObject* result = Py_True;
     char* fieldName;
     char* newContent;
     if (!PyArg_ParseTuple(args, "ss", &fieldName, &newContent)) {
-        Base::Console().Error("Error: DrawSVGTemplatePy::getEditFieldNames - Bad Args\n");
-        result = Py_False;
-    } else {
-        try {
-            getDrawSVGTemplatePtr()->EditableTexts.setValue(fieldName, newContent);
-        }
-        catch (...) {
-            result = Py_False;
-        }
+        return nullptr;
     }
 
-    return result;
+    getDrawSVGTemplatePtr()->EditableTexts.setValue(fieldName, newContent);
+
+    Py_Return;
 }
