@@ -79,6 +79,7 @@
 
 
 using namespace TechDraw;
+using DU = DrawUtil;
 
 //===========================================================================
 // DrawViewPart
@@ -342,7 +343,7 @@ GeometryObject* DrawViewPart::makeGeometryForShape(TopoDS_Shape& shape)
                                             viewAxis,
                                             Rotation.getValue());  //conventional rotation
      }
-//    BRepTools::Write(scaledShape, "DVPScaled.brep");            //debug
+    BRepTools::Write(scaledShape, "DVPScaled.brep");            //debug
     GeometryObject* go =  buildGeometryObject(scaledShape, viewAxis);
     return go;
 }
@@ -1011,23 +1012,23 @@ bool DrawViewPart::hasGeometry(void) const
 //in the derived view.
 gp_Ax2 DrawViewPart::localVectorToCS(const Base::Vector3d localUnit) const
 {
-    gp_Pnt stdOrigin(0.0, 0.0, 0.0);
-    gp_Ax2 dvpCS = getProjectionCS(DrawUtil::toVector3d(stdOrigin));
-    gp_Vec gLocalUnit = DrawUtil::togp_Dir(localUnit);
-    gp_Vec gLocalX(-gLocalUnit.Y(), gLocalUnit.X(), 0.0);    //clockwise perp for 2d
+    double angle = atan2(localUnit.y, localUnit.x);     //radians
+    gp_Ax1 rotateAxisDir(gp_Pnt(0.0, 0.0, 0.0), getProjectionCS().Direction());
+    gp_Vec gNewDirection = getProjectionCS().XDirection().Rotated(rotateAxisDir, angle);
 
-    gp_Ax3 OXYZ;
-    gp_Trsf xLocalOXYZ;
-    xLocalOXYZ.SetTransformation(OXYZ, gp_Ax3(dvpCS));
-    gp_Vec gLocalUnitOXYZ = gLocalUnit.Transformed(xLocalOXYZ);
-    gp_Vec gLocalXOXYZ = gLocalX.Transformed(xLocalOXYZ);
-
-    return { stdOrigin, gp_Dir(gLocalUnitOXYZ), gp_Dir(gLocalXOXYZ) };
+    gp_Vec crossDirs = getProjectionCS().Direction().Crossed(gNewDirection);
+    gp_Vec gNewX = getProjectionCS().XDirection();
+    gp_Vec triple = crossDirs.Crossed(getProjectionCS().XDirection());
+    if (!DU::fpCompare(triple.Magnitude(), 0.0, EWTOLERANCE)) {
+        gNewX = triple;
+    }
+    return { gp_Pnt(0.0, 0.0, 0.0), gp_Dir(gNewDirection), gp_Dir(gNewX) };
 }
+
 
 Base::Vector3d DrawViewPart::localVectorToDirection(const Base::Vector3d localUnit) const
 {
-    Base::Console().Message("DVP::localVectorToDirection() - localUnit: %s\n", DrawUtil::formatVector(localUnit).c_str());
+//    Base::Console().Message("DVP::localVectorToDirection() - localUnit: %s\n", DrawUtil::formatVector(localUnit).c_str());
     gp_Ax2 cs = localVectorToCS(localUnit);
     return DrawUtil::toVector3d(cs.Direction());
 }
