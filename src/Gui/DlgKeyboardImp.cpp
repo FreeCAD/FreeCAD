@@ -101,9 +101,12 @@ DlgCustomKeyboardImp::DlgCustomKeyboardImp( QWidget* parent  )
 
     ui->shortcutTimeout->onRestore();
     QTimer *timer = new QTimer(this);
-    QObject::connect(ui->shortcutTimeout, QOverload<int>::of(&QSpinBox::valueChanged),
-                     timer, [=](int) {timer->start(100);});
-    QObject::connect(timer, &QTimer::timeout, [=](){ui->shortcutTimeout->onSave();});
+    QObject::connect(ui->shortcutTimeout, QOverload<int>::of(&QSpinBox::valueChanged), timer, [=](int) {
+        timer->start(100);
+    });
+    QObject::connect(timer, &QTimer::timeout, [=]() {
+        ui->shortcutTimeout->onSave();
+    });
 }
 
 /** Destroys the object and frees any allocated resources */
@@ -153,11 +156,14 @@ void DlgCustomKeyboardImp::populateCommandList(QTreeWidget *commandTreeWidget,
     if (auto item = commandTreeWidget->currentItem())
         current = item->data(1, Qt::UserRole).toByteArray();
 
-    if (separatorItem)
+    if (separatorItem) {
         commandTreeWidget->takeTopLevelItem(commandTreeWidget->indexOfTopLevelItem(separatorItem));
+    }
     commandTreeWidget->clear();
-    if (separatorItem)
+    if (separatorItem) {
         commandTreeWidget->addTopLevelItem(separatorItem);
+    }
+
     CommandManager & cCmdMgr = Application::Instance->commandManager();
     auto group = combo->itemData(combo->currentIndex(), Qt::UserRole).toByteArray();
     auto cmds = group == "All" ? cCmdMgr.getAllCommands()
@@ -210,11 +216,13 @@ DlgCustomKeyboardImp::initCommandList(QTreeWidget *commandTreeWidget,
         populateCommandList(commandTreeWidget, separatorItem, combo);
     });
 
-    QObject::connect(ShortcutManager::instance(), &ShortcutManager::shortcutChanged,
-                     timer, [timer]() { timer->start(100); });
+    QObject::connect(ShortcutManager::instance(), &ShortcutManager::shortcutChanged, timer, [timer]() {
+        timer->start(100);
+    });
 
-    QObject::connect(combo, QOverload<int>::of(&QComboBox::activated),
-                     timer, [timer]() { timer->start(100); });
+    QObject::connect(combo, QOverload<int>::of(&QComboBox::activated), timer, [timer]() {
+        timer->start(100);
+    });
 
     return Application::Instance->commandManager().signalChanged.connect([timer](){
         timer->start(100);
@@ -285,11 +293,18 @@ DlgCustomKeyboardImp::initCommandWidgets(QTreeWidget *commandTreeWidget,
 
         auto timer = new QTimer(priorityList);
         timer->setSingleShot(true);
-        if (currentShortcut)
-            QObject::connect(currentShortcut, &QLineEdit::textChanged, timer, [timer](){timer->start(200);});
-        QObject::connect(editShortcut, &QLineEdit::textChanged, timer, [timer](){timer->start(200);});
-        QObject::connect(ShortcutManager::instance(), &ShortcutManager::priorityChanged, timer, [timer](){timer->start(200);});
-        QObject::connect(timer, &QTimer::timeout, [=](){
+        if (currentShortcut) {
+            QObject::connect(currentShortcut, &QLineEdit::textChanged, timer, [timer]() {
+                timer->start(200);
+            });
+        }
+        QObject::connect(editShortcut, &QLineEdit::textChanged, timer, [timer]() {
+            timer->start(200);
+        });
+        QObject::connect(ShortcutManager::instance(), &ShortcutManager::priorityChanged, timer, [timer](){
+            timer->start(200);
+        });
+        QObject::connect(timer, &QTimer::timeout, [=]() {
             populatePriorityList(priorityList, editShortcut, currentShortcut);
         });
     }
@@ -510,8 +525,9 @@ void DlgCustomKeyboardImp::onModifyMacroAction(const QByteArray&)
 {
     QVariant data = ui->categoryBox->itemData(ui->categoryBox->currentIndex(), Qt::UserRole);
     QString group = data.toString();
-    if (group == QLatin1String("Macros"))
+    if (group == QLatin1String("Macros")) {
         ui->categoryBox->activated(ui->categoryBox->currentIndex());
+    }
 }
 
 void DlgCustomKeyboardImp::changeEvent(QEvent *e)
@@ -531,8 +547,10 @@ void DlgCustomKeyboardImp::changeEvent(QEvent *e)
         }
         ui->categoryBox->activated(ui->categoryBox->currentIndex());
     }
-    else if (e->type() == QEvent::StyleChange)
+    else if (e->type() == QEvent::StyleChange) {
         ui->categoryBox->activated(ui->categoryBox->currentIndex());
+    }
+
     QWidget::changeEvent(e);
 }
 
