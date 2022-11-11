@@ -20,16 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEATURE_MESH_SETOPERATIONS_H
 #define FEATURE_MESH_SETOPERATIONS_H
 
-#include <App/PropertyStandard.h>
+#include <App/PropertyLinks.h>
 
 #include "MeshFeature.h"
-
-#include <App/PropertyLinks.h>
-#include <App/PropertyGeo.h>
 
 
 namespace Mesh

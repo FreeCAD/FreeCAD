@@ -20,21 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Sequencer.h>
-
-#include "Core/MeshKernel.h"
-#include "Core/Algorithm.h"
-#include "Core/Evaluation.h"
 #include "Core/Iterator.h"
-#include "Core/Visitor.h"
-
 #include "Core/SetOperations.h"
 
 #include "FeatureMeshSetOperations.h"
@@ -48,8 +36,8 @@ PROPERTY_SOURCE(Mesh::SetOperations, Mesh::Feature)
 
 SetOperations::SetOperations()
 {
-    ADD_PROPERTY(Source1  ,(nullptr));
-    ADD_PROPERTY(Source2  ,(nullptr));
+    ADD_PROPERTY(Source1, (nullptr));
+    ADD_PROPERTY(Source2, (nullptr));
     ADD_PROPERTY(OperationType, ("union"));
 }
 

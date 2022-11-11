@@ -20,22 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
-
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Matrix.h>
-#include <Base/Sequencer.h>
-#include "FeatureMeshCurvature.h"
-#include "MeshFeature.h"
 
 #include "Core/Curvature.h"
-#include "Core/Elements.h"
-#include "Core/Iterator.h"
 
+#include "FeatureMeshCurvature.h"
+#include "MeshFeature.h"
 
 
 using namespace Mesh;
