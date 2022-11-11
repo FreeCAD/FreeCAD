@@ -1012,16 +1012,20 @@ bool DrawViewPart::hasGeometry(void) const
 //in the derived view.
 gp_Ax2 DrawViewPart::localVectorToCS(const Base::Vector3d localUnit) const
 {
+//    Base::Console().Message("DVP::localVectorToCS(%s)\n", DU::formatVector((localUnit)).c_str());
     double angle = atan2(localUnit.y, localUnit.x);     //radians
     gp_Ax1 rotateAxisDir(gp_Pnt(0.0, 0.0, 0.0), getProjectionCS().Direction());
-    gp_Vec gNewDirection = getProjectionCS().XDirection().Rotated(rotateAxisDir, angle);
-
-    gp_Vec crossDirs = getProjectionCS().Direction().Crossed(gNewDirection);
-    gp_Vec gNewX = getProjectionCS().XDirection();
-    gp_Vec triple = crossDirs.Crossed(getProjectionCS().XDirection());
-    if (!DU::fpCompare(triple.Magnitude(), 0.0, EWTOLERANCE)) {
-        gNewX = triple;
+    gp_Vec gOldX = getProjectionCS().XDirection();
+    gp_Vec gNewDirection = gOldX.Rotated(rotateAxisDir, angle);
+    gp_Vec gNewY = getProjectionCS().Direction();
+    gp_Vec gNewX = (gNewDirection.Crossed(gNewY).Reversed());
+    if (gNewX.IsParallel(gOldX, EWTOLERANCE)) {
+        //if the X directions are parallel, the view is rotating around X, so
+        //we should use the original X to prevent unwanted mirroring.
+        //There might be a better choice of tolerance than EWTOLERANCE
+        gNewX = gOldX;
     }
+
     return { gp_Pnt(0.0, 0.0, 0.0), gp_Dir(gNewDirection), gp_Dir(gNewX) };
 }
 
