@@ -1,5 +1,5 @@
 <RCC>
-    <qresource> 
+    <qresource>
         <file>icons/Draft_2DShapeView.svg</file>
         <file>icons/Draft_AddConstruction.svg</file>
         <file>icons/Draft_AddPoint.svg</file>
@@ -44,6 +44,7 @@
         <file>icons/Draft_Finish.svg</file>
         <file>icons/Draft_FlipDimension.svg</file>
         <file>icons/Draft_Grid.svg</file>
+        <file>icons/Draft_Hatch.svg</file>
         <file>icons/Draft_Heal.svg</file>
         <file>icons/Draft_Join.svg</file>
         <file>icons/Draft_Label.svg</file>
@@ -57,6 +58,7 @@
         <file>icons/Draft_N-Curve.svg</file>
         <file>icons/Draft_N-Linear.svg</file>
         <file>icons/Draft_N-Polygon.svg</file>
+        <file>icons/Draft_NewLayer.svg</file>
         <file>icons/Draft_Offset.svg</file>
         <file>icons/Draft_PathArray.svg</file>
         <file>icons/Draft_PathLinkArray.svg</file>
@@ -78,6 +80,21 @@
         <file>icons/Draft_ShapeString_tree.svg</file>
         <file>icons/Draft_Slope.svg</file>
         <file>icons/Draft_Snap.svg</file>
+        <file>icons/Draft_Snap_Angle.svg</file>
+        <file>icons/Draft_Snap_Center.svg</file>
+        <file>icons/Draft_Snap_Dimensions.svg</file>
+        <file>icons/Draft_Snap_Endpoint.svg</file>
+        <file>icons/Draft_Snap_Extension.svg</file>
+        <file>icons/Draft_Snap_Grid.svg</file>
+        <file>icons/Draft_Snap_Intersection.svg</file>
+        <file>icons/Draft_Snap_Lock.svg</file>
+        <file>icons/Draft_Snap_Midpoint.svg</file>
+        <file>icons/Draft_Snap_Near.svg</file>
+        <file>icons/Draft_Snap_Ortho.svg</file>
+        <file>icons/Draft_Snap_Parallel.svg</file>
+        <file>icons/Draft_Snap_Perpendicular.svg</file>
+        <file>icons/Draft_Snap_Special.svg</file>
+        <file>icons/Draft_Snap_WorkingPlane.svg</file>
         <file>icons/Draft_Split.svg</file>
         <file>icons/Draft_Stretch.svg</file>
         <file>icons/Draft_SubelementHighlight.svg</file>
@@ -91,23 +108,6 @@
         <file>icons/Draft_WireToBSpline.svg</file>
         <file>icons/DraftWorkbench.svg</file>
         <file>icons/preferences-draft.svg</file>
-        <file>icons/Snap_Angle.svg</file>
-        <file>icons/Snap_Center.svg</file>
-        <file>icons/Snap_Dimensions.svg</file>
-        <file>icons/Snap_Endpoint.svg</file>
-        <file>icons/Snap_Extension.svg</file>
-        <file>icons/Snap_Grid.svg</file>
-        <file>icons/Snap_Intersection.svg</file>
-        <file>icons/Snap_Lock.svg</file>
-        <file>icons/Snap_Midpoint.svg</file>
-        <file>icons/Snap_Near.svg</file>
-        <file>icons/Snap_Ortho.svg</file>
-        <file>icons/Snap_Parallel.svg</file>
-        <file>icons/Snap_Perpendicular.svg</file>
-        <file>icons/Snap_Special.svg</file>
-        <file>icons/Snap_WorkingPlane.svg</file>
-        <file>icons/Draft_NewLayer.svg</file>
-        <file>icons/Draft_Hatch.svg</file>
         <file>patterns/aluminium.svg</file>
         <file>patterns/brick01.svg</file>
         <file>patterns/concrete.svg</file>
@@ -190,4 +190,4 @@
         <file>ui/TaskPanel_SetStyle.ui</file>
         <file>ui/dialogHatch.ui</file>
     </qresource>
-</RCC> 
+</RCC>

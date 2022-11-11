@@ -175,18 +175,18 @@ class Snapper:
                                         ('special',       'dot')])
 
         self.cursors = \
-            coll.OrderedDict([('passive',       ':/icons/Snap_Near.svg'),
-                              ('extension',     ':/icons/Snap_Extension.svg'),
-                              ('parallel',      ':/icons/Snap_Parallel.svg'),
-                              ('grid',          ':/icons/Snap_Grid.svg'),
-                              ('endpoint',      ':/icons/Snap_Endpoint.svg'),
-                              ('midpoint',      ':/icons/Snap_Midpoint.svg'),
-                              ('perpendicular', ':/icons/Snap_Perpendicular.svg'),
-                              ('angle',         ':/icons/Snap_Angle.svg'),
-                              ('center',        ':/icons/Snap_Center.svg'),
-                              ('ortho',         ':/icons/Snap_Ortho.svg'),
-                              ('intersection',  ':/icons/Snap_Intersection.svg'),
-                              ('special',       ':/icons/Snap_Special.svg')])
+            coll.OrderedDict([('passive',       ':/icons/Draft_Snap_Near.svg'),
+                              ('extension',     ':/icons/Draft_Snap_Extension.svg'),
+                              ('parallel',      ':/icons/Draft_Snap_Parallel.svg'),
+                              ('grid',          ':/icons/Draft_Snap_Grid.svg'),
+                              ('endpoint',      ':/icons/Draft_Snap_Endpoint.svg'),
+                              ('midpoint',      ':/icons/Draft_Snap_Midpoint.svg'),
+                              ('perpendicular', ':/icons/Draft_Snap_Perpendicular.svg'),
+                              ('angle',         ':/icons/Draft_Snap_Angle.svg'),
+                              ('center',        ':/icons/Draft_Snap_Center.svg'),
+                              ('ortho',         ':/icons/Draft_Snap_Ortho.svg'),
+                              ('intersection',  ':/icons/Draft_Snap_Intersection.svg'),
+                              ('special',       ':/icons/Draft_Snap_Special.svg')])
 
 
     def init_active_snaps(self):
