@@ -120,7 +120,7 @@ void SoFCOffscreenRenderer::writeToImageFile(const char* filename, const char* c
         QByteArray ba;
         QBuffer buffer(&ba);
         buffer.open(QIODevice::WriteOnly);
-        image.save(&buffer, "JPG");
+        image.save(&buffer, "JPG", 90);
         writeJPEGComment(com, ba);
 
         QFile file(QString::fromUtf8(filename));
