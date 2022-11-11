@@ -20,15 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESH_SEGMENT_H
 #define MESH_SEGMENT_H
 
-#include <vector>
 #include <string>
+#include <vector>
+
+#include "Core/Iterator.h"
+
 #include "Facet.h"
 #include "Types.h"
-#include "Core/Iterator.h"
+
 
 namespace Mesh
 {

@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
+
+#include <App/Document.h>
 
 #include "Importer.h"
 #include "MeshFeature.h"
-#include <App/Document.h>
+
 
 using namespace Mesh;
 
