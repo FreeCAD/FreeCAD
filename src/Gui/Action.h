@@ -77,7 +77,7 @@ public:
         return _action;
     }
 
-    static QString createToolTip(QString tooltip,
+    static QString createToolTip(QString helpText,
                                  const QString &title,
                                  const QFont &font,
                                  const QString &shortcut,

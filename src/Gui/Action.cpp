@@ -282,7 +282,7 @@ QString Action::commandMenuText(const Command *cmd)
     return title;
 }
 
-QString Action::createToolTip(QString _tooltip,
+QString Action::createToolTip(QString helpText,
                               const QString & title,
                               const QFont &font,
                               const QString &sc,
@@ -291,7 +291,7 @@ QString Action::createToolTip(QString _tooltip,
     QString text = cleanTitle(title);
 
     if (text.isEmpty())
-        return _tooltip;
+        return helpText;
 
     // The following code tries to make a more useful tooltip by inserting at
     // the beginning of the tooltip the action title in bold followed by the
@@ -302,8 +302,8 @@ QString Action::createToolTip(QString _tooltip,
     // wrappin using <p style='white-space:pre'>.
 
     QString shortcut = sc;
-    if (shortcut.size() && _tooltip.endsWith(shortcut))
-        _tooltip.resize(_tooltip.size() - shortcut.size());
+    if (shortcut.size() && helpText.endsWith(shortcut))
+        helpText.resize(helpText.size() - shortcut.size());
     if (shortcut.size())
         shortcut = QString::fromLatin1(" (%1)").arg(shortcut);
 
@@ -329,45 +329,46 @@ QString Action::createToolTip(QString _tooltip,
             .arg(cmdName.toHtmlEscaped());
     }
 
-    if (shortcut.size() && _tooltip.endsWith(shortcut))
-        _tooltip.resize(_tooltip.size() - shortcut.size());
+    if (shortcut.size() && helpText.endsWith(shortcut))
+        helpText.resize(helpText.size() - shortcut.size());
 
-    if (_tooltip.isEmpty()
-            || _tooltip == text
-            || _tooltip == title)
+    if (helpText.isEmpty()
+            || helpText == text
+            || helpText == title)
     {
         return tooltip + cmdName;
     }
-    if (Qt::mightBeRichText(_tooltip)) {
+    if (Qt::mightBeRichText(helpText)) {
         // already rich text, so let it be to avoid duplicated unwrapping
-        return tooltip + _tooltip + cmdName;
+        return tooltip + helpText + cmdName;
     }
 
     tooltip += QString::fromLatin1(
             "<p style='white-space:pre; margin:0;'>");
 
     // If the user supplied tooltip contains line break, we shall honour it.
-    if (_tooltip.indexOf(QLatin1Char('\n')) >= 0)
-        tooltip += _tooltip.toHtmlEscaped() + QString::fromLatin1("</p>") ;
+    if (helpText.indexOf(QLatin1Char('\n')) >= 0) {
+        tooltip += helpText.toHtmlEscaped() + QString::fromLatin1("</p>") ;
+    }
     else {
         // If not, try to end the non wrapping paragraph at some pre defined
         // width, so that the following text can wrap at that width.
         float tipWidth = 400;
         QFontMetrics fm(font);
-        int width = QtTools::horizontalAdvance(fm, _tooltip);
+        int width = QtTools::horizontalAdvance(fm, helpText);
         if (width <= tipWidth) {
-            tooltip += _tooltip.toHtmlEscaped() + QString::fromLatin1("</p>") ;
+            tooltip += helpText.toHtmlEscaped() + QString::fromLatin1("</p>") ;
         }
         else {
-            int index = tipWidth / width * _tooltip.size();
+            int index = tipWidth / width * helpText.size();
             // Try to only break at white space
-            for(int i=0; i<50 && index<_tooltip.size(); ++i, ++index) {
-                if (_tooltip[index] == QLatin1Char(' '))
+            for(int i=0; i<50 && index<helpText.size(); ++i, ++index) {
+                if (helpText[index] == QLatin1Char(' '))
                     break;
             }
-            tooltip += _tooltip.left(index).toHtmlEscaped()
+            tooltip += helpText.left(index).toHtmlEscaped()
                 + QString::fromLatin1("</p>")
-                + _tooltip.right(_tooltip.size()-index).trimmed().toHtmlEscaped();
+                + helpText.right(helpText.size()-index).trimmed().toHtmlEscaped();
         }
     }
     return tooltip + cmdName;
