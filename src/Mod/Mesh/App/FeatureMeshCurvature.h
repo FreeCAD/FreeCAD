@@ -20,16 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FeatureMeshCurvature_H
 #define FeatureMeshCurvature_H
 
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
-#include <App/PropertyGeo.h>
 
-#include "Mesh.h"
 #include "MeshProperties.h"
+
 
 namespace Mesh
 {

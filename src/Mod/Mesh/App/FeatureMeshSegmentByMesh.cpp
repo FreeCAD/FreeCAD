@@ -20,20 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Sequencer.h>
 #include <Base/Converter.h>
 
 #include "Core/Algorithm.h"
 #include "Core/Evaluation.h"
-#include "Core/Iterator.h"
-#include "Core/Visitor.h"
 
 #include "FeatureMeshSegmentByMesh.h"
 
@@ -46,10 +38,10 @@ PROPERTY_SOURCE(Mesh::SegmentByMesh, Mesh::Feature)
 
 SegmentByMesh::SegmentByMesh()
 {
-    ADD_PROPERTY(Source  ,(nullptr));
-    ADD_PROPERTY(Tool    ,(nullptr));
-    ADD_PROPERTY(Base    ,(0.0,0.0,0.0));
-    ADD_PROPERTY(Normal  ,(0.0,0.0,1.0));
+    ADD_PROPERTY(Source, (nullptr));
+    ADD_PROPERTY(Tool, (nullptr));
+    ADD_PROPERTY(Base, (0.0, 0.0, 0.0));
+    ADD_PROPERTY(Normal, (0.0, 0.0, 1.0));
 }
 
 short SegmentByMesh::mustExecute() const

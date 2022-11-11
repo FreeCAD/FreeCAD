@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESH_GRID_H
 #define MESH_GRID_H
 
 #include <set>
 
-#include "MeshKernel.h"
-#include <Base/Vector3D.h>
 #include <Base/BoundBox.h>
+
+#include "MeshKernel.h"
+
 
 #define  MESH_CT_GRID          256     // Default value for number of elements per grid
 #define  MESH_MAX_GRIDS        100000  // Default value for maximum number of grids
@@ -41,7 +41,6 @@ class MeshKernel;
 class MeshGeomFacet;
 class MeshGrid;
 
-//#define MESHGRID_BBOX_EXTENSION 1.0e-3f
 #define MESHGRID_BBOX_EXTENSION 10.0f
 
 /**

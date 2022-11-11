@@ -20,14 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEATURE_MESH_TRANSFORM_H
 #define FEATURE_MESH_TRANSFORM_H
 
-#include "MeshFeature.h"
-
 #include <App/PropertyLinks.h>
-#include <App/PropertyGeo.h>
+
+#include "MeshFeature.h"
 
 
 namespace Mesh

@@ -20,17 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Sequencer.h>
 #include "FeatureMeshImport.h"
-
-#include "Core/MeshIO.h"
 
 
 using namespace Mesh;
@@ -39,9 +31,8 @@ using namespace MeshCore;
 PROPERTY_SOURCE(Mesh::Import, Mesh::Feature)
 
 
-Mesh::Import::Import()
-{
-    ADD_PROPERTY(FileName,(""));
+Mesh::Import::Import() {
+    ADD_PROPERTY(FileName, (""));
 }
 
 short Mesh::Import::mustExecute() const
