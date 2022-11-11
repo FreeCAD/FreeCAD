@@ -2513,15 +2513,6 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
         addConstraint(std::move(newConstr));
     };
 
-    // Adds a Point on ObjectConstraint except if the object is a B-Spline
-    auto addConstraintIfNoPointOnBSpline = [this](ConstraintType constrType, int GeoId1, PointPos pos1, int GeoId2, PointPos pos2)
-    {
-        if (constrType == PointOnObject && getGeometry(GeoId2)->getTypeId() == Part::GeomBSplineCurve::getClassTypeId())
-            return; // There is no support for PointOnObject in BSpline
-
-        addConstraint(constrType, GeoId1, pos1, GeoId2, pos2);
-    };
-
     // Removes all internal geometry of a BSplineCurve and updates the GeoId index after removal
     auto ifBSplineRemoveInternalAlignmentGeometry = [this](int &GeoId)
     {
@@ -2797,12 +2788,12 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
             // Segment comprising the start
             transformPreexistingConstraints (GeoId, GeoId1, point1, constrType1, secondPos1);
 
-            addConstraintIfNoPointOnBSpline (constrType1, GeoId, Sketcher::PointPos::end, GeoId1, secondPos1);
+            addConstraint (constrType1, GeoId, Sketcher::PointPos::end, GeoId1, secondPos1);
 
             // Segment comprising the end
             transformPreexistingConstraints (GeoId, GeoId2, point2, constrType2, secondPos2);
 
-            addConstraintIfNoPointOnBSpline (constrType2, newGeoId, Sketcher::PointPos::start, GeoId2, secondPos2);
+            addConstraint (constrType2, newGeoId, Sketcher::PointPos::start, GeoId2, secondPos2);
 
             // Both segments have a coincident center
             if(!isLineSegment && !isBSpline) {
@@ -2854,12 +2845,12 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
             if (op.Type == Operation::trim_start) {
                 delConstraintOnPoint(GeoId, PointPos::start, false);
                 // constrain the trimming point on the corresponding geometry
-                addConstraintIfNoPointOnBSpline (constrType, GeoId, PointPos::start, op.intersectingGeoId, secondPos);
+                addConstraint (constrType, GeoId, PointPos::start, op.intersectingGeoId, secondPos);
             }
             else if (op.Type == Operation::trim_end) {
                 delConstraintOnPoint(GeoId, PointPos::end, false);
                 // constrain the trimming point on the corresponding geometry
-                addConstraintIfNoPointOnBSpline (constrType, GeoId, PointPos::end, op.intersectingGeoId, secondPos);
+                addConstraint (constrType, GeoId, PointPos::end, op.intersectingGeoId, secondPos);
             }
 
             if (isNonPeriodicBSpline)
@@ -2951,9 +2942,9 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
             THROWM(ValueError,"Invalid position Sketcher::PointPos::none when creating a Coincident constraint")
 
         // constrain the trimming points on the corresponding geometries
-        addConstraintIfNoPointOnBSpline (constrType1, GeoId, PointPos::end, GeoId1, secondPos1);
+        addConstraint (constrType1, GeoId, PointPos::end, GeoId1, secondPos1);
 
-        addConstraintIfNoPointOnBSpline (constrType2, GeoId, PointPos::start, GeoId2, secondPos2);
+        addConstraint (constrType2, GeoId, PointPos::start, GeoId2, secondPos2);
 
         if (isBSpline)
             exposeInternalGeometry(GeoId);
