@@ -12,6 +12,7 @@ SET(AddonManager_SRCS
     addonmanager_devmode_add_content.py
     addonmanager_devmode_license_selector.py
     addonmanager_devmode_licenses_table.py
+    addonmanager_devmode_metadata_checker.py
     addonmanager_devmode_person_editor.py
     addonmanager_devmode_people_table.py
     addonmanager_devmode_predictor.py
