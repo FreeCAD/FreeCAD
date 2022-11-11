@@ -23,15 +23,16 @@
 #include "PreCompiled.h"
 
 #include <Base/PlacementPy.h>
-#include <Base/VectorPy.h>
-#include <Mod/Part/App/TopoShapePy.h>
-#include <Mod/Path/App/CommandPy.h>
-#include <Mod/Mesh/App/MeshPy.h>
-#include "Mod/Path/PathSimulator/App/PathSim.h"
 
+#include <Mod/Mesh/App/MeshPy.h>
+#include <Mod/Path/App/CommandPy.h>
+#include <Mod/Part/App/TopoShapePy.h>
+
+#include "PathSim.h"
 // inclusion of the generated files (generated out of PathSimPy.xml)
 #include "PathSimPy.h"
 #include "PathSimPy.cpp"
+
 
 using namespace PathSimulator;
 
