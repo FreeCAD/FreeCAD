@@ -337,14 +337,16 @@ TopoDS_Shape DrawComplexSection::makeAlignedPieces(const TopoDS_Shape &rawShape,
 {
 //    Base::Console().Message("DCS::makeAlignedPieces()\n");
     std::vector<TopoDS_Shape> pieces;
-    std::vector<double> pieceXSize;//size in sectionCS.XDirection (width)
-    std::vector<double> pieceYSize;//size in sectionCS.Direction (depth)
-    std::vector<double> pieceZSize;//size in sectionCS.YDirection (height)
-    std::vector<double> pieceDirections;
-    //make a "real" CS from the section projection CS
+    std::vector<double> pieceXSizeAll;  //size in sectionCS.XDirection (width)
+    std::vector<double> pieceYSizeAll;  //size in sectionCS.Direction (depth)
+    std::vector<double> pieceZSizeAll;  //size in sectionCS.YDirection (height)
+
+    //make a CS from the section CS ZX plane to allow piece positioning (left-right)
+    //with the section view vertical centerline and (in-out, forward-backward) with
+    //the effective section plane for cut surface identification.
     gp_Ax3 alignedCS(gp_Pnt(0.0, 0.0, 0.0),
-                     getSectionCS().YDirection(), //up and down
-                     getSectionCS().XDirection());//left to right
+                     getSectionCS().YDirection(), //section up and down >> alignedCS.z
+                     getSectionCS().XDirection());//section left to right >> alignedCS.x
     gp_Ax3 stdCS;                                 //OXYZ
     gp_Vec gProjectionUnit = gp_Vec(getSectionCS().Direction());
 
@@ -357,22 +359,22 @@ TopoDS_Shape DrawComplexSection::makeAlignedPieces(const TopoDS_Shape &rawShape,
         throw Base::RuntimeError("Profile is parallel to Section Normal");
     }
 
-    bool isVertical = true;
+    bool isProfileVertical = true;
     if (fabs(gProfileVec.Dot(gp::OY().Direction().XYZ())) != 1.0) {
         //profile is not parallel with stdY (paper space Up).
         //this test is not good enough for "vertical-ish" diagonal profiles
-        isVertical = false;
+        isProfileVertical = false;
     }
 
-    double leftToRight = 1.0;//profile vector points to right, so we move to right
+    double horizReverser = 1.0;//profile vector points to right, so we move to right
     if (gProfileVec.Dot(gp_Vec(gp::OX().Direction().XYZ())) < 0.0) {
         //profileVec does not point towards stdX (right in paper space)
-        leftToRight = -1.0;
+        horizReverser = -1.0;
     }
-    double topToBottom = 1.0;//profile vector points to top, so we move to top
+    double verticalReverser = 1.0;//profile vector points to top, so we move to top
     if (gProfileVec.Dot(gp_Vec(gp::OY().Direction().XYZ())) < 0.0) {
         //profileVec does not point towards stdY (up in paper space)
-        topToBottom = -1.0;
+        verticalReverser = -1.0;
     }
 
     gp_Vec rotateAxis = getSectionCS().Direction().Crossed(gProfileVec);
@@ -401,9 +403,6 @@ TopoDS_Shape DrawComplexSection::makeAlignedPieces(const TopoDS_Shape &rawShape,
             continue;
         }
 
-        double faceAngle =
-            gp_Vec(getSectionCS().Direction().Reversed()).AngleWithRef(segmentNormal, rotateAxis);
-
         //move intersection shape to the origin
         gp_Trsf xPieceCenter;
         xPieceCenter.SetTranslation(gp_Vec(findCentroid(intersect).XYZ()) * -1.0);
@@ -411,6 +410,8 @@ TopoDS_Shape DrawComplexSection::makeAlignedPieces(const TopoDS_Shape &rawShape,
         TopoDS_Shape pieceCentered = mkTransXLate.Shape();
 
         //rotate the intersection so interesting face is aligned with paper plane
+        double faceAngle =
+            gp_Vec(getSectionCS().Direction().Reversed()).AngleWithRef(segmentNormal, rotateAxis);
         gp_Ax1 faceAxis(gp_Pnt(0.0, 0.0, 0.0), rotateAxis);
         gp_Ax3 pieceCS;//XYZ tipped so face is aligned with sectionCS
         pieceCS.Rotate(faceAxis, faceAngle);
@@ -434,22 +435,24 @@ TopoDS_Shape DrawComplexSection::makeAlignedPieces(const TopoDS_Shape &rawShape,
         BRepBndLib::AddOptimal(pieceAligned, shapeBox);
         double xMin = 0, xMax = 0, yMin = 0, yMax = 0, zMin = 0, zMax = 0;
         shapeBox.Get(xMin, yMin, zMin, xMax, yMax, zMax);
-        double pieceWidth(xMax - xMin);
-        double pieceDepth(yMax - yMin);
-        double pieceHeight(zMax - zMin);
-        pieceXSize.push_back(pieceWidth);
-        pieceYSize.push_back(pieceDepth);
-        pieceZSize.push_back(pieceHeight);
+        double pieceXSize(xMax - xMin);
+        double pieceYSize(yMax - yMin);
+        double pieceZSize(zMax - zMin);
+
+        pieceXSizeAll.push_back(pieceXSize);
+        pieceYSizeAll.push_back(pieceYSize);
+        pieceZSizeAll.push_back(pieceZSize);
 
         //now we need to move the piece so that the interesting face is coincident
         //with the paper plane
-        gp_Vec depthVector(gp::OY().Direction().XYZ() * pieceDepth / 2.0);//move "back"
-        //only aligned to paper plane
-        gp_Vec netDisplacement = -1.0 * gp_Vec(findCentroid(pieceAligned).XYZ()) + depthVector;
-        //if we are going to space along X, we need to bring the pieces into alignment
-        //with the XY plane.
-        gp_Vec xyDisplacement = isVertical ? gp_Vec(0.0, 0.0, 0.0) : gp_Vec(gp::OZ().Direction());
-        xyDisplacement = xyDisplacement * topToBottom * pieceHeight / 2.0;
+        //yVector is movement of cut face to paperPlane (XZ)
+        gp_Vec yVector(gp::OY().Direction().XYZ() * pieceYSize / 2.0);//move "back"
+        gp_Vec netDisplacement = -1.0 * gp_Vec(findCentroid(pieceAligned).XYZ()) + yVector;
+        //if we are going to space along X, we need to bring the pieces back into alignment
+        //with the XY plane.  If we are stacking the pieces along Z, we don't want a vertical adjustment.
+        gp_Vec xyDisplacement = isProfileVertical ? gp_Vec(0.0, 0.0, 0.0) : gp_Vec(gp::OZ().Direction());
+        double dot = gp_Vec(gp::OZ().Direction()).Dot(alignedCS.Direction());
+        xyDisplacement = xyDisplacement * dot * (pieceZSize / 2.0);
         netDisplacement = netDisplacement + xyDisplacement;
 
         gp_Trsf xPieceDisplace;
@@ -472,17 +475,17 @@ TopoDS_Shape DrawComplexSection::makeAlignedPieces(const TopoDS_Shape &rawShape,
     }
 
     //space the pieces "horizontally" (stdX) or "vertically" (stdZ)
-    double movementReverser = isVertical ? topToBottom : leftToRight;
+    double movementReverser = isProfileVertical ? verticalReverser : horizReverser;
     //TODO: non-cardinal profiles!
-    gp_Vec movementAxis = isVertical ? gp_Vec(gp::OZ().Direction()) : gp_Vec(gp::OX().Direction());
+    gp_Vec movementAxis = isProfileVertical ? gp_Vec(gp::OZ().Direction()) : gp_Vec(gp::OX().Direction());
     gp_Vec gMovementVector = movementAxis * movementReverser;
 
     int stopAt = pieces.size();
     double distanceToMove = 0.0;
     for (int iPiece = 0; iPiece < stopAt; iPiece++) {
-        double pieceSize = pieceXSize.at(iPiece);
-        if (isVertical) {
-            pieceSize = pieceZSize.at(iPiece);
+        double pieceSize = pieceXSizeAll.at(iPiece);
+        if (isProfileVertical) {
+            pieceSize = pieceZSizeAll.at(iPiece);
         }
         double myDistanceToMove = distanceToMove + pieceSize / 2.0;
         gp_Trsf xPieceDistribute;
@@ -496,14 +499,17 @@ TopoDS_Shape DrawComplexSection::makeAlignedPieces(const TopoDS_Shape &rawShape,
     BRep_Builder builder;
     TopoDS_Compound comp;
     builder.MakeCompound(comp);
-    for (auto &piece : pieces) { builder.Add(comp, piece); }
+    for (auto &piece : pieces) {
+        builder.Add(comp, piece);
+    }
 
     //center the compound along SectionCS XDirection
     Base::Vector3d centerVector = DU::toVector3d(gMovementVector) * distanceToMove / -2.0;
     TopoDS_Shape centeredCompound = moveShape(comp, centerVector);
     if (debugSection()) {
-        BRepTools::Write(centeredCompound, "DCSfinCenteredCompound.brep");//debug
+        BRepTools::Write(centeredCompound, "DCSmap40CenteredCompound.brep");//debug
     }
+
     //realign with SectionCS
     gp_Trsf xPieceAlign;
     xPieceAlign.SetTransformation(alignedCS, stdCS);
@@ -511,7 +517,7 @@ TopoDS_Shape DrawComplexSection::makeAlignedPieces(const TopoDS_Shape &rawShape,
     TopoDS_Shape alignedCompound = mkTransAlign.Shape();
 
     if (debugSection()) {
-        BRepTools::Write(alignedCompound, "DCSAlignedResult.brep");//debug
+        BRepTools::Write(alignedCompound, "DCSmap50AlignedCompound.brep");//debug
     }
 
     return alignedCompound;
@@ -633,6 +639,7 @@ TopoDS_Shape DrawComplexSection::getShapeToIntersect()
 
 TopoDS_Wire DrawComplexSection::makeProfileWire(App::DocumentObject *toolObj)
 {
+//    Base::Console().Message("DCS::makeProfileWire()\n");
     TopoDS_Shape toolShape = Part::Feature::getShape(toolObj);
     if (toolShape.IsNull()) {
         return TopoDS_Wire();
@@ -651,6 +658,7 @@ TopoDS_Wire DrawComplexSection::makeProfileWire(App::DocumentObject *toolObj)
 
 gp_Vec DrawComplexSection::makeProfileVector(TopoDS_Wire profileWire)
 {
+//    Base::Console().Message("DCS::makeProfileVector()\n");
     TopoDS_Vertex tvFirst, tvLast;
     TopExp::Vertices(profileWire, tvFirst, tvLast);
     gp_Pnt gpFirst = BRep_Tool::Pnt(tvFirst);
@@ -870,6 +878,7 @@ gp_Vec DrawComplexSection::projectVector(const gp_Vec& vec) const
 //static
 gp_Vec DrawComplexSection::projectVector(const gp_Vec& vec, gp_Ax2 sectionCS)
 {
+//    Base::Console().Message("DCS::projectVector(%s, CS)\n", DU::formatVector(vec).c_str());
     HLRAlgo_Projector projector( sectionCS );
     gp_Pnt2d prjPnt;
     projector.Project(gp_Pnt(vec.XYZ()), prjPnt);
@@ -980,6 +989,11 @@ bool DrawComplexSection::canBuild(gp_Ax2 sectionCS, App::DocumentObject* profile
 //    Base::Console().Message("DCS::canBuild()\n");
     if (!isProfileObject(profileObject)) {
         return false;
+    }
+    TopoDS_Shape shape = Part::Feature::getShape(profileObject);
+    if (BRep_Tool::IsClosed(shape)) {
+        //closed profiles don't have a profile vector but should always make a section?
+        return true;
     }
     gp_Vec gProfileVec = makeProfileVector(makeProfileWire(profileObject));
     gProfileVec = projectVector(gProfileVec, sectionCS).Normalized();
