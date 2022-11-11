@@ -363,8 +363,6 @@ SET(Mesh_SRCS
     FeatureMeshTransform.h
     FeatureMeshTransformDemolding.cpp
     FeatureMeshTransformDemolding.h
-#   GTSAlgos.cpp
-#   GTSAlgos.h
     Mesh.cpp
     Mesh.h
     MeshFeature.cpp
