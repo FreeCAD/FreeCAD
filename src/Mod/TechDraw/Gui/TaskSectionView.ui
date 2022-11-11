@@ -160,14 +160,13 @@
     </layout>
    </item>
    <item>
-    <widget class="Line" name="line">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item>
     <widget class="QGroupBox" name="gbOrientation">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="title">
       <string>Set View Direction</string>
      </property>
@@ -309,13 +308,6 @@
        <layout class="QVBoxLayout" name="compassLayout"/>
       </item>
      </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="Line" name="line_2">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
     </widget>
    </item>
    <item>
@@ -471,13 +463,6 @@
     </widget>
    </item>
    <item>
-    <widget class="Line" name="line_3">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item>
     <widget class="QGroupBox" name="gbUpdate">
      <property name="title">
       <string>Preview</string>
@@ -530,7 +515,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../../../../../Documents/FreeCAD/Stash/Gui_SectionDlg/Resources/TechDraw.qrc"/>
+  <include location="Resources/TechDraw.qrc"/>
  </resources>
  <connections/>
 </ui>
