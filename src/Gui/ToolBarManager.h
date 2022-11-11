@@ -26,6 +26,7 @@
 
 #include <string>
 #include <QStringList>
+#include <FCGlobal.h>
 
 class QAction;
 class QToolBar;
@@ -41,7 +42,7 @@ public:
     };
 
     ToolBarItem();
-    ToolBarItem(ToolBarItem* item, HideStyle forceHide = HideStyle::VISIBLE);
+    explicit ToolBarItem(ToolBarItem* item, HideStyle forceHide = HideStyle::VISIBLE);
     ~ToolBarItem();
 
     void setCommand(const std::string&);

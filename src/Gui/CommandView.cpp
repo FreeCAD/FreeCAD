@@ -2599,7 +2599,7 @@ void StdViewBoxZoom::activated(int iMsg)
         View3DInventorViewer* viewer = view->getViewer();
         if (!viewer->isSelecting()) {
             SelectionCallbackHandler::Create(viewer, View3DInventorViewer::BoxZoom, QCursor(QPixmap(cursor_box_zoom), 7, 7));
-		}
+        }
     }
 }
 

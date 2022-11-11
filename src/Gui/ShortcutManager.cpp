@@ -322,10 +322,10 @@ bool ShortcutManager::eventFilter(QObject *o, QEvent *ev)
                 if (it->key.shortcut == action->shortcut() && it->key.name == name)
                     break;
                 QKeySequence oldShortcut = it->key.shortcut;
-                index.replace(it, {action, name});
+                index.replace(it, ActionData{action, name});
                 actionShortcutChanged(action, oldShortcut);
             } else {
-                index.insert({action, name});
+                index.insert(ActionData{action, name});
                 actionShortcutChanged(action, QKeySequence());
             }
         }

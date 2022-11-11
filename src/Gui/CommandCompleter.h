@@ -41,7 +41,7 @@ class GuiExport CommandCompleter : public QCompleter
 {
     Q_OBJECT
 public:
-    CommandCompleter(QLineEdit *edit, QObject *parent = nullptr);
+    explicit CommandCompleter(QLineEdit *edit, QObject *parent = nullptr);
 
 Q_SIGNALS:
     /// Triggered when a command is selected in the completer

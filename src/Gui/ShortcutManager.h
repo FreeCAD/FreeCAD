@@ -20,8 +20,8 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef GUI_SHORTCUT_MANAGER_H 
-#define GUI_SHORTCUT_MANAGER_H 
+#ifndef GUI_SHORTCUT_MANAGER_H
+#define GUI_SHORTCUT_MANAGER_H
 
 #include <unordered_map>
 
@@ -108,7 +108,7 @@ private:
     struct ActionKey {
         QKeySequence shortcut;
         QByteArray name;
-        ActionKey(const QKeySequence &shortcut, const char *name = "")
+        explicit ActionKey(const QKeySequence &shortcut, const char *name = "")
             : shortcut(shortcut)
             , name(name)
         {}
@@ -126,7 +126,7 @@ private:
         intptr_t pointer;
         QPointer<QAction> action;
 
-        ActionData(QAction *action, const char *name = "")
+        explicit ActionData(QAction *action, const char *name = "")
             : key(action->shortcut(), name)
             , pointer(reinterpret_cast<intptr_t>(action))
             , action(action)

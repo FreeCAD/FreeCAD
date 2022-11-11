@@ -306,7 +306,7 @@ PyObject* CommandPy::createCustomCommand(PyObject* args, PyObject* kw)
     auto macro = new MacroCommand(name.c_str(), false);
     commandManager.addCommand(macro);
 
-    macro->setScriptName(macroFile); 
+    macro->setScriptName(macroFile);
 
     if (menuTxt)
         macro->setMenuText(menuTxt);
@@ -338,8 +338,8 @@ PyObject* CommandPy::removeCustomCommand(PyObject* args)
     CommandManager& commandManager = Application::Instance->commandManager();
     std::vector<Command*> macros = commandManager.getGroupCommands("Macros");
 
-    auto action = std::find_if(macros.begin(), macros.end(), [actionName](const Command* c) { 
-        return std::string(c->getName()) == std::string(actionName); 
+    auto action = std::find_if(macros.begin(), macros.end(), [actionName](const Command* c) {
+        return std::string(c->getName()) == std::string(actionName);
     });
 
     if (action != macros.end()) {

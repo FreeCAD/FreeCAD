@@ -55,7 +55,7 @@ class CommandModel : public QAbstractItemModel
     int revision = 0;
 
 public:
-    CommandModel(QObject* parent)
+    explicit CommandModel(QObject* parent)
         : QAbstractItemModel(parent)
     {
         update();

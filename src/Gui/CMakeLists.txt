@@ -862,8 +862,8 @@ SET(Quarter_MOC_HDR
 
 qt_wrap_cpp(Quarter_MOC_SRCS ${Quarter_MOC_HDR})
 
-SET(Quarter_SRCS 
-    ${Quarter_CPP_SRC} 
+SET(Quarter_SRCS
+    ${Quarter_CPP_SRC}
     ${Quarter_H_SRC}
     ${Quarter_MOC_SRCS}
 )
@@ -1128,7 +1128,7 @@ SET(FreeCADGui_CPP_SRCS
     ManualAlignment.cpp
     TransactionObject.cpp
 )
-SET(FreeCADGui_SRCS 
+SET(FreeCADGui_SRCS
     Application.h
     AutoSaver.h
     BitmapFactory.h

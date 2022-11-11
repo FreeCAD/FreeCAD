@@ -1255,7 +1255,7 @@ void StatusWidget::hideEvent(QHideEvent*)
 class LineNumberArea : public QWidget
 {
 public:
-    LineNumberArea(PropertyListEditor *editor) : QWidget(editor) {
+    explicit LineNumberArea(PropertyListEditor *editor) : QWidget(editor) {
         codeEditor = editor;
     }
 
