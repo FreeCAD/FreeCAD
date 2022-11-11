@@ -20,17 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESH_FEATURE_H
 #define MESH_FEATURE_H
 
-#include <App/GeoFeature.h>
+#include <App/GeoFeature.h> // must be before FeatureCustom.h
 #include <App/FeatureCustom.h>
 #include <App/FeaturePython.h>
 
 #include "Core/MeshKernel.h"
+
 #include "Mesh.h"
 #include "MeshProperties.h"
+
 
 namespace Base{
   class XMLReader;

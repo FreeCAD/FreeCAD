@@ -20,44 +20,39 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <algorithm>
 # include <sstream>
 #endif
 
-#include <CXX/Objects.hxx>
 #include <Base/Builder3D.h>
 #include <Base/Console.h>
 #include <Base/Converter.h>
 #include <Base/Exception.h>
-#include <Base/Writer.h>
-#include <Base/Reader.h>
 #include <Base/Interpreter.h>
+#include <Base/Reader.h>
 #include <Base/Sequencer.h>
 #include <Base/Stream.h>
 #include <Base/Tools.h>
 #include <Base/ViewProj.h>
+#include <Base/Writer.h>
 
 #include "Core/Builder.h"
-#include "Core/MeshKernel.h"
-#include "Core/Grid.h"
-#include "Core/Iterator.h"
-#include "Core/Info.h"
-#include "Core/TopoAlgorithm.h"
-#include "Core/Evaluation.h"
+#include "Core/Decimation.h"
 #include "Core/Degeneration.h"
+#include "Core/Grid.h"
+#include "Core/Info.h"
+#include "Core/Iterator.h"
+#include "Core/MeshKernel.h"
 #include "Core/Segmentation.h"
 #include "Core/SetOperations.h"
-#include "Core/Triangulation.h"
+#include "Core/TopoAlgorithm.h"
 #include "Core/Trim.h"
 #include "Core/TrimByPlane.h"
-#include "Core/Visitor.h"
-#include "Core/Decimation.h"
 
 #include "Mesh.h"
-#include "MeshPy.h"
+
 
 using namespace Mesh;
 

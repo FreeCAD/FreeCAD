@@ -20,16 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#include <Base/VectorPy.h>
-#include <Base/Handle.h>
 #include <Base/Converter.h>
 #include <Base/GeometryPyCXX.h>
 #include <Base/MatrixPy.h>
 #include <Base/Stream.h>
 #include <Base/Tools.h>
+#include <Base/VectorPy.h>
+
+#include <boost/algorithm/string.hpp>
+
+#include "Core/Degeneration.h"
+#include "Core/Segmentation.h"
+#include "Core/Smoothing.h"
+#include "Core/Triangulation.h"
 
 #include "Mesh.h"
 #include "MeshPy.h"
@@ -37,18 +42,7 @@
 #include "FacetPy.h"
 #include "MeshPy.cpp"
 #include "MeshProperties.h"
-#include "Core/Algorithm.h"
-#include "Core/Triangulation.h"
-#include "Core/Iterator.h"
-#include "Core/Degeneration.h"
-#include "Core/Elements.h"
-#include "Core/Grid.h"
-#include "Core/MeshKernel.h"
-#include "Core/Segmentation.h"
-#include "Core/Smoothing.h"
-#include "Core/Curvature.h"
 
-#include <boost/algorithm/string.hpp>
 
 using namespace Mesh;
 

@@ -20,26 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESH_MESHPROPERTIES_H
 #define MESH_MESHPROPERTIES_H
 
-#include <vector>
 #include <list>
+#include <map>
 #include <set>
 #include <string>
-#include <map>
+#include <vector>
 
 #include <Base/Handle.h>
 #include <Base/Matrix.h>
-#include <Base/Vector3D.h>
 
-#include <App/PropertyStandard.h>
-#include <App/PropertyGeo.h>
-
-#include <Mod/Mesh/App/Core/MeshKernel.h>
 #include <Mod/Mesh/App/Core/MeshIO.h>
-#include <Mod/Mesh/App/Mesh.h>
+#include <Mod/Mesh/App/Core/MeshKernel.h>
+
+#include "Mesh.h"
 
 
 namespace Mesh

@@ -20,19 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <algorithm>
 # include <sstream>
 #endif
 
-
-#include "Core/MeshKernel.h"
-
 #include "Segment.h"
 #include "Mesh.h"
-#include <Mod/Mesh/App/MeshPy.h>
+#include "MeshPy.h"
+
 
 using namespace Mesh;
 
