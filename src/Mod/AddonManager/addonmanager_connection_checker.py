@@ -109,5 +109,8 @@ class ConnectionCheckerGUI(QtCore.QObject):
     def _check_succeeded(self):
         """Emit both the connection_available and the check_complete signals, in that order."""
 
+        if hasattr(self, "connection_check_message") and self.connection_check_message:
+            self.connection_check_message.close()
+
         self.connection_available.emit()
         self.check_complete.emit()
