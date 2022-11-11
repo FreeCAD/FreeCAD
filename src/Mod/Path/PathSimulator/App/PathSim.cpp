@@ -22,16 +22,8 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <boost/regex.hpp>
-#endif
-
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Base/Exception.h>
-#include <Base/Console.h>
-
 #include "PathSim.h"
+
 
 using namespace Base;
 using namespace PathSimulator;
