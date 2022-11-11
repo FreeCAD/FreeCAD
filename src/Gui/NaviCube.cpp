@@ -1619,7 +1619,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
 			viewRot = rotateView(viewRot, DIR_RIGHT, rotStepAngle);
 			break;
 		case TEX_DOT_BACKSIDE:
-			viewRot = rotateView(viewRot, 0, 180);
+			viewRot = rotateView(viewRot, DIR_UP, 180);
 			break;
 		case TEX_VIEW_MENU_FACE:
 			handleMenu();
