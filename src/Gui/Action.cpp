@@ -649,8 +649,6 @@ void WorkbenchComboBox::onActivated(int i)
     int index = itemData(i).toInt();
     auto ev = new WorkbenchActionEvent(this->actions().at(index));
     QApplication::postEvent(this->group, ev);
-    // TODO: Test if we can use this instead
-    //QTimer::singleShot(20, this->actions()[i], SLOT(trigger()));
 }
 
 void WorkbenchComboBox::onActivated(QAction* action)
@@ -1358,9 +1356,9 @@ DockWidgetAction::~DockWidgetAction()
 void DockWidgetAction::addTo ( QWidget * w )
 {
     if (!_menu) {
-      _menu = new QMenu();
-      _action->setMenu(_menu);
-      connect(_menu, SIGNAL(aboutToShow()), getMainWindow(), SLOT(onDockWindowMenuAboutToShow()));
+        _menu = new QMenu();
+        _action->setMenu(_menu);
+        getMainWindow()->setDockWindowMenu(_menu);
     }
 
     w->addAction(_action);
@@ -1383,7 +1381,7 @@ void ToolBarAction::addTo ( QWidget * w )
     if (!_menu) {
       _menu = new QMenu();
       _action->setMenu(_menu);
-      connect(_menu, SIGNAL(aboutToShow()), getMainWindow(), SLOT(onToolBarMenuAboutToShow()));
+      getMainWindow()->setToolBarMenu(_menu);
     }
 
     w->addAction(_action);
@@ -1408,16 +1406,14 @@ void WindowAction::addTo ( QWidget * w )
             _menu = new QMenu();
             _action->setMenu(_menu);
             _menu->addActions(_group->actions());
-            connect(_menu, SIGNAL(aboutToShow()),
-                    getMainWindow(), SLOT(onWindowsMenuAboutToShow()));
+            getMainWindow()->setWindowsMenu(_menu);
         }
 
         w->addAction(_action);
     }
     else {
         menu->addActions(_group->actions());
-        connect(menu, SIGNAL(aboutToShow()),
-                getMainWindow(), SLOT(onWindowsMenuAboutToShow()));
+        getMainWindow()->setWindowsMenu(menu);
     }
 }
 

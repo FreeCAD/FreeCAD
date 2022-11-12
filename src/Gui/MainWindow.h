@@ -156,6 +156,17 @@ public:
     void saveWindowSettings();
     //@}
 
+    /** @name Menu
+     */
+    //@{
+    /// Set menu for dock windows.
+    void setDockWindowMenu(QMenu*);
+    /// Set menu for toolbars.
+    void setToolBarMenu(QMenu*);
+    /// Set menu for sub-windows
+    void setWindowsMenu(QMenu*);
+    //@}
+
     /** @name MIME data handling
      */
     //@{
