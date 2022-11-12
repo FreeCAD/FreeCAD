@@ -336,18 +336,18 @@ void Workbench::createLinkMenu(MenuItem *item) {
         "Std_LinkImport","Std_LinkImportAll",nullptr,"Std_LinkSelectLinked",
         "Std_LinkSelectLinkedFinal","Std_LinkSelectAllLinks"};
     bool separator = true;
-    for(const auto & i : cmds) {
-        if(!i) {
+    for(const auto & it : cmds) {
+        if(!it) {
             if(separator) {
                 separator = false;
                 *linkMenu << "Separator";
             }
             continue;
         }
-        auto cmd = rMgr.getCommandByName(i);
+        auto cmd = rMgr.getCommandByName(it);
         if(cmd->isActive()) {
             separator = true;
-            *linkMenu << i;
+            *linkMenu << it;
         }
     }
     *item << linkMenu;
@@ -362,8 +362,8 @@ void Workbench::addPermanentMenuItem(const std::string& cmd, const std::string& 
 
 void Workbench::removePermanentMenuItem(const std::string& cmd)
 {
-    auto it = std::find_if(staticMenuItems.begin(), staticMenuItems.end(), [cmd](const std::pair<std::string, std::string>& p) {
-        return (p.first == cmd);
+    auto it = std::find_if(staticMenuItems.begin(), staticMenuItems.end(), [cmd](const std::pair<std::string, std::string>& pmi) {
+        return (pmi.first == cmd);
     });
 
     if (it != staticMenuItems.end())

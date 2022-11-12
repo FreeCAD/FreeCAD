@@ -51,7 +51,7 @@ public:
     Action (Command* pcCmd, QAction* action, QObject * parent);
     virtual ~Action();
 
-    virtual void addTo (QWidget * w);
+    virtual void addTo (QWidget * widget);
     virtual void setEnabled(bool);
     virtual void setVisible(bool);
 
@@ -132,15 +132,15 @@ public:
     explicit ActionGroup (Command* pcCmd, QObject * parent = nullptr);
     virtual ~ActionGroup();
 
-    void addTo (QWidget * w);
+    void addTo (QWidget * widget);
     void setEnabled (bool);
     void setDisabled (bool);
     void setExclusive (bool);
     bool isExclusive() const;
     void setVisible (bool);
-    void setIsMode(bool b) { _isMode = b; }
+    void setIsMode(bool check) { _isMode = check; }
 
-    void setDropDownMenu(bool b) { _dropDown = b; }
+    void setDropDownMenu(bool check) { _dropDown = check; }
     QAction* addAction(QAction*);
     QAction* addAction(const QString&);
     QList<QAction*> actions() const;
@@ -203,7 +203,7 @@ public:
      */
     WorkbenchGroup (Command* pcCmd, QObject * parent);
     virtual ~WorkbenchGroup();
-    void addTo (QWidget * w);
+    void addTo (QWidget * widget);
     void refreshWorkbenchList();
 
     void slotActivateWorkbench(const char*);
@@ -211,10 +211,10 @@ public:
     void slotRemoveWorkbench(const char*);
 
 protected:
-    void customEvent(QEvent* e);
+    void customEvent(QEvent* event);
 
 private:
-    void setWorkbenchData(int i, const QString& wb);
+    void setWorkbenchData(int index, const QString& wb);
 };
 
 // --------------------------------------------------------------------
@@ -296,7 +296,7 @@ class GuiExport UndoAction : public Action
 public:
     explicit UndoAction (Command* pcCmd,QObject * parent = nullptr);
     ~UndoAction();
-    void addTo (QWidget * w);
+    void addTo (QWidget * widget);
     void setEnabled(bool);
     void setVisible(bool);
 
@@ -321,7 +321,7 @@ class GuiExport RedoAction : public Action
 public:
     explicit RedoAction (Command* pcCmd,QObject * parent = nullptr);
     ~RedoAction();
-    void addTo ( QWidget * w );
+    void addTo ( QWidget * widget );
     void setEnabled(bool);
     void setVisible(bool);
 
@@ -345,7 +345,7 @@ class GuiExport DockWidgetAction : public Action
 public:
     explicit DockWidgetAction (Command* pcCmd, QObject * parent = nullptr);
     virtual ~DockWidgetAction();
-    void addTo (QWidget * w);
+    void addTo (QWidget * widget);
 
 private:
     QMenu* _menu;
@@ -364,7 +364,7 @@ class GuiExport ToolBarAction : public Action
 public:
     explicit ToolBarAction (Command* pcCmd, QObject * parent = nullptr);
     virtual ~ToolBarAction();
-    void addTo (QWidget * w);
+    void addTo (QWidget * widget);
 
 private:
     QMenu* _menu;
@@ -382,7 +382,7 @@ class GuiExport WindowAction : public ActionGroup
 public:
     explicit WindowAction (Command* pcCmd, QObject * parent = nullptr);
     virtual ~WindowAction();
-    void addTo (QWidget * w);
+    void addTo (QWidget * widget);
 
 private:
     QMenu* _menu;

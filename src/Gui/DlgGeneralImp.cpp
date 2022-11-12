@@ -444,12 +444,14 @@ void DlgGeneralImp::newPreferencePackDialogAccepted()
     auto preferencePackTemplates = Application::Instance->prefPackManager()->templateFiles();
     auto selection = newPreferencePackDialog->selectedTemplates();
     std::vector<PreferencePackManager::TemplateFile> selectedTemplates;
-    std::copy_if(preferencePackTemplates.begin(), preferencePackTemplates.end(), std::back_inserter(selectedTemplates), [selection](PreferencePackManager::TemplateFile& t) {
-        for (const auto& item : selection)
-            if (item.group == t.group && item.name == t.name)
+    std::copy_if(preferencePackTemplates.begin(), preferencePackTemplates.end(), std::back_inserter(selectedTemplates), [selection](PreferencePackManager::TemplateFile& tf) {
+        for (const auto& item : selection) {
+            if (item.group == tf.group && item.name == tf.name) {
                 return true;
+            }
+        }
         return false;
-        });
+    });
     auto preferencePackName = newPreferencePackDialog->preferencePackName();
     Application::Instance->prefPackManager()->save(preferencePackName, selectedTemplates);
     recreatePreferencePackMenu();

@@ -337,10 +337,10 @@ void MenuManager::setup(MenuItem* item, QMenu* menu) const
                     if (mgr.addTo((*it)->command().c_str(), menu)) {
                         QList<QAction*> acts = menu->actions();
                         for (int i=count; i < acts.count(); i++) {
-                            QAction* a = acts[i];
+                            QAction* act = acts[i];
                             // set the menu user data
-                            a->setData(QString::fromLatin1((*it)->command().c_str()));
-                            used_actions.append(a);
+                            act->setData(QString::fromLatin1((*it)->command().c_str()));
+                            used_actions.append(act);
                         }
                     }
                 }
