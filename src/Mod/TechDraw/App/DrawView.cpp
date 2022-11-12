@@ -274,11 +274,16 @@ void DrawView::validateScale()
 int DrawView::countParentPages() const
 {
     int count = 0;
+    std::vector<App::DocumentObject*> parentAll = getInList();
 
-    std::vector<App::DocumentObject*> parent = getInList();
-    for (std::vector<App::DocumentObject*>::iterator it = parent.begin(); it != parent.end(); ++it) {
-        if ((*it)->getTypeId().isDerivedFrom(DrawPage::getClassTypeId())) {
-            //page = static_cast<TechDraw::DrawPage *>(*it);
+    //it can happen that a page is repeated in the InList, so we need to
+    //prune the duplicates
+    std::sort(parentAll.begin(), parentAll.end());
+    auto last = std::unique(parentAll.begin(), parentAll.end());
+    parentAll.erase(last, parentAll.end());
+
+    for (auto& parent : parentAll) {
+        if (parent->getTypeId().isDerivedFrom(DrawPage::getClassTypeId())) {
             count++;
         }
     }
@@ -293,19 +298,17 @@ DrawPage* DrawView::findParentPage() const
     // Get Feature Page
     DrawPage *page = nullptr;
     DrawViewCollection *collection = nullptr;
-    std::vector<App::DocumentObject*> parent = getInList();
-    for (std::vector<App::DocumentObject*>::iterator it = parent.begin(); it != parent.end(); ++it) {
-        if ((*it)->getTypeId().isDerivedFrom(DrawPage::getClassTypeId())) {
-            page = static_cast<TechDraw::DrawPage *>(*it);
-        }
-
-        if ((*it)->getTypeId().isDerivedFrom(DrawViewCollection::getClassTypeId())) {
-            collection = static_cast<TechDraw::DrawViewCollection *>(*it);
+    std::vector<App::DocumentObject*> parentsAll = getInList();
+    for (auto& parent : parentsAll) {
+        if (parent->getTypeId().isDerivedFrom(DrawPage::getClassTypeId())) {
+            page = static_cast<TechDraw::DrawPage *>(parent);
+        } else if (parent->getTypeId().isDerivedFrom(DrawViewCollection::getClassTypeId())) {
+            collection = static_cast<TechDraw::DrawViewCollection *>(parent);
             page = collection->findParentPage();
         }
 
         if(page)
-          break; // Found page so leave
+          break; // Found a page so leave
     }
 
     return page;
@@ -318,14 +321,18 @@ std::vector<DrawPage*> DrawView::findAllParentPages() const
     std::vector<DrawPage*> result;
     DrawPage *page = nullptr;
     DrawViewCollection *collection = nullptr;
-    std::vector<App::DocumentObject*> parent = getInList();
-    for (std::vector<App::DocumentObject*>::iterator it = parent.begin(); it != parent.end(); ++it) {
-        if ((*it)->getTypeId().isDerivedFrom(DrawPage::getClassTypeId())) {
-            page = static_cast<TechDraw::DrawPage *>(*it);
-        }
+    std::vector<App::DocumentObject*> parentsAll = getInList();
 
-        if ((*it)->getTypeId().isDerivedFrom(DrawViewCollection::getClassTypeId())) {
-            collection = static_cast<TechDraw::DrawViewCollection *>(*it);
+    //prune the duplicates
+    std::sort(parentsAll.begin(), parentsAll.end());
+    auto last = std::unique(parentsAll.begin(), parentsAll.end());
+    parentsAll.erase(last, parentsAll.end());
+
+    for (auto& parent : parentsAll) {
+        if (parent->getTypeId().isDerivedFrom(DrawPage::getClassTypeId())) {
+            page = static_cast<TechDraw::DrawPage*>(parent);
+        } else if (parent->getTypeId().isDerivedFrom(DrawViewCollection::getClassTypeId())) {
+            collection = static_cast<TechDraw::DrawViewCollection *>(parent);
             page = collection->findParentPage();
         }
 
