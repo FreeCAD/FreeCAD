@@ -843,7 +843,19 @@ void TaskSketcherElements::on_listWidgetElements_itemPressed(QListWidgetItem* it
             }
 
             // first update the listwidget. Item is selected if at least one element of the geo is selected.
-            item->setSelected(item->isLineSelected || item->isStartingPointSelected || item->isEndPointSelected || item->isMidPointSelected);
+            bool selected = item->isLineSelected || item->isStartingPointSelected || item->isEndPointSelected || item->isMidPointSelected;
+
+            {
+                QSignalBlocker sigblk(ui->listWidgetElements);
+
+                if (item->isSelected() && selected) {
+                    item->setSelected(false);// if already selected and changing or adding subelement, ensure selection change is triggered, which ensures timely repaint
+                    item->setSelected(selected);
+                }
+                else {
+                    item->setSelected(selected);
+                }
+            }
 
             // now the scene
             std::stringstream ss;
