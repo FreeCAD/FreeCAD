@@ -97,7 +97,7 @@ void DrawSVGTemplate::onChanged(const App::Property* prop)
 }
 
 //parse the Svg code, inserting current EditableTexts values, and return the result as a QString.
-//While parsing, not the Orientation, Width and Height values in the Svg code.
+//While parsing, note the Orientation, Width and Height values in the Svg code.
 QString DrawSVGTemplate::processTemplate()
 {
 //    Base::Console().Message("DSVGT::processTemplate() - isRestoring: %d\n", isRestoring());

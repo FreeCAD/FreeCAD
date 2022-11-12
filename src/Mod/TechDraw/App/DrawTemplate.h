@@ -50,20 +50,12 @@ public:
     App::PropertyMap EditableTexts;
 
 public:
-
     /// Returns template width in mm
     virtual double getWidth() const;
     /// Returns template height in mm
     virtual double getHeight() const;
 
     virtual DrawPage* getParentPage() const;
-
-    /** @name methods override Feature */
-    //@{
-    /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute(void) override;
-    //@}
-
 
     /// returns the type name of the ViewProvider
     const char* getViewProviderName(void) const override{
