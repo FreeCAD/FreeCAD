@@ -80,23 +80,7 @@ double DrawTemplate::getHeight() const
     return Height.getValue();
 }
 
-App::DocumentObjectExecReturn *DrawTemplate::execute()
-{
-//    DrawPage *page = nullptr;
-//    std::vector<App::DocumentObject*> parent = getInList();
-//    for (std::vector<App::DocumentObject*>::iterator it = parent.begin(); it != parent.end(); ++it) {
-//        if ((*it)->getTypeId().isDerivedFrom(DrawPage::getClassTypeId())) {
-//            page = dynamic_cast<TechDraw::DrawPage *>(*it);
-//        }
-//    }
-
-//    if(page) {
-//        page->Template.touch();
-//    }
-
-    return App::DocumentObject::execute();
-}
-
+//find the (first) DrawPage which points to this template
 DrawPage* DrawTemplate::getParentPage() const
 {
     TechDraw::DrawPage* page(nullptr);
@@ -104,6 +88,7 @@ DrawPage* DrawTemplate::getParentPage() const
     for (auto& obj : parents) {
         if (obj->getTypeId().isDerivedFrom(DrawPage::getClassTypeId())) {
             page = static_cast<TechDraw::DrawPage *>(obj);
+            break;
         }
     }
     return page;
