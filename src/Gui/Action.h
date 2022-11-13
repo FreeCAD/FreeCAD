@@ -107,7 +107,7 @@ public Q_SLOTS:
     virtual void onActivated ();
     virtual void onToggled   (bool);
 
-protected:
+private:
     QAction* _action;
     Command *_pcCmd;
     QString _tooltip;
@@ -150,17 +150,20 @@ public:
     int checkedAction() const;
     void setCheckedAction(int);
 
+protected:
+    QActionGroup* groupAction() const {
+        return _group;
+    }
+
 public Q_SLOTS:
     void onActivated () override;
     void onToggled(bool) override;
     void onActivated (QAction*);
     void onHovered   (QAction*);
 
-protected:
+private:
     QActionGroup* _group;
     bool _dropDown;
-    bool _external;
-    bool _toggle;
     bool _isMode;
 
 private:
