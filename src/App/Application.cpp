@@ -2140,6 +2140,7 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
     ("response-file", value<string>(),"Can be specified with '@name', too")
     ("dump-config", "Dumps configuration")
     ("get-config", value<string>(), "Prints the value of the requested configuration key")
+    ("set-config", value< vector<string> >()->multitoken(), "Sets the value of a configuration key")
     ("keep-deprecated-paths", "If set then config files are kept on the old location")
     ;
 
@@ -2424,6 +2425,18 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
         }
         str << std::endl;
         throw Base::ProgramInformation(str.str());
+    }
+
+    if (vm.count("set-config")) {
+        std::vector<std::string> configKeyValue = vm["set-config"].as< std::vector<std::string> >();
+        for (const auto& it : configKeyValue) {
+            auto pos = it.find('=');
+            if (pos != std::string::npos) {
+                std::string key = it.substr(0, pos);
+                std::string val = it.substr(pos + 1);
+                mConfig[key] = val;
+            }
+        }
     }
 }
 }
