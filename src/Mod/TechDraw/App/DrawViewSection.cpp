@@ -95,6 +95,29 @@ using namespace TechDraw;
 
 using DU = DrawUtil;
 
+//class to store geometry of points where the section line changes direction
+ChangePoint::ChangePoint(QPointF location, QPointF preDirection, QPointF postDirection)
+{
+    m_location = location;
+    m_preDirection = preDirection;
+    m_postDirection = postDirection;
+}
+
+ChangePoint::ChangePoint(gp_Pnt location, gp_Dir preDirection, gp_Dir postDirection)
+{
+    m_location.setX(location.X());
+    m_location.setY(location.Y());
+    m_preDirection.setX(preDirection.X());
+    m_preDirection.setY(preDirection.Y());
+    m_postDirection.setX(postDirection.X());
+    m_postDirection.setY(postDirection.Y());
+}
+
+void ChangePoint::scale(double scaleFactor)
+{
+    m_location = m_location * scaleFactor;
+}
+
 const char* DrawViewSection::SectionDirEnums[]= {"Right",
                                             "Left",
                                             "Up",
@@ -723,6 +746,30 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawViewSection::sectionLineEnds()
     result.first = sectionOrg + sectionLineDir * halfSize;
     result.second = sectionOrg - sectionLineDir * halfSize;
 
+    return result;
+}
+
+//find the points and directions to make the change point marks.
+ChangePointVector DrawViewSection::getChangePointsFromSectionLine()
+{
+    //    Base::Console().Message("Dvs::getChangePointsFromSectionLine()\n");
+    ChangePointVector result;
+    std::vector<gp_Pnt> allPoints;
+    DrawViewPart *baseDvp = dynamic_cast<DrawViewPart *>(BaseView.getValue());
+    if (baseDvp) {
+        std::pair<Base::Vector3d, Base::Vector3d> lineEnds = sectionLineEnds();
+        //make start and end marks
+        gp_Pnt location0 = DU::togp_Pnt(lineEnds.first);
+        gp_Pnt location1 = DU::togp_Pnt(lineEnds.second);
+        gp_Dir postDir = gp_Dir(location1.XYZ() - location0.XYZ());
+        gp_Dir preDir = postDir.Reversed();
+        ChangePoint startPoint(location0, preDir, postDir);
+        result.push_back(startPoint);
+        preDir = gp_Dir(location0.XYZ() - location1.XYZ());
+        postDir = preDir.Reversed();
+        ChangePoint endPoint(location1, preDir, postDir);
+        result.push_back(endPoint);
+    }
     return result;
 }
 

@@ -86,6 +86,7 @@
 using namespace TechDraw;
 using namespace TechDrawGui;
 using namespace std;
+using DU = DrawUtil;
 
 #define GEOMETRYEDGE 0
 #define COSMETICEDGE 1
@@ -844,16 +845,31 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
         Base::Vector3d l1 = Rez::guiX(sLineEnds.first) * scale;
         Base::Vector3d l2 = Rez::guiX(sLineEnds.second) * scale;
         //make the section line a little longer
-        double fudge = Rez::guiX(2.0 * Preferences::dimFontSizeMM());
+        double fudge = 2.0 * Preferences::dimFontSizeMM();
         Base::Vector3d lineDir = l2 - l1;
         lineDir.Normalize();
-        sectionLine->setEnds(l1 - lineDir * fudge,
-                             l2 + lineDir * fudge);
+        sectionLine->setEnds(l1 - lineDir * Rez::guiX(fudge),
+                             l2 + lineDir * Rez::guiX(fudge));
 
         //which way do the arrows point?
         Base::Vector3d arrowDir = viewSection->SectionNormal.getValue();
         arrowDir = - viewPart->projectPoint(arrowDir);  //arrows point reverse of sectionNormal
         sectionLine->setDirection(arrowDir.x, - arrowDir.y);    //3d direction needs Y inversion
+
+        if (vp->SectionLineMarks.getValue()) {
+            ChangePointVector points = viewSection->getChangePointsFromSectionLine();
+            //extend the changePoint locations to match the fudged section line ends
+            QPointF location0 = points.front().getLocation() * scale;
+            location0 = location0 - DU::toQPointF(lineDir) * fudge;
+            QPointF location1 = points.back().getLocation() * scale;
+            location1 = location1 + DU::toQPointF(lineDir) * fudge;
+            //change points have Rez::guiX applied in sectionLine
+            points.front().setLocation(location0);
+            points.back().setLocation(location1);
+            sectionLine->setChangePoints(points);
+        } else {
+            sectionLine->clearChangePoints();
+        }
 
         //set the general parameters
         sectionLine->setPos(0.0, 0.0);

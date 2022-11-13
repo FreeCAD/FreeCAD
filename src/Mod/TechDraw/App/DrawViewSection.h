@@ -58,6 +58,28 @@ class PATLineSpec;
 class LineSet;
 class DashSet;
 
+//changes in direction of complex section line. also marks at arrow positions.
+class ChangePoint
+{
+public:
+    ChangePoint(QPointF location, QPointF preDirection, QPointF postDirection);
+    ChangePoint(gp_Pnt location, gp_Dir preDirection, gp_Dir postDirection);
+    ~ChangePoint() = default;
+
+    QPointF getLocation() const { return m_location; }
+    void setLocation(QPointF newLocation) { m_location = newLocation; }
+    QPointF getPreDirection() const { return m_preDirection; }
+    QPointF getPostDirection() const { return m_postDirection; }
+    void scale(double scaleFactor);
+
+private:
+    QPointF m_location;
+    QPointF m_preDirection;
+    QPointF m_postDirection;
+};
+
+using ChangePointVector = std::vector<ChangePoint>;
+
 class TechDrawExport DrawViewSection : public DrawViewPart
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::DrawViewSection);
@@ -141,6 +163,7 @@ public:
     static const char* CutSurfaceEnums[];
 
     virtual std::pair<Base::Vector3d, Base::Vector3d> sectionLineEnds();
+    virtual ChangePointVector getChangePointsFromSectionLine();
 
     bool showSectionEdges(void);
 

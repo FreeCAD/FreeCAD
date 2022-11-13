@@ -35,27 +35,6 @@
 namespace TechDraw
 {
 
-//changes in direction of complex section line
-class ChangePoint
-{
-public:
-    ChangePoint(QPointF location, QPointF preDirection, QPointF postDirection);
-    ChangePoint(gp_Pnt location, gp_Dir preDirection, gp_Dir postDirection);
-    ~ChangePoint() = default;
-
-    QPointF getLocation() const { return m_location; }
-    QPointF getPreDirection() const { return m_preDirection; }
-    QPointF getPostDirection() const { return m_postDirection; }
-    void scale(double scaleFactor);
-
-private:
-    QPointF m_location;
-    QPointF m_preDirection;
-    QPointF m_postDirection;
-};
-
-using ChangePointVector = std::vector<ChangePoint>;
-
 class TechDrawExport DrawComplexSection: public DrawViewSection
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::DrawComplexSection);
@@ -94,7 +73,7 @@ public:
     std::pair<Base::Vector3d, Base::Vector3d> sectionArrowDirs();
     TopoDS_Wire makeSectionLineWire();
 
-    ChangePointVector getChangePointsFromSectionLine();
+    ChangePointVector getChangePointsFromSectionLine() override;
 
     bool validateProfilePosition(TopoDS_Wire profileWire, gp_Ax2 sectionCS,
                                  gp_Dir &gClosestBasis) const;
