@@ -43,8 +43,9 @@ MenuItem::MenuItem()
 
 MenuItem::MenuItem(MenuItem* item)
 {
-    if (item)
+    if (item) {
         item->appendItem(this);
+    }
 }
 
 MenuItem::~MenuItem()
@@ -69,16 +70,14 @@ bool MenuItem::hasItems() const
 
 MenuItem* MenuItem::findItem(const std::string& name)
 {
-    if (_name == name)
-    {
+    if (_name == name) {
         return this;
     }
-    else
-    {
-        for (QList<MenuItem*>::Iterator it = _items.begin(); it != _items.end(); ++it)
-        {
-            if ((*it)->_name == name)
+    else {
+        for (QList<MenuItem*>::Iterator it = _items.begin(); it != _items.end(); ++it) {
+            if ((*it)->_name == name) {
                 return *it;
+            }
         }
     }
 
@@ -87,16 +86,16 @@ MenuItem* MenuItem::findItem(const std::string& name)
 
 MenuItem* MenuItem::findParentOf(const std::string& name)
 {
-    for (QList<MenuItem*>::Iterator it = _items.begin(); it != _items.end(); ++it)
-    {
-        if ((*it)->_name == name)
+    for (QList<MenuItem*>::Iterator it = _items.begin(); it != _items.end(); ++it) {
+        if ((*it)->_name == name) {
             return this;
+        }
     }
 
-    for (QList<MenuItem*>::Iterator it = _items.begin(); it != _items.end(); ++it)
-    {
-        if ((*it)->findParentOf(name))
+    for (QList<MenuItem*>::Iterator it = _items.begin(); it != _items.end(); ++it) {
+        if ((*it)->findParentOf(name)) {
             return *it;
+        }
     }
 
     return nullptr;
@@ -129,34 +128,36 @@ void MenuItem::appendItem(MenuItem* item)
 bool MenuItem::insertItem(MenuItem* before, MenuItem* item)
 {
     int pos = _items.indexOf(before);
-    if (pos != -1)
-    {
+    if (pos != -1) {
         _items.insert(pos, item);
         return true;
     }
-    else
-        return false;
+
+    return false;
 }
 
 MenuItem* MenuItem::afterItem(MenuItem* item) const
 {
     int pos = _items.indexOf(item);
-    if (pos < 0 || pos+1 == _items.size())
+    if (pos < 0 || pos+1 == _items.size()) {
         return nullptr;
+    }
     return _items.at(pos+1);
 }
 
 void MenuItem::removeItem(MenuItem* item)
 {
     int pos = _items.indexOf(item);
-    if (pos != -1)
+    if (pos != -1) {
         _items.removeAt(pos);
+    }
 }
 
 void MenuItem::clear()
 {
-    for (QList<MenuItem*>::Iterator it = _items.begin(); it != _items.end(); ++it)
+    for (QList<MenuItem*>::Iterator it = _items.begin(); it != _items.end(); ++it) {
         delete *it;
+    }
     _items.clear();
 }
 
@@ -184,8 +185,9 @@ MenuManager* MenuManager::_instance=nullptr;
 
 MenuManager* MenuManager::getInstance()
 {
-    if ( !_instance )
+    if ( !_instance ) {
         _instance = new MenuManager;
+    }
     return _instance;
 }
 
@@ -205,8 +207,9 @@ MenuManager::~MenuManager()
 
 void MenuManager::setup(MenuItem* menuItems) const
 {
-    if (!menuItems)
+    if (!menuItems) {
         return; // empty menu bar
+    }
 
     QMenuBar* menuBar = getMainWindow()->menuBar();
 
@@ -286,8 +289,9 @@ void MenuManager::setup(MenuItem* menuItems) const
         }
 
         // flll up the menu
-        if (!action->isSeparator())
+        if (!action->isSeparator()) {
             setup(*it, action->menu());
+        }
     }
 
     setupMenuBarCornerWidgets();
@@ -357,8 +361,9 @@ void MenuManager::setup(MenuItem* item, QMenu* menu) const
         }
 
         // fill up the submenu
-        if ((*it)->hasItems())
+        if ((*it)->hasItems()) {
             setup(*it, used_actions.front()->menu());
+        }
     }
 
     // remove all menu items which we don't need for the moment
@@ -407,8 +412,9 @@ void MenuManager::retranslate() const
     QMenuBar* menuBar = getMainWindow()->menuBar();
     QList<QAction*> actions = menuBar->actions();
     for (QList<QAction*>::Iterator it = actions.begin(); it != actions.end(); ++it) {
-        if ((*it)->menu())
+        if ((*it)->menu()) {
             retranslate((*it)->menu());
+        }
     }
 }
 
@@ -444,8 +450,9 @@ void MenuManager::retranslate(QMenu* menu) const
 QAction* MenuManager::findAction(const QList<QAction*>& acts, const QString& item) const
 {
     for (QList<QAction*>::ConstIterator it = acts.begin(); it != acts.end(); ++it) {
-        if ((*it)->data().toString() == item)
+        if ((*it)->data().toString() == item) {
             return *it;
+        }
     }
 
     return nullptr; // no item with the user data found
@@ -464,11 +471,13 @@ QList<QAction*> MenuManager::findActions(const QList<QAction*>& acts, const QStr
             used.append(*it);
             first_match = true;
             // get only one separator per request
-            if (item == QLatin1String("Separator"))
+            if (item == QLatin1String("Separator")) {
                 break;
+            }
         }
-        else if (first_match)
+        else if (first_match) {
             break;
+        }
     }
 
     return used;
