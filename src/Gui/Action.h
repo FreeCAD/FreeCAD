@@ -49,7 +49,7 @@ public:
     explicit Action (Command* pcCmd, QObject * parent = nullptr);
     /// Action takes ownership of the 'action' object.
     Action (Command* pcCmd, QAction* action, QObject * parent);
-    virtual ~Action();
+    ~Action() override;
 
     virtual void addTo (QWidget * widget);
     virtual void setEnabled(bool);
@@ -80,8 +80,8 @@ public:
     static QString createToolTip(QString helpText,
                                  const QString &title,
                                  const QFont &font,
-                                 const QString &shortcut,
-                                 const Command *cmd = nullptr);
+                                 const QString &shortCut,
+                                 const Command *command = nullptr);
 
     /** Obtain tool tip of a given command
      * @param cmd: input command
@@ -113,6 +113,9 @@ protected:
     QString _tooltip;
     QString _title;
     QMetaObject::Connection _connection;
+
+private:
+    Q_DISABLE_COPY(Action)
 };
 
 // --------------------------------------------------------------------
@@ -130,14 +133,14 @@ class GuiExport ActionGroup : public Action
 
 public:
     explicit ActionGroup (Command* pcCmd, QObject * parent = nullptr);
-    virtual ~ActionGroup();
+    ~ActionGroup() override;
 
-    void addTo (QWidget * widget);
-    void setEnabled (bool);
+    void addTo (QWidget * widget) override;
+    void setEnabled (bool) override;
     void setDisabled (bool);
     void setExclusive (bool);
     bool isExclusive() const;
-    void setVisible (bool);
+    void setVisible (bool) override;
     void setIsMode(bool check) { _isMode = check; }
 
     void setDropDownMenu(bool check) { _dropDown = check; }
@@ -148,8 +151,8 @@ public:
     void setCheckedAction(int);
 
 public Q_SLOTS:
-    void onActivated ();
-    void onToggled(bool);
+    void onActivated () override;
+    void onToggled(bool) override;
     void onActivated (QAction*);
     void onHovered   (QAction*);
 
@@ -159,6 +162,9 @@ protected:
     bool _external;
     bool _toggle;
     bool _isMode;
+
+private:
+    Q_DISABLE_COPY(ActionGroup)
 };
 
 // --------------------------------------------------------------------
@@ -170,8 +176,8 @@ class GuiExport WorkbenchComboBox : public QComboBox
 
 public:
     explicit WorkbenchComboBox(WorkbenchGroup* wb, QWidget* parent=nullptr);
-    virtual ~WorkbenchComboBox();
-    void showPopup();
+    ~WorkbenchComboBox() override;
+    void showPopup() override;
 
 public Q_SLOTS:
     void onActivated(int);
@@ -181,10 +187,12 @@ protected Q_SLOTS:
     void onWorkbenchActivated(const QString&);
 
 protected:
-    void actionEvent (QActionEvent*);
+    void actionEvent (QActionEvent*) override;
 
 private:
     WorkbenchGroup* group;
+
+    Q_DISABLE_COPY(WorkbenchComboBox)
 };
 
 /**
@@ -202,8 +210,8 @@ public:
      * when it gets activated.
      */
     WorkbenchGroup (Command* pcCmd, QObject * parent);
-    virtual ~WorkbenchGroup();
-    void addTo (QWidget * widget);
+    ~WorkbenchGroup() override;
+    void addTo (QWidget * widget) override;
     void refreshWorkbenchList();
 
     void slotActivateWorkbench(const char*);
@@ -211,10 +219,12 @@ public:
     void slotRemoveWorkbench(const char*);
 
 protected:
-    void customEvent(QEvent* event);
+    void customEvent(QEvent* event) override;
 
 private:
     void setWorkbenchData(int index, const QString& wb);
+
+    Q_DISABLE_COPY(WorkbenchGroup)
 };
 
 // --------------------------------------------------------------------
@@ -229,7 +239,7 @@ class GuiExport RecentFilesAction : public ActionGroup
 
 public:
     explicit RecentFilesAction (Command* pcCmd, QObject * parent = nullptr);
-    virtual ~RecentFilesAction();
+    ~RecentFilesAction() override;
 
     void appendFile(const QString&);
     void activateFile(int);
@@ -248,6 +258,8 @@ private:
     class Private;
     friend class Private;
     std::unique_ptr<Private> _pimpl;
+
+    Q_DISABLE_COPY(RecentFilesAction)
 };
 
 // --------------------------------------------------------------------
@@ -262,7 +274,7 @@ class GuiExport RecentMacrosAction : public ActionGroup
 
 public:
     explicit RecentMacrosAction (Command* pcCmd, QObject * parent = nullptr);
-    virtual ~RecentMacrosAction();
+    ~RecentMacrosAction() override;
 
     void appendFile(const QString&);
     void activateFile(int);
@@ -279,6 +291,8 @@ private:
     int maximumItems; /**< Number of maximum items */
     std::string shortcut_modifiers; /**< default = "Ctrl+Shift+" */
     int shortcut_count; /**< Number of dynamic shortcuts to create -- default = 3*/
+
+    Q_DISABLE_COPY(RecentMacrosAction)
 };
 
 
@@ -295,16 +309,18 @@ class GuiExport UndoAction : public Action
 
 public:
     explicit UndoAction (Command* pcCmd,QObject * parent = nullptr);
-    ~UndoAction();
-    void addTo (QWidget * widget);
-    void setEnabled(bool);
-    void setVisible(bool);
+    ~UndoAction() override;
+    void addTo (QWidget * widget) override;
+    void setEnabled(bool) override;
+    void setVisible(bool) override;
 
 private Q_SLOTS:
     void actionChanged();
 
 private:
     QAction* _toolAction;
+
+    Q_DISABLE_COPY(UndoAction)
 };
 
 // --------------------------------------------------------------------
@@ -320,16 +336,18 @@ class GuiExport RedoAction : public Action
 
 public:
     explicit RedoAction (Command* pcCmd,QObject * parent = nullptr);
-    ~RedoAction();
-    void addTo ( QWidget * widget );
-    void setEnabled(bool);
-    void setVisible(bool);
+    ~RedoAction() override;
+    void addTo ( QWidget * widget ) override;
+    void setEnabled(bool) override;
+    void setVisible(bool) override;
 
 private Q_SLOTS:
     void actionChanged();
 
 private:
     QAction* _toolAction;
+
+    Q_DISABLE_COPY(RedoAction)
 };
 
 // --------------------------------------------------------------------
@@ -344,11 +362,13 @@ class GuiExport DockWidgetAction : public Action
 
 public:
     explicit DockWidgetAction (Command* pcCmd, QObject * parent = nullptr);
-    virtual ~DockWidgetAction();
-    void addTo (QWidget * widget);
+    ~DockWidgetAction() override;
+    void addTo (QWidget * widget) override;
 
 private:
     QMenu* _menu;
+
+    Q_DISABLE_COPY(DockWidgetAction)
 };
 
 // --------------------------------------------------------------------
@@ -363,11 +383,13 @@ class GuiExport ToolBarAction : public Action
 
 public:
     explicit ToolBarAction (Command* pcCmd, QObject * parent = nullptr);
-    virtual ~ToolBarAction();
-    void addTo (QWidget * widget);
+    ~ToolBarAction() override;
+    void addTo (QWidget * widget) override;
 
 private:
     QMenu* _menu;
+
+    Q_DISABLE_COPY(ToolBarAction)
 };
 
 // --------------------------------------------------------------------
@@ -381,11 +403,13 @@ class GuiExport WindowAction : public ActionGroup
 
 public:
     explicit WindowAction (Command* pcCmd, QObject * parent = nullptr);
-    virtual ~WindowAction();
-    void addTo (QWidget * widget);
+    ~WindowAction() override;
+    void addTo (QWidget * widget) override;
 
 private:
     QMenu* _menu;
+
+    Q_DISABLE_COPY(WindowAction)
 };
 
 } // namespace Gui

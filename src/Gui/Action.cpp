@@ -217,20 +217,20 @@ void Action::setToolTip(const QString & text, const QString & title)
                 _pcCmd));
 }
 
-QString Action::cleanTitle(const QString & text)
+QString Action::cleanTitle(const QString & title)
 {
-    QString title(text);
+    QString text(title);
     // Deal with QAction title mnemonic
     static QRegularExpression re(QStringLiteral("&(.)"));
-    title.replace(re, QStringLiteral("\\1"));
+    text.replace(re, QStringLiteral("\\1"));
 
     // Probably not a good idea to trim ending punctuation
 #if 0
     // Trim line ending punctuation
     static QRegularExpression rePunct(QStringLiteral("[[:punct:]]+$"));
-    title.replace(rePunct, QString());
+    text.replace(rePunct, QString());
 #endif
-    return title;
+    return text;
 }
 
 QString Action::commandToolTip(const Command *cmd, bool richFormat)
@@ -286,8 +286,8 @@ QString Action::commandMenuText(const Command *cmd)
 QString Action::createToolTip(QString helpText,
                               const QString & title,
                               const QFont &font,
-                              const QString &sc,
-                              const Command *pcCmd)
+                              const QString &shortCut,
+                              const Command *command)
 {
     QString text = cleanTitle(title);
 
@@ -302,7 +302,7 @@ QString Action::createToolTip(QString helpText,
     // a rich text tooltip but the width is too short. We can escape the auto
     // wrappin using <p style='white-space:pre'>.
 
-    QString shortcut = sc;
+    QString shortcut = shortCut;
     if (shortcut.size() && helpText.endsWith(shortcut))
         helpText.resize(helpText.size() - shortcut.size());
     if (shortcut.size())
@@ -313,10 +313,10 @@ QString Action::createToolTip(QString helpText,
             text.toHtmlEscaped(), shortcut.toHtmlEscaped());
 
     QString cmdName;
-    if (pcCmd && pcCmd->getName()) {
-        cmdName = QString::fromLatin1(pcCmd->getName());
-        if (auto groupcmd = dynamic_cast<const GroupCommand*>(pcCmd)) {
-            if (auto act = pcCmd->getAction()) {
+    if (command && command->getName()) {
+        cmdName = QString::fromLatin1(command->getName());
+        if (auto groupcmd = dynamic_cast<const GroupCommand*>(command)) {
+            if (auto act = command->getAction()) {
                 int idx = act->property("defaultAction").toInt();
                 auto cmd = groupcmd->getCommand(idx);
                 if (cmd && cmd->getName()) {
@@ -571,6 +571,8 @@ public:
     { return act; }
 private:
     QAction* act;
+
+    Q_DISABLE_COPY(WorkbenchActionEvent)
 };
 }
 
@@ -862,6 +864,11 @@ void WorkbenchGroup::slotRemoveWorkbench(const char* name)
 class RecentFilesAction::Private: public ParameterGrp::ObserverType
 {
 public:
+    Private(const Private&) = delete;
+    Private(Private&&) = delete;
+    void operator= (const Private&) = delete;
+    void operator= (Private&&) = delete;
+
     Private(RecentFilesAction *master, const char *path):master(master)
     {
         handle = App::GetApplication().GetParameterGroupByPath(path);
