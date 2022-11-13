@@ -179,7 +179,6 @@ class GuiExport WorkbenchComboBox : public QComboBox
 
 public:
     explicit WorkbenchComboBox(WorkbenchGroup* wb, QWidget* parent=nullptr);
-    ~WorkbenchComboBox() override;
     void showPopup() override;
 
 public Q_SLOTS:
@@ -213,7 +212,6 @@ public:
      * when it gets activated.
      */
     WorkbenchGroup (Command* pcCmd, QObject * parent);
-    ~WorkbenchGroup() override;
     void addTo (QWidget * widget) override;
     void refreshWorkbenchList();
 
@@ -242,7 +240,6 @@ class GuiExport RecentFilesAction : public ActionGroup
 
 public:
     explicit RecentFilesAction (Command* pcCmd, QObject * parent = nullptr);
-    ~RecentFilesAction() override;
 
     void appendFile(const QString&);
     void activateFile(int);
@@ -277,7 +274,6 @@ class GuiExport RecentMacrosAction : public ActionGroup
 
 public:
     explicit RecentMacrosAction (Command* pcCmd, QObject * parent = nullptr);
-    ~RecentMacrosAction() override;
 
     void appendFile(const QString&);
     void activateFile(int);
@@ -406,7 +402,6 @@ class GuiExport WindowAction : public ActionGroup
 
 public:
     explicit WindowAction (Command* pcCmd, QObject * parent = nullptr);
-    ~WindowAction() override;
     void addTo (QWidget * widget) override;
 
 private:

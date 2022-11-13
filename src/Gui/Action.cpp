@@ -246,7 +246,7 @@ QString Action::cleanTitle(const QString & title)
 QString Action::commandToolTip(const Command *cmd, bool richFormat)
 {
     if (!cmd) {
-        return QString();
+        return {};
     }
 
     if (richFormat) {
@@ -281,7 +281,7 @@ QString Action::commandToolTip(const Command *cmd, bool richFormat)
 QString Action::commandMenuText(const Command *cmd)
 {
     if (!cmd) {
-        return QString();
+        return {};
     }
 
     QString title;
@@ -327,10 +327,10 @@ QString Action::createToolTip(QString helpText,
     // wrappin using <p style='white-space:pre'>.
 
     QString shortcut = shortCut;
-    if (shortcut.size() && helpText.endsWith(shortcut)) {
+    if (!shortcut.isEmpty() && helpText.endsWith(shortcut)) {
         helpText.resize(helpText.size() - shortcut.size());
     }
-    if (shortcut.size()) {
+    if (!shortcut.isEmpty()) {
         shortcut = QString::fromLatin1(" (%1)").arg(shortcut);
     }
 
@@ -356,7 +356,7 @@ QString Action::createToolTip(QString helpText,
             .arg(cmdName.toHtmlEscaped());
     }
 
-    if (shortcut.size() && helpText.endsWith(shortcut)) {
+    if (!shortcut.isEmpty() && helpText.endsWith(shortcut)) {
         helpText.resize(helpText.size() - shortcut.size());
     }
 
@@ -557,8 +557,9 @@ void ActionGroup::onActivated ()
     command()->invoke(this->property("defaultAction").toInt(), Command::TriggerAction);
 }
 
-void ActionGroup::onToggled(bool)
+void ActionGroup::onToggled(bool check)
 {
+    Q_UNUSED(check)
     onActivated();
 }
 
@@ -598,8 +599,6 @@ public:
     explicit WorkbenchActionEvent(QAction* act)
       : QEvent(QEvent::User), act(act)
     { }
-    ~WorkbenchActionEvent() override
-    { }
     QAction* action() const
     { return act; }
 private:
@@ -615,10 +614,6 @@ WorkbenchComboBox::WorkbenchComboBox(WorkbenchGroup* wb, QWidget* parent) : QCom
             this, qOverload<int>(&WorkbenchComboBox::onActivated));
     connect(getMainWindow(), &MainWindow::workbenchActivated,
             this, &WorkbenchComboBox::onWorkbenchActivated);
-}
-
-WorkbenchComboBox::~WorkbenchComboBox()
-{
 }
 
 void WorkbenchComboBox::showPopup()
@@ -737,10 +732,6 @@ WorkbenchGroup::WorkbenchGroup (  Command* pcCmd, QObject * parent )
     Application::Instance->signalRemoveWorkbench.connect(boost::bind(&WorkbenchGroup::slotRemoveWorkbench, this, bp::_1));
 }
 
-WorkbenchGroup::~WorkbenchGroup()
-{
-}
-
 void WorkbenchGroup::addTo(QWidget *widget)
 {
     refreshWorkbenchList();
@@ -801,17 +792,17 @@ void WorkbenchGroup::refreshWorkbenchList()
     // Go through the list of enabled workbenches and verify that they really exist because
     // it might be possible that a workbench has been removed after setting up the list of
     // enabled workbenches.
-    for (QStringList::Iterator it = enabled_wbs_list.begin(); it != enabled_wbs_list.end(); ++it) {
-        int index = items.indexOf(*it);
+    for (const auto& it : enabled_wbs_list) {
+        int index = items.indexOf(it);
         if (index >= 0) {
-            enable_wbs << *it;
+            enable_wbs << it;
             items.removeAt(index);
         }
     }
 
     // Filter out the actively disabled workbenches
-    for (QStringList::Iterator it = disabled_wbs_list.begin(); it != disabled_wbs_list.end(); ++it) {
-        int index = items.indexOf(*it);
+    for (const auto& it : disabled_wbs_list) {
+        int index = items.indexOf(it);
         if (index >= 0) {
             items.removeAt(index);
         }
@@ -833,8 +824,8 @@ void WorkbenchGroup::refreshWorkbenchList()
 
     // Show all enabled wb
     int index = 0;
-    for (QStringList::Iterator it = enable_wbs.begin(); it != enable_wbs.end(); ++it) {
-        setWorkbenchData(index++, *it);
+    for (const auto& it : enable_wbs) {
+        setWorkbenchData(index++, it);
     }
 }
 
@@ -854,9 +845,9 @@ void WorkbenchGroup::slotAddWorkbench(const char* name)
 {
     QList<QAction*> workbenches = groupAction()->actions();
     QAction* action = nullptr;
-    for (QList<QAction*>::Iterator it = workbenches.begin(); it != workbenches.end(); ++it) {
-        if (!(*it)->isVisible()) {
-            action = *it;
+    for (auto it : workbenches) {
+        if (!it->isVisible()) {
+            action = it;
             break;
         }
     }
@@ -884,14 +875,14 @@ void WorkbenchGroup::slotRemoveWorkbench(const char* name)
 {
     QString workbench = QString::fromLatin1(name);
     QList<QAction*> workbenches = groupAction()->actions();
-    for (QList<QAction*>::Iterator it = workbenches.begin(); it != workbenches.end(); ++it) {
-        if ((*it)->objectName() == workbench) {
-            (*it)->setObjectName(QString());
-            (*it)->setIcon(QIcon());
-            (*it)->setText(QString());
-            (*it)->setToolTip(QString());
-            (*it)->setStatusTip(QString());
-            (*it)->setVisible(false); // do this at last
+    for (auto it : workbenches) {
+        if (it->objectName() == workbench) {
+            it->setObjectName(QString());
+            it->setIcon(QIcon());
+            it->setText(QString());
+            it->setToolTip(QString());
+            it->setStatusTip(QString());
+            it->setVisible(false); // do this at last
             break;
         }
     }
@@ -918,8 +909,9 @@ public:
         handle->Detach(this);
     }
 
-    void OnChange(Base::Subject<const char*> &, const char *reason) override
+    void OnChange(Base::Subject<const char*> & sub, const char *reason) override
     {
+        Q_UNUSED(sub)
         if (!updating && reason && strcmp(reason, "RecentFiles")==0) {
             Base::StateLocker guard(updating);
             master->restore();
@@ -943,10 +935,6 @@ RecentFilesAction::RecentFilesAction ( Command* pcCmd, QObject * parent )
 {
     _pimpl.reset(new Private(this, "User parameter:BaseApp/Preferences/RecentFiles"));
     restore();
-}
-
-RecentFilesAction::~RecentFilesAction()
-{
 }
 
 /** Adds the new item to the recent files. */
@@ -1104,10 +1092,6 @@ RecentMacrosAction::RecentMacrosAction ( Command* pcCmd, QObject * parent )
   , maximumItems(20)
 {
     restore();
-}
-
-RecentMacrosAction::~RecentMacrosAction()
-{
 }
 
 /** Adds the new item to the recent files. */
@@ -1456,10 +1440,6 @@ void ToolBarAction::addTo ( QWidget * widget )
 WindowAction::WindowAction ( Command* pcCmd, QObject * parent )
   : ActionGroup(pcCmd, parent)
   , _menu(nullptr)
-{
-}
-
-WindowAction::~WindowAction()
 {
 }
 
