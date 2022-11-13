@@ -24,7 +24,7 @@
 #ifndef _PreComp_
 # include <algorithm>
 # include <cstring>
-
+# include <QAbstractButton>
 # include <QApplication>
 # include <QDebug>
 # include <QGenericReturnArgument>
@@ -75,10 +75,12 @@ DlgPreferencesImp::DlgPreferencesImp(QWidget* parent, Qt::WindowFlags fl)
     ui->listBox->setFixedWidth(Base::clamp<int>(length + 20, 108, 120));
     ui->listBox->setGridSize(QSize(108, 75));
 
-    connect(ui->buttonBox,  SIGNAL (helpRequested()),
-            getMainWindow(), SLOT (whatsThis()));
-    connect(ui->listBox, SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)),
-            this, SLOT(changeGroup(QListWidgetItem *, QListWidgetItem*)));
+    connect(ui->buttonBox, &QDialogButtonBox::clicked,
+            this, &DlgPreferencesImp::onButtonBoxClicked);
+    connect(ui->buttonBox,  &QDialogButtonBox::helpRequested,
+            getMainWindow(), &MainWindow::whatsThis);
+    connect(ui->listBox, &QListWidget::currentItemChanged,
+            this, &DlgPreferencesImp::changeGroup);
 
     setupPages();
 
@@ -316,7 +318,7 @@ void DlgPreferencesImp::accept()
         QDialog::accept();
 }
 
-void DlgPreferencesImp::on_buttonBox_clicked(QAbstractButton* btn)
+void DlgPreferencesImp::onButtonBoxClicked(QAbstractButton* btn)
 {
     if (ui->buttonBox->standardButton(btn) == QDialogButtonBox::Apply)
         applyChanges();

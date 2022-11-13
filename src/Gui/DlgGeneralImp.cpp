@@ -431,11 +431,12 @@ void DlgGeneralImp::saveAsNewPreferencePack()
 void DlgGeneralImp::revertToSavedConfig()
 {
     revertToBackupConfigDialog = std::make_unique<DlgRevertToBackupConfigImp>(this);
-    connect(revertToBackupConfigDialog.get(), &DlgRevertToBackupConfigImp::accepted, [this]() {
+    connect(revertToBackupConfigDialog.get(), &DlgRevertToBackupConfigImp::accepted, this, [this]() {
         auto parentDialog = qobject_cast<DlgPreferencesImp*> (this->window());
-        if (parentDialog)
+        if (parentDialog) {
             parentDialog->reload();
-        });
+        }
+    });
     revertToBackupConfigDialog->open();
 }
 

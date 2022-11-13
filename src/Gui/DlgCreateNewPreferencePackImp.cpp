@@ -53,6 +53,7 @@ DlgCreateNewPreferencePackImp::DlgCreateNewPreferencePackImp(QWidget* parent)
     ui->lineEdit->setValidator(&_nameValidator);
     ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
     connect(ui->treeWidget, &QTreeWidget::itemChanged, this, &DlgCreateNewPreferencePackImp::onItemChanged);
+    connect(ui->lineEdit, &QLineEdit::textEdited, this, &DlgCreateNewPreferencePackImp::onLineEditTextEdited);
 }
 
 
@@ -147,7 +148,7 @@ void DlgCreateNewPreferencePackImp::onItemChanged(QTreeWidgetItem* item, int col
     }
 }
 
-void DlgCreateNewPreferencePackImp::on_lineEdit_textEdited(const QString& text)
+void DlgCreateNewPreferencePackImp::onLineEditTextEdited(const QString& text)
 {
     ui->buttonBox->button(QDialogButtonBox::Ok)->setDisabled(text.isEmpty());
 }
