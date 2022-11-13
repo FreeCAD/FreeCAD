@@ -2921,7 +2921,7 @@ TopoShape::sortEdges(std::list<TopoShape>& edges, bool keepOrder, double tol)
             }
             else if (pEI->v1.SquareDistance(first) <= tol3d) {
                 first = pEI->v2;
-                sorted.push_back(reverseEdge(pEI->edge));
+                sorted.push_front(reverseEdge(pEI->edge));
                 edges.erase(pEI->it);
                 edge_points.erase(pEI);
                 pEI = edge_points.begin();
