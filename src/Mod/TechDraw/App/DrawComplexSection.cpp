@@ -123,31 +123,6 @@ using namespace TechDraw;
 using namespace std;
 using DU = DrawUtil;
 
-//class to store geometry of points where the section line changes direction
-ChangePoint::ChangePoint(QPointF location, QPointF preDirection, QPointF postDirection)
-{
-    m_location = location;
-    m_preDirection = preDirection;
-    m_postDirection = postDirection;
-}
-
-ChangePoint::ChangePoint(gp_Pnt location, gp_Dir preDirection, gp_Dir postDirection)
-{
-    m_location.setX(location.X());
-    m_location.setY(location.Y());
-    m_preDirection.setX(preDirection.X());
-    m_preDirection.setY(preDirection.Y());
-    m_postDirection.setX(postDirection.X());
-    m_postDirection.setY(postDirection.Y());
-}
-
-void ChangePoint::scale(double scaleFactor)
-{
-    m_location = m_location * scaleFactor;
-    m_preDirection = m_preDirection * scaleFactor;
-    m_postDirection = m_postDirection * scaleFactor;
-}
-
 //===========================================================================
 // DrawComplexSection
 //===========================================================================
