@@ -801,11 +801,13 @@ Base::Vector3d DrawViewSection::getXDirection() const
         //we have an XDirection property
         if (DrawUtil::fpCompare(XDirection.getValue().Length(), 0.0)) {
             //but it has no value, so we make a value
-            gp_Ax2 cs = getCSFromBase(SectionDirection.getValueAsString());
-            gp_Dir gXDir = cs.XDirection();
-            result = Base::Vector3d(gXDir.X(),
-                                    gXDir.Y(),
-                                    gXDir.Z());
+            if (BaseView.getValue()) {
+                gp_Ax2 cs = getCSFromBase(SectionDirection.getValueAsString());
+                gp_Dir gXDir = cs.XDirection();
+                result = Base::Vector3d(gXDir.X(),
+                                        gXDir.Y(),
+                                        gXDir.Z());
+            }
         } else {
             //XDirection is good, so we use it
             result = XDirection.getValue();

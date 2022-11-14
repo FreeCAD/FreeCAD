@@ -737,6 +737,12 @@ void execComplexSection(Gui::Command* cmd)
         }
     }
 
+    if (!baseView) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("I do not know what base view to use."));
+        return;
+    }
+
     if (shapes.empty() &&
         xShapes.empty() &&
         !baseView) {
