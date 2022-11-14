@@ -40,6 +40,7 @@
 #include "Selection.h"
 #include "ToolBarManager.h"
 #include "ToolBoxManager.h"
+#include "UserSettings.h"
 #include "Window.h"
 
 #include <App/Application.h>
@@ -237,8 +238,9 @@ void Workbench::setupCustomToolbars(ToolBarItem* root, const char* toolbar) cons
     }
 
     // for this workbench global toolbars are not allowed
-    if (getTypeId() == NoneWorkbench::getClassTypeId())
+    if (getTypeId() == NoneWorkbench::getClassTypeId()) {
         return;
+    }
 
     // application-wide custom toolbars
     hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
@@ -259,8 +261,11 @@ void Workbench::setupCustomToolbars(ToolBarItem* root, const Base::Reference<Par
     std::string separator = "Separator";
     for (const auto & it : hGrps) {
         bool active = it->GetBool("Active", true);
-        if (!active) // ignore this toolbar
+        if (!active) {
+            // ignore this toolbar
             continue;
+        }
+
         auto bar = new ToolBarItem(root);
         bar->setCommand("Custom");
 
@@ -310,24 +315,7 @@ void Workbench::setupCustomToolbars(ToolBarItem* root, const Base::Reference<Par
 
 void Workbench::setupCustomShortcuts() const
 {
-    // Assigns user defined accelerators
-    ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter();
-    if (hGrp->HasGroup("Shortcut")) {
-        hGrp = hGrp->GetGroup("Shortcut");
-        // Get all user defined shortcuts
-        const CommandManager& cCmdMgr = Application::Instance->commandManager();
-        std::vector<std::pair<std::string,std::string> > items = hGrp->GetASCIIMap();
-        for (const auto & item : items) {
-            Command* cmd = cCmdMgr.getCommandByName(item.first.c_str());
-            if (cmd && cmd->getAction()) {
-                // may be UTF-8 encoded
-                QString str = QString::fromUtf8(item.second.c_str());
-                QKeySequence shortcut = str;
-                cmd->getAction()->setShortcut(shortcut.toString(QKeySequence::NativeText));
-                cmd->recreateTooltip(item.first.c_str(), cmd->getAction()); // The tooltip has the shortcut in it...
-            }
-        }
-    }
+    // Now managed by ShortcutManager
 }
 
 void Workbench::setupContextMenu(const char* recipient,MenuItem* item) const
@@ -341,8 +329,10 @@ void Workbench::createMainWindowPopupMenu(MenuItem*) const
 }
 
 void Workbench::createLinkMenu(MenuItem *item) {
-    if(!item || !App::GetApplication().getActiveDocument())
+    if(!item || !App::GetApplication().getActiveDocument()) {
         return;
+    }
+
     auto linkMenu = new MenuItem;
     linkMenu->setCommand("Link actions");
     *linkMenu << "Std_LinkMakeGroup" << "Std_LinkMake";
@@ -352,18 +342,18 @@ void Workbench::createLinkMenu(MenuItem *item) {
         "Std_LinkImport","Std_LinkImportAll",nullptr,"Std_LinkSelectLinked",
         "Std_LinkSelectLinkedFinal","Std_LinkSelectAllLinks"};
     bool separator = true;
-    for(const auto & i : cmds) {
-        if(!i) {
+    for(const auto & it : cmds) {
+        if(!it) {
             if(separator) {
                 separator = false;
                 *linkMenu << "Separator";
             }
             continue;
         }
-        auto cmd = rMgr.getCommandByName(i);
+        auto cmd = rMgr.getCommandByName(it);
         if(cmd->isActive()) {
             separator = true;
-            *linkMenu << i;
+            *linkMenu << it;
         }
     }
     *item << linkMenu;
@@ -378,12 +368,13 @@ void Workbench::addPermanentMenuItem(const std::string& cmd, const std::string& 
 
 void Workbench::removePermanentMenuItem(const std::string& cmd)
 {
-    auto it = std::find_if(staticMenuItems.begin(), staticMenuItems.end(), [cmd](const std::pair<std::string, std::string>& p) {
-        return (p.first == cmd);
+    auto it = std::find_if(staticMenuItems.begin(), staticMenuItems.end(), [cmd](const std::pair<std::string, std::string>& pmi) {
+        return (pmi.first == cmd);
     });
 
-    if (it != staticMenuItems.end())
+    if (it != staticMenuItems.end()) {
         staticMenuItems.erase(it);
+    }
 }
 
 void  Workbench::addPermanentMenuItems(MenuItem* mb) const
@@ -451,15 +442,17 @@ PyObject* Workbench::getPyObject()
 void Workbench::addTaskWatcher(const std::vector<Gui::TaskView::TaskWatcher*> &Watcher)
 {
     Gui::TaskView::TaskView* taskView = Control().taskPanel();
-    if (taskView)
+    if (taskView) {
         taskView->addTaskWatcher(Watcher);
+    }
 }
 
 void Workbench::removeTaskWatcher()
 {
     Gui::TaskView::TaskView* taskView = Control().taskPanel();
-    if (taskView)
+    if (taskView) {
         taskView->clearTaskWatcher();
+    }
 }
 
 std::list<std::string> Workbench::listToolbars() const
@@ -467,8 +460,9 @@ std::list<std::string> Workbench::listToolbars() const
     std::unique_ptr<ToolBarItem> tb(setupToolBars());
     std::list<std::string> bars;
     QList<ToolBarItem*> items = tb->getItems();
-    for (const auto & item : items)
+    for (const auto & item : items) {
         bars.push_back(item->command());
+    }
     return bars;
 }
 
@@ -495,8 +489,9 @@ std::list<std::string> Workbench::listMenus() const
     std::unique_ptr<MenuItem> mb(setupMenuBar());
     std::list<std::string> menus;
     QList<MenuItem*> items = mb->getItems();
-    for (const auto & item : items)
+    for (const auto & item : items) {
         menus.push_back(item->command());
+    }
     return menus;
 }
 
@@ -505,8 +500,9 @@ std::list<std::string> Workbench::listCommandbars() const
     std::unique_ptr<ToolBarItem> cb(setupCommandBars());
     std::list<std::string> bars;
     QList<ToolBarItem*> items = cb->getItems();
-    for (const auto & item : items)
+    for (const auto & item : items) {
         bars.push_back(item->command());
+    }
     return bars;
 }
 
@@ -768,9 +764,11 @@ ToolBarItem* StdWorkbench::setupToolBars() const
           << "Std_Refresh" << "Separator" << "Std_WhatsThis";
 
     // Workbench switcher
-    auto wb = new ToolBarItem( root );
-    wb->setCommand("Workbench");
-    *wb << "Std_Workbench";
+    if (WorkbenchSwitcher::isToolbar(WorkbenchSwitcher::getValue())) {
+        auto wb = new ToolBarItem(root);
+        wb->setCommand("Workbench");
+        *wb << "Std_Workbench";
+    }
 
     // Macro
     auto macro = new ToolBarItem( root );
@@ -831,8 +829,9 @@ DockWindowItems* StdWorkbench::setupDockWindows() const
           GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DockWindows")->GetGroup("DAGView");
 
     bool enabled = group->GetBool("Enabled", false);
-    if (enabled)
+    if (enabled) {
       root->addDockWidget("Std_DAGView", Qt::RightDockWidgetArea, false, false);
+    }
 
     return root;
 }
@@ -853,8 +852,9 @@ BlankWorkbench::~BlankWorkbench()
 void BlankWorkbench::activated()
 {
     QList<QDockWidget*> dw = getMainWindow()->findChildren<QDockWidget*>();
-    for (auto & it : dw)
+    for (auto & it : dw) {
         it->toggleViewAction()->setVisible(false);
+    }
     getMainWindow()->statusBar()->hide();
 }
 
@@ -1071,20 +1071,22 @@ void PythonBaseWorkbench::setupContextMenu(const char* recipient, MenuItem* item
 
 void PythonBaseWorkbench::appendMenu(const std::list<std::string>& menu, const std::list<std::string>& items) const
 {
-    if ( menu.empty() || items.empty() )
+    if ( menu.empty() || items.empty() ) {
         return;
+    }
 
     auto jt=menu.begin();
     MenuItem* item = _menuBar->findItem( *jt );
-    if (!item)
-    {
+    if (!item) {
         item = new MenuItem;
         item->setCommand( *jt );
         Gui::MenuItem* wnd = _menuBar->findItem( "&Windows" );
-        if (wnd)
+        if (wnd) {
             _menuBar->insertItem(wnd, item);
-        else
+        }
+        else {
             _menuBar->appendItem(item);
+        }
     }
 
     // create sub menus
@@ -1099,8 +1101,9 @@ void PythonBaseWorkbench::appendMenu(const std::list<std::string>& menu, const s
         item = subitem;
     }
 
-    for (const auto & it : items)
+    for (const auto & it : items) {
         *item << it;
+    }
 }
 
 void PythonBaseWorkbench::removeMenu(const std::string& menu) const
@@ -1124,8 +1127,9 @@ void PythonBaseWorkbench::appendContextMenu(const std::list<std::string>& menu, 
         item = subitem;
     }
 
-    for (const auto & it : items)
+    for (const auto & it : items) {
         *item << it;
+    }
 }
 
 void PythonBaseWorkbench::removeContextMenu(const std::string& menu) const
@@ -1145,14 +1149,14 @@ void PythonBaseWorkbench::clearContextMenu()
 void PythonBaseWorkbench::appendToolbar(const std::string& bar, const std::list<std::string>& items) const
 {
     ToolBarItem* item = _toolBar->findItem(bar);
-    if (!item)
-    {
+    if (!item) {
         item = new ToolBarItem(_toolBar);
         item->setCommand(bar);
     }
 
-    for (const auto & it : items)
+    for (const auto & it : items) {
         *item << it;
+    }
 }
 
 void PythonBaseWorkbench::removeToolbar(const std::string& bar) const
@@ -1167,20 +1171,20 @@ void PythonBaseWorkbench::removeToolbar(const std::string& bar) const
 void PythonBaseWorkbench::appendCommandbar(const std::string& bar, const std::list<std::string>& items) const
 {
     ToolBarItem* item = _commandBar->findItem( bar );
-    if ( !item )
-    {
+    if (!item) {
         item = new ToolBarItem(_commandBar);
         item->setCommand(bar);
     }
 
-    for (const auto & it : items)
+    for (const auto & it : items) {
         *item << it;
+    }
 }
 
 void PythonBaseWorkbench::removeCommandbar(const std::string& bar) const
 {
     ToolBarItem* item = _commandBar->findItem(bar);
-    if ( item ) {
+    if (item) {
         _commandBar->removeItem(item);
         delete item;
     }

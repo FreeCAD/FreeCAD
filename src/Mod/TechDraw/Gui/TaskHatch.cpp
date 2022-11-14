@@ -173,7 +173,7 @@ void TaskHatch::apply(bool forceUpdate)
 
 void TaskHatch::createHatch()
 {
-//    Base::Console().Message("TH::createHatch()\n");
+    Base::Console().Message("TH::createHatch()\n");
     App::Document* doc = m_dvp->getDocument();
     std::string FeatName = doc->getUniqueObjectName("Hatch");
     std::stringstream featLabel;

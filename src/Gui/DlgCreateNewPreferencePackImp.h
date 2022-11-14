@@ -64,7 +64,7 @@ protected Q_SLOTS:
 
     void onItemChanged(QTreeWidgetItem* item, int column);
 
-    void on_lineEdit_textEdited(const QString &text);
+    void onLineEditTextEdited(const QString &text);
 
     void accept() override;
 

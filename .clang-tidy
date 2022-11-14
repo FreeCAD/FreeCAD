@@ -1,7 +1,8 @@
 ---
 Checks:          'clang-diagnostic-*,clang-analyzer-*,boost-*,bugprone-*,
 performance-*,readability-*,portability-*,modernize-*,cppcoreguidelines-*,
-concurrency-*,-modernize-use-trailing-return-type, -modernize-use-nodiscard'
+concurrency-*,-modernize-use-trailing-return-type, -modernize-use-nodiscard,
+-readability-redundant-access-specifiers'
 WarningsAsErrors: ''
 HeaderFilterRegex: ''
 AnalyzeTemporaryDtors: false

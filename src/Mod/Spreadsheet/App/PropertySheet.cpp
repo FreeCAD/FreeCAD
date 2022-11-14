@@ -151,6 +151,38 @@ bool PropertySheet::isValidAlias(const std::string &candidate)
         return false;
 }
 
+namespace
+{
+
+// A utility function that gets the range (the minimum and maximum row and column) out of a 
+// vector of cell addresses. Note that it's possible that neither cell in the tuple itself
+// has data in it, but operating on all cells in the inclusive range specified by the tuple
+// is guaranteed to include all cells in the passed-in vector, and no cells exist to the
+// left, right, above, or below the block specified.
+std::tuple<CellAddress, CellAddress> extractRange(const std::vector<CellAddress> &cells)
+{
+    CellAddress firstRowAndColumn;
+    CellAddress lastRowAndColumn;
+    for (const auto & cell : cells) {
+        int row = cell.row();
+        int column = cell.col();
+        if (row < firstRowAndColumn.row() || !firstRowAndColumn.isValid()) {
+            firstRowAndColumn.setRow(row);
+        }
+        if (column < firstRowAndColumn.col() || !firstRowAndColumn.isValid()) {
+            firstRowAndColumn.setCol(column);
+        }
+        if (row > lastRowAndColumn.row() || !lastRowAndColumn.isValid()) {
+            lastRowAndColumn.setRow(row);
+        }
+        if (column > lastRowAndColumn.col() || !lastRowAndColumn.isValid()) {
+            lastRowAndColumn.setCol(column);
+        }
+    }
+    return std::make_tuple(firstRowAndColumn, lastRowAndColumn);
+}
+}// namespace
+
 std::vector<CellAddress> PropertySheet::getUsedCells() const
 {
     std::vector<CellAddress> usedSet;
@@ -161,6 +193,12 @@ std::vector<CellAddress> PropertySheet::getUsedCells() const
     }
 
     return usedSet;
+}
+
+std::tuple<CellAddress, CellAddress> PropertySheet::getUsedRange() const
+{
+    auto usedCells = getUsedCells();
+    return extractRange(usedCells);
 }
 
 std::vector<CellAddress> PropertySheet::getNonEmptyCells() const
@@ -175,6 +213,12 @@ std::vector<CellAddress> PropertySheet::getNonEmptyCells() const
     }
 
     return usedSet;
+}
+
+std::tuple<CellAddress, CellAddress> PropertySheet::getNonEmptyRange() const
+{
+    auto nonEmptyCells = getNonEmptyCells();
+    return extractRange(nonEmptyCells);
 }
 
 void PropertySheet::setDirty(CellAddress address)

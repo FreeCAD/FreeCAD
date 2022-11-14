@@ -37,7 +37,7 @@ import re  # Needed for py 3.6 and earlier, can remove later, search for "re."
 from datetime import date, timedelta
 from typing import Dict, List
 
-from PySide2 import QtGui, QtCore, QtWidgets
+from PySide import QtGui, QtCore, QtWidgets
 import FreeCAD
 import FreeCADGui
 
@@ -54,7 +54,6 @@ from addonmanager_workers_installation import (
     UpdateMetadataCacheWorker,
     UpdateAllWorker,
 )
-from addonmanager_workers_utility import ConnectionChecker
 import addonmanager_utilities as utils
 import AddonManager_rc
 from package_list import PackageList, PackageListItemModel
@@ -68,6 +67,9 @@ from manage_python_dependencies import (
     PythonPackageManager,
 )
 from addonmanager_devmode import DeveloperMode
+from addonmanager_firstrun import FirstRunDialog
+from addonmanager_connection_checker import ConnectionCheckerGUI
+from addonmanager_devmode_metadata_checker import MetadataValidators
 
 import NetworkManager
 
@@ -110,7 +112,6 @@ class CommandAddonManager:
     """The main Addon Manager class and FreeCAD command"""
 
     workers = [
-        "connection_checker",
         "create_addon_list_worker",
         "check_worker",
         "show_worker",
@@ -163,6 +164,10 @@ class CommandAddonManager:
         self.update_all_worker = None
         self.developer_mode = None
 
+        # Set up the connection checker
+        self.connection_checker = ConnectionCheckerGUI()
+        self.connection_checker.connection_available.connect(self.launch)
+
         # Give other parts of the AM access to the current instance
         global INSTANCE
         INSTANCE = self
@@ -182,121 +187,11 @@ class CommandAddonManager:
 
         NetworkManager.InitializeNetworkManager()
 
-        # display first use dialog if needed
-        pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
-        readWarning = pref.GetBool("readWarning2022", False)
-
-        dev_mode_active = pref.GetBool("developerMode", False)
-
-        if not readWarning:
-            warning_dialog = FreeCADGui.PySideUic.loadUi(
-                os.path.join(os.path.dirname(__file__), "first_run.ui")
-            )
-            warning_dialog.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
-            autocheck = pref.GetBool("AutoCheck", False)
-            download_macros = pref.GetBool("DownloadMacros", False)
-            proxy_string = pref.GetString("ProxyUrl", "")
-            if pref.GetBool("NoProxyCheck", True):
-                proxy_option = 0
-            elif pref.GetBool("SystemProxyCheck", False):
-                proxy_option = 1
-            elif pref.GetBool("UserProxyCheck", False):
-                proxy_option = 2
-
-            def toggle_proxy_list(option: int):
-                if option == 2:
-                    warning_dialog.lineEditProxy.show()
-                else:
-                    warning_dialog.lineEditProxy.hide()
-
-            warning_dialog.checkBoxAutoCheck.setChecked(autocheck)
-            warning_dialog.checkBoxDownloadMacroMetadata.setChecked(download_macros)
-            warning_dialog.comboBoxProxy.setCurrentIndex(proxy_option)
-            toggle_proxy_list(proxy_option)
-            if proxy_option == 2:
-                warning_dialog.lineEditProxy.setText(proxy_string)
-
-            warning_dialog.comboBoxProxy.currentIndexChanged.connect(toggle_proxy_list)
-
-            warning_dialog.labelWarning.setStyleSheet(
-                f"color:{utils.warning_color_string()};font-weight:bold;"
-            )
-
-            if warning_dialog.exec() == QtWidgets.QDialog.Accepted:
-                readWarning = True
-                pref.SetBool("readWarning2022", True)
-                pref.SetBool("AutoCheck", warning_dialog.checkBoxAutoCheck.isChecked())
-                pref.SetBool(
-                    "DownloadMacros",
-                    warning_dialog.checkBoxDownloadMacroMetadata.isChecked(),
-                )
-                if warning_dialog.checkBoxDownloadMacroMetadata.isChecked():
-                    self.trigger_recache = True
-                selected_proxy_option = warning_dialog.comboBoxProxy.currentIndex()
-                if selected_proxy_option == 0:
-                    pref.SetBool("NoProxyCheck", True)
-                    pref.SetBool("SystemProxyCheck", False)
-                    pref.SetBool("UserProxyCheck", False)
-                elif selected_proxy_option == 1:
-                    pref.SetBool("NoProxyCheck", False)
-                    pref.SetBool("SystemProxyCheck", True)
-                    pref.SetBool("UserProxyCheck", False)
-                else:
-                    pref.SetBool("NoProxyCheck", False)
-                    pref.SetBool("SystemProxyCheck", False)
-                    pref.SetBool("UserProxyCheck", True)
-                    pref.SetString("ProxyUrl", warning_dialog.lineEditProxy.text())
-
-        if readWarning:
-            # Check the connection in a new thread, so FreeCAD stays responsive
-            self.connection_checker = ConnectionChecker()
-            self.connection_checker.success.connect(self.launch)
-            self.connection_checker.failure.connect(self.network_connection_failed)
-            self.connection_checker.start()
-
-            # If it takes longer than a half second to check the connection, show a message:
-            self.connection_message_timer = QtCore.QTimer.singleShot(
-                500, self.show_connection_check_message
-            )
-
-    def show_connection_check_message(self):
-        if not self.connection_checker.isFinished():
-            self.connection_check_message = QtWidgets.QMessageBox(
-                QtWidgets.QMessageBox.Information,
-                translate("AddonsInstaller", "Checking connection"),
-                translate("AddonsInstaller", "Checking for connection to GitHub..."),
-                QtWidgets.QMessageBox.Cancel,
-            )
-            self.connection_check_message.buttonClicked.connect(
-                self.cancel_network_check
-            )
-            self.connection_check_message.show()
-
-    def cancel_network_check(self, _):
-        if not self.connection_checker.isFinished():
-            self.connection_checker.success.disconnect(self.launch)
-            self.connection_checker.failure.disconnect(self.network_connection_failed)
-            self.connection_checker.requestInterruption()
-            self.connection_checker.wait(500)
-            self.connection_check_message.close()
-
-    def network_connection_failed(self, message: str) -> None:
-        # This must run on the main GUI thread
-        if hasattr(self, "connection_check_message") and self.connection_check_message:
-            self.connection_check_message.close()
-        if NetworkManager.HAVE_QTNETWORK:
-            QtWidgets.QMessageBox.critical(
-                None, translate("AddonsInstaller", "Connection failed"), message
-            )
-        else:
-            QtWidgets.QMessageBox.critical(
-                None,
-                translate("AddonsInstaller", "Missing dependency"),
-                translate(
-                    "AddonsInstaller",
-                    "Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.",
-                ),
-            )
+        firstRunDialog = FirstRunDialog()
+        if not firstRunDialog.exec():
+            return
+        
+        self.connection_checker.start()
 
     def launch(self) -> None:
         """Shows the Addon Manager UI"""
@@ -915,6 +810,7 @@ class CommandAddonManager:
 
     def check_python_updates(self) -> None:
         self.update_allowed_packages_list()  # Not really the best place for it...
+        PythonPackageManager.migrate_old_am_installations()  # Migrate 0.20 to 0.21
         self.do_next_startup_phase()
 
     def show_python_updates_dialog(self) -> None:
@@ -929,6 +825,9 @@ class CommandAddonManager:
         if not self.developer_mode:
             self.developer_mode = DeveloperMode()
         self.developer_mode.show()
+
+        checker = MetadataValidators()
+        checker.validate_all(self.item_model.repos)
 
     def add_addon_repo(self, addon_repo: Addon) -> None:
         """adds a workbench to the list"""
@@ -1783,151 +1682,4 @@ class CommandAddonManager:
                     ).format(repo.name)
                     + "\n"
                 )
-
-    def validate(self):
-        """Developer tool: check all repos for validity and print report"""
-
-        FreeCAD.Console.PrintLog(f"\n\nADDON MANAGER DEVELOPER MODE CHECKS\n")
-        FreeCAD.Console.PrintLog(f"-----------------------------------\n")
-
-        counter = 0
-        for addon in self.item_model.repos:
-            counter += 1
-            self.update_progress_bar(counter, len(self.item_model.repos))
-            if addon.metadata is not None:
-                self.validate_package_xml(addon)
-            elif addon.repo_type == Addon.Kind.MACRO:
-                if addon.macro.parsed:
-                    if len(addon.macro.icon) == 0 and len(addon.macro.xpm) == 0:
-                        FreeCAD.Console.PrintLog(
-                            f"Macro '{addon.name}' does not have an icon\n"
-                        )
-            else:
-                FreeCAD.Console.PrintLog(
-                    f"Addon '{addon.name}' does not have a package.xml file\n"
-                )
-
-        FreeCAD.Console.PrintLog(f"-----------------------------------\n\n")
-        self.do_next_startup_phase()
-
-    def validate_package_xml(self, addon: Addon):
-        if addon.metadata is None:
-            return
-
-        # The package.xml standard has some required elements that the basic XML reader is not actually checking
-        # for. In developer mode, actually make sure that all of the rules are being followed for each element.
-
-        errors = []
-
-        # Top-level required elements
-
-        if not addon.metadata.Name or len(addon.metadata.Name) == 0:
-            errors.append(
-                f"No top-level <name> element found, or <name> element is empty"
-            )
-        if not addon.metadata.Version or addon.metadata.Version == "0.0.0":
-            errors.append(
-                f"No top-level <version> element found, or <version> element is invalid"
-            )
-        # if not addon.metadata.Date or len(addon.metadata.Date) == 0:
-        #    errors.append(f"No top-level <date> element found, or <date> element is invalid")
-        if not addon.metadata.Description or len(addon.metadata.Description) == 0:
-            errors.append(
-                f"No top-level <description> element found, or <description> element is invalid"
-            )
-
-        maintainers = addon.metadata.Maintainer
-        if len(maintainers) == 0:
-            errors.append(f"No top-level <maintainers> found, at least one is required")
-        for maintainer in maintainers:
-            if len(maintainer["email"]) == 0:
-                errors.append(
-                    f"No email address specified for maintainer '{maintainer['name']}'"
-                )
-
-        licenses = addon.metadata.License
-        if len(licenses) == 0:
-            errors.append(f"No top-level <license> found, at least one is required")
-
-        urls = addon.metadata.Urls
-        if len(urls) == 0:
-            errors.append(
-                f"No <url> elements found, at least a repo url must be provided"
-            )
-        else:
-            found_repo = False
-            found_readme = False
-            for url in urls:
-                if url["type"] == "repository":
-                    found_repo = True
-                    if len(url["branch"]) == 0:
-                        errors.append(
-                            "<repository> element is missing the 'branch' attribute"
-                        )
-                elif url["type"] == "readme":
-                    found_readme = True
-                    location = url["location"]
-                    p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(location)
-                    if not p:
-                        errors.append(
-                            f"Could not access specified readme at {location}"
-                        )
-                    else:
-                        p = p.data().decode("utf8")
-                        if "<html" in p or "<!DOCTYPE html>" in p:
-                            pass
-                        else:
-                            errors.append(
-                                f"Readme data found at {location} does not appear to be rendered HTML"
-                            )
-            if not found_repo:
-                errors.append("No repo url specified")
-            if not found_readme:
-                errors.append(
-                    "No readme url specified (not required, but highly recommended)"
-                )
-
-        contents = addon.metadata.Content
-        if not contents or len(contents) == 0:
-            errors.append("No content items found")
-
-        missing_icon = True
-        if addon.metadata.Icon and len(addon.metadata.Icon) > 0:
-            missing_icon = False
-        else:
-            if "workbench" in contents:
-                wb = contents["workbench"][0]
-                if wb.Icon:
-                    missing_icon = False
-        if missing_icon:
-            errors.append(f"No <icon> element found, or <icon> element is invalid")
-
-        if "workbench" in contents:
-            for wb in contents["workbench"]:
-                errors.extend(self.validate_workbench_metadata(wb))
-
-        if "preferencepack" in contents:
-            for wb in contents["preferencepack"]:
-                errors.extend(self.validate_preference_pack_metadata(wb))
-
-        if len(errors) > 0:
-            FreeCAD.Console.PrintLog(
-                f"Errors found in package.xml file for '{addon.name}'\n"
-            )
-            for error in errors:
-                FreeCAD.Console.PrintLog(f"   * {error}\n")
-
-    def validate_workbench_metadata(self, workbench) -> List[str]:
-        errors = []
-        if not workbench.Classname or len(workbench.Classname) == 0:
-            errors.append("No <classname> specified for workbench")
-        return errors
-
-    def validate_preference_pack_metadata(self, pack) -> List[str]:
-        errors = []
-        if not pack.Name or len(pack.Name) == 0:
-            errors.append("No <name> specified for preference pack")
-        return errors
-
-
 # @}

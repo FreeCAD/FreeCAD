@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESH_MESHTEXTURE_H
 #define MESH_MESHTEXTURE_H
 
 #include <memory>
+
 #include "Core/Algorithm.h"
-#include "Core/MeshKernel.h"
 #include "Core/KDTree.h"
+
 #include "Mesh.h"
 
 

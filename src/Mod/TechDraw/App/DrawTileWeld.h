@@ -48,9 +48,6 @@ public:
     App::PropertyFile         SymbolFile;
     App::PropertyFileIncluded SymbolIncluded;
 
-    short mustExecute() const override;
-    App::DocumentObjectExecReturn *execute() override;
-    void onDocumentRestored() override;
     void setupObject() override;
 
     const char* getViewProviderName() const override {
@@ -59,9 +56,7 @@ public:
     PyObject *getPyObject() override;
     virtual QRectF getRect() const { return { 0, 0, 1, 1}; }
 
-    void replaceSymbolIncluded(std::string newSymbolFile);
-    void setupSymbolIncluded();
-//    void replaceSymbol(std::string newSymbolFile);
+    void replaceFileIncluded(std::string newSymbolFile);
 
     std::string prefSymbol();
 

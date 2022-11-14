@@ -384,6 +384,8 @@ SET(Command_CPP_SRCS
     CommandStructure.cpp
     CommandLink.cpp
     CommandPyImp.cpp
+    ShortcutManager.cpp
+    CommandCompleter.cpp
 )
 SET(Command_SRCS
     ${Command_CPP_SRCS}
@@ -391,6 +393,8 @@ SET(Command_SRCS
     ActionFunction.h
     Command.h
     CommandT.h
+    ShortcutManager.h
+    CommandCompleter.h
 )
 SOURCE_GROUP("Command" FILES ${Command_SRCS})
 
@@ -858,8 +862,8 @@ SET(Quarter_MOC_HDR
 
 qt_wrap_cpp(Quarter_MOC_SRCS ${Quarter_MOC_HDR})
 
-SET(Quarter_SRCS 
-    ${Quarter_CPP_SRC} 
+SET(Quarter_SRCS
+    ${Quarter_CPP_SRC}
     ${Quarter_H_SRC}
     ${Quarter_MOC_SRCS}
 )
@@ -1123,8 +1127,9 @@ SET(FreeCADGui_CPP_SRCS
     WaitCursor.cpp
     ManualAlignment.cpp
     TransactionObject.cpp
+    UserSettings.cpp
 )
-SET(FreeCADGui_SRCS 
+SET(FreeCADGui_SRCS
     Application.h
     AutoSaver.h
     BitmapFactory.h
@@ -1157,6 +1162,7 @@ SET(FreeCADGui_SRCS
     WaitCursor.h
     ManualAlignment.h
     TransactionObject.h
+    UserSettings.h
     ${FreeCADGui_SDK_MOC_HDRS}
 )
 

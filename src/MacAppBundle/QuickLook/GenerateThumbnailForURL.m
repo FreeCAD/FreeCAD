@@ -1,0 +1,72 @@
+#include <CoreFoundation/CoreFoundation.h>
+#include <CoreServices/CoreServices.h>
+#include <QuickLook/QuickLook.h>
+#include <Foundation/Foundation.h>
+#include <AppKit/AppKit.h>
+
+/* -----------------------------------------------------------------------------
+    Generate a thumbnail for file
+
+   This function's job is to create thumbnail for designated file as fast as possible
+   ----------------------------------------------------------------------------- */
+
+OSStatus GenerateThumbnailForURL(void *thisInterface, QLThumbnailRequestRef thumbnail, CFURLRef url, CFStringRef contentTypeUTI, CFDictionaryRef options, CGSize maxSize)
+{
+  OSStatus ret = coreFoundationUnknownErr;
+
+  @autoreleasepool {
+
+    // unzip -qq -o -j -d /tmp ~/test.FCStd thumbnails/Thumbnail.png
+    //  -qq : be really quiet
+    //  -o : overwrite without prompt
+    //  -j : don't create archive paths
+    //  -d : destination path (create this path)
+    // extracts thumbnails/Thumbnail.png to /tmp/Thumbnail.png .
+    // We add a UUID and use a system temp directory here.
+
+    NSUUID *uuid = [NSUUID UUID];
+    NSString *uuidPath = [uuid UUIDString];
+    NSString *unzipDstPath = [NSString stringWithFormat:@"%@/%@/", NSTemporaryDirectory(), uuidPath];
+    NSString *unzipDstFile = [NSString stringWithFormat:@"%@%@", unzipDstPath, @"Thumbnail.png"];
+    NSURL *zipFile = (__bridge NSURL *)url;
+    NSTask *task = [NSTask launchedTaskWithLaunchPath:@"/usr/bin/unzip"
+                                            arguments:@[@"-qq", @"-o", @"-j", @"-d", unzipDstPath, [zipFile path], @"thumbnails/Thumbnail.png"]];
+    [task waitUntilExit];
+    //        NSLog(@"%@", unzipDstPath);
+    //        NSLog(@"%@", unzipDstFile);
+
+    if ( [[NSFileManager defaultManager] fileExistsAtPath:unzipDstFile] )
+    {
+      CGSize canvasSize = CGSizeMake(128, 128);
+      CGContextRef cgContext = QLThumbnailRequestCreateContext(thumbnail, /*maxSize*/canvasSize, true, NULL);
+      if(cgContext)
+      {
+        CGDataProviderRef pngDP = CGDataProviderCreateWithFilename([unzipDstFile fileSystemRepresentation]);
+        CGImageRef image = CGImageCreateWithPNGDataProvider(pngDP, NULL, true, kCGRenderingIntentDefault);
+        CGDataProviderRelease(pngDP);
+
+        CGContextDrawImage(cgContext,CGRectMake(0, 0, 128, 128), image);
+
+        QLThumbnailRequestFlushContext(thumbnail, cgContext);
+        ret = noErr;
+
+        CFRelease(cgContext);
+        CFRelease(image);
+      }
+    }
+
+    if ( [[NSFileManager defaultManager] isDeletableFileAtPath:unzipDstFile] )
+      [[NSFileManager defaultManager] removeItemAtPath:unzipDstFile error:nil];
+
+    if ( [[NSFileManager defaultManager] isDeletableFileAtPath:unzipDstPath] )
+      [[NSFileManager defaultManager] removeItemAtPath:unzipDstPath error:nil];
+  }
+
+  return ret;
+}
+
+
+void CancelThumbnailGeneration(void* thisInterface, QLThumbnailRequestRef thumbnail)
+{
+    // implement only if supported
+}

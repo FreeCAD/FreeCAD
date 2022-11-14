@@ -149,6 +149,7 @@ class TechDrawExport DrawUtil {
         static Base::Vector3d toVector3d(const gp_Dir gp) { return Base::Vector3d(gp.X(), gp.Y(), gp.Z()); }
         static gp_Pnt         togp_Pnt(const Base::Vector3d v)  { return gp_Pnt(v.x, v.y, v.z); }
         static gp_Dir         togp_Dir(const Base::Vector3d v)  { return gp_Dir(v.x, v.y, v.z); }
+        static gp_Vec         togp_Vec(const Base::Vector3d v)  { return gp_Vec(v.x, v.y, v.z); }
         static std::string shapeToString(TopoDS_Shape s);
         static TopoDS_Shape shapeFromString(std::string s);
         static Base::Vector3d invertY(Base::Vector3d v);

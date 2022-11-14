@@ -25,12 +25,12 @@
 
 #ifndef _PreComp_
 # if defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
-# include <unistd.h>
-# include <pwd.h>
-# include <sys/types.h>
+#  include <unistd.h>
+#  include <pwd.h>
+#  include <sys/types.h>
 # elif defined(__MINGW32__)
-# define WINVER 0x502 // needed for SetDllDirectory
-# include <Windows.h>
+#  define WINVER 0x502 // needed for SetDllDirectory
+#  include <Windows.h>
 # endif
 # include <boost/program_options.hpp>
 # include <boost/date_time/posix_time/posix_time.hpp>
@@ -2140,6 +2140,7 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
     ("response-file", value<string>(),"Can be specified with '@name', too")
     ("dump-config", "Dumps configuration")
     ("get-config", value<string>(), "Prints the value of the requested configuration key")
+    ("set-config", value< vector<string> >()->multitoken(), "Sets the value of a configuration key")
     ("keep-deprecated-paths", "If set then config files are kept on the old location")
     ;
 
@@ -2313,6 +2314,9 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
             str << "Python   " << PY_VERSION << '\n';
             str << "PySide   " << FC_PYSIDE_VERSION << '\n';
             str << "shiboken " << FC_SHIBOKEN_VERSION << '\n';
+#ifdef SMESH_VERSION_STR
+            str << "SMESH    " << SMESH_VERSION_STR << '\n';
+#endif
             str << "VTK      " << FC_VTK_VERSION << '\n';
             str << "xerces-c " << FC_XERCESC_VERSION << '\n';
         }
@@ -2421,6 +2425,18 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
         }
         str << std::endl;
         throw Base::ProgramInformation(str.str());
+    }
+
+    if (vm.count("set-config")) {
+        std::vector<std::string> configKeyValue = vm["set-config"].as< std::vector<std::string> >();
+        for (const auto& it : configKeyValue) {
+            auto pos = it.find('=');
+            if (pos != std::string::npos) {
+                std::string key = it.substr(0, pos);
+                std::string val = it.substr(pos + 1);
+                mConfig[key] = val;
+            }
+        }
     }
 }
 }
@@ -2605,6 +2621,9 @@ void Application::initConfig(int argc, char ** argv)
     mConfig["QT_VERSION"] = QT_VERSION_STR;
     mConfig["EIGEN_VERSION"] = FC_EIGEN3_VERSION;
     mConfig["PYSIDE_VERSION"] = FC_PYSIDE_VERSION;
+#ifdef SMESH_VERSION_STR
+    mConfig["SMESH_VERSION"] = SMESH_VERSION_STR;
+#endif
     mConfig["XERCESC_VERSION"] = FC_XERCESC_VERSION;
 
 

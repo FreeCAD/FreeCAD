@@ -33,6 +33,7 @@ import DraftVecUtils
 
 from draftgeoutils.general import geomType, vec
 from draftgeoutils.geometry import get_normal
+from draftgeoutils.wires import isReallyClosed
 from draftgeoutils.intersections import wiresIntersect, connect
 
 # Delay import of module until first use because it is heavy
@@ -237,7 +238,7 @@ def offsetWire(wire, dvec, bind=False, occ=False,
         if norm is None:
             norm = App.Vector(0, 0, 1)
 
-    closed = wire.isClosed()
+    closed = isReallyClosed(wire)
     nedges = []
     if occ:
         length = abs(dvec.Length)

@@ -64,32 +64,16 @@ DrawViewImage::DrawViewImage()
 
 void DrawViewImage::onChanged(const App::Property* prop)
 {
-    App::Document* doc = getDocument();
-    if (!isRestoring()) {
-        if ((prop == &ImageFile) && doc) {
-            if (!ImageFile.isEmpty()) {
-                replaceImageIncluded(ImageFile.getValue());
-            }
-            requestPaint();
-        } else if (prop == &Scale) {
-            requestPaint();
-        }
+    if (isRestoring()) {
+        TechDraw::DrawView::onChanged(prop);
+    }
+
+    if (prop == &ImageFile) {
+        replaceImageIncluded(ImageFile.getValue());
+        requestPaint();
     }
 
     TechDraw::DrawView::onChanged(prop);
-}
-
-short DrawViewImage::mustExecute() const
-{
-    if (isRestoring()) {
-        return App::DocumentObject::mustExecute();
-    }
-    if (Height.isTouched() ||
-        Width.isTouched()) {
-        return 1;
-    }
-
-    return App::DocumentObject::mustExecute();
 }
 
 App::DocumentObjectExecReturn *DrawViewImage::execute()
@@ -103,44 +87,25 @@ QRectF DrawViewImage::getRect() const
     return { 0.0, 0.0, Width.getValue(), Height.getValue()};
 }
 
-void DrawViewImage::replaceImageIncluded(std::string newFileName)
+void DrawViewImage::replaceImageIncluded(std::string newImageFile)
 {
-//    Base::Console().Message("DVI::replaceImageIncluded(%s)\n", newFileName.c_str());
-    if (ImageIncluded.isEmpty()) {
-        setupImageIncluded();
+//    Base::Console().Message("DVI::replaceImageIncluded(%s)\n", newImageFile.c_str());
+    if (newImageFile.empty()) {
+        return;
+    }
+
+    Base::FileInfo tfi(newImageFile);
+    if (tfi.isReadable()) {
+        ImageIncluded.setValue(newImageFile.c_str());
     } else {
-        std::string tempName = ImageIncluded.getExchangeTempFile();
-        DrawUtil::copyFile(newFileName, tempName);
-        ImageIncluded.setValue(tempName.c_str());
+        throw Base::RuntimeError("Could not read the new image file");
     }
 }
 
-void DrawViewImage::setupImageIncluded()
+void DrawViewImage::setupObject()
 {
-//    Base::Console().Message("DVI::setupImageIncluded()\n");
-    App::Document* doc = getDocument();
-    std::string dir = doc->TransientDir.getValue();
-    std::string special = getNameInDocument();
-    special += "Image.bitmap";
-    std::string imageName = dir + "/" + special;
-
-    //setupImageIncluded is only called when ImageIncluded is empty, so
-    //just set up the empty file first
-    DrawUtil::copyFile(std::string(), imageName);
-    ImageIncluded.setValue(imageName.c_str());
-
-    if (ImageFile.isEmpty()) {
-        return;
-    }
-
-    Base::FileInfo fi(ImageFile.getValue());
-    if (!fi.isReadable()) {
-        return;
-    }
-
-    std::string exchName = ImageIncluded.getExchangeTempFile();
-    DrawUtil::copyFile(ImageFile.getValue(), exchName);
-    ImageIncluded.setValue(exchName.c_str(), special.c_str());
+//    Base::Console().Message("DVI::setupObject()\n");
+    replaceImageIncluded(ImageFile.getValue());
 }
 
 // Python Drawing feature ---------------------------------------------------------

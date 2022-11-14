@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <Python.h>
 # include <vtkCompositeDataSet.h>
 # include <vtkMultiBlockDataSet.h>
 # include <vtkMultiPieceDataSet.h>

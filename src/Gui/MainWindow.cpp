@@ -1165,6 +1165,21 @@ void MainWindow::onDockWindowMenuAboutToShow()
     }
 }
 
+void MainWindow::setDockWindowMenu(QMenu* menu)
+{
+    connect(menu, &QMenu::aboutToShow, this, &MainWindow::onDockWindowMenuAboutToShow);
+}
+
+void MainWindow::setToolBarMenu(QMenu* menu)
+{
+    connect(menu, &QMenu::aboutToShow, this, &MainWindow::onToolBarMenuAboutToShow);
+}
+
+void MainWindow::setWindowsMenu(QMenu* menu)
+{
+    connect(menu, &QMenu::aboutToShow, this, &MainWindow::onWindowsMenuAboutToShow);
+}
+
 QList<QWidget*> MainWindow::windows(QMdiArea::WindowOrder order) const
 {
     QList<QWidget*> mdis;

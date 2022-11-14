@@ -27,6 +27,7 @@
 #include <list>
 #include <map>
 #include <string>
+#include <FCGlobal.h>
 
 
 class QDir;
@@ -74,6 +75,10 @@ public:
     TStringMap supportedLocales() const;
     /** Adds a path where localization files can be found */
     void addPath(const QString& path);
+    /** eventFilter used to convert decimal separator **/
+    bool eventFilter(QObject* obj, QEvent* ev);
+    /** Enables/disables decimal separator conversion **/
+    void enableDecimalPointConversion(bool on);
 
 private:
     Translator();
@@ -86,6 +91,7 @@ private:
 private:
     static Translator* _pcSingleton;
     TranslatorP* d;
+    std::unique_ptr<Translator, std::function<void(Translator*)>> decimalPointConverter;
 };
 
 } // namespace Gui

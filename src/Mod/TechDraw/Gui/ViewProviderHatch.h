@@ -51,6 +51,7 @@ public:
 
     bool useNewSelectionModel() const override {return false;}
     void onChanged(const App::Property* prop) override;
+    void updateData(const App::Property*) override;
     bool setEdit(int ModNum) override;
     bool doubleClicked() override;
     bool canDelete(App::DocumentObject* obj) const override;

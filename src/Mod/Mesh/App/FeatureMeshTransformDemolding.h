@@ -20,15 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEATURE_MESH_TRANSFORM_DEMOLDING_H
 #define FEATURE_MESH_TRANSFORM_DEMOLDING_H
 
-#include "FeatureMeshTransform.h"
-
 #include <App/PropertyLinks.h>
-#include <App/PropertyGeo.h>
-#include <App/PropertyStandard.h>
+
+#include "FeatureMeshTransform.h"
 
 
 namespace Mesh

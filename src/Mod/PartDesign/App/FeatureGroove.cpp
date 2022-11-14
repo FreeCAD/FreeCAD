@@ -51,7 +51,7 @@ const App::PropertyAngle::Constraints Groove::floatAngle = { Base::toDegrees<dou
 Groove::Groove()
 {
     addSubType = FeatureAddSub::Subtractive;
-    
+
     ADD_PROPERTY_TYPE(Base,(Base::Vector3d(0.0f,0.0f,0.0f)),"Groove", App::Prop_ReadOnly, "Base");
     ADD_PROPERTY_TYPE(Axis,(Base::Vector3d(0.0f,1.0f,0.0f)),"Groove", App::Prop_ReadOnly, "Axis");
     ADD_PROPERTY_TYPE(Angle,(360.0),"Groove", App::Prop_None, "Angle");
@@ -139,7 +139,7 @@ App::DocumentObjectExecReturn *Groove::execute()
             if (checkLineCrossesFace(gp_Lin(pnt, dir), TopoDS::Face(xp.Current())))
                 return new App::DocumentObjectExecReturn("Revolve axis intersects the sketch");
         }
-        
+
         // revolve the face to a solid
         BRepPrimAPI_MakeRevol RevolMaker(sketchshape, gp_Ax1(pnt, dir), angle);
 
@@ -167,7 +167,7 @@ App::DocumentObjectExecReturn *Groove::execute()
             if (solidCount > 1) {
                 return new App::DocumentObjectExecReturn("Groove: Result has multiple solids. This is not supported at this time.");
             }
-            
+
         }
         else
             return new App::DocumentObjectExecReturn("Could not revolve the sketch!");

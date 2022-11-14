@@ -106,7 +106,7 @@ void Thumbnail::SaveDocFile (Base::Writer &writer) const
         if (App::GetApplication().GetParameterGroupByPath
             ("User parameter:BaseApp/Preferences/Document")->GetBool("AddThumbnailLogo",true)) {
             // only scale app icon if an offscreen image could be created
-            appIcon = appIcon.scaled(this->size / 4, this->size /4, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+            appIcon = appIcon.scaled(this->size / 4, this->size /4, Qt::KeepAspectRatio, Qt::SmoothTransformation);
             px = BitmapFactory().merge(QPixmap::fromImage(img), appIcon, BitmapFactoryInst::BottomRight);
         }
         else {

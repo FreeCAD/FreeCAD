@@ -69,6 +69,7 @@ ViewProviderTemplate::~ViewProviderTemplate()
 
 void ViewProviderTemplate::updateData(const App::Property* prop)
 {
+    //This doesn't belong here.  Should be in attach?
     if (getTemplate()->isDerivedFrom(TechDraw::DrawSVGTemplate::getClassTypeId())) {
         auto t = static_cast<TechDraw::DrawSVGTemplate*>(getTemplate());
         if (prop == &(t->Template)) {
@@ -80,6 +81,14 @@ void ViewProviderTemplate::updateData(const App::Property* prop)
             }
        }
     }
+
+    if (prop == &(getTemplate()->EditableTexts)) {
+        QGITemplate* qgiv = getQTemplate();
+        if (qgiv) {
+            qgiv->updateView(true);
+        }
+    }
+
     Gui::ViewProviderDocumentObject::updateData(prop);
 }
 

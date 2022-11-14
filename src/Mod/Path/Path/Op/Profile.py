@@ -637,10 +637,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                                 Path.Log.error(msg)
                             else:
                                 Path.Log.error(self.inaccessibleMsg)
-                    # Eif
-                # Eif
-            # Efor
-        # Efor
 
         return shapes
 

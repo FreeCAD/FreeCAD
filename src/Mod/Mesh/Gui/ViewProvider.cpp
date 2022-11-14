@@ -234,7 +234,7 @@ QIcon ViewProviderExport::getIcon() const
 
 App::PropertyFloatConstraint::Constraints ViewProviderMesh::floatRange = {1.0f, 64.0f, 1.0f};
 App::PropertyFloatConstraint::Constraints ViewProviderMesh::angleRange = {0.0f, 180.0f, 1.0f};
-App::PropertyIntegerConstraint::Constraints ViewProviderMesh::intPercent = {0, 100, 1};
+App::PropertyIntegerConstraint::Constraints ViewProviderMesh::intPercent = {0, 100, 5};
 const char* ViewProviderMesh::LightingEnums[]= {"One side", "Two side", nullptr};
 
 PROPERTY_SOURCE(MeshGui::ViewProviderMesh, Gui::ViewProviderGeometryObject)
@@ -1012,7 +1012,7 @@ void ViewProviderMesh::clipMeshCallback(void * ud, SoEventCallback * n)
                     func->setAutoDelete(true);
                     MeshSplit* split = new MeshSplit(self, clPoly, proj);
                     func->setFunction(std::bind(&MeshSplit::cutMesh, split));
-                    QTimer::singleShot(0, func, SLOT(timeout()));
+                    func->singleShot(0);
                 }
             }
         }
@@ -1073,7 +1073,7 @@ void ViewProviderMesh::trimMeshCallback(void * ud, SoEventCallback * n)
                     func->setAutoDelete(true);
                     MeshSplit* split = new MeshSplit(self, clPoly, proj);
                     func->setFunction(std::bind(&MeshSplit::trimMesh, split));
-                    QTimer::singleShot(0, func, SLOT(timeout()));
+                    func->singleShot(0);
                 }
             }
         }

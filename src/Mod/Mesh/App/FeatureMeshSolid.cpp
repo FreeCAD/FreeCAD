@@ -20,23 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Interpreter.h>
 #include <App/Document.h>
 
 #include "FeatureMeshSolid.h"
-#include "Mesh.h"
 
 
 namespace Mesh {
-    const App::PropertyIntegerConstraint::Constraints intSampling = {0,INT_MAX,1};
-    const App::PropertyLength::Constraints floatRange = {0.0,FLT_MAX,1.0};
+    const App::PropertyIntegerConstraint::Constraints intSampling = {0, INT_MAX, 1};
+    const App::PropertyLength::Constraints floatRange = {0.0, FLT_MAX, 1.0};
 }
 
 using namespace Mesh;
@@ -46,8 +39,8 @@ PROPERTY_SOURCE(Mesh::Sphere, Mesh::Feature)
 
 Sphere::Sphere()
 {
-    ADD_PROPERTY(Radius  ,(5.0));
-    ADD_PROPERTY(Sampling  ,(50));
+    ADD_PROPERTY(Radius, (5.0));
+    ADD_PROPERTY(Sampling, (50));
     Radius.setConstraints(&floatRange);
     Sampling.setConstraints(&intSampling);
 }

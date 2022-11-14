@@ -7,14 +7,17 @@ SET(AddonManager_SRCS
     Addon.py
     AddonManager.py
     AddonManager.ui
+    addonmanager_connection_checker.py
     addonmanager_devmode.py
     addonmanager_devmode_add_content.py
     addonmanager_devmode_license_selector.py
     addonmanager_devmode_licenses_table.py
+    addonmanager_devmode_metadata_checker.py
     addonmanager_devmode_person_editor.py
     addonmanager_devmode_people_table.py
     addonmanager_devmode_predictor.py
     addonmanager_devmode_validators.py
+    addonmanager_firstrun.py
     addonmanager_git.py
     addonmanager_macro.py
     addonmanager_utilities.py

@@ -107,7 +107,7 @@ bool TaskDressUpParameters::referenceSelected(const Gui::SelectionChanges& msg)
         App::DocumentObject* base = this->getBase();
 
         // TODO: Must we make a copy here instead of assigning to const char* ?
-        const char* fname = base->getNameInDocument();        
+        const char* fname = base->getNameInDocument();
         if (strcmp(msg.pObjectName, fname) != 0)
             return false;
 
@@ -128,7 +128,7 @@ bool TaskDressUpParameters::referenceSelected(const Gui::SelectionChanges& msg)
         }
         DressUpView->highlightReferences(false);
         setupTransaction();
-        pcDressUp->Base.setValue(base, refs);        
+        pcDressUp->Base.setValue(base, refs);
         pcDressUp->getDocument()->recomputeFeature(pcDressUp);
 
         return true;
@@ -427,7 +427,7 @@ bool TaskDlgDressUpParameters::accept()
     getDressUpView()->highlightReferences(false);
     std::vector<std::string> refs = parameter->getReferences();
     std::stringstream str;
-    str << Gui::Command::getObjectCmd(vp->getObject()) << ".Base = (" 
+    str << Gui::Command::getObjectCmd(vp->getObject()) << ".Base = ("
         << Gui::Command::getObjectCmd(parameter->getBase()) << ",[";
     for (std::vector<std::string>::const_iterator it = refs.begin(); it != refs.end(); ++it)
         str << "\"" << *it << "\",";

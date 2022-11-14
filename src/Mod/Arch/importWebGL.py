@@ -650,14 +650,14 @@ def getHTMLTemplate():
 
 def export( exportList, filename, colors = None, camera = None ):
     """Exports objects to an html file"""
-    
+
     global disableCompression, base, baseFloat
-    
+
     data = { 'camera':{}, 'file':{}, 'objects':[] }
-    
+
     if not FreeCADGui and not camera:
         camera = OfflineRenderingUtils.getCamera(FreeCAD.ActiveDocument.FileName)
-    
+
     if camera:
         # REF: https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Arch/OfflineRenderingUtils.py
         camnode = OfflineRenderingUtils.getCoinCamera(camera)
@@ -674,17 +674,17 @@ def export( exportList, filename, colors = None, camera = None ):
         data['camera']['focalDistance'] = v.getCameraNode().focalDistance.getValue()
         data['camera']['position_x'] = v.viewPosition().Base.x
         data['camera']['position_y'] = v.viewPosition().Base.y
-        data['camera']['position_z'] = v.viewPosition().Base.z 
-    
+        data['camera']['position_z'] = v.viewPosition().Base.z
+
     # Take the objects out of groups
     objectslist = Draft.get_group_contents(exportList, walls=True, addgroups=False)
     # objectslist = Arch.pruneIncluded(objectslist)
-    
+
     for obj in objectslist:
-        
+
         # Pull all obj data before we dig down the links
         label = obj.Label
-        
+
         color = '#cccccc';
         opacity = 1.0
         if FreeCADGui:
@@ -692,8 +692,8 @@ def export( exportList, filename, colors = None, camera = None ):
             opacity = int((100 - obj.ViewObject.Transparency)/5) / 20 # 0>>1 with step of 0.05
         elif colors:
             if label in colors:
-                color = Draft.getrgb(colors[label], testbw = False) 
-        
+                color = Draft.getrgb(colors[label], testbw = False)
+
         validObject = False
         if obj.isDerivedFrom('Mesh::Feature'):
             mesh = obj.Mesh
@@ -720,26 +720,26 @@ def export( exportList, filename, colors = None, camera = None ):
                     mesh.Placement = linkPlacement
                     validObject = True
                     break
-        
+
         if not validObject: continue
-        
+
         objdata = { 'name': label, 'color': color, 'opacity': opacity, 'verts':'', 'facets':'', 'wires':[], 'faceColors':[], 'facesToFacets':[], 'floats':[] }
-        
+
         if obj.isDerivedFrom('Part::Feature'):
-            
+
             deviation = 0.5
             if FreeCADGui:
                 deviation = obj.ViewObject.Deviation
-                
+
                 # obj.ViewObject.DiffuseColor is length=1 when all faces are the same color, length=len(faces) for when they're not
                 if len(obj.ViewObject.DiffuseColor) == len(objShape.Faces):
                     for fc in obj.ViewObject.DiffuseColor:
                         objdata['faceColors'].append( Draft.getrgb(fc, testbw = False) )
-            
+
             # get verts and facets for ENTIRE object
             shapeData = objShape.tessellate( deviation )
             mesh = Mesh.Mesh(shapeData)
-            
+
             if len(objShape.Faces) > 1:
                 # Map each Facet created by tessellate() to a Face so that it can be colored correctly using faceColors
                 # This is done by matching the results of a tessellate() on EACH FACE to the overall tessellate stored in shapeData
@@ -759,8 +759,8 @@ def export( exportList, filename, colors = None, camera = None ):
                         FreeCAD.Console.PrintMessage("Facet to Face Mismatch.\n")
                         objdata['facesToFacets'] = []
                         break
-                    
-                    # map each of the face facets to the shape facets and make a list of shape facet indices that belong to this face 
+
+                    # map each of the face facets to the shape facets and make a list of shape facet indices that belong to this face
                     facetList = []
                     for ff in faceData[1]: # face facets
                         found = False
@@ -774,9 +774,9 @@ def export( exportList, filename, colors = None, camera = None ):
                         FreeCAD.Console.PrintMessage("Facet List Mismatch.\n")
                         objdata['facesToFacets'] = []
                         break
-                    
+
                     objdata['facesToFacets'].append( baseEncode(facetList) )
-            
+
             wires = [] # Add wires
             for f in objShape.Faces:
                 for w in f.Wires:
@@ -787,7 +787,7 @@ def export( exportList, filename, colors = None, camera = None ):
                         wire.append( '{:.5f}'.format(v.y) )
                         wire.append( '{:.5f}'.format(v.z) )
                     wires.append( wire )
-            
+
             if not disableCompression:
                 for w in range( len(wires) ):
                     for wv in range( len(wires[w]) ):
@@ -802,7 +802,7 @@ def export( exportList, filename, colors = None, camera = None ):
                             wires[w][wv] = len(objdata['floats'])-1
                     wires[w] = baseEncode(wires[w])
             objdata['wires'] = wires
-        
+
         vIndex = {}
         verts = []
         for p in range( len(mesh.Points) ):
@@ -810,7 +810,7 @@ def export( exportList, filename, colors = None, camera = None ):
             verts.append( '{:.5f}'.format(mesh.Points[p].Vector.x) )
             verts.append( '{:.5f}'.format(mesh.Points[p].Vector.y) )
             verts.append( '{:.5f}'.format(mesh.Points[p].Vector.z) )
-        
+
         # create floats list to compress verts and wires being written into the JS
         if not disableCompression:
             for v in range( len(verts) ):
@@ -824,13 +824,13 @@ def export( exportList, filename, colors = None, camera = None ):
                     objdata['floats'].append( verts[v] )
                     verts[v] = len(objdata['floats'])-1
         objdata['verts'] = baseEncode(verts)
-        
+
         facets = []
         for f in mesh.Facets:
             for i in f.PointIndices:
                 facets.append( vIndex[i] )
         objdata['facets'] = baseEncode(facets)
-        
+
         # compress floats
         if not disableCompression:
             # use ratio of 7x base13 to 4x base90 because 13^7 ~ 90^4
@@ -848,37 +848,34 @@ def export( exportList, filename, colors = None, camera = None ):
                     floatStr += base[ quotient % baseCt ]
                     quotient = int(quotient / baseCt)
             objdata['floats'] = floatStr
-        
+
         data['objects'].append( objdata )
-    
+
     html = getHTMLTemplate()
-    
+
     html = html.replace('$pagetitle',FreeCAD.ActiveDocument.Label)
     version = FreeCAD.Version()
     html = html.replace('$version',version[0] + '.' + version[1] + '.' + version[2])
-    
+
     # Remove data compression in JS
     data['compressed'] = not disableCompression
     data['base'] = base
     data['baseFloat'] = baseFloat
-    
+
     html = html.replace('$data', json.dumps(data, separators=(',', ':')) ) # Shape Data
     
-    if six.PY2:
-        outfile = pythonopen(filename, "wb")
-    else:
-        outfile = pythonopen(filename, "w")
+    outfile = pythonopen(filename, "w")
     outfile.write( html )
     outfile.close()
     FreeCAD.Console.PrintMessage( translate("Arch", "Successfully written") + ' ' + filename + "\n" )
 
 def baseEncode( arr ):
     """Compresses an array of ints into a base90 string"""
-    
+
     global disableCompression, base
     if disableCompression: return arr
     if len(arr) == 0: return ''
-    
+
     longest = 0
     output = []
     baseCt = len(base)

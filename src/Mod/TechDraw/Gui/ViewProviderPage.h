@@ -59,6 +59,12 @@ public:
 
     void attach(App::DocumentObject *) override;
     void setDisplayMode(const char* ModeName) override;
+
+    bool canDragObjects() const override;
+    bool canDragObject(App::DocumentObject* docObj) const override;
+    bool canDropObject(App::DocumentObject* docObj) const override;
+    void dropObject(App::DocumentObject* docObj) override;
+
     bool useNewSelectionModel() const override {return false;}
     /// returns a list of all possible modes
     std::vector<std::string> getDisplayModes() const override;

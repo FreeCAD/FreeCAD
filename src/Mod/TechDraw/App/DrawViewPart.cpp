@@ -79,6 +79,7 @@
 
 
 using namespace TechDraw;
+using DU = DrawUtil;
 
 //===========================================================================
 // DrawViewPart
@@ -342,7 +343,7 @@ GeometryObject* DrawViewPart::makeGeometryForShape(TopoDS_Shape& shape)
                                             viewAxis,
                                             Rotation.getValue());  //conventional rotation
      }
-//    BRepTools::Write(scaledShape, "DVPScaled.brep");            //debug
+    BRepTools::Write(scaledShape, "DVPScaled.brep");            //debug
     GeometryObject* go =  buildGeometryObject(scaledShape, viewAxis);
     return go;
 }
@@ -900,21 +901,19 @@ TopoDS_Shape DrawViewPart::getShape() const
     return result;
 }
 
-//returns the (unscaled) size of the visible lines along the alignment vector
+//returns the (unscaled) size of the visible lines along the alignment vector.
+//alignment vector is already projected onto our CS, so only has X,Y components
 double DrawViewPart::getSizeAlongVector(Base::Vector3d alignmentVector)
 {
-    gp_Ax3 projectedCS3(getProjectionCS());
-    projectedCS3.SetXDirection(DrawUtil::togp_Dir(alignmentVector));
-    gp_Ax3 stdCS;   //OXYZ
-
-    gp_Trsf xPieceAlign;
-    xPieceAlign.SetTransformation(stdCS, projectedCS3);
-    BRepBuilderAPI_Transform mkTransAlign(getShape(), xPieceAlign);
-    TopoDS_Shape shapeAligned = mkTransAlign.Shape();
-
+//    Base::Console().Message("DVP::GetSizeAlongVector(%s)\n", DrawUtil::formatVector(alignmentVector).c_str());
+    double alignmentAngle = atan2(alignmentVector.y, alignmentVector.x) * -1.0;
+    gp_Ax2 OXYZ;        //shape has already been projected and we will rotate around Z
+    TopoDS_Shape rotatedShape = rotateShape(getShape(),
+                                            OXYZ,
+                                            alignmentAngle * 180.0 / M_PI);
     Bnd_Box shapeBox;
     shapeBox.SetGap(0.0);
-    BRepBndLib::AddOptimal(shapeAligned, shapeBox);
+    BRepBndLib::AddOptimal(rotatedShape, shapeBox);
     double xMin = 0, xMax = 0, yMin = 0, yMax = 0, zMin = 0, zMax = 0;
     shapeBox.Get(xMin, yMin, zMin, xMax, yMax, zMax);
     double shapeWidth((xMax - xMin) / getScale());
@@ -1006,25 +1005,36 @@ bool DrawViewPart::hasGeometry(void) const
     return false;
 }
 
-//convert a vector in local XY coords into a coordinate sytem in global
+//convert a vector in local XY coords into a coordinate system in global
 //coordinates aligned to the vector.
 //Note that this CS may not have the ideal XDirection for the derived view
 //(likely a DrawViewSection) and the user may need to adjust the XDirection
 //in the derived view.
 gp_Ax2 DrawViewPart::localVectorToCS(const Base::Vector3d localUnit) const
 {
-    gp_Pnt stdOrigin(0.0, 0.0, 0.0);
-    gp_Ax2 dvpCS = getProjectionCS(DrawUtil::toVector3d(stdOrigin));
-    gp_Vec gLocalUnit = DrawUtil::togp_Dir(localUnit);
-    gp_Vec gLocalX(-gLocalUnit.Y(), gLocalUnit.X(), 0.0);    //clockwise perp for 2d
+//    Base::Console().Message("DVP::localVectorToCS(%s)\n", DU::formatVector((localUnit)).c_str());
+    double angle = atan2(localUnit.y, localUnit.x);     //radians
+    gp_Ax1 rotateAxisDir(gp_Pnt(0.0, 0.0, 0.0), getProjectionCS().Direction());
+    gp_Vec gOldX = getProjectionCS().XDirection();
+    gp_Vec gNewDirection = gOldX.Rotated(rotateAxisDir, angle);
+    gp_Vec gNewY = getProjectionCS().Direction();
+    gp_Vec gNewX = (gNewDirection.Crossed(gNewY).Reversed());
+    if (gNewX.IsParallel(gOldX, EWTOLERANCE)) {
+        //if the X directions are parallel, the view is rotating around X, so
+        //we should use the original X to prevent unwanted mirroring.
+        //There might be a better choice of tolerance than EWTOLERANCE
+        gNewX = gOldX;
+    }
 
-    gp_Ax3 OXYZ;
-    gp_Trsf xLocalOXYZ;
-    xLocalOXYZ.SetTransformation(OXYZ, gp_Ax3(dvpCS));
-    gp_Vec gLocalUnitOXYZ = gLocalUnit.Transformed(xLocalOXYZ);
-    gp_Vec gLocalXOXYZ = gLocalX.Transformed(xLocalOXYZ);
+    return { gp_Pnt(0.0, 0.0, 0.0), gp_Dir(gNewDirection), gp_Dir(gNewX) };
+}
 
-    return { stdOrigin, gp_Dir(gLocalUnitOXYZ), gp_Dir(gLocalXOXYZ) };
+
+Base::Vector3d DrawViewPart::localVectorToDirection(const Base::Vector3d localUnit) const
+{
+//    Base::Console().Message("DVP::localVectorToDirection() - localUnit: %s\n", DrawUtil::formatVector(localUnit).c_str());
+    gp_Ax2 cs = localVectorToCS(localUnit);
+    return DrawUtil::toVector3d(cs.Direction());
 }
 
 gp_Ax2 DrawViewPart::getProjectionCS(const Base::Vector3d pt) const

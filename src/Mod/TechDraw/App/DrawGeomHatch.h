@@ -62,14 +62,15 @@ public:
     App::PropertyString      NamePattern;
     App::PropertyFloatConstraint ScalePattern;
 
-    virtual short mustExecute() const override;
-    virtual App::DocumentObjectExecReturn *execute(void) override;
-    virtual void onChanged(const App::Property* prop) override;
-    virtual const char* getViewProviderName(void) const override {
+    App::DocumentObjectExecReturn *execute(void) override;
+    void onChanged(const App::Property* prop) override;
+    const char* getViewProviderName(void) const override {
         return "TechDrawGui::ViewProviderGeomHatch";
     }
-    virtual PyObject *getPyObject(void) override;
-    virtual void unsetupObject(void) override;
+    PyObject *getPyObject(void) override;
+    void setupObject() override;
+    void unsetupObject(void) override;
+    void onDocumentRestored() override;
 
 
     DrawViewPart* getSourceView(void) const;
@@ -96,19 +97,16 @@ public:
     static std::vector<LineSet> makeLineSets(std::string fileSpec, std::string myPattern);
 
 protected:
-    virtual void onDocumentRestored() override;
-    virtual void setupObject() override;
-    void setupPatIncluded(void);
-    void replacePatIncluded(std::string newPatFile);
+    void replacePatIncluded(std::string newHatchFileName);
 
     void makeLineSets(void);
 
     std::vector<PATLineSpec> getDecodedSpecsFromFile();
+
+private:
     std::vector<LineSet> m_lineSets;
     std::string m_saveFile;
     std::string m_saveName;
-
-private:
     static App::PropertyFloatConstraint::Constraints scaleRange;
 
 };

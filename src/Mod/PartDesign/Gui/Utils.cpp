@@ -95,7 +95,7 @@ bool setEdit(App::DocumentObject *obj, PartDesign::Body *body) {
  * \param autoActivate
  * \return Body
  */
-PartDesign::Body *getBody(bool messageIfNot, bool autoActivate, bool assertModern, 
+PartDesign::Body *getBody(bool messageIfNot, bool autoActivate, bool assertModern,
         App::DocumentObject **topParent, std::string *subname)
 {
     PartDesign::Body * activeBody = nullptr;

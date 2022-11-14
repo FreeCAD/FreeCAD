@@ -24,7 +24,7 @@
 #ifndef _PreComp_
 # include <algorithm>
 # include <cstring>
-
+# include <QAbstractButton>
 # include <QApplication>
 # include <QDebug>
 # include <QGenericReturnArgument>
@@ -75,10 +75,12 @@ DlgPreferencesImp::DlgPreferencesImp(QWidget* parent, Qt::WindowFlags fl)
     ui->listBox->setFixedWidth(Base::clamp<int>(length + 20, 108, 120));
     ui->listBox->setGridSize(QSize(108, 75));
 
-    connect(ui->buttonBox,  SIGNAL (helpRequested()),
-            getMainWindow(), SLOT (whatsThis()));
-    connect(ui->listBox, SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)),
-            this, SLOT(changeGroup(QListWidgetItem *, QListWidgetItem*)));
+    connect(ui->buttonBox, &QDialogButtonBox::clicked,
+            this, &DlgPreferencesImp::onButtonBoxClicked);
+    connect(ui->buttonBox,  &QDialogButtonBox::helpRequested,
+            getMainWindow(), &MainWindow::whatsThis);
+    connect(ui->listBox, &QListWidget::currentItemChanged,
+            this, &DlgPreferencesImp::changeGroup);
 
     setupPages();
 
@@ -176,15 +178,24 @@ QTabWidget* DlgPreferencesImp::createTabForGroup(const std::string &groupName)
  */
 void DlgPreferencesImp::createPageInGroup(QTabWidget *tabWidget, const std::string &pageName)
 {
-    PreferencePage* page = WidgetFactory().createPreferencePage(pageName.c_str());
-    if (page) {
-        tabWidget->addTab(page, page->windowTitle());
-        page->loadSettings();
-        page->setProperty("GroupName", tabWidget->property("GroupName"));
-        page->setProperty("PageName", QVariant(QString::fromStdString(pageName)));
+    try {
+        PreferencePage* page = WidgetFactory().createPreferencePage(pageName.c_str());
+        if (page) {
+            tabWidget->addTab(page, page->windowTitle());
+            page->loadSettings();
+            page->setProperty("GroupName", tabWidget->property("GroupName"));
+            page->setProperty("PageName", QVariant(QString::fromStdString(pageName)));
+        }
+        else {
+            Base::Console().Warning("%s is not a preference page\n", pageName.c_str());
+        }
     }
-    else {
-        Base::Console().Warning("%s is not a preference page\n", pageName.c_str());
+    catch (const Base::Exception& e) {
+        Base::Console().Error("Base exception thrown for '%s'\n", pageName.c_str());
+        e.ReportException();
+    }
+    catch (const std::exception& e) {
+        Base::Console().Error("C++ exception thrown for '%s' (%s)\n", pageName.c_str(), e.what());
     }
 }
 
@@ -307,7 +318,7 @@ void DlgPreferencesImp::accept()
         QDialog::accept();
 }
 
-void DlgPreferencesImp::on_buttonBox_clicked(QAbstractButton* btn)
+void DlgPreferencesImp::onButtonBoxClicked(QAbstractButton* btn)
 {
     if (ui->buttonBox->standardButton(btn) == QDialogButtonBox::Apply)
         applyChanges();

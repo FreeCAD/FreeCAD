@@ -25,13 +25,13 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-QT_BEGIN_NAMESPACE
+#include <QObject>
+
 class QGraphicsScene;
 class QGraphicsSvgItem;
 class QSvgRenderer;
 class QFile;
 class QString;
-QT_END_NAMESPACE
 
 namespace TechDraw {
 class DrawSVGTemplate;
@@ -61,7 +61,7 @@ public:
 
 protected:
     void openFile(const QFile &file);
-    void load (const QString & fileName);
+    void load (const QByteArray& svgCode);
     void createClickHandles(void);
 
 protected:

@@ -512,6 +512,7 @@ TaskSketcherElements::TaskSketcherElements(ViewProviderSketch *sketchView)
     const char* ctrlKey = "Ctrl";
     QString cmdKey = QShortcut::tr(ctrlKey);
 #endif
+    Q_UNUSED(cmdKey)
 
     ui->listWidgetElements->setSelectionMode(QAbstractItemView::ExtendedSelection);
     ui->listWidgetElements->setEditTriggers(QListWidget::NoEditTriggers);
@@ -519,42 +520,7 @@ TaskSketcherElements::TaskSketcherElements(ViewProviderSketch *sketchView)
 
     createSettingsButtonActions();
 
-    // connecting the needed signals
-    QObject::connect(
-        ui->listWidgetElements, SIGNAL(itemPressed(QListWidgetItem *)),
-        this                     , SLOT  (on_listWidgetElements_itemPressed(QListWidgetItem *))
-       );
-    QObject::connect(
-        ui->listWidgetElements, SIGNAL(itemEntered(QListWidgetItem *)),
-        this                     , SLOT  (on_listWidgetElements_itemEntered(QListWidgetItem *))
-       );
-    QObject::connect(
-        ui->listWidgetElements, SIGNAL(onItemHovered(QListWidgetItem *)),
-        this, SLOT(on_listWidgetElements_mouseMoveOnItem(QListWidgetItem *))
-    );
-    QObject::connect(
-        ui->listMultiFilter, SIGNAL(itemChanged(QListWidgetItem*)),
-        this, SLOT(on_listMultiFilter_itemChanged(QListWidgetItem*))
-    );
-    QObject::connect(
-        ui->filterBox, SIGNAL(stateChanged(int)),
-        this, SLOT(on_filterBox_stateChanged(int))
-    );
-    QObject::connect(
-        ui->settingsButton, SIGNAL(clicked(bool)),
-        this, SLOT(on_settingsButton_clicked(bool))
-    );
-    QObject::connect(
-        qAsConst(ui->settingsButton)->actions()[0], SIGNAL(changed()),
-        this, SLOT(on_settings_extendedInformation_changed())
-    );
-    QObject::connect(
-        qAsConst(ui->settingsButton)->actions()[1], SIGNAL(changed()),
-        this, SLOT(on_settings_autoCollapseFilter_changed())
-    );
-
-    connectionElementsChanged = sketchView->signalElementsChanged.connect(
-        boost::bind(&SketcherGui::TaskSketcherElements::slotElementsChanged, this));
+    connectSignals();
 
     this->groupLayout()->addWidget(proxy);
 
@@ -584,9 +550,50 @@ TaskSketcherElements::~TaskSketcherElements()
     connectionElementsChanged.disconnect();
 }
 
+void TaskSketcherElements::connectSignals()
+{
+    // connecting the needed signals
+    QObject::connect(
+        ui->listWidgetElements, &ElementView::itemPressed,
+        this, &TaskSketcherElements::onListWidgetElementsItemPressed
+    );
+    QObject::connect(
+        ui->listWidgetElements, &ElementView::itemEntered,
+        this, &TaskSketcherElements::onListWidgetElementsItemEntered
+    );
+    QObject::connect(
+        ui->listWidgetElements, &ElementView::onItemHovered,
+        this, &TaskSketcherElements::onListWidgetElementsMouseMoveOnItem
+    );
+    QObject::connect(
+        ui->listMultiFilter, &QListWidget::itemChanged,
+        this, &TaskSketcherElements::onListMultiFilterItemChanged
+    );
+    QObject::connect(
+        ui->filterBox, &QCheckBox::stateChanged,
+        this, &TaskSketcherElements::onFilterBoxStateChanged
+    );
+    QObject::connect(
+        ui->settingsButton, &QToolButton::clicked,
+        this, &TaskSketcherElements::onSettingsButtonClicked
+    );
+    QObject::connect(
+        qAsConst(ui->settingsButton)->actions()[0], &QAction::changed,
+        this, &TaskSketcherElements::onSettingsExtendedInformationChanged
+    );
+    QObject::connect(
+        qAsConst(ui->settingsButton)->actions()[1], &QAction::changed,
+        this, &TaskSketcherElements::onSettingsAutoCollapseFilterChanged
+    );
+
+    connectionElementsChanged = sketchView->signalElementsChanged.connect(
+        boost::bind(&SketcherGui::TaskSketcherElements::slotElementsChanged, this));
+}
+
 /* filter functions --------------------------------------------------- */
 
-void TaskSketcherElements::on_filterBox_stateChanged(int val){
+void TaskSketcherElements::onFilterBoxStateChanged(int val)
+{
     Q_UNUSED(val)
 
     ui->listMultiFilter->setVisible(ui->filterBox->checkState() == Qt::Checked);
@@ -610,14 +617,29 @@ bool TaskSketcherElements::eventFilter(QObject* obj, QEvent* event)
     return TaskBox::eventFilter(obj, event);
 }
 
-enum class GeoFilterType { NormalGeos, ConstructionGeos, InternalGeos, ExternalGeos, AllGeosTypes, PointGeos, LineGeos, CircleGeos, EllipseGeos, ArcGeos, ArcOfEllipseGeos, HyperbolaGeos, ParabolaGeos, BSplineGeos };
+enum class GeoFilterType { NormalGeos,
+                           ConstructionGeos,
+                           InternalGeos,
+                           ExternalGeos,
+                           AllGeosTypes,
+                           PointGeos,
+                           LineGeos,
+                           CircleGeos,
+                           EllipseGeos,
+                           ArcGeos,
+                           ArcOfEllipseGeos,
+                           HyperbolaGeos,
+                           ParabolaGeos,
+                           BSplineGeos
+                         };
 
-void TaskSketcherElements::on_listMultiFilter_itemChanged(QListWidgetItem* item)
+void TaskSketcherElements::onListMultiFilterItemChanged(QListWidgetItem* item)
 {
     {
+        int start = 4; //From 4 to the end, it's the geometry types (line, circle, arc...)
         QSignalBlocker sigblk(ui->listMultiFilter);
         if (item == ui->listMultiFilter->item(static_cast<int>(GeoFilterType::AllGeosTypes))) {
-            for (int i = 4; i < ui->listMultiFilter->count(); i++) { //From 4 to the end, it's the geometry types (line, circle, arc...)
+            for (int i = start; i < ui->listMultiFilter->count(); i++) {
                 ui->listMultiFilter->item(i)->setCheckState(item->checkState());
             }
         }
@@ -752,7 +774,7 @@ void TaskSketcherElements::onSelectionChanged(const Gui::SelectionChanges& msg)
     }
 }
 
-void TaskSketcherElements::on_listWidgetElements_itemPressed(QListWidgetItem* it) {
+void TaskSketcherElements::onListWidgetElementsItemPressed(QListWidgetItem* it) {
     //We use itemPressed instead of previously used ItemSelectionChanged because if user click on already selected item, ItemSelectionChanged didn't trigger.
     if (!it)
         return;
@@ -843,7 +865,19 @@ void TaskSketcherElements::on_listWidgetElements_itemPressed(QListWidgetItem* it
             }
 
             // first update the listwidget. Item is selected if at least one element of the geo is selected.
-            item->setSelected(item->isLineSelected || item->isStartingPointSelected || item->isEndPointSelected || item->isMidPointSelected);
+            bool selected = item->isLineSelected || item->isStartingPointSelected || item->isEndPointSelected || item->isMidPointSelected;
+
+            {
+                QSignalBlocker sigblk(ui->listWidgetElements);
+
+                if (item->isSelected() && selected) {
+                    item->setSelected(false);// if already selected and changing or adding subelement, ensure selection change is triggered, which ensures timely repaint
+                    item->setSelected(selected);
+                }
+                else {
+                    item->setSelected(selected);
+                }
+            }
 
             // now the scene
             std::stringstream ss;
@@ -885,14 +919,14 @@ void TaskSketcherElements::on_listWidgetElements_itemPressed(QListWidgetItem* it
     ui->listWidgetElements->repaint();
 }
 
-void TaskSketcherElements::on_listWidgetElements_itemEntered(QListWidgetItem *item)
+void TaskSketcherElements::onListWidgetElementsItemEntered(QListWidgetItem *item)
 {
     ui->listWidgetElements->setFocus();
 
     focusItemIndex = ui->listWidgetElements->row(item);
 }
 
-void TaskSketcherElements::on_listWidgetElements_mouseMoveOnItem(QListWidgetItem* it) {
+void TaskSketcherElements::onListWidgetElementsMouseMoveOnItem(QListWidgetItem* it) {
     ElementItem* item = static_cast<ElementItem*>(it);
 
     if (!item || (ui->listWidgetElements->row(item) == previouslyHoveredItemIndex && item->hovered == previouslyHoveredType) )
@@ -1165,9 +1199,10 @@ void TaskSketcherElements::createSettingsButtonActions()
     collapseFilter = hGrp->GetBool("AutoCollapseFilter", true);
 }
 
-void TaskSketcherElements::on_settings_extendedInformation_changed()
+void TaskSketcherElements::onSettingsExtendedInformationChanged()
 {
-    isNamingBoxChecked = ui->settingsButton->actions()[0]->isChecked();
+    QList<QAction*> acts = ui->settingsButton->actions();
+    isNamingBoxChecked = acts[0]->isChecked();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Elements");
     hGrp->SetBool("ExtendedNaming", isNamingBoxChecked);
@@ -1175,9 +1210,10 @@ void TaskSketcherElements::on_settings_extendedInformation_changed()
     slotElementsChanged();
 }
 
-void TaskSketcherElements::on_settings_autoCollapseFilter_changed()
+void TaskSketcherElements::onSettingsAutoCollapseFilterChanged()
 {
-    collapseFilter = ui->settingsButton->actions()[1]->isChecked();
+    QList<QAction*> acts = ui->settingsButton->actions();
+    collapseFilter = acts[1]->isChecked();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Elements");
     hGrp->SetBool("AutoCollapseFilter", collapseFilter);
@@ -1190,7 +1226,7 @@ void TaskSketcherElements::on_settings_autoCollapseFilter_changed()
     }
 }
 
-void TaskSketcherElements::on_settingsButton_clicked(bool)
+void TaskSketcherElements::onSettingsButtonClicked(bool)
 {
     ui->settingsButton->showMenu();
 }

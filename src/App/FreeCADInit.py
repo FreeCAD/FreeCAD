@@ -171,7 +171,15 @@ def InitApplications():
     sys.path = [ModDir] + libpaths + [ExtDir] + sys.path
 
     # The AddonManager may install additional Python packages in
-    # this path:
+    # these paths:
+    import platform
+    major,minor,_ = platform.python_version_tuple()
+    vendor_path = os.path.join(
+        FreeCAD.getUserAppDataDir(), "AdditionalPythonPackages",f"py{major}{minor}"
+    )
+    if os.path.isdir(vendor_path):
+        sys.path.append(vendor_path)
+
     additional_packages_path = os.path.join(FreeCAD.getUserAppDataDir(),"AdditionalPythonPackages")
     if os.path.isdir(additional_packages_path):
         sys.path.append(additional_packages_path)
@@ -351,8 +359,6 @@ class FCADLogger(object):
         build.
     '''
 
-    _string_type = str if sys.version_info[0] >= 3 else basestring
-
     _levels = { 'Error':0, 'error':0,
                 'Warning':1, 'warn':1,
                 'Message':2, 'msg':2, 'info':2,
@@ -521,7 +527,7 @@ class FCADLogger(object):
                      string.format()
         '''
 
-        if (args or kargs) and isinstance(msg,self.__class__._string_type):
+        if (args or kargs) and isinstance(msg,str):
             if not kargs:
                 msg = msg.format(*args)
             else:

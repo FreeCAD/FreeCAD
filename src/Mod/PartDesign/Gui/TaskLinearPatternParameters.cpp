@@ -162,7 +162,7 @@ void TaskLinearPatternParameters::setupUI()
     ui->spinLength->setUnit(Base::Unit::Length);
     ui->spinLength->blockSignals(false);
     ui->spinOccurrences->setEnabled(true);
-    
+
     dirLinks.setCombo(*(ui->comboDirection));
     App::DocumentObject* sketch = getSketchObject();
     if (sketch && sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {

@@ -41,7 +41,8 @@ using namespace Gui::Dialog;
  *  The dialog will by default be modeless, unless you set 'modal' to
  *  true to construct a modal dialog.
  */
-DlgMaterialPropertiesImp::DlgMaterialPropertiesImp(const std::string& mat, QWidget* parent, Qt::WindowFlags fl)
+DlgMaterialPropertiesImp::DlgMaterialPropertiesImp(const std::string& mat, QWidget* parent,
+                                                   Qt::WindowFlags fl)
   : QDialog(parent, fl)
   , ui(new Ui_DlgMaterialProperties)
   , material(mat)
@@ -76,10 +77,10 @@ QColor DlgMaterialPropertiesImp::diffuseColor() const
 void DlgMaterialPropertiesImp::on_ambientColor_changed()
 {
     QColor col = ui->ambientColor->color();
-    float r = (float)col.red()/255.0f;
-    float g = (float)col.green()/255.0f;
-    float b = (float)col.blue()/255.0f;
-    App::Color ambient(r,g,b);
+    float r = (float)col.red() / 255.0f;
+    float g = (float)col.green() / 255.0f;
+    float b = (float)col.blue() / 255.0f;
+    App::Color ambient(r, g, b);
 
     for (std::vector<ViewProvider*>::iterator it= Objects.begin(); it != Objects.end(); ++it) {
         App::Property* prop = (*it)->getPropertyByName(material.c_str());
@@ -98,12 +99,12 @@ void DlgMaterialPropertiesImp::on_ambientColor_changed()
 void DlgMaterialPropertiesImp::on_diffuseColor_changed()
 {
     QColor col = ui->diffuseColor->color();
-    float r = (float)col.red()/255.0f;
-    float g = (float)col.green()/255.0f;
-    float b = (float)col.blue()/255.0f;
-    App::Color diffuse(r,g,b);
+    float r = (float)col.red() / 255.0f;
+    float g = (float)col.green() / 255.0f;
+    float b = (float)col.blue() / 255.0f;
+    App::Color diffuse(r, g, b);
 
-    for (std::vector<ViewProvider*>::iterator it= Objects.begin();it!=Objects.end();++it) {
+    for (std::vector<ViewProvider*>::iterator it = Objects.begin(); it != Objects.end(); ++it) {
         App::Property* prop = (*it)->getPropertyByName(material.c_str());
         if (prop && prop->getTypeId().isDerivedFrom(App::PropertyMaterial::getClassTypeId())) {
             auto ShapeMaterial = static_cast<App::PropertyMaterial*>(prop);
@@ -120,12 +121,12 @@ void DlgMaterialPropertiesImp::on_diffuseColor_changed()
 void DlgMaterialPropertiesImp::on_emissiveColor_changed()
 {
     QColor col = ui->emissiveColor->color();
-    float r = (float)col.red()/255.0f;
-    float g = (float)col.green()/255.0f;
-    float b = (float)col.blue()/255.0f;
-    App::Color emissive(r,g,b);
+    float r = (float)col.red() / 255.0f;
+    float g = (float)col.green() / 255.0f;
+    float b = (float)col.blue() / 255.0f;
+    App::Color emissive(r, g, b);
 
-    for (std::vector<ViewProvider*>::iterator it= Objects.begin();it!=Objects.end();++it) {
+    for (std::vector<ViewProvider*>::iterator it = Objects.begin(); it != Objects.end(); ++it) {
         App::Property* prop = (*it)->getPropertyByName(material.c_str());
         if (prop && prop->getTypeId().isDerivedFrom(App::PropertyMaterial::getClassTypeId())) {
             auto ShapeMaterial = static_cast<App::PropertyMaterial*>(prop);
@@ -142,12 +143,12 @@ void DlgMaterialPropertiesImp::on_emissiveColor_changed()
 void DlgMaterialPropertiesImp::on_specularColor_changed()
 {
     QColor col = ui->specularColor->color();
-    float r = (float)col.red()/255.0f;
-    float g = (float)col.green()/255.0f;
-    float b = (float)col.blue()/255.0f;
-    App::Color specular(r,g,b);
+    float r = (float)col.red() / 255.0f;
+    float g = (float)col.green() / 255.0f;
+    float b = (float)col.blue() / 255.0f;
+    App::Color specular(r, g, b);
 
-    for (std::vector<ViewProvider*>::iterator it= Objects.begin();it!=Objects.end();++it) {
+    for (std::vector<ViewProvider*>::iterator it = Objects.begin(); it != Objects.end(); ++it) {
         App::Property* prop = (*it)->getPropertyByName(material.c_str());
         if (prop && prop->getTypeId().isDerivedFrom(App::PropertyMaterial::getClassTypeId())) {
             auto ShapeMaterial = static_cast<App::PropertyMaterial*>(prop);
@@ -163,8 +164,8 @@ void DlgMaterialPropertiesImp::on_specularColor_changed()
  */
 void DlgMaterialPropertiesImp::on_shininess_valueChanged(int sh)
 {
-    float shininess = (float)sh/100.0f;
-    for (std::vector<ViewProvider*>::iterator it= Objects.begin();it!=Objects.end();++it) {
+    float shininess = (float)sh / 100.0f;
+    for (std::vector<ViewProvider*>::iterator it = Objects.begin(); it != Objects.end(); ++it) {
         App::Property* prop = (*it)->getPropertyByName(material.c_str());
         if (prop && prop->getTypeId().isDerivedFrom(App::PropertyMaterial::getClassTypeId())) {
             auto ShapeMaterial = static_cast<App::PropertyMaterial*>(prop);
@@ -182,7 +183,7 @@ void DlgMaterialPropertiesImp::setViewProviders(const std::vector<Gui::ViewProvi
 {
     Objects = Obj;
 
-    for (std::vector<ViewProvider*>::iterator it= Objects.begin();it!=Objects.end();++it) {
+    for (std::vector<ViewProvider*>::iterator it = Objects.begin(); it != Objects.end(); ++it) {
         App::Property* prop = (*it)->getPropertyByName(material.c_str());
         if (prop && prop->getTypeId().isDerivedFrom(App::PropertyMaterial::getClassTypeId())) {
             auto ShapeMaterial = static_cast<App::PropertyMaterial*>(prop);
@@ -190,21 +191,21 @@ void DlgMaterialPropertiesImp::setViewProviders(const std::vector<Gui::ViewProvi
             int r = int(mat.ambientColor.r * 255.0f);
             int g = int(mat.ambientColor.g * 255.0f);
             int b = int(mat.ambientColor.b * 255.0f);
-            ui->ambientColor->setColor( QColor(r,g,b) );
+            ui->ambientColor->setColor(QColor(r, g, b));
             r = int(mat.diffuseColor.r * 255.0f);
             g = int(mat.diffuseColor.g * 255.0f);
             b = int(mat.diffuseColor.b * 255.0f);
-            ui->diffuseColor->setColor( QColor(r,g,b) );
+            ui->diffuseColor->setColor(QColor(r, g, b));
             r = int(mat.emissiveColor.r * 255.0f);
             g = int(mat.emissiveColor.g * 255.0f);
             b = int(mat.emissiveColor.b * 255.0f);
-            ui->emissiveColor->setColor( QColor(r,g,b) );
+            ui->emissiveColor->setColor(QColor(r, g, b));
             r = int(mat.specularColor.r * 255.0f);
             g = int(mat.specularColor.g * 255.0f);
             b = int(mat.specularColor.b * 255.0f);
-            ui->specularColor->setColor( QColor(r,g,b) );
+            ui->specularColor->setColor(QColor(r, g, b));
             ui->shininess->blockSignals(true);
-            ui->shininess->setValue((int)(100.0f * (mat.shininess+0.001f)));
+            ui->shininess->setValue((int)(100.0f * (mat.shininess + 0.001f)));
             ui->shininess->blockSignals(false);
             break;
         }

@@ -28,6 +28,7 @@
 # include <cstdlib>
 # include <map>
 # include <memory>
+# include <Python.h>
 
 # include <SMESH_Mesh.hxx>
 # include <SMESHDS_Mesh.hxx>

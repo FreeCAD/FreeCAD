@@ -93,9 +93,24 @@ void CompassDialWidget::drawWidget(QPainter& painter)
 void CompassDialWidget::drawBackground(QPainter& painter)
 {
     painter.save();
+
+    //Move to the center of the compass
+    painter.translate(width() / 2, height() / 2);
+    double scale = std::min((float) width() / (float) (m_designDiameter + 2.0 * m_margin),
+                            (float) height() / (float) (m_designDiameter + 2.0 * m_margin));
+    painter.scale(scale, scale);
+
     painter.setPen(QPen(Qt::NoPen));
     // Clear the background
-    painter.fillRect(m_rect, palette().brush((QPalette::Window)));
+    int circleWidth = 2.0 * (m_designRadius + m_margin);
+    int circleHeight = 2.0 * (m_designRadius + m_margin);
+    QRect circleRect(-circleWidth / 2, -circleHeight / 2, circleWidth, circleHeight);
+    painter.drawEllipse(circleRect);
+//    QRect backRect(-m_rect.width() / 2, -m_rect.height() / 2, m_rect.width(), m_rect.height());
+    QPainterPath backPath;
+    backPath.addEllipse(circleRect);
+    painter.fillPath(backPath, palette().brush((QPalette::Window)));
+//    painter.fillRect(backRect, palette().brush((QPalette::Window)));
     painter.restore();
 }
 

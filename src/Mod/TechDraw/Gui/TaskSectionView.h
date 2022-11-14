@@ -125,6 +125,7 @@ private:
     Base::Vector3d m_localUnit;
     CompassWidget* m_compass;
     VectorEditWidget* m_viewDirectionWidget;
+    bool m_directionIsSet;
 };
 
 class TaskDlgSectionView : public Gui::TaskView::TaskDialog

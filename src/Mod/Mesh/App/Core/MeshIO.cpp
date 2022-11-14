@@ -56,7 +56,6 @@
 #include <boost/regex.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
-#include <boost/tokenizer.hpp>
 #include <boost/convert.hpp>
 #include <boost/convert/spirit.hpp>
 

@@ -24,8 +24,11 @@
 #ifndef GUI_DIALOG_DLGTOOLBARS_IMP_H
 #define GUI_DIALOG_DLGTOOLBARS_IMP_H
 
+#include <boost/signals2/connection.hpp>
 #include "PropertyPage.h"
 #include <memory>
+
+class QTreeWidgetItem;
 
 namespace Gui {
 namespace Dialog {
@@ -50,7 +53,6 @@ protected:
     ~DlgCustomToolbars() override;
 
 protected Q_SLOTS:
-    void on_categoryBox_activated(int index);
     void on_workbenchBox_activated(int index);
     void on_moveActionRightButton_clicked();
     void on_moveActionLeftButton_clicked();
@@ -73,6 +75,7 @@ protected:
     virtual void removeCustomCommand(const QString&, const QByteArray&);
     virtual void moveUpCustomCommand(const QString&, const QByteArray&);
     virtual void moveDownCustomCommand(const QString&, const QByteArray&);
+    void onActivateCategoryBox();
 
 private:
     void importCustomToolbars(const QByteArray&);
@@ -82,6 +85,7 @@ protected:
     std::unique_ptr<Ui_DlgCustomToolbars> ui;
 private:
     Type type;
+    boost::signals2::scoped_connection conn;
 };
 
 /** This class implements the creation of user defined toolbars.
@@ -98,6 +102,7 @@ public:
     ~DlgCustomToolbarsImp() override;
 
 protected:
+    void showEvent(QShowEvent* e) override;
     void changeEvent(QEvent *e) override;
     void addCustomToolbar(const QString&) override;
     void removeCustomToolbar(const QString&) override;
@@ -110,6 +115,7 @@ protected:
 private:
     QList<QAction*> getActionGroup(QAction*);
     void setActionGroup(QAction*, const QList<QAction*>& group);
+    bool firstShow = true;
 };
 
 /** This class implements the creation of user defined toolbox bars.

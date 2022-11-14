@@ -95,7 +95,7 @@ def searchforopenscadexe():
                 stdout=subprocess.PIPE,stderr=subprocess.PIPE)
         stdout, stderr = p1.communicate(ascript)
         if p1.returncode == 0:
-            opathl = stdout.decode().split('\n') if sys.version_info.major >= 3 else stdout.split('\n')
+            opathl = stdout.decode().split('\n')
             if len(opathl) >= 1:
                 return opathl[0]+'Contents/MacOS/OpenSCAD'
         #test the default path

@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <algorithm>
@@ -29,20 +28,20 @@
 #  include <windows.h>
 # endif
 # ifdef FC_OS_MACOSX
-# include <OpenGL/gl.h>
+#  include <OpenGL/gl.h>
 # else
-# include <GL/gl.h>
+#  include <GL/gl.h>
 # endif
 # include <Inventor/nodes/SoOrthographicCamera.h>
 # include <Inventor/events/SoEvent.h>
 # include <Inventor/events/SoLocation2Event.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
-#include <QApplication>
-#include <QCursor>
-#include <QImage>
-#include <QMenu>
-#include <QOpenGLTexture>
-#include <QPainterPath>
+# include <QApplication>
+# include <QCursor>
+# include <QImage>
+# include <QMenu>
+# include <QOpenGLTexture>
+# include <QPainterPath>
 #endif
 
 #include <Base/Tools.h>
@@ -322,8 +321,8 @@ void NaviCubeImplementation::OnChange(ParameterGrp::SubjectType& rCaller, Parame
 	}
 }
 
-char* NaviCubeImplementation::enum2str(int e) {
-	switch (e) {
+char* NaviCubeImplementation::enum2str(int positionEnum) {
+	switch (positionEnum) {
 	default: return "???";
 	case TEX_FRONT: return "TEX_FRONT";
 	case TEX_REAR: return "TEX_REAR";
@@ -1619,7 +1618,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
 			viewRot = rotateView(viewRot, DIR_RIGHT, rotStepAngle);
 			break;
 		case TEX_DOT_BACKSIDE:
-			viewRot = rotateView(viewRot, 0, 180);
+			viewRot = rotateView(viewRot, DIR_UP, 180);
 			break;
 		case TEX_VIEW_MENU_FACE:
 			handleMenu();

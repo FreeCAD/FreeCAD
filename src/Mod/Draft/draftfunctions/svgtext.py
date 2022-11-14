@@ -53,20 +53,6 @@ def _get_text_techdraw(text, tcolor, fontsize, anchor,
         _t = _t.replace("<", "&lt;")
         t = _t.replace(">", "&gt;")
 
-        # TODO: remove when Python 2 is no longer supported
-        if six.PY2 and not isinstance(t, six.text_type):
-            t = t.decode("utf8")
-
-        # possible workaround if UTF8 is unsupported
-        #   import unicodedata as U
-        #   v = list()
-        #   for c in U.normalize("NFKD", t):
-        #       if not U.combining(c):
-        #           v.append(c)
-        #
-        #   t = u"".join(v)
-        #   t = t.encode("utf8")
-
         svg += '<text '
         svg += 'stroke-width="0" stroke="{}" '.format(tcolor)
         svg += 'fill="{}" font-size="{}" '.format(tcolor, fontsize)

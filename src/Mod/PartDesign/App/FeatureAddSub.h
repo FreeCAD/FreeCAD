@@ -37,9 +37,9 @@ class PartDesignExport FeatureAddSub : public PartDesign::Feature
 public:
     enum Type {
         Additive = 0,
-        Subtractive 
+        Subtractive
     };
-    
+
     FeatureAddSub();
 
     Type getAddSubType();

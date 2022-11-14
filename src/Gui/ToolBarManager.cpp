@@ -26,6 +26,7 @@
 # include <QApplication>
 # include <QToolBar>
 # include <QToolButton>
+# include <QPointer>
 #endif
 
 #include "ToolBarManager.h"
@@ -36,11 +37,11 @@
 
 using namespace Gui;
 
-ToolBarItem::ToolBarItem()
+ToolBarItem::ToolBarItem() : forceHide(HideStyle::VISIBLE)
 {
 }
 
-ToolBarItem::ToolBarItem(ToolBarItem* item)
+ToolBarItem::ToolBarItem(ToolBarItem* item, HideStyle forcehide) : forceHide(forcehide)
 {
     if ( item )
         item->appendItem(this);
@@ -56,7 +57,7 @@ void ToolBarItem::setCommand(const std::string& name)
     _name = name;
 }
 
-std::string ToolBarItem::command() const
+const std::string & ToolBarItem::command() const
 {
     return _name;
 }
@@ -178,6 +179,15 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
     if (!toolBarItems)
         return; // empty menu bar
 
+    static QPointer<QWidget> _ActionWidget;
+    if (!_ActionWidget) {
+        _ActionWidget = new QWidget(getMainWindow());
+    }
+    else {
+        for (auto action : _ActionWidget->actions())
+            _ActionWidget->removeAction(action);
+    }
+
     saveState();
     this->toolbarNames.clear();
 
@@ -196,7 +206,6 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
         this->toolbarNames << name;
         QToolBar* toolbar = findToolBar(toolbars, name);
         std::string toolbarName = (*it)->command();
-        bool visible = hPref->GetBool(toolbarName.c_str(), true);
         bool toolbar_added = false;
 
         if (!toolbar) {
@@ -210,18 +219,22 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
                     + QChar::fromLatin1(']');
                 toolbar->setToolTip(tooltip);
             }
-            toolbar->setVisible(visible);
             toolbar_added = true;
         }
         else {
-            toolbar->setVisible(visible);
-            toolbar->toggleViewAction()->setVisible(true);
             int index = toolbars.indexOf(toolbar);
             toolbars.removeAt(index);
         }
 
+        bool visible = hPref->GetBool(toolbarName.c_str(), true) && (*it)->forceHide == ToolBarItem::HideStyle::VISIBLE;
+        toolbar->setVisible(visible);
+        toolbar->toggleViewAction()->setVisible((*it)->forceHide == ToolBarItem::HideStyle::VISIBLE);
+
         // setup the toolbar
         setup(*it, toolbar);
+        for (auto action : toolbar->actions()) {
+            _ActionWidget->addAction(action);
+        }
 
         // try to add some breaks to avoid to have all toolbars in one line
         if (toolbar_added) {
@@ -254,7 +267,7 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
         QByteArray toolbarName = (*it)->objectName().toUtf8();
         if (!(*it)->toggleViewAction()->isVisible())
             continue;
-        hPref->SetBool(toolbarName.constData(), (*it)->isVisible());
+        //hPref->SetBool(toolbarName.constData(), (*it)->isVisible());
         (*it)->hide();
         (*it)->toggleViewAction()->setVisible(false);
     }
@@ -276,15 +289,19 @@ void ToolBarManager::setup(ToolBarItem* item, QToolBar* toolbar) const
         if (!action) {
             if ((*it)->command() == "Separator") {
                 action = toolbar->addSeparator();
-            } else {
+            }
+            else {
                 // Check if action was added successfully
                 if (mgr.addTo((*it)->command().c_str(), toolbar))
                     action = toolbar->actions().constLast();
             }
 
             // set the tool button user data
-            if (action) action->setData(QString::fromLatin1((*it)->command().c_str()));
-        } else {
+            if (action) {
+                action->setData(QString::fromLatin1((*it)->command().c_str()));
+            }
+        }
+        else {
             // Note: For toolbars we do not remove and re-add the actions
             // because this causes flicker effects. So, it could happen that the order of
             // buttons doesn't match with the order of commands in the workbench.
@@ -308,6 +325,8 @@ void ToolBarManager::saveState() const
     for (QStringList::ConstIterator it = this->toolbarNames.begin(); it != this->toolbarNames.end(); ++it) {
         QToolBar* toolbar = findToolBar(toolbars, *it);
         if (toolbar) {
+            if (!toolbar->toggleViewAction()->isVisible())
+                continue; //if toggleViewAction is not visible it means that the toolbar is forceHide. In which case we do not save settings.
             QByteArray toolbarName = toolbar->objectName().toUtf8();
             hPref->SetBool(toolbarName.constData(), toolbar->isVisible());
         }
@@ -384,4 +403,28 @@ QList<QToolBar*> ToolBarManager::toolBars() const
     }
 
     return tb;
+}
+
+void ToolBarManager::setToolbarVisibility(bool show, const QList<QString>& names) {
+    for (auto& name : names) {
+        setToolbarVisibility(show, name);
+    }
+}
+
+void ToolBarManager::setToolbarVisibility(bool show, const QString& name) {
+
+    ParameterGrp::handle hPref = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("MainWindow")->GetGroup("Toolbars");
+
+    QToolBar* tb = findToolBar(toolBars(), name);
+    if (tb) {
+        if (show) {
+            if(hPref->GetBool(name.toStdString().c_str(), true))
+                tb->show();
+            tb->toggleViewAction()->setVisible(true);
+        }
+        else {
+            tb->hide();
+            tb->toggleViewAction()->setVisible(false);
+        }
+    }
 }

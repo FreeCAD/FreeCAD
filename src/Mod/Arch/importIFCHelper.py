@@ -43,16 +43,6 @@ DEBUG_prod_repr = False
 DEBUG_prod_colors = False
 
 
-def decode(filename, utf=False):
-    """Turn unicode into strings, only for Python 2."""
-    if six.PY2 and isinstance(filename, six.text_type):
-        # This is a workaround since ifcopenshell 0.6 currently
-        # can't handle unicode filenames
-        encoding = "utf8" if utf else sys.getfilesystemencoding()
-        filename = filename.encode(encoding)
-    return filename
-
-
 def dd2dms(dd):
     """Convert decimal degrees to degrees, minutes, seconds.
 
@@ -630,20 +620,14 @@ def getIfcProperties(ifcfile, pid, psets, d):
     for pset in psets.keys():
         # print("reading pset: ",pset)
         psetname = ifcfile[pset].Name
-        if six.PY2:
-            psetname = psetname.encode("utf8")
         for prop in psets[pset]:
             e = ifcfile[prop]
             pname = e.Name
-            if six.PY2:
-                pname = pname.encode("utf8")
             if e.is_a("IfcPropertySingleValue"):
                 if e.NominalValue:
                     ptype = e.NominalValue.is_a()
                     if ptype in ['IfcLabel','IfcText','IfcIdentifier','IfcDescriptiveMeasure']:
                         pvalue = e.NominalValue.wrappedValue
-                        if six.PY2:
-                            pvalue = pvalue.encode("utf8")
                     else:
                         pvalue = str(e.NominalValue.wrappedValue)
                     if hasattr(e.NominalValue,'Unit'):
@@ -1101,8 +1085,6 @@ def createAnnotation(annotation,doc,ifcscale,preferences):
             grid_placement = None
             if annotation.Name:
                 name = annotation.Name
-                if six.PY2:
-                    name = name.encode("utf8")
             if annotation.ObjectPlacement:
                 # https://forum.freecadweb.org/viewtopic.php?f=39&t=40027
                 grid_placement = getPlacement(annotation.ObjectPlacement,scaling=1)
@@ -1116,8 +1098,6 @@ def createAnnotation(annotation,doc,ifcscale,preferences):
         name = "Annotation"
         if annotation.Name:
             name = annotation.Name
-            if six.PY2:
-                name = name.encode("utf8")
         if "annotation" not in name.lower():
             name = "Annotation " + name
         if preferences['PREFIX_NUMBERS']: name = "ID" + str(aid) + " " + name

@@ -196,16 +196,17 @@ private:
     void setItemVisibility(QListWidgetItem* item);
     void clearWidget();
     void createSettingsButtonActions();
+    void connectSignals();
 
 public Q_SLOTS:
-    void on_listWidgetElements_itemPressed(QListWidgetItem* item);
-    void on_listWidgetElements_itemEntered(QListWidgetItem *item);
-    void on_listWidgetElements_mouseMoveOnItem(QListWidgetItem* item);
-    void on_settings_extendedInformation_changed();
-    void on_settings_autoCollapseFilter_changed();
-    void on_settingsButton_clicked(bool);
-    void on_filterBox_stateChanged(int val);
-    void on_listMultiFilter_itemChanged(QListWidgetItem* item);
+    void onListWidgetElementsItemPressed(QListWidgetItem* item);
+    void onListWidgetElementsItemEntered(QListWidgetItem *item);
+    void onListWidgetElementsMouseMoveOnItem(QListWidgetItem* item);
+    void onSettingsExtendedInformationChanged();
+    void onSettingsAutoCollapseFilterChanged();
+    void onSettingsButtonClicked(bool);
+    void onFilterBoxStateChanged(int val);
+    void onListMultiFilterItemChanged(QListWidgetItem* item);
 
 protected:
     void changeEvent(QEvent *e) override;

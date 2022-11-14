@@ -980,6 +980,57 @@ PyObject *SheetPy::recomputeCells(PyObject *args) {
     }PY_CATCH;
 }
 
+PyObject *SheetPy::getUsedCells(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+    auto usedCells = getSheetPtr()->getCells()->getUsedCells();
+    Py::List pyCellList;
+    for (const auto &cell : usedCells) { 
+        pyCellList.append(Py::String(cell.toString()));
+    }
+    return Py::new_reference_to(pyCellList);
+}
+
+PyObject *SheetPy::getUsedRange(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+    auto usedRange = getSheetPtr()->getCells()->getUsedRange();
+    Py::Tuple pyTuple(2);
+    pyTuple[0] = Py::String(std::get<0>(usedRange).toString());
+    pyTuple[1] = Py::String(std::get<1>(usedRange).toString());
+    return Py::new_reference_to(pyTuple);
+}
+
+PyObject *SheetPy::getNonEmptyCells(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+    auto nonEmptyCells = getSheetPtr()->getCells()->getNonEmptyCells();
+    Py::List pyCellList;
+    for (const auto &cell : nonEmptyCells) { 
+        pyCellList.append(Py::String(cell.toString())); 
+    }
+    return Py::new_reference_to(pyCellList);
+}
+
+PyObject *SheetPy::getNonEmptyRange(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+    auto nonEmptyRange = getSheetPtr()->getCells()->getNonEmptyRange();
+    Py::Tuple pyTuple(2);
+    pyTuple[0] = Py::String(std::get<0>(nonEmptyRange).toString());
+    pyTuple[1] = Py::String(std::get<1>(nonEmptyRange).toString());
+    return Py::new_reference_to(pyTuple);
+}
+
+
 // +++ custom attributes implementer ++++++++++++++++++++++++++++++++++++++++
 
 PyObject *SheetPy::getCustomAttributes(const char*) const

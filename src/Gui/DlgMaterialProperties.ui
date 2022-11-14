@@ -26,7 +26,16 @@
       <string>Material</string>
      </property>
      <layout class="QGridLayout">
-      <property name="margin">
+      <property name="leftMargin">
+       <number>9</number>
+      </property>
+      <property name="topMargin">
+       <number>9</number>
+      </property>
+      <property name="rightMargin">
+       <number>9</number>
+      </property>
+      <property name="bottomMargin">
        <number>9</number>
       </property>
       <property name="spacing">
@@ -46,7 +55,7 @@
         </property>
        </widget>
       </item>
-     <item row="1" column="0">
+      <item row="1" column="0">
        <widget class="QLabel" name="textLabel1">
         <property name="text">
          <string>Diffuse color:</string>
@@ -93,7 +102,16 @@
         <property name="spacing">
          <number>6</number>
         </property>
-        <property name="margin">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
          <number>0</number>
         </property>
         <item>
@@ -124,11 +142,14 @@
           <property name="suffix">
            <string>%</string>
           </property>
+          <property name="singleStep">
+           <number>5</number>
+          </property>
          </widget>
         </item>
        </layout>
       </item>
-      </layout>
+     </layout>
     </widget>
    </item>
    <item row="1" column="0">

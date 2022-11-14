@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
- *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2016, 2022 WandererFan <wandererfan@gmail.com>          *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -185,7 +185,8 @@ short DrawViewSection::mustExecute() const
         Direction.isTouched()     ||
         BaseView.isTouched()  ||
         SectionNormal.isTouched() ||
-        SectionOrigin.isTouched() ) {
+        SectionOrigin.isTouched() ||
+        Rotation.isTouched() ) {
         return 1;
     }
 
@@ -219,21 +220,11 @@ void DrawViewSection::onChanged(const App::Property* prop)
             makeLineSets();
         }
     } else if (prop == &FileHatchPattern) {
-        if (!FileHatchPattern.isEmpty()) {
-            Base::FileInfo fi(FileHatchPattern.getValue());
-            if (fi.isReadable()) {
-                replaceSvgIncluded(FileHatchPattern.getValue());
-            }
-        }
+        replaceSvgIncluded(FileHatchPattern.getValue());
     } else if (prop == &FileGeomPattern) {
-        if (!FileGeomPattern.isEmpty()) {
-            Base::FileInfo fi(FileGeomPattern.getValue());
-            if (fi.isReadable()) {
-                replacePatIncluded(FileGeomPattern.getValue());
-            }
-        }
-    } else if (prop == &FileGeomPattern    ||
-        prop == &NameGeomPattern ) {
+        replacePatIncluded(FileGeomPattern.getValue());
+        makeLineSets();
+    } else if (prop == &NameGeomPattern ) {
         makeLineSets();
     }
 
@@ -491,7 +482,7 @@ void DrawViewSection::onSectionCutFinished()
     postSectionCutTasks();
 
     //display geometry for cut shape is in geometryObject as in DVP
-    m_tempGeometryObject = buildGeometryObject(m_preparedShape, getSectionCS());
+    m_tempGeometryObject = buildGeometryObject(m_preparedShape, getProjectionCS());
 }
 
 //activities that depend on updated geometry object
@@ -625,7 +616,7 @@ TopoDS_Compound DrawViewSection::alignSectionFaces(TopoDS_Shape faceIntersection
                                                       getScale());
     if (!DrawUtil::fpCompare(Rotation.getValue(), 0.0)) {
         scaledSection = TechDraw::rotateShape(scaledSection,
-                                              getSectionCS(),
+                                              getProjectionCS(),
                                               Rotation.getValue());
     }
 
@@ -638,7 +629,7 @@ TopoDS_Compound DrawViewSection::mapToPage(TopoDS_Shape& shapeToAlign)
     // needs to be aligned to paper plane (origin, stdZ);
     //project the faces in the shapeToAlign, build new faces from the resulting wires and
     //combine everything into a compound of faces
-
+//    Base::Console().Message("DVS::mapToPage() - shapeToAlign.null: %d\n", shapeToAlign.IsNull());
     BRep_Builder builder;
     TopoDS_Compound result;
     builder.MakeCompound(result);
@@ -650,7 +641,7 @@ TopoDS_Compound DrawViewSection::mapToPage(TopoDS_Shape& shapeToAlign)
         TopExp_Explorer expWires(face, TopAbs_WIRE);
         for ( ; expWires.More(); expWires.Next()) {
             const TopoDS_Wire& wire = TopoDS::Wire(expWires.Current());
-            TopoDS_Shape projectedShape = GeometryObject::projectSimpleShape(wire, getSectionCS());
+            TopoDS_Shape projectedShape = GeometryObject::projectSimpleShape(wire, getProjectionCS());
             std::vector<TopoDS_Edge> wireEdges;
             //projectedShape is just a bunch of edges. we have to rebuild the wire.
             TopExp_Explorer expEdges(projectedShape, TopAbs_EDGE);
@@ -813,7 +804,7 @@ void DrawViewSection::setCSFromBase(const Base::Vector3d localUnit)
     Base::Vector3d vXDir(newSectionCS.XDirection().X(),
                          newSectionCS.XDirection().Y(),
                          newSectionCS.XDirection().Z());
-    XDirection.setValue(vXDir);
+    XDirection.setValue(vXDir);         //XDir is for projection
 }
 
 //reset the section CS based on an XY vector in current section CS
@@ -857,8 +848,8 @@ gp_Ax2 DrawViewSection::getCSFromBase(const std::string sectionName) const
         dvsDir  = dvpUp;
         dvsXDir = dvpRight;
     } else if (sectionName == "Left") {
-        dvsDir = dvpRight;
-        dvsXDir = dvpDir.Reversed();
+        dvsDir = dvpRight;   //dvpX
+        dvsXDir = dvpDir.Reversed();  //-dvpZ
     } else if (sectionName == "Right") {
         dvsDir = dvpRight.Reversed();
         dvsXDir = dvpDir;
@@ -994,27 +985,6 @@ void DrawViewSection::unsetupObject()
 
 void DrawViewSection::onDocumentRestored()
 {
-//    Base::Console().Message("DVS::onDocumentRestored()\n");
-    if (SvgIncluded.isEmpty()) {
-        if (!FileHatchPattern.isEmpty()) {
-            std::string svgFileName = FileHatchPattern.getValue();
-            Base::FileInfo tfi(svgFileName);
-            if (tfi.isReadable()) {
-                setupSvgIncluded();
-            }
-        }
-    }
-
-    if (PatIncluded.isEmpty()) {
-        if (!FileGeomPattern.isEmpty()) {
-            std::string patFileName = FileGeomPattern.getValue();
-            Base::FileInfo tfi(patFileName);
-            if (tfi.isReadable()) {
-                    setupPatIncluded();
-            }
-        }
-    }
-
     makeLineSets();
     DrawViewPart::onDocumentRestored();
 }
@@ -1022,8 +992,8 @@ void DrawViewSection::onDocumentRestored()
 void DrawViewSection::setupObject()
 {
     //by this point DVS should have a name and belong to a document
-    setupSvgIncluded();
-    setupPatIncluded();
+    replaceSvgIncluded(FileHatchPattern.getValue());
+    replacePatIncluded(FileGeomPattern.getValue());
 
     DrawViewPart::setupObject();
 }
@@ -1056,73 +1026,33 @@ void DrawViewSection::makeLineSets(void)
     }
 }
 
-void DrawViewSection::setupSvgIncluded(void)
-{
-//    Base::Console().Message("DVS::setupSvgIncluded()\n");
-    App::Document* doc = getDocument();
-    std::string special = getNameInDocument();
-    special += "SvgHatch.svg";
-    std::string dir = doc->TransientDir.getValue();
-    std::string svgName = dir + special;
-
-    //first time
-    std::string svgInclude = SvgIncluded.getValue();
-    if (svgInclude.empty()) {
-        DrawUtil::copyFile(std::string(), svgName);
-        SvgIncluded.setValue(svgName.c_str());
-    }
-
-    std::string svgFile = FileHatchPattern.getValue();
-    if (!svgFile.empty()) {
-        std::string exchName = SvgIncluded.getExchangeTempFile();
-        DrawUtil::copyFile(svgFile, exchName);
-        SvgIncluded.setValue(exchName.c_str(), special.c_str());
-    }
-}
-
-void DrawViewSection::setupPatIncluded()
-{
-//    Base::Console().Message("DVS::setupPatIncluded()\n");
-    App::Document* doc = getDocument();
-    std::string special = getNameInDocument();
-    special += "PatHatch.pat";
-    std::string dir = doc->TransientDir.getValue();
-    std::string patName = dir + special;
-    std::string patProp = PatIncluded.getValue();
-    if (patProp.empty()) {
-        DrawUtil::copyFile(std::string(), patName);
-        PatIncluded.setValue(patName.c_str());
-    }
-
-    if (!FileGeomPattern.isEmpty()) {
-        std::string exchName = PatIncluded.getExchangeTempFile();
-        DrawUtil::copyFile(FileGeomPattern.getValue(), exchName);
-        PatIncluded.setValue(exchName.c_str(), special.c_str());
-    }
-}
-
-//this could probably always use FileHatchPattern as input?
 void DrawViewSection::replaceSvgIncluded(std::string newSvgFile)
 {
-//    Base::Console().Message("DVS::replaceSvgHatch(%s)\n", newSvgFile.c_str());
-    if (SvgIncluded.isEmpty()) {
-        setupSvgIncluded();
+//    Base::Console().Message("DVS::replaceSvgIncluded(%s)\n", newSvgFile.c_str());
+    if (newSvgFile.empty()) {
+        return;
+    }
+
+    Base::FileInfo tfi(newSvgFile);
+    if (tfi.isReadable()) {
+        SvgIncluded.setValue(newSvgFile.c_str());
     } else {
-        std::string tempName = SvgIncluded.getExchangeTempFile();
-        DrawUtil::copyFile(newSvgFile, tempName);
-        SvgIncluded.setValue(tempName.c_str());
+        throw Base::RuntimeError("Could not read the new Svg file");
     }
 }
 
 void DrawViewSection::replacePatIncluded(std::string newPatFile)
 {
-//    Base::Console().Message("DVS::replacePatHatch(%s)\n", newPatFile.c_str());
-    if (PatIncluded.isEmpty()) {
-        setupPatIncluded();
+//    Base::Console().Message("DVS::replacePatIncluded(%s)\n", newPatFile.c_str());
+    if (newPatFile.empty()) {
+        return;
+    }
+
+    Base::FileInfo tfi(newPatFile);
+    if (tfi.isReadable()) {
+        PatIncluded.setValue(newPatFile.c_str());
     } else {
-        std::string tempName = PatIncluded.getExchangeTempFile();
-        DrawUtil::copyFile(newPatFile, tempName);
-        PatIncluded.setValue(tempName.c_str());
+        throw Base::RuntimeError("Could not read the new Pat file");
     }
 }
 

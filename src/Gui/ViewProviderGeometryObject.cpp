@@ -53,7 +53,7 @@ using namespace Gui;
 
 PROPERTY_SOURCE(Gui::ViewProviderGeometryObject, Gui::ViewProviderDragger)
 
-const App::PropertyIntegerConstraint::Constraints intPercent = {0, 100, 1};
+const App::PropertyIntegerConstraint::Constraints intPercent = {0, 100, 5};
 
 ViewProviderGeometryObject::ViewProviderGeometryObject()
     : pcBoundSwitch(nullptr)
@@ -65,9 +65,9 @@ ViewProviderGeometryObject::ViewProviderGeometryObject()
 
     if (randomColor){
         auto fMax = (float)RAND_MAX;
-        r = (float)rand()/fMax;
-        g = (float)rand()/fMax;
-        b = (float)rand()/fMax;
+        r = (float)rand() / fMax;
+        g = (float)rand() / fMax;
+        b = (float)rand() / fMax;
     }
     else {
         unsigned long shcol = hGrp->GetUnsigned("DefaultShapeColor", 3435973887UL); // light gray (204,204,204)

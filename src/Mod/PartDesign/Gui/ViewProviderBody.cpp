@@ -143,7 +143,7 @@ bool ViewProviderBody::doubleClicked()
     if(!activeDoc)
         activeDoc = getDocument();
     auto activeView = activeDoc->setActiveView(this);
-    if(!activeView) 
+    if(!activeView)
         return false;
 
     if (activeView->isActiveObject(getObject(),PDBODYKEY)) {
@@ -248,7 +248,7 @@ void ViewProviderBody::slotChangedObjectApp ( const App::DocumentObject& obj, co
 
     if(App::GetApplication().isRestoring())
         return;
-    
+
     if (!obj.isDerivedFrom ( Part::Feature::getClassTypeId () ) ||
         obj.isDerivedFrom ( Part::BodyBase::getClassTypeId () )    ) { // we are interested only in Part::Features, not in bodies
         return;
@@ -364,7 +364,7 @@ void ViewProviderBody::onChanged(const App::Property* prop) {
 
     if(prop == &DisplayModeBody) {
         auto body = dynamic_cast<PartDesign::Body*>(getObject());
-    
+
         if ( DisplayModeBody.getValue() == 0 )  {
             //if we are in an override mode we need to make sure to come out, because
             //otherwise the maskmode is blocked and won't go into "through"

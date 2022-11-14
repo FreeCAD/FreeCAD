@@ -46,22 +46,6 @@ __url__    = "https://www.freecadweb.org"
 
 # module functions ###############################################
 
-
-def string_replace(text, pattern, replacement):
-    """
-    if py2 isn't supported anymore calls to this function
-    should be replaced with:
-    `text.replace(pattern, replacement)`
-    for python2 the encoding must be done, as unicode replacement leads to something like this:
-    ```
-    >>> a = u'abc mm ^3'
-    >>> a.replace(u"^3", u"³")
-    u'abc mm \xc2\xb3'
-    ```
-    """
-    return text.replace(pattern, replacement)
-
-
 def getStringList(objects):
     '''getStringList(objects): returns a string defining a list
     of objects'''
@@ -859,14 +843,14 @@ def survey(callback=False):
                                 if o.Object.Shape.Solids:
                                     u = FreeCAD.Units.Quantity(o.Object.Shape.Volume,FreeCAD.Units.Volume)
                                     t = u.getUserPreferred()[0]
-                                    t = string_replace(t, "^3","³")
+                                    t = t.replace("^3","³")
                                     anno.LabelText = "v " + t
                                     FreeCAD.Console.PrintMessage("Object: " + n + ", Element: Whole, Volume: " + utf8_decode(t) + "\n")
                                     FreeCAD.SurveyObserver.totalVolume += u.Value
                                 elif o.Object.Shape.Faces:
                                     u = FreeCAD.Units.Quantity(o.Object.Shape.Area,FreeCAD.Units.Area)
                                     t = u.getUserPreferred()[0]
-                                    t = string_replace(t, "^2","²")
+                                    t = t.replace("^2","²")
                                     anno.LabelText = "a " + t
                                     FreeCAD.Console.PrintMessage("Object: " + n + ", Element: Whole, Area: " + utf8_decode(t) + "\n")
                                     FreeCAD.SurveyObserver.totalArea += u.Value
@@ -902,7 +886,7 @@ def survey(callback=False):
                                     if "Face" in el:
                                         u = FreeCAD.Units.Quantity(e.Area,FreeCAD.Units.Area)
                                         t = u.getUserPreferred()[0]
-                                        t = string_replace(t, "^2","²")
+                                        t = t.replace("^2","²")
                                         anno.LabelText = "a " + t
                                         FreeCAD.Console.PrintMessage("Object: " + n + ", Element: " + el + ", Area: "+ utf8_decode(t)  + "\n")
                                         FreeCAD.SurveyObserver.totalArea += u.Value
@@ -938,12 +922,12 @@ def survey(callback=False):
                     if FreeCAD.SurveyObserver.totalArea:
                         u = FreeCAD.Units.Quantity(FreeCAD.SurveyObserver.totalArea,FreeCAD.Units.Area)
                         t = u.getUserPreferred()[0]
-                        t = string_replace(t, "^2","²")
+                        t = t.replace("^2","²")
                         msg += " Area: " + t
                     if FreeCAD.SurveyObserver.totalVolume:
                         u = FreeCAD.Units.Quantity(FreeCAD.SurveyObserver.totalVolume,FreeCAD.Units.Volume)
                         t = u.getUserPreferred()[0]
-                        t = string_replace(t, "^3","³")
+                        t = t.replace("^3","³")
                         msg += " Volume: " + t
                     FreeCAD.Console.PrintMessage(msg+"\n")
 
@@ -1049,7 +1033,7 @@ class SurveyTaskPanel:
         if hasattr(FreeCAD,"SurveyObserver"):
             u = FreeCAD.Units.Quantity(FreeCAD.SurveyObserver.totalArea,FreeCAD.Units.Area)
             t = u.getUserPreferred()[0]
-            t = string_replace(t, "^2","²")
+            t = t.replace("^2","²")
             if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("surveyUnits",True):
                 QtGui.QApplication.clipboard().setText(t)
             else:

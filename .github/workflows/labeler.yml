@@ -21,4 +21,4 @@ jobs:
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
         configuration-path: ".github/labels.yml"
-        sync-labels: false 
+        sync-labels: false

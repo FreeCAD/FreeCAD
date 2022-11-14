@@ -236,7 +236,7 @@ def resolveFileName(job, subpartname, sequencenumber):
 
     if openDialog:
         foo = QtGui.QFileDialog.getSaveFileName(
-            QtGui.QApplication.activeWindow(), "Output File", filename
+            QtGui.QApplication.activeWindow(), "Output File", fullPath
         )
         if foo[0]:
             fullPath = foo[0]
@@ -247,9 +247,9 @@ def resolveFileName(job, subpartname, sequencenumber):
         # remove any unused substitution strings:
         for s in validPathSubstitutions + validFilenameSubstitutions:
             fullPath = fullPath.replace(f"%{s}", "")
+        fullPath = os.path.normpath(fullPath)
+        Path.Log.track(fullPath)
 
-    fullPath = os.path.normpath(fullPath)
-    Path.Log.track(fullPath)
     return fullPath
 
 

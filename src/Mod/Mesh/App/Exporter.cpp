@@ -28,26 +28,22 @@
 # include <boost/core/ignore_unused.hpp>
 #endif
 
-#include "Exporter.h"
-#include "MeshFeature.h"
-
-#include "Core/Iterator.h"
-#include "Core/IO/Writer3MF.h"
-
-#include <Base/Console.h>
+#include <App/Application.h>
+#include <App/ComplexGeoData.h>
+#include <App/ComplexGeoDataPy.h>
+#include <App/DocumentObject.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
 #include <Base/Sequencer.h>
 #include <Base/Stream.h>
 #include <Base/Tools.h>
-
-#include <App/Application.h>
-#include <App/ComplexGeoData.h>
-#include <App/ComplexGeoDataPy.h>
-#include <App/DocumentObject.h>
-
+#include "Core/Iterator.h"
+#include "Core/IO/Writer3MF.h"
 #include <zipios++/zipoutputstream.h>
+
+#include "Exporter.h"
+
 
 using namespace Mesh;
 using namespace MeshCore;

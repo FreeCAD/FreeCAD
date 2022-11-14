@@ -161,6 +161,16 @@ void showNoConstraintBetweenFixedGeometry()
                                      "such as B-spline knot points."));
 }
 
+bool isGeoConcentricCompatible(const Part::Geometry* geo) {
+    if (geo->getTypeId() == Part::GeomEllipse::getClassTypeId() ||
+        geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
+        geo->getTypeId() == Part::GeomCircle::getClassTypeId() ||
+        geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+        return true;
+    }
+    return false;
+}
+
 /// Makes a simple tangency constraint using extra point + tangent via point
 /// ellipse => an ellipse
 /// geom2 => any of an ellipse, an arc of ellipse, a circle, or an arc (of circle)
@@ -1890,14 +1900,14 @@ CmdSketcherConstrainCoincident::CmdSketcherConstrainCoincident()
     sAppModule      = "Sketcher";
     sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Constrain coincident");
-    sToolTipText    = QT_TR_NOOP("Create a coincident constraint on the selected item");
+    sToolTipText    = QT_TR_NOOP("Create a coincident constraint between points, or a concentric constraint between circles, arcs, and ellipses");
     sWhatsThis      = "Sketcher_ConstrainCoincident";
     sStatusTip      = sToolTipText;
     sPixmap         = "Constraint_PointOnPoint";
     sAccel          = "C";
     eType           = ForEdit;
 
-    allowedSelSequences = {{SelVertex, SelVertexOrRoot}, {SelRoot, SelVertex}};
+    allowedSelSequences = { {SelVertex, SelVertexOrRoot}, {SelRoot, SelVertex}, {SelEdge, SelEdge}, {SelEdge, SelExternalEdge}, {SelExternalEdge, SelEdge} };
 }
 
 bool CmdSketcherConstrainCoincident::substituteConstraintCombinations(SketchObject * Obj,
@@ -1973,26 +1983,35 @@ void CmdSketcherConstrainCoincident::activated(int iMsg)
         return;
     }
 
+    bool allConicsEdges = true; //If user selects only conics (circle, ellipse, arc, arcOfEllipse) then we make concentric constraint.
     for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end(); ++it) {
         int GeoId;
         Sketcher::PointPos PosId;
         getIdsFromName(*it, Obj, GeoId, PosId);
         if (isEdge(GeoId,PosId)) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                QObject::tr("Select two or more vertices from the sketch."));
-            return;
+            if (!isGeoConcentricCompatible(Obj->getGeometry(GeoId))) {
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                    QObject::tr("Select two or more vertices from the sketch for a coincident constraint, or two or more circles, ellipses, arcs or arcs of ellipse for a concentric constraint."));
+                return;
+            }
         }
+        else
+            allConicsEdges = false; //at least one point is selected, so concentric can't be applied.
     }
 
     int GeoId1, GeoId2;
     Sketcher::PointPos PosId1, PosId2;
     getIdsFromName(SubNames[0], Obj, GeoId1, PosId1);
+    if (allConicsEdges)
+        PosId1 = Sketcher::PointPos::mid;
 
     // undo command open
     bool constraintsAdded = false;
     openCommand(QT_TRANSLATE_NOOP("Command", "Add coincident constraint"));
     for (std::size_t i=1; i<SubNames.size(); i++) {
         getIdsFromName(SubNames[i], Obj, GeoId2, PosId2);
+        if (allConicsEdges)
+            PosId2 = Sketcher::PointPos::mid;
 
         // check if the edge already has a Block constraint
         if (areBothPointsOrSegmentsFixed(Obj,GeoId1,GeoId2)) {
@@ -2033,42 +2052,54 @@ void CmdSketcherConstrainCoincident::activated(int iMsg)
 
 void CmdSketcherConstrainCoincident::applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex)
 {
+    SketcherGui::ViewProviderSketch* sketchgui = static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
+    Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
+
+    int GeoId1 = selSeq.at(0).GeoId, GeoId2 = selSeq.at(1).GeoId;
+    Sketcher::PointPos PosId1 = selSeq.at(0).PosId, PosId2 = selSeq.at(1).PosId;
+
     switch (seqIndex) {
     case 0: // {SelVertex, SelVertexOrRoot}
     case 1: // {SelRoot, SelVertex}
-        // create the constraint
-        SketcherGui::ViewProviderSketch* sketchgui = static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
-        Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
-
-        int GeoId1 = selSeq.at(0).GeoId, GeoId2 = selSeq.at(1).GeoId;
-        Sketcher::PointPos PosId1 = selSeq.at(0).PosId, PosId2 = selSeq.at(1).PosId;
-
-        // check if the edge already has a Block constraint
-        if (areBothPointsOrSegmentsFixed(Obj, GeoId1, GeoId2)) {
-            showNoConstraintBetweenFixedGeometry();
+        //Nothing specific.
+        break;
+    case 2: // {SelEdge, SelEdge}
+    case 3: // {SelEdge, SelExternalEdge}
+    case 4: // {SelExternalEdge, SelEdge}
+        //Concentric for circles, ellipse, arc, arcofEllipse only.
+        if (!isGeoConcentricCompatible(Obj->getGeometry(GeoId1)) || !isGeoConcentricCompatible(Obj->getGeometry(GeoId2))) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"), 
+                QObject::tr("Select two vertices from the sketch for a coincident constraint, or two circles, ellipses, arcs or arcs of ellipse for a concentric constraint."));
             return;
         }
-
-        // undo command open
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add coincident constraint"));
-
-        // check if this coincidence is already enforced (even indirectly)
-        bool constraintExists = Obj->arePointsCoincident(GeoId1, PosId1, GeoId2, PosId2);
-        if (substituteConstraintCombinations(Obj, GeoId1, PosId1,GeoId2, PosId2)) {
-        }
-        else if (!constraintExists && (GeoId1 != GeoId2)) {
-            Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Coincident', %d, %d, %d, %d)) ",
-                GeoId1, static_cast<int>(PosId1), GeoId2, static_cast<int>(PosId2));
-        }
-        else {
-            Gui::Command::abortCommand();
-            return;
-        }
-        Gui::Command::commitCommand();
-        tryAutoRecompute(Obj);
-
+        PosId1 = Sketcher::PointPos::mid;
+        PosId2 = Sketcher::PointPos::mid;
         break;
     }
+
+    // check if the edge already has a Block constraint
+    if (areBothPointsOrSegmentsFixed(Obj, GeoId1, GeoId2)) {
+        showNoConstraintBetweenFixedGeometry();
+        return;
+    }
+
+    // undo command open
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add coincident constraint"));
+
+    // check if this coincidence is already enforced (even indirectly)
+    bool constraintExists = Obj->arePointsCoincident(GeoId1, PosId1, GeoId2, PosId2);
+    if (substituteConstraintCombinations(Obj, GeoId1, PosId1, GeoId2, PosId2)) {
+    }
+    else if (!constraintExists && (GeoId1 != GeoId2)) {
+        Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Coincident', %d, %d, %d, %d)) ",
+            GeoId1, static_cast<int>(PosId1), GeoId2, static_cast<int>(PosId2));
+    }
+    else {
+        Gui::Command::abortCommand();
+        return;
+    }
+    Gui::Command::commitCommand();
+    tryAutoRecompute(Obj);
 }
 
 // ======================================================================================

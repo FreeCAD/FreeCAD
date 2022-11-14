@@ -25,7 +25,7 @@
 import os
 from typing import Tuple  # Needed until Py 3.9, when tuple supports this directly
 
-from PySide2.QtWidgets import QDialog
+from PySide.QtWidgets import QDialog
 
 import FreeCAD
 import FreeCADGui

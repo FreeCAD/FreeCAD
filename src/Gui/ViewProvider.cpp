@@ -234,7 +234,7 @@ void ViewProvider::eventCallback(void * ud, SoEventCallback * node)
                         auto func = new Gui::TimerFunction();
                         func->setAutoDelete(true);
                         func->setFunction(std::bind(&Document::resetEdit, doc));
-                        QTimer::singleShot(0, func, SLOT(timeout()));
+                        func->singleShot(0);
                     }
                 }
                 else if (press) {

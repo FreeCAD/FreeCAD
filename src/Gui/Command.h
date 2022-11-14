@@ -25,6 +25,10 @@
 #define GUI_COMMAND_H
 
 #include <list>
+#include <map>
+#include <string>
+#include <vector>
+#include <boost_signals2.hpp>
 
 #include <Base/Type.h>
 #include <Gui/Application.h>
@@ -341,8 +345,6 @@ public:
     void testActive();
     /// Enables or disables the command
     void setEnabled(bool);
-    /// (Re)Create the text for the tooltip (for example, when the shortcut is changed)
-    void recreateTooltip(const char* context, Action*);
     /// Command trigger source
     enum TriggerSource {
         /// No external trigger, e.g. invoked through Python
@@ -366,6 +368,8 @@ public:
     void addTo(QWidget *);
     void addToGroup(ActionGroup *, bool checkable);
     void addToGroup(ActionGroup *);
+    /// Create the action if not exist
+    void initAction();
     //@}
 
 
@@ -568,6 +572,11 @@ public:
     //@}
 
 
+    /// Override shortcut of this command
+    virtual void setShortcut (const QString &);
+    /// Obtain the current shortcut of this command
+    virtual QString getShortcut() const;
+
     /** @name arbitrary helper methods */
     //@{
     void adjustCameraPosition();
@@ -641,6 +650,7 @@ public:
      */
     Command *addCommand(const char *cmdName);
 
+    Command *getCommand(int idx) const;
 protected:
     void activated(int iMsg) override;
     Gui::Action * createAction() override;
@@ -871,6 +881,12 @@ public:
     void addCommandMode(const char* sContext, const char* sName);
     void updateCommands(const char* sContext, int mode);
 
+    /// Return a revision number to check for addition or removal of any command
+    int getRevision() const { return _revision; }
+
+    /// Signal on any addition or removal of command
+    boost::signals2::signal<void ()> signalChanged;
+
     /** 
      * Returns a pointer to a conflicting command, or nullptr if there is no conflict.
      * In the case of multiple conflicts, only the first is returned. 
@@ -891,6 +907,8 @@ private:
     void clearCommands();
     std::map<std::string, Command*> _sCommands;
     std::map<std::string, std::list<std::string> > _sCommandModes;
+
+    int _revision = 0;
 };
 
 } // namespace Gui

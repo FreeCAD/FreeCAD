@@ -31,6 +31,7 @@
 #include "Application.h"
 #include "Command.h"
 #include "MainWindow.h"
+#include "UserSettings.h"
 
 
 using namespace Gui;
@@ -42,8 +43,9 @@ MenuItem::MenuItem()
 
 MenuItem::MenuItem(MenuItem* item)
 {
-    if (item)
+    if (item) {
         item->appendItem(this);
+    }
 }
 
 MenuItem::~MenuItem()
@@ -68,16 +70,14 @@ bool MenuItem::hasItems() const
 
 MenuItem* MenuItem::findItem(const std::string& name)
 {
-    if (_name == name)
-    {
+    if (_name == name) {
         return this;
     }
-    else
-    {
-        for (QList<MenuItem*>::Iterator it = _items.begin(); it != _items.end(); ++it)
-        {
-            if ((*it)->_name == name)
+    else {
+        for (QList<MenuItem*>::Iterator it = _items.begin(); it != _items.end(); ++it) {
+            if ((*it)->_name == name) {
                 return *it;
+            }
         }
     }
 
@@ -86,16 +86,16 @@ MenuItem* MenuItem::findItem(const std::string& name)
 
 MenuItem* MenuItem::findParentOf(const std::string& name)
 {
-    for (QList<MenuItem*>::Iterator it = _items.begin(); it != _items.end(); ++it)
-    {
-        if ((*it)->_name == name)
+    for (QList<MenuItem*>::Iterator it = _items.begin(); it != _items.end(); ++it) {
+        if ((*it)->_name == name) {
             return this;
+        }
     }
 
-    for (QList<MenuItem*>::Iterator it = _items.begin(); it != _items.end(); ++it)
-    {
-        if ((*it)->findParentOf(name))
+    for (QList<MenuItem*>::Iterator it = _items.begin(); it != _items.end(); ++it) {
+        if ((*it)->findParentOf(name)) {
             return *it;
+        }
     }
 
     return nullptr;
@@ -128,34 +128,36 @@ void MenuItem::appendItem(MenuItem* item)
 bool MenuItem::insertItem(MenuItem* before, MenuItem* item)
 {
     int pos = _items.indexOf(before);
-    if (pos != -1)
-    {
+    if (pos != -1) {
         _items.insert(pos, item);
         return true;
     }
-    else
-        return false;
+
+    return false;
 }
 
 MenuItem* MenuItem::afterItem(MenuItem* item) const
 {
     int pos = _items.indexOf(item);
-    if (pos < 0 || pos+1 == _items.size())
+    if (pos < 0 || pos+1 == _items.size()) {
         return nullptr;
+    }
     return _items.at(pos+1);
 }
 
 void MenuItem::removeItem(MenuItem* item)
 {
     int pos = _items.indexOf(item);
-    if (pos != -1)
+    if (pos != -1) {
         _items.removeAt(pos);
+    }
 }
 
 void MenuItem::clear()
 {
-    for (QList<MenuItem*>::Iterator it = _items.begin(); it != _items.end(); ++it)
+    for (QList<MenuItem*>::Iterator it = _items.begin(); it != _items.end(); ++it) {
         delete *it;
+    }
     _items.clear();
 }
 
@@ -183,8 +185,9 @@ MenuManager* MenuManager::_instance=nullptr;
 
 MenuManager* MenuManager::getInstance()
 {
-    if ( !_instance )
+    if ( !_instance ) {
         _instance = new MenuManager;
+    }
     return _instance;
 }
 
@@ -204,11 +207,13 @@ MenuManager::~MenuManager()
 
 void MenuManager::setup(MenuItem* menuItems) const
 {
-    if (!menuItems)
+    if (!menuItems) {
         return; // empty menu bar
+    }
 
     QMenuBar* menuBar = getMainWindow()->menuBar();
 
+#if 0
 #if defined(FC_OS_MACOSX) && QT_VERSION >= 0x050900
     // Unknown Qt macOS bug observed with Qt >= 5.9.4 causes random crashes when viewing reused top level menus.
     menuBar->clear();
@@ -222,6 +227,31 @@ void MenuManager::setup(MenuItem* menuItems) const
         ("User parameter:BaseApp/Preferences/MainWindow")->GetBool("ClearMenuBar",false)) {
         menuBar->clear();
     }
+#else
+    // In addition to the reason described in the above comments, there is
+    // another more subtle one that's making clearing menu bar a necessity for
+    // all platforms.
+    //
+    // By right, it should be fine for more than one command action having the
+    // same shortcut but in different workbench. It should not require manual
+    // conflict resolving in this case, as the action in an inactive workbench
+    // is expected to be inactive as well, or else user may experience
+    // seemingly random shortcut miss firing based on the order he/she
+    // switches workbenches. In fact, this may be considered as an otherwise
+    // difficult to implement feature of context aware shortcut, where a
+    // specific shortcut can activate different actions under different
+    // workbenches.
+    //
+    // This works as expected for action adding to a toolbar. As Qt will ignore
+    // actions inside an invisible toolbar.  However, Qt refuse to do the same
+    // for actions in a hidden menu action of a menu bar. This is very likely a
+    // Qt bug, as the behavior does not seem to conform to Qt's documentation
+    // of Qt::ShortcutContext.
+    //
+    // Clearing the menu bar, and recreate it every time when switching
+    // workbench with only the active actions can solve this problem.
+    menuBar->clear();
+#endif
 
     QList<MenuItem*> items = menuItems->getItems();
     QList<QAction*> actions = menuBar->actions();
@@ -259,9 +289,12 @@ void MenuManager::setup(MenuItem* menuItems) const
         }
 
         // flll up the menu
-        if (!action->isSeparator())
+        if (!action->isSeparator()) {
             setup(*it, action->menu());
+        }
     }
+
+    setupMenuBarCornerWidgets();
 
     // hide all menus which we don't need for the moment
     for (QList<QAction*>::Iterator it = actions.begin(); it != actions.end(); ++it) {
@@ -308,10 +341,10 @@ void MenuManager::setup(MenuItem* item, QMenu* menu) const
                     if (mgr.addTo((*it)->command().c_str(), menu)) {
                         QList<QAction*> acts = menu->actions();
                         for (int i=count; i < acts.count(); i++) {
-                            QAction* a = acts[i];
+                            QAction* act = acts[i];
                             // set the menu user data
-                            a->setData(QString::fromLatin1((*it)->command().c_str()));
-                            used_actions.append(a);
+                            act->setData(QString::fromLatin1((*it)->command().c_str()));
+                            used_actions.append(act);
                         }
                     }
                 }
@@ -328,8 +361,9 @@ void MenuManager::setup(MenuItem* item, QMenu* menu) const
         }
 
         // fill up the submenu
-        if ((*it)->hasItems())
+        if ((*it)->hasItems()) {
             setup(*it, used_actions.front()->menu());
+        }
     }
 
     // remove all menu items which we don't need for the moment
@@ -338,13 +372,49 @@ void MenuManager::setup(MenuItem* item, QMenu* menu) const
     }
 }
 
+void MenuManager::setupMenuBarCornerWidgets() const
+{
+    /*Note: currently only workbench selector uses corner widget.*/
+    QMenuBar* menuBar = getMainWindow()->menuBar();
+    std::string pos = WorkbenchSwitcher::getValue();
+
+    bool showLeftWidget = false;
+    bool showRightWidget = false;
+
+    //Right corner widget
+    if (WorkbenchSwitcher::isRightCorner(pos)) {
+        //add workbench selector to menubar right corner widget.
+        if (!menuBar->cornerWidget(Qt::TopRightCorner)) {
+            Application::Instance->commandManager().addTo("Std_Workbench", menuBar);
+        }
+        showRightWidget = true;
+    }
+    //Left corner widget
+    else if (WorkbenchSwitcher::isLeftCorner(pos)) {
+        //add workbench selector to menubar left corner widget.
+        if (!menuBar->cornerWidget(Qt::TopLeftCorner)) {
+            Application::Instance->commandManager().addTo("Std_Workbench", menuBar);
+        }
+        showLeftWidget = true;
+    }
+
+    // Set visibility of corner widget
+    if (QWidget* right = menuBar->cornerWidget(Qt::TopRightCorner)) {
+        right->setVisible(showRightWidget);
+    }
+    if (QWidget* left = menuBar->cornerWidget(Qt::TopLeftCorner)) {
+        left->setVisible(showLeftWidget);
+    }
+}
+
 void MenuManager::retranslate() const
 {
     QMenuBar* menuBar = getMainWindow()->menuBar();
     QList<QAction*> actions = menuBar->actions();
     for (QList<QAction*>::Iterator it = actions.begin(); it != actions.end(); ++it) {
-        if ((*it)->menu())
+        if ((*it)->menu()) {
             retranslate((*it)->menu());
+        }
     }
 }
 
@@ -380,8 +450,9 @@ void MenuManager::retranslate(QMenu* menu) const
 QAction* MenuManager::findAction(const QList<QAction*>& acts, const QString& item) const
 {
     for (QList<QAction*>::ConstIterator it = acts.begin(); it != acts.end(); ++it) {
-        if ((*it)->data().toString() == item)
+        if ((*it)->data().toString() == item) {
             return *it;
+        }
     }
 
     return nullptr; // no item with the user data found
@@ -400,11 +471,13 @@ QList<QAction*> MenuManager::findActions(const QList<QAction*>& acts, const QStr
             used.append(*it);
             first_match = true;
             // get only one separator per request
-            if (item == QLatin1String("Separator"))
+            if (item == QLatin1String("Separator")) {
                 break;
+            }
         }
-        else if (first_match)
+        else if (first_match) {
             break;
+        }
     }
 
     return used;

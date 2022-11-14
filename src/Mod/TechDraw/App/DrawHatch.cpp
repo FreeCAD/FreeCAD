@@ -48,7 +48,7 @@ DrawHatch::DrawHatch(void)
 {
     static const char *vgroup = "Hatch";
 
-    ADD_PROPERTY_TYPE(Source, (nullptr), vgroup, (App::PropertyType)(App::Prop_None), "The View + Face to be hatched");
+    ADD_PROPERTY_TYPE(Source, (nullptr), vgroup, App::PropertyType::Prop_None, "The View + Face to be hatched");
     Source.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(HatchPattern, (prefSvgHatch()), vgroup, App::Prop_None, "The hatch pattern file for this area");
     ADD_PROPERTY_TYPE(SvgIncluded, (""), vgroup, App::Prop_None,
@@ -59,32 +59,15 @@ DrawHatch::DrawHatch(void)
 
 void DrawHatch::onChanged(const App::Property* prop)
 {
-    if (!isRestoring()) {
-        if (prop == &Source) {
-            DrawHatch::execute();
-        }
-        App::Document* doc = getDocument();
-        if ((prop == &HatchPattern) && doc) {
-            if (!HatchPattern.isEmpty()) {
-                replaceFileIncluded(HatchPattern.getValue());
-            }
-        }
+    if (isRestoring()) {
+        App::DocumentObject::onChanged(prop);
+        return;
+    }
+
+    if (prop == &HatchPattern) {
+        replaceFileIncluded(HatchPattern.getValue());
     }
     App::DocumentObject::onChanged(prop);
-}
-
-short DrawHatch::mustExecute() const
-{
-    short result = 0;
-    if (!isRestoring()) {
-        result  =  (Source.isTouched()  ||
-                    HatchPattern.isTouched());
-    }
-
-    if (result) {
-        return result;
-    }
-    return App::DocumentObject::mustExecute();
 }
 
 App::DocumentObjectExecReturn *DrawHatch::execute(void)
@@ -183,66 +166,25 @@ bool DrawHatch::empty(void)
     return sourceNames.empty();
 }
 
-void DrawHatch::replaceFileIncluded(std::string newSvgFile)
+void DrawHatch::replaceFileIncluded(std::string newHatchFileName)
 {
-//    Base::Console().Message("DH::replaceSvgHatch(%s)\n", newSvgFile.c_str());
-    if (SvgIncluded.isEmpty()) {
-        setupFileIncluded();
+//    Base::Console().Message("DH::replaceFileIncluded(%s)\n", newHatchFileName.c_str());
+    if (newHatchFileName.empty()) {
+        return;
+    }
+
+    Base::FileInfo tfi(newHatchFileName);
+    if (tfi.isReadable()) {
+        SvgIncluded.setValue(newHatchFileName.c_str());
     } else {
-        std::string tempName = SvgIncluded.getExchangeTempFile();
-        DrawUtil::copyFile(newSvgFile, tempName);
-        SvgIncluded.setValue(tempName.c_str());
+        throw Base::RuntimeError("Could not read the new svg file");
     }
-}
-
-void DrawHatch::onDocumentRestored()
-{
-//if this is a restore, we should be checking for SvgIncluded empty,
-// if it is, set it up from hatchPattern,
-// else, don't do anything
-//    Base::Console().Message("DH::onDocumentRestored()\n");
-    if (SvgIncluded.isEmpty()) {
-        if (!HatchPattern.isEmpty()) {
-            std::string svgFileName = HatchPattern.getValue();
-            Base::FileInfo tfi(svgFileName);
-            if (tfi.isReadable()) {
-                if (SvgIncluded.isEmpty()) {
-                    setupFileIncluded();
-                }
-            }
-        }
-    }
-
-    App::DocumentObject::onDocumentRestored();
 }
 
 void DrawHatch::setupObject()
 {
-    //by this point DH should have a name and belong to a document
-    setupFileIncluded();
-
-    App::DocumentObject::setupObject();
-}
-
-void DrawHatch::setupFileIncluded(void)
-{
-//    Base::Console().Message("DH::setupFileIncluded()\n");
-    App::Document* doc = getDocument();
-    std::string special = getNameInDocument();
-    special += "Hatch.fill";
-    std::string dir = doc->TransientDir.getValue();
-    std::string svgName = dir + special;
-
-    if (SvgIncluded.isEmpty()) {
-        DrawUtil::copyFile(std::string(), svgName);
-        SvgIncluded.setValue(svgName.c_str());
-    }
-
-    if (!HatchPattern.isEmpty()) {
-        std::string exchName = SvgIncluded.getExchangeTempFile();
-        DrawUtil::copyFile(HatchPattern.getValue(), exchName);
-        SvgIncluded.setValue(exchName.c_str(), special.c_str());
-    }
+//    Base::Console().Message("DH::setupObject()\n");
+    replaceFileIncluded(HatchPattern.getValue());
 }
 
 void DrawHatch::unsetupObject(void)

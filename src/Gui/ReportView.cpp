@@ -69,7 +69,7 @@ ReportView::ReportView( QWidget* parent )
     tabLayout->addWidget( tabWidget, 0, 0 );
 
 
-    // create the output window
+    // create the output window for 'Report view'
     tabOutput = new ReportOutput();
     tabOutput->setWindowTitle(tr("Output"));
     tabOutput->setWindowIcon(BitmapFactory().pixmap("MacroEditor"));
@@ -571,7 +571,7 @@ void ReportOutput::contextMenuEvent ( QContextMenuEvent * e )
     errAct->setChecked(bErr);
 
     auto showOnMenu = new QMenu (optionMenu);
-    showOnMenu->setTitle(tr("Show output window on"));
+    showOnMenu->setTitle(tr("Show Report view on"));
     optionMenu->addMenu(showOnMenu);
 
     QAction* showNormAct = showOnMenu->addAction(tr("Normal messages"), this, SLOT(onToggleShowReportViewOnNormalMessage()));

@@ -363,7 +363,7 @@ void QuantitySpinBox::evaluateExpression()
 
 void Gui::QuantitySpinBox::setNumberExpression(App::NumberExpression* expr)
 {
-    lineEdit()->setText(getUserString(expr->getQuantity()));
+    updateEdit(getUserString(expr->getQuantity()));
     handlePendingEmit();
 }
 
@@ -403,8 +403,29 @@ void QuantitySpinBox::updateText(const Quantity &quant)
     double dFactor;
     QString txt = getUserString(quant, dFactor, d->unitStr);
     d->unitValue = quant.getValue()/dFactor;
-    lineEdit()->setText(txt);
+    updateEdit(txt);
     handlePendingEmit();
+}
+
+void QuantitySpinBox::updateEdit(const QString& text)
+{
+    Q_D(QuantitySpinBox);
+
+    QLineEdit* edit = lineEdit();
+
+    bool empty = edit->text().isEmpty();
+    int cursor = edit->cursorPosition();
+    int selsize = edit->selectedText().size();
+
+    edit->setText(text);
+
+    cursor = qBound(0, cursor, edit->displayText().size() - d->unitStr.size());
+    if (selsize > 0) {
+        edit->setSelection(0, cursor);
+    }
+    else {
+        edit->setCursorPosition(empty ? 0 : cursor);
+    }
 }
 
 void QuantitySpinBox::validateInput()
@@ -416,7 +437,7 @@ void QuantitySpinBox::validateInput()
     const App::ObjectIdentifier & path = getPath();
     d->validateAndInterpret(text, state, path);
     if (state != QValidator::Acceptable) {
-        lineEdit()->setText(d->validStr);
+        updateEdit(d->validStr);
     }
 
     handlePendingEmit();

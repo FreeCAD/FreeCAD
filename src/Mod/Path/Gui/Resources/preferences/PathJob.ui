@@ -25,7 +25,7 @@
         <x>0</x>
         <y>0</y>
         <width>424</width>
-        <height>529</height>
+        <height>268</height>
        </rect>
       </property>
       <attribute name="label">
@@ -90,34 +90,32 @@
          </property>
          <layout class="QGridLayout" name="gridLayout">
           <item row="0" column="0">
-           <widget class="QWidget" name="widget_5">
-            <layout class="QGridLayout" name="gridLayout_4">
-             <item row="0" column="0">
-              <widget class="QLabel" name="label_6">
-               <property name="text">
-                <string>Default Geometry Tolerance</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="Gui::InputField" name="geometryTolerance">
-               <property name="toolTip">
-                <string>Default value for new Jobs, used for computing Paths.  Smaller increases accuracy, but slows down computation</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="label_12">
-               <property name="text">
-                <string>Default Curve Accuracy</string>
-               </property>
-              </widget>
-             </item>
+           <layout class="QGridLayout" name="gridLayout_4">
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_6">
+              <property name="text">
+               <string>Default Geometry Tolerance</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="Gui::InputField" name="geometryTolerance">
+              <property name="toolTip">
+               <string>Default value for new Jobs, used for computing Paths.  Smaller increases accuracy, but slows down computation</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_12">
+              <property name="text">
+               <string>Default Curve Accuracy</string>
+              </property>
+             </widget>
+            </item>
             <item row="1" column="1">
-              <widget class="Gui::InputField" name="curveAccuracy"/>
-             </item>
-             </layout>
-           </widget>
+             <widget class="Gui::InputField" name="curveAccuracy"/>
+            </item>
+           </layout>
           </item>
          </layout>
         </widget>
@@ -142,8 +140,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>443</width>
-        <height>516</height>
+        <width>424</width>
+        <height>432</height>
        </rect>
       </property>
       <attribute name="label">
@@ -166,95 +164,81 @@
            <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
           </property>
           <item row="1" column="0">
-           <widget class="QWidget" name="widget_2">
-            <layout class="QHBoxLayout" name="horizontalLayout_3">
-             <item>
-              <widget class="QLabel" name="label_4">
-               <property name="text">
-                <string>Default Path</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <item>
+             <widget class="QLabel" name="label_4">
+              <property name="text">
+               <string>Default Path</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
           <item row="1" column="1">
-           <widget class="QWidget" name="widget">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <layout class="QHBoxLayout" name="horizontalLayout_2">
-             <item>
-              <widget class="QLineEdit" name="leOutputFile">
-               <property name="toolTip">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter a path and optionally file name (see below) to be used as the default for the post processor export.&lt;/p&gt;&lt;p&gt;The following substitutions are performed before the name is resolved at the time of the post processing:&lt;/p&gt;&lt;p&gt;Substitution allows the following:&lt;/p&gt;&lt;p&gt;%D ... directory of the active document&lt;/p&gt;&lt;p&gt;%d ... name of the active document (with extension)&lt;/p&gt;&lt;p&gt;%M ... user macro directory&lt;/p&gt;&lt;p&gt;%j ... name of the active Job object&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The Following can be used if output is being split. If Output is not split&lt;/p&gt;&lt;p&gt;these will be ignored.  &lt;/p&gt;&lt;p&gt;%T ... Tool Number&lt;/p&gt;&lt;p&gt;%t ... Tool Controller label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%W ... Work Coordinate System&lt;/p&gt;&lt;p&gt;%O ... Operation Label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;When splitting output, a sequence number will always be added.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%S ... Sequence Number&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):&lt;/p&gt;&lt;p&gt;&amp;quot;/home/cnc/%d.g-code&amp;quot;&lt;/p&gt;&lt;p&gt;See the file save policy below on how to deal with name conflicts.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QToolButton" name="tbOutputFile">
-               <property name="text">
-                <string>...</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <item>
+             <widget class="QLineEdit" name="leOutputFile">
+              <property name="toolTip">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter a path and optionally file name (see below) to be used as the default for the post processor export.&lt;/p&gt;&lt;p&gt;The following substitutions are performed before the name is resolved at the time of the post processing:&lt;/p&gt;&lt;p&gt;Substitution allows the following:&lt;/p&gt;&lt;p&gt;%D ... directory of the active document&lt;/p&gt;&lt;p&gt;%d ... name of the active document (with extension)&lt;/p&gt;&lt;p&gt;%M ... user macro directory&lt;/p&gt;&lt;p&gt;%j ... name of the active Job object&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The Following can be used if output is being split. If Output is not split&lt;/p&gt;&lt;p&gt;these will be ignored.  &lt;/p&gt;&lt;p&gt;%T ... Tool Number&lt;/p&gt;&lt;p&gt;%t ... Tool Controller label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%W ... Work Coordinate System&lt;/p&gt;&lt;p&gt;%O ... Operation Label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;When splitting output, a sequence number will always be added.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%S ... Sequence Number&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):&lt;/p&gt;&lt;p&gt;&amp;quot;/home/cnc/%d.g-code&amp;quot;&lt;/p&gt;&lt;p&gt;See the file save policy below on how to deal with name conflicts.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QToolButton" name="tbOutputFile">
+              <property name="text">
+               <string>...</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
           <item row="2" column="0">
-           <widget class="QWidget" name="widget_3">
-            <layout class="QHBoxLayout" name="horizontalLayout_4">
-             <item>
-              <widget class="QLabel" name="label_5">
-               <property name="text">
-                <string>File Save Policy</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <item>
+             <widget class="QLabel" name="label_5">
+              <property name="text">
+               <string>File Save Policy</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
           <item row="2" column="1">
-           <widget class="QWidget" name="widget_4">
-            <layout class="QHBoxLayout" name="horizontalLayout_5">
-             <item>
-              <widget class="QComboBox" name="cboOutputPolicy">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
+           <layout class="QHBoxLayout" name="horizontalLayout_5">
+            <item>
+             <widget class="QComboBox" name="cboOutputPolicy">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="toolTip">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose how to deal with potential file name conflicts. Always open a dialog, only open a dialog if the output file already exists, overwrite any existing file or add a unique (3 digit) sequential ID to the file name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <item>
+               <property name="text">
+                <string>Open File Dialog</string>
                </property>
-               <property name="toolTip">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose how to deal with potential file name conflicts. Always open a dialog, only open a dialog if the output file already exists, overwrite any existing file or add a unique (3 digit) sequential ID to the file name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </item>
+              <item>
+               <property name="text">
+                <string>Open File Dialog on conflict</string>
                </property>
-               <item>
-                <property name="text">
-                 <string>Open File Dialog</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Open File Dialog on conflict</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Overwrite existing file</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Append Unique ID on conflict</string>
-                </property>
-               </item>
-              </widget>
-             </item>
-            </layout>
-           </widget>
+              </item>
+              <item>
+               <property name="text">
+                <string>Overwrite existing file</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Append Unique ID on conflict</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+           </layout>
           </item>
          </layout>
         </widget>
@@ -348,7 +332,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>296</width>
+        <width>411</width>
         <height>527</height>
        </rect>
       </property>
@@ -439,7 +423,7 @@
              <item row="1" column="2">
               <widget class="Gui::InputField" name="stockExtYneg"/>
              </item>
-            <item row="1" column="3">
+             <item row="1" column="3">
               <widget class="Gui::InputField" name="stockExtYpos"/>
              </item>
              <item row="2" column="1">
@@ -455,7 +439,7 @@
              <item row="2" column="3">
               <widget class="Gui::InputField" name="stockExtZpos"/>
              </item>
-             </layout>
+            </layout>
            </widget>
           </item>
           <item>
@@ -478,10 +462,10 @@
                </property>
               </widget>
              </item>
-            <item row="1" column="2">
+             <item row="1" column="2">
               <widget class="Gui::InputField" name="stockCylinderHeight"/>
              </item>
-             </layout>
+            </layout>
            </widget>
           </item>
           <item>
@@ -514,10 +498,10 @@
                </property>
               </widget>
              </item>
-            <item row="2" column="2">
+             <item row="2" column="2">
               <widget class="Gui::InputField" name="stockBoxHeight"/>
              </item>
-             </layout>
+            </layout>
            </widget>
           </item>
           <item>
@@ -583,7 +567,7 @@
                </property>
               </widget>
              </item>
-            <item row="4" column="0">
+             <item row="4" column="0">
               <widget class="QLabel" name="label_10">
                <property name="text">
                 <string>Position</string>
@@ -599,7 +583,7 @@
              <item row="4" column="4">
               <widget class="Gui::InputField" name="stockPositionZ"/>
              </item>
-             </layout>
+            </layout>
            </widget>
           </item>
          </layout>
@@ -625,8 +609,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>196</width>
-        <height>74</height>
+        <width>424</width>
+        <height>200</height>
        </rect>
       </property>
       <attribute name="label">
@@ -659,6 +643,19 @@
       </layout>
      </widget>
     </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer_5">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
    </item>
   </layout>
  </widget>

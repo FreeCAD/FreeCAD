@@ -47,22 +47,19 @@ DrawTemplate::DrawTemplate()
     const char *group = "Page Properties";
 
     Orientation.setEnums(OrientationEnums);
-    ADD_PROPERTY(Orientation, ((long)0));
+    ADD_PROPERTY(Orientation, (0l));
 
     // Physical Properties inherent to every template class
-    ADD_PROPERTY_TYPE(Width,     (0),  group, (App::PropertyType)(App::Prop_None), "Width of page");
-    ADD_PROPERTY_TYPE(Height,    (0),  group, (App::PropertyType)(App::Prop_None), "Height of page");
-    //ADD_PROPERTY_TYPE(PaperSize, (""), group, (App::PropertyType)(App::Prop_None), "Paper Format");   //obs?
+    ADD_PROPERTY_TYPE(Width,     (0),  group, App::PropertyType::Prop_None, "Width of page");
+    ADD_PROPERTY_TYPE(Height,    (0),  group, App::PropertyType::Prop_None, "Height of page");
 
-    ADD_PROPERTY_TYPE(EditableTexts, (), group, (App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(EditableTexts, (), group, App::PropertyType::Prop_None,
                       "Editable strings in the template");
 }
 
 DrawTemplate::~DrawTemplate()
 {
-  Base::Console().Log("template destroyed");
 }
-
 
 PyObject *DrawTemplate::getPyObject()
 {
@@ -71,11 +68,6 @@ PyObject *DrawTemplate::getPyObject()
         PythonObject = Py::Object(new DrawTemplatePy(this), true);
     }
     return Py::new_reference_to(PythonObject);
-}
-
-unsigned int DrawTemplate::getMemSize() const
-{
-    return 0;
 }
 
 double DrawTemplate::getWidth() const
@@ -88,41 +80,15 @@ double DrawTemplate::getHeight() const
     return Height.getValue();
 }
 
-short DrawTemplate::mustExecute() const
-{
-    return App::DocumentObject::mustExecute();
-}
-
-/// get called by the container when a Property was changed
-void DrawTemplate::onChanged(const App::Property* prop)
-{
-    App::DocumentObject::onChanged(prop);
-}
-
-App::DocumentObjectExecReturn *DrawTemplate::execute()
-{
-    DrawPage *page = nullptr;
-    std::vector<App::DocumentObject*> parent = getInList();
-    for (std::vector<App::DocumentObject*>::iterator it = parent.begin(); it != parent.end(); ++it) {
-        if ((*it)->getTypeId().isDerivedFrom(DrawPage::getClassTypeId())) {
-            page = dynamic_cast<TechDraw::DrawPage *>(*it);
-        }
-    }
-
-    if(page) {
-        page->Template.touch();     //if you are on a page, execute yourself???
-    }
-
-    return App::DocumentObject::execute();
-}
-
+//find the (first) DrawPage which points to this template
 DrawPage* DrawTemplate::getParentPage() const
 {
-    TechDraw::DrawPage* page = nullptr;
-    std::vector<App::DocumentObject*> parent = getInList();
-    for (std::vector<App::DocumentObject*>::iterator it = parent.begin(); it != parent.end(); ++it) {
-        if ((*it)->getTypeId().isDerivedFrom(DrawPage::getClassTypeId())) {
-            page = static_cast<TechDraw::DrawPage *>(*it);
+    TechDraw::DrawPage* page(nullptr);
+    std::vector<App::DocumentObject*> parents = getInList();
+    for (auto& obj : parents) {
+        if (obj->getTypeId().isDerivedFrom(DrawPage::getClassTypeId())) {
+            page = static_cast<TechDraw::DrawPage *>(obj);
+            break;
         }
     }
     return page;

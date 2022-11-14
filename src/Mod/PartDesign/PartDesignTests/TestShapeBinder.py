@@ -48,3 +48,32 @@ class TestShapeBinder(unittest.TestCase):
         FreeCAD.closeDocument("PartDesignTestShapeBinder")
         #print ("omit closing document for debugging")
 
+
+class TestSubShapeBinder(unittest.TestCase):
+    def setUp(self):
+        self.Doc = FreeCAD.newDocument("PartDesignTestSubShapeBinder")
+
+    def tearDown(self):
+        FreeCAD.closeDocument("PartDesignTestSubShapeBinder")
+
+    def testOffsetBinder(self):
+        # See PR 7445
+        body = self.Doc.addObject('PartDesign::Body','Body')
+        box = self.Doc.addObject('PartDesign::AdditiveBox','Box')
+        body.addObject(box)
+
+        box.Length=10.00000
+        box.Width=10.00000
+        box.Height=10.00000
+
+        binder = body.newObject('PartDesign::SubShapeBinder','Binder')
+        binder.Support=[(box, ("Edge2", "Edge12", "Edge6", "Edge10"))]
+        self.Doc.recompute()
+
+        self.assertAlmostEqual(binder.Shape.Length, 40)
+
+        binder.OffsetJoinType="Tangent"
+        binder.Offset = 5.00000
+        self.Doc.recompute()
+
+        self.assertAlmostEqual(binder.Shape.Length, 80)

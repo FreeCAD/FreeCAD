@@ -26,6 +26,7 @@
 
 #include "PropertyPage.h"
 #include <memory>
+#include <string>
 
 class QTabWidget;
 
@@ -45,14 +46,14 @@ class DlgGeneralImp : public PreferencePage
     Q_OBJECT
 
 public:
-    DlgGeneralImp( QWidget* parent = nullptr );
+    explicit DlgGeneralImp( QWidget* parent = nullptr );
     ~DlgGeneralImp() override;
 
     void saveSettings() override;
     void loadSettings() override;
 
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent *event) override;
 
 protected Q_SLOTS:
     void onLoadPreferencePackClicked(const std::string &packName);
@@ -67,6 +68,9 @@ private:
     void revertToSavedConfig();
     bool setLanguage(); //Returns true if language has been changed
     void setNumberLocale(bool force = false);
+    void setDecimalPointConversion(bool on);
+    void saveWorkbenchSelector();
+    void loadWorkbenchSelector();
 
 private:
     int localeIndex;

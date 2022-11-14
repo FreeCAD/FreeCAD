@@ -20,14 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEATURE_MESH_IMPORT_H
 #define FEATURE_MESH_IMPORT_H
 
 #include "MeshFeature.h"
 
-#include <App/PropertyStandard.h>
 #include <App/PropertyFile.h>
+
 
 namespace Mesh
 {
