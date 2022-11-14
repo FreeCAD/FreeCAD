@@ -1984,19 +1984,24 @@ void CmdSketcherConstrainCoincident::activated(int iMsg)
     }
 
     bool allConicsEdges = true; //If user selects only conics (circle, ellipse, arc, arcOfEllipse) then we make concentric constraint.
+    bool atLeastOneEdge = false;
     for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end(); ++it) {
         int GeoId;
         Sketcher::PointPos PosId;
         getIdsFromName(*it, Obj, GeoId, PosId);
-        if (isEdge(GeoId,PosId)) {
-            if (!isGeoConcentricCompatible(Obj->getGeometry(GeoId))) {
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                    QObject::tr("Select two or more vertices from the sketch for a coincident constraint, or two or more circles, ellipses, arcs or arcs of ellipse for a concentric constraint."));
-                return;
-            }
+        if (isEdge(GeoId, PosId)) {
+            atLeastOneEdge = true;
+            if (!isGeoConcentricCompatible(Obj->getGeometry(GeoId)))
+                allConicsEdges = false;
         }
         else
             allConicsEdges = false; //at least one point is selected, so concentric can't be applied.
+
+        if (atLeastOneEdge && !allConicsEdges) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                QObject::tr("Select two or more vertices from the sketch for a coincident constraint, or two or more circles, ellipses, arcs or arcs of ellipse for a concentric constraint."));
+            return;
+        }
     }
 
     int GeoId1, GeoId2;
