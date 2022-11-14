@@ -1034,7 +1034,6 @@ PyObject *PropertyLinkSub::getPyObject(void)
     Py::Tuple tup(2);
     Py::List list(static_cast<int>(_cSubList.size()));
     if (_pcLinkSub) {
-        _pcLinkSub->getPyObject();
         tup[0] = Py::asObject(_pcLinkSub->getPyObject());
         for(unsigned int i = 0;i<_cSubList.size(); i++)
             list[i] = Py::String(_cSubList[i]);
