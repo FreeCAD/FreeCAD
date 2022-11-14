@@ -91,11 +91,13 @@ TaskComplexSection::TaskComplexSection(TechDraw::DrawPage* page,
     m_directionIsSet(false)
 {
     m_sectionName = std::string();
-    m_doc         = m_baseView->getDocument();
-
-    m_saveBaseName = m_baseView->getNameInDocument();
-    m_savePageName = m_baseView->findParentPage()->getNameInDocument();
-
+    if (m_page) {
+        m_doc = m_page->getDocument();
+        m_savePageName = m_page->getNameInDocument();
+    }
+    if (m_baseView) {
+        m_saveBaseName = m_baseView->getNameInDocument();
+    }
     ui->setupUi(this);
 
     saveSectionState();
@@ -120,11 +122,14 @@ TaskComplexSection::TaskComplexSection(TechDraw::DrawComplexSection* complexSect
 {
     m_sectionName = m_section->getNameInDocument();
     m_doc         = m_section->getDocument();
+    m_page        = m_section->findParentPage();
+    m_savePageName = m_page->getNameInDocument();
+
     m_baseView = dynamic_cast<TechDraw::DrawViewPart*> (m_section->BaseView.getValue());
     if (m_baseView) {
         m_saveBaseName = m_baseView->getNameInDocument();
-        m_savePageName = m_baseView->findParentPage()->getNameInDocument();
     }
+
     m_shapes = m_section->Source.getValues();
     m_xShapes = m_section->XSource.getValues();
     m_profileObject = m_section->CuttingToolWireObject.getValue();
@@ -305,7 +310,10 @@ void TaskComplexSection::slotViewDirectionChanged(Base::Vector3d newDirection)
 {
 //    Base::Console().Message("TCS::slotViewDirectionChanged(%s)\n",
 //                            DrawUtil::formatVector(newDirection).c_str());
-    Base::Vector3d projectedViewDirection = m_baseView->projectPoint(newDirection, false);
+    Base::Vector3d projectedViewDirection = newDirection;
+    if (m_baseView) {
+        projectedViewDirection = m_baseView->projectPoint(newDirection, false);
+    }
     projectedViewDirection.Normalize();
     double viewAngle = atan2(projectedViewDirection.y,
                              projectedViewDirection.x);
