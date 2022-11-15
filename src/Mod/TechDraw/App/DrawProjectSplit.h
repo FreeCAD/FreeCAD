@@ -40,6 +40,7 @@ class gp_Ax2;
 namespace TechDraw
 {
 class GeometryObject;
+using GeometryObjectPtr = std::shared_ptr<GeometryObject>;
 class Vertex;
 class BaseGeom;
 }
@@ -98,7 +99,7 @@ public:
 
 public:
     static std::vector<TopoDS_Edge> getEdgesForWalker(TopoDS_Shape shape, double scale, Base::Vector3d direction);
-    static TechDraw::GeometryObject*  buildGeometryObject(TopoDS_Shape shape, const gp_Ax2& viewAxis);
+    static TechDraw::GeometryObjectPtr  buildGeometryObject(TopoDS_Shape shape, const gp_Ax2& viewAxis);
 
     static bool isOnEdge(TopoDS_Edge e, TopoDS_Vertex v, double& param, bool allowEnds = false);
     static std::vector<TopoDS_Edge> splitEdges(std::vector<TopoDS_Edge> orig, std::vector<splitPoint> splits);

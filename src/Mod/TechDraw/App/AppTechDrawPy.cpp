@@ -411,7 +411,7 @@ private:
             if (PyObject_TypeCheck(viewObj, &(TechDraw::DrawViewPartPy::Type))) {
                 obj = static_cast<App::DocumentObjectPy*>(viewObj)->getDocumentObjectPtr();
                 dvp = static_cast<TechDraw::DrawViewPart*>(obj);
-                TechDraw::GeometryObject* gObj = dvp->getGeometryObject();
+                TechDraw::GeometryObjectPtr gObj = dvp->getGeometryObject();
                 TopoDS_Shape shape = TechDraw::mirrorShape(gObj->getVisHard());
                 ss << dxfOut.exportEdges(shape);
                 shape = TechDraw::mirrorShape(gObj->getVisOutline());
@@ -469,7 +469,7 @@ private:
             if (PyObject_TypeCheck(viewObj, &(TechDraw::DrawViewPartPy::Type))) {
                 obj = static_cast<App::DocumentObjectPy*>(viewObj)->getDocumentObjectPtr();
                 dvp = static_cast<TechDraw::DrawViewPart*>(obj);
-                TechDraw::GeometryObject* gObj = dvp->getGeometryObject();
+                TechDraw::GeometryObjectPtr gObj = dvp->getGeometryObject();
                 //visible group begin "<g ... >"
                 ss << grpHead1;
 //                double thick = dvp->LineWidth.getValue();
@@ -533,7 +533,7 @@ private:
     {
         if(!dvp->hasGeometry())
             return;
-        TechDraw::GeometryObject* gObj = dvp->getGeometryObject();
+        TechDraw::GeometryObjectPtr gObj = dvp->getGeometryObject();
         TopoDS_Shape shape = TechDraw::mirrorShape(gObj->getVisHard());
         double offX = 0.0;
         double offY = 0.0;

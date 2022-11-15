@@ -151,7 +151,6 @@ DrawViewPart::~DrawViewPart()
         m_faceFuture.waitForFinished();
     }
     removeAllReferencesFromGeom();
-    delete geometryObject;
 }
 
 std::vector<TopoDS_Shape> DrawViewPart::getSourceShape2d() const
@@ -318,7 +317,7 @@ void DrawViewPart::partExec(TopoDS_Shape& shape)
 }
 
 //prepare the shape for HLR processing by centering, scaling and rotating it
-GeometryObject* DrawViewPart::makeGeometryForShape(TopoDS_Shape& shape)
+GeometryObjectPtr DrawViewPart::makeGeometryForShape(TopoDS_Shape& shape)
 {
 //    Base::Console().Message("DVP::makeGeometryForShape() - %s\n", getNameInDocument());
     gp_Pnt inputCenter;
@@ -344,17 +343,17 @@ GeometryObject* DrawViewPart::makeGeometryForShape(TopoDS_Shape& shape)
                                             Rotation.getValue());  //conventional rotation
      }
     BRepTools::Write(scaledShape, "DVPScaled.brep");            //debug
-    GeometryObject* go =  buildGeometryObject(scaledShape, viewAxis);
+    GeometryObjectPtr go =  buildGeometryObject(scaledShape, viewAxis);
     return go;
 }
 
 //create a geometry object and trigger the HLR process in another thread
-TechDraw::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape& shape, const gp_Ax2 &viewAxis)
+TechDraw::GeometryObjectPtr DrawViewPart::buildGeometryObject(TopoDS_Shape& shape, const gp_Ax2 &viewAxis)
 {
 //    Base::Console().Message("DVP::buildGeometryObject() - %s\n", getNameInDocument());
     showProgressMessage(getNameInDocument(), "is finding hidden lines");
 
-    TechDraw::GeometryObject* go = new TechDraw::GeometryObject(getNameInDocument(), this);
+    TechDraw::GeometryObjectPtr go(std::make_shared<TechDraw::GeometryObject>(getNameInDocument(), this));
     go->setIsoCount(IsoCount.getValue());
     go->isPerspective(Perspective.getValue());
     go->setFocus(Focus.getValue());
@@ -372,7 +371,7 @@ TechDraw::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape& shape,
         //https://github.com/KDE/clazy/blob/1.11/docs/checks/README-connect-3arg-lambda.md
         connectHlrWatcher = QObject::connect(&m_hlrWatcher, &QFutureWatcherBase::finished,
                                              &m_hlrWatcher, [this] { this->onHlrFinished(); } );
-        m_hlrFuture = QtConcurrent::run(go, &GeometryObject::projectShape, shape, viewAxis);
+        m_hlrFuture = QtConcurrent::run(go.get(), &GeometryObject::projectShape, shape, viewAxis);
         m_hlrWatcher.setFuture(m_hlrFuture);
         waitingForHlr(true);
     }
@@ -385,10 +384,6 @@ void DrawViewPart::onHlrFinished(void)
 //    Base::Console().Message("DVP::onHlrFinished() - %s\n", getNameInDocument());
 
     //now that the new GeometryObject is fully populated, we can replace the old one
-    if (geometryObject &&
-            m_tempGeometryObject) {
-        delete geometryObject;      //remove the old
-    }
     if (m_tempGeometryObject) {
         geometryObject = m_tempGeometryObject;  //replace with new
         m_tempGeometryObject = nullptr;     //superfluous?
