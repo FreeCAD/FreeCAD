@@ -33,9 +33,9 @@ using namespace PartGui;
 
 /* TRANSLATOR PartGui::DlgPartImportIgesImp */
 
-/* 
- *  Constructs a DlgPartImportIges which is a child of 'parent', with the 
- *  name 'name' and widget flags set to 'f' 
+/*
+ *  Constructs a DlgPartImportIges which is a child of 'parent', with the
+ *  name 'name' and widget flags set to 'f'
  *
  *  The dialog will by default be modeless, unless you set 'modal' to
  *  true to construct a modal dialog.
@@ -47,7 +47,7 @@ DlgPartImportIgesImp::DlgPartImportIgesImp(QWidget* parent, Qt::WindowFlags fl)
     ui->setupUi(this);
 }
 
-/*  
+/*
  *  Destroys the object and frees any allocated resources
  */
 DlgPartImportIgesImp::~DlgPartImportIgesImp()
@@ -55,12 +55,12 @@ DlgPartImportIgesImp::~DlgPartImportIgesImp()
     // no need to delete child widgets, Qt does it all for us
 }
 
-/* 
+/*
  * public slot
  */
 void DlgPartImportIgesImp::OnApply()
 {
-    qWarning( "DlgPartImportIgesImp::OnApply() not yet implemented!" ); 
+    qWarning( "DlgPartImportIgesImp::OnApply() not yet implemented!" );
 }
 
 void DlgPartImportIgesImp::onChooseFileName()

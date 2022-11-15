@@ -108,7 +108,7 @@ void ExtrusionHelper::makeDraft(const TopoDS_Shape& shape,
     // methods like checking the center of mass etc. don't help us here.
     // As solution we build a prism with every wire, then subtract every prism from each other.
     // If the moment of inertia changes by a subtraction, we have an inner wire prism.
-    // 
+    //
     // first build the prisms
     std::vector<TopoDS_Shape> resultPrisms;
     TopoDS_Shape singlePrism;

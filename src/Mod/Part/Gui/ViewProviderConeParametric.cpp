@@ -33,7 +33,7 @@ using namespace std;
 
 PROPERTY_SOURCE(PartGui::ViewProviderConeParametric, PartGui::ViewProviderPrimitive)
 
-       
+
 ViewProviderConeParametric::ViewProviderConeParametric()
 {
   sPixmap = "Part_Cone_Parametric";

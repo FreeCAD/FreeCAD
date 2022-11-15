@@ -48,7 +48,7 @@ std::string PlateSurfacePy::representation() const
 
 PyObject *PlateSurfacePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of PlateSurfacePy and the Twin object 
+    // create a new instance of PlateSurfacePy and the Twin object
     return new PlateSurfacePy(new GeomPlateSurface);
 }
 
@@ -190,5 +190,5 @@ PyObject *PlateSurfacePy::getCustomAttributes(const char* /*attr*/) const
 
 int PlateSurfacePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

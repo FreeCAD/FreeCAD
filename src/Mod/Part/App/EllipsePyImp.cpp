@@ -46,7 +46,7 @@ std::string EllipsePy::representation() const
 
 PyObject *EllipsePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of EllipsePy and the Twin object 
+    // create a new instance of EllipsePy and the Twin object
     return new EllipsePy(new GeomEllipse);
 }
 
@@ -128,7 +128,7 @@ int EllipsePy::PyInit(PyObject* args, PyObject* kwds)
 Py::Float EllipsePy::getMajorRadius() const
 {
     Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(getGeomEllipsePtr()->handle());
-    return Py::Float(ellipse->MajorRadius()); 
+    return Py::Float(ellipse->MajorRadius());
 }
 
 void EllipsePy::setMajorRadius(Py::Float arg)
@@ -140,7 +140,7 @@ void EllipsePy::setMajorRadius(Py::Float arg)
 Py::Float EllipsePy::getMinorRadius() const
 {
     Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(getGeomEllipsePtr()->handle());
-    return Py::Float(ellipse->MinorRadius()); 
+    return Py::Float(ellipse->MinorRadius());
 }
 
 void EllipsePy::setMinorRadius(Py::Float arg)
@@ -152,7 +152,7 @@ void EllipsePy::setMinorRadius(Py::Float arg)
 Py::Float EllipsePy::getFocal() const
 {
     Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(getGeomEllipsePtr()->handle());
-    return Py::Float(ellipse->Focal()); 
+    return Py::Float(ellipse->Focal());
 }
 
 Py::Object EllipsePy::getFocus1() const
@@ -176,5 +176,5 @@ PyObject *EllipsePy::getCustomAttributes(const char* /*attr*/) const
 
 int EllipsePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

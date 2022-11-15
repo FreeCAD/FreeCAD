@@ -126,7 +126,7 @@ bool PartGui::evaluateLinearPreSelection(TopoDS_Shape &shape1, TopoDS_Shape &sha
   std::vector<Gui::SelectionSingleton::SelObj>::iterator it;
   std::vector<TopoDS_Shape> shapes;
   DimSelections sels[2];
-  
+
   int i=0;
   for (it = selections.begin(); it != selections.end(); ++it)
   {
@@ -147,9 +147,9 @@ bool PartGui::evaluateLinearPreSelection(TopoDS_Shape &shape1, TopoDS_Shape &sha
 
   shape1 = shapes.front();
   shape2 = shapes.back();
-  
+
   auto doc = App::GetApplication().getActiveDocument();
-  if(doc) 
+  if(doc)
     _Measures[doc->getName()].emplace_back(sels[0],sels[1],true);
   return true;
 }
@@ -322,7 +322,7 @@ void PartGui::eraseAllDimensions()
 
 void PartGui::refreshDimensions() {
   auto doc = App::GetApplication().getActiveDocument();
-  if(!doc) 
+  if(!doc)
       return;
   auto it = _Measures.find(doc->getName());
   if(it == _Measures.end())
@@ -337,7 +337,7 @@ void PartGui::refreshDimensions() {
           PartGui::TaskMeasureAngular::buildDimension(info.sel1,info.sel2);
   }
 }
-    
+
 void PartGui::toggle3d()
 {
   ParameterGrp::handle group = App::GetApplication().GetUserParameter().
@@ -621,10 +621,10 @@ void PartGui::TaskMeasureLinear::buildDimension(const DimSelections &sel1, const
 {
   if(sel1.selections.size() != 1 || sel2.selections.size() != 1)
     return;
-  
+
   DimSelections::DimSelection current1 = sel1.selections.at(0);
   DimSelections::DimSelection current2 = sel2.selections.at(0);
-  
+
   TopoDS_Shape shape1, shape2;
   if (!getShapeFromStrings(shape1, current1.documentName, current1.objectName, current1.subObjectName))
   {
@@ -637,7 +637,7 @@ void PartGui::TaskMeasureLinear::buildDimension(const DimSelections &sel1, const
     return;
   }
   auto doc = App::GetApplication().getActiveDocument();
-  if(doc) 
+  if(doc)
     _Measures[doc->getName()].emplace_back(sel1,sel2,true);
   goDimensionLinearNoTask(shape1, shape2);
 }
@@ -870,12 +870,12 @@ bool PartGui::evaluateAngularPreSelection(VectorAdapter &vector1Out, VectorAdapt
     if (shape.IsNull())
       break;
     mat.inverse();
-    
+
     if (shape.ShapeType() == TopAbs_VERTEX)
     {
-        if(sels.empty() || 
+        if(sels.empty() ||
            sels.back().selections.back().shapeType!=DimSelections::Vertex ||
-           sels.back().selections.size()==1) 
+           sels.back().selections.size()==1)
         {
             sels.emplace_back();
         }
@@ -927,7 +927,7 @@ bool PartGui::evaluateAngularPreSelection(VectorAdapter &vector1Out, VectorAdapt
     sel.x = v.x;
     sel.y = v.y;
     sel.z = v.z;
-    
+
     if (shape.ShapeType() == TopAbs_EDGE)
     {
       sel.shapeType = DimSelections::Edge;
@@ -973,7 +973,7 @@ bool PartGui::evaluateAngularPreSelection(VectorAdapter &vector1Out, VectorAdapt
   }
 
   auto doc = App::GetApplication().getActiveDocument();
-  if(doc) 
+  if(doc)
     _Measures[doc->getName()].emplace_back(sels[0],sels[1],false);
   return true;
 }
@@ -1557,7 +1557,7 @@ void PartGui::TaskMeasureAngular::onSelectionChanged(const Gui::SelectionChanges
 {
   TopoDS_Shape shape;
   Base::Matrix4D mat;
-  if (!getShapeFromStrings(shape, std::string(msg.pDocName), 
+  if (!getShapeFromStrings(shape, std::string(msg.pDocName),
               std::string(msg.pObjectName), std::string(msg.pSubName),&mat))
     return;
   mat.inverse();
@@ -1596,7 +1596,7 @@ void PartGui::TaskMeasureAngular::onSelectionChanged(const Gui::SelectionChanges
         assert(selections1.selections.size() == 2);
         assert(selections1.selections.at(0).shapeType == DimSelections::Vertex);
         assert(selections1.selections.at(1).shapeType == DimSelections::Vertex);
-        
+
         QTimer::singleShot(0, this, SLOT(selectionClearDelayedSlot()));
         stepped->getButton(1)->setEnabled(true);
         stepped->getButton(1)->setChecked(true);
@@ -1766,7 +1766,7 @@ void PartGui::TaskMeasureAngular::buildDimension(const DimSelections &sel1, cons
   //build adapters.
   VectorAdapter adapt1 = buildAdapter(sel1);
   VectorAdapter adapt2 = buildAdapter(sel2);
-  
+
   if (!adapt1.isValid() || !adapt2.isValid())
   {
     Base::Console().Message("\ncouldn't build adapter\n\n");

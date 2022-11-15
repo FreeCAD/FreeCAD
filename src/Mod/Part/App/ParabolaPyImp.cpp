@@ -46,7 +46,7 @@ std::string ParabolaPy::representation() const
 
 PyObject *ParabolaPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of ParabolaPy and the Twin object 
+    // create a new instance of ParabolaPy and the Twin object
     return new ParabolaPy(new GeomParabola);
 }
 
@@ -85,7 +85,7 @@ int ParabolaPy::PyInit(PyObject* args, PyObject* kwds)
         Base::Vector3d normal = static_cast<Base::VectorPy*>(pV3)->value();
 
         Base::Vector3d xvect = focus-center;
-    
+
         // set the geometry
         gp_Pnt p1(center.x,center.y,center.z);
         gp_Dir norm(normal.x,normal.y,normal.z);
@@ -103,7 +103,7 @@ int ParabolaPy::PyInit(PyObject* args, PyObject* kwds)
         parabola->SetParab(mc.Value());
         return 0;
     }
-    
+
     PyErr_SetString(PyExc_TypeError, "Parabola constructor accepts:\n"
     "-- empty parameter list\n"
     "-- Parabola\n"
@@ -160,13 +160,13 @@ PyObject* ParabolaPy::compute(PyObject *args)
 Py::Float ParabolaPy::getFocal() const
 {
     Handle(Geom_Parabola) curve = Handle(Geom_Parabola)::DownCast(getGeometryPtr()->handle());
-    return Py::Float(curve->Focal()); 
+    return Py::Float(curve->Focal());
 }
 
 void ParabolaPy::setFocal(Py::Float arg)
 {
     Handle(Geom_Parabola) curve = Handle(Geom_Parabola)::DownCast(getGeometryPtr()->handle());
-    curve->SetFocal((double)arg); 
+    curve->SetFocal((double)arg);
 }
 
 Py::Object ParabolaPy::getFocus() const
@@ -180,7 +180,7 @@ Py::Object ParabolaPy::getFocus() const
 Py::Float ParabolaPy::getParameter() const
 {
     Handle(Geom_Parabola) curve = Handle(Geom_Parabola)::DownCast(getGeometryPtr()->handle());
-    return Py::Float(curve->Parameter()); 
+    return Py::Float(curve->Parameter());
 }
 
 PyObject *ParabolaPy::getCustomAttributes(const char* /*attr*/) const
@@ -190,7 +190,7 @@ PyObject *ParabolaPy::getCustomAttributes(const char* /*attr*/) const
 
 int ParabolaPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }
 
 

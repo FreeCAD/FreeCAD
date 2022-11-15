@@ -97,7 +97,7 @@ DlgBooleanOperation::DlgBooleanOperation(QWidget* parent)
     findShapes();
 }
 
-/*  
+/*
  *  Destroys the object and frees any allocated resources
  */
 DlgBooleanOperation::~DlgBooleanOperation()
@@ -137,7 +137,7 @@ void DlgBooleanOperation::slotChangedObject(const App::DocumentObject& obj,
             Gui::Document* activeGui = Gui::Application::Instance->getDocument(obj.getDocument());
             QString label = QString::fromUtf8(obj.Label.getValue());
             QString name = QString::fromLatin1(obj.getNameInDocument());
-            
+
             QTreeWidgetItem* child = new BooleanOperationItem();
             child->setCheckState(0, Qt::Unchecked);
             child->setText(0, label);
@@ -222,7 +222,7 @@ void DlgBooleanOperation::findShapes()
         if (!shape.IsNull()) {
             QString label = QString::fromUtf8((*it)->Label.getValue());
             QString name = QString::fromLatin1((*it)->getNameInDocument());
-            
+
             QTreeWidgetItem* child = new BooleanOperationItem();
             child->setCheckState(0, Qt::Unchecked);
             child->setText(0, label);
@@ -378,17 +378,17 @@ void DlgBooleanOperation::accept()
     }
 
     if (!litem || !indexOfCurrentItem(litem,ltop,lchild)) {
-        QMessageBox::critical(this, windowTitle(), 
+        QMessageBox::critical(this, windowTitle(),
             tr("Select a shape on the left side, first"));
         return;
     }
     if (!ritem || !indexOfCurrentItem(ritem,rtop,rchild)) {
-        QMessageBox::critical(this, windowTitle(), 
+        QMessageBox::critical(this, windowTitle(),
             tr("Select a shape on the right side, first"));
         return;
     }
     if (ltop == rtop && lchild == rchild) {
-        QMessageBox::critical(this, windowTitle(), 
+        QMessageBox::critical(this, windowTitle(),
             tr("Cannot perform a boolean operation with the same shape"));
         return;
     }
@@ -398,7 +398,7 @@ void DlgBooleanOperation::accept()
     shapeTwo = (const char*)ritem->data(0, Qt::UserRole).toByteArray();
     App::Document* activeDoc = App::GetApplication().getActiveDocument();
     if (!activeDoc) {
-        QMessageBox::critical(this, windowTitle(), 
+        QMessageBox::critical(this, windowTitle(),
             tr("No active document available"));
         return;
     }
@@ -408,14 +408,14 @@ void DlgBooleanOperation::accept()
     App::DocumentObject* obj2 = activeDoc->getObject(shapeTwo.c_str());
     if (!obj1 || !obj2) {
         // objects don't exists (anymore)
-        QMessageBox::critical(this, windowTitle(), 
+        QMessageBox::critical(this, windowTitle(),
             tr("One of the selected objects doesn't exist anymore"));
         return;
     }
 
     if (ui->unionButton->isChecked()) {
         if (!hasSolids(obj1) || !hasSolids(obj2)) {
-            QMessageBox::critical(this, windowTitle(), 
+            QMessageBox::critical(this, windowTitle(),
                 tr("Performing union on non-solids is not possible"));
             return;
         }
@@ -424,7 +424,7 @@ void DlgBooleanOperation::accept()
     }
     else if (ui->interButton->isChecked()) {
         if (!hasSolids(obj1) || !hasSolids(obj2)) {
-            QMessageBox::critical(this, windowTitle(), 
+            QMessageBox::critical(this, windowTitle(),
                 tr("Performing intersection on non-solids is not possible"));
             return;
         }
@@ -433,7 +433,7 @@ void DlgBooleanOperation::accept()
     }
     else if (ui->diffButton->isChecked()) {
         if (!hasSolids(obj1) || !hasSolids(obj2)) {
-            QMessageBox::critical(this, windowTitle(), 
+            QMessageBox::critical(this, windowTitle(),
                 tr("Performing difference on non-solids is not possible"));
             return;
         }

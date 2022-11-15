@@ -44,7 +44,7 @@ PyObject *BodyBasePy::getCustomAttributes(const char* /*attr*/) const
 
 int BodyBasePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }
 
 

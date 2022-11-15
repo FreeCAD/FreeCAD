@@ -50,22 +50,22 @@ std::string ArcOfParabolaPy::representation() const
     Standard_Real fFocal = parabola->Focal();
     Standard_Real u1 = trim->FirstParameter();
     Standard_Real u2 = trim->LastParameter();
-    
+
     gp_Dir normal = parabola->Axis().Direction();
     gp_Dir xdir = parabola->XAxis().Direction();
-    
+
     gp_Ax2 xdirref(loc, normal); // this is a reference XY for the parabola
-    
+
     Standard_Real fAngleXU = -xdir.AngleWithRef(xdirref.XDirection(),normal);
-    
+
 
     std::stringstream str;
     str << "ArcOfParabola (";
-    str << "Focal : " << fFocal << ", "; 
+    str << "Focal : " << fFocal << ", ";
     str << "AngleXU : " << fAngleXU << ", ";
-    str << "Position : (" << loc.X() << ", "<< loc.Y() << ", "<< loc.Z() << "), "; 
-    str << "Direction : (" << dir.X() << ", "<< dir.Y() << ", "<< dir.Z() << "), "; 
-    str << "Parameter : (" << u1 << ", " << u2 << ")"; 
+    str << "Position : (" << loc.X() << ", "<< loc.Y() << ", "<< loc.Z() << "), ";
+    str << "Direction : (" << dir.X() << ", "<< dir.Y() << ", "<< dir.Z() << "), ";
+    str << "Parameter : (" << u1 << ", " << u2 << ")";
     str << ")";
 
     return str.str();
@@ -73,7 +73,7 @@ std::string ArcOfParabolaPy::representation() const
 
 PyObject *ArcOfParabolaPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of ArcOfParabolaPy and the Twin object 
+    // create a new instance of ArcOfParabolaPy and the Twin object
     return new ArcOfParabolaPy(new GeomArcOfParabola);
 }
 
@@ -105,7 +105,7 @@ int ArcOfParabolaPy::PyInit(PyObject* args, PyObject* /*kwds*/)
             return -1;
         }
     }
-    
+
     // All checks failed
     PyErr_SetString(PyExc_TypeError,
         "ArcOfParabola constructor expects an parabola curve and a parameter range");
@@ -114,7 +114,7 @@ int ArcOfParabolaPy::PyInit(PyObject* args, PyObject* /*kwds*/)
 
 Py::Float ArcOfParabolaPy::getFocal() const
 {
-    return Py::Float(getGeomArcOfParabolaPtr()->getFocal()); 
+    return Py::Float(getGeomArcOfParabolaPtr()->getFocal());
 }
 
 void  ArcOfParabolaPy::setFocal(Py::Float arg)
@@ -137,5 +137,5 @@ PyObject *ArcOfParabolaPy::getCustomAttributes(const char* ) const
 
 int ArcOfParabolaPy::setCustomAttributes(const char* , PyObject *)
 {
-    return 0; 
+    return 0;
 }

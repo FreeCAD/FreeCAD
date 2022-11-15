@@ -41,7 +41,7 @@ def myCustomFusionRoutine(list_of_shapes):
 
     def __define_attributes(self):
         # stores the data returned by generalFuse, supplied to class constructor
-        self.gfa_return = None 
+        self.gfa_return = None
 
         # pieces that resulted from intersetion routine. List of shapes (non-decorated).
         self.pieces = None
@@ -60,7 +60,7 @@ def myCustomFusionRoutine(list_of_shapes):
 
         # dictionary for finding, which source shapes did an element of pieces come from.
         # key = HashableShape (element). Value = set of ints
-        self._element_to_source = {} 
+        self._element_to_source = {}
 
         self._freeze()
 

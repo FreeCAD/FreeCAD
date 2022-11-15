@@ -48,7 +48,7 @@ std::string ConePy::representation() const
 
 PyObject *ConePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of ConePy and the Twin object 
+    // create a new instance of ConePy and the Twin object
     return new ConePy(new GeomCone);
 }
 
@@ -155,7 +155,7 @@ Py::Float ConePy::getRadius() const
 {
     Handle(Geom_ConicalSurface) s = Handle(Geom_ConicalSurface)::DownCast
         (getGeomConePtr()->handle());
-    return Py::Float(s->RefRadius()); 
+    return Py::Float(s->RefRadius());
 }
 
 void ConePy::setRadius(Py::Float arg)
@@ -169,7 +169,7 @@ Py::Float ConePy::getSemiAngle() const
 {
     Handle(Geom_ConicalSurface) s = Handle(Geom_ConicalSurface)::DownCast
         (getGeomConePtr()->handle());
-    return Py::Float(s->SemiAngle()); 
+    return Py::Float(s->SemiAngle());
 }
 
 void ConePy::setSemiAngle(Py::Float arg)
@@ -259,7 +259,7 @@ PyObject *ConePy::getCustomAttributes(const char* /*attr*/) const
 
 int ConePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }
 
 

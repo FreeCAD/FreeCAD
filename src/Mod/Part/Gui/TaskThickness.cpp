@@ -223,9 +223,9 @@ bool ThicknessWidget::accept()
         Gui::cmdAppObjectArgs(d->thickness, "Value = %f", d->ui.spinOffset->value().getValue());
         Gui::cmdAppObjectArgs(d->thickness, "Mode = %i", d->ui.modeType->currentIndex());
         Gui::cmdAppObjectArgs(d->thickness, "Join = %i", d->ui.joinType->currentIndex());
-        Gui::cmdAppObjectArgs(d->thickness, "Intersection = %s", 
+        Gui::cmdAppObjectArgs(d->thickness, "Intersection = %s",
             d->ui.intersection->isChecked() ? "True" : "False");
-        Gui::cmdAppObjectArgs(d->thickness, "SelfIntersection = %s", 
+        Gui::cmdAppObjectArgs(d->thickness, "SelfIntersection = %s",
             d->ui.selfIntersection->isChecked() ? "True" : "False");
 
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");

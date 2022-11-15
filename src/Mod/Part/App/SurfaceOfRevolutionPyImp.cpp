@@ -43,7 +43,7 @@ std::string SurfaceOfRevolutionPy::representation() const
 
 PyObject *SurfaceOfRevolutionPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of SurfaceOfRevolutionPy and the Twin object 
+    // create a new instance of SurfaceOfRevolutionPy and the Twin object
     return new SurfaceOfRevolutionPy(new GeomSurfaceOfRevolution);
 }
 
@@ -53,8 +53,8 @@ int SurfaceOfRevolutionPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     PyObject* pGeom;
     PyObject* pPnt;
     PyObject* pDir;
-    if (!PyArg_ParseTuple(args, "O!O!O!", 
-                            &(GeometryPy::Type), &pGeom, 
+    if (!PyArg_ParseTuple(args, "O!O!O!",
+                            &(GeometryPy::Type), &pGeom,
                             &(Base::VectorPy::Type),&pPnt,
                             &(Base::VectorPy::Type),&pDir))
         return -1;
@@ -184,7 +184,7 @@ PyObject *SurfaceOfRevolutionPy::getCustomAttributes(const char* /*attr*/) const
 
 int SurfaceOfRevolutionPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }
 
 

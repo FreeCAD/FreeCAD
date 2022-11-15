@@ -147,7 +147,7 @@ void ViewProviderBoolean::updateData(const App::Property* prop)
 bool ViewProviderBoolean::onDelete(const std::vector<std::string> &)
 {
     // get the input shapes
-    Part::Boolean* pBool = static_cast<Part::Boolean*>(getObject()); 
+    Part::Boolean* pBool = static_cast<Part::Boolean*>(getObject());
     App::DocumentObject *pBase = pBool->Base.getValue();
     App::DocumentObject *pTool = pBool->Tool.getValue();
 
@@ -203,7 +203,7 @@ void ViewProviderMultiFuse::updateData(const App::Property* prop)
             if (!objBase)
                 continue;
             const TopoDS_Shape& baseShape = objBase->Shape.getValue();
- 
+
             TopTools_IndexedMapOfShape baseMap;
             TopExp::MapShapes(baseShape, TopAbs_FACE, baseMap);
 
@@ -340,7 +340,7 @@ void ViewProviderMultiCommon::updateData(const App::Property* prop)
             if (!objBase)
                 continue;
             const TopoDS_Shape& baseShape = objBase->Shape.getValue();
- 
+
             TopTools_IndexedMapOfShape baseMap;
             TopExp::MapShapes(baseShape, TopAbs_FACE, baseMap);
 

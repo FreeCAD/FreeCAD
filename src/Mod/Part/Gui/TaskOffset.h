@@ -28,7 +28,7 @@
 #include <Gui/TaskView/TaskDialog.h>
 
 namespace Part { class Offset; }
-namespace PartGui { 
+namespace PartGui {
 
 class OffsetWidget : public QWidget
 {

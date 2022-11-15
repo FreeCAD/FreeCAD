@@ -98,19 +98,19 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action)
         if(ctx->selectionIndex.empty() || ctx->isSelectAll()) {
             if(ctx2) {
                 ctx2->selectionColor = ctx->highlightColor;
-                renderSelection(action,ctx2); 
+                renderSelection(action,ctx2);
             } else
                 renderHighlight(action,ctx);
         }else{
             if(!action->isRenderingDelayedPaths())
-                renderSelection(action,ctx); 
+                renderSelection(action,ctx);
             if(ctx2) {
                 ctx2->selectionColor = ctx->highlightColor;
-                renderSelection(action,ctx2); 
+                renderSelection(action,ctx2);
             } else
                 renderHighlight(action,ctx);
             if(action->isRenderingDelayedPaths())
-                renderSelection(action,ctx); 
+                renderSelection(action,ctx);
         }
         return;
     }
@@ -121,15 +121,15 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action)
         if(ctx->isSelectAll()) {
             if(ctx2) {
                 ctx2->selectionColor = ctx->selectionColor;
-                renderSelection(action,ctx2); 
+                renderSelection(action,ctx2);
             }else if(ctx->isSelectAll())
-                renderSelection(action,ctx); 
+                renderSelection(action,ctx);
             if(action->isRenderingDelayedPaths())
                 renderHighlight(action,ctx);
             return;
         }
         if(!action->isRenderingDelayedPaths())
-            renderSelection(action,ctx); 
+            renderSelection(action,ctx);
     }
     if(ctx2 && !ctx2->selectionIndex.empty())
         renderSelection(action,ctx2,false);
@@ -418,7 +418,7 @@ void SoBrepEdgeSet::doAction(SoAction* action)
                 ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext);
                 selCounter.checkAction(selaction,ctx);
                 ctx->selectionColor = selaction->getColor();
-                if(ctx->isSelectAll()) 
+                if(ctx->isSelectAll())
                     ctx->selectionIndex.clear();
                 if(!ctx->selectionIndex.insert(index).second)
                     return;

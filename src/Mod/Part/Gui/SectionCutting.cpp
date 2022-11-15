@@ -261,7 +261,7 @@ SectionCut::SectionCut(QWidget* parent)
     connect(ui->CutTransparency, &QSlider::sliderMoved, this,
             &SectionCut::onTransparencySliderMoved);
     connect(ui->CutTransparency, &QSlider::valueChanged, this, &SectionCut::onTransparencyChanged);
-    
+
     // if there is a cut, perform it
     if (hasBoxX || hasBoxY || hasBoxZ) {
         ui->RefreshCutPB->setEnabled(false);
@@ -319,7 +319,7 @@ void SectionCut::startCutting(bool isInitial)
     // it is dangerous to deal with the fact that the user is free
     // to uncheck cutting planes and to add/remove objects while this dialog is open
     // We must remove in this order because the tree hierary of the features is Z->Y->X and Cut->Box
-    
+
     if (doc->getObject(CutZName))
         deleteObject(CutZName);
     if (doc->getObject(BoxZName))
@@ -388,7 +388,7 @@ void SectionCut::startCutting(bool isInitial)
         // we need all Link objects in App::Part for example for Assembly 4
         if (it->getObject()->getTypeId() == Base::Type::fromName("App::Part")) {
             App::Part* pcPart = static_cast<App::Part*>(it->getObject());
-           
+
             // collect all its link objects
             auto groupObjects = pcPart->Group.getValue();
             for (auto itGO = groupObjects.begin(); itGO != groupObjects.end(); ++itGO) {
@@ -434,7 +434,7 @@ void SectionCut::startCutting(bool isInitial)
         ui->cutZHS->setEnabled(false);
         ui->cutZHS->setToolTip(SliderToolTip);
     }
-    
+
     // sort out objects that are part of Part::Boolean, Part::MultiCommon, Part::MultiFuse,
     // Part::Thickness and Part::FilletBase
     std::vector<App::DocumentObject*>::iterator it2;
@@ -483,12 +483,12 @@ void SectionCut::startCutting(bool isInitial)
         ui->groupBoxZ->blockSignals(false);
         return;
     }
-    
+
     // we cut this way:
     // 1. put all existing objects into a part compound
     // 2. create a box with the size of the bounding box
     // 3. cut the box from the compound
-    
+
     // depending on how many cuts should be performed, we need as many boxes
     // if nothing is yet to be cut, we can return
     if (!ui->groupBoxX->isChecked() && !ui->groupBoxY->isChecked()
@@ -532,7 +532,7 @@ void SectionCut::startCutting(bool isInitial)
         else
             newName = (*itCuts)->getNameInDocument();
         newName = newName + "_CutLink";
-        
+
         auto newObject = doc->addObject("App::Link", newName.c_str());
         if (!newObject) {
             Base::Console().Error("SectionCut error: 'App::Link' could not be added\n");
@@ -542,7 +542,7 @@ void SectionCut::startCutting(bool isInitial)
         // set the object to the created empty link object
         pcLink->LinkedObject.setValue((*itCuts));
         // we want to get the link at the same position as the original
-        pcLink->LinkTransform.setValue(true); 
+        pcLink->LinkTransform.setValue(true);
 
         // if the object is part of an App::Part container,
         // the link needs to get the container placement
@@ -601,7 +601,7 @@ void SectionCut::startCutting(bool isInitial)
 
     // refresh all cut limits according to the new bounding box
     refreshCutRanges(CompoundBoundingBox);
-        
+
     // prepare the cut box size according to the bounding box size
     std::vector<float> BoundingBoxSize = { 0.0, 0.0, 0.0 };
     CompoundBoundingBox.getSize(BoundingBoxSize[0], BoundingBoxSize[1], BoundingBoxSize[2]);
@@ -746,7 +746,7 @@ void SectionCut::startCutting(bool isInitial)
             vpBox->ShapeColor.setValue(boxColor);
             vpBox->Transparency.setValue(boxTransparency);
         }
-        
+
         auto CutFeature = doc->addObject("Part::Cut", CutYName);
         if (!CutFeature) {
             Base::Console().Error((std::string("SectionCut error: ")
@@ -760,7 +760,7 @@ void SectionCut::startCutting(bool isInitial)
         else
             pcCut->Base.setValue(CutCompound);
         pcCut->Tool.setValue(CutBox);
-        
+
         // set the cut value
         ui->cutY->setValue(CutPosY);
         if (!ui->groupBoxZ->isChecked())
@@ -1466,7 +1466,7 @@ void SectionCut::onFlipXclicked()
             return;
         }
         pcCut->recomputeFeature(true);
-    }     
+    }
 }
 
 void SectionCut::onFlipYclicked()

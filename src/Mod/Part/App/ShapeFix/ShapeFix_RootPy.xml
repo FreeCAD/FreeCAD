@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-  <PythonExport 
+  <PythonExport
       Father="PyObjectBase"
       Name="ShapeFix_RootPy"
       PythonName="Part.ShapeFix.Root"
-      Twin="ShapeFix_Root" 
+      Twin="ShapeFix_Root"
       TwinPointer="ShapeFix_Root"
       Include="ShapeFix_Root.hxx"
       Namespace="Part"

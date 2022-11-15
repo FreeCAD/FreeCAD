@@ -45,7 +45,7 @@ std::string SurfaceOfExtrusionPy::representation() const
 
 PyObject *SurfaceOfExtrusionPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of SurfaceOfExtrusionPy and the Twin object 
+    // create a new instance of SurfaceOfExtrusionPy and the Twin object
     return new SurfaceOfExtrusionPy(new GeomSurfaceOfExtrusion);
 }
 
@@ -54,8 +54,8 @@ int SurfaceOfExtrusionPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
     PyObject* pGeom;
     PyObject* pDir;
-    if (!PyArg_ParseTuple(args, "O!O!", 
-                            &(GeometryPy::Type), &pGeom, 
+    if (!PyArg_ParseTuple(args, "O!O!",
+                            &(GeometryPy::Type), &pGeom,
                             &(Base::VectorPy::Type),&pDir))
         return -1;
 
@@ -152,5 +152,5 @@ PyObject *SurfaceOfExtrusionPy::getCustomAttributes(const char* /*attr*/) const
 
 int SurfaceOfExtrusionPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

@@ -121,7 +121,7 @@ App::DocumentObjectExecReturn *MultiCommon::execute()
                 // Let's call algorithm computing a fuse operation:
                 BRepAlgoAPI_Common mkCommon(resShape, *it);
                 // Let's check if the fusion has been successful
-                if (!mkCommon.IsDone()) 
+                if (!mkCommon.IsDone())
                     throw BooleanException("Intersection failed");
                 resShape = mkCommon.Shape();
 

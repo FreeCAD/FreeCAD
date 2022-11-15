@@ -117,5 +117,5 @@ PyObject *ArcOfConic2dPy::getCustomAttributes(const char* ) const
 
 int ArcOfConic2dPy::setCustomAttributes(const char* , PyObject *)
 {
-    return 0; 
+    return 0;
 }

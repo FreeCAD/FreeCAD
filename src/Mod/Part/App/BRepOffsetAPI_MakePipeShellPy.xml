@@ -31,7 +31,7 @@
 				<UserDocu>
 					setTrihedronMode(point,direction)
 					Sets a fixed trihedron to perform the sweeping.
-					All sections will be parallel. 
+					All sections will be parallel.
 				</UserDocu>
 			</Documentation>
 		</Methode>
@@ -58,15 +58,15 @@
 				<UserDocu>
 					setAuxiliarySpine(wire, CurvilinearEquivalence, TypeOfContact)
 					Sets an auxiliary spine to define the Normal.
-					
+
 					CurvilinearEquivalence = bool
 					For each Point of the Spine P, an Point Q is evalued on AuxiliarySpine.
 					If CurvilinearEquivalence=True Q split AuxiliarySpine with the same length ratio than P split Spine.
-					
+
 					* OCC before 6.7
 					TypeOfContact = bool
 					True = keep Contact
-					
+
 					* OCC >= 6.7
 					TypeOfContact = long
 					0: No contact
@@ -182,7 +182,7 @@
 			<Documentation>
 				<UserDocu>
 					setMaxDegree(int degree)
-					Define the maximum V degree of resulting surface. 
+					Define the maximum V degree of resulting surface.
 				</UserDocu>
 			</Documentation>
 		</Methode>

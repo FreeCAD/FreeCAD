@@ -184,7 +184,7 @@ std::vector<App::DocumentObject*> ViewProviderMirror::claimChildren() const
 bool ViewProviderMirror::onDelete(const std::vector<std::string> &)
 {
     // get the input shape
-    Part::Mirroring* pMirroring = static_cast<Part::Mirroring*>(getObject()); 
+    Part::Mirroring* pMirroring = static_cast<Part::Mirroring*>(getObject());
     App::DocumentObject *pSource = pMirroring->Source.getValue();
     if (pSource)
         Gui::Application::Instance->showViewProvider(pSource);
@@ -321,7 +321,7 @@ std::vector<App::DocumentObject*> ViewProviderFillet::claimChildren() const
 bool ViewProviderFillet::onDelete(const std::vector<std::string> &)
 {
     // get the input shape
-    Part::Fillet* pFillet = static_cast<Part::Fillet*>(getObject()); 
+    Part::Fillet* pFillet = static_cast<Part::Fillet*>(getObject());
     App::DocumentObject *pBase = pFillet->Base.getValue();
     if (pBase)
         Gui::Application::Instance->showViewProvider(pBase);
@@ -433,7 +433,7 @@ std::vector<App::DocumentObject*> ViewProviderChamfer::claimChildren() const
 bool ViewProviderChamfer::onDelete(const std::vector<std::string> &)
 {
     // get the input shape
-    Part::Chamfer* pChamfer = static_cast<Part::Chamfer*>(getObject()); 
+    Part::Chamfer* pChamfer = static_cast<Part::Chamfer*>(getObject());
     App::DocumentObject *pBase = pChamfer->Base.getValue();
     if (pBase)
         Gui::Application::Instance->showViewProvider(pBase);
@@ -464,7 +464,7 @@ std::vector<App::DocumentObject*> ViewProviderRevolution::claimChildren() const
 bool ViewProviderRevolution::onDelete(const std::vector<std::string> &)
 {
     // get the input shape
-    Part::Revolution* pRevolve = static_cast<Part::Revolution*>(getObject()); 
+    Part::Revolution* pRevolve = static_cast<Part::Revolution*>(getObject());
     App::DocumentObject *pBase = pRevolve->Source.getValue();
     if (pBase)
         Gui::Application::Instance->showViewProvider(pBase);
@@ -592,7 +592,7 @@ std::vector<App::DocumentObject*> ViewProviderOffset::claimChildren() const
 bool ViewProviderOffset::onDelete(const std::vector<std::string> &)
 {
     // get the support and Sketch
-    Part::Offset* offset = static_cast<Part::Offset*>(getObject()); 
+    Part::Offset* offset = static_cast<Part::Offset*>(getObject());
     App::DocumentObject* source = offset->Source.getValue();
     if (source){
         Gui::Application::Instance->getViewProvider(source)->show();
@@ -676,7 +676,7 @@ std::vector<App::DocumentObject*> ViewProviderThickness::claimChildren() const
 bool ViewProviderThickness::onDelete(const std::vector<std::string> &)
 {
     // get the support and Sketch
-    Part::Thickness* thickness = static_cast<Part::Thickness*>(getObject()); 
+    Part::Thickness* thickness = static_cast<Part::Thickness*>(getObject());
     App::DocumentObject* source = thickness->Faces.getValue();
     if (source){
         Gui::Application::Instance->getViewProvider(source)->show();

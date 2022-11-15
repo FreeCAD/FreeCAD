@@ -35,7 +35,7 @@ class Ui_DlgSettings3DViewPart;
  * \author Jürgen Riegel
  */
 class DlgSettings3DViewPart : public Gui::Dialog::PreferencePage
-{ 
+{
     Q_OBJECT
 
 public:

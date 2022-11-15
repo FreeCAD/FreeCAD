@@ -372,12 +372,12 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
         if(ctx->isSelectAll()) {
             if(ctx2 && ctx2->selectionIndex.size()) {
                 ctx2->selectionColor = ctx->selectionColor;
-                renderSelection(action,ctx2); 
+                renderSelection(action,ctx2);
             } else
-                renderSelection(action,ctx); 
+                renderSelection(action,ctx);
             return;
         }
-        renderSelection(action,ctx); 
+        renderSelection(action,ctx);
     }
     if(ctx2 && ctx2->selectionIndex.size()) {
         renderSelection(action,ctx2,false);
@@ -548,10 +548,10 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
         // There are a few factors affects the rendering order.
         //
         // 1) For normal case, the highlight (pre-selection) is the top layer. And since
-        // the depth buffer clipping is on here, we shall draw highlight first, then 
+        // the depth buffer clipping is on here, we shall draw highlight first, then
         // selection, then the rest part.
         //
-        // 2) If action->isRenderingDelayedPaths() is true, it means we are rendering 
+        // 2) If action->isRenderingDelayedPaths() is true, it means we are rendering
         // with depth buffer clipping turned off (always on top rendering), so we shall
         // draw the top layer last, i.e. renderHighlight() last
         //
@@ -566,19 +566,19 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
             if(ctx->selectionIndex.empty() || ctx->isSelectAll()) {
                 if(ctx2) {
                     ctx2->selectionColor = ctx->highlightColor;
-                    renderSelection(action,ctx2); 
+                    renderSelection(action,ctx2);
                 } else
                     renderHighlight(action,ctx);
             }else{
                 if(!action->isRenderingDelayedPaths())
-                    renderSelection(action,ctx); 
+                    renderSelection(action,ctx);
                 if(ctx2) {
                     ctx2->selectionColor = ctx->highlightColor;
-                    renderSelection(action,ctx2); 
+                    renderSelection(action,ctx2);
                 } else
                     renderHighlight(action,ctx);
                 if(action->isRenderingDelayedPaths())
-                    renderSelection(action,ctx); 
+                    renderSelection(action,ctx);
             }
             return;
         }
@@ -589,20 +589,20 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
             if(ctx->isSelectAll()) {
                 if(ctx2) {
                     ctx2->selectionColor = ctx->selectionColor;
-                    renderSelection(action,ctx2); 
+                    renderSelection(action,ctx2);
                 } else
-                    renderSelection(action,ctx); 
+                    renderSelection(action,ctx);
                 if(action->isRenderingDelayedPaths())
                     renderHighlight(action,ctx);
                 return;
             }
             if(!action->isRenderingDelayedPaths())
-                renderSelection(action,ctx); 
+                renderSelection(action,ctx);
         }
         if(ctx2) {
             renderSelection(action,ctx2,false);
             if(action->isRenderingDelayedPaths()) {
-                renderSelection(action,ctx); 
+                renderSelection(action,ctx);
                 renderHighlight(action,ctx);
             }
             return;
@@ -612,7 +612,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
     SoMaterialBundle mb(action);
     // It is important to send material before shouldGLRender(), otherwise
     // material override with transparncy won't work.
-    mb.sendFirst(); 
+    mb.sendFirst();
 
     // When setting transparency shouldGLRender() handles the rendering and returns false.
     // Therefore generatePrimitives() needs to be re-implemented to handle the materials
@@ -675,7 +675,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
         if(notify) enableNotify(notify);
         state->pop();
     }else if(action->isRenderingDelayedPaths()) {
-        renderSelection(action,ctx); 
+        renderSelection(action,ctx);
         renderHighlight(action,ctx);
     }
 }
@@ -723,10 +723,10 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction *action, SelContext
     //      b) has transparency
     //      c) has color override in secondary context
 
-    if((mb==SoMaterialBindingElement::OVERALL || 
-        (mb==SoMaterialBindingElement::PER_PART && diffuse_size>=partIndex.getNum())) 
+    if((mb==SoMaterialBindingElement::OVERALL ||
+        (mb==SoMaterialBindingElement::PER_PART && diffuse_size>=partIndex.getNum()))
         &&
-       ((ctx && Gui::Selection().needPickedList()) || 
+       ((ctx && Gui::Selection().needPickedList()) ||
         trans0!=0.0 ||
         (ctx2 && !ctx2->colors.empty())))
     {
@@ -736,7 +736,7 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction *action, SelContext
 
         if(ctx && Gui::Selection().needPickedList()) {
             hasTransparency = true;
-            if(trans0 < 0.5) 
+            if(trans0 < 0.5)
                 trans0=0.5;
             trans_size = 1;
             if(ctx2)
@@ -1388,7 +1388,7 @@ void SoBrepFaceSet::renderSelection(SoGLRenderAction *action, SelContextPtr ctx,
         state->pop();
         // SoCacheElement::invalidate(state);
     }
-    
+
     if (normalCacheUsed)
         this->readUnlockNormalCache();
 }

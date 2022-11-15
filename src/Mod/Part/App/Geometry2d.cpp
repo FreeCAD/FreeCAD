@@ -194,7 +194,7 @@ void Geom2dPoint::Restore(Base::XMLReader &reader)
     // get the value of my Attribute
     X = reader.getAttributeAsFloat("X");
     Y = reader.getAttributeAsFloat("Y");
- 
+
     // set the read geometry
     setPoint(Base::Vector2d(X,Y));
 }
@@ -296,14 +296,14 @@ bool Geom2dCurve::closestParameter(const Base::Vector2d& point, double &u) const
         std::cout << e.GetMessageString() << std::endl;
         return false;
     }
-    
+
     return false;
 }
 
 bool Geom2dCurve::closestParameterToBasicCurve(const Base::Vector2d& point, double &u) const
 {
     Handle(Geom2d_Curve) c = Handle(Geom2d_Curve)::DownCast(handle());
-    
+
     if (c->IsKind(STANDARD_TYPE(Geom2d_TrimmedCurve))){
         Handle(Geom2d_TrimmedCurve) tc = Handle(Geom2d_TrimmedCurve)::DownCast(handle());
         Handle(Geom2d_Curve) bc = tc->BasisCurve();
@@ -316,14 +316,14 @@ bool Geom2dCurve::closestParameterToBasicCurve(const Base::Vector2d& point, doub
             }
         }
         catch (Standard_Failure& e) {
-    
+
             std::cout << e.GetMessageString() << std::endl;
             return false;
         }
-        
-        return false;        
-        
-    } 
+
+        return false;
+
+    }
     else {
         return this->closestParameter(point, u);
     }
@@ -1060,7 +1060,7 @@ void Geom2dArcOfCircle::Restore(Base::XMLReader &reader)
         Handle(Geom2d_TrimmedCurve) tmpcurve = ma.Value();
         Handle(Geom2d_Circle) tmpcircle = Handle(Geom2d_Circle)::DownCast(tmpcurve->BasisCurve());
         Handle(Geom2d_Circle) circle = Handle(Geom2d_Circle)::DownCast(this->myCurve->BasisCurve());
- 
+
         circle->SetCirc2d(tmpcircle->Circ2d());
         this->myCurve->SetTrim(tmpcurve->FirstParameter(), tmpcurve->LastParameter());
     }
@@ -1211,7 +1211,7 @@ void Geom2dEllipse::Restore(Base::XMLReader& reader)
     RestoreAxis(reader, axis);
     MajorRadius = reader.getAttributeAsFloat("MajorRadius");
     MinorRadius = reader.getAttributeAsFloat("MinorRadius");
-    
+
     try {
         GCE2d_MakeEllipse mc(axis, MajorRadius, MinorRadius);
         if (!mc.IsDone())
@@ -1357,7 +1357,7 @@ void Geom2dArcOfEllipse::Save(Base::Writer &writer) const
 {
     // save the attributes of the father class
     Geom2dCurve::Save(writer);
-    
+
     Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast(this->myCurve->BasisCurve());
 
     gp_Elips2d e = ellipse->Elips2d();
@@ -1393,15 +1393,15 @@ void Geom2dArcOfEllipse::Restore(Base::XMLReader &reader)
         GCE2d_MakeEllipse mc(axis, MajorRadius, MinorRadius);
         if (!mc.IsDone())
             throw Base::CADKernelError(gce_ErrorStatusText(mc.Status()));
-        
+
         GCE2d_MakeArcOfEllipse ma(mc.Value()->Elips2d(), u, v);
         if (!ma.IsDone())
             throw Base::CADKernelError(gce_ErrorStatusText(ma.Status()));
-        
+
         Handle(Geom2d_TrimmedCurve) tmpcurve = ma.Value();
         Handle(Geom2d_Ellipse) tmpellipse = Handle(Geom2d_Ellipse)::DownCast(tmpcurve->BasisCurve());
         Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast(this->myCurve->BasisCurve());
- 
+
         ellipse->SetElips2d(tmpellipse->Elips2d());
         this->myCurve->SetTrim(tmpcurve->FirstParameter(), tmpcurve->LastParameter());
     }
@@ -1619,7 +1619,7 @@ void Geom2dArcOfHyperbola::Save(Base::Writer &writer) const
 {
     // save the attributes of the father class
     Geom2dCurve::Save(writer);
-    
+
     Handle(Geom2d_Hyperbola) hh = Handle(Geom2d_Hyperbola)::DownCast(this->myCurve->BasisCurve());
 
     gp_Hypr2d h = hh->Hypr2d();
@@ -1655,15 +1655,15 @@ void Geom2dArcOfHyperbola::Restore(Base::XMLReader &reader)
         GCE2d_MakeHyperbola mc(axis, MajorRadius, MinorRadius);
         if (!mc.IsDone())
             throw Base::CADKernelError(gce_ErrorStatusText(mc.Status()));
-        
+
         GCE2d_MakeArcOfHyperbola ma(mc.Value()->Hypr2d(), u, v);
         if (!ma.IsDone())
             throw Base::CADKernelError(gce_ErrorStatusText(ma.Status()));
-        
+
         Handle(Geom2d_TrimmedCurve) tmpcurve = ma.Value();
         Handle(Geom2d_Hyperbola) tmphyperbola = Handle(Geom2d_Hyperbola)::DownCast(tmpcurve->BasisCurve());
         Handle(Geom2d_Hyperbola) hyperbola = Handle(Geom2d_Hyperbola)::DownCast(this->myCurve->BasisCurve());
- 
+
         hyperbola->SetHypr2d(tmphyperbola->Hypr2d());
         this->myCurve->SetTrim(tmpcurve->FirstParameter(), tmpcurve->LastParameter());
     }
@@ -1844,7 +1844,7 @@ void Geom2dArcOfParabola::Save(Base::Writer &writer) const
 {
     // save the attributes of the father class
     Geom2dCurve::Save(writer);
-    
+
     Handle(Geom2d_Parabola) hp = Handle(Geom2d_Parabola)::DownCast(this->myCurve->BasisCurve());
     gp_Parab2d p = hp->Parab2d();
     gp_Ax22d axis = p.Axis();
@@ -1878,7 +1878,7 @@ void Geom2dArcOfParabola::Restore(Base::XMLReader &reader)
         GCE2d_MakeParabola mc(axis, Focal);
         if (!mc.IsDone())
             throw Base::CADKernelError(gce_ErrorStatusText(mc.Status()));
-        
+
         GCE2d_MakeArcOfParabola ma(mc.Value()->Parab2d(), u, v);
         if (!ma.IsDone())
             throw Base::CADKernelError(gce_ErrorStatusText(ma.Status()));
@@ -1886,7 +1886,7 @@ void Geom2dArcOfParabola::Restore(Base::XMLReader &reader)
         Handle(Geom2d_TrimmedCurve) tmpcurve = ma.Value();
         Handle(Geom2d_Parabola) tmpparabola = Handle(Geom2d_Parabola)::DownCast(tmpcurve->BasisCurve());
         Handle(Geom2d_Parabola) parabola = Handle(Geom2d_Parabola)::DownCast(this->myCurve->BasisCurve());
- 
+
         parabola->SetParab2d(tmpparabola->Parab2d());
         this->myCurve->SetTrim(tmpcurve->FirstParameter(), tmpcurve->LastParameter());
     }
@@ -1966,7 +1966,7 @@ void Geom2dLine::Save(Base::Writer &writer) const
     Base::Vector2d Pos = getPos();
     Base::Vector2d Dir = getDir();
 
-    writer.Stream() 
+    writer.Stream()
         << writer.ind()
         << "<Geom2dLine "
         << "PosX=\"" << Pos.x << "\" "
@@ -2100,7 +2100,7 @@ void Geom2dLineSegment::Save(Base::Writer &writer) const
     Base::Vector2d End   =  getEndPoint();
     Base::Vector2d Start =  getStartPoint();
 
-    writer.Stream() 
+    writer.Stream()
         << writer.ind()
         << "<Geom2dLineSegment "
         << "StartX=\"" << Start.x << "\" "

@@ -289,7 +289,7 @@ DlgFilletEdges::DlgFilletEdges(FilletType type, Part::FilletBase* fillet, QWidge
     findShapes();
 }
 
-/*  
+/*
  *  Destroys the object and frees any allocated resources
  */
 DlgFilletEdges::~DlgFilletEdges()
@@ -1043,7 +1043,7 @@ DlgChamferEdges::DlgChamferEdges(Part::FilletBase* chamfer, QWidget* parent, Qt:
     this->setWindowTitle(tr("Chamfer Edges"));
 }
 
-/*  
+/*
  *  Destroys the object and frees any allocated resources
  */
 DlgChamferEdges::~DlgChamferEdges()

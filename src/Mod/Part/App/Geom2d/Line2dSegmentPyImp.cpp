@@ -153,7 +153,7 @@ int Line2dSegmentPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             return 0;
         }
         catch (Standard_Failure& e) {
-    
+
             PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return -1;
         }
@@ -189,7 +189,7 @@ PyObject* Line2dSegmentPy::setParameterRange(PyObject *args)
         return nullptr;
     }
 
-    Py_Return; 
+    Py_Return;
 }
 
 Py::Object Line2dSegmentPy::getStartPoint() const
@@ -307,5 +307,5 @@ PyObject *Line2dSegmentPy::getCustomAttributes(const char* /*attr*/) const
 
 int Line2dSegmentPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

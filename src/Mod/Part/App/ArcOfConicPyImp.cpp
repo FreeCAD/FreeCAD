@@ -238,5 +238,5 @@ PyObject *ArcOfConicPy::getCustomAttributes(const char* ) const
 
 int ArcOfConicPy::setCustomAttributes(const char* , PyObject *)
 {
-    return 0; 
+    return 0;
 }

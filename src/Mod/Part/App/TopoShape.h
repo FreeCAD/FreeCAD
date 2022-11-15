@@ -321,7 +321,7 @@ public:
     TopoDS_Shape makeShell(const TopoDS_Shape&) const;
     //@}
 
-    /** @name Element name mapping aware shape maker 
+    /** @name Element name mapping aware shape maker
      *
      * To be complete in next batch of patches
      */
