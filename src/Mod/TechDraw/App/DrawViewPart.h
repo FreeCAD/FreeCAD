@@ -54,6 +54,7 @@ class Part;
 namespace TechDraw
 {
 class GeometryObject;
+using GeometryObjectPtr = std::shared_ptr<GeometryObject>;
 class Vertex;
 class BaseGeom;
 class Face;
@@ -124,7 +125,7 @@ public:
     const std::vector<TechDraw::FacePtr> getFaceGeometry() const;
 
     bool hasGeometry() const;
-    TechDraw::GeometryObject* getGeometryObject() const { return geometryObject; }
+    TechDraw::GeometryObjectPtr getGeometryObject() const { return geometryObject; }
 
     TechDraw::BaseGeomPtr getGeomByIndex(int idx) const;               //get existing geom for edge idx in projection
     TechDraw::VertexPtr getProjVertexByIndex(int idx) const;           //get existing geom for vertex idx in projection
@@ -221,15 +222,15 @@ public Q_SLOTS:
 protected:
     bool checkXDirection() const;
 
-    TechDraw::GeometryObject* geometryObject;
-    TechDraw::GeometryObject* m_tempGeometryObject;  //holds the new GO until hlr is completed
+    TechDraw::GeometryObjectPtr geometryObject;
+    TechDraw::GeometryObjectPtr m_tempGeometryObject;  //holds the new GO until hlr is completed
     Base::BoundBox3d bbox;
 
     void onChanged(const App::Property* prop) override;
     void unsetupObject() override;
 
-    virtual TechDraw::GeometryObject*  buildGeometryObject(TopoDS_Shape& shape, const gp_Ax2& viewAxis);
-    virtual TechDraw::GeometryObject*  makeGeometryForShape(TopoDS_Shape& shape);   //const??
+    virtual TechDraw::GeometryObjectPtr  buildGeometryObject(TopoDS_Shape& shape, const gp_Ax2& viewAxis);
+    virtual TechDraw::GeometryObjectPtr  makeGeometryForShape(TopoDS_Shape& shape);   //const??
     void partExec(TopoDS_Shape& shape);
     virtual void addShapes2d(void);
 

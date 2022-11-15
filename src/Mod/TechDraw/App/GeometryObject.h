@@ -25,6 +25,7 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -221,6 +222,8 @@ protected:
     double m_focus;
     bool m_usePolygonHLR;
 };
+
+using GeometryObjectPtr = std::shared_ptr<GeometryObject>;
 
 } //namespace TechDraw
 

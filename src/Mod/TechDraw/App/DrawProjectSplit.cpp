@@ -85,7 +85,7 @@ std::vector<TopoDS_Edge> DrawProjectSplit::getEdgesForWalker(TopoDS_Shape shape,
     scaledShape = TechDraw::scaleShape(copyShape,
                                        scale);
     gp_Ax2 viewAxis = TechDraw::legacyViewAxis1(Base::Vector3d(0.0, 0.0, 0.0), direction, false);
-    TechDraw::GeometryObject* go = buildGeometryObject(scaledShape, viewAxis);
+    TechDraw::GeometryObjectPtr go = buildGeometryObject(scaledShape, viewAxis);
     const std::vector<TechDraw::BaseGeomPtr>& goEdges = go->getVisibleFaceEdges(false, false);
     for (auto& e: goEdges){
         edgesIn.push_back(e->occEdge);
@@ -100,15 +100,14 @@ std::vector<TopoDS_Edge> DrawProjectSplit::getEdgesForWalker(TopoDS_Shape shape,
         }
     }
 
-    delete go;
     return nonZero;
 }
 
 //project the shape using viewAxis (coordinate system) and return a geometry object
-TechDraw::GeometryObject* DrawProjectSplit::buildGeometryObject(TopoDS_Shape shape,
+TechDraw::GeometryObjectPtr DrawProjectSplit::buildGeometryObject(TopoDS_Shape shape,
                                                                         const gp_Ax2& viewAxis)
 {
-    TechDraw::GeometryObject* geometryObject = new TechDraw::GeometryObject("DrawProjectSplit", nullptr);
+    TechDraw::GeometryObjectPtr geometryObject(std::make_shared<TechDraw::GeometryObject>("DrawProjectSplit", nullptr));
 
     if (geometryObject->usePolygonHLR()){
         geometryObject->projectShapeWithPolygonAlgo(shape, viewAxis);
