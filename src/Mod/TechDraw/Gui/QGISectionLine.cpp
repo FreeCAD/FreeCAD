@@ -347,10 +347,12 @@ void QGISectionLine::makeChangePointMarks()
         cPointItem->setPen(cPointPen);
         cPointItem->setZValue(ZVALUE::SECTIONLINE + 1);
         cPointItem->setPos(0.0, 0.0);
+
+        cPointItem->setRotation(rotation());
+
         m_changePointMarks.push_back(cPointItem);
     }
 }
-
 
 void QGISectionLine::setEnds(Base::Vector3d l1, Base::Vector3d l2)
 {
