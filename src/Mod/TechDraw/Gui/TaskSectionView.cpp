@@ -442,7 +442,7 @@ bool TaskSectionView::apply(bool forceUpdate)
     Gui::WaitCursor wc;
     if (m_dirName.empty()) {
         //this should never happen
-        std::string msg = 
+        std::string msg =
             Base::Tools::toStdString(tr("Nothing to apply. No section direction picked yet"));
         Base::Console().Error((msg + "\n").c_str());
         return false;
