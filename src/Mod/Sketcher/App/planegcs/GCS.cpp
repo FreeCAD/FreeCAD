@@ -1345,27 +1345,46 @@ int System::addConstraintInternalAlignmentKnotPoint(BSpline &b, Point &p, unsign
     if (numpoles == 0)
         numpoles = 1;
 
+    // `startpole` is the first pole affecting the knot with `knotindex`
     size_t startpole = 0;
     std::vector<double *> pvec;
     pvec.push_back(p.x);
 
-    std::vector<double> weights(numpoles, 1.0 / numpoles);
+    std::vector<double> factors(numpoles, 1.0 / numpoles);
 
-    // TODO: Adjust for periodic knot
+    // Only poles with indices `[i, i+1,... i+b.degree]` affect the interval
+    // `flattenedknots[b.degree+i]` to `flattenedknots[b.degree+i+1]`.
+    // When a knot has higher multiplicity, it can be seen as spanning
+    // multiple of these intervals, and thus is only affected by an
+    // intersection of the poles that affect it.
+    // The `knotindex` gives us the intervals, so work backwards and find
+    // the affecting poles.
+    // Note that this works also for periodic B-splines, just that the poles wrap around if needed.
     for (size_t j = 1; j <= knotindex; ++j)
         startpole += b.mult[j];
+    // For the last knot, even the upper limit of the last interval range
+    // is included. So offset for that.
+    // For periodic B-splines the `flattenedknots` are defined differently,
+    // so this is not needed for them.
     if (!b.periodic && startpole >= b.poles.size())
         startpole = b.poles.size() - 1;
-    for (size_t i = 0; i < numpoles; ++i) {
+
+    // Calculate the factors to be passed to weighted linear combination constraint.
+    // The if condition has a small performance benefit, but that is not why it is here.
+    // One case when numpoles <= 2 is for the last knot of a non-periodic B-spline.
+    // In this case, the interval `k` passed to `getLinCombFactor` is degenerate, and this is the cleanest way to handle it.
+    if (numpoles > 2)
+        for (size_t i = 0; i < numpoles; ++i)
+            factors[i] = b.getLinCombFactor(*(b.knots[knotindex]), startpole + b.degree, startpole + i);
+
+    // The mod operation is to adjust for periodic B-splines.
+    // This can be separated for performance reasons but it will be less readable.
+    for (size_t i = 0; i < numpoles; ++i)
         pvec.push_back(b.poles[(startpole + i) % b.poles.size()].x);
-        // FIXME: `getLinCombFactor` seg-faults for the last knot so this safeguard exists
-        if (numpoles > 2)
-            weights[i] = b.getLinCombFactor(*(b.knots[knotindex]), startpole + b.degree, startpole + i);
-    }
     for (size_t i = 0; i < numpoles; ++i)
         pvec.push_back(b.weights[(startpole + i) % b.poles.size()]);
 
-    Constraint *constr = new ConstraintWeightedLinearCombination(numpoles, pvec, weights);
+    Constraint *constr = new ConstraintWeightedLinearCombination(numpoles, pvec, factors);
     constr->setTag(tagId);
     constr->setDriving(driving);
     constr->setInternalAlignment(Constraint::Alignment::InternalAlignment);
@@ -1378,7 +1397,7 @@ int System::addConstraintInternalAlignmentKnotPoint(BSpline &b, Point &p, unsign
     for (size_t i = 0; i < numpoles; ++i)
         pvec.push_back(b.weights[(startpole + i) % b.poles.size()]);
 
-    constr = new ConstraintWeightedLinearCombination(numpoles, pvec, weights);
+    constr = new ConstraintWeightedLinearCombination(numpoles, pvec, factors);
     constr->setTag(tagId);
     constr->setDriving(driving);
     constr->setInternalAlignment(Constraint::Alignment::InternalAlignment);

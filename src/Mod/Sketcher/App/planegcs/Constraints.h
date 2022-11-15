@@ -160,17 +160,19 @@ namespace GCS
     // Center of Gravity
     class ConstraintCenterOfGravity : public Constraint
     {
+        inline double* thecenter() { return pvec[0]; }
+        inline double* pointat(size_t i) { return pvec[1 + i]; }
     public:
         /// Constrains that the first parameter is center of gravity of rest
-        ConstraintCenterOfGravity(const std::vector<double *>& givenpvec);
+        /// Let `pvec = [q, p_1, p_2,...]`, and
+        /// `givenweights = [f_1, f_2,...]`, then this constraint ensures
+        /// `q = sum(p_i*f_i)`.
         ConstraintCenterOfGravity(const std::vector<double *>& givenpvec, const std::vector<double>& givenweights);
         ConstraintType getTypeId() override;
         void rescale(double coef=1.) override;
         double error() override;
         double grad(double *) override;
     private:
-        void setupInputs();
-        static const std::vector< std::vector<double> > defaultweights;
         std::vector<double> weights;
         double numpoints;
     };
@@ -178,24 +180,30 @@ namespace GCS
     // Weighted Linear Combination
     class ConstraintWeightedLinearCombination : public Constraint
     {
+        inline double* thepoint() { return pvec[0]; }
+        inline double* poleat(size_t i) { return pvec[1 + i]; }
+        inline double* weightat(size_t i) { return pvec[1 + numpoles + i]; }
     public:
         /// Constrains that the first element in pvec is a linear combination
         /// of the next numpoints elements in homogeneous coordinates with
         /// weights given in the last numpoints elements.
-        /// Let pvec = [q, p_1, p_2,... w_1, w_2,...], and
-        /// givenfactors = [f_1, f_2,...], then this constraint ensures
-        /// q*sum(w_i*f_i) = sum(p_i*w_i*f_i).
-        ConstraintWeightedLinearCombination(size_t givennumpoints, const std::vector<double *>& givenpvec);
+        /// Let `pvec = [q, p_1, p_2,... w_1, w_2,...]`, and
+        /// `givenfactors = [f_1, f_2,...]`, then this constraint ensures
+        /// `q*sum(w_i*f_i) = sum(p_i*w_i*f_i)`.
+        ///
+        /// This constraint is currently used to ensure that a B-spline knot
+        /// point remains at the position determined by it's poles.
+        /// In that case, `q` is the x (or y) coordinate of the knot, `p_i` are
+        /// the x (or y) coordinates of the poles, and `w_i` are their weights.
+        /// Finally, `f_i` are obtained using `BSpline::getLinCombFactor()`.
         ConstraintWeightedLinearCombination(size_t givennumpoints, const std::vector<double *>& givenpvec, const std::vector<double>& givenfactors);
         ConstraintType getTypeId() override;
         void rescale(double coef=1.) override;
         double error() override;
         double grad(double *) override;
     private:
-        void setupInputs();
-        static const std::vector< std::vector<double> > defaultfactors;
         std::vector<double> factors;
-        size_t numpoints;
+        size_t numpoles;
     };
 
     // Difference
