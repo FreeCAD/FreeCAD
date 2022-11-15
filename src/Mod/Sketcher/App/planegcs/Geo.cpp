@@ -718,12 +718,21 @@ double BSpline::getLinCombFactor(double x, size_t k, size_t i)
     // https://en.wikipedia.org/wiki/De_Boor%27s_algorithm.
 
     // FIXME: This should probably be guaranteed by now, and done somewhere else
+    // To elaborate: `flattenedknots` should be set up as soon as `knots`
+    // and `mult` have been defined after creating the B-spline.
+    // However, in the future the values of `knots` could go into the solver
+    // as well, when alternatives may be needed to keep `flattenedknots` updated.
+    // Slightly more detailed discussion here:
+    // https://github.com/FreeCAD/FreeCAD/pull/7484#discussion_r1020858392
     if (flattenedknots.empty())
         setupFlattenedKnots();
 
     std::vector d(degree + 1, 0.0);
-    // TODO: Ensure this is within range
-    d[i + degree - k] = 1.0;
+    // Ensure this is within range
+    int idxOfPole = i + degree - k;
+    if (idxOfPole < 0 || idxOfPole > degree)
+        return 0.0;
+    d[idxOfPole] = 1.0;
 
     for (size_t r = 1; static_cast<int>(r) < degree + 1; ++r) {
         for (size_t j = degree; j > r - 1; --j) {
