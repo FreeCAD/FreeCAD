@@ -622,28 +622,28 @@ Py::Long BSplineCurve2dPy::getDegree() const
 {
     Handle(Geom2d_BSplineCurve) curve = Handle(Geom2d_BSplineCurve)::DownCast
         (getGeometry2dPtr()->handle());
-    return Py::Long(curve->Degree()); 
+    return Py::Long(curve->Degree());
 }
 
 Py::Long BSplineCurve2dPy::getMaxDegree() const
 {
     Handle(Geom2d_BSplineCurve) curve = Handle(Geom2d_BSplineCurve)::DownCast
         (getGeometry2dPtr()->handle());
-    return Py::Long(curve->MaxDegree()); 
+    return Py::Long(curve->MaxDegree());
 }
 
 Py::Long BSplineCurve2dPy::getNbPoles() const
 {
     Handle(Geom2d_BSplineCurve) curve = Handle(Geom2d_BSplineCurve)::DownCast
         (getGeometry2dPtr()->handle());
-    return Py::Long(curve->NbPoles()); 
+    return Py::Long(curve->NbPoles());
 }
 
 Py::Long BSplineCurve2dPy::getNbKnots() const
 {
     Handle(Geom2d_BSplineCurve) curve = Handle(Geom2d_BSplineCurve)::DownCast
         (getGeometry2dPtr()->handle());
-    return Py::Long(curve->NbKnots()); 
+    return Py::Long(curve->NbKnots());
 }
 
 Py::Object BSplineCurve2dPy::getStartPoint() const
@@ -666,14 +666,14 @@ Py::Object BSplineCurve2dPy::getFirstUKnotIndex() const
 {
     Handle(Geom2d_BSplineCurve) curve = Handle(Geom2d_BSplineCurve)::DownCast
         (getGeometry2dPtr()->handle());
-    return Py::Long(curve->FirstUKnotIndex()); 
+    return Py::Long(curve->FirstUKnotIndex());
 }
 
 Py::Object BSplineCurve2dPy::getLastUKnotIndex() const
 {
     Handle(Geom2d_BSplineCurve) curve = Handle(Geom2d_BSplineCurve)::DownCast
         (getGeometry2dPtr()->handle());
-    return Py::Long(curve->LastUKnotIndex()); 
+    return Py::Long(curve->LastUKnotIndex());
 }
 
 Py::List BSplineCurve2dPy::getKnotSequence() const
@@ -736,17 +736,17 @@ PyObject* BSplineCurve2dPy::approximate(PyObject *args, PyObject *kwds)
     double weight1 = 0;
     double weight2 = 0;
     double weight3 = 0;
-    
+
     static char* kwds_interp[] = {"Points", "DegMax", "Continuity", "Tolerance", "DegMin", "ParamType", "Parameters",
                                   "LengthWeight", "CurvatureWeight", "TorsionWeight", nullptr};
-    
+
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "O|isdisOddd",kwds_interp,
                                      &obj, &degMax,
-                                     &continuity, &tol3d, &degMin, 
+                                     &continuity, &tol3d, &degMin,
                                      &parType, &par,
                                      &weight1, &weight2, &weight3))
         return nullptr;
-    
+
     try {
         Py::Sequence list(obj);
         TColgp_Array1OfPnt2d pnts(1,list.size());
@@ -759,7 +759,7 @@ PyObject* BSplineCurve2dPy::approximate(PyObject *args, PyObject *kwds)
         if (degMin > degMax) {
             Standard_Failure::Raise("DegMin must be lower or equal to DegMax");
         }
-        
+
         GeomAbs_Shape c;
         std::string str = continuity;
         if (str == "C0")
@@ -778,7 +778,7 @@ PyObject* BSplineCurve2dPy::approximate(PyObject *args, PyObject *kwds)
             c = GeomAbs_CN;
         else
             c = GeomAbs_C2;
-        
+
         if (weight1 || weight2 || weight3) {
             // It seems that this function only works with Continuity = C0, C1 or C2
             if (!(c == GeomAbs_C0 || c == GeomAbs_C1 || c == GeomAbs_C2)) {
@@ -796,7 +796,7 @@ PyObject* BSplineCurve2dPy::approximate(PyObject *args, PyObject *kwds)
                 return nullptr; // goes to the catch block
             }
         }
-        
+
         if (par) {
             Py::Sequence plist(par);
             TColStd_Array1OfReal parameters(1,plist.size());
@@ -805,7 +805,7 @@ PyObject* BSplineCurve2dPy::approximate(PyObject *args, PyObject *kwds)
                 Py::Float f(*it);
                 parameters(index++) = static_cast<double>(f);
             }
-            
+
             Geom2dAPI_PointsToBSpline fit(pnts, parameters, degMin, degMax, c, tol3d);
             Handle(Geom2d_BSplineCurve) spline = fit.Curve();
             if (!spline.IsNull()) {
@@ -817,7 +817,7 @@ PyObject* BSplineCurve2dPy::approximate(PyObject *args, PyObject *kwds)
                 return nullptr; // goes to the catch block
             }
         }
-        
+
         Approx_ParametrizationType pt;
         std::string pstr = parType;
         if (pstr == "Uniform")
@@ -1278,5 +1278,5 @@ PyObject* BSplineCurve2dPy::getCustomAttributes(const char* /*attr*/) const
 
 int BSplineCurve2dPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

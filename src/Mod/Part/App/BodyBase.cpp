@@ -80,7 +80,7 @@ bool BodyBase::isAfter(const App::DocumentObject *feature, const App::DocumentOb
 }
 
 void BodyBase::onBeforeChange (const App::Property* prop) {
-    
+
     //Tip can't point outside the body, hence no base feature tip
     /*// If we are changing the base feature and tip point to it reset it
     if ( prop == &BaseFeature && BaseFeature.getValue() == Tip.getValue() && BaseFeature.getValue() ) {

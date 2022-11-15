@@ -77,7 +77,7 @@ Mirroring::Mirroring(QWidget* parent)
     sel.applyFrom(Gui::Selection().getObjectsOfType(App::Part::getClassTypeId()));
 }
 
-/*  
+/*
  *  Destroys the object and frees any allocated resources
  */
 Mirroring::~Mirroring()
@@ -110,7 +110,7 @@ void Mirroring::findShapes()
         if (!shape.isNull()) {
             QString label = QString::fromUtf8((*it)->Label.getValue());
             QString name = QString::fromLatin1((*it)->getNameInDocument());
-            
+
             QTreeWidgetItem* child = new QTreeWidgetItem();
             child->setText(0, label);
             child->setToolTip(0, label);

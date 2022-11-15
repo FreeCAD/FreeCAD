@@ -132,7 +132,7 @@ private:
     std::string m_currentShowType;
 
     std::vector<QWidget*> m_guiObjectVec;
-    
+
     const QString m_projectionObjectName;
     Part::Feature* m_projectionObject;
     App::Document* m_partDocument;
@@ -140,7 +140,7 @@ private:
 
     class EdgeSelection;
     EdgeSelection* filterEdge;
-    
+
     class FaceSelection;
     FaceSelection* filterFace;
 };

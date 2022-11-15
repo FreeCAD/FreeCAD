@@ -31,8 +31,8 @@ using namespace PartGui;
 /* TRANSLATOR PartGui::DlgSettingsObjectColor */
 
 /**
- *  Constructs a DlgSettingsObjectColor which is a child of 'parent', with the 
- *  name 'name' and widget flags set to 'f' 
+ *  Constructs a DlgSettingsObjectColor which is a child of 'parent', with the
+ *  name 'name' and widget flags set to 'f'
  */
 DlgSettingsObjectColor::DlgSettingsObjectColor(QWidget* parent)
     : PreferencePage(parent)
@@ -42,7 +42,7 @@ DlgSettingsObjectColor::DlgSettingsObjectColor(QWidget* parent)
     ui->DefaultShapeColor->setDisabled(ui->checkRandomColor->isChecked());
 }
 
-/** 
+/**
  *  Destroys the object and frees any allocated resources
  */
 DlgSettingsObjectColor::~DlgSettingsObjectColor()

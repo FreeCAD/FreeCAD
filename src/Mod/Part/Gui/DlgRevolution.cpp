@@ -130,7 +130,7 @@ DlgRevolution::DlgRevolution(QWidget* parent, Qt::WindowFlags fl)
     autoSolid();
 }
 
-/*  
+/*
  *  Destroys the object and frees any allocated resources
  */
 DlgRevolution::~DlgRevolution()

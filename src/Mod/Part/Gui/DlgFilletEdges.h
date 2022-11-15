@@ -35,7 +35,7 @@
 namespace Base {
     class Quantity;
 }
-namespace Part { 
+namespace Part {
     class FilletBase;
     class Fillet;
     class Chamfer;
@@ -58,7 +58,7 @@ public:
     void setModelData(QWidget *editor, QAbstractItemModel *model,
                       const QModelIndex &index) const override;
 
-    void updateEditorGeometry(QWidget *editor, 
+    void updateEditorGeometry(QWidget *editor,
         const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 };
 

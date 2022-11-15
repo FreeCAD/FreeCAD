@@ -46,7 +46,7 @@ std::string HyperbolaPy::representation() const
 
 PyObject *HyperbolaPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of HyperbolaPy and the Twin object 
+    // create a new instance of HyperbolaPy and the Twin object
     return new HyperbolaPy(new GeomHyperbola);
 }
 
@@ -128,7 +128,7 @@ int HyperbolaPy::PyInit(PyObject* args, PyObject* kwds)
 Py::Float HyperbolaPy::getMajorRadius() const
 {
     Handle(Geom_Hyperbola) hyperbola = Handle(Geom_Hyperbola)::DownCast(getGeomHyperbolaPtr()->handle());
-    return Py::Float(hyperbola->MajorRadius()); 
+    return Py::Float(hyperbola->MajorRadius());
 }
 
 void HyperbolaPy::setMajorRadius(Py::Float arg)
@@ -140,7 +140,7 @@ void HyperbolaPy::setMajorRadius(Py::Float arg)
 Py::Float HyperbolaPy::getMinorRadius() const
 {
     Handle(Geom_Hyperbola) hyperbola = Handle(Geom_Hyperbola)::DownCast(getGeomHyperbolaPtr()->handle());
-    return Py::Float(hyperbola->MinorRadius()); 
+    return Py::Float(hyperbola->MinorRadius());
 }
 
 void HyperbolaPy::setMinorRadius(Py::Float arg)
@@ -152,7 +152,7 @@ void HyperbolaPy::setMinorRadius(Py::Float arg)
 Py::Float HyperbolaPy::getFocal() const
 {
     Handle(Geom_Hyperbola) hyperbola = Handle(Geom_Hyperbola)::DownCast(getGeomHyperbolaPtr()->handle());
-    return Py::Float(hyperbola->Focal()); 
+    return Py::Float(hyperbola->Focal());
 }
 
 Py::Object HyperbolaPy::getFocus1() const
@@ -176,5 +176,5 @@ PyObject *HyperbolaPy::getCustomAttributes(const char* /*attr*/) const
 
 int HyperbolaPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

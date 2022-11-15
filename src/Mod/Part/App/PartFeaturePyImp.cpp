@@ -44,5 +44,5 @@ PyObject *PartFeaturePy::getCustomAttributes(const char* ) const
 
 int PartFeaturePy::setCustomAttributes(const char* , PyObject *)
 {
-    return 0; 
+    return 0;
 }

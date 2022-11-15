@@ -38,8 +38,8 @@
 using namespace PartGui;
 
 /**
- *  Constructs a DlgSettings3DViewPart which is a child of 'parent', with the 
- *  name 'name' and widget flags set to 'f' 
+ *  Constructs a DlgSettings3DViewPart which is a child of 'parent', with the
+ *  name 'name' and widget flags set to 'f'
  */
 DlgSettings3DViewPart::DlgSettings3DViewPart(QWidget* parent)
   : PreferencePage(parent), ui(new Ui_DlgSettings3DViewPart), checkValue(false)
@@ -51,7 +51,7 @@ DlgSettings3DViewPart::DlgSettings3DViewPart(QWidget* parent)
     ui->maxDeviation->setMinimum(lowerLimit);
 }
 
-/** 
+/**
  *  Destroys the object and frees any allocated resources
  */
 DlgSettings3DViewPart::~DlgSettings3DViewPart()

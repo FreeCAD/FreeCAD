@@ -360,7 +360,7 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
         App::DocumentObject* selObj = ViewProvider->getObject()->getDocument()->getObject(msg.pObjectName);
         if (!selObj || selObj == ViewProvider->getObject())//prevent self-referencing
             return;
-        
+
         std::string subname = msg.pSubName;
 
         // Remove subname for planes and datum features
@@ -1003,7 +1003,7 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
         std::string editSubName;
         auto sels = Gui::Selection().getSelection(nullptr, Gui::ResolveMode::NoResolve, true);
         if(!sels.empty() && sels[0].pResolvedObject
-                       && sels[0].pResolvedObject->getLinkedObject()==editObj) 
+                       && sels[0].pResolvedObject->getLinkedObject()==editObj)
         {
             editObj = sels[0].pObject;
             editSubName = sels[0].SubName;

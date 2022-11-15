@@ -51,7 +51,7 @@ std::string PlanePy::representation() const
 
 PyObject *PlanePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of PlanePy and the Twin object 
+    // create a new instance of PlanePy and the Twin object
     return new PlanePy(new GeomPlane);
 }
 
@@ -257,5 +257,5 @@ PyObject *PlanePy::getCustomAttributes(const char* /*attr*/) const
 
 int PlanePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

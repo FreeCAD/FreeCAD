@@ -43,7 +43,7 @@ std::string RectangularTrimmedSurfacePy::representation() const
 
 PyObject *RectangularTrimmedSurfacePy::PyMake(struct _typeobject *, PyObject *, PyObject *)
 {
-    // create a new instance of RectangularTrimmedSurfacePy and the Twin object 
+    // create a new instance of RectangularTrimmedSurfacePy and the Twin object
     return new RectangularTrimmedSurfacePy(new GeomTrimmedSurface);
 }
 
@@ -126,5 +126,5 @@ PyObject *RectangularTrimmedSurfacePy::getCustomAttributes(const char* /*attr*/)
 
 int RectangularTrimmedSurfacePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

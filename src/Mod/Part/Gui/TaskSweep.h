@@ -33,7 +33,7 @@ namespace Gui {
 class SelectionObject;
 class StatusWidget;
 }
-namespace PartGui { 
+namespace PartGui {
 
 class SweepWidget : public QWidget
 {

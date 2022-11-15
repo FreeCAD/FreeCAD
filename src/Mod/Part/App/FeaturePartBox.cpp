@@ -122,7 +122,7 @@ void Box::Restore(Base::XMLReader &reader)
                 prop->setStatusValue(status.to_ulong());
         }
         if (prop && strcmp(prop->getTypeId().getName(), TypeName) == 0) {
-            if (!prop->testStatus(App::Property::Transient) 
+            if (!prop->testStatus(App::Property::Transient)
                     && !status.test(App::Property::Transient)
                     && !status.test(App::Property::PropTransient)
                     && !(getPropertyType(prop) & App::Prop_Transient))

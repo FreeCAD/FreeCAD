@@ -62,13 +62,13 @@ int Parabola2dPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 Py::Float Parabola2dPy::getFocal() const
 {
     Handle(Geom2d_Parabola) curve = Handle(Geom2d_Parabola)::DownCast(getGeometry2dPtr()->handle());
-    return Py::Float(curve->Focal()); 
+    return Py::Float(curve->Focal());
 }
 
 void Parabola2dPy::setFocal(Py::Float arg)
 {
     Handle(Geom2d_Parabola) curve = Handle(Geom2d_Parabola)::DownCast(getGeometry2dPtr()->handle());
-    curve->SetFocal((double)arg); 
+    curve->SetFocal((double)arg);
 }
 
 Py::Object Parabola2dPy::getFocus() const
@@ -91,5 +91,5 @@ PyObject *Parabola2dPy::getCustomAttributes(const char* /*attr*/) const
 
 int Parabola2dPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

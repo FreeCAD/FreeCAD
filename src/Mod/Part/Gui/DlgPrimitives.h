@@ -184,7 +184,7 @@ class TaskPrimitivesEdit : public Gui::TaskView::TaskDialog
 public:
     explicit TaskPrimitivesEdit(Part::Primitive* feature);
     ~TaskPrimitivesEdit() override;
-    
+
 public:
     bool accept() override;
     bool reject() override;
@@ -192,7 +192,7 @@ public:
 
 private:
     DlgPrimitives* widget;
-    Location* location; 
+    Location* location;
 };
 
 } // namespace PartGui

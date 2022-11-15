@@ -46,7 +46,7 @@ using namespace Part;
 
 PyObject *BRepOffsetAPI_MakePipeShellPy::PyMake(struct _typeobject *, PyObject *args, PyObject *)  // Python wrapper
 {
-    // create a new instance of BRepOffsetAPI_MakePipeShellPy and the Twin object 
+    // create a new instance of BRepOffsetAPI_MakePipeShellPy and the Twin object
     PyObject* obj;
     if (!PyArg_ParseTuple(args, "O!",&(TopoShapePy::Type),&obj))
         return nullptr;
@@ -459,7 +459,7 @@ PyObject* BRepOffsetAPI_MakePipeShellPy::simulate(PyObject *args)
         return nullptr;
 
     try {
-        TopTools_ListOfShape list; 
+        TopTools_ListOfShape list;
         this->getBRepOffsetAPI_MakePipeShellPtr()->Simulate(nbsec, list);
 
         Py::List shapes;
@@ -484,5 +484,5 @@ PyObject *BRepOffsetAPI_MakePipeShellPy::getCustomAttributes(const char* ) const
 
 int BRepOffsetAPI_MakePipeShellPy::setCustomAttributes(const char* , PyObject *)
 {
-    return 0; 
+    return 0;
 }

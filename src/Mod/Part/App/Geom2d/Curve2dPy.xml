@@ -71,7 +71,7 @@ length([uMin,uMax,Tol]) -> Float</UserDocu>
 		</Methode>
 		<Methode Name="parameterAtDistance">
 			<Documentation>
-				<UserDocu>Returns the parameter on the curve of a point at the given distance from a starting parameter. 
+				<UserDocu>Returns the parameter on the curve of a point at the given distance from a starting parameter.
 parameterAtDistance([abscissa, startingParameter]) -> Float the</UserDocu>
 			</Documentation>
 		</Methode>

@@ -131,5 +131,5 @@ PyObject *OffsetCurve2dPy::getCustomAttributes(const char* /*attr*/) const
 
 int OffsetCurve2dPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

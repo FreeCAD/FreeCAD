@@ -69,7 +69,7 @@ public:
     DocumentObject *getSubObject(const char *subname, PyObject **pyObj,
             Base::Matrix4D *mat, bool transform, int depth) const override;
 
-    /** Convenience function to extract shape from fully qualified subname 
+    /** Convenience function to extract shape from fully qualified subname
      *
      * @param obj: the parent object
      *
@@ -90,12 +90,12 @@ public:
      * if pmat already include obj's transformation matrix.
      */
     static TopoDS_Shape getShape(const App::DocumentObject *obj,
-            const char *subname=nullptr, bool needSubElement=false, Base::Matrix4D *pmat=nullptr, 
+            const char *subname=nullptr, bool needSubElement=false, Base::Matrix4D *pmat=nullptr,
             App::DocumentObject **owner=nullptr, bool resolveLink=true, bool transform=true);
 
     static TopoShape getTopoShape(const App::DocumentObject *obj,
-            const char *subname=nullptr, bool needSubElement=false, Base::Matrix4D *pmat=nullptr, 
-            App::DocumentObject **owner=nullptr, bool resolveLink=true, bool transform=true, 
+            const char *subname=nullptr, bool needSubElement=false, Base::Matrix4D *pmat=nullptr,
+            App::DocumentObject **owner=nullptr, bool resolveLink=true, bool transform=true,
             bool noElementMap=false);
 
     static void clearShapeCache();

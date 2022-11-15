@@ -798,7 +798,7 @@ PyObject *GeometrySurfacePy::getCustomAttributes(const char* /*attr*/) const
 
 int GeometrySurfacePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }
 
 // Specialized intersection functions

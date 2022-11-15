@@ -44,7 +44,7 @@ std::string ToroidPy::representation() const
 
 PyObject *ToroidPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of ToroidPy and the Twin object 
+    // create a new instance of ToroidPy and the Twin object
     return new ToroidPy(new GeomToroid);
 }
 
@@ -66,7 +66,7 @@ Py::Float ToroidPy::getMajorRadius() const
 {
     Handle(Geom_ToroidalSurface) torus = Handle(Geom_ToroidalSurface)::DownCast
         (getGeomToroidPtr()->handle());
-    return Py::Float(torus->MajorRadius()); 
+    return Py::Float(torus->MajorRadius());
 }
 
 void ToroidPy::setMajorRadius(Py::Float arg)
@@ -85,7 +85,7 @@ Py::Float ToroidPy::getMinorRadius() const
 {
     Handle(Geom_ToroidalSurface) torus = Handle(Geom_ToroidalSurface)::DownCast
         (getGeomToroidPtr()->handle());
-    return Py::Float(torus->MinorRadius()); 
+    return Py::Float(torus->MinorRadius());
 }
 
 void ToroidPy::setMinorRadius(Py::Float arg)
@@ -171,14 +171,14 @@ Py::Float ToroidPy::getArea() const
 {
     Handle(Geom_ToroidalSurface) torus = Handle(Geom_ToroidalSurface)::DownCast
         (getGeomToroidPtr()->handle());
-    return Py::Float(torus->Area()); 
+    return Py::Float(torus->Area());
 }
 
 Py::Float ToroidPy::getVolume() const
 {
     Handle(Geom_ToroidalSurface) torus = Handle(Geom_ToroidalSurface)::DownCast
         (getGeomToroidPtr()->handle());
-    return Py::Float(torus->Volume()); 
+    return Py::Float(torus->Volume());
 }
 
 PyObject *ToroidPy::getCustomAttributes(const char* /*attr*/) const
@@ -188,5 +188,5 @@ PyObject *ToroidPy::getCustomAttributes(const char* /*attr*/) const
 
 int ToroidPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

@@ -318,7 +318,7 @@ def cmdCreateSliceFeature(name, mode, transaction=True):
 def cmdSliceApart():
     FreeCAD.ActiveDocument.openTransaction("Slice apart")
     made = cmdCreateSliceFeature(name="Slice", mode="Split", transaction=False)
-    
+
     if made:
         FreeCADGui.addModule("CompoundTools.Explode")
         FreeCADGui.doCommand("CompoundTools.Explode.explodeCompound(f)")

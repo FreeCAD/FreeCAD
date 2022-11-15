@@ -275,7 +275,7 @@ App::PropertyPlacement& AttachExtension::getPlacement() const {
 }
 
 PyObject* AttachExtension::getExtensionPyObject() {
-    
+
     if (ExtensionPythonObject.is(Py::_None())){
         // ref counter is set to 1
         ExtensionPythonObject = Py::Object(new AttachExtensionPy(this),true);

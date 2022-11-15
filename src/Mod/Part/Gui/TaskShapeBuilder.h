@@ -28,7 +28,7 @@
 #include <Gui/TaskView/TaskView.h>
 
 
-namespace PartGui { 
+namespace PartGui {
 
 class ShapeBuilderWidget : public QWidget,
                            public Gui::SelectionObserver

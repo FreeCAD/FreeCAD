@@ -108,7 +108,7 @@ App::PropertyQuantityConstraint::Constraints ViewProviderPartExt::angDeflectionR
 const char* ViewProviderPartExt::LightingEnums[]= {"One side","Two side",nullptr};
 const char* ViewProviderPartExt::DrawStyleEnums[]= {"Solid","Dashed","Dotted","Dashdot",nullptr};
 
-ViewProviderPartExt::ViewProviderPartExt() 
+ViewProviderPartExt::ViewProviderPartExt()
 {
     VisualTouched = true;
     forceUpdateCount = 0;
@@ -119,12 +119,12 @@ ViewProviderPartExt::ViewProviderPartExt()
     float lr,lg,lb;
     lr = ((lcol >> 24) & 0xff) / 255.0; lg = ((lcol >> 16) & 0xff) / 255.0; lb = ((lcol >> 8) & 0xff) / 255.0;
     // get default vertex color
-    unsigned long vcol = Gui::ViewParams::instance()->getDefaultShapeVertexColor(); 
+    unsigned long vcol = Gui::ViewParams::instance()->getDefaultShapeVertexColor();
     float vr,vg,vb;
     vr = ((vcol >> 24) & 0xff) / 255.0; vg = ((vcol >> 16) & 0xff) / 255.0; vb = ((vcol >> 8) & 0xff) / 255.0;
     int lwidth = Gui::ViewParams::instance()->getDefaultShapeLineWidth();
     int psize = Gui::ViewParams::instance()->getDefaultShapePointSize();
-	
+
 
 
     ParameterGrp::handle hPart = App::GetApplication().GetParameterGroupByPath
@@ -155,8 +155,8 @@ ViewProviderPartExt::ViewProviderPartExt()
     vmat.specularColor.set(0.0f,0.0f,0.0f);
     vmat.emissiveColor.set(0.0f,0.0f,0.0f);
     vmat.shininess = 1.0f;
-    vmat.transparency = 0.0f;	
-	
+    vmat.transparency = 0.0f;
+
     ADD_PROPERTY_TYPE(LineMaterial,(lmat), osgroup, App::Prop_None, "Object line material.");
     ADD_PROPERTY_TYPE(PointMaterial,(vmat), osgroup, App::Prop_None, "Object point material.");
     ADD_PROPERTY_TYPE(LineColor, (lmat.diffuseColor), osgroup, App::Prop_None, "Set object line color.");
@@ -256,13 +256,13 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
     // to freeze the GUI
     // https://forum.freecadweb.org/viewtopic.php?f=3&t=24912&p=195613
     if (prop == &Deviation) {
-        if(isUpdateForced()||Visibility.getValue()) 
+        if(isUpdateForced()||Visibility.getValue())
             updateVisual();
         else
             VisualTouched = true;
     }
     if (prop == &AngularDeflection) {
-        if(isUpdateForced()||Visibility.getValue()) 
+        if(isUpdateForced()||Visibility.getValue())
             updateVisual();
         else
             VisualTouched = true;
@@ -834,7 +834,7 @@ bool ViewProviderPartExt::loadParameter()
 
 void ViewProviderPartExt::reload()
 {
-    if (loadParameter()) 
+    if (loadParameter())
         updateVisual();
 }
 
@@ -845,11 +845,11 @@ void ViewProviderPartExt::updateData(const App::Property* prop)
         // calculate the visual only if visible
         if (isUpdateForced() || Visibility.getValue())
             updateVisual();
-        else 
+        else
             VisualTouched = true;
 
         if (!VisualTouched) {
-            if (this->faceset->partIndex.getNum() > 
+            if (this->faceset->partIndex.getNum() >
                 this->pcShapeMaterial->diffuseColor.getNum()) {
                 this->pcFaceBind->value = SoMaterialBinding::OVERALL;
             }
@@ -1074,7 +1074,7 @@ void ViewProviderPartExt::updateVisual()
 #endif
             if (NormalsFromUV)
                 Part::Tools::getPointNormals(actFace, mesh, Normals);
-            
+
             for (int g=1;g<=nbTriInFace;g++) {
                 // Get the triangle
                 Standard_Integer N1,N2,N3;
@@ -1155,12 +1155,12 @@ void ViewProviderPartExt::updateVisual()
                 edgeVector.push_back((int32_t)edgeIndex-1);
                 // already processed this index ?
                 if (edgeIdxSet.find(edgeIndex)!=edgeIdxSet.end()) {
-                    
+
                     // this holds the indices of the edge's triangulation to the current polygon
                     Handle(Poly_PolygonOnTriangulation) aPoly = BRep_Tool::PolygonOnTriangulation(curEdge, mesh, aLoc);
                     if (aPoly.IsNull())
                         continue; // polygon does not exist
-                    
+
                     // getting the indexes of the edge polygon
                     const TColStd_Array1OfInteger& indices = aPoly->Nodes();
                     for (Standard_Integer i=indices.Lower();i <= indices.Upper();i++) {
@@ -1189,7 +1189,7 @@ void ViewProviderPartExt::updateVisual()
             }
 
             edgeVector.push_back(-1);
-            
+
             // counting up the per Face offsets
             faceNodeOffset += nbNodesInFace;
             faceTriaOffset += nbTriInFace;
@@ -1237,10 +1237,10 @@ void ViewProviderPartExt::updateVisual()
             verts[faceNodeOffset+i].setValue((float)(pnt.X()),(float)(pnt.Y()),(float)(pnt.Z()));
         }
 
-        // normalize all normals 
+        // normalize all normals
         for (int i = 0; i< numNorms ;i++)
             norms[i].normalize();
-        
+
         std::vector<int32_t> lineSetCoords;
         for (std::map<int, std::vector<int32_t> >::iterator it = lineSetMap.begin(); it != lineSetMap.end(); ++it) {
             lineSetCoords.insert(lineSetCoords.end(), it->second.begin(), it->second.end());

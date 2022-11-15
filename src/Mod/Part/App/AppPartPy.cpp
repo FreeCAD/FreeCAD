@@ -124,14 +124,14 @@ PartExport void getPyShapes(PyObject *obj, std::vector<TopoShape> &shapes) {
         return;
     if(PyObject_TypeCheck(obj,&Part::TopoShapePy::Type))
         shapes.push_back(*static_cast<TopoShapePy*>(obj)->getTopoShapePtr());
-    else if (PyObject_TypeCheck(obj, &GeometryPy::Type)) 
+    else if (PyObject_TypeCheck(obj, &GeometryPy::Type))
         shapes.emplace_back(static_cast<GeometryPy*>(obj)->getGeometryPtr()->toShape());
     else if(PySequence_Check(obj)) {
         Py::Sequence list(obj);
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapePy::Type)))
                 shapes.push_back(*static_cast<TopoShapePy*>((*it).ptr())->getTopoShapePtr());
-            else if (PyObject_TypeCheck((*it).ptr(), &GeometryPy::Type)) 
+            else if (PyObject_TypeCheck((*it).ptr(), &GeometryPy::Type))
                 shapes.emplace_back(static_cast<GeometryPy*>(
                                 (*it).ptr())->getGeometryPtr()->toShape());
             else
@@ -622,7 +622,7 @@ public:
             "             transformation matrix\n"
             "* retType: 0: return TopoShape,\n"
             "           1: return (shape,subObj,mat), where subObj is the object referenced in 'subname',\n"
-            "              and 'mat' is the accumulated transformation matrix of that sub-object.\n" 
+            "              and 'mat' is the accumulated transformation matrix of that sub-object.\n"
             "           2: same as 1, but make sure 'subObj' is resolved if it is a link.\n"
             "* refine: refine the returned shape"
         );
@@ -885,7 +885,7 @@ private:
     {
         PyObject *shape;
         Py::List list;
-        if (!PyArg_ParseTuple(args.ptr(), "O", &shape)) 
+        if (!PyArg_ParseTuple(args.ptr(), "O", &shape))
             throw Py::Exception();
         auto theShape = static_cast<Part::TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
         for (TopExp_Explorer ex(theShape, TopAbs_FACE); ex.More(); ex.Next()) {
@@ -2063,7 +2063,7 @@ private:
         try {
             if (useFontSpec) {
 #ifdef FC_OS_WIN32
-//    Windows doesn't do Utf8 by default and FreeType doesn't do wchar. 
+//    Windows doesn't do Utf8 by default and FreeType doesn't do wchar.
 //    this is a hacky work around.
 //    copy fontspec to Ascii temp name
                 std::string tempFile = Base::FileInfo::getTempFileName();   //utf8/ascii
@@ -2314,15 +2314,15 @@ private:
         PyObject *noElementMap = Py_False;
         PyObject *refine = Py_False;
         short retType = 0;
-        static char* kwd_list[] = {"obj", "subname", "mat", 
+        static char* kwd_list[] = {"obj", "subname", "mat",
             "needSubElement","transform","retType","noElementMap","refine",nullptr};
         if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!|sO!O!O!hO!O!", kwd_list,
-                &App::DocumentObjectPy::Type, &pObj, &subname, &Base::MatrixPy::Type, &pyMat, 
+                &App::DocumentObjectPy::Type, &pObj, &subname, &Base::MatrixPy::Type, &pyMat,
                 &PyBool_Type,&needSubElement,&PyBool_Type,&transform,&retType,
                 &PyBool_Type,&noElementMap,&PyBool_Type,&refine))
             throw Py::Exception();
 
-        App::DocumentObject *obj = 
+        App::DocumentObject *obj =
             static_cast<App::DocumentObjectPy*>(pObj)->getDocumentObjectPtr();
         App::DocumentObject *subObj = nullptr;
         Base::Matrix4D mat;

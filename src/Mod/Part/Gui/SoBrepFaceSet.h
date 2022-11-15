@@ -60,7 +60,7 @@ namespace PartGui {
  * Example:
  * Let's say you have a shape with two faces. When meshing face 1 it creates 10 triangles and face 2 creates 5 triangles. Then
  * the partIndex attribute would be the array [10,5].
- * 
+ *
  * Highlighting/selection:
  * The highlightIndex now defines which part of the shape must be highlighted. So, in the above example it can have the values
  * 0, 1, or -1 (i.e. no highlighting). The highlightIndex is a SoSFInt32 field because only one part can be highlighted at a

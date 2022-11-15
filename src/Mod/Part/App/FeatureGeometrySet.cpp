@@ -54,7 +54,7 @@ App::DocumentObjectExecReturn *FeatureGeometrySet::execute()
             result.setShape(result.fuse(sh));
         }
     }
-    
+
     Shape.setValue(result);
 
     return App::DocumentObject::StdReturn;

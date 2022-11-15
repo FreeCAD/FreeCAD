@@ -129,7 +129,7 @@ public:
     void unsetHighlightedPoints();
     //@}
 
-    /** @name Color management methods 
+    /** @name Color management methods
      */
     //@{
     std::map<std::string,App::Color> getElementColors(const char *element=nullptr) const override;

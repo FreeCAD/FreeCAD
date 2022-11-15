@@ -57,12 +57,12 @@ TopoDS_Shape Datum::getShape() const
     return sh.getShape();
 }
 
-App::DocumentObject *Datum::getSubObject(const char *subname, 
+App::DocumentObject *Datum::getSubObject(const char *subname,
         PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const
 {
     // For the sake of simplicity, we don't bother to check for subname, just
     // return the shape as it is, because a datum object only holds shape with
-    // one single geometry element. 
+    // one single geometry element.
     (void)subname;
     (void)depth;
 
@@ -75,7 +75,7 @@ App::DocumentObject *Datum::getSubObject(const char *subname,
     Base::PyGILStateLocker lock;
     PY_TRY {
         TopoShape ts(getShape().Located(TopLoc_Location()));
-        if(pmat && !ts.isNull()) 
+        if(pmat && !ts.isNull())
             ts.transformShape(*pmat,false,true);
         *pyObj =  Py::new_reference_to(shape2pyshape(ts.getShape()));
         return const_cast<Datum*>(this);

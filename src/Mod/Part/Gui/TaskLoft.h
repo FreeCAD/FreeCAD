@@ -29,7 +29,7 @@
 
 class QTreeWidgetItem;
 
-namespace PartGui { 
+namespace PartGui {
 
 class LoftWidget : public QWidget
 {

@@ -142,7 +142,7 @@ CrossSections::CrossSections(const Base::BoundBox3d& bb, QWidget* parent, Qt::Wi
     }
 }
 
-/*  
+/*
  *  Destroys the object and frees any allocated resources
  */
 CrossSections::~CrossSections()

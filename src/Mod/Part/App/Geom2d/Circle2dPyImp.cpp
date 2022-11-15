@@ -164,7 +164,7 @@ PyObject* Circle2dPy::getCircleCenter(PyObject *args)
 Py::Float Circle2dPy::getRadius() const
 {
     Handle(Geom2d_Circle) circle = Handle(Geom2d_Circle)::DownCast(getGeom2dCirclePtr()->handle());
-    return Py::Float(circle->Radius()); 
+    return Py::Float(circle->Radius());
 }
 
 void  Circle2dPy::setRadius(Py::Float arg)
@@ -180,5 +180,5 @@ PyObject *Circle2dPy::getCustomAttributes(const char* ) const
 
 int Circle2dPy::setCustomAttributes(const char* , PyObject *)
 {
-    return 0; 
+    return 0;
 }
