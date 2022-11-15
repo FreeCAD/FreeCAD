@@ -20,7 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-//based on a python widget from: 
+//based on a python widget from:
 //https://github.com/tcalmant/demo-ipopo-qt/blob/master/pc/details/compass.py
 
 #ifndef COMPASSDIALWIDGET_H

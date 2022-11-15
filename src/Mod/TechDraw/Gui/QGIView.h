@@ -138,7 +138,7 @@ public:
 
     virtual void setStack(int z);
     virtual void setStackFromVP();
-    
+
     static Gui::ViewProvider* getViewProvider(App::DocumentObject* obj);
     static ViewProviderPage* getViewProviderPage(TechDraw::DrawView* dView);
     static QGVPage* getQGVPage(TechDraw::DrawView* dView);
