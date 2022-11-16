@@ -112,7 +112,7 @@ def createStructuralCurve(ifcfile, ifcbin, curve):
     uid = ifcopenshell.guid.new
     ownerHistory = ifcfile.by_type("IfcOwnerHistory")[0]
     structContext = getStructuralContext(ifcfile)
-    
+
     cartPnt1 = ifcbin.createIfcCartesianPoint(tuple(curve.Vertexes[ 0].Point.multiply(scaling)))
     cartPnt2 = ifcbin.createIfcCartesianPoint(tuple(curve.Vertexes[-1].Point.multiply(scaling)))
     vertPnt1 = ifcfile.createIfcVertexPoint(cartPnt1)
@@ -148,11 +148,11 @@ def createStructuralMember(ifcfile, ifcbin, obj):
     uid = ifcopenshell.guid.new
     ownerHistory = ifcfile.by_type("IfcOwnerHistory")[0]
     structContext = getStructuralContext(ifcfile)
-    
+
     # find edges to convert into structural members
     edges = None
     if Draft.getType(obj) not in ["Structure"]:
-        # for non structural elements 
+        # for non structural elements
         if ALLOW_LINEAR_OBJECTS and obj.isDerivedFrom("Part::Feature"):
             # for objects created with Part workbench
             if obj.Shape.Faces:
@@ -173,11 +173,11 @@ def createStructuralMember(ifcfile, ifcbin, obj):
         edges = wire.Edges
     if not edges:
         return None
-        
+
     # OBJECT CLASSIFICATION by edge number
     # Linear elements for edge_number = 1, Surface elements for edge_number > 1
     # we don't care about curved edges just now...
-    
+
     if len(edges) == 1:
         # LINEAR OBJECTS: beams, columns
         # ATM limitations:
@@ -194,11 +194,11 @@ def createStructuralMember(ifcfile, ifcbin, obj):
         vertPnt2 = ifcfile.createIfcVertexPoint(cartPnt2)
         newEdge = ifcfile.createIfcEdge(vertPnt1, vertPnt2)
         topologyRep = ifcfile.createIfcTopologyRepresentation(structContext, "Analysis", "Edge", (newEdge,))
-        prodDefShape = ifcfile.createIfcProductDefinitionShape(None, None, (topologyRep,))  
+        prodDefShape = ifcfile.createIfcProductDefinitionShape(None, None, (topologyRep,))
         # set local coordinate system
         localPlacement = ifcbin.createIfcLocalPlacement()
-        localZAxis = ifcbin.createIfcDirection((0, 0, 1))    
-        # create structural member    
+        localZAxis = ifcbin.createIfcDirection((0, 0, 1))
+        # create structural member
         if ifcfile.wrapped_data.schema_name() == "IFC2X3":
             structuralMember = ifcfile.createIfcStructuralCurveMember(
                 uid(), ownerHistory, obj.Label, None, None, localPlacement, prodDefShape, "RIGID_JOINED_MEMBER")
@@ -211,8 +211,8 @@ def createStructuralMember(ifcfile, ifcbin, obj):
         # SURFACE OBJECTS: slabs (horizontal, vertical, inclined)
         # ATM limitations:
         # - mo material properties are taken into account
-        # - walls don't work because they miss a node system   
-        # -     
+        # - walls don't work because they miss a node system
+        # -
         # creates geometry
         verts = [None for _ in range(len(edges))]
         for i, edge in enumerate(edges):
@@ -227,7 +227,7 @@ def createStructuralMember(ifcfile, ifcbin, obj):
             vertPnt1 = ifcfile.createIfcVertexPoint(cartPnt1)
             vertPnt2 = ifcfile.createIfcVertexPoint(cartPnt2)
             edge = ifcfile.createIfcEdge(vertPnt1, vertPnt2)
-            orientedEdges[i] = ifcfile.createIfcOrientedEdge(None, None, edge, True) 
+            orientedEdges[i] = ifcfile.createIfcOrientedEdge(None, None, edge, True)
         edgeLoop = ifcfile.createIfcEdgeLoop(tuple(orientedEdges))
         # sets local coordinate system
         localPlacement = ifcbin.createIfcLocalPlacement()
@@ -274,13 +274,13 @@ def createStructuralMember(ifcfile, ifcbin, obj):
         else:
             # just add the point, no other member using it yet
             structural_nodes[vertCoord] = None
-                
+
     # check for existing connection curves
     for edge in edges:
         verts12 = tuple([edge.Vertexes[ 0].Point.x, edge.Vertexes[ 0].Point.y, edge.Vertexes[ 0].Point.z,
                          edge.Vertexes[-1].Point.x, edge.Vertexes[-1].Point.y, edge.Vertexes[-1].Point.z])
         verts21 = tuple([edge.Vertexes[-1].Point.x, edge.Vertexes[-1].Point.y, edge.Vertexes[-1].Point.z,
-                         edge.Vertexes[ 0].Point.x, edge.Vertexes[ 0].Point.y, edge.Vertexes[ 0].Point.z])                
+                         edge.Vertexes[ 0].Point.x, edge.Vertexes[ 0].Point.y, edge.Vertexes[ 0].Point.z])
         verts12_in_curves = verts12 in structural_curves
         verts21_in_curves = verts21 in structural_curves
         if verts21_in_curves:

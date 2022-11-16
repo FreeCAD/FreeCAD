@@ -82,7 +82,7 @@ def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name="
         obj.StructureThickness = 150
         obj.DownSlabThickness = 150
         obj.UpSlabThickness = 150
-        
+
         obj.RailingOffsetLeft = 60
         obj.RailingOffsetRight = 60
         obj.RailingHeightLeft = 900
@@ -418,7 +418,7 @@ class _Stairs(ArchComponent.Component):
         if not "ConnectionEndStairsUp" in pl:
             obj.addProperty("App::PropertyEnumeration","ConnectionEndStairsUp","Structure",QT_TRANSLATE_NOOP("App::Property","The type of connection between the end of the stairs and the upper floor slab"))
             obj.ConnectionEndStairsUp = ["toFlightThickness","toSlabThickness"]
-            
+
         self.Type = "Stairs"
 
     def onDocumentRestored(self,obj):
@@ -945,12 +945,12 @@ class _Stairs(ArchComponent.Component):
         if not callByMakeStraightStairsWithLanding:
             vBase = self.vbaseFollowLastSegment(obj, vBase)
             obj.AbsTop = vBase
-            
+
         if not obj.Flight in ["HalfTurnLeft","HalfTurnRight"]:
             vNose = DraftVecUtils.scaleTo(vLength,-abs(obj.Nosing.Value))
         else:
             vNose = Vector(0,0,0)
-            
+
         h = 0
         l = 0
 
@@ -1028,7 +1028,7 @@ class _Stairs(ArchComponent.Component):
         p2 = p1.add(Vector(0,0,-(abs(fHeight) - obj.TreadThickness.Value)))
         p3 = p1.add(vLength)
         p4 = p3.add(Vector(0,0,-(abs(fHeight) - obj.TreadThickness.Value)))
-        
+
         if obj.Structure == "Massive":
             if obj.StructureThickness.Value:
                 struct = Part.Face(Part.makePolygon([p1,p2,p4,p3,p1]))
@@ -1105,12 +1105,12 @@ class _Stairs(ArchComponent.Component):
             callByMakeStraightStairsWithLanding = False
         else:
             callByMakeStraightStairsWithLanding = True
-            
+
         if not downstartstairs:
             downstartstairs = obj.ConnectionDownStartStairs
         if not endstairsup:
             endstairsup = obj.ConnectionEndStairsUp
-            
+
         v = DraftGeomUtils.vec(edge)
         vLength = DraftVecUtils.scaleTo(v,float(edge.Length)/(numberofsteps-1))
         vLength = Vector(vLength.x,vLength.y,0)
@@ -1205,7 +1205,7 @@ class _Stairs(ArchComponent.Component):
                 resHeight1 = obj.StructureThickness.Value/math.cos(a)
                 dh = s2 - float(h)/numberofsteps
                 resHeight2 = ((numberofsteps-1)*vHeight.Length) - dh
-                
+
                 if endstairsup == "toFlightThickness":
                     lProfile.append(lProfile[-1].add(Vector(0,0,-resHeight1)))
                     resHeight2 = ((numberofsteps-1)*vHeight.Length)-(resHeight1+obj.TreadThickness.Value)
@@ -1218,10 +1218,10 @@ class _Stairs(ArchComponent.Component):
                     resLength2 = th / math.tan(a)
                     lProfile.append(lProfile[-1].add(Vector(0,0,obj.TreadThickness.Value - dh)))
                     lProfile.append(lProfile[-1].add(DraftVecUtils.scaleTo(vLength,resLength2)))
-                    
+
                 if s1 > resHeight1:
                     downstartstairs = "VerticalCut"
-                    
+
                 if downstartstairs == "VerticalCut":
                     dh = obj.DownSlabThickness.Value - resHeight1 - obj.TreadThickness.Value
                     resHeight2 = resHeight2 + obj.DownSlabThickness.Value - dh
@@ -1231,7 +1231,7 @@ class _Stairs(ArchComponent.Component):
                     temp_s1 = s1
                     if obj.UpSlabThickness.Value > resHeight1:
                         s1 = temp_s1
-                    
+
                     resHeight2 = resHeight2 + s1
                     resLength = (vLength.Length/vHeight.Length) * resHeight2
                     th = (resHeight1 - s1) + obj.TreadThickness.Value
@@ -1389,11 +1389,11 @@ class _Stairs(ArchComponent.Component):
                 self.makeStraightStairs(obj,Part.LineSegment(p3r,p4r).toShape(),obj.RiserHeight.Value,obj.UpSlabThickness.Value,obj.NumberOfSteps-landing,"HorizontalVerticalCut",None)
             else:
                 self.makeStraightStairs(obj,Part.LineSegment(p3,p4).toShape(),obj.RiserHeight.Value,obj.UpSlabThickness.Value,obj.NumberOfSteps-landing,"HorizontalVerticalCut",None)
-            
+
             self.makeStraightStairs(obj,Part.LineSegment(p1,p2).toShape(),obj.DownSlabThickness.Value,obj.RiserHeight.Value,landing,None,'toSlabThickness')
         else:
             self.makeStraightStairs(obj,Part.LineSegment(p1,p2).toShape(),obj.DownSlabThickness.Value,obj.UpSlabThickness.Value,landing,None,None)
-            
+
         print (p1, p2)
         if obj.Landings == "At center" and obj.Flight not in ["HalfTurnLeft", "HalfTurnRight"]:
             print (p3, p4)

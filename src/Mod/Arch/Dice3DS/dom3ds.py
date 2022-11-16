@@ -85,7 +85,7 @@ class FileLikeBuffer(object):
     def seek(self,pos):
         self.index = pos
         if self.index < 0 or self.index > self.end:
-            raise FBufError("Invalid position in fbuf")    
+            raise FBufError("Invalid position in fbuf")
     def advance(self,n):
         self.index += n
         if self.index > self.end:
@@ -1615,7 +1615,7 @@ class CAMERA_NODE_TAG(ChunkBase):
               "ROLL_TRACK_TAG roll_track")
 
 class TARGET_NODE_TAG(ChunkBase):
-    tag = 0xB004    
+    tag = 0xB004
     single = ("NODE_ID node_id,"
               "NODE_HDR node_hdr,"
               "POS_TRACK_TAG pos_track")
@@ -1639,7 +1639,7 @@ class SPOTLIGHT_NODE_TAG(ChunkBase):
               "ROLL_TRACK_TAG roll_track")
 
 class L_TARGET_NODE_TAG(ChunkBase):
-    tag = 0xB006 
+    tag = 0xB006
     single = ("NODE_ID node_id,"
               "NODE_HDR node_hdr,"
               "POS_TRACK_TAG pos_track,"
@@ -1865,7 +1865,7 @@ def dump_3ds_file(filename,flo,arraylines=10,tight=False,recover=True):
     otherwise raise an exception.
 
     """
-    
+
     check_magic = False
     dom = read_3ds_file(filename,check_magic,tight,recover)
     dump_3ds_chunk(dom,flo,arraylines)

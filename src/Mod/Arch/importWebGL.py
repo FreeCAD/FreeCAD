@@ -863,7 +863,7 @@ def export( exportList, filename, colors = None, camera = None ):
     data['baseFloat'] = baseFloat
 
     html = html.replace('$data', json.dumps(data, separators=(',', ':')) ) # Shape Data
-    
+
     outfile = pythonopen(filename, "w")
     outfile.write( html )
     outfile.close()
