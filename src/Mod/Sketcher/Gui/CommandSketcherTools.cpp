@@ -1491,7 +1491,7 @@ CmdSketcherCompCopy::CmdSketcherCompCopy()
 {
     sAppModule      = "Sketcher";
     sGroup          = "Sketcher";
-    sMenuText       = QT_TR_NOOP("Copy");
+    sMenuText       = QT_TR_NOOP("Clone");
     sToolTipText    = QT_TR_NOOP("Creates a clone of the geometry taking as reference the last selected point");
     sWhatsThis      = "Sketcher_CompCopy";
     sStatusTip      = sToolTipText;
