@@ -21,12 +21,12 @@
 #*                                                                         *	
 #***************************************************************************	
 
-class ArchSketchObject:								
-    def __init__(self, obj):							
-        pass
-										
-class ArchSketch(ArchSketchObject):						
-    def __init__(self, obj):							
+class ArchSketchObject:
+    def __init__(self, obj):
         pass
 
-#from ArchSketchObjectExt import ArchSketch  # Not works
+class ArchSketch(ArchSketchObject):
+    def __init__(self, obj):
+        pass
+
+#from ArchSketchObjectExt import ArchSketch  # Doesn't work
