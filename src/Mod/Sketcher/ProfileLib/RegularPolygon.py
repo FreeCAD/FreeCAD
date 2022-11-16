@@ -31,9 +31,9 @@ App = FreeCAD
 Gui = FreeCADGui
 
 def makeRegularPolygon(
-        sketch, 
-        sides, 
-        centerPoint=App.Vector(0,0,0), 
+        sketch,
+        sides,
+        centerPoint=App.Vector(0,0,0),
         firstCornerPoint=App.Vector(-20.00,34.64,0),
 	construction=False):
 
@@ -58,7 +58,7 @@ def makeRegularPolygon(
                0 ))
 
     geoList = []
-    for i in range(0,sides-1): 
+    for i in range(0,sides-1):
         geoList.append(Part.LineSegment(pointList[i],pointList[i+1]))
     geoList.append(Part.LineSegment(pointList[sides-1],pointList[0]))
     geoList.append(Part.Circle(centerPoint,App.Vector(0,0,1),diffVec.Length))

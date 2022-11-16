@@ -32,7 +32,7 @@
 #include <Mod/Sketcher/App/SketchAnalysis.h>
 
 class SoGroup;
-namespace Sketcher { class SketchObject; } 
+namespace Sketcher { class SketchObject; }
 
 namespace SketcherGui {
 
