@@ -53,7 +53,7 @@ public:
         return "PathGui::ViewProviderPathCompound";
     }
     virtual App::DocumentObjectExecReturn *execute(void);
-    
+
     /// Checks whether the object \a obj is part of this group.
     bool hasObject(const DocumentObject* obj) const;
     /// Adds an object to this group.

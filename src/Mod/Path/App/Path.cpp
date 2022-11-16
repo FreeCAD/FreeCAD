@@ -282,7 +282,7 @@ Base::BoundBox3d Toolpath::getBoundBox() const
     BoundBoxSegmentVisitor visitor;
     PathSegmentWalker walker(*this);
     walker.walk(visitor, Vector3d(0, 0, 0));
-    
+
     return visitor.bb;
 }
 

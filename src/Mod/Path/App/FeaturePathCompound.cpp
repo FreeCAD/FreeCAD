@@ -71,7 +71,7 @@ App::DocumentObjectExecReturn *FeatureCompound::execute()
 
     result.setCenter(Path.getValue().getCenter());
     Path.setValue(result);
-    
+
     return App::DocumentObject::StdReturn;
 }
 

@@ -65,9 +65,9 @@ PyObject* FeatureAreaPy::setParams(PyObject *args, PyObject *keywds)
     //populate the CONF variables with values in properties
     PARAM_FOREACH(AREA_SET,AREA_PARAMS_CONF)
 
-    //Parse arguments to overwrite CONF variables 
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, 
-                "|" PARAM_PY_KWDS(AREA_PARAMS_CONF), kwlist, 
+    //Parse arguments to overwrite CONF variables
+    if (!PyArg_ParseTupleAndKeywords(args, keywds,
+                "|" PARAM_PY_KWDS(AREA_PARAMS_CONF), kwlist,
                 PARAM_REF(PARAM_FNAME,AREA_PARAMS_CONF)))
         return nullptr;
 

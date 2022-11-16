@@ -56,7 +56,7 @@ std::string CommandPy::representation() const
     return str.str();
 }
 
-// 
+//
 // Py::Dict parameters_copy_dict is now a class member to avoid delete/create/copy on every read access from python code
 // Now the pre-filled Py::Dict is returned which is more consistent with normal python behaviour.
 // It should be cleared whenever the c++ Parameters object is changed eg setParameters() or other objects invalidate its content, eg setPlacement()
@@ -154,7 +154,7 @@ void CommandPy::setName(Py::String arg)
 Py::Dict CommandPy::getParameters() const
 {
     // dict now a class member , https://forum.freecadweb.org/viewtopic.php?f=15&t=50583
-    if (parameters_copy_dict.length()==0) {    
+    if (parameters_copy_dict.length()==0) {
       for(std::map<std::string,double>::iterator i = getCommandPtr()->Parameters.begin(); i != getCommandPtr()->Parameters.end(); ++i) {
           parameters_copy_dict.setItem(i->first, Py::Float(i->second));
       }

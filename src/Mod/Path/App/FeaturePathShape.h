@@ -49,7 +49,7 @@ public:
     /// Constructor
     FeatureShape();
     virtual ~FeatureShape();
-    
+
     // Part::PropertyPartShape Shape;
     App::PropertyLinkList Sources;
     App::PropertyVector StartPoint;
@@ -65,7 +65,7 @@ public:
     virtual const char* getViewProviderName() const {
         return "PathGui::ViewProviderPathShape";
     }
-    
+
 protected:
     /// get called by the container when a property has changed
     //virtual void onChanged (const App::Property* prop);

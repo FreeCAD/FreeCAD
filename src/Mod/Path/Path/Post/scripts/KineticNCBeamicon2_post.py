@@ -44,7 +44,7 @@ from PathScripts import PathUtils
 TOOLTIP = """
 This is a postprocessor file for the Path workbench. It is used to
 take a pseudo-gcode fragment outputted by a Path object, and output
-real GCode suitable for the KineticNC/Beamicon2 Control Software for up to 4 Axis (3 plus rotary). 
+real GCode suitable for the KineticNC/Beamicon2 Control Software for up to 4 Axis (3 plus rotary).
 The CORNER_MAX Values are set for a mill with max travel of 1000mm in X, 600mm in Y and 300mm in Z direction.
 This postprocessor, once placed in the appropriate PathScripts folder, can be used directly from inside
 FreeCAD, via the GUI importer or via python scripts with:
@@ -116,8 +116,8 @@ CORNER_MAX = {"x": 1000, "y": 600, "z": 300}
 PRECISION = 3
 
 # Preamble text will appear at the beginning of the GCODE output file.
-PREAMBLE = """% 
-G17 G21 G40 G49 G80 G90 
+PREAMBLE = """%
+G17 G21 G40 G49 G80 G90
 M08
 """
 
@@ -134,7 +134,7 @@ PRE_OPERATION = """"""
 POST_OPERATION = """"""
 
 # Tool Change commands will be inserted before a tool change
-TOOL_CHANGE = """M05 
+TOOL_CHANGE = """M05
 M09"""
 
 # to distinguish python built-in open function from the one declared below

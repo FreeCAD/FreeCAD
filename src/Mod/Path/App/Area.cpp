@@ -2646,7 +2646,7 @@ struct ShapeInfo {
                 if (mySupportEdge) {
                     //if best point is on some edge, split the edge in half
                     if (edge.IsEqual(mySupport)) {
-                        //to fix PointProjectionFailed.     
+                        //to fix PointProjectionFailed.
                         GeomAPI_ProjectPointOnCurve gpp;
                         gpp.Init(myBestPt, curve);
                         gpp.Perform(myBestPt);
