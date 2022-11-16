@@ -26,6 +26,7 @@
 
 #include <list>
 #include <map>
+#include <memory>
 #include <set>
 #include <vector>
 
@@ -40,6 +41,7 @@
 
 #include "Namespace.h"
 #include "Selection.h"
+#include "View3DInventorSelection.h"
 #include "Quarter/SoQTQuarterAdaptor.h"
 
 
@@ -139,8 +141,6 @@ public:
 
     /// Observer message from the Selection
     void onSelectionChanged(const SelectionChanges &Reason) override;
-    void checkGroupOnTop(const SelectionChanges &Reason);
-    void clearGroupOnTop();
 
     SoDirectionalLight* getBacklight() const;
     void setBacklight(SbBool on);
@@ -449,11 +449,7 @@ private:
 
     SoSeparator * pcViewProviderRoot;
 
-    SoGroup * pcGroupOnTop;
-    SoGroup * pcGroupOnTopSel;
-    SoGroup * pcGroupOnTopPreSel;
-    std::map<std::string,SoNode*> objectsOnTop;
-    std::map<std::string,SoNode*> objectsOnTopPreSel;
+    std::unique_ptr<View3DInventorSelection> inventorSelection;
 
     SoSeparator * pcEditingRoot;
     SoTransform * pcEditingTransform;
