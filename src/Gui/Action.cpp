@@ -937,6 +937,11 @@ RecentFilesAction::RecentFilesAction ( Command* pcCmd, QObject * parent )
     restore();
 }
 
+RecentFilesAction::~RecentFilesAction()
+{
+    _pimpl.reset(nullptr);
+}
+
 /** Adds the new item to the recent files. */
 void RecentFilesAction::appendFile(const QString& filename)
 {

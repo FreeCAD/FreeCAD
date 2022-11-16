@@ -240,6 +240,7 @@ class GuiExport RecentFilesAction : public ActionGroup
 
 public:
     explicit RecentFilesAction (Command* pcCmd, QObject * parent = nullptr);
+    ~RecentFilesAction() override;
 
     void appendFile(const QString&);
     void activateFile(int);
