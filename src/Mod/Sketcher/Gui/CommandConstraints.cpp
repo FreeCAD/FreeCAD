@@ -2073,7 +2073,7 @@ void CmdSketcherConstrainCoincident::applyConstraint(std::vector<SelIdPair> &sel
     case 4: // {SelExternalEdge, SelEdge}
         //Concentric for circles, ellipse, arc, arcofEllipse only.
         if (!isGeoConcentricCompatible(Obj->getGeometry(GeoId1)) || !isGeoConcentricCompatible(Obj->getGeometry(GeoId2))) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"), 
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                 QObject::tr("Select two vertices from the sketch for a coincident constraint, or two circles, ellipses, arcs or arcs of ellipse for a concentric constraint."));
             return;
         }

@@ -56,8 +56,8 @@ class TestSketchExpression(unittest.TestCase):
         sketch.addConstraint(conList)
         del geoList, conList
 
-        length = sketch.addConstraint(Sketcher.Constraint('Distance',0,6.0)) 
-        height = sketch.addConstraint(Sketcher.Constraint('Distance',3,5.0)) 
+        length = sketch.addConstraint(Sketcher.Constraint('Distance',0,6.0))
+        height = sketch.addConstraint(Sketcher.Constraint('Distance',3,5.0))
 
         sketch.renameConstraint(length, u'Length')
         sketch.setExpression('Constraints[{}]'.format(height), u'.Constraints.Length')

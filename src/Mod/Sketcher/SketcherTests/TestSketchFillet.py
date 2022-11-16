@@ -45,7 +45,7 @@ def BoxCircle(SketchFeature):
   right_midpoint = App.Vector(2, 1, 0)
   circle = int(SketchFeature.GeometryCount)
   SketchFeature.addGeometry(Part.Circle(App.Vector(0,0,0), App.Vector(0,0,1), 1),False)
-  SketchFeature.addConstraint(Sketcher.Constraint('Radius',circle,1)) 
+  SketchFeature.addConstraint(Sketcher.Constraint('Radius',circle,1))
   SketchFeature.addConstraint(Sketcher.Constraint('Coincident',top_edge,2,circle,3))
   # Since the circle center is coincident with the corner, there are three coincident points
   # and thus the simpler fillet() call would get confused. Instead we'll need to point at the two
@@ -59,7 +59,7 @@ def PointOnObject(SketchFeature):
   CreateRectangleSketch(SketchFeature, [0, 0], [2, 2])
   circle = int(SketchFeature.GeometryCount)
   SketchFeature.addGeometry(Part.Circle(App.Vector(12,3,0), App.Vector(0,0,1), 1),False)
-  SketchFeature.addConstraint(Sketcher.Constraint('Radius',circle,1)) 
+  SketchFeature.addConstraint(Sketcher.Constraint('Radius',circle,1))
   SketchFeature.addConstraint(Sketcher.Constraint('PointOnObject',top_edge,2,circle))
   SketchFeature.fillet(top_edge, 2, 0.25, True, True)
 

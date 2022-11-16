@@ -109,7 +109,7 @@ void PropertyConstraintListItem::initialize()
                 item->setObjectName(internalName);
                 this->appendChild(item);
             }
-            
+
             item->bind(list->createPath(id-1));
             item->setAutoApply(false);
         }

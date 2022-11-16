@@ -47,7 +47,7 @@ class SketcherWorkbench ( Workbench ):
             import Profiles
         except ImportError:
             print("Error in Profiles module")
-            
+
     def GetClassName(self):
         return "SketcherGui::Workbench"
 
