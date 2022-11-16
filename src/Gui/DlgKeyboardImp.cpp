@@ -282,8 +282,8 @@ DlgCustomKeyboardImp::initCommandWidgets(QTreeWidget *commandTreeWidget,
                                          QTreeWidget *priorityList,
                                          QAbstractButton *buttonUp,
                                          QAbstractButton *buttonDown,
-                                         AccelLineEdit *editShortcut,
-                                         AccelLineEdit *currentShortcut)
+                                         Gui::AccelLineEdit *editShortcut,
+                                         Gui::AccelLineEdit *currentShortcut)
 {
     initCommandCompleter(editCommand, comboGroups, commandTreeWidget, separatorItem);
     auto conn = initCommandList(commandTreeWidget, separatorItem, comboGroups);
@@ -313,8 +313,8 @@ DlgCustomKeyboardImp::initCommandWidgets(QTreeWidget *commandTreeWidget,
 }
 
 void DlgCustomKeyboardImp::populatePriorityList(QTreeWidget *priorityList,
-                                                AccelLineEdit *editor,
-                                                AccelLineEdit *curShortcut)
+                                                Gui::AccelLineEdit *editor,
+                                                Gui::AccelLineEdit *curShortcut)
 {
     QByteArray current;
     if (auto currentItem = priorityList->currentItem())

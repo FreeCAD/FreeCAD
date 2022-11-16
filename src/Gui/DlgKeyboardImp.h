@@ -81,8 +81,8 @@ public:
                            QTreeWidget *priorityList = nullptr,
                            QAbstractButton *buttonUp = nullptr,
                            QAbstractButton *buttonDown = nullptr,
-                           AccelLineEdit *editShortcut = nullptr,
-                           AccelLineEdit *currentShortcut = nullptr);
+                           Gui::AccelLineEdit *editShortcut = nullptr,
+                           Gui::AccelLineEdit *currentShortcut = nullptr);
 
 protected:
     /** @name Internal helper function for handling command list widgets
