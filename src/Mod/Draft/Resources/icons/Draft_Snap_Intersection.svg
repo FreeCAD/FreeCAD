@@ -23,16 +23,6 @@
          offset="1"
          style="stop-color:#34e0e2;stop-opacity:1" />
     </linearGradient>
-    <radialGradient
-       r="34.345188"
-       fy="672.79736"
-       fx="225.26402"
-       cy="672.79736"
-       cx="225.26402"
-       gradientTransform="matrix(1,0,0,0.6985294,0,202.82863)"
-       gradientUnits="userSpaceOnUse"
-       id="radialGradient4274"
-       xlink:href="#linearGradient3144" />
     <linearGradient
        id="linearGradient3144">
       <stop
@@ -52,7 +42,7 @@
        cx="225.26402"
        gradientTransform="matrix(1,0,0,0.6985294,0,202.82863)"
        gradientUnits="userSpaceOnUse"
-       id="radialGradient4272"
+       id="radialGradient3850"
        xlink:href="#linearGradient3144" />
     <radialGradient
        r="34.345188"
@@ -62,25 +52,35 @@
        cx="225.26402"
        gradientTransform="matrix(1,0,0,0.6985294,0,202.82863)"
        gradientUnits="userSpaceOnUse"
-       id="radialGradient3850-9"
-       xlink:href="#linearGradient3144-7" />
+       id="radialGradient3850-4"
+       xlink:href="#linearGradient3144-1" />
     <linearGradient
-       id="linearGradient3144-7">
+       id="linearGradient3144-1">
       <stop
-         id="stop3146-0"
+         id="stop3146-2"
          offset="0"
          style="stop-color:#ffffff;stop-opacity:1;" />
       <stop
-         id="stop3148-3"
+         id="stop3148-2"
          offset="1"
          style="stop-color:#ffffff;stop-opacity:0;" />
     </linearGradient>
+    <radialGradient
+       r="34.345188"
+       fy="672.79736"
+       fx="225.26402"
+       cy="672.79736"
+       cx="225.26402"
+       gradientTransform="matrix(1,0,0,0.6985294,0,202.82863)"
+       gradientUnits="userSpaceOnUse"
+       id="radialGradient4247"
+       xlink:href="#linearGradient3144-1" />
     <linearGradient
        gradientUnits="userSpaceOnUse"
-       y2="481.77188"
-       x2="145.80684"
-       y1="740.82611"
-       x1="170.47868"
+       y2="13"
+       x2="30"
+       y1="56"
+       x1="36"
        id="linearGradient3788"
        xlink:href="#linearGradient3782" />
   </defs>
@@ -90,17 +90,18 @@
        transform="matrix(0.1621282,0,0,0.1621282,6.3605986,-66.108806)"
        id="g4289">
       <path
-         id="rect2269"
-         d="m 286.05557,438.59616 -97.2637,89.49573 c -9.47407,-4.02615 -19.86033,-6.45475 -30.73458,-6.70738 -46.96422,-1.09111 -85.889394,37.06283 -86.956391,85.08801 -0.206698,9.30353 1.102026,18.17235 3.560714,26.63792 l -95.389647,87.77097 44.602625,50.78451 93.515589,-86.04621 c 11.08528,5.82478 23.43483,9.4647 36.73158,9.77362 46.96421,1.09111 86.07678,-37.06283 87.14377,-85.08801 0.26056,-11.72758 -1.9207,-22.84946 -5.80958,-33.15367 l 95.38965,-87.77097 -44.79003,-50.78452 z"
-         style="color:#000000;fill:url(#linearGradient3788);fill-opacity:1;fill-rule:nonzero;stroke:#042a2a;stroke-width:12.33591689000000000;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+         id="rect3942-4-9"
+         transform="matrix(6.1679584,0,0,6.1679584,-39.231908,407.75637)"
+         d="M 15,4.9999997 5.0000001,15 22,32 5.0000001,49 15,59 32,42 49,59 59,49 42,32 59,15 49,4.9999997 32,22 z"
+         style="color:#000000;fill:url(#linearGradient3788);fill-opacity:1;fill-rule:nonzero;stroke:#042a2a;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
       <path
-         id="rect2269-1"
-         d="m 285.31157,456.45719 -93.99584,85.85152 c -7.97816,-3.42968 -24.01391,-8.30211 -33.17116,-8.51729 -39.54881,-0.92948 -73.650032,31.3621 -74.548551,72.27243 -0.174054,7.92523 2.630113,24.25109 4.70059,31.4625 l -91.381778,84.35166 27.715843,32.27526 90.876996,-83.85376 c 9.33495,4.96187 25.8826,12.29955 37.07987,12.56271 39.54881,0.92945 75.00897,-29.60952 76.18784,-73.88419 0.26597,-9.98902 -4.7014,-26.47341 -7.97623,-35.25105 l 92.66402,-85.14125 z"
-         style="color:#000000;fill:none;stroke:#34e0e2;stroke-width:12.33591652;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+         id="rect3942-4-9-1"
+         d="m 53.287469,457.10004 -43.175709,43.1757 104.85529,104.8553 -104.85529,104.85529 43.175709,43.17571 104.855291,-104.85529 104.8553,104.85529 43.1757,-43.17571 -104.85529,-104.85529 104.85529,-104.8553 -43.1757,-43.1757 -104.8553,104.85529 z"
+         style="color:#000000;fill:none;stroke:#34e0e2;stroke-width:12.33591689000000000;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
     </g>
   </g>
   <metadata
-     id="metadata6495">
+     id="metadata6439">
     <rdf:RDF>
       <cc:Work
          rdf:about="">
@@ -126,20 +127,22 @@
             <dc:title>FreeCAD</dc:title>
           </cc:Agent>
         </dc:publisher>
-        <dc:identifier>FreeCAD/src/Mod/Draft/Resources/icons/Snap_Midpoint.svg</dc:identifier>
+        <dc:identifier>FreeCAD/src/Mod/Draft/Resources/icons/Draft_Snap_Intersection.svg</dc:identifier>
         <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
         <dc:contributor>
           <cc:Agent>
             <dc:title>[agryson] Alexander Gryson</dc:title>
           </cc:Agent>
         </dc:contributor>
-        <dc:description>A line at an angle with a bulbous center</dc:description>
         <dc:subject>
           <rdf:Bag>
-            <rdf:li>line</rdf:li>
-            <rdf:li>midpoint</rdf:li>
+            <rdf:li>cross</rdf:li>
+            <rdf:li>multiply</rdf:li>
+            <rdf:li>multiplication</rdf:li>
+            <rdf:li>intersection</rdf:li>
           </rdf:Bag>
         </dc:subject>
+        <dc:description>An angled cross, similar to a multiplication sign</dc:description>
       </cc:Work>
     </rdf:RDF>
   </metadata>
