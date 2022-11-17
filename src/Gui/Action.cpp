@@ -330,11 +330,15 @@ int ActionGroup::checkedAction() const
 
 void ActionGroup::setCheckedAction(int i)
 {
-    QAction* a = _group->actions()[i];
-    a->setChecked(true);
-    this->setIcon(a->icon());
-    if (!this->_isMode) this->setToolTip(a->toolTip());
-    this->setProperty("defaultAction", QVariant(i));
+    auto acts = groupAction()->actions();
+    QAction* act = acts.at(index);
+    act->setChecked(true);
+    this->setIcon(act->icon());
+
+    if (!this->_isMode) {
+        this->setToolTip(act->toolTip(), act->text());
+    }
+    this->setProperty("defaultAction", QVariant(index));
 }
 
 /**
@@ -357,21 +361,9 @@ void ActionGroup::onActivated (QAction* a)
 {
     int index = _group->actions().indexOf(a);
 
-    // Calling QToolButton::setIcon() etc. has no effect if it has QAction set.
-    // We have to change the QAction icon instead
-#if 0
-    QList<QWidget*> widgets = a->associatedWidgets();
-    for (QList<QWidget*>::iterator it = widgets.begin(); it != widgets.end(); ++it) {
-        QMenu* menu = qobject_cast<QMenu*>(*it);
-        if (menu) {
-            QToolButton* button = qobject_cast<QToolButton*>(menu->parent());
-            if (button) {
-                button->setIcon(a->icon());
-                button->setText(a->text());
-                button->setToolTip(a->toolTip());
-                this->setProperty("defaultAction", QVariant(index));
-            }
-        }
+    this->setIcon(act->icon());
+    if (!this->_isMode) {
+        this->setToolTip(act->toolTip(), act->text());
     }
 #endif
     this->setIcon(a->icon());
