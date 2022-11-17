@@ -432,12 +432,8 @@ void DrawViewPart::postHlrTasks(void)
     addReferencesToGeom();
     addShapes2d();
 
-    //dimensions and balloons need to be recomputed here because their
+    //balloons need to be recomputed here because their
     //references will be invalid until the geometry exists
-    std::vector<TechDraw::DrawViewDimension*> dims = getDimensions();
-    for (auto& d : dims) {
-        d->recomputeFeature();
-    }
     std::vector<TechDraw::DrawViewBalloon*> bals = getBalloons();
     for (auto& b : bals) {
         b->recomputeFeature();
@@ -456,6 +452,24 @@ void DrawViewPart::postHlrTasks(void)
 
     requestPaint();
 }
+
+//run any tasks that need to been done after faces are available
+void DrawViewPart::postFaceExtractionTasks(void)
+{
+    // Some centerlines depend on faces so we could not add CL geometry before now
+    addCenterLinesToGeom();
+
+    // Dimensions need to be recomputed here because their
+    // references will be invalid until all the geometry exists,
+    // specifically cosmetic centerlines
+    std::vector<TechDraw::DrawViewDimension*> dims = getDimensions();
+    for (auto& d : dims) {
+        d->recomputeFeature();
+    }
+
+    requestPaint();
+}
+
 
 //! make faces from the edge geometry
 void DrawViewPart::extractFaces()
@@ -662,8 +676,9 @@ void DrawViewPart::onFacesFinished(void)
     QObject::disconnect(connectFaceWatcher);
     showProgressMessage(getNameInDocument(), "has finished extracting faces");
 
-    //some centerlines depend on faces so we could not add CL geometry before now
-    addCenterLinesToGeom();
+    // Now we can recompute Dimensions and do other tasks possibly depending on Face extraction
+    postFaceExtractionTasks();
+
     requestPaint();
 }
 
