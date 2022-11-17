@@ -33,6 +33,7 @@ import FreeCAD as App
 import DraftVecUtils
 
 from draftgeoutils.general import geomType
+from draftgeoutils.edges import findMidpoint
 
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
@@ -134,8 +135,7 @@ def arcFromSpline(edge):
     else:
         # circle
         p1 = edge.Vertexes[0].Point
-        ml = edge.Length/2
-        p2 = edge.valueAt(ml)
+        p2 = findMidpoint(edge)
         ray = p2.sub(p1)
         ray.scale(0.5, 0.5, 0.5)
         center = p1.add(ray)
