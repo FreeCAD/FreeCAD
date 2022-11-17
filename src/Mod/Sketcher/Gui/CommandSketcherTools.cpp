@@ -1134,10 +1134,6 @@ public:
 
             EditCurve[1] = endpoint;
             drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr1, endpoint, Base::Vector2d(0.0, 0.0), AutoConstraint::VERTEX)) {
-                renderSuggestConstraintsCursor(sugConstr1);
-                return;
-            }
         }
         applyCursor();
     }
@@ -1160,7 +1156,6 @@ public:
             unsetCursor();
             resetPositionText();
 
-            int currentgeoid = static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->getHighestCurveIndex();
             Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Copy/clone/move geometry"));
 
             try{
@@ -1180,20 +1175,6 @@ public:
             catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());
                 Gui::Command::abortCommand();
-            }
-
-            if (Op != SketcherCopy::Move) {
-                // add auto constraints for the destination copy
-                if (!sugConstr1.empty()) {
-                    createAutoConstraints(sugConstr1, currentgeoid+nElements, OriginPos);
-                    sugConstr1.clear();
-                }
-            }
-            else {
-                if (!sugConstr1.empty()) {
-                    createAutoConstraints(sugConstr1, OriginGeoId, OriginPos);
-                    sugConstr1.clear();
-                }
             }
 
             tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
