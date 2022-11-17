@@ -614,6 +614,9 @@ protected:
     /// get called when a property status has changed
     void onPropertyStatusChanged(const Property &prop, unsigned long oldStatus) override;
 
+private:
+    void printInvalidLinks() const;
+
      /// python object of this class and all descendent
 protected: // attributes
     Py::SmartPtr PythonObject;
