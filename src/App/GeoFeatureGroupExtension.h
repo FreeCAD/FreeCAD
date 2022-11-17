@@ -25,6 +25,7 @@
 #ifndef APP_GeoFeatureGroup_H
 #define APP_GeoFeatureGroup_H
 
+#include <unordered_set>
 #include "DocumentObject.h"
 #include "GroupExtension.h"
 #include "PropertyGeo.h"
@@ -120,7 +121,7 @@ public:
     static void getInvalidLinkObjects(const App::DocumentObject* obj, std::vector<App::DocumentObject*>& vec);
     
 private:
-    Base::Placement recursiveGroupPlacement(GeoFeatureGroupExtension* group);
+    Base::Placement recursiveGroupPlacement(GeoFeatureGroupExtension* group, std::unordered_set<GeoFeatureGroupExtension*>& history);
     static std::vector<App::DocumentObject*> getScopedObjectsFromLinks(const App::DocumentObject*, LinkScope scope = LinkScope::Local);
     static std::vector<App::DocumentObject*> getScopedObjectsFromLink(App::Property*, LinkScope scope = LinkScope::Local);
 

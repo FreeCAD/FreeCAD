@@ -103,25 +103,35 @@ DocumentObject* GeoFeatureGroupExtension::getGroupOfObject(const DocumentObject*
     return nullptr;
 }
 
-Base::Placement GeoFeatureGroupExtension::globalGroupPlacement() {
-
-    if(getExtendedObject()->isRecomputing())
+Base::Placement GeoFeatureGroupExtension::globalGroupPlacement()
+{
+    if (getExtendedObject()->isRecomputing()) {
         throw Base::RuntimeError("Global placement cannot be calculated on recompute");
+    }
 
-    return recursiveGroupPlacement(this);
+    std::unordered_set<GeoFeatureGroupExtension*> history;
+    history.insert(this);
+    return recursiveGroupPlacement(this, history);
 }
 
 
-Base::Placement GeoFeatureGroupExtension::recursiveGroupPlacement(GeoFeatureGroupExtension* group) {
+Base::Placement GeoFeatureGroupExtension::recursiveGroupPlacement(GeoFeatureGroupExtension* group,
+                                                                  std::unordered_set<GeoFeatureGroupExtension*>& history)
+{
+    history.insert(this);
 
-    
     auto inList = group->getExtendedObject()->getInList();
-    for(auto* link : inList) {
+    for (auto* link : inList) {
         auto parent = link->getExtensionByType<GeoFeatureGroupExtension>(true);
-        if(parent && parent->hasObject(group->getExtendedObject()))
-            return recursiveGroupPlacement(parent) * group->placement().getValue();
+        if (parent && parent->hasObject(group->getExtendedObject())) {
+            // Cyclic dependencies detected
+            if (history.count(parent) > 0) {
+                break;
+            }
+            return recursiveGroupPlacement(parent, history) * group->placement().getValue();
+        }
     }
-    
+
     return group->placement().getValue();
 }
 
