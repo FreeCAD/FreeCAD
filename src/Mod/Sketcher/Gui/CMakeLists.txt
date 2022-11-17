@@ -42,8 +42,6 @@ set(SketcherGui_UIC_SRCS
     SketcherSettingsDisplay.ui
     SketchRectangularArrayDialog.ui
     SketcherRegularPolygonDialog.ui
-    ConstraintMultiFilterDialog.ui
-    ConstraintSettingsDialog.ui
 )
 
 SET(SketcherGui_SRCS
@@ -145,10 +143,6 @@ SET(SketcherGui_SRCS
     SketchRectangularArrayDialog.cpp
     SketcherRegularPolygonDialog.h
     SketcherRegularPolygonDialog.cpp
-    ConstraintMultiFilterDialog.h
-    ConstraintMultiFilterDialog.cpp
-    ConstraintSettingsDialog.h
-    ConstraintSettingsDialog.cpp
     TaskDlgEditSketch.cpp
     TaskDlgEditSketch.h
     ViewProviderPython.cpp
