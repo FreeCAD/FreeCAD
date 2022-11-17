@@ -98,6 +98,9 @@ public:
     //return true if the current user schema uses multiple units for angles (ex. DMS)
     static bool isMultiUnitAngle();
 
+    //return the basic unit of measure for length in the current user schema.
+    static std::string getBasicLengthUnit();
+
     // Python interface
     static PyMethodDef    Methods[];
 
