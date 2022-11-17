@@ -112,6 +112,8 @@ SET(Draw_SRCS
     DimensionGeometry.h
     DimensionReferences.cpp
     DimensionReferences.h
+    DimensionFormatter.cpp
+    DimensionFormatter.h
     DrawViewBalloon.cpp
     DrawViewBalloon.h
     DrawViewSection.cpp

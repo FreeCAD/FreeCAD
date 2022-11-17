@@ -1,5 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
+ *                 2022 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -57,8 +58,7 @@
 #include <Mod/TechDraw/App/DrawViewDimensionPy.h>  // generated from DrawViewDimensionPy.xml
 
 #include "DrawViewDimension.h"
-//#include "DimensionGeometry.h"
-//#include "DimensionReferences.h"
+#include "DimensionFormatter.h"
 #include "DrawUtil.h"
 #include "DrawViewPart.h"
 #include "Geometry.h"
@@ -72,20 +72,6 @@ using DU = DrawUtil;
 //===========================================================================
 
 PROPERTY_SOURCE(TechDraw::DrawViewDimension, TechDraw::DrawView)
-
-//namespace {
-//    // keep this enum synchronized with TypeEnums
-//    enum DimensionType {
-//        Distance,
-//        DistanceX,
-//        DistanceY,
-//        DistanceZ,
-//        Radius,
-//        Diameter,
-//        Angle,
-//        Angle3Pt
-//    };
-//}
 
 const char* DrawViewDimension::TypeEnums[]= {"Distance",
                                              "DistanceX",
@@ -108,6 +94,9 @@ static const App::PropertyQuantityConstraint::Constraints PositiveConstraint = {
 
 DrawViewDimension::DrawViewDimension()
 {
+    //create the formatter since it will be needed to set default property values
+    m_formatter = new DimensionFormatter(this);
+
     ADD_PROPERTY_TYPE(References2D, (nullptr, nullptr), "", (App::Prop_None), "Projected Geometry References");
     References2D.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(References3D, (nullptr, nullptr), "", (App::Prop_None), "3D Geometry References");
@@ -161,12 +150,14 @@ DrawViewDimension::DrawViewDimension()
     resetAngular();
     resetArc();
     m_hasGeometry = false;
+    m_formatter = new DimensionFormatter(this);
 }
 
 DrawViewDimension::~DrawViewDimension()
 {
     delete measurement;
     measurement = nullptr;
+    delete m_formatter;
 }
 
 void DrawViewDimension::resetLinear()
@@ -362,7 +353,6 @@ void DrawViewDimension::handleChangedPropertyType(Base::XMLReader &reader, const
     }
 }
 
-
 short DrawViewDimension::mustExecute() const
 {
     if (!isRestoring()) {
@@ -458,46 +448,10 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute()
     return DrawView::execute();
 }
 
-//TODO: schema not report their multiValue status
+////TODO: schema not report their multiValue status
 bool DrawViewDimension::isMultiValueSchema() const
 {
-    bool angularMeasure = (Type.isValue("Angle") || Type.isValue("Angle3Pt"));
-
-    Base::UnitSystem uniSys = Base::UnitsApi::getSchema();
-    if (uniSys == Base::UnitSystem::ImperialBuilding &&
-            !angularMeasure) {
-        return true;
-    } else if (uniSys == Base::UnitSystem::ImperialCivil &&
-               !angularMeasure) {
-        return true;
-    }
-    return false;
-}
-
-std::string DrawViewDimension::getBaseLengthUnit(Base::UnitSystem system)
-{
-    switch (system) {
-    case Base::UnitSystem::SI1:
-        return "mm";
-    case Base::UnitSystem::SI2:
-        return "m";
-    case Base::UnitSystem::Imperial1:
-        return "in";
-    case Base::UnitSystem::ImperialDecimal:
-        return "in";
-    case Base::UnitSystem::Centimeters:
-        return "cm";
-    case Base::UnitSystem::ImperialBuilding:
-        return "ft";
-    case Base::UnitSystem::MmMin:
-        return "mm";
-    case Base::UnitSystem::ImperialCivil:
-        return "ft";
-    case Base::UnitSystem::FemMilliMeterNewton:
-        return "mm";
-    default:
-        return "Unknown schema";
-    }
+    return m_formatter->isMultiValueSchema();
 }
 
 std::string DrawViewDimension::formatValue(qreal value,
@@ -505,203 +459,10 @@ std::string DrawViewDimension::formatValue(qreal value,
                                            int partial,
                                            bool isDim)
 {
-    QString qUserStringUnits;
-    QString formattedValue;
-    bool angularMeasure = false;
-    QLocale loc;
-
-    Base::Quantity asQuantity;
-    asQuantity.setValue(value);
-    if ( (Type.isValue("Angle")) ||
-         (Type.isValue("Angle3Pt")) ) {
-        angularMeasure = true;
-        asQuantity.setUnit(Base::Unit::Angle);
-    } else {
-        asQuantity.setUnit(Base::Unit::Length);
-    }
-
-    QString qUserString = asQuantity.getUserString();  // this handles mm to inch/km/parsec etc
-                                                       // and decimal positions but won't give more than
-                                                       // Global_Decimals precision
-
-    //units api: get schema to figure out if this is multi-value schema(Imperial1, ImperialBuilding, etc)
-    //if it is multi-unit schema, don't even try to use Alt Decimals
-    Base::UnitSystem unitSystem = Base::UnitsApi::getSchema();
-
-    // we need to know what length unit is used by the scheme
-    std::string BaseLengthUnit = getBaseLengthUnit(unitSystem);
-
-    //get formatSpec prefix/suffix/specifier
-    QStringList qsl = getPrefixSuffixSpec(qFormatSpec);
-    QString formatPrefix    = qsl[0];   //FormatSpec prefix
-    QString formatSuffix    = qsl[1];   //FormatSpec suffix
-    QString formatSpecifier = qsl[2];   //FormatSpec specifier
-
-    //handle multi value schemes (yd/ft/in, dms, etc)
-    std::string genPrefix = getPrefix();     //general prefix - diameter, radius, etc
-    QString qMultiValueStr;
-    QString qGenPrefix = QString::fromUtf8(genPrefix.data(), genPrefix.size());
-    if ((unitSystem == Base::UnitSystem::ImperialCivil) && angularMeasure) {
-        QString dispMinute = QString::fromUtf8("\'");
-        QString dispSecond = QString::fromUtf8("\"");
-        QString schemeMinute = QString::fromUtf8("M");
-        QString schemeSecond = QString::fromUtf8("S");
-        QString displaySub = qUserString.replace(schemeMinute, dispMinute);
-        displaySub = displaySub.replace(schemeSecond, dispSecond);
-        qMultiValueStr = displaySub;
-        if (!genPrefix.empty()) {
-            // prefix + 48*30'30" + suffix
-            qMultiValueStr = formatPrefix + qGenPrefix + displaySub + formatSuffix;
-        }
-        formattedValue = qMultiValueStr;
-    } else if (isMultiValueSchema()) {
-        qMultiValueStr = qUserString;
-        if (!genPrefix.empty()) {
-            //qUserString from Quantity includes units - prefix + R + nnn ft + suffix
-            qMultiValueStr = formatPrefix + qUserString + formatSuffix;
-        }
-        return qMultiValueStr.toStdString();
-    } else {  //not multivalue schema
-        if (formatSpecifier.isEmpty()) {
-            Base::Console().Warning("Warning - no numeric format in Format Spec %s - %s\n",
-                                    qPrintable(qFormatSpec), getNameInDocument());
-            return Base::Tools::toStdString(qFormatSpec);
-        }
-
-        // for older TD drawings the formatSpecifier "%g" was used, but the number of decimals was
-        // neverheless limited. To keep old drawings, we limit the number of decimals too
-        // if the TD preferences option to use the global decimal number is set
-        // the formatSpecifier can have a prefix and/or suffix
-        if (useDecimals() && formatSpecifier.contains(QString::fromLatin1("%g"), Qt::CaseInsensitive)) {
-                int globalPrecision = Base::UnitsApi::getDecimals();
-                // change formatSpecifier to e.g. "%.2f"
-                QString newSpecifier = QString::fromStdString("%." + std::to_string(globalPrecision) + "f");
-                formatSpecifier.replace(QString::fromLatin1("%g"), newSpecifier, Qt::CaseInsensitive);
-        }
-
-        // qUserString is the value + unit with default decimals, so extract the unit
-        // we cannot just use unit.getString() because this would convert '°' to 'deg'
-        QRegularExpression rxUnits(QString::fromUtf8(" \\D*$")); // space + any non digits at end of string
-        QRegularExpressionMatch rxMatch;
-        int pos = qUserString.indexOf(rxUnits, 0, &rxMatch);
-        if (pos != -1) {
-            qUserStringUnits = rxMatch.captured(0); // entire capture - non numerics at end of qUserString
-        }
-
-        // get value in the base unit with default decimals
-        // for the conversion we use the same method as in DlgUnitsCalculator::valueChanged
-        // get the conversion factor for the unit
-        double convertValue = Base::Quantity::parse(QString::fromLatin1("1") + QString::fromStdString(BaseLengthUnit)).getValue();
-        // the result is now just val / convertValue because val is always in the base unit
-        // don't do this for angular values since they are not in the BaseLengthUnit
-        double userVal;
-        if (!angularMeasure) {
-            userVal = asQuantity.getValue() / convertValue;
-            // since we converted to the BaseLengthUnit we must assure it is also used for qUserStringUnits
-            qUserStringUnits = QChar::fromLatin1(' ') + QString::fromStdString(BaseLengthUnit);
-        }
-        else {
-            userVal = asQuantity.getValue();
-        }
-
-        // we reformat the value
-        // the user can overwrite the decimal settings, so we must in every case use the formatSpecifier
-        // the default is: if useDecimals(), then formatSpecifier = global decimals, otherwise it is %.2f
-        // Also, handle the new non-standard format-specifier '%w', which has the following rules: works as %f, but no trailing zeros
-        if (formatSpecifier.contains(QRegularExpression(QStringLiteral("%.*[wW]")))) {
-            QString fs = formatSpecifier;
-            fs.replace(QRegularExpression(QStringLiteral("%(.*)w")), QStringLiteral("%\\1f"));
-            fs.replace(QRegularExpression(QStringLiteral("%(.*)W")), QStringLiteral("%\\1F"));
-            formattedValue = QString::asprintf(Base::Tools::toStdString(fs).c_str(), userVal);
-            // First, try to cut trailing zeros, if AFTER decimal dot there are nonzero numbers
-            // Second, try to cut also decimal dot and zeros, if there are just zeros after it
-            formattedValue.replace(QRegularExpression(QStringLiteral("([0-9][0-9]*\\.[0-9]*[1-9])00*$")), QStringLiteral("\\1"));
-            formattedValue.replace(QRegularExpression(QStringLiteral("([0-9][0-9]*)\\.0*$")), QStringLiteral("\\1"));
-        } else {
-            formattedValue = QString::asprintf(Base::Tools::toStdString(formatSpecifier).c_str(), userVal);
-        }
-
-        // if abs(1 - userVal / formattedValue) > 0.1 we know that we make an error greater than 10%
-        // then we need more digits
-        if (abs(userVal - formattedValue.toDouble()) > 0.1 * abs(userVal)) {
-            int i = 1;
-            do { // increase decimals step by step until error is < 10 %
-                formattedValue = QLocale().toString(userVal, 'f', i);
-                ++i;
-            } while (abs(userVal - loc.toDouble(formattedValue)) > 0.1 * abs(userVal));
-            // We purposely don't reset the formatSpecifier.
-            // Why "%.1f" is overwritten for a value of e.g. "0.001" is obvious,
-            // moreover such cases only occurs when
-            // changing unit schemes on existing drawings. Moreover a typical case is that
-            // you accidentally used e.g. a building scheme, see your mistake and go back
-            // then you would end up with e.g. "%.5f" and must manually correct this.
-        }
-
-        // replace decimal sign if necessary
-        QChar dp = QChar::fromLatin1('.');
-        if (loc.decimalPoint() != dp) {
-            formattedValue.replace(dp, loc.decimalPoint());
-        }
-    }
-
-
-    std::string formattedValueString = formattedValue.toStdString();
-
-    if (partial == 0) {   //full text for multi-value schemas
-        return Base::Tools::toStdString(formatPrefix) +
-            Base::Tools::toStdString(qMultiValueStr) +
-            Base::Tools::toStdString(formatSuffix) +
-            Base::Tools::toStdString(qUserStringUnits);
-    }
-    else if (partial == 1)  {            // prefix number[unit] suffix
-            // remove space between dimension and ° (U+00B0)
-            // other units need 1 space for readability
-            if ( angularMeasure &&
-                 !qUserStringUnits.contains(QString::fromLatin1("deg")) ) {
-                QRegularExpression space(QString::fromUtf8("\\s"));
-                qUserStringUnits.remove(space);
-            }
-            if (angularMeasure) {
-                //always insert unit after value
-                return Base::Tools::toStdString(formatPrefix) +
-                         formattedValueString +
-                         Base::Tools::toStdString(qUserStringUnits) +
-                         Base::Tools::toStdString(formatSuffix);
-            } else if (showUnits()){
-                if (isDim && haveTolerance()) {
-                    //unit will be included in tolerance so don't repeat it here
-                    return Base::Tools::toStdString(formatPrefix) +
-                             formattedValueString +
-                             Base::Tools::toStdString(formatSuffix);
-                } else {
-                    //no tolerance, so we need to include unit
-                    return Base::Tools::toStdString(formatPrefix) +
-                             formattedValueString +
-                             Base::Tools::toStdString(qUserStringUnits) +
-                             Base::Tools::toStdString(formatSuffix);
-                }
-            } else {
-                return Base::Tools::toStdString(formatPrefix) +
-                         formattedValueString +
-                         Base::Tools::toStdString(formatSuffix);
-            }
-    }
-    else if (partial == 2) {             // just the unit
-        if (angularMeasure) {
-            // remove leading space from unit if unit is not "deg"
-            if ( !qUserStringUnits.contains(QString::fromLatin1("deg")) ) {
-                QRegularExpression space(QString::fromUtf8("\\s"));
-                qUserStringUnits.remove(space);
-            }
-            return Base::Tools::toStdString(qUserStringUnits);
-        } else if (showUnits()) {
-            return Base::Tools::toStdString(qUserStringUnits);
-        } else {
-            return "";
-        }
-    }
-
-    return formattedValueString;
+    return m_formatter->formatValue(value,
+                                   qFormatSpec,
+                                   partial,
+                                   isDim);
 }
 
 bool DrawViewDimension::haveTolerance()
@@ -718,141 +479,24 @@ bool DrawViewDimension::haveTolerance()
 
 std::string DrawViewDimension::getFormattedToleranceValue(int partial)
 {
-    QString FormatSpec = QString::fromUtf8(FormatSpecOverTolerance.getStrValue().data());
-    QString ToleranceString;
-
-    if (ArbitraryTolerances.getValue())
-        ToleranceString = FormatSpec;
-    else
-        ToleranceString = QString::fromUtf8(formatValue(OverTolerance.getValue(),
-                                                        FormatSpec,
-                                                        partial,
-                                                        false).c_str());
-
-    return ToleranceString.toStdString();
+    return m_formatter->getFormattedToleranceValue(partial);
 }
 
-//get over and under tolerances
+////get over and under tolerances
 std::pair<std::string, std::string> DrawViewDimension::getFormattedToleranceValues(int partial)
 {
-    QString underFormatSpec = QString::fromUtf8(FormatSpecUnderTolerance.getStrValue().data());
-    QString overFormatSpec = QString::fromUtf8(FormatSpecOverTolerance.getStrValue().data());
-    std::pair<std::string, std::string> tolerances;
-    QString underTolerance, overTolerance;
-
-    if (ArbitraryTolerances.getValue()) {
-        underTolerance = underFormatSpec;
-        overTolerance = overFormatSpec;
-    } else {
-        if (DrawUtil::fpCompare(UnderTolerance.getValue(), 0.0)) {
-            underTolerance = QString::fromUtf8(formatValue(UnderTolerance.getValue(),
-                                                           QString::fromUtf8("%.0f"),
-                                                           partial,
-                                                           false).c_str());
-        }
-        else {
-            underTolerance = QString::fromUtf8(formatValue(UnderTolerance.getValue(),
-                                                           underFormatSpec,
-                                                           partial,
-                                                           false).c_str());
-        }
-        if (DrawUtil::fpCompare(OverTolerance.getValue(), 0.0)) {
-            overTolerance = QString::fromUtf8(formatValue(OverTolerance.getValue(),
-                                                          QString::fromUtf8("%.0f"),
-                                                          partial,
-                                                          false).c_str());
-        }
-        else {
-            overTolerance = QString::fromUtf8(formatValue(OverTolerance.getValue(),
-                                                          overFormatSpec,
-                                                          partial,
-                                                          false).c_str());
-        }
-    }
-
-    tolerances.first = underTolerance.toStdString();
-    tolerances.second = overTolerance.toStdString();
-
-    return tolerances;
+    return m_formatter->getFormattedToleranceValues(partial);
 }
 
-//partial = 2 unit only
+////partial = 2 unit only
 std::string DrawViewDimension::getFormattedDimensionValue(int partial)
 {
-    QString qFormatSpec = QString::fromUtf8(FormatSpec.getStrValue().data());
-
-    if ( (Arbitrary.getValue() && !EqualTolerance.getValue())
-        || (Arbitrary.getValue() && TheoreticalExact.getValue()) ) {
-        return FormatSpec.getStrValue();
-    }
-
-    if (Arbitrary.getValue()) {
-        return FormatSpec.getStrValue();
-    }
-
-    // if there is an equal over-/undertolerance (so only 1 tolerance to show with +/-) and
-    // not theoretically exact (which has no tolerance), and
-    // tolerance has been specified, ie
-    // (OverTolerance != 0.0 (so a tolerance has been specified) or
-    // ArbitraryTolerances are specified)
-    // concatenate the tolerance to dimension
-    if (EqualTolerance.getValue() &&
-        !TheoreticalExact.getValue() &&
-        (!DrawUtil::fpCompare(OverTolerance.getValue(), 0.0) || ArbitraryTolerances.getValue())) {
-        QString labelText = QString::fromUtf8(formatValue(getDimValue(),
-                                                          qFormatSpec,
-                                                          1,
-                                                          true).c_str()); //just the number pref/spec[unit]/suf
-        QString unitText = QString::fromUtf8(formatValue(getDimValue(),
-                                                         qFormatSpec,
-                                                         2,
-                                                         false).c_str()); //just the unit
-        QString tolerance = QString::fromStdString(getFormattedToleranceValue(1).c_str());
-
-        // tolerance might start with a plus sign that we don't want, so cut it off
-        // note plus sign is not at pos = 0!
-        QRegularExpression plus(QString::fromUtf8("^\\s*\\+"));
-        tolerance.remove(plus);
-
-        return (labelText +
-                 QString::fromUtf8(" \xC2\xB1 ") +          // +/- symbol
-                 tolerance).toStdString();
-
-        if (partial == 2) {
-            return unitText.toStdString();
-        }
-
-        return "";
-    }
-
-    //tolerance not specified, so just format dimension value?
-    std::string formattedValue = formatValue(getDimValue(), qFormatSpec, partial, true);
-
-    return formattedValue;
+    return m_formatter->getFormattedDimensionValue(partial);
 }
 
 QStringList DrawViewDimension::getPrefixSuffixSpec(QString fSpec)
 {
-    QStringList result;
-    //find the %x.y tag in FormatSpec
-    QRegularExpression rxFormat(QStringLiteral("%[+-]?[0-9]*\\.*[0-9]*[aefgwAEFGW]")); //printf double format spec
-    QRegularExpressionMatch rxMatch;
-    int pos = fSpec.indexOf(rxFormat, 0, &rxMatch);
-    if (pos != -1)  {
-        QString match = rxMatch.captured(0);                                  //entire capture of rx
-        QString formatPrefix = fSpec.left(pos);
-        result.append(formatPrefix);
-        QString formatSuffix = fSpec.right(fSpec.size() - pos - match.size());
-        result.append(formatSuffix);
-        result.append(match);
-    } else {       //printf format not found!
-        Base::Console().Warning("Warning - no numeric format in formatSpec %s - %s\n",
-                                qPrintable(fSpec), getNameInDocument());
-        result.append(QString());
-        result.append(QString());
-        result.append(fSpec);
-    }
-    return result;
+    return m_formatter->getPrefixSuffixSpec(fSpec);
 }
 
 //!NOTE: this returns the Dimension value in internal units (ie mm)!!!!
@@ -1336,7 +980,9 @@ anglePoints DrawViewDimension::getAnglePointsTwoEdges(ReferenceVector references
         }
         Base::Vector3d extenPoint0 = farPoint0;     //extension line points
         Base::Vector3d extenPoint1 = farPoint1;
-        if (!DU::fpCompare(fabs(leg0Dir.Dot(leg1Dir)), 0.0)) {
+        if (DU::fpCompare(fabs(leg0Dir.Dot(leg1Dir)), 0.0)) {
+            //legs of angle are perpendicular farPoints will do
+        } else {
             //legs of the angle are skew
             //project farthest points onto opposite edge
             Base::Vector3d projFar0OnLeg1 = farPoint0.Perpendicular(apex, leg1Dir);
@@ -1350,13 +996,13 @@ anglePoints DrawViewDimension::getAnglePointsTwoEdges(ReferenceVector references
                                          generic0->getEndPoint())) {
                 extenPoint0 = projFar1OnLeg0;
             }
-
-            anglePoints pts;
-            pts.first(extenPoint0);
-            pts.second(extenPoint1);
-            pts.vertex(apex);
-            return pts;
         }
+
+        anglePoints pts;
+        pts.first(extenPoint0);
+        pts.second(extenPoint1);
+        pts.vertex(apex);
+        return pts;
     }
 
     //this is a 3d object
@@ -1806,7 +1452,7 @@ bool DrawViewDimension::useDecimals() const
     return Preferences::useGlobalDecimals();
 }
 
-std::string DrawViewDimension::getPrefix() const
+std::string DrawViewDimension::getPrefixForDimType() const
 {
     if (Type.isValue("Radius")){
         return "R";
@@ -1821,40 +1467,7 @@ std::string DrawViewDimension::getPrefix() const
 
 std::string DrawViewDimension::getDefaultFormatSpec(bool isToleranceFormat) const
 {
-    std::string prefFormat = Preferences::formatSpec();
-    QString formatSpec;
-    QString qPrefix;
-    if (prefFormat.empty()) {
-        QString format1 = Base::Tools::fromStdString("%.");
-        QString format2 = Base::Tools::fromStdString("f");
-        int precision;
-        if (useDecimals()) {
-            precision = Base::UnitsApi::getDecimals();
-        } else {
-            precision = Preferences::altDecimals();
-        }
-        QString formatPrecision = QString::number(precision);
-
-        std::string prefix = getPrefix();
-
-        if (!prefix.empty()) {
-            qPrefix = QString::fromUtf8(prefix.data(), prefix.size());
-        }
-
-        formatSpec = qPrefix + format1 + formatPrecision + format2;
-    } else {
-
-        std::string prefix = getPrefix();
-        qPrefix = QString::fromUtf8(prefix.data(), prefix.size());
-        formatSpec = qPrefix + QString::fromStdString(prefFormat);
-
-    }
-
-    if (isToleranceFormat) {
-        formatSpec.replace(QString::fromUtf8("%"), QString::fromUtf8("%+"));
-    }
-
-    return Base::Tools::toStdString(formatSpec);
+    return m_formatter->getDefaultFormatSpec(isToleranceFormat);
 }
 
 bool DrawViewDimension::isExtentDim() const

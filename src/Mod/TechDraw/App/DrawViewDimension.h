@@ -35,6 +35,7 @@
 #include "DrawViewPart.h"
 #include "DimensionGeometry.h"
 #include "DimensionReferences.h"
+
 #include "Geometry.h"
 #include "DrawView.h"
 #include "DrawUtil.h"
@@ -48,8 +49,7 @@ class Measurement;
 namespace TechDraw
 {
 class DrawViewPart;
-
-
+class DimensionFormatter;
 
 class TechDrawExport DrawViewDimension : public TechDraw::DrawView
 {
@@ -153,8 +153,6 @@ enum DimensionType {
 
     bool isMultiValueSchema() const;
 
-    std::string getBaseLengthUnit(Base::UnitSystem system);
-
     pointPair getArrowPositions();
     void saveArrowPositions(const Base::Vector2d positions[]);
 
@@ -168,7 +166,7 @@ protected:
     void Restore(Base::XMLReader& reader) override;
     void onChanged(const App::Property* prop) override;
     void onDocumentRestored() override;
-    std::string getPrefix() const;
+    std::string getPrefixForDimType() const;
     std::string getDefaultFormatSpec(bool isToleranceFormat = false) const;
     virtual pointPair getPointsOneEdge(ReferenceVector references);
     virtual pointPair getPointsTwoEdges(ReferenceVector references);
@@ -205,6 +203,9 @@ private:
     arcPoints   m_arcPoints;
     anglePoints m_anglePoints;
     bool        m_hasGeometry;
+
+    friend class DimensionFormatter;
+    DimensionFormatter* m_formatter;
 };
 
 } //namespace TechDraw
