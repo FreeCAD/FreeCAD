@@ -66,7 +66,7 @@ enum GetLinkOption {
 enum class MessageOption {
     Quiet, /**< Suppress error. */
     Error, /**< Print an error message. */
-    Throw, /**< Throw an execption. */
+    Throw, /**< Throw an exception. */
 };
 
 
