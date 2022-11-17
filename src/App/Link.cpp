@@ -128,7 +128,7 @@ const bool & LinkParams::getCopyOnChangeApplyToAll() {
 
 // Auto generated code. See class document of LinkParams.
 const bool & LinkParams::defaultCopyOnChangeApplyToAll() {
-    const static bool def = true;
+    static const bool def = true;
     return def;
 }
 

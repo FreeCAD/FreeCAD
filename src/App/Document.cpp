@@ -821,8 +821,8 @@ void Document::exportGraphviz(std::ostream& out) const
             graph_traits<Graph>::edge_iterator ei, ei_end;
             tie(ei, ei_end) = edges(DepList);
             for (; ei != ei_end; ++ei) {
-                in_edges.insert(std::make_pair<Vertex, Edge>(target(*ei, DepList), *ei));
-                out_edges.insert(std::make_pair<Vertex, Edge>(source(*ei, DepList), *ei));
+                in_edges.insert(std::make_pair(target(*ei, DepList), *ei));
+                out_edges.insert(std::make_pair(source(*ei, DepList), *ei));
             }
 
             // Go through dependency graph and remove nodes with either no input or output
@@ -924,13 +924,15 @@ void Document::exportGraphviz(std::ostream& out) const
 //}
 
 bool Document::checkOnCycle()
-{/*
+{
+#if 0
   std::vector < default_color_type > color(num_vertices(_DepList), white_color);
   graph_traits < DependencyList >::vertex_iterator vi, vi_end;
   for (tie(vi, vi_end) = vertices(_DepList); vi != vi_end; ++vi)
     if (color[*vi] == white_color)
       if (_has_cycle_dfs(_DepList, *vi, &color[0]))
-        return true; */
+        return true;
+#endif
     return false;
 }
 
@@ -971,7 +973,7 @@ bool Document::undo(int id)
 
         }
 
-        for(auto & obj:d->objectArray) {
+        for(auto & obj : d->objectArray) {
             if(obj->testStatus(ObjectStatus::PendingTransactionUpdate)) {
                 obj->onUndoRedoFinished();
                 obj->setStatus(ObjectStatus::PendingTransactionUpdate,false);
@@ -1020,7 +1022,7 @@ bool Document::redo(int id)
         mRedoTransactions.pop_back();
         }
 
-        for(auto & obj:d->objectArray) {
+        for(auto & obj : d->objectArray) {
             if(obj->testStatus(ObjectStatus::PendingTransactionUpdate)) {
                 obj->onUndoRedoFinished();
                 obj->setStatus(ObjectStatus::PendingTransactionUpdate,false);
@@ -1288,7 +1290,8 @@ int Document::getTransactionID(bool undo, unsigned pos) const {
         if(pos>=mUndoTransactions.size())
             return 0;
         auto rit = mUndoTransactions.rbegin();
-        for(;pos;++rit,--pos);
+        for(;pos;++rit,--pos)
+            continue;
         return (*rit)->getID();
     }
     if(pos>=mRedoTransactions.size())
@@ -2986,11 +2989,13 @@ void Document::getLinksTo(std::set<DocumentObject*> &links,
 {
     std::map<const App::DocumentObject*, std::vector<App::DocumentObject*> > linkMap;
 
-    for(auto o : !objs.empty()?objs:d->objectArray) {
-        if(o == obj) continue;
+    for(auto o : !objs.empty() ? objs : d->objectArray) {
+        if (o == obj)
+            continue;
         auto linked = o;
-        if(options & GetLinkArrayElement)
+        if (options & GetLinkArrayElement) {
             linked = o->getLinkedObject(false);
+        }
         else {
             auto ext = o->getExtensionByType<LinkBaseExtension>(true);
             if(ext)
