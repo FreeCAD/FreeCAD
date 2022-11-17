@@ -96,11 +96,9 @@ DocumentObject::~DocumentObject(void)
     }
 }
 
-App::DocumentObjectExecReturn *DocumentObject::recompute(void)
+void DocumentObject::printInvalidLinks() const
 {
-    //check if the links are valid before making the recompute
-    if(!GeoFeatureGroupExtension::areLinksValid(this)) {
-#if 1
+    try {
         // Get objects that have invalid link scope, and print their names.
         // Truncate the invalid object list name strings for readability, if they happen to be very long.
         std::vector<App::DocumentObject*> invalid_linkobjs;
@@ -114,28 +112,44 @@ App::DocumentObjectExecReturn *DocumentObject::recompute(void)
                     scopenames += "... ";
                     break;
                 }
+
                 scopenames += scope.first->getNameInDocument();
                 scopenames += " ";
             }
+
             if (objnames.length() > 80) {
                 objnames += "... ";
                 break;
             }
         }
+
         if (objnames.empty()) {
             objnames = "N/A";
-        } else {
+        }
+        else {
             objnames.pop_back();
         }
+
         if (scopenames.empty()) {
             scopenames = "N/A";
-        } else {
+        }
+        else {
             scopenames.pop_back();
         }
-        Base::Console().Warning("%s: Link(s) to object(s) '%s' go out of the allowed scope '%s'. Instead, the linked object(s) reside within '%s'.\n", getTypeId().getName(), objnames.c_str(), getNameInDocument(), scopenames.c_str());
-#else
-        return new App::DocumentObjectExecReturn("Links go out of the allowed scope", this);
-#endif
+
+        Base::Console().Warning("%s: Link(s) to object(s) '%s' go out of the allowed scope '%s'. Instead, the linked object(s) reside within '%s'.\n",
+                                getTypeId().getName(), objnames.c_str(), getNameInDocument(), scopenames.c_str());
+    }
+    catch (const Base::Exception& e) {
+        e.ReportException();
+    }
+}
+
+App::DocumentObjectExecReturn *DocumentObject::recompute()
+{
+    //check if the links are valid before making the recompute
+    if (!GeoFeatureGroupExtension::areLinksValid(this)) {
+        printInvalidLinks();
     }
 
     // set/unset the execution bit
@@ -887,31 +901,43 @@ std::vector<std::string> DocumentObject::getSubObjects(int reason) const {
     return ret;
 }
 
-std::vector<std::pair<App::DocumentObject *,std::string> > DocumentObject::getParents(int depth) const {
-    std::vector<std::pair<App::DocumentObject *,std::string> > ret;
-    if(!getNameInDocument() || !GetApplication().checkLinkDepth(depth))
+std::vector<std::pair<App::DocumentObject *,std::string>> DocumentObject::getParents(int depth) const {
+    std::vector<std::pair<App::DocumentObject *, std::string>> ret;
+    if (!getNameInDocument() || !GetApplication().checkLinkDepth(depth, false)) {
         return ret;
+    }
+
     std::string name(getNameInDocument());
     name += ".";
-    for(auto parent : getInList()) {
-        if(!parent || !parent->getNameInDocument())
+    for (auto parent : getInList()) {
+        if (!parent || !parent->getNameInDocument()) {
             continue;
-        if(!parent->hasChildElement() && 
-           !parent->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId()))
-            continue;
-        if(!parent->getSubObject(name.c_str()))
-            continue;
+        }
 
-        auto links = GetApplication().getLinksTo(parent,App::GetLinkRecursive);
+        if (!parent->hasChildElement() &&
+            !parent->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId())) {
+            continue;
+        }
+
+        if (!parent->getSubObject(name.c_str())) {
+            continue;
+        }
+
+        auto links = GetApplication().getLinksTo(parent, App::GetLinkRecursive);
         links.insert(parent);
-        for(auto parent : links) {
-            auto parents = parent->getParents(depth+1);
-            if(parents.empty()) 
-                parents.emplace_back(parent,std::string());
-            for(auto &v : parents) 
-                ret.emplace_back(v.first,v.second+name);
+
+        for (auto parent : links) {
+            auto parents = parent->getParents(depth + 1);
+            if (parents.empty()) {
+                parents.emplace_back(parent, std::string());
+            }
+
+            for (auto &v : parents) {
+                ret.emplace_back(v.first, v.second + name);
+            }
         }
     }
+
     return ret;
 }
 
