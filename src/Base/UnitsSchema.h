@@ -71,6 +71,9 @@ public:
 
     //return true if this schema uses multiple units for angles (ex. DMS)
     virtual bool isMultiUnitAngle() const {return false;}
+
+    //return the basic length unit for this schema
+    virtual std::string getBasicLengthUnit() const { return std::string("mm"); }
 };
 
 

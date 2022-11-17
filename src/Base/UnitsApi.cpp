@@ -163,6 +163,11 @@ bool UnitsApi::isMultiUnitAngle()
     return UserPrefSystem->isMultiUnitAngle();
 }
 
+std::string UnitsApi::getBasicLengthUnit()
+{
+    return UserPrefSystem->getBasicLengthUnit();
+}
+
 // === static translation methods ==========================================
 
 QString UnitsApi::schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString)
