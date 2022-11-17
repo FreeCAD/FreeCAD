@@ -3021,7 +3021,7 @@ void Document::getLinksTo(std::set<DocumentObject*> &links,
 
     std::vector<const DocumentObject*> current(1,obj);
     for(int depth=0;!current.empty();++depth) {
-        if(!GetApplication().checkLinkDepth(depth,true))
+        if(!GetApplication().checkLinkDepth(depth, MessageOption::Error))
             break;
         std::vector<const DocumentObject*> next;
         for(const App::DocumentObject *o : current) {

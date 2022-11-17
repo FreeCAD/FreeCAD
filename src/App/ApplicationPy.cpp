@@ -832,7 +832,7 @@ PyObject *Application::sCheckLinkDepth(PyObject * /*self*/, PyObject *args)
         return nullptr;
 
     PY_TRY {
-        return Py::new_reference_to(Py::Int(GetApplication().checkLinkDepth(depth,false)));
+        return Py::new_reference_to(Py::Int(GetApplication().checkLinkDepth(depth, MessageOption::Throw)));
     }PY_CATCH;
 }
 

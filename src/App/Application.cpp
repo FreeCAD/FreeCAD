@@ -1150,22 +1150,30 @@ std::string Application::getHelpDir()
 #endif
 }
 
-int Application::checkLinkDepth(int depth, bool no_throw) {
-    if(_objCount<0) {
+int Application::checkLinkDepth(int depth, MessageOption option)
+{
+    if (_objCount < 0) {
         _objCount = 0;
-        for(auto &v : DocMap)
+        for (auto &v : DocMap) {
             _objCount += v.second->countObjects();
+        }
     }
-    if(depth > _objCount+2) {
+
+    if (depth > _objCount + 2) {
         const char *msg = "Link recursion limit reached. "
                 "Please check for cyclic reference.";
-        if(no_throw) {
+        switch (option) {
+        case MessageOption::Quiet:
+            return 0;
+        case MessageOption::Error:
             FC_ERR(msg);
             return 0;
-        }else
+        case MessageOption::Throw:
             throw Base::RuntimeError(msg);
+        }
     }
-    return _objCount+2;
+
+    return _objCount + 2;
 }
 
 std::set<DocumentObject *> Application::getLinksTo(
