@@ -173,6 +173,7 @@ public:
     double getSizeAlongVector(Base::Vector3d alignmentVector);
 
     virtual void postHlrTasks(void);
+    virtual void postFaceExtractionTasks(void);
 
     bool isIso() const;
 
