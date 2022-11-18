@@ -269,13 +269,10 @@ void execRadius(Gui::Command* cmd)
                                                                       acceptableGeometry,
                                                                       minimumCounts,
                                                                       acceptableDimensionGeometrys);
-    if ( !( geometryRefs2d == TechDraw::isCircle ||
-          geometryRefs2d == TechDraw::isEllipse ||
-          geometryRefs2d == TechDraw::isBSplineCircle ||
-          geometryRefs2d == TechDraw::isViewReference) ) {
+    if ( geometryRefs2d == TechDraw::isInvalid ) {
         QMessageBox::warning(Gui::getMainWindow(),
                              QObject::tr("Incorrect Selection"),
-                             QObject::tr("Can not make radius dimension from selection"));
+                             QObject::tr("Can not make 2d radius dimension from selection"));
         return;
     }
 
@@ -288,12 +285,10 @@ void execRadius(Gui::Command* cmd)
                                                       acceptableGeometry,
                                                       minimumCounts,
                                                       acceptableDimensionGeometrys);
-        if ( !( geometryRefs3d == TechDraw::isCircle ||
-              geometryRefs3d == TechDraw::isEllipse ||
-              geometryRefs3d == TechDraw::isBSplineCircle) ) {
+        if ( geometryRefs3d == TechDraw::isInvalid ) {
             QMessageBox::warning(Gui::getMainWindow(),
                                  QObject::tr("Incorrect Selection"),
-                                 QObject::tr("Can not make radius dimension from selection"));
+                                 QObject::tr("Can not make 3d radius dimension from selection"));
             return;
         }
 
@@ -395,13 +390,10 @@ void execDiameter(Gui::Command* cmd)
                                                                       acceptableGeometry,
                                                                       minimumCounts,
                                                                       acceptableDimensionGeometrys);
-    if ( !( geometryRefs2d == TechDraw::isCircle ||
-          geometryRefs2d == TechDraw::isEllipse ||
-          geometryRefs2d == TechDraw::isBSplineCircle ||
-          geometryRefs2d == TechDraw::isViewReference) ) {
+    if ( geometryRefs2d == TechDraw::isInvalid ) {
         QMessageBox::warning(Gui::getMainWindow(),
                              QObject::tr("Incorrect Selection"),
-                             QObject::tr("Can not make diameter dimension from selection"));
+                             QObject::tr("Can not make 2d diameter dimension from selection"));
         return;
     }
 
@@ -414,12 +406,10 @@ void execDiameter(Gui::Command* cmd)
                                                       acceptableGeometry,
                                                       minimumCounts,
                                                       acceptableDimensionGeometrys);
-        if ( !( geometryRefs3d == TechDraw::isCircle ||
-              geometryRefs3d == TechDraw::isEllipse ||
-              geometryRefs3d == TechDraw::isBSplineCircle) ) {
+        if ( geometryRefs3d == TechDraw::isInvalid ) {
             QMessageBox::warning(Gui::getMainWindow(),
                                  QObject::tr("Incorrect Selection"),
-                                 QObject::tr("Can not make diameter dimension from selection"));
+                                 QObject::tr("Can not make 3d diameter dimension from selection"));
             return;
         }
 
@@ -622,13 +612,10 @@ void execDistance(Gui::Command* cmd)
                                                                       acceptableGeometry,
                                                                       minimumCounts,
                                                                       acceptableDimensionGeometrys);
-    if ( !( geometryRefs2d == TechDraw::isVertical ||
-          geometryRefs2d == TechDraw::isHorizontal ||
-          geometryRefs2d == TechDraw::isDiagonal ||
-          geometryRefs2d == TechDraw::isViewReference) ) {
+    if ( geometryRefs2d == TechDraw::isInvalid ) {
         QMessageBox::warning(Gui::getMainWindow(),
                              QObject::tr("Incorrect Selection"),
-                             QObject::tr("Can not make linear dimension from selection"));
+                             QObject::tr("Can not make 2d linear dimension from selection"));
         return;
     }
 
@@ -641,12 +628,10 @@ void execDistance(Gui::Command* cmd)
                                                       acceptableGeometry,
                                                       minimumCounts,
                                                       acceptableDimensionGeometrys);
-        if ( !( geometryRefs3d == TechDraw::isVertical ||
-              geometryRefs3d == TechDraw::isHorizontal ||
-              geometryRefs3d == TechDraw::isDiagonal) ) {
+        if (  geometryRefs3d == TechDraw::isInvalid ) {
             QMessageBox::warning(Gui::getMainWindow(),
                                  QObject::tr("Incorrect Selection"),
-                                 QObject::tr("Can not make linear dimension from selection"));
+                                 QObject::tr("Can not make 3d linear dimension from selection"));
             return;
         }
     }
@@ -721,11 +706,10 @@ void execDistanceX(Gui::Command* cmd)
                                                                       acceptableGeometry,
                                                                       minimumCounts,
                                                                       acceptableDimensionGeometrys);
-    if ( !( geometryRefs2d == TechDraw::isHorizontal ||
-          geometryRefs2d == TechDraw::isViewReference) ) {
+    if ( geometryRefs2d == TechDraw::isInvalid ) {
         QMessageBox::warning(Gui::getMainWindow(),
                              QObject::tr("Incorrect Selection"),
-                             QObject::tr("Can not make vertical dimension from selection"));
+                             QObject::tr("Can not make 2d horizontal dimension from selection"));
         return;
     }
 
@@ -738,10 +722,10 @@ void execDistanceX(Gui::Command* cmd)
                                                       acceptableGeometry,
                                                       minimumCounts,
                                                       acceptableDimensionGeometrys);
-        if (geometryRefs3d != TechDraw::isHorizontal) {
+        if (geometryRefs3d == TechDraw::isInvalid) {
             QMessageBox::warning(Gui::getMainWindow(),
                                  QObject::tr("Incorrect Selection"),
-                                 QObject::tr("Can not make vertical dimension from selection"));
+                                 QObject::tr("Can not make 3d horizontal dimension from selection"));
             return;
         }
     }
@@ -817,11 +801,10 @@ void execDistanceY(Gui::Command* cmd)
                                                                       acceptableGeometry,
                                                                       minimumCounts,
                                                                       acceptableDimensionGeometrys);
-    if ( !( geometryRefs2d == TechDraw::isVertical ||
-          geometryRefs2d == TechDraw::isViewReference) ) {
+    if ( geometryRefs2d == TechDraw::isInvalid ) {
         QMessageBox::warning(Gui::getMainWindow(),
                              QObject::tr("Incorrect Selection"),
-                             QObject::tr("Can not make vertical dimension from selection"));
+                             QObject::tr("Can not make 2d vertical dimension from selection"));
         return;
     }
 
@@ -834,10 +817,10 @@ void execDistanceY(Gui::Command* cmd)
                                                       acceptableGeometry,
                                                       minimumCounts,
                                                       acceptableDimensionGeometrys);
-        if ( geometryRefs3d != TechDraw::isVertical) {
+        if ( geometryRefs3d == TechDraw::isVertical) {
             QMessageBox::warning(Gui::getMainWindow(),
                                  QObject::tr("Incorrect Selection"),
-                                 QObject::tr("Can not make vertical dimension from selection"));
+                                 QObject::tr("Can not make 3d vertical dimension from selection"));
             return;
         }
     }
@@ -1001,11 +984,10 @@ void execAngle(Gui::Command* cmd)
                                                                       acceptableGeometry,
                                                                       minimumCounts,
                                                                       acceptableDimensionGeometrys);
-    if ( !( geometryRefs2d == TechDraw::isAngle ||
-          geometryRefs2d == TechDraw::isViewReference) ) {
+    if ( geometryRefs2d == TechDraw::isInvalid ) {
         QMessageBox::warning(Gui::getMainWindow(),
                              QObject::tr("Incorrect Selection"),
-                             QObject::tr("Can not make angle dimension from selection"));
+                             QObject::tr("Can not make 2d angle dimension from selection"));
         return;
     }
 
@@ -1018,10 +1000,10 @@ void execAngle(Gui::Command* cmd)
                                                       acceptableGeometry,
                                                       minimumCounts,
                                                       acceptableDimensionGeometrys);
-        if ( geometryRefs3d != TechDraw::isAngle ) {
+        if ( geometryRefs3d == TechDraw::isInvalid ) {
             QMessageBox::warning(Gui::getMainWindow(),
                                  QObject::tr("Incorrect Selection"),
-                                 QObject::tr("Can not make angle dimension from selection"));
+                                 QObject::tr("Can not make 3d angle dimension from selection"));
             return;
         }
     }
@@ -1095,11 +1077,10 @@ void execAngle3Pt(Gui::Command* cmd)
                                                                       acceptableGeometry,
                                                                       minimumCounts,
                                                                       acceptableDimensionGeometrys);
-    if ( !( geometryRefs2d == TechDraw::isAngle3Pt ||
-          geometryRefs2d == TechDraw::isViewReference) ) {
+    if ( geometryRefs2d == TechDraw::isInvalid ) {
         QMessageBox::warning(Gui::getMainWindow(),
                              QObject::tr("Incorrect Selection"),
-                             QObject::tr("Can not make angle dimension from selection"));
+                             QObject::tr("Can not make 2d angle dimension from selection"));
         return;
     }
 
@@ -1112,10 +1093,10 @@ void execAngle3Pt(Gui::Command* cmd)
                                                       acceptableGeometry,
                                                       minimumCounts,
                                                       acceptableDimensionGeometrys);
-        if ( geometryRefs3d != TechDraw::isAngle3Pt ) {
+        if ( geometryRefs3d == TechDraw::isInvalid ) {
             QMessageBox::warning(Gui::getMainWindow(),
                                  QObject::tr("Incorrect Selection"),
-                                 QObject::tr("Can not make angle dimension from selection"));
+                                 QObject::tr("Can not make 3d angle dimension from selection"));
             return;
         }
     }
@@ -1380,10 +1361,9 @@ void execExtent(Gui::Command* cmd, int direction)
     if ( geometryRefs2d == TechDraw::isInvalid) {
         QMessageBox::warning(Gui::getMainWindow(),
                              QObject::tr("Incorrect Selection"),
-                             QObject::tr("Can not make extent dimension from selection"));
+                             QObject::tr("Can not make 2d extent dimension from selection"));
         return;
     }
-
     //what 3d geometry configuration did we receive?
     DimensionGeometryType geometryRefs3d;
     if (geometryRefs2d == TechDraw::isViewReference  &&
@@ -1393,12 +1373,10 @@ void execExtent(Gui::Command* cmd, int direction)
                                                       acceptableGeometry,
                                                       minimumCounts,
                                                       acceptableDimensionGeometrys);
-        if ( !( geometryRefs3d == TechDraw::isVertical ||
-              geometryRefs3d == TechDraw::isHorizontal ||
-              geometryRefs3d == TechDraw::isDiagonal) ) {
+        if ( geometryRefs3d == isInvalid ) {
             QMessageBox::warning(Gui::getMainWindow(),
                                  QObject::tr("Incorrect Selection"),
-                                 QObject::tr("Can not make extent dimension from selection"));
+                                 QObject::tr("Can not make 3d extent dimension from selection"));
             return;
         }
     }
@@ -1417,12 +1395,11 @@ void execExtent(Gui::Command* cmd, int direction)
         DrawDimHelper::makeExtentDim(partFeat,
                                      edgeNames,
                                      direction);     //0 - horizontal, 1 - vertical
+    } else {
+        DrawDimHelper::makeExtentDim3d(partFeat,
+                                       references3d,
+                                       direction);   //0 - horizontal, 1 - vertical
     }
-    //     else {
-    //        DrawDimHelpt::makeExtentDim3d(partFeat,
-    //                                      objs3d,
-    //                                      direction);   //0 - horizontal, 1 - vertical
-    //    }
 }
 
 //===========================================================================

@@ -74,19 +74,27 @@ TechDraw::DrawViewPart* TechDraw::getReferencesFromSelection( ReferenceVector& r
             if (!ShapeExtractor::getShapes(links).IsNull()) {
                 //this item has 3d geometry so we are interested
                 App::DocumentObject* obj3d = selItem.getObject();
-                if (selItem.getSubNames().empty() &&
-                    ShapeExtractor::isPointType(obj3d)) {
-                    //a point object may not have a subName when selected,
-                    //so we need to perform some special handling.
+                if (selItem.getSubNames().empty()) {
                     if (ShapeExtractor::isPointType(obj3d)) {
+                        //a point object may not have a subName when selected,
+                        //so we need to perform some special handling.
                         ReferenceEntry ref(obj3d, "Vertex1");
                         references3d.push_back(ref);
+                        continue;
+                    } else {
+                        //this is a whole object reference, probably for an extent dimension
+                        ReferenceEntry ref(obj3d, std::string());
+                        references3d.push_back(ref);
+                        continue;
                     }
                 }
+                //this is a regular reference in form obj+subelement
                 for (auto& sub3d : selItem.getSubNames()) {
                     ReferenceEntry ref(obj3d, sub3d);
                     references3d.push_back(ref);
                 }
+            } else {
+                Base::Console().Message("DV::getRefsFromSel - %s has no shape!\n", selItem.getObject()->getNameInDocument());
             }
         }
     }
@@ -106,7 +114,6 @@ DimensionGeometryType TechDraw::validateDimSelection(ReferenceVector references,
                                 std::vector<int> minimumCounts,                      //how many of each geometry are needed for a good dimension
                                 std::vector<DimensionGeometryType> acceptableDimensionGeometrys)           //isVertical, isHorizontal, ...
 {
-//    Base::Console().Message("DV::validateDimSelection() - references: %d\n", references.size());
     StringVector subNames;
     TechDraw::DrawViewPart* dvpSave(nullptr);
     for (auto& ref : references) {
@@ -175,8 +182,11 @@ DimensionGeometryType TechDraw::validateDimSelection3d(TechDraw::DrawViewPart* d
 //    Base::Console().Message("DV::validateDimSelection3d() - references: %d\n", references.size());
     StringVector subNames;
     for (auto& ref : references) {
-        subNames.push_back(ref.getSubName());
+        if (!ref.getSubName().empty()) {
+            subNames.push_back(ref.getSubName());
+        }
     }
+
 
     //check for invalid geometry descriptors in the subNames
     std::unordered_set<std::string> acceptableGeometrySet(acceptableGeometry.begin(),
@@ -210,6 +220,7 @@ DimensionGeometryType TechDraw::validateDimSelection3d(TechDraw::DrawViewPart* d
 bool TechDraw::validateSubnameList(StringVector subNames,
                          GeometrySet acceptableGeometrySet)
 {
+//    Base::Console().Message("DV::validateSubNameList()\n");
     for (auto& sub : subNames) {
         std::string geometryType = DrawUtil::getGeomTypeFromName(sub);
         if (acceptableGeometrySet.count(geometryType) == 0) {
@@ -224,6 +235,7 @@ bool TechDraw::validateSubnameList(StringVector subNames,
 bool TechDraw::checkGeometryOccurences(StringVector subNames,
                              GeomCountMap keyedMinimumCounts)
 {
+//    Base::Console().Message("DV::checkGeometryOccurences() - subNames: %d\n", subNames.size());
     //how many of each geometry descriptor are input
     GeomCountMap foundCounts;
     for (auto& sub : subNames) {
@@ -283,6 +295,27 @@ DimensionGeometryType TechDraw::getGeometryConfiguration(ReferenceVector valid2d
 //return the first valid configuration contained in the already validated references
 DimensionGeometryType TechDraw::getGeometryConfiguration3d(DrawViewPart* dvp, ReferenceVector valid3dReferences)
 {
+//    Base::Console().Message("DV::getGeometryConfig3d() - refs: %d\n", valid3dReferences.size());
+    //first we check for whole object references
+    ReferenceVector wholeObjectRefs;
+    ReferenceVector subElementRefs;
+    for (auto& ref : valid3dReferences) {
+        if (ref.isWholeObject()) {
+            wholeObjectRefs.push_back(ref);
+        } else {
+            subElementRefs.push_back(ref);
+        }
+    }
+    if (subElementRefs.empty()) {
+        //only whole object references
+        return isMultiEdge;
+    }
+    if (!wholeObjectRefs.empty()) {
+        //mix of whole object and subelement refs
+        return isMultiEdge;      //??? correct ???
+    }
+
+    //only have subelement refs
     DimensionGeometryType config = isValidMultiEdge3d(dvp, valid3dReferences);
     if ( config > isInvalid) {
         return config;
@@ -565,7 +598,7 @@ DimensionGeometryType TechDraw::isValidVertexes(ReferenceVector refs)
 //! verify that the vertex references can make a dimension
 DimensionGeometryType TechDraw::isValidVertexes3d(DrawViewPart *dvp, ReferenceVector refs)
 {
-//    Base::Console().Message("DV::isValidVertexes3d()\n");
+//    Base::Console().Message("DV::isValidVertexes3d() - refs: %d\n", refs.size());
     (void) dvp;
     if (refs.size() == 2) {
         //2 vertices can only make a distance dimention
@@ -577,14 +610,16 @@ DimensionGeometryType TechDraw::isValidVertexes3d(DrawViewPart *dvp, ReferenceVe
             return isInvalid;
         }
         Base::Vector3d point0 = DU::toVector3d(BRep_Tool::Pnt(TopoDS::Vertex(geometry0)));
+        point0 = dvp->projectPoint(point0);
         Base::Vector3d point1 = DU::toVector3d(BRep_Tool::Pnt(TopoDS::Vertex(geometry1)));
+        point1 = dvp->projectPoint(point1);
         Base::Vector3d line = point1 - point0;
         if(fabs(line.y) < FLT_EPSILON ) {
             return isHorizontal;
         } else if(fabs(line.x) < FLT_EPSILON) {
             return isVertical;
-        } else if(fabs(line.z) < FLT_EPSILON) {
-            return isZLimited;
+//        } else if(fabs(line.z) < FLT_EPSILON) {
+//            return isZLimited;
         } else {
             return isDiagonal;
         }

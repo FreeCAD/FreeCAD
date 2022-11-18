@@ -252,7 +252,6 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
         XDirection.purgeTouched();  //don't trigger updates!
     }
 
-    m_saveShape = shape;
     partExec(shape);
 
     return DrawView::execute();
@@ -320,32 +319,36 @@ void DrawViewPart::partExec(TopoDS_Shape& shape)
 GeometryObjectPtr DrawViewPart::makeGeometryForShape(TopoDS_Shape& shape)
 {
 //    Base::Console().Message("DVP::makeGeometryForShape() - %s\n", getNameInDocument());
-    gp_Pnt inputCenter;
-    Base::Vector3d stdOrg(0.0, 0.0, 0.0);
-    gp_Ax2 viewAxis = getProjectionCS(stdOrg);
-    inputCenter = TechDraw::findCentroid(shape,
-                                         viewAxis);
-    Base::Vector3d centroid(inputCenter.X(),
-                            inputCenter.Y(),
-                            inputCenter.Z());
-
-    //center shape on origin
-    TopoDS_Shape centeredShape = TechDraw::moveShape(shape,
-                                                     centroid * -1.0);
-    m_saveCentroid = centroid;
-    m_saveShape = centeredShape;
-
-    TopoDS_Shape scaledShape = TechDraw::scaleShape(centeredShape,
-                                                    getScale());
-    if (!DrawUtil::fpCompare(Rotation.getValue(), 0.0)) {
-        scaledShape = TechDraw::rotateShape(scaledShape,
-                                            viewAxis,
-                                            Rotation.getValue());  //conventional rotation
-     }
-    BRepTools::Write(scaledShape, "DVPScaled.brep");            //debug
-    GeometryObjectPtr go =  buildGeometryObject(scaledShape, viewAxis);
+    gp_Pnt inputCenter = TechDraw::findCentroid(shape,
+                                                getProjectionCS());
+    m_saveCentroid = DU::toVector3d(inputCenter);
+    m_saveShape = centerScaleRotate(this, shape, m_saveCentroid);
+    GeometryObjectPtr go =  buildGeometryObject(shape, getProjectionCS());
     return go;
 }
+
+//Modify a shape by centering, scaling and rotating and return the centered (but not rotated) shape
+TopoDS_Shape DrawViewPart::centerScaleRotate(DrawViewPart* dvp,
+                                             TopoDS_Shape& inOutShape,
+                                             Base::Vector3d centroid)
+{
+//    Base::Console().Message("DVP::centerScaleRotate() - %s\n", dvp->getNameInDocument());
+    gp_Ax2 viewAxis = dvp->getProjectionCS();
+
+    //center shape on origin
+    TopoDS_Shape centeredShape = TechDraw::moveShape(inOutShape,
+                                                     centroid * -1.0);
+
+    inOutShape = TechDraw::scaleShape(centeredShape, dvp->getScale());
+    if (!DrawUtil::fpCompare(dvp->Rotation.getValue(), 0.0)) {
+        inOutShape = TechDraw::rotateShape(inOutShape,
+                                            viewAxis,
+                                            dvp->Rotation.getValue());  //conventional rotation
+     }
+//    BRepTools::Write(inOutShape, "DVPScaled.brep");            //debug
+    return centeredShape;
+}
+
 
 //create a geometry object and trigger the HLR process in another thread
 TechDraw::GeometryObjectPtr DrawViewPart::buildGeometryObject(TopoDS_Shape& shape, const gp_Ax2 &viewAxis)

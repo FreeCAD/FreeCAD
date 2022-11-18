@@ -155,6 +155,7 @@ void GeometryObject::clear()
 void GeometryObject::projectShape(const TopoDS_Shape& inShape,
                                   const gp_Ax2& viewAxis)
 {
+//    Base::Console().Message("GO::projectShape()\n");
     clear();
 
     Handle(HLRBRep_Algo) brep_hlr;
@@ -260,6 +261,7 @@ void GeometryObject::projectShape(const TopoDS_Shape& inShape,
 //convert the hlr output into TD Geometry
 void GeometryObject::makeTDGeometry()
 {
+//    Base::Console().Message("GO::makeTDGeometry()\n");
     extractGeometry(TechDraw::ecHARD,                   //always show the hard&outline visible lines
                         true);
     extractGeometry(TechDraw::ecOUTLINE,

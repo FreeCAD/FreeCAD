@@ -58,6 +58,10 @@ TopoDS_Shape ReferenceEntry::getGeometry() const
     if (geoFeat) {
         shape.setPlacement(geoFeat->globalPlacement());
     }
+
+    if (getSubName().empty()) {
+        return shape.getShape();
+    }
     return shape.getSubShape(getSubName().c_str());
 }
 
@@ -66,3 +70,7 @@ std::string ReferenceEntry::geomType() const
     return DrawUtil::getGeomTypeFromName(getSubName());
 }
 
+bool ReferenceEntry::isWholeObject() const
+{
+    return getSubName().empty();
+}

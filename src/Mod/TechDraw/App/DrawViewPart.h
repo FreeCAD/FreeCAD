@@ -114,6 +114,9 @@ public:
     }
     PyObject *getPyObject() override;
 
+    static TopoDS_Shape centerScaleRotate(DrawViewPart* dvp,
+                                            TopoDS_Shape& inOutShape,
+                                            Base::Vector3d centroid);
     std::vector<TechDraw::DrawHatch*> getHatches() const;
     std::vector<TechDraw::DrawGeomHatch*> getGeomHatches() const;
     std::vector<TechDraw::DrawViewDimension*> getDimensions() const;

@@ -58,6 +58,7 @@ public:
     void setSubName(std::string subName) { m_subName = subName; }
     TopoDS_Shape getGeometry() const;
     std::string geomType() const;
+    bool isWholeObject() const;
 
 private:
     bool is3d();

@@ -47,19 +47,18 @@ PROPERTY_SOURCE(TechDraw::DrawViewDimExtent, TechDraw::DrawViewDimension)
 DrawViewDimExtent::DrawViewDimExtent(void)
 {
     App::PropertyLinkSubList       Source;                       //DrawViewPart & SubElements(Edges)
-                                                                 //Cosmetic End points are stored in DVD::References2d
-    App::PropertyLinkSubList       Source3d;                     //Part::Feature & SubElements  TBI
+    App::PropertyLinkSubList       Source3d;                     //Part::Feature(s) & SubElements
 
-    ADD_PROPERTY_TYPE(Source, (nullptr, nullptr), "", (App::PropertyType)(App::Prop_Output), "View (Edges) to dimension");
+    ADD_PROPERTY_TYPE(Source, (nullptr, nullptr), "", (App::PropertyType)(App::Prop_Output), "View containing the  dimension");
     Source.setScope(App::LinkScope::Global);
-    ADD_PROPERTY_TYPE(Source3d, (nullptr, nullptr), "", (App::PropertyType)(App::Prop_Output), "View (Edges) to dimension");   //TBI
+
+    //Source3d is a candidate for deprecation as References3D contains the same information
+    ADD_PROPERTY_TYPE(Source3d, (nullptr, nullptr), "", (App::PropertyType)(App::Prop_Output), "3d geometry to be dimensioned");
     Source3d.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(DirExtent ,(0), "", App::Prop_Output, "Horizontal / Vertical");
 
+    //CosmeticTags is a candidate for deprecation
     ADD_PROPERTY_TYPE(CosmeticTags ,(""), "", App::Prop_Output, "Id of cosmetic endpoints");
-
-    //hide the properties the user can't edit in the property editor
-    Source3d.setStatus(App::Property::Hidden, true);   //TBI
 
 }
 
@@ -114,9 +113,10 @@ pointPair DrawViewDimExtent::getPointsExtent(ReferenceVector references)
 {
 //    Base::Console().Message("DVD::getPointsExtent() - %s\n", getNameInDocument());
     App::DocumentObject* refObject = references.front().getObject();
+    int direction = DirExtent.getValue();
     if (refObject->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
         auto dvp = static_cast<TechDraw::DrawViewPart*>(refObject);
-        int direction = DirExtent.getValue();
+
         std::vector<std::string> edgeNames;     //empty list means we are using all the edges
         if (!references.at(0).getSubName().empty()) {
             //this is the usual case of selected edges in a dvp
@@ -136,9 +136,13 @@ pointPair DrawViewDimExtent::getPointsExtent(ReferenceVector references)
                                   direction);
         return pointPair(endPoints.first, endPoints.second);
     }
+
     //this is a 3d reference
-    //is there such a thing? it would have to be a subset of the dvp's source shape?
-    return pointPair();
+    std::pair<Base::Vector3d, Base::Vector3d> endPoints =
+            DrawDimHelper::minMax3d(getViewPart(),
+                                    references,
+                                    direction);
+    return pointPair(endPoints.first, endPoints.second);
 }
 
 PyObject *DrawViewDimExtent::getPyObject(void)
