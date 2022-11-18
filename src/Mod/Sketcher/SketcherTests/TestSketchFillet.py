@@ -1,4 +1,5 @@
-#   (c) Emmanuel O'Brien 2021  LGPL                                       *
+#**************************************************************************
+#   Copyright (c) 2021 Emmanuel O'Brien                                   *
 #                                                                         *
 #   This file is part of the FreeCAD CAx development system.              *
 #                                                                         *
