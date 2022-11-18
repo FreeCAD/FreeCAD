@@ -92,3 +92,5 @@ BuildAndInstallDesignerPlugin()
 CreatePackagingTargets()
 
 PrintFinalReport()
+
+add_subdirectory(tests)
