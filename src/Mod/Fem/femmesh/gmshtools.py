@@ -330,6 +330,7 @@ class GmshTools():
                     raise GmshError(error_message)
                 self.gmsh_bin = gmsh_path
             elif system() == "Darwin":
+                # https://forum.freecadweb.org/viewtopic.php?f=13&t=73041&p=642026#p642022
                 gmsh_path = "/Applications/Gmsh.app/Contents/MacOS/gmsh"
                 FreeCAD.ParamGet(
                     "User parameter:BaseApp/Preferences/Mod/Fem/Gmsh"
