@@ -184,7 +184,7 @@ def createStructuralMember(ifcfile, ifcbin, obj):
         # - no profile properties are taken into account
         # - no materials properties are takein into account
         # -
-    	# create geometry
+        # create geometry
         verts = [None for _ in range(len(edges)+1)]
         verts[0] = tuple(edges[0].Vertexes[ 0].Point.multiply(scaling))
         verts[1] = tuple(edges[0].Vertexes[-1].Point.multiply(scaling))

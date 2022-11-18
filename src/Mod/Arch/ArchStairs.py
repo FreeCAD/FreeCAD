@@ -110,7 +110,7 @@ def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name="
             stairs[i].Base = baseobjI
 
             if (len(baseobjI.Shape.Edges) > 1):
-                stepsI = 1							#'landing' if 'multi-edges' currently
+                stepsI = 1                              #'landing' if 'multi-edges' currently
             elif steps:
                 stepsI = steps
             else:
@@ -121,7 +121,7 @@ def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name="
                 additions.append(stairs[i])
                 stairs[i].LastSegment = stairs[i-1]
             else:
-                if len(stairs) > 1:						# i.e. length >1, have a 'master' staircase created
+                if len(stairs) > 1:                     # i.e. length >1, have a 'master' staircase created
                     stairs[0].Base = stairs[1]
             i += 1
         if lenSelection > 1:
@@ -161,25 +161,25 @@ def makeRailing(stairs):
             if side == "L":
                 outlineLR = stair.OutlineLeft
                 outlineLRAll = stair.OutlineLeftAll
-                stairs0RailingLR = "RailingLeft"				# stairs0OutlineWireLR = "OutlineWireLeft"
-                stairRailingLR = "RailingLeft"					# stairOutlineWireLR = "OutlineWireLeft"
+                stairs0RailingLR = "RailingLeft"                    # stairs0OutlineWireLR = "OutlineWireLeft"
+                stairRailingLR = "RailingLeft"                      # stairOutlineWireLR = "OutlineWireLeft"
             elif side == "R":
                 outlineLR = stair.OutlineRight
                 outlineLRAll = stair.OutlineRightAll
-                stairs0RailingLR = "RailingRight"				# stairs0OutlineWireLR = "OutlineWireRight"
-                stairRailingLR = "RailingRight"					# stairOutlineWireLR = "OutlineWireRight"
+                stairs0RailingLR = "RailingRight"                   # stairs0OutlineWireLR = "OutlineWireRight"
+                stairRailingLR = "RailingRight"                     # stairOutlineWireLR = "OutlineWireRight"
             if outlineLR or outlineLRAll:
                 lrRail = ArchPipe.makePipe(baseobj=None,diameter=0,length=0,placement=None,name="Rail")
                 if outlineLRAll:
-                    #lrRail.Base = lrRailWire					# no need to set here as _Stairs will do
-                    setattr(stair, stairRailingLR, lrRail.Name)			# setattr(stair, stairOutlineWireLR, lrRailWire.Name)
+                    #lrRail.Base = lrRailWire                       # no need to set here as _Stairs will do
+                    setattr(stair, stairRailingLR, lrRail.Name)     # setattr(stair, stairOutlineWireLR, lrRailWire.Name)
                     railList = stairs[0].Additions
                     railList.append(lrRail)
                     stairs[0].Additions = railList
                     break
                 elif outlineLR:
-                    #lrRail.Base = lrRailWire					# no need to set here as _Stairs will do
-                    setattr(stair, stairRailingLR, lrRail.Name)			# setattr(stair, stairOutlineWireLR, lrRailWire.Name)
+                    #lrRail.Base = lrRailWire                       # no need to set here as _Stairs will do
+                    setattr(stair, stairRailingLR, lrRail.Name)     # setattr(stair, stairOutlineWireLR, lrRailWire.Name)
                     railList = stair.Additions
                     railList.append(lrRail)
                     stair.Additions = railList
@@ -188,7 +188,7 @@ def makeRailing(stairs):
         sel = FreeCADGui.Selection.getSelection()
         sel0 = sel[0]
         stairs = []
-        if Draft.getType(sel[0]) == "Stairs":					# TODO currently consider 1st selected object, then would tackle multiple objects ?
+        if Draft.getType(sel[0]) == "Stairs":                       # TODO currently consider 1st selected object, then would tackle multiple objects ?
             stairs.append(sel0)
             if Draft.getType(sel0.Base) == "Stairs":
                 stairs.append(sel0.Base)
@@ -469,7 +469,7 @@ class _Stairs(ArchComponent.Component):
                     if isinstance(edge.Curve,(Part.LineSegment,Part.Line)):
                       # preparing for multi-edges landing / segment staircase
                       if obj.NumberOfSteps > 1:
-                            self.makeStraightStairsWithLanding(obj,edge)	# all cases use makeStraightStairsWithLanding()
+                            self.makeStraightStairsWithLanding(obj,edge)    # all cases use makeStraightStairsWithLanding()
 
                       # preparing for multi-edges landing / segment staircase
                       if obj.NumberOfSteps == 1:
@@ -528,9 +528,9 @@ class _Stairs(ArchComponent.Component):
 
             if railWireL:
                 # Migration
-                if Draft.getType(railingLeftObject.Base) != "Part":		# None or not "Part"
+                if Draft.getType(railingLeftObject.Base) != "Part":        # None or not "Part"
                     railingLeftWireObject = FreeCAD.ActiveDocument.addObject("Part::Feature","RailingWire")
-                    if railingLeftObject.Base:					# if has railingLeftObject.Base but that != "Part"
+                    if railingLeftObject.Base:                    # if has railingLeftObject.Base but that != "Part"
                         railingLeftObject.Document.removeObject(railingLeftObject.Base.Name) # Delete the previous Base object... # Not Using FreeCAD.ActiveDocument...
                     railingLeftObject.Base = railingLeftWireObject
                 # update the Base object shape
@@ -657,7 +657,7 @@ class _Stairs(ArchComponent.Component):
         return stepWire, stepFace
 
 
-    @staticmethod								# obj become stairsObj
+    @staticmethod                                # obj become stairsObj
     def returnOutlines(stairsObj, edges, align="Left", mode=None, widthFirstSegment=zeroMM, widthOtherSegments=[], treadThickness=zeroMM,
                        railStartRiser=zeroMM, offsetHLeft=zeroMM, offsetHRight=zeroMM, offsetVLeft=zeroMM, offsetVRight=zeroMM, widthFirstSegmentDefault=False):
 
@@ -669,7 +669,7 @@ class _Stairs(ArchComponent.Component):
 
         v, vLength, vWidth, vBase = [], [], [], []
 
-        p1, p2, p3, p4, pArc, pArc1, pArc2 = [], [], [], [], [], [], []		# p1o, p2o - Not used
+        p1, p2, p3, p4, pArc, pArc1, pArc2 = [], [], [], [], [], [], []        # p1o, p2o - Not used
         outline, outlineP1P2, outlineP3P4, outlineP1P2Closed, outlineP3P4Closed, outlineP1P2Ordered = [], [], [], [], [], []
 
         if not isinstance(edges, list):
@@ -679,10 +679,10 @@ class _Stairs(ArchComponent.Component):
         for i, edge in enum_edges:
 
             isLine = isinstance(edge.Curve,(Part.Line, Part.LineSegment))
-            isArc = isinstance(edge.Curve,Part.Circle)				# why it is Part.Circle for an Arc Edge? - why Part.ArcOfCircle Not Working?
+            isArc = isinstance(edge.Curve,Part.Circle)                # why it is Part.Circle for an Arc Edge? - why Part.ArcOfCircle Not Working?
 
             ''' (1) append v (vec) '''
-            v.append(DraftGeomUtils.vec(edge))	# TODO check all function below ok with curve?
+            v.append(DraftGeomUtils.vec(edge))    # TODO check all function below ok with curve?
 
 
             ''' (2) get netWidthI '''
@@ -709,7 +709,7 @@ class _Stairs(ArchComponent.Component):
                 #vBase2vec = (vBase2-vBase[i]) # - would not be correct if Align is not Left
 
             ''' (1a) calc & append vLength - Need v (vec) '''
-            vLength.append(Vector(v[i].x,v[i].y,v[i].z))	# TODO check all function below ok with curve? # TODO vLength in this f() is 3d
+            vLength.append(Vector(v[i].x,v[i].y,v[i].z))    # TODO check all function below ok with curve? # TODO vLength in this f() is 3d
 
 
             ''' (1b, 2a) calc & append vWidth - Need vLength, netWidthI '''
@@ -720,7 +720,7 @@ class _Stairs(ArchComponent.Component):
                 dvec = vLength[i].cross(Vector(0,0,1))
 
             elif isArc:
-                #dvec = edge.Vertexes[0].Point.sub(edge.Curve.Center)		# TODO - how to determine direction? - Reference from ArchWall; used tangentAt instead
+                #dvec = edge.Vertexes[0].Point.sub(edge.Curve.Center)        # TODO - how to determine direction? - Reference from ArchWall; used tangentAt instead
                 #dvec1 = edge.Vertexes[1].Point.sub(edge.Curve.Center)
                 dvec = edge.tangentAt(edge.FirstParameter).cross(Vector(0,0,1))
                 dvec1 = edge.tangentAt(edge.LastParameter).cross(Vector(0,0,1))
@@ -742,7 +742,7 @@ class _Stairs(ArchComponent.Component):
             vBase[i] = vBase[i].add(Vector(0,0,railStartRiser.Value))
 
             if isArc:
-                vBase1 = vBase1.add(Vector(0,0,offsetVLeft.Value))	# TODO - if arc is flight (sloping then), arc would be ellipse, so the following become incorrect?
+                vBase1 = vBase1.add(Vector(0,0,offsetVLeft.Value))    # TODO - if arc is flight (sloping then), arc would be ellipse, so the following become incorrect?
                 vBase1 = vBase1.add(Vector(0,0,railStartRiser.Value))
                 vBase2 = vBase2.add(Vector(0,0,offsetVLeft.Value))
                 vBase2 = vBase2.add(Vector(0,0,railStartRiser.Value))
@@ -783,7 +783,7 @@ class _Stairs(ArchComponent.Component):
             ''' (3c, 2c/2d) from [p1, p2, p3, p4] - calc outlineP1P2, outlineP3P4 '''
 
             if i > 0:
-                lastEdge = edges[i-1]	# thisEdge = edge
+                lastEdge = edges[i-1]    # thisEdge = edge
                 p1last =  p1[i-1]
                 p2last =  p2[i-1]
                 p3last =  p3[i-1]
@@ -801,7 +801,7 @@ class _Stairs(ArchComponent.Component):
                 lastEdgeIsLineSegmentBool = isinstance(lastEdge.Curve,(Part.Line, Part.LineSegment))
                 thisEdgeIsLineSegmentBool = isinstance(edge.Curve,(Part.Line, Part.LineSegment))
 
-                lastEdgeIsCircleBool = isinstance(lastEdge.Curve,(Part.Circle))	# why it is Part.Circle for an Arc Edge? - why Part.ArcOfCircle Not Working?
+                lastEdgeIsCircleBool = isinstance(lastEdge.Curve,(Part.Circle))    # why it is Part.Circle for an Arc Edge? - why Part.ArcOfCircle Not Working?
                 thisEdgeIsCircleBool = isinstance(edge.Curve,(Part.Circle))
 
                 intersectionP1P2, intersectionP3P4 = _Stairs.findLineArcIntersections(p1last, p2last, p3last, p4last, p1this, p2this, p3this, p4this, lastEdgeIsLineSegmentBool, thisEdgeIsLineSegmentBool,
@@ -821,24 +821,24 @@ class _Stairs(ArchComponent.Component):
         outline.append(p1[0])
 
         pArc1.append(None)
-        pArc2 = pArc2[::-1]							# pArcReverse = pArc2[::-1]
+        pArc2 = pArc2[::-1]                            # pArcReverse = pArc2[::-1]
         pArc2.append(None)
         pArc.extend(pArc1)
-        pArc.extend(pArc2)							# pArc.extend(pArcReverse)
+        pArc.extend(pArc2)                            # pArc.extend(pArcReverse)
 
         firstEdgeIsLineSegmentBool = isinstance(edges[0].Curve,(Part.Line, Part.LineSegment))
-        firstEdgeIsCircleBool = isinstance(edges[0].Curve,(Part.Circle))	# why it is Part.Circle for an Arc Edge? - why Part.ArcOfCircle Not Working?
+        firstEdgeIsCircleBool = isinstance(edges[0].Curve,(Part.Circle))    # why it is Part.Circle for an Arc Edge? - why Part.ArcOfCircle Not Working?
 
-        if mode in ["OrderedClose", "OrderedCloseAndOrderedOpen"]:		# seem only using 'OrderedClose'
+        if mode in ["OrderedClose", "OrderedCloseAndOrderedOpen"]:        # seem only using 'OrderedClose'
             intersectionP1P2, intersectionP3P4 = _Stairs.findLineArcIntersections(p1this, p2this, p3this, p4this, p1[0], p2[0], p3[0], p4[0], thisEdgeIsLineSegmentBool, firstEdgeIsLineSegmentBool,
                                                                                   thisEdgeIsCircleBool, firstEdgeIsCircleBool, pArc1this, pArc2this, pArc1[0], pArc2[0])
             outlineP1P2Closed = list(outlineP1P2)
-            outlineP1P2Closed[0] = intersectionP1P2	#intersection[0]
-            outlineP1P2Closed[i+1] = intersectionP1P2	#intersection[0]
+            outlineP1P2Closed[0] = intersectionP1P2    #intersection[0]
+            outlineP1P2Closed[i+1] = intersectionP1P2    #intersection[0]
 
             outlineP3P4Closed = list(outlineP3P4)
-            outlineP3P4Closed[0] = intersectionP3P4	#intersection[0]
-            outlineP3P4Closed[i+1] = intersectionP3P4	#intersection[0]
+            outlineP3P4Closed[0] = intersectionP3P4    #intersection[0]
+            outlineP3P4Closed[i+1] = intersectionP3P4    #intersection[0]
 
         if mode in ["OrderedOpen", "OrderedCloseAndOrderedOpen"]:
           if i > 0: # Multi-edge, otherwise no use
@@ -889,24 +889,24 @@ class _Stairs(ArchComponent.Component):
             return intersectionsP1P2[0], intersectionsP3P4[0]
         else:
             if lastEdgeIsCircleBool:
-                edge1  = Part.Arc(p1last,pArc1last,p2last).toShape()		# edge1  = Part.Arc(p1[i-1],pArc1[i-1],p2[i-1]).toShape()
-                edge1a = Part.Arc(p3last,pArc2last,p4last).toShape()		# edge1a = Part.Arc(p3[i-1],pArc2[i-1],p4[i-1]).toShape()
+                edge1  = Part.Arc(p1last,pArc1last,p2last).toShape()        # edge1  = Part.Arc(p1[i-1],pArc1[i-1],p2[i-1]).toShape()
+                edge1a = Part.Arc(p3last,pArc2last,p4last).toShape()        # edge1a = Part.Arc(p3[i-1],pArc2[i-1],p4[i-1]).toShape()
             else:
-                edge1  = Part.LineSegment(p1last,p2last).toShape()		# edge1  = Part.LineSegment(p1[i-1],p2[i-1]).toShape()
-                edge1a = Part.LineSegment(p3last,p4last).toShape()		# edge1a = Part.LineSegment(p3[i-1],p4[i-1]).toShape()
+                edge1  = Part.LineSegment(p1last,p2last).toShape()        # edge1  = Part.LineSegment(p1[i-1],p2[i-1]).toShape()
+                edge1a = Part.LineSegment(p3last,p4last).toShape()        # edge1a = Part.LineSegment(p3[i-1],p4[i-1]).toShape()
 
-            if thisEdgeIsCircleBool:						# why it is Part.Circle for an Arc Edge? - why Part.ArcOfCircle Not Working?
-                edge2  = Part.Arc(p1this,pArc1this,p2this).toShape()		# edge2  = Part.Arc(p1[i],pArc1[i],p2[i]).toShape()
-                edge2a = Part.Arc(p3this,pArc2this,p4this).toShape()		# edge2a = Part.Arc(p3[i],pArc2[i],p4[i]).toShape()
+            if thisEdgeIsCircleBool:                        # why it is Part.Circle for an Arc Edge? - why Part.ArcOfCircle Not Working?
+                edge2  = Part.Arc(p1this,pArc1this,p2this).toShape()        # edge2  = Part.Arc(p1[i],pArc1[i],p2[i]).toShape()
+                edge2a = Part.Arc(p3this,pArc2this,p4this).toShape()        # edge2a = Part.Arc(p3[i],pArc2[i],p4[i]).toShape()
             else:
-                edge2  = Part.LineSegment(p1this,p2this).toShape()		# edge2  = Part.LineSegment(p1[i],p2[i]).toShape()
-                edge2a = Part.LineSegment(p3this,p4this).toShape()		# edge2a = Part.LineSegment(p3[i],p4[i]).toShape()
+                edge2  = Part.LineSegment(p1this,p2this).toShape()        # edge2  = Part.LineSegment(p1[i],p2[i]).toShape()
+                edge2a = Part.LineSegment(p3this,p4this).toShape()        # edge2a = Part.LineSegment(p3[i],p4[i]).toShape()
             intersections = DraftGeomUtils.findIntersection(edge1, edge2, True,True)
 
             enum_intersections = enumerate(intersections)
             distList = []
             for n, intersectionI in enum_intersections:
-                distList.append((intersectionI-p1this).Length)			# distList.append((intersectionI-p1[i]).Length)) # TODO just use p1[i] for test; may be p2[i-1]...?
+                distList.append((intersectionI-p1this).Length)            # distList.append((intersectionI-p1[i]).Length)) # TODO just use p1[i] for test; may be p2[i-1]...?
 
             # TODO - To test and follow up if none intersection is found
             nearestIntersectionIndex = distList.index(min(distList))
@@ -916,7 +916,7 @@ class _Stairs(ArchComponent.Component):
             enum_intersections = enumerate(intersections)
             distList = []
             for n, intersectionI in enum_intersections:
-                distList.append((intersectionI-p4this).Length)			# distList.append((intersectionI-p4[i]).Length)) # TODO just use p4[i] for test; may be p3[i-1]...?
+                distList.append((intersectionI-p4this).Length)            # distList.append((intersectionI-p4[i]).Length)) # TODO just use p4[i] for test; may be p3[i-1]...?
             nearestIntersectionIndex = distList.index(min(distList))
             nearestIntersectionP3P4 = intersections[nearestIntersectionIndex]
             return nearestIntersectionP1P2, nearestIntersectionP3P4
@@ -925,12 +925,12 @@ class _Stairs(ArchComponent.Component):
     def vbaseFollowLastSegment(obj, vBase):
         if obj.LastSegment:
             lastSegmentAbsTop = obj.LastSegment.AbsTop
-            vBase = Vector(vBase.x, vBase.y,lastSegmentAbsTop.z)		# use Last Segment top's z-coordinate
+            vBase = Vector(vBase.x, vBase.y,lastSegmentAbsTop.z)        # use Last Segment top's z-coordinate
         return vBase
 
 
     # Add flag (temporarily?) for indicating which method call this to determine whether the landing has been 're-based' before or not
-    def makeStraightLanding(self,obj,edge,numberofsteps=None, callByMakeStraightStairsWithLanding=False):	# what is use of numberofsteps ?
+    def makeStraightLanding(self,obj,edge,numberofsteps=None, callByMakeStraightStairsWithLanding=False):    # what is use of numberofsteps ?
         "builds a landing from a straight edge"
 
         # general data
@@ -1129,14 +1129,14 @@ class _Stairs(ArchComponent.Component):
                 lastSegmentAbsTop = obj.LastSegment.AbsTop
                 print("lastSegmentAbsTop is: ")
                 print(lastSegmentAbsTop)
-                vBase = Vector(vBase.x, vBase.y,lastSegmentAbsTop.z)		# use Last Segment top's z-coordinate
+                vBase = Vector(vBase.x, vBase.y,lastSegmentAbsTop.z)        # use Last Segment top's z-coordinate
             obj.AbsTop = vBase.add(Vector(0,0,h))
 
         vNose = DraftVecUtils.scaleTo(vLength,-abs(obj.Nosing.Value))
         a = math.atan(vHeight.Length/vLength.Length)
 
         vBasedAligned = self.align(vBase,obj.Align,vWidth)
-        vRiserThickness = DraftVecUtils.scaleTo(vLength,obj.RiserThickness.Value)	# 50)
+        vRiserThickness = DraftVecUtils.scaleTo(vLength,obj.RiserThickness.Value)    # 50)
 
         # steps and risers
         for i in range(numberofsteps-1):
@@ -1162,17 +1162,17 @@ class _Stairs(ArchComponent.Component):
             ''' risers - add to steps or pseudosteps in the meantime before adding self.risers / self.pseudorisers '''
 
             #vResHeight = vHeight.add(Vector(0,0,-abs(obj.TreadThickness.Value)))
-            r2 = r1.add(DraftVecUtils.neg(vHeight))	#vResHeight
+            r2 = r1.add(DraftVecUtils.neg(vHeight))    #vResHeight
             if i == 0:
                 r2 = r2.add(Vector(0,0,abs(obj.TreadThickness.Value)))
             r3 = r2.add(vWidth)
-            r4 = r3.add(vHeight)	#vResHeight
+            r4 = r3.add(vHeight)    #vResHeight
             if i == 0:
                 r4 = r4.add(Vector(0,0,-abs(obj.TreadThickness.Value)))
             riser = Part.Face(Part.makePolygon([r1,r2,r3,r4,r1]))
 
             if obj.RiserThickness.Value:
-                riser = riser.extrude(vRiserThickness)	#Vector(0,100,0))
+                riser = riser.extrude(vRiserThickness)    #Vector(0,100,0))
                 self.steps.append(riser)
             else:
                 self.pseudosteps.append(riser)
@@ -1320,12 +1320,12 @@ class _Stairs(ArchComponent.Component):
                 else:
                     reslength = edge.Length - obj.Width.Value
 
-                treadDepth = float(reslength)/(obj.NumberOfSteps-2)		# why needs 'float'?
+                treadDepth = float(reslength)/(obj.NumberOfSteps-2)        # why needs 'float'?
                 obj.TreadDepth = treadDepth
                 vLength = DraftVecUtils.scaleTo(v,treadDepth)
             else:
                 reslength = edge.Length
-                treadDepth = float(reslength)/(obj.NumberOfSteps-1)		# why needs 'float'?
+                treadDepth = float(reslength)/(obj.NumberOfSteps-1)        # why needs 'float'?
                 obj.TreadDepth = treadDepth
                 vLength = DraftVecUtils.scaleTo(v,treadDepth)
         else:
@@ -1355,7 +1355,7 @@ class _Stairs(ArchComponent.Component):
 
         if obj.LastSegment:
             lastSegmentAbsTop = obj.LastSegment.AbsTop
-            p1 = Vector(p1.x, p1.y,lastSegmentAbsTop.z)				# use Last Segment top's z-coordinate
+            p1 = Vector(p1.x, p1.y,lastSegmentAbsTop.z)                # use Last Segment top's z-coordinate
 
         obj.AbsTop = p1.add(Vector(0,0,h))
         p2 = p1.add(DraftVecUtils.scale(vLength,landing-1).add(Vector(0,0,landing*hstep)))
@@ -1414,8 +1414,8 @@ class _Stairs(ArchComponent.Component):
         obj.OutlineLeft = outlineRailL # outlineL # outlineP1P2
         obj.OutlineRight = outlineRailR # outlineR # outlineP3P4
 
-        self.OutlineRailArcLeft = pArcRailL	#obj.OutlineRailArcLeft = pArcRailL
-        self.OutlineRailArcRight = pArcRailR	#obj.OutlineRailArcRight = pArcRailR
+        self.OutlineRailArcLeft = pArcRailL    #obj.OutlineRailArcLeft = pArcRailL
+        self.OutlineRailArcRight = pArcRailR    #obj.OutlineRailArcRight = pArcRailR
 
         outlineLeftAll, outlineRightAll, outlineRailArcLeftAll, outlineRailArcRightAll = [], [], [], []
 
