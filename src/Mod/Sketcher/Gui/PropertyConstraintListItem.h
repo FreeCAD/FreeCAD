@@ -1,4 +1,3 @@
-
 /***************************************************************************
 * Copyright (c) 2014 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>        *
 *                                                                          *
