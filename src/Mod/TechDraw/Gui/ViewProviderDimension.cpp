@@ -99,7 +99,8 @@ void ViewProviderDimension::attach(App::DocumentObject *pcFeat)
     // call parent attach method
     ViewProviderDrawingView::attach(pcFeat);
 
-    sPixmap = "TechDraw_Dimension";
+//    sPixmap = "TechDraw_Dimension";
+    setPixmapForType();
     if (getViewObject()->isDerivedFrom(TechDraw::LandmarkDimension::getClassTypeId())) {
         sPixmap = "TechDraw_LandmarkDimension";
     }
@@ -138,36 +139,61 @@ bool ViewProviderDimension::setEdit(int ModNum)
     return true;
 }
 
-void ViewProviderDimension::updateData(const App::Property* p)
+void ViewProviderDimension::updateData(const App::Property* prop)
 {
-    if (p == &(getViewObject()->Type)) {
-        if (getViewObject()->Type.isValue("DistanceX")) {
-            sPixmap = "TechDraw_HorizontalDimension";
-        } else if (getViewObject()->Type.isValue("DistanceY")) {
-            sPixmap = "TechDraw_VerticalDimension";
-        } else if (getViewObject()->Type.isValue("Radius")) {
-            sPixmap = "TechDraw_RadiusDimension";
-        } else if (getViewObject()->Type.isValue("Diameter")) {
-            sPixmap = "TechDraw_DiameterDimension";
-        } else if (getViewObject()->Type.isValue("Angle")) {
-            sPixmap = "TechDraw_AngleDimension";
-        } else if (getViewObject()->Type.isValue("Angle3Pt")) {
-            sPixmap = "TechDraw_3PtAngleDimension";
-        }
+    if (prop == &(getViewObject()->Type)) {
+        setPixmapForType();
     }
 
-    //Dimension handles X, Y updates differently that other QGIView
-    //call QGIViewDimension::updateView
-    if (p == &(getViewObject()->X)  ||
-        p == &(getViewObject()->Y) ){
+    //feature properties that affect graphics representation
+    if (prop == &(getViewObject()->FormatSpec) ||
+        prop == &(getViewObject()->Arbitrary) ||
+        prop == &(getViewObject()->FormatSpecOverTolerance) ||
+        prop == &(getViewObject()->FormatSpecUnderTolerance) ||
+        prop == &(getViewObject()->ArbitraryTolerances) ||
+        prop == &(getViewObject()->MeasureType) ||
+        prop == &(getViewObject()->TheoreticalExact) ||
+        prop == &(getViewObject()->EqualTolerance) ||
+        prop == &(getViewObject()->OverTolerance) ||
+        prop == &(getViewObject()->UnderTolerance) ||
+        prop == &(getViewObject()->Inverted) ) {
         QGIView* qgiv = getQView();
         if (qgiv) {
             qgiv->updateView(true);
         }
+        return;
+    }
+
+    //Dimension handles X, Y updates differently that other QGIView
+    //call QGIViewDimension::updateView
+    if (prop == &(getViewObject()->X)  ||
+        prop == &(getViewObject()->Y) ){
+        QGIView* qgiv = getQView();
+        if (qgiv) {
+            qgiv->updateView(true);
+        }
+        return;
     }
 
     //Skip QGIView X, Y processing - do not call ViewProviderDrawingView
-    Gui::ViewProviderDocumentObject::updateData(p);
+    Gui::ViewProviderDocumentObject::updateData(prop);
+}
+
+void ViewProviderDimension::setPixmapForType()
+{
+    if (getViewObject()->Type.isValue("DistanceX")) {
+        sPixmap = "TechDraw_HorizontalDimension";
+    } else if (getViewObject()->Type.isValue("DistanceY")) {
+        sPixmap = "TechDraw_VerticalDimension";
+    } else if (getViewObject()->Type.isValue("Radius")) {
+        sPixmap = "TechDraw_RadiusDimension";
+    } else if (getViewObject()->Type.isValue("Diameter")) {
+        sPixmap = "TechDraw_DiameterDimension";
+    } else if (getViewObject()->Type.isValue("Angle")) {
+        sPixmap = "TechDraw_AngleDimension";
+    } else if (getViewObject()->Type.isValue("Angle3Pt")) {
+        sPixmap = "TechDraw_3PtAngleDimension";
+    }
 }
 
 void ViewProviderDimension::onChanged(const App::Property* p)

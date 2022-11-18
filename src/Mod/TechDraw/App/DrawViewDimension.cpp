@@ -242,7 +242,6 @@ void DrawViewDimension::onChanged(const App::Property* prop)
                 FormatSpecUnderTolerance.setReadOnly(false);
             }
         }
-        requestPaint();
     }
     else if (prop == &EqualTolerance) {
         // if EqualTolerance set negated overtolerance for untertolerance
@@ -266,7 +265,6 @@ void DrawViewDimension::onChanged(const App::Property* prop)
                 FormatSpecUnderTolerance.setReadOnly(false);
             }
         }
-        requestPaint();
     }
     else if (prop == &OverTolerance) {
         // if EqualTolerance set negated overtolerance for untertolerance
@@ -274,27 +272,16 @@ void DrawViewDimension::onChanged(const App::Property* prop)
             UnderTolerance.setValue(-1.0 * OverTolerance.getValue());
             UnderTolerance.setUnit(OverTolerance.getUnit());
         }
-        requestPaint();
     }
     else if (prop == &FormatSpecOverTolerance) {
         if (!ArbitraryTolerances.getValue()) {
             FormatSpecUnderTolerance.setValue(FormatSpecOverTolerance.getValue());
         }
-        requestPaint();
     }
     else if (prop == &FormatSpecUnderTolerance) {
         if (!ArbitraryTolerances.getValue()) {
             FormatSpecOverTolerance.setValue(FormatSpecUnderTolerance.getValue());
         }
-        requestPaint();
-    }
-    else if ( (prop == &FormatSpec) ||
-         (prop == &Arbitrary) ||
-         (prop == &ArbitraryTolerances) ||
-         (prop == &MeasureType) ||
-         (prop == &UnderTolerance) ||
-         (prop == &Inverted) ) {
-        requestPaint();
     }
 
     DrawView::onChanged(prop);
@@ -356,21 +343,9 @@ void DrawViewDimension::handleChangedPropertyType(Base::XMLReader &reader, const
 short DrawViewDimension::mustExecute() const
 {
     if (!isRestoring()) {
-        if (
-            References2D.isTouched() ||
-            Type.isTouched() ||
-            FormatSpec.isTouched() ||
-            Arbitrary.isTouched() ||
-            FormatSpecOverTolerance.isTouched() ||
-            FormatSpecUnderTolerance.isTouched() ||
-            ArbitraryTolerances.isTouched() ||
-            MeasureType.isTouched() ||
-            TheoreticalExact.isTouched() ||
-            EqualTolerance.isTouched() ||
-            OverTolerance.isTouched() ||
-            UnderTolerance.isTouched() ||
-            Inverted.isTouched()
-        ) {
+        if (References2D.isTouched() ||
+            References3D.isTouched() ||
+            Type.isTouched() ) {
             return true;
         }
     }
