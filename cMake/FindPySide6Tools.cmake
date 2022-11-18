@@ -3,11 +3,6 @@
 # PYSIDE_RCC_EXECUTABLE - Location of PYSIDE6RCC executable
 # PYSIDE_TOOLS_FOUND - PYSIDE6 utilities found.
 
-IF(PYSIDE6_UIC_EXECUTABLE AND PYSIDE6_RCC_EXECUTABLE)
-    # Already in cache, be silent
-    set(PYSIDE_TOOLS_FOUND_QUIETLY TRUE)
-ENDIF()
-
 if (TARGET Qt6::uic)
     get_target_property(PYSIDE6_UIC_EXECUTABLE Qt6::uic LOCATION)
     set(UICOPTIONS "--generator=python")

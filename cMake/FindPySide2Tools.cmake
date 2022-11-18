@@ -3,11 +3,6 @@
 # PYSIDE_RCC_EXECUTABLE - Location of PYSIDE2RCC executable
 # PYSIDE_TOOLS_FOUND - PySide2 utilities found.
 
-IF(PYSIDE2_UIC_EXECUTABLE AND PYSIDE2_RCC_EXECUTABLE)
-  # Already in cache, be silent
-  set(PYSIDE2_TOOLS_FOUND_QUIETLY TRUE)
-ENDIF()
-
 if(WIN32 OR ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     #pyside2 tools are often in same location as python interpreter
     get_filename_component(PYTHON_BIN_DIR ${PYTHON_EXECUTABLE} PATH)
