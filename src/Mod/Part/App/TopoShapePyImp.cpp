@@ -1143,7 +1143,7 @@ PyObject*  TopoShapePy::generalFuse(PyObject *args)
         TopoDS_Shape gfaResultShape = this->getTopoShapePtr()->generalFuse(shapeVec,tolerance,&map);
         Py::Object shapePy = shape2pyshape(gfaResultShape);
         Py::List mapPy;
-        for(TopTools_ListOfShape &shapes: map){
+        for(TopTools_ListOfShape &shapes : map) {
             Py::List shapesPy;
             for(TopTools_ListIteratorOfListOfShape it(shapes); it.More(); it.Next()){
                 shapesPy.append(shape2pyshape(it.Value()));
@@ -1247,7 +1247,7 @@ PyObject* TopoShapePy::childShapes(PyObject *args)
 
 namespace Part {
 // Containers to associate TopAbs_ShapeEnum values to each TopoShape*Py class
-const std::vector<std::pair<PyTypeObject*, TopAbs_ShapeEnum>> vecTypeShape = {
+static const std::vector<std::pair<PyTypeObject*, TopAbs_ShapeEnum>> vecTypeShape = {
     {&TopoShapeCompoundPy::Type, TopAbs_COMPOUND},
     {&TopoShapeCompSolidPy::Type, TopAbs_COMPSOLID},
     {&TopoShapeSolidPy::Type, TopAbs_SOLID},
@@ -1259,7 +1259,7 @@ const std::vector<std::pair<PyTypeObject*, TopAbs_ShapeEnum>> vecTypeShape = {
     {&TopoShapePy::Type, TopAbs_SHAPE}
 };
 
-const std::map<PyTypeObject*, TopAbs_ShapeEnum> mapTypeShape(
+static const std::map<PyTypeObject*, TopAbs_ShapeEnum> mapTypeShape(
     vecTypeShape.begin(), vecTypeShape.end());
 
 // Returns shape type of a Python type. Similar to TopAbs::ShapeTypeFromString.
@@ -1271,7 +1271,7 @@ static TopAbs_ShapeEnum ShapeTypeFromPyType(PyTypeObject* pyType)
             return it->second;
     }
     return TopAbs_SHAPE;
-};
+}
 }
 
 PyObject*  TopoShapePy::ancestorsOfType(PyObject *args)
@@ -2500,7 +2500,7 @@ PyObject* TopoShapePy::proximity(PyObject *args)
 
     proximity.Perform();
     if (!proximity.IsDone()) {
-        PyErr_SetString(PartExceptionOCCError, "BRepExtrema_ShapeProximity not done");
+        PyErr_SetString(PartExceptionOCCError, "BRepExtrema_ShapeProximity failed, make sure the shapes are tessellated");
         return nullptr;
     }
 
