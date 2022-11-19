@@ -57,6 +57,8 @@
 
 #include <Gui/Command.h>
 
+#include <QWidgetAction> //to be put in _PreComp_ once grid PR merge.
+
 using namespace SketcherGui;
 using namespace Gui::TaskView;
 
@@ -371,7 +373,7 @@ ElementItem* ElementView::itemFromIndex(const QModelIndex& index) {
     return static_cast<ElementItem*>(QListWidget::itemFromIndex(index));
 }
 
-// ----------------------------------------------------------------------------
+/* ElementItem delegate ---------------------------------------------------- */
 
 ElementItemDelegate::ElementItemDelegate(ElementView* parent) : QStyledItemDelegate(parent)
 { // This class relies on the parent being an ElementView, see getElementtItem
@@ -486,7 +488,37 @@ ElementItem* ElementItemDelegate::getElementtItem(const QModelIndex& index) cons
     ElementView* elementView = static_cast<ElementView*>(parent());
     return elementView->itemFromIndex(index);
 }
-// ----------------------------------------------------------------------------
+
+/* Filter element list widget ------------------------------------------------------ */
+ElementFilterList::ElementFilterList(QWidget* parent) : QListWidget(parent)
+{
+    addItem(new QListWidgetItem(QApplication::translate("ElementFilterList", "Normal"), this));
+    addItem(new QListWidgetItem(QApplication::translate("ElementFilterList", "Construction"), this));
+    addItem(new QListWidgetItem(QApplication::translate("ElementFilterList", "Internal"), this));
+    addItem(new QListWidgetItem(QApplication::translate("ElementFilterList", "External"), this));
+    addItem(new QListWidgetItem(QApplication::translate("ElementFilterList", "All types"), this));
+    addItem(new QListWidgetItem(QApplication::translate("ElementFilterList", " - Point"), this));
+    addItem(new QListWidgetItem(QApplication::translate("ElementFilterList", " - Line"), this));
+    addItem(new QListWidgetItem(QApplication::translate("ElementFilterList", " - Circle"), this));
+    addItem(new QListWidgetItem(QApplication::translate("ElementFilterList", " - Ellipse"), this));
+    addItem(new QListWidgetItem(QApplication::translate("ElementFilterList", " - Arc"), this));
+    addItem(new QListWidgetItem(QApplication::translate("ElementFilterList", " - Arc of ellipse"), this));
+    addItem(new QListWidgetItem(QApplication::translate("ElementFilterList", " - Arc of hyperbola"), this));
+    addItem(new QListWidgetItem(QApplication::translate("ElementFilterList", " - Arc of parabola"), this));
+    addItem(new QListWidgetItem(QApplication::translate("ElementFilterList", " - B-Spline"), this));
+
+    for (int i = 0; i < count(); i++) {
+        QListWidgetItem* it = item(i);
+
+        it->setFlags(it->flags() | Qt::ItemIsUserCheckable);
+        it->setCheckState(Qt::Checked);
+    }
+}
+
+ElementFilterList::~ElementFilterList()
+{
+}
+
 
 /* TRANSLATOR SketcherGui::TaskSketcherElements */
 
@@ -499,7 +531,6 @@ TaskSketcherElements::TaskSketcherElements(ViewProviderSketch *sketchView)
     , previouslyHoveredItemIndex(-1)
     , previouslyHoveredType(SubElementType::none)
     , isNamingBoxChecked(false)
-    , collapseFilter(true)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
@@ -518,6 +549,7 @@ TaskSketcherElements::TaskSketcherElements(ViewProviderSketch *sketchView)
     ui->listWidgetElements->setEditTriggers(QListWidget::NoEditTriggers);
     ui->listWidgetElements->setMouseTracking(true);
 
+    createFilterButtonActions();
     createSettingsButtonActions();
 
     connectSignals();
@@ -526,23 +558,6 @@ TaskSketcherElements::TaskSketcherElements(ViewProviderSketch *sketchView)
 
 
     slotElementsChanged();
-
-    // make filter items checkable
-    {
-        QSignalBlocker sigblk(ui->listMultiFilter);
-        for (int i = 0; i < ui->listMultiFilter->count(); i++) {
-            QListWidgetItem* item = ui->listMultiFilter->item(i);
-
-            item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
-
-            item->setCheckState(Qt::Checked);
-        }
-        ui->listMultiFilter->setVisible(false);
-    }
-
-    this->installEventFilter(this);
-    ui->filterBox->installEventFilter(this);
-    ui->listMultiFilter->installEventFilter(this);
 }
 
 TaskSketcherElements::~TaskSketcherElements()
@@ -566,7 +581,7 @@ void TaskSketcherElements::connectSignals()
         this, &TaskSketcherElements::onListWidgetElementsMouseMoveOnItem
     );
     QObject::connect(
-        ui->listMultiFilter, &QListWidget::itemChanged,
+        filterList, &QListWidget::itemChanged,
         this, &TaskSketcherElements::onListMultiFilterItemChanged
     );
     QObject::connect(
@@ -575,15 +590,15 @@ void TaskSketcherElements::connectSignals()
     );
     QObject::connect(
         ui->settingsButton, &QToolButton::clicked,
-        this, &TaskSketcherElements::onSettingsButtonClicked
+        ui->settingsButton, &QToolButton::showMenu
     );
     QObject::connect(
         qAsConst(ui->settingsButton)->actions()[0], &QAction::changed,
         this, &TaskSketcherElements::onSettingsExtendedInformationChanged
     );
     QObject::connect(
-        qAsConst(ui->settingsButton)->actions()[1], &QAction::changed,
-        this, &TaskSketcherElements::onSettingsAutoCollapseFilterChanged
+        ui->filterButton, &QToolButton::clicked,
+        ui->filterButton, &QToolButton::showMenu
     );
 
     connectionElementsChanged = sketchView->signalElementsChanged.connect(
@@ -592,29 +607,19 @@ void TaskSketcherElements::connectSignals()
 
 /* filter functions --------------------------------------------------- */
 
-void TaskSketcherElements::onFilterBoxStateChanged(int val)
+void TaskSketcherElements::createFilterButtonActions()
 {
-    Q_UNUSED(val)
-
-    ui->listMultiFilter->setVisible(ui->filterBox->checkState() == Qt::Checked);
-
-    slotElementsChanged();
+    auto* action = new QWidgetAction(this);
+    filterList = new ElementFilterList(this);
+    action->setDefaultWidget(filterList);
+    qAsConst(ui->filterButton)->addAction(action);
 }
 
-bool TaskSketcherElements::eventFilter(QObject* obj, QEvent* event)
+void TaskSketcherElements::onFilterBoxStateChanged(int val)
 {
-    if (collapseFilter) {
-        if (obj == qobject_cast<QObject*>(ui->filterBox) && event->type() == QEvent::Enter && ui->filterBox->checkState() == Qt::Checked) {
-            ui->listMultiFilter->show();
-        }
-        else if (obj == qobject_cast<QObject*>(ui->listMultiFilter) && event->type() == QEvent::Leave) {
-            ui->listMultiFilter->hide();
-        }
-        else if (obj == this && event->type() == QEvent::Leave) {
-            ui->listMultiFilter->hide();
-        }
-    }
-    return TaskBox::eventFilter(obj, event);
+    Q_UNUSED(val);
+    ui->filterButton->setEnabled(ui->filterBox->checkState() == Qt::Checked);
+    slotElementsChanged();
 }
 
 enum class GeoFilterType { NormalGeos,
@@ -636,12 +641,32 @@ enum class GeoFilterType { NormalGeos,
 void TaskSketcherElements::onListMultiFilterItemChanged(QListWidgetItem* item)
 {
     {
-        int start = 4; //From 4 to the end, it's the geometry types (line, circle, arc...)
-        QSignalBlocker sigblk(ui->listMultiFilter);
-        if (item == ui->listMultiFilter->item(static_cast<int>(GeoFilterType::AllGeosTypes))) {
-            for (int i = start; i < ui->listMultiFilter->count(); i++) {
-                ui->listMultiFilter->item(i)->setCheckState(item->checkState());
+        QSignalBlocker sigblk(filterList);
+
+        int index = filterList->row(item);
+        int indexOfAllTypes = static_cast<int>(GeoFilterType::AllGeosTypes);
+
+        if (index == indexOfAllTypes) {
+            for (int i = indexOfAllTypes + 1; i < filterList->count(); i++) {
+                filterList->item(i)->setCheckState(item->checkState());
             }
+        }
+        else if (index > indexOfAllTypes) {
+            bool atLeastOneUnchecked = false;
+            bool atLeastOneChecked = false;
+
+            for (int i = indexOfAllTypes + 1; i < filterList->count(); i++) {
+                if (filterList->item(i)->checkState() == Qt::Checked)
+                    atLeastOneChecked = true;
+                if (filterList->item(i)->checkState() == Qt::Unchecked)
+                    atLeastOneUnchecked = true;
+            }
+            if (atLeastOneChecked && atLeastOneUnchecked)
+                filterList->item(indexOfAllTypes)->setCheckState(Qt::PartiallyChecked);
+            else if(atLeastOneUnchecked)
+                filterList->item(indexOfAllTypes)->setCheckState(Qt::Unchecked);
+            else if(atLeastOneChecked)
+                filterList->item(indexOfAllTypes)->setCheckState(Qt::Checked);
         }
     }
 
@@ -656,19 +681,19 @@ void TaskSketcherElements::setItemVisibility(QListWidgetItem* it)
 
     using GeometryState = ElementItem::GeometryState;
 
-    if ((ui->listMultiFilter->item(static_cast<int>(GeoFilterType::NormalGeos))->checkState() == Qt::Unchecked && item->State == GeometryState::Normal) ||
-        (ui->listMultiFilter->item(static_cast<int>(GeoFilterType::ConstructionGeos))->checkState() == Qt::Unchecked && item->State == GeometryState::Construction) ||
-        (ui->listMultiFilter->item(static_cast<int>(GeoFilterType::InternalGeos))->checkState() == Qt::Unchecked && item->State == GeometryState::InternalAlignment) ||
-        (ui->listMultiFilter->item(static_cast<int>(GeoFilterType::ExternalGeos))->checkState() == Qt::Unchecked && item->State == GeometryState::External) ||
-        (ui->listMultiFilter->item(static_cast<int>(GeoFilterType::PointGeos))->checkState() == Qt::Unchecked && item->GeometryType == Part::GeomPoint::getClassTypeId()) ||
-        (ui->listMultiFilter->item(static_cast<int>(GeoFilterType::LineGeos))->checkState() == Qt::Unchecked && item->GeometryType == Part::GeomLineSegment::getClassTypeId()) ||
-        (ui->listMultiFilter->item(static_cast<int>(GeoFilterType::CircleGeos))->checkState() == Qt::Unchecked && item->GeometryType == Part::GeomCircle::getClassTypeId()) ||
-        (ui->listMultiFilter->item(static_cast<int>(GeoFilterType::EllipseGeos))->checkState() == Qt::Unchecked && item->GeometryType == Part::GeomEllipse::getClassTypeId()) ||
-        (ui->listMultiFilter->item(static_cast<int>(GeoFilterType::ArcGeos))->checkState() == Qt::Unchecked && item->GeometryType == Part::GeomArcOfCircle::getClassTypeId()) ||
-        (ui->listMultiFilter->item(static_cast<int>(GeoFilterType::ArcOfEllipseGeos))->checkState() == Qt::Unchecked && item->GeometryType == Part::GeomArcOfEllipse::getClassTypeId()) ||
-        (ui->listMultiFilter->item(static_cast<int>(GeoFilterType::HyperbolaGeos))->checkState() == Qt::Unchecked && item->GeometryType == Part::GeomArcOfHyperbola::getClassTypeId()) ||
-        (ui->listMultiFilter->item(static_cast<int>(GeoFilterType::ParabolaGeos))->checkState() == Qt::Unchecked && item->GeometryType == Part::GeomArcOfParabola::getClassTypeId()) ||
-        (ui->listMultiFilter->item(static_cast<int>(GeoFilterType::BSplineGeos))->checkState() == Qt::Unchecked && item->GeometryType == Part::GeomBSplineCurve::getClassTypeId()) )
+    if ((filterList->item(static_cast<int>(GeoFilterType::NormalGeos))->checkState() == Qt::Unchecked && item->State == GeometryState::Normal) ||
+        (filterList->item(static_cast<int>(GeoFilterType::ConstructionGeos))->checkState() == Qt::Unchecked && item->State == GeometryState::Construction) ||
+        (filterList->item(static_cast<int>(GeoFilterType::InternalGeos))->checkState() == Qt::Unchecked && item->State == GeometryState::InternalAlignment) ||
+        (filterList->item(static_cast<int>(GeoFilterType::ExternalGeos))->checkState() == Qt::Unchecked && item->State == GeometryState::External) ||
+        (filterList->item(static_cast<int>(GeoFilterType::PointGeos))->checkState() == Qt::Unchecked && item->GeometryType == Part::GeomPoint::getClassTypeId()) ||
+        (filterList->item(static_cast<int>(GeoFilterType::LineGeos))->checkState() == Qt::Unchecked && item->GeometryType == Part::GeomLineSegment::getClassTypeId()) ||
+        (filterList->item(static_cast<int>(GeoFilterType::CircleGeos))->checkState() == Qt::Unchecked && item->GeometryType == Part::GeomCircle::getClassTypeId()) ||
+        (filterList->item(static_cast<int>(GeoFilterType::EllipseGeos))->checkState() == Qt::Unchecked && item->GeometryType == Part::GeomEllipse::getClassTypeId()) ||
+        (filterList->item(static_cast<int>(GeoFilterType::ArcGeos))->checkState() == Qt::Unchecked && item->GeometryType == Part::GeomArcOfCircle::getClassTypeId()) ||
+        (filterList->item(static_cast<int>(GeoFilterType::ArcOfEllipseGeos))->checkState() == Qt::Unchecked && item->GeometryType == Part::GeomArcOfEllipse::getClassTypeId()) ||
+        (filterList->item(static_cast<int>(GeoFilterType::HyperbolaGeos))->checkState() == Qt::Unchecked && item->GeometryType == Part::GeomArcOfHyperbola::getClassTypeId()) ||
+        (filterList->item(static_cast<int>(GeoFilterType::ParabolaGeos))->checkState() == Qt::Unchecked && item->GeometryType == Part::GeomArcOfParabola::getClassTypeId()) ||
+        (filterList->item(static_cast<int>(GeoFilterType::BSplineGeos))->checkState() == Qt::Unchecked && item->GeometryType == Part::GeomBSplineCurve::getClassTypeId()) )
     {
         item->setHidden(true);
         return;
@@ -1180,23 +1205,18 @@ void TaskSketcherElements::changeEvent(QEvent *e)
 void TaskSketcherElements::createSettingsButtonActions()
 {
     QAction* action = new QAction(tr("Extended information"), this);
-    QAction* action2 = new QAction(tr("Auto collapse filter"), this);
 
     action->setCheckable(true);
-    action2->setCheckable(true);
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Elements");
     {
         QSignalBlocker block(this);
         action->setChecked(hGrp->GetBool("ExtendedNaming", false));
-        action2->setChecked(hGrp->GetBool("AutoCollapseFilter", false));
     }
 
     ui->settingsButton->addAction(action);
-    ui->settingsButton->addAction(action2);
 
     isNamingBoxChecked = hGrp->GetBool("ExtendedNaming", false);
-    collapseFilter = hGrp->GetBool("AutoCollapseFilter", true);
 }
 
 void TaskSketcherElements::onSettingsExtendedInformationChanged()
@@ -1208,27 +1228,6 @@ void TaskSketcherElements::onSettingsExtendedInformationChanged()
     hGrp->SetBool("ExtendedNaming", isNamingBoxChecked);
 
     slotElementsChanged();
-}
-
-void TaskSketcherElements::onSettingsAutoCollapseFilterChanged()
-{
-    QList<QAction*> acts = ui->settingsButton->actions();
-    collapseFilter = acts[1]->isChecked();
-
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Elements");
-    hGrp->SetBool("AutoCollapseFilter", collapseFilter);
-
-    if (collapseFilter) {
-        ui->listMultiFilter->setVisible(false);
-    }
-    else {
-        ui->listMultiFilter->setVisible(ui->filterBox->checkState() == Qt::Checked);
-    }
-}
-
-void TaskSketcherElements::onSettingsButtonClicked(bool)
-{
-    ui->settingsButton->showMenu();
 }
 
 #include "moc_TaskSketcherElements.cpp"

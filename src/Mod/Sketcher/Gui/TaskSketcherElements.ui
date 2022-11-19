@@ -30,17 +30,48 @@
     <layout class="QHBoxLayout" name="horizontalLayout1">
      <item>
       <widget class="QCheckBox" name="filterBox">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="toolTip">
-        <string>Check to activate filters</string>
+        <string>Check to toggle filters</string>
        </property>
        <property name="styleSheet">
-        <string notr="true">padding-bottom: 0px; margin-bottom: 0px</string>
+        <string notr="true">padding-right: 0px; margin-right: 0px</string>
+       </property>
+       <property name="text">
+        <string></string>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+	 <item>
+      <widget class="QToolButton" name="filterButton">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>Click to show filters</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">padding-left: 0px; margin-left: 0px</string>
+       </property>
+       <property name="enabled">
+        <bool>false</bool>
        </property>
        <property name="text">
         <string>Filters</string>
        </property>
-       <property name="checked">
-        <bool>false</bool>
+       <property name="popupMode">
+        <enum>QToolButton::MenuButtonPopup</enum>
        </property>
       </widget>
      </item>
@@ -68,98 +99,6 @@
       </widget>
      </item>
     </layout>
-   </item>
-   <item>
-    <widget class="QListWidget" name="listMultiFilter">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">padding-top: 0px; margin-top: 0px</string>
-     </property>
-     <property name="sizeAdjustPolicy">
-      <enum>QAbstractScrollArea::AdjustToContents</enum>
-     </property>
-     <property name="selectionMode">
-      <enum>QAbstractItemView::NoSelection</enum>
-     </property>
-     <property name="modelColumn">
-      <number>0</number>
-     </property>
-     <item>
-      <property name="text">
-       <string>Normal</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Construction</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Internal</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>External</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>All types</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string> - Point</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string> - Line</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string> - Circle</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string> - Ellipse </string>
-      </property>
-     </item>
-      <item>
-      <property name="text">
-       <string> - Arc</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string> - Arc of ellipse</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string> - Arc of hyperbola</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string> - Arc of parabola</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string> - B-Spline</string>
-      </property>
-     </item>
-    </widget>
    </item>
    <item>
     <widget class="ElementView" name="listWidgetElements">
