@@ -87,9 +87,9 @@ const char* UnitsApi::getDescription(UnitSystem system)
     }
 }
 
-UnitsSchemaPtr UnitsApi::createSchema(UnitSystem s)
+UnitsSchemaPtr UnitsApi::createSchema(UnitSystem system)
 {
-    switch (s) {
+    switch (system) {
     case UnitSystem::SI1:
         return std::make_unique<UnitsSchemaInternal>();
     case UnitSystem::SI2:
@@ -115,14 +115,14 @@ UnitsSchemaPtr UnitsApi::createSchema(UnitSystem s)
     return nullptr;
 }
 
-void UnitsApi::setSchema(UnitSystem s)
+void UnitsApi::setSchema(UnitSystem system)
 {
     if (UserPrefSystem) {
         UserPrefSystem->resetSchemaUnits(); // for schemas changed the Quantity constants
     }
 
-    UserPrefSystem = createSchema(s);
-    currentSystem = s;
+    UserPrefSystem = createSchema(system);
+    currentSystem = system;
 
     // for wrong value fall back to standard schema
     if (!UserPrefSystem) {
@@ -133,21 +133,21 @@ void UnitsApi::setSchema(UnitSystem s)
     UserPrefSystem->setSchemaUnits(); // if necessary a unit schema can change the constants in Quantity (e.g. mi=1.8km rather then 1.6km).
 }
 
-QString UnitsApi::toString(const Base::Quantity& q, const QuantityFormat& f)
+QString UnitsApi::toString(const Base::Quantity& quantity, const QuantityFormat& format)
 {
-    QString value = QString::fromLatin1("'%1 %2'").arg(q.getValue(), 0, f.toFormat(), f.precision)
-                                                  .arg(q.getUnit().getString());
+    QString value = QString::fromLatin1("'%1 %2'").arg(quantity.getValue(), 0, format.toFormat(), format.precision)
+                                                  .arg(quantity.getUnit().getString());
     return value;
 }
 
-QString UnitsApi::toNumber(const Base::Quantity& q, const QuantityFormat& f)
+QString UnitsApi::toNumber(const Base::Quantity& quantity, const QuantityFormat& format)
 {
-    return toNumber(q.getValue(), f);
+    return toNumber(quantity.getValue(), format);
 }
 
-QString UnitsApi::toNumber(double d, const QuantityFormat& f)
+QString UnitsApi::toNumber(double value, const QuantityFormat& format)
 {
-    QString number = QString::fromLatin1("%1").arg(d, 0, f.toFormat(), f.precision);
+    QString number = QString::fromLatin1("%1").arg(value, 0, format.toFormat(), format.precision);
     return number;
 }
 
