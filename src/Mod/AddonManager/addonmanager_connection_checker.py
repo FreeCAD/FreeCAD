@@ -94,7 +94,7 @@ class ConnectionCheckerGUI(QtCore.QObject):
                 None, translate("AddonsInstaller", "Connection failed"), message
             )
         else:
-            #pylint: disable=line-too-long
+            # pylint: disable=line-too-long
             QtWidgets.QMessageBox.critical(
                 None,
                 translate("AddonsInstaller", "Missing dependency"),

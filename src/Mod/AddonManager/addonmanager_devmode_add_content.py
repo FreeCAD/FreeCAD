@@ -364,7 +364,7 @@ class AddContent:
         if not self.metadata:
             self.metadata = FreeCAD.Metadata()
         dlg = EditDependencies()
-        dlg.exec(self.metadata) # Modifies metadata directly
+        dlg.exec(self.metadata)  # Modifies metadata directly
 
 
 class EditTags:
@@ -535,7 +535,6 @@ class EditDependency:
         self.dialog.typeComboBox.setCurrentIndex(2)
 
         self.dialog.layout().setSizeConstraint(QLayout.SetFixedSize)
-
 
     def exec(
         self, dep_type="", dep_name="", dep_optional=False

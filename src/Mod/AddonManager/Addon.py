@@ -24,11 +24,14 @@
 
 import os
 from urllib.parse import urlparse
-from typing import Dict, Set
+from typing import Dict, Set, List
 from threading import Lock
 from enum import IntEnum
 
 import FreeCAD
+
+if FreeCAD.GuiUp:
+    import FreeCADGui
 
 from addonmanager_macro import Macro
 import addonmanager_utilities as utils
@@ -582,3 +585,80 @@ class Addon:
             os.unlink(stopfile)
         except FileNotFoundError:
             pass
+
+
+# @dataclass(frozen)
+class MissingDependencies:
+    """Encapsulates a group of four types of dependencies:
+    * Internal workbenches -> wbs
+    * External addons -> external_addons
+    * Required Python packages -> python_requires
+    * Optional Python packages -> python_optional
+    """
+
+    def __init__(self, repo: Addon, all_repos: List[Addon]):
+
+        deps = Addon.Dependencies()
+        repo_name_dict = {}
+        for r in all_repos:
+            repo_name_dict[r.name] = r
+            if hasattr(r, "display_name"):
+                # Test harness might not provide a display name
+                repo_name_dict[r.display_name] = r
+
+        if hasattr(repo, "walk_dependency_tree"):
+            # Sometimes the test harness doesn't provide this function, to override any dependency
+            # checking
+            repo.walk_dependency_tree(repo_name_dict, deps)
+
+        self.external_addons = []
+        for dep in deps.required_external_addons:
+            if dep.status() == Addon.Status.NOT_INSTALLED:
+                self.external_addons.append(dep.name)
+
+        # Now check the loaded addons to see if we are missing an internal workbench:
+        if FreeCAD.GuiUp:
+            wbs = [wb.lower() for wb in FreeCADGui.listWorkbenches()]
+        else:
+            wbs = []
+
+        self.wbs = []
+        for dep in deps.internal_workbenches:
+            if dep.lower() + "workbench" not in wbs:
+                if dep.lower() == "plot":
+                    # Special case for plot, which is no longer a full workbench:
+                    try:
+                        __import__("Plot")
+                    except ImportError:
+                        # Plot might fail for a number of reasons
+                        self.wbs.append(dep)
+                        FreeCAD.Console.PrintLog("Failed to import Plot module")
+                else:
+                    self.wbs.append(dep)
+
+        # Check the Python dependencies:
+        self.python_min_version = deps.python_min_version
+        self.python_requires = []
+        for py_dep in deps.python_requires:
+            if py_dep not in self.python_requires:
+                try:
+                    __import__(py_dep)
+                except ImportError:
+                    self.python_requires.append(py_dep)
+
+        self.python_optional = []
+        for py_dep in deps.python_optional:
+            try:
+                __import__(py_dep)
+            except ImportError:
+                self.python_optional.append(py_dep)
+
+        self.wbs.sort()
+        self.external_addons.sort()
+        self.python_requires.sort()
+        self.python_optional.sort()
+        self.python_optional = [
+            option
+            for option in self.python_optional
+            if option not in self.python_requires
+        ]

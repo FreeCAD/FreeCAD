@@ -35,6 +35,7 @@ try:
         QRegularExpressionValidator,
     )
     from PySide.QtCore import QRegularExpression
+
     RegexWrapper = QRegularExpression
     RegexValidatorWrapper = QRegularExpressionValidator
 except ImportError:
@@ -42,11 +43,13 @@ except ImportError:
         QRegExpValidator,
     )
     from PySide.QtCore import QRegExp
+
     RegexWrapper = QRegExp
     RegexValidatorWrapper = QRegExpValidator
 
 
-#pylint: disable=too-few-public-methods
+# pylint: disable=too-few-public-methods
+
 
 class NameValidator(QValidator):
     """Simple validator to exclude characters that are not valid in filenames."""
@@ -73,7 +76,7 @@ class PythonIdentifierValidator(QValidator):
     """Validates whether input is a valid Python identifier."""
 
     def validate(self, value: str, _: int):
-        """ The function that does the validation. """
+        """The function that does the validation."""
         if not value:
             return QValidator.Intermediate
 
@@ -129,7 +132,6 @@ class CalVerValidator(RegexValidatorWrapper):
             self.setRegularExpression(CalVerValidator.calver_re)
         else:
             self.setRegExp(CalVerValidator.calver_re)
-
 
     @classmethod
     def check(cls, value: str) -> bool:
