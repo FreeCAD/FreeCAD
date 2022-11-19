@@ -729,7 +729,7 @@ double BSpline::getLinCombFactor(double x, size_t k, size_t i)
 
     std::vector d(degree + 1, 0.0);
     // Ensure this is within range
-    int idxOfPole = i + degree - k;
+    int idxOfPole = static_cast<int>(i) + degree - static_cast<int>(k);
     if (idxOfPole < 0 || idxOfPole > degree)
         return 0.0;
     d[idxOfPole] = 1.0;
