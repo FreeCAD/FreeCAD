@@ -34,7 +34,8 @@ from addonmanager_devmode_license_selector import LicenseSelector
 
 translate = FreeCAD.Qt.translate
 
-#pylint: disable=too-few-public-methods
+# pylint: disable=too-few-public-methods
+
 
 class LicensesTable:
     """A QTableWidget and associated buttons for managing the list of authors and maintainers."""

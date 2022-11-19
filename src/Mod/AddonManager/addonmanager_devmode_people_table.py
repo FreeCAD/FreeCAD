@@ -35,7 +35,7 @@ from addonmanager_devmode_person_editor import PersonEditor
 
 translate = FreeCAD.Qt.translate
 
-#pylint: disable=too-few-public-methods
+# pylint: disable=too-few-public-methods
 
 
 class PeopleTable:

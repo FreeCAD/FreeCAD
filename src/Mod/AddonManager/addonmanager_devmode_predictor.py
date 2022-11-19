@@ -37,7 +37,7 @@ from addonmanager_utilities import get_readme_url
 
 translate = FreeCAD.Qt.translate
 
-#pylint: disable=too-few-public-methods
+# pylint: disable=too-few-public-methods
 
 
 class AddonSlice:
@@ -89,12 +89,12 @@ class Predictor:
         # is common for there to be multiple entries representing the same human being,
         # so a passing attempt is made to reconcile:
         filtered_committers = {}
-        for key,committer in committers.items():
+        for key, committer in committers.items():
             if "github" in key.lower():
                 # Robotic merge commit (or other similar), ignore
                 continue
             # Does any other committer share any of these emails?
-            for other_key,other_committer in committers.items():
+            for other_key, other_committer in committers.items():
                 if other_key == key:
                     continue
                 for other_email in other_committer["email"]:

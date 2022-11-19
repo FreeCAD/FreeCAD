@@ -32,6 +32,10 @@ from typing import List
 import time
 import FreeCAD
 
+from PySide import QtCore  # Needed to detect thread interruption
+
+import addonmanager_utilities as utils
+
 translate = FreeCAD.Qt.translate
 
 
@@ -99,8 +103,8 @@ class GitManager:
         """Fetches and pulls the local_path from its remote"""
         old_dir = os.getcwd()
         os.chdir(local_path)
-        self._synchronous_call_git(["fetch"])
         try:
+            self._synchronous_call_git(["fetch"])
             self._synchronous_call_git(["pull"])
             self._synchronous_call_git(["submodule", "update", "--init", "--recursive"])
         except GitFailed as e:
@@ -355,30 +359,14 @@ class GitManager:
         """Calls git and returns its output."""
         final_args = [self.git_exe]
         final_args.extend(args)
-        try:
-            if os.name == "nt":
-                proc = subprocess.run(
-                    final_args,
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.PIPE,
-                    check=True,
-                    shell=True,  # On Windows this will prevent all the pop-up consoles
-                )
-            else:
-                proc = subprocess.run(
-                    final_args,
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.PIPE,
-                    check=True,
-                )
-        except subprocess.CalledProcessError as e:
-            raise GitFailed(str(e)) from e
 
-        if proc.returncode != 0:
+        try:
+            proc = utils.run_interruptable_subprocess(final_args)
+        except subprocess.CalledProcessError as e:
             raise GitFailed(
-                f"Git returned a non-zero exit status: {proc.returncode}\n"
+                f"Git returned a non-zero exit status: {e.returncode}\n"
                 + f"Called with: {' '.join(final_args)}\n\n"
-                + f"Returned stderr:\n{proc.stderr.decode()}"
+                + f"Returned stderr:\n{e.stderr}"
             )
 
-        return proc.stdout.decode()
+        return proc.stdout

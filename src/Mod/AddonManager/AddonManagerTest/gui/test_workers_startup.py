@@ -27,8 +27,6 @@ import unittest
 import os
 import tempfile
 
-from addonmanager_git import initialize_git
-
 import FreeCAD
 
 from PySide2 import QtCore
@@ -39,11 +37,6 @@ from addonmanager_workers_startup import (
     CreateAddonListWorker,
     LoadPackagesFromCacheWorker,
     LoadMacrosFromCacheWorker,
-    CheckSingleUpdateWorker,
-)
-
-from addonmanager_workers_installation import (
-    InstallWorkbenchWorker,
 )
 
 
@@ -131,7 +124,6 @@ class TestWorkersStartup(unittest.TestCase):
                 f.write(json.dumps(self.macro_cache, indent="  "))
 
         original_macro_counter = self.macro_counter
-        original_workbench_counter = self.workbench_counter
         original_addon_list = self.addon_list.copy()
         self.macro_counter = 0
         self.workbench_counter = 0
