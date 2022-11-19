@@ -69,7 +69,7 @@ class ElementItem : public QListWidgetItem
         , StartingVertex(startingVertex)
         , MidVertex(midVertex)
         , EndVertex(endVertex)
-        , GeometryType(geometryType)
+        , GeometryType(std::move(geometryType))
         , State(state)
         , isLineSelected(false)
         , isStartingPointSelected(false)
@@ -177,6 +177,16 @@ Q_SIGNALS:
     void onItemHovered(QListWidgetItem *);
 };
 
+class ElementFilterList : public QListWidget
+{
+    Q_OBJECT
+
+public:
+    explicit ElementFilterList(QWidget* parent = nullptr);
+    ~ElementFilterList() override;
+
+};
+
 class TaskSketcherElements : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
 {
     Q_OBJECT
@@ -188,13 +198,12 @@ public:
     /// Observer message from the Selection
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
-    bool eventFilter(QObject* obj, QEvent* event) override;
-
 private:
     void slotElementsChanged();
     void updateVisibility();
     void setItemVisibility(QListWidgetItem* item);
     void clearWidget();
+    void createFilterButtonActions();
     void createSettingsButtonActions();
     void connectSignals();
 
@@ -203,8 +212,6 @@ public Q_SLOTS:
     void onListWidgetElementsItemEntered(QListWidgetItem *item);
     void onListWidgetElementsMouseMoveOnItem(QListWidgetItem* item);
     void onSettingsExtendedInformationChanged();
-    void onSettingsAutoCollapseFilterChanged();
-    void onSettingsButtonClicked(bool);
     void onFilterBoxStateChanged(int val);
     void onListMultiFilterItemChanged(QListWidgetItem* item);
 
@@ -224,8 +231,9 @@ private:
     int previouslyHoveredItemIndex;
     SubElementType previouslyHoveredType;
 
+    ElementFilterList* filterList;
+
     bool isNamingBoxChecked;
-    bool collapseFilter;
 };
 
 } //namespace SketcherGui
