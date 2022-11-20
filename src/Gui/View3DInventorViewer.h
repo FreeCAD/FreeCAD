@@ -391,6 +391,10 @@ public:
     bool isEnabledVBO() const;
     void setRenderCache(int);
 
+    void getDimensions(float& fHeight, float& fWidth) const;
+    float getMaxDimension() const;
+    SbVec3f getCenterPointOnFocalPlane() const;
+
     NavigationStyle* navigationStyle() const;
 
     void setDocument(Gui::Document *pcDocument);

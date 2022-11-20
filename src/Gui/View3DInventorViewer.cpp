@@ -2379,15 +2379,29 @@ void View3DInventorViewer::setSeekMode(SbBool on)
                                 NavigationStyle::IDLE : NavigationStyle::INTERACT));
 }
 
-void View3DInventorViewer::printDimension()
-{
+SbVec3f View3DInventorViewer::getCenterPointOnFocalPlane() const {
+    SoCamera* cam = getSoRenderManager()->getCamera();
+    if (!cam)
+        return SbVec3f(0. ,0. ,0. );
+
+    SbVec3f direction;
+    cam->orientation.getValue().multVec(SbVec3f(0, 0, -1), direction);
+    return cam->position.getValue() + cam->focalDistance.getValue() * direction;
+}
+
+float View3DInventorViewer::getMaxDimension() const {
+    float fHeight = -1.0;
+    float fWidth = -1.0;
+    getDimensions(fHeight, fWidth);
+    return std::max(fHeight, fWidth);
+}
+
+void View3DInventorViewer::getDimensions(float& fHeight, float& fWidth) const {
     SoCamera* camera = getSoRenderManager()->getCamera();
     if (!camera) // no camera there
         return;
 
     float aspectRatio = getViewportRegion().getViewportAspectRatio();
-    float fHeight = -1.0;
-    float fWidth = -1.0;
 
     SoType type = camera->getTypeId();
     if (type.isDerivedFrom(SoOrthographicCamera::getClassTypeId())) {
@@ -2406,6 +2420,13 @@ void View3DInventorViewer::printDimension()
     else {
         fHeight *= aspectRatio;
     }
+}
+
+void View3DInventorViewer::printDimension()
+{
+    float fHeight = -1.0;
+    float fWidth = -1.0;
+    getDimensions(fHeight, fWidth);
 
     QString dim;
 
