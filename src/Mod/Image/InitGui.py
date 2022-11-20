@@ -41,12 +41,12 @@ class ImageWorkbench ( Workbench ):
     def Initialize(self):
         # load the module
         import ImageGui
-        
+
         try:
             import ImageTools._CommandImageScaling
         except ImportError as err:
-            FreeCAD.Console.PrintError("Features from ImageTools package cannot be loaded. {err}\n".format(err= str(err)))        
-        
+            FreeCAD.Console.PrintError("Features from ImageTools package cannot be loaded. {err}\n".format(err= str(err)))
+
     def GetClassName(self):
         return "ImageGui::Workbench"
 

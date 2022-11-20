@@ -34,6 +34,3 @@ ParGrp = App.ParamGet("System parameter:Modules").GetGroup("Image")
 ParGrp.SetString("HelpIndex",        "Image/Help/index.html")
 ParGrp.SetString("WorkBenchName",    "Image")
 ParGrp.SetString("WorkBenchModule",  "ImageWorkbench.py")
-
-
-
