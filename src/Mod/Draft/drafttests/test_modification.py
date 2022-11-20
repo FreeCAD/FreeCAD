@@ -596,6 +596,7 @@ class DraftModification(unittest.TestCase):
         page.addView(view)
         _msg("  view={}".format(view.TypeId))
         self.assertTrue(view, "'{}' failed".format(operation))
+        self.assertTrue(view in page.OutList, "'{}' failed".format(operation))
 
     def test_mirror(self):
         """Create a rectangle, then a mirrored shape."""
