@@ -106,6 +106,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         obj.ThreadOrientation = self.form.threadOrientation.currentData()
         obj.ThreadType = self.form.threadType.currentData()
         obj.ThreadName = self.form.threadName.currentText()
+        obj.ThreadFit = self.form.threadFit.value()
         obj.Direction = self.form.opDirection.currentData()
         obj.Passes = self.form.opPasses.value()
         obj.LeadInOut = self.form.leadInOut.checkState() == QtCore.Qt.Checked
@@ -124,6 +125,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         self.form.threadName.blockSignals(True)
         self.form.threadName.setCurrentText(obj.ThreadName)
         self.form.threadName.blockSignals(False)
+        self.form.threadFit.setValue(obj.ThreadFit)
         self.form.threadTPI.setValue(obj.TPI)
 
         self.form.opPasses.setValue(obj.Passes)
