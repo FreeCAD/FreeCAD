@@ -150,6 +150,7 @@ SET(TDTest_SRCS
     TDTest/DrawViewPartTest.py
     TDTest/DrawViewSectionTest.py
     TDTest/DrawViewBalloonTest.py
+    TDTest/DrawViewDetailTest.py
     TDTest/TechDrawTestUtilities.py
 )
 
