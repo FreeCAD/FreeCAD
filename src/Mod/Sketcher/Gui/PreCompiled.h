@@ -84,6 +84,7 @@
 # include <QMessageBox>
 #include <qdebug.h>
 #include <QString>
+#include <QWidgetAction>
 
 // all of Inventor
 #ifndef __InventorAll__
