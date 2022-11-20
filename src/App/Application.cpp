@@ -2313,20 +2313,20 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
         if (vm.count("verbose")) {
             str << "\nLibrary versions:\n";
             str << "boost    " << BOOST_LIB_VERSION << '\n';
-            str << "Coin3D   " << FC_COIN3D_VERSION << '\n';
-            str << "Eigen3   " << FC_EIGEN3_VERSION << '\n';
+            str << "Coin3D   " << fcCoin3dVersion << '\n';
+            str << "Eigen3   " << fcEigen3Version << '\n';
 #ifdef OCC_VERSION_STRING_EXT
             str << "OCC      " << OCC_VERSION_STRING_EXT << '\n';
 #endif
             str << "Qt       " << QT_VERSION_STR << '\n';
             str << "Python   " << PY_VERSION << '\n';
-            str << "PySide   " << FC_PYSIDE_VERSION << '\n';
-            str << "shiboken " << FC_SHIBOKEN_VERSION << '\n';
+            str << "PySide   " << fcPysideVersion << '\n';
+            str << "shiboken " << fcShibokenVersion << '\n';
 #ifdef SMESH_VERSION_STR
             str << "SMESH    " << SMESH_VERSION_STR << '\n';
 #endif
-            str << "VTK      " << FC_VTK_VERSION << '\n';
-            str << "xerces-c " << FC_XERCESC_VERSION << '\n';
+            str << "VTK      " << fcVtkVersion << '\n';
+            str << "xerces-c " << fcXercescVersion << '\n';
         }
         throw Base::ProgramInformation(str.str());
     }
@@ -2627,12 +2627,12 @@ void Application::initConfig(int argc, char ** argv)
     mConfig["BOOST_VERSION"] = BOOST_LIB_VERSION;
     mConfig["PYTHON_VERSION"] = PY_VERSION;
     mConfig["QT_VERSION"] = QT_VERSION_STR;
-    mConfig["EIGEN_VERSION"] = FC_EIGEN3_VERSION;
-    mConfig["PYSIDE_VERSION"] = FC_PYSIDE_VERSION;
+    mConfig["EIGEN_VERSION"] = fcEigen3Version;
+    mConfig["PYSIDE_VERSION"] = fcPysideVersion;
 #ifdef SMESH_VERSION_STR
     mConfig["SMESH_VERSION"] = SMESH_VERSION_STR;
 #endif
-    mConfig["XERCESC_VERSION"] = FC_XERCESC_VERSION;
+    mConfig["XERCESC_VERSION"] = fcXercescVersion;
 
 
     logStatus();

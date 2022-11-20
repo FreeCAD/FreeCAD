@@ -535,7 +535,7 @@ void AboutDialog::showLibraryInformation()
         QLatin1String("Eigen"),
         baseurl + QLatin1String("#_TocEigen"),
         QLatin1String("https://eigen.tuxfamily.org"),
-        QString::fromLatin1(FC_EIGEN3_VERSION)
+        QString::fromLatin1(fcEigen3Version)
     };
 
     // FreeType
@@ -543,7 +543,7 @@ void AboutDialog::showLibraryInformation()
         QLatin1String("FreeType"),
         baseurl + QLatin1String("#_TocFreeType"),
         QLatin1String("https://freetype.org"),
-        QString::fromLatin1(FC_FREETYPE_VERSION)
+        QString::fromLatin1(fcFreetypeVersion)
     };
 
     // KDL
@@ -577,7 +577,7 @@ void AboutDialog::showLibraryInformation()
         QLatin1String("Point Cloud Library"),
         baseurl + QLatin1String("#_TocPcl"),
         QLatin1String("https://www.pointclouds.org"),
-        QString::fromLatin1(FC_PCL_VERSION)
+        QString::fromLatin1(fcPclVersion)
     };
 
     // PyCXX
@@ -585,7 +585,7 @@ void AboutDialog::showLibraryInformation()
         QLatin1String("PyCXX"),
         baseurl + QLatin1String("#_TocPyCXX"),
         QLatin1String("http://cxx.sourceforge.net"),
-        QString::fromLatin1(FC_PYCXX_VERSION)
+        QString::fromLatin1(fcPycxxVersion)
     };
 
     // Python
@@ -601,7 +601,7 @@ void AboutDialog::showLibraryInformation()
         QLatin1String("Qt for Python (PySide)"),
         baseurl + QLatin1String("#_TocPySide"),
         QLatin1String("https://wiki.qt.io/Qt_for_Python"),
-        QString::fromLatin1(FC_PYSIDE_VERSION)
+        QString::fromLatin1(fcPysideVersion)
     };
 
     // Qt
@@ -629,7 +629,7 @@ void AboutDialog::showLibraryInformation()
         QLatin1String("Qt for Python (Shiboken)"),
         baseurl + QLatin1String("#_TocPySide"),
         QLatin1String("https://wiki.qt.io/Qt_for_Python"),
-        QString::fromLatin1(FC_SHIBOKEN_VERSION)
+        QString::fromLatin1(fcShibokenVersion)
     };
 
     // vtk
@@ -637,7 +637,7 @@ void AboutDialog::showLibraryInformation()
         QLatin1String("vtk"),
         baseurl + QLatin1String("#_TocVtk"),
         QLatin1String("https://www.vtk.org"),
-        QString::fromLatin1(FC_VTK_VERSION)
+        QString::fromLatin1(fcVtkVersion)
     };
 
     // Xerces-C
@@ -645,7 +645,7 @@ void AboutDialog::showLibraryInformation()
         QLatin1String("Xerces-C"),
         baseurl + QLatin1String("#_TocXercesC"),
         QLatin1String("https://xerces.apache.org/xerces-c"),
-        QString::fromLatin1(FC_XERCESC_VERSION)
+        QString::fromLatin1(fcXercescVersion)
     };
 
     // Zipios++
@@ -769,7 +769,7 @@ void AboutDialog::on_copyButton_clicked()
     str << "Python " << PY_VERSION << ", ";
     str << "Qt " << QT_VERSION_STR << ", ";
     str << "Coin " << COIN_VERSION << ", ";
-    str << "Vtk " << FC_VTK_VERSION << ", ";
+    str << "Vtk " << fcVtkVersion << ", ";
 #if defined(HAVE_OCC_VERSION)
     str << "OCC "
         << OCC_VERSION_MAJOR << "."

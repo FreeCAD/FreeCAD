@@ -1143,7 +1143,7 @@ PyObject*  TopoShapePy::generalFuse(PyObject *args)
         TopoDS_Shape gfaResultShape = this->getTopoShapePtr()->generalFuse(shapeVec,tolerance,&map);
         Py::Object shapePy = shape2pyshape(gfaResultShape);
         Py::List mapPy;
-        for(TopTools_ListOfShape &shapes: map){
+        for(TopTools_ListOfShape &shapes : map) {
             Py::List shapesPy;
             for(TopTools_ListIteratorOfListOfShape it(shapes); it.More(); it.Next()){
                 shapesPy.append(shape2pyshape(it.Value()));
@@ -1247,7 +1247,7 @@ PyObject* TopoShapePy::childShapes(PyObject *args)
 
 namespace Part {
 // Containers to associate TopAbs_ShapeEnum values to each TopoShape*Py class
-const std::vector<std::pair<PyTypeObject*, TopAbs_ShapeEnum>> vecTypeShape = {
+static const std::vector<std::pair<PyTypeObject*, TopAbs_ShapeEnum>> vecTypeShape = {
     {&TopoShapeCompoundPy::Type, TopAbs_COMPOUND},
     {&TopoShapeCompSolidPy::Type, TopAbs_COMPSOLID},
     {&TopoShapeSolidPy::Type, TopAbs_SOLID},
@@ -1259,7 +1259,7 @@ const std::vector<std::pair<PyTypeObject*, TopAbs_ShapeEnum>> vecTypeShape = {
     {&TopoShapePy::Type, TopAbs_SHAPE}
 };
 
-const std::map<PyTypeObject*, TopAbs_ShapeEnum> mapTypeShape(
+static const std::map<PyTypeObject*, TopAbs_ShapeEnum> mapTypeShape(
     vecTypeShape.begin(), vecTypeShape.end());
 
 // Returns shape type of a Python type. Similar to TopAbs::ShapeTypeFromString.
@@ -1271,7 +1271,7 @@ static TopAbs_ShapeEnum ShapeTypeFromPyType(PyTypeObject* pyType)
             return it->second;
     }
     return TopAbs_SHAPE;
-};
+}
 }
 
 PyObject*  TopoShapePy::ancestorsOfType(PyObject *args)
@@ -2494,55 +2494,13 @@ PyObject* TopoShapePy::proximity(PyObject *args)
     BRepExtrema_ShapeProximity proximity;
     proximity.LoadShape1 (s1);
     proximity.LoadShape2 (s2);
-    if (tol > 0.0)
+    if (tol > 0.0) {
         proximity.SetTolerance (tol);
+    }
+
     proximity.Perform();
     if (!proximity.IsDone()) {
-        // the proximity failed, maybe it's because the shapes are not yet mesh
-        TopLoc_Location aLoc;
-        TopExp_Explorer xp(s1, TopAbs_FACE);
-        while (xp.More()) {
-            const Handle(Poly_Triangulation)& aTriangulation =
-              BRep_Tool::Triangulation(TopoDS::Face(xp.Current()), aLoc);
-            if (aTriangulation.IsNull()) {
-                PyErr_SetString(PartExceptionOCCError, "BRepExtrema_ShapeProximity not done, call 'tessellate' beforehand");
-                return nullptr;
-            }
-        }
-
-        xp.Init(s2, TopAbs_FACE);
-        while (xp.More()) {
-            const Handle(Poly_Triangulation)& aTriangulation =
-              BRep_Tool::Triangulation(TopoDS::Face(xp.Current()), aLoc);
-            if (aTriangulation.IsNull()) {
-                PyErr_SetString(PartExceptionOCCError, "BRepExtrema_ShapeProximity not done, call 'tessellate' beforehand");
-                return nullptr;
-            }
-        }
-
-        // check also for free edges
-        xp.Init(s1, TopAbs_EDGE, TopAbs_FACE);
-        while (xp.More()) {
-            const Handle(Poly_Polygon3D)& aPoly3D =
-              BRep_Tool::Polygon3D(TopoDS::Edge(xp.Current()), aLoc);
-            if (aPoly3D.IsNull()) {
-                PyErr_SetString(PartExceptionOCCError, "BRepExtrema_ShapeProximity not done, call 'tessellate' beforehand");
-                return nullptr;
-            }
-        }
-
-        xp.Init(s2, TopAbs_EDGE, TopAbs_FACE);
-        while (xp.More()) {
-            const Handle(Poly_Polygon3D)& aPoly3D =
-              BRep_Tool::Polygon3D(TopoDS::Edge(xp.Current()), aLoc);
-            if (aPoly3D.IsNull()) {
-                PyErr_SetString(PartExceptionOCCError, "BRepExtrema_ShapeProximity not done, call 'tessellate' beforehand");
-                return nullptr;
-            }
-        }
-
-        // another problem must have occurred
-        PyErr_SetString(PartExceptionOCCError, "BRepExtrema_ShapeProximity not done");
+        PyErr_SetString(PartExceptionOCCError, "BRepExtrema_ShapeProximity failed, make sure the shapes are tessellated");
         return nullptr;
     }
 

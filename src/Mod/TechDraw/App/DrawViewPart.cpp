@@ -438,6 +438,14 @@ void DrawViewPart::postHlrTasks(void)
     for (auto& b : bals) {
         b->recomputeFeature();
     }
+    // Dimensions need to be recomputed now, unless their recomputation must be postponed
+    // until face creation, in which case they are recomputed after that
+    if (!handleFaces() || CoarseView.getValue()) {
+        std::vector<TechDraw::DrawViewDimension*> dims = getDimensions();
+        for (auto& d : dims) {
+            d->recomputeFeature();
+        }
+    }
 
     //second pass if required
     if (ScaleType.isValue("Automatic") &&
@@ -453,7 +461,7 @@ void DrawViewPart::postHlrTasks(void)
     requestPaint();
 }
 
-//run any tasks that need to been done after faces are available
+// Run any tasks that need to be done after faces are available
 void DrawViewPart::postFaceExtractionTasks(void)
 {
     // Some centerlines depend on faces so we could not add CL geometry before now

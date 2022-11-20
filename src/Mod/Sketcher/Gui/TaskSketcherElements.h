@@ -69,7 +69,7 @@ class ElementItem : public QListWidgetItem
         , StartingVertex(startingVertex)
         , MidVertex(midVertex)
         , EndVertex(endVertex)
-        , GeometryType(geometryType)
+        , GeometryType(std::move(geometryType))
         , State(state)
         , isLineSelected(false)
         , isStartingPointSelected(false)
@@ -177,6 +177,39 @@ Q_SIGNALS:
     void onItemHovered(QListWidgetItem *);
 };
 
+class ElementFilterList : public QListWidget
+{
+    Q_OBJECT
+
+public:
+    explicit ElementFilterList(QWidget* parent = nullptr);
+    ~ElementFilterList() override;
+
+protected:
+    void changeEvent(QEvent* e) override;
+    virtual void languageChange();
+
+private:
+    using filterItemRepr =  std::pair<const char *, const int>; // {filter item text, filter item level}
+    inline static const std::vector<filterItemRepr> filterItems = {
+        {QT_TR_NOOP("Normal"),0},
+        {QT_TR_NOOP("Construction"),0},
+        {QT_TR_NOOP("Internal"),0},
+        {QT_TR_NOOP("External"),0},
+        {QT_TR_NOOP("All types"),0},
+        {QT_TR_NOOP("Point"),1},
+        {QT_TR_NOOP("Line"),1},
+        {QT_TR_NOOP("Circle"),1},
+        {QT_TR_NOOP("Ellipse"),1},
+        {QT_TR_NOOP("Arc of circle"),1},
+        {QT_TR_NOOP("Arc of ellipse"),1},
+        {QT_TR_NOOP("Arc of hyperbola"),1},
+        {QT_TR_NOOP("Arc of parabola"),1},
+        {QT_TR_NOOP("B-Spline"),1}
+    };
+
+};
+
 class TaskSketcherElements : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
 {
     Q_OBJECT
@@ -188,13 +221,12 @@ public:
     /// Observer message from the Selection
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
-    bool eventFilter(QObject* obj, QEvent* event) override;
-
 private:
     void slotElementsChanged();
     void updateVisibility();
     void setItemVisibility(QListWidgetItem* item);
     void clearWidget();
+    void createFilterButtonActions();
     void createSettingsButtonActions();
     void connectSignals();
 
@@ -203,8 +235,6 @@ public Q_SLOTS:
     void onListWidgetElementsItemEntered(QListWidgetItem *item);
     void onListWidgetElementsMouseMoveOnItem(QListWidgetItem* item);
     void onSettingsExtendedInformationChanged();
-    void onSettingsAutoCollapseFilterChanged();
-    void onSettingsButtonClicked(bool);
     void onFilterBoxStateChanged(int val);
     void onListMultiFilterItemChanged(QListWidgetItem* item);
 
@@ -224,8 +254,9 @@ private:
     int previouslyHoveredItemIndex;
     SubElementType previouslyHoveredType;
 
+    ElementFilterList* filterList;
+
     bool isNamingBoxChecked;
-    bool collapseFilter;
 };
 
 } //namespace SketcherGui
