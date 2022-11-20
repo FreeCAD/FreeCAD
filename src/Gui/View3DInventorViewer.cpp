@@ -813,12 +813,24 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
 
     std::vector<ViewProvider*> groups;
     auto grpVp = vp;
+    std::set<ViewProvider*> visited;
     for(auto childVp=vp;;childVp=grpVp) {
         auto grp = App::GeoFeatureGroupExtension::getGroupOfObject(childVp->getObject());
-        if(!grp || !grp->getNameInDocument()) break;
+        if(!grp || !grp->getNameInDocument()) {
+            break;
+        }
+
         grpVp = dynamic_cast<ViewProviderDocumentObject*>(
                 Application::Instance->getViewProvider(grp));
-        if(!grpVp) break;
+        if(!grpVp) {
+            break;
+        }
+
+        // avoid endless-loops
+        if (!visited.insert(childVp).second) {
+            break;
+        }
+
         auto childRoot = grpVp->getChildRoot();
         auto modeSwitch = grpVp->getModeSwitch();
         auto idx = modeSwitch->whichChild.getValue();
