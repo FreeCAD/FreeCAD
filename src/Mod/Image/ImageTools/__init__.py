@@ -24,10 +24,10 @@ __title__ = "ImageTools package"  # from "Macro Image Scaling"
 __author__  = "JAndersM"
 __url__     = "https://www.freecadweb.org/wiki/Macro_Image_Scaling"
 __version__ = "00.01"
-__date__    = "19/01/2016" 
- 
- 
-__tutorial__ = "https://youtu.be/2iFE40uHrA8" 
+__date__    = "19/01/2016"
+
+
+__tutorial__ = "https://youtu.be/2iFE40uHrA8"
 __forum__ = "https://forum.freecadweb.org/viewtopic.php?f=3&t=14265"
 
 

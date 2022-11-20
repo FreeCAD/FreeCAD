@@ -60,7 +60,7 @@ class _CommandImageScaling:
     def Activated(self):
         import draftguitools.gui_trackers as trackers
         cmdCreateImageScaling(name="ImageScaling", trackers=trackers)
-        
+
     def IsActive(self):
         if FreeCAD.ActiveDocument:
             return True
@@ -79,7 +79,7 @@ def cmdCreateImageScaling(name, trackers):
         dy=p2[1]-p1[1]
         dz=p2[2]-p1[2]
         return math.sqrt(dx*dx+dy*dy+dz*dz)
-        
+
     def centerOnScreen (widg):
         '''centerOnScreen()
         Centers the window on the screen.'''
@@ -87,7 +87,7 @@ def cmdCreateImageScaling(name, trackers):
         xp=(resolution.width() / 2) - widg.frameGeometry().width()/2
         yp=(resolution.height() / 2) - widg.frameGeometry().height()/2
         widg.move(xp, yp)
-    
+
     class Ui_Dialog(object):
         def setupUi(self, Dialog):
             self.view = FreeCADGui.ActiveDocument.ActiveView
@@ -135,12 +135,12 @@ def cmdCreateImageScaling(name, trackers):
             self.tracker.raiseTracker()
             self.tracker.on()
             self.dialog.show()
-    
+
         def retranslateUi(self, Dialog):
             Dialog.setWindowTitle(translate("Dialog", "Scale image plane", None))
             self.label.setText(translate("Dialog", "Distance", None))
             self.label1.setText(translate("Dialog", "Select first point", None))
-            
+
         def accept(self):
             sel = FreeCADGui.Selection.getSelection()
             try:
@@ -159,7 +159,7 @@ def cmdCreateImageScaling(name, trackers):
             except (IndexError, AttributeError):
                 self.label1.setText("<font color='red'>" + translate("Dialog", "Select ImagePlane", None) + "</font>")
                 return
-            
+
         def reject(self):
             if len(self.stack) != 2:
                 self.view.removeEventCallbackPivy(pvy.SoMouseButtonEvent.getClassTypeId(),self.callback)
@@ -168,16 +168,16 @@ def cmdCreateImageScaling(name, trackers):
             self.tracker.off()
             self.tracker.finalize()
             self.dialog.hide()
-        
+
         def getmousepoint(self, event_cb):
             event = event_cb.getEvent()
             if len(self.stack)==1:
                 pos = event.getPosition()
                 point = self.view.getPoint(pos[0],pos[1])
                 self.tracker.p2(point)
-                
+
         def getpoint(self,event_cb):
-            event = event_cb.getEvent()           
+            event = event_cb.getEvent()
             if event.getState() == pvy.SoMouseButtonEvent.DOWN:
                 pos = event.getPosition()
                 point = self.view.getPoint(pos[0],pos[1])
@@ -192,8 +192,8 @@ def cmdCreateImageScaling(name, trackers):
                     self.view.removeEventCallbackPivy(pvy.SoLocation2Event.getClassTypeId(),self.callmouse)
                     self.buttonBox.button(QtGui.QDialogButtonBox.Ok).setEnabled(True)
                     self.label1.setText(translate("Dialog", "Select Image Plane and type distance", None))
-    
-    #Init        
+
+    #Init
     if FreeCADGui.ActiveDocument is not None:
         d = QtGui.QWidget()
         ui = Ui_Dialog()
