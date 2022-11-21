@@ -38,6 +38,7 @@ set(SketcherGui_UIC_SRCS
     SketchOrientationDialog.ui
     SketchMirrorDialog.ui
     SketcherSettings.ui
+    SketcherSettingsGrid.ui
     SketcherSettingsColors.ui
     SketcherSettingsDisplay.ui
     SketchRectangularArrayDialog.ui
@@ -119,6 +120,8 @@ SET(SketcherGui_SRCS
     EditModeCoinManagerParameters.cpp
     EditModeCoinManager.cpp
     EditModeCoinManager.h
+    EditModeGridCoinManager.cpp
+    EditModeGridCoinManager.h
     EditModeGeometryCoinManager.cpp
     EditModeGeometryCoinManager.h
     EditModeConstraintCoinManager.cpp

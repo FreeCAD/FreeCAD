@@ -104,6 +104,12 @@
         <file>icons/general/Sketcher_ValidateSketch.svg</file>
         <file>icons/general/Sketcher_ViewSection.svg</file>
         <file>icons/general/Sketcher_ViewSketch.svg</file>
+        <file>icons/general/Sketcher_GridToggle.svg</file>
+        <file>icons/general/Sketcher_GridToggle_Deactivated.svg</file>
+        <file>icons/general/Sketcher_GridSnap.svg</file>
+        <file>icons/general/Sketcher_GridSnap_Deactivated.svg</file>
+        <file>icons/general/Sketcher_GridAuto.svg</file>
+        <file>icons/general/Sketcher_GridAuto_Deactivated.svg</file>
     </qresource>
     <qresource>
         <file>icons/geometry/Sketcher_AlterFillet.svg</file>
