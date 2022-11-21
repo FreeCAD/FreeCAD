@@ -30,12 +30,17 @@
 # include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoPickStyle.h>
 # include <Inventor/nodes/SoVertexProperty.h>
+# include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoBaseColor.h>
+# include <Inventor/SbVec3f.h>
 #endif  // #ifndef _PreComp_
 
 #include <Gui/Application.h>
 #include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 #include <Gui/SoFCBoundingBox.h>
 
+#include "ViewProviderSketch.h"
 #include "EditModeCoinManager.h"
 #include "EditModeGridCoinManager.h"
 
