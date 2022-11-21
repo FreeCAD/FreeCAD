@@ -196,6 +196,27 @@ ConsoleMsgFlags ConsoleSingleton::SetEnabledMsgType(const char* sObs, ConsoleMsg
     }
 }
 
+bool ConsoleSingleton::IsMsgTypeEnabled(const char* sObs, FreeCAD_ConsoleMsgType type) const
+{
+    ILogger* pObs = Get(sObs);
+    if (pObs) {
+        switch (type) {
+        case MsgType_Txt:
+            return pObs->bMsg;
+        case MsgType_Log:
+            return pObs->bLog;
+        case MsgType_Wrn:
+            return pObs->bWrn;
+        case MsgType_Err:
+            return pObs->bErr;
+        default:
+            return false;
+        }
+    }
+
+    return false;
+}
+
 void ConsoleSingleton::SetConnectionMode(ConnectionMode mode)
 {
     connectionMode = mode;
