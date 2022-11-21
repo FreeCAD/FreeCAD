@@ -282,6 +282,11 @@ struct ConstraintParameters {
 /** @brief      Helper struct adapted to store the pointer to edit mode scenegraph objects.
  */
 struct EditModeScenegraphNodes {
+    /** @name Grid nodes*/
+    //@{
+    SoSeparator *                   GridRoot;
+    //@}
+
     /** @name Point nodes*/
     //@{
     SoSeparator *                   EditRoot;

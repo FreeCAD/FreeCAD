@@ -62,6 +62,7 @@ namespace SketcherGui {
 class ViewProviderSketch;
 class EditModeConstraintCoinManager;
 class EditModeGeometryCoinManager;
+class EditModeGridCoinManager;
 
 using GeoList = Sketcher::GeoList;
 using GeoListFacade = Sketcher::GeoListFacade;
@@ -218,6 +219,9 @@ public:
     void drawConstraintIcons(const GeoListFacade & geolistfacade);
     //@}
 
+    //Draw the grid
+    void drawGrid(bool cameraUpdate = false);
+
     /** @name coin node access*/
     SoSeparator* getRootEditNode();
     //@}
@@ -226,12 +230,6 @@ public:
     //@{
     void updateColor();
     void updateColor(const GeoListFacade & geolistfacade); // overload to be used with temporal geometry.
-    //@}
-
-
-    /** @name change coin visualisation and behaviour*/
-    //@{
-    void updateGridExtent();
     //@}
 
     /** @name change constraints selectability*/
@@ -289,6 +287,7 @@ private:
     // Coin Helpers
     std::unique_ptr<EditModeConstraintCoinManager> pEditModeConstraintCoinManager;
     std::unique_ptr<EditModeGeometryCoinManager> pEditModeGeometryCoinManager;
+    std::unique_ptr<EditModeGridCoinManager> pEditModeGridCoinManager;
 };
 
 

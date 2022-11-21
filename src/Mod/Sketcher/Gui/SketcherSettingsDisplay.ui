@@ -67,7 +67,7 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
+      <item row="2" column="1">
        <widget class="Gui::PrefSpinBox" name="SegmentsPerGeometry">
         <property name="toolTip">
          <string>The number of polygons used for geometry approximation.</string>
@@ -86,7 +86,7 @@
         </property>
        </widget>
       </item>
-      <item row="10" column="0">
+      <item row="9" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBoxShowDimensionalName">
         <property name="toolTip">
          <string>If checked, displays the name on dimensional constraints (if exists).</string>
@@ -102,7 +102,7 @@
         </property>
        </widget>
       </item>
-      <item row="10" column="1">
+      <item row="9" column="1">
        <widget class="Gui::PrefLineEdit" name="prefDimensionalStringFormat">
         <property name="toolTip">
          <string>The format of the dimensional constraint string presentation.
@@ -125,7 +125,7 @@ Defaults to: %N = %V
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
+      <item row="2" column="0">
        <widget class="QLabel" name="label_3">
         <property name="text">
          <string>Segments per geometry</string>
@@ -135,7 +135,7 @@ Defaults to: %N = %V
         </property>
        </widget>
       </item>
-      <item row="5" column="0" colspan="2">
+      <item row="4" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="continueMode">
         <property name="toolTip">
          <string>The current sketcher creation tool will remain active after creation.</string>
@@ -179,7 +179,7 @@ Defaults to: %N = %V
         </property>
        </widget>
       </item>
-      <item row="7" column="0" colspan="2">
+      <item row="6" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="checkBoxHideUnits">
         <property name="toolTip">
          <string>Base length units will not be displayed in constraints or cursor coordinates.
@@ -212,27 +212,7 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>Grid line pattern</string>
-        </property>
-        <property name="buddy">
-         <cstring>comboBox</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QComboBox" name="comboBox">
-        <property name="toolTip">
-         <string>Line pattern used for grid lines.</string>
-        </property>
-        <property name="currentIndex">
-         <number>-1</number>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="0" colspan="2">
+      <item row="5" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="constraintMode">
         <property name="toolTip">
          <string>The current constraint creation tool will remain active after creation.</string>
@@ -251,7 +231,7 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
         </property>
        </widget>
       </item>
-      <item row="8" column="0">
+      <item row="7" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBoxShowCursorCoords">
         <property name="toolTip">
          <string>Cursor position coordinates will be displayed beside cursor while editing sketch.</string>
@@ -270,7 +250,7 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="0" colspan="2">
+      <item row="3" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="dialogOnDistanceConstraint">
         <property name="toolTip">
          <string>A dialog will pop up to input a value for new dimensional constraints.</string>
@@ -289,7 +269,7 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
         </property>
        </widget>
       </item>
-      <item row="9" column="0">
+      <item row="8" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBoxUseSystemDecimals">
         <property name="toolTip">
          <string>Cursor coordinates will use the system decimals setting instead of the short form.</string>

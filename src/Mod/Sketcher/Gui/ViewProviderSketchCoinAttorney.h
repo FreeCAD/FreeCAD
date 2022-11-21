@@ -78,7 +78,6 @@ private:
     static inline const GeoList getGeoList(const ViewProviderSketch & vp);
     static inline const GeoListFacade getGeoListFacade(const ViewProviderSketch & vp);
     static inline Base::Placement getEditingPlacement(const ViewProviderSketch & vp);
-    static inline void updateGridExtent(ViewProviderSketch & vp, float minx, float maxx, float miny, float maxy);
     static inline bool isShownVirtualSpace(const ViewProviderSketch & vp);
     static inline std::unique_ptr<SoRayPickAction> getRayPickAction(const ViewProviderSketch & vp);
 
@@ -112,6 +111,7 @@ private:
     friend class EditModeCoinManager;
     friend class EditModeConstraintCoinManager;
     friend class EditModeGeometryCoinManager;
+    friend class EditModeGridCoinManager;
     friend class EditModeInformationOverlayCoinConverter;
     friend class EditModeGeometryCoinConverter;
 };
@@ -139,11 +139,6 @@ const GeoListFacade ViewProviderSketchCoinAttorney::getGeoListFacade(const ViewP
 inline Base::Placement ViewProviderSketchCoinAttorney::getEditingPlacement(const ViewProviderSketch & vp)
 {
     return vp.getEditingPlacement();
-}
-
-inline void ViewProviderSketchCoinAttorney::updateGridExtent(ViewProviderSketch & vp, float minx, float maxx, float miny, float maxy)
-{
-    vp.updateGridExtent(minx, maxx, miny, maxy);
 }
 
 inline bool ViewProviderSketchCoinAttorney::isShownVirtualSpace(const ViewProviderSketch & vp)

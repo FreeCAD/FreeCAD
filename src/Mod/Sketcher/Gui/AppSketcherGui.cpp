@@ -130,6 +130,7 @@ PyMOD_INIT_FUNC(SketcherGui)
     SketcherGui::ViewProviderSketchGeometryExtension  ::init();
 
     (void)new Gui::PrefPageProducer<SketcherGui::SketcherSettings>        ( QT_TRANSLATE_NOOP("QObject","Sketcher") );
+    (void)new Gui::PrefPageProducer<SketcherGui::SketcherSettingsGrid>    ( QT_TRANSLATE_NOOP("QObject","Sketcher") );
     (void)new Gui::PrefPageProducer<SketcherGui::SketcherSettingsDisplay> ( QT_TRANSLATE_NOOP("QObject","Sketcher") );
     (void)new Gui::PrefPageProducer<SketcherGui::SketcherSettingsColors>  ( QT_TRANSLATE_NOOP("QObject","Sketcher") );
 
