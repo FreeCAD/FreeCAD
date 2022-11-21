@@ -570,12 +570,10 @@ class DraftModification(unittest.TestCase):
         self.assertTrue(obj.hasExtension("Part::AttachExtension"),
                         "'{}' failed".format(operation))
 
-    def test_draft_to_drawing(self):
-        """Create a solid, and then a projected view in a Drawing page."""
-        operation = "Draft Drawing"
+    def test_draft_to_techdraw(self):
+        """Create a solid, and then a DraftView on a TechDraw page."""
+        operation = "TechDraw DraftView (relies on Draft code)"
         _msg("  Test '{}'".format(operation))
-        _wrn("  The Drawing Workbench is obsolete since 0.17,")
-        _wrn("  consider using the TechDraw Workbench instead")
         prism = App.ActiveDocument.addObject("Part::Prism")
         prism.Polygon = 5
         # Rotate the prism 45 degrees around the Y axis
@@ -585,21 +583,20 @@ class DraftModification(unittest.TestCase):
         _msg("  n_sides={}".format(prism.Polygon))
         _msg("  placement={}".format(prism.Placement))
 
-        svg_template = 'Mod/Drawing/Templates/A3_Landscape.svg'
-        template = Draft.get_param("template",
-                                   App.getResourceDir() + svg_template)
-        try:
-            page = App.ActiveDocument.addObject('Drawing::FeaturePage')
-            page.Template = template
-            _msg("  Drawing view")
-            _msg("  page={}".format(page.TypeId))
-            _msg("  template={}".format(page.Template))
-            obj = Draft.make_drawing_view(prism, page, otherProjection=None)
-            self.assertTrue(obj, "'{}' failed".format(operation))
-        except TypeError:
-            pass
-        except ModuleNotFoundError:
-            pass
+        page = App.ActiveDocument.addObject("TechDraw::DrawPage")
+        _msg("  page={}".format(page.TypeId))
+        template = App.ActiveDocument.addObject("TechDraw::DrawSVGTemplate")
+        template.Template = App.getResourceDir() \
+                            + "Mod/TechDraw/Templates/A3_Landscape_blank.svg"
+        page.Template = template
+        _msg("  template={}".format(template.TypeId))
+        view = App.ActiveDocument.addObject("TechDraw::DrawViewDraft")
+        view.Source = prism
+        view.Direction = App.Vector(0, 0, 1)
+        page.addView(view)
+        _msg("  view={}".format(view.TypeId))
+        self.assertTrue(view, "'{}' failed".format(operation))
+        self.assertTrue(view in page.OutList, "'{}' failed".format(operation))
 
     def test_mirror(self):
         """Create a rectangle, then a mirrored shape."""
