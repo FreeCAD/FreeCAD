@@ -20,17 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
-
-#include "WriterOBJ.h"
-#include "Core/Iterator.h"
 #include <Base/Console.h>
 #include <Base/Sequencer.h>
 #include <Base/Tools.h>
+#include "Core/Iterator.h"
+
+#include "WriterOBJ.h"
+
 
 using namespace MeshCore;
 
