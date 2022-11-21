@@ -637,53 +637,46 @@ void ConstraintView::swapNamedOfSelectedItems()
 ConstraintFilterList::ConstraintFilterList(QWidget* parent)
     : QListWidget(parent)
 {
-    {
-        QSignalBlocker block(this);
-        new QListWidgetItem(QApplication::translate("ConstraintFilterList", "All"), this);
-        new QListWidgetItem(QApplication::translate("ConstraintFilterList", "Geometric"), this);
-        new QListWidgetItem(QApplication::translate("ConstraintFilterList", " - Coincident"), this);
-        new QListWidgetItem(QApplication::translate("ConstraintFilterList", " - Point on Object"), this);
-        new QListWidgetItem(QApplication::translate("ConstraintFilterList", " - Vertical"), this);
-        new QListWidgetItem(QApplication::translate("ConstraintFilterList", " - Horizontal"), this);
-        new QListWidgetItem(QApplication::translate("ConstraintFilterList", " - Parallel"), this);
-        new QListWidgetItem(QApplication::translate("ConstraintFilterList", " - Perpendicular"), this);
-        new QListWidgetItem(QApplication::translate("ConstraintFilterList", " - Tangent"), this);
-        new QListWidgetItem(QApplication::translate("ConstraintFilterList", " - Equality"), this);
-        new QListWidgetItem(QApplication::translate("ConstraintFilterList", " - Symmetric"), this);
-        new QListWidgetItem(QApplication::translate("ConstraintFilterList", " - Block"), this);
-        new QListWidgetItem(QApplication::translate("ConstraintFilterList", "Datums"), this);
-        new QListWidgetItem(QApplication::translate("ConstraintFilterList", " - Horizontal Distance"), this);
-        new QListWidgetItem(QApplication::translate("ConstraintFilterList", " - Vertical Distance"), this);
-        new QListWidgetItem(QApplication::translate("ConstraintFilterList", " - Distance"), this);
-        new QListWidgetItem(QApplication::translate("ConstraintFilterList", " - Radius"), this);
-        new QListWidgetItem(QApplication::translate("ConstraintFilterList", " - Weight"), this);
-        new QListWidgetItem(QApplication::translate("ConstraintFilterList", " - Diameter"), this);
-        new QListWidgetItem(QApplication::translate("ConstraintFilterList", " - Angle"), this);
-        new QListWidgetItem(QApplication::translate("ConstraintFilterList", " - Snell's Law"), this);
-        new QListWidgetItem(QApplication::translate("ConstraintFilterList", "Named"), this);
-        new QListWidgetItem(QApplication::translate("ConstraintFilterList", "Reference"), this);
-        new QListWidgetItem(QApplication::translate("ConstraintFilterList", "Internal Alignment"), this);
-        new QListWidgetItem(QApplication::translate("ConstraintFilterList", "Selected constraints"), this);
-        new QListWidgetItem(QApplication::translate("ConstraintFilterList", "Associated constraints"), this);
+    for (auto const& filterItem : filterItems) {
+        Q_UNUSED(filterItem);
+        auto it = new QListWidgetItem();
 
-        normalFilterCount = count() - 2; //All filter but selected and associated
-        selectedFilterIndex = normalFilterCount;
-        associatedFilterIndex = normalFilterCount + 1;
-
-        for (int i = 0; i < count(); i++) {
-            QListWidgetItem* it = item(i);
-
-            it->setFlags(it->flags() | Qt::ItemIsUserCheckable);
-            if(i < normalFilterCount)
-                it->setCheckState(Qt::Checked);
-            else //associated and selected should not be checked by default.
-                it->setCheckState(Qt::Unchecked);
-        }
+        it->setFlags(it->flags() | Qt::ItemIsUserCheckable);
+        if(row(it) < normalFilterCount)
+            it->setCheckState(Qt::Checked);
+        else //associated and selected should not be checked by default.
+            it->setCheckState(Qt::Unchecked);
+        addItem(it);
     }
+    languageChange();
+
+    normalFilterCount = count() - 2; //All filter but selected and associated
+    selectedFilterIndex = normalFilterCount;
+    associatedFilterIndex = normalFilterCount + 1;
 }
 
 ConstraintFilterList::~ConstraintFilterList()
 {
+}
+
+void ConstraintFilterList::changeEvent(QEvent* e)
+{
+    if (e->type() == QEvent::LanguageChange)
+        languageChange();
+
+    QWidget::changeEvent(e);
+}
+
+void ConstraintFilterList::languageChange()
+{
+    assert(static_cast<int>(filterItems.size()) == count());
+    int i = 0;
+    for (auto const& filterItem : filterItems) {
+        auto text = QStringLiteral("  ").repeated(filterItem.second - 1) +
+            (filterItem.second > 0 ? QStringLiteral("- ") : QStringLiteral("")) + 
+            tr(filterItem.first);
+        item(i++)->setText(text);
+    }
 }
 
 FilterValueBitset ConstraintFilterList::getMultiFilter()
