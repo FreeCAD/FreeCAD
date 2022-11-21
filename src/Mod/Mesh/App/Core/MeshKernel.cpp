@@ -20,30 +20,27 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <algorithm>
-# include <stdexcept>
 # include <map>
 # include <queue>
+# include <stdexcept>
 #endif
 
 #include <Base/Exception.h>
-#include <Base/Sequencer.h>
 #include <Base/Stream.h>
 #include <Base/Swap.h>
 
-#include "Algorithm.h"
-#include "Approximation.h"
-#include "Helpers.h"
 #include "MeshKernel.h"
-#include "Iterator.h"
-#include "Evaluation.h"
+#include "Algorithm.h"
 #include "Builder.h"
-#include "Smoothing.h"
+#include "Evaluation.h"
+#include "Iterator.h"
 #include "MeshIO.h"
+#include "Smoothing.h"
+
 
 using namespace MeshCore;
 

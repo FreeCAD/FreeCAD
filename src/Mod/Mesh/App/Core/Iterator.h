@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESH_ITERATOR_H
 #define MESH_ITERATOR_H
 
-#include "MeshKernel.h"
-#include "Elements.h"
-#include <Base/Matrix.h>
-#include <Base/Vector3D.h>
 #include <climits>
+
+#include <Base/Matrix.h>
+
+#include "MeshKernel.h"
+
 
 namespace MeshCore {
 

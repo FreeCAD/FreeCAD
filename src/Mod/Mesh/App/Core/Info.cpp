@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -31,10 +30,8 @@
 #endif
 
 #include "Info.h"
-#include "Algorithm.h"
 #include "Iterator.h"
 
-#include <Base/Exception.h>
 
 using namespace MeshCore;
 

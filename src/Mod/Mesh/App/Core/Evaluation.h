@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESH_EVALUATION_H
 #define MESH_EVALUATION_H
 
-#include <list>
 #include <cmath>
+#include <list>
 
 #include "MeshKernel.h"
 #include "Visitor.h"
+
 
 namespace MeshCore {
 

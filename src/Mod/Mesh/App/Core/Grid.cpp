@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -28,11 +27,10 @@
 #endif
 
 #include "Grid.h"
-#include "Iterator.h"
-
-#include "MeshKernel.h"
 #include "Algorithm.h"
-#include "Tools.h"
+#include "Iterator.h"
+#include "MeshKernel.h"
+
 
 using namespace MeshCore;
 
