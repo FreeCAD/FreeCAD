@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -29,31 +28,26 @@
 # include <iterator>
 #endif
 
-#include "Approximation.h"
-#include "Elements.h"
-#include "Utilities.h"
-#include "CylinderFit.h"
-#include "SphereFit.h"
-
 #include <Base/BoundBox.h>
 #include <Base/Console.h>
 #include <boost/math/special_functions/fpclassify.hpp>
-#include <Mod/Mesh/App/WildMagic4/Wm4ApprQuadraticFit3.h>
-#include <Mod/Mesh/App/WildMagic4/Wm4ApprPlaneFit3.h>
-#include <Mod/Mesh/App/WildMagic4/Wm4DistVector3Plane3.h>
-#include <Mod/Mesh/App/WildMagic4/Wm4Matrix3.h>
 #include <Mod/Mesh/App/WildMagic4/Wm4ApprPolyFit3.h>
+#include <Mod/Mesh/App/WildMagic4/Wm4ApprQuadraticFit3.h>
 #include <Mod/Mesh/App/WildMagic4/Wm4ApprSphereFit3.h>
-#include <Mod/Mesh/App/WildMagic4/Wm4Sphere3.h>
-#include <Mod/Mesh/App/WildMagic4/Wm4ApprCylinderFit3.h>
 
 //#define FC_USE_EIGEN
 #include <Eigen/QR>
 #include <Eigen/Eigen>
-#include <unsupported/Eigen/NonLinearOptimization>
 #ifdef FC_USE_EIGEN
-#include <Eigen/Eigenvalues>
+# include <Eigen/Eigenvalues>
 #endif
+
+#include "Approximation.h"
+#include "CylinderFit.h"
+#include "Elements.h"
+#include "SphereFit.h"
+#include "Utilities.h"
+
 
 using namespace MeshCore;
 

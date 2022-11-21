@@ -20,20 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <algorithm>
 #endif
 
-#include <Base/Sequencer.h>
 #include <Base/Exception.h>
+#include <Base/Sequencer.h>
 
 #include "Builder.h"
-#include "MeshKernel.h"
 #include "Functional.h"
+#include "MeshKernel.h"
 #include <QVector>
+
 
 using namespace MeshCore;
 

@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -29,19 +28,14 @@
 # include <queue>
 #endif
 
+#include <boost/math/special_functions/fpclassify.hpp>
+
 #include "Degeneration.h"
-#include "Definitions.h"
-#include "Iterator.h"
-#include "Helpers.h"
-#include "MeshKernel.h"
-#include "Algorithm.h"
-#include "Info.h"
 #include "Grid.h"
+#include "Iterator.h"
 #include "TopoAlgorithm.h"
 #include "Triangulation.h"
 
-#include <boost/math/special_functions/fpclassify.hpp>
-#include <Base/Sequencer.h>
 
 using namespace MeshCore;
 

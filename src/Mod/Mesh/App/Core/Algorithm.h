@@ -20,17 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESHALGORITHM_H
 #define MESHALGORITHM_H
 
+#include <map>
 #include <set>
 #include <vector>
-#include <map>
 
-#include "MeshKernel.h"
 #include "Elements.h"
-#include <Base/Vector3D.h>
+#include "MeshKernel.h"
+
 
 // forward declarations
 

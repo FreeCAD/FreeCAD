@@ -30,22 +30,22 @@
 #include <QFutureWatcher>
 #include <QtConcurrentMap>
 
+#include <Base/Sequencer.h>
+#include <Base/Tools.h>
+
 //#define OPTIMIZE_CURVATURE
 #ifdef OPTIMIZE_CURVATURE
-#include <Eigen/Eigenvalues>
+# include <Eigen/Eigenvalues>
 #else
-#include <Mod/Mesh/App/WildMagic4/Wm4Vector3.h>
-#include <Mod/Mesh/App/WildMagic4/Wm4MeshCurvature.h>
+# include <Mod/Mesh/App/WildMagic4/Wm4MeshCurvature.h>
 #endif
 
 #include "Curvature.h"
-#include "Algorithm.h"
 #include "Approximation.h"
-#include "MeshKernel.h"
 #include "Iterator.h"
+#include "MeshKernel.h"
 #include "Tools.h"
-#include <Base/Sequencer.h>
-#include <Base/Tools.h>
+
 
 using namespace MeshCore;
 namespace sp = std::placeholders;
