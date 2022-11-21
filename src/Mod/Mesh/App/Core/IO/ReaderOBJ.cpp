@@ -20,20 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <istream>
-#include <boost/regex.hpp>
-#include <boost/lexical_cast.hpp>
-#include <boost/tokenizer.hpp>
+# include <boost/lexical_cast.hpp>
+# include <boost/regex.hpp>
+# include <boost/tokenizer.hpp>
 #endif
 
+#include <Base/Tools.h>
+#include "Core/MeshIO.h"
+#include "Core/MeshKernel.h"
 
 #include "ReaderOBJ.h"
-#include "Core/MeshKernel.h"
-#include "Core/MeshIO.h"
-#include <Base/Tools.h>
 
 
 using namespace MeshCore;
