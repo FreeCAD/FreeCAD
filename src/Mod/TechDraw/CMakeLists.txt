@@ -9,6 +9,7 @@ endif(BUILD_GUI)
 set(TechDraw_Scripts
     Init.py
     TestTechDrawApp.py
+    TestTechDrawGui.py
 )
 
 if(BUILD_GUI)
