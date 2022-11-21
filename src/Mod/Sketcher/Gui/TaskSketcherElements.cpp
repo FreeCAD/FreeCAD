@@ -520,7 +520,7 @@ void ElementFilterList::languageChange()
     int i=0;
     for (auto const &filterItem:filterItems) {
         auto text = QStringLiteral("  ").repeated(filterItem.second-1) +
-            (filterItem.second > 0 ? QStringLiteral("- ") : QStringLiteral()) +
+            (filterItem.second > 0 ? QStringLiteral("- ") : QStringLiteral("")) +
             tr(filterItem.first);
         item(i++)->setText(text);
     }
