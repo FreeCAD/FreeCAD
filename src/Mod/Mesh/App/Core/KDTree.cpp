@@ -20,16 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifdef _MSC_VER
 # pragma warning(disable : 4396)
 #endif
-#ifndef _PreComp_
-#endif
 
-#include "KDTree.h"
 #include <kdtree++/kdtree.hpp>
+#include "KDTree.h"
+
 
 using namespace MeshCore;
 

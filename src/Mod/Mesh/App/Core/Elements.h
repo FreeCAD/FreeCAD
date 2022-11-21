@@ -20,20 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESH_ELEMENTS_H
 #define MESH_ELEMENTS_H
 
-#include <functional>
-#include <vector>
 #include <climits>
 #include <cstring>
+#include <functional>
+#include <vector>
+
+#include <Base/BoundBox.h>
+#include <Base/Matrix.h>
 
 #include "Definitions.h"
 
-#include <Base/BoundBox.h>
-#include <Base/Vector3D.h>
-#include <Base/Matrix.h>
 
 // Cannot use namespace Base in constructors of MeshPoint
 #ifdef _MSC_VER

@@ -20,16 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESH_HELPERS_H
 #define MESH_HELPERS_H
 
 #include "Elements.h"
 
-#include <Base/Vector3D.h>
 
 namespace MeshCore {
-
 
 /**
  * Helper class for points.

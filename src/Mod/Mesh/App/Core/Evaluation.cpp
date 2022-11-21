@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -28,21 +27,17 @@
 # include <vector>
 #endif
 
-#include <Mod/Mesh/App/WildMagic4/Wm4Matrix3.h>
-#include <Mod/Mesh/App/WildMagic4/Wm4Vector3.h>
+#include <Base/Matrix.h>
+#include <Base/Sequencer.h>
 
 #include "Evaluation.h"
-#include "Iterator.h"
 #include "Algorithm.h"
 #include "Approximation.h"
-#include "MeshIO.h"
-#include "Helpers.h"
-#include "Grid.h"
-#include "TopoAlgorithm.h"
 #include "Functional.h"
-#include <Base/Matrix.h>
+#include "Grid.h"
+#include "Iterator.h"
+#include "TopoAlgorithm.h"
 
-#include <Base/Sequencer.h>
 
 using namespace MeshCore;
 

@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESH_IO_H
 #define MESH_IO_H
 
-#include "MeshKernel.h"
-#include <Base/Vector3D.h>
-#include <Base/Matrix.h>
 #include <App/Material.h>
+#include <Base/Matrix.h>
+
+#include "MeshKernel.h"
+
 
 namespace Base {
 class XMLReader;

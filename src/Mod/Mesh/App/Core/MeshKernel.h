@@ -20,19 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESH_KERNEL_H
 #define MESH_KERNEL_H
 
 #include <cassert>
 #include <iosfwd>
 
-#include "Elements.h"
+#include <Base/BoundBox.h>
+#include <Base/Matrix.h>
+
 #include "Helpers.h"
 
-#include <Base/BoundBox.h>
-#include <Base/Vector3D.h>
-#include <Base/Matrix.h>
 
 namespace Base{
   class Polygon2d;

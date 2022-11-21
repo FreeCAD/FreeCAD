@@ -20,44 +20,45 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#include "Definitions.h"
-#include "Iterator.h"
 
-#include "MeshKernel.h"
-#include "MeshIO.h"
-#include "Algorithm.h"
-#include "Builder.h"
-#include "Degeneration.h"
-#include "IO/Reader3MF.h"
-#include "IO/ReaderOBJ.h"
-#include "IO/Writer3MF.h"
-#include "IO/WriterOBJ.h"
+#ifndef _PreComp_
+# include <algorithm>
+# include <cmath>
+# include <iomanip>
+# include <sstream>
+# include <string_view>
+#endif
+
+#include <boost/algorithm/string.hpp>
+#include <boost/convert.hpp>
+#include <boost/convert/spirit.hpp>
+#include <boost/lexical_cast.hpp>
+#include <boost/regex.hpp>
 
 #include <Base/Builder3D.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
-#include <Base/Reader.h>
-#include <Base/Writer.h>
 #include <Base/FileInfo.h>
+#include <Base/Placement.h>
+#include <Base/Reader.h>
 #include <Base/Sequencer.h>
 #include <Base/Stream.h>
-#include <Base/Placement.h>
 #include <Base/Tools.h>
+#include <Base/Writer.h>
+#include "IO/Reader3MF.h"
+#include "IO/ReaderOBJ.h"
+#include "IO/Writer3MF.h"
+#include "IO/WriterOBJ.h"
 #include <zipios++/gzipoutputstream.h>
 #include <zipios++/zipoutputstream.h>
 
-#include <cmath>
-#include <sstream>
-#include <iomanip>
-#include <algorithm>
-#include <string_view>
-#include <boost/regex.hpp>
-#include <boost/algorithm/string.hpp>
-#include <boost/lexical_cast.hpp>
-#include <boost/convert.hpp>
-#include <boost/convert/spirit.hpp>
+#include "MeshIO.h"
+#include "Builder.h"
+#include "Definitions.h"
+#include "Degeneration.h"
+#include "Iterator.h"
+#include "MeshKernel.h"
 
 
 using namespace MeshCore;
