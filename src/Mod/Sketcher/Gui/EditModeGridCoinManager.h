@@ -24,16 +24,16 @@
 #ifndef SKETCHERGUI_EditModeGridCoinManager_H
 #define SKETCHERGUI_EditModeGridCoinManager_H
 
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoBaseColor.h>
-#include <Inventor/SbVec3f.h>
 
 #include <Base/Parameter.h>
 #include <App/Application.h>
-#include <Gui/View3DInventorViewer.h>
 
-#include "ViewProviderSketch.h"
 #include "EditModeCoinManagerParameters.h"
+
+class SoSeparator;
+class SoBaseColor;
+class SbVec3f;
+class View3DInventorViewer;
 
 namespace SketcherGui {
 
