@@ -88,6 +88,41 @@ public:
     int normalFilterCount; //All filters but selected and associated
     int selectedFilterIndex;
     int associatedFilterIndex;
+
+protected:
+    void changeEvent(QEvent* e) override;
+    virtual void languageChange();
+
+private:
+    using filterItemRepr = std::pair<const char*, const int>; // {filter item text, filter item level}
+    inline static const std::vector<filterItemRepr> filterItems = {
+        {QT_TR_NOOP("All"),0},
+        {QT_TR_NOOP("Geometric"),0},
+        {QT_TR_NOOP("Coincident"),1},
+        {QT_TR_NOOP("Point on Object"),1},
+        {QT_TR_NOOP("Vertical"),1},
+        {QT_TR_NOOP("Horizontal"),1},
+        {QT_TR_NOOP("Parallel"),1},
+        {QT_TR_NOOP("Perpendicular"),1},
+        {QT_TR_NOOP("Tangent"),1},
+        {QT_TR_NOOP("Equality"),1},
+        {QT_TR_NOOP("Symmetric"),1},
+        {QT_TR_NOOP("Block"),1},
+        {QT_TR_NOOP("Datums"),0},
+        {QT_TR_NOOP("Horizontal Distance"),1},
+        {QT_TR_NOOP("Vertical Distance"),1},
+        {QT_TR_NOOP("Distance"),1},
+        {QT_TR_NOOP("Radius"),1},
+        {QT_TR_NOOP("Weight"),1},
+        {QT_TR_NOOP("Diameter"),1},
+        {QT_TR_NOOP("Angle"),1},
+        {QT_TR_NOOP("Snell's Law"),1},
+        {QT_TR_NOOP("Named"),0},
+        {QT_TR_NOOP("Reference"),0},
+        {QT_TR_NOOP("Internal Alignment"),0},
+        {QT_TR_NOOP("Selected constraints"),0},
+        {QT_TR_NOOP("Associated constraints"),0},
+    };
 };
 
 class TaskSketcherConstraints : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
