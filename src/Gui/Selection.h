@@ -28,7 +28,6 @@
 #include <list>
 #include <string>
 #include <vector>
-#include <CXX/Objects.hxx>
 
 #include <App/DocumentObject.h>
 #include <App/DocumentObserver.h>
@@ -36,6 +35,8 @@
 
 #include "SelectionObject.h"
 
+
+using PyObject = struct _object;
 
 namespace App
 {
@@ -266,55 +267,6 @@ private:
     std::string filterObjName;
     ResolveMode resolve;
     bool blockedSelection;
-};
-
-/**
- * The SelectionObserverPython class implements a mechanism to register
- * a Python class instance implementing the required interface in order
- * to be notified on selection changes.
- *
- * @author Werner Mayer
- */
-class GuiExport SelectionObserverPython : public SelectionObserver
-{
-
-public:
-    /// Constructor
-    explicit SelectionObserverPython(const Py::Object& obj, ResolveMode resolve = ResolveMode::OldStyleElement);
-    ~SelectionObserverPython() override;
-
-    static void addObserver(const Py::Object& obj, ResolveMode resolve = ResolveMode::OldStyleElement);
-    static void removeObserver(const Py::Object& obj);
-
-private:
-    void onSelectionChanged(const SelectionChanges& msg) override;
-    void addSelection(const SelectionChanges&);
-    void removeSelection(const SelectionChanges&);
-    void setSelection(const SelectionChanges&);
-    void clearSelection(const SelectionChanges&);
-    void setPreselection(const SelectionChanges&);
-    void removePreselection(const SelectionChanges&);
-    void pickedListChanged();
-
-private:
-    Py::Object inst;
-
-#define FC_PY_SEL_OBSERVER \
-    FC_PY_ELEMENT(onSelectionChanged) \
-    FC_PY_ELEMENT(addSelection) \
-    FC_PY_ELEMENT(removeSelection) \
-    FC_PY_ELEMENT(setSelection) \
-    FC_PY_ELEMENT(clearSelection) \
-    FC_PY_ELEMENT(setPreselection) \
-    FC_PY_ELEMENT(removePreselection) \
-    FC_PY_ELEMENT(pickedListChanged)
-
-#undef FC_PY_ELEMENT
-#define FC_PY_ELEMENT(_name) Py::Object py_##_name;
-
-    FC_PY_SEL_OBSERVER
-
-    static std::vector<SelectionObserverPython*> _instances;
 };
 
 /** SelectionGate

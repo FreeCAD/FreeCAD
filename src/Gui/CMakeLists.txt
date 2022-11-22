@@ -1096,6 +1096,8 @@ SET(Selection_SRCS
     SelectionFilter.cpp
     SelectionFilter.y
     SelectionFilter.l
+    SelectionObserverPython.cpp
+    SelectionObserverPython.h
 )
 SOURCE_GROUP("Selection" FILES ${Selection_SRCS})
 
