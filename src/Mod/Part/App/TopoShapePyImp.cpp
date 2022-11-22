@@ -2900,7 +2900,8 @@ Py::List TopoShapePy::getSubShapes(void) const
     const TopoDS_Shape& shape = getTopoShapePtr()->getShape();
 
     if (!shape.IsNull()) {
-        for (TopoDS_Iterator it(shape); it.More(); it.Next()) ret.append(shape2pyshape(it.Value()));
+        for (TopoDS_Iterator it(shape); it.More(); it.Next())
+            ret.append(shape2pyshape(it.Value()));
     }
 
     return ret;
