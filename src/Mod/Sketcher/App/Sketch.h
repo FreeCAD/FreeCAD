@@ -33,6 +33,7 @@
 #include "planegcs/GCS.h"
 
 #include <Base/Persistence.h>
+#include <CXX/Objects.hxx>
 
 namespace Sketcher
 {
