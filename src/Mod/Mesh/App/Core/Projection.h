@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESH_PROJECTION_H
 #define MESH_PROJECTION_H
 
 #include <vector>
 #include <Base/BoundBox.h>
-#include <Base/Vector3D.h>
-#include <Mod/Mesh/App/Core/Elements.h>
+
+#include "Elements.h"
+
 
 using Base::Vector3f;
 

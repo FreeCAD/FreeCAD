@@ -20,31 +20,26 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-
 #ifndef _PreComp_
+# include <fstream>
 # include <ios>
 #endif
 
-#include <fstream>
+#include <Base/Builder3D.h>
+#include <Base/Sequencer.h>
+
 #include "SetOperations.h"
 #include "Algorithm.h"
-#include "Elements.h"
-#include "Iterator.h"
-#include "Grid.h"
-#include "MeshIO.h"
-#include "Visitor.h"
 #include "Builder.h"
-#include "Grid.h"
-#include "Evaluation.h"
 #include "Definitions.h"
+#include "Elements.h"
+#include "Grid.h"
+#include "Iterator.h"
 #include "Triangulation.h"
+#include "Visitor.h"
 
-#include <Base/Sequencer.h>
-#include <Base/Builder3D.h>
-#include <Base/Tools2D.h>
 
 using namespace Base;
 using namespace MeshCore;

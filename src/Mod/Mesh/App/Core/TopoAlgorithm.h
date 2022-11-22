@@ -20,22 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESH_TOPOALGORITHM_H
 #define MESH_TOPOALGORITHM_H
 
 #include <map>
 #include <vector>
 
-#include "Definitions.h"
-#include "Iterator.h"
-#include "MeshKernel.h"
-#include "Elements.h"
-#include "Visitor.h"
 #include "Algorithm.h"
+#include "Elements.h"
+#include "MeshKernel.h"
 
-#include <Base/Vector3D.h>
-#include <Base/Sequencer.h>
 
 namespace MeshCore {
 class AbstractPolygonTriangulator;

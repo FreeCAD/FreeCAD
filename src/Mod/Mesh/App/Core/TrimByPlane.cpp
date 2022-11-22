@@ -21,11 +21,14 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#include <algorithm>
+#ifndef _PreComp_
+# include <algorithm>
+#endif
 
 #include "TrimByPlane.h"
 #include "Grid.h"
 #include "Iterator.h"
+
 
 using namespace MeshCore;
 

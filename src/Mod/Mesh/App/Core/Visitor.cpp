@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#include "MeshKernel.h"
+#include "MeshKernel.h" // must be before Visitor.h
 #include "Visitor.h"
 #include "Algorithm.h"
 #include "Approximation.h"
+
 
 using namespace MeshCore;
 

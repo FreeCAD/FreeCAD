@@ -23,11 +23,13 @@
 #ifndef MESHCORE_SEGMENTATION_H
 #define MESHCORE_SEGMENTATION_H
 
-#include "MeshKernel.h"
-#include "Curvature.h"
-#include "Visitor.h"
-#include <vector>
 #include <memory>
+#include <vector>
+
+#include "Curvature.h"
+#include "MeshKernel.h"
+#include "Visitor.h"
+
 
 namespace MeshCore {
 

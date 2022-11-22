@@ -20,13 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef VISITOR_H
 #define VISITOR_H
 
 #include <vector>
-#include <Base/Vector3D.h>
 #include <Mod/Mesh/MeshGlobal.h>
+
 
 namespace MeshCore {
 

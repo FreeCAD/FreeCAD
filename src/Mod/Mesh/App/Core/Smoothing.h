@@ -20,12 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESH_SMOOTHING_H
 #define MESH_SMOOTHING_H
 
 #include <vector>
+
 #include "Definitions.h"
+
 
 namespace MeshCore
 {

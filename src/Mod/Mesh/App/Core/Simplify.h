@@ -11,7 +11,7 @@
 // * Remove macros loop,i,j,k
 
 #include <vector>
-#include <Base/Vector3D.h>
+
 
 #ifndef _USE_MATH_DEFINES
 #define _USE_MATH_DEFINES

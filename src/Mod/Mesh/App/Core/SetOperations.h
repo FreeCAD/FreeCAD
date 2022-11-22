@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESH_SETOPERATIONS_H
 #define MESH_SETOPERATIONS_H
 
@@ -28,12 +27,12 @@
 #include <map>
 #include <set>
 
-#include "MeshKernel.h"
-#include "Elements.h"
+#include <Base/Builder3D.h>
+
 #include "Iterator.h"
+#include "MeshKernel.h"
 #include "Visitor.h"
 
-#include <Base/Builder3D.h>
 
 // forward declarations
 
