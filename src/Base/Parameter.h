@@ -51,6 +51,7 @@ using PyObject = struct _object;
 
 #include <map>
 #include <vector>
+#include <boost_signals2.hpp>
 #include <xercesc/util/XercesDefs.hpp>
 
 #include "Handle.h"
@@ -105,6 +106,10 @@ public:
     void importFrom(const char* FileName);
     /// insert from a file to this group, overwrite only the similar
     void insert(const char* FileName);
+    /// revert to default value by deleting any parameter that has the same value in the given file
+    void revert(const char* FileName);
+    /// revert to default value by deleting any parameter that has the same value in the given group
+    void revert(Base::Reference<ParameterGrp>);
     //@}
 
     /** @name methods for group handling */
@@ -124,7 +129,37 @@ public:
     /// rename a sub group from this group
     bool RenameGrp(const char* OldName, const char* NewName);
     /// clears everything in this group (all types)
-    void Clear();
+    /// @param notify: whether to notify on deleted parameters using the Observer interface.
+    void Clear(bool notify = false);
+    //@}
+
+    /** @name methods for generic attribute handling */
+    //@{
+    enum class ParamType {
+        FCInvalid = 0,
+        FCText = 1,
+        FCBool = 2,
+        FCInt = 3,
+        FCUInt = 4,
+        FCFloat = 5,
+        FCGroup = 6,
+    };
+    static const char *TypeName(ParamType type);
+    static ParamType TypeValue(const char *);
+    void SetAttribute(ParamType Type, const char *Name, const char *Value);
+    void RemoveAttribute(ParamType Type, const char *Name);
+    const char *GetAttribute(ParamType Type,
+                             const char *Name,
+                             std::string &Value,
+                             const char *Default) const;
+    std::vector<std::pair<std::string, std::string>>
+        GetAttributeMap(ParamType Type, const char * sFilter = NULL) const;
+    /** Return the type and name of all parameters with optional filter
+     *  @param sFilter only strings which name includes sFilter are put in the vector
+     *  @return std::vector of pair(type, name)
+     */
+    std::vector<std::pair<ParamType,std::string>>
+        GetParameterNames(const char * sFilter = NULL) const;
     //@}
 
     /** @name methods for bool handling */
@@ -201,6 +236,8 @@ public:
     //@{
     /// set a string value
     void  SetASCII(const char* Name, const char *sValue);
+    /// set a string value
+    void  SetASCII(const char* Name, const std::string &sValue) { SetASCII(Name, sValue.c_str()); }
     /// read a string values
     std::string GetASCII(const char* Name, const char * pPreset=nullptr) const;
     /// remove a string value from this group
@@ -222,18 +259,32 @@ public:
         return _cName.c_str();
     }
 
+    /// return the full path of this group
+    std::string GetPath() const;
+    void GetPath(std::string &) const;
+
     /** Notifies all observers for all entries except of sub-groups.
      */
     void NotifyAll();
 
+    ParameterGrp *Parent() const {return _Parent;}
+    ParameterManager *Manager() const {return _Manager;}
+
 protected:
     /// constructor is protected (handle concept)
-    ParameterGrp(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *GroupNode=nullptr,const char* sName=nullptr);
+    ParameterGrp(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *GroupNode=nullptr,
+                 const char* sName=nullptr,
+                 ParameterGrp *Parent=nullptr);
     /// destructor is protected (handle concept)
     ~ParameterGrp() override;
     /// helper function for GetGroup
     Base::Reference<ParameterGrp> _GetGroup(const char* Name);
     bool ShouldRemove() const;
+
+    void _Reset();
+
+    void _SetAttribute(ParamType Type, const char *Name, const char *Value);
+    void _Notify(ParamType Type, const char *Name, const char *Value);
 
     XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *FindNextElement(XERCES_CPP_NAMESPACE_QUALIFIER DOMNode *Prev, const char* Type) const;
 
@@ -250,7 +301,9 @@ protected:
      *  element of Type and with the attribute Name=Name. On success it returns
      *  the pointer to that element, otherwise it creates the element and returns the pointer.
      */
-    XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *FindOrCreateElement(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *Start, const char* Type, const char* Name) const;
+    XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *FindOrCreateElement(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *Start, const char* Type, const char* Name);
+
+    XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *CreateElement(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *Start, const char* Type, const char* Name);
 
     /** Find an attribute specified by Name
      */
@@ -262,7 +315,15 @@ protected:
     std::string _cName;
     /// map of already exported groups
     std::map <std::string ,Base::Reference<ParameterGrp> > _GroupMap;
-
+    ParameterGrp * _Parent = nullptr;
+    ParameterManager *_Manager = nullptr;
+    /// Means this group xml element has not been added to its parent yet.
+    bool _Detached = false;
+    /** Indicate this group is currently being cleared
+     *
+     * This is used to prevent anynew value/sub-group to be added in observer
+     */
+    bool _Clearing = false;
 };
 
 /** The parameter serializer class
@@ -281,6 +342,7 @@ public:
     virtual void SaveDocument(const ParameterManager&);
     virtual int LoadDocument(ParameterManager&);
     virtual bool LoadOrCreateDocument(ParameterManager&);
+    const std::string &GetFileName() const {return filename;}
 
 protected:
     std::string filename;
@@ -299,6 +361,33 @@ public:
     static void Init();
     static void Terminate();
 
+    /** Signal on parameter changes
+     *
+     * The signal is triggered on adding, removing, renaming or modifying on
+     * all individual parameters and group. The signature of the signal is 
+     * \code
+     *      void (ParameterGrp *param, ParamType type, const char *name, const char *value)
+     * \endcode
+     * where 'param' is the parameter group causing the change, 'type' is the
+     * type of the parameter, 'name' is the name of the parameter, and 'value'
+     * is the current value.
+     *
+     * The possible values of 'type' are, 'FCBool', 'FCInt', 'FCUint',
+     * 'FCFloat', 'FCText', and 'FCParamGroup'. The notification is triggered
+     * when value is changed, in which case 'value' contains the new value in
+     * text form, or, when the parameter is removed, in which case 'value' is
+     * empty.
+     *
+     * For 'FCParamGroup' type, the observer will be notified in the following events.
+     *  - Group creation: both 'name' and 'value' contain the name of the new group
+     *  - Group removal: both 'name' and 'value' are empty
+     *  - Group rename: 'name' is the new name, and 'value' is the old name
+     */
+    boost::signals2::signal<void (ParameterGrp* /*param*/,
+                                  ParamType     /*type*/,
+                                  const char *  /*name*/,
+                                  const char *  /*value*/)> signalParamChanged;
+
     int   LoadDocument(const char* sFileName);
     int   LoadDocument(const XERCES_CPP_NAMESPACE_QUALIFIER InputSource&);
     bool  LoadOrCreateDocument(const char* sFileName);
@@ -313,6 +402,8 @@ public:
     void  SetSerializer(ParameterSerializer*);
     /// Returns true if a serializer is set, otherwise false is returned.
     bool  HasSerializer() const;
+    /// Returns the filename of the serialize.
+    const std::string & GetSerializeFileName() const;
     /// Loads an XML document by calling the serializer's load method.
     int   LoadDocument();
     /// Loads or creates an XML document by calling the serializer's load method.

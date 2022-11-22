@@ -92,7 +92,7 @@ DlgParameterImp::DlgParameterImp( QWidget* parent,  Qt::WindowFlags fl )
 #endif
 
     ParameterManager* sys = App::GetApplication().GetParameterSet("System parameter");
-    const std::map<std::string,ParameterManager *>& rcList = App::GetApplication().GetParameterSetList();
+    const auto& rcList = App::GetApplication().GetParameterSetList();
     for (const auto & it : rcList) {
         if (it.second != sys) // for now ignore system parameters because they are nowhere used
             ui->parameterSet->addItem(tr(it.first.c_str()), QVariant(QByteArray(it.first.c_str())));

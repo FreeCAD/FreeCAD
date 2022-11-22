@@ -332,7 +332,7 @@ public:
     Base::Reference<ParameterGrp>                     GetParameterGroupByPath(const char* sName);
 
     ParameterManager *                                GetParameterSet(const char* sName) const;
-    const std::map<std::string, ParameterManager *> &  GetParameterSetList() const;
+    const std::map<std::string,Base::Reference<ParameterManager>> &  GetParameterSetList(void) const;
     void AddParameterSet(const char* sName);
     void RemoveParameterSet(const char* sName);
     //@}
@@ -503,8 +503,8 @@ private:
 
     /** @name member for parameter */
     //@{
-    static ParameterManager *_pcSysParamMngr;
-    static ParameterManager *_pcUserParamMngr;
+    static Base::Reference<ParameterManager> _pcSysParamMngr;
+    static Base::Reference<ParameterManager> _pcUserParamMngr;
     //@}
 
     //---------------------------------------------------------------------
@@ -605,7 +605,7 @@ private:
     std::vector<FileTypeItem> _mExportTypes;
     std::map<std::string,Document*> DocMap;
     mutable std::map<std::string,Document*> DocFileMap;
-    std::map<std::string,ParameterManager *> mpcPramManager;
+    std::map<std::string,Base::Reference<ParameterManager>> mpcPramManager;
     std::map<std::string,std::string> &_mConfig;
     App::Document* _pActiveDoc;
 
