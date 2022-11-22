@@ -29,28 +29,6 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout1">
      <item>
-      <widget class="QCheckBox" name="filterBox">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="toolTip">
-        <string>Check to toggle filters</string>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">padding-right: 0px; margin-right: 0px</string>
-       </property>
-       <property name="text">
-        <string></string>
-       </property>
-       <property name="checked">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-	 <item>
       <widget class="QToolButton" name="filterButton">
        <property name="sizePolicy">
         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
@@ -63,9 +41,6 @@
        </property>
        <property name="styleSheet">
         <string notr="true">padding-left: 0px; margin-left: 0px</string>
-       </property>
-       <property name="enabled">
-        <bool>false</bool>
        </property>
        <property name="text">
         <string>Filters</string>

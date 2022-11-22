@@ -592,10 +592,6 @@ void TaskSketcherElements::connectSignals()
         this, &TaskSketcherElements::onListMultiFilterItemChanged
     );
     QObject::connect(
-        ui->filterBox, &QCheckBox::stateChanged,
-        this, &TaskSketcherElements::onFilterBoxStateChanged
-    );
-    QObject::connect(
         ui->settingsButton, &QToolButton::clicked,
         ui->settingsButton, &QToolButton::showMenu
     );
@@ -620,13 +616,6 @@ void TaskSketcherElements::createFilterButtonActions()
     filterList = new ElementFilterList(this);
     action->setDefaultWidget(filterList);
     qAsConst(ui->filterButton)->addAction(action);
-}
-
-void TaskSketcherElements::onFilterBoxStateChanged(int val)
-{
-    Q_UNUSED(val);
-    ui->filterButton->setEnabled(ui->filterBox->checkState() == Qt::Checked);
-    slotElementsChanged();
 }
 
 enum class GeoFilterType { NormalGeos,
@@ -683,8 +672,6 @@ void TaskSketcherElements::onListMultiFilterItemChanged(QListWidgetItem* item)
 void TaskSketcherElements::setItemVisibility(QListWidgetItem* it)
 {
     ElementItem* item = static_cast<ElementItem*>(it);
-
-    if (ui->filterBox->checkState() == Qt::Unchecked) { item->setHidden(false); return; }
 
     using GeometryState = ElementItem::GeometryState;
 

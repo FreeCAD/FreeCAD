@@ -235,7 +235,6 @@ public Q_SLOTS:
     void onListWidgetElementsItemEntered(QListWidgetItem *item);
     void onListWidgetElementsMouseMoveOnItem(QListWidgetItem* item);
     void onSettingsExtendedInformationChanged();
-    void onFilterBoxStateChanged(int val);
     void onListMultiFilterItemChanged(QListWidgetItem* item);
 
 protected:
