@@ -1043,6 +1043,19 @@ SET(Widget_SRCS
 )
 SOURCE_GROUP("Widget" FILES ${Widget_SRCS})
 
+SET(Params_CPP_SRCS
+    TreeParams.cpp
+)
+
+SET(Params_HPP_SRCS
+    TreeParams.h
+)
+
+SET(Params_SRCS
+    ${Params_CPP_SRCS}
+    ${Params_HPP_SRCS}
+)
+SOURCE_GROUP("Params" FILES ${Params_SRCS})
 # The view sources
 SET(View_CPP_SRCS
     MDIView.cpp
@@ -1194,6 +1207,7 @@ SET(FreeCADGui_SRCS
     ${View3D_SRCS}
     ${Viewprovider_SRCS}
     ${Widget_SRCS}
+    ${Params_SRCS}
     ${View_SRCS}
     ${Workbench_SRCS}
     ${Selection_SRCS}
