@@ -21,7 +21,6 @@
 #*****************************************************************************
 
 import FreeCAD, Draft, ArchCommands
-
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
