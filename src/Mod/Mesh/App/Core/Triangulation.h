@@ -20,12 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef MESH_TRIANGULATION_H
 #define MESH_TRIANGULATION_H
 
 #include "Elements.h"
-#include <Base/Vector3D.h>
+
 
 namespace MeshCore
 {

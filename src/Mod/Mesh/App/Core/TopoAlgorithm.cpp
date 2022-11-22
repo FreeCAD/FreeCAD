@@ -20,26 +20,23 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <algorithm>
-# include <utility>
 # include <queue>
+# include <utility>
 #endif
 
+#include <Base/Console.h>
 #include <Mod/Mesh/App/WildMagic4/Wm4MeshCurvature.h>
-#include <Mod/Mesh/App/WildMagic4/Wm4Vector3.h>
 
 #include "TopoAlgorithm.h"
+#include "Evaluation.h"
 #include "Iterator.h"
 #include "MeshKernel.h"
-#include "Algorithm.h"
-#include "Evaluation.h"
 #include "Triangulation.h"
-#include "Definitions.h"
-#include <Base/Console.h>
+
 
 using namespace MeshCore;
 

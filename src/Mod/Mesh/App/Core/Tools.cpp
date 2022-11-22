@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -28,7 +27,6 @@
 #endif
 
 #include "Tools.h"
-#include "Iterator.h"
 
 
 using namespace MeshCore;

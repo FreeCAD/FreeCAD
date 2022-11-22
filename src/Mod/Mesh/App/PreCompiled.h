@@ -43,6 +43,7 @@
 #include <cmath>
 #include <cfloat>
 #include <fcntl.h>
+#include <fstream>
 #include <ios>
 
 #ifdef FC_USE_GTS
