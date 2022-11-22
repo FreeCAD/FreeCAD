@@ -20,7 +20,8 @@
 #*                                                                           *
 #*****************************************************************************
 
-import FreeCAD,ArchCommands
+import FreeCAD, Draft, ArchCommands
+
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
@@ -61,12 +62,11 @@ def cutComponentwithPlane(archObject, cutPlane, sideFace):
     if cutVolume:
         obj = FreeCAD.ActiveDocument.addObject("Part::Feature","CutVolume")
         obj.Shape = cutVolume
-        obj.ViewObject.ShapeColor = (1.00,0.00,0.00)
-        obj.ViewObject.Transparency = 75
         if "Additions" in archObject.Object.PropertiesList:
-            ArchCommands.removeComponents(obj,archObject.Object)
+            ArchCommands.removeComponents(obj, archObject.Object) # Also changes the obj colors.
             return None
         else:
+            Draft.format_object(obj, archObject.Object)
             cutObj = FreeCAD.ActiveDocument.addObject("Part::Cut","CutPlane")
             cutObj.Base = archObject.Object
             cutObj.Tool = obj
