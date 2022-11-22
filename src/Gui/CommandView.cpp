@@ -74,6 +74,7 @@
 #include "TextureMapping.h"
 #include "Tools.h"
 #include "Tree.h"
+#include "TreeParams.h"
 #include "Utilities.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
@@ -3376,7 +3377,7 @@ bool StdCmdSelForward::isActive()
 #define TREEVIEW_DOC_CMD_DEF(_name,_v) \
 DEF_STD_CMD_AC(StdTree##_name) \
 void StdTree##_name::activated(int){ \
-    TreeParams::Instance()->setDocumentMode(_v);\
+    TreeParams::setDocumentMode(_v);\
     if(_pcAction) _pcAction->setChecked(true,true);\
 }\
 Action * StdTree##_name::createAction(void) {\
@@ -3388,7 +3389,7 @@ Action * StdTree##_name::createAction(void) {\
     return pcAction;\
 }\
 bool StdTree##_name::isActive() {\
-    bool checked = TreeParams::Instance()->DocumentMode()==_v;\
+    bool checked = TreeParams::getDocumentMode()==_v;\
     if(_pcAction && _pcAction->isChecked()!=checked)\
         _pcAction->setChecked(checked,true);\
     return true;\
@@ -3448,8 +3449,8 @@ StdTreeCollapseDocument::StdTreeCollapseDocument()
 #define TREEVIEW_CMD_DEF(_name) \
 DEF_STD_CMD_AC(StdTree##_name) \
 void StdTree##_name::activated(int){ \
-    auto checked = !TreeParams::Instance()->_name();\
-    TreeParams::Instance()->set##_name(checked);\
+    auto checked = !TreeParams::get##_name();\
+    TreeParams::set##_name(checked);\
     if(_pcAction) _pcAction->setChecked(checked,true);\
 }\
 Action * StdTree##_name::createAction(void) {\
@@ -3461,7 +3462,7 @@ Action * StdTree##_name::createAction(void) {\
     return pcAction;\
 }\
 bool StdTree##_name::isActive() {\
-    bool checked = TreeParams::Instance()->_name();\
+    bool checked = TreeParams::get##_name();\
     if(_pcAction && _pcAction->isChecked()!=checked)\
         _pcAction->setChecked(checked,true);\
     return true;\

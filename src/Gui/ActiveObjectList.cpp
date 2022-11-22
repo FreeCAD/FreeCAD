@@ -30,7 +30,7 @@
 #include <Gui/ViewProviderDocumentObject.h>
 
 #include "ActiveObjectList.h"
-#include "Tree.h"
+#include "TreeParams.h"
 
 
 FC_LOG_LEVEL_INIT("MDIView", true, true)
@@ -66,7 +66,7 @@ void ActiveObjectList::setHighlight(const ObjectInfo &info, HighlightMode mode, 
     if (!vp)
         return;
 
-    if (TreeParams::Instance()->TreeActiveAutoExpand()) {
+    if (TreeParams::getTreeActiveAutoExpand()) {
         vp->getDocument()->signalExpandObject(*vp, enable ? TreeItemMode::ExpandPath : TreeItemMode::CollapseItem,
                                               info.obj, info.subname.c_str());
     }

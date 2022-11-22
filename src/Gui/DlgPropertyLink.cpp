@@ -44,6 +44,7 @@
 #include "PropertyView.h"
 #include "Selection.h"
 #include "Tree.h"
+#include "TreeParams.h"
 #include "View3DInventor.h"
 #include "ViewProviderDocumentObject.h"
 
@@ -449,7 +450,7 @@ void DlgPropertyLink::showEvent(QShowEvent *ev) {
 }
 
 void DlgPropertyLink::onItemEntered(QTreeWidgetItem *) {
-    int timeout = Gui::TreeParams::Instance()->PreSelectionDelay()/2;
+    int timeout = Gui::TreeParams::getPreSelectionDelay()/2;
     if(timeout < 0)
         timeout = 1;
     timer->start(timeout);
@@ -509,7 +510,7 @@ void DlgPropertyLink::onItemSelectionChanged()
 
     bool focus = false;
     // Do auto view switch if tree view does not do it
-    if(!TreeParams::Instance()->SyncView()) {
+    if(!TreeParams::getSyncView()) {
         focus = ui->treeWidget->hasFocus();
         auto doc = Gui::Application::Instance->getDocument(sobjs.front().getDocumentName().c_str());
         if(doc) {
