@@ -154,8 +154,8 @@ namespace sp = std::placeholders;
 // Application
 //==========================================================================
 
-ParameterManager *App::Application::_pcSysParamMngr;
-ParameterManager *App::Application::_pcUserParamMngr;
+Base::Reference<ParameterManager> App::Application::_pcSysParamMngr;
+Base::Reference<ParameterManager> App::Application::_pcUserParamMngr;
 Base::ConsoleObserverStd  *Application::_pConsoleObserverStd = nullptr;
 Base::ConsoleObserverFile *Application::_pConsoleObserverFile = nullptr;
 
@@ -1215,21 +1215,22 @@ ParameterManager & Application::GetUserParameter()
 
 ParameterManager * Application::GetParameterSet(const char* sName) const
 {
-    std::map<std::string,ParameterManager *>::const_iterator it = mpcPramManager.find(sName);
+    auto it = mpcPramManager.find(sName);
     if ( it != mpcPramManager.end() )
         return it->second;
     else
         return nullptr;
 }
 
-const std::map<std::string,ParameterManager *> & Application::GetParameterSetList() const
+const std::map<std::string,Base::Reference<ParameterManager>> &
+Application::GetParameterSetList(void) const
 {
     return mpcPramManager;
 }
 
 void Application::AddParameterSet(const char* sName)
 {
-    std::map<std::string,ParameterManager *>::const_iterator it = mpcPramManager.find(sName);
+    auto it = mpcPramManager.find(sName);
     if ( it != mpcPramManager.end() )
         return;
     mpcPramManager[sName] = new ParameterManager();
@@ -1237,11 +1238,10 @@ void Application::AddParameterSet(const char* sName)
 
 void Application::RemoveParameterSet(const char* sName)
 {
-    std::map<std::string,ParameterManager *>::iterator it = mpcPramManager.find(sName);
+    auto it = mpcPramManager.find(sName);
     // Must not delete user or system parameter
     if ( it == mpcPramManager.end() || it->second == _pcUserParamMngr || it->second == _pcSysParamMngr )
         return;
-    delete it->second;
     mpcPramManager.erase(it);
 }
 
@@ -1260,7 +1260,7 @@ Base::Reference<ParameterGrp>  Application::GetParameterGroupByPath(const char* 
     cName.erase(0,pos+1);
 
     // test if name is valid
-    std::map<std::string,ParameterManager *>::iterator It = mpcPramManager.find(cTemp.c_str());
+    auto It = mpcPramManager.find(cTemp.c_str());
     if (It == mpcPramManager.end())
         throw Base::ValueError("Application::GetParameterGroupByPath() unknown parameter set name specified");
 
@@ -1651,8 +1651,8 @@ void Application::destruct()
     Base::Console().Log("Saving user parameter...done\n");
 
     // now save all other parameter files
-    std::map<std::string,ParameterManager *>& paramMgr = _pcSingleton->mpcPramManager;
-    for (std::map<std::string,ParameterManager *>::iterator it = paramMgr.begin(); it != paramMgr.end(); ++it) {
+    auto& paramMgr = _pcSingleton->mpcPramManager;
+    for (auto it = paramMgr.begin(); it != paramMgr.end(); ++it) {
         if ((it->second != _pcSysParamMngr) && (it->second != _pcUserParamMngr)) {
             if (it->second->HasSerializer()) {
                 Base::Console().Log("Saving %s...\n", it->first.c_str());
@@ -1660,9 +1660,6 @@ void Application::destruct()
                 Base::Console().Log("Saving %s...done\n", it->first.c_str());
             }
         }
-
-        // clean up
-        delete it->second;
     }
 
     paramMgr.clear();

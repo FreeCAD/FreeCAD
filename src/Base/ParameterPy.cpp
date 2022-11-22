@@ -52,10 +52,15 @@ public:
     {
         inst = obj;
     }
+    ParameterGrpObserver(const Py::Object& obj, const Py::Object &callable, ParameterGrp *target)
+        : callable(callable), _target(target), inst(obj)
+    {
+    }
     ~ParameterGrpObserver() override
     {
         Base::PyGILStateLocker lock;
         inst = Py::None();
+        callable = Py::None();
     }
     void OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason) override
     {
@@ -81,6 +86,11 @@ public:
         return this->inst.is(obj);
     }
 
+public:
+    Py::Object callable;
+    boost::signals2::scoped_connection conn;
+    ParameterGrp *_target = nullptr; // no reference counted, do not access
+
 private:
     Py::Object inst;
 };
@@ -103,10 +113,14 @@ public:
     Py::Object remGroup(const Py::Tuple&);
     Py::Object hasGroup(const Py::Tuple&);
 
+    Py::Object getManager(const Py::Tuple&);
+    Py::Object getParent(const Py::Tuple&);
+
     Py::Object isEmpty(const Py::Tuple&);
     Py::Object clear(const Py::Tuple&);
 
     Py::Object attach(const Py::Tuple&);
+    Py::Object attachManager(const Py::Tuple& args);
     Py::Object detach(const Py::Tuple&);
     Py::Object notify(const Py::Tuple&);
     Py::Object notifyAll(const Py::Tuple&);
@@ -165,10 +179,31 @@ void ParameterGrpPy::init_type()
     add_varargs_method("RemGroup",&ParameterGrpPy::remGroup,"RemGroup(str)");
     add_varargs_method("HasGroup",&ParameterGrpPy::hasGroup,"HasGroup(str)");
 
+    add_varargs_method("Manager",&ParameterGrpPy::getManager,"Manager()");
+    add_varargs_method("Parent",&ParameterGrpPy::getParent,"Parent()");
+
     add_varargs_method("IsEmpty",&ParameterGrpPy::isEmpty,"IsEmpty()");
     add_varargs_method("Clear",&ParameterGrpPy::clear,"Clear()");
 
     add_varargs_method("Attach",&ParameterGrpPy::attach,"Attach()");
+    add_varargs_method("AttachManager",&ParameterGrpPy::attachManager,
+        "AttachManager(observer) -- attach parameter manager for notification\n\n"
+        "This method attaches a user defined observer to the manager (i.e. the root)\n"
+        "of the current parameter group to receive notification of all its parameters\n"
+        "and those from its sub-groups\n\n"
+        "The method expects the observer to have a callable attribute as shown below\n"
+        "       slotParamChanged(param, tp, name, value)\n"
+        "where 'param' is the parameter group causing the change, 'tp' is the type of\n"
+        "the parameter, 'name' is the name of the parameter, and 'value' is the current\n"
+        "value.\n\n"
+        "The possible value of type are, 'FCBool', 'FCInt', 'FCUint', 'FCFloat', 'FCText',\n"
+        "and 'FCParamGroup'. The notification is triggered when value is changed, in which\n"
+        "case 'value' contains the new value in text form, or, when the parameter is removed,\n"
+        "in which case 'value' is empty.\n\n"
+        "For 'FCParamGroup' type, the observer will be notified in the following events.\n"
+        "* Group creation: both 'name' and 'value' contain the name of the new group\n"
+        "* Group removal: both 'name' and 'value' are empty\n"
+        "* Group rename: 'name' is the new name, and 'value' is the old name");
     add_varargs_method("Detach",&ParameterGrpPy::detach,"Detach()");
     add_varargs_method("Notify",&ParameterGrpPy::notify,"Notify()");
     add_varargs_method("NotifyAll",&ParameterGrpPy::notifyAll,"NotifyAll()");
@@ -214,7 +249,8 @@ ParameterGrpPy::~ParameterGrpPy()
 {
     for (ParameterGrpObserverList::iterator it = _observers.begin(); it != _observers.end(); ++it) {
         ParameterGrpObserver* obs = *it;
-        _cParamGrp->Detach(obs);
+        if (!obs->_target)
+            _cParamGrp->Detach(obs);
         delete obs;
     }
 }
@@ -279,6 +315,40 @@ Py::Object ParameterGrpPy::getGroup(const Py::Tuple& args)
         e.setPyException();
         throw Py::Exception();
     }
+}
+
+Py::Object ParameterGrpPy::getManager(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    // get the Handle of the wanted group
+    Base::Reference<ParameterGrp> handle = _cParamGrp->Manager();
+    if (handle.isValid()) {
+        // create a python wrapper class
+        ParameterGrpPy *pcParamGrp = new ParameterGrpPy(handle);
+        // increment the ref count
+        return Py::asObject(pcParamGrp);
+    }
+    else 
+        return Py::Object();
+}
+
+Py::Object ParameterGrpPy::getParent(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    // get the Handle of the wanted group
+    Base::Reference<ParameterGrp> handle = _cParamGrp->Parent();
+    if (handle.isValid()) {
+        // create a python wrapper class
+        ParameterGrpPy *pcParamGrp = new ParameterGrpPy(handle);
+        // increment the ref count
+        return Py::asObject(pcParamGrp);
+    }
+    else 
+        return Py::Object();
 }
 
 Py::Object ParameterGrpPy::getGroupName(const Py::Tuple& args)
@@ -590,6 +660,56 @@ Py::Object ParameterGrpPy::attach(const Py::Tuple& args)
     _cParamGrp->Attach(obs);
     _observers.push_back(obs);
 
+    return Py::None();
+}
+
+Py::Object ParameterGrpPy::attachManager(const Py::Tuple& args)
+{
+    PyObject* obj;
+    if (!PyArg_ParseTuple(args.ptr(), "O", &obj))
+        throw Py::Exception();
+
+    if (!_cParamGrp->Manager())
+        throw Py::RuntimeError("Parameter has no manager");
+
+    Py::Object o(obj);
+    if (!o.hasAttr(std::string("slotParamChanged")))
+        throw Py::TypeError("Object has no slotParamChanged attribute");
+
+    Py::Object attr(o.getAttr("slotParamChanged"));
+    if (!attr.isCallable())
+        throw Py::TypeError("Object has no slotParamChanged callable attribute");
+
+    for (ParameterGrpObserverList::iterator it = _observers.begin(); it != _observers.end(); ++it) {
+        if ((*it)->isEqual(o)) {
+            throw Py::RuntimeError("Object is already attached.");
+        }
+    }
+
+    ParameterGrpObserver* obs = new ParameterGrpObserver(o, attr, _cParamGrp);
+    obs->conn = _cParamGrp->Manager()->signalParamChanged.connect(
+        [obs](ParameterGrp *Param, ParameterGrp::ParamType Type, const char *Name, const char *Value) {
+            if (!Param) return;
+            for (auto p = Param; p; p = p->Parent()) {
+                if (p == obs->_target) {
+                    Base::PyGILStateLocker lock;
+                    Py::TupleN args(
+                        Py::asObject(new ParameterGrpPy(Param)),
+                        Py::String(ParameterGrp::TypeName(Type)),
+                        Py::String(Name ? Name : ""),
+                        Py::String(Value ? Value : ""));
+                    try {
+                        Py::Callable(obs->callable).apply(args);
+                    } catch (Py::Exception &) {
+                        Base::PyException e;
+                        e.ReportException();
+                    }
+                    break;
+                }
+            }
+        });
+
+    _observers.push_back(obs);
     return Py::None();
 }
 
