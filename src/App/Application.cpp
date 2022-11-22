@@ -71,8 +71,8 @@
 #include <Base/Persistence.h>
 #include <Base/PlacementPy.h>
 #include <Base/PrecisionPy.h>
+#include <Base/ProgressIndicatorPy.h>
 #include <Base/RotationPy.h>
-#include <Base/Sequencer.h>
 #include <Base/Tools.h>
 #include <Base/Translate.h>
 #include <Base/Type.h>

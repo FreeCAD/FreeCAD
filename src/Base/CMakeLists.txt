@@ -247,6 +247,7 @@ SET(FreeCADBase_CPP_SRCS
     Placement.cpp
     PlacementPyImp.cpp
     PrecisionPyImp.cpp
+    ProgressIndicatorPy.cpp
     PyExport.cpp
     PyObjectBase.cpp
     QtTools.cpp
@@ -313,6 +314,7 @@ SET(FreeCADBase_HPP_SRCS
     Persistence.h
     Placement.h
     Precision.h
+    ProgressIndicatorPy.h
     PyExport.h
     PyObjectBase.h
     QtTools.h
