@@ -135,7 +135,7 @@ int TopoShapePy::PyInit(PyObject* args, PyObject*)
     if (pcObj) {
         TopoShape shape;
         PY_TRY {
-            if(PyObject_TypeCheck(pcObj,&TopoShapePy::Type)) {
+            if (PyObject_TypeCheck(pcObj,&TopoShapePy::Type)) {
                 shape = *static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr();
             }
             else {
@@ -1156,9 +1156,9 @@ PyObject*  TopoShapePy::generalFuse(PyObject *args)
         TopoDS_Shape gfaResultShape = this->getTopoShapePtr()->generalFuse(shapeVec,tolerance,&map);
         Py::Object shapePy = shape2pyshape(gfaResultShape);
         Py::List mapPy;
-        for(TopTools_ListOfShape &shapes: map){
+        for (TopTools_ListOfShape& shapes : map) {
             Py::List shapesPy;
-            for(TopTools_ListIteratorOfListOfShape it(shapes); it.More(); it.Next()){
+            for (TopTools_ListIteratorOfListOfShape it(shapes); it.More(); it.Next()) {
                 shapesPy.append(shape2pyshape(it.Value()));
             }
             mapPy.append(shapesPy);
@@ -1262,7 +1262,7 @@ PyObject* TopoShapePy::childShapes(PyObject *args)
 
 namespace Part {
 // Containers to associate TopAbs_ShapeEnum values to each TopoShape*Py class
-const std::vector<std::pair<PyTypeObject*, TopAbs_ShapeEnum>> vecTypeShape = {
+static const std::vector<std::pair<PyTypeObject*, TopAbs_ShapeEnum>> vecTypeShape = {
     {&TopoShapeCompoundPy::Type, TopAbs_COMPOUND},
     {&TopoShapeCompSolidPy::Type, TopAbs_COMPSOLID},
     {&TopoShapeSolidPy::Type, TopAbs_SOLID},
@@ -1274,7 +1274,7 @@ const std::vector<std::pair<PyTypeObject*, TopAbs_ShapeEnum>> vecTypeShape = {
     {&TopoShapePy::Type, TopAbs_SHAPE}
 };
 
-const std::map<PyTypeObject*, TopAbs_ShapeEnum> mapTypeShape(
+static const std::map<PyTypeObject*, TopAbs_ShapeEnum> mapTypeShape(
     vecTypeShape.begin(), vecTypeShape.end());
 
 // Returns shape type of a Python type. Similar to TopAbs::ShapeTypeFromString.
@@ -1286,7 +1286,7 @@ static TopAbs_ShapeEnum ShapeTypeFromPyType(PyTypeObject* pyType)
             return it->second;
     }
     return TopAbs_SHAPE;
-};
+}
 }
 
 PyObject*  TopoShapePy::ancestorsOfType(PyObject *args)
@@ -1915,7 +1915,7 @@ PyObject*  TopoShapePy::findPlane(PyObject *args)
 
     PY_TRY {
         gp_Pln pln;
-        if(getTopoShapePtr()->findPlane(pln,tol))
+        if (getTopoShapePtr()->findPlane(pln, tol))
             return new PlanePy(new GeomPlane(new Geom_Plane(pln)));
         Py_Return;
     }
@@ -2591,10 +2591,10 @@ PyObject* TopoShapePy::proximity(PyObject *args)
 PyObject* TopoShapePy::distToShape(PyObject *args)
 {
     PyObject* ps2;
-    gp_Pnt P1,P2;
-    BRepExtrema_SupportType supportType1,supportType2;
-    TopoDS_Shape suppS1,suppS2;
-    Standard_Real minDist = -1, t1,t2,u1,v1,u2,v2;
+    gp_Pnt P1, P2;
+    BRepExtrema_SupportType supportType1, supportType2;
+    TopoDS_Shape suppS1, suppS2;
+    Standard_Real minDist = -1, t1, t2, u1, v1, u2, v2;
 
     if (!PyArg_ParseTuple(args, "O!",&(TopoShapePy::Type), &ps2))
         return nullptr;
@@ -2635,24 +2635,24 @@ PyObject* TopoShapePy::distToShape(PyObject *args)
             Py::Object param1, param2;
 
             P1 = extss.PointOnShape1(i);
-            pt1 = Py::asObject( new Base::VectorPy(new Base::Vector3d(P1.X(),P1.Y(),P1.Z())));
+            pt1 = Py::asObject(new Base::VectorPy(new Base::Vector3d(P1.X(), P1.Y(), P1.Z())));
             supportType1 = extss.SupportTypeShape1(i);
             suppS1 = extss.SupportOnShape1(i);
             switch (supportType1) {
                 case BRepExtrema_IsVertex:
                     suppType1 = Py::String("Vertex");
-                    suppIndex1 = Py::asObject(_getSupportIndex("Vertex",ts1,suppS1));
+                    suppIndex1 = Py::asObject(_getSupportIndex("Vertex", ts1, suppS1));
                     param1 = Py::None();
                     break;
                 case BRepExtrema_IsOnEdge:
                     suppType1 = Py::String("Edge");
-                    suppIndex1 = Py::asObject(_getSupportIndex("Edge",ts1,suppS1));
-                    extss.ParOnEdgeS1(i,t1);
+                    suppIndex1 = Py::asObject(_getSupportIndex("Edge", ts1, suppS1));
+                    extss.ParOnEdgeS1(i, t1);
                     param1 = Py::Float(t1);
                     break;
                 case BRepExtrema_IsInFace:
                     suppType1 = Py::String("Face");
-                    suppIndex1 = Py::asObject(_getSupportIndex("Face",ts1,suppS1));
+                    suppIndex1 = Py::asObject(_getSupportIndex("Face", ts1, suppS1));
                     extss.ParOnFaceS1(i,u1,v1);
                     {
                         Py::Tuple tup(2);
@@ -2662,32 +2662,33 @@ PyObject* TopoShapePy::distToShape(PyObject *args)
                     }
                     break;
                 default:
-                    Base::Console().Message("distToShape: supportType1 is unknown: %d \n",supportType1);
+                    Base::Console().Message("distToShape: supportType1 is unknown: %d \n",
+                                            supportType1);
                     suppType1 = Py::String("Unknown");
                     suppIndex1 = -1;
                     param1 = Py::None();
             }
 
             P2 = extss.PointOnShape2(i);
-            pt2 = Py::asObject(new Base::VectorPy(new Base::Vector3d(P2.X(),P2.Y(),P2.Z())));
+            pt2 = Py::asObject(new Base::VectorPy(new Base::Vector3d(P2.X(), P2.Y(), P2.Z())));
             supportType2 = extss.SupportTypeShape2(i);
             suppS2 = extss.SupportOnShape2(i);
             switch (supportType2) {
                 case BRepExtrema_IsVertex:
                     suppType2 = Py::String("Vertex");
-                    suppIndex2 = Py::asObject(_getSupportIndex("Vertex",ts2,suppS2));
+                    suppIndex2 = Py::asObject(_getSupportIndex("Vertex", ts2, suppS2));
                     param2 = Py::None();
                     break;
                 case BRepExtrema_IsOnEdge:
                     suppType2 = Py::String("Edge");
-                    suppIndex2 = Py::asObject(_getSupportIndex("Edge",ts2,suppS2));
-                    extss.ParOnEdgeS2(i,t2);
+                    suppIndex2 = Py::asObject(_getSupportIndex("Edge", ts2, suppS2));
+                    extss.ParOnEdgeS2(i, t2);
                     param2 = Py::Float(t2);
                     break;
                 case BRepExtrema_IsInFace:
                     suppType2 = Py::String("Face");
-                    suppIndex2 = Py::asObject(_getSupportIndex("Face",ts2,suppS2));
-                    extss.ParOnFaceS2(i,u2,v2);
+                    suppIndex2 = Py::asObject(_getSupportIndex("Face", ts2, suppS2));
+                    extss.ParOnFaceS2(i, u2, v2);
                     {
                         Py::Tuple tup(2);
                         tup[0] = Py::Float(u2);
@@ -2696,7 +2697,8 @@ PyObject* TopoShapePy::distToShape(PyObject *args)
                     }
                     break;
                 default:
-                    Base::Console().Message("distToShape: supportType2 is unknown: %d \n",supportType2);
+                    Base::Console().Message("distToShape: supportType2 is unknown: %d \n",
+                                            supportType2);
                     suppType2 = Py::String("Unknown");
                     suppIndex2 = -1;
                     param2 = Py::None();
@@ -2941,8 +2943,7 @@ Py::List TopoShapePy::getSubShapes(void) const
     const TopoDS_Shape& shape = getTopoShapePtr()->getShape();
 
     if (!shape.IsNull()) {
-        for(TopoDS_Iterator it(shape);it.More();it.Next())
-            ret.append(shape2pyshape(it.Value()));
+        for (TopoDS_Iterator it(shape); it.More(); it.Next()) ret.append(shape2pyshape(it.Value()));
     }
 
     return ret;
@@ -3044,7 +3045,7 @@ PyObject *TopoShapePy::getCustomAttributes(const char* attr) const
         return nullptr;
     PY_TRY {
         TopoDS_Shape res = getTopoShapePtr()->getSubShape(attr,true);
-        if(!res.IsNull())
+        if (!res.IsNull())
             return Py::new_reference_to(shape2pyshape(res));
     }
     PY_CATCH_OCC
