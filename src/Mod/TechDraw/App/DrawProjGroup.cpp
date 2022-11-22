@@ -423,6 +423,39 @@ bool DrawProjGroup::hasProjection(const char *viewProjType) const
     return false;
 }
 
+bool DrawProjGroup::canDelete(const char *viewProjType) const
+{
+//    Base::Console().Message("DPG::canDelete(%s)\n", viewProjType);
+    TechDraw::DrawProjGroupItem* foundItem(nullptr);
+    for( const auto it : Views.getValues() ) {
+        auto view( dynamic_cast<TechDraw::DrawProjGroupItem *>(it) );
+        if (!view) {
+            //should never have a item in DPG that is not a DPGI.
+            Base::Console().Log("PROBLEM - DPG::hasProjection finds non-DPGI in Group %s / %s\n",
+                                    getNameInDocument(), viewProjType);
+            throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
+        }
+
+        if (strcmp(viewProjType, view->Type.getValueAsString()) == 0 ) {
+            foundItem = view;
+            break;
+        }
+    }
+
+    if (foundItem) {
+        auto linkedItems = foundItem->getInList();
+        for (auto& item : linkedItems) {
+            if (item == this) {
+                continue;
+            }
+            if (item->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
 App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
 {
     DrawProjGroupItem *view( nullptr );
