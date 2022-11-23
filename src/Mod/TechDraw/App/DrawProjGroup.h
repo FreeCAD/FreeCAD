@@ -74,6 +74,8 @@ public:
     virtual QRectF getRect(void) const override;
     /// Check if container has a view of a specific type
     bool hasProjection(const char *viewProjType) const;
+    ///check if it is safe to delete item
+    bool canDelete(const char *viewProjType) const;
 
     App::DocumentObject * getProjObj(const char *viewProjType) const;
     DrawProjGroupItem* getProjItem(const char *viewProjType) const;

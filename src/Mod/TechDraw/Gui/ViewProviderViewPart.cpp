@@ -242,7 +242,11 @@ bool ViewProviderViewPart::setEdit(int ModNum)
         }
         TechDraw::DrawViewPart* dvp = getViewObject();
         TechDraw::DrawViewDetail* dvd = dynamic_cast<TechDraw::DrawViewDetail*>(dvp);
-        if (dvd != nullptr) { 
+        if (dvd != nullptr) {
+            if (!dvd->BaseView.getValue()) {
+                Base::Console().Error("DrawViewDetail - %s - has no BaseView!\n", dvd->getNameInDocument());
+                return false;
+            }
             // clear the selection (convenience)
             Gui::Selection().clearSelection();
             Gui::Control().showDialog(new TaskDlgDetail(dvd));
