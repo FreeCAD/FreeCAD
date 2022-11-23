@@ -45,9 +45,6 @@
        <property name="text">
         <string></string>
        </property>
-       <property name="checked">
-        <bool>false</bool>
-       </property>
       </widget>
      </item>
 	 <item>
@@ -63,9 +60,6 @@
        </property>
        <property name="styleSheet">
         <string notr="true">padding-left: 0px; margin-left: 0px</string>
-       </property>
-       <property name="enabled">
-        <bool>false</bool>
        </property>
        <property name="text">
         <string>Filters</string>

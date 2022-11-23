@@ -490,16 +490,55 @@ ElementItem* ElementItemDelegate::getElementtItem(const QModelIndex& index) cons
 }
 
 /* Filter element list widget ------------------------------------------------------ */
+enum class GeoFilterType {
+    NormalGeos,
+    ConstructionGeos,
+    InternalGeos,
+    ExternalGeos,
+    AllGeosTypes,
+    PointGeos,
+    LineGeos,
+    CircleGeos,
+    EllipseGeos,
+    ArcGeos,
+    ArcOfEllipseGeos,
+    HyperbolaGeos,
+    ParabolaGeos,
+    BSplineGeos
+};
+
 ElementFilterList::ElementFilterList(QWidget* parent) : QListWidget(parent)
 {
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+    int filterState = hGrp->GetInt("ElementFilterState", INT_MAX); //INT_MAX = 1111111111111111111111111111111 in binary.
+
     for (auto const &filterItem:filterItems) {
         Q_UNUSED(filterItem);
         auto it = new QListWidgetItem();
         it->setFlags(it->flags() | Qt::ItemIsUserCheckable);
-        it->setCheckState(Qt::Checked);
+
+        bool isChecked = static_cast<bool>(filterState & 1); //get the first bit of filterState
+        it->setCheckState(isChecked ? Qt::Checked : Qt::Unchecked);
+        filterState = filterState >> 1; //shift right to get rid of the used bit.
+
         addItem(it);
     }
     languageChange();
+
+    //We need to fix the state of 'All' group checkbox in case it is partially checked.
+    int indexOfAllTypes = static_cast<int>(GeoFilterType::AllGeosTypes);
+    if(item(indexOfAllTypes)->checkState() == Qt::Unchecked)
+    {
+        bool allUnchecked = true;
+        for (int i = indexOfAllTypes + 1; i < count(); i++) {
+            if (item(i)->checkState() == Qt::Checked) {
+                allUnchecked = false;
+                break;
+            }
+        }
+        if (!allUnchecked)
+            item(indexOfAllTypes)->setCheckState(Qt::PartiallyChecked);
+    }
 }
 
 ElementFilterList::~ElementFilterList()
@@ -563,6 +602,9 @@ TaskSketcherElements::TaskSketcherElements(ViewProviderSketch *sketchView)
 
     this->groupLayout()->addWidget(proxy);
 
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+    ui->filterBox->setChecked(hGrp->GetBool("ElementFilterEnabled", true) ? Qt::Checked : Qt::Unchecked);
+    ui->filterButton->setEnabled(ui->filterBox->checkState() == Qt::Checked);
 
     slotElementsChanged();
 }
@@ -625,25 +667,12 @@ void TaskSketcherElements::createFilterButtonActions()
 void TaskSketcherElements::onFilterBoxStateChanged(int val)
 {
     Q_UNUSED(val);
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+    hGrp->SetBool("ElementFilterEnabled", ui->filterBox->checkState() == Qt::Checked);
+
     ui->filterButton->setEnabled(ui->filterBox->checkState() == Qt::Checked);
     slotElementsChanged();
 }
-
-enum class GeoFilterType { NormalGeos,
-                           ConstructionGeos,
-                           InternalGeos,
-                           ExternalGeos,
-                           AllGeosTypes,
-                           PointGeos,
-                           LineGeos,
-                           CircleGeos,
-                           EllipseGeos,
-                           ArcGeos,
-                           ArcOfEllipseGeos,
-                           HyperbolaGeos,
-                           ParabolaGeos,
-                           BSplineGeos
-                         };
 
 void TaskSketcherElements::onListMultiFilterItemChanged(QListWidgetItem* item)
 {
@@ -676,6 +705,16 @@ void TaskSketcherElements::onListMultiFilterItemChanged(QListWidgetItem* item)
                 filterList->item(indexOfAllTypes)->setCheckState(Qt::Checked);
         }
     }
+
+    //Save the state of the filter.
+    int filterState = INT_MIN; //INT_MIN = 000000000000000000000000000000 in binary.
+    for (int i = filterList->count() - 1; i >= 0 ; i--) {
+        bool isChecked = filterList->item(i)->checkState() == Qt::Checked;
+        filterState = filterState << 1; //we shift left first, else the list is shifted at the end.
+        filterState = filterState | isChecked;
+    }
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+    hGrp->SetInt("ElementFilterState", filterState);
 
     updateVisibility();
 }
