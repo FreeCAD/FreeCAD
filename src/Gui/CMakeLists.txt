@@ -1066,10 +1066,12 @@ SOURCE_GROUP("Widget" FILES ${Widget_SRCS})
 
 SET(Params_CPP_SRCS
     TreeParams.cpp
+    OverlayParams.cpp
 )
 
 SET(Params_HPP_SRCS
     TreeParams.h
+    OverlayParams.h
 )
 
 SET(Params_SRCS
@@ -1103,6 +1105,8 @@ SOURCE_GROUP("View" FILES ${View_SRCS})
 # The workbench sources
 SET(Workbench_CPP_SRCS
     DockWindowManager.cpp
+    OverlayManager.cpp
+    OverlayWidgets.cpp
     MenuManager.cpp
     PythonWorkbenchPyImp.cpp
     ToolBarManager.cpp
@@ -1116,6 +1120,8 @@ SET(Workbench_CPP_SRCS
 SET(Workbench_SRCS
     ${Workbench_CPP_SRCS}
     DockWindowManager.h
+    OverlayManager.h
+    OverlayWidgets.h
     MenuManager.h
     ToolBarManager.h
     ToolBoxManager.h

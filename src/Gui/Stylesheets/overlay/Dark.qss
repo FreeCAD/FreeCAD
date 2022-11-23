@@ -1,0 +1,158 @@
+* {
+  color: #f0f0f0;
+  alternate-background-color: rgba(50,50,50,120);
+}
+
+QComboBox,
+QComboBox:editable,
+QComboBox:!editable,
+QLineEdit,
+QTextEdit,
+QPlainTextEdit,
+QAbstractSpinBox,
+QDateEdit,
+QDateTimeEdit,
+Gui--PropertyEditor--PropertyEditor QLabel {
+  background : #6e6e6e;
+}
+
+QComboBox:disabled,
+QAbstractSpinBox:disabled,
+QLineEdit:disabled,
+QTextEdit:disabled,
+QPlainTextEdit:disabled,
+QTimeEdit:disabled,
+QDateEdit:disabled,
+QDateTimeEdit:disabled {
+  color: darkgray;
+}
+
+QTabWidget::pane {
+  background-color: transparent;
+  border: transparent;
+}
+
+Gui--OverlayTabWidget {
+  qproperty-enableEffect: 0;
+}
+
+Gui--OverlayTabWidget::pane {
+  background-color: rgba(100,100,100,150)
+}
+
+QTabBar {
+  border : none;
+}
+
+QTabBar::tab {
+  color: #f0f0f0;
+  background-color: rgba(100,100,100,50);
+  padding: 5px;
+}
+
+QTabBar::tab:selected {
+  background-color: rgba(100,100,100,150);
+}
+
+QTabBar::tab:hover {
+  background-color: rgba(150,150,150,150);
+}
+
+QHeaderView { background:transparent }
+QHeaderView::section {
+  color: rgb(200,200,200);
+  background-color: rgba(50,50,50,50);
+  padding: 2px;
+  border: 1px solid rgb(100,100,100);
+}
+
+QToolTip {
+  background-color: rgba(100,100,100,180);
+  border: 1px solid darkgray;
+  border-radius:2px;
+}
+
+Gui--OverlayToolButton {
+  background: transparent;
+  padding: 0px;
+  border: none;
+}
+
+Gui--OverlayToolButton::hover {
+  background: rgba(150,150,150,200);
+}
+
+Gui--OverlayToolButton::focus {
+  background: rgba(150,150,150,155);
+}
+
+Gui--OverlayToolButton::pressed {
+  background: rgba(50,50,50,80);
+  border: 1px inset darkgray;
+}
+
+Gui--OverlayToolButton::checked {
+  background: rgba(50,50,50,80);
+  border: 1px inset darkgray;
+}
+
+Gui--OverlayToolButton::checked:hover {
+  background: rgba(150,150,150,200);
+  border: 1px inset darkgray;
+}
+
+QTreeView,
+QListView,
+QTableView {
+  background: rgb(100,100,100);
+  selection-background-color: rgba(94, 144, 250, 0.7);
+  border: transparent;
+}
+
+QListView::item:selected,
+QTreeView::item:selected  {
+  background-color: rgba(94, 144, 250, 0.7);
+}
+
+Gui--PropertyEditor--PropertyEditor {
+  qproperty-groupTextColor: rgb(50, 50, 50);
+  qproperty-groupBackground: rgba(140, 140, 140, 0.7);
+  qproperty-itemBackground: rgba(0, 0, 0, 0.01);
+}
+
+Gui--CallTipsList::item {
+  background-color: rgba(100, 100, 100, 200);
+}
+
+Gui--CallTipsList::item::selected {
+  background-color: rgb(94, 144, 250);
+}
+
+/* Use the following selector to customize title bar for each side */
+/*
+Gui--OverlayTabWidget#OverlayBottom Gui--OverlayTitleBar,
+Gui--OverlayTabWidget#OverlayBottom QSplitter Gui--OverlaySplitterHandle {
+  background-color: qlineargradient(
+    spread:pad, x1:0, y1:1, x2:0, y2:0,
+    stop:0 #80202020, stop:1 #00202020);
+}
+*/
+
+Gui--OverlayTitleBar,
+Gui--OverlaySplitterHandle {
+  background-color: rgba(80, 80, 80, 150)
+}
+
+QScrollArea#ClippingScrollArea,
+QWidget#ClippingScrollAreaContents {
+  background-color: #808c8c8c;
+}
+
+QSint--ActionGroup QFrame[class="content"] {
+  background-color: #808c8c8c; /* Task Panel background color */
+}
+
+QSint--ActionGroup QFrame[class="content"] > QWidget {
+  background-color: #808c8c8c; /* Task Panel background color */
+}
+
