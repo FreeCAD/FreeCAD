@@ -22,22 +22,20 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <BRep_Tool.hxx>
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepExtrema_DistShapeShape.hxx>
-#include <BRepGProp.hxx>
-#include <GCPnts_AbscissaPoint.hxx>
-#include <gp_Circ.hxx>
-#include <gp_Lin.hxx>
-#include <GProp_GProps.hxx>
-#include <TopAbs_ShapeEnum.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Shape.hxx>
+# include <BRep_Tool.hxx>
+# include <BRepAdaptor_Curve.hxx>
+# include <BRepExtrema_DistShapeShape.hxx>
+# include <BRepGProp.hxx>
+# include <GCPnts_AbscissaPoint.hxx>
+# include <gp_Circ.hxx>
+# include <gp_Lin.hxx>
+# include <GProp_GProps.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Shape.hxx>
 #endif
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
-
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/TopoShape.h>
 
@@ -46,8 +44,9 @@
 
 
 #ifndef M_PI
-    #define M_PI    3.14159265358979323846 /* pi */
+# define M_PI 3.14159265358979323846
 #endif
+
 using namespace Measure;
 using namespace Base;
 using namespace Part;
