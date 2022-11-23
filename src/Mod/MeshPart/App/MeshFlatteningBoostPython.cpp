@@ -41,6 +41,7 @@
 #include <Eigen/Core>
 #include <Eigen/Geometry>
 #include <Eigen/Sparse>
+#include <Base/Interpreter.h>
 #include <Mod/Part/App/TopoShapeEdgePy.h>
 #include <Mod/Part/App/TopoShapeFacePy.h>
 
