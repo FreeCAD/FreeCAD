@@ -83,6 +83,8 @@ public:
     explicit ConstraintFilterList(QWidget* parent = nullptr);
     ~ConstraintFilterList() override;
 
+    void setPartiallyChecked();
+
     FilterValueBitset getMultiFilter();
 
     int normalFilterCount; //All filters but selected and associated

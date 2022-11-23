@@ -637,6 +637,9 @@ void ConstraintView::swapNamedOfSelectedItems()
 ConstraintFilterList::ConstraintFilterList(QWidget* parent)
     : QListWidget(parent)
 {
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+    int filterState = hGrp->GetInt("ConstraintFilterState", INT_MAX); //INT_MAX = 1111111111111111111111111111111 in binary.
+
     normalFilterCount = filterItems.size() - 2; //All filter but selected and associated
     selectedFilterIndex = normalFilterCount;
     associatedFilterIndex = normalFilterCount + 1;
@@ -647,12 +650,17 @@ ConstraintFilterList::ConstraintFilterList(QWidget* parent)
 
         it->setFlags(it->flags() | Qt::ItemIsUserCheckable);
         addItem(it);
-        if (row(it) < normalFilterCount)
-            it->setCheckState(Qt::Checked);
+        if (row(it) < normalFilterCount) {
+            bool isChecked = static_cast<bool>(filterState & 1); //get the first bit of filterState
+            it->setCheckState(isChecked ? Qt::Checked : Qt::Unchecked);
+            filterState = filterState >> 1; //shift right to get rid of the used bit.
+        }
         else //associated and selected should not be checked by default.
             it->setCheckState(Qt::Unchecked);
     }
     languageChange();
+
+    setPartiallyChecked();
 }
 
 ConstraintFilterList::~ConstraintFilterList()
@@ -676,6 +684,37 @@ void ConstraintFilterList::languageChange()
             (filterItem.second > 0 ? QStringLiteral("- ") : QStringLiteral("")) + 
             tr(filterItem.first);
         item(i++)->setText(text);
+    }
+}
+
+void ConstraintFilterList::setPartiallyChecked()
+{
+    /* If a group is partially checked or unchecked then we apply Qt::PartiallyChecked.
+    The for-loop index is starting from the end. This way sub-groups are first set, which enables the bigger group to be set correctly after.
+    Example: If we go from 0 to count, then the loop starts at 'All' group, which check state of 'Geometric' which is not updated yet.*/
+    for (int i = normalFilterCount - 1; i >= 0; i--) {
+        bool mustBeChecked = true;
+        bool mustBeUnchecked = true;
+        int numberOfFilterInGroup = 0;
+
+        for (int j = 0; j < FilterValueLength; j++) {
+            if (i == j)
+                continue;
+
+            if (filterAggregates[i][j]) { // if it is in group
+                numberOfFilterInGroup++;
+                mustBeChecked = mustBeChecked && item(j)->checkState() == Qt::Checked;
+                mustBeUnchecked = mustBeUnchecked && item(j)->checkState() == Qt::Unchecked;
+            }
+        }
+        if (numberOfFilterInGroup > 1) { //avoid groups of single filters.
+            if (mustBeChecked)
+                item(i)->setCheckState(Qt::Checked);
+            else if (mustBeUnchecked)
+                item(i)->setCheckState(Qt::Unchecked);
+            else
+                item(i)->setCheckState(Qt::PartiallyChecked);
+        }
     }
 }
 
@@ -714,7 +753,11 @@ TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch *sketchView)
 
     this->groupLayout()->addWidget(proxy);
 
-    multiFilterStatus.set(); // Match 'All' selection, all bits set.
+    multiFilterStatus = filterList->getMultiFilter();
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+    ui->filterBox->setChecked(hGrp->GetBool("ConstraintFilterEnabled", true) ? Qt::Checked : Qt::Unchecked);
+    ui->filterButton->setEnabled(ui->filterBox->checkState() == Qt::Checked);
 
     slotConstraintsChanged();
 
@@ -868,6 +911,10 @@ void TaskSketcherConstraints::createFilterButtonActions()
 
 void TaskSketcherConstraints::on_filterBox_stateChanged(int val)
 {
+    Q_UNUSED(val);
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+    hGrp->SetBool("ConstraintFilterEnabled", ui->filterBox->checkState() == Qt::Checked);
+
     ui->filterButton->setEnabled(ui->filterBox->checkState() == Qt::Checked);
     updateList();
 }
@@ -1508,33 +1555,8 @@ void TaskSketcherConstraints::on_filterList_itemChanged(QListWidgetItem* item)
                 filterList->item(i)->setCheckState(item->checkState());
         }
 
-        /* Now we also need to see if any modified group is all checked or all unchecked and set their status accordingly
-        If a group is partially checked or unchecked then we apply Qt::PartiallyChecked.
-        The for-loop index is starting from the end. This way sub-groups are first set, which enables the bigger group to be set correctly after.
-        Example: If we go from 0 to count, then the loop starts at 'All' group, which check state of 'Geometric' which is not updated yet.*/
-        for (int i = filterList->normalFilterCount - 1; i >= 0; i--) {
-            if (filterAggregates[i][filterindex] && i != filterList->row(item)) { // only for groups comprising the changed filter && not for selected item.
-                bool mustBeChecked = true;
-                bool mustBeUnchecked = true;
-
-                for (int j = 0; j < FilterValueLength; j++) {
-                    if (i == j)
-                        continue;
-
-                    if (filterAggregates[i][j]) { // if it is in group
-                        mustBeChecked = mustBeChecked && filterList->item(j)->checkState() == Qt::Checked;
-                        mustBeUnchecked = mustBeUnchecked && filterList->item(j)->checkState() == Qt::Unchecked;
-                    }
-                }
-
-                if (mustBeChecked)
-                    filterList->item(i)->setCheckState(Qt::Checked);
-                else if (mustBeUnchecked)
-                    filterList->item(i)->setCheckState(Qt::Unchecked);
-                else
-                    filterList->item(i)->setCheckState(Qt::PartiallyChecked);
-            }
-        }
+        /* Now we also need to see if any modified group is all checked or all unchecked and set their status accordingly*/
+        filterList->setPartiallyChecked();
     }
     else if (filterindex == filterList->selectedFilterIndex) { //Selected constraints
         if (item->checkState() == Qt::Checked) {
@@ -1556,6 +1578,16 @@ void TaskSketcherConstraints::on_filterList_itemChanged(QListWidgetItem* item)
     }
 
     filterList->blockSignals(false);
+
+    //Save the state of the filter.
+    int filterState = INT_MIN; //INT_MIN = 000000000000000000000000000000 in binary.
+    for (int i = filterList->count() - 1; i >= 0; i--) {
+        bool isChecked = filterList->item(i)->checkState() == Qt::Checked;
+        filterState = filterState << 1; //we shift left first, else the list is shifted at the end.
+        filterState = filterState | isChecked;
+    }
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+    hGrp->SetInt("ConstraintFilterState", filterState);
 
     // if tracking, it will call slotConstraintChanged via update mechanism as Multi Filter affects not only visibility, but also filtered list content, if not tracking will still update the list to match the multi-filter.
     updateList();
