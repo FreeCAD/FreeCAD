@@ -1221,9 +1221,14 @@ void TaskSketcherElements::createSettingsButtonActions()
         action->setChecked(hGrp->GetBool("ExtendedNaming", false));
     }
 
-    ui->settingsButton->addAction(action);
+    qAsConst(ui->settingsButton)->addAction(action);
 
     isNamingBoxChecked = hGrp->GetBool("ExtendedNaming", false);
+
+    auto* action2 = new QWidgetAction(this);
+    renderingOrder = new RenderingOrderWidget(this, sketchView);
+    action2->setDefaultWidget(renderingOrder);
+    qAsConst(ui->settingsButton)->addAction(action2);
 }
 
 void TaskSketcherElements::onSettingsExtendedInformationChanged()

@@ -31,6 +31,8 @@
 #include <QIcon>
 #include <QStyledItemDelegate>
 
+#include "RenderingOrderWidget.h"
+
 namespace App {
 class Property;
 }
@@ -255,6 +257,7 @@ private:
     SubElementType previouslyHoveredType;
 
     ElementFilterList* filterList;
+    RenderingOrderWidget* renderingOrder;
 
     bool isNamingBoxChecked;
 };

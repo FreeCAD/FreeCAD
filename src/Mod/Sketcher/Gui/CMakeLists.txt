@@ -155,6 +155,8 @@ SET(SketcherGui_SRCS
     ViewProviderPython.h
     ViewProviderSketchGeometryExtension.h
     ViewProviderSketchGeometryExtension.cpp
+    RenderingOrderWidget.h
+    RenderingOrderWidget.cpp
 )
 
 if(FREECAD_USE_PCH)
