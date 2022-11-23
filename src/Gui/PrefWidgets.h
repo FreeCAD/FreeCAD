@@ -104,6 +104,8 @@ private:
 
   // friends
   friend class Gui::WidgetFactoryInst;
+protected:
+  bool m_Restored = false;
 };
 
 /** The PrefSpinBox class.
@@ -212,6 +214,15 @@ protected:
 /**
  * The PrefComboBox class.
  * \author Werner Mayer
+ *
+ * The PrefComboBox supports restoring/saving variant type of item data. You
+ * can add a property named 'prefType' with the type you want. If no such
+ * property is found, the class defaults to restore/save the item index.
+ *
+ * Note that there is special handling for 'prefType' of QString, which means
+ * to restore/save the item text. This allows the combox to be editable, and
+ * accepts user entered value. Use QByteArray if you want to restore/save a
+ * non translatable string stored as item data.
  */
 class GuiExport PrefComboBox : public QComboBox, public PrefWidget
 {
@@ -226,8 +237,14 @@ public:
 
 protected:
   // restore from/save to parameters
-  void restorePreferences() override;
-  void savePreferences() override;
+  void restorePreferences();
+  void savePreferences();
+  virtual QVariant::Type getParamType() const;
+
+private:
+  QVariant m_Default;
+  int m_DefaultIndex;
+  QString m_DefaultText;
 };
 
 /**
