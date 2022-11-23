@@ -482,6 +482,9 @@ void TaskProjGroup::setupViewCheckboxes(bool addConnections)
         const char *viewStr = viewChkIndexToCStr(i);
         if ( viewStr != nullptr && multiView->hasProjection(viewStr) ) {
             box->setCheckState(Qt::Checked);
+            if (!multiView->canDelete(viewStr)) {
+                box->setEnabled(false);
+            }
         } else {
             box->setCheckState(Qt::Unchecked);
         }
