@@ -329,6 +329,9 @@ protected:
   // restore from/save to parameters
   void restorePreferences() override;
   void savePreferences() override;
+
+private:
+  QColor m_Default;
 };
 
 /** The PrefUnitSpinBox class.
