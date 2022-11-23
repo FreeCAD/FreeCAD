@@ -20,19 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef _MeshAlgos_h_
 #define _MeshAlgos_h_
 
 #ifdef FC_USE_GTS
-#  include <gts.h>
+# include <gts.h>
 #endif
 
 #include <vector>
 
-#include <Base/Vector3D.h>
-
 #include "CurveProjector.h"
+
 
 class TopoDS_Edge;
 class TopoDS_Shape;

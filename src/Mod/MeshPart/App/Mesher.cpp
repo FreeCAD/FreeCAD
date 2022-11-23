@@ -21,19 +21,21 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#include <algorithm>
-#include "Mesher.h"
+#ifndef _PreComp_
+# include <algorithm>
+# include <BRepMesh_IncrementalMesh.hxx>
+# include <BRepTools.hxx>
+# include <Standard_Version.hxx>
+# include <TopoDS_Shape.hxx>
+#endif
 
 #include <Base/Console.h>
-#include <Base/Exception.h>
 #include <Base/Tools.h>
 #include <Mod/Mesh/App/Mesh.h>
 #include <Mod/Part/App/TopoShape.h>
 
-#include <TopoDS_Shape.hxx>
-#include <BRepTools.hxx>
-#include <BRepMesh_IncrementalMesh.hxx>
-#include <Standard_Version.hxx>
+#include "Mesher.h"
+
 
 #ifdef HAVE_SMESH
 #if defined(__clang__)

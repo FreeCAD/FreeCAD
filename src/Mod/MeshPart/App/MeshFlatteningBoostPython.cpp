@@ -20,16 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
 #include "PreCompiled.h"
-#include <Base/Interpreter.h>
-#include <Mod/Part/App/TopoShapeFacePy.h>
-#include <Mod/Part/App/TopoShapeEdgePy.h>
+#ifndef _PreComp_
+# include <map>
+# include <memory>
+# include <stdexcept>
+# include <vector>
+# include <TopoDS.hxx>
+# include <TopoDS_Edge.hxx>
+# include <TopoDS_Face.hxx>
+#endif
 
-#include <Eigen/Core>
-#include <Eigen/Geometry>
-#include <Eigen/Sparse>
 #include <boost/python.hpp>
 #include <boost/python/module.hpp>
 #include <boost/python/class.hpp>
@@ -37,22 +38,15 @@
 #include <boost/python/call.hpp>
 #include <boost/python/copy_const_reference.hpp>
 #include <boost/python/return_value_policy.hpp>
-
-#include <memory>
-#include <vector>
-#include <tuple>
-#include <map>
-#include <stdexcept>
+#include <Eigen/Core>
+#include <Eigen/Geometry>
+#include <Eigen/Sparse>
+#include <Mod/Part/App/TopoShapeEdgePy.h>
+#include <Mod/Part/App/TopoShapeFacePy.h>
 
 #include "MeshFlattening.h"
 #include "MeshFlatteningLscmRelax.h"
 #include "MeshFlatteningNurbs.h"
-
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS.hxx>
-#include <ShapeFix_Edge.hxx>
-
 
 
 namespace py = boost::python;

@@ -20,40 +20,27 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
 #ifdef _MSC_VER
-    #define strdup _strdup
+# define strdup _strdup
 #endif
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <stdexcept>
+# include <vector>
+
+# include <TopoDS.hxx>
+# include <TopoDS_Edge.hxx>
+# include <TopoDS_Face.hxx>
+#endif
+
 #include <Mod/Part/App/TopoShapeFacePy.h>
 #include <Mod/Part/App/TopoShapeEdgePy.h>
-
-#include <Eigen/Core>
-#include <Eigen/Geometry>
-#include <Eigen/Sparse>
-#include <pybind11/pybind11.h>
-#include <pybind11/stl.h>
-#include <pybind11/operators.h>
-#include <pybind11/numpy.h>
 #include <pybind11/eigen.h>
-
-#include <memory>
-#include <vector>
-#include <tuple>
-#include <map>
-#include <stdexcept>
 
 #include "MeshFlattening.h"
 #include "MeshFlatteningLscmRelax.h"
 #include "MeshFlatteningNurbs.h"
-
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS.hxx>
-#include <ShapeFix_Edge.hxx>
-
 
 
 namespace py = pybind11;

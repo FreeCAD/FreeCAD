@@ -20,11 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <cmath>
+# include <iostream>
+#endif
+
 #include "MeshFlatteningNurbs.h"
-#include <iostream>
-#include <cmath>
 
 
 namespace nurbs{

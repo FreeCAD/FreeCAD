@@ -20,15 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
 #ifndef NURBS_H
 #define NURBS_H
 
-#include <Eigen/Geometry>
-#include <Eigen/IterativeLinearSolvers>
-#include <Eigen/SparseCore>
 #include <tuple>
+
+#include <Eigen/IterativeLinearSolvers>
+
 
 namespace nurbs{
 
