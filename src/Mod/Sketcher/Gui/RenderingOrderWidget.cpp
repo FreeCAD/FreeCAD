@@ -28,7 +28,7 @@
 # include <QApplication>
 #endif
 
-# include <QEvent>
+#include <QEvent>
 #include <QString>
 
 #include <Gui/Application.h>
@@ -42,12 +42,11 @@ using namespace SketcherGui;
 RenderingOrderWidget::RenderingOrderWidget(QWidget *parent, ViewProviderSketch* sketchView)
   : QWidget(parent)
     , sketchView(sketchView)
+    , label(new QLabel(this))
+    , list(new QListWidget(this))
 {
-    label = new QLabel(this);
-    label->setText(QApplication::translate("RenderingOrderWidget", "Rendering order (global):"));
+    languageChanged();
 
-    list = new QListWidget(this);
-    list->setToolTip(QApplication::translate("RenderingOrderWidget", "To change, drag and drop a geometry type to top or bottom"));
     list->setDragEnabled(true);
     list->setDragDropMode(QAbstractItemView::InternalMove);
     list->setSortingEnabled(false);
@@ -131,8 +130,13 @@ void RenderingOrderWidget::changeEvent(QEvent *e)
 {
     QWidget::changeEvent(e);
     if (e->type() == QEvent::LanguageChange) {
-        label->setText(QApplication::translate("RenderingOrderWidget", "Rendering order (global):"));
-        list->setToolTip(QApplication::translate("RenderingOrderWidget", "To change, drag and drop a geometry type to top or bottom"));
+        languageChanged();
         loadSettings();
     }
+}
+
+void RenderingOrderWidget::languageChanged() {
+    label->setText(tr("Rendering order (global):"));
+    list->setToolTip(tr("To change, drag and drop a geometry type to top or bottom"));
+
 }

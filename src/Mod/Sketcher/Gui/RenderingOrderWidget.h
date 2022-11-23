@@ -44,6 +44,7 @@ public:
 
     void saveSettings();
     void loadSettings();
+    void languageChanged();
 
 protected:
     void changeEvent(QEvent *e) override;
