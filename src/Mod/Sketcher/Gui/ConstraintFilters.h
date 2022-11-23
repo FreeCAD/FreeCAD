@@ -49,18 +49,18 @@ namespace ConstraintFilter {
         Equality = 9,
         Symmetric = 10,
         Block = 11,
-        Datums = 12,
-        HorizontalDistance = 13,
-        VerticalDistance = 14,
-        Distance = 15,
-        Radius = 16,
-        Weight = 17,
-        Diameter = 18,
-        Angle = 19,
-        SnellsLaw = 20,
-        Named = 21,
-        NonDriving = 22,
-        InternalAlignment = 23,
+        InternalAlignment = 12,
+        Datums = 13,
+        HorizontalDistance = 14,
+        VerticalDistance = 15,
+        Distance = 16,
+        Radius = 17,
+        Weight = 18,
+        Diameter = 19,
+        Angle = 20,
+        SnellsLaw = 21,
+        Named = 22,
+        NonDriving = 23,
         NumFilterValue // SpecialFilterValue shall start at the same index as this
     };
 
@@ -120,24 +120,22 @@ namespace ConstraintFilter {
         buildBitset(FilterValue::Equality), // Equality = Just this (9)
         buildBitset(FilterValue::Symmetric), // Symmetric = Just this (10)
         buildBitset(FilterValue::Block), // Block = Just this (11)
+        buildBitset(FilterValue::InternalAlignment), // InternalAlignment = Just this (12)
 
         buildBitset(FilterValue::Datums, FilterValue::Distance, FilterValue::HorizontalDistance, FilterValue::VerticalDistance, FilterValue::Radius,
-                    FilterValue::Weight, FilterValue::Diameter, FilterValue::Angle, FilterValue::SnellsLaw), // Datum = all others not being geometric (12)
+                    FilterValue::Weight, FilterValue::Diameter, FilterValue::Angle, FilterValue::SnellsLaw), // Datum = all others not being geometric (13)
 
-        buildBitset(FilterValue::HorizontalDistance), // HorizontalDistance = Just this (13)
-        buildBitset(FilterValue::VerticalDistance), // VerticalDistance = Just this (14)
-        buildBitset(FilterValue::Distance), // Distance = Just this (15)
-        buildBitset(FilterValue::Radius), // Radius = Just this (16)
-        buildBitset(FilterValue::Weight), // Weight = Just this (17)
-        buildBitset(FilterValue::Diameter), // Diameter = Just this (18)
-        buildBitset(FilterValue::Angle), // Angle = Just this (19)
-        buildBitset(FilterValue::SnellsLaw), // SnellsLaw = Just this (20)
+        buildBitset(FilterValue::HorizontalDistance), // HorizontalDistance = Just this (14)
+        buildBitset(FilterValue::VerticalDistance), // VerticalDistance = Just this (15)
+        buildBitset(FilterValue::Distance), // Distance = Just this (16)
+        buildBitset(FilterValue::Radius), // Radius = Just this (17)
+        buildBitset(FilterValue::Weight), // Weight = Just this (18)
+        buildBitset(FilterValue::Diameter), // Diameter = Just this (19)
+        buildBitset(FilterValue::Angle), // Angle = Just this (20)
+        buildBitset(FilterValue::SnellsLaw), // SnellsLaw = Just this (21)
 
-        buildBitset(FilterValue::Named), // Named = Just this (21)
-        buildBitset(FilterValue::NonDriving), // NonDriving = Just this (22)
-
-
-        buildBitset(FilterValue::InternalAlignment) // InternalAlignment = Just this (23)
+        buildBitset(FilterValue::Named), // Named = Just this (22)
+        buildBitset(FilterValue::NonDriving) // NonDriving = Just this (23)
     };
 
 }
