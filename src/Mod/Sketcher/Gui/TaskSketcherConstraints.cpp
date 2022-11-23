@@ -64,6 +64,7 @@
 
 using namespace SketcherGui;
 using namespace Gui::TaskView;
+namespace bp = boost::placeholders;
 
 /// Inserts a QAction into an existing menu
 /// ICONSTR is the string of the icon in the resource file
@@ -746,6 +747,10 @@ TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch *sketchView)
     ui->listWidgetConstraints->setEditTriggers(QListWidget::EditKeyPressed);
     //QMetaObject::connectSlotsByName(this);
 
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+    ui->filterBox->setChecked(hGrp->GetBool("ConstraintFilterEnabled", true) ? Qt::Checked : Qt::Unchecked);
+    ui->filterButton->setEnabled(ui->filterBox->checkState() == Qt::Checked);
+
     createFilterButtonActions();
     createSettingButtonActions();
 
@@ -755,15 +760,16 @@ TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch *sketchView)
 
     multiFilterStatus = filterList->getMultiFilter();
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-    ui->filterBox->setChecked(hGrp->GetBool("ConstraintFilterEnabled", true) ? Qt::Checked : Qt::Unchecked);
-    ui->filterButton->setEnabled(ui->filterBox->checkState() == Qt::Checked);
 
     slotConstraintsChanged();
 
     specialFilterMode = SpecialFilterType::None;
 
     ui->listWidgetConstraints->setStyleSheet(QString::fromLatin1("margin-top: 0px"));
+
+    Gui::Application* app = Gui::Application::Instance;
+    changedSketchView = app->signalChangedObject.connect(boost::bind
+    (&TaskSketcherConstraints::onChangedSketchView, this, bp::_1, bp::_2));
 }
 
 TaskSketcherConstraints::~TaskSketcherConstraints()
@@ -823,15 +829,23 @@ void TaskSketcherConstraints::connectSignals()
     );
     QObject::connect(
         qAsConst(ui->settingsButton)->actions()[0], &QAction::changed,
-        this, &TaskSketcherConstraints::on_settings_extendedInformation_changed
+        this, &TaskSketcherConstraints::on_settings_autoConstraints_changed
     );
     QObject::connect(
         qAsConst(ui->settingsButton)->actions()[1], &QAction::changed,
-        this, &TaskSketcherConstraints::on_settings_hideInternalAligment_changed
+        this, &TaskSketcherConstraints::on_settings_autoRemoveRedundant_changed
     );
     QObject::connect(
         qAsConst(ui->settingsButton)->actions()[2], &QAction::changed,
         this, &TaskSketcherConstraints::on_settings_restrictVisibility_changed
+    );
+    QObject::connect(
+        qAsConst(ui->settingsButton)->actions()[3], &QAction::changed,
+        this, &TaskSketcherConstraints::on_settings_extendedInformation_changed
+    );
+    QObject::connect(
+        qAsConst(ui->settingsButton)->actions()[4], &QAction::changed,
+        this, &TaskSketcherConstraints::on_settings_hideInternalAligment_changed
     );
     QObject::connect(
         filterList, &ConstraintFilterList::itemChanged,
@@ -846,25 +860,33 @@ void TaskSketcherConstraints::connectSignals()
 /* Settings menu ==================================================*/
 void TaskSketcherConstraints::createSettingButtonActions()
 {
-    QAction* action = new QAction(QString::fromLatin1("Extended information"),this);
-    QAction* action2 = new QAction(QString::fromLatin1("Hide internal alignment"),this);
-    QAction* action3 = new QAction(QString::fromLatin1("Show only filtered Constraints"),this);
+    QAction* action = new QAction(QString::fromLatin1("Auto constraints"), this);
+    QAction* action2 = new QAction(QString::fromLatin1("Auto remove redundants"), this);
+    QAction* action3 = new QAction(QString::fromLatin1("Show only filtered Constraints"), this);
+    QAction* action4 = new QAction(QString::fromLatin1("Extended information (in widget)"), this);
+    QAction* action5 = new QAction(QString::fromLatin1("Hide internal alignment (in widget)"), this);
 
     action->setCheckable(true);
     action2->setCheckable(true);
     action3->setCheckable(true);
+    action4->setCheckable(true);
+    action5->setCheckable(true);
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
     {
         QSignalBlocker block(this);
-        action->setChecked(hGrp->GetBool("ExtendedConstraintInformation", false));
-        action2->setChecked(hGrp->GetBool("HideInternalAlignment", false));
+        action->setChecked(sketchView->Autoconstraints.getValue());
+        action2->setChecked(hGrp->GetBool("AutoRemoveRedundants", false));
         action3->setChecked(hGrp->GetBool("VisualisationTrackingFilter", false));
+        action4->setChecked(hGrp->GetBool("ExtendedConstraintInformation", false));
+        action5->setChecked(hGrp->GetBool("HideInternalAlignment", false));
     }
 
     qAsConst(ui->settingsButton)->addAction(action);
     qAsConst(ui->settingsButton)->addAction(action2);
     qAsConst(ui->settingsButton)->addAction(action3);
+    qAsConst(ui->settingsButton)->addAction(action4);
+    qAsConst(ui->settingsButton)->addAction(action5);
 }
 
 void TaskSketcherConstraints::on_settings_extendedInformation_changed()
@@ -898,6 +920,37 @@ void TaskSketcherConstraints::on_settings_restrictVisibility_changed()
     // Act
     if (bstate)
         change3DViewVisibilityToTrackFilter();
+}
+
+void TaskSketcherConstraints::on_settings_autoConstraints_changed()
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+
+    bool bstate = qAsConst(ui->settingsButton)->actions()[3]->isChecked();
+
+    Base::ConnectionBlocker block(changedSketchView);
+    sketchView->Autoconstraints.setValue(bstate);
+}
+
+void TaskSketcherConstraints::on_settings_autoRemoveRedundant_changed()
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+
+    bool bstate = qAsConst(ui->settingsButton)->actions()[3]->isChecked();
+
+    if (hGrp->GetBool("AutoRemoveRedundants", false) != bstate) {
+        hGrp->SetBool("AutoRemoveRedundants", bstate);
+    }
+}
+
+void TaskSketcherConstraints::onChangedSketchView(const Gui::ViewProvider& vp, const App::Property& prop)
+{
+    if (sketchView == &vp) {
+        if (&sketchView->Autoconstraints == &prop) {
+            QSignalBlocker block(ui->settingsButton);
+            qAsConst(ui->settingsButton)->actions()[3]->setChecked(sketchView->Autoconstraints.getValue());
+        }
+    }
 }
 
 /* show filter button ==============================================*/

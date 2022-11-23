@@ -37,6 +37,10 @@ namespace App {
 class Property;
 }
 
+namespace Gui {
+    class ViewProvider;
+}
+
 namespace SketcherGui {
 
 using namespace ConstraintFilter;
@@ -179,6 +183,8 @@ public Q_SLOTS:
     void on_settings_restrictVisibility_changed();
     void on_settings_extendedInformation_changed();
     void on_settings_hideInternalAligment_changed();
+    void on_settings_autoConstraints_changed();
+    void on_settings_autoRemoveRedundant_changed();
     void on_filterList_itemChanged(QListWidgetItem* item);
 
 protected:
@@ -188,6 +194,9 @@ protected:
     Connection connectionConstraintsChanged;
 
 private:
+    void onChangedSketchView(const Gui::ViewProvider&, const App::Property&);
+
+private:
     QWidget* proxy;
     bool inEditMode;
     std::unique_ptr<Ui_TaskSketcherConstraints> ui;
@@ -195,6 +204,8 @@ private:
     std::vector<unsigned int> selectionFilter; // holds the constraint ids of the selected constraints
     std::vector<unsigned int> associatedConstraintsFilter; // holds the constraint ids of the constraints associated with the selected geometry
     ConstraintFilterList* filterList;
+    boost::signals2::scoped_connection changedSketchView;
+
 };
 
 } //namespace SketcherGui
