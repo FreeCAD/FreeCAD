@@ -637,22 +637,22 @@ void ConstraintView::swapNamedOfSelectedItems()
 ConstraintFilterList::ConstraintFilterList(QWidget* parent)
     : QListWidget(parent)
 {
+    normalFilterCount = filterItems.size() - 2; //All filter but selected and associated
+    selectedFilterIndex = normalFilterCount;
+    associatedFilterIndex = normalFilterCount + 1;
+
     for (auto const& filterItem : filterItems) {
         Q_UNUSED(filterItem);
         auto it = new QListWidgetItem();
 
         it->setFlags(it->flags() | Qt::ItemIsUserCheckable);
-        if(row(it) < normalFilterCount)
+        addItem(it);
+        if (row(it) < normalFilterCount)
             it->setCheckState(Qt::Checked);
         else //associated and selected should not be checked by default.
             it->setCheckState(Qt::Unchecked);
-        addItem(it);
     }
     languageChange();
-
-    normalFilterCount = count() - 2; //All filter but selected and associated
-    selectedFilterIndex = normalFilterCount;
-    associatedFilterIndex = normalFilterCount + 1;
 }
 
 ConstraintFilterList::~ConstraintFilterList()
@@ -878,7 +878,7 @@ void TaskSketcherConstraints::on_showHideButton_clicked(bool val)
     bool allSelected = true;
     for (int i = 0; i < ui->listWidgetConstraints->count(); ++i){
         QListWidgetItem* it = ui->listWidgetConstraints->item(i);
-        if (it->checkState() == Qt::Unchecked) {
+        if (it->isHidden() == false && it->checkState() == Qt::Unchecked) {
             allSelected = false;
             break;
         }

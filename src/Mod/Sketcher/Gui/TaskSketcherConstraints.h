@@ -108,6 +108,7 @@ private:
         {QT_TR_NOOP("Equality"),1},
         {QT_TR_NOOP("Symmetric"),1},
         {QT_TR_NOOP("Block"),1},
+        {QT_TR_NOOP("Internal Alignment"),1},
         {QT_TR_NOOP("Datums"),0},
         {QT_TR_NOOP("Horizontal Distance"),1},
         {QT_TR_NOOP("Vertical Distance"),1},
@@ -119,7 +120,6 @@ private:
         {QT_TR_NOOP("Snell's Law"),1},
         {QT_TR_NOOP("Named"),0},
         {QT_TR_NOOP("Reference"),0},
-        {QT_TR_NOOP("Internal Alignment"),0},
         {QT_TR_NOOP("Selected constraints"),0},
         {QT_TR_NOOP("Associated constraints"),0},
     };
