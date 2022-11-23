@@ -35,14 +35,12 @@
 // 6: K.u=forces ->u
 // 7: x1, y1 += w * u
 
-#include "MeshFlattening.h"
-
-#include <vector>
 #include <memory>
 #include <tuple>
+#include <vector>
 
-#include <Eigen/Geometry>
-#include <Eigen/IterativeLinearSolvers>
+#include "MeshFlattening.h"
+
 
 using spMat = Eigen::SparseMatrix<double>;
 

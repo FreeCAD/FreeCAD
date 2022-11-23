@@ -20,20 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef _CurveProjector_h_
 #define _CurveProjector_h_
 
 #ifdef FC_USE_GTS
-#  include <gts.h>
+# include <gts.h>
 #endif
 
-#include <gp_Pln.hxx>
 #include <TopoDS_Edge.hxx>
 
-#include <Base/Vector3D.h>
 #include <Mod/Mesh/App/Mesh.h>
 #include <Mod/MeshPart/MeshPartGlobal.h>
+
 
 namespace MeshCore
 {

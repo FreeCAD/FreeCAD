@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # ifdef FC_OS_LINUX
@@ -28,40 +27,35 @@
 # endif
 # include <Bnd_Box.hxx>
 # include <BndLib_Add3dCurve.hxx>
+# include <BRep_Tool.hxx>
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepBuilderAPI_MakeVertex.hxx>
 # include <BRepExtrema_DistShapeShape.hxx>
 # include <GCPnts_AbscissaPoint.hxx>
 # include <GCPnts_UniformDeflection.hxx>
 # include <GCPnts_UniformAbscissa.hxx>
+# include <GeomAPI_IntCS.hxx>
+# include <Geom_Curve.hxx>
+# include <Geom_Plane.hxx>
 # include <gp_Pln.hxx>
+# include <Standard_Failure.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
-# include <Geom_Curve.hxx>
-# include <Geom_Plane.hxx>
-# include <BRep_Tool.hxx>
-# include <GeomAPI_IntCS.hxx>
-# include <Standard_Failure.hxx>
 #endif
 
-
-#include "MeshAlgos.h"
-#include "CurveProjector.h"
-
-#include <Mod/Mesh/App/Core/MeshIO.h>
-#include <Mod/Mesh/App/Core/MeshKernel.h>
-#include <Mod/Mesh/App/Core/Iterator.h>
-#include <Mod/Mesh/App/Core/Algorithm.h>
-#include <Mod/Mesh/App/Core/Projection.h>
-#include <Mod/Mesh/App/Core/Grid.h>
-#include <Mod/Mesh/App/Mesh.h>
-
-#include <Base/Exception.h>
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
 #include <Base/Sequencer.h>
 #include <Base/Stream.h>
+
+#include <Mod/Mesh/App/Core/Algorithm.h>
+#include <Mod/Mesh/App/Core/Grid.h>
+#include <Mod/Mesh/App/Core/Iterator.h>
+#include <Mod/Mesh/App/Core/MeshKernel.h>
+#include <Mod/Mesh/App/Core/Projection.h>
+
+#include "MeshAlgos.h"
 
 
 using namespace MeshPart;

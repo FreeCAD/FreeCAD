@@ -20,32 +20,28 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRepBuilderAPI_MakePolygon.hxx>
 # include <TopoDS.hxx>
 #endif
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
-
-#include <Base/PyObjectBase.h>
 #include <Base/Console.h>
-#include <Base/Vector3D.h>
 #include <Base/Converter.h>
-#include <Base/Interpreter.h>
-#include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
-#include <Mod/Part/App/TopoShapePy.h>
+#include <Base/Interpreter.h>
+#include <Base/Vector3D.h>
+#include <Base/VectorPy.h>
 #include <Mod/Part/App/TopoShapeEdgePy.h>
+#include <Mod/Part/App/TopoShapePy.h>
 #include <Mod/Part/App/TopoShapeWirePy.h>
+#include <Mod/Mesh/App/MeshPy.h>
 #include <Mod/Mesh/App/Core/Algorithm.h>
 #include <Mod/Mesh/App/Core/MeshKernel.h>
-#include <Mod/Mesh/App/Mesh.h>
-#include <Mod/Mesh/App/MeshPy.h>
+
 #include "MeshAlgos.h"
 #include "Mesher.h"
+
 
 namespace MeshPart {
 class Module : public Py::ExtensionModule<Module>

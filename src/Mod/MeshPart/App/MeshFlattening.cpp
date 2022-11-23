@@ -20,23 +20,23 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <map>
+# include <set>
+# include <vector>
+
+# include <BRep_Tool.hxx>
+# include <Geom_BSplineSurface.hxx>
+# include <Geom_Surface.hxx>
+# include <Poly_Triangulation.hxx>
+# include <Standard_Version.hxx>
+# include <TColStd_Array1OfReal.hxx>
+# include <TopLoc_Location.hxx>
+#endif
+
 #include "MeshFlattening.h"
 #include "MeshFlatteningLscmRelax.h"
-#include <Poly_Triangulation.hxx>
-#include <BRep_Tool.hxx>
-#include <Geom_Surface.hxx>
-#include <Geom_BSplineSurface.hxx>
-#include <TColgp_Array1OfPnt2d.hxx>
-#include <TColStd_Array1OfReal.hxx>
-#include <TopLoc_Location.hxx>
-#include <Standard_Version.hxx>
-
-#include <set>
-#include <map>
-#include <vector>
-#include <exception>
 
 
 std::vector<ColMat<double, 3>> getBoundaries(ColMat<double, 3> vertices, ColMat<long, 3> tris)
