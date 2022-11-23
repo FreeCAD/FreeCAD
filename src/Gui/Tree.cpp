@@ -32,6 +32,7 @@
 # include <QHeaderView>
 # include <QMenu>
 # include <QMessageBox>
+# include <QPainter>
 # include <QPixmap>
 # include <QThread>
 # include <QTimer>
@@ -89,6 +90,7 @@ std::set<TreeWidget*> TreeWidget::Instances;
 static TreeWidget* _LastSelectedTreeWidget;
 const int TreeWidget::DocumentType = 1000;
 const int TreeWidget::ObjectType = 1001;
+static bool _DraggingActive;
 static bool _DragEventFilter;
 
 void TreeParams::onItemBackgroundChanged()
@@ -355,13 +357,95 @@ public:
 
 // ---------------------------------------------------------------------------
 
-TreeWidgetEditDelegate::TreeWidgetEditDelegate(QObject* parent)
+namespace Gui {
+/**
+ * TreeWidget item delegate for editing
+ */
+class TreeWidgetItemDelegate: public QStyledItemDelegate {
+    typedef QStyledItemDelegate inherited;
+public:
+    TreeWidgetItemDelegate(QObject* parent=0);
+
+    virtual QWidget* createEditor(QWidget *parent,
+            const QStyleOptionViewItem &, const QModelIndex &index) const;
+
+    virtual QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
+
+    virtual void initStyleOption(QStyleOptionViewItem *option, const QModelIndex &index) const;
+
+    virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+};
+
+} // namespace Gui
+
+TreeWidgetItemDelegate::TreeWidgetItemDelegate(QObject* parent)
     : QStyledItemDelegate(parent)
 {
 }
 
-QWidget* TreeWidgetEditDelegate::createEditor(
-    QWidget* parent, const QStyleOptionViewItem&, const QModelIndex& index) const
+void TreeWidgetItemDelegate::paint(QPainter *painter,
+                const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+    QStyleOptionViewItem opt = option;
+    initStyleOption(&opt, index);
+
+    TreeWidget * tree = static_cast<TreeWidget*>(parent());
+    auto style = tree->style();
+
+    // If the second column is not shown, we'll trim the color background when
+    // rendering as transparent overlay.
+    bool trimBG = TreeParams::getHideColumn();
+    QRect rect = opt.rect;
+
+    if (index.column() == 0) {
+        if (tree->testAttribute(Qt::WA_NoSystemBackground)
+                && (trimBG || (opt.backgroundBrush.style() == Qt::NoBrush
+                                && _TreeItemBackground.style() != Qt::NoBrush)))
+        {
+            const int margin = style->pixelMetric(QStyle::PM_FocusFrameHMargin, &option, tree) + 1;
+            // 2 margin for text, 2 margin for decoration (icon)
+            int width = 4*margin + opt.fontMetrics.boundingRect(opt.text).width()
+                + opt.decorationSize.width() + TreeParams::getItemBackgroundPadding();
+            if (TreeParams::getCheckBoxesSelection()) {
+                // another 2 margin for checkbox
+                width += 2*margin + style->pixelMetric(QStyle::PM_IndicatorWidth)
+                    + style->pixelMetric(QStyle::PM_LayoutHorizontalSpacing);
+            }
+            if (width < rect.width())
+                rect.setWidth(width);
+            if (trimBG) {
+                rect.setWidth(rect.width() + 5);
+                opt.rect = rect;
+                if (opt.backgroundBrush.style() == Qt::NoBrush)
+                    painter->fillRect(rect, _TreeItemBackground);
+            } else if (!opt.state.testFlag(QStyle::State_Selected))
+                painter->fillRect(rect, _TreeItemBackground);
+        }
+
+    }
+
+    style->drawControl(QStyle::CE_ItemViewItem, &opt, painter, tree);
+}
+
+void TreeWidgetItemDelegate::initStyleOption(QStyleOptionViewItem *option,
+                                             const QModelIndex &index) const
+{
+    inherited::initStyleOption(option, index);
+
+    TreeWidget * tree = static_cast<TreeWidget*>(parent());
+    QTreeWidgetItem * item = tree->itemFromIndex(index);
+    if (!item || item->type() != TreeWidget::ObjectType)
+        return;
+
+    QSize size;
+    size = option->icon.actualSize(QSize(0xffff, 0xffff));
+    if (size.height())
+        option->decorationSize = QSize(size.width()*TreeWidget::iconSize()/size.height(),
+                                       TreeWidget::iconSize());
+}
+
+QWidget* TreeWidgetItemDelegate::createEditor(
+        QWidget *parent, const QStyleOptionViewItem &, const QModelIndex &index) const
 {
     auto ti = static_cast<QTreeWidgetItem*>(index.internalPointer());
     if (ti->type() != TreeWidget::ObjectType || index.column() > 1)
@@ -375,14 +459,27 @@ QWidget* TreeWidgetEditDelegate::createEditor(
     App::GetApplication().setActiveTransaction(str.str().c_str());
     FC_LOG("create editor transaction " << App::GetApplication().getActiveTransaction());
 
-    auto le = new ExpLineEdit(parent);
-    le->setFrame(false);
-    le->setReadOnly(prop.isReadOnly());
-    le->bind(App::ObjectIdentifier(prop));
-    le->setAutoApply(true);
-    return le;
+    QLineEdit *editor;
+    if(TreeParams::getLabelExpression()) {
+        ExpLineEdit *le = new ExpLineEdit(parent);
+        le->setAutoApply(true);
+        le->setFrame(false);
+        le->bind(App::ObjectIdentifier(prop));
+        editor = le;
+    } else {
+        editor = new QLineEdit(parent);
+    }
+    editor->setReadOnly(prop.isReadOnly());
+    return editor;
 }
 
+QSize TreeWidgetItemDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+    QSize size = QStyledItemDelegate::sizeHint(option, index);
+    int spacing = std::max(0, static_cast<int>(TreeParams::getItemSpacing()));
+    size.setHeight(size.height() + spacing);
+    return size;
+}
 // ---------------------------------------------------------------------------
 
 TreeWidget::TreeWidget(const char* name, QWidget* parent)
@@ -404,7 +501,7 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
     this->setDropIndicatorShown(false);
     this->setDragDropMode(QTreeWidget::InternalMove);
     this->setColumnCount(2);
-    this->setItemDelegate(new TreeWidgetEditDelegate(this));
+    this->setItemDelegate(new TreeWidgetItemDelegate(this));
 
     this->showHiddenAction = new QAction(this);
     this->showHiddenAction->setCheckable(true);
@@ -1170,6 +1267,47 @@ void TreeWidget::selectAllInstances(const ViewProviderDocumentObject& vpd) {
         v.second->selectAllInstances(vpd);
 }
 
+static int &treeIconSize()
+{
+    static int _treeIconSize = -1;
+
+    if (_treeIconSize < 0)
+        _treeIconSize = TreeParams::getIconSize();
+    return _treeIconSize;
+}
+
+int TreeWidget::iconHeight() const
+{
+    return treeIconSize();
+}
+
+void TreeWidget::setIconHeight(int height)
+{
+    if (treeIconSize() == height)
+        return;
+
+    treeIconSize() = height;
+    if (treeIconSize() <= 0)
+        treeIconSize() = std::max(10, iconSize());
+
+    for(auto tree : Instances)
+        tree->setIconSize(QSize(treeIconSize(), treeIconSize()));
+}
+
+int TreeWidget::iconSize() {
+    static int defaultSize;
+    if (defaultSize == 0) {
+        auto tree = instance();
+        if(tree)
+            defaultSize = tree->viewOptions().decorationSize.width();
+        else
+            defaultSize = QApplication::style()->pixelMetric(QStyle::PM_SmallIconSize);
+    }
+    if (treeIconSize() > 0)
+        return std::max(10, treeIconSize());
+    return defaultSize;
+}
+
 TreeWidget* TreeWidget::instance() {
     auto res = _LastSelectedTreeWidget;
     if (res && res->isVisible())
@@ -1336,6 +1474,15 @@ bool TreeWidget::eventFilter(QObject*, QEvent* ev) {
     return false;
 }
 
+namespace Gui {
+
+bool isTreeViewDragging()
+{
+    return _DraggingActive;
+}
+
+} // namespace Gui
+
 void TreeWidget::keyPressEvent(QKeyEvent* event)
 {
     if (event->matches(QKeySequence::Find)) {
@@ -1477,6 +1624,7 @@ void TreeWidget::startDragging() {
 
 void TreeWidget::startDrag(Qt::DropActions supportedActions)
 {
+    Base::StateLocker guard(_DraggingActive);
     QTreeWidget::startDrag(supportedActions);
     if (_DragEventFilter) {
         _DragEventFilter = false;

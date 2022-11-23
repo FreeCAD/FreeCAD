@@ -67,6 +67,8 @@
 #include "Macro.h"
 #include "MainWindow.h"
 #include "NavigationStyle.h"
+#include "OverlayParams.h"
+#include "OverlayManager.h"
 #include "SceneInspector.h"
 #include "Selection.h"
 #include "SelectionObject.h"
@@ -3939,6 +3941,279 @@ Action * StdCmdSelBoundingBox::createAction()
 }
 
 //===========================================================================
+// Std_DockOverlayAll
+//===========================================================================
+
+DEF_STD_CMD(StdCmdDockOverlayAll)
+
+StdCmdDockOverlayAll::StdCmdDockOverlayAll()
+  :Command("Std_DockOverlayAll")
+{
+  sGroup        = "View";
+  sMenuText     = QT_TR_NOOP("Toggle overlay for all");
+  sToolTipText  = QT_TR_NOOP("Toggle overlay mode for all docked windows");
+  sWhatsThis    = "Std_DockOverlayAll";
+  sStatusTip    = sToolTipText;
+  sAccel        = "F4";
+  eType         = 0;
+}
+
+void StdCmdDockOverlayAll::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    OverlayManager::instance()->setOverlayMode(OverlayManager::OverlayMode::ToggleAll);
+}
+
+//===========================================================================
+// Std_DockOverlayTransparentAll
+//===========================================================================
+
+DEF_STD_CMD(StdCmdDockOverlayTransparentAll)
+
+StdCmdDockOverlayTransparentAll::StdCmdDockOverlayTransparentAll()
+  :Command("Std_DockOverlayTransparentAll")
+{
+  sGroup        = "View";
+  sMenuText     = QT_TR_NOOP("Toggle transparent for all");
+  sToolTipText  = QT_TR_NOOP("Toggle transparent for all overlay docked window.\n"
+                             "This makes the docked widget stay transparent at all times.");
+  sWhatsThis    = "Std_DockOverlayTransparentAll";
+  sStatusTip    = sToolTipText;
+  sAccel        = "SHIFT+F4";
+  eType         = 0;
+}
+
+void StdCmdDockOverlayTransparentAll::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    OverlayManager::instance()->setOverlayMode(OverlayManager::OverlayMode::ToggleTransparentAll);
+}
+
+//===========================================================================
+// Std_DockOverlayToggle
+//===========================================================================
+
+DEF_STD_CMD(StdCmdDockOverlayToggle)
+
+StdCmdDockOverlayToggle::StdCmdDockOverlayToggle()
+  :Command("Std_DockOverlayToggle")
+{
+  sGroup        = "View";
+  sMenuText     = QT_TR_NOOP("Toggle overlay");
+  sToolTipText  = QT_TR_NOOP("Toggle overlay mode of the docked window under cursor");
+  sWhatsThis    = "Std_DockOverlayToggle";
+  sStatusTip    = sToolTipText;
+  sAccel        = "F3";
+  eType         = 0;
+}
+
+void StdCmdDockOverlayToggle::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    OverlayManager::instance()->setOverlayMode(OverlayManager::OverlayMode::ToggleActive);
+}
+
+//===========================================================================
+// Std_DockOverlayToggleTransparent
+//===========================================================================
+
+DEF_STD_CMD(StdCmdDockOverlayToggleTransparent)
+
+StdCmdDockOverlayToggleTransparent::StdCmdDockOverlayToggleTransparent()
+  :Command("Std_DockOverlayToggleTransparent")
+{
+    sGroup        = "Standard-View";
+    sMenuText     = QT_TR_NOOP("Toggle transparent");
+    sToolTipText  = QT_TR_NOOP("Toggle transparent mode for the docked widget under cursor.\n"
+                               "This makes the docked widget stay transparent at all times.");
+    sWhatsThis    = "Std_DockOverlayToggleTransparent";
+    sStatusTip    = sToolTipText;
+    sAccel        = "SHIFT+F3";
+    eType         = 0;
+}
+
+void StdCmdDockOverlayToggleTransparent::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    OverlayManager::instance()->setOverlayMode(OverlayManager::OverlayMode::ToggleTransparent);
+}
+
+//===========================================================================
+// Std_DockOverlayToggleLeft
+//===========================================================================
+
+DEF_STD_CMD(StdCmdDockOverlayToggleLeft)
+
+StdCmdDockOverlayToggleLeft::StdCmdDockOverlayToggleLeft()
+  :Command("Std_DockOverlayToggleLeft")
+{
+    sGroup        = "Standard-View";
+    sMenuText     = QT_TR_NOOP("Toggle left");
+    sToolTipText  = QT_TR_NOOP("Show/hide left overlay panel");
+    sWhatsThis    = "Std_DockOverlayToggleLeft";
+    sStatusTip    = sToolTipText;
+    sAccel        = "SHIFT+Left";
+    sPixmap       = "qss:overlay/close.svg";
+    eType         = 0;
+}
+
+void StdCmdDockOverlayToggleLeft::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    OverlayManager::instance()->setOverlayMode(OverlayManager::OverlayMode::ToggleLeft);
+}
+
+//===========================================================================
+// Std_DockOverlayToggleRight
+//===========================================================================
+
+DEF_STD_CMD(StdCmdDockOverlayToggleRight)
+
+StdCmdDockOverlayToggleRight::StdCmdDockOverlayToggleRight()
+  :Command("Std_DockOverlayToggleRight")
+{
+    sGroup        = "Standard-View";
+    sMenuText     = QT_TR_NOOP("Toggle right");
+    sToolTipText  = QT_TR_NOOP("Show/hide right overlay panel");
+    sWhatsThis    = "Std_DockOverlayToggleRight";
+    sStatusTip    = sToolTipText;
+    sAccel        = "SHIFT+Right";
+    sPixmap       = "qss:overlay/close.svg";
+    eType         = 0;
+}
+
+void StdCmdDockOverlayToggleRight::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    OverlayManager::instance()->setOverlayMode(OverlayManager::OverlayMode::ToggleRight);
+}
+
+//===========================================================================
+// Std_DockOverlayToggleTop
+//===========================================================================
+
+DEF_STD_CMD(StdCmdDockOverlayToggleTop)
+
+StdCmdDockOverlayToggleTop::StdCmdDockOverlayToggleTop()
+  :Command("Std_DockOverlayToggleTop")
+{
+    sGroup        = "Standard-View";
+    sMenuText     = QT_TR_NOOP("Toggle top");
+    sToolTipText  = QT_TR_NOOP("Show/hide top overlay panel");
+    sWhatsThis    = "Std_DockOverlayToggleTop";
+    sStatusTip    = sToolTipText;
+    sAccel        = "SHIFT+Up";
+    sPixmap       = "qss:overlay/close.svg";
+    eType         = 0;
+}
+
+void StdCmdDockOverlayToggleTop::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    OverlayManager::instance()->setOverlayMode(OverlayManager::OverlayMode::ToggleTop);
+}
+
+//===========================================================================
+// Std_DockOverlayToggleBottom
+//===========================================================================
+
+DEF_STD_CMD(StdCmdDockOverlayToggleBottom)
+
+StdCmdDockOverlayToggleBottom::StdCmdDockOverlayToggleBottom()
+  :Command("Std_DockOverlayToggleBottom")
+{
+    sGroup        = "Standard-View";
+    sMenuText     = QT_TR_NOOP("Toggle bottom");
+    sToolTipText  = QT_TR_NOOP("Show/hide bottom overlay panel");
+    sWhatsThis    = "Std_DockOverlayToggleBottom";
+    sStatusTip    = sToolTipText;
+    sAccel        = "SHIFT+Down";
+    sPixmap       = "qss:overlay/close.svg";
+    eType         = 0;
+}
+
+void StdCmdDockOverlayToggleBottom::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    OverlayManager::instance()->setOverlayMode(OverlayManager::OverlayMode::ToggleBottom);
+}
+
+//===========================================================================
+// Std_DockOverlayMouseTransparent
+//===========================================================================
+
+DEF_STD_CMD_AC(StdCmdDockOverlayMouseTransparent)
+
+StdCmdDockOverlayMouseTransparent::StdCmdDockOverlayMouseTransparent()
+  :Command("Std_DockOverlayMouseTransparent")
+{
+  sGroup        = "View";
+  sMenuText     = QT_TR_NOOP("Bypass mouse events in dock overlay");
+  sToolTipText  = QT_TR_NOOP("Bypass all mouse events in dock overlay");
+  sWhatsThis    = "Std_DockOverlayMouseTransparent";
+  sStatusTip    = sToolTipText;
+  sAccel        = "T, T";
+  eType         = NoTransaction;
+}
+
+void StdCmdDockOverlayMouseTransparent::activated(int iMsg)
+{
+    (void)iMsg;
+    bool checked = !OverlayManager::instance()->isMouseTransparent();
+    OverlayManager::instance()->setMouseTransparent(checked);
+    if(_pcAction)
+        _pcAction->setChecked(checked,true);
+}
+
+Action * StdCmdDockOverlayMouseTransparent::createAction(void) {
+    Action *pcAction = Command::createAction();
+    pcAction->setCheckable(true);
+    pcAction->setIcon(QIcon());
+    _pcAction = pcAction;
+    isActive();
+    return pcAction;
+}
+
+bool StdCmdDockOverlayMouseTransparent::isActive() {
+    bool checked = OverlayManager::instance()->isMouseTransparent();
+    if(_pcAction && _pcAction->isChecked()!=checked)
+        _pcAction->setChecked(checked,true);
+    return true;
+}
+
+// ============================================================================
+
+class StdCmdDockOverlay : public GroupCommand
+{
+public:
+    StdCmdDockOverlay()
+        :GroupCommand("Std_DockOverlay")
+    {
+        sGroup        = "View";
+        sMenuText     = QT_TR_NOOP("Dock window overlay");
+        sToolTipText  = QT_TR_NOOP("Setting docked window overlay mode");
+        sWhatsThis    = "Std_DockOverlay";
+        sStatusTip    = sToolTipText;
+        eType         = 0;
+        bCanLog       = false;
+
+        addCommand(new StdCmdDockOverlayAll());
+        addCommand(new StdCmdDockOverlayTransparentAll());
+        addCommand();
+        addCommand(new StdCmdDockOverlayToggle());
+        addCommand(new StdCmdDockOverlayToggleTransparent());
+        addCommand();
+        addCommand(new StdCmdDockOverlayMouseTransparent());
+        addCommand();
+        addCommand(new StdCmdDockOverlayToggleLeft());
+        addCommand(new StdCmdDockOverlayToggleRight());
+        addCommand(new StdCmdDockOverlayToggleTop());
+        addCommand(new StdCmdDockOverlayToggleBottom());
+    };
+    virtual const char* className() const {return "StdCmdDockOverlay";}
+};
+
+//===========================================================================
 // Std_StoreWorkingView
 //===========================================================================
 DEF_STD_CMD_A(StdStoreWorkingView)
@@ -4087,6 +4362,7 @@ void CreateViewStdCommands()
     rcCmdMgr.addCommand(new CmdViewMeasureToggleAll());
     rcCmdMgr.addCommand(new StdCmdSelBoundingBox());
     rcCmdMgr.addCommand(new StdCmdTreeViewActions());
+    rcCmdMgr.addCommand(new StdCmdDockOverlay());
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     if(hGrp->GetASCII("GestureRollFwdCommand").empty())

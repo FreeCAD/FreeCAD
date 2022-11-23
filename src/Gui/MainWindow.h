@@ -106,6 +106,10 @@ public:
      */
     QList<QWidget*> windows(QMdiArea::WindowOrder order = QMdiArea::CreationOrder) const;
     /**
+     * Returns the internal QMdiArea instance.
+     */
+    QMdiArea *getMdiArea() const;
+    /**
      * Can be called after the caption of an MDIView has changed to update the tab's caption.
      */
     void tabChanged(MDIView* view);
@@ -152,7 +156,7 @@ public:
     /// Loads the main window settings.
     void loadWindowSettings();
     /// Saves the main window settings.
-    void saveWindowSettings();
+    void saveWindowSettings(bool canDelay = false);
     //@}
 
     /** @name Menu
@@ -202,6 +206,8 @@ public:
 
     enum StatusType {None, Err, Wrn, Pane, Msg, Log, Tmp, Critical};
     void showStatus(int type, const QString & message);
+
+    void initDockWindows(bool show);
 
 public Q_SLOTS:
     /**
@@ -254,6 +260,8 @@ public Q_SLOTS:
 
     void showMessage (const QString & message, int timeout = 0);
 
+    bool isRestoringWindowState() const;
+
 protected:
     /**
      * This method checks if the main window can be closed by checking all open documents and views.
@@ -283,14 +291,10 @@ protected:
 
 private:
     void setupDockWindows();
-    bool setupTreeView(const std::string&);
-    bool setupTaskView(const std::string&);
-    bool setupPropertyView(const std::string&);
-    bool setupSelectionView(const std::string&);
-    bool setupComboView(const std::string&);
-    bool setupDAGView(const std::string&);
-    bool setupReportView(const std::string&);
-    bool setupPythonConsole(const std::string&);
+    bool setupTaskView();
+    bool setupSelectionView();
+    bool setupReportView();
+    bool setupPythonConsole();
 
     static void renderDevBuildWarning(QPainter &painter, const QPoint startPosition, const QSize maxSize);
 

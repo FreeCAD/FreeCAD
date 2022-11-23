@@ -23,6 +23,7 @@
 #ifndef GUI_DOCKWND_COMBOVIEW_H
 #define GUI_DOCKWND_COMBOVIEW_H
 
+#include <Base/Parameter.h>
 #include "DockWindow.h"
 
 
@@ -69,6 +70,8 @@ public:
      * A more elaborate description of the constructor.
      */
     ComboView(Gui::Document*  pcDocument, QWidget *parent=nullptr);
+
+    void setShowModel(bool);
 
     /**
      * A destructor.
