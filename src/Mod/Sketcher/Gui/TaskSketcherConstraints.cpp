@@ -975,6 +975,7 @@ void TaskSketcherConstraints::on_filterBox_stateChanged(int val)
 /*hide all show all button  =====================================================*/
 void TaskSketcherConstraints::on_showHideButton_clicked(bool val)
 {
+    Q_UNUSED(val)
     bool allSelected = true;
     for (int i = 0; i < ui->listWidgetConstraints->count(); ++i){
         QListWidgetItem* it = ui->listWidgetConstraints->item(i);
