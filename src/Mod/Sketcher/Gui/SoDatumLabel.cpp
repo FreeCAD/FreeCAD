@@ -504,10 +504,6 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
     }
 
     if (this->datumtype.getValue() == SYMMETRIC) {
-        // For the symmetry constraint that does not have text, but does have arrows
-        //this->imgHeight = 3.36f;
-        //this->imgWidth  = 5.26f;
-
         this->imgHeight = scale*25.0f;
         this->imgWidth = scale*25.0f;
     }
@@ -522,13 +518,13 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
     glDisable(GL_LIGHTING);
 
     //Enable Anti-alias
-    if(action->isSmoothing())
-    {
-      glEnable(GL_LINE_SMOOTH);
-      glEnable(GL_BLEND);
-      glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-      glHint(GL_LINE_SMOOTH_HINT,GL_NICEST);
+    if (action->isSmoothing()) {
+        glEnable(GL_LINE_SMOOTH);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+        glHint(GL_LINE_SMOOTH_HINT,GL_NICEST);
     }
+
     // Position for Datum Text Label
     float angle = 0;
 
@@ -607,12 +603,13 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
             // Increase Margin to improve visibility
             float tmpMargin = this->imgHeight /0.75;
             par3 = par4;
-            if((par2-par1).dot(dir) > (par4 - par1).length()) {
+            if ((par2-par1).dot(dir) > (par4 - par1).length()) {
                 par3 = par2;
                 par2 = par1 - dir * tmpMargin;
                 flipTriang = true;
             }
-        } else if ((par2-par1).dot(dir) < 0.f) {
+        }
+        else if ((par2-par1).dot(dir) < 0.f) {
             float tmpMargin = this->imgHeight /0.75;
             par2 = par1;
             if((par3-par1).dot(dir) < 0.f) {
@@ -623,17 +620,17 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         }
         // Perp Lines
         glBegin(GL_LINES);
-        glVertex2f(p1[0], p1[1]);
-        glVertex2f(perp1[0], perp1[1]);
+            glVertex2f(p1[0], p1[1]);
+            glVertex2f(perp1[0], perp1[1]);
 
-        glVertex2f(p2[0], p2[1]);
-        glVertex2f(perp2[0], perp2[1]);
+            glVertex2f(p2[0], p2[1]);
+            glVertex2f(perp2[0], perp2[1]);
 
-        glVertex2f(par1[0], par1[1]);
-        glVertex2f(par2[0], par2[1]);
+            glVertex2f(par1[0], par1[1]);
+            glVertex2f(par2[0], par2[1]);
 
-        glVertex2f(par3[0], par3[1]);
-        glVertex2f(par4[0], par4[1]);
+            glVertex2f(par3[0], par3[1]);
+            glVertex2f(par4[0], par4[1]);
         glEnd();
 
         SbVec3f ar1 = par1 + ((flipTriang) ? -1 : 1) * dir * 0.866f * 2 * margin;
@@ -646,13 +643,13 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
 
         //Draw a pretty arrowhead (Equilateral) (Eventually could be improved to other shapes?)
         glBegin(GL_TRIANGLES);
-          glVertex2f(par1[0], par1[1]);
-          glVertex2f(ar1[0], ar1[1]);
-          glVertex2f(ar2[0], ar2[1]);
+            glVertex2f(par1[0], par1[1]);
+            glVertex2f(ar1[0], ar1[1]);
+            glVertex2f(ar2[0], ar2[1]);
 
-          glVertex2f(par4[0], par4[1]);
-          glVertex2f(ar3[0], ar3[1]);
-          glVertex2f(ar4[0], ar4[1]);
+            glVertex2f(par4[0], par4[1]);
+            glVertex2f(ar3[0], ar3[1]);
+            glVertex2f(ar4[0], ar4[1]);
         glEnd();
 
         // BOUNDING BOX CALCULATION - IMPORTANT
@@ -711,7 +708,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
 
         SbVec3f p3 = pos +  dir * (this->imgWidth / 2 + margin);
         if ((p3-p1).length() > (p2-p1).length())
-        p2 = p3;
+            p2 = p3;
 
         // Calculate the points
         SbVec3f pnt1 = pos - dir * (margin + this->imgWidth / 2);
@@ -719,17 +716,17 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
 
         // Draw the Lines
         glBegin(GL_LINES);
-        glVertex2f(p1[0], p1[1]);
-        glVertex2f(pnt1[0], pnt1[1]);
+            glVertex2f(p1[0], p1[1]);
+            glVertex2f(pnt1[0], pnt1[1]);
 
-        glVertex2f(pnt2[0], pnt2[1]);
-        glVertex2f(p2[0], p2[1]);
+            glVertex2f(pnt2[0], pnt2[1]);
+            glVertex2f(p2[0], p2[1]);
         glEnd();
 
         glBegin(GL_TRIANGLES);
-          glVertex2f(ar0[0], ar0[1]);
-          glVertex2f(ar1[0], ar1[1]);
-          glVertex2f(ar2[0], ar2[1]);
+            glVertex2f(ar0[0], ar0[1]);
+            glVertex2f(ar1[0], ar1[1]);
+            glVertex2f(ar2[0], ar2[1]);
         glEnd();
 
         if (this->datumtype.getValue() == DIAMETER) {
@@ -740,9 +737,9 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
             ar1_1 -= normal * margin;
 
             glBegin(GL_TRIANGLES);
-            glVertex2f(ar0_1[0], ar0_1[1]);
-            glVertex2f(ar1_1[0], ar1_1[1]);
-            glVertex2f(ar2_1[0], ar2_1[1]);
+                glVertex2f(ar0_1[0], ar0_1[1]);
+                glVertex2f(ar1_1[0], ar1_1[1]);
+                glVertex2f(ar2_1[0], ar2_1[1]);
             glEnd();
 
         }
@@ -801,9 +798,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         // Draw
         glBegin(GL_LINE_STRIP);
 
-        int i=0;
-
-        for (; i < countSegments; i++) {
+        for (int i=0; i < countSegments; i++) {
             double theta = startangle + segment*i;
             SbVec3f v1 = p0+SbVec3f(r*cos(theta),r*sin(theta),0);
             glVertex2f(v1[0],v1[1]);
@@ -811,8 +806,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         glEnd();
 
         glBegin(GL_LINE_STRIP);
-        i=0;
-        for (; i < countSegments; i++) {
+        for (int i=0; i < countSegments; i++) {
             double theta = endangle - segment*i;
             SbVec3f v1 = p0+SbVec3f(r*cos(theta),r*sin(theta),0);
             glVertex2f(v1[0],v1[1]);
@@ -829,11 +823,11 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         SbVec3f pnt4 = p0+(r+margin)*v2;
 
         glBegin(GL_LINES);
-        glVertex2f(pnt1[0],pnt1[1]);
-        glVertex2f(pnt2[0],pnt2[1]);
+            glVertex2f(pnt1[0],pnt1[1]);
+            glVertex2f(pnt2[0],pnt2[1]);
 
-        glVertex2f(pnt3[0],pnt3[1]);
-        glVertex2f(pnt4[0],pnt4[1]);
+            glVertex2f(pnt3[0],pnt3[1]);
+            glVertex2f(pnt4[0],pnt4[1]);
         glEnd();
 
         // BOUNDING BOX CALCULATION - IMPORTANT
@@ -888,12 +882,12 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         ar1 -= normal * margin;
 
         glBegin(GL_LINES);
-          glVertex3f(p1[0], p1[1], ZCONSTR);
-          glVertex3f(ar0[0], ar0[1], ZCONSTR);
-          glVertex3f(ar0[0], ar0[1], ZCONSTR);
-          glVertex3f(ar1[0], ar1[1], ZCONSTR);
-          glVertex3f(ar0[0], ar0[1], ZCONSTR);
-          glVertex3f(ar2[0], ar2[1], ZCONSTR);
+            glVertex3f(p1[0], p1[1], ZCONSTR);
+            glVertex3f(ar0[0], ar0[1], ZCONSTR);
+            glVertex3f(ar0[0], ar0[1], ZCONSTR);
+            glVertex3f(ar1[0], ar1[1], ZCONSTR);
+            glVertex3f(ar0[0], ar0[1], ZCONSTR);
+            glVertex3f(ar2[0], ar2[1], ZCONSTR);
         glEnd();
 
         // Calculate coordinates for the second arrow
@@ -904,12 +898,12 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         ar4 -= normal * margin;
 
         glBegin(GL_LINES);
-          glVertex3f(p2[0], p2[1], ZCONSTR);
-          glVertex3f(ar3[0], ar3[1], ZCONSTR);
-          glVertex3f(ar3[0], ar3[1], ZCONSTR);
-          glVertex3f(ar4[0], ar4[1], ZCONSTR);
-          glVertex3f(ar3[0], ar3[1], ZCONSTR);
-          glVertex3f(ar5[0], ar5[1], ZCONSTR);
+            glVertex3f(p2[0], p2[1], ZCONSTR);
+            glVertex3f(ar3[0], ar3[1], ZCONSTR);
+            glVertex3f(ar3[0], ar3[1], ZCONSTR);
+            glVertex3f(ar4[0], ar4[1], ZCONSTR);
+            glVertex3f(ar3[0], ar3[1], ZCONSTR);
+            glVertex3f(ar5[0], ar5[1], ZCONSTR);
         glEnd();
 
         // BOUNDING BOX CALCULATION - IMPORTANT
