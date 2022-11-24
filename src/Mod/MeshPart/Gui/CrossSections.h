@@ -23,11 +23,13 @@
 #ifndef MESHPARTGUI_CROSSSECTIONS_H
 #define MESHPARTGUI_CROSSSECTIONS_H
 
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/TaskView/TaskView.h>
-#include <Base/BoundBox.h>
 #include <QDialog>
 #include <QPointer>
+
+#include <Base/BoundBox.h>
+#include <Gui/TaskView/TaskDialog.h>
+#include <Gui/TaskView/TaskView.h>
+
 
 namespace Gui {
 class View3DInventor;

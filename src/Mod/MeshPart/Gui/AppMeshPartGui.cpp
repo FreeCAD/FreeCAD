@@ -22,16 +22,15 @@
 
 #include "PreCompiled.h"
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
-
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/PyObjectBase.h>
 #include <Gui/Application.h>
 #include <Gui/Language/Translator.h>
+
 #include "CurveOnMesh.h"
 #include "Workbench.h"
+
 
 // use a different name to CreateCommand()
 void CreateMeshPartCommands();

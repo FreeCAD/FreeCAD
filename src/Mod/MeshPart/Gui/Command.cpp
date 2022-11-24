@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QApplication>
@@ -28,22 +27,22 @@
 # include <QPushButton>
 #endif
 
-#include <Mod/Mesh/App/MeshFeature.h>
-
-#include <Base/Converter.h>
 #include <App/Application.h>
 #include <App/Document.h>
+#include <Base/Converter.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
-#include <Gui/FileDialog.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
-#include "Tessellation.h"
+#include <Mod/Mesh/App/MeshFeature.h>
+
 #include "CrossSections.h"
 #include "TaskCurveOnMesh.h"
+#include "Tessellation.h"
+
 
 using namespace std;
 
