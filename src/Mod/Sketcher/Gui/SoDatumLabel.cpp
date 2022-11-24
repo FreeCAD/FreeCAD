@@ -44,6 +44,7 @@
 # include <Inventor/misc/SoState.h>
 # include <cmath>
 # include <Inventor/actions/SoGetMatrixAction.h>
+# include <Inventor/elements/SoFocalDistanceElement.h>
 # include <Inventor/elements/SoFontNameElement.h>
 # include <Inventor/elements/SoFontSizeElement.h>
 # include <Inventor/elements/SoModelMatrixElement.h>
@@ -434,11 +435,15 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
     * This is not documented and therefore may change on later coin versions!
     */
     const SbViewVolume & vv = SoViewVolumeElement::get(state);
-    // As reference use the center point the camera is looking at on the near plane
+    // As reference use the center point the camera is looking at on the focal plane
     // because then independent of the camera we get a constant scale factor when panning.
     // If we used (0,0,0) instead then the scale factor would change heavily in perspective
     // rendering mode. See #0002921 and #0002922.
-    SbVec3f center = vv.getSightPoint(vv.getNearDist());
+    // It's important to use the distance to the focal plane an not near or far plane because
+    // depending on additionally displayed objects they may change heavily and thus impact the
+    // scale factor. See #7082 and #7860.
+    float focal = SoFocalDistanceElement::get(state);
+    SbVec3f center = vv.getSightPoint(focal);
     float scale = vv.getWorldToScreenScale(center, 1.f);
     const SbViewportRegion & vp = SoViewportRegionElement::get(state);
     SbVec2s vp_size = vp.getViewportSizePixels();
