@@ -84,6 +84,10 @@ protected:
 
 private:
     float getScaleFactor(SoState*) const;
+    void generateDistancePrimitives(SoAction * action, const SbVec3f&, const SbVec3f&);
+    void generateDiameterPrimitives(SoAction * action, const SbVec3f&, const SbVec3f&);
+    void generateAnglePrimitives(SoAction * action, const SbVec3f&);
+    void generateSymmetricPrimitives(SoAction * action, const SbVec3f&, const SbVec3f&);
 
 private:
     void drawImage();

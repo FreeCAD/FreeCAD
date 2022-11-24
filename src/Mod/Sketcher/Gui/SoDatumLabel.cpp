@@ -155,12 +155,242 @@ void SoDatumLabel::computeBBox(SoAction * /*action*/, SbBox3f &box, SbVec3f &cen
     }
 }
 
+void SoDatumLabel::generateDistancePrimitives(SoAction * action, const SbVec3f& p1, const SbVec3f& p2)
+{
+    float length = this->param1.getValue();
+    float length2 = this->param2.getValue();
+    SbVec3f dir, normal;
+    if (this->datumtype.getValue() == DISTANCE) {
+        dir = (p2-p1);
+    } else if (this->datumtype.getValue() == DISTANCEX) {
+        dir = SbVec3f( (p2[0] - p1[0] >= FLT_EPSILON) ? 1 : -1, 0, 0);
+    } else if (this->datumtype.getValue() == DISTANCEY) {
+        dir = SbVec3f(0, (p2[1] - p1[1] >= FLT_EPSILON) ? 1 : -1, 0);
+    }
+
+    dir.normalize();
+    normal = SbVec3f (-dir[1],dir[0],0);
+
+    float normproj12 = (p2-p1).dot(normal);
+    SbVec3f p1_ = p1 + normproj12 * normal;
+
+    SbVec3f midpos = (p1_ + p2)/2;
+    // Get magnitude of angle between horizontal
+    float angle = atan2f(dir[1],dir[0]);
+
+    SbVec3f img1 = SbVec3f(-this->imgWidth / 2, -this->imgHeight / 2, 0.f);
+    SbVec3f img2 = SbVec3f(-this->imgWidth / 2,  this->imgHeight / 2, 0.f);
+    SbVec3f img3 = SbVec3f( this->imgWidth / 2, -this->imgHeight / 2, 0.f);
+    SbVec3f img4 = SbVec3f( this->imgWidth / 2,  this->imgHeight / 2, 0.f);
+
+    // Rotate through an angle
+    float s = sin(angle);
+    float c = cos(angle);
+
+    img1 = SbVec3f((img1[0] * c) - (img1[1] * s), (img1[0] * s) + (img1[1] * c), 0.f);
+    img2 = SbVec3f((img2[0] * c) - (img2[1] * s), (img2[0] * s) + (img2[1] * c), 0.f);
+    img3 = SbVec3f((img3[0] * c) - (img3[1] * s), (img3[0] * s) + (img3[1] * c), 0.f);
+    img4 = SbVec3f((img4[0] * c) - (img4[1] * s), (img4[0] * s) + (img4[1] * c), 0.f);
+
+    SbVec3f textOffset = midpos + normal * length + dir * length2;
+
+    img1 += textOffset;
+    img2 += textOffset;
+    img3 += textOffset;
+    img4 += textOffset;
+
+    // Primitive Shape is only for text as this should only be selectable
+    SoPrimitiveVertex pv;
+
+    this->beginShape(action, QUADS);
+
+    pv.setNormal( SbVec3f(0.f, 0.f, 1.f) );
+
+    // Set coordinates
+    pv.setPoint( img1 );
+    shapeVertex(&pv);
+
+    pv.setPoint( img2 );
+    shapeVertex(&pv);
+
+    pv.setPoint( img3 );
+    shapeVertex(&pv);
+
+    pv.setPoint( img4 );
+    shapeVertex(&pv);
+
+    this->endShape();
+}
+
+void SoDatumLabel::generateDiameterPrimitives(SoAction * action, const SbVec3f& p1, const SbVec3f& p2)
+{
+    SbVec3f dir = (p2-p1);
+    dir.normalize();
+
+    float length = this->param1.getValue();
+    SbVec3f pos = p2 + length*dir;
+
+    float angle = atan2f(dir[1],dir[0]);
+
+    SbVec3f img1 = SbVec3f(-this->imgWidth / 2, -this->imgHeight / 2, 0.f);
+    SbVec3f img2 = SbVec3f(-this->imgWidth / 2,  this->imgHeight / 2, 0.f);
+    SbVec3f img3 = SbVec3f( this->imgWidth / 2, -this->imgHeight / 2, 0.f);
+    SbVec3f img4 = SbVec3f( this->imgWidth / 2,  this->imgHeight / 2, 0.f);
+
+    // Rotate through an angle
+    float s = sin(angle);
+    float c = cos(angle);
+
+    img1 = SbVec3f((img1[0] * c) - (img1[1] * s), (img1[0] * s) + (img1[1] * c), 0.f);
+    img2 = SbVec3f((img2[0] * c) - (img2[1] * s), (img2[0] * s) + (img2[1] * c), 0.f);
+    img3 = SbVec3f((img3[0] * c) - (img3[1] * s), (img3[0] * s) + (img3[1] * c), 0.f);
+    img4 = SbVec3f((img4[0] * c) - (img4[1] * s), (img4[0] * s) + (img4[1] * c), 0.f);
+
+    SbVec3f textOffset = pos;
+
+    img1 += textOffset;
+    img2 += textOffset;
+    img3 += textOffset;
+    img4 += textOffset;
+
+    // Primitive Shape is only for text as this should only be selectable
+    SoPrimitiveVertex pv;
+
+    this->beginShape(action, QUADS);
+
+    pv.setNormal( SbVec3f(0.f, 0.f, 1.f) );
+
+    // Set coordinates
+    pv.setPoint( img1 );
+    shapeVertex(&pv);
+
+    pv.setPoint( img2 );
+    shapeVertex(&pv);
+
+    pv.setPoint( img3 );
+    shapeVertex(&pv);
+
+    pv.setPoint( img4 );
+    shapeVertex(&pv);
+
+    this->endShape();
+}
+
+void SoDatumLabel::generateAnglePrimitives(SoAction * action, const SbVec3f& p0)
+{
+    // Only the angle intersection point is needed
+
+    // Load the Parameters
+    float length     = this->param1.getValue();
+    float startangle = this->param2.getValue();
+    float range      = this->param3.getValue();
+
+    float r = 2*length;
+
+    // Useful Information
+    // v0 - vector for text position
+    // p0 - vector for angle intersect
+    SbVec3f v0(cos(startangle+range/2),sin(startangle+range/2),0);
+
+    SbVec3f textOffset = p0 + v0 * r;
+
+    SbVec3f img1 = SbVec3f(-this->imgWidth / 2, -this->imgHeight / 2, 0.f);
+    SbVec3f img2 = SbVec3f(-this->imgWidth / 2,  this->imgHeight / 2, 0.f);
+    SbVec3f img3 = SbVec3f( this->imgWidth / 2, -this->imgHeight / 2, 0.f);
+    SbVec3f img4 = SbVec3f( this->imgWidth / 2,  this->imgHeight / 2, 0.f);
+
+    img1 += textOffset;
+    img2 += textOffset;
+    img3 += textOffset;
+    img4 += textOffset;
+
+    // Primitive Shape is only for text as this should only be selectable
+    SoPrimitiveVertex pv;
+
+    this->beginShape(action, QUADS);
+
+    pv.setNormal( SbVec3f(0.f, 0.f, 1.f) );
+
+    // Set coordinates
+    pv.setPoint( img1 );
+    shapeVertex(&pv);
+
+    pv.setPoint( img2 );
+    shapeVertex(&pv);
+
+    pv.setPoint( img3 );
+    shapeVertex(&pv);
+
+    pv.setPoint( img4 );
+    shapeVertex(&pv);
+
+    this->endShape();
+}
+
+void SoDatumLabel::generateSymmetricPrimitives(SoAction * action, const SbVec3f& p1, const SbVec3f& p2)
+{
+    // Get the Scale. See GLRender function for details on the viewport width calculation
+    //SoState *state = action->getState();
+    //const SbViewVolume & vv = SoViewVolumeElement::get(state);
+    //float scale = vv.getWorldToScreenScale(SbVec3f(0.f,0.f,0.f), 1.0f);
+    //SbVec2s vp_size = SoViewportRegionElement::get(state).getViewportSizePixels();
+    //scale /= float(vp_size[0]);
+
+    SbVec3f dir = (p2-p1);
+    dir.normalize();
+    SbVec3f normal (-dir[1],dir[0],0);
+
+    float margin = this->imgHeight / 4.0;
+
+    // Calculate coordinates for the first arrow
+    SbVec3f ar0, ar1, ar2;
+    ar0  = p1 + dir * 5 * margin ;
+    ar1  = ar0 - dir * 0.866f * 2 * margin; // Base Point of Arrow
+    ar2  = ar1 + normal * margin; // Triangular corners
+    ar1 -= normal * margin;
+
+    // Calculate coordinates for the second arrow
+    SbVec3f ar3, ar4, ar5;
+    ar3  = p2 - dir * 5 * margin ;
+    ar4  = ar3 + dir * 0.866f * 2 * margin; // Base Point of 2nd Arrow
+
+    ar5  = ar4 + normal * margin; // Triangular corners
+    ar4 -= normal * margin;
+
+    SoPrimitiveVertex pv;
+
+    this->beginShape(action, TRIANGLES);
+
+    pv.setNormal( SbVec3f(0.f, 0.f, 1.f) );
+
+    // Set coordinates
+    pv.setPoint( ar0 );
+    shapeVertex(&pv);
+
+    pv.setPoint( ar1 );
+    shapeVertex(&pv);
+
+    pv.setPoint( ar2 );
+    shapeVertex(&pv);
+
+    // Set coordinates
+    pv.setPoint( ar3 );
+    shapeVertex(&pv);
+
+    pv.setPoint( ar4 );
+    shapeVertex(&pv);
+
+    pv.setPoint( ar5 );
+    shapeVertex(&pv);
+
+    this->endShape();
+}
+
 void SoDatumLabel::generatePrimitives(SoAction * action)
 {
-
     // Initialisation check (needs something more sensible) prevents an infinite loop bug
-    if(this->imgHeight <= FLT_EPSILON || this->imgWidth <= FLT_EPSILON)
-      return;
+    if (this->imgHeight <= FLT_EPSILON || this->imgWidth <= FLT_EPSILON)
+        return;
 
     // Get the points stored
     const SbVec3f *points = this->pnts.getValues(0);
@@ -168,231 +398,24 @@ void SoDatumLabel::generatePrimitives(SoAction * action)
     SbVec3f p2 = points[1];
 
     // Change the offset and bounding box parameters depending on Datum Type
-    if(this->datumtype.getValue() == DISTANCE || this->datumtype.getValue() == DISTANCEX || this->datumtype.getValue() == DISTANCEY ){
-
-        float length = this->param1.getValue();
-        float length2 = this->param2.getValue();
-        SbVec3f dir, normal;
-        if (this->datumtype.getValue() == DISTANCE) {
-            dir = (p2-p1);
-        } else if (this->datumtype.getValue() == DISTANCEX) {
-            dir = SbVec3f( (p2[0] - p1[0] >= FLT_EPSILON) ? 1 : -1, 0, 0);
-        } else if (this->datumtype.getValue() == DISTANCEY) {
-            dir = SbVec3f(0, (p2[1] - p1[1] >= FLT_EPSILON) ? 1 : -1, 0);
-        }
-
-        dir.normalize();
-        normal = SbVec3f (-dir[1],dir[0],0);
-
-        float normproj12 = (p2-p1).dot(normal);
-        SbVec3f p1_ = p1 + normproj12 * normal;
-
-        SbVec3f midpos = (p1_ + p2)/2;
-        // Get magnitude of angle between horizontal
-        float angle = atan2f(dir[1],dir[0]);
-
-        SbVec3f img1 = SbVec3f(-this->imgWidth / 2, -this->imgHeight / 2, 0.f);
-        SbVec3f img2 = SbVec3f(-this->imgWidth / 2,  this->imgHeight / 2, 0.f);
-        SbVec3f img3 = SbVec3f( this->imgWidth / 2, -this->imgHeight / 2, 0.f);
-        SbVec3f img4 = SbVec3f( this->imgWidth / 2,  this->imgHeight / 2, 0.f);
-
-        // Rotate through an angle
-        float s = sin(angle);
-        float c = cos(angle);
-
-        img1 = SbVec3f((img1[0] * c) - (img1[1] * s), (img1[0] * s) + (img1[1] * c), 0.f);
-        img2 = SbVec3f((img2[0] * c) - (img2[1] * s), (img2[0] * s) + (img2[1] * c), 0.f);
-        img3 = SbVec3f((img3[0] * c) - (img3[1] * s), (img3[0] * s) + (img3[1] * c), 0.f);
-        img4 = SbVec3f((img4[0] * c) - (img4[1] * s), (img4[0] * s) + (img4[1] * c), 0.f);
-
-        SbVec3f textOffset = midpos + normal * length + dir * length2;
-
-        img1 += textOffset;
-        img2 += textOffset;
-        img3 += textOffset;
-        img4 += textOffset;
-
-        // Primitive Shape is only for text as this should only be selectable
-        SoPrimitiveVertex pv;
-
-        this->beginShape(action, QUADS);
-
-        pv.setNormal( SbVec3f(0.f, 0.f, 1.f) );
-
-        // Set coordinates
-        pv.setPoint( img1 );
-        shapeVertex(&pv);
-
-        pv.setPoint( img2 );
-        shapeVertex(&pv);
-
-        pv.setPoint( img3 );
-        shapeVertex(&pv);
-
-        pv.setPoint( img4 );
-        shapeVertex(&pv);
-
-        this->endShape();
-
-    } else if (this->datumtype.getValue() == RADIUS || this->datumtype.getValue() == DIAMETER) {
-
-        SbVec3f dir = (p2-p1);
-        dir.normalize();
-
-        float length = this->param1.getValue();
-        SbVec3f pos = p2 + length*dir;
-
-        float angle = atan2f(dir[1],dir[0]);
-
-        SbVec3f img1 = SbVec3f(-this->imgWidth / 2, -this->imgHeight / 2, 0.f);
-        SbVec3f img2 = SbVec3f(-this->imgWidth / 2,  this->imgHeight / 2, 0.f);
-        SbVec3f img3 = SbVec3f( this->imgWidth / 2, -this->imgHeight / 2, 0.f);
-        SbVec3f img4 = SbVec3f( this->imgWidth / 2,  this->imgHeight / 2, 0.f);
-
-        // Rotate through an angle
-        float s = sin(angle);
-        float c = cos(angle);
-
-        img1 = SbVec3f((img1[0] * c) - (img1[1] * s), (img1[0] * s) + (img1[1] * c), 0.f);
-        img2 = SbVec3f((img2[0] * c) - (img2[1] * s), (img2[0] * s) + (img2[1] * c), 0.f);
-        img3 = SbVec3f((img3[0] * c) - (img3[1] * s), (img3[0] * s) + (img3[1] * c), 0.f);
-        img4 = SbVec3f((img4[0] * c) - (img4[1] * s), (img4[0] * s) + (img4[1] * c), 0.f);
-
-        SbVec3f textOffset = pos;
-
-        img1 += textOffset;
-        img2 += textOffset;
-        img3 += textOffset;
-        img4 += textOffset;
-
-        // Primitive Shape is only for text as this should only be selectable
-        SoPrimitiveVertex pv;
-
-        this->beginShape(action, QUADS);
-
-        pv.setNormal( SbVec3f(0.f, 0.f, 1.f) );
-
-        // Set coordinates
-        pv.setPoint( img1 );
-        shapeVertex(&pv);
-
-        pv.setPoint( img2 );
-        shapeVertex(&pv);
-
-        pv.setPoint( img3 );
-        shapeVertex(&pv);
-
-        pv.setPoint( img4 );
-        shapeVertex(&pv);
-
-        this->endShape();
-    } else if (this->datumtype.getValue() == ANGLE) {
-
-        // Only the angle intersection point is needed
-        SbVec3f p0 = points[0];
-
-        // Load the Parameters
-        float length     = this->param1.getValue();
-        float startangle = this->param2.getValue();
-        float range      = this->param3.getValue();
-
-        float r = 2*length;
-
-        // Useful Information
-        // v0 - vector for text position
-        // p0 - vector for angle intersect
-        SbVec3f v0(cos(startangle+range/2),sin(startangle+range/2),0);
-
-        SbVec3f textOffset = p0 + v0 * r;
-
-        SbVec3f img1 = SbVec3f(-this->imgWidth / 2, -this->imgHeight / 2, 0.f);
-        SbVec3f img2 = SbVec3f(-this->imgWidth / 2,  this->imgHeight / 2, 0.f);
-        SbVec3f img3 = SbVec3f( this->imgWidth / 2, -this->imgHeight / 2, 0.f);
-        SbVec3f img4 = SbVec3f( this->imgWidth / 2,  this->imgHeight / 2, 0.f);
-
-        img1 += textOffset;
-        img2 += textOffset;
-        img3 += textOffset;
-        img4 += textOffset;
-
-        // Primitive Shape is only for text as this should only be selectable
-        SoPrimitiveVertex pv;
-
-        this->beginShape(action, QUADS);
-
-        pv.setNormal( SbVec3f(0.f, 0.f, 1.f) );
-
-        // Set coordinates
-        pv.setPoint( img1 );
-        shapeVertex(&pv);
-
-        pv.setPoint( img2 );
-        shapeVertex(&pv);
-
-        pv.setPoint( img3 );
-        shapeVertex(&pv);
-
-        pv.setPoint( img4 );
-        shapeVertex(&pv);
-
-        this->endShape();
-    } else if (this->datumtype.getValue() == SYMMETRIC) {
-
-        // Get the Scale. See GLRender function for details on the viewport width calculation
-        //SoState *state = action->getState();
-        //const SbViewVolume & vv = SoViewVolumeElement::get(state);
-        //float scale = vv.getWorldToScreenScale(SbVec3f(0.f,0.f,0.f), 1.0f);
-        //SbVec2s vp_size = SoViewportRegionElement::get(state).getViewportSizePixels();
-        //scale /= float(vp_size[0]);
-
-        SbVec3f dir = (p2-p1);
-        dir.normalize();
-        SbVec3f normal (-dir[1],dir[0],0);
-
-        float margin = this->imgHeight / 4.0;
-
-        // Calculate coordinates for the first arrow
-        SbVec3f ar0, ar1, ar2;
-        ar0  = p1 + dir * 5 * margin ;
-        ar1  = ar0 - dir * 0.866f * 2 * margin; // Base Point of Arrow
-        ar2  = ar1 + normal * margin; // Triangular corners
-        ar1 -= normal * margin;
-
-        // Calculate coordinates for the second arrow
-        SbVec3f ar3, ar4, ar5;
-        ar3  = p2 - dir * 5 * margin ;
-        ar4  = ar3 + dir * 0.866f * 2 * margin; // Base Point of 2nd Arrow
-
-        ar5  = ar4 + normal * margin; // Triangular corners
-        ar4 -= normal * margin;
-
-        SoPrimitiveVertex pv;
-
-        this->beginShape(action, TRIANGLES);
-
-        pv.setNormal( SbVec3f(0.f, 0.f, 1.f) );
-
-        // Set coordinates
-        pv.setPoint( ar0 );
-        shapeVertex(&pv);
-
-        pv.setPoint( ar1 );
-        shapeVertex(&pv);
-
-        pv.setPoint( ar2 );
-        shapeVertex(&pv);
-
-        // Set coordinates
-        pv.setPoint( ar3 );
-        shapeVertex(&pv);
-
-        pv.setPoint( ar4 );
-        shapeVertex(&pv);
-
-        pv.setPoint( ar5 );
-        shapeVertex(&pv);
-
-        this->endShape();
+    if (this->datumtype.getValue() == DISTANCE ||
+        this->datumtype.getValue() == DISTANCEX ||
+        this->datumtype.getValue() == DISTANCEY) {
+
+        generateDistancePrimitives(action, p1, p2);
+    }
+    else if (this->datumtype.getValue() == RADIUS ||
+             this->datumtype.getValue() == DIAMETER) {
+
+        generateDiameterPrimitives(action, p1, p2);
+    }
+    else if (this->datumtype.getValue() == ANGLE) {
+
+        generateAnglePrimitives(action, p1);
+    }
+    else if (this->datumtype.getValue() == SYMMETRIC) {
+
+        generateSymmetricPrimitives(action, p1, p2);
     }
 }
 
@@ -451,7 +474,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
     if (!shouldGLRender(action))
         return;
     if (action->handleTransparency(true))
-      return;
+        return;
 
     float scale = getScaleFactor(state);
 
