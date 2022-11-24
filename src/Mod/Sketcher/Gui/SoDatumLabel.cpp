@@ -417,15 +417,8 @@ void SoDatumLabel::notify(SoNotList * l)
     inherited::notify(l);
 }
 
-void SoDatumLabel::GLRender(SoGLRenderAction * action)
+float SoDatumLabel::getScaleFactor(SoState* state) const
 {
-    SoState *state = action->getState();
-
-    if (!shouldGLRender(action))
-        return;
-    if (action->handleTransparency(true))
-      return;
-
     /**Remark from Stefan Tröger:
     * The scale calculation is based on knowledge of SbViewVolume::getWorldToScreenScale
     * implementation internals. The factor returned from this function is calculated from the view frustums
@@ -447,6 +440,20 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
     const SbViewportRegion & vp = SoViewportRegionElement::get(state);
     SbVec2s vp_size = vp.getViewportSizePixels();
     scale /= float(vp_size[0]);
+
+    return scale;
+}
+
+void SoDatumLabel::GLRender(SoGLRenderAction * action)
+{
+    SoState *state = action->getState();
+
+    if (!shouldGLRender(action))
+        return;
+    if (action->handleTransparency(true))
+      return;
+
+    float scale = getScaleFactor(state);
 
     const SbString* s = string.getValues(0);
     bool hasText = (s->getLength() > 0) ? true : false;
@@ -903,6 +910,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         const unsigned char * dataptr = this->image.getValue(imgsize, nc);
 
         //Get the camera z-direction
+        const SbViewVolume & vv = SoViewVolumeElement::get(state);
         SbVec3f z = vv.zVector();
 
         bool flip = norm.getValue().dot(z) > FLT_EPSILON;

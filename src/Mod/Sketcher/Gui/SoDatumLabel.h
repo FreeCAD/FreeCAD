@@ -47,16 +47,16 @@ class SketcherGuiExport SoDatumLabel : public SoShape {
     SO_NODE_HEADER(SoDatumLabel);
 
 public:
-  enum Type
-  {
-  ANGLE,
-  DISTANCE,
-  DISTANCEX,
-  DISTANCEY,
-  RADIUS,
-  DIAMETER,
-  SYMMETRIC
-  };
+    enum Type
+    {
+        ANGLE,
+        DISTANCE,
+        DISTANCEX,
+        DISTANCEY,
+        RADIUS,
+        DIAMETER,
+        SYMMETRIC
+    };
 
     static void initClass();
     SoDatumLabel();
@@ -76,11 +76,14 @@ public:
     bool       useAntialiasing;
 
 protected:
-    ~SoDatumLabel() override {};
+    ~SoDatumLabel() override {}
     void GLRender(SoGLRenderAction *action) override;
     void computeBBox(SoAction *, SbBox3f &box, SbVec3f &center) override;
     void generatePrimitives(SoAction * action) override;
     void notify(SoNotList * l) override;
+
+private:
+    float getScaleFactor(SoState*) const;
 
 private:
     void drawImage();
