@@ -102,6 +102,7 @@
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/elements/SoFocalDistanceElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoProjectionMatrixElement.h>
 #include <Inventor/elements/SoViewingMatrixElement.h>
