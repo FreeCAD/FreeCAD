@@ -26,6 +26,7 @@
 #endif
 
 #include <Gui/Application.h>
+#include <Gui/ParamHandler.h>
 
 #include "DlgSettingsTheme.h"
 #include "ui_DlgSettingsTheme.h"
@@ -42,14 +43,8 @@ using namespace Gui::Dialog;
 DlgSettingsTheme::DlgSettingsTheme(QWidget* parent)
     : PreferencePage(parent)
     , ui(new Ui_DlgSettingsTheme)
-    , styleSheetChanged(false)
 {
     ui->setupUi(this);
-
-    connect(ui->styleSheetsCombobox, qOverload<int>(&QComboBox::activated), this, &DlgSettingsTheme::onStyleSheetChanged);
-    connect(ui->ThemeAccentColor1, &Gui::PrefColorButton::changed, this, &DlgSettingsTheme::onColorChanged);
-    connect(ui->ThemeAccentColor2, &Gui::PrefColorButton::changed, this, &DlgSettingsTheme::onColorChanged);
-    connect(ui->ThemeAccentColor3, &Gui::PrefColorButton::changed, this, &DlgSettingsTheme::onColorChanged);
 }
 
 /**
@@ -62,9 +57,8 @@ void DlgSettingsTheme::saveSettings()
     ui->ThemeAccentColor1->onSave();
     ui->ThemeAccentColor2->onSave();
     ui->ThemeAccentColor3->onSave();
-
-    if (styleSheetChanged)
-        saveStyleSheet();
+    ui->StyleSheets->onSave();
+    ui->OverlayStyleSheets->onSave();
 }
 
 void DlgSettingsTheme::loadSettings()
@@ -76,50 +70,50 @@ void DlgSettingsTheme::loadSettings()
     loadStyleSheet();
 }
 
-void DlgSettingsTheme::saveStyleSheet()
-{
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
-
-    QVariant sheet = ui->styleSheetsCombobox->itemData(ui->styleSheetsCombobox->currentIndex());
-    hGrp->SetASCII("StyleSheet", (const char*)sheet.toByteArray());
-    bool tiledBackground = hGrp->GetBool("TiledBackground", false);
-    Application::Instance->setStyleSheet(sheet.toString(), tiledBackground);
-
-    styleSheetChanged = false;
-}
-
 void DlgSettingsTheme::loadStyleSheet()
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
+    populateStylesheets("StyleSheet", "qss", ui->StyleSheets, "No style sheet");
+    populateStylesheets("OverlayActiveStyleSheet", "overlay", ui->OverlayStyleSheets, "Auto");
+}
 
+void DlgSettingsTheme::populateStylesheets(const char *key,
+                                        const char *path,
+                                        PrefComboBox *combo,
+                                        const char *def,
+                                        QStringList filter)
+{
+    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
     // List all .qss/.css files
     QMap<QString, QString> cssFiles;
     QDir dir;
-    QStringList filter;
-    filter << QString::fromLatin1("*.qss");
-    filter << QString::fromLatin1("*.css");
+    if (filter.isEmpty()) {
+        filter << QStringLiteral("*.qss");
+        filter << QStringLiteral("*.css");
+    }
+    QFileInfoList fileNames;
 
     // read from user, resource and built-in directory
-    QStringList qssPaths = QDir::searchPaths(QString::fromLatin1("qss"));
-    for (const auto& qssPath : qssPaths) {
-        dir.setPath(qssPath);
-        QFileInfoList fileNames = dir.entryInfoList(filter, QDir::Files, QDir::Name);
-        for (const auto& fileName : qAsConst(fileNames)) {
-            if (cssFiles.find(fileName.baseName()) == cssFiles.end()) {
-                cssFiles[fileName.baseName()] = fileName.fileName();
+    QStringList qssPaths = QDir::searchPaths(QString::fromUtf8(path));
+    for (QStringList::iterator it = qssPaths.begin(); it != qssPaths.end(); ++it) {
+        dir.setPath(*it);
+        fileNames = dir.entryInfoList(filter, QDir::Files, QDir::Name);
+        for (QFileInfoList::iterator jt = fileNames.begin(); jt != fileNames.end(); ++jt) {
+            if (cssFiles.find(jt->baseName()) == cssFiles.end()) {
+                cssFiles[jt->baseName()] = jt->fileName();
             }
         }
     }
 
+    combo->clear();
+
     // now add all unique items
-    ui->styleSheetsCombobox->clear();
-    ui->styleSheetsCombobox->addItem(tr("No style sheet"), QString::fromLatin1(""));
+    combo->addItem(tr(def), QStringLiteral(""));
     for (QMap<QString, QString>::iterator it = cssFiles.begin(); it != cssFiles.end(); ++it) {
-        ui->styleSheetsCombobox->addItem(it.key(), it.value());
+        combo->addItem(it.key(), it.value());
     }
 
-    QString selectedStyleSheet = QString::fromLatin1(hGrp->GetASCII("StyleSheet").c_str());
-    int index = ui->styleSheetsCombobox->findData(selectedStyleSheet);
+    QString selectedStyleSheet = QString::fromUtf8(hGrp->GetASCII(key).c_str());
+    int index = combo->findData(selectedStyleSheet);
 
     // might be an absolute path name
     if (index < 0 && !selectedStyleSheet.isEmpty()) {
@@ -131,24 +125,13 @@ void DlgSettingsTheme::loadStyleSheet()
             }
             else {
                 selectedStyleSheet = fi.absoluteFilePath();
-                ui->styleSheetsCombobox->addItem(fi.baseName(), selectedStyleSheet);
+                combo->addItem(fi.baseName(), selectedStyleSheet);
             }
-
-            index = ui->styleSheetsCombobox->findData(selectedStyleSheet);
         }
     }
 
-    if (index > -1)
-        ui->styleSheetsCombobox->setCurrentIndex(index);
-}
-
-void DlgSettingsTheme::onStyleSheetChanged(int index) {
-    Q_UNUSED(index);
-    styleSheetChanged = true;
-}
-
-void DlgSettingsTheme::onColorChanged() {
-    styleSheetChanged = true;
+    combo->setCurrentIndex(index);
+    combo->onRestore();
 }
 
 /**
@@ -158,12 +141,35 @@ void DlgSettingsTheme::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
+        loadStyleSheet();
     }
     else {
         QWidget::changeEvent(e);
     }
 }
 
+namespace {
+
+void applyStyleSheet(ParameterGrp *hGrp)
+{
+    auto sheet = hGrp->GetASCII("StyleSheet");
+    bool tiledBG = hGrp->GetBool("TiledBackground", false);
+    Gui::Application::Instance->setStyleSheet(QString::fromUtf8(sheet.c_str()), tiledBG);
+}
+
+} // anonymous namespace
+
+void DlgSettingsTheme::attachObserver()
+{
+    static ParamHandlers handlers;
+
+    auto handler = handlers.addDelayedHandler("BaseApp/Preferences/MainWindow",
+                               {"StyleSheet", "TiledBackground"},
+                               applyStyleSheet);
+    handlers.addHandler("BaseApp/Preferences/Themes", 
+                        {"ThemeAccentColor1", "ThemeAccentColor2", "ThemeAccentColor2"},
+                        handler);
+}
 
 #include "moc_DlgSettingsTheme.cpp"
 

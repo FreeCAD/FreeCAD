@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QLabel">
+    <widget class="QLabel" name="label">
      <property name="text">
       <string>This page let you customize your current theme. The offered settings are optional for theme developers so they may or may not have an effect in your current theme.</string>
      </property>
@@ -28,8 +28,38 @@
     <layout class="QGridLayout">
      <item row="0" column="0">
       <layout class="QGridLayout">
+       <item row="3" column="1">
+        <widget class="Gui::PrefComboBox" name="StyleSheets">
+         <property name="toolTip">
+          <string>Style sheet how user interface will look like</string>
+         </property>
+         <property name="prefPath" stdset="0">
+          <cstring>MainWindow</cstring>
+         </property>
+         <property name="prefEntry" stdset="0">
+          <cstring>StyleSheet</cstring>
+         </property>
+         <property name="prefType" stdset="0">
+          <cstring></cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Accent color 2</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Accent color 3</string>
+         </property>
+        </widget>
+       </item>
        <item row="0" column="0">
-        <widget class="QLabel">
+        <widget class="QLabel" name="label">
          <property name="text">
           <string>Accent color 1</string>
          </property>
@@ -61,10 +91,10 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="0">
-        <widget class="QLabel">
+       <item row="3" column="0">
+        <widget class="QLabel" name="styleSheetLabel">
          <property name="text">
-          <string>Accent color 2</string>
+          <string>Style sheet (advanced):</string>
          </property>
         </widget>
        </item>
@@ -94,13 +124,6 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="0">
-        <widget class="QLabel">
-         <property name="text">
-          <string>Accent color 3</string>
-         </property>
-        </widget>
-       </item>
        <item row="2" column="1">
         <widget class="Gui::PrefColorButton" name="ThemeAccentColor3">
          <property name="sizePolicy">
@@ -127,18 +150,23 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="styleSheetLabel">
+       <item row="4" column="0">
+        <widget class="QLabel" name="label_2">
          <property name="text">
-          <string>Style sheet (advanced):</string>
+          <string>Overlay style sheet:</string>
          </property>
         </widget>
        </item>
-       <item row="3" column="1">
-        <widget class="QComboBox" name="styleSheetsCombobox">
-         <property name="toolTip">
-          <string>Apply manually .qss Qt Stylesheets. This is the legacy way that was used to customize the interface.
-You can now use Theme to get a full customization of the interface.</string>
+       <item row="4" column="1">
+        <widget class="Gui::PrefComboBox" name="OverlayStyleSheets">
+         <property name="prefPath" stdset="0">
+          <cstring>MainWindow</cstring>
+         </property>
+         <property name="prefEntry" stdset="0">
+          <cstring>OverlayActiveStyleSheet</cstring>
+         </property>
+         <property name="prefType" stdset="0">
+          <cstring></cstring>
          </property>
         </widget>
        </item>
@@ -183,6 +211,11 @@ You can now use Theme to get a full customization of the interface.</string>
   <customwidget>
    <class>Gui::PrefColorButton</class>
    <extends>Gui::ColorButton</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefComboBox</class>
+   <extends>QComboBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>
