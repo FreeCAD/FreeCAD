@@ -305,16 +305,13 @@ ConstraintType ConstraintSlopeAtBSplineKnot::getTypeId()
 void ConstraintSlopeAtBSplineKnot::rescale(double coef)
 {
     double slopex = 0., slopey = 0.;
-    double linex = *linep2x() - *linep1x();
-    double liney = *linep2y() - *linep1y();
 
     for (size_t i = 0; i < numpoles; ++i) {
         slopex += *polexat(i) * slopefactors[i];
         slopey += *poleyat(i) * slopefactors[i];
     }
 
-    scale = coef / sqrt((slopex*slopex + slopey*slopey) *
-                        (linex*linex + liney*liney));
+    scale = coef / sqrt((slopex*slopex + slopey*slopey));
 }
 
 double ConstraintSlopeAtBSplineKnot::error()
@@ -338,11 +335,14 @@ double ConstraintSlopeAtBSplineKnot::error()
     // This is actually wsum^2 * the respective slopes
     double slopex = wsum*xslopesum - wslopesum*xsum;
     double slopey = wsum*yslopesum - wslopesum*ysum;
+
     double linex = *linep2x() - *linep1x();
     double liney = *linep2y() - *linep1y();
+    double dirx = linex / sqrt(linex*linex + liney*liney);
+    double diry = liney / sqrt(linex*linex + liney*liney);
 
     // error is the cross product
-    return scale * (slopex*liney - slopey*linex);
+    return scale * (slopex*diry - slopey*dirx);
 }
 
 double ConstraintSlopeAtBSplineKnot::grad(double *param)
@@ -350,6 +350,8 @@ double ConstraintSlopeAtBSplineKnot::grad(double *param)
     double result = 0.0;
     double linex = *linep2x() - *linep1x();
     double liney = *linep2y() - *linep1y();
+    double dirx = linex / sqrt(linex*linex + liney*liney);
+    double diry = liney / sqrt(linex*linex + liney*liney);
 
     // TODO: Fill up
     for (size_t i = 0; i < numpoles; ++i) {
@@ -361,7 +363,7 @@ double ConstraintSlopeAtBSplineKnot::grad(double *param)
                 wsum += wcontrib;
                 wslopesum += wslopecontrib;
             }
-            result += (wsum*slopefactors[i] - wslopesum*factors[i]) * liney;
+            result += (wsum*slopefactors[i] - wslopesum*factors[i]) * diry;
         }
         if (param == poleyat(i)) {
             double wsum = 0., wslopesum = 0.;
@@ -371,7 +373,7 @@ double ConstraintSlopeAtBSplineKnot::grad(double *param)
                 wsum += wcontrib;
                 wslopesum += wslopecontrib;
             }
-            result += - (wsum*slopefactors[i] - wslopesum*factors[i]) * linex;
+            result += - (wsum*slopefactors[i] - wslopesum*factors[i]) * dirx;
         }
         if (param == weightat(i)) {
             double xsum = 0., xslopesum = 0.;
@@ -385,41 +387,15 @@ double ConstraintSlopeAtBSplineKnot::grad(double *param)
                 yslopesum += wslopecontrib * (*poleyat(j) - *poleyat(i));
             }
             result +=
-                (factors[i]*xslopesum - slopefactors[i]*xsum) * liney -
-                (factors[i]*yslopesum - slopefactors[i]*ysum) * linex;
+                (factors[i]*xslopesum - slopefactors[i]*xsum) * diry -
+                (factors[i]*yslopesum - slopefactors[i]*ysum) * dirx;
         }
     }
 
     double slopex = 0., slopey = 0.;
-    bool slopexcomputed = false, slopeycomputed = false;
 
-    auto getSlopeX = [&]() {
-        if (slopexcomputed)
-            return slopex;
-
+    auto getSlopes = [&]() {
         double xsum = 0., xslopesum = 0.;
-        double wsum = 0., wslopesum = 0.;
-
-        for (size_t i = 0; i < numpoles; ++i) {
-            double wcontrib = *weightat(i) * factors[i];
-            double wslopecontrib = *weightat(i) * slopefactors[i];
-            wsum += wcontrib;
-            xsum += *polexat(i) * wcontrib;
-            wslopesum += wslopecontrib;
-            xslopesum += *polexat(i) * wslopecontrib;
-        }
-
-        // This is actually wsum^2 * the respective slopes
-        slopex = wsum*xslopesum - wslopesum*xsum;
-
-        slopexcomputed = true;
-        return slopex;
-    };
-
-    auto getSlopeY = [&]() {
-        if (slopeycomputed)
-            return slopey;
-
         double ysum = 0., yslopesum = 0.;
         double wsum = 0., wslopesum = 0.;
 
@@ -427,26 +403,42 @@ double ConstraintSlopeAtBSplineKnot::grad(double *param)
             double wcontrib = *weightat(i) * factors[i];
             double wslopecontrib = *weightat(i) * slopefactors[i];
             wsum += wcontrib;
+            xsum += *polexat(i) * wcontrib;
             ysum += *poleyat(i) * wcontrib;
             wslopesum += wslopecontrib;
+            xslopesum += *polexat(i) * wslopecontrib;
             yslopesum += *poleyat(i) * wslopecontrib;
         }
 
-        // this is actually wsum^2 * the respective slopes
+        // This is actually wsum^2 * the respective slopes
+        slopex = wsum*xslopesum - wslopesum*xsum;
         slopey = wsum*yslopesum - wslopesum*ysum;
-
-        slopeycomputed = true;
-        return slopey;
     };
 
-    if (param == linep1x())
-        result += getSlopeY();
-    if (param == linep2x())
-        result += -getSlopeY();
-    if (param == linep1y())
-        result += -getSlopeX();
-    if (param == linep2y())
-        result += getSlopeX();
+    if (param == linep1x()) {
+        getSlopes();
+        double dDirxDlinex = (liney*liney) / pow(linex*linex + liney*liney, 1.5);
+        double dDiryDlinex = -(linex*liney) / pow(linex*linex + liney*liney, 1.5);
+        result += slopex*(-dDiryDlinex) - slopey*(-dDirxDlinex);
+    }
+    if (param == linep2x()) {
+        getSlopes();
+        double dDirxDlinex = (liney*liney) / pow(linex*linex + liney*liney, 1.5);
+        double dDiryDlinex = -(linex*liney) / pow(linex*linex + liney*liney, 1.5);
+        result += slopex*dDiryDlinex - slopey*dDirxDlinex;
+    }
+    if (param == linep1y()) {
+        getSlopes();
+        double dDirxDliney = -(linex*liney) / pow(linex*linex + liney*liney, 1.5);
+        double dDiryDliney = (linex*linex) / pow(linex*linex + liney*liney, 1.5);
+        result += slopex*(-dDiryDliney) - slopey*(-dDirxDliney);
+    }
+    if (param == linep2y()) {
+        getSlopes();
+        double dDirxDliney = -(linex*liney) / pow(linex*linex + liney*liney, 1.5);
+        double dDiryDliney = (linex*linex) / pow(linex*linex + liney*liney, 1.5);
+        result += slopex*dDiryDliney - slopey*dDirxDliney;
+    }
 
     return scale * result;
 }
