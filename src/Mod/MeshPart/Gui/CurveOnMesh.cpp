@@ -27,37 +27,35 @@
 # include <QPointer>
 # include <QStatusBar>
 # include <QTimer>
+# include <BRepBuilderAPI_MakePolygon.hxx>
 # include <Inventor/SoPickedPoint.h>
-# include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/details/SoFaceDetail.h>
-# include <Inventor/details/SoLineDetail.h>
-# include <Inventor/details/SoPointDetail.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoPickStyle.h>
 # include <Inventor/nodes/SoLineSet.h>
 # include <Inventor/nodes/SoPointSet.h>
 # include <Inventor/nodes/SoSeparator.h>
-# include <BRepBuilderAPI_MakePolygon.hxx>
 #endif
 
-#include "CurveOnMesh.h"
-#include <Base/Converter.h>
 #include <App/Document.h>
+#include <Base/Converter.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Utilities.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
+#include <Mod/Mesh/App/MeshFeature.h>
 #include <Mod/Mesh/App/Core/Algorithm.h>
 #include <Mod/Mesh/App/Core/Grid.h>
 #include <Mod/Mesh/App/Core/MeshKernel.h>
 #include <Mod/Mesh/App/Core/Projection.h>
-#include <Mod/Mesh/App/MeshFeature.h>
 #include <Mod/Mesh/Gui/ViewProvider.h>
 #include <Mod/Part/App/PartFeature.h>
+
+#include "CurveOnMesh.h"
+
 
 #ifndef HAVE_ACOSH
 #define HAVE_ACOSH
