@@ -57,6 +57,8 @@ public:
     void saveThemes();
     void loadThemes();
 
+    static void attachObserver();
+
 protected:
     void changeEvent(QEvent *event) override;
 
