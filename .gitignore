@@ -10,6 +10,7 @@
 *.lib
 *.pch
 *.vcproj
+*.kdev4
 *.exp
 *.dep
 *.manifest
