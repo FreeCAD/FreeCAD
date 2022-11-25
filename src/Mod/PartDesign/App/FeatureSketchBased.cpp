@@ -522,20 +522,13 @@ void ProfileBased::getUpToFace(TopoDS_Face& upToFace,
         }
     }
 
-    // Check that the upToFace does not intersect the sketch face and
-    // is not parallel to the extrusion direction (for simplicity, supportface is used instead of sketchshape)
-    BRepAdaptor_Surface adapt1(TopoDS::Face(supportface));
+    // Check that the upToFace is not parallel to the extrusion direction
     BRepAdaptor_Surface adapt2(TopoDS::Face(upToFace));
 
     if (adapt2.GetType() == GeomAbs_Plane) {
-        if (adapt1.Plane().Axis().IsNormal(adapt2.Plane().Axis(), Precision::Confusion()))
+        if (dir.IsNormal(adapt2.Plane().Axis().Direction(), Precision::Confusion()))
             throw Base::ValueError("SketchBased: Up to face: Must not be parallel to extrusion direction!");
     }
-
-    // We must measure from sketchshape, not supportface, here
-    BRepExtrema_DistShapeShape distSS(sketchshape, upToFace);
-    if (distSS.Value() < Precision::Confusion())
-        throw Base::ValueError("SketchBased: Up to face: Must not intersect sketch!");
 }
 
 void ProfileBased::addOffsetToFace(TopoDS_Face& upToFace, const gp_Dir& dir, double offset)
