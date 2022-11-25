@@ -86,7 +86,7 @@ void CDxfWrite::endRun(void)
 {
     makeLayerTable();
     makeBlockRecordTableBody();
-    
+
     writeClassesSection();
     writeTablesSection();
     writeBlocksSection();
@@ -130,7 +130,7 @@ void CDxfWrite::writeClassesSection(void)
     if (m_version < 14) {
         return;
     }
-    
+
     //static classes section content
     std::stringstream ss;
     ss << "classes" << m_version << ".rub";
@@ -209,7 +209,7 @@ void CDxfWrite::makeLayerTable(void)
     (*m_ssLayer) << "  6"      << endl;
     (*m_ssLayer) << "CONTINUOUS" << endl;
 
-    for (auto& l: m_layerList) {
+    for (auto& l : m_layerList) {
         (*m_ssLayer) << "  0"      << endl;
         (*m_ssLayer) << "LAYER"      << endl;
         (*m_ssLayer) << "  5"      << endl;
@@ -257,7 +257,7 @@ void CDxfWrite::makeBlockRecordTableHead(void)
         (*m_ssBlkRecord) << "AcDbSymbolTable"      << endl;
         (*m_ssBlkRecord) << "  70"      << endl;
         (*m_ssBlkRecord) << (m_blockList.size() + 5)   << endl;
-        
+
         m_saveModelSpaceHandle = getBlkRecordHandle();
         (*m_ssBlkRecord) << "  0"      << endl;
         (*m_ssBlkRecord) << "BLOCK_RECORD"      << endl;
@@ -290,7 +290,7 @@ void CDxfWrite::makeBlockRecordTableHead(void)
 //        (*m_ssBlkRecord) << "  1"      << endl;
 //        (*m_ssBlkRecord) << " "        << endl;
 }
- 
+
 //***************************
 //makeBlockRecordTableBody
 //added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
@@ -299,9 +299,9 @@ void CDxfWrite::makeBlockRecordTableBody(void)
     if (m_version < 14) {
         return;
     }
-    
+
     int iBlkRecord = 0;
-    for (auto& b: m_blockList) {
+    for (auto& b : m_blockList) {
         (*m_ssBlkRecord) << "  0"      << endl;
         (*m_ssBlkRecord) << "BLOCK_RECORD"      << endl;
         (*m_ssBlkRecord) << "  5"      << endl;
@@ -352,7 +352,7 @@ void CDxfWrite::makeBlockSectionHead(void)
     (*m_ssBlock) << "   0"         << endl;
     (*m_ssBlock) << " 10"          << endl;
     (*m_ssBlock) << 0.0            << endl;
-    (*m_ssBlock) << " 20"          << endl; 
+    (*m_ssBlock) << " 20"          << endl;
     (*m_ssBlock) << 0.0            << endl;
     (*m_ssBlock) << " 30"          << endl;
     (*m_ssBlock) << 0.0            << endl;
@@ -402,7 +402,7 @@ void CDxfWrite::makeBlockSectionHead(void)
     (*m_ssBlock) << "   0"         << endl;
     (*m_ssBlock) << " 10"          << endl;
     (*m_ssBlock) << 0.0            << endl;
-    (*m_ssBlock) << " 20"          << endl; 
+    (*m_ssBlock) << " 20"          << endl;
     (*m_ssBlock) << 0.0            << endl;
     (*m_ssBlock) << " 30"          << endl;
     (*m_ssBlock) << 0.0            << endl;
@@ -500,7 +500,7 @@ std::string CDxfWrite::getBlkRecordHandle(void)
 //    return ss.str();
 }
 
-void CDxfWrite::addBlockName(std::string b, std::string h) 
+void CDxfWrite::addBlockName(std::string b, std::string h)
 {
     m_blockList.push_back(b);
     m_blkRecordList.push_back(h);
@@ -584,21 +584,21 @@ void CDxfWrite::writeLWPolyLine(const LWPolyDataOut &pd)
 //    (*m_ssEntity) << pd.Elev          << endl;    // Elevation
 //    (*m_ssEntity) << " 39"            << endl;
 //    (*m_ssEntity) << pd.Thick         << endl;    // Thickness
-    for (auto& p: pd.Verts) {
+    for (auto& p : pd.Verts) {
         (*m_ssEntity) << " 10"        << endl;    // Vertices
         (*m_ssEntity) << p.x          << endl;
         (*m_ssEntity) << " 20"        << endl;
         (*m_ssEntity) << p.y          << endl;
-    } 
-    for (auto& s: pd.StartWidth) {
+    }
+    for (auto& s : pd.StartWidth) {
         (*m_ssEntity) << " 40"        << endl;
         (*m_ssEntity) << s            << endl;    // Start Width
     }
-    for (auto& e: pd.EndWidth) {
+    for (auto& e : pd.EndWidth) {
         (*m_ssEntity) << " 41"        << endl;
         (*m_ssEntity) << e            << endl;    // End Width
     }
-    for (auto& b: pd.Bulge) {                // Bulge
+    for (auto& b : pd.Bulge) {                // Bulge
         (*m_ssEntity) << " 42"        << endl;
         (*m_ssEntity) << b            << endl;
     }
@@ -641,7 +641,7 @@ void CDxfWrite::writePolyline(const LWPolyDataOut &pd)
     (*m_ssEntity) << "0.0"            << endl;
     (*m_ssEntity) << " 70"            << endl;
     (*m_ssEntity) << "0"              << endl;
-    for (auto& p: pd.Verts) {
+    for (auto& p : pd.Verts) {
         (*m_ssEntity) << "  0"        << endl;
         (*m_ssEntity) << "VERTEX"     << endl;
         (*m_ssEntity) << "  5"      << endl;
@@ -654,7 +654,7 @@ void CDxfWrite::writePolyline(const LWPolyDataOut &pd)
         (*m_ssEntity) << p.y          << endl;
         (*m_ssEntity) << " 30"        << endl;
         (*m_ssEntity) << "0.0"        << endl;
-    } 
+    }
     (*m_ssEntity) << "  0"            << endl;
     (*m_ssEntity) << "SEQEND"         << endl;
     (*m_ssEntity) << "  5"            << endl;
@@ -769,7 +769,7 @@ void CDxfWrite::writeCircle(const double* c, double radius)
     (*m_ssEntity) << radius      << endl;    // Radius
 }
 
-void CDxfWrite::writeEllipse(const double* c, double major_radius, double minor_radius, 
+void CDxfWrite::writeEllipse(const double* c, double major_radius, double minor_radius,
                              double rotation, double start_angle, double end_angle,
                              bool endIsCW)
 {
@@ -857,13 +857,13 @@ void CDxfWrite::writeSpline(const SplineDataOut &sd)
 
     (*m_ssEntity) << " 70"          << endl;
     (*m_ssEntity) << sd.flag        << endl;      //flags
-    (*m_ssEntity) << " 71"          << endl; 
+    (*m_ssEntity) << " 71"          << endl;
     (*m_ssEntity) << sd.degree      << endl;
     (*m_ssEntity) << " 72"          << endl;
     (*m_ssEntity) << sd.knots       << endl;
     (*m_ssEntity) << " 73"          << endl;
     (*m_ssEntity) << sd.control_points   << endl;
-    (*m_ssEntity) << " 74"          << endl; 
+    (*m_ssEntity) << " 74"          << endl;
     (*m_ssEntity) << 0              << endl;
 
 //    (*m_ssEntity) << " 12"          << endl;
@@ -879,17 +879,17 @@ void CDxfWrite::writeSpline(const SplineDataOut &sd)
 //    (*m_ssEntity) << " 33"          << endl;
 //    (*m_ssEntity) << sd.endtan.z    << endl;
 
-    for (auto& k: sd.knot) {
-        (*m_ssEntity) << " 40"      << endl;  
-        (*m_ssEntity) << k          << endl;  
+    for (auto& k : sd.knot) {
+        (*m_ssEntity) << " 40"      << endl;
+        (*m_ssEntity) << k          << endl;
     }
 
     for (auto& w : sd.weight) {
-        (*m_ssEntity) << " 41"      << endl;  
-        (*m_ssEntity) << w          << endl;  
+        (*m_ssEntity) << " 41"      << endl;
+        (*m_ssEntity) << w          << endl;
     }
 
-    for (auto& c: sd.control) {
+    for (auto& c : sd.control) {
         (*m_ssEntity) << " 10"      << endl;
         (*m_ssEntity) << c.x        << endl;    // X in WCS coordinates
         (*m_ssEntity) << " 20"      << endl;
@@ -897,7 +897,7 @@ void CDxfWrite::writeSpline(const SplineDataOut &sd)
         (*m_ssEntity) << " 30"      << endl;
         (*m_ssEntity) << c.z        << endl;    // Z in WCS coordinates
     }
-    for (auto& f: sd.fit) {
+    for (auto& f : sd.fit) {
         (*m_ssEntity) << " 11"      << endl;
         (*m_ssEntity) << f.x        << endl;    // X in WCS coordinates
         (*m_ssEntity) << " 21"      << endl;
@@ -930,7 +930,7 @@ void CDxfWrite::writeVertex(double x, double y, double z)
     }
     (*m_ssEntity) << " 10"          << endl;
     (*m_ssEntity) << x              << endl;
-    (*m_ssEntity) << " 20"          << endl; 
+    (*m_ssEntity) << " 20"          << endl;
     (*m_ssEntity) << y              << endl;
     (*m_ssEntity) << " 30"          << endl;
     (*m_ssEntity) << z              << endl;
@@ -942,9 +942,9 @@ void CDxfWrite::writeText(const char* text, const double* location1, const doubl
                           const double height, const int horizJust)
 {
     putText(text, toVector3d(location1), toVector3d(location2),
-            height, horizJust, 
+            height, horizJust,
             m_ssEntity, getEntityHandle(), m_saveModelSpaceHandle);
-}                                     
+}
 
 //***************************
 //putText
@@ -976,7 +976,7 @@ void CDxfWrite::putText(const char* text, const Base::Vector3d location1, const 
 //    (*outStream) << 0              << endl;     //thickness
     (*outStream) << " 10"          << endl;     //first alignment point
     (*outStream) << location1.x    << endl;
-    (*outStream) << " 20"          << endl; 
+    (*outStream) << " 20"          << endl;
     (*outStream) << location1.y    << endl;
     (*outStream) << " 30"          << endl;
     (*outStream) << location1.z    << endl;
@@ -1001,7 +1001,7 @@ void CDxfWrite::putText(const char* text, const Base::Vector3d location1, const 
 ////    (*outStream) << "0"            << endl;
     (*outStream) << " 11"          << endl;    //second alignment point
     (*outStream) << location2.x    << endl;
-    (*outStream) << " 21"          << endl; 
+    (*outStream) << " 21"          << endl;
     (*outStream) << location2.y    << endl;
     (*outStream) << " 31"          << endl;
     (*outStream) << location2.z    << endl;
@@ -1015,7 +1015,7 @@ void CDxfWrite::putText(const char* text, const Base::Vector3d location1, const 
         (*outStream) << "100"          << endl;
         (*outStream) << "AcDbText"     << endl;
     }
-    
+
 }
 
 void CDxfWrite::putArrow(Base::Vector3d arrowPos, Base::Vector3d barb1Pos, Base::Vector3d barb2Pos,
@@ -1096,13 +1096,13 @@ void CDxfWrite::writeLinearDim(const double* textMidPoint, const double* lineDef
     (*m_ssEntity) << "*" << getLayerName()     << endl;     // blockName
     (*m_ssEntity) << " 10"          << endl;     //dimension line definition point
     (*m_ssEntity) << lineDefPoint[0]    << endl;
-    (*m_ssEntity) << " 20"          << endl; 
+    (*m_ssEntity) << " 20"          << endl;
     (*m_ssEntity) << lineDefPoint[1]    << endl;
     (*m_ssEntity) << " 30"          << endl;
     (*m_ssEntity) << lineDefPoint[2]    << endl;
     (*m_ssEntity) << " 11"          << endl;     //text mid point
     (*m_ssEntity) << textMidPoint[0]    << endl;
-    (*m_ssEntity) << " 21"          << endl; 
+    (*m_ssEntity) << " 21"          << endl;
     (*m_ssEntity) << textMidPoint[1]    << endl;
     (*m_ssEntity) << " 31"          << endl;
     (*m_ssEntity) << textMidPoint[2]    << endl;
@@ -1128,13 +1128,13 @@ void CDxfWrite::writeLinearDim(const double* textMidPoint, const double* lineDef
     }
     (*m_ssEntity) << " 13"          << endl;
     (*m_ssEntity) << extLine1[0]    << endl;
-    (*m_ssEntity) << " 23"          << endl; 
+    (*m_ssEntity) << " 23"          << endl;
     (*m_ssEntity) << extLine1[1]    << endl;
     (*m_ssEntity) << " 33"          << endl;
     (*m_ssEntity) << extLine1[2]    << endl;
     (*m_ssEntity) << " 14"          << endl;
     (*m_ssEntity) << extLine2[0]    << endl;
-    (*m_ssEntity) << " 24"          << endl; 
+    (*m_ssEntity) << " 24"          << endl;
     (*m_ssEntity) << extLine2[1]    << endl;
     (*m_ssEntity) << " 34"          << endl;
     (*m_ssEntity) << extLine2[2]    << endl;
@@ -1186,14 +1186,14 @@ void CDxfWrite::writeAngularDim(const double* textMidPoint, const double* lineDe
 
     (*m_ssEntity) << " 10"          << endl;
     (*m_ssEntity) << endExt2[0]     << endl;
-    (*m_ssEntity) << " 20"          << endl; 
+    (*m_ssEntity) << " 20"          << endl;
     (*m_ssEntity) << endExt2[1]     << endl;
     (*m_ssEntity) << " 30"          << endl;
     (*m_ssEntity) << endExt2[2]     << endl;
 
     (*m_ssEntity) << " 11"          << endl;
     (*m_ssEntity) << textMidPoint[0]  << endl;
-    (*m_ssEntity) << " 21"          << endl; 
+    (*m_ssEntity) << " 21"          << endl;
     (*m_ssEntity) << textMidPoint[1]  << endl;
     (*m_ssEntity) << " 31"          << endl;
     (*m_ssEntity) << textMidPoint[2]  << endl;
@@ -1204,7 +1204,7 @@ void CDxfWrite::writeAngularDim(const double* textMidPoint, const double* lineDe
 //    (*m_ssEntity) << " 71"          << endl;    // not R12?  not required?
 //    (*m_ssEntity) << 5              << endl;    // attachPoint 5 = middle
     (*m_ssEntity) << "  1"          << endl;
-    (*m_ssEntity) << dimText        << endl;    
+    (*m_ssEntity) << dimText        << endl;
     (*m_ssEntity) << "  3"          << endl;
     (*m_ssEntity) << "STANDARD"     << endl;    //style
 //angular dims
@@ -1214,28 +1214,28 @@ void CDxfWrite::writeAngularDim(const double* textMidPoint, const double* lineDe
     }
     (*m_ssEntity) << " 13"           << endl;
     (*m_ssEntity) << startExt1[0]    << endl;
-    (*m_ssEntity) << " 23"           << endl; 
+    (*m_ssEntity) << " 23"           << endl;
     (*m_ssEntity) << startExt1[1]    << endl;
     (*m_ssEntity) << " 33"           << endl;
     (*m_ssEntity) << startExt1[2]    << endl;
 
     (*m_ssEntity) << " 14"           << endl;
     (*m_ssEntity) << endExt1[0]      << endl;
-    (*m_ssEntity) << " 24"           << endl; 
+    (*m_ssEntity) << " 24"           << endl;
     (*m_ssEntity) << endExt1[1]      << endl;
     (*m_ssEntity) << " 34"           << endl;
     (*m_ssEntity) << endExt1[2]      << endl;
 
     (*m_ssEntity) << " 15"           << endl;
     (*m_ssEntity) << startExt2[0]    << endl;
-    (*m_ssEntity) << " 25"           << endl; 
+    (*m_ssEntity) << " 25"           << endl;
     (*m_ssEntity) << startExt2[1]    << endl;
     (*m_ssEntity) << " 35"           << endl;
     (*m_ssEntity) << startExt2[2]    << endl;
 
     (*m_ssEntity) << " 16"           << endl;
     (*m_ssEntity) << lineDefPoint[0] << endl;
-    (*m_ssEntity) << " 26"           << endl; 
+    (*m_ssEntity) << " 26"           << endl;
     (*m_ssEntity) << lineDefPoint[1] << endl;
     (*m_ssEntity) << " 36"           << endl;
     (*m_ssEntity) << lineDefPoint[2] << endl;
@@ -1250,7 +1250,7 @@ void CDxfWrite::writeAngularDim(const double* textMidPoint, const double* lineDe
 //***************************
 //writeRadialDim
 //added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
-void CDxfWrite::writeRadialDim(const double* centerPoint, const double* textMidPoint, 
+void CDxfWrite::writeRadialDim(const double* centerPoint, const double* textMidPoint,
                          const double* arcPoint,
                          const char* dimText)
 {
@@ -1274,13 +1274,13 @@ void CDxfWrite::writeRadialDim(const double* centerPoint, const double* textMidP
     (*m_ssEntity) << "*" << getLayerName()     << endl;     // blockName
     (*m_ssEntity) << " 10"          << endl;     // arc center point
     (*m_ssEntity) << centerPoint[0] << endl;
-    (*m_ssEntity) << " 20"          << endl; 
+    (*m_ssEntity) << " 20"          << endl;
     (*m_ssEntity) << centerPoint[1] << endl;
     (*m_ssEntity) << " 30"          << endl;
     (*m_ssEntity) << centerPoint[2] << endl;
     (*m_ssEntity) << " 11"          << endl;     //text mid point
     (*m_ssEntity) << textMidPoint[0]   << endl;
-    (*m_ssEntity) << " 21"          << endl; 
+    (*m_ssEntity) << " 21"          << endl;
     (*m_ssEntity) << textMidPoint[1]   << endl;
     (*m_ssEntity) << " 31"          << endl;
     (*m_ssEntity) << textMidPoint[2]   << endl;
@@ -1289,7 +1289,7 @@ void CDxfWrite::writeRadialDim(const double* centerPoint, const double* textMidP
 //    (*m_ssEntity) << " 71"          << endl;    // not R12
 //    (*m_ssEntity) << 1              << endl;    // attachPoint 5 = middle center
     (*m_ssEntity) << "  1"          << endl;
-    (*m_ssEntity) << dimText        << endl;    
+    (*m_ssEntity) << dimText        << endl;
     (*m_ssEntity) << "  3"          << endl;
     (*m_ssEntity) << "STANDARD"     << endl;    //style
 //radial dims
@@ -1299,7 +1299,7 @@ void CDxfWrite::writeRadialDim(const double* centerPoint, const double* textMidP
     }
     (*m_ssEntity) << " 15"          << endl;
     (*m_ssEntity) << arcPoint[0]    << endl;
-    (*m_ssEntity) << " 25"          << endl; 
+    (*m_ssEntity) << " 25"          << endl;
     (*m_ssEntity) << arcPoint[1]    << endl;
     (*m_ssEntity) << " 35"          << endl;
     (*m_ssEntity) << arcPoint[2]    << endl;
@@ -1314,7 +1314,7 @@ void CDxfWrite::writeRadialDim(const double* centerPoint, const double* textMidP
 //***************************
 //writeDiametricDim
 //added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
-void CDxfWrite::writeDiametricDim(const double* textMidPoint, 
+void CDxfWrite::writeDiametricDim(const double* textMidPoint,
                          const double* arcPoint1, const double* arcPoint2,
                          const char* dimText)
 {
@@ -1338,13 +1338,13 @@ void CDxfWrite::writeDiametricDim(const double* textMidPoint,
     (*m_ssEntity) << "*" << getLayerName()     << endl;     // blockName
     (*m_ssEntity) << " 10"          << endl;
     (*m_ssEntity) << arcPoint1[0]   << endl;
-    (*m_ssEntity) << " 20"          << endl; 
+    (*m_ssEntity) << " 20"          << endl;
     (*m_ssEntity) << arcPoint1[1]   << endl;
     (*m_ssEntity) << " 30"          << endl;
     (*m_ssEntity) << arcPoint1[2]   << endl;
     (*m_ssEntity) << " 11"          << endl;     //text mid point
     (*m_ssEntity) << textMidPoint[0]   << endl;
-    (*m_ssEntity) << " 21"          << endl; 
+    (*m_ssEntity) << " 21"          << endl;
     (*m_ssEntity) << textMidPoint[1]   << endl;
     (*m_ssEntity) << " 31"          << endl;
     (*m_ssEntity) << textMidPoint[2]   << endl;
@@ -1353,7 +1353,7 @@ void CDxfWrite::writeDiametricDim(const double* textMidPoint,
 //    (*m_ssEntity) << " 71"          << endl;    // not R12
 //    (*m_ssEntity) << 5              << endl;    // attachPoint 5 = middle center
     (*m_ssEntity) << "  1"          << endl;
-    (*m_ssEntity) << dimText        << endl;    
+    (*m_ssEntity) << dimText        << endl;
     (*m_ssEntity) << "  3"          << endl;
     (*m_ssEntity) << "STANDARD"     << endl;    //style
 //diametric dims
@@ -1363,7 +1363,7 @@ void CDxfWrite::writeDiametricDim(const double* textMidPoint,
     }
     (*m_ssEntity) << " 15"          << endl;
     (*m_ssEntity) << arcPoint2[0]   << endl;
-    (*m_ssEntity) << " 25"          << endl; 
+    (*m_ssEntity) << " 25"          << endl;
     (*m_ssEntity) << arcPoint2[1]   << endl;
     (*m_ssEntity) << " 35"          << endl;
     (*m_ssEntity) << arcPoint2[2]   << endl;
@@ -1410,7 +1410,7 @@ void CDxfWrite::writeDimBlockPreamble(void)
     (*m_ssBlock) << "   1"         << endl;
     (*m_ssBlock) << " 10"          << endl;
     (*m_ssBlock) << 0.0            << endl;
-    (*m_ssBlock) << " 20"          << endl; 
+    (*m_ssBlock) << " 20"          << endl;
     (*m_ssBlock) << 0.0            << endl;
     (*m_ssBlock) << " 30"          << endl;
     (*m_ssBlock) << 0.0            << endl;
@@ -1464,7 +1464,7 @@ void CDxfWrite::writeLinearDimBlock(const double* textMidPoint, const double* di
     angle = angle * 180.0 / M_PI;
     if (type == ALIGNED) {
         //NOP
-    } else if (type == HORIZONTAL) { 
+    } else if (type == HORIZONTAL) {
         double x = e1Start[0];
         double y = dimLine[1];
         e1E = Base::Vector3d(x, y, 0.0);
@@ -1473,7 +1473,7 @@ void CDxfWrite::writeLinearDimBlock(const double* textMidPoint, const double* di
         perp = Base::Vector3d(0, -1, 0);     //down
         para = Base::Vector3d(1, 0, 0);      //right
         if (dimLine[1] > e1Start[1]) {
-            perp = Base::Vector3d(0, 1, 0);   //up 
+            perp = Base::Vector3d(0, 1, 0);   //up
         }
         if (e1Start[0] > e2Start[0]) {
             para = Base::Vector3d(-1, 0, 0);  //left
@@ -1559,7 +1559,7 @@ void CDxfWrite::writeAngularDimBlock(const double* textMidPoint, const double* l
     Base::Vector3d endOff(cos(endAngle - offset),sin(endAngle - offset),0.0);
     startAngle = startAngle * 180.0 / M_PI;
     endAngle = endAngle * 180.0 / M_PI;
-    
+
     Base::Vector3d linePt(lineDefPoint[0],lineDefPoint[1],lineDefPoint[2]);
     double radius = (e2S - linePt).Length();
 
@@ -1610,9 +1610,9 @@ void CDxfWrite::writeAngularDimBlock(const double* textMidPoint, const double* l
     Base::Vector3d endTan = e1S + (startOff * radius);
     Base::Vector3d startTan = e2S + (endOff * radius);
     Base::Vector3d tanP1 = (arrow1Start - startTan).Normalize();
-    Base::Vector3d perp1(-tanP1.y,tanP1.x,tanP1.z); 
+    Base::Vector3d perp1(-tanP1.y,tanP1.x,tanP1.z);
     Base::Vector3d tanP2 = (arrow2Start - endTan).Normalize();
-    Base::Vector3d perp2(-tanP2.y,tanP2.x,tanP2.z); 
+    Base::Vector3d perp2(-tanP2.y,tanP2.x,tanP2.z);
     double arrowLen = 5.0;                  //magic number
     double arrowWidth = arrowLen/6.0/2.0;   //magic number calc!
 
@@ -1632,7 +1632,7 @@ void CDxfWrite::writeAngularDimBlock(const double* textMidPoint, const double* l
 //***************************
 //writeRadialDimBlock
 //added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
-void CDxfWrite::writeRadialDimBlock(const double* centerPoint, const double* textMidPoint, 
+void CDxfWrite::writeRadialDimBlock(const double* centerPoint, const double* textMidPoint,
                          const double* arcPoint, const char* dimText)
 {
     putLine(toVector3d(centerPoint), toVector3d(arcPoint),
@@ -1660,7 +1660,7 @@ void CDxfWrite::writeRadialDimBlock(const double* centerPoint, const double* tex
 //***************************
 //writeDiametricDimBlock
 //added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
-void CDxfWrite::writeDiametricDimBlock(const double* textMidPoint, 
+void CDxfWrite::writeDiametricDimBlock(const double* textMidPoint,
                          const double* arcPoint1, const double* arcPoint2,
                          const char* dimText)
 {
@@ -1724,7 +1724,7 @@ void CDxfWrite::writeEntitiesSection(void)
     
     //write entities content
     (*m_ofs) << (*m_ssEntity).str();
-    
+
 
     (*m_ofs) << "  0"      << endl;
     (*m_ofs) << "ENDSEC"   << endl;
@@ -2001,7 +2001,7 @@ bool CDxfRead::ReadArc()
     double c[3] = {0,0,0}; // centre
     double z_extrusion_dir = 1.0;
     bool hidden = false;
-    
+
     while(!((*m_ifs).eof()))
     {
         get_line();
@@ -2078,9 +2078,9 @@ bool CDxfRead::ReadArc()
                 get_line();
                 break;
             case 230:
-                //Z extrusion direction for arc 
+                //Z extrusion direction for arc
                 get_line();
-                ss.str(m_str); ss >> z_extrusion_dir; if(ss.fail()) return false;                                
+                ss.str(m_str); ss >> z_extrusion_dir; if(ss.fail()) return false;
                 break;
 
             default:
@@ -2661,7 +2661,7 @@ bool CDxfRead::ReadLwPolyLine()
                 ss.str(m_str); ss >> y; y = mm(y); if(ss.fail()) return false;
                 y_found = true;
                 break;
-            case 38: 
+            case 38:
                 // elevation
                 get_line();
                 ss.str(m_str); ss >> z; z = mm(z); if(ss.fail()) return false;
@@ -2874,7 +2874,7 @@ void CDxfRead::OnReadArc(double start_angle, double end_angle, double radius, co
     temp[0] =-c[0];
     temp[1] =c[1];
     temp[2] =c[2];
-    
+
     e[0] = -(c[0] + radius * cos(start_angle * M_PI/180));
     e[1] = (c[1] + radius * sin(start_angle * M_PI/180));
     e[2] = c[2];
@@ -2929,12 +2929,12 @@ bool CDxfRead::ReadInsert()
         std::istringstream ss;
         ss.imbue(std::locale("C"));
         switch(n){
-            case 0: 
+            case 0:
                 // next item found
                 DerefACI();
                 OnReadInsert(c, s, name, rot * M_PI/180);
                 return(true);
-            case 8: 
+            case 8:
                 // Layer name follows
                 get_line();
                 strcpy(m_layer_name, m_str);
@@ -3021,12 +3021,12 @@ bool CDxfRead::ReadDimension()
         std::istringstream ss;
         ss.imbue(std::locale("C"));
         switch(n){
-            case 0: 
+            case 0:
                 // next item found
                 DerefACI();
                 OnReadDimension(s, e, p, rot * M_PI/180);
                 return(true);
-            case 8: 
+            case 8:
                 // Layer name follows
                 get_line();
                 strcpy(m_layer_name, m_str);
@@ -3285,7 +3285,7 @@ void CDxfRead::DoRead(const bool ignore_errors /* = false */ )
             }
             continue;
         } // End if - then
-        
+
         else if(!strcmp(m_str, "0"))
         {
             get_line();
@@ -3311,9 +3311,9 @@ void CDxfRead::DoRead(const bool ignore_errors /* = false */ )
                   printf("CDxfRead::DoRead() Failed to read layer\n");
                   //return; Some objects or tables can have "LAYER" as name...
                 }
-              continue;     
+              continue;
         }
-        
+
         else if (!strcmp( m_str, "BLOCK" )) {
             if(!ReadBlockInfo())
             {

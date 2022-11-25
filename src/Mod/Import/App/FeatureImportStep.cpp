@@ -38,20 +38,20 @@ using namespace Import;
 
 void FeatureImportStep::InitLabel(const TDF_Label &rcLabel)
 {
-	addProperty("String","FileName");
+    addProperty("String","FileName");
 
 }
 
 /*
 bool FeaturePartImportStep::MustExecute(void)
 {
-	Base::Console().Log("PartBoxFeature::MustExecute()\n");
-	return false;
+    Base::Console().Log("PartBoxFeature::MustExecute()\n");
+    return false;
 }
 */
 Standard_Integer FeatureImportStep::Execute(void)
 {
-	Base::Console().Log("FeaturePartImportStep::Execute()\n");
+    Base::Console().Log("FeaturePartImportStep::Execute()\n");
 
 /*  cout << GetFloatProperty("x") << endl;
   cout << GetFloatProperty("y") << endl;
@@ -71,13 +71,13 @@ Standard_Integer FeatureImportStep::Execute(void)
       return 1;
 
     int i=_open(FileName.c_str(),O_RDONLY);
-	  if( i != -1)
-	  {
-		  _close(i);
-	  }else{
+    if( i != -1)
+    {
+        _close(i);
+    }else{
       setError("File not readable");
-		  return 1;
-	  }
+      return 1;
+    }
 
     // just do show the wait cursor when the Gui is up
     Base::Sequencer().start("Load IGES", 1);
@@ -112,7 +112,7 @@ Standard_Integer FeatureImportStep::Execute(void)
       }
     }
 
-	  setShape(aShape);
+    setShape(aShape);
     Base::Sequencer().stop();
   }
   catch(...){
@@ -127,8 +127,8 @@ Standard_Integer FeatureImportStep::Execute(void)
 /*
 void FeatureImportStep::Validate(void)
 {
-	Base::Console().Log("FeaturePartImportStep::Validate()\n");
- 
+  Base::Console().Log("FeaturePartImportStep::Validate()\n");
+
   // We validate the object label ( Label() ), all the arguments and the results of the object:
   log.SetValid(Label(), Standard_True);
 

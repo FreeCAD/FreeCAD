@@ -38,20 +38,19 @@ using namespace Import;
 
 void FeatureImportIges::InitLabel(const TDF_Label &rcLabel)
 {
-	addProperty("String","FileName");
-
+    addProperty("String","FileName");
 }
 
 /*
 bool FeaturePartImportStep::MustExecute(void)
 {
-	Base::Console().Log("PartBoxFeature::MustExecute()\n");
-	return false;
+    Base::Console().Log("PartBoxFeature::MustExecute()\n");
+    return false;
 }
 */
 Standard_Integer FeatureImportIges::Execute(void)
 {
-	Base::Console().Log("FeaturePartImportIges::Execute()\n");
+    Base::Console().Log("FeaturePartImportIges::Execute()\n");
 
 /*  cout << GetFloatProperty("x") << endl;
   cout << GetFloatProperty("y") << endl;
@@ -68,13 +67,13 @@ Standard_Integer FeatureImportIges::Execute(void)
     std::string FileName = getPropertyString("FileName");
 
     int i=_open(FileName.c_str(),O_RDONLY);
-	  if( i != -1)
-	  {
-		  _close(i);
-	  }else{
+    if( i != -1)
+    {
+      _close(i);
+    }else{
       Base::Console().Log("FeaturePartImportIges::Execute() not able to open %s!\n",FileName.c_str());
-		  return 1;
-	  }
+          return 1;
+    }
 
     // just do show the wait cursor when the Gui is up
     Base::Sequencer().start("Load IGES", 1);
@@ -83,17 +82,17 @@ Standard_Integer FeatureImportIges::Execute(void)
     // read iges-file
     if (aReader.ReadFile((const Standard_CString)FileName.c_str()) != IFSelect_RetDone)
       throw Base::FileException("IGES read failed (load file)");
-  
+
     // check iges-file (memory)
     //if (!aReader.Check(Standard_True))
     //  Base::Console().Warning( "IGES model contains errors! try loading anyway....\n" );
-  
+
     // make brep
     aReader.TransferRoots();
     // one shape, who contain's all subshapes
     aShape = aReader.OneShape();
 
-	  setShape(aShape);
+    setShape(aShape);
     Base::Sequencer().stop();
   }
   catch(...){
@@ -108,7 +107,7 @@ Standard_Integer FeatureImportIges::Execute(void)
 /*
 void FeatureImportIges::Validate(void)
 {
-	Base::Console().Log("FeaturePartImportStep::Validate()\n");
+  Base::Console().Log("FeaturePartImportStep::Validate()\n");
  
   // We validate the object label ( Label() ), all the arguments and the results of the object:
   log.SetValid(Label(), Standard_True);
