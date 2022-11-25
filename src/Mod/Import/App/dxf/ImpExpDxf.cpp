@@ -326,7 +326,7 @@ void ImpExpDxfRead::OnReadInsert(const double* point, const double* scale, const
             TopoDS_Compound comp;
             builder.MakeCompound(comp);
             std::vector<Part::TopoShape*> v = i->second;
-            for(std::vector<Part::TopoShape*>::const_iterator j = v.begin(); j != v.end(); ++j) { 
+            for(std::vector<Part::TopoShape*>::const_iterator j = v.begin(); j != v.end(); ++j) {
                 const TopoDS_Shape& sh = (*j)->getShape();
                 if (!sh.IsNull())
                     builder.Add(comp, sh);
@@ -341,7 +341,7 @@ void ImpExpDxfRead::OnReadInsert(const double* point, const double* scale, const
                 AddObject(pcomp);
             }
         }
-    } 
+    }
 }
 
 
@@ -425,7 +425,7 @@ void ImpExpDxfRead::AddGraphics() const
                 k = "LAYER_0";
             std::vector<Part::TopoShape*> v = i->second;
             if(k.substr(0, 6) != "BLOCKS") {
-                for(std::vector<Part::TopoShape*>::const_iterator j = v.begin(); j != v.end(); ++j) { 
+                for(std::vector<Part::TopoShape*>::const_iterator j = v.begin(); j != v.end(); ++j) {
                     const TopoDS_Shape& sh = (*j)->getShape();
                     if (!sh.IsNull())
                         builder.Add(comp, sh);
@@ -433,7 +433,7 @@ void ImpExpDxfRead::AddGraphics() const
                 if (!comp.IsNull()) {
                     Part::Feature *pcFeature = static_cast<Part::Feature *>(document->addObject("Part::Feature", k.c_str()));
                     pcFeature->Shape.setValue(comp);
-                } 
+                }
             }
         }
     }
@@ -458,7 +458,7 @@ point3D gPntTopoint3D(gp_Pnt& p)
    return result;
 }
 
-ImpExpDxfWrite::ImpExpDxfWrite(std::string filepath) : 
+ImpExpDxfWrite::ImpExpDxfWrite(std::string filepath) :
     CDxfWrite(filepath.c_str())
 {
     setOptionSource("User parameter:BaseApp/Preferences/Mod/Import");
@@ -580,11 +580,11 @@ void ImpExpDxfWrite::exportShape(const TopoDS_Shape input)
             gp_Pnt p = BRep_Tool::Pnt(v);
             duplicates.push_back(p);
         }
-        
+
         std::sort(duplicates.begin(),duplicates.end(),ImpExpDxfWrite::gp_PntCompare);
         auto newEnd = std::unique(duplicates.begin(),duplicates.end(),ImpExpDxfWrite::gp_PntEqual);
         std::vector<gp_Pnt> uniquePts(duplicates.begin(),newEnd);
-        for (auto& p: uniquePts) {
+        for (auto& p : uniquePts) {
             double point[3] = {0,0,0};
             gPntToTuple(point, p);
             writePoint(point);
@@ -592,7 +592,7 @@ void ImpExpDxfWrite::exportShape(const TopoDS_Shape input)
     }
 }
 
-bool ImpExpDxfWrite::gp_PntEqual(gp_Pnt p1, gp_Pnt p2) 
+bool ImpExpDxfWrite::gp_PntEqual(gp_Pnt p1, gp_Pnt p2)
 {
     bool result = false;
     if (p1.IsEqual(p2,Precision::Confusion())) {
@@ -602,12 +602,12 @@ bool ImpExpDxfWrite::gp_PntEqual(gp_Pnt p1, gp_Pnt p2)
 }
 
 //is p1 "less than" p2?
-bool ImpExpDxfWrite::gp_PntCompare(gp_Pnt p1, gp_Pnt p2) 
+bool ImpExpDxfWrite::gp_PntCompare(gp_Pnt p1, gp_Pnt p2)
 {
     bool result = false;
     if (!(p1.IsEqual(p2,Precision::Confusion()))) {                       //ie v1 != v2
         if (!(fabs(p1.X() - p2.X()) < Precision::Confusion())) {          // x1 != x2
-            result = p1.X() < p2.X();        
+            result = p1.X() < p2.X();
         } else if (!(fabs(p1.Y() - p2.Y()) < Precision::Confusion())) {   // y1 != y2
             result = p1.Y() < p2.Y();
         } else {
@@ -643,7 +643,7 @@ void ImpExpDxfWrite::exportEllipse(BRepAdaptor_Curve& c)
     gp_Dir xaxis = ellp.XAxis().Direction();       //direction of major axis
     //rotation appears to be the clockwise(?) angle between major & +Y??
     double rotation = xaxis.AngleWithRef(gp_Dir(0, 1, 0), gp_Dir(0, 0, 1));
-    
+
     //2*M_PI = 6.28319 is invalid(doesn't display in LibreCAD), but 2PI = 6.28318 is valid!
     //writeEllipse(center, major, minor, rotation, 0.0, 2 * M_PI, true );
     writeEllipse(center, major, minor, rotation, 0.0, 6.28318, true );
@@ -764,7 +764,7 @@ void ImpExpDxfWrite::exportBSpline(BRepAdaptor_Curve& c)
     spline->D0(spline->LastParameter(),p);
     sd.endtan = gPntTopoint3D(p);
 
-    //next bit is from DrawingExport.cpp (Dan Falk?).  
+    //next bit is from DrawingExport.cpp (Dan Falk?).
     Standard_Integer m = 0;
     if (spline->IsPeriodic()) {
         m = spline->NbPoles() + 2*spline->Degree() - spline->Multiplicity(1) + 2;
@@ -785,8 +785,8 @@ void ImpExpDxfWrite::exportBSpline(BRepAdaptor_Curve& c)
     for (int i = poles.Lower(); i <= poles.Upper(); i++) {
         sd.control.push_back(gPntTopoint3D(poles(i)));
     }
-    //OCC doesn't have separate lists for control points and fit points. 
-    
+    //OCC doesn't have separate lists for control points and fit points.
+
     writeSpline(sd);
 }
 
@@ -873,8 +873,8 @@ void ImpExpDxfWrite::exportText(const char* text, Base::Vector3d position1, Base
     writeText(text, location1, location2, size, just);
 }
 
-void ImpExpDxfWrite::exportLinearDim(Base::Vector3d textLocn, Base::Vector3d lineLocn, 
-                                     Base::Vector3d extLine1Start, Base::Vector3d extLine2Start, 
+void ImpExpDxfWrite::exportLinearDim(Base::Vector3d textLocn, Base::Vector3d lineLocn,
+                                     Base::Vector3d extLine1Start, Base::Vector3d extLine2Start,
                                      char* dimText, int type)
 {
     double text[3] = {0,0,0};
@@ -896,8 +896,8 @@ void ImpExpDxfWrite::exportLinearDim(Base::Vector3d textLocn, Base::Vector3d lin
     writeLinearDim(text, line, ext1,ext2,dimText, type);
 }
 
-void ImpExpDxfWrite::exportAngularDim(Base::Vector3d textLocn, Base::Vector3d lineLocn, 
-                             Base::Vector3d extLine1End, Base::Vector3d extLine2End, 
+void ImpExpDxfWrite::exportAngularDim(Base::Vector3d textLocn, Base::Vector3d lineLocn,
+                             Base::Vector3d extLine1End, Base::Vector3d extLine2End,
                              Base::Vector3d apexPoint,
                              char* dimText)
 {
@@ -924,7 +924,7 @@ void ImpExpDxfWrite::exportAngularDim(Base::Vector3d textLocn, Base::Vector3d li
     writeAngularDim(text, line, apex, ext1, apex, ext2, dimText);
 }
 
-void ImpExpDxfWrite::exportRadialDim(Base::Vector3d centerPoint, Base::Vector3d textLocn, 
+void ImpExpDxfWrite::exportRadialDim(Base::Vector3d centerPoint, Base::Vector3d textLocn,
                              Base::Vector3d arcPoint,
                              char* dimText)
 {
@@ -944,7 +944,7 @@ void ImpExpDxfWrite::exportRadialDim(Base::Vector3d centerPoint, Base::Vector3d 
 
 }
 
-void ImpExpDxfWrite::exportDiametricDim(Base::Vector3d textLocn, 
+void ImpExpDxfWrite::exportDiametricDim(Base::Vector3d textLocn,
                              Base::Vector3d arcPoint1, Base::Vector3d arcPoint2,
                              char* dimText)
 {

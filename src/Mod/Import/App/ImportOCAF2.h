@@ -137,15 +137,15 @@ private:
         int free = true;
     };
 
-    App::DocumentObject *loadShape(App::Document *doc, TDF_Label label, 
+    App::DocumentObject *loadShape(App::Document *doc, TDF_Label label,
             const TopoDS_Shape &shape, bool baseOnly=false, bool newDoc=true);
     App::Document *getDocument(App::Document *doc, TDF_Label label);
-    bool createAssembly(App::Document *doc, TDF_Label label, 
+    bool createAssembly(App::Document *doc, TDF_Label label,
             const TopoDS_Shape &shape, Info &info, bool newDoc);
-    bool createObject(App::Document *doc, TDF_Label label, 
+    bool createObject(App::Document *doc, TDF_Label label,
             const TopoDS_Shape &shape, Info &info, bool newDoc);
-    bool createGroup(App::Document *doc, Info &info, 
-            const TopoDS_Shape &shape, std::vector<App::DocumentObject*> &children, 
+    bool createGroup(App::Document *doc, Info &info,
+            const TopoDS_Shape &shape, std::vector<App::DocumentObject*> &children,
             const boost::dynamic_bitset<> &visibilities, bool canReduce=false);
     bool getColor(const TopoDS_Shape &shape, Info &info, bool check=false, bool noDefault=false);
     void getSHUOColors(TDF_Label label, std::map<std::string,App::Color> &colors, bool appendFirst);
@@ -164,7 +164,7 @@ private:
         explicit ImportLegacy(ImportOCAF2 &parent)
             :ImportOCAF(parent.pDoc, parent.pDocument, parent.default_name),myParent(parent)
         {}
-            
+
     private:
         void applyColors(Part::Feature* part, const std::vector<App::Color>& colors) override {
             myParent.applyFaceColors(part, colors);
@@ -220,8 +220,8 @@ public:
 
 private:
     TDF_Label exportObject(App::DocumentObject *obj, const char *sub, TDF_Label parent, const char *name=nullptr);
-    void setupObject(TDF_Label label, App::DocumentObject *obj, 
-            const Part::TopoShape &shape, const std::string &prefix, 
+    void setupObject(TDF_Label label, App::DocumentObject *obj,
+            const Part::TopoShape &shape, const std::string &prefix,
             const char *name=nullptr, bool force=false);
     void setName(TDF_Label label, App::DocumentObject *obj, const char *name=nullptr);
     TDF_Label findComponent(const char *subname, TDF_Label label, TDF_LabelSequence &labels);

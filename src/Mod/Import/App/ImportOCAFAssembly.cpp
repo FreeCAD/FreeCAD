@@ -53,8 +53,8 @@ using namespace Import;
 
 
 ImportOCAFAssembly::ImportOCAFAssembly(Handle(TDocStd_Document) h, App::Document* d, const std::string& name, App::DocumentObject *target)
-    : pDoc(h), 
-      doc(d), 
+    : pDoc(h),
+      doc(d),
       default_name(name),
       targetObj(target)
 {

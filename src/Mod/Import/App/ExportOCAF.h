@@ -33,6 +33,7 @@
 #include <XCAFDoc_ColorTool.hxx>
 #include <XCAFDoc_ShapeTool.hxx>
 
+#include <App/Material.h>
 #include <Mod/Import/ImportGlobal.h>
 
 
@@ -42,6 +43,7 @@ class TopLoc_Location;
 namespace App {
 class Document;
 class DocumentObject;
+class Part;
 }
 namespace Part {
 class Feature;

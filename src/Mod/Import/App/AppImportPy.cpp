@@ -687,9 +687,9 @@ static PyObject * importAssembly(PyObject *self, PyObject *args)
        
 
         App::Document *pcDoc = 0;
-            
-		pcDoc = App::GetApplication().getActiveDocument();
-        
+
+        pcDoc = App::GetApplication().getActiveDocument();
+
         if (!pcDoc) 
             pcDoc = App::GetApplication().newDocument("ImportedAssembly");
         
