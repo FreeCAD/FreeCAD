@@ -1526,34 +1526,14 @@ DOMPrintFilter::FilterAction DOMPrintFilter::acceptNode(const DOMNode* node) con
     }
 
     switch (node->getNodeType()) {
-    case DOMNode::ELEMENT_NODE: {
-        return DOMNodeFilter::FILTER_ACCEPT;
-
-        break;
+        case DOMNode::DOCUMENT_TYPE_NODE:
+        case DOMNode::DOCUMENT_NODE: {
+            return DOMNodeFilter::FILTER_REJECT;// no effect
+        }
+        default: {
+            return DOMNodeFilter::FILTER_ACCEPT;
+        }
     }
-    case DOMNode::COMMENT_NODE: {
-        return DOMNodeFilter::FILTER_ACCEPT;
-        break;
-    }
-    case DOMNode::TEXT_NODE: {
-        return DOMNodeFilter::FILTER_ACCEPT;
-        break;
-    }
-    case DOMNode::DOCUMENT_TYPE_NODE: {
-        return DOMNodeFilter::FILTER_REJECT;  // no effect
-        break;
-    }
-    case DOMNode::DOCUMENT_NODE: {
-        return DOMNodeFilter::FILTER_REJECT;  // no effect
-        break;
-    }
-    default : {
-        return DOMNodeFilter::FILTER_ACCEPT;
-        break;
-    }
-    }
-
-    return DOMNodeFilter::FILTER_ACCEPT;
 }
 
 //**************************************************************************
