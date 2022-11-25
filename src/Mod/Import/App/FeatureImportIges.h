@@ -20,17 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
 #ifndef __FeatureImportIges_H__
 #define __FeatureImportIges_H__
 
-
 #include <Mod/Part/App/PartFeature.h>
+
 
 namespace Import
 {
-
 
 class FeatureImportIges :public Part::Feature
 {

@@ -23,51 +23,47 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <Standard_Version.hxx>
+# if OCC_VERSION_HEX < 0x070600
+#  include <BRepAdaptor_HCurve.hxx>
+# endif
+# include <Approx_Curve3d.hxx>
+# include <BRep_Builder.hxx>
+# include <BRepAdaptor_Curve.hxx>
+# include <BRepBuilderAPI_MakeEdge.hxx>
+# include <BRepBuilderAPI_MakeVertex.hxx>
+# include <GCPnts_UniformAbscissa.hxx>
+# include <Geom_BSplineCurve.hxx>
+# include <GeomAPI_Interpolate.hxx>
+# include <GeomAPI_PointsToBSpline.hxx>
+# include <gp_Ax1.hxx>
+# include <gp_Ax2.hxx>
+# include <gp_Circ.hxx>
+# include <gp_Dir.hxx>
+# include <gp_Elips.hxx>
+# include <gp_Pnt.hxx>
+# include <gp_Vec.hxx>
+# include <TColgp_Array1OfPnt.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Compound.hxx>
+# include <TopoDS_Edge.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopoDS_Shape.hxx>
+# include <TopoDS_Vertex.hxx>
 #endif
+
+#include <App/Annotation.h>
+#include <App/Application.h>
+#include <App/Document.h>
+#include <Base/Console.h>
+#include <Base/Interpreter.h>
+#include <Base/Matrix.h>
+#include <Base/Parameter.h>
+#include <Base/Vector3D.h>
+#include <Mod/Part/App/PartFeature.h>
 
 #include "ImpExpDxf.h"
 
-#include <Approx_Curve3d.hxx>
-#include <BRepAdaptor_Curve.hxx>
-#include <BRep_Builder.hxx>
-#include <BRepBuilderAPI_MakeEdge.hxx>
-#include <BRepBuilderAPI_MakeVertex.hxx>
-#include <GCPnts_UniformAbscissa.hxx>
-#include <GeomAPI_PointsToBSpline.hxx>
-#include <GeomAPI_Interpolate.hxx>
-#include <GeomAdaptor_Curve.hxx>
-#include <Geom_BSplineCurve.hxx>
-#include <Geom_BezierCurve.hxx>
-#include <gp_Circ.hxx>
-#include <gp_Elips.hxx>
-#include <gp_Lin.hxx>
-#include <gp_Ax1.hxx>
-#include <gp_Ax2.hxx>
-#include <gp_Pnt.hxx>
-#include <gp_Dir.hxx>
-#include <gp_Vec.hxx>
-#include <Standard_Version.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <TopoDS_Compound.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TColgp_Array1OfPnt.hxx>
-#if OCC_VERSION_HEX < 0x070600
-#include <BRepAdaptor_HCurve.hxx>
-#endif
-
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-#include <Base/Matrix.h>
-#include <Base/Vector3D.h>
-#include <Base/Interpreter.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/Annotation.h>
-#include <Mod/Part/App/PartFeature.h>
 
 using namespace Import;
 

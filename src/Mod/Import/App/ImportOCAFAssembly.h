@@ -20,18 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef IMPORT_ImportOCAFAssembly_H
 #define IMPORT_ImportOCAFAssembly_H
 
-#include <Quantity_Color.hxx>
-#include <TopoDS_Shape.hxx>
 #include <climits>
-#include <string>
-#include <set>
 #include <map>
+#include <set>
+#include <string>
 #include <vector>
+
+#include <TopoDS_Shape.hxx>
+
 #include <App/Material.h>
+#include <Mod/Import/ImportGlobal.h>
+
 
 class TDF_Label;
 class TopLoc_Location;

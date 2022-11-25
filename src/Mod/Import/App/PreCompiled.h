@@ -51,7 +51,7 @@
 
 // OpenCasCade =====================================================================================
 // Base
-#include "OpenCascadeAll.h"
+#include <Mod/Part/App/OpenCascadeAll.h>
 
 #endif //_PreComp_
 

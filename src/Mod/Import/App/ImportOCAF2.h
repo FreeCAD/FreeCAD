@@ -23,21 +23,22 @@
 #ifndef IMPORT_IMPORTOCAF2_H
 #define IMPORT_IMPORTOCAF2_H
 
-#include <TDocStd_Document.hxx>
-#include <XCAFDoc_ColorTool.hxx>
-#include <XCAFDoc_ShapeTool.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TDF_LabelMapHasher.hxx>
 #include <climits>
-#include <string>
-#include <set>
 #include <map>
+#include <set>
+#include <string>
 #include <unordered_map>
 #include <vector>
-#include <App/Material.h>
-#include <App/Part.h>
-#include <Mod/Part/App/FeatureCompound.h>
+
+#include <TDF_LabelMapHasher.hxx>
+#include <TDocStd_Document.hxx>
+#include <TopoDS_Shape.hxx>
+#include <XCAFDoc_ColorTool.hxx>
+#include <XCAFDoc_ShapeTool.hxx>
+
 #include <Base/Sequencer.h>
+#include <Mod/Part/App/TopoShape.h>
+
 #include "ImportOCAF.h"
 #include "ExportOCAF.h"
 

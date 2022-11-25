@@ -26,21 +26,12 @@
 #endif
 #ifndef _PreComp_
 # include <climits>
-#if defined(__clang__)
-# pragma clang diagnostic push
-# pragma clang diagnostic ignored "-Wextra-semi"
-#endif
-# include <Standard_Version.hxx>
-# include <NCollection_Vector.hxx>
-# include <TDocStd_Document.hxx>
-# include <XCAFApp_Application.hxx>
-# include <TDocStd_Document.hxx>
-# include <XCAFApp_Application.hxx>
-# include <XCAFDoc_DocumentTool.hxx>
-# include <XCAFDoc_ShapeTool.hxx>
-# include <STEPCAFControl_Reader.hxx>
-# include <STEPCAFControl_Writer.hxx>
-# include <STEPControl_Writer.hxx>
+# if defined(__clang__)
+#  pragma clang diagnostic pop
+#  pragma clang diagnostic push
+#  pragma clang diagnostic ignored "-Wextra-semi"
+# endif
+# include <APIHeaderSection_MakeHeader.hxx>
 # include <IGESCAFControl_Reader.hxx>
 # include <IGESCAFControl_Writer.hxx>
 # include <IGESControl_Controller.hxx>
@@ -48,39 +39,33 @@
 # include <IGESData_IGESModel.hxx>
 # include <IGESToBRep_Actor.hxx>
 # include <Interface_Static.hxx>
-# include <Transfer_TransientProcess.hxx>
-# include <XSControl_WorkSession.hxx>
-# include <XSControl_TransferReader.hxx>
-# include <APIHeaderSection_MakeHeader.hxx>
 # include <OSD_Exception.hxx>
-#if defined(__clang__)
-# pragma clang diagnostic pop
-#endif
+# include <Standard_Version.hxx>
+# include <STEPCAFControl_Reader.hxx>
+# include <STEPCAFControl_Writer.hxx>
+# include <TDocStd_Document.hxx>
+# include <XCAFApp_Application.hxx>
+# include <XCAFDoc_DocumentTool.hxx>
+# include <XSControl_TransferReader.hxx>
+# include <XSControl_WorkSession.hxx>
 #endif
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
-
-#include "ImportOCAF2.h"
-//#include "ImportOCAFAssembly.h"
-#include <Base/PyObjectBase.h>
-#include <Base/Console.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
-#include <Mod/Part/App/OCAF/ImportExportSettings.h>
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/ProgressIndicator.h>
+#include <Base/Console.h>
+#include "dxf/ImpExpDxf.h"
+#include <Mod/Part/App/encodeFilename.h>
 #include <Mod/Part/App/ImportIges.h>
 #include <Mod/Part/App/ImportStep.h>
 #include <Mod/Part/App/Interface.h>
-#include <Mod/Part/App/encodeFilename.h>
-#include <Mod/Part/App/TopoShape.h>
+#include <Mod/Part/App/ProgressIndicator.h>
 #include <Mod/Part/App/TopoShapePy.h>
-#include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/PartFeaturePy.h>
+#include <Mod/Part/App/OCAF/ImportExportSettings.h>
 
-#include "dxf/ImpExpDxf.h"
+#include "ImportOCAF2.h"
+
 
 namespace Import {
 

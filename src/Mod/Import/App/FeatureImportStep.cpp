@@ -19,20 +19,18 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-
  
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <fcntl.h>
-# include <TopTools_HSequenceOfShape.hxx>
-# include <STEPControl_Writer.hxx>
 # include <STEPControl_Reader.hxx>
 # include <TopoDS_Shape.hxx>
-# include <TFunction_Logbook.hxx>
+# include <TopTools_HSequenceOfShape.hxx>
 #endif
 
 #include <Base/Console.h>
 #include <Base/Sequencer.h>
+
 #include "FeatureImportStep.h"
 
 

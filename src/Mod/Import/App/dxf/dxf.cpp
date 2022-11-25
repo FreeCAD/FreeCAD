@@ -8,19 +8,19 @@
 //required by windows for M_PI definition
 #define _USE_MATH_DEFINES
 #include <cmath>
-
-#include <iomanip>
 #include <fstream>
-#include <sstream>
+#include <iomanip>
 #include <iostream>
+#include <sstream>
 
 #include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
-#include <Base/Parameter.h>
 #include <Base/Stream.h>
 #include <Base/Vector3D.h>
+
 #include "dxf.h"
+
 
 using namespace std;
 
