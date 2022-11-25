@@ -23,10 +23,13 @@
 #ifndef IMPEXPDXF_H
 #define IMPEXPDXF_H
 
-#include "dxf.h"
-#include <Mod/Part/App/TopoShape.h>
-#include <App/Document.h>
 #include <gp_Pnt.hxx>
+
+#include <App/Document.h>
+#include <Mod/Part/App/TopoShape.h>
+
+#include "dxf.h"
+
 
 class BRepAdaptor_Curve;
 

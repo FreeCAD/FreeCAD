@@ -20,24 +20,23 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <sstream>
 #endif
 
+#include <Base/Exception.h>
+#include <Base/FileInfo.h>
+
+#include <Interface_Static.hxx>
+#include <Message_Messenger.hxx>
+#include <Message_PrinterOStream.hxx>
+#include <Standard_Version.hxx>
+#include <STEPControl_Reader.hxx>
+#include <StepData_StepModel.hxx>
+
 #include "StepShape.h"
 
-# include <STEPControl_Reader.hxx>
-# include <StepData_StepModel.hxx>
-# include <StepData_StepModel.hxx>
-# include <Interface_Static.hxx>
-# include <Message_Messenger.hxx>
-# include <Message_PrinterOStream.hxx>
-# include <Standard_Version.hxx>
-
-# include <Base/FileInfo.h>
-# include <Base/Exception.h>
 
 using namespace Import;
 

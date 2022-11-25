@@ -20,17 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
 #ifndef __FeatureImportStep_H__
 #define __FeatureImportStep_H__
 
-
 #include <Mod/Part/App/PartFeature.h>
+
 
 namespace Import
 {
-
 
   class FeatureImportStep :public Part::Feature
 {

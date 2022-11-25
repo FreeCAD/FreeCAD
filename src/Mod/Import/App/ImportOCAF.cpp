@@ -20,86 +20,46 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #if defined(__MINGW32__)
 # define WNT // avoid conflict with GUID
 #endif
 #ifndef _PreComp_
-# include <gp_Trsf.hxx>
-# include <gp_Ax1.hxx>
-# include <NCollection_Vector.hxx>
-# include <BRepBuilderAPI_MakeShape.hxx>
-# include <BRepAlgoAPI_Fuse.hxx>
-# include <BRepAlgoAPI_Common.hxx>
-# include <TopTools_ListIteratorOfListOfShape.hxx>
-# include <TopExp.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
-# include <Standard_Failure.hxx>
-# include <TopoDS_Face.hxx>
-# include <gp_Dir.hxx>
+# include <climits>
 # include <gp_Pln.hxx> // for Precision::Confusion()
+# include <gp_Trsf.hxx>
 # include <Bnd_Box.hxx>
 # include <BRepBndLib.hxx>
-# include <BRepExtrema_DistShapeShape.hxx>
-# include <climits>
-# include <Standard_Version.hxx>
 # include <BRep_Builder.hxx>
-# include <TDocStd_Document.hxx>
-# include <XCAFApp_Application.hxx>
-# include <TDocStd_Document.hxx>
-# include <XCAFApp_Application.hxx>
-# include <XCAFDoc_DocumentTool.hxx>
-# include <XCAFDoc_ShapeTool.hxx>
-# include <XCAFDoc_ColorTool.hxx>
-# include <XCAFDoc_Location.hxx>
-# include <XCAFDoc_GraphNode.hxx>
-# include <TDF_Label.hxx>
-# include <TDF_Tool.hxx>
-# include <TDF_LabelSequence.hxx>
-# include <TDF_ChildIterator.hxx>
-# include <TDataStd_Name.hxx>
+# include <BRepExtrema_DistShapeShape.hxx>
 # include <Quantity_ColorRGBA.hxx>
-# include <STEPCAFControl_Reader.hxx>
-# include <STEPControl_Writer.hxx>
-# include <IGESCAFControl_Reader.hxx>
-# include <IGESCAFControl_Writer.hxx>
-# include <IGESControl_Controller.hxx>
-# include <Interface_Static.hxx>
-# include <Transfer_TransientProcess.hxx>
-# include <XSControl_WorkSession.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
-# include <TopTools_MapOfShape.hxx>
+# include <Standard_Failure.hxx>
+# include <Standard_Version.hxx>
+# include <TDataStd_Name.hxx>
+# include <TDF_ChildIterator.hxx>
+# include <TDF_Label.hxx>
+# include <TDF_LabelSequence.hxx>
+# include <TDocStd_Document.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS_Iterator.hxx>
-# include <APIHeaderSection_MakeHeader.hxx>
-# include <OSD_Exception.hxx>
-# include <TDataXtd_Shape.hxx>
+# include <TopTools_IndexedMapOfShape.hxx>
+# include <XCAFDoc_DocumentTool.hxx>
+# include <XCAFDoc_Location.hxx>
 #endif
 
-#include <boost/algorithm/string.hpp>
-#include <Base/Parameter.h>
-#include <Base/Console.h>
 #include <App/Application.h>
 #include <App/Document.h>
-#include <App/DocumentObjectPy.h>
-#include <App/Part.h>
-#include <App/Link.h>
-#include <Mod/Part/App/PartFeature.h>
+#include <Base/Console.h>
+#include <Base/Parameter.h>
 #include <Mod/Part/App/FeatureCompound.h>
-#include "ImportOCAF.h"
-#include <Mod/Part/App/ProgressIndicator.h>
-#include <Mod/Part/App/ImportIges.h>
-#include <Mod/Part/App/ImportStep.h>
 
-#include <App/DocumentObject.h>
-#include <App/DocumentObjectGroup.h>
+#include "ImportOCAF.h"
+
 
 #ifdef HAVE_TBB
-#include <tbb/parallel_for.h>
-#include <tbb/blocked_range.h>
-#include <tbb/task_group.h>
+# include <tbb/blocked_range.h>
+# include <tbb/parallel_for.h>
+# include <tbb/task_group.h>
 #endif
 
 using namespace Import;
