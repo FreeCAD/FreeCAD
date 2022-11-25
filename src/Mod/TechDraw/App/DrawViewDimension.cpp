@@ -39,6 +39,8 @@
 #include <BRepExtrema_DistShapeShape.hxx>
 #include <BRep_Tool.hxx>
 #include <gp_Pnt.hxx>
+#include <gp_Circ.hxx>
+#include <gp_Elips.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Shape.hxx>
 #include <TopExp.hxx>
