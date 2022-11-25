@@ -366,7 +366,7 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute()
         return App::DocumentObject::StdReturn;
 
     if (!has2DReferences() && !has3DReferences()) {
-        //no references, cant' do anything
+        //no references, can't do anything
         return App::DocumentObject::StdReturn;
     }
 

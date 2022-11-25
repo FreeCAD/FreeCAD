@@ -231,7 +231,7 @@ bool TechDraw::validateSubnameList(StringVector subNames,
     return true;
 }
 
-//count how many of each "Edge", "Vertex, etc and compare totals to required minium
+//count how many of each "Edge", "Vertex, etc and compare totals to required minimum
 bool TechDraw::checkGeometryOccurences(StringVector subNames,
                              GeomCountMap keyedMinimumCounts)
 {
@@ -245,7 +245,7 @@ bool TechDraw::checkGeometryOccurences(StringVector subNames,
             //already have this geometryType
             it0->second++;
         } else {
-            //first occurence of this geometryType
+            //first occurrence of this geometryType
             foundCounts[geometryType] = 1;
         }
     }
@@ -368,7 +368,7 @@ DimensionGeometryType TechDraw::isValidSingleEdge(ReferenceEntry ref)
         return isInvalid;
     }
 
-    //the geometry exists (redundent?)
+    //the geometry exists (redundant?)
     int GeoId( TechDraw::DrawUtil::getIndexFromName(ref.getSubName()) );
     TechDraw::BaseGeomPtr geom = objFeat->getGeomByIndex(GeoId);
     if (!geom) {
@@ -466,7 +466,7 @@ DimensionGeometryType TechDraw::isValidMultiEdge(ReferenceVector refs)
 
     auto objFeat0( dynamic_cast<TechDraw::DrawViewPart *>(refs.at(0).getObject()));
     if ( !objFeat0 ) {
-        //probably redundent
+        //probably redundant
         throw Base::RuntimeError("Logic error in isValidMultiEdge");
     }
 
@@ -544,7 +544,7 @@ DimensionGeometryType TechDraw::isValidMultiEdge3d(DrawViewPart *dvp, ReferenceV
         edgesAll.push_back(edge);
     }
     if (edgesAll.size() > 2) {
-        //must be an extent dimenion of lines?
+        //must be an extent dimension of lines?
         return isMultiEdge;
     } else if (edgesAll.size() == 2) {
         Base::Vector3d first0 = DU::toVector3d(BRep_Tool::Pnt(TopExp::FirstVertex(edgesAll.at(0))));
@@ -570,12 +570,12 @@ DimensionGeometryType TechDraw::isValidVertexes(ReferenceVector refs)
 {
     TechDraw::DrawViewPart* dvp( dynamic_cast<TechDraw::DrawViewPart*>(refs.front().getObject()) );
     if ( !dvp ) {
-        //probably redundent
+        //probably redundant
         throw Base::RuntimeError("Logic error in isValidMultiEdge");
     }
 
     if (refs.size() == 2) {
-        //2 vertices can only make a distance dimention
+        //2 vertices can only make a distance dimension
         TechDraw::VertexPtr v0 = dvp->getVertex(refs.at(0).getSubName());
         TechDraw::VertexPtr v1 = dvp->getVertex(refs.at(1).getSubName());
         Base::Vector3d line = v1->point() - v0->point();
@@ -601,7 +601,7 @@ DimensionGeometryType TechDraw::isValidVertexes3d(DrawViewPart *dvp, ReferenceVe
 //    Base::Console().Message("DV::isValidVertexes3d() - refs: %d\n", refs.size());
     (void) dvp;
     if (refs.size() == 2) {
-        //2 vertices can only make a distance dimention
+        //2 vertices can only make a distance dimension
         TopoDS_Shape geometry0 = refs.at(0).getGeometry();
         TopoDS_Shape geometry1 = refs.at(1).getGeometry();
         if (geometry0.IsNull() || geometry1.IsNull() ||

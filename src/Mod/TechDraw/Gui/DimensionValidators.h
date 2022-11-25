@@ -36,10 +36,8 @@ using StringVector = std::vector<std::string>;
 using GeomCount = std::pair<std::string, int>;           //geometry descriptor ("Edge") + counter pair
 using GeomCountVector = std::vector<GeomCount>;
 using GeomCountMap = std::map<std::string, int>;
-using GeometrySet = std::unordered_set<std::string>;    //queriable unique set of geometrty descriptors
+using GeometrySet = std::unordered_set<std::string>;    //queryable unique set of geometrty descriptors
 
-//using ReferenceEntry = std::pair<App::DocumentObject*, std::string>;
-//using ReferenceVector = std::vector<ReferenceEntry>;
 using DimensionGeometryType = int;
 
 namespace TechDraw
