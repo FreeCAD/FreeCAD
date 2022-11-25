@@ -27,7 +27,6 @@
 #ifndef _PreComp_
 # include <climits>
 # if defined(__clang__)
-#  pragma clang diagnostic pop
 #  pragma clang diagnostic push
 #  pragma clang diagnostic ignored "-Wextra-semi"
 # endif
@@ -44,10 +43,14 @@
 # include <STEPCAFControl_Reader.hxx>
 # include <STEPCAFControl_Writer.hxx>
 # include <TDocStd_Document.hxx>
+# include <Transfer_TransientProcess.hxx>
 # include <XCAFApp_Application.hxx>
 # include <XCAFDoc_DocumentTool.hxx>
 # include <XSControl_TransferReader.hxx>
 # include <XSControl_WorkSession.hxx>
+# if defined(__clang__)
+#  pragma clang diagnostic pop
+# endif
 #endif
 
 #include <App/Application.h>
