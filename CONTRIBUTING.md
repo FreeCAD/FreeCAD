@@ -23,12 +23,13 @@ The FreeCAD Contribution Process is expressed here with the following specific g
 
 ## 2. Fundamentals
 
-1. FreeCAD uses the git distributed revision control system.
-2. Source code for the main application and related subprojects is hosted on github.com in the FreeCAD organization, hereafter referred to as 'the Platform'.
-3. Problems are discrete, well-defined limitations or bugs.
-4. FreeCAD uses the Platform's issue-tracking system to track problems and contributions.  For help requests and general discussions, use the project forum. 
-5. Contributions are sets of code changes that resolve a single problem.
-6. FreeCAD uses the Pull Request workflow for evaluating and accepting contributions.
+1. FreeCAD contributors use english as communication language.
+2. FreeCAD uses the git distributed revision control system.
+3. Source code for the main application and related subprojects is hosted on github.com in the FreeCAD organization, hereafter referred to as 'the Platform'.
+4. Problems are discrete, well-defined limitations or bugs.
+5. FreeCAD uses the Platform's issue-tracking system to track problems and contributions.  For help requests and general discussions, use the project forum. 
+6. Contributions are sets of code changes that resolve a single problem.
+7. FreeCAD uses the Pull Request workflow for evaluating and accepting contributions.
 
 ## 3. Roles
 1. "User": An member of the wider FreeCAD community who uses the software.
