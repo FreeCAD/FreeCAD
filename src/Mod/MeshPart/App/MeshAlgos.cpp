@@ -69,8 +69,10 @@ void MeshAlgos::offsetSpecial2(MeshCore::MeshKernel* Mesh, float fSize)
     unsigned int i = 0;
 
     // go through all the Vertex normals
-    for(std::vector<Base::Vector3f>::iterator It= PointNormals.begin();It != PointNormals.end();++It,i++){
-        builder.addSingleLine(Mesh->GetPoint(i),Mesh->GetPoint(i)+It->Normalize() * fSize);
+    for(std::vector<Base::Vector3f>::iterator It= PointNormals.begin();It != PointNormals.end();++It,i++) {
+        Base::Line3f line{Mesh->GetPoint(i), Mesh->GetPoint(i) + It->Normalize() * fSize};
+        Base::DrawStyle drawStyle;
+        builder.addSingleLine(line, drawStyle);
         // and move each mesh point in the normal direction
         Mesh->MovePoint(i,It->Normalize() * fSize);
     }
@@ -85,8 +87,10 @@ void MeshAlgos::offsetSpecial2(MeshCore::MeshKernel* Mesh, float fSize)
                 continue;
             // calculate the angle between them
             float angle = acos((FaceNormals[i] * it->GetNormal()) / (it->GetNormal().Length() * FaceNormals[i].Length()));
-            if(angle > 1.6){
-                builder.addSinglePoint(it->GetGravityPoint(),4,1,0,0);
+            if (angle > 1.6){
+                Base::DrawStyle drawStyle;
+                drawStyle.pointSize = 4.0F;
+                builder.addSinglePoint(it->GetGravityPoint(), drawStyle, Base::ColorRGB{1.0F, 0.0F, 0.0F});
                 fliped.insert(it.Position());
             }
         }

@@ -948,8 +948,10 @@ void MeshObject::offsetSpecial2(float fSize)
     unsigned int i = 0;
 
     // go through all the vertex normals
-    for (std::vector<Base::Vector3f>::iterator It= PointNormals.begin();It != PointNormals.end();++It,i++){
-        builder.addSingleLine(_kernel.GetPoint(i),_kernel.GetPoint(i)+It->Normalize() * fSize);
+    for (std::vector<Base::Vector3f>::iterator It= PointNormals.begin();It != PointNormals.end();++It,i++) {
+        Base::Line3f line{_kernel.GetPoint(i), _kernel.GetPoint(i) + It->Normalize() * fSize};
+        Base::DrawStyle drawStyle;
+        builder.addSingleLine(line, drawStyle);
         // and move each mesh point in the normal direction
         _kernel.MovePoint(i,It->Normalize() * fSize);
     }
@@ -964,7 +966,9 @@ void MeshObject::offsetSpecial2(float fSize)
             // calculate the angle between them
             float angle = acos((FaceNormals[i] * it->GetNormal()) / (it->GetNormal().Length() * FaceNormals[i].Length()));
             if (angle > 1.6) {
-                builder.addSinglePoint(it->GetGravityPoint(),4,1,0,0);
+                Base::DrawStyle drawStyle;
+                drawStyle.pointSize = 4.0F;
+                builder.addSinglePoint(it->GetGravityPoint(), drawStyle, Base::ColorRGB{1.0F, 0.0F, 0.0F});
                 fliped.insert(it.Position());
             }
         }
