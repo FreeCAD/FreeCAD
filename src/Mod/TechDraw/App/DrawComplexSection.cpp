@@ -133,7 +133,7 @@ const char *DrawComplexSection::ProjectionStrategyEnums[] = {"Offset", "Aligned"
                                                              nullptr};
 
 DrawComplexSection::DrawComplexSection()
-    : m_toolFaceShape(TopoDS_Shape()), m_profileWire(TopoDS_Wire())
+    : m_toolFaceShape(TopoDS_Shape())
 {
     static const char *fgroup = "Cutting Tool";
 
@@ -171,35 +171,17 @@ TopoDS_Shape DrawComplexSection::getShapeToCut()
     return DrawViewSection::getShapeToCut();
 }
 
-void DrawComplexSection::makeSectionCut(TopoDS_Shape &baseShape)
-{
-    //    Base::Console().Message("DCS::makeSectionCut() - %s\n", getNameInDocument(), baseShape.IsNull());
-    if (ProjectionStrategy.getValue() == 0) {
-        //Offset. Use regular section behaviour
-        DrawViewSection::makeSectionCut(baseShape);
-        return;
-    }
-    //Aligned strategy
-    if (debugSection()) {
-        //only useful for debugging with Aligned strategy
-        DrawViewSection::makeSectionCut(baseShape);
-    }
-    return;
-}
-
 TopoDS_Shape DrawComplexSection::makeCuttingTool(double dMax)
 {
     //    Base::Console().Message("DCS::makeCuttingTool()\n");
-    App::DocumentObject *toolObj = CuttingToolWireObject.getValue();
-    if (!isProfileObject(toolObj)) {
-        return TopoDS_Shape();
+    TopoDS_Wire profileWire = makeProfileWire();
+    if (profileWire.IsNull()) {
+        throw Base::RuntimeError("Can not make wire from cutting tool (1)");
     }
-    TopoDS_Wire profileWire = makeProfileWire(toolObj);
-    BRepBuilderAPI_Copy BuilderCopy(profileWire);
-    m_profileWire = TopoDS::Wire(BuilderCopy.Shape());
+
     if (debugSection()) {
         //the nose to tail version of the profile
-        BRepTools::Write(m_profileWire, "DCSProfileWire.brep");//debug
+        BRepTools::Write(profileWire, "DCSProfileWire.brep");//debug
     }
 
     gp_Ax2 sectionCS = getSectionCS();
@@ -326,7 +308,11 @@ TopoDS_Shape DrawComplexSection::makeAlignedPieces(const TopoDS_Shape &rawShape,
     gp_Vec gProjectionUnit = gp_Vec(getSectionCS().Direction());
 
     //get a vector that describes the profile's orientation
-    gp_Vec gProfileVec = makeProfileVector(m_profileWire);
+    TopoDS_Wire profileWire = makeProfileWire();
+    if (profileWire.IsNull()) {
+        throw Base::RuntimeError("Can not make wire from cutting tool (2)");
+    }
+    gp_Vec gProfileVec = makeProfileVector(profileWire);
     //now we want to know what the profileVector looks like on the page (only X,Y coords)
     gProfileVec = projectVector(gProfileVec).Normalized();
 
@@ -611,10 +597,19 @@ TopoDS_Shape DrawComplexSection::getShapeToIntersect()
     //Aligned
     return m_preparedShape;
 }
+TopoDS_Wire DrawComplexSection::makeProfileWire() const
+{
+    App::DocumentObject *toolObj = CuttingToolWireObject.getValue();
+    return makeProfileWire(toolObj);
+}
 
 TopoDS_Wire DrawComplexSection::makeProfileWire(App::DocumentObject *toolObj)
 {
 //    Base::Console().Message("DCS::makeProfileWire()\n");
+    if (!isProfileObject(toolObj)) {
+        return TopoDS_Wire();
+    }
+
     TopoDS_Shape toolShape = Part::Feature::getShape(toolObj);
     if (toolShape.IsNull()) {
         return TopoDS_Wire();
