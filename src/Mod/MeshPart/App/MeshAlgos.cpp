@@ -273,8 +273,8 @@ MeshCore::MeshKernel* MeshAlgos::boolean(MeshCore::MeshKernel* pMesh1,
     self_intersects = gts_surface_is_self_intersecting (s3);
     if (self_intersects != NULL) {
 //      if (verbose)
-//	      gts_surface_print_stats (self_intersects, stderr);
- //     gts_surface_write (self_intersects, stdout);
+//        gts_surface_print_stats (self_intersects, stderr);
+//     gts_surface_write (self_intersects, stdout);
       gts_object_destroy (GTS_OBJECT (self_intersects));
       gts_object_destroy (GTS_OBJECT (s1));
       gts_object_destroy (GTS_OBJECT (s2));
@@ -350,7 +350,7 @@ GtsSurface* MeshAlgos::createGTSSurface(MeshCore::MeshKernel* Mesh)
 
     // creating the edges and add the face to the surface
     gts_surface_add_face (Surf,
-  	    gts_face_new (Surf->face_class,
+          gts_face_new (Surf->face_class,
           new_edge (aVertex[p1],aVertex[p2]),
           new_edge (aVertex[p2],aVertex[p3]),
           new_edge (aVertex[p3],aVertex[p1])));
