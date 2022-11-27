@@ -68,8 +68,8 @@ public:
     bool operator== (const Line3& line) const;
 
     // methods
-    double Length () const;
-    double SqrLength () const;
+    float_type Length () const;
+    float_type SqrLength () const;
     BoundBox3<float_type> CalcBoundBox() const;
     Vector3<float_type> GetBase() const;
     Vector3<float_type> GetDirection() const;
