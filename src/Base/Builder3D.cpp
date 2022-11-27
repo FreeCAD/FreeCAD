@@ -239,16 +239,18 @@ void Builder3D::addSingleLine(const Base::Line3f& line, DrawStyle drawStyle, con
 
 void Builder3D::addSingleArrow(const Base::Line3f& line, DrawStyle drawStyle, const ColorRGB& color)
 {
-    float l = line.Length();
-    float cl = l / 10.0f;
-    float cr = cl / 2.0f;
+    float length = line.Length();
+    float coneLength = length / 10.0F;
+    float coneRadius = coneLength / 2.0F;
+    float sf1 = length - coneLength;
+    float sf2 = length - coneLength/2.0F;
 
     Vector3f dir = line.GetDirection();
     dir.Normalize();
-    dir.Scale(l-cl, l-cl, l-cl);
+    dir.Scale(sf1, sf1, sf1);
     Vector3f pt2s = line.p1 + dir;
     dir.Normalize();
-    dir.Scale(l-cl/2.0f, l-cl/2.0f, l-cl/2.0f);
+    dir.Scale(sf2, sf2, sf2);
     Vector3f cpt = line.p1 + dir;
 
     Vector3f rot = Vector3f(0.0f, 1.0f, 0.0f) % dir;
@@ -269,7 +271,7 @@ void Builder3D::addSingleArrow(const Base::Line3f& line, DrawStyle drawStyle, co
          <<     "translation " << cpt.x << " " << cpt.y << " " << cpt.z << " "
          <<     "rotation " << rot.x << " " << rot.y << " " << rot.z << " " << a
          <<   "} "
-         <<   "Cone { bottomRadius " << cr << " height " << cl << "} "
+         <<   "Cone { bottomRadius " << coneRadius << " height " << coneLength << "} "
          << "} ";
 
 }
@@ -562,13 +564,13 @@ void InventorBuilder::addLineSet()
  */
 void InventorBuilder::addText(const Vector3f& pnt, const char * text, const ColorRGB& rgb)
 {
-  result << Base::blanks(indent) << "Separator { \n"
-         << Base::blanks(indent) << "  Material { diffuseColor "
-         << rgb.red() << " "<< rgb.green() << " "<< rgb.blue() << "} \n"
-         << Base::blanks(indent) << "  Transform { translation "
-         << pnt.x << " "<< pnt.y << " "<< pnt.z << "} \n"
-         << Base::blanks(indent) << "  Text2 { string \" " << text << "\" " << "} \n"
-         << Base::blanks(indent) << "}\n";
+    result << Base::blanks(indent) << "Separator { \n"
+           << Base::blanks(indent) << "  Material { diffuseColor "
+           << rgb.red() << " "<< rgb.green() << " "<< rgb.blue() << "} \n"
+           << Base::blanks(indent) << "  Transform { translation "
+           << pnt.x << " "<< pnt.y << " "<< pnt.z << "} \n"
+           << Base::blanks(indent) << "  Text2 { string \" " << text << "\" " << "} \n"
+           << Base::blanks(indent) << "}\n";
 
 }
 
@@ -594,16 +596,18 @@ void InventorBuilder::addSingleLine(const Base::Line3f& line, Base::DrawStyle dr
 
 void InventorBuilder::addSingleArrow(const Base::Line3f& line, Base::DrawStyle drawStyle, const ColorRGB& rgb)
 {
-    float l = line.Length();
-    float cl = l / 10.0f;
-    float cr = cl / 2.0f;
+    float length = line.Length();
+    float coneLength = length / 10.0F;
+    float coneRadius = coneLength / 2.0F;
+    float sf1 = length - coneLength;
+    float sf2 = length - coneLength/2.0F;
 
     Vector3f dir = line.GetDirection();
     dir.Normalize();
-    dir.Scale(l-cl, l-cl, l-cl);
+    dir.Scale(sf1, sf1, sf1);
     Vector3f pt2s = line.p1 + dir;
     dir.Normalize();
-    dir.Scale(l-cl/2.0f, l-cl/2.0f, l-cl/2.0f);
+    dir.Scale(sf2, sf2, sf2);
     Vector3f cpt = line.p1 + dir;
 
     Vector3f rot = Vector3f(0.0f, 1.0f, 0.0f) % dir;
@@ -628,7 +632,7 @@ void InventorBuilder::addSingleArrow(const Base::Line3f& line, Base::DrawStyle d
            << Base::blanks(indent) << "    rotation "
            << rot.x << " " << rot.y << " " << rot.z << " " << a << '\n'
            << Base::blanks(indent) << "  } \n"
-           << Base::blanks(indent) << "  Cone { bottomRadius " << cr << " height " << cl << "} \n"
+           << Base::blanks(indent) << "  Cone { bottomRadius " << coneRadius << " height " << coneLength << "} \n"
            << Base::blanks(indent) << "} \n";
 }
 
