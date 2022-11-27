@@ -1172,15 +1172,15 @@ void MeshObject::trimByPlane(const Base::Vector3f& base, const Base::Vector3f& n
 
     // Apply the inverted mesh placement to the plane because the trimming is done
     // on the untransformed mesh data
-    Base::Vector3f baseL, normalL;
+    Base::Vector3f basePlane, normalPlane;
     Base::Placement meshPlacement = getPlacement();
     meshPlacement.invert();
-    meshPlacement.multVec(base, baseL);
-    meshPlacement.getRotation().multVec(normal, normalL);
+    meshPlacement.multVec(base, basePlane);
+    meshPlacement.getRotation().multVec(normal, normalPlane);
 
     MeshCore::MeshFacetGrid meshGrid(this->_kernel);
-    trim.CheckFacets(meshGrid, baseL, normalL, trimFacets, removeFacets);
-    trim.TrimFacets(trimFacets, baseL, normalL, triangle);
+    trim.CheckFacets(meshGrid, basePlane, normalPlane, trimFacets, removeFacets);
+    trim.TrimFacets(trimFacets, basePlane, normalPlane, triangle);
     if (!removeFacets.empty())
         this->deleteFacets(removeFacets);
     if (!triangle.empty())

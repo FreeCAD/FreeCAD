@@ -25,6 +25,7 @@
 
 #include "Mod/Points/App/Points.h"
 #include <Base/Builder3D.h>
+#include <Base/Converter.h>
 #include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
 #include <boost/math/special_functions/fpclassify.hpp>
@@ -126,7 +127,7 @@ PyObject* PointsPy::writeInventor(PyObject * args)
     builder.beginPoints();
     PointKernel* kernel = getPointKernelPtr();
     for (Points::PointKernel::const_iterator it = kernel->begin(); it != kernel->end(); ++it)
-        builder.addPoint((float)it->x,(float)it->y,(float)it->z);
+        builder.addPoint(Base::convertTo<Base::Vector3f>(*it));
     builder.endPoints();
     builder.addPointSet();
     builder.close();

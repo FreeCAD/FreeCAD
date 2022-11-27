@@ -1091,7 +1091,7 @@ void TopoShape::exportFaceSet(double dev, double ca,
         builder.addShapeHints((float)ca);
         if (supportFaceColors) {
             App::Color c = colors[index];
-            builder.addMaterial(c.r, c.g, c.b, c.a);
+            builder.addMaterial(Base::ColorRGB{c.r, c.g, c.b}, c.a);
         }
 
         builder.beginPoints();
@@ -1133,7 +1133,9 @@ void TopoShape::exportLineSet(std::ostream& str) const
             vertices.push_back(Base::convertTo<Base::Vector3f>(p));
         });
 
-        builder.addLineSet(vertices, 2, 0, 0, 0);
+        Base::DrawStyle drawStyle;
+        drawStyle.lineWidth = 2.0F;
+        builder.addLineSet(vertices, drawStyle, Base::ColorRGB{0, 0, 0});
     }
 }
 

@@ -66,24 +66,6 @@ protected:
     } Rgb;
 };
 
-class BaseExport ColorRGBA : public ColorRGB
-{
-public:
-    ColorRGBA() : _alpha {1.0F} {
-    }
-    explicit ColorRGBA(float red, float green, float blue, float alpha)
-        : ColorRGB(red, green, blue)
-        , _alpha {valueInRange(alpha)} {
-    }
-    ~ColorRGBA() = default;
-    float alpha() const {
-        return _alpha;
-    }
-
-private:
-    float _alpha;
-};
-
 class BaseExport DrawStyle
 {
 public:
@@ -94,10 +76,28 @@ public:
         Invisible
     };
 
+    const char* styleAsString() const;
+    std::string patternAsString() const;
     Style style = Style::Filled;
     unsigned short pointSize = 2;
     unsigned short lineWidth = 2;
     unsigned short linePattern = 0xffff;
+};
+
+class BaseExport PolygonOffset
+{
+public:
+    enum class Style {
+        Filled,
+        Lines,
+        Points
+    };
+
+    const char* styleAsString() const;
+    float factor = 1.0F;
+    float units = 1.0F;
+    Style style = Style::Filled;
+    bool on = true;
 };
 
 class BaseExport Triangle
@@ -232,7 +232,7 @@ public:
      * This automatically opens a separator node.
      * \param str - stream to write the content into
      */
-    InventorBuilder(std::ostream& str);
+    explicit InventorBuilder(std::ostream& str);
     /*!
      * \brief Destruction of an InventorBuilder instance
      */
@@ -265,19 +265,12 @@ public:
     //@{
     /*!
      * \brief Sets a base color node. The colors are in the range [0, 1].
-     * \param color_r - red color
-     * \param color_g - green color
-     * \param color_b - blue color
      */
-    void addBaseColor(float color_r,float color_g,float color_b);
+    void addBaseColor(const ColorRGB& rgb);
     /*!
      * \brief Sets a material node. The colors are in the range [0, 1].
-     * \param color_r - red color
-     * \param color_g - green color
-     * \param color_b - blue color
-     * \param color_a - transparency
      */
-    void addMaterial(float color_r,float color_g,float color_b,float color_a=0);
+    void addMaterial(const ColorRGB& rgb, float transparency=0);
     /*!
      * \brief Starts a material node. The node must be closed with \ref endMaterial
      * and the colors must be added with \ref addColor().
@@ -289,11 +282,8 @@ public:
     void endMaterial();
     /*!
      * \brief Adds a color to a material node. The colors are in the range [0, 1].
-     * \param color_r - red color
-     * \param color_g - green color
-     * \param color_b - blue color
      */
-    void addColor(float color_r,float color_g,float color_b);
+    void addColor(const ColorRGB& rgb);
     /*!
      * \brief Sets a material binding node.
      * \param binding - binding of the material. Allowed values are:
@@ -303,36 +293,25 @@ public:
     void addMaterialBinding(const char* binding = "OVERALL");
     /*!
      * \brief Sets a draw style node.
-     * \param pointSize - the point size
-     * \param lineWidth - the line width
-     * \param linePattern - the line pattern
-     * \param style - the draw style
      */
-    void addDrawStyle(short pointSize, short lineWidth,
-        unsigned short linePattern = 0xffff, const char* style="FILLED");
+    void addDrawStyle(DrawStyle drawStyle);
     /*!
      * \brief Sets a shape hints node.
      * \param crease - the crease angle in radians
      */
-    void addShapeHints(float crease=0.0f);
+    void addShapeHints(float creaseAngle=0.0f);
     /*!
      * \brief Sets a polygon offset node.
-     * \param factor - Offset multiplication factor.
-     * \param units - Offset translation multiplication factor.
-     * \param styles - Can be FILLED, LINES or POINTS.
-     * \param on - Whether the offset is on or off.
      */
-    void addPolygonOffset(float factor=1.0f, float units=1.0f, const char* styles="FILLED", bool on=true);
+    void addPolygonOffset(PolygonOffset polygonOffset);
     //@}
 
     /** @name Add coordinates */
     //@{
     /// add a single point
-    void addPoint(float x, float y, float z);
-    /// add a single point
-    void addPoint(const Vector3f &vec);
+    void addPoint(const Vector3f& pnt);
     /// add a list of points
-    void addPoints(const std::vector<Vector3f> &vec);
+    void addPoints(const std::vector<Vector3f>& points);
     //@}
 
     /** @name Point set handling */
@@ -357,15 +336,12 @@ public:
 
     /** @name Line/Direction handling */
     //@{
-    /// add a line defined by 2 Vector3D
-    void addSingleLine(const Vector3f& pt1, const Vector3f& pt2, short lineSize=2,
-                       float color_r=1.0,float color_g=1.0,float color_b=1.0, unsigned short linePattern = 0xffff);
-    /// add a arrow (directed line) by 2 Vector3D. The arrow shows in direction of point 2.
-    void addSingleArrow(const Vector3f& pt1, const Vector3f& pt2, short lineSize=2,
-                        float color_r=1.0,float color_g=1.0,float color_b=1.0, unsigned short linePattern = 0xffff);
+    /// add a line
+    void addSingleLine(const Base::Line3f& line, DrawStyle drawStyle, const ColorRGB& rgb = ColorRGB{1.0F, 1.0F, 1.0F});
+    /// add a arrow
+    void addSingleArrow(const Base::Line3f& line, DrawStyle drawStyle, const ColorRGB& rgb = ColorRGB{1.0F, 1.0F, 1.0F});
     /// add a line defined by a list of points whereat always a pair (i.e. a point and the following point) builds a line.
-    void addLineSet(const std::vector<Vector3f>& points, short lineSize=2,
-                    float color_r=1.0,float color_g=1.0,float color_b=1.0, unsigned short linePattern = 0xffff);
+    void addLineSet(const std::vector<Vector3f>& points, DrawStyle drawStyle, const ColorRGB& rgb = ColorRGB{1.0F, 1.0F, 1.0F});
     /// add an SoLineSet node
     void addLineSet();
     //@}
@@ -373,10 +349,9 @@ public:
     /** @name Triangle handling */
     //@{
     /// add a (filled) triangle defined by 3 vectors
-    void addSingleTriangle(const Vector3f& pt0, const Vector3f& pt1, const Vector3f& pt2, bool filled = true, short lineSize=2,
-                           float color_r=1.0,float color_g=1.0,float color_b=1.0);
-    void addSinglePlane(const Vector3f& base, const Vector3f& eX, const Vector3f& eY, float length, float width, bool filled = true,
-                        short lineSize=2, float color_r=1.0,float color_g=1.0,float color_b=1.0);
+    void addSingleTriangle(const Triangle& triangle, DrawStyle drawStyle, const ColorRGB& rgb = ColorRGB{1.0F, 1.0F, 1.0F});
+    void addSinglePlane(const Vector3f& base, const Vector3f& eX, const Vector3f& eY, float length, float width, DrawStyle drawStyle,
+                        const ColorRGB& rgb = ColorRGB{1.0F, 1.0F, 1.0F});
     void addIndexedFaceSet(const std::vector<int>& indices);
     void addFaceSet(const std::vector<int>& vertices);
     //@}
@@ -392,24 +367,21 @@ public:
 
     /** @name Bounding Box handling */
     //@{
-    void addBoundingBox(const Vector3f& pt1, const Vector3f& pt2, short lineWidth=2,
-                        float color_r=1.0,float color_g=1.0,float color_b=1.0);
+    void addBoundingBox(const Vector3f& pt1, const Vector3f& pt2, DrawStyle drawStyle,
+                        const ColorRGB& rgb = ColorRGB{1.0F, 1.0F, 1.0F});
     //@}
 
     /** @name Transformation */
     //@{
     /// adds a transformation
     void addTransformation(const Matrix4D&);
-    void addTransformation(const Vector3f& translation, const Vector3f& rotationaxis, float fAngle);
+    void addTransformation(const Base::Placement&);
     //@}
 
     /** @name Text handling */
     //@{
     /// add a text
-    void addText(float pos_x, float pos_y , float pos_z,const char * text,
-                 float color_r=1.0,float color_g=1.0,float color_b=1.0);
-    /// add a text
-    void addText(const Vector3f &vec,const char * text, float color_r=1.0,float color_g=1.0,float color_b=1.0);
+    void addText(const Vector3f &vec,const char * text, const ColorRGB& rgb = ColorRGB{1.0F, 1.0F, 1.0F});
     //@}
 
 private:
