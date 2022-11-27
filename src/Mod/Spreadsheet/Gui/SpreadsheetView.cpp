@@ -389,7 +389,7 @@ void SheetView::confirmAliasChanged(const QString& text)
     }
 
     QModelIndex i = ui->cells->currentIndex();
-    if (const auto* cell = sheet->getCell(CellAddress(i.row(), i.column()))) {
+    if (const auto* cell = sheet->getNewCell(CellAddress(i.row(), i.column()))) {
         if (!aliasOkay) {
             //do not show error message if failure to set new alias is because it is already the same string
             std::string current_alias;
@@ -539,13 +539,13 @@ void SheetViewPy::init_type()
     behaviors().supportRepr();
     behaviors().supportGetattr();
     behaviors().supportSetattr();
-    
+
     add_varargs_method("selectedRanges", &SheetViewPy::selectedRanges, "selectedRanges(): Get a list of all selected ranges");
     add_varargs_method("selectedCells", &SheetViewPy::selectedCells, "selectedCells(): Get a list of all selected cells");
     add_varargs_method("select", &SheetViewPy::select, "select(cell,flags): Select (or deselect) the given cell, applying QItemSelectionModel.SelectionFlags\nselect(topLeft,bottomRight,flags): Select (or deselect) the given range, applying QItemSelectionModel.SelectionFlags");
     add_varargs_method("currentIndex", &SheetViewPy::currentIndex, "currentIndex(): Get the current index");
     add_varargs_method("setCurrentIndex", &SheetViewPy::setCurrentIndex, "setCurrentIndex(cell): Set the current index to the named cell (e.g. 'A1')");
-    
+
     add_varargs_method("getSheet", &SheetViewPy::getSheet, "getSheet()");
     add_varargs_method("cast_to_base", &SheetViewPy::cast_to_base, "cast_to_base() cast to MDIView class");
     behaviors().readyType();
