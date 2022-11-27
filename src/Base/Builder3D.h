@@ -28,7 +28,7 @@
 
 #include <sstream>
 #include <vector>
-#include <Base/Vector3D.h>
+#include <Base/Tools3D.h>
 #ifndef FC_GLOBAL_H
 #include <FCGlobal.h>
 #endif
@@ -36,6 +36,97 @@
 namespace Base
 {
 class Matrix4D;
+
+class BaseExport ColorRGB
+{
+public:
+    ColorRGB();
+    explicit ColorRGB(float red, float green, float blue);
+    ~ColorRGB() = default;
+
+    float red() const {
+        return Rgb.red;
+    }
+
+    float green() const {
+        return Rgb.green;
+    }
+
+    float blue() const {
+        return Rgb.blue;
+    }
+
+protected:
+    /*! Returns the clamped value in range [-1, +1] */
+    static float valueInRange(float value);
+    struct {
+        float red;
+        float green;
+        float blue;
+    } Rgb;
+};
+
+class BaseExport ColorRGBA : public ColorRGB
+{
+public:
+    ColorRGBA() : _alpha {1.0F} {
+    }
+    explicit ColorRGBA(float red, float green, float blue, float alpha)
+        : ColorRGB(red, green, blue)
+        , _alpha {valueInRange(alpha)} {
+    }
+    ~ColorRGBA() = default;
+    float alpha() const {
+        return _alpha;
+    }
+
+private:
+    float _alpha;
+};
+
+class BaseExport DrawStyle
+{
+public:
+    enum class Style {
+        Filled,
+        Lines,
+        Points,
+        Invisible
+    };
+
+    Style style = Style::Filled;
+    unsigned short pointSize = 2;
+    unsigned short lineWidth = 2;
+    unsigned short linePattern = 0xffff;
+};
+
+class BaseExport Triangle
+{
+public:
+    explicit Triangle(const Base::Vector3f& pt1,
+                      const Base::Vector3f& pt2,
+                      const Base::Vector3f& pt3)
+        : pt1(pt1), pt2(pt2), pt3(pt3)
+    {
+    }
+
+    const Base::Vector3f& getPoint1() const {
+        return pt1;
+    }
+
+    const Base::Vector3f& getPoint2() const {
+        return pt2;
+    }
+
+    const Base::Vector3f& getPoint3() const {
+        return pt3;
+    }
+
+private:
+    Base::Vector3f pt1;
+    Base::Vector3f pt2;
+    Base::Vector3f pt3;
+};
 
 /** A Builder class for 3D representations on App level
  * On the application level nothing is known of the visual representation of data.
@@ -65,73 +156,64 @@ class Matrix4D;
 class BaseExport Builder3D
 {
 public:
-  /// Construction
-  Builder3D();
-  /// Destruction
-  virtual ~Builder3D();
+    Builder3D();
+    virtual ~Builder3D();
 
-  /** @name point set handling */
-  //@{
-  /// starts a point set
-  void startPoints(short pointSize=2, float color_r=1.0,float color_g=0.0,float color_b=0.0);
-  /// insert a point in an point set
-  void addPoint(float x, float y, float z);
-  /// add a vector to a point set
-  void addPoint(const Vector3f &vec);
-  /// ends the points set operation
-  void endPoints();
-  /// add a singular point (without startPoints() & endPoints() )
-  void addSinglePoint(float x, float y, float z, short pointSize=2, float color_r=1.0,float color_g=1.0,float color_b=1.0);
-  /// add a singular point (without startPoints() & endPoints() )
-  void addSinglePoint(const Base::Vector3f &vec, short pointSize=2, float color_r=1.0,float color_g=1.0,float color_b=1.0);
-  //@}
+    /** @name point set handling */
+    //@{
+    /// starts a point set
+    void startPoints(short pointSize=2, const ColorRGB& color = ColorRGB{1.0F, 0.0F, 0.0F});
+    /// add a point to a point set
+    void addPoint(const Vector3f& point);
+    /// ends the points set operation
+    void endPoints();
+    /// add a single point (without startPoints() & endPoints() )
+    void addSinglePoint(const Base::Vector3f& point, DrawStyle drawStyle, const ColorRGB& color = ColorRGB{1.0F, 1.0F, 1.0F});
+    //@}
 
-  /** @name line/direction handling */
-  //@{
-  /// add a line defined by 2 Vector3D
-  void addSingleLine(const Vector3f& pt1, const Vector3f& pt2, short lineSize=2, float color_r=1.0,float color_g=1.0,float color_b=1.0, unsigned short linePattern = 0xffff);
-  /// add a arrow (directed line) by 2 Vector3D. The arrow shows in direction of point 2.
-  void addSingleArrow(const Vector3f& pt1, const Vector3f& pt2, short lineSize=2, float color_r=1.0,float color_g=1.0,float color_b=1.0, unsigned short linePattern = 0xffff);
-  //@}
+    /** @name line/direction handling */
+    //@{
+    /// add a line
+    void addSingleLine(const Base::Line3f& line, DrawStyle drawStyle, const ColorRGB& color = ColorRGB{1.0F, 1.0F, 1.0F});
+    /// add an arrow.
+    void addSingleArrow(const Base::Line3f& line, DrawStyle drawStyle, const ColorRGB& color = ColorRGB{1.0F, 1.0F, 1.0F});
+    //@}
 
-  /** @name triangle handling */
-  //@{
-  /// add a (filled) triangle defined by 3 vectors
-  void addSingleTriangle(const Vector3f& pt0, const Vector3f& pt1, const Vector3f& pt2, bool filled = true, short lineSize=2, float color_r=1.0,float color_g=1.0,float color_b=1.0);
-  //@}
+    /** @name triangle handling */
+    //@{
+    /// add a triangle
+    void addSingleTriangle(const Triangle& triangle, DrawStyle drawStyle, const ColorRGB& color = ColorRGB{1.0F, 1.0F, 1.0F});
+    //@}
 
-  /** @name Transformation */
-  //@{
-  /// adds a transformation
-  void addTransformation(const Base::Matrix4D&);
-  void addTransformation(const Base::Vector3f& translation, const Base::Vector3f& rotationaxis, float fAngle);
-  //@}
+    /** @name Transformation */
+    //@{
+    /// adds a transformation
+    void addTransformation(const Base::Matrix4D&);
+    void addTransformation(const Base::Placement&);
+    //@}
 
-  /** @name text handling */
-  //@{
-  /// add a text
-  void addText(float pos_x, float pos_y , float pos_z,const char * text, float color_r=1.0,float color_g=1.0,float color_b=1.0);
-  /// add a text
-  void addText(const Base::Vector3f &vec,const char * text, float color_r=1.0,float color_g=1.0,float color_b=1.0);
-  //@}
+    /** @name text handling */
+    //@{
+    /// add a text
+    void addText(const Base::Vector3f& point, const char * text, const ColorRGB& color = ColorRGB{1.0F, 1.0F, 1.0F});
+    //@}
 
-  /// clear the string buffer
-  void clear ();
+    /// clear the string buffer
+    void clear();
 
-  /** @name write the result */
-  //@{
-  /// sends the result to the log and gui
-  void saveToLog();
-  /// save the result to a file (*.iv)
-  void saveToFile(const char* FileName);
-  //@}
+    /** @name write the result */
+    //@{
+    /// sends the result to the log and gui
+    void saveToLog();
+    /// save the result to a file (*.iv)
+    void saveToFile(const char* FileName);
+    //@}
 
 private:
-  /// the result string
-  std::stringstream result;
+    /// the result string
+    std::stringstream result;
 
-  bool bStartEndOpen;
-
+    bool bStartEndOpen;
 };
 
 /**
