@@ -53,7 +53,6 @@ public:
     TopoDS_Compound findSectionPlaneIntersections(const TopoDS_Shape &cutShape) override;
     TopoDS_Shape prepareShape(const TopoDS_Shape &cutShape, double shapeSize) override;
     TopoDS_Shape getShapeToPrepare() const override;
-    void makeSectionCut(TopoDS_Shape &baseShape) override;
     TopoDS_Shape getShapeToIntersect() override;
     gp_Pln getSectionPlane() const override;
     TopoDS_Compound alignSectionFaces(TopoDS_Shape faceIntersections) override;
@@ -80,6 +79,7 @@ public:
     bool showSegment(gp_Dir segmentNormal) const;
     gp_Vec projectVector(const gp_Vec& vec) const;
 
+    TopoDS_Wire makeProfileWire() const;
     static TopoDS_Wire makeProfileWire(App::DocumentObject *toolObj);
     static TopoDS_Wire makeNoseToTailWire(TopoDS_Wire inWire);
     static gp_Vec makeProfileVector(TopoDS_Wire profileWire);
@@ -94,7 +94,6 @@ private:
     gp_Dir getFaceNormal(TopoDS_Face &face);
 
     TopoDS_Shape m_toolFaceShape;
-    TopoDS_Wire m_profileWire;
 
     static const char *ProjectionStrategyEnums[];
 };
