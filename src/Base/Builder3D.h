@@ -128,94 +128,6 @@ private:
     Base::Vector3f pt3;
 };
 
-/** A Builder class for 3D representations on App level
- * On the application level nothing is known of the visual representation of data.
- * Nevertheless it's often needed to see some 3D information, e.g. points, directions,
- * when you program or debug an algorithm. Builder3D was made for this specific purpose.
- * This class allows you to easily build up a 3D representation of some mathematical and
- * algorithm internals. You can save this representation to a file and view it in an
- * Inventor viewer, or send it to the log. In the case of using the log and a debug
- * FreeCAD the representation will be loaded into the active viewer.
- *  \par
- * The workflow goes as follows: Create the a Builder3D object and call the methods
- * to insert the graphical elements. After that call either saveToLog() or saveToFile().
- *  \par
- * Usage:
- *  \code
-  Base::Builder3D log3D;
-  for ( unsigned long i=0; i<pMesh->CountPoints(); i++ )
-  {
-    log3D.addSinglePoint(pMesh->GetPoint(i));
-    log3D.addText(pMesh->GetPoint(i),"Point");
-    ...
-  }
-  log3D.saveToLog();
- *  \endcode
- * \see Base::ConsoleSingleton
- */
-class BaseExport Builder3D
-{
-public:
-    Builder3D();
-    virtual ~Builder3D();
-
-    /** @name point set handling */
-    //@{
-    /// starts a point set
-    void startPoints(short pointSize=2, const ColorRGB& color = ColorRGB{1.0F, 0.0F, 0.0F});
-    /// add a point to a point set
-    void addPoint(const Vector3f& point);
-    /// ends the points set operation
-    void endPoints();
-    /// add a single point (without startPoints() & endPoints() )
-    void addSinglePoint(const Base::Vector3f& point, DrawStyle drawStyle, const ColorRGB& color = ColorRGB{1.0F, 1.0F, 1.0F});
-    //@}
-
-    /** @name line/direction handling */
-    //@{
-    /// add a line
-    void addSingleLine(const Base::Line3f& line, DrawStyle drawStyle, const ColorRGB& color = ColorRGB{1.0F, 1.0F, 1.0F});
-    /// add an arrow.
-    void addSingleArrow(const Base::Line3f& line, DrawStyle drawStyle, const ColorRGB& color = ColorRGB{1.0F, 1.0F, 1.0F});
-    //@}
-
-    /** @name triangle handling */
-    //@{
-    /// add a triangle
-    void addSingleTriangle(const Triangle& triangle, DrawStyle drawStyle, const ColorRGB& color = ColorRGB{1.0F, 1.0F, 1.0F});
-    //@}
-
-    /** @name Transformation */
-    //@{
-    /// adds a transformation
-    void addTransformation(const Base::Matrix4D&);
-    void addTransformation(const Base::Placement&);
-    //@}
-
-    /** @name text handling */
-    //@{
-    /// add a text
-    void addText(const Base::Vector3f& point, const char * text, const ColorRGB& color = ColorRGB{1.0F, 1.0F, 1.0F});
-    //@}
-
-    /// clear the string buffer
-    void clear();
-
-    /** @name write the result */
-    //@{
-    /// sends the result to the log and gui
-    void saveToLog();
-    /// save the result to a file (*.iv)
-    void saveToFile(const char* FileName);
-    //@}
-
-private:
-    /// the result string
-    std::stringstream result;
-
-    bool bStartEndOpen;
-};
-
 /**
  * This class does basically the same as Builder3D except that it writes the data
  * directly into a given stream without buffering the output data in a string stream.
@@ -322,6 +234,8 @@ public:
     void endPoints();
     /// add an SoPointSet node
     void addPointSet();
+    /// add a single point (without startPoints() & endPoints() )
+    void addSinglePoint(const Base::Vector3f& point, DrawStyle drawStyle, const ColorRGB& color = ColorRGB{1.0F, 1.0F, 1.0F});
     //@}
 
     /** @name Normal handling */
@@ -391,6 +305,57 @@ private:
 private:
     std::ostream& result;
     int indent;
+};
+
+/** A Builder class for 3D representations on App level
+ * On the application level nothing is known of the visual representation of data.
+ * Nevertheless it's often needed to see some 3D information, e.g. points, directions,
+ * when you program or debug an algorithm. Builder3D was made for this specific purpose.
+ * This class allows you to easily build up a 3D representation of some mathematical and
+ * algorithm internals. You can save this representation to a file and view it in an
+ * Inventor viewer, or send it to the log. In the case of using the log and a debug
+ * FreeCAD the representation will be loaded into the active viewer.
+ *  \par
+ * The workflow goes as follows: Create the a Builder3D object and call the methods
+ * to insert the graphical elements. After that call either saveToLog() or saveToFile().
+ *  \par
+ * Usage:
+ *  \code
+  Base::Builder3D log3D;
+  for ( unsigned long i=0; i<pMesh->CountPoints(); i++ )
+  {
+    log3D.addSinglePoint(pMesh->GetPoint(i));
+    log3D.addText(pMesh->GetPoint(i),"Point");
+    ...
+  }
+  log3D.saveToLog();
+ *  \endcode
+ * \see Base::ConsoleSingleton
+ */
+class BaseExport Builder3D : public InventorBuilder
+{
+public:
+    Builder3D();
+    virtual ~Builder3D();
+
+    /** @name point set handling */
+    //@{
+    //@}
+
+    /// clear the string buffer
+    void clear();
+
+    /** @name write the result */
+    //@{
+    /// sends the result to the log and gui
+    void saveToLog();
+    /// save the result to a file (*.iv)
+    void saveToFile(const char* FileName);
+    //@}
+
+private:
+    /// the result string
+    std::stringstream result;
 };
 
 /**

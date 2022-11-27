@@ -105,264 +105,6 @@ const char* PolygonOffset::styleAsString() const
     return "FILLED";
 }
 
-/**
- * A constructor.
- * A more elaborate description of the constructor.
- */
-Builder3D::Builder3D()
-  : bStartEndOpen(false)
-{
-    result << "#Inventor V2.1 ascii \n\n";
-    result << "Separator { ";
-}
-
-/**
- * A destructor.
- * A more elaborate description of the destructor.
- */
-Builder3D::~Builder3D() = default;
-
-
-//**************************************************************************
-// points handling
-
-/**
- * Starts the definition of point set with the given point size and color.
- * If possible don't make too many startPoints() and endPoints() calls.
- * Try to put all points in one set.
- * @see endPoints()
- * @param pointSize the point size in pixel that are displayed.
- * @param ColorRGB point color.
- */
-void Builder3D::startPoints(short pointSize, const ColorRGB& color)
-{
-    bStartEndOpen = true;
-    result << "Separator { ";
-    result <<   "Material { ";
-    result <<     "diffuseColor " << color.red() << " "<< color.green() << " " << color.blue();
-    result <<   "} ";
-    result <<   "MaterialBinding { value PER_PART } ";
-    result <<   "DrawStyle { pointSize " << pointSize << "} ";
-    result <<   "Coordinate3 { ";
-    result <<     "point [ ";
-}
-
-/// add a point to a point set
-void Builder3D::addPoint(const Vector3f &point)
-{
-    result << point.x << " " << point.y << " " << point.z << ",";
-}
-/**
- * Ends the point set operations and write the resulting inventor string.
- * @see startPoints()
- */
-void Builder3D::endPoints()
-{
-    result  <<      "] ";
-    result  <<     "} ";
-    result  <<   "PointSet { } ";
-    result  << "} ";
-    bStartEndOpen = false;
-}
-
-void Builder3D::addSinglePoint(const Base::Vector3f &point, DrawStyle drawStyle, const ColorRGB& color)
-{
-    // addSinglePoint() not between startXXX() and endXXX() allowed
-    assert(!bStartEndOpen);
-
-    result << "Separator { ";
-    result <<   "Material { ";
-    result <<     "diffuseColor " << color.red() << " "<< color.green() << " "<< color.blue();
-    result <<   "} ";
-    result <<   "MaterialBinding { value PER_PART } ";
-    result <<   "DrawStyle { pointSize " << drawStyle.pointSize << "} ";
-    result <<   "Coordinate3 { ";
-    result <<     "point [ ";
-    result << point.x << " " << point.y << " " << point.z << ",";
-    result <<      "] ";
-    result <<     "} ";
-    result <<   "PointSet { } ";
-    result << "} ";
-}
-
-//**************************************************************************
-// text handling
-
-
-/**
- * Add a Text with a given position to the 3D set. The origin is the
- * lower leftmost corner.
- * @param point origin of the text
- * @param text the text to display.
- * @param color text color.
- */
-void Builder3D::addText(const Base::Vector3f& point, const char * text, const Base::ColorRGB& color)
-{
-  // addSinglePoint() not between startXXX() and endXXX() allowed
-  assert(!bStartEndOpen);
-
-  result << "Separator { "
-         <<   "Material { diffuseColor " << color.red() << " "<< color.green() << " "<< color.blue() << "} "
-         <<   "Transform { translation " << point.x << " "<< point.y << " "<< point.z << "} "
-         <<   "Text2 { string \" " << text << "\" " << "} "
-         << "} ";
-}
-
-void Builder3D::clear ()
-{
-    // under gcc stringstream::str() returns a copy not a reference
-#if defined(_MSC_VER)
-    result.str().clear();
-#endif
-    result.clear();
-}
-
-//**************************************************************************
-// line/arrow handling
-
-void Builder3D::addSingleLine(const Base::Line3f& line, DrawStyle drawStyle, const ColorRGB& color)
-{
-    std::string pattern = drawStyle.patternAsString();
-
-    result << "Separator { "
-           <<   "Material { diffuseColor " << color.red() << " "<< color.green() << " "<< color.blue() << "} "
-           <<   "DrawStyle { lineWidth " << drawStyle.lineWidth << " linePattern " << pattern << " } "
-           <<   "Coordinate3 { "
-           <<     "point [ "
-           <<        line.p1.x << " " << line.p1.y << " " << line.p1.z << ","
-           <<        line.p2.x << " " << line.p2.y << " " << line.p2.z
-           <<     "] "
-           <<   "} "
-           <<   "LineSet { } "
-           << "} ";
-}
-
-void Builder3D::addSingleArrow(const Base::Line3f& line, DrawStyle drawStyle, const ColorRGB& color)
-{
-    float length = line.Length();
-    float coneLength = length / 10.0F;
-    float coneRadius = coneLength / 2.0F;
-    float sf1 = length - coneLength;
-    float sf2 = length - coneLength/2.0F;
-
-    Vector3f dir = line.GetDirection();
-    dir.Normalize();
-    dir.Scale(sf1, sf1, sf1);
-    Vector3f pt2s = line.p1 + dir;
-    dir.Normalize();
-    dir.Scale(sf2, sf2, sf2);
-    Vector3f cpt = line.p1 + dir;
-
-    Vector3f rot = Vector3f(0.0f, 1.0f, 0.0f) % dir;
-    rot.Normalize();
-    float a = Vector3f(0.0f, 1.0f, 0.0f).GetAngle(dir);
-
-    result << "Separator { "
-         <<   "Material { diffuseColor " << color.red() << " "<< color.green() << " "<< color.blue() << "} "
-         <<   "DrawStyle { lineWidth " << drawStyle.lineWidth << "} "
-         <<   "Coordinate3 { "
-         <<     "point [ "
-         <<        line.p1.x << " " << line.p1.y << " " << line.p1.z << ","
-         <<        pt2s.x << " " << pt2s.y << " " << pt2s.z
-         <<     "] "
-         <<   "} "
-         <<   "LineSet { } "
-         <<   "Transform { "
-         <<     "translation " << cpt.x << " " << cpt.y << " " << cpt.z << " "
-         <<     "rotation " << rot.x << " " << rot.y << " " << rot.z << " " << a
-         <<   "} "
-         <<   "Cone { bottomRadius " << coneRadius << " height " << coneLength << "} "
-         << "} ";
-
-}
-
-//**************************************************************************
-// triangle handling
-
-void Builder3D::addSingleTriangle(const Triangle& triangle, DrawStyle drawStyle, const ColorRGB& color)
-{
-    std::string fs = "";
-    if (drawStyle.style == DrawStyle::Style::Filled) {
-        fs = "IndexedFaceSet { coordIndex[ 0, 1, 2, -1 ] } ";
-    }
-
-    result << "Separator { "
-           <<   "Material { diffuseColor " << color.red() << " "<< color.green() << " "<< color.blue() << "} "
-           <<   "DrawStyle { lineWidth " << drawStyle.lineWidth << "} "
-           <<   "Coordinate3 { "
-           <<     "point [ "
-           <<        triangle.getPoint1().x << " " << triangle.getPoint1().y << " " << triangle.getPoint1().z << ","
-           <<        triangle.getPoint2().x << " " << triangle.getPoint2().y << " " << triangle.getPoint2().z << ","
-           <<        triangle.getPoint3().x << " " << triangle.getPoint3().y << " " << triangle.getPoint3().z << ","
-           <<     "] "
-           <<   "} "
-           <<   "LineSet { } "
-           <<   fs
-           << "} ";
-}
-
-void Builder3D::addTransformation(const Base::Matrix4D& transform)
-{
-    Base::Placement placement;
-    placement.fromMatrix(transform);
-    addTransformation(placement);
-}
-
-void Builder3D::addTransformation(const Base::Placement& transform)
-{
-    Base::Vector3d translation = transform.getPosition();
-    Base::Vector3d rotationaxis;
-    double angle{};
-    transform.getRotation().getValue(rotationaxis, angle);
-    result << "Transform {";
-    result << "  translation " << translation.x << " " << translation.y << " " << translation.z;
-    result << "  rotation " << rotationaxis.x << " " << rotationaxis.y << " " << rotationaxis.z << " " << angle;
-    result << "}";
-}
-
-//**************************************************************************
-// output handling
-
-/**
- * Save the resulting inventor 3D representation to the Console().Log() facility.
- * In DEBUG mode the Gui (if running) will trigger on that and show the representation in
- * the active Viewer/Document. It shows only one representation on time. If you need to
- * show more then one representation use saveToFile() instead.
- * @see saveToFile()
- */
-void Builder3D::saveToLog()
-{
-    result <<   "} ";
-    // Note: The string can become very long, so that ConsoleSingelton::Log() will internally
-    // truncate the string which causes Inventor to fail to interpret the truncated string.
-    // So, we send the string directly to the observer that handles the Inventor stuff.
-    //Console().Log("Vdbg: %s \n",result.str().c_str());
-    ILogger* obs = Base::Console().Get("StatusBar");
-    if (obs){
-        obs->SendLog(result.str().c_str(), Base::LogStyle::Log);
-    }
-}
-
-/**
- * Save the resulting inventor 3D representation to a file. Ending should be *.iv.
- * That enables you to show the result in a Inventor Viewer or in FreeCAD by:
- * /code
- * Gui.document().addAnnotation("Debug","MyFile.iv")
- * /endcode
- * @see saveToFile()
- */
-void Builder3D::saveToFile(const char* FileName)
-{
-    result <<   "} ";
-    Base::FileInfo fi(FileName);
-    Base::ofstream  file(fi);
-    if (!file)
-        throw FileException("Builder3D::saveToFile(): Can not open file...");
-
-    file << "#Inventor V2.1 ascii \n";
-    file << result.str();
-}
-
 // -----------------------------------------------------------------------------
 
 InventorBuilder::InventorBuilder(std::ostream& output)
@@ -537,6 +279,23 @@ void InventorBuilder::endPoints()
 void InventorBuilder::addPointSet()
 {
     result << Base::blanks(indent) << "PointSet { } \n";
+}
+
+void InventorBuilder::addSinglePoint(const Base::Vector3f &point, DrawStyle drawStyle, const ColorRGB& color)
+{
+    result << Base::blanks(indent) << "Separator { ";
+    result << Base::blanks(indent) << "  Material { ";
+    result << Base::blanks(indent) << "    diffuseColor " << color.red() << " "<< color.green() << " "<< color.blue();
+    result << Base::blanks(indent) << "  }";
+    result << Base::blanks(indent) << "  MaterialBinding { value PER_PART } ";
+    result << Base::blanks(indent) << "  DrawStyle { pointSize " << drawStyle.pointSize << "} ";
+    result << Base::blanks(indent) << "  Coordinate3 { ";
+    result << Base::blanks(indent) << "    point [ ";
+    result << point.x << " " << point.y << " " << point.z << ",";
+    result << Base::blanks(indent) << "    ] ";
+    result << Base::blanks(indent) << "  }";
+    result << Base::blanks(indent) << "  PointSet { } ";
+    result << Base::blanks(indent) <<"}";
 }
 
 /**
@@ -919,6 +678,66 @@ void InventorBuilder::addTransformation(const Base::Placement& transform)
          << rotationaxis.x << " " << rotationaxis.y << " " << rotationaxis.z
          << " " << angle << '\n';
     result << Base::blanks(indent) <<  "}" << '\n';
+}
+
+// -----------------------------------------------------------------------------
+
+/**
+ * A constructor.
+ * A more elaborate description of the constructor.
+ */
+Builder3D::Builder3D()
+  : InventorBuilder(result)
+{
+}
+
+/**
+ * A destructor.
+ * A more elaborate description of the destructor.
+ */
+Builder3D::~Builder3D() = default;
+
+void Builder3D::clear ()
+{
+    // under gcc stringstream::str() returns a copy not a reference
+#if defined(_MSC_VER)
+    result.str().clear();
+#endif
+    result.clear();
+}
+
+/**
+ * Save the resulting inventor 3D representation to the Console().Log() facility.
+ * In DEBUG mode the Gui (if running) will trigger on that and show the representation in
+ * the active Viewer/Document. It shows only one representation on time. If you need to
+ * show more then one representation use saveToFile() instead.
+ * @see saveToFile()
+ */
+void Builder3D::saveToLog()
+{
+    ILogger* obs = Base::Console().Get("StatusBar");
+    if (obs){
+        obs->SendLog(result.str().c_str(), Base::LogStyle::Log);
+    }
+}
+
+/**
+ * Save the resulting inventor 3D representation to a file. Ending should be *.iv.
+ * That enables you to show the result in a Inventor Viewer or in FreeCAD by:
+ * /code
+ * Gui.document().addAnnotation("Debug","MyFile.iv")
+ * /endcode
+ * @see saveToFile()
+ */
+void Builder3D::saveToFile(const char* FileName)
+{
+    Base::FileInfo fi(FileName);
+    Base::ofstream  file(fi);
+    if (!file) {
+        throw FileException("Cannot open file");
+    }
+
+    file << result.str();
 }
 
 // -----------------------------------------------------------------------------
