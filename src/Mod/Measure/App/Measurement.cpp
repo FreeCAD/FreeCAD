@@ -307,7 +307,11 @@ double Measurement::angle(const Base::Vector3d & /*param*/) const
         throw Base::RuntimeError("MeasureType is Invalid for angle measurement");
     } else {
         if(measureType == Edges) {
-            // Only case that is supported is edge to edge
+            //Only case that is supported is edge to edge
+            //The angle between two skew lines is measured by the angle between one line (A)
+            //and a line (B) with the direction of the second through a point on the first line.
+            //Since we don't know if the directions of the lines point in the same general direction
+            //we could get the angle we want or the supplementary angle.
             if(numRefs == 2) {
                 TopoDS_Shape shape1 = getShape(objects.at(0), subElements.at(0).c_str());
                 TopoDS_Shape shape2 = getShape(objects.at(1), subElements.at(1).c_str());
@@ -318,15 +322,17 @@ double Measurement::angle(const Base::Vector3d & /*param*/) const
                 if(curve1.GetType() == GeomAbs_Line &&
                    curve2.GetType() == GeomAbs_Line) {
 
-                    gp_Pnt pnt1 = curve1.Value(curve1.FirstParameter());
-                    gp_Pnt pnt2 = curve1.Value(curve1.LastParameter());
+                    gp_Pnt pnt1First = curve1.Value(curve1.FirstParameter());
                     gp_Dir dir1 = curve1.Line().Direction();
                     gp_Dir dir2 = curve2.Line().Direction();
+                    gp_Dir dir2r = curve2.Line().Direction().Reversed();
 
-                    gp_Lin l1 = gp_Lin(pnt1,dir1);
-                    gp_Lin l2 = gp_Lin(pnt2,dir2);
+                    gp_Lin l1 = gp_Lin(pnt1First, dir1); // (A)
+                    gp_Lin l2 = gp_Lin(pnt1First, dir2); // (B)
+                    gp_Lin l2r = gp_Lin(pnt1First, dir2r);  // (B')
                     Standard_Real aRad = l1.Angle(l2);
-                    return aRad * 180  / M_PI;
+                    double aRadr = l1.Angle(l2r);
+                    return std::min(aRad, aRadr) * 180  / M_PI;
                 } else {
                     throw Base::RuntimeError("Measurement references must both be lines");
                 }
