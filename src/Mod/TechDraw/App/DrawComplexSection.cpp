@@ -133,7 +133,6 @@ const char *DrawComplexSection::ProjectionStrategyEnums[] = {"Offset", "Aligned"
                                                              nullptr};
 
 DrawComplexSection::DrawComplexSection()
-    : m_toolFaceShape(TopoDS_Shape())
 {
     static const char *fgroup = "Cutting Tool";
 
@@ -256,7 +255,7 @@ TopoDS_Shape DrawComplexSection::getShapeToPrepare() const
 //get the shape ready for projection and cut surface finding
 TopoDS_Shape DrawComplexSection::prepareShape(const TopoDS_Shape &cutShape, double shapeSize)
 {
-//    Base::Console().Message("DCS::prepareShape() - strat: %d\n", ProjectionStrategy.getValue());
+//    Base::Console().Message("DCS::prepareShape() - strategy: %d\n", ProjectionStrategy.getValue());
     if (ProjectionStrategy.getValue() == 0) {
         //Offset. Use regular section behaviour
         return DrawViewSection::prepareShape(cutShape, shapeSize);
