@@ -297,7 +297,7 @@ jobs:
         run: |
           set +e
 
-          cmake --build build/ > ${{ env.logdir }}Build.log 2> ${{ env.logdir }}BuildErrors.log
+          cmake --build build/ -j$(nproc) > ${{ env.logdir }}Build.log 2> ${{ env.logdir }}BuildErrors.log
 
           exitCode=$?
 
