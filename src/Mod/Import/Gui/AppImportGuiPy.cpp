@@ -31,13 +31,13 @@
 # include <QApplication>
 # include <QDialog>
 # include <QDialogButtonBox>
+# include <QHBoxLayout>
 # include <QPointer>
 # include <QString>
 # include <QStyle>
 # include <QTreeWidget>
 # include <QTreeWidgetItem>
 # include <QTextStream>
-# include <QHBoxLayout>
 # include <QVBoxLayout>
 
 #if defined(__clang__)
@@ -58,39 +58,50 @@
 # include <STEPCAFControl_Reader.hxx>
 # include <STEPCAFControl_Writer.hxx>
 # include <TColStd_IndexedDataMapOfStringString.hxx>
+# include <TDataStd.hxx>
+# include <TDataStd_Integer.hxx>
 # include <TDataStd_Name.hxx>
+# include <TDataStd_TreeNode.hxx>
+# include <TDataXtd_Shape.hxx>
+# include <TDF_AttributeIterator.hxx>
 # include <TDF_ChildIterator.hxx>
+# include <TDF_ChildIDIterator.hxx>
+# include <TDF_IDList.hxx>
 # include <TDF_Label.hxx>
+# include <TDF_ListIteratorOfIDList.hxx>
+# include <TDF_TagSource.hxx>
 # include <TDocStd_Document.hxx>
+# include <TDocStd_Owner.hxx>
+# include <TNaming_NamedShape.hxx>
+# include <TNaming_UsedShapes.hxx>
 # include <Transfer_TransientProcess.hxx>
 # include <XCAFApp_Application.hxx>
+# include <XCAFDoc_Color.hxx>
 # include <XCAFDoc_ColorTool.hxx>
 # include <XCAFDoc_DocumentTool.hxx>
+# include <XCAFDoc_LayerTool.hxx>
 # include <XCAFDoc_Location.hxx>
+# include <XCAFDoc_ShapeMapTool.hxx>
 # include <XCAFDoc_ShapeTool.hxx>
 # include <XSControl_TransferReader.hxx>
 # include <XSControl_WorkSession.hxx>
 
-# include <TDataXtd_Shape.hxx>
-#if OCC_VERSION_HEX >= 0x070500
-# include <Message_ProgressRange.hxx>
-# include <RWGltf_CafWriter.hxx>
-#endif
-
-#if defined(__clang__)
-# pragma clang diagnostic pop
-#endif
+# if OCC_VERSION_HEX >= 0x070500
+#  include <Message_ProgressRange.hxx>
+#  include <RWGltf_CafWriter.hxx>
+# endif
+# if defined(__clang__)
+#  pragma clang diagnostic pop
+# endif
 #endif
 
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
 #include <Base/Console.h>
-#include <Base/PyObjectBase.h>
-#include <Gui/MainWindow.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
-#include <Gui/ViewProvider.h>
+#include <Gui/MainWindow.h>
 #include <Gui/ViewProviderLink.h>
 #include <Mod/Import/App/ImportOCAF2.h>
 #include <Mod/Part/Gui/ViewProvider.h>
@@ -99,24 +110,8 @@
 #include <Mod/Part/App/ImportIges.h>
 #include <Mod/Part/App/ImportStep.h>
 #include <Mod/Part/App/Interface.h>
-#include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/ProgressIndicator.h>
 #include <Mod/Part/Gui/DlgExportStep.h>
-
-#include <TDataStd.hxx>
-#include <TDataStd_Integer.hxx>
-#include <TDataStd_TreeNode.hxx>
-#include <TDF_AttributeIterator.hxx>
-#include <TDF_ChildIDIterator.hxx>
-#include <TDF_IDList.hxx>
-#include <TDF_ListIteratorOfIDList.hxx>
-#include <TDF_TagSource.hxx>
-#include <TDocStd_Owner.hxx>
-#include <TNaming_NamedShape.hxx>
-#include <TNaming_UsedShapes.hxx>
-#include <XCAFDoc_Color.hxx>
-#include <XCAFDoc_LayerTool.hxx>
-#include <XCAFDoc_ShapeMapTool.hxx>
 
 
 FC_LOG_LEVEL_INIT("Import", true, true)
