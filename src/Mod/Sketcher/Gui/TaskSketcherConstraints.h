@@ -163,9 +163,6 @@ private:
     void updateSelectionFilter();
     void updateAssociatedConstraintsFilter();
     void updateList();
-    void createFilterButtonActions();
-    void createSettingButtonActions();
-    void connectSignals();
 
     void getSelectionGeoId(QString expr, int & geoid, Sketcher::PointPos & pos);
 
@@ -180,11 +177,11 @@ public Q_SLOTS:
     void on_listWidgetConstraints_emitHideSelection3DVisibility();
     void on_filterBox_stateChanged(int val);
     void on_showHideButton_clicked(bool);
-    void on_settings_restrictVisibility_changed();
-    void on_settings_extendedInformation_changed();
-    void on_settings_hideInternalAligment_changed();
-    void on_settings_autoConstraints_changed();
-    void on_settings_autoRemoveRedundant_changed();
+    void on_settings_restrictVisibility_changed(bool value = false);
+    void on_settings_extendedInformation_changed(bool value = false);
+    void on_settings_hideInternalAligment_changed(bool value = false);
+    void on_settings_autoConstraints_changed(bool value = false);
+    void on_settings_autoRemoveRedundant_changed(bool value = false);
     void on_filterList_itemChanged(QListWidgetItem* item);
 
 protected:
