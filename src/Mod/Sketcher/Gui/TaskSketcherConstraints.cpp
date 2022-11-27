@@ -781,6 +781,7 @@ TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch *sketchView)
         action4->setChecked(hGrp->GetBool("ExtendedConstraintInformation", false));
         action5->setChecked(hGrp->GetBool("HideInternalAlignment", false));
     }
+    hGrp->Attach(this);
 
     auto settingsBut = qAsConst(ui->settingsButton);
 
@@ -886,6 +887,7 @@ TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch *sketchView)
 TaskSketcherConstraints::~TaskSketcherConstraints()
 {
     connectionConstraintsChanged.disconnect();
+    App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher")->Detach(this);
 }
 
 void TaskSketcherConstraints::on_settings_extendedInformation_changed(bool value)
@@ -1293,6 +1295,29 @@ void TaskSketcherConstraints::onSelectionChanged(const Gui::SelectionChanges& ms
     }
     else if (msg.Type == Gui::SelectionChanges::SetSelection) {
         // do nothing here
+    }
+}
+
+void TaskSketcherConstraints::OnChange(Base::Subject<const char*> &rCaller,const char* rcReason)
+{
+    Q_UNUSED(rCaller);
+    int actNum = -1;
+    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+    if (strcmp(rcReason, "AutoRemoveRedundants") == 0) {
+        actNum = 1;
+    }
+    else if (strcmp(rcReason, "VisualisationTrackingFilter") == 0) {
+        actNum = 2;
+    }
+    else if (strcmp(rcReason, "ExtendedConstraintInformation") == 0) {
+        actNum = 3;
+    }
+    else if (strcmp(rcReason, "HideInternalAlignment") == 0) {
+        actNum = 4;
+    }
+    if (actNum >= 0) {
+        assert(actNum < static_cast<int>(ui->settingsButton->actions().size()));
+        qAsConst(ui->settingsButton)->actions()[actNum]->setChecked(hGrp->GetBool(rcReason, false));
     }
 }
 

@@ -24,6 +24,7 @@
 #ifndef GUI_TASKVIEW_TaskSketcherConstraints_H
 #define GUI_TASKVIEW_TaskSketcherConstraints_H
 
+#include <Base/Parameter.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
 #include <boost_signals2.hpp>
@@ -131,7 +132,10 @@ private:
     };
 };
 
-class TaskSketcherConstraints : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
+class TaskSketcherConstraints :
+    public Gui::TaskView::TaskBox,
+    public Gui::SelectionObserver,
+    public ParameterGrp::ObserverType
 {
     Q_OBJECT
 
@@ -152,6 +156,7 @@ public:
 
     /// Observer message from the Selection
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
+    void OnChange(Base::Subject<const char*> &rCaller,const char* rcReason) override;
 
     SpecialFilterType specialFilterMode;
 
