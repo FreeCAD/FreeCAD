@@ -1515,6 +1515,9 @@ bool TaskSketcherConstraints::isConstraintFiltered(QListWidgetItem * item)
             visible = (std::find(associatedConstraintsFilter.begin(), associatedConstraintsFilter.end(), it->ConstraintNbr) != associatedConstraintsFilter.end());
         }
     }
+    else if (constraint->Type == Sketcher::InternalAlignment) {
+        visible = !hideInternalAlignment;
+    }
 
     return !visible;
 }
