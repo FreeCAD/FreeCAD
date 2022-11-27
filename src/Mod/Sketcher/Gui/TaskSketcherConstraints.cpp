@@ -759,11 +759,12 @@ TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch *sketchView)
 
     // Create local settings menu
     // FIXME there is probably a smarter way to handle this menu
-    QAction* action1 = new QAction(QString::fromLatin1("Auto constraints"), this);
-    QAction* action2 = new QAction(QString::fromLatin1("Auto remove redundants"), this);
-    QAction* action3 = new QAction(QString::fromLatin1("Show only filtered Constraints"), this);
-    QAction* action4 = new QAction(QString::fromLatin1("Extended information (in widget)"), this);
-    QAction* action5 = new QAction(QString::fromLatin1("Hide internal alignment (in widget)"), this);
+    // FIXME translations aren't updated automatically at language change
+    QAction* action1 = new QAction(tr("Auto constraints"), this);
+    QAction* action2 = new QAction(tr("Auto remove redundants"), this);
+    QAction* action3 = new QAction(tr("Show only filtered Constraints"), this);
+    QAction* action4 = new QAction(tr("Extended information (in widget)"), this);
+    QAction* action5 = new QAction(tr("Hide internal alignment (in widget)"), this);
 
     action1->setCheckable(true);
     action2->setCheckable(true);
