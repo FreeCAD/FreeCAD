@@ -53,7 +53,7 @@
 #endif
 
 // OpenCasCade Base
-#include "OpenCascadeAll.h"
+#include <Mod/Part/App/OpenCascadeAll.h>
 
 // OpenCascade View
 #include <Geom_Axis2Placement.hxx>
