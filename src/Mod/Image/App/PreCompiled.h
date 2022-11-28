@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -26,7 +26,7 @@
 #include <FCConfig.h>
 
 #ifdef _PreComp_
-/// here get the warnings of to long specifieres disabled (needed for VC6)
+/// here get the warnings of too long specifiers disabled (needed for VC6)
 #ifdef _MSC_VER
 #	pragma warning( disable : 4251 )
 #	pragma warning( disable : 4503 )
