@@ -415,6 +415,24 @@ bool BaseGeom::closed()
     return false;
 }
 
+//keep this in sync with enum GeomType
+std::string BaseGeom::geomTypeName()
+{
+    std::vector<std::string> typeNames {
+        "NotDefined",
+        "Circle",
+        "ArcOfCircle",
+        "Ellipse",
+        "ArcOfEllipse",
+        "Bezier",
+        "BSpline",
+        "Line",         //why was this ever called "Generic"?
+        "Unknown" } ;
+    if (geomType >= typeNames.size()) {
+        return "Unknown";
+    }
+    return typeNames.at(geomType);
+}
 
 //! Convert 1 OCC edge into 1 BaseGeom (static factory method)
 BaseGeomPtr BaseGeom::baseFactory(TopoDS_Edge edge)

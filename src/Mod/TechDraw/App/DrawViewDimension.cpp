@@ -267,7 +267,7 @@ void DrawViewDimension::onChanged(const App::Property* prop)
         }
         return;
     } else if (prop == &OverTolerance) {
-=       // if EqualTolerance set negated overtolerance for untertolerance
+        // if EqualTolerance set negated overtolerance for untertolerance
         if (EqualTolerance.getValue()) {
             UnderTolerance.setValue(-1.0 * OverTolerance.getValue());
             UnderTolerance.setUnit(OverTolerance.getUnit());
@@ -567,8 +567,15 @@ pointPair DrawViewDimension::getPointsOneEdge(ReferenceVector references)
         //TODO: Notify if not straight line Edge?
         //this is a 2d object (a DVP + subelements)
         TechDraw::BaseGeomPtr geom = getViewPart()->getGeomByIndex(iSubelement);
-        if (!geom || geom->geomType != TechDraw::GeomType::GENERIC) {
-            throw Base::RuntimeError("Missing geometry for dimension");
+        if (!geom) {
+            std::stringstream ssMessage;
+            ssMessage << getNameInDocument() << " can not find geometry for 2d reference (1)";
+            throw Base::RuntimeError(ssMessage.str());
+        }
+        if (geom->geomType != TechDraw::GeomType::GENERIC) {
+            std::stringstream ssMessage;
+            ssMessage << getNameInDocument() << " 2d reference is a " << geom->geomTypeName();
+            throw Base::RuntimeError(ssMessage.str());
         }
         TechDraw::GenericPtr generic = std::static_pointer_cast<TechDraw::Generic>(geom);
         return { generic->points[0], generic->points[1] };
@@ -600,14 +607,16 @@ pointPair DrawViewDimension::getPointsTwoEdges(ReferenceVector references)
 //    Base::Console().Message("DVD::getPointsTwoEdges() - %s\n", getNameInDocument());
     App::DocumentObject* refObject = references.front().getObject();
     int iSubelement0 = DrawUtil::getIndexFromName(references.at(0).getSubName());
-    int iSubelement1 = DrawUtil::getIndexFromName(references.at(0).getSubName());
+    int iSubelement1 = DrawUtil::getIndexFromName(references.at(1).getSubName());
     if (refObject->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId()) &&
         !references.at(0).getSubName().empty()) {
         //this is a 2d object (a DVP + subelements)
         TechDraw::BaseGeomPtr geom0 = getViewPart()->getGeomByIndex(iSubelement0);
         TechDraw::BaseGeomPtr geom1 = getViewPart()->getGeomByIndex(iSubelement1);
         if (!geom0 || !geom1) {
-            throw Base::RuntimeError("Missing geometry for dimension");
+            std::stringstream ssMessage;
+            ssMessage << getNameInDocument() << " can not find geometry for 2d reference (2)";
+            throw Base::RuntimeError(ssMessage.str());
         }
         return closestPoints(geom0->occEdge, geom1->occEdge);
     }
@@ -640,8 +649,11 @@ pointPair DrawViewDimension::getPointsTwoVerts(ReferenceVector references)
         TechDraw::VertexPtr v0 = getViewPart()->getProjVertexByIndex(iSubelement0);
         TechDraw::VertexPtr v1 = getViewPart()->getProjVertexByIndex(iSubelement1);
         if (!v0 || !v1) {
-            throw Base::RuntimeError("Missing geometry for dimension");
+            std::stringstream ssMessage;
+            ssMessage << getNameInDocument() << " can not find geometry for 2d reference (3)";
+            throw Base::RuntimeError(ssMessage.str());
         }
+
         return { v0->pnt, v1->pnt };
     }
 
@@ -670,7 +682,7 @@ pointPair DrawViewDimension::getPointsEdgeVert(ReferenceVector references)
 //    Base::Console().Message("DVD::getPointsEdgeVert() - %s\n", getNameInDocument());
     App::DocumentObject* refObject = references.front().getObject();
     int iSubelement0 = DrawUtil::getIndexFromName(references.at(0).getSubName());
-    int iSubelement1 = DrawUtil::getIndexFromName(references.at(0).getSubName());
+    int iSubelement1 = DrawUtil::getIndexFromName(references.at(1).getSubName());
     if (refObject->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId()) &&
         !references.at(0).getSubName().empty()) {
         //this is a 2d object (a DVP + subelements)
@@ -684,7 +696,7 @@ pointPair DrawViewDimension::getPointsEdgeVert(ReferenceVector references)
             vertex = getViewPart()->getProjVertexByIndex(iSubelement0);
         }
         if (!vertex || !edge) {
-            throw Base::RuntimeError("Missing geometry for dimension");
+            throw Base::RuntimeError("Missing geometry for dimension (4)");
         }
         return closestPoints(edge->occEdge, vertex->occVertex);
     }
@@ -715,8 +727,9 @@ arcPoints DrawViewDimension::getArcParameters(ReferenceVector references)
         //this is a 2d object (a DVP + subelements)
         TechDraw::BaseGeomPtr geom = getViewPart()->getGeomByIndex(iSubelement);
         if (!geom) {
-            Base::Console().Error("DVD - %s - 2D references are corrupt (1)\n",getNameInDocument());
-            return arcPoints();
+            std::stringstream ssMessage;
+            ssMessage << getNameInDocument() << " can not find geometry for 2d reference (4)";
+            throw Base::RuntimeError(ssMessage.str());
         }
         return arcPointsFromBaseGeom(getViewPart()->getGeomByIndex(iSubelement));
     }
@@ -820,8 +833,9 @@ arcPoints DrawViewDimension::arcPointsFromBaseGeom(TechDraw::BaseGeomPtr base)
             throw Base::RuntimeError("Bad BSpline geometry for arc dimension");
         }
     } else {
-        Base::Console().Log("Error: DVD - %s - 2D references are corrupt\n", getNameInDocument());
-        throw Base::RuntimeError("Bad geometry for arc dimension");
+        std::stringstream ssMessage;
+        ssMessage << getNameInDocument() << " 2d reference is a " << base->geomTypeName();
+        throw Base::RuntimeError(ssMessage.str());
     }
     return pts;
 }
@@ -922,13 +936,19 @@ anglePoints DrawViewDimension::getAnglePointsTwoEdges(ReferenceVector references
         TechDraw::BaseGeomPtr geom0 = getViewPart()->getGeomByIndex(iSubelement0);
         TechDraw::BaseGeomPtr geom1 = getViewPart()->getGeomByIndex(iSubelement1);
         if (!geom0 || !geom1) {
-            throw Base::RuntimeError("Missing geometry for dimension");
+            std::stringstream ssMessage;
+            ssMessage << getNameInDocument() << " can not find geometry for 2d reference (5)";
+            throw Base::RuntimeError(ssMessage.str());
         }
-        if (!geom0 || geom0->geomType != TechDraw::GeomType::GENERIC) {
-            throw Base::RuntimeError("Missing geometry for dimension");
+        if (geom0->geomType != TechDraw::GeomType::GENERIC) {
+            std::stringstream ssMessage;
+            ssMessage << getNameInDocument() << " first 2d reference is a " << geom0->geomTypeName();
+            throw Base::RuntimeError(ssMessage.str());
         }
-        if (!geom1 || geom1->geomType != TechDraw::GeomType::GENERIC) {
-            throw Base::RuntimeError("Missing geometry for dimension");
+        if (geom1->geomType != TechDraw::GeomType::GENERIC) {
+            std::stringstream ssMessage;
+            ssMessage << getNameInDocument() << " second 2d reference is a " << geom0->geomTypeName();
+            throw Base::RuntimeError(ssMessage.str());
         }
         TechDraw::GenericPtr generic0 = std::static_pointer_cast<TechDraw::Generic>(geom0);
         TechDraw::GenericPtr generic1 = std::static_pointer_cast<TechDraw::Generic>(geom1);
@@ -1126,6 +1146,34 @@ ReferenceVector DrawViewDimension::getEffectiveReferences() const
         }
     }
     return effectiveRefs;
+}
+
+//return the 2d references as a ReferenceVector
+ReferenceVector DrawViewDimension::getReferences2d() const
+{
+    const std::vector<App::DocumentObject*>& objects = References2D.getValues();
+    const std::vector<std::string>& subElements = References2D.getSubValues();
+    ReferenceVector refs2d;
+    int refCount = objects.size();
+    for (int i = 0; i < refCount; i++) {
+        ReferenceEntry ref(objects.at(i), subElements.at(i));
+        refs2d.push_back(ref);
+    }
+    return refs2d;
+}
+
+//return the 3d references as a ReferenceVector
+ReferenceVector DrawViewDimension::getReferences3d() const
+{
+    const std::vector<App::DocumentObject*>& objects3d = References3D.getValues();
+    const std::vector<std::string>& subElements3d = References3D.getSubValues();
+    ReferenceVector refs3d;
+    int refCount = objects3d.size();
+    for (int i = 0; i < refCount; i++) {
+        ReferenceEntry ref(objects3d.at(i), subElements3d.at(i));
+        refs3d.push_back(ref);
+    }
+    return refs3d;
 }
 
 //what configuration of references do we have - Vertex-Vertex, Edge-Vertex, Edge, ...

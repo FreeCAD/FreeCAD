@@ -54,7 +54,7 @@ public:
 
     App::DocumentObject* getObject() const { return m_object; }
     void setObject(App::DocumentObject* docObj) { m_object = docObj; }
-    std::string getSubName() const { return m_subName; }
+    std::string getSubName(bool longForm = false) const;
     void setSubName(std::string subName) { m_subName = subName; }
     TopoDS_Shape getGeometry() const;
     std::string geomType() const;

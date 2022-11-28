@@ -49,7 +49,6 @@
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 
-#include "PreferencesGui.h"
 #include "DimensionValidators.h"
 #include "TaskDimRepair.h"
 #include <Mod/TechDraw/Gui/ui_TaskDimRepair.h>
@@ -68,6 +67,13 @@ TaskDimRepair::TaskDimRepair(TechDraw::DrawViewDimension* inDvd,
 {
     ui->setupUi(this);
 
+    if (m_references2d.size() == 1  &&
+        m_references2d.front().getSubName().empty() &&
+        m_references3d.empty()) {
+        //the entry in references2d is a spurious View reference (from getReferencesFromSelection),
+        // not a geometry reference, so we treat it as empty
+        m_references2d.clear();
+    }
     connect(ui->pbSelection, SIGNAL(clicked(bool)), this, SLOT(slotUseSelection()));
 
     saveDimState();
@@ -105,7 +111,7 @@ void TaskDimRepair::setUiPrimary()
     if (!m_references3d.empty()) {
         references3d = m_references3d;
     } else if (!objs3d.empty()) {
-        references3d = m_dim->getEffectiveReferences();
+        references3d = m_dim->getReferences3d();
     }
     loadTableWidget(ui->twReferences3d, references3d);
 }
@@ -115,21 +121,18 @@ void TaskDimRepair::saveDimState()
     m_saveMeasureType = m_dim->MeasureType.getValue();
     m_saveDimType = m_dim->Type.getValue();
     m_dimType = m_dim->Type.getValue();
-    m_saveObjs3d = m_dim->References3D.getValues();
-    m_saveSubs3d = m_dim->References3D.getSubValues();
-    m_saveDvp = static_cast<DrawViewPart*>(m_dim->References2D.getValues().front());
-    m_saveSubs2d = m_dim->References2D.getSubValues();
+    m_saveRefs3d = m_dim->getReferences3d();
+    m_saveRefs2d = m_dim->getReferences2d();
+    m_saveDvp = m_dim->getViewPart();
 }
 
 //restore the start conditions
 void TaskDimRepair::restoreDimState()
 {
 //    Base::Console().Message("TDR::restoreDimState()\n");
-    if (m_dim != nullptr) {
-        std::vector<App::DocumentObject*> objs2d(m_saveSubs2d.size());
-        std::iota(objs2d.begin(), objs2d.end(), m_saveDvp);
-        m_dim->References2D.setValues(objs2d, m_saveSubs2d);
-        m_dim->References3D.setValues(m_saveObjs3d, m_saveSubs3d);
+    if (m_dim) {
+        m_dim->setReferences2d(m_saveRefs2d);
+        m_dim->setReferences3d(m_saveRefs3d);
     }
 }
 
@@ -137,6 +140,7 @@ void TaskDimRepair::restoreDimState()
 //use the current selection to replace the references in dim
 void TaskDimRepair::slotUseSelection()
 {
+//    Base::Console().Message("TDR::slotUseSelection()\n");
     const std::vector<App::DocumentObject*> dimObjects = Gui::Selection().getObjectsOfType(TechDraw::DrawViewDimension::getClassTypeId());
     if (dimObjects.empty()) {
         //selection does not include a dimension, so we need to add our dimension to keep the
@@ -256,29 +260,24 @@ void TaskDimRepair::fillList(QListWidget* lwItems, std::vector<std::string> labe
 }
 void TaskDimRepair::replaceReferences()
 {
-    if (m_dim) {
+//    Base::Console().Message("TDR::replaceReferences() - refs2d: %d refs3d %d\n", m_references2d.size(), m_references3d.size());
+    if (!m_dim) {
+        return;
+    }
+    if (!m_references2d.empty()) {
         m_dim->setReferences2d(m_references2d);
+    }
+    if (!m_references3d.empty()) {
         m_dim->setReferences3d(m_references3d);
     }
 }
-
-void TaskDimRepair::updateTypes()
-{
-    if (m_references3d.empty()) {
-        m_dim->MeasureType.setValue("Projected");
-    } else {
-        m_dim->MeasureType.setValue("True");
-    }
-    m_dim->Type.setValue(m_dimType);
-}
-
 
 bool TaskDimRepair::accept()
 {
 //    Base::Console().Message("TDR::accept()\n");
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
     replaceReferences();
-    updateTypes();
+    m_dim->Type.setValue(m_dimType);
     m_dim->recomputeFeature();
     return true;
 }
