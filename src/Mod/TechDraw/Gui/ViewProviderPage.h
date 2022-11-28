@@ -32,6 +32,7 @@
 
 #include <App/PropertyUnits.h>
 #include <Gui/ViewProviderDocumentObject.h>
+#include <ViewProviderPageExtension.h>
 
 namespace TechDraw{
     class DrawPage;
@@ -43,7 +44,8 @@ class MDIViewPage;
 class QGVPage;
 class QGSPage;
 
-class TechDrawGuiExport ViewProviderPage : public Gui::ViewProviderDocumentObject
+class TechDrawGuiExport ViewProviderPage : public Gui::ViewProviderDocumentObject,
+                                           public ViewProviderPageExtension
 {
     PROPERTY_HEADER_WITH_OVERRIDE(TechDrawGui::ViewProviderPage);
 
@@ -63,7 +65,12 @@ public:
     bool canDragObjects() const override;
     bool canDragObject(App::DocumentObject* docObj) const override;
     bool canDropObject(App::DocumentObject* docObj) const override;
+
     void dropObject(App::DocumentObject* docObj) override;
+    void constDropObject(App::DocumentObject* docObj) const;
+
+    bool canDropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner,
+            const char *subname, const std::vector<std::string> &elements) const override;
 
     bool useNewSelectionModel() const override {return false;}
     /// returns a list of all possible modes
@@ -109,6 +116,10 @@ public:
 
     QGSPage* getQGSPage(void) {return m_graphicsScene;}
     QGVPage* getQGVPage(void) {return m_graphicsView;}
+
+    ViewProviderPageExtension* getVPPExtension() const;
+
+    const char* whoAmI() const;
 
 protected:
     bool setEdit(int ModNum) override;
