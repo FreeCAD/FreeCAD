@@ -1410,6 +1410,12 @@ class SpreadsheetCases(unittest.TestCase):
         non_empty_range = sheet.getNonEmptyRange()
         self.assertEquals(non_empty_range,("D5","X15"))
 
+    def testAliasEmptyCell(self):
+        # https://github.com/FreeCAD/FreeCAD/issues/7841
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+        sheet.setAlias('A1', 'aliasOfEmptyCell')
+        self.assertEqual(sheet.getCellFromAlias("aliasOfEmptyCell"),"A1")
+
     def tearDown(self):
         #closing doc
         FreeCAD.closeDocument(self.doc.Name)
