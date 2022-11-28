@@ -180,3 +180,45 @@ static char * blarg_xpm[] = {
         m.fill_details_from_file(outfile)
         os.unlink(outfile)
         return m
+
+    def test_fetch_raw_code_no_data(self):
+
+        class MockNetworkManagerNoData():
+            def __init__(self):
+                self.fetched_url = None
+            def blocking_get(self, url):
+                self.fetched_url = url
+                return None
+        nmNoData = MockNetworkManagerNoData()
+        m = Macro("Unit Test Macro")
+        Macro.network_manager = nmNoData
+        returned_data = m._fetch_raw_code("rawcodeurl <a href=\"https://fake_url.com\">Totally fake</a>")
+        self.assertIsNone(returned_data)
+        self.assertEqual(nmNoData.fetched_url,"https://fake_url.com")
+
+        nmNoData.fetched_url = None
+        returned_data = m._fetch_raw_code("Fake pagedata with no URL at all.")
+        self.assertIsNone(returned_data)
+        self.assertIsNone(nmNoData.fetched_url)
+
+        Macro.network_manager = None
+
+    def test_fetch_raw_code_with_data(self):
+
+        class MockNetworkManagerWithData():
+            class MockQByteArray:
+                def data(self):
+                    return "Data returned to _fetch_raw_code".encode("utf-8")
+            def __init__(self):
+                self.fetched_url = None
+            def blocking_get(self, url):
+                self.fetched_url = url
+                return MockNetworkManagerWithData.MockQByteArray()
+
+        nmWithData = MockNetworkManagerWithData()
+        m = Macro("Unit Test Macro")
+        Macro.network_manager = nmWithData
+        returned_data = m._fetch_raw_code("rawcodeurl <a href=\"https://fake_url.com\">Totally fake</a>")
+        self.assertEqual(returned_data,"Data returned to _fetch_raw_code")
+
+        Macro.network_manager = None
