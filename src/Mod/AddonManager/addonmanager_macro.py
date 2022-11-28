@@ -50,6 +50,9 @@ translate = FreeCAD.Qt.translate
 class Macro:
     """This class provides a unified way to handle macros coming from different sources"""
 
+    # Use a stored class variable for this so that we can override it during testing
+    network_manager = None
+
     # pylint: disable=too-many-instance-attributes
     def __init__(self, name):
         self.name = name
@@ -87,6 +90,14 @@ class Macro:
         """For cache purposes this entire class is dumped directly"""
 
         return self.__dict__
+
+    @classmethod
+    def _get_network_manager(cls):
+        if cls.network_manager is None:
+            # Make sure we're initialized:
+            NetworkManager.InitializeNetworkManager()
+            cls.network_manager = NetworkManager.AM_NETWORK_MANAGER
+        return cls.network_manager
 
     @property
     def filename(self):
@@ -257,7 +268,8 @@ class Macro:
         it. If the macro's code is hosted elsewhere, as specified by a "rawcodeurl" found on
         the wiki page, that code is downloaded and used as the source."""
         code = ""
-        p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(url)
+        nm = Macro._get_network_manager()
+        p = nm.blocking_get(url)
         if not p:
             FreeCAD.Console.PrintWarning(
                 translate(
@@ -319,7 +331,8 @@ class Macro:
         self.raw_code_url = re.findall('rawcodeurl.*?href="(http.*?)">', page_data)
         if self.raw_code_url:
             self.raw_code_url = self.raw_code_url[0]
-            u2 = NetworkManager.AM_NETWORK_MANAGER.blocking_get(self.raw_code_url)
+            nm = Macro._get_network_manager()
+            u2 = nm.blocking_get(self.raw_code_url)
             if not u2:
                 FreeCAD.Console.PrintWarning(
                     translate(
@@ -350,7 +363,8 @@ class Macro:
             FreeCAD.Console.PrintLog(
                 f"Attempting to fetch macro icon from {self.icon}\n"
             )
-            p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(self.icon)
+            nm = Macro._get_network_manager()
+            p = nm.blocking_get(self.icon)
             if p:
                 cache_path = FreeCAD.getUserCachePath()
                 am_path = os.path.join(cache_path, "AddonManager", "MacroIcons")
@@ -475,7 +489,8 @@ class Macro:
             if self.raw_code_url:
                 fetch_url = self.raw_code_url.rsplit("/", 1)[0] + "/" + other_file
                 FreeCAD.Console.PrintLog(f"Attempting to fetch {fetch_url}...\n")
-                p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(fetch_url)
+                nm = Macro._get_network_manager()
+                p = nm.blocking_get(fetch_url)
                 if p:
                     with open(dst_file, "wb") as f:
                         f.write(p)
@@ -609,7 +624,8 @@ class Macro:
             FreeCAD.Console.PrintLog(
                 f"Found a File: link for macro {self.name} -- {wiki_icon}\n"
             )
-            p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(wiki_icon)
+            nm = Macro._get_network_manager()
+            p = nm.blocking_get(wiki_icon)
             if p:
                 p = p.data().decode("utf8")
                 f = io.StringIO(p)
