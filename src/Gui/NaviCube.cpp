@@ -221,7 +221,7 @@ public:
 	vector<GLubyte> m_IndexArray;
 	vector<Vector2f> m_TextureCoordArray;
 	vector<Vector3f> m_VertexArray;
-	vector<Vector3f> m_VertexArray2;
+	map<int, vector<Vector3f>> m_VertexArrays2;
 	map<int, GLuint> m_Textures;
 	vector<Face*> m_Faces;
 	vector<int> m_Buttons;
@@ -387,7 +387,6 @@ GLuint NaviCubeImplementation::createCubeFaceTex(QtGLWidget* gl, float gap, cons
 	QImage image(texSize, texSize, QImage::Format_ARGB32);
 	image.fill(qRgba(255, 255, 255, 0));
 	QPainter paint;
-	QPen pen(Qt::black, 10);
 	paint.begin(&image);
 	paint.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
 
@@ -416,24 +415,39 @@ GLuint NaviCubeImplementation::createCubeFaceTex(QtGLWidget* gl, float gap, cons
 	}
 	else if (shape == SHAPE_SQUARE) {
 		QPainterPath pathSquare;
-		pathSquare.addRect(QRectF(gapi, gapi, (qreal)texSize - 2.0 * gapi, (qreal)texSize - 2.0 * gapi));
+		auto rectSquare = QRectF(gapi, gapi, (qreal)texSize - 2.0 * gapi, (qreal)texSize - 2.0 * gapi);
+		// Qt's coordinate system is x->left y->down, this must be taken into account on operations
+		pathSquare.moveTo(rectSquare.left()         , rectSquare.bottom() - gapi);
+		pathSquare.lineTo(rectSquare.left() + gapi  , rectSquare.bottom());
+		pathSquare.lineTo(rectSquare.right() - gapi , rectSquare.bottom());
+		pathSquare.lineTo(rectSquare.right()        , rectSquare.bottom() - gapi);
+		pathSquare.lineTo(rectSquare.right()        , rectSquare.top() + gapi);
+		pathSquare.lineTo(rectSquare.right() - gapi , rectSquare.top());
+		pathSquare.lineTo(rectSquare.left() + gapi  , rectSquare.top());
+		pathSquare.lineTo(rectSquare.left()         , rectSquare.top() + gapi);
+		pathSquare.closeSubpath();
 		paint.fillPath(pathSquare, Qt::white);
 	}
 	else if (shape == SHAPE_CORNER) {
 		QPainterPath pathCorner;
-		QRectF rectCorner = QRectF(3.46 * gapi, 3.31 * gapi, sqrt(2) * gapi, 1.3 * gapi);
-		pathCorner.moveTo(rectCorner.left() + (rectCorner.width() / 2), rectCorner.top());
-		pathCorner.lineTo(rectCorner.bottomLeft());
-		pathCorner.lineTo(rectCorner.bottomRight());
-		pathCorner.lineTo(rectCorner.left() + (rectCorner.width() / 2), rectCorner.top());
+		// the hexagon edges are of length sqrt(2) * gapi
+		const auto hexWidth = 2 * sqrt(2) * gapi; // hexagon vertex to vertex distance
+		const auto hexHeight = sqrt(3) * sqrt(2) * gapi; // edge to edge distance
+		auto rectCorner = QRectF((texSize - hexWidth) / 2, (texSize - hexHeight) / 2, hexWidth, hexHeight);
+		// Qt's coordinate system is x->left y->down, this must be taken into account on operations
+		pathCorner.moveTo(rectCorner.left()                   , rectCorner.bottom() - hexHeight / 2); // left middle vertex
+		pathCorner.lineTo(rectCorner.left() + hexWidth * 0.25 , rectCorner.bottom()); // left lower
+		pathCorner.lineTo(rectCorner.left() + hexWidth * 0.75 , rectCorner.bottom()); // right lower
+		pathCorner.lineTo(rectCorner.right()                  , rectCorner.bottom() - hexHeight / 2); // right middle
+		pathCorner.lineTo(rectCorner.left() + hexWidth * 0.75 , rectCorner.top()); // right upper
+		pathCorner.lineTo(rectCorner.left() + hexWidth * 0.25 , rectCorner.top()); // left upper
+		pathCorner.closeSubpath();
 		paint.fillPath(pathCorner, Qt::white);
-		paint.setPen(pen);
-		paint.drawPath(pathCorner);
 	}
 	else if (shape == SHAPE_EDGE) {
 		QPainterPath pathEdge;
 		// since the gap is 0.12, the rect must be geometriclly shifted up with a factor
-		pathEdge.addRect(QRectF(gapi, ((qreal)texSize - sqrt(2) * gapi) * 0.5, (qreal)texSize - 2.0 * gapi, sqrt(2) * gapi));
+		pathEdge.addRect(QRectF(2 * gapi, ((qreal)texSize - sqrt(2) * gapi) * 0.5, (qreal)texSize - 4.0 * gapi, sqrt(2) * gapi));
 		paint.fillPath(pathEdge, Qt::white);
 	}
 
@@ -630,26 +644,55 @@ void NaviCubeImplementation::addFace(float gap, const Vector3f& x, const Vector3
 	Vector3f y = x.cross(-z);
 	y = y / y.norm() * x.norm();
 
-	auto x2 = x * (1 - gap * 2);
-	auto y2 = x2.cross(-z);
-	y2 = y2 / y2.norm() * x2.norm();
-
 	int t = m_VertexArray.size();
 
-	m_VertexArray.emplace_back(z - x - y);
-	m_VertexArray2.emplace_back(z - x2 - y2);
-	m_TextureCoordArray.emplace_back(0, 0);
-	m_VertexArray.emplace_back(z + x - y);
-	m_VertexArray2.emplace_back(z + x2 - y2);
-	m_TextureCoordArray.emplace_back(1, 0);
-	m_VertexArray.emplace_back(z + x + y);
-	m_VertexArray2.emplace_back(z + x2 + y2);
-	m_TextureCoordArray.emplace_back(1, 1);
-	m_VertexArray.emplace_back(z - x + y);
-	m_VertexArray2.emplace_back(z - x2 + y2);
-	m_TextureCoordArray.emplace_back(0, 1);
+    m_VertexArray.emplace_back(z - x - y);
+    m_TextureCoordArray.emplace_back(0, 0);
+    m_VertexArray.emplace_back(z + x - y);
+    m_TextureCoordArray.emplace_back(1, 0);
+    m_VertexArray.emplace_back(z + x + y);
+    m_TextureCoordArray.emplace_back(1, 1);
+    m_VertexArray.emplace_back(z - x + y);
+    m_TextureCoordArray.emplace_back(0, 1);
 
-	// TEX_TOP, TEX_FRONT_FACE, TEX_TOP
+    if (pickTex == TEX_FRONT_FACE) {
+        auto x2 = x * (1 - gap * 2);
+        auto y2 = y * (1 - gap * 2);
+        auto x4 = x * (1 - gap * 4);
+        auto y4 = y * (1 - gap * 4);
+        m_VertexArrays2[pickId].reserve(8);
+        m_VertexArrays2[pickId].emplace_back(z - x2 - y4);
+        m_VertexArrays2[pickId].emplace_back(z - x4 - y2);
+        m_VertexArrays2[pickId].emplace_back(z + x4 - y2);
+        m_VertexArrays2[pickId].emplace_back(z + x2 - y4);
+
+        m_VertexArrays2[pickId].emplace_back(z + x2 + y4);
+        m_VertexArrays2[pickId].emplace_back(z + x4 + y2);
+        m_VertexArrays2[pickId].emplace_back(z - x4 + y2);
+        m_VertexArrays2[pickId].emplace_back(z - x2 + y4);
+    }
+    else if (pickTex == TEX_EDGE_FACE) {
+        auto x4 = x * (1 - gap * 4);
+        auto y_sqrt2 = y * sqrt(2) * gap;
+        m_VertexArrays2[pickId].reserve(4);
+        m_VertexArrays2[pickId].emplace_back(z - x4 - y_sqrt2);
+        m_VertexArrays2[pickId].emplace_back(z + x4 - y_sqrt2);
+        m_VertexArrays2[pickId].emplace_back(z + x4 + y_sqrt2);
+        m_VertexArrays2[pickId].emplace_back(z - x4 + y_sqrt2);
+    }
+    else if (pickTex == TEX_CORNER_FACE) {
+        auto x_sqrt2 = x * sqrt(2) * gap;
+        auto y_sqrt6 = y * sqrt(6) * gap;
+        m_VertexArrays2[pickId].reserve(6);
+        m_VertexArrays2[pickId].emplace_back(z - 2 * x_sqrt2);
+        m_VertexArrays2[pickId].emplace_back(z - x_sqrt2 - y_sqrt6);
+        m_VertexArrays2[pickId].emplace_back(z + x_sqrt2 - y_sqrt6);
+        m_VertexArrays2[pickId].emplace_back(z + 2 * x_sqrt2);
+        m_VertexArrays2[pickId].emplace_back(z + x_sqrt2 + y_sqrt6);
+        m_VertexArrays2[pickId].emplace_back(z - x_sqrt2 + y_sqrt6);
+    }
+
+    // TEX_TOP, TEX_FRONT_FACE, TEX_TOP
 	// TEX_TOP 			frontTex,
 	// TEX_FRONT_FACE	pickTex,
 	// TEX_TOP 			pickId
@@ -782,7 +825,8 @@ void NaviCubeImplementation::initNaviCube(QtGLWidget* gl) {
 
 	z = r45z * r54x * z;
 	x = r45z * r54x * x;
-	z *= sqrt(3) * (1 - 4 * gap / 3); // corner face position
+	z *= sqrt(3) * (1 - 2 * gap); // corner face position along the cube diagonal
+
 
 	addFace(gap, x, z, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_BOTTOM_RIGHT_REAR);
 	x = r90z * x;
@@ -1083,27 +1127,21 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode) {
 		glColor4f(c.redF(), c.greenF(), c.blueF(), c.alphaF());
 		glLineWidth(m_BorderWidth);
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		glBegin(GL_QUADS);
 		for (int pass = 0; pass < 3; pass++) {
 			for (const auto& f : m_Faces) {
 				if (pass != f->m_RenderPass)
 					continue;
-				if (f->m_TextureId == f->m_PickTextureId) {
-					if (f->m_PickTexId == TEX_FRONT_FACE) {
-						int idx = f->m_FirstVertex;
-						const Vector3f& mv1 = m_VertexArray2[m_IndexArray[idx]];
-						const Vector3f& mv2 = m_VertexArray2[m_IndexArray[idx + 1]];
-						const Vector3f& mv3 = m_VertexArray2[m_IndexArray[idx + 2]];
-						const Vector3f& mv4 = m_VertexArray2[m_IndexArray[idx + 3]];
-						glVertex3f(mv1[0], mv1[1], mv1[2]);
-						glVertex3f(mv2[0], mv2[1], mv2[2]);
-						glVertex3f(mv3[0], mv3[1], mv3[2]);
-						glVertex3f(mv4[0], mv4[1], mv4[2]);
-					}
-				}
-			}
+                if (f->m_TextureId == f->m_PickTextureId) {
+                    if (f->m_PickTexId == TEX_FRONT_FACE || f->m_PickTexId == TEX_EDGE_FACE || f->m_PickTexId == TEX_CORNER_FACE) {
+                        glBegin(GL_POLYGON);
+                        for (const Vector3f& v : m_VertexArrays2[f->m_PickId]) {
+                            glVertex3f(v[0], v[1], v[2]);
+                        }
+                        glEnd();
+                    }
+                }
+            }
 		}
-		glEnd();
 		glEnable(GL_TEXTURE_2D);
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
