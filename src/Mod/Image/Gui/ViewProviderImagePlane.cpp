@@ -30,14 +30,12 @@
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoTexture2.h>
 # include <Inventor/nodes/SoTextureCoordinate2.h>
-# include <QFile>
 # include <QFileInfo>
 # include <QImage>
 # include <QString>
 #endif
 
 #include <App/Document.h>
-#include <Base/FileInfo.h>
 #include <Gui/BitmapFactory.h>
 #include <Mod/Image/App/ImagePlane.h>
 
