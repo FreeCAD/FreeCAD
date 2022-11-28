@@ -58,6 +58,8 @@ std::string DimensionFormatter::formatValue(qreal value,
                                             int partial,
                                             bool isDim)
 {
+//    Base::Console().Message("DF::formatValue() - %s isRestoring: %d\n",
+//                            m_dimension->getNameInDocument(), m_dimension->isRestoring());
     bool angularMeasure = false;
     QLocale loc;
 
@@ -129,7 +131,8 @@ std::string DimensionFormatter::formatValue(qreal value,
         }
 
         if (isTooSmall(userVal, formatSpecifier)) {
-            Base::Console().Warning("Dimension value is too small for format specifier: %s\n", qPrintable(formatSpecifier));
+            Base::Console().Warning("Dimension %s value %.6f is too small for format specifier: %s\n",
+                            m_dimension->getNameInDocument(), userVal, qPrintable(formatSpecifier));
         }
 
         formattedValue = formatValueToSpec(userVal, formatSpecifier);
@@ -398,7 +401,7 @@ bool DimensionFormatter::isTooSmall(double value, QString formatSpec)
         QString decimalGroup = rxMatch.captured(1);
         int factor = decimalGroup.toInt();
         double minValue = pow(10.0, -factor);
-        if (value < minValue) {
+        if (std::fabs(value) < minValue) {
             return true;
         }
     } else {

@@ -65,6 +65,19 @@ TopoDS_Shape ReferenceEntry::getGeometry() const
     return shape.getSubShape(getSubName().c_str());
 }
 
+std::string ReferenceEntry::getSubName(bool longForm) const
+{
+    if (longForm) {
+        return m_subName;
+    }
+    std::string workingSubName(m_subName);
+    size_t lastDot = workingSubName.rfind('.');
+    if (lastDot != std::string::npos) {
+        workingSubName = workingSubName.substr(lastDot + 1);
+    }
+    return workingSubName;
+}
+
 std::string ReferenceEntry::geomType() const
 {
     return DrawUtil::getGeomTypeFromName(getSubName());

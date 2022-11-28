@@ -459,23 +459,25 @@ DimensionGeometryType TechDraw::isValidMultiEdge(ReferenceVector refs)
         return isInvalid;
     }
 
-    //must be an extent?
-    if (refs.size() > 2) {
-        return isMultiEdge;
-    }
-
     auto objFeat0( dynamic_cast<TechDraw::DrawViewPart *>(refs.at(0).getObject()));
     if ( !objFeat0 ) {
         //probably redundant
         throw Base::RuntimeError("Logic error in isValidMultiEdge");
     }
 
-    //they both must start with "Edge"
-    if(TechDraw::DrawUtil::getGeomTypeFromName(refs.at(0).getSubName()) != "Edge" ||
-        TechDraw::DrawUtil::getGeomTypeFromName(refs.at(1).getSubName()) != "Edge") {
-        return isInvalid;
+    //they all must start with "Edge"
+    for (auto& ref : refs) {
+        if(TechDraw::DrawUtil::getGeomTypeFromName(ref.getSubName()) != "Edge" ) {
+            return isInvalid;
+        }
     }
 
+    if (refs.size() > 2) {
+        //many edges, must be an extent?
+        return isMultiEdge;
+    }
+
+    //exactly 2 edges. could be angle, could be distance
     int GeoId0( TechDraw::DrawUtil::getIndexFromName(refs.at(0).getSubName()) );
     int GeoId1( TechDraw::DrawUtil::getIndexFromName(refs.at(1).getSubName()) );
     TechDraw::BaseGeomPtr geom0 = objFeat0->getGeomByIndex(GeoId0);
