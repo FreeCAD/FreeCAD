@@ -61,6 +61,9 @@
 #include "ViewProviderViewPart.h"
 #include "ViewProviderViewSection.h"
 #include "ViewProviderWeld.h"
+#include "ViewProviderPageExtension.h"
+#include "ViewProviderDrawingViewExtension.h"
+#include "ViewProviderTemplateExtension.h"
 #include "Workbench.h"
 
 
@@ -148,6 +151,11 @@ PyMOD_INIT_FUNC(TechDrawGui)
     TechDrawGui::ViewProviderRichAnno::init();
     TechDrawGui::ViewProviderTile::init();
     TechDrawGui::ViewProviderWeld::init();
+
+    TechDrawGui::ViewProviderPageExtension   ::init();
+//    TechDrawGui::ViewProviderPageExtensionPython::init();
+    TechDrawGui::ViewProviderDrawingViewExtension::init();
+    TechDrawGui::ViewProviderTemplateExtension::init();
 
     TechDrawGui::ViewProviderCosmeticExtension::init();
 
