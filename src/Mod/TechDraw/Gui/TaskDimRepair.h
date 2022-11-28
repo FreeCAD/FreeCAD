@@ -82,9 +82,8 @@ private:
     long int m_saveMeasureType;
     long int m_saveDimType;
     TechDraw::DrawViewPart* m_saveDvp;
-    std::vector<std::string> m_saveSubs2d;
-    std::vector<App::DocumentObject*> m_saveObjs3d;
-    std::vector<std::string> m_saveSubs3d;
+    TechDraw::ReferenceVector m_saveRefs2d;
+    TechDraw::ReferenceVector m_saveRefs3d;
 };
 
 class TaskDlgDimReference : public Gui::TaskView::TaskDialog

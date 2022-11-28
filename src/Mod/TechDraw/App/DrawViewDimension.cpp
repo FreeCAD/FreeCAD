@@ -601,7 +601,7 @@ pointPair DrawViewDimension::getPointsTwoEdges(ReferenceVector references)
 //    Base::Console().Message("DVD::getPointsTwoEdges() - %s\n", getNameInDocument());
     App::DocumentObject* refObject = references.front().getObject();
     int iSubelement0 = DrawUtil::getIndexFromName(references.at(0).getSubName());
-    int iSubelement1 = DrawUtil::getIndexFromName(references.at(0).getSubName());
+    int iSubelement1 = DrawUtil::getIndexFromName(references.at(1).getSubName());
     if (refObject->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId()) &&
         !references.at(0).getSubName().empty()) {
         //this is a 2d object (a DVP + subelements)
@@ -671,7 +671,7 @@ pointPair DrawViewDimension::getPointsEdgeVert(ReferenceVector references)
 //    Base::Console().Message("DVD::getPointsEdgeVert() - %s\n", getNameInDocument());
     App::DocumentObject* refObject = references.front().getObject();
     int iSubelement0 = DrawUtil::getIndexFromName(references.at(0).getSubName());
-    int iSubelement1 = DrawUtil::getIndexFromName(references.at(0).getSubName());
+    int iSubelement1 = DrawUtil::getIndexFromName(references.at(1).getSubName());
     if (refObject->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId()) &&
         !references.at(0).getSubName().empty()) {
         //this is a 2d object (a DVP + subelements)
@@ -1127,6 +1127,34 @@ ReferenceVector DrawViewDimension::getEffectiveReferences() const
         }
     }
     return effectiveRefs;
+}
+
+//return the 2d references as a ReferenceVector
+ReferenceVector DrawViewDimension::getReferences2d() const
+{
+    const std::vector<App::DocumentObject*>& objects = References2D.getValues();
+    const std::vector<std::string>& subElements = References2D.getSubValues();
+    ReferenceVector refs2d;
+    int refCount = objects.size();
+    for (int i = 0; i < refCount; i++) {
+        ReferenceEntry ref(objects.at(i), subElements.at(i));
+        refs2d.push_back(ref);
+    }
+    return refs2d;
+}
+
+//return the 3d references as a ReferenceVector
+ReferenceVector DrawViewDimension::getReferences3d() const
+{
+    const std::vector<App::DocumentObject*>& objects3d = References3D.getValues();
+    const std::vector<std::string>& subElements3d = References3D.getSubValues();
+    ReferenceVector refs3d;
+    int refCount = objects3d.size();
+    for (int i = 0; i < refCount; i++) {
+        ReferenceEntry ref(objects3d.at(i), subElements3d.at(i));
+        refs3d.push_back(ref);
+    }
+    return refs3d;
 }
 
 //what configuration of references do we have - Vertex-Vertex, Edge-Vertex, Edge, ...
