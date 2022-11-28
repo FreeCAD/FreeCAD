@@ -612,6 +612,7 @@ void execDistance(Gui::Command* cmd)
                                                                       acceptableGeometry,
                                                                       minimumCounts,
                                                                       acceptableDimensionGeometrys);
+
     if ( geometryRefs2d == TechDraw::isInvalid ) {
         QMessageBox::warning(Gui::getMainWindow(),
                              QObject::tr("Incorrect Selection"),
@@ -628,6 +629,7 @@ void execDistance(Gui::Command* cmd)
                                                       acceptableGeometry,
                                                       minimumCounts,
                                                       acceptableDimensionGeometrys);
+
         if (  geometryRefs3d == TechDraw::isInvalid ) {
             QMessageBox::warning(Gui::getMainWindow(),
                                  QObject::tr("Incorrect Selection"),
@@ -699,7 +701,7 @@ void execDistanceX(Gui::Command* cmd)
     //Define the geometric configuration required for a length dimension
     StringVector acceptableGeometry( { "Edge", "Vertex" } );
     std::vector<int> minimumCounts( { 1, 2 } );
-    std::vector<DimensionGeometryType> acceptableDimensionGeometrys( { isHorizontal } );
+    std::vector<DimensionGeometryType> acceptableDimensionGeometrys( { isHorizontal, isDiagonal } );
 
     //what 2d geometry configuration did we receive?
     DimensionGeometryType geometryRefs2d = validateDimSelection(references2d,
@@ -794,7 +796,7 @@ void execDistanceY(Gui::Command* cmd)
     //Define the geometric configuration required for a length dimension
     StringVector acceptableGeometry( { "Edge", "Vertex" } );
     std::vector<int> minimumCounts( { 1, 2 } );
-    std::vector<DimensionGeometryType> acceptableDimensionGeometrys( { isVertical } );
+    std::vector<DimensionGeometryType> acceptableDimensionGeometrys( { isVertical, isDiagonal } );
 
     //what 2d geometry configuration did we receive?
     DimensionGeometryType geometryRefs2d = validateDimSelection(references2d,
@@ -1632,12 +1634,9 @@ DrawViewDimension* dimensionMaker(TechDraw::DrawViewPart* dvp,
     Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().addObject('TechDraw::DrawViewDimension', '%s')", dimName.c_str());
     Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.Type = '%s'", dimName.c_str()
                                                                                     ,dimType.c_str());
-    std::string measureType("True");
-    if (references3d.empty()) {
-        measureType = "Projected";
-    }
+
     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.MeasureType = '%s'", dimName.c_str(),
-                                                                                            measureType.c_str());
+                                                                                            "Projected");
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(dvp->getDocument()->getObject(dimName.c_str()));
     if (!dim) {

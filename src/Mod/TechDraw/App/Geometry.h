@@ -133,6 +133,8 @@ class TechDrawExport BaseGeom : public std::enable_shared_from_this<BaseGeom>
         boost::uuids::uuid getTag() const;
         virtual std::string getTagAsString() const;
 
+        std::string geomTypeName();
+
 private:
         void intersectionLL(TechDraw::BaseGeomPtr geom1,
                             TechDraw::BaseGeomPtr geom2,

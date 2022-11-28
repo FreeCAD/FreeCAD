@@ -139,6 +139,8 @@ enum DimensionType {
 
     void setReferences2d(ReferenceVector refs);
     void setReferences3d(ReferenceVector refs);
+    ReferenceVector getReferences2d() const;
+    ReferenceVector getReferences3d() const;
 
     void setAll3DMeasurement();
     void clear3DMeasurements();
