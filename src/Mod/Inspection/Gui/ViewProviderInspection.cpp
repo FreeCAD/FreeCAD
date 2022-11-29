@@ -27,24 +27,23 @@
 # include <QMenu>
 # include <QMessageBox>
 
-#include <Inventor/SoPickedPoint.h>
-#include <Inventor/actions/SoRayPickAction.h>
-#include <Inventor/actions/SoSearchAction.h>
-#include <Inventor/details/SoFaceDetail.h>
-#include <Inventor/events/SoButtonEvent.h>
-#include <Inventor/events/SoKeyboardEvent.h>
-#include <Inventor/events/SoMouseButtonEvent.h>
-#include <Inventor/lists/SoPickedPointList.h> 
-#include <Inventor/nodes/SoCoordinate3.h>
-#include <Inventor/nodes/SoDrawStyle.h>
-#include <Inventor/nodes/SoIndexedFaceSet.h>
-#include <Inventor/nodes/SoIndexedLineSet.h>
-#include <Inventor/nodes/SoMaterial.h>
-#include <Inventor/nodes/SoMaterialBinding.h>
-#include <Inventor/nodes/SoNormal.h>
-#include <Inventor/nodes/SoPointSet.h>
-#include <Inventor/nodes/SoShapeHints.h>
-#include <Inventor/errors/SoDebugError.h>
+# include <Inventor/SoPickedPoint.h>
+# include <Inventor/actions/SoRayPickAction.h>
+# include <Inventor/actions/SoSearchAction.h>
+# include <Inventor/details/SoFaceDetail.h>
+# include <Inventor/errors/SoDebugError.h>
+# include <Inventor/events/SoButtonEvent.h>
+# include <Inventor/events/SoKeyboardEvent.h>
+# include <Inventor/events/SoMouseButtonEvent.h>
+# include <Inventor/nodes/SoCoordinate3.h>
+# include <Inventor/nodes/SoDrawStyle.h>
+# include <Inventor/nodes/SoIndexedFaceSet.h>
+# include <Inventor/nodes/SoIndexedLineSet.h>
+# include <Inventor/nodes/SoMaterial.h>
+# include <Inventor/nodes/SoMaterialBinding.h>
+# include <Inventor/nodes/SoNormal.h>
+# include <Inventor/nodes/SoPointSet.h>
+# include <Inventor/nodes/SoShapeHints.h>
 #endif
 
 #include <App/GeoFeature.h>
@@ -53,11 +52,10 @@
 #include <Gui/Flag.h>
 #include <Gui/MainWindow.h>
 #include <Gui/SoFCColorBar.h>
-
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/Widgets.h>
-#include <Mod/Points/App/Properties.h>
 #include <Mod/Inspection/App/InspectionFeature.h>
+#include <Mod/Points/App/Properties.h>
 
 #include "ViewProviderInspection.h"
 
