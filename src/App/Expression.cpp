@@ -3193,12 +3193,6 @@ static int column;
 #define yylex ExpressionParserlex
 int ExpressionParserlex();
 
-// Parser, defined in ExpressionParser.y
-# define YYTOKENTYPE
-#include "ExpressionParser.tab.c"
-
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-// Scanner, defined in ExpressionParser.l
 #if defined(__clang__)
 # pragma clang diagnostic push
 # pragma clang diagnostic ignored "-Wsign-compare"
@@ -3206,14 +3200,24 @@ int ExpressionParserlex();
 #elif defined (__GNUC__)
 # pragma GCC diagnostic push
 # pragma GCC diagnostic ignored "-Wsign-compare"
+# pragma GCC diagnostic ignored "-Wfree-nonheap-object"
 #endif
+
+// Parser, defined in ExpressionParser.y
+# define YYTOKENTYPE
+#include "ExpressionParser.tab.c"
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+// Scanner, defined in ExpressionParser.l
 #include "lex.ExpressionParser.c"
+#endif // DOXYGEN_SHOULD_SKIP_THIS
+
 #if defined(__clang__)
 # pragma clang diagnostic pop
 #elif defined (__GNUC__)
 # pragma GCC diagnostic pop
 #endif
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+
 #ifdef _MSC_VER
 # define strdup _strdup
 #endif

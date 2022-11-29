@@ -461,11 +461,15 @@ void Quantity_yyerror(char *errorinfo)
 #endif
 
 
-// for VC9 (isatty and fileno not supported anymore)
-//#ifdef _MSC_VER
-//int isatty (int i) {return _isatty(i);}
-//int fileno(FILE *stream) {return _fileno(stream);}
-//#endif
+#if defined(__clang__)
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wsign-compare"
+# pragma clang diagnostic ignored "-Wunneeded-internal-declaration"
+#elif defined (__GNUC__)
+# pragma GCC diagnostic push
+# pragma GCC diagnostic ignored "-Wsign-compare"
+# pragma GCC diagnostic ignored "-Wfree-nonheap-object"
+#endif
 
 namespace QuantityParser {
 
@@ -479,22 +483,15 @@ int QuantityLexer();
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // Scanner, defined in QuantityParser.l
-#if defined(__clang__)
-# pragma clang diagnostic push
-# pragma clang diagnostic ignored "-Wsign-compare"
-# pragma clang diagnostic ignored "-Wunneeded-internal-declaration"
-#elif defined (__GNUC__)
-# pragma GCC diagnostic push
-# pragma GCC diagnostic ignored "-Wsign-compare"
-#endif
 #include "QuantityLexer.c"
+#endif // DOXYGEN_SHOULD_SKIP_THIS
+}
+
 #if defined(__clang__)
 # pragma clang diagnostic pop
 #elif defined (__GNUC__)
 # pragma GCC diagnostic pop
 #endif
-#endif // DOXYGEN_SHOULD_SKIP_THIS
-}
 
 Quantity Quantity::parse(const QString &string)
 {
