@@ -48,9 +48,6 @@
 using namespace Base;
 
 
-//**************************************************************************
-// Construction/Destruction
-
 constexpr float valueMinLegal {-1.0F};
 constexpr float valueMaxLegal {1.0F};
 
@@ -92,6 +89,26 @@ std::string DrawStyle::patternAsString() const
     return str.str();
 }
 
+const char* MaterialBinding::bindingAsString() const
+{
+    switch (value) {
+    case Binding::PerPart:
+        return "PER_PART";
+    case Binding::PerPartIndexed:
+        return "PER_PART_INDEXED";
+    case Binding::PerFace:
+        return "PER_FACE";
+    case Binding::PerFaceIndexed:
+        return "PER_FACE_INDEXED";
+    case Binding::PerVertex:
+        return "PER_VERTEX";
+    case Binding::PerVertexIndexed:
+        return "PER_VERTEX_INDEXED";
+    default:
+        return "OVERALL";
+    }
+}
+
 const char* PolygonOffset::styleAsString() const
 {
     switch (style) {
@@ -107,85 +124,91 @@ const char* PolygonOffset::styleAsString() const
 
 // -----------------------------------------------------------------------------
 
+std::ostream& operator<<( std::ostream& os, InventorBuilder::Indentation m)
+{
+    for (int i = 0; i < m.count(); i++)
+        os << " ";
+    return os;
+}
+
 InventorBuilder::InventorBuilder(std::ostream& output)
   : result(output)
-  , indent(0)
 {
     result << "#Inventor V2.1 ascii \n\n";
-    beginSeparator();
 }
 
 InventorBuilder:: ~InventorBuilder()
 {
-    close();
 }
 
-void InventorBuilder::close()
+void InventorBuilder::increaseIndent()
 {
-    if (indent > 0) {
-        indent = 0;
-        endSeparator();
-    }
+    indent.increaseIndent();
+}
+
+void InventorBuilder::decreaseIndent()
+{
+    indent.decreaseIndent();
 }
 
 void InventorBuilder::beginSeparator()
 {
-    result << Base::blanks(indent) << "Separator { \n";
-    indent += 2;
+    result << indent << "Separator { \n";
+    increaseIndent();
 }
 
 void InventorBuilder::endSeparator()
 {
-    indent-=2;
-    result << Base::blanks(indent) << "}\n";
+    decreaseIndent();
+    result << indent << "}\n";
 }
 
 void InventorBuilder::addInfo(const char* text)
 {
-    result << Base::blanks(indent) << "Info { \n";
-    result << Base::blanks(indent) << "  string \"" << text << "\"\n";
-    result << Base::blanks(indent) << "} \n";
+    result << indent << "Info { \n";
+    result << indent << "  string \"" << text << "\"\n";
+    result << indent << "} \n";
 }
 
 void InventorBuilder::addLabel(const char* text)
 {
-    result << Base::blanks(indent) << "Label { \n";
-    result << Base::blanks(indent) << "  label \"" << text << "\"\n";
-    result << Base::blanks(indent) << "} \n";
+    result << indent << "Label { \n";
+    result << indent << "  label \"" << text << "\"\n";
+    result << indent << "} \n";
 }
 
 void InventorBuilder::addBaseColor(const ColorRGB& rgb)
 {
-    result << Base::blanks(indent) << "BaseColor { \n";
-    result << Base::blanks(indent) << "  rgb "
+    result << indent << "BaseColor { \n";
+    result << indent << "  rgb "
            << rgb.red() << " " << rgb.green() << " " << rgb.blue() << '\n';
-    result << Base::blanks(indent) << "} \n";
+    result << indent << "} \n";
 }
 
 void InventorBuilder::addMaterial(const ColorRGB& rgb, float transparency)
 {
-    result << Base::blanks(indent) << "Material { \n";
-    result << Base::blanks(indent) << "  diffuseColor "
+    result << indent << "Material { \n";
+    result << indent << "  diffuseColor "
            << rgb.red() << " " << rgb.green() << " " << rgb.blue() << '\n';
     if (transparency > 0)
-        result << Base::blanks(indent) << "  transparency " << transparency << '\n';
-    result << Base::blanks(indent) << "} \n";
+        result << indent << "  transparency " << transparency << '\n';
+    result << indent << "} \n";
 }
 
 void InventorBuilder::beginMaterial()
 {
-    result << Base::blanks(indent) << "Material { \n";
-    indent += 2;
-    result << Base::blanks(indent) << "diffuseColor [\n";
-    indent += 2;
+    result << indent << "Material { \n";
+    increaseIndent();
+    result << indent << "diffuseColor [\n";
+    increaseIndent();
 }
 
 void InventorBuilder::endMaterial()
 {
-    indent -= 2;
-    result << Base::blanks(indent) << "]\n";
-    indent -= 2;
-    result << Base::blanks(indent) << "}\n";
+    decreaseIndent();
+    result << indent << "]\n";
+    decreaseIndent();
+    result << indent << "}\n";
 }
 
 void InventorBuilder::addColor(const ColorRGB& rgb)
@@ -193,61 +216,57 @@ void InventorBuilder::addColor(const ColorRGB& rgb)
     result << rgb.red() << " " << rgb.green() << " " << rgb.blue() << '\n';
 }
 
-void InventorBuilder::addMaterialBinding(const char* bind)
+void InventorBuilder::addMaterialBinding(MaterialBinding bind)
 {
-    result << Base::blanks(indent) << "MaterialBinding { value "
-           << bind << " } \n";
+    result << indent << "MaterialBinding { value "
+           << bind.bindingAsString() << " } \n";
 }
 
 void InventorBuilder::addDrawStyle(DrawStyle drawStyle)
 {
-    result << Base::blanks(indent) << "DrawStyle {\n"
-           << Base::blanks(indent) << "  style " << drawStyle.styleAsString() << '\n'
-           << Base::blanks(indent) << "  pointSize " << drawStyle.pointSize << '\n'
-           << Base::blanks(indent) << "  lineWidth " << drawStyle.lineWidth << '\n'
-           << Base::blanks(indent) << "  linePattern " << drawStyle.linePattern << '\n'
-           << Base::blanks(indent) << "}\n";
+    result << indent << "DrawStyle {\n"
+           << indent << "  style " << drawStyle.styleAsString() << '\n'
+           << indent << "  pointSize " << drawStyle.pointSize << '\n'
+           << indent << "  lineWidth " << drawStyle.lineWidth << '\n'
+           << indent << "  linePattern " << drawStyle.linePattern << '\n'
+           << indent << "}\n";
 }
 
 void InventorBuilder::addShapeHints(float creaseAngle)
 {
-    result << Base::blanks(indent) << "ShapeHints {\n"
-           << Base::blanks(indent) << "  creaseAngle " << creaseAngle << '\n'
-           << Base::blanks(indent) << "}\n";
+    result << indent << "ShapeHints {\n"
+           << indent << "  creaseAngle " << creaseAngle << '\n'
+           << indent << "}\n";
 }
 
 void InventorBuilder::addPolygonOffset(PolygonOffset polygonOffset)
 {
-    result << Base::blanks(indent) << "PolygonOffset {\n"
-           << Base::blanks(indent) << "  factor " << polygonOffset.factor << '\n'
-           << Base::blanks(indent) << "  units " << polygonOffset.units << '\n'
-           << Base::blanks(indent) << "  styles " << polygonOffset.styleAsString() << '\n'
-           << Base::blanks(indent) << "  on " << (polygonOffset.on ? "TRUE" : "FALSE") << '\n'
-           << Base::blanks(indent) << "}\n";
+    result << indent << "PolygonOffset {\n"
+           << indent << "  factor " << polygonOffset.factor << '\n'
+           << indent << "  units " << polygonOffset.units << '\n'
+           << indent << "  styles " << polygonOffset.styleAsString() << '\n'
+           << indent << "  on " << (polygonOffset.on ? "TRUE" : "FALSE") << '\n'
+           << indent << "}\n";
 }
-
-//**************************************************************************
-// points handling
 
 /**
  * Starts the definition of point set.
  * If possible don't make too many beginPoints() and endPoints() calls.
  * Try to put all points in one set.
- * @see startPoints()
  * @see endPoints()
  */
 void InventorBuilder::beginPoints()
 {
-    result << Base::blanks(indent) << "Coordinate3 { \n";
-    indent += 2;
-    result << Base::blanks(indent) << "point [ \n";
-    indent += 2;
+    result << indent << "Coordinate3 { \n";
+    increaseIndent();
+    result << indent << "point [ \n";
+    increaseIndent();
 }
 
 /// insert a point in a point set
 void InventorBuilder::addPoint(const Vector3f& pnt)
 {
-    result << Base::blanks(indent) << pnt.x << " " << pnt.y << " " << pnt.z << ",\n";
+    result << indent << pnt.x << " " << pnt.y << " " << pnt.z << ",\n";
 }
 
 void InventorBuilder::addPoints(const std::vector<Vector3f>& points)
@@ -259,60 +278,59 @@ void InventorBuilder::addPoints(const std::vector<Vector3f>& points)
 
 /**
  * Ends the point set operations and write the resulting inventor string.
- * @see startPoints()
+ * @see beginPoints()
  */
 void InventorBuilder::endPoints()
 {
-    indent -= 2;
-    result << Base::blanks(indent) << "]\n";
-    indent -= 2;
-    result << Base::blanks(indent) << "}\n";
+    decreaseIndent();
+    result << indent << "]\n";
+    decreaseIndent();
+    result << indent << "}\n";
 }
 
 /**
  * Adds an SoPointSet node after creating an SoCordinate3 node with
  * beginPoints() and endPoints().
- * @see startPoints()
  * @see beginPoints()
  * @see endPoints()
  */
 void InventorBuilder::addPointSet()
 {
-    result << Base::blanks(indent) << "PointSet { } \n";
+    result << indent << "PointSet { } \n";
 }
 
 void InventorBuilder::addSinglePoint(const Base::Vector3f &point, DrawStyle drawStyle, const ColorRGB& color)
 {
-    result << Base::blanks(indent) << "Separator { ";
-    result << Base::blanks(indent) << "  Material { ";
-    result << Base::blanks(indent) << "    diffuseColor " << color.red() << " "<< color.green() << " "<< color.blue();
-    result << Base::blanks(indent) << "  }";
-    result << Base::blanks(indent) << "  MaterialBinding { value PER_PART } ";
-    result << Base::blanks(indent) << "  DrawStyle { pointSize " << drawStyle.pointSize << "} ";
-    result << Base::blanks(indent) << "  Coordinate3 { ";
-    result << Base::blanks(indent) << "    point [ ";
+    result << indent << "Separator { ";
+    result << indent << "  Material { ";
+    result << indent << "    diffuseColor " << color.red() << " "<< color.green() << " "<< color.blue();
+    result << indent << "  }";
+    result << indent << "  MaterialBinding { value PER_PART } ";
+    result << indent << "  DrawStyle { pointSize " << drawStyle.pointSize << "} ";
+    result << indent << "  Coordinate3 { ";
+    result << indent << "    point [ ";
     result << point.x << " " << point.y << " " << point.z << ",";
-    result << Base::blanks(indent) << "    ] ";
-    result << Base::blanks(indent) << "  }";
-    result << Base::blanks(indent) << "  PointSet { } ";
-    result << Base::blanks(indent) <<"}";
+    result << indent << "    ] ";
+    result << indent << "  }";
+    result << indent << "  PointSet { } ";
+    result << indent <<"}";
 }
 
 /**
  * Adds a SoLineSet node after creating a SoCordinate3 node with
  * beginPoints() and endPoints().
- * @see startPoints()
  * @see beginPoints()
  * @see endPoints()
  */
 void InventorBuilder::addLineSet()
 {
-    result << Base::blanks(indent) << "LineSet { } \n";
+    result << indent << "LineSet { } \n";
 }
 
-//**************************************************************************
-// text handling
-
+void InventorBuilder::addText(const char * text)
+{
+    result << indent << "  Text2 { string \" " << text << "\" " << "} \n";
+}
 
 /**
  * Add a Text with a given position to the 3D set. The origin is the
@@ -323,18 +341,14 @@ void InventorBuilder::addLineSet()
  */
 void InventorBuilder::addText(const Vector3f& pnt, const char * text, const ColorRGB& rgb)
 {
-    result << Base::blanks(indent) << "Separator { \n"
-           << Base::blanks(indent) << "  Material { diffuseColor "
+    result << indent << "Separator { \n"
+           << indent << "  Material { diffuseColor "
            << rgb.red() << " "<< rgb.green() << " "<< rgb.blue() << "} \n"
-           << Base::blanks(indent) << "  Transform { translation "
+           << indent << "  Transform { translation "
            << pnt.x << " "<< pnt.y << " "<< pnt.z << "} \n"
-           << Base::blanks(indent) << "  Text2 { string \" " << text << "\" " << "} \n"
-           << Base::blanks(indent) << "}\n";
-
+           << indent << "  Text2 { string \" " << text << "\" " << "} \n"
+           << indent << "}\n";
 }
-
-//**************************************************************************
-// line/arrow handling
 
 void InventorBuilder::addSingleLine(const Base::Line3f& line, Base::DrawStyle drawStyle, const ColorRGB& rgb)
 {
@@ -373,26 +387,26 @@ void InventorBuilder::addSingleArrow(const Base::Line3f& line, Base::DrawStyle d
     rot.Normalize();
     float a = Vector3f(0.0f, 1.0f, 0.0f).GetAngle(dir);
 
-    result << Base::blanks(indent) << "Separator { \n"
-           << Base::blanks(indent) << "  Material { diffuseColor "
+    result << indent << "Separator { \n"
+           << indent << "  Material { diffuseColor "
            << rgb.red() << " "<< rgb.green() << " "<< rgb.blue() << "} \n"
-           << Base::blanks(indent) << "  DrawStyle { lineWidth "
+           << indent << "  DrawStyle { lineWidth "
            << drawStyle.lineWidth << "} \n"
-           << Base::blanks(indent) << "  Coordinate3 { \n"
-           << Base::blanks(indent) << "    point [ "
+           << indent << "  Coordinate3 { \n"
+           << indent << "    point [ "
            <<        line.p1.x << " " << line.p1.y << " " << line.p1.z << ","
            <<        pt2s.x << " " << pt2s.y << " " << pt2s.z
            << " ] \n"
-           << Base::blanks(indent) << "  } \n"
-           << Base::blanks(indent) << "  LineSet { } \n"
-           << Base::blanks(indent) << "  Transform { \n"
-           << Base::blanks(indent) << "    translation "
+           << indent << "  } \n"
+           << indent << "  LineSet { } \n"
+           << indent << "  Transform { \n"
+           << indent << "    translation "
            << cpt.x << " " << cpt.y << " " << cpt.z << " \n"
-           << Base::blanks(indent) << "    rotation "
+           << indent << "    rotation "
            << rot.x << " " << rot.y << " " << rot.z << " " << a << '\n'
-           << Base::blanks(indent) << "  } \n"
-           << Base::blanks(indent) << "  Cone { bottomRadius " << coneRadius << " height " << coneLength << "} \n"
-           << Base::blanks(indent) << "} \n";
+           << indent << "  } \n"
+           << indent << "  Cone { bottomRadius " << coneRadius << " height " << coneLength << "} \n"
+           << indent << "} \n";
 }
 
 /** Add a line defined by a list of points whereat always a pair (i.e. a point and the following point) builds a line.
@@ -425,23 +439,21 @@ void InventorBuilder::addLineSet(const std::vector<Vector3f>& points, DrawStyle 
            << "  } \n";
 }
 
-//**************************************************************************
-// triangle handling
-
 void InventorBuilder::addIndexedFaceSet(const std::vector<int>& indices)
 {
     if (indices.size() < 4)
         return;
 
-    result << Base::blanks(indent) << "IndexedFaceSet { \n"
-           << Base::blanks(indent) << "  coordIndex [ \n";
+    result << indent << "IndexedFaceSet { \n"
+           << indent << "  coordIndex [ \n";
 
-    indent += 4;
+    increaseIndent();
+    increaseIndent();
     std::vector<int>::const_iterator it_last_f = indices.end()-1;
     int index=0;
     for (std::vector<int>::const_iterator it = indices.begin(); it != indices.end(); ++it) {
         if (index % 8 == 0)
-            result << Base::blanks(indent);
+            result << indent;
         if (it != it_last_f)
             result << *it << ", ";
         else
@@ -449,22 +461,24 @@ void InventorBuilder::addIndexedFaceSet(const std::vector<int>& indices)
         if (++index % 8 == 0)
             result << '\n';
     }
-    indent -= 4;
+    decreaseIndent();
+    decreaseIndent();
 
-    result << Base::blanks(indent) << "} \n";
+    result << indent << "} \n";
 }
 
 void InventorBuilder::addFaceSet(const std::vector<int>& vertices)
 {
-    result << Base::blanks(indent) << "FaceSet { \n"
-           << Base::blanks(indent) << "  numVertices [ \n";
+    result << indent << "FaceSet { \n"
+           << indent << "  numVertices [ \n";
 
-    indent += 4;
+    increaseIndent();
+    increaseIndent();
     std::vector<int>::const_iterator it_last_f = vertices.end()-1;
     int index=0;
     for (std::vector<int>::const_iterator it = vertices.begin(); it != vertices.end(); ++it) {
         if (index % 8 == 0)
-            result << Base::blanks(indent);
+            result << indent;
         if (it != it_last_f)
             result << *it << ", ";
         else
@@ -472,32 +486,33 @@ void InventorBuilder::addFaceSet(const std::vector<int>& vertices)
         if (++index % 8 == 0)
             result << '\n';
     }
-    indent -= 4;
+    decreaseIndent();
+    decreaseIndent();
 
-    result << Base::blanks(indent) << "} \n";
+    result << indent << "} \n";
 }
 
 void InventorBuilder::beginNormal()
 {
-    result << Base::blanks(indent) << "Normal { \n";
-    indent += 2;
-    result << Base::blanks(indent) << "vector [ \n";
-    indent += 2;
+    result << indent << "Normal { \n";
+    increaseIndent();
+    result << indent << "vector [ \n";
+    increaseIndent();
 }
 
 void InventorBuilder::endNormal()
 {
-    indent -= 2;
-    result << Base::blanks(indent) << "]\n";
-    indent -= 2;
-    result << Base::blanks(indent) << "}\n";
+    decreaseIndent();
+    result << indent << "]\n";
+    decreaseIndent();
+    result << indent << "}\n";
 }
 
 void InventorBuilder::addNormalBinding(const char* binding)
 {
-    result << Base::blanks(indent) << "NormalBinding {\n"
-           << Base::blanks(indent) << "  value " << binding << '\n'
-           << Base::blanks(indent) << "}\n";
+    result << indent << "NormalBinding {\n"
+           << indent << "  value " << binding << '\n'
+           << indent << "}\n";
 }
 
 void InventorBuilder::addSingleTriangle(const Triangle& triangle, DrawStyle drawStyle, const ColorRGB& rgb)
@@ -605,20 +620,25 @@ void InventorBuilder::addNurbsSurface(const std::vector<Base::Vector3f>& control
            << "  }\n";
 }
 
+void InventorBuilder::addCone(float bottomRadius, float height)
+{
+    result << indent << "  Cone { bottomRadius " << bottomRadius << " height " << height << "} \n";
+}
+
 void InventorBuilder::addCylinder(float radius, float height)
 {
-    result << Base::blanks(indent) << "Cylinder {\n"
-           << Base::blanks(indent) << "  radius " << radius << "\n"
-           << Base::blanks(indent) << "  height " << height << "\n"
-           << Base::blanks(indent) << "  parts (SIDES | TOP | BOTTOM)\n"
-           << Base::blanks(indent) << "}\n";
+    result << indent << "Cylinder {\n"
+           << indent << "  radius " << radius << "\n"
+           << indent << "  height " << height << "\n"
+           << indent << "  parts (SIDES | TOP | BOTTOM)\n"
+           << indent << "}\n";
 }
 
 void InventorBuilder::addSphere(float radius)
 {
-    result << Base::blanks(indent) << "Sphere {\n"
-           << Base::blanks(indent) << "  radius " << radius << "\n"
-           << Base::blanks(indent) << "}\n";
+    result << indent << "Sphere {\n"
+           << indent << "  radius " << radius << "\n"
+           << indent << "}\n";
 }
 
 void InventorBuilder::addBoundingBox(const Vector3f& pt1, const Vector3f& pt2, DrawStyle drawStyle, const ColorRGB& rgb)
@@ -671,13 +691,13 @@ void InventorBuilder::addTransformation(const Base::Placement& transform)
     double angle{};
     transform.getRotation().getValue(rotationaxis, angle);
 
-    result << Base::blanks(indent) << "Transform {\n";
-    result << Base::blanks(indent) << "  translation "
+    result << indent << "Transform {\n";
+    result << indent << "  translation "
          << translation.x << " " << translation.y << " " << translation.z << '\n';
-    result << Base::blanks(indent) << "  rotation "
+    result << indent << "  rotation "
          << rotationaxis.x << " " << rotationaxis.y << " " << rotationaxis.z
          << " " << angle << '\n';
-    result << Base::blanks(indent) <<  "}" << '\n';
+    result << indent <<  "}" << '\n';
 }
 
 // -----------------------------------------------------------------------------

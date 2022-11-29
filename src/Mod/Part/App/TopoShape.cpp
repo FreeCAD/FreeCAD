@@ -1047,6 +1047,7 @@ void TopoShape::exportFaceSet(double dev, double ca,
                               std::ostream& str) const
 {
     Base::InventorBuilder builder(str);
+    builder.beginSeparator();
     TopExp_Explorer ex;
     std::size_t numFaces = 0;
     for (ex.Init(this->_Shape, TopAbs_FACE); ex.More(); ex.Next()) {
@@ -1100,11 +1101,13 @@ void TopoShape::exportFaceSet(double dev, double ca,
         builder.addIndexedFaceSet(indices);
         builder.endSeparator();
     }
+    builder.endSeparator();
 }
 
 void TopoShape::exportLineSet(std::ostream& str) const
 {
     Base::InventorBuilder builder(str);
+    builder.beginSeparator();
     // get a indexed map of edges
     TopTools_IndexedMapOfShape M;
     TopExp::MapShapes(this->_Shape, TopAbs_EDGE, M);
@@ -1137,6 +1140,8 @@ void TopoShape::exportLineSet(std::ostream& str) const
         drawStyle.lineWidth = 2.0F;
         builder.addLineSet(vertices, drawStyle, Base::ColorRGB{0, 0, 0});
     }
+
+    builder.endSeparator();
 }
 
 Base::BoundBox3d TopoShape::getBoundBox() const

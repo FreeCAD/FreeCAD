@@ -125,13 +125,14 @@ PyObject* PointsPy::writeInventor(PyObject * args)
 
     std::stringstream result;
     Base::InventorBuilder builder(result);
+    builder.beginSeparator();
     builder.beginPoints();
     PointKernel* kernel = getPointKernelPtr();
     for (Points::PointKernel::const_iterator it = kernel->begin(); it != kernel->end(); ++it)
         builder.addPoint(Base::convertTo<Base::Vector3f>(*it));
     builder.endPoints();
     builder.addPointSet();
-    builder.close();
+    builder.endSeparator();
 
     return Py::new_reference_to(Py::String(result.str()));
 }

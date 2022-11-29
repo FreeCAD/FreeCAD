@@ -558,7 +558,6 @@ void MeshObject::writeInventor(std::ostream& str, float creaseangle) const
     builder.endPoints();
     builder.addIndexedFaceSet(indices);
     builder.endSeparator();
-    builder.close();
 }
 
 void MeshObject::addFacet(const MeshCore::MeshGeomFacet& facet)
