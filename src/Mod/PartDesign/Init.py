@@ -1,10 +1,7 @@
-# FreeCAD init script of the PartDesign module  
-# (c) 2001 Juergen Riegel
-
 #***************************************************************************
-#*   (c) Juergen Riegel (juergen.riegel@web.de) 2002                       *   
+#*   Copyright (c) 2001,2002 Juergen Riegel <juergen.riegel@web.de>        *
 #*                                                                         *
-#*   This file ispart of the FreeCAD CAx development system.              *
+#*   This file is part of the FreeCAD CAx development system.              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -22,7 +19,8 @@
 #*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 #*   USA                                                                   *
 #*                                                                         *
-#*   Juergen Riegel 2002                                                   *
 #***************************************************************************/
+
+# FreeCAD init script of the PartDesign module
 
 FreeCAD.__unit_test__ += [ "TestPartDesignApp" ]
