@@ -159,6 +159,12 @@ public:
     int count() {
         return spaces;
     }
+    friend std::ostream& operator<<( std::ostream& os, Indentation m)
+    {
+        for (int i = 0; i < m.count(); i++)
+            os << " ";
+        return os;
+    }
 };
 
 class BaseExport InventorOutput
