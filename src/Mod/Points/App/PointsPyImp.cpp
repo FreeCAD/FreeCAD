@@ -20,19 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#include "Mod/Points/App/Points.h"
-#include <Base/Builder3D.h>
-#include <Base/Converter.h>
-#include <Base/VectorPy.h>
-#include <Base/GeometryPyCXX.h>
 #include <boost/math/special_functions/fpclassify.hpp>
 
+#include <Base/Builder3D.h>
+#include <Base/Converter.h>
+#include <Base/GeometryPyCXX.h>
+#include <Base/VectorPy.h>
+
+#include "Points.h"
 // inclusion of the generated files (generated out of PointsPy.xml)
 #include "PointsPy.h"
 #include "PointsPy.cpp"
+
 
 using namespace Points;
 

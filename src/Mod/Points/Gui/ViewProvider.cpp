@@ -20,44 +20,34 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <limits>
+# include <Inventor/errors/SoDebugError.h>
+# include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/nodes/SoCamera.h>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoPointSet.h>
 # include <Inventor/nodes/SoIndexedPointSet.h>
 # include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoMaterialBinding.h>
 # include <Inventor/nodes/SoNormal.h>
-# include <Inventor/errors/SoDebugError.h>
-# include <Inventor/events/SoMouseButtonEvent.h>
+# include <Inventor/nodes/SoPointSet.h>
 #endif
 
 #include <boost/math/special_functions/fpclassify.hpp>
-#include <limits>
 
-/// Here the FreeCAD includes sorted by Base,App,Gui,...
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-#include <Base/Exception.h>
-#include <Base/Sequencer.h>
-#include <Base/Tools2D.h>
-#include <Base/Vector3D.h>
-#include <App/Application.h>
 #include <App/Document.h>
+#include <Base/Vector3D.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/SoFCSelection.h>
-#include <Gui/Window.h>
-
 #include <Gui/View3DInventorViewer.h>
 #include <Mod/Points/App/PointsFeature.h>
+#include <Mod/Points/App/Properties.h>
 
 #include "ViewProvider.h"
-#include "../App/Properties.h"
 
 
 using namespace PointsGui;

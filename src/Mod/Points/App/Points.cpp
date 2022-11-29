@@ -20,25 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <cmath>
 # include <iostream>
+# include <QtConcurrentMap>
 #endif
 
 #include <boost/math/special_functions/fpclassify.hpp>
-#include <QtConcurrentMap>
 
-#include <Base/Exception.h>
 #include <Base/Matrix.h>
-#include <Base/Persistence.h>
 #include <Base/Stream.h>
 #include <Base/Writer.h>
 
 #include "Points.h"
 #include "PointsAlgos.h"
-#include "PointsPy.h"
+
 
 #ifdef _MSC_VER
 # include <ppl.h>
