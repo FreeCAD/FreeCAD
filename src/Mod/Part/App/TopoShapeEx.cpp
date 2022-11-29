@@ -212,7 +212,7 @@
 #include "FaceMakerBullseye.h"
 #include "PartParams.h"
 
-FC_LOG_LEVEL_INIT("TopoShape",true,2);
+FC_LOG_LEVEL_INIT("TopoShape", true, 2);
 
 #if OCC_VERSION_HEX >= 0x070600
 using Adaptor3d_HCurve = Adaptor3d_Curve;
@@ -347,7 +347,6 @@ class TopoShape::Cache: public std::enable_shared_from_this<TopoShape::Cache>
 public:
     ElementMapPtr cachedElementMap;
     TopLoc_Location subLocation;
-    
     TopoDS_Shape shape;
     TopLoc_Location loc;
     TopLoc_Location locInv;
@@ -611,7 +610,7 @@ unsigned long TopoShape::getElementMapReserve() const
 {
     if (isNull())
         return 0;
-    return countSubShapes(TopAbs_VERTEX) 
+    return countSubShapes(TopAbs_VERTEX)
         + countSubShapes(TopAbs_EDGE)
         + countSubShapes(TopAbs_FACE);
 }
@@ -1042,8 +1041,7 @@ void TopoShape::mapSubElement(const TopoShape &other, const char *op, bool force
     }
 
     bool warned = false;
-    static const std::array<TopAbs_ShapeEnum,3> types = 
-        {TopAbs_VERTEX,TopAbs_EDGE,TopAbs_FACE};
+    static const std::array<TopAbs_ShapeEnum, 3> types = {TopAbs_VERTEX, TopAbs_EDGE, TopAbs_FACE};
 
     auto checkHasher = [this](const TopoShape &other) {
         if(Hasher) {
@@ -1793,7 +1791,7 @@ TopoShape &TopoShape::makERuledSurface(const std::vector<TopoShape> &shapes,
     else {
         ruledShape = BRepFill::Shell(TopoDS::Wire(S1.getShape()), TopoDS::Wire(S2.getShape()));
     }
-    
+
     // Both BRepFill::Face() and Shell() modifies the original input edges
     // without any API to provide relationship to the output edges. So we have
     // to use searchSubShape() to build the relationship by ourselves.
@@ -1858,7 +1856,7 @@ MapperHistory::MapperHistory(ShapeFix_Root &fix)
     if (fix.Context())
         history = fix.Context()->History();
 }
-    
+
 const std::vector<TopoDS_Shape> &
 MapperHistory::modified(const TopoDS_Shape &s) const
 {
@@ -2143,7 +2141,7 @@ TopoShape &TopoShape::makEPrismUntil(const TopoShape &_base,
                     , Precision::Confusion()
 #endif
             );
-            if (!mkFace.IsDone()) 
+            if (!mkFace.IsDone())
                 remove_limits = false;
             else
                 uptoface.setShape(located(mkFace.Shape(),loc), false);
@@ -2164,11 +2162,11 @@ TopoShape &TopoShape::makEPrismUntil(const TopoShape &_base,
             // It is unclear under exactly what condition extrude up to face
             // can fail. Either the support face or the up to face must be part
             // of the base, or maybe some thing else.
-            // 
+            //
             // To deal with it, we retry again by disregard the supplied base,
             // and use up to face to extrude our own base. Later on, use the
             // supplied base (i.e. _base) to calculate the final shape if the
-            // mode is FuseWithBase or CutWithBase, 
+            // mode is FuseWithBase or CutWithBase.
             checkBase = true;
             uptoface = uptofaceCopy;
             base.makEPrism(_uptoface, direction);
@@ -3495,7 +3493,7 @@ TopoShape &TopoShape::makEBoolean(const char *maker,
         OSD_Parallel::SetUseOcctThreads(Standard_True);
     }
 #   else
-    // Only run parallel 
+    // Only run parallel
     if (shapeArguments.Size() + shapeTools.Size() > 2)
         mk->SetRunParallel(true);
     else if (PartParams::getParallelRunThreshold() > 0) {
@@ -3581,7 +3579,7 @@ Data::MappedName TopoShape::setElementComboName(const Data::IndexedName & elemen
     Data::ElementIDRefs sids;
     if (_sids)
         sids = *_sids;
-    if(names.size() == 1) 
+    if(names.size() == 1)
         ss << marker;
     else {
         bool first = true;
