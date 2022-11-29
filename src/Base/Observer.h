@@ -216,6 +216,15 @@ protected:
   std::set<Observer <_MessageType> *> _ObserverSet;
 };
 
+#if defined (FC_OS_WIN32) || defined(FC_OS_CYGWIN)
+#   ifdef FCBase
+template class BaseExport Observer<const char*>;
+template class BaseExport Subject<const char*>;
+#   else
+extern template class BaseExport Observer<const char*>;
+extern template class BaseExport Subject<const char*>;
+#   endif
+#endif
 
 } //namespace Base
 
