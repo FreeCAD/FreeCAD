@@ -25,24 +25,22 @@
 #ifndef _PreComp_
 #include <numeric>
 
-#include <gp_Pnt.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepClass3d_SolidClassifier.hxx>
 #include <BRepGProp_Face.hxx>
+#include <gp_Pnt.hxx>
 #include <TopExp.hxx>
 #include <TopoDS.hxx>
 
-#include <QtConcurrentMap>
 #include <QEventLoop>
 #include <QFuture>
 #include <QFutureWatcher>
+#include <QtConcurrentMap>
 #endif
 
-#include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/FutureWatcherProgress.h>
-#include <Base/Parameter.h>
 #include <Base/Sequencer.h>
 #include <Base/Stream.h>
 
