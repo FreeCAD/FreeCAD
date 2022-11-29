@@ -147,7 +147,7 @@ class TestAddon(unittest.TestCase):
         self.assertTrue(addon_m.contains_macro())
         self.assertFalse(addon_m.contains_preference_pack())
 
-        # There is no equivalent for preference packs, they are always accompanied by a 
+        # There is no equivalent for preference packs, they are always accompanied by a
         # metadata file
 
     def test_create_from_macro(self):
@@ -175,7 +175,7 @@ class TestAddon(unittest.TestCase):
         self.assertTrue(addon.__dict__, second_addon.__dict__)
 
     def test_dependency_resolution(self):
-        
+
         addonA = Addon("AddonA","https://github.com/FreeCAD/FakeAddonA", Addon.Status.NOT_INSTALLED, "master")
         addonB = Addon("AddonB","https://github.com/FreeCAD/FakeAddonB", Addon.Status.NOT_INSTALLED, "master")
         addonC = Addon("AddonC","https://github.com/FreeCAD/FakeAddonC", Addon.Status.NOT_INSTALLED, "master")

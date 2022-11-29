@@ -1,5 +1,5 @@
 # This file lists the Python packages that the Addon Manager allows to be installed
-# automatically via pip. To request that a package be added to this list, submit a 
+# automatically via pip. To request that a package be added to this list, submit a
 # pull request to the FreeCAD git repository with the requested package added. Only
 # packages in this list will be processed from the metadata.txt and requirements.txt
 # files specified by an Addon. Note that this is NOT a requirements.txt-format file,
