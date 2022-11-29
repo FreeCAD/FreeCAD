@@ -124,12 +124,150 @@ const char* PolygonOffset::styleAsString() const
 
 // -----------------------------------------------------------------------------
 
-std::ostream& operator<<( std::ostream& os, InventorBuilder::Indentation m)
+std::ostream& operator<<( std::ostream& os, Indentation m)
 {
     for (int i = 0; i < m.count(); i++)
         os << " ";
     return os;
 }
+
+InventorOutput::InventorOutput(std::ostream& result, Indentation& indent)
+  : result(result)
+  , indent(indent)
+{
+}
+
+std::ostream& InventorOutput::write()
+{
+    result << indent;
+    return result;
+}
+
+std::ostream& InventorOutput::write(const char* str)
+{
+    result << indent << str;
+    return result;
+}
+
+std::ostream& InventorOutput::write(const std::string& str)
+{
+    result << indent << str;
+    return result;
+}
+
+std::ostream& InventorOutput::writeLine()
+{
+    result << indent << '\n';
+    return result;
+}
+
+std::ostream& InventorOutput::writeLine(const char* str)
+{
+    result << indent << str << '\n';
+    return result;
+}
+
+std::ostream& InventorOutput::writeLine(const std::string& str)
+{
+    result << indent << str << '\n';
+    return result;
+}
+
+// -----------------------------------------------------------------------------
+
+LabelItem::LabelItem(const std::string& text) : text(text)
+{
+
+}
+
+void LabelItem::write(InventorOutput& out) const
+{
+    out.write("Label { \n");
+    out.write() << "  label \"" << text << "\"\n";
+    out.write("} \n");
+}
+
+// -----------------------------------------------------------------------------
+
+InfoItem::InfoItem(const std::string& text) : text(text)
+{
+
+}
+
+void InfoItem::write(InventorOutput& out) const
+{
+    out.write("Info { \n");
+    out.write() << "  string \"" << text << "\"\n";
+    out.write("} \n");
+}
+
+// -----------------------------------------------------------------------------
+
+BaseColorItem::BaseColorItem(const ColorRGB& rgb) : rgb(rgb)
+{
+
+}
+
+void BaseColorItem::write(InventorOutput& out) const
+{
+    out.write("BaseColor { \n");
+    out.write() << "  rgb " << rgb.red() << " " << rgb.green() << " " << rgb.blue() << '\n';
+    out.write("} \n");
+}
+
+// -----------------------------------------------------------------------------
+
+PointItem::PointItem(const Base::Vector3f& point, DrawStyle drawStyle, const ColorRGB& rgb)
+    : point(point)
+    , drawStyle(drawStyle)
+    , rgb(rgb)
+{
+
+}
+
+void PointItem::write(InventorOutput& out) const
+{
+    out.write() << "Separator { \n";
+    out.write() << "  Material { \n";
+    out.write() << "    diffuseColor " << rgb.red() << " "<< rgb.green() << " "<< rgb.blue() << '\n';
+    out.write() << "  }\n";
+    out.write() << "  MaterialBinding { value PER_PART }\n";
+    out.write() << "  DrawStyle { pointSize " << drawStyle.pointSize << "}\n";
+    out.write() << "  Coordinate3 {\n";
+    out.write() << "    point [ " << point.x << " " << point.y << " " << point.z << "]\n";
+    out.write() << "  }\n";
+    out.write() << "  PointSet { }\n";
+    out.write() <<"}\n";
+}
+
+// -----------------------------------------------------------------------------
+
+LineItem::LineItem(const Base::Line3f& line, DrawStyle drawStyle, const ColorRGB& rgb)
+    : line(line)
+    , drawStyle(drawStyle)
+    , rgb(rgb)
+{
+
+}
+
+void LineItem::write(InventorOutput& out) const
+{
+    std::string pattern = drawStyle.patternAsString();
+
+    out.write("  Separator { \n");
+    out.write() << "    Material { diffuseColor " << rgb.red() << " "<< rgb.green() << " "<< rgb.blue() << "} \n";
+    out.write() << "    DrawStyle { lineWidth " << drawStyle.lineWidth << " linePattern " << pattern << " } \n";
+    out.write() << "    Coordinate3 { \n";
+    out.write() << "      point [ ";
+    out.write() <<        line.p1.x << " " << line.p1.y << " " << line.p1.z << ",";
+    out.write() <<        line.p2.x << " " << line.p2.y << " " << line.p2.z;
+    out.write() << " ] \n";
+    out.write() << "    } \n";
+    out.write() << "    LineSet { } \n";
+    out.write() << "  } \n";
+}
+
+// -----------------------------------------------------------------------------
 
 InventorBuilder::InventorBuilder(std::ostream& output)
   : result(output)
@@ -149,6 +287,12 @@ void InventorBuilder::increaseIndent()
 void InventorBuilder::decreaseIndent()
 {
     indent.decreaseIndent();
+}
+
+void InventorBuilder::addNode(const NodeItem& node)
+{
+    InventorOutput out(result, indent);
+    node.write(out);
 }
 
 void InventorBuilder::beginSeparator()

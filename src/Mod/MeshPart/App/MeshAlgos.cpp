@@ -90,7 +90,8 @@ void MeshAlgos::offsetSpecial2(MeshCore::MeshKernel* Mesh, float fSize)
             if (angle > 1.6){
                 Base::DrawStyle drawStyle;
                 drawStyle.pointSize = 4.0F;
-                builder.addSinglePoint(it->GetGravityPoint(), drawStyle, Base::ColorRGB{1.0F, 0.0F, 0.0F});
+                Base::PointItem item{it->GetGravityPoint(), drawStyle, Base::ColorRGB{1.0F, 0.0F, 0.0F}};
+                builder.addNode(item);
                 fliped.insert(it.Position());
             }
         }
