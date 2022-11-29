@@ -1534,8 +1534,7 @@ static std::vector<TopoShape> prepareProfiles(const std::vector<TopoShape> &shap
         if (shape.ShapeType() == TopAbs_FACE) {
             shape = sh.splitWires().getShape();
         } else if (shape.ShapeType() == TopAbs_WIRE) {
-            BRepBuilderAPI_MakeWire mkWire(TopoDS::Wire(shape));
-            shape = mkWire.Wire();
+            // do nothing
         } else if (shape.ShapeType() == TopAbs_EDGE) {
             BRepBuilderAPI_MakeWire mkWire(TopoDS::Edge(shape));
             shape = mkWire.Wire();
@@ -2921,7 +2920,7 @@ TopoShape::sortEdges(std::list<TopoShape>& edges, bool keepOrder, double tol)
             }
             else if (pEI->v1.SquareDistance(first) <= tol3d) {
                 first = pEI->v2;
-                sorted.push_back(reverseEdge(pEI->edge));
+                sorted.push_front(reverseEdge(pEI->edge));
                 edges.erase(pEI->it);
                 edge_points.erase(pEI);
                 pEI = edge_points.begin();
