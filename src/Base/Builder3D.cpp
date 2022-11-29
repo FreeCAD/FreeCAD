@@ -124,13 +124,6 @@ const char* PolygonOffset::styleAsString() const
 
 // -----------------------------------------------------------------------------
 
-std::ostream& operator<<( std::ostream& os, Indentation m)
-{
-    for (int i = 0; i < m.count(); i++)
-        os << " ";
-    return os;
-}
-
 InventorOutput::InventorOutput(std::ostream& result, Indentation& indent)
   : result(result)
   , indent(indent)
