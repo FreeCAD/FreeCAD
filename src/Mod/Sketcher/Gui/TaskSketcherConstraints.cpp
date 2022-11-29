@@ -748,8 +748,8 @@ TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch *sketchView)
     //QMetaObject::connectSlotsByName(this);
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-    ui->filterBox->setChecked(hGrp->GetBool("ConstraintFilterEnabled", true) ? Qt::Checked : Qt::Unchecked);
-    ui->filterButton->setEnabled(ui->filterBox->checkState() == Qt::Checked);
+    ui->filterBox->setChecked(hGrp->GetBool("ConstraintFilterEnabled", true));
+    ui->filterButton->setEnabled(ui->filterBox->isChecked());
 
     createFilterButtonActions();
     createSettingButtonActions();

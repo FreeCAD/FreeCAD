@@ -184,7 +184,7 @@ bool CommandCompleter::eventFilter(QObject *o, QEvent *ev)
         }
         case Qt::Key_Tab: {
             if (this->popup()->isVisible()) {
-                QKeyEvent kevent(ke->type(),Qt::Key_Down,0);
+                QKeyEvent kevent(ke->type(), Qt::Key_Down, Qt::NoModifier);
                 qApp->sendEvent(this->popup(), &kevent);
                 return true;
             }
@@ -192,7 +192,7 @@ bool CommandCompleter::eventFilter(QObject *o, QEvent *ev)
         }
         case Qt::Key_Backtab: {
             if (this->popup()->isVisible()) {
-                QKeyEvent kevent(ke->type(),Qt::Key_Up,0);
+                QKeyEvent kevent(ke->type(), Qt::Key_Up, Qt::NoModifier);
                 qApp->sendEvent(this->popup(), &kevent);
                 return true;
             }
