@@ -147,6 +147,97 @@ private:
     Base::Vector3f pt3;
 };
 
+class Indentation {
+    int spaces = 0;
+public:
+    void increaseIndent() {
+        spaces += 2;
+    }
+    void decreaseIndent() {
+        spaces -= 2;
+    }
+    int count() {
+        return spaces;
+    }
+};
+
+class BaseExport InventorOutput
+{
+public:
+    explicit InventorOutput(std::ostream& result, Indentation& indent);
+    std::ostream& write();
+    std::ostream& write(const char*);
+    std::ostream& write(const std::string&);
+    std::ostream& writeLine();
+    std::ostream& writeLine(const char*);
+    std::ostream& writeLine(const std::string&);
+
+private:
+    std::ostream& result;
+    Indentation& indent;
+};
+
+class BaseExport NodeItem
+{
+public:
+    virtual ~NodeItem() = default;
+    virtual void write(InventorOutput& out) const = 0;
+};
+
+class BaseExport LabelItem : public NodeItem
+{
+public:
+    explicit LabelItem(const std::string& text);
+    void write(InventorOutput& out) const override;
+
+private:
+    std::string text;
+};
+
+class BaseExport InfoItem : public NodeItem
+{
+public:
+    explicit InfoItem(const std::string& text);
+    void write(InventorOutput& out) const override;
+
+private:
+    std::string text;
+};
+
+class BaseExport BaseColorItem : public NodeItem
+{
+public:
+    explicit BaseColorItem(const ColorRGB& rgb);
+    void write(InventorOutput& out) const override;
+
+private:
+    ColorRGB rgb;
+};
+
+class BaseExport PointItem : public NodeItem
+{
+public:
+    explicit PointItem(const Base::Vector3f& point, DrawStyle drawStyle, const ColorRGB& rgb = ColorRGB{1.0F, 1.0F, 1.0F});
+    void write(InventorOutput& out) const override;
+
+private:
+    Base::Vector3f point;
+    DrawStyle drawStyle;
+    ColorRGB rgb;
+};
+
+class BaseExport LineItem : public NodeItem
+{
+public:
+    explicit LineItem(const Base::Line3f& line, DrawStyle drawStyle, const ColorRGB& rgb = ColorRGB{1.0F, 1.0F, 1.0F});
+    void write(InventorOutput& out) const override;
+
+private:
+    Base::Line3f line;
+    DrawStyle drawStyle;
+    ColorRGB rgb;
+};
+
 /**
  * This class does basically the same as Builder3D except that it writes the data
  * directly into a given stream without buffering the output data in a string stream.
@@ -169,6 +260,7 @@ public:
      */
     virtual ~InventorBuilder();
 
+    void addNode(const NodeItem&);
     /*!
      * \brief Sets a separator node.
      */
@@ -317,21 +409,6 @@ private:
     void decreaseIndent();
     InventorBuilder (const InventorBuilder&);
     void operator = (const InventorBuilder&);
-
-public:
-    class Indentation {
-        int spaces = 0;
-    public:
-        void increaseIndent() {
-            spaces += 2;
-        }
-        void decreaseIndent() {
-            spaces -= 2;
-        }
-        int count() {
-            return spaces;
-        }
-    };
 
 private:
     std::ostream& result;
