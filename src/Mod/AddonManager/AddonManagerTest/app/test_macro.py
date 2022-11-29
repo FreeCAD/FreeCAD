@@ -54,7 +54,7 @@ class TestMacro(unittest.TestCase):
         self.assertEqual(m.author, replacements["AUTHOR"])
         self.assertEqual(m.date, replacements["DATE"])
         self.assertEqual(m.icon, replacements["ICON"])
-    
+
     def test_other_files(self):
         replacements = {
             "FILES": "file_a,file_b,file_c",

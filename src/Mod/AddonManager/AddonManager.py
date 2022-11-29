@@ -190,7 +190,7 @@ class CommandAddonManager:
         firstRunDialog = FirstRunDialog()
         if not firstRunDialog.exec():
             return
-        
+
         self.connection_checker.start()
 
     def launch(self) -> None:
