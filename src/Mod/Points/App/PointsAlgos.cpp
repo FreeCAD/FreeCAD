@@ -32,6 +32,7 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/regex.hpp>
 #include <boost/algorithm/string.hpp>
+#include <boost/math/special_functions/fpclassify.hpp>
 
 #include <Base/Console.h>
 #include <Base/Converter.h>
