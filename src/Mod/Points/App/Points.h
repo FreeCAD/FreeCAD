@@ -27,19 +27,18 @@
 #include <vector>
 #include <iterator>
 
-#include <Base/Vector3D.h>
+#include <App/ComplexGeoData.h>
+#include <App/PropertyGeo.h>
 #include <Base/Matrix.h>
 #include <Base/Reader.h>
+#include <Base/Vector3D.h>
 #include <Base/Writer.h>
 
-#include <App/ComplexGeoData.h>
-#include <App/PropertyStandard.h>
-#include <App/PropertyGeo.h>
+
 #include <Mod/Points/PointsGlobal.h>
 
 namespace Points
 {
-
 
 /** Point kernel
  */

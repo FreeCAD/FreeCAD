@@ -20,29 +20,25 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <algorithm>
-# include <QFileInfo>
 # include <QInputDialog>
 # include <Inventor/events/SoMouseButtonEvent.h>
 #endif
 
-#include <Base/Exception.h>
-#include <Base/Interpreter.h>
-#include <Base/Matrix.h>
-#include <Base/Tools.h>
-#include <Base/UnitsApi.h>
 #include <App/Application.h>
 #include <App/Document.h>
+#include <Base/Exception.h>
+#include <Base/Interpreter.h>
+#include <Base/Tools.h>
+#include <Base/UnitsApi.h>
 #include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/MainWindow.h>
 #include <Gui/Command.h>
+#include <Gui/Document.h>
 #include <Gui/FileDialog.h>
+#include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
-#include <Gui/ViewProvider.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/WaitCursor.h>
@@ -50,6 +46,7 @@
 #include "../App/PointsFeature.h"
 #include "../App/Structured.h"
 #include "../App/Properties.h"
+
 #include "DlgPointsReadImp.h"
 #include "ViewProvider.h"
 
