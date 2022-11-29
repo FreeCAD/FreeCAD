@@ -84,6 +84,25 @@ public:
     unsigned short linePattern = 0xffff;
 };
 
+class BaseExport MaterialBinding
+{
+public:
+    enum class Binding {
+        Overall = 2,
+        PerPart = 3,
+        PerPartIndexed = 4,
+        PerFace = 5,
+        PerFaceIndexed = 6,
+        PerVertex = 7,
+        PerVertexIndexed = 8,
+        Default = Overall,
+        None = Overall
+    };
+
+    const char* bindingAsString() const;
+    Binding value = Binding::Overall;
+};
+
 class BaseExport PolygonOffset
 {
 public:
@@ -149,11 +168,6 @@ public:
      * \brief Destruction of an InventorBuilder instance
      */
     virtual ~InventorBuilder();
-    /*!
-     * \brief If needed closes the first opened separator node.
-     * This method must not be used more than one time for an instance.
-     */
-    void close();
 
     /*!
      * \brief Sets a separator node.
@@ -198,11 +212,9 @@ public:
     void addColor(const ColorRGB& rgb);
     /*!
      * \brief Sets a material binding node.
-     * \param binding - binding of the material. Allowed values are:
-     * OVERALL, PER_PART, PER_PART_INDEXED, PER_FACE, PER_FACE_INDEXED, PER_VERTEX,
-     * PER_VERTEX_INDEXED and DEFAULT.
+     * \param binding - binding of the material.
      */
-    void addMaterialBinding(const char* binding = "OVERALL");
+    void addMaterialBinding(MaterialBinding);
     /*!
      * \brief Sets a draw style node.
      */
@@ -275,6 +287,7 @@ public:
     void addNurbsSurface(const std::vector<Base::Vector3f>& controlPoints,
         int numUControlPoints, int numVControlPoints,
         const std::vector<float>& uKnots, const std::vector<float>& vKnots);
+    void addCone(float bottomRadius, float height);
     void addCylinder(float radius, float height);
     void addSphere(float radius);
     //@}
@@ -295,16 +308,34 @@ public:
     /** @name Text handling */
     //@{
     /// add a text
+    void addText(const char * text);
     void addText(const Vector3f &vec,const char * text, const ColorRGB& rgb = ColorRGB{1.0F, 1.0F, 1.0F});
     //@}
 
 private:
+    void increaseIndent();
+    void decreaseIndent();
     InventorBuilder (const InventorBuilder&);
     void operator = (const InventorBuilder&);
 
+public:
+    class Indentation {
+        int spaces = 0;
+    public:
+        void increaseIndent() {
+            spaces += 2;
+        }
+        void decreaseIndent() {
+            spaces -= 2;
+        }
+        int count() {
+            return spaces;
+        }
+    };
+
 private:
     std::ostream& result;
-    int indent;
+    Indentation indent;
 };
 
 /** A Builder class for 3D representations on App level
@@ -337,10 +368,6 @@ class BaseExport Builder3D : public InventorBuilder
 public:
     Builder3D();
     virtual ~Builder3D();
-
-    /** @name point set handling */
-    //@{
-    //@}
 
     /// clear the string buffer
     void clear();
