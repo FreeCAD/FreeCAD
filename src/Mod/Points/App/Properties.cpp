@@ -25,6 +25,7 @@
 # include <algorithm>
 # include <cmath>
 # include <iostream>
+# include <QtConcurrentMap>
 #endif
 
 #include <Base/Converter.h>
