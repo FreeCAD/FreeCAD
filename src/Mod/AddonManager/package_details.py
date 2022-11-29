@@ -555,8 +555,8 @@ class PackageDetails(QWidget):
                 sibling = article.previousSibling;
             }
         }
-    } else if (url.hostname === "gitlab.com" || 
-               url.hostname === "framagit.org" || 
+    } else if (url.hostname === "gitlab.com" ||
+               url.hostname === "framagit.org" ||
                url.hostname === "salsa.debian.org") {
         // These all use the GitLab page display...
         const articles = document.getElementsByTagName("article");
@@ -570,7 +570,7 @@ class PackageDetails(QWidget):
                 sibling = article.previousSibling;
             }
         }
-    } else if (url.hostname === "wiki.freecad.org" || 
+    } else if (url.hostname === "wiki.freecad.org" ||
                url.hostname === "wiki.freecadweb.org") {
         const first_heading = document.getElementById('firstHeading');
         const body_content = document.getElementById('bodyContent');
