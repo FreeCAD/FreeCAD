@@ -288,7 +288,7 @@ void SolverReportingManager::LogToConsole(const std::string& str)
     if(str.size() < Base::Console().BufferSize)
         Base::Console().Log(str.c_str());
     else
-        Base::Console().Log("SolverReportingManager - Too long string suppressed");
+        Base::Console().Log("SolverReportingManager - Overly long string suppressed");
 }
 
 void SolverReportingManager::LogToFile(const std::string& str)
