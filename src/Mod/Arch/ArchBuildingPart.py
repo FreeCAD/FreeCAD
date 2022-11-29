@@ -455,7 +455,7 @@ class BuildingPart(ArchIFC.IfcProduct):
         shapes = []
         solidindex = 0
         materialstable = {}
-        for child in Draft.get_group_contents(obj):
+        for child in Draft.get_group_contents(obj, walls=True):
             if not Draft.get_type(child) in ["Space"]:
                 if hasattr(child,'Shape') and child.Shape:
                     shapes.append(child.Shape)
@@ -732,7 +732,7 @@ class ViewProviderBuildingPart:
         "recursively get the colors of objects inside this BuildingPart"
 
         colors = []
-        for child in Draft.get_group_contents(obj):
+        for child in Draft.get_group_contents(obj, walls=True):
             if not Draft.get_type(child) in ["Space"]:
                 if hasattr(child,'Shape') and (hasattr(child.ViewObject,"DiffuseColor") or hasattr(child.ViewObject,"ShapeColor")):
                     if hasattr(child.ViewObject,"DiffuseColor") and len(child.ViewObject.DiffuseColor) == len(child.Shape.Faces):
