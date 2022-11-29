@@ -1,5 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
+ *   Copyright (c) 2017 Zheng, Lei <realthunder.dev@gmail.com>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -19,10 +20,6 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-/* 
- *  Copyright (c) 2017 Zheng, Lei <realthunder.dev@gmail.com> 
- */
-
 
 #ifndef PATH_FeaturePathShape_H
 #define PATH_FeaturePathShape_H
