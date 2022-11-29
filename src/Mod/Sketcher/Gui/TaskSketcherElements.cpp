@@ -603,8 +603,8 @@ TaskSketcherElements::TaskSketcherElements(ViewProviderSketch *sketchView)
     this->groupLayout()->addWidget(proxy);
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-    ui->filterBox->setChecked(hGrp->GetBool("ElementFilterEnabled", true) ? Qt::Checked : Qt::Unchecked);
-    ui->filterButton->setEnabled(ui->filterBox->checkState() == Qt::Checked);
+    ui->filterBox->setChecked(hGrp->GetBool("ElementFilterEnabled", true));
+    ui->filterButton->setEnabled(ui->filterBox->isChecked());
 
     slotElementsChanged();
 }
