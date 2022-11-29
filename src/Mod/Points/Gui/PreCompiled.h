@@ -40,7 +40,9 @@
 
 // STL
 #include <algorithm>
+#include <bitset>
 #include <iostream>
+#include <limits>
 #include <list>
 #include <map>
 #include <queue>
@@ -49,7 +51,6 @@
 #include <stack>
 #include <string>
 #include <vector>
-#include <bitset>
 
 #ifdef FC_OS_WIN32
 # include <windows.h>

@@ -21,15 +21,12 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
 #include "DlgPointsReadImp.h"
 #include "ui_DlgPointsRead.h"
 
+
 using namespace PointsGui;
-
-
 
 DlgPointsReadImp::DlgPointsReadImp(const char *FileName, QWidget* parent,  Qt::WindowFlags fl )
     : QDialog( parent, fl )

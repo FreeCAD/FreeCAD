@@ -20,22 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <algorithm>
 # include <cmath>
 # include <iostream>
-# include <algorithm>
 #endif
 
-#include <Base/Exception.h>
 #include <Base/Matrix.h>
-#include <Base/Stream.h>
 #include <Base/Writer.h>
 
 #include "PropertyPointKernel.h"
 #include "PointsPy.h"
+
 
 using namespace Points;
 

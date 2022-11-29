@@ -41,20 +41,21 @@
 
 // STL
 #include <algorithm>
+#include <bitset>
+#include <cfloat>
+#include <cmath>
+#include <cstdlib>
 #include <iostream>
 #include <fstream>
 #include <list>
 #include <map>
+#include <memory>
 #include <queue>
 #include <set>
 #include <sstream>
 #include <stack>
 #include <string>
 #include <vector>
-#include <bitset>
-#include <cfloat>
-#include <cmath>
-#include <cstdlib>
 
 #endif //_PreComp_
 

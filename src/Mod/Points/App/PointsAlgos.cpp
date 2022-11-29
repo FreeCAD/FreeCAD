@@ -20,33 +20,29 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#ifdef FC_OS_LINUX
-# include <unistd.h>
-#endif
+# ifdef FC_OS_LINUX
+#  include <unistd.h>
+# endif
+# include <memory>
 # include <sstream>
 #endif
 
+#include <boost/lexical_cast.hpp>
+#include <boost/regex.hpp>
+#include <boost/algorithm/string.hpp>
 
-#include "PointsAlgos.h"
-#include "Points.h"
-
+#include <Base/Console.h>
 #include <Base/Converter.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
-#include <Base/Console.h>
 #include <Base/Sequencer.h>
 #include <Base/Stream.h>
-
-#include <memory>
-#include <boost/regex.hpp>
-#include <boost/lexical_cast.hpp>
-#include <boost/algorithm/string.hpp>
-#include <boost/math/special_functions/fpclassify.hpp>
-
 #include <E57Format.h>
+
+#include "PointsAlgos.h"
+
 
 using namespace Points;
 
