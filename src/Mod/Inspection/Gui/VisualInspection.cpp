@@ -27,9 +27,9 @@
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
-#include <Gui/Application.h>
 #include <Gui/MainWindow.h>
 #include <Gui/PrefWidgets.h>
 #include <Gui/ViewProvider.h>
