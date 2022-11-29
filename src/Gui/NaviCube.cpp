@@ -79,34 +79,34 @@ using namespace Gui;
 
 class Face {
 public:
-	int m_FirstVertex;
-	int m_VertexCount;
-	GLuint m_TextureId;
-	QColor m_Color;
-	int m_PickId;
-	int m_PickTexId;
-	GLuint m_PickTextureId;
-	int m_RenderPass;
-	Face(
-		 int firstVertex,
-		 int vertexCount,
-		 GLuint textureId,
-		 int pickId,
-		 int pickTexId,
-		 GLuint pickTextureId,
-		 const QColor& color,
-		 int  renderPass
+    int m_FirstVertex;
+    int m_VertexCount;
+    GLuint m_TextureId;
+    QColor m_Color;
+    int m_PickId;
+    int m_PickTexId;
+    GLuint m_PickTextureId;
+    int m_RenderPass;
+    Face(
+		int firstVertex,
+		int vertexCount,
+		GLuint textureId,
+		int pickId,
+		int pickTexId,
+		GLuint pickTextureId,
+		const QColor& color,
+		int renderPass
 	)
-	{
-		m_FirstVertex = firstVertex;
-		m_VertexCount = vertexCount;
-		m_TextureId = textureId;
-		m_PickId = pickId;
-		m_PickTexId = pickTexId;
-		m_PickTextureId = pickTextureId;
-		m_Color = color;
-		m_RenderPass = renderPass;
-	}
+    {
+        m_FirstVertex = firstVertex;
+        m_VertexCount = vertexCount;
+        m_TextureId = textureId;
+        m_PickId = pickId;
+        m_PickTexId = pickTexId;
+        m_PickTextureId = pickTextureId;
+        m_Color = color;
+        m_RenderPass = renderPass;
+    }
 };
 
 class NaviCubeImplementation : public ParameterGrp::ObserverType {
