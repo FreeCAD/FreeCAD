@@ -28,29 +28,29 @@
 
 #ifdef FC_OS_WIN32
 # ifndef NOMINMAX
-# define NOMINMAX
+#  define NOMINMAX
 # endif
 #endif
 
 #ifdef _PreComp_
 
 // standard
-#include <cstdio>
-#include <cassert>
+# include <cstdio>
+# include <cassert>
 
 // STL
-#include <algorithm>
-#include <bitset>
-#include <iostream>
-#include <limits>
-#include <list>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <string>
-#include <vector>
+# include <algorithm>
+# include <bitset>
+# include <iostream>
+# include <limits>
+# include <list>
+# include <map>
+# include <queue>
+# include <set>
+# include <sstream>
+# include <stack>
+# include <string>
+# include <vector>
 
 #ifdef FC_OS_WIN32
 # include <windows.h>

@@ -24,6 +24,7 @@
 #ifndef _PreComp_
 # include <cmath>
 # include <iostream>
+# include <QtConcurrentMap>
 #endif
 
 #include <boost/math/special_functions/fpclassify.hpp>
