@@ -272,23 +272,12 @@ void TaskDimRepair::replaceReferences()
     }
 }
 
-void TaskDimRepair::updateTypes()
-{
-    if (m_references3d.empty()) {
-        m_dim->MeasureType.setValue("Projected");
-    } else {
-        m_dim->MeasureType.setValue("True");
-    }
-    m_dim->Type.setValue(m_dimType);
-}
-
-
 bool TaskDimRepair::accept()
 {
 //    Base::Console().Message("TDR::accept()\n");
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
     replaceReferences();
-    updateTypes();
+    m_dim->Type.setValue(m_dimType);
     m_dim->recomputeFeature();
     return true;
 }

@@ -1634,12 +1634,9 @@ DrawViewDimension* dimensionMaker(TechDraw::DrawViewPart* dvp,
     Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().addObject('TechDraw::DrawViewDimension', '%s')", dimName.c_str());
     Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.Type = '%s'", dimName.c_str()
                                                                                     ,dimType.c_str());
-    std::string measureType("True");
-    if (references3d.empty()) {
-        measureType = "Projected";
-    }
+
     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.MeasureType = '%s'", dimName.c_str(),
-                                                                                            measureType.c_str());
+                                                                                            "Projected");
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(dvp->getDocument()->getObject(dimName.c_str()));
     if (!dim) {

@@ -65,7 +65,6 @@ protected:
 
     void setUiPrimary();
     void replaceReferences();
-    void updateTypes();
     void updateUi();
     void fillList(QListWidget* lwItems, std::vector<std::string> labels, std::vector<std::string> names);
     void loadTableWidget(QTableWidget* tw, TechDraw::ReferenceVector refs);
