@@ -651,13 +651,9 @@ ConstraintFilterList::ConstraintFilterList(QWidget* parent)
 
         it->setFlags(it->flags() | Qt::ItemIsUserCheckable);
         addItem(it);
-        if (row(it) < normalFilterCount) {
-            bool isChecked = static_cast<bool>(filterState & 1); //get the first bit of filterState
-            it->setCheckState(isChecked ? Qt::Checked : Qt::Unchecked);
-            filterState = filterState >> 1; //shift right to get rid of the used bit.
-        }
-        else //associated and selected should not be checked by default.
-            it->setCheckState(Qt::Unchecked);
+        bool isChecked = static_cast<bool>(filterState & 1); //get the first bit of filterState
+        it->setCheckState(isChecked ? Qt::Checked : Qt::Unchecked);
+        filterState = filterState >> 1; //shift right to get rid of the used bit.
     }
     languageChange();
 
@@ -1651,7 +1647,7 @@ void TaskSketcherConstraints::on_filterList_itemChanged(QListWidgetItem* item)
     filterList->blockSignals(false);
 
     //Save the state of the filter.
-    int filterState = INT_MIN; //INT_MIN = 000000000000000000000000000000 in binary.
+    int filterState = 0;
     for (int i = filterList->count() - 1; i >= 0; i--) {
         bool isChecked = filterList->item(i)->checkState() == Qt::Checked;
         filterState = filterState << 1; //we shift left first, else the list is shifted at the end.
