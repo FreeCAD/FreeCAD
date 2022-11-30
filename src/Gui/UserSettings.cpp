@@ -72,7 +72,7 @@ int WorkbenchSwitcher::getIndex()
     auto hGrp = getWSParameter();
     std::string pos = hGrp->GetASCII("WSPosition", "WSToolbar");
     auto wsPositions = values();
-    int index = std::max(0, wsPositions.indexOf(pos));
+    int index = std::max(0, static_cast<int>(wsPositions.indexOf(pos)));
     return index;
 }
 
