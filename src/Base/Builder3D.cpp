@@ -166,6 +166,62 @@ std::ostream& InventorOutput::writeLine(const std::string& str)
     return result;
 }
 
+void InventorOutput::increaseIndent()
+{
+    indent.increaseIndent();
+}
+
+void InventorOutput::decreaseIndent()
+{
+    indent.decreaseIndent();
+}
+
+// -----------------------------------------------------------------------------
+
+void NodeItem::writeField(const char* field, const std::vector<ColorRGB>& rgb, InventorOutput& out) const
+{
+    if (rgb.empty())
+        return;
+
+    if (rgb.size() == 1) {
+        out.increaseIndent();
+        out.write() << field << " " << rgb[0].red() << " " << rgb[0].green() << " " << rgb[0].blue() << '\n';
+        out.decreaseIndent();
+    }
+    else {
+        out.increaseIndent();
+        out.write() << field << " [\n";
+        out.increaseIndent();
+        for (auto it : rgb) {
+            out.write() << it.red() << " " << it.green() << " " << it.blue() << '\n';
+        }
+        out.decreaseIndent();
+        out.decreaseIndent();
+    }
+}
+
+void NodeItem::writeField(const char* field, const std::vector<float>& value, InventorOutput& out) const
+{
+    if (value.empty())
+        return;
+
+    if (value.size() == 1) {
+        out.increaseIndent();
+        out.write() << field << " " << value[0] << '\n';
+        out.decreaseIndent();
+    }
+    else {
+        out.increaseIndent();
+        out.write() << field << " [\n";
+        out.increaseIndent();
+        for (auto it : value) {
+            out.write() << it << '\n';
+        }
+        out.decreaseIndent();
+        out.decreaseIndent();
+    }
+}
+
 // -----------------------------------------------------------------------------
 
 LabelItem::LabelItem(const std::string& text) : text(text)
@@ -258,6 +314,160 @@ void LineItem::write(InventorOutput& out) const
     out.write() << "    } \n";
     out.write() << "    LineSet { } \n";
     out.write() << "  } \n";
+}
+
+// -----------------------------------------------------------------------------
+
+void MaterialItem::setAmbientColor(const std::vector<ColorRGB>& rgb)
+{
+    ambientColor = rgb;
+}
+
+void MaterialItem::setDiffuseColor(const std::vector<ColorRGB>& rgb)
+{
+    diffuseColor = rgb;
+}
+
+void MaterialItem::setSpecularColor(const std::vector<ColorRGB>& rgb)
+{
+    specularColor = rgb;
+}
+
+void MaterialItem::setEmissiveColor(const std::vector<ColorRGB>& rgb)
+{
+    emissiveColor = rgb;
+}
+
+void MaterialItem::setShininess(const std::vector<float>& value)
+{
+    shininess = value;
+}
+
+void MaterialItem::setTransparency(const std::vector<float>& value)
+{
+    transparency = value;
+}
+
+void MaterialItem::write(InventorOutput& out) const
+{
+    beginMaterial(out);
+    writeAmbientColor(out);
+    writeDiffuseColor(out);
+    writeSpecularColor(out);
+    writeEmissiveColor(out);
+    writeShininess(out);
+    writeTransparency(out);
+    endMaterial(out);
+}
+
+void MaterialItem::beginMaterial(InventorOutput& out) const
+{
+    out.writeLine("Material {");
+    out.increaseIndent();
+}
+
+void MaterialItem::endMaterial(InventorOutput& out) const
+{
+    out.decreaseIndent();
+    out.writeLine("}");
+}
+
+void MaterialItem::writeAmbientColor(InventorOutput& out) const
+{
+    writeField("ambientColor", ambientColor, out);
+}
+
+void MaterialItem::writeDiffuseColor(InventorOutput& out) const
+{
+    writeField("diffuseColor", diffuseColor, out);
+}
+
+void MaterialItem::writeSpecularColor(InventorOutput& out) const
+{
+    writeField("specularColor", specularColor, out);
+}
+
+void MaterialItem::writeEmissiveColor(InventorOutput& out) const
+{
+    writeField("emissiveColor", emissiveColor, out);
+}
+
+void MaterialItem::writeShininess(InventorOutput& out) const
+{
+    writeField("shininess", shininess, out);
+}
+
+void MaterialItem::writeTransparency(InventorOutput& out) const
+{
+    writeField("transparency", transparency, out);
+}
+
+// -----------------------------------------------------------------------------
+
+MaterialBindingItem::MaterialBindingItem(MaterialBinding bind) : bind(bind)
+{
+
+}
+
+void MaterialBindingItem::write(InventorOutput& out) const
+{
+    out.write() << "MaterialBinding { value "
+                << bind.bindingAsString() << " } \n";
+}
+
+// -----------------------------------------------------------------------------
+
+DrawStyleItem::DrawStyleItem(DrawStyle style) : style(style)
+{
+
+}
+
+void DrawStyleItem::write(InventorOutput& out) const
+{
+    out.write() << "DrawStyle {\n";
+    out.write() << "  style " << style.styleAsString() << '\n';
+    out.write() << "  pointSize " << style.pointSize << '\n';
+    out.write() << "  lineWidth " << style.lineWidth << '\n';
+    out.write() << "  linePattern " << style.linePattern << '\n';
+    out.write() << "}\n";
+}
+
+// -----------------------------------------------------------------------------
+
+ShapeHintsItem::ShapeHintsItem(float creaseAngle) : creaseAngle(creaseAngle)
+{
+
+}
+
+void ShapeHintsItem::write(InventorOutput& out) const
+{
+    out.write() << "ShapeHints {\n";
+    out.write() << "  creaseAngle " << creaseAngle << '\n';
+    out.write() << "}\n";
+}
+
+// -----------------------------------------------------------------------------
+
+PolygonOffsetItem::PolygonOffsetItem(PolygonOffset offset) : offset(offset)
+{
+
+}
+
+void PolygonOffsetItem::write(InventorOutput& out) const
+{
+    out.write() << "PolygonOffset {\n";
+    out.write() << "  factor " << offset.factor << '\n';
+    out.write() << "  units " << offset.units << '\n';
+    out.write() << "  styles " << offset.styleAsString() << '\n';
+    out.write() << "  on " << (offset.on ? "TRUE" : "FALSE") << '\n';
+    out.write() << "}\n";
+}
+
+// -----------------------------------------------------------------------------
+
+void PointSetItem::write(InventorOutput& out) const
+{
+    out.writeLine("PointSet { }");
 }
 
 // -----------------------------------------------------------------------------

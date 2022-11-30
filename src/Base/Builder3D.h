@@ -177,6 +177,8 @@ public:
     std::ostream& writeLine();
     std::ostream& writeLine(const char*);
     std::ostream& writeLine(const std::string&);
+    void increaseIndent();
+    void decreaseIndent();
 
 private:
     std::ostream& result;
@@ -188,8 +190,15 @@ class BaseExport NodeItem
 public:
     virtual ~NodeItem() = default;
     virtual void write(InventorOutput& out) const = 0;
+
+protected:
+    void writeField(const char* field, const std::vector<ColorRGB>& rgb, InventorOutput& out) const;
+    void writeField(const char* field, const std::vector<float>& value, InventorOutput& out) const;
 };
 
+/*!
+ * \brief The LabelItem class supports the SoLabel node.
+ */
 class BaseExport LabelItem : public NodeItem
 {
 public:
@@ -200,6 +209,9 @@ private:
     std::string text;
 };
 
+/*!
+ * \brief The InfoItem class supports the SoInfo node.
+ */
 class BaseExport InfoItem : public NodeItem
 {
 public:
@@ -210,6 +222,9 @@ private:
     std::string text;
 };
 
+/*!
+ * \brief The BaseColorItem class supports the SoBaseColor node.
+ */
 class BaseExport BaseColorItem : public NodeItem
 {
 public:
@@ -244,6 +259,100 @@ private:
     ColorRGB rgb;
 };
 
+/*!
+ * \brief The MaterialItem class supports the SoMaterial node.
+ */
+class BaseExport MaterialItem : public NodeItem
+{
+public:
+    void setAmbientColor(const std::vector<ColorRGB>& rgb);
+    void setDiffuseColor(const std::vector<ColorRGB>& rgb);
+    void setSpecularColor(const std::vector<ColorRGB>& rgb);
+    void setEmissiveColor(const std::vector<ColorRGB>& rgb);
+    void setShininess(const std::vector<float>& value);
+    void setTransparency(const std::vector<float>& value);
+    void write(InventorOutput& out) const override;
+
+private:
+    void beginMaterial(InventorOutput& out) const;
+    void endMaterial(InventorOutput& out) const;
+    void writeAmbientColor(InventorOutput& out) const;
+    void writeDiffuseColor(InventorOutput& out) const;
+    void writeSpecularColor(InventorOutput& out) const;
+    void writeEmissiveColor(InventorOutput& out) const;
+    void writeShininess(InventorOutput& out) const;
+    void writeTransparency(InventorOutput& out) const;
+
+private:
+    std::vector<ColorRGB> ambientColor;
+    std::vector<ColorRGB> diffuseColor;
+    std::vector<ColorRGB> specularColor;
+    std::vector<ColorRGB> emissiveColor;
+    std::vector<float> shininess;
+    std::vector<float> transparency;
+};
+
+/*!
+ * \brief The MaterialBindingItem class supports the SoMaterialBinding node.
+ */
+class BaseExport MaterialBindingItem : public NodeItem
+{
+public:
+    explicit MaterialBindingItem(MaterialBinding bind);
+    void write(InventorOutput& out) const override;
+
+private:
+    MaterialBinding bind;
+};
+
+/*!
+ * \brief The DrawStyleItem class supports the SoDrawStyle node.
+ */
+class BaseExport DrawStyleItem : public NodeItem
+{
+public:
+    explicit DrawStyleItem(DrawStyle style);
+    void write(InventorOutput& out) const override;
+
+private:
+    DrawStyle style;
+};
+
+/*!
+ * \brief The ShapeHintsItem class supports the SoShapeHints node.
+ */
+class BaseExport ShapeHintsItem : public NodeItem
+{
+public:
+    explicit ShapeHintsItem(float creaseAngle);
+    void write(InventorOutput& out) const override;
+
+private:
+    float creaseAngle;
+};
+
+/*!
+ * \brief The PolygonOffsetItem class supports the SoPolygonOffset node.
+ */
+class BaseExport PolygonOffsetItem : public NodeItem
+{
+public:
+    explicit PolygonOffsetItem(PolygonOffset offset);
+    void write(InventorOutput& out) const override;
+
+private:
+    PolygonOffset offset;
+};
+
+/*!
+ * \brief The PointSetItem class supports the SoPointSet node.
+ */
+class BaseExport PointSetItem : public NodeItem
+{
+public:
+    void write(InventorOutput& out) const override;
+};
+
 /**
  * This class does basically the same as Builder3D except that it writes the data
  * directly into a given stream without buffering the output data in a string stream.
@@ -257,7 +366,6 @@ class BaseExport InventorBuilder
 public:
     /*!
      * \brief Construction of an InventorBuilder instance.
-     * This automatically opens a separator node.
      * \param str - stream to write the content into
      */
     explicit InventorBuilder(std::ostream& str);
@@ -265,7 +373,10 @@ public:
      * \brief Destruction of an InventorBuilder instance
      */
     virtual ~InventorBuilder();
-
+    /*!
+     * \brief addNode
+     * Writes the content of the added node to the output stream.
+     */
     void addNode(const NodeItem&);
     /*!
      * \brief Sets a separator node.
