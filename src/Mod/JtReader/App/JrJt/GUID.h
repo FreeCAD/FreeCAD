@@ -1,5 +1,5 @@
 /***************************************************************************
-*   Copyright (c) Juergen Riegel         (juergen.riegel@web.de) 2014     *
+*   Copyright (c) 2014 Juergen Riegel <juergen.riegel@web.de>             *
 *                                                                         *
 *   This file is part of the FreeCAD CAx development system.              *
 *                                                                         *
@@ -35,76 +35,76 @@
 
 using namespace std;
 
-#undef _C2 
+#undef _C2
 
 struct GUID
 {
-	GUID(){};
+    GUID(){};
 
-	GUID(uint32_t a1, uint16_t b1, uint16_t b2, uint8_t c1, uint8_t c2, uint8_t c3, uint8_t c4, uint8_t c5, uint8_t c6, uint8_t c7, uint8_t c8)
-		:_A1(a1), _B1(b1), _B2(b2), _C1(c1), _C2(c2), _C3(c3), _C4(c4), _C5(c5), _C6(c6), _C7(c7), _C8(c8)
-	{}
+    GUID(uint32_t a1, uint16_t b1, uint16_t b2, uint8_t c1, uint8_t c2, uint8_t c3, uint8_t c4, uint8_t c5, uint8_t c6, uint8_t c7, uint8_t c8)
+        :_A1(a1), _B1(b1), _B2(b2), _C1(c1), _C2(c2), _C3(c3), _C4(c4), _C5(c5), _C6(c6), _C7(c7), _C8(c8)
+    {}
 
-	GUID(Context& cont)
-	{
-		read(cont);
-	}
+    GUID(Context& cont)
+    {
+        read(cont);
+    }
 
-	bool operator!=(const GUID& other) const {
-		return !operator == (other);
-	}
-	
-	bool operator==(const GUID& other) const {
-			return
-			_A1 == other._A1
-			&& _B1 == other._B1
-			&& _B2 == other._B2
-			&& _C1 == other._C1
-			&& _C2 == other._C2
-			&& _C3 == other._C3
-			&& _C4 == other._C4
-			&& _C5 == other._C5
-			&& _C6 == other._C6
-			&& _C7 == other._C7
-			&& _C8 == other._C8;
-	}
+    bool operator!=(const GUID& other) const {
+        return !operator == (other);
+    }
 
-	inline void read(Context& cont)
-	{
-		_A1.read(cont);
+    bool operator==(const GUID& other) const {
+            return
+            _A1 == other._A1
+            && _B1 == other._B1
+            && _B2 == other._B2
+            && _C1 == other._C1
+            && _C2 == other._C2
+            && _C3 == other._C3
+            && _C4 == other._C4
+            && _C5 == other._C5
+            && _C6 == other._C6
+            && _C7 == other._C7
+            && _C8 == other._C8;
+    }
 
-		_B1.read(cont);
-		_B2.read(cont);
+    inline void read(Context& cont)
+    {
+        _A1.read(cont);
 
-		_C1.read(cont);
-		_C2.read(cont);
-		_C3.read(cont);
-		_C4.read(cont);
-		_C5.read(cont);
-		_C6.read(cont);
-		_C7.read(cont);
-		_C8.read(cont);
-	}
+        _B1.read(cont);
+        _B2.read(cont);
 
-	std::string toString()const{
-		std::stringstream strm;
-		strm << "{" << std::hex << _A1 << "-" << _B1 << _B2 << "-" << _C1 << _C2 << _C3 << _C4 << _C5 << _C6 << _C7 << _C8 << "}";
-		return strm.str();
-	}
+        _C1.read(cont);
+        _C2.read(cont);
+        _C3.read(cont);
+        _C4.read(cont);
+        _C5.read(cont);
+        _C6.read(cont);
+        _C7.read(cont);
+        _C8.read(cont);
+    }
 
-	U32 _A1;
+    std::string toString()const{
+        std::stringstream strm;
+        strm << "{" << std::hex << _A1 << "-" << _B1 << _B2 << "-" << _C1 << _C2 << _C3 << _C4 << _C5 << _C6 << _C7 << _C8 << "}";
+        return strm.str();
+    }
 
-	U16 _B1;
-	U16 _B2;
+    U32 _A1;
 
-	U8  _C1;
-	U8  _C2;
-	U8  _C3;
-	U8  _C4;
-	U8  _C5;
-	U8  _C6;
-	U8  _C7;
-	U8  _C8;
+    U16 _B1;
+    U16 _B2;
+
+    U8  _C1;
+    U8  _C2;
+    U8  _C3;
+    U8  _C4;
+    U8  _C5;
+    U8  _C6;
+    U8  _C7;
+    U8  _C8;
 
 };
 

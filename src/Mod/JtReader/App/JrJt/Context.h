@@ -1,5 +1,5 @@
-/***************************************************************************
-*   Copyright (c) Juergen Riegel         (juergen.riegel@web.de) 2014     *
+/**************************************************************************
+*   Copyright (c) 2014 Juergen Riegel <juergen.riegel@web.de>             *
 *                                                                         *
 *   This file is part of the FreeCAD CAx development system.              *
 *                                                                         *
@@ -32,13 +32,13 @@ using namespace std;
 class Context
 {
 public:
-	Context(istream &s) :Strm(s){};
-	uint8_t VersionMinor;
-	uint8_t VersionMajor;
+    Context(istream &s) :Strm(s){};
+    uint8_t VersionMinor;
+    uint8_t VersionMajor;
 
-	bool Endiness;
+    bool Endiness;
 
-	istream & Strm;
+    istream & Strm;
 
 };
 
