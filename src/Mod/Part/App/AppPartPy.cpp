@@ -2067,11 +2067,11 @@ private:
 //    this is a hacky work around.
 //    copy fontspec to Ascii temp name
                 std::string tempFile = Base::FileInfo::getTempFileName();   //utf8/ascii
-				Base::FileInfo fiIn(fontspec);
-				fiIn.copyTo(tempFile.c_str());
+                Base::FileInfo fiIn(fontspec);
+                fiIn.copyTo(tempFile.c_str());
                 CharList = FT2FC(unichars,pysize,tempFile.c_str(),height,track);
-				Base::FileInfo fiTemp(tempFile);
-				fiTemp.deleteFile();
+                Base::FileInfo fiTemp(tempFile);
+                fiTemp.deleteFile();
 #else
                 CharList = FT2FC(unichars,pysize,fontspec,height,track);
 #endif
