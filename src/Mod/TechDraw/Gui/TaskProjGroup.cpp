@@ -182,7 +182,7 @@ void TaskProjGroup::viewToggled(bool toggle)
     bool changed = false;
     // Obtain name of checkbox
     QString viewName = sender()->objectName();
-    int index = viewName.midRef(7).toInt();
+    int index = viewName.mid(7).toInt();
     const char *viewNameCStr = viewChkIndexToCStr(index);
     if ( toggle && !multiView->hasProjection( viewNameCStr ) ) {
         Gui::Command::doCommand(Gui::Command::Doc,
