@@ -1089,10 +1089,14 @@ void TopoShape::exportFaceSet(double dev, double ca,
         }
 
         builder.beginSeparator();
-        builder.addShapeHints((float)ca);
+        Base::ShapeHintsItem shapeHints{static_cast<float>(ca)};
+        builder.addNode(shapeHints);
         if (supportFaceColors) {
             App::Color c = colors[index];
-            builder.addMaterial(Base::ColorRGB{c.r, c.g, c.b}, c.a);
+            Base::MaterialItem material;
+            material.setDiffuseColor({Base::ColorRGB{c.r, c.g, c.b}});
+            material.setTransparency({c.a});
+            builder.addNode(material);
         }
 
         builder.beginPoints();
