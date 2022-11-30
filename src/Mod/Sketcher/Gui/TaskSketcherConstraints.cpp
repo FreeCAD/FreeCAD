@@ -897,7 +897,7 @@ void TaskSketcherConstraints::on_settings_extendedInformation_changed(bool value
     slotConstraintsChanged();
 }
 
-void TaskSketcherConstraints::on_settings_hideInternalAligment_changed(bool value) // FIXME doesn't work
+void TaskSketcherConstraints::on_settings_hideInternalAligment_changed(bool value)
 {
     // synchronise  parameter
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
