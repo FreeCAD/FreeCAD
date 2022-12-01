@@ -34,11 +34,13 @@ set(CMAKE_AUTOMOC ON)
 include_directories(
     ${QtGui_INCLUDE_DIRS}
     ${QtTest_INCLUDE_DIRS}
+    ${COIN3D_INCLUDE_DIRS}
 )
 
 # ------------------------------------------------------
 
 set (InventorBuilder_LIBS
+    ${COIN3D_LIBRARIES}
     FreeCADBase
 )
 
