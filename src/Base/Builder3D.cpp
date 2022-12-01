@@ -184,19 +184,16 @@ void NodeItem::writeField(const char* field, const std::vector<ColorRGB>& rgb, I
         return;
 
     if (rgb.size() == 1) {
-        out.increaseIndent();
         out.write() << field << " " << rgb[0].red() << " " << rgb[0].green() << " " << rgb[0].blue() << '\n';
-        out.decreaseIndent();
     }
     else {
-        out.increaseIndent();
         out.write() << field << " [\n";
         out.increaseIndent();
         for (auto it : rgb) {
             out.write() << it.red() << " " << it.green() << " " << it.blue() << '\n';
         }
         out.decreaseIndent();
-        out.decreaseIndent();
+        out.write() << "]\n";
     }
 }
 
@@ -206,19 +203,16 @@ void NodeItem::writeField(const char* field, const std::vector<float>& value, In
         return;
 
     if (value.size() == 1) {
-        out.increaseIndent();
         out.write() << field << " " << value[0] << '\n';
-        out.decreaseIndent();
     }
     else {
-        out.increaseIndent();
         out.write() << field << " [\n";
         out.increaseIndent();
         for (auto it : value) {
             out.write() << it << '\n';
         }
         out.decreaseIndent();
-        out.decreaseIndent();
+        out.write() << "]\n";
     }
 }
 
@@ -231,9 +225,9 @@ LabelItem::LabelItem(const std::string& text) : text(text)
 
 void LabelItem::write(InventorOutput& out) const
 {
-    out.write("Label { \n");
+    out.write("Label {\n");
     out.write() << "  label \"" << text << "\"\n";
-    out.write("} \n");
+    out.write("}\n");
 }
 
 // -----------------------------------------------------------------------------
@@ -245,9 +239,9 @@ InfoItem::InfoItem(const std::string& text) : text(text)
 
 void InfoItem::write(InventorOutput& out) const
 {
-    out.write("Info { \n");
+    out.write("Info {\n");
     out.write() << "  string \"" << text << "\"\n";
-    out.write("} \n");
+    out.write("}\n");
 }
 
 // -----------------------------------------------------------------------------
@@ -259,9 +253,9 @@ BaseColorItem::BaseColorItem(const ColorRGB& rgb) : rgb(rgb)
 
 void BaseColorItem::write(InventorOutput& out) const
 {
-    out.write("BaseColor { \n");
+    out.write("BaseColor {\n");
     out.write() << "  rgb " << rgb.red() << " " << rgb.green() << " " << rgb.blue() << '\n';
-    out.write("} \n");
+    out.write("}\n");
 }
 
 // -----------------------------------------------------------------------------
@@ -428,7 +422,7 @@ void DrawStyleItem::write(InventorOutput& out) const
     out.write() << "  style " << style.styleAsString() << '\n';
     out.write() << "  pointSize " << style.pointSize << '\n';
     out.write() << "  lineWidth " << style.lineWidth << '\n';
-    out.write() << "  linePattern " << style.linePattern << '\n';
+    out.write() << "  linePattern " << style.patternAsString() << '\n';
     out.write() << "}\n";
 }
 
