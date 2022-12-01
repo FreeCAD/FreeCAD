@@ -65,6 +65,8 @@ ViewProviderHatch::ViewProviderHatch()
                         vgroup, App::Prop_None, "The color of the hatch pattern");
     ADD_PROPERTY_TYPE(HatchScale, (1.0), vgroup, App::Prop_None, "Hatch pattern size adjustment");
     HatchScale.setConstraints(&scaleRange);
+    ADD_PROPERTY_TYPE(HatchRotation, (0.0), vgroup, App::Prop_None, "Hatch pattern rotation");
+    ADD_PROPERTY_TYPE(HatchOffset, (0.0, 0.0, 0.0), vgroup, App::Prop_None, "Hatch pattern offset");
 }
 
 ViewProviderHatch::~ViewProviderHatch()
@@ -94,8 +96,10 @@ bool ViewProviderHatch::doubleClicked()
 
 void ViewProviderHatch::onChanged(const App::Property* prop)
 {
-    if ((prop == &HatchScale) ||
-        (prop == &HatchColor)) {
+    if (prop == &HatchScale ||
+        prop == &HatchColor ||
+        prop == &HatchRotation ||
+        prop == &HatchOffset)  {
         if (HatchScale.getValue() > 0.0) {
             TechDraw::DrawViewPart* parent = getViewObject()->getSourceView();
             if (parent) {

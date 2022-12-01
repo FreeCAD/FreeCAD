@@ -61,6 +61,8 @@ protected Q_SLOTS:
     void onFileChanged();
     void onScaleChanged();
     void onColorChanged();
+    void onRotationChanged();
+    void onOffsetChanged();
 
 protected:
     void changeEvent(QEvent *e) override;
@@ -85,11 +87,15 @@ private:
     std::string m_file;
     double m_scale;
     App::Color m_color;
+    double m_rotation;
+    Base::Vector3d m_offset;
 
     std::string m_saveFile;
     double m_saveScale;
     App::Color m_saveColor;
     std::vector<std::string> m_saveSubs;
+    double m_saveRotation;
+    Base::Vector3d m_saveOffset;
 
 };
 

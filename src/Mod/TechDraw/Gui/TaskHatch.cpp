@@ -68,7 +68,9 @@ TaskHatch::TaskHatch(TechDraw::DrawViewPart* inDvp, std::vector<std::string> sub
     connect(ui->fcFile, SIGNAL(fileNameSelected(QString)), this, SLOT(onFileChanged()));
     connect(ui->sbScale, SIGNAL(valueChanged(double)), this, SLOT(onScaleChanged()));
     connect(ui->ccColor, SIGNAL(changed()), this, SLOT(onColorChanged()));
-
+    connect(ui->dsbRotation, SIGNAL(valueChanged(double)), this, SLOT(onRotationChanged()));
+    connect(ui->dsbOffsetX, SIGNAL(valueChanged(double)), this, SLOT(onOffsetChanged()));
+    connect(ui->dsbOffsetY, SIGNAL(valueChanged(double)), this, SLOT(onOffsetChanged()));
     setUiPrimary();
 }
 
@@ -86,6 +88,9 @@ TaskHatch::TaskHatch(TechDrawGui::ViewProviderHatch* inVp) :
     connect(ui->fcFile, SIGNAL(fileNameSelected(QString)), this, SLOT(onFileChanged()));
     connect(ui->sbScale, SIGNAL(valueChanged(double)), this, SLOT(onScaleChanged()));
     connect(ui->ccColor, SIGNAL(changed()), this, SLOT(onColorChanged()));
+    connect(ui->dsbRotation, SIGNAL(valueChanged(double)), this, SLOT(onRotationChanged()));
+    connect(ui->dsbOffsetX, SIGNAL(valueChanged(double)), this, SLOT(onOffsetChanged()));
+    connect(ui->dsbOffsetY, SIGNAL(valueChanged(double)), this, SLOT(onOffsetChanged()));
 
     saveHatchState();
     setUiEdit();
@@ -103,6 +108,7 @@ void TaskHatch::setUiPrimary()
     ui->sbScale->setValue(1.0);
     ui->sbScale->setSingleStep(0.1);
     ui->ccColor->setColor(TechDraw::DrawHatch::prefSvgHatchColor().asValue<QColor>());
+    ui->dsbRotation->setValue(0.0);
 }
 
 void TaskHatch::setUiEdit()
@@ -114,6 +120,9 @@ void TaskHatch::setUiEdit()
     ui->sbScale->setValue(m_saveScale);
     ui->sbScale->setSingleStep(0.1);
     ui->ccColor->setColor(m_saveColor.asValue<QColor>());
+    ui->dsbRotation->setValue(m_saveRotation);
+    ui->dsbOffsetX->setValue(m_saveOffset.x);
+    ui->dsbOffsetY->setValue(m_saveOffset.y);
 }
 
 void TaskHatch::saveHatchState()
@@ -121,6 +130,9 @@ void TaskHatch::saveHatchState()
     m_saveFile = m_hatch->HatchPattern.getValue();
     m_saveScale = m_vp->HatchScale.getValue();
     m_saveColor = m_vp->HatchColor.getValue();
+    m_saveRotation = m_vp->HatchRotation.getValue();
+    m_saveOffset = m_vp->HatchOffset.getValue();
+
 }
 
 //restore the start conditions
@@ -131,6 +143,8 @@ void TaskHatch::restoreHatchState()
         m_hatch->HatchPattern.setValue(m_saveFile);
         m_vp->HatchScale.setValue(m_saveScale);
         m_vp->HatchColor.setValue(m_saveColor);
+        m_vp->HatchRotation.setValue(m_saveRotation);
+        m_vp->HatchOffset.setValue(m_saveOffset);
     }
 }
 
@@ -149,6 +163,19 @@ void TaskHatch::onScaleChanged()
 void TaskHatch::onColorChanged()
 {
     m_color.setValue<QColor>(ui->ccColor->color());
+    apply();
+}
+
+void TaskHatch::onRotationChanged()
+{
+    m_rotation = ui->dsbRotation->value();
+    apply();
+}
+
+void TaskHatch::onOffsetChanged()
+{
+    m_offset.x = ui->dsbOffsetX->value();
+    m_offset.y = ui->dsbOffsetY->value();
     apply();
 }
 
@@ -173,7 +200,7 @@ void TaskHatch::apply(bool forceUpdate)
 
 void TaskHatch::createHatch()
 {
-    Base::Console().Message("TH::createHatch()\n");
+//    Base::Console().Message("TH::createHatch()\n");
     App::Document* doc = m_dvp->getDocument();
     std::string FeatName = doc->getUniqueObjectName("Hatch");
     std::stringstream featLabel;
@@ -200,6 +227,9 @@ void TaskHatch::createHatch()
         ac.setValue<QColor>(ui->ccColor->color());
         m_vp->HatchColor.setValue(ac);
         m_vp->HatchScale.setValue(ui->sbScale->value().getValue());
+        m_vp->HatchRotation.setValue(ui->dsbRotation->value());
+        Base::Vector3d offset(ui->dsbOffsetX->value(), ui->dsbOffsetY->value(), 0.0);
+        m_vp->HatchOffset.setValue(offset);
     } else {
         Base::Console().Error("TaskHatch - Hatch has no ViewProvider\n");
     }
@@ -221,6 +251,9 @@ void TaskHatch::updateHatch()
     ac.setValue<QColor>(ui->ccColor->color());
     m_vp->HatchColor.setValue(ac);
     m_vp->HatchScale.setValue(ui->sbScale->value().getValue());
+    m_vp->HatchRotation.setValue(ui->dsbRotation->value());
+    Base::Vector3d offset(ui->dsbOffsetX->value(), ui->dsbOffsetY->value(), 0.0);
+    m_vp->HatchOffset.setValue(offset);
     Command::commitCommand();
 }
 

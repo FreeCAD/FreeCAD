@@ -86,6 +86,10 @@ DrawGeomHatch::DrawGeomHatch()
     ADD_PROPERTY_TYPE(ScalePattern, (1.0), vgroup, App::Prop_None,
                       "GeomHatch pattern size adjustment");
     ScalePattern.setConstraints(&scaleRange);
+    ADD_PROPERTY_TYPE(PatternRotation, (0.0), vgroup, App::Prop_None,
+                      "Pattern rotation in degrees anticlockwise");
+    ADD_PROPERTY_TYPE(PatternOffset, (0.0, 0.0, 0.0), vgroup, App::Prop_None,
+                      "Pattern offset");
 
     m_saveFile = "";
     m_saveName = "";
@@ -242,14 +246,17 @@ std::vector<LineSet>  DrawGeomHatch::getTrimmedLines(int i)   //get the trimmed 
         Base::Console().Log("DGH::getTrimmedLines - no source geometry\n");
         return result;
     }
-    return getTrimmedLines(source, m_lineSets, i, ScalePattern.getValue());
+    return getTrimmedLines(source, m_lineSets, i, ScalePattern.getValue(),
+                           PatternRotation.getValue(), PatternOffset.getValue());
 }
 
 /* static */
 std::vector<LineSet>  DrawGeomHatch::getTrimmedLinesSection(DrawViewSection* source,
                                                             std::vector<LineSet> lineSets,
                                                             TopoDS_Face f,
-                                                            double scale )
+                                                            double scale,
+                                                            double hatchRotation,
+                                                            Base::Vector3d hatchOffset)
 {
     std::vector<LineSet> result;
     gp_Pln p;
@@ -270,26 +277,35 @@ std::vector<LineSet>  DrawGeomHatch::getTrimmedLinesSection(DrawViewSection* sou
     result = getTrimmedLines(source,
                              lineSets,
                              fMoved,
-                             scale );
+                             scale,
+                             hatchRotation,
+                             hatchOffset );
     return result;
 }
 
 //! get hatch lines trimmed to face outline
-std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source, std::vector<LineSet> lineSets, int iface, double scale )
+std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source, std::vector<LineSet> lineSets,
+                                                    int iface, double scale, double hatchRotation ,
+                                                    Base::Vector3d hatchOffset)
 {
     TopoDS_Face face = extractFace(source, iface);
     std::vector<LineSet> result = getTrimmedLines(source,
                                                lineSets,
                                                face,
-                                               scale );
+                                               scale,
+                                               hatchRotation,
+                                               hatchOffset );
     return result;
 }
 
 std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source,
                                                     std::vector<LineSet> lineSets,
                                                     TopoDS_Face f,
-                                                    double scale )
+                                                    double scale,
+                                                    double hatchRotation,
+                                                    Base::Vector3d hatchOffset)
 {
+//    Base::Console().Message("DGH::getTrimmedLines() - rotation: %.3f hatchOffset: %s\n", hatchRotation, DrawUtil::formatVector(hatchOffset).c_str());
     (void)source;
     std::vector<LineSet> result;
 
@@ -310,11 +326,25 @@ std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source,
 
         //make Compound for this linespec
         BRep_Builder builder;
-        TopoDS_Compound grid;
-        builder.MakeCompound(grid);
+        TopoDS_Compound gridComp;
+        builder.MakeCompound(gridComp);
         for (auto& c: candidates) {
-           builder.Add(grid, c);
+           builder.Add(gridComp, c);
         }
+
+        TopoDS_Shape grid = gridComp;
+        if (hatchRotation != 0.0) {
+            double hatchRotationRad = hatchRotation * M_PI / 180.0;
+            gp_Ax1 gridAxis(gp_Pnt(0.0, 0.0, 0.0), gp_Vec(gp::OZ().Direction()));
+            gp_Trsf xGridRotate;
+            xGridRotate.SetRotation(gridAxis, hatchRotationRad);
+            BRepBuilderAPI_Transform mkTransRotate(grid, xGridRotate, true);
+            grid = mkTransRotate.Shape();
+        }
+        gp_Trsf xGridTranslate;
+        xGridTranslate.SetTranslation(DrawUtil::togp_Vec(hatchOffset));
+        BRepBuilderAPI_Transform mkTransTranslate(grid, xGridTranslate, true);
+        grid = mkTransTranslate.Shape();
 
         //Common(Compound, Face)
         BRepAlgoAPI_Common mkCommon(face, grid);
@@ -369,6 +399,15 @@ std::vector<TopoDS_Edge> DrawGeomHatch::makeEdgeOverlay(PATLineSpec hl, Bnd_Box 
 
     double minX, maxX, minY, maxY, minZ, maxZ;
     b.Get(minX, minY, minZ, maxX, maxY, maxZ);
+    //make the overlay bigger to cover rotations. might need to be bigger than 2x.
+    double centerX = (minX + maxX) / 2.0;
+    double widthX = maxX - minX;
+    minX = centerX - widthX;
+    maxX = centerX + widthX;
+    double centerY = (minY + maxY) / 2.0;
+    double widthY = maxY - minY;
+    minY = centerY - widthY;
+    maxY = centerY + widthY;
 
     Base::Vector3d start;
     Base::Vector3d end;
