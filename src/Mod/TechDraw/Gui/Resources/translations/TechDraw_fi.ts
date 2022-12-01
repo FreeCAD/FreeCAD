@@ -6076,7 +6076,7 @@ Jos &apos;Yhtäsuuret toleranssit&apos; on valittu, tämä arvo korvaantuu &apos
       <location filename="../../TaskDimension.ui" line="137"/>
       <location filename="../../TaskDimension.ui" line="176"/>
       <source>If checked the content of &apos;Format Spec&apos; will
-be used instead if the dimension value</source>
+be used instead of the dimension value</source>
       <translation>Tällä valinnalla &apos;Muotoilun Määrityskentän&apos; sisältö korvaa Mitan numeerisen arvon</translation>
     </message>
     <message>

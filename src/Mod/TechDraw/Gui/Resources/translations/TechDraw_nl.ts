@@ -6083,7 +6083,7 @@ de waarde voor &apos;overtolerantie &apos;.</translation>
       <location filename="../../TaskDimension.ui" line="137"/>
       <location filename="../../TaskDimension.ui" line="176"/>
       <source>If checked the content of &apos;Format Spec&apos; will
-be used instead if the dimension value</source>
+be used instead of the dimension value</source>
       <translation>Indien aangevinkt, dan zal de inhoud van &apos;Format Spec&apos; worden
 gebruikt in plaats van de maatwaarde</translation>
     </message>

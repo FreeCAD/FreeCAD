@@ -6084,7 +6084,7 @@ by negative value of &apos;Over Tolerance&apos;.</source>
       <location filename="../../TaskDimension.ui" line="137"/>
       <location filename="../../TaskDimension.ui" line="176"/>
       <source>If checked the content of &apos;Format Spec&apos; will
-be used instead if the dimension value</source>
+be used instead of the dimension value</source>
       <translation>Markatuta badago, &apos;Formatu-adierazlea&apos; aukeraren
 edukia erabiliko da kota-balioaren ordez</translation>
     </message>
