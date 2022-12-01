@@ -672,11 +672,13 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
                 if hasattr(vobj,"FirstLine"):
                     scale = vobj.FirstLine.Value/vobj.FontSize.Value
                     self.header.scaleFactor.setValue([scale,scale,scale])
+                    self.onChanged(vobj, "TextPosition")
 
         elif (prop == "FirstLine"):
             if hasattr(self,"header") and hasattr(vobj,"FontSize") and hasattr(vobj,"FirstLine"):
                 scale = vobj.FirstLine.Value/vobj.FontSize.Value
                 self.header.scaleFactor.setValue([scale,scale,scale])
+                self.onChanged(vobj, "TextPosition")
 
         elif prop == "TextColor":
             if hasattr(self,"color") and hasattr(vobj,"TextColor"):
