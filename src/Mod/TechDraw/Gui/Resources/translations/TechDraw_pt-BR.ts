@@ -6083,7 +6083,7 @@ pelo valor negativo de &apos;Sobretolerância&apos;.</translation>
       <location filename="../../TaskDimension.ui" line="137"/>
       <location filename="../../TaskDimension.ui" line="176"/>
       <source>If checked the content of &apos;Format Spec&apos; will
-be used instead if the dimension value</source>
+be used instead of the dimension value</source>
       <translation>Se ativado, o conteúdo de &apos;Especificação de formatação&apos; será
 usado no lugar do valor da dimensão</translation>
     </message>

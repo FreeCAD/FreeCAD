@@ -6084,7 +6084,7 @@ przez ujemną wartość "górnej tolerancji".</translation>
       <location filename="../../TaskDimension.ui" line="137"/>
       <location filename="../../TaskDimension.ui" line="176"/>
       <source>If checked the content of &apos;Format Spec&apos; will
-be used instead if the dimension value</source>
+be used instead of the dimension value</source>
       <translation>Jeżeli opcja jest zaznaczona, to zostanie użyta
 wartość pola "Określenie formatu", zamiast wartości wymiaru</translation>
     </message>
