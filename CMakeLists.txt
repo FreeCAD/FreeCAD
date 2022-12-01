@@ -93,4 +93,6 @@ CreatePackagingTargets()
 
 PrintFinalReport()
 
-add_subdirectory(tests)
+if (BUILD_TEST)
+    add_subdirectory(tests)
+endif()
