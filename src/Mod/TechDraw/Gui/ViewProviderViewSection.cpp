@@ -99,7 +99,8 @@ void ViewProviderViewSection::updateData(const App::Property* prop)
     if (prop == &(getViewObject()->FileHatchPattern)   ||
         prop == &(getViewObject()->CutSurfaceDisplay)    ||
         prop == &(getViewObject()->NameGeomPattern)    ||
-        prop == &(getViewObject()->HatchScale)   ) {
+        prop == &(getViewObject()->HatchScale)  ||
+        prop == &(getViewObject()->HatchRotation) ) {
         updateGraphic();
     }
 

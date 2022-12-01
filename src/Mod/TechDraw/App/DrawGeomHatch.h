@@ -61,6 +61,8 @@ public:
     App::PropertyFileIncluded PatIncluded;
     App::PropertyString      NamePattern;
     App::PropertyFloatConstraint ScalePattern;
+    App::PropertyFloat       PatternRotation;
+    App::PropertyVector      PatternOffset;
 
     App::DocumentObjectExecReturn *execute(void) override;
     void onChanged(const App::Property* prop) override;
@@ -77,17 +79,22 @@ public:
 
     std::vector<LineSet> getFaceOverlay(int i = 0);
     std::vector<LineSet> getTrimmedLines(int i = 0);
-    static std::vector<LineSet> getTrimmedLines(DrawViewPart* dvp, std::vector<LineSet> lineSets, int iface, double scale);
+    static std::vector<LineSet> getTrimmedLines(DrawViewPart* dvp, std::vector<LineSet> lineSets, int iface,
+                                                double scale, double hatchRotation = 0.0,
+                                                Base::Vector3d hatchOffset = Base::Vector3d(0.0, 0.0, 0.0));
     static std::vector<LineSet> getTrimmedLines(DrawViewPart* source,
                                                 std::vector<LineSet> lineSets,
                                                 TopoDS_Face face,
-                                                double scale );
+                                                double scale , double hatchRotation = 0.0,
+                                                Base::Vector3d hatchOffset = Base::Vector3d(0.0, 0.0, 0.0));
     static std::vector<LineSet> getTrimmedLinesSection(DrawViewSection* source,
                                                                 std::vector<LineSet> lineSets,
                                                                 TopoDS_Face f,
-                                                                double scale );
+                                                                double scale , double hatchRotation = 0.0,
+                                                                Base::Vector3d hatchOffset = Base::Vector3d(0.0, 0.0, 0.0));
 
-    static std::vector<TopoDS_Edge> makeEdgeOverlay(PATLineSpec hl, Bnd_Box bBox, double scale);
+    static std::vector<TopoDS_Edge> makeEdgeOverlay(PATLineSpec hl, Bnd_Box bBox,
+                                    double scale);
     static TopoDS_Edge makeLine(Base::Vector3d s, Base::Vector3d e);
     static std::vector<PATLineSpec> getDecodedSpecsFromFile(std::string fileSpec, std::string myPattern);
     static TopoDS_Face extractFace(DrawViewPart* source, int iface );

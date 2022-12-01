@@ -175,6 +175,8 @@ DrawViewSection::DrawViewSection()  :
                                             "Embedded Pat pattern file. System use only."); // n/a to end users
     ADD_PROPERTY_TYPE(NameGeomPattern ,(DrawGeomHatch::prefGeomHatchName()), fgroup, App::Prop_None, "The pattern name for geometric hatching");
     ADD_PROPERTY_TYPE(HatchScale, (1.0), fgroup, App::Prop_None, "Hatch pattern size adjustment");
+    ADD_PROPERTY_TYPE(HatchRotation, (0.0), fgroup, App::Prop_None, "Rotation of hatch pattern in degrees anti-clockwise");
+    ADD_PROPERTY_TYPE(HatchOffset, (0.0, 0.0, 0.0), fgroup, App::Prop_None, "Hatch pattern offset");
 
     getParameters();
 
@@ -980,7 +982,9 @@ std::vector<LineSet> DrawViewSection::getDrawableLines(int i)
     std::vector<LineSet> result;
     result = DrawGeomHatch::getTrimmedLinesSection(this, m_lineSets,
                                                    getSectionTopoDSFace(i),
-                                                   HatchScale.getValue());
+                                                   HatchScale.getValue(),
+                                                   HatchRotation.getValue(),
+                                                   HatchOffset.getValue());
     return result;
 }
 

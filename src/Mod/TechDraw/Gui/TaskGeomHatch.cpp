@@ -90,6 +90,13 @@ void TaskGeomHatch::initUi()
     connect(ui->sbWeight, SIGNAL(valueChanged(double)), this, SLOT(onLineWeightChanged()));
     ui->ccColor->setColor(m_color.asValue<QColor>());
     connect(ui->ccColor, SIGNAL(changed()), this, SLOT(onColorChanged()));
+
+    ui->dsbRotation->setValue(m_rotation);
+    connect(ui->dsbRotation, SIGNAL(valueChanged(double)), this, SLOT(onRotationChanged()));
+    ui->dsbOffsetX->setValue(m_offset.x);
+    connect(ui->dsbOffsetX, SIGNAL(valueChanged(double)), this, SLOT(onOffsetChanged()));
+    ui->dsbOffsetY->setValue(m_offset.y);
+    connect(ui->dsbOffsetY, SIGNAL(valueChanged(double)), this, SLOT(onOffsetChanged()));
 }
 
 void TaskGeomHatch::onFileChanged()
@@ -115,6 +122,23 @@ void TaskGeomHatch::onScaleChanged()
 {
     m_scale = ui->sbScale->value().getValue();
     m_hatch->ScalePattern.setValue(ui->sbScale->value().getValue());
+    TechDraw::DrawView* dv = static_cast<TechDraw::DrawView*>(m_source);
+    dv->requestPaint();
+}
+
+void TaskGeomHatch::onRotationChanged()
+{
+    m_rotation = ui->dsbRotation->value();
+    m_hatch->PatternRotation.setValue(m_rotation);
+    TechDraw::DrawView* dv = static_cast<TechDraw::DrawView*>(m_source);
+    dv->requestPaint();
+}
+
+void TaskGeomHatch::onOffsetChanged()
+{
+    Base::Vector3d offset(ui->dsbOffsetX->value(), ui->dsbOffsetY->value(), 0.0);
+    m_offset = offset;
+    m_hatch->PatternOffset.setValue(m_offset);
     TechDraw::DrawView* dv = static_cast<TechDraw::DrawView*>(m_source);
     dv->requestPaint();
 }
@@ -156,6 +180,8 @@ bool TaskGeomHatch::reject()
         m_hatch->FilePattern.setValue(m_origFile);
         m_hatch->NamePattern.setValue(m_origName);
         m_hatch->ScalePattern.setValue(m_origScale);
+        m_hatch->PatternRotation.setValue(m_origRotation);
+        m_hatch->PatternOffset.setValue(m_origOffset);
         m_Vp->ColorPattern.setValue(m_origColor);
         m_Vp->WeightPattern.setValue(m_origWeight);
     }
@@ -167,6 +193,8 @@ void TaskGeomHatch::getParameters()
     m_file   = m_hatch->FilePattern.getValue();
     m_name   = m_hatch->NamePattern.getValue();
     m_scale  = m_hatch->ScalePattern.getValue();
+    m_rotation = m_hatch->PatternRotation.getValue();
+    m_offset   = m_hatch->PatternOffset.getValue();
     m_color  = m_Vp->ColorPattern.getValue();
     m_weight = m_Vp->WeightPattern.getValue();
     if (!getCreateMode()) {
@@ -175,6 +203,8 @@ void TaskGeomHatch::getParameters()
         m_origScale  = m_hatch->ScalePattern.getValue();
         m_origColor  = m_Vp->ColorPattern.getValue();
         m_origWeight = m_Vp->WeightPattern.getValue();
+        m_origRotation = m_hatch->PatternRotation.getValue();
+        m_origOffset   = m_hatch->PatternOffset.getValue();
     }
 }
 
@@ -193,6 +223,7 @@ void TaskGeomHatch::updateValues()
     m_Vp->ColorPattern.setValue(m_color);
     m_weight = ui->sbWeight->value().getValue();
     m_Vp->WeightPattern.setValue(m_weight);
+    m_hatch->PatternRotation.setValue(ui->dsbRotation->value());
 }
 
 QStringList TaskGeomHatch::listToQ(std::vector<std::string> inList)

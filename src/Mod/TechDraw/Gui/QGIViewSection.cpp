@@ -117,7 +117,8 @@ void QGIViewSection::drawSectionFace()
             newFace->setFillMode(QGIFace::SvgFill);
             newFace->setHatchColor(sectionVp->HatchColor.getValue());
             newFace->setHatchScale(section->HatchScale.getValue());
-//                std::string hatchSpec = section->FileHatchPattern.getValue();
+            newFace->setHatchRotation(section->HatchRotation.getValue());
+            newFace->setHatchOffset(section->HatchOffset.getValue());
             std::string hatchSpec = section->SvgIncluded.getValue();
             newFace->setHatchFile(hatchSpec);
         } else if (section->CutSurfaceDisplay.isValue("PatHatch")) {
@@ -126,6 +127,8 @@ void QGIViewSection::drawSectionFace()
             newFace->setHatchColor(sectionVp->GeomHatchColor.getValue());
             newFace->setHatchScale(section->HatchScale.getValue());
             newFace->setLineWeight(sectionVp->WeightPattern.getValue());
+            newFace->setHatchRotation(section->HatchRotation.getValue());
+            newFace->setHatchOffset(section->HatchOffset.getValue());
             std::vector<TechDraw::LineSet> lineSets = section->getDrawableLines(i);
             if (!lineSets.empty()) {
                 newFace->clearLineSets();
