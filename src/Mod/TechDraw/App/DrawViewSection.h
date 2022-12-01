@@ -102,6 +102,8 @@ public:
     App::PropertyFileIncluded PatIncluded;
     App::PropertyString NameGeomPattern;
     App::PropertyFloat  HatchScale;
+    App::PropertyFloat  HatchRotation;
+    App::PropertyVector HatchOffset;
 
     App::PropertyBool   FuseBeforeCut;
     App::PropertyBool   TrimAfterCut;                   //new v021

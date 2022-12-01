@@ -113,6 +113,13 @@ public:
     QPixmap textureFromBitmap(std::string fileSpec);
     QPixmap textureFromSvg(std::string fillSpec);
 
+    //Qt uses clockwise degrees
+    void setHatchRotation(double degrees) { m_hatchRotation = -degrees; }
+    double getHatchRotation() const { return -m_hatchRotation; }
+
+    void setHatchOffset(Base::Vector3d offset) { m_hatchOffset = offset; }
+    Base::Vector3d getHatchOffset() { return m_hatchOffset; }
+
 protected:
     void makeMark(double x, double y);
     double getXForm();
@@ -146,7 +153,6 @@ protected:
 
     bool m_hideSvgTiles;
 
-
 private:
     QPixmap m_texture;                          //
 
@@ -158,6 +164,10 @@ private:
     double m_geomWeight;                       //lineweight for crosshatch lines
     bool m_defClearFace;
     QColor m_defFaceColor;
+
+    double m_hatchRotation;
+    Base::Vector3d m_hatchOffset;
+
 };
 
 }

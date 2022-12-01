@@ -26,6 +26,7 @@
 #define DRAWINGGUI_VIEWPROVIDERHATCH_H
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
+#include <App/PropertyGeo.h>
 
 #include <Gui/ViewProviderDocumentObject.h>
 
@@ -46,8 +47,10 @@ public:
     /// destructor
     ~ViewProviderHatch() override;
 
-    App::PropertyColor       HatchColor;
+    App::PropertyColor           HatchColor;
     App::PropertyFloatConstraint HatchScale;
+    App::PropertyFloat           HatchRotation;
+    App::PropertyVector          HatchOffset;
 
     bool useNewSelectionModel() const override {return false;}
     void onChanged(const App::Property* prop) override;
