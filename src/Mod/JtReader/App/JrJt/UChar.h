@@ -1,5 +1,5 @@
-/***************************************************************************
-*   Copyright (c) Juergen Riegel         (juergen.riegel@web.de) 2014     *
+/**************************************************************************
+*   Copyright (c) 2014 Juergen Riegel <juergen.riegel@web.de>             *
 *                                                                         *
 *   This file is part of the FreeCAD CAx development system.              *
 *                                                                         *
@@ -31,24 +31,24 @@ using namespace std;
 
 struct UChar
 {
-	UChar(){};
+    UChar(){};
 
-	UChar(Context& cont)
-	{
-		read(cont);
-	}
+    UChar(Context& cont)
+    {
+        read(cont);
+    }
 
-	inline operator uint8_t() const
-	{
-		return _UChar;
-	}
+    inline operator uint8_t() const
+    {
+        return _UChar;
+    }
 
-	inline void read(Context& cont)
-	{
-		cont.Strm.read((char*)&_UChar, 1);
-	}
+    inline void read(Context& cont)
+    {
+        cont.Strm.read((char*)&_UChar, 1);
+    }
 
-	uint8_t _UChar;
+    uint8_t _UChar;
 };
 
 
