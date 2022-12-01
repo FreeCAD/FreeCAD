@@ -36,8 +36,6 @@ public:
     uint8_t VersionMinor;
     uint8_t VersionMajor;
 
-    bool Endianness;
-
     istream & Strm;
 
 };
