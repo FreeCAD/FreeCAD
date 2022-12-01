@@ -50,16 +50,17 @@ private Q_SLOTS:
         output.str(std::string());
     }
 
-    // Must be the very first test!
-    void test_Output()
-    {
-        QCOMPARE(output.str().c_str(), "#Inventor V2.1 ascii \n\n");
-    }
-
     void test_Invalid()
     {
         SoNode* node = loadBuffer("Hello, World");
         QCOMPARE(node, nullptr);
+    }
+
+    void test_Output()
+    {
+        std::stringstream str;
+        Base::InventorBuilder builder(str);
+        QCOMPARE(str.str().c_str(), "#Inventor V2.1 ascii \n\n");
     }
 
     void test_MaterialBinding_data()
