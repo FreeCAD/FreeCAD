@@ -1,5 +1,5 @@
-/***************************************************************************
-*   Copyright (c) Juergen Riegel         <juergen.riegel@web.de>          *
+/**************************************************************************
+*   Copyright (c) 2014 Juergen Riegel <juergen.riegel@web.de>             *
 *                                                                         *
 *   This file is part of the FreeCAD CAx development system.              *
 *                                                                         *
@@ -43,22 +43,22 @@ TestJtReader::~TestJtReader()
 
 void TestJtReader::read(void)
 {
-	//const std::vector<TOC_Entry>& toc = readToc();
+    //const std::vector<TOC_Entry>& toc = readToc();
 
-	for (std::vector<TOC_Entry>::const_iterator i = TocEntries.begin(); i != TocEntries.end(); ++i){
-		int segType = i->getSegmentType();
+    for (std::vector<TOC_Entry>::const_iterator i = TocEntries.begin(); i != TocEntries.end(); ++i){
+        int segType = i->getSegmentType();
 
-		if (segType == 7){
-			FcLodHandler handler;
+        if (segType == 7){
+            FcLodHandler handler;
 
-			readLodSegment(*i, handler);
+            readLodSegment(*i, handler);
 
 
-		}
-			
+        }
+            
 
-		Base::Console().Log(i->toString().c_str());
-	}
+        Base::Console().Log(i->toString().c_str());
+    }
 
 
 
