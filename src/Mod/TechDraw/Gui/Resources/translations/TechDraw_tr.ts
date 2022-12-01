@@ -6079,7 +6079,7 @@ Eğer &apos;Eşit Tolerans işaretlenirse, &apos;üst sapma
       <location filename="../../TaskDimension.ui" line="137"/>
       <location filename="../../TaskDimension.ui" line="176"/>
       <source>If checked the content of &apos;Format Spec&apos; will
-be used instead if the dimension value</source>
+be used instead of the dimension value</source>
       <translation>Eğer &apos;Biçim belirleyici içeriği işaretlenirse, 
 ölçü değeri yerine &apos; kullanılacaktır</translation>
     </message>

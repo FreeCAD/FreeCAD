@@ -6083,7 +6083,7 @@ z negativno vrednostjo &apos;Čezdopustnega odstopanja&apos;.</translation>
       <location filename="../../TaskDimension.ui" line="137"/>
       <location filename="../../TaskDimension.ui" line="176"/>
       <source>If checked the content of &apos;Format Spec&apos; will
-be used instead if the dimension value</source>
+be used instead of the dimension value</source>
       <translation>Če je označeno, bo vsebina &apos;Določevalnika oblike&apos; 
 uporabljena namesto vrednosti kote</translation>
     </message>

@@ -6074,7 +6074,7 @@ par la valeur négative de &apos;la tolérance supérieure&apos;.</translation>
       <location filename="../../TaskDimension.ui" line="137"/>
       <location filename="../../TaskDimension.ui" line="176"/>
       <source>If checked the content of &apos;Format Spec&apos; will
-be used instead if the dimension value</source>
+be used instead of the dimension value</source>
       <translation>Si coché, le contenu de &apos;Nombre de déciamles&apos; sera utilisé
 à la place de la valeur de la cote</translation>
     </message>
