@@ -869,15 +869,16 @@ TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch *sketchView)
 
     multiFilterStatus = filterList->getMultiFilter();
 
-    slotConstraintsChanged();
-
-    specialFilterMode = SpecialFilterType::None;
-
     ui->listWidgetConstraints->setStyleSheet(QString::fromLatin1("margin-top: 0px"));
 
     Gui::Application* app = Gui::Application::Instance;
     changedSketchView = app->signalChangedObject.connect(boost::bind
     (&TaskSketcherConstraints::onChangedSketchView, this, bp::_1, bp::_2));
+
+    slotConstraintsChanged(); // Populate constraints list
+    // Initialize special filters
+    for (int i = filterList->normalFilterCount ; i < filterList->count() ; i++)
+        on_filterList_itemChanged(filterList->item(i));
 }
 
 TaskSketcherConstraints::~TaskSketcherConstraints()
