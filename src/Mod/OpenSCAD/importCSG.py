@@ -634,6 +634,7 @@ def fuse(lst,name):
        if gui:
            myfuse.Base.ViewObject.hide()
            myfuse.Tool.ViewObject.hide()
+    myfuse.Placement = FreeCAD.Placement()
     return(myfuse)
 
 def p_empty_union_action(p):
