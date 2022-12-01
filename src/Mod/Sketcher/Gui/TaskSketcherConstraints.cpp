@@ -1223,9 +1223,9 @@ void TaskSketcherConstraints::onSelectionChanged(const Gui::SelectionChanges& ms
 
     std::string temp;
     if (msg.Type == Gui::SelectionChanges::ClrSelection) {
-        ui->listWidgetConstraints->blockSignals(true);
+        auto tmpBlock = ui->listWidgetConstraints->blockSignals(true);
         ui->listWidgetConstraints->clearSelection();
-        ui->listWidgetConstraints->blockSignals(false);
+        ui->listWidgetConstraints->blockSignals(tmpBlock);
 
         if(specialFilterMode == SpecialFilterType::Selected) {
             updateSelectionFilter();
@@ -1259,9 +1259,9 @@ void TaskSketcherConstraints::onSelectionChanged(const Gui::SelectionChanges& ms
                             ConstraintItem* item = static_cast<ConstraintItem*>
                                 (ui->listWidgetConstraints->item(i));
                             if (item->ConstraintNbr == ConstrId) {
-                                ui->listWidgetConstraints->blockSignals(true);
+                                auto tmpBlock = ui->listWidgetConstraints->blockSignals(true);
                                 item->setSelected(select);
-                                ui->listWidgetConstraints->blockSignals(false);
+                                ui->listWidgetConstraints->blockSignals(tmpBlock);
                                 break;
                             }
                         }
@@ -1570,12 +1570,12 @@ void TaskSketcherConstraints::slotConstraintsChanged()
         ui->listWidgetConstraints->addItem(new ConstraintItem(sketch, sketchView, i));
 
     /* Update the states */
-    ui->listWidgetConstraints->blockSignals(true);
+    auto tmpBlock = ui->listWidgetConstraints->blockSignals(true);
     for (int i = 0; i <  ui->listWidgetConstraints->count(); ++i) {
         ConstraintItem * it = static_cast<ConstraintItem*>(ui->listWidgetConstraints->item(i));
         it->updateVirtualSpaceStatus();
     }
-    ui->listWidgetConstraints->blockSignals(false);
+    ui->listWidgetConstraints->blockSignals(tmpBlock);
 
     /* Update filtering */
     for(std::size_t i = 0; i < vals.size(); ++i) {
@@ -1589,10 +1589,10 @@ void TaskSketcherConstraints::slotConstraintsChanged()
         // case a name has changed because this function gets
         // called after changing the constraint list property
         QAbstractItemModel* model = ui->listWidgetConstraints->model();
-        bool block = model->blockSignals(true);
+        auto tmpBlock = model->blockSignals(true);
         it->setHidden(!visible);
         it->setData(Qt::EditRole, Base::Tools::fromStdString(constraint->Name));
-        model->blockSignals(block);
+        model->blockSignals(tmpBlock);
 
     }
 }
@@ -1610,7 +1610,7 @@ void TaskSketcherConstraints::on_filterList_itemChanged(QListWidgetItem* item)
 {
     int filterindex = filterList->row(item);
 
-    filterList->blockSignals(true);
+    auto tmpBlock = filterList->blockSignals(true);
 
     if (filterindex < filterList->normalFilterCount) {
 
@@ -1645,7 +1645,7 @@ void TaskSketcherConstraints::on_filterList_itemChanged(QListWidgetItem* item)
             specialFilterMode = SpecialFilterType::None;
     }
 
-    filterList->blockSignals(false);
+    filterList->blockSignals(tmpBlock);
 
     //Save the state of the filter.
     int filterState = 0;
