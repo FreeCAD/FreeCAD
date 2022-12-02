@@ -8,7 +8,7 @@
       Include="App/GeoFeatureGroupExtension.h"
       Namespace="App"
       FatherInclude="App/GroupExtensionPy.h"
-      FatherNamespace="App"> 
+      FatherNamespace="App">
     <Documentation>
       <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
       <UserDocu>This class handles placeable group of document objects</UserDocu>
