@@ -84,7 +84,7 @@ public:
     unsigned short linePattern = 0xffff;
 };
 
-class BaseExport MaterialBinding
+class BaseExport BindingElement
 {
 public:
     enum class Binding {
@@ -192,6 +192,7 @@ public:
     virtual void write(InventorOutput& out) const = 0;
 
 protected:
+    void writeField(const char* field, const std::vector<Vector3f>& vec, InventorOutput& out) const;
     void writeField(const char* field, const std::vector<ColorRGB>& rgb, InventorOutput& out) const;
     void writeField(const char* field, const std::vector<float>& value, InventorOutput& out) const;
 };
@@ -259,6 +260,18 @@ private:
     ColorRGB rgb;
 };
 
+class BaseExport ArrowItem : public NodeItem
+{
+public:
+    explicit ArrowItem(const Base::Line3f& line, DrawStyle drawStyle, const ColorRGB& rgb = ColorRGB{1.0F, 1.0F, 1.0F});
+    void write(InventorOutput& out) const override;
+
+private:
+    Base::Line3f line;
+    DrawStyle drawStyle;
+    ColorRGB rgb;
+};
+
 /*!
  * \brief The MaterialItem class supports the SoMaterial node.
  */
@@ -298,11 +311,12 @@ private:
 class BaseExport MaterialBindingItem : public NodeItem
 {
 public:
-    explicit MaterialBindingItem(MaterialBinding bind);
+    MaterialBindingItem() = default;
+    void setValue(BindingElement::Binding bind);
     void write(InventorOutput& out) const override;
 
 private:
-    MaterialBinding bind;
+    BindingElement value;
 };
 
 /*!
@@ -351,6 +365,79 @@ class BaseExport PointSetItem : public NodeItem
 {
 public:
     void write(InventorOutput& out) const override;
+};
+
+/*!
+ * \brief The NormalItem class supports the SoNormal node.
+ */
+class BaseExport NormalItem : public NodeItem
+{
+public:
+    explicit NormalItem() = default;
+    void setVector(const std::vector<Base::Vector3f>& vec);
+    void write(InventorOutput& out) const override;
+
+private:
+    void beginNormal(InventorOutput& out) const;
+    void endNormal(InventorOutput& out) const;
+    std::vector<Base::Vector3f> vector;
+};
+
+/*!
+ * \brief The MaterialBindingItem class supports the SoMaterialBinding node.
+ */
+class BaseExport NormalBindingItem : public NodeItem
+{
+public:
+    NormalBindingItem() = default;
+    void setValue(BindingElement::Binding bind);
+    void write(InventorOutput& out) const override;
+
+private:
+    BindingElement value;
+};
+
+/*!
+ * \brief The CylinderItem class supports the SoCylinder node.
+ */
+class BaseExport CylinderItem : public NodeItem
+{
+public:
+    void setRadius(float);
+    void setHeight(float);
+    void write(InventorOutput& out) const override;
+
+private:
+    float radius = 2.0F;
+    float height = 10.0F;
+};
+
+/*!
+ * \brief The ConeItem class supports the SoCone node.
+ */
+class BaseExport ConeItem : public NodeItem
+{
+public:
+    void setBottomRadius(float);
+    void setHeight(float);
+    void write(InventorOutput& out) const override;
+
+private:
+    float bottomRadius = 2.0F;
+    float height = 10.0F;
+};
+
+/*!
+ * \brief The SphereItem class supports the SoSphere node.
+ */
+class BaseExport SphereItem : public NodeItem
+{
+public:
+    void setRadius(float);
+    void write(InventorOutput& out) const override;
+
+private:
+    float radius = 2.0F;
 };
 
 /**
@@ -423,7 +510,7 @@ public:
      * \brief Sets a material binding node.
      * \param binding - binding of the material.
      */
-    void addMaterialBinding(MaterialBinding);
+    void addMaterialBinding(BindingElement);
     /*!
      * \brief Sets a draw style node.
      */
