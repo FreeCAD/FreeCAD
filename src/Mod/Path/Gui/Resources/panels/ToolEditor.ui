@@ -71,7 +71,7 @@
       <item row="3" column="1">
        <widget class="Gui::InputField" name="toolLengthOffset">
         <property name="text">
-         <string>0.00</string>
+         <string notr="true">0.00</string>
         </property>
         <property name="unit" stdset="0">
          <string>mm</string>
@@ -128,7 +128,7 @@
       <item row="1" column="1">
        <widget class="Gui::InputField" name="toolDiameter">
         <property name="text">
-         <string>0.00</string>
+         <string notr="true">0.00</string>
         </property>
         <property name="unit" stdset="0">
          <string>mm</string>
@@ -138,7 +138,7 @@
       <item row="3" column="1">
        <widget class="Gui::InputField" name="toolFlatRadius">
         <property name="text">
-         <string>0.00</string>
+         <string notr="true">0.00</string>
         </property>
         <property name="unit" stdset="0">
          <string>mm</string>
@@ -148,7 +148,7 @@
       <item row="4" column="1">
        <widget class="Gui::InputField" name="toolCornerRadius">
         <property name="text">
-         <string>0.00</string>
+         <string notr="true">0.00</string>
         </property>
         <property name="unit" stdset="0">
          <string>mm</string>
@@ -158,17 +158,17 @@
       <item row="5" column="1">
        <widget class="Gui::InputField" name="toolCuttingEdgeAngle">
         <property name="text">
-         <string>180°</string>
+         <string notr="true">180°</string>
         </property>
         <property name="unit" stdset="0">
-         <string>°</string>
+         <string notr="true">°</string>
         </property>
        </widget>
       </item>
       <item row="6" column="1">
        <widget class="Gui::InputField" name="toolCuttingEdgeHeight">
         <property name="text">
-         <string>0.00</string>
+         <string notr="true">0.00</string>
         </property>
         <property name="unit" stdset="0">
          <string>mm</string>
@@ -200,7 +200,7 @@
          <item row="1" column="1">
           <widget class="Gui::InputField" name="value_D">
            <property name="text">
-            <string>0.00</string>
+            <string notr="true">0.00</string>
            </property>
            <property name="unit" stdset="0">
             <string>mm</string>
@@ -217,7 +217,7 @@
          <item row="2" column="1">
           <widget class="Gui::InputField" name="value_d">
            <property name="text">
-            <string>0.00</string>
+            <string notr="true">0.00</string>
            </property>
            <property name="unit" stdset="0">
             <string>mm</string>
@@ -234,7 +234,7 @@
          <item row="3" column="1">
           <widget class="Gui::InputField" name="value_H">
            <property name="text">
-            <string>0.00</string>
+            <string notr="true">0.00</string>
            </property>
            <property name="unit" stdset="0">
             <string>mm</string>
@@ -244,17 +244,17 @@
          <item row="4" column="0">
           <widget class="QLabel" name="label_a">
            <property name="text">
-            <string>α = </string>
+            <string notr="true">α = </string>
            </property>
           </widget>
          </item>
          <item row="4" column="1">
           <widget class="Gui::InputField" name="value_a">
            <property name="text">
-            <string>180°</string>
+            <string notr="true">180°</string>
            </property>
            <property name="unit" stdset="0">
-            <string>°</string>
+            <string notr="true">°</string>
            </property>
           </widget>
          </item>
@@ -274,7 +274,7 @@
             <bool>false</bool>
            </property>
            <property name="text">
-            <string>0.00</string>
+            <string notr="true">0.00</string>
            </property>
            <property name="unit" stdset="0">
             <string>mm</string>

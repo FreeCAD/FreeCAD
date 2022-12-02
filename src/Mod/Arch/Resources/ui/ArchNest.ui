@@ -132,7 +132,7 @@
          <string>A comma-separated list of angles to try and rotate the shapes</string>
         </property>
         <property name="text">
-         <string>0,90,180,270</string>
+         <string notr="true">0,90,180,270</string>
         </property>
        </widget>
       </item>

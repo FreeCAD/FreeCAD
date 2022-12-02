@@ -90,7 +90,7 @@
            <string>The default transparency for new shapes</string>
           </property>
           <property name="suffix">
-           <string>%</string>
+           <string notr="true">%</string>
           </property>
           <property name="maximum">
            <number>100</number>

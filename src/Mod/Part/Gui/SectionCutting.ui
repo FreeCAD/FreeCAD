@@ -339,7 +339,7 @@ Works only if all objects have the same values.</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>0 %</string>
+         <string notr="true">0 %</string>
         </property>
         <property name="maximum">
          <number>100</number>
