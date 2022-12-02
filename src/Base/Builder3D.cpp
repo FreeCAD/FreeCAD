@@ -89,7 +89,7 @@ std::string DrawStyle::patternAsString() const
     return str.str();
 }
 
-const char* MaterialBinding::bindingAsString() const
+const char* BindingElement::bindingAsString() const
 {
     switch (value) {
     case Binding::PerPart:
@@ -177,6 +177,25 @@ void InventorOutput::decreaseIndent()
 }
 
 // -----------------------------------------------------------------------------
+
+void NodeItem::writeField(const char* field, const std::vector<Vector3f>& vec, InventorOutput& out) const
+{
+    if (vec.empty())
+        return;
+
+    if (vec.size() == 1) {
+        out.write() << field << " " << vec[0].x << " " << vec[0].y << " " << vec[0].z << '\n';
+    }
+    else {
+        out.write() << field << " [\n";
+        out.increaseIndent();
+        for (auto it : vec) {
+            out.write() << it.x << " " << it.y << " " << it.z << '\n';
+        }
+        out.decreaseIndent();
+        out.write() << "]\n";
+    }
+}
 
 void NodeItem::writeField(const char* field, const std::vector<ColorRGB>& rgb, InventorOutput& out) const
 {
@@ -312,6 +331,56 @@ void LineItem::write(InventorOutput& out) const
 
 // -----------------------------------------------------------------------------
 
+ArrowItem::ArrowItem(const Base::Line3f& line, DrawStyle drawStyle, const ColorRGB& rgb)
+    : line(line)
+    , drawStyle(drawStyle)
+    , rgb(rgb)
+{
+
+}
+
+void ArrowItem::write(InventorOutput& out) const
+{
+    float length = line.Length();
+    float coneLength = length / 10.0F;
+    float coneRadius = coneLength / 2.0F;
+    float sf1 = length - coneLength;
+    float sf2 = length - coneLength/2.0F;
+
+    Vector3f dir = line.GetDirection();
+    dir.Normalize();
+    dir.Scale(sf1, sf1, sf1);
+    Vector3f pt2s = line.p1 + dir;
+    dir.Normalize();
+    dir.Scale(sf2, sf2, sf2);
+    Vector3f cpt = line.p1 + dir;
+
+    Vector3f rot = Vector3f(0.0f, 1.0f, 0.0f) % dir;
+    rot.Normalize();
+    float angle = Vector3f(0.0f, 1.0f, 0.0f).GetAngle(dir);
+
+    out.write() << "Separator {\n";
+    out.write() << "  Material { diffuseColor " << rgb.red() << " "<< rgb.green() << " "<< rgb.blue() << "}\n";
+    out.write() << "  DrawStyle { lineWidth " << drawStyle.lineWidth << " }\n";
+    out.write() << "  Coordinate3 {\n";
+    out.write() << "    point [ ";
+    out.write() <<        line.p1.x << " " << line.p1.y << " " << line.p1.z << ", ";
+    out.write() <<        pt2s.x << " " << pt2s.y << " " << pt2s.z;
+    out.write() << " ]\n";
+    out.write() << "  }\n";
+    out.write() << "  LineSet { }\n";
+    out.write() << "  Transform { \n";
+    out.write() << "    translation "
+                << cpt.x << " " << cpt.y << " " << cpt.z << '\n';
+    out.write() << "    rotation "
+                << rot.x << " " << rot.y << " " << rot.z << " " << angle << '\n';
+    out.write() << "  }\n";
+    out.write() << "  Cone { bottomRadius " << coneRadius << " height " << coneLength << "} \n";
+    out.write() << "}\n";
+}
+
+// -----------------------------------------------------------------------------
+
 void MaterialItem::setAmbientColor(const std::vector<ColorRGB>& rgb)
 {
     ambientColor = rgb;
@@ -398,15 +467,15 @@ void MaterialItem::writeTransparency(InventorOutput& out) const
 
 // -----------------------------------------------------------------------------
 
-MaterialBindingItem::MaterialBindingItem(MaterialBinding bind) : bind(bind)
+void MaterialBindingItem::setValue(BindingElement::Binding bind)
 {
-
+    value.value = bind;
 }
 
 void MaterialBindingItem::write(InventorOutput& out) const
 {
     out.write() << "MaterialBinding { value "
-                << bind.bindingAsString() << " } \n";
+                << value.bindingAsString() << " } \n";
 }
 
 // -----------------------------------------------------------------------------
@@ -462,6 +531,95 @@ void PolygonOffsetItem::write(InventorOutput& out) const
 void PointSetItem::write(InventorOutput& out) const
 {
     out.writeLine("PointSet { }");
+}
+
+// -----------------------------------------------------------------------------
+
+void NormalItem::setVector(const std::vector<Base::Vector3f>& vec)
+{
+    vector = vec;
+}
+
+void NormalItem::write(InventorOutput& out) const
+{
+    beginNormal(out);
+    writeField("vector", vector, out);
+    endNormal(out);
+}
+
+void NormalItem::beginNormal(InventorOutput& out) const
+{
+    out.writeLine("Normal {");
+    out.increaseIndent();
+}
+
+void NormalItem::endNormal(InventorOutput& out) const
+{
+    out.decreaseIndent();
+    out.writeLine("}");
+}
+
+// -----------------------------------------------------------------------------
+
+void NormalBindingItem::setValue(BindingElement::Binding bind)
+{
+    value.value = bind;
+}
+
+void NormalBindingItem::write(InventorOutput& out) const
+{
+    out.write() << "NormalBinding { value "
+                << value.bindingAsString() << " }\n";
+}
+
+// -----------------------------------------------------------------------------
+
+void CylinderItem::setRadius(float value)
+{
+    radius = value;
+}
+
+void CylinderItem::setHeight(float value)
+{
+    height = value;
+}
+
+void CylinderItem::write(InventorOutput& out) const
+{
+    out.write() << "Cylinder {\n";
+    out.write() << "  radius " << radius << "\n";
+    out.write() << "  height " << height << "\n";
+    out.write() << "  parts (SIDES | TOP | BOTTOM)\n";
+    out.write() << "}\n";
+}
+
+// -----------------------------------------------------------------------------
+
+void ConeItem::setBottomRadius(float value)
+{
+    bottomRadius = value;
+}
+
+void ConeItem::setHeight(float value)
+{
+    height = value;
+}
+
+void ConeItem::write(InventorOutput& out) const
+{
+    out.write() << "Cone { bottomRadius " << bottomRadius << " height " << height << " }\n";
+}
+
+// -----------------------------------------------------------------------------
+
+void SphereItem::setRadius(float value)
+{
+    radius = value;
+}
+
+void SphereItem::write(InventorOutput& out) const
+{
+    out.write() << "Sphere { radius " << radius << " }\n";
 }
 
 // -----------------------------------------------------------------------------
@@ -557,7 +715,7 @@ void InventorBuilder::addColor(const ColorRGB& rgb)
     result << rgb.red() << " " << rgb.green() << " " << rgb.blue() << '\n';
 }
 
-void InventorBuilder::addMaterialBinding(MaterialBinding bind)
+void InventorBuilder::addMaterialBinding(BindingElement bind)
 {
     result << indent << "MaterialBinding { value "
            << bind.bindingAsString() << " } \n";

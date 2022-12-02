@@ -73,7 +73,7 @@ private Q_SLOTS:
     {
         QFETCH(QString, result);
 
-        Base::MaterialBindingItem item{Base::MaterialBinding{}};
+        Base::MaterialBindingItem item;
         builder.addNode(item);
         QString string = QString::fromStdString(output.str());
 
@@ -292,6 +292,29 @@ R"(PolygonOffset {
         QCOMPARE(string, result);
     }
 
+    void test_Normal_data()
+    {
+        auto result =
+R"(Normal {
+  vector 1 0 0.5
+}
+)";
+        QTest::addColumn<QString>("result");
+        QTest::newRow("Normal") << result;
+    }
+
+    void test_Normal()
+    {
+        QFETCH(QString, result);
+
+        Base::NormalItem item;
+        item.setVector({Base::Vector3f{1,0,0.5}});
+        builder.addNode(item);
+        QString string = QString::fromStdString(output.str());
+
+        QCOMPARE(string, result);
+    }
+
     void test_LineItem()
     {
         Base::Line3f line;
@@ -299,6 +322,19 @@ R"(PolygonOffset {
         Base::LineItem item{line, style};
         builder.addNode(item);
 
+        SoNode* node = loadBuffer(output.str());
+        QVERIFY(node != nullptr);
+    }
+
+    void test_ArrowItem()
+    {
+        Base::Line3f line;
+        line.p2.z = 10;
+        Base::DrawStyle style;
+        Base::ArrowItem item{line, style};
+        builder.addNode(item);
+
+        qDebug() << QString::fromStdString(output.str());
         SoNode* node = loadBuffer(output.str());
         QVERIFY(node != nullptr);
     }
@@ -312,6 +348,90 @@ R"(PolygonOffset {
 
         SoNode* node = loadBuffer(output.str());
         QVERIFY(node != nullptr);
+    }
+
+    void test_NormalBinding_data()
+    {
+        auto result = "NormalBinding { value PER_PART }\n";
+        QTest::addColumn<QString>("result");
+        QTest::newRow("NormalBinding") << result;
+    }
+
+    void test_NormalBinding()
+    {
+        QFETCH(QString, result);
+
+        Base::NormalBindingItem item;
+        item.setValue(Base::BindingElement::Binding::PerPart);
+        builder.addNode(item);
+        QString string = QString::fromStdString(output.str());
+
+        QCOMPARE(string, result);
+    }
+
+    void test_Cylinder_data()
+    {
+        auto result =
+R"(Cylinder {
+  radius 3
+  height 7
+  parts (SIDES | TOP | BOTTOM)
+}
+)";
+        QTest::addColumn<QString>("result");
+        QTest::newRow("Cylinder") << result;
+    }
+
+    void test_Cylinder()
+    {
+        QFETCH(QString, result);
+
+        Base::CylinderItem item;
+        item.setRadius(3);
+        item.setHeight(7);
+        builder.addNode(item);
+        QString string = QString::fromStdString(output.str());
+
+        QCOMPARE(string, result);
+    }
+
+    void test_Cone_data()
+    {
+        auto result = "Cone { bottomRadius 2 height 10 }\n";
+        QTest::addColumn<QString>("result");
+        QTest::newRow("Cone") << result;
+    }
+
+    void test_Cone()
+    {
+        QFETCH(QString, result);
+
+        Base::ConeItem item;
+        item.setBottomRadius(2);
+        item.setHeight(10);
+        builder.addNode(item);
+        QString string = QString::fromStdString(output.str());
+
+        QCOMPARE(string, result);
+    }
+
+    void test_Sphere_data()
+    {
+        auto result = "Sphere { radius 4 }\n";
+        QTest::addColumn<QString>("result");
+        QTest::newRow("Sphere") << result;
+    }
+
+    void test_Sphere()
+    {
+        QFETCH(QString, result);
+
+        Base::SphereItem item;
+        item.setRadius(4);
+        builder.addNode(item);
+        QString string = QString::fromStdString(output.str());
+
+        QCOMPARE(string, result);
     }
 
 private:
