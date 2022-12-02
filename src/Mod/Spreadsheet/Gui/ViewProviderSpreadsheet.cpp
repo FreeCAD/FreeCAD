@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2011 Jrgen Riegel (juergen.riegel@web.de)               *
- *   Copyright (c) 2015 Eivind Kvedalen (eivind@kvedalen.name)             *
+ *   Copyright (c) 2011 Juergen Riegel <juergen.riegel@web.de>             *
+ *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
