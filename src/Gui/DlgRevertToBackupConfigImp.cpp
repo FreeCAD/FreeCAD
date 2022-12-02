@@ -53,7 +53,7 @@ DlgRevertToBackupConfigImp::~DlgRevertToBackupConfigImp()
 void Gui::Dialog::DlgRevertToBackupConfigImp::onItemSelectionChanged()
 {
     auto items = ui->listWidget->selectedItems();
-    if (items.count() == 1) 
+    if (items.count() == 1)
         ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->setEnabled(true);
     else
         ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->setEnabled(false);

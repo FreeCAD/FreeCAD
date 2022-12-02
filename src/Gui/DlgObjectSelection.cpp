@@ -166,7 +166,7 @@ void DlgObjectSelection::init(const std::vector<App::DocumentObject*> &objs,
             this, SLOT(onDepItemChanged(QTreeWidgetItem*,int)));
     connect(ui->treeWidget, SIGNAL(itemSelectionChanged()),
             this, SLOT(onItemSelectionChanged()));
-    connect(useOriginalsBtn, SIGNAL(clicked()), 
+    connect(useOriginalsBtn, SIGNAL(clicked()),
             this, SLOT(onUseOriginalsBtnClicked()));
 
     connect(ui->buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
@@ -611,7 +611,7 @@ void DlgObjectSelection::onItemSelectionChanged() {
         for (auto obj : inlist)
             createDepItem(ui->inList, obj);
     }
-        
+
     if (enabled)
         ui->depList->setSortingEnabled(true);
     if (enabled2)

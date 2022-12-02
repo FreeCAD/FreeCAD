@@ -30,13 +30,13 @@ If you would like to change the overall look/style of the theme, just find and r
 ! If you find not matching or unreadable sections in FreeCAD please tell Chrismettal or open up a PR yourself !
 
     BACKGROUND (darker to lighter)
-        #65A2E5 
+        #65A2E5
         #1e1e1e
         #3c3c3c
         #434D5B
         #232932 = top menu background etc
         #646464
-        #232932 = main background color     
+        #232932 = main background color
         #787878
         #8c8c8c
         #a0a0a0
@@ -45,7 +45,7 @@ If you would like to change the overall look/style of the theme, just find and r
         #232932 = console color
         #d2d2d2
         #588AC1 = top menu item
-        #588AC2 
+        #588AC2
         white
 
     SELECTION (darker to lighter)
@@ -138,8 +138,8 @@ Sub windows
 ==================================================================================================*/
 QMdiSubWindow {
     border:1px solid #121512;
-    margin-top: 30px;    
-    margin-left: 4px;    
+    margin-top: 30px;
+    margin-left: 4px;
     margin-right: 4px;
     margin-bottom:4px;
 }

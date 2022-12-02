@@ -158,7 +158,7 @@ void Gui::Dialog::DlgCreateNewPreferencePackImp::accept()
     // Ensure that the chosen name is either unique, or that the user actually wants to overwrite the old one
     if (auto chosenName = ui->lineEdit->text().toStdString();
         std::find(_existingPackNames.begin(), _existingPackNames.end(), chosenName) != _existingPackNames.end()) {
-        auto result = QMessageBox::warning(this, tr("Pack already exists"), 
+        auto result = QMessageBox::warning(this, tr("Pack already exists"),
                                            tr("A preference pack with that name already exists. Do you want to overwrite it?"),
                                            QMessageBox::Yes | QMessageBox::Cancel);
         if (result == QMessageBox::Cancel)

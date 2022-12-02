@@ -176,7 +176,7 @@ std::vector<std::string> DlgPreferencePackManagementImp::getPacksFromDirectory(c
 void DlgPreferencePackManagementImp::deleteUserPack(const std::string& name)
 {
     // Do the deletion here...
-    auto result = QMessageBox::warning(this, tr("Delete saved preference pack?"), 
+    auto result = QMessageBox::warning(this, tr("Delete saved preference pack?"),
         tr("Are you sure you want to delete the preference pack named '%1'? This cannot be undone.").arg(QString::fromStdString(name)),
         QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Cancel);
     if (result == QMessageBox::Yes) {

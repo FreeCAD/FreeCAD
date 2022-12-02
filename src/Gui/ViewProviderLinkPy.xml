@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-	<PythonExport 
-		Father="ViewProviderDocumentObjectPy" 
-		Name="ViewProviderLinkPy" 
-		Twin="ViewProviderLink" 
-		TwinPointer="ViewProviderLink" 
-		Include="Gui/ViewProviderLink.h" 
-		Namespace="Gui" 
+	<PythonExport
+		Father="ViewProviderDocumentObjectPy"
+		Name="ViewProviderLinkPy"
+		Twin="ViewProviderLink"
+		TwinPointer="ViewProviderLink"
+		Include="Gui/ViewProviderLink.h"
+		Namespace="Gui"
 		FatherInclude="Gui/ViewProviderDocumentObjectPy.h"
 		FatherNamespace="Gui">
 		<Documentation>
