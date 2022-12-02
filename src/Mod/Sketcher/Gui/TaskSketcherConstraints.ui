@@ -43,7 +43,7 @@
         <string notr="true">padding-right: 0px; margin-right: 0px</string>
        </property>
        <property name="text">
-        <string></string>
+        <string notr="true"></string>
        </property>
       </widget>
      </item>

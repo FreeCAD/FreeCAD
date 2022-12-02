@@ -83,7 +83,7 @@ in the corner -- in % of height/width of viewport</string>
            <number>10</number>
           </property>
           <property name="suffix">
-           <string>%</string>
+           <string notr="true">%</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>CornerCoordSystemSize</cstring>

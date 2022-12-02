@@ -76,12 +76,12 @@
         </item>
         <item>
          <property name="text">
-          <string>;</string>
+          <string notr="true">;</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>,</string>
+          <string notr="true">,</string>
          </property>
         </item>
        </widget>
@@ -108,7 +108,7 @@
          <string/>
         </property>
         <property name="text">
-         <string>"</string>
+         <string notr="true">"</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>ImportExportQuoteCharacter</cstring>
@@ -137,7 +137,7 @@
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
-         <string>\</string>
+         <string notr="true">\</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>ImportExportEscapeCharacter</cstring>

@@ -140,7 +140,7 @@
         <item>
          <widget class="QSpinBox" name="shininess">
           <property name="suffix">
-           <string>%</string>
+           <string notr="true">%</string>
           </property>
           <property name="singleStep">
            <number>5</number>

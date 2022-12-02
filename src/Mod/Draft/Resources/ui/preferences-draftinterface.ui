@@ -605,7 +605,7 @@
            </size>
           </property>
           <property name="text">
-           <string>`</string>
+           <string notr="true">`</string>
           </property>
           <property name="maxLength">
            <number>1</number>
@@ -693,7 +693,7 @@
            </size>
           </property>
           <property name="text">
-           <string>/</string>
+           <string notr="true">/</string>
           </property>
           <property name="maxLength">
            <number>1</number>
@@ -781,7 +781,7 @@
            </size>
           </property>
           <property name="text">
-           <string>[</string>
+           <string notr="true">[</string>
           </property>
           <property name="maxLength">
            <number>1</number>
@@ -825,7 +825,7 @@
            </size>
           </property>
           <property name="text">
-           <string>]</string>
+           <string notr="true">]</string>
           </property>
           <property name="maxLength">
            <number>1</number>
