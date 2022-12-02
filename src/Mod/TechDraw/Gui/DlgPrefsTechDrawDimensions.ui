@@ -407,7 +407,7 @@ Multiplier of 'Font Size'</string>
            <string>Character used to indicate diameter dimensions</string>
           </property>
           <property name="text">
-           <string>⌀</string>
+           <string notr="true">⌀</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

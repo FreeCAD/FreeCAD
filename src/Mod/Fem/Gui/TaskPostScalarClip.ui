@@ -141,7 +141,7 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>-100000</string>
+        <string notr="true">-100000</string>
        </property>
       </widget>
      </item>
@@ -185,7 +185,7 @@
         <enum>Qt::LeftToRight</enum>
        </property>
        <property name="text">
-        <string>0</string>
+        <string notr="true">0</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

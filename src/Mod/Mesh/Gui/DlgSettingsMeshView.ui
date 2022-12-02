@@ -120,7 +120,7 @@
         <item row="0" column="4">
          <widget class="Gui::PrefSpinBox" name="spinMeshTransparency">
           <property name="suffix">
-           <string>%</string>
+           <string notr="true">%</string>
           </property>
           <property name="maximum">
            <number>100</number>
@@ -189,7 +189,7 @@
         <item row="1" column="4">
          <widget class="Gui::PrefSpinBox" name="spinLineTransparency">
           <property name="suffix">
-           <string>%</string>
+           <string notr="true">%</string>
           </property>
           <property name="maximum">
            <number>100</number>
@@ -372,7 +372,7 @@ to a smoother appearance.
  If face angle &lt; crease angle, smooth shading is used</string>
         </property>
         <property name="suffix">
-         <string> °</string>
+         <string notr="true"> °</string>
         </property>
         <property name="maximum">
          <double>180.000000000000000</double>

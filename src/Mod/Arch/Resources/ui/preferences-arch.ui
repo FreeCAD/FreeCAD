@@ -586,7 +586,7 @@
 to projections of hidden objects.</string>
           </property>
           <property name="text">
-           <string>30, 10</string>
+           <string notr="true">30, 10</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

@@ -296,7 +296,7 @@
            <string>Minimum angle for a fragment</string>
           </property>
           <property name="suffix">
-           <string>°</string>
+           <string notr="true">°</string>
           </property>
           <property name="minimum">
            <double>0.010000000000000</double>

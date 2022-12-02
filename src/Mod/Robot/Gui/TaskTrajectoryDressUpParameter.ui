@@ -133,7 +133,7 @@
      <item>
       <widget class="QLineEdit" name="lineEditPlacement">
        <property name="text">
-        <string>(0,0,0),(0,0,0)</string>
+        <string notr="true">(0,0,0),(0,0,0)</string>
        </property>
        <property name="readOnly">
         <bool>true</bool>
