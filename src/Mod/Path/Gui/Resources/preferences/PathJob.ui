@@ -55,7 +55,7 @@
           <item row="0" column="3">
            <widget class="QToolButton" name="tbDefaultFilePath">
             <property name="text">
-             <string>...</string>
+             <string notr="true">...</string>
             </property>
            </widget>
           </item>
@@ -76,7 +76,7 @@
           <item row="1" column="3">
            <widget class="QToolButton" name="tbDefaultJobTemplate">
             <property name="text">
-             <string>...</string>
+             <string notr="true">...</string>
             </property>
            </widget>
           </item>
@@ -186,7 +186,7 @@
             <item>
              <widget class="QToolButton" name="tbOutputFile">
               <property name="text">
-               <string>...</string>
+               <string notr="true">...</string>
               </property>
              </widget>
             </item>
