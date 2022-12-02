@@ -48,7 +48,7 @@ class GuiExport ExpressionCompleter : public QCompleter
 {
     Q_OBJECT
 public:
-    ExpressionCompleter(const App::DocumentObject * currentDocObj, 
+    ExpressionCompleter(const App::DocumentObject * currentDocObj,
             QObject *parent = nullptr, bool noProperty = false, bool checkInList = true);
 
     void getPrefixRange(int &start, int &end) const {

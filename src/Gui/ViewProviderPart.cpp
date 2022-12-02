@@ -116,7 +116,7 @@ QIcon ViewProviderPart::getIcon() const
     const char* pixmap = sPixmap;
     // if it's flagged as an Assembly in its Type, it gets another icon
     if (part->Type.getStrValue() == "Assembly") { pixmap = aPixmap; }
-    
+
     return mergeGreyableOverlayIcons (Gui::BitmapFactory().pixmap(pixmap));
 }
 

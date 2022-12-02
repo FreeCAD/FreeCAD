@@ -369,7 +369,7 @@ const I3dMouseParam& Gui::GuiNativeEvent::MouseParams() const
 void Gui::GuiNativeEvent::Move3d(HANDLE device, std::vector<float>& motionData)
 {
 	Q_UNUSED(device);
-	
+
     motionDataArray[0] = -ceil(motionData[0]);
     motionDataArray[1] = ceil(motionData[1]);
     motionDataArray[2] = ceil(motionData[2]);
@@ -388,7 +388,7 @@ void Gui::GuiNativeEvent::Move3d(HANDLE device, std::vector<float>& motionData)
 void Gui::GuiNativeEvent::On3dmouseKeyDown(HANDLE device, int virtualKeyCode)
 {
 	Q_UNUSED(device);
-    
+
     mainApp->postButtonEvent(virtualKeyCode - 1, 1);
 }
 

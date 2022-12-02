@@ -7,7 +7,7 @@ based on the stock theme from FreeCAD by Pablo Gil Fernández
 
 KNOWN BUGS and TO DO
 ============================================================================================================
-Please, follow the link to get updated information: 
+Please, follow the link to get updated information:
 https://forum.freecadweb.org/viewtopic.php?f=34&t=55134&sid=0466734fc3349eccd8921eb356f70ad7
 
 LICENSE
@@ -24,9 +24,9 @@ INSTALLATION
     WINDOWS = C:/[INSTALLATION_PATH]/FreeCAD/data/Gui/Stylesheets/
     LINUX = /home/[YOUR_USER_NAME]/.FreeCAD/Gui/Stylesheets/
 
-============================================================================================================ 
+============================================================================================================
 THESE COLOURS WERE USED AS TEMP SCRATCHPAD FOR DESIGNING. PLEASE DISREGARD!
- 
+
     BACKGROUND (darker to lighter)
         black
         #1e1e1e
@@ -112,8 +112,8 @@ Sub windows
 ==================================================================================================*/
 QMdiSubWindow {
     border:1px solid #333333;
-    margin-top: 30px;    
-    margin-left: 4px;    
+    margin-top: 30px;
+    margin-left: 4px;
     margin-right: 4px;
     margin-bottom:4px;
 }
@@ -575,7 +575,7 @@ QTabWidget::tab-bar:right {
 
 QTabBar {
     qproperty-drawBase: 0; /* important */
-    background-color: transparent; /* Hack for Undocked white background - was transparent*/ 
+    background-color: transparent; /* Hack for Undocked white background - was transparent*/
 }
 
 /* Workaround for QTabBars created from docked QDockWidgets which don't draw the border if not set and reset as follows: */
@@ -1214,7 +1214,7 @@ QSint--ActionGroup QFrame[class="content"] > QWidget > QPushButton {
     margin: 0px;
 }
 
-/* Fix for lists inside task panels */ /* sketcher constraints list */ 
+/* Fix for lists inside task panels */ /* sketcher constraints list */
 QSint--ActionGroup QFrame[class="content"] QTreeView,
 QSint--ActionGroup QFrame[class="content"] QListView,
 QSint--ActionGroup QFrame[class="content"] QTableView {
@@ -1770,8 +1770,8 @@ QDialog QToolButton:focus {
 QDialog QToolButton:disabled,
 QDialog QToolButton:disabled:checked {
     color: #f5f5f5;
-    background-color: #2a2a2a; 
-    border: 1px solid #2a2a2a; 
+    background-color: #2a2a2a;
+    border: 1px solid #2a2a2a;
 }
 
 QDialog QToolButton:pressed {

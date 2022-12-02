@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-    <PythonExport 
-        Father="BaseClassPy" 
-        Name="AxisOriginPy" 
-        Twin="AxisOrigin" 
-        TwinPointer="AxisOrigin" 
-        Include="Gui/AxisOrigin.h" 
-        Namespace="Gui" 
+    <PythonExport
+        Father="BaseClassPy"
+        Name="AxisOriginPy"
+        Twin="AxisOrigin"
+        TwinPointer="AxisOrigin"
+        Include="Gui/AxisOrigin.h"
+        Namespace="Gui"
         FatherInclude="Base/BaseClassPy.h"
         FatherNamespace="Base"
         Constructor="true"

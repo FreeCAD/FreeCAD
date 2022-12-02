@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BASE_PREFERENCEPACKMANAGER_H 
-#define BASE_PREFERENCEPACKMANAGER_H 
+#ifndef BASE_PREFERENCEPACKMANAGER_H
+#define BASE_PREFERENCEPACKMANAGER_H
 
 #include <vector>
 #include <string>
@@ -78,10 +78,10 @@ namespace Gui {
 
     /**
      * \class PreferencePackManager handles storable and loadable collections of user preferences
-     * 
+     *
      * This class provides some additional utility functions for allowing users to save their current
      * preferences as a PreferencePack based on a set of template files provided either in the main
-     * FreeCAD distribution, or inside various installed mods. 
+     * FreeCAD distribution, or inside various installed mods.
      */
     class PreferencePackManager {
     public:
@@ -129,36 +129,36 @@ namespace Gui {
 
 
         /**
-         * \struct TemplateFile A file containing a set of preferences that can be saved into 
+         * \struct TemplateFile A file containing a set of preferences that can be saved into
          * a PreferencePack
          *
-         * PreferencePacks can contain any parameters at all, but inside FreeCAD there is no 
-         * centralized list of all of these parameters, and at any given time the user.cfg file 
-         * usually does not store a value for all possible parameters. Instead, it simply allows 
-         * calling code to use whatever default values that code sets. This is all completely 
+         * PreferencePacks can contain any parameters at all, but inside FreeCAD there is no
+         * centralized list of all of these parameters, and at any given time the user.cfg file
+         * usually does not store a value for all possible parameters. Instead, it simply allows
+         * calling code to use whatever default values that code sets. This is all completely
          * hidden from the users: FreeCAD behaves as though those values exist in the config file.
-         * 
-         * When a user saves their current configuration as a pack, they likely expect that saved 
-         * configuration to include those default values, so that if they later apply their saved 
-         * configuration those defaults are restored. To enable this a set of template files 
-         * listing default values for various types of parameters can be used. Each file is 
-         * presented to the user as a checkable box when saving a new preferences pack, and the 
-         * intention is that these files will list out the various user-facing parameters that 
+         *
+         * When a user saves their current configuration as a pack, they likely expect that saved
+         * configuration to include those default values, so that if they later apply their saved
+         * configuration those defaults are restored. To enable this a set of template files
+         * listing default values for various types of parameters can be used. Each file is
+         * presented to the user as a checkable box when saving a new preferences pack, and the
+         * intention is that these files will list out the various user-facing parameters that
          * someone might want to save into a preferences pack.
-         * 
+         *
          * These files are themselves valid user.cfg files, that if loaded and applied will result
-         * in the default values of their contained variables being set. For this to work, these 
-         * files should be kept up-to-date with the default values set in the code. They are not 
+         * in the default values of their contained variables being set. For this to work, these
+         * files should be kept up-to-date with the default values set in the code. They are not
          * required to contain an exhaustive listing of all possible parameters: in most cases it
          * is enough that they list the variables that a user would expect for a given name. For
          * example, "Sketcher Colors.cfg" should list out all of the default colors used in
          * Sketcher that a user can set in Preferences, but it is not necessary that it contain any
-         * color that is only used internally, and it should not include things like fonts, or 
+         * color that is only used internally, and it should not include things like fonts, or
          * behavior information.
-         * 
+         *
          * The base FreeCAD installation includes default templates in:
          *    $INSTALL_DIR/data/Gui/PreferencePackTemplates/
-         * 
+         *
          * External add-ons are also searched for any directory called PreferencePackTemplates or
          * preference_pack_templates -- either of which is expected to contain appearance and/or
          * behavior subdirectories. In this way external add-ons can allow a user to easily save

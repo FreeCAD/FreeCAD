@@ -39,9 +39,9 @@ class Ui_DlgPreferencePackManagement;
 
 /**
  * \class DlgCreateNewPreferencePackImp
- * 
- * A dialog to request a preferencePack name and a set of preferencePack templates. 
- * 
+ *
+ * A dialog to request a preferencePack name and a set of preferencePack templates.
+ *
  * \author Chris Hennes
  */
 class GuiExport DlgPreferencePackManagementImp : public QDialog

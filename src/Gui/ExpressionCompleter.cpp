@@ -255,7 +255,7 @@ public:
             if(count)
                 *count = propSize;
         }
-        if(v) 
+        if(v)
             *v = QString::fromLatin1(propName);
         return;
     }
@@ -336,7 +336,7 @@ private:
  * @param parent Parent object owning the completer.
  */
 
-ExpressionCompleter::ExpressionCompleter(const App::DocumentObject * currentDocObj, 
+ExpressionCompleter::ExpressionCompleter(const App::DocumentObject * currentDocObj,
         QObject *parent, bool noProperty, bool checkInList)
     : QCompleter(parent), currentObj(currentDocObj)
     , noProperty(noProperty), checkInList(checkInList)

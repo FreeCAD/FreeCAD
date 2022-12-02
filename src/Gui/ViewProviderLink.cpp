@@ -2114,7 +2114,7 @@ std::vector<App::DocumentObject*> ViewProviderLink::claimChildren() const {
         }
     } else if(hasElements(ext) || isGroup(ext)) {
         ret = ext->getElementListValue();
-        if (ext->_getElementCountValue() 
+        if (ext->_getElementCountValue()
                 && ext->getLinkClaimChildValue()
                 && ext->getLinkedObjectValue())
             ret.insert(ret.begin(), ext->getLinkedObjectValue());
