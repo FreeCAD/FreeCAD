@@ -494,15 +494,17 @@ def importDXFface(filename,layer=None,doc=None):
     for shapeobj in groupobj[0].Group:
         edges.extend(shapeobj.Shape.Edges)
     faces = edgestofaces(edges)
-        # in order to allow multiple import with the same layer name
-        # we need to remove used objects from the layer group
-        #shapeobj.Document.removeObject(shapeobj.Name)
-    #groupobj[0].Document.removeObject(groupobj[0].Name)
+    # in order to allow multiple import with the same layer name
+    # we need to remove used objects from the layer group
+    container = None
     for layer in layers: #remove everything that has been imported
+        if container is None:
+            container = layer.getParentGroup()
         removeOp = getattr(layer, "removeObjectsFromDocument", None)
         if callable(removeOp):
             layer.removeObjectsFromDocument()
-        #for obj in layer.Group:
-        #    obj.Document.removeObject(obj.Name)
+        for obj in layer.Group:
+            obj.Document.removeObject(obj.Name)
         layer.Document.removeObject(layer.Name)
+    container.Document.removeObject(container.Name)
     return faces
