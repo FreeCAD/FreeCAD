@@ -41,10 +41,10 @@ installed addons will be checked for available updates
       <string>Download Macro metadata (approximately 10MB)</string>
      </property>
      <property name="prefEntry" stdset="0">
-      <string>DownloadMacros</string>
+      <cstring>DownloadMacros</cstring>
      </property>
      <property name="prefPath" stdset="0">
-      <string>Addons</string>
+      <cstring>Addons</cstring>
      </property>
     </widget>
    </item>
