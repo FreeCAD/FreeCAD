@@ -45,7 +45,7 @@ namespace App{class DocumentObject;}
 namespace Gui
 {
   class ViewProviderDocumentObject;
-  
+
   namespace DAG
   {
     enum class VisibilityState
@@ -54,7 +54,7 @@ namespace Gui
       On, //<! shown
       Off //<! hidden
     };
-    
+
     enum class FeatureState
     {
       None = 0, //<! not determined.
@@ -62,12 +62,12 @@ namespace Gui
       Fail,     //<! feature failed to update.
       Pending   //<! feature is pending an update.
     };
-    
+
     //limit of column width? boost::dynamic_bitset?
     //did a trial run with this set at 4096, not much difference.
     //going to leave a big number by default and see how it goes.
     using ColumnMask = std::bitset<1024>;
-    
+
     /*! @brief Graph vertex information
    *
    * My data stored for each vertex;
@@ -98,7 +98,7 @@ namespace Gui
       boost::vertex_index_t, std::size_t,
       boost::property <boost::vertex_color_t, boost::default_color_type, VertexProperty>
     >;
-    
+
     /*! @brief Graph edge information
     *
     * My data stored for each edge;
@@ -119,7 +119,7 @@ namespace Gui
     };
     /*! @brief needed to create an internal index for graph edges. needed for setS.*/
     using edge_prop = boost::property<boost::edge_index_t, std::size_t, EdgeProperty>;
-    
+
     using Graph = boost::adjacency_list<boost::setS, boost::listS, boost::bidirectionalS, vertex_prop, edge_prop>;
     using Vertex = boost::graph_traits<Graph>::vertex_descriptor;
     using Edge = boost::graph_traits<Graph>::edge_descriptor;
@@ -130,7 +130,7 @@ namespace Gui
     using VertexAdjacencyIterator = boost::graph_traits<Graph>::adjacency_iterator;
     using GraphReversed = boost::reverse_graph<Graph, Graph&>;
     using Path = std::vector<Vertex>; //!< a path or any array of vertices
-    
+
     template <class GraphEW>
     class Edge_writer {
     public:
@@ -145,7 +145,7 @@ namespace Gui
     private:
       const GraphEW &graphEW;
     };
-    
+
     template <class GraphVW>
     class Vertex_writer {
     public:
@@ -154,13 +154,13 @@ namespace Gui
       void operator()(std::ostream& out, const VertexW& vertexW) const
       {
         out << "[label=\"";
-        out << graphVW[vertexW].text->toPlainText().toLatin1().data(); 
+        out << graphVW[vertexW].text->toPlainText().toLatin1().data();
         out << "\"]";
       }
     private:
       const GraphVW &graphVW;
     };
-    
+
     template <class GraphIn>
     void outputGraphviz(const GraphIn &graphIn, const std::string &filePath)
     {
@@ -168,7 +168,7 @@ namespace Gui
       boost::write_graphviz(file, graphIn, Vertex_writer<GraphIn>(graphIn),
                             Edge_writer<GraphIn>(graphIn));
     }
-    
+
     //! get all the leaves of the templated graph. Not used right now.
     template <class GraphIn>
     class RakeLeaves
@@ -190,7 +190,7 @@ namespace Gui
     private:
       const GraphIn &graph;
     };
-    
+
     //! get all the roots of the templated graph. Not used right now.
     template <class GraphIn>
     class DigRoots
@@ -212,24 +212,24 @@ namespace Gui
     private:
       const GraphIn &graph;
     };
-    
+
     /*! @brief Get connected components.
     */
     class ConnectionVisitor : public boost::default_bfs_visitor
     {
     public:
       explicit ConnectionVisitor(std::vector<Vertex> &verticesIn) : vertices(verticesIn){}
-      
+
       template<typename TVertex, typename TGraph>
       void discover_vertex(TVertex vertex, TGraph &graph)
       {
-        Q_UNUSED(graph); 
+        Q_UNUSED(graph);
         vertices.push_back(vertex);
       }
     private:
       std::vector<Vertex> &vertices;
     };
-    
+
     /*! Multi_index record. */
     struct GraphLinkRecord
     {
@@ -238,17 +238,17 @@ namespace Gui
       const RectItem *rectItem; //!< qgraphics item.
       std::string uniqueName; //!< name for document object.
       Vertex vertex; //!< vertex in graph.
-      
+
       //@{
       //! used as tags.
       struct ByDObject{};
-      struct ByVPDObject{}; 
-      struct ByRectItem{}; 
+      struct ByVPDObject{};
+      struct ByRectItem{};
       struct ByUniqueName{};
       struct ByVertex{};
       //@}
     };
-    
+
     namespace BMI = boost::multi_index;
     using GraphLinkContainer = boost::multi_index_container
     <
@@ -282,7 +282,7 @@ namespace Gui
         >
       >
     >;
-    
+
     bool hasRecord(const App::DocumentObject* dObjectIn, const GraphLinkContainer &containerIn);
     const GraphLinkRecord& findRecord(Vertex vertexIn, const GraphLinkContainer &containerIn);
     const GraphLinkRecord& findRecord(const App::DocumentObject* dObjectIn, const GraphLinkContainer &containerIn);

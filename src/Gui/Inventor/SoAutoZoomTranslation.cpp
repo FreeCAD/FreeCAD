@@ -114,7 +114,7 @@ void SoAutoZoomTranslation::doAction(SoAction * action)
 //    scaleFactor.setValue(SbVec3f(sf,sf,sf));
 //    //this->enableNotify	(	true );
 //    //scaleFactor.setDirty (true);
-//    
+//
 //}
 
 void SoAutoZoomTranslation::getMatrix(SoGetMatrixAction * action)

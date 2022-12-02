@@ -75,7 +75,7 @@ public:
 
     /// Options for getSelections()
     enum class SelectionOptions {
-        /// Invert the selection, i.e. return the unselected objects 
+        /// Invert the selection, i.e. return the unselected objects
         Invert = 1,
         /// Sort the returned object in depending order
         Sort = 2,
@@ -126,8 +126,8 @@ private:
     std::map<App::SubObjectT, QTreeWidgetItem*> depMap;
     std::map<App::SubObjectT, QTreeWidgetItem*> inMap;
     std::map<App::SubObjectT, Qt::CheckState> itemChanged;
-    QTreeWidgetItem *allItem = nullptr;    
-    
+    QTreeWidgetItem *allItem = nullptr;
+
     QPushButton* useOriginalsBtn;
     bool returnOriginals = false;
 

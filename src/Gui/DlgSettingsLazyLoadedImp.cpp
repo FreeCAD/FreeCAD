@@ -41,7 +41,7 @@ const uint DlgSettingsLazyLoadedImp::WorkbenchNameRole = Qt::UserRole;
 /* TRANSLATOR Gui::Dialog::DlgSettingsLazyLoadedImp */
 
 /**
- *  Constructs a DlgSettingsLazyLoadedImp 
+ *  Constructs a DlgSettingsLazyLoadedImp
  */
 DlgSettingsLazyLoadedImp::DlgSettingsLazyLoadedImp( QWidget* parent )
     : PreferencePage( parent )
@@ -74,7 +74,7 @@ void DlgSettingsLazyLoadedImp::saveSettings()
 
 void DlgSettingsLazyLoadedImp::loadSettings()
 {
-    // There are two different "autoload" settings: the first, in FreeCAD since 2004, 
+    // There are two different "autoload" settings: the first, in FreeCAD since 2004,
     // controls the module the user sees first when starting FreeCAD, and defaults to the Start workbench
     std::string start = App::Application::Config()["StartWorkbench"];
     _startupModule = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
@@ -111,7 +111,7 @@ void DlgSettingsLazyLoadedImp::buildUnloadedWorkbenchList()
 {
     QStringList workbenches = Application::Instance->workbenches();
     workbenches.sort();
-   
+
     ui->workbenchTable->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
     ui->workbenchTable->setRowCount(0);
     _autoloadCheckboxes.clear(); // setRowCount(0) just invalidated all of these pointers
@@ -146,14 +146,14 @@ void DlgSettingsLazyLoadedImp::buildUnloadedWorkbenchList()
         auto textLabel = new QLabel(wbDisplayName);
         textLabel->setToolTip(wbTooltip);
         ui->workbenchTable->setCellWidget(rowNumber, 1, textLabel);
-        
+
         // Column 3: Autoloaded checkbox
-        // 
+        //
         // To get the checkbox centered, we have to jump through some hoops...
         auto checkWidget = new QWidget(this);
         auto autoloadCheckbox = new QCheckBox(this);
-        autoloadCheckbox->setToolTip(tr("If checked") + 
-                                     QString::fromUtf8(", ") + wbDisplayName + QString::fromUtf8(" ") + 
+        autoloadCheckbox->setToolTip(tr("If checked") +
+                                     QString::fromUtf8(", ") + wbDisplayName + QString::fromUtf8(" ") +
                                      tr("will be loaded automatically when FreeCAD starts up"));
         auto checkLayout = new QHBoxLayout(checkWidget);
         checkLayout->addWidget(autoloadCheckbox);
@@ -175,13 +175,13 @@ void DlgSettingsLazyLoadedImp::buildUnloadedWorkbenchList()
             _autoloadCheckboxes.insert(std::make_pair(wbName, autoloadCheckbox));
         }
         ui->workbenchTable->setCellWidget(rowNumber, 2, checkWidget);
-        
+
         // Column 4: Load button/loaded indicator
         if (WorkbenchManager::instance()->getWorkbench(wbName.toStdString())) {
             auto label = new QLabel(tr("Loaded"));
             label->setAlignment(Qt::AlignCenter);
             ui->workbenchTable->setCellWidget(rowNumber, 3, label);
-        } 
+        }
         else {
             auto button = new QPushButton(tr("Load now"));
             connect(button, &QPushButton::clicked, this, [this,wbName]() { onLoadClicked(wbName); });
