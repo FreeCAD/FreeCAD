@@ -1112,7 +1112,7 @@ void ObjectIdentifier::getDepLabels(
 }
 
 ObjectIdentifier::Dependencies
-ObjectIdentifier::getDep(bool needProps, std::vector<std::string> *labels) const 
+ObjectIdentifier::getDep(bool needProps, std::vector<std::string> *labels) const
 {
     Dependencies deps;
     getDep(deps,needProps,labels);
@@ -1122,7 +1122,7 @@ ObjectIdentifier::getDep(bool needProps, std::vector<std::string> *labels) const
 void ObjectIdentifier::getDep(Dependencies &deps, bool needProps, std::vector<std::string> *labels) const
 {
     ResolveResults result(*this);
-    if(labels) 
+    if(labels)
         getDepLabels(result,*labels);
 
     if(!result.resolvedDocumentObject)
@@ -1306,7 +1306,7 @@ Property *ObjectIdentifier::resolveProperty(const App::DocumentObject *obj,
         }
         return &const_cast<App::DocumentObject*>(obj)->Label; //fake the property
     }
-    
+
     return obj->getPropertyByName(propertyName);
 }
 
@@ -1676,13 +1676,13 @@ Py::Object ObjectIdentifier::access(const ResolveResults &result,
         if(prop && prop->getContainer()!=obj) {
             auto linkTouched = Base::freecad_dynamic_cast<PropertyBool>(
                     obj->getPropertyByName("_LinkTouched"));
-            if(linkTouched) 
+            if(linkTouched)
                 propName = linkTouched->getName();
             else {
                 auto propOwner = Base::freecad_dynamic_cast<DocumentObject>(prop->getContainer());
-                if(propOwner) 
+                if(propOwner)
                     obj = propOwner;
-                else 
+                else
                     propName = nullptr;
             }
         }

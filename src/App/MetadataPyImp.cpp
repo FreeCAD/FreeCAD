@@ -139,22 +139,22 @@ void MetadataPy::setVersion(Py::Object args)
     const char *name = nullptr;
     if (!PyArg_Parse(args.ptr(), "z", &name))
         throw Py::Exception();
-    if (name && name[0] != '\0') 
+    if (name && name[0] != '\0')
         getMetadataPtr()->setVersion(App::Meta::Version(std::string(name)));
     else
         getMetadataPtr()->setVersion(App::Meta::Version());
 }
 
-Py::Object MetadataPy::getDate() const 
-{ 
-    return Py::String(getMetadataPtr()->date()); 
+Py::Object MetadataPy::getDate() const
+{
+    return Py::String(getMetadataPtr()->date());
 }
 
 void MetadataPy::setDate(Py::Object args)
 {
     const char *date = nullptr;
-    if (!PyArg_Parse(args.ptr(), "z", &date)) 
-        throw Py::Exception(); 
+    if (!PyArg_Parse(args.ptr(), "z", &date))
+        throw Py::Exception();
     if (date) getMetadataPtr()->setDate(date);
     else
         getMetadataPtr()->setDate("");
