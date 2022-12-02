@@ -25,7 +25,7 @@ ENDIF(DOCDIR)
 
 # -----------------------------------------------------------------------------
 
-#write relevant cmake variables to a file for later access with python. Exported are all variables 
+#write relevant cmake variables to a file for later access with python. Exported are all variables
 #starting with BUILD. As the variable only exists if the user set it to ON a dict is useless, we
 #use a python list for export.
 set(_vars "const char CMakeVariables[] =\"cmake = [")
