@@ -7,7 +7,8 @@
 
 # Maintainers:  keep this list of plugins up to date
 # List plugins in %%{_libdir}/%{name}/lib, less '.so' and 'Gui.so', here
-%global plugins Fem FreeCAD Image Import Inspection Mesh MeshPart Part Points QtUnit Raytracing ReverseEngineering Robot Sketcher Start Web PartDesignGui _PartDesign Path PathGui Spreadsheet SpreadsheetGui area DraftUtils DraftUtils libDriver libDriverDAT libDriverSTL libDriverUNV libE57Format libMEFISTO2 libSMDS libSMESH libSMESHDS libStdMeshers Measure TechDraw TechDrawGui libarea-native Surface SurfaceGui PathSimulator
+%global plugins Fem FreeCAD PathApp Image Import Inspection Mesh MeshPart Part Points Raytracing ReverseEngineering Robot Sketcher Start Web PartDesignGui _PartDesign Path PathGui Spreadsheet SpreadsheetGui area DraftUtils DraftUtils libDriver libDriverDAT libDriverSTL libDriverUNV libE57Format libMEFISTO2 libSMDS libSMESH libSMESHDS libStdMeshers Measure TechDraw TechDrawGui libarea-native Surface SurfaceGui PathSimulator
+
 
 # Some configuration options for other environments
 # rpmbuild --with=bundled_zipios:  use bundled version of zipios++
@@ -16,6 +17,9 @@
 %global bundled_pycxx %{?_without_bundled_pycxx: 0} %{?!_without_bundled_pycxx: 1}
 # rpmbuild --without=bundled_smesh:  don't use bundled version of Salome's Mesh
 %global bundled_smesh %{?_without_bundled_smesh: 0} %{?!_without_bundled_smesh: 1}
+
+#Hack to force zipios
+%global bundled_zipios %{?_with_bundled_zipios: 1} %{?!_with_bundled_zipios: 1}
 
 # Prevent RPM from doing its magical 'build' directory for now
 %global __cmake_in_source_build 0
@@ -67,7 +71,11 @@ BuildRequires:  libglvnd-devel
 BuildRequires:  libicu-devel
 BuildRequires:  libkdtree++-devel
 BuildRequires:  libspnav-devel
+%if 0%{?fedora} < 37
 BuildRequires:  libusb-devel
+%else
+BuildRequires:  libusb1-devel
+%endif
 BuildRequires:  med-devel
 BuildRequires:  mesa-libEGL-devel
 BuildRequires:  mesa-libGLU-devel
@@ -86,6 +94,7 @@ BuildRequires:  python3-pycxx-devel
 %endif
 BuildRequires:  python3-pyside2-devel
 BuildRequires:  python3-shiboken2-devel
+BuildRequires:  qt5-qtwebengine-devel
 BuildRequires:  qt5-qtwebkit-devel
 BuildRequires:  qt5-qtsvg-devel
 BuildRequires:  qt5-qttools-static
@@ -222,6 +231,7 @@ LDFLAGS='-Wl,--as-needed -Wl,--no-undefined'; export LDFLAGS
 %endif
        -DPACKAGE_WCREF="%{release} (Git)" \
        -DPACKAGE_WCURL="git://github.com/%{github_name}/FreeCAD.git master" \
+       -DBUILD_TEST=FALSE \
        ../
 
 make fc_version
@@ -271,6 +281,9 @@ rm -f %{buildroot}%{_docdir}/%{name}/Start_Page.html
 # Belongs in %%license not %%doc
 #No longer present?
 #rm -f %{buildroot}%{_docdir}/freecad/ThirdPartyLibraries.html
+
+# Remove header from external library that's erroneously installed
+rm -f %{buildroot}%{_libdir}/%{name}/include/E57Format/E57Export.h
 
 # Bug maintainers to keep %%{plugins} macro up to date.
 #
@@ -329,7 +342,6 @@ fi
 %{_metainfodir}/*
 %dir %{_libdir}/%{name}
 %{_libdir}/%{name}/bin/
-%{_libdir}/%{name}/include/E57Format/E57Export.h
 %{_libdir}/%{name}/%{_lib}/
 %{_libdir}/%{name}/Mod/
 %{_libdir}/%{name}/Ext/
