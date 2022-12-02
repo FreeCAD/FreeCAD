@@ -193,19 +193,35 @@ MeasureType Measurement::getType()
 
 TopoDS_Shape Measurement::getShape(App::DocumentObject *obj , const char *subName) const
 {
+//    Base::Console().Message("Meas::getShape(%s, %s)\n", obj->getNameInDocument(), subName);
+    //temporary fix to get "Vertex7" from "Body003.Pocket020.Vertex7"
+    //when selected, Body features are provided as featureName and subNameAndIndex
+    //other sources provide the full extended name with index
+    std::string workingSubName(subName);
+    size_t lastDot = workingSubName.rfind('.');
+    if (lastDot != std::string::npos) {
+        workingSubName = workingSubName.substr(lastDot + 1);
+    }
+
     try {
         Part::TopoShape partShape = Part::Feature::getTopoShape(obj);
         App::GeoFeature* geoFeat = dynamic_cast<App::GeoFeature*>(obj);
         if (geoFeat) {
             partShape.setPlacement(geoFeat->globalPlacement());
         }
-        TopoDS_Shape shape = partShape.getSubShape(subName);
-        if(shape.IsNull())
+        TopoDS_Shape shape = partShape.getSubShape(workingSubName.c_str());
+        if(shape.IsNull()) {
             throw Part::NullShapeException("null shape in measurement");
+        }
         return shape;
-    } catch (Standard_Failure& e) {
+    }
+    catch (Standard_Failure& e) {
         throw Base::CADKernelError(e.GetMessageString());
     }
+    catch (...) {
+        throw Base::RuntimeError("Measurement: Unknown error retrieving shape");
+    }
+
 }
 
 //TODO:: add lengthX, lengthY (and lengthZ??) support
