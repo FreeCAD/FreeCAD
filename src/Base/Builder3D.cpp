@@ -480,9 +480,9 @@ void MaterialBindingItem::write(InventorOutput& out) const
 
 // -----------------------------------------------------------------------------
 
-DrawStyleItem::DrawStyleItem(DrawStyle style) : style(style)
+void DrawStyleItem::setValue(DrawStyle value)
 {
-
+    style = value;
 }
 
 void DrawStyleItem::write(InventorOutput& out) const
@@ -511,9 +511,9 @@ void ShapeHintsItem::write(InventorOutput& out) const
 
 // -----------------------------------------------------------------------------
 
-PolygonOffsetItem::PolygonOffsetItem(PolygonOffset offset) : offset(offset)
+void PolygonOffsetItem::setValue(PolygonOffset value)
 {
-
+    offset = value;
 }
 
 void PolygonOffsetItem::write(InventorOutput& out) const

@@ -220,7 +220,7 @@ R"(DrawStyle {
     {
         QFETCH(QString, result);
 
-        Base::DrawStyleItem item{Base::DrawStyle{}};
+        Base::DrawStyleItem item;
         builder.addNode(item);
         QString string = QString::fromStdString(output.str());
 
@@ -267,7 +267,7 @@ R"(PolygonOffset {
     {
         QFETCH(QString, result);
 
-        Base::PolygonOffsetItem item{Base::PolygonOffset{}};
+        Base::PolygonOffsetItem item;
         builder.addNode(item);
         QString string = QString::fromStdString(output.str());
 

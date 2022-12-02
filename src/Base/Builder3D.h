@@ -325,7 +325,7 @@ private:
 class BaseExport DrawStyleItem : public NodeItem
 {
 public:
-    explicit DrawStyleItem(DrawStyle style);
+    void setValue(DrawStyle value);
     void write(InventorOutput& out) const override;
 
 private:
@@ -351,7 +351,7 @@ private:
 class BaseExport PolygonOffsetItem : public NodeItem
 {
 public:
-    explicit PolygonOffsetItem(PolygonOffset offset);
+    void setValue(PolygonOffset value);
     void write(InventorOutput& out) const override;
 
 private:
