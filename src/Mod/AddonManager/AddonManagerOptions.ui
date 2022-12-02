@@ -185,14 +185,14 @@ installed addons will be checked for available updates
      <item>
       <widget class="QToolButton" name="addCustomRepositoryButton">
        <property name="text">
-        <string>...</string>
+        <string notr="true">...</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QToolButton" name="removeCustomRepositoryButton">
        <property name="text">
-        <string>...</string>
+        <string notr="true">...</string>
        </property>
       </widget>
      </item>

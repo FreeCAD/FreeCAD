@@ -87,7 +87,7 @@
         <item>
          <widget class="QToolButton" name="addButton">
           <property name="text">
-           <string>...</string>
+           <string notr="true">...</string>
           </property>
           <property name="autoRaise">
            <bool>true</bool>
@@ -97,7 +97,7 @@
         <item>
          <widget class="QToolButton" name="removeButton">
           <property name="text">
-           <string>...</string>
+           <string notr="true">...</string>
           </property>
           <property name="autoRaise">
            <bool>true</bool>
