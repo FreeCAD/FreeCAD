@@ -141,7 +141,7 @@
            </size>
           </property>
           <property name="text">
-           <string>...</string>
+           <string notr="true">...</string>
           </property>
          </widget>
         </item>
@@ -159,7 +159,7 @@
         <item row="0" column="1">
          <widget class="QPushButton" name="buttonColorPlot">
           <property name="text">
-           <string>...</string>
+           <string notr="true">...</string>
           </property>
          </widget>
         </item>
