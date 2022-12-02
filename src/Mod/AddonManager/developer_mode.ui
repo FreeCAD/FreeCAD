@@ -298,14 +298,14 @@
         <item>
          <widget class="QToolButton" name="addContentItemToolButton">
           <property name="text">
-           <string>...</string>
+           <string notr="true">...</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QToolButton" name="removeContentItemToolButton">
           <property name="text">
-           <string>...</string>
+           <string notr="true">...</string>
           </property>
          </widget>
         </item>

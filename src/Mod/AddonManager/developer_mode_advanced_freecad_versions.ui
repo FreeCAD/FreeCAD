@@ -68,14 +68,14 @@
      <item>
       <widget class="QToolButton" name="addEntryToolButton">
        <property name="text">
-        <string>...</string>
+        <string notr="true">...</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QToolButton" name="removeEntryToolButton">
        <property name="text">
-        <string>...</string>
+        <string notr="true">...</string>
        </property>
       </widget>
      </item>
