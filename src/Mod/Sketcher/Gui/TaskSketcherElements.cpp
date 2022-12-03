@@ -723,7 +723,9 @@ void TaskSketcherElements::setItemVisibility(QListWidgetItem* it)
 {
     ElementItem* item = static_cast<ElementItem*>(it);
 
-    if (ui->filterBox->checkState() == Qt::Unchecked) { item->setHidden(false); return; }
+    if (ui->filterBox->checkState() == Qt::Unchecked) { item->setHidden(false);
+        return;
+    }
 
     using GeometryState = ElementItem::GeometryState;
 

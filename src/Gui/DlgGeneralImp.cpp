@@ -382,7 +382,7 @@ void DlgGeneralImp::recreatePreferencePackMenu()
     ui->PreferencePacks->horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeMode::Stretch);
     ui->PreferencePacks->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeMode::ResizeToContents);
     QStringList columnHeaders;
-    columnHeaders << tr("Preference Pack Name") 
+    columnHeaders << tr("Preference Pack Name")
                   << tr("Tags")
                   << QString(); // for the "Load" buttons
     ui->PreferencePacks->setHorizontalHeaderLabels(columnHeaders);
@@ -440,7 +440,7 @@ void DlgGeneralImp::revertToSavedConfig()
     revertToBackupConfigDialog->open();
 }
 
-void DlgGeneralImp::newPreferencePackDialogAccepted() 
+void DlgGeneralImp::newPreferencePackDialogAccepted()
 {
     auto preferencePackTemplates = Application::Instance->prefPackManager()->templateFiles();
     auto selection = newPreferencePackDialog->selectedTemplates();
@@ -468,11 +468,11 @@ void DlgGeneralImp::onManagePreferencePacksClicked()
     this->preferencePackManagementDialog->show();
 }
 
-void DlgGeneralImp::onImportConfigClicked() 
+void DlgGeneralImp::onImportConfigClicked()
 {
-    auto path = fs::path(QFileDialog::getOpenFileName(this, 
-        tr("Choose a FreeCAD config file to import"), 
-        QString(), 
+    auto path = fs::path(QFileDialog::getOpenFileName(this,
+        tr("Choose a FreeCAD config file to import"),
+        QString(),
         QString::fromUtf8("*.cfg")).toStdString());
     if (!path.empty()) {
         // Create a name from the filename:
@@ -484,7 +484,8 @@ void DlgGeneralImp::onImportConfigClicked()
             auto result = QMessageBox::question(
                 this, tr("File exists"),
                 tr("A preference pack with that name already exists. Overwrite?"));
-            if (result == QMessageBox::No) return; // Maybe someday ask for a new name?
+            if (result == QMessageBox::No) // Maybe someday ask for a new name?
+                return;
         }
         Application::Instance->prefPackManager()->importConfig(packName, path);
         recreatePreferencePackMenu();

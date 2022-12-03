@@ -340,7 +340,8 @@ DOMElement *appendSimpleXMLNode(DOMElement *baseNode, const std::string &nodeNam
                                 const std::string &nodeContents)
 {
     // For convenience (and brevity of final output) don't create nodes that don't have contents
-    if (nodeContents.empty()) return nullptr;
+    if (nodeContents.empty())
+        return nullptr;
 
     auto doc = baseNode->getOwnerDocument();
     DOMElement *namedElement = doc->createElement(XUTF8Str(nodeName.c_str()).unicodeForm());
@@ -352,7 +353,8 @@ DOMElement *appendSimpleXMLNode(DOMElement *baseNode, const std::string &nodeNam
 
 void addAttribute(DOMElement *node, const std::string &key, const std::string &value)
 {
-    if (value.empty()) return;
+    if (value.empty())
+        return;
 
     node->setAttribute(XUTF8Str(key.c_str()).unicodeForm(), XUTF8Str(value.c_str()).unicodeForm());
 }
@@ -449,7 +451,8 @@ void Metadata::write(const fs::path &file) const
 
 bool Metadata::satisfies(const Meta::Dependency &dep)
 {
-    if (dep.package != _name) return false;
+    if (dep.package != _name)
+        return false;
 
     // The "condition" attribute allows an expression to enable or disable this dependency check: it must contain a valid
     // FreeCAD Expression. If it evaluates to false, this dependency is bypassed (e.g. this function returns false).
@@ -470,24 +473,30 @@ bool Metadata::satisfies(const Meta::Dependency &dep)
         }
         auto parsedExpression = App::Expression::parse(nullptr, dep.condition);
         auto result = parsedExpression->eval();
-        if (!boost::any_cast<bool>(result->getValueAsAny())) return false;
+        if (!boost::any_cast<bool>(result->getValueAsAny()))
+            return false;
     }
 
-    if (!dep.version_eq.empty()) return _version == Meta::Version(dep.version_eq);
+    if (!dep.version_eq.empty())
+        return _version == Meta::Version(dep.version_eq);
 
     // Any of the others might be specified in pairs, so only return the "false" case
 
     if (!dep.version_lt.empty())
-        if (!(_version < Meta::Version(dep.version_lt))) return false;
+        if (!(_version < Meta::Version(dep.version_lt)))
+            return false;
 
     if (!dep.version_lte.empty())
-        if (!(_version <= Meta::Version(dep.version_lt))) return false;
+        if (!(_version <= Meta::Version(dep.version_lt)))
+            return false;
 
     if (!dep.version_gt.empty())
-        if (!(_version > Meta::Version(dep.version_lt))) return false;
+        if (!(_version > Meta::Version(dep.version_lt)))
+            return false;
 
     if (!dep.version_gte.empty())
-        if (!(_version >= Meta::Version(dep.version_lt))) return false;
+        if (!(_version >= Meta::Version(dep.version_lt)))
+            return false;
 
     return true;
 }
@@ -505,7 +514,8 @@ bool Metadata::supportsCurrentFreeCAD() const
         fcVersion = Meta::Version(ss.str());
     }
 
-    if (_freecadmin != Meta::Version() && _freecadmin > fcVersion) return false;
+    if (_freecadmin != Meta::Version() && _freecadmin > fcVersion)
+        return false;
     else if (_freecadmax != Meta::Version() && _freecadmax < fcVersion)
         return false;
     return true;
@@ -739,7 +749,8 @@ Meta::Url::Url(const XERCES_CPP_NAMESPACE::DOMElement *e)
 
 bool App::Meta::Url::operator==(const Url &rhs) const
 {
-    if (type == UrlType::repository && branch != rhs.branch) return false;
+    if (type == UrlType::repository && branch != rhs.branch)
+        return false;
     return type == rhs.type && location == rhs.location;
 }
 
@@ -810,7 +821,8 @@ Meta::Version::Version(const std::string &versionString) : minor(0), patch(0)
 
 std::string Meta::Version::str() const
 {
-    if (*this == Meta::Version()) return "";
+    if (*this == Meta::Version())
+        return "";
     std::ostringstream stream;
     stream << major << "." << minor << "." << patch << suffix;
     return stream.str();
