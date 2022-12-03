@@ -1405,8 +1405,9 @@ void TreeParams::onResizableColumnChanged() {
 
 void TreeParams::onIconSizeChanged() {
     auto tree = TreeWidget::instance();
-    if (tree)
-        tree->setIconHeight(TreeParams::getIconSize());
+    // Commented out temporarily while merging PR #7888
+    //if (tree)
+        //tree->setIconHeight(TreeParams::getIconSize());
 }
 
 void TreeParams::onFontSizeChanged() {
