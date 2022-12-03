@@ -81,6 +81,10 @@ TaskDlgEditSketch::~TaskDlgEditSketch()
     std::vector<QWidget*>::iterator it = std::find(Content.begin(), Content.end(), SolverAdvanced);
     if (it == Content.end())
         Content.push_back(SolverAdvanced);
+    // same thing for edit control panel
+    it = std::find(Content.begin(), Content.end(), General);
+    if (it == Content.end())
+        Content.push_back(General);
 }
 
 //==== calls from the TaskView ===============================================================
