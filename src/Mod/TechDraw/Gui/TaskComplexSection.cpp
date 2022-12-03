@@ -761,7 +761,8 @@ bool TaskComplexSection::reject()
     Gui::Command::updateActive();
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
 
-    return false;}
+    return false;
+}
 
 void TaskComplexSection::changeEvent(QEvent* event)
 {
