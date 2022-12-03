@@ -6,6 +6,15 @@
 #include <Inventor/SoInput.h>
 #include <Inventor/nodes/SoSeparator.h>
 
+Q_DECLARE_METATYPE(Base::Vector3f)
+Q_DECLARE_METATYPE(Base::ColorRGB)
+Q_DECLARE_METATYPE(Base::Line3f)
+Q_DECLARE_METATYPE(Base::BindingElement::Binding)
+Q_DECLARE_METATYPE(Base::DrawStyle)
+Q_DECLARE_METATYPE(Base::DrawStyle::Style)
+Q_DECLARE_METATYPE(Base::PolygonOffset)
+Q_DECLARE_METATYPE(Base::PolygonOffset::Style)
+
 class testInventorBuilder : public QObject
 {
     Q_OBJECT
@@ -65,15 +74,35 @@ private Q_SLOTS:
 
     void test_MaterialBinding_data()
     {
+        QTest::addColumn<Base::BindingElement::Binding>("input");
         QTest::addColumn<QString>("result");
-        QTest::newRow("MaterialBinding") << "MaterialBinding { value OVERALL } \n";
+        QTest::newRow("MaterialBinding") << Base::BindingElement::Binding::Overall
+                                         << "MaterialBinding { value OVERALL } \n";
+        QTest::newRow("MaterialBinding") << Base::BindingElement::Binding::PerPart
+                                         << "MaterialBinding { value PER_PART } \n";
+        QTest::newRow("MaterialBinding") << Base::BindingElement::Binding::PerPartIndexed
+                                         << "MaterialBinding { value PER_PART_INDEXED } \n";
+        QTest::newRow("MaterialBinding") << Base::BindingElement::Binding::PerFace
+                                         << "MaterialBinding { value PER_FACE } \n";
+        QTest::newRow("MaterialBinding") << Base::BindingElement::Binding::PerFaceIndexed
+                                         << "MaterialBinding { value PER_FACE_INDEXED } \n";
+        QTest::newRow("MaterialBinding") << Base::BindingElement::Binding::PerVertex
+                                         << "MaterialBinding { value PER_VERTEX } \n";
+        QTest::newRow("MaterialBinding") << Base::BindingElement::Binding::PerVertexIndexed
+                                         << "MaterialBinding { value PER_VERTEX_INDEXED } \n";
+        QTest::newRow("MaterialBinding") << Base::BindingElement::Binding::Default
+                                         << "MaterialBinding { value OVERALL } \n";
+        QTest::newRow("MaterialBinding") << Base::BindingElement::Binding::None
+                                         << "MaterialBinding { value OVERALL } \n";
     }
 
     void test_MaterialBinding()
     {
+        QFETCH(Base::BindingElement::Binding, input);
         QFETCH(QString, result);
 
         Base::MaterialBindingItem item;
+        item.setValue(input);
         builder.addNode(item);
         QString string = QString::fromStdString(output.str());
 
@@ -87,15 +116,17 @@ R"(Label {
   label "FreeCAD"
 }
 )";
+        QTest::addColumn<QString>("input");
         QTest::addColumn<QString>("result");
-        QTest::newRow("Label") << result;
+        QTest::newRow("Label") << "FreeCAD" << result;
     }
 
     void test_Label()
     {
+        QFETCH(QString, input);
         QFETCH(QString, result);
 
-        Base::LabelItem item{"FreeCAD"};
+        Base::LabelItem item{input.toStdString()};
         builder.addNode(item);
         QString string = QString::fromStdString(output.str());
 
@@ -109,15 +140,17 @@ R"(Info {
   string "FreeCAD"
 }
 )";
+        QTest::addColumn<QString>("input");
         QTest::addColumn<QString>("result");
-        QTest::newRow("Label") << result;
+        QTest::newRow("Info") << "FreeCAD" << result;
     }
 
     void test_Info()
     {
+        QFETCH(QString, input);
         QFETCH(QString, result);
 
-        Base::InfoItem item{"FreeCAD"};
+        Base::InfoItem item{input.toStdString()};
         builder.addNode(item);
         QString string = QString::fromStdString(output.str());
 
@@ -131,15 +164,17 @@ R"(BaseColor {
   rgb 0.21 0.3 0.4
 }
 )";
+        QTest::addColumn<Base::ColorRGB>("input");
         QTest::addColumn<QString>("result");
-        QTest::newRow("BaseColor") << result;
+        QTest::newRow("BaseColor") << Base::ColorRGB{0.21F, 0.3F, 0.4F} << result;
     }
 
     void test_BaseColor()
     {
+        QFETCH(Base::ColorRGB, input);
         QFETCH(QString, result);
 
-        Base::BaseColorItem item{Base::ColorRGB{0.21F, 0.3F, 0.4F}};
+        Base::BaseColorItem item{input};
         builder.addNode(item);
         QString string = QString::fromStdString(output.str());
 
@@ -153,16 +188,18 @@ R"(Material {
   diffuseColor 1 0 0
 }
 )";
+        QTest::addColumn<Base::ColorRGB>("input");
         QTest::addColumn<QString>("result");
-        QTest::newRow("Material") << result;
+        QTest::newRow("Material") << Base::ColorRGB{1,0,0} << result;
     }
 
     void test_Material()
     {
+        QFETCH(Base::ColorRGB, input);
         QFETCH(QString, result);
 
         Base::MaterialItem item;
-        item.setDiffuseColor({Base::ColorRGB{1,0,0}});
+        item.setDiffuseColor({input});
         builder.addNode(item);
         QString string = QString::fromStdString(output.str());
 
@@ -180,18 +217,22 @@ R"(Material {
   ]
 }
 )";
+        QTest::addColumn<Base::ColorRGB>("input1");
+        QTest::addColumn<Base::ColorRGB>("input2");
+        QTest::addColumn<Base::ColorRGB>("input3");
         QTest::addColumn<QString>("result");
-        QTest::newRow("Material") << result;
+        QTest::newRow("Material") << Base::ColorRGB{1,0,0} << Base::ColorRGB{0,1,0} << Base::ColorRGB{0,0,1} << result;
     }
 
     void test_Materials()
     {
+        QFETCH(Base::ColorRGB, input1);
+        QFETCH(Base::ColorRGB, input2);
+        QFETCH(Base::ColorRGB, input3);
         QFETCH(QString, result);
 
         Base::MaterialItem item;
-        item.setDiffuseColor({Base::ColorRGB{1,0,0},
-                              Base::ColorRGB{0,1,0},
-                              Base::ColorRGB{0,0,1}});
+        item.setDiffuseColor({input1, input2, input3});
         builder.addNode(item);
         QString string = QString::fromStdString(output.str());
 
@@ -207,20 +248,34 @@ R"(Material {
         auto result =
 R"(DrawStyle {
   style FILLED
-  pointSize 2
-  lineWidth 2
-  linePattern 0xffff
+  pointSize 3
+  lineWidth 3
+  linePattern 0xf0f0
 }
 )";
+        QTest::addColumn<Base::DrawStyle::Style>("styleEnum");
+        QTest::addColumn<ushort>("pointSize");
+        QTest::addColumn<ushort>("lineWidth");
+        QTest::addColumn<ushort>("linePattern");
         QTest::addColumn<QString>("result");
-        QTest::newRow("DrawStyle") << result;
+        QTest::newRow("DrawStyle") << Base::DrawStyle::Style::Filled << ushort(3) << ushort(3) << ushort(0xf0f0) << result;
     }
 
     void test_DrawStyle()
     {
+        QFETCH(Base::DrawStyle::Style, styleEnum);
+        QFETCH(ushort, pointSize);
+        QFETCH(ushort, lineWidth);
+        QFETCH(ushort, linePattern);
         QFETCH(QString, result);
 
         Base::DrawStyleItem item;
+        Base::DrawStyle style;
+        style.style = styleEnum;
+        style.pointSize = pointSize;
+        style.lineWidth = lineWidth;
+        style.linePattern = linePattern;
+        item.setValue(style);
         builder.addNode(item);
         QString string = QString::fromStdString(output.str());
 
@@ -234,15 +289,17 @@ R"(ShapeHints {
   creaseAngle 0.5
 }
 )";
+        QTest::addColumn<float>("input");
         QTest::addColumn<QString>("result");
-        QTest::newRow("ShapeHints") << result;
+        QTest::newRow("ShapeHints") << 0.5F << result;
     }
 
     void test_ShapeHints()
     {
+        QFETCH(float, input);
         QFETCH(QString, result);
 
-        Base::ShapeHintsItem item{0.5F};
+        Base::ShapeHintsItem item{input};
         builder.addNode(item);
         QString string = QString::fromStdString(output.str());
 
@@ -253,21 +310,35 @@ R"(ShapeHints {
     {
         auto result =
 R"(PolygonOffset {
-  factor 1
+  factor 2
   units 1
   styles FILLED
-  on TRUE
+  on FALSE
 }
 )";
+        QTest::addColumn<Base::PolygonOffset::Style>("styleEnum");
+        QTest::addColumn<float>("factor");
+        QTest::addColumn<float>("units");
+        QTest::addColumn<bool>("on");
         QTest::addColumn<QString>("result");
-        QTest::newRow("PolygonOffset") << result;
+        QTest::newRow("PolygonOffset") << Base::PolygonOffset::Style::Filled << 2.0F << 1.0F << false << result;
     }
 
     void test_PolygonOffset()
     {
+        QFETCH(Base::PolygonOffset::Style, styleEnum);
+        QFETCH(float, factor);
+        QFETCH(float, units);
+        QFETCH(bool, on);
         QFETCH(QString, result);
 
         Base::PolygonOffsetItem item;
+        Base::PolygonOffset offset;
+        offset.factor = factor;
+        offset.units = units;
+        offset.style = styleEnum;
+        offset.on = on;
+        item.setValue(offset);
         builder.addNode(item);
         QString string = QString::fromStdString(output.str());
 
@@ -299,26 +370,35 @@ R"(Normal {
   vector 1 0 0.5
 }
 )";
+        QTest::addColumn<Base::Vector3f>("input");
         QTest::addColumn<QString>("result");
-        QTest::newRow("Normal") << result;
+        QTest::newRow("Normal") << Base::Vector3f{1,0,0.5} << result;
     }
 
     void test_Normal()
     {
+        QFETCH(Base::Vector3f, input);
         QFETCH(QString, result);
 
         Base::NormalItem item;
-        item.setVector({Base::Vector3f{1,0,0.5}});
+        item.setVector({input});
         builder.addNode(item);
         QString string = QString::fromStdString(output.str());
 
         QCOMPARE(string, result);
     }
 
+    void test_LineItem_data()
+    {
+        QTest::addColumn<Base::Line3f>("line");
+        QTest::addColumn<Base::DrawStyle>("style");
+        QTest::newRow("LineItem") << Base::Line3f{} << Base::DrawStyle{};
+    }
+
     void test_LineItem()
     {
-        Base::Line3f line;
-        Base::DrawStyle style;
+        QFETCH(Base::Line3f, line);
+        QFETCH(Base::DrawStyle, style);
         Base::LineItem item{line, style};
         builder.addNode(item);
 
@@ -326,11 +406,17 @@ R"(Normal {
         QVERIFY(node != nullptr);
     }
 
+    void test_ArrowItem_data()
+    {
+        QTest::addColumn<Base::Line3f>("line");
+        QTest::addColumn<Base::DrawStyle>("style");
+        QTest::newRow("Arrow") << Base::Line3f{Base::Vector3f{0,0,10}, Base::Vector3f{}} << Base::DrawStyle{};
+    }
+
     void test_ArrowItem()
     {
-        Base::Line3f line;
-        line.p2.z = 10;
-        Base::DrawStyle style;
+        QFETCH(Base::Line3f, line);
+        QFETCH(Base::DrawStyle, style);
         Base::ArrowItem item{line, style};
         builder.addNode(item);
 
@@ -339,11 +425,18 @@ R"(Normal {
         QVERIFY(node != nullptr);
     }
 
+    void test_PointItem_data()
+    {
+        QTest::addColumn<Base::Vector3f>("point");
+        QTest::addColumn<Base::DrawStyle>("style");
+        QTest::newRow("PointItem") << Base::Vector3f{} << Base::DrawStyle{};
+    }
+
     void test_PointItem()
     {
-        Base::Vector3f pnt;
-        Base::DrawStyle style;
-        Base::PointItem item{pnt, style};
+        QFETCH(Base::Vector3f, point);
+        QFETCH(Base::DrawStyle, style);
+        Base::PointItem item{point, style};
         builder.addNode(item);
 
         SoNode* node = loadBuffer(output.str());
@@ -352,17 +445,35 @@ R"(Normal {
 
     void test_NormalBinding_data()
     {
-        auto result = "NormalBinding { value PER_PART }\n";
+        QTest::addColumn<Base::BindingElement::Binding>("input");
         QTest::addColumn<QString>("result");
-        QTest::newRow("NormalBinding") << result;
+        QTest::newRow("NormalBinding") << Base::BindingElement::Binding::Overall
+                                       << "NormalBinding { value OVERALL }\n";
+        QTest::newRow("NormalBinding") << Base::BindingElement::Binding::PerPart
+                                       << "NormalBinding { value PER_PART }\n";
+        QTest::newRow("NormalBinding") << Base::BindingElement::Binding::PerPartIndexed
+                                       << "NormalBinding { value PER_PART_INDEXED }\n";
+        QTest::newRow("NormalBinding") << Base::BindingElement::Binding::PerFace
+                                       << "NormalBinding { value PER_FACE }\n";
+        QTest::newRow("NormalBinding") << Base::BindingElement::Binding::PerFaceIndexed
+                                       << "NormalBinding { value PER_FACE_INDEXED }\n";
+        QTest::newRow("NormalBinding") << Base::BindingElement::Binding::PerVertex
+                                       << "NormalBinding { value PER_VERTEX }\n";
+        QTest::newRow("NormalBinding") << Base::BindingElement::Binding::PerVertexIndexed
+                                       << "NormalBinding { value PER_VERTEX_INDEXED }\n";
+        QTest::newRow("NormalBinding") << Base::BindingElement::Binding::Default
+                                       << "NormalBinding { value OVERALL }\n";
+        QTest::newRow("NormalBinding") << Base::BindingElement::Binding::None
+                                       << "NormalBinding { value OVERALL }\n";
     }
 
     void test_NormalBinding()
     {
+        QFETCH(Base::BindingElement::Binding, input);
         QFETCH(QString, result);
 
         Base::NormalBindingItem item;
-        item.setValue(Base::BindingElement::Binding::PerPart);
+        item.setValue(input);
         builder.addNode(item);
         QString string = QString::fromStdString(output.str());
 
@@ -378,17 +489,21 @@ R"(Cylinder {
   parts (SIDES | TOP | BOTTOM)
 }
 )";
+        QTest::addColumn<float>("radius");
+        QTest::addColumn<float>("height");
         QTest::addColumn<QString>("result");
-        QTest::newRow("Cylinder") << result;
+        QTest::newRow("Cylinder") << 3.0F << 7.0F << result;
     }
 
     void test_Cylinder()
     {
+        QFETCH(float, radius);
+        QFETCH(float, height);
         QFETCH(QString, result);
 
         Base::CylinderItem item;
-        item.setRadius(3);
-        item.setHeight(7);
+        item.setRadius(radius);
+        item.setHeight(height);
         builder.addNode(item);
         QString string = QString::fromStdString(output.str());
 
@@ -398,17 +513,22 @@ R"(Cylinder {
     void test_Cone_data()
     {
         auto result = "Cone { bottomRadius 2 height 10 }\n";
+
+        QTest::addColumn<float>("radius");
+        QTest::addColumn<float>("height");
         QTest::addColumn<QString>("result");
-        QTest::newRow("Cone") << result;
+        QTest::newRow("Cone") << 2.0F << 10.0F << result;
     }
 
     void test_Cone()
     {
+        QFETCH(float, radius);
+        QFETCH(float, height);
         QFETCH(QString, result);
 
         Base::ConeItem item;
-        item.setBottomRadius(2);
-        item.setHeight(10);
+        item.setBottomRadius(radius);
+        item.setHeight(height);
         builder.addNode(item);
         QString string = QString::fromStdString(output.str());
 
@@ -418,16 +538,19 @@ R"(Cylinder {
     void test_Sphere_data()
     {
         auto result = "Sphere { radius 4 }\n";
+
+        QTest::addColumn<float>("input");
         QTest::addColumn<QString>("result");
-        QTest::newRow("Sphere") << result;
+        QTest::newRow("Sphere") << 4.0F << result;
     }
 
     void test_Sphere()
     {
+        QFETCH(float, input);
         QFETCH(QString, result);
 
         Base::SphereItem item;
-        item.setRadius(4);
+        item.setRadius(input);
         builder.addNode(item);
         QString string = QString::fromStdString(output.str());
 
