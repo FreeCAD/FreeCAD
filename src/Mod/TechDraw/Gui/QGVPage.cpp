@@ -22,111 +22,51 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <cmath>
+# include <cmath>
 
-#include <QAction>
-#include <QApplication>
-#include <QBitmap>
-#include <QContextMenuEvent>
-#include <QFileInfo>
-#include <QFileDialog>
-#include <QGLWidget>
-#include <QGraphicsEffect>
-#include <QMouseEvent>
-#include <QPainter>
-#include <QPaintEvent>
-#include <QSvgGenerator>
-#include <QScrollBar>
-#include <QWheelEvent>
-#include <QTemporaryFile>
-#include <QDomDocument>
-#include <QTextStream>
-#include <QFile>
-#include <QLabel>
+# include <QApplication>
+# include <QBitmap>
+# include <QContextMenuEvent>
+# include <QGLWidget>
+# include <QLabel>
+# include <QMouseEvent>
+# include <QPainter>
+# include <QPaintEvent>
+# include <QScrollBar>
+# include <QWheelEvent>
 #endif
 
 #include <App/Application.h>
 #include <App/Document.h>
-#include <App/Material.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
-#include <Base/Stream.h>
-#include <Gui/FileDialog.h>
-#include <Gui/Selection.h>
-#include <Gui/WaitCursor.h>
-#include <Gui/Command.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/MainWindow.h>
+#include <Gui/Document.h>
+#include <Gui/NavigationStyle.h>
+#include <Gui/Selection.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
-#include <Gui/NavigationStyle.h>
 
-#include <Mod/TechDraw/App/Geometry.h>
 #include <Mod/TechDraw/App/DrawPage.h>
-#include <Mod/TechDraw/App/DrawTemplate.h>
 #include <Mod/TechDraw/App/DrawSVGTemplate.h>
-#include <Mod/TechDraw/App/DrawParametricTemplate.h>
-#include <Mod/TechDraw/App/DrawViewCollection.h>
-#include <Mod/TechDraw/App/DrawViewBalloon.h>
-#include <Mod/TechDraw/App/DrawViewDimension.h>
-//#include <Mod/TechDraw/App/LandmarkDimension.h>
-#include <Mod/TechDraw/App/DrawProjGroup.h>
-#include <Mod/TechDraw/App/DrawViewPart.h>
-#include <Mod/TechDraw/App/DrawViewAnnotation.h>
-#include <Mod/TechDraw/App/DrawViewSymbol.h>
-#include <Mod/TechDraw/App/DrawViewClip.h>
-#include <Mod/TechDraw/App/DrawHatch.h>
-#include <Mod/TechDraw/App/DrawViewSpreadsheet.h>
-#include <Mod/TechDraw/App/DrawViewImage.h>
-#include <Mod/TechDraw/App/DrawLeaderLine.h>
-#include <Mod/TechDraw/App/DrawRichAnno.h>
-#include <Mod/TechDraw/App/DrawWeldSymbol.h>
-#include <Mod/TechDraw/App/DrawTile.h>
-#include <Mod/TechDraw/App/DrawTileWeld.h>
-#include <Mod/TechDraw/App/DrawUtil.h>
 
-#include "Rez.h"
-#include "PreferencesGui.h"
-#include "DrawGuiUtil.h"
-#include "QGIDrawingTemplate.h"
-#include "QGITemplate.h"
-#include "QGISVGTemplate.h"
-#include "TemplateTextField.h"
-#include "QGIViewCollection.h"
-#include "QGIViewDimension.h"
-#include "QGIViewBalloon.h"
-#include "QGIProjGroup.h"
-#include "QGIViewPart.h"
-#include "QGIViewSection.h"
-#include "QGIViewAnnotation.h"
-#include "QGIViewSymbol.h"
-#include "QGIViewClip.h"
-#include "QGIViewSpreadsheet.h"
-#include "QGIViewImage.h"
-#include "QGIFace.h"
-#include "QGILeaderLine.h"
-#include "QGIRichAnno.h"
-#include "QGIWeldSymbol.h"
-#include "QGITile.h"
-
-#include "ZVALUE.h"
-#include "ViewProviderPage.h"
-#include "QGSPage.h"
 #include "QGVPage.h"
 #include "MDIViewPage.h"
-#include "QGVNavStyle.h"
+#include "PreferencesGui.h"
+#include "QGSPage.h"
 #include "QGVNavStyleBlender.h"
-#include "QGVNavStyleTouchpad.h"
 #include "QGVNavStyleCAD.h"
-#include "QGVNavStyleTinkerCAD.h"
 #include "QGVNavStyleGesture.h"
 #include "QGVNavStyleInventor.h"
 #include "QGVNavStyleMaya.h"
 #include "QGVNavStyleOCC.h"
 #include "QGVNavStyleOpenSCAD.h"
 #include "QGVNavStyleRevit.h"
+#include "QGVNavStyleTinkerCAD.h"
+#include "QGVNavStyleTouchpad.h"
+#include "Rez.h"
+#include "ViewProviderPage.h"
+
 
 // used SVG namespaces
 #define CC_NS_URI "http://creativecommons.org/ns#"

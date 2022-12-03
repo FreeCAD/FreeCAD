@@ -22,23 +22,20 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QApplication>
-#include <QContextMenuEvent>
-#include <QKeyEvent>
-#include <QScrollBar>
+# include <QContextMenuEvent>
+# include <QKeyEvent>
+# include <QScrollBar>
 #endif
 
+#include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
-
-#include <App/Application.h>
-
 #include <Mod/TechDraw/App/DrawPage.h>
-#include <Mod/TechDraw/App/DrawUtil.h>
 
 #include "QGVNavStyle.h"
-#include "QGVPage.h"
 #include "QGSPage.h"
+#include "QGVPage.h"
+
 
 using namespace TechDrawGui;
 
