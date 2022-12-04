@@ -26,7 +26,7 @@
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <QGraphicsScene>
-#include <QPageLayout>
+
 
 class QTemporaryFile;
 class QLabel;

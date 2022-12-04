@@ -22,43 +22,23 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QAction>
-# include <QApplication>
-# include <QContextMenuEvent>
-# include <QFileInfo>
-# include <QFileDialog>
-# include <QGLWidget>
-# include <QGraphicsEffect>
-# include <QMouseEvent>
+# include <cmath>
+
+# include <QDomDocument>
+# include <QFile>
 # include <QPainter>
-# include <QPaintEvent>
 # include <QSvgGenerator>
-#include <QScrollBar>
-# include <QWheelEvent>
-#include <QTemporaryFile>
-#include <QDomDocument>
-#include <QTextStream>
-#include <QFile>
-#include <QLabel>
-#include <cmath>
+# include <QTemporaryFile>
+# include <QTextStream>
 #endif
 
 #include <App/Application.h>
 #include <App/Document.h>
-#include <App/Material.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
-#include <Base/Stream.h>
-#include <Gui/FileDialog.h>
-#include <Gui/Selection.h>
-#include <Gui/WaitCursor.h>
 #include <Gui/Command.h>
-#include <Gui/Application.h>
 #include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/MainWindow.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
+#include <Gui/Selection.h>
 
 #include <Mod/TechDraw/App/DrawHatch.h>
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
@@ -68,14 +48,11 @@
 #include <Mod/TechDraw/App/DrawRichAnno.h>
 #include <Mod/TechDraw/App/DrawSVGTemplate.h>
 #include <Mod/TechDraw/App/DrawTemplate.h>
-#include <Mod/TechDraw/App/DrawTile.h>
-#include <Mod/TechDraw/App/DrawTileWeld.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawViewAnnotation.h>
 #include <Mod/TechDraw/App/DrawViewBalloon.h>
 #include <Mod/TechDraw/App/DrawViewClip.h>
 #include <Mod/TechDraw/App/DrawViewCollection.h>
-#include <Mod/TechDraw/App/DrawViewDetail.h>
 #include <Mod/TechDraw/App/DrawViewDimension.h>
 #include <Mod/TechDraw/App/DrawViewImage.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
@@ -83,33 +60,30 @@
 #include <Mod/TechDraw/App/DrawViewSpreadsheet.h>
 #include <Mod/TechDraw/App/DrawViewSymbol.h>
 #include <Mod/TechDraw/App/DrawWeldSymbol.h>
-#include <Mod/TechDraw/App/Geometry.h>
 
-
-#include "Rez.h"
-#include "QGIDrawingTemplate.h"
-#include "QGITemplate.h"
-#include "QGISVGTemplate.h"
-#include "QGIViewCollection.h"
-#include "QGIViewDimension.h"
-#include "QGIViewBalloon.h"
-#include "QGIProjGroup.h"
-#include "QGIViewPart.h"
-#include "QGIViewSection.h"
-#include "QGIViewAnnotation.h"
-#include "QGIViewSymbol.h"
-#include "QGIViewClip.h"
-#include "QGIViewSpreadsheet.h"
-#include "QGIViewImage.h"
-#include "QGILeaderLine.h"
-#include "QGIRichAnno.h"
-#include "QGIWeldSymbol.h"
-
-#include "ZVALUE.h"
-#include "DrawGuiUtil.h"
-#include "ViewProviderPage.h"
 #include "QGSPage.h"
 #include "MDIViewPage.h"
+#include "QGIDrawingTemplate.h"
+#include "QGILeaderLine.h"
+#include "QGIProjGroup.h"
+#include "QGIRichAnno.h"
+#include "QGISVGTemplate.h"
+#include "QGITemplate.h"
+#include "QGIViewAnnotation.h"
+#include "QGIViewBalloon.h"
+#include "QGIViewClip.h"
+#include "QGIViewCollection.h"
+#include "QGIViewDimension.h"
+#include "QGIViewImage.h"
+#include "QGIViewPart.h"
+#include "QGIViewSection.h"
+#include "QGIViewSpreadsheet.h"
+#include "QGIViewSymbol.h"
+#include "QGIWeldSymbol.h"
+#include "Rez.h"
+#include "ViewProviderPage.h"
+#include "ZVALUE.h"
+
 
 // used SVG namespaces
 #define CC_NS_URI "http://creativecommons.org/ns#"
