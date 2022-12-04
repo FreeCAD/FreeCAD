@@ -20,29 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
-#ifndef _PreComp_
-# include <boost/regex.hpp>
-#endif
 
 #include <App/Application.h>
 #include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Parameter.h>
 #include <Base/Reader.h>
 #include <Base/Stream.h>
 #include <Base/Writer.h>
-
-// KDL stuff - at the moment, not used
-//#include "Mod/Robot/App/kdl_cp/path_line.hpp"
-//#include "Mod/Robot/App/kdl_cp/path_circle.hpp"
-//#include "Mod/Robot/App/kdl_cp/rotational_interpolation_sa.hpp"
-//#include "Mod/Robot/App/kdl_cp/utilities/error.h"
+#include <Mod/Path/App/PathSegmentWalker.h>
 
 #include "Path.h"
-#include <Mod/Path/App/PathSegmentWalker.h>
+
 
 using namespace Path;
 using namespace Base;

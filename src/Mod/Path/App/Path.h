@@ -20,16 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PATH_Path_H
 #define PATH_Path_H
 
-#include "Command.h"
-//#include "Mod/Robot/App/kdl_cp/path_composite.hpp"
-//#include "Mod/Robot/App/kdl_cp/frames_io.hpp"
 #include <Base/BoundBox.h>
 #include <Base/Persistence.h>
 #include <Base/Vector3D.h>
+
+#include "Command.h"
+
 
 namespace Path
 {
