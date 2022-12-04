@@ -25,7 +25,6 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <QObject>
 
 class QGraphicsScene;
 class QGraphicsSvgItem;

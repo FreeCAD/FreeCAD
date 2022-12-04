@@ -22,29 +22,24 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <qmath.h>
-#include <QGraphicsScene>
-#include <QPainter>
-#include <QPainterPath>
-#include <QPainterPathStroker>
-#include <QStyleOptionGraphicsItem>
+# include <QGraphicsScene>
+# include <QPainter>
+# include <QPainterPath>
+# include <QStyleOptionGraphicsItem>
 #endif
 
 #include <App/Application.h>
-#include <App/Material.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 #include <Base/Tools.h>
 
-//#include <Mod/TechDraw/App/Preferences.h>
-#include <Mod/TechDraw/App/DrawUtil.h>
-
-#include "QGIArrow.h"
 #include "QGISectionLine.h"
-#include "QGIView.h"
 #include "PreferencesGui.h"
+#include "QGIArrow.h"
+#include "QGIView.h"
 #include "Rez.h"
 #include "ZVALUE.h"
+
 
 #define ANSISTANDARD 0
 #define ISOSTANDARD 1
