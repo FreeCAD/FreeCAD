@@ -20,20 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <sstream>
+
 # include <QDialog>
 # include <QDoubleSpinBox>
-# include <QVBoxLayout>
 # include <QMessageBox>
 # include <QPointer>
+# include <QVBoxLayout>
 #endif
 
-#include "SegmentationBestFit.h"
-#include "ui_SegmentationBestFit.h"
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
@@ -41,8 +38,11 @@
 #include <Gui/SelectionObject.h>
 #include <Mod/Mesh/App/Core/Approximation.h>
 #include <Mod/Mesh/App/Core/Segmentation.h>
-#include <Mod/Mesh/App/Mesh.h>
 #include <Mod/Mesh/App/MeshFeature.h>
+
+#include "SegmentationBestFit.h"
+#include "ui_SegmentationBestFit.h"
+
 
 using namespace MeshGui;
 
