@@ -20,9 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <Standard_math.hxx>
 #endif
@@ -30,6 +28,7 @@
 #include <Base/Vector3D.h>
 
 #include "Voronoi.h"
+
 
 using namespace Base;
 using namespace Path;

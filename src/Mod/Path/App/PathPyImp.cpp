@@ -20,18 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#include "Mod/Path/App/Path.h"
+#include "Base/GeometryPyCXX.h"
 
 // inclusion of the generated files (generated out of PathPy.xml)
 #include "PathPy.h"
 #include "PathPy.cpp"
 
-#include "Base/BoundBoxPy.h"
-#include "Base/GeometryPyCXX.h"
 #include "CommandPy.h"
+
 
 using namespace Path;
 
