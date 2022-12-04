@@ -46,6 +46,9 @@
 
 #ifdef _PreComp_
 
+// boost
+#include <boost/algorithm/string/replace.hpp>
+
 // standard
 #include <iostream>
 #include <cassert>

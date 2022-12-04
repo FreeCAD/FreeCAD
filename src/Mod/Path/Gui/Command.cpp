@@ -20,32 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <TopExp_Explorer.hxx>
 #endif
 
 #include <Base/Console.h>
-#include <App/Application.h>
 #include <Gui/Application.h>
-#include <Gui/MainWindow.h>
 #include <Gui/Command.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionFilter.h>
-#include <Gui/SelectionObject.h>
 #include <Gui/Document.h>
-#include <Gui/Control.h>
-
-#include <Mod/Path/App/FeaturePath.h>
-#include <Mod/Path/App/FeaturePathCompound.h>
-#include <Mod/Path/App/FeaturePathShape.h>
-#include <Mod/Part/App/PartFeature.h>
+#include <Gui/Selection.h>
+#include <Gui/SelectionObject.h>
 #include <Mod/Path/App/FeatureArea.h>
+#include <Mod/Path/App/FeaturePathShape.h>
 
 
 // Path Area  #####################################################################################################
-
 
 DEF_STD_CMD_A(CmdPathArea)
 

@@ -21,26 +21,21 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
 
-#include <QDir>
-#include <QFileInfo>
-
-#include <Base/Console.h>
-#include <Base/VectorPy.h>
-#include <Base/FileInfo.h>
-#include <Base/Interpreter.h>
+#ifndef _PreComp_
+# include <QDir>
+# include <QFileInfo>
+#endif
 
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
 
+#include <Base/FileInfo.h>
+#include <Base/Interpreter.h>
 #include <Gui/Command.h>
 #include <Gui/WaitCursor.h>
 
-#include "ViewProviderPath.h"
 #include "DlgProcessorChooser.h"
 #include "ui_DlgProcessorChooser.h"
 

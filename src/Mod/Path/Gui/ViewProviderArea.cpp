@@ -22,12 +22,11 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
 #include <Gui/Application.h>
 #include <Mod/Path/App/FeatureArea.h>
+
 #include "ViewProviderArea.h"
+
 
 using namespace PathGui;
 
