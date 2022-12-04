@@ -22,35 +22,16 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <cmath>
-#include <QAction>
-#include <QApplication>
-#include <QContextMenuEvent>
-#include <QFile>
-#include <QFileInfo>
-#include <QGraphicsScene>
-#include <QMenu>
-#include <QMouseEvent>
-#include <QGraphicsSceneHoverEvent>
-#include <QPainterPathStroker>
-#include <QPainter>
-#include <QPainterPath>
-#include <QTextOption>
+# include <cmath>
 #endif
 
-#include <qmath.h>
-
-#include <Base/Console.h>
-#include <App/Material.h>
-
-#include <Mod/TechDraw/App/DrawGeomHatch.h>
 #include <Mod/TechDraw/App/DrawViewSection.h>
 
-
-#include "ZVALUE.h"
-#include "ViewProviderViewSection.h"
-#include "QGIFace.h"
 #include "QGIViewSection.h"
+#include "QGIFace.h"
+#include "ViewProviderViewSection.h"
+#include "ZVALUE.h"
+
 
 using namespace TechDrawGui;
 

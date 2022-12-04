@@ -23,53 +23,40 @@
 #include "PreCompiled.h"
 
 #ifdef FC_OS_WIN32
-#define _USE_MATH_DEFINES            //re Windows & M_PI issues
+# define _USE_MATH_DEFINES            //re Windows & M_PI issues
 #endif
-#include <cmath>
 
 #ifndef _PreComp_
-#include <BRep_Builder.hxx>
-#include <TopoDS_Compound.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS.hxx>
-#include <BRepAdaptor_Curve.hxx>
-#include <Precision.hxx>
+# include <cmath>
 
-#include <QApplication>
-#include <QDebug>
-#include <QGraphicsScene>
-#include <QGraphicsSceneMouseEvent>
-#include <QPainter>
-#include <QPainterPath>
-#include <QPaintDevice>
-#include <QSvgGenerator>
+# include <QGraphicsScene>
+# include <QGraphicsSceneMouseEvent>
+# include <QPaintDevice>
+# include <QPainter>
+# include <QPainterPath>
+# include <QSvgGenerator>
 #endif
 
 #include <App/Application.h>
-#include <App/Material.h>
+
 #include <Base/Console.h>
-#include <Base/Exception.h>
 #include <Base/Parameter.h>
 #include <Base/UnitsApi.h>
 #include <Gui/Command.h>
 
-#include <Mod/Part/App/PartFeature.h>
-
+#include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawViewDimension.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
-#include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/Geometry.h>
 
-#include "ZVALUE.h"
-
+#include "QGIViewDimension.h"
 #include "PreferencesGui.h"
 #include "QGIArrow.h"
 #include "QGIDimLines.h"
 #include "QGIVertex.h"
 #include "ViewProviderDimension.h"
+#include "ZVALUE.h"
 
-#include "QGIViewDimension.h"
 
 #define NORMAL 0
 #define PRE 1

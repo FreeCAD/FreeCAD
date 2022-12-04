@@ -23,7 +23,9 @@
 #include "PreCompiled.h"
 
 #include <Mod/TechDraw/App/DrawViewSpreadsheet.h>
+
 #include "QGIViewSpreadsheet.h"
+
 
 using namespace TechDrawGui;
 

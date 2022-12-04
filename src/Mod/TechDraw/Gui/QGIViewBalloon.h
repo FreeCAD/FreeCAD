@@ -30,7 +30,6 @@
 #include <QFont>
 #include <QGraphicsItem>
 #include <QGraphicsObject>
-#include <QObject>
 #include <QStyleOptionGraphicsItem>
 
 #include <Base/Vector3D.h>
