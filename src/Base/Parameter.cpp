@@ -634,7 +634,7 @@ void ParameterGrp::_Notify(ParamType Type, const char *Name, const char *Value)
 }
 
 void ParameterGrp::_SetAttribute(ParamType T, const char *Name, const char *Value)
-{
+{ 
     const char *Type = TypeName(T);
     if (!Type)
         return;
@@ -1929,19 +1929,20 @@ DOMPrintFilter::FilterAction DOMPrintFilter::acceptNode(const DOMNode* node) con
     }
 
     switch (node->getNodeType()) {
-        case DOMNode::DOCUMENT_TYPE_NODE:
-        case DOMNode::DOCUMENT_NODE: {
-            return DOMNodeFilter::FILTER_REJECT;// no effect
-        }
         case DOMNode::TEXT_NODE: {
             // Filter out text element if it is under a group node. Note text xml
             // element is plain text in between tags, and we do not store any text
             // there.
             auto parent = node->getParentNode();
-            if (parent && XMLString::compareString(
-                              parent->getNodeName(), XStr("FCParamGroup").unicodeForm()) == 0)
+            if (parent
+                && XMLString::compareString(parent->getNodeName(),
+                                            XStr("FCParamGroup").unicodeForm()) == 0)
                 return DOMNodeFilter::FILTER_REJECT;
             return DOMNodeFilter::FILTER_ACCEPT;
+        }
+        case DOMNode::DOCUMENT_TYPE_NODE:
+        case DOMNode::DOCUMENT_NODE: {
+            return DOMNodeFilter::FILTER_REJECT;// no effect
         }
         default: {
             return DOMNodeFilter::FILTER_ACCEPT;
