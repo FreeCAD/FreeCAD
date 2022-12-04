@@ -26,15 +26,16 @@
 # include <QDialogButtonBox>
 #endif
 
+#include <Gui/Command.h>
+#include <Gui/Selection.h>
+#include <Gui/WaitCursor.h>
+#include <Mod/Mesh/App/MeshFeature.h>
+#include <Mod/Mesh/App/Core/Smoothing.h>
+
 #include "DlgSmoothing.h"
 #include "ui_DlgSmoothing.h"
 #include "Selection.h"
 
-#include <Gui/WaitCursor.h>
-#include <Gui/Command.h>
-#include <Gui/Selection.h>
-#include <Mod/Mesh/App/MeshFeature.h>
-#include <Mod/Mesh/App/Core/Smoothing.h>
 
 using namespace MeshGui;
 
