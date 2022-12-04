@@ -23,16 +23,14 @@
 #ifndef MESHGUI_SOPOLYGON_H
 #define MESHGUI_SOPOLYGON_H
 
-#include <Inventor/fields/SoSFUInt32.h>
-#include <Inventor/fields/SoSFInt32.h>
-#include <Inventor/fields/SoSFBool.h>
-#include <Inventor/fields/SoSubField.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/nodes/SoShape.h>
 #include <Inventor/elements/SoReplacedElement.h>
+#include <Inventor/fields/SoSFBool.h>
+#include <Inventor/fields/SoSFInt32.h>
+#include <Inventor/nodes/SoShape.h>
 #ifndef MESH_GLOBAL_H
-#include <Mod/Mesh/MeshGlobal.h>
+# include <Mod/Mesh/MeshGlobal.h>
 #endif
+
 
 namespace MeshGui {
 

@@ -23,16 +23,15 @@
 #ifndef MESHGUI_SOFC_MESHFACESET_H
 #define MESHGUI_SOFC_MESHFACESET_H
 
-#include <Inventor/fields/SoSField.h>
-#include <Inventor/fields/SoSubField.h>
-#include <Mod/Mesh/App/Core/Elements.h>
-
-
 #include <Inventor/elements/SoReplacedElement.h>
+#include <Inventor/fields/SoMFInt32.h>
+#include <Inventor/fields/SoMFVec3f.h>
+#include <Inventor/fields/SoSField.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoShape.h>
-#include <Inventor/fields/SoMFVec3f.h>
-#include <Inventor/fields/SoMFInt32.h>
+
+#include <Mod/Mesh/App/Core/Elements.h>
+
 
 class SoMaterialBundle;
 

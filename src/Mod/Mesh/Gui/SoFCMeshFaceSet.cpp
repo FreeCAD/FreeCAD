@@ -20,17 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # ifdef FC_OS_WIN32
-# include <windows.h>
+#  include <windows.h>
 # endif
 # ifdef FC_OS_MACOSX
-# include <OpenGL/gl.h>
+#  include <OpenGL/gl.h>
 # else
-# include <GL/gl.h>
+#  include <GL/gl.h>
 # endif
 # include <Inventor/SbBox.h>
 # include <Inventor/SoOutput.h>
@@ -41,7 +39,6 @@
 # include <Inventor/actions/SoGetPrimitiveCountAction.h>
 # include <Inventor/actions/SoPickAction.h>
 # include <Inventor/actions/SoRayPickAction.h>
-# include <Inventor/actions/SoWriteAction.h>
 # include <Inventor/bundles/SoMaterialBundle.h>
 # include <Inventor/bundles/SoTextureCoordinateBundle.h>
 # include <Inventor/caches/SoBoundingBoxCache.h>
@@ -50,22 +47,20 @@
 # include <Inventor/details/SoPointDetail.h>
 # include <Inventor/elements/SoGLCacheContextElement.h>
 # include <Inventor/elements/SoLazyElement.h>
-# include <Inventor/elements/SoLightModelElement.h>
-# include <Inventor/misc/SoState.h>
 # include <Inventor/errors/SoReadError.h>
+# include <Inventor/misc/SoState.h>
 #endif
-
-#include <Inventor/caches/SoBoundingBoxCache.h>
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Gui/SoFCInteractiveElement.h>
+#include <Mod/Mesh/App/Core/Algorithm.h>
 #include <Mod/Mesh/App/Core/Elements.h>
 #include <Mod/Mesh/App/Core/Grid.h>
-#include <Mod/Mesh/App/Core/Algorithm.h>
-#include <Mod/Mesh/App/Core/MeshIO.h>
+
 #include "SoFCMeshFaceSet.h"
 #include "SoFCMeshVertex.h"
+
 
 using namespace MeshGui;
 
@@ -456,7 +451,7 @@ void SoFCMeshFaceSet::notify(SoNotList * node)
 void SoFCMeshFaceSet::createProxyModel(const MeshCore::MeshPointArray* rPoints, const MeshCore::MeshFacetArray* rFaces, SbBool simplest)
 {
   Base::BoundBox3f cBox;
-  for ( MeshCore::MeshPointArray::_TConstIterator it = rPoints->begin(); it != rPoints->end(); ++it )
+  for (MeshCore::MeshPointArray::_TConstIterator it = rPoints->begin(); it != rPoints->end(); ++it)
     cBox &= (*it);
 
   if ( simplest ) {
@@ -469,14 +464,14 @@ void SoFCMeshFaceSet::createProxyModel(const MeshCore::MeshPointArray* rPoints, 
       6,1,2,6,5,1
     };
     SbVec3f points[8] = {
-      SbVec3f(cBox.MinX,cBox.MinY,cBox.MinZ),
-      SbVec3f(cBox.MaxX,cBox.MinY,cBox.MinZ),
-      SbVec3f(cBox.MaxX,cBox.MaxY,cBox.MinZ),
-      SbVec3f(cBox.MinX,cBox.MaxY,cBox.MinZ),
-      SbVec3f(cBox.MinX,cBox.MinY,cBox.MaxZ),
-      SbVec3f(cBox.MaxX,cBox.MinY,cBox.MaxZ),
-      SbVec3f(cBox.MaxX,cBox.MaxY,cBox.MaxZ),
-      SbVec3f(cBox.MinX,cBox.MaxY,cBox.MaxZ)
+        SbVec3f(cBox.MinX, cBox.MinY, cBox.MinZ),
+        SbVec3f(cBox.MaxX, cBox.MinY, cBox.MinZ),
+        SbVec3f(cBox.MaxX, cBox.MaxY, cBox.MinZ),
+        SbVec3f(cBox.MinX, cBox.MaxY, cBox.MinZ),
+        SbVec3f(cBox.MinX, cBox.MinY, cBox.MaxZ),
+        SbVec3f(cBox.MaxX, cBox.MinY, cBox.MaxZ),
+        SbVec3f(cBox.MaxX, cBox.MaxY, cBox.MaxZ),
+        SbVec3f(cBox.MinX, cBox.MaxY, cBox.MaxZ)
     };
 
     coordIndex.setValues(0,36,triangles);
@@ -1032,11 +1027,11 @@ void SoFCMeshFaceSet::computeBBox(SoAction *action, SbBox3f &box, SbVec3f &cente
   const MeshCore::MeshPointArray * rPoints = SoFCMeshVertexElement::get(state);
   if (rPoints && rPoints->size() > 0) {
     Base::BoundBox3f cBox;
-    for ( MeshCore::MeshPointArray::_TConstIterator it = rPoints->begin(); it != rPoints->end(); ++it )
+    for (MeshCore::MeshPointArray::_TConstIterator it = rPoints->begin(); it != rPoints->end();
       cBox &= (*it);
     box.setBounds(SbVec3f(cBox.MinX,cBox.MinY,cBox.MinZ),
 		              SbVec3f(cBox.MaxX,cBox.MaxY,cBox.MaxZ));
-    Base::Vector3f mid = cBox.CalcCenter();
+    Base::Vector3f mid = cBox.GetCenter();
     center.setValue(mid.x,mid.y,mid.z);
   }
   else {
@@ -1180,11 +1175,13 @@ void SoFCMeshOpenEdgeSet::computeBBox(SoAction *action, SbBox3f &box, SbVec3f &c
   const MeshCore::MeshPointArray * rPoints = SoFCMeshVertexElement::get(state);
   if (rPoints && rPoints->size() > 0) {
     Base::BoundBox3f cBox;
-    for ( MeshCore::MeshPointArray::_TConstIterator it = rPoints->begin(); it != rPoints->end(); ++it )
-      cBox &= (*it);
+    for (MeshCore::MeshPointArray::_TConstIterator it = rPoints->begin(); it != rPoints->end();
+         ++it)
+      ;
+    //cBox &= (*it);
     box.setBounds(SbVec3f(cBox.MinX,cBox.MinY,cBox.MinZ),
 		              SbVec3f(cBox.MaxX,cBox.MaxY,cBox.MaxZ));
-    Base::Vector3f mid = cBox.CalcCenter();
+    Base::Vector3f mid = cBox.GetCenter();
     center.setValue(mid.x,mid.y,mid.z);
   }
   else {
