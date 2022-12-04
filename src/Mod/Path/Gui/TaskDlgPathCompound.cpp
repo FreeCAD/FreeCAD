@@ -20,25 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <QRegularExpression>
 #endif
 
+#include <App/Document.h>
+#include <App/DocumentObject.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/Command.h>
+
 #include "TaskDlgPathCompound.h"
 #include "ui_TaskDlgPathCompound.h"
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <Gui/TaskView/TaskSelectLinkProperty.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
 
 using namespace PathGui;
 using namespace Gui;
@@ -140,13 +135,13 @@ bool TaskDlgPathCompound::accept()
         paths.push_back(pcPath);
     }
     pcCompound->Group.setValues(paths);
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
     return true;
 }
 
 bool TaskDlgPathCompound::reject()
 {
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
     return true;
 }
 
