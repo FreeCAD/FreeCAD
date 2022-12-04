@@ -22,28 +22,14 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QAction>
-# include <QContextMenuEvent>
-# include <QGraphicsScene>
-# include <QGraphicsSceneMouseEvent>
-# include <QMenu>
-# include <QMessageBox>
-# include <QMouseEvent>
-# include <QPainter>
 # include <QPainterPath>
 #endif
-
-#include <App/Document.h>
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Tools2D.h>
-#include <Gui/Selection.h>
-#include <Gui/Command.h>
 
 #include <Mod/TechDraw/App/Geometry.h>
 #include <Mod/TechDraw/App/DrawParametricTemplate.h>
 
 #include "QGIDrawingTemplate.h"
+
 
 using namespace TechDrawGui;
 

@@ -31,7 +31,6 @@
 #include <QGraphicsScene>
 #include <QPointF>
 
-#include "QGIArrow.h"
 #include "QGCustomText.h"
 #include "QGCustomRect.h"
 #include "QGIDecoration.h"
