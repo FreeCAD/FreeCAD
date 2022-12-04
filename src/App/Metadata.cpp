@@ -109,10 +109,10 @@ Metadata::Metadata(const fs::path &metadataFile)
     _dom = doc->getDocumentElement();
 
     auto rootTagName = StrXUTF8(_dom->getTagName()).str;
-    if (rootTagName != "package")
+    if (rootTagName != "package") {
         throw Base::XMLBaseException(
             "Malformed package.xml document: Root <package> group not found");
-
+    }
     auto formatVersion = XMLString::parseInt(_dom->getAttribute(XUTF8Str("format").unicodeForm()));
     switch (formatVersion) {
         case 1: parseVersion1(_dom); break;
@@ -183,7 +183,9 @@ std::vector<Meta::GenericMetadata> Metadata::operator[](const std::string &tag) 
 {
     std::vector<Meta::GenericMetadata> returnValue;
     auto range = _genericMetadata.equal_range(tag);
-    for (auto item = range.first; item != range.second; ++item) returnValue.push_back(item->second);
+    for (auto item = range.first; item != range.second; ++item) {
+        returnValue.push_back(item->second);
+    }
     return returnValue;
 }
 
@@ -192,9 +194,9 @@ XERCES_CPP_NAMESPACE::DOMElement *Metadata::dom() const { return _dom; }
 void Metadata::setName(const std::string &name)
 {
     std::string invalidCharacters = "/\\?%*:|\"<>";// Should cover all OSes
-    if (_name.find_first_of(invalidCharacters) != std::string::npos)
+    if (_name.find_first_of(invalidCharacters) != std::string::npos) {
         throw Base::RuntimeError("Name cannot contain any of: " + invalidCharacters);
-
+    }
     _name = name;
 }
 
@@ -340,9 +342,9 @@ DOMElement *appendSimpleXMLNode(DOMElement *baseNode, const std::string &nodeNam
                                 const std::string &nodeContents)
 {
     // For convenience (and brevity of final output) don't create nodes that don't have contents
-    if (nodeContents.empty())
+    if (nodeContents.empty()) {
         return nullptr;
-
+    }
     auto doc = baseNode->getOwnerDocument();
     DOMElement *namedElement = doc->createElement(XUTF8Str(nodeName.c_str()).unicodeForm());
     baseNode->appendChild(namedElement);
@@ -353,9 +355,9 @@ DOMElement *appendSimpleXMLNode(DOMElement *baseNode, const std::string &nodeNam
 
 void addAttribute(DOMElement *node, const std::string &key, const std::string &value)
 {
-    if (value.empty())
+    if (value.empty()) {
         return;
-
+    }
     node->setAttribute(XUTF8Str(key.c_str()).unicodeForm(), XUTF8Str(value.c_str()).unicodeForm());
 }
 
@@ -451,9 +453,9 @@ void Metadata::write(const fs::path &file) const
 
 bool Metadata::satisfies(const Meta::Dependency &dep)
 {
-    if (dep.package != _name)
+    if (dep.package != _name) {
         return false;
-
+    }
     // The "condition" attribute allows an expression to enable or disable this dependency check: it must contain a valid
     // FreeCAD Expression. If it evaluates to false, this dependency is bypassed (e.g. this function returns false).
     if (!dep.condition.empty()) {
@@ -477,27 +479,31 @@ bool Metadata::satisfies(const Meta::Dependency &dep)
             return false;
     }
 
-    if (!dep.version_eq.empty())
+    if (!dep.version_eq.empty()) {
         return _version == Meta::Version(dep.version_eq);
-
+    }
     // Any of the others might be specified in pairs, so only return the "false" case
 
-    if (!dep.version_lt.empty())
-        if (!(_version < Meta::Version(dep.version_lt)))
+    if (!dep.version_lt.empty()) {
+        if (!(_version < Meta::Version(dep.version_lt))) {
             return false;
-
-    if (!dep.version_lte.empty())
-        if (!(_version <= Meta::Version(dep.version_lt)))
+        }
+    }
+    if (!dep.version_lte.empty()) {
+        if (!(_version <= Meta::Version(dep.version_lt))) {
             return false;
-
-    if (!dep.version_gt.empty())
-        if (!(_version > Meta::Version(dep.version_lt)))
+        }
+    }
+    if (!dep.version_gt.empty()) {
+        if (!(_version > Meta::Version(dep.version_lt))) {
             return false;
-
-    if (!dep.version_gte.empty())
-        if (!(_version >= Meta::Version(dep.version_lt)))
+        }
+    }
+    if (!dep.version_gte.empty()) {
+        if (!(_version >= Meta::Version(dep.version_lt))) {
             return false;
-
+        }
+    }
     return true;
 }
 
@@ -741,16 +747,17 @@ Meta::Url::Url(const XERCES_CPP_NAMESPACE::DOMElement *e)
     else
         type = UrlType::website;
 
-    if (type == UrlType::repository)
+    if (type == UrlType::repository) {
         branch = StrXUTF8(e->getAttribute(XUTF8Str("branch").unicodeForm())).str;
-
+    }
     location = StrXUTF8(e->getTextContent()).str;
 }
 
 bool App::Meta::Url::operator==(const Url &rhs) const
 {
-    if (type == UrlType::repository && branch != rhs.branch)
+    if (type == UrlType::repository && branch != rhs.branch) {
         return false;
+    }
     return type == rhs.type && location == rhs.location;
 }
 
@@ -821,8 +828,9 @@ Meta::Version::Version(const std::string &versionString) : minor(0), patch(0)
 
 std::string Meta::Version::str() const
 {
-    if (*this == Meta::Version())
+    if (*this == Meta::Version()) {
         return "";
+    }
     std::ostringstream stream;
     stream << major << "." << minor << "." << patch << suffix;
     return stream.str();
