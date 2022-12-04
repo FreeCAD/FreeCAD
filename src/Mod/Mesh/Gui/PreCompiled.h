@@ -45,6 +45,7 @@
 // standard
 #include <cstdio>
 #include <cassert>
+#include <ios>
 
 // STL
 #include <algorithm>

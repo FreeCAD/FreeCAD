@@ -20,9 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoCoordinate3.h>
@@ -34,23 +32,15 @@
 # include <Inventor/nodes/SoShapeHints.h>
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-#include <Base/Exception.h>
-#include <Base/Sequencer.h>
 #include <App/Application.h>
-#include <Gui/Selection.h>
+#include <Base/Parameter.h>
 #include <Gui/Inventor/MarkerBitmaps.h>
-
-#include <Mod/Mesh/App/Core/Degeneration.h>
-#include <Mod/Mesh/App/Core/Evaluation.h>
-#include <Mod/Mesh/App/Core/Iterator.h>
-#include <Mod/Mesh/App/Mesh.h>
 #include <Mod/Mesh/App/MeshFeature.h>
+#include <Mod/Mesh/App/Core/Degeneration.h>
+#include <Mod/Mesh/App/Core/Iterator.h>
 
-#include "ViewProvider.h"
 #include "ViewProviderDefects.h"
+
 
 using namespace Mesh;
 using namespace MeshGui;

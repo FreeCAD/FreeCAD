@@ -23,6 +23,8 @@
 #ifndef MESHGUI_VIEWPROVIDERMESHTRANSFORM_H
 #define MESHGUI_VIEWPROVIDERMESHTRANSFORM_H
 
+#include "ViewProvider.h"
+
 class SoSeparator;
 class SbVec3f;
 class SoSwitch;
@@ -37,9 +39,6 @@ class SoTransformerManip;
 namespace Gui {
   class View3DInventorViewer;
 }
-
-
-#include "ViewProvider.h"
 
 namespace MeshGui {
 
