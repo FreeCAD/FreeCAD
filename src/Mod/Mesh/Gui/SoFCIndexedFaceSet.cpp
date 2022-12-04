@@ -20,12 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef FC_OS_WIN32
 # ifndef GL_GLEXT_PROTOTYPES
-# define GL_GLEXT_PROTOTYPES 1
+#  define GL_GLEXT_PROTOTYPES 1
 # endif
 #endif
 
@@ -33,13 +32,13 @@
 # include <algorithm>
 # include <climits>
 # ifdef FC_OS_MACOSX
-# include <OpenGL/gl.h>
-# include <OpenGL/glu.h>
-# include <OpenGL/glext.h>
+#  include <OpenGL/gl.h>
+#  include <OpenGL/glext.h>
+#  include <OpenGL/glu.h>
 # else
-# include <GL/gl.h>
-# include <GL/glu.h>
-# include <GL/glext.h>
+#  include <GL/gl.h>
+#  include <GL/glext.h>
+#  include <GL/glu.h>
 # endif
 # include <Inventor/actions/SoGLRenderAction.h>
 # include <Inventor/actions/SoSearchAction.h>
@@ -56,19 +55,16 @@
 # include <Inventor/errors/SoDebugError.h>
 # include <Inventor/nodes/SoCoordinate3.h>
 #endif
-
 #include <Inventor/C/glue/gl.h>
-#include <Inventor/misc/SoContextHandler.h>
 
+#include <Gui/GLBuffer.h>
 #include <Gui/SoFCInteractiveElement.h>
 #include <Gui/SoFCSelectionAction.h>
-#include <Gui/GLBuffer.h>
+
 #include "SoFCIndexedFaceSet.h"
 
+
 #define RENDER_GL_VAO
-//#define RENDER_GLARRAYS
-
-
 
 using namespace MeshGui;
 

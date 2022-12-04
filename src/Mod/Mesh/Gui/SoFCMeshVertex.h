@@ -23,11 +23,11 @@
 #ifndef MESHGUI_SOFCMESHVERTEX_H
 #define MESHGUI_SOFCMESHVERTEX_H
 
-#include <Inventor/fields/SoSField.h>
-#include <Inventor/fields/SoSubField.h>
-#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/elements/SoReplacedElement.h>
+#include <Inventor/fields/SoSField.h>
+
 #include <Mod/Mesh/App/Core/Elements.h>
+
 
 namespace MeshGui {
 

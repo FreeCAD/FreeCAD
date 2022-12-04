@@ -20,21 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <algorithm>
 # include <climits>
 # ifdef FC_OS_WIN32
-# include <windows.h>
+#  include <windows.h>
 # endif
 # ifdef FC_OS_MACOSX
-# include <OpenGL/gl.h>
-# include <OpenGL/glu.h>
+#  include <OpenGL/gl.h>
+#  include <OpenGL/glu.h>
 # else
-# include <GL/gl.h>
-# include <GL/glu.h>
+#  include <GL/gl.h>
+#  include <GL/glu.h>
 # endif
 # include <Inventor/SbLine.h>
 # include <Inventor/SoPickedPoint.h>
@@ -45,28 +43,26 @@
 # include <Inventor/actions/SoGLRenderAction.h>
 # include <Inventor/actions/SoPickAction.h>
 # include <Inventor/actions/SoSearchAction.h>
-# include <Inventor/actions/SoWriteAction.h>
 # include <Inventor/bundles/SoMaterialBundle.h>
 # include <Inventor/bundles/SoTextureCoordinateBundle.h>
 # include <Inventor/details/SoFaceDetail.h>
 # include <Inventor/details/SoLineDetail.h>
-# include <Inventor/errors/SoReadError.h>
 # include <Inventor/misc/SoState.h>
 #endif
 
-#include "SoFCMeshObject.h"
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Gui/SoFCInteractiveElement.h>
 #include <Gui/SoFCSelectionAction.h>
 #include <Mod/Mesh/App/Core/Algorithm.h>
-#include <Mod/Mesh/App/Core/MeshIO.h>
-#include <Mod/Mesh/App/Core/MeshKernel.h>
 #include <Mod/Mesh/App/Core/Elements.h>
 #include <Mod/Mesh/App/Core/Grid.h>
+#include <Mod/Mesh/App/Core/MeshKernel.h>
+
+#include "SoFCMeshObject.h"
+
 
 using namespace MeshGui;
-
 
 class SoOutputStreambuf : public std::streambuf
 {
