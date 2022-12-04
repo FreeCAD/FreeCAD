@@ -20,24 +20,25 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-#include <Inventor/SbRotation.h>
-#include <Inventor/SbViewportRegion.h>
-#include <Inventor/nodes/SoCoordinate3.h>
-#include <Inventor/nodes/SoIndexedFaceSet.h>
-#include <Inventor/nodes/SoDirectionalLight.h>
-#include <Inventor/nodes/SoOrthographicCamera.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <QBuffer>
-#include <QByteArray>
+# include <QBuffer>
+# include <QByteArray>
+
+# include <Inventor/SbRotation.h>
+# include <Inventor/SbViewportRegion.h>
+# include <Inventor/nodes/SoCoordinate3.h>
+# include <Inventor/nodes/SoDirectionalLight.h>
+# include <Inventor/nodes/SoIndexedFaceSet.h>
+# include <Inventor/nodes/SoOrthographicCamera.h>
+# include <Inventor/nodes/SoSeparator.h>
 #endif
+
+#include <Gui/SoFCOffscreenRenderer.h>
 
 #include "ThumbnailExtension.h"
 #include "ViewProvider.h"
-#include <Gui/SoFCOffscreenRenderer.h>
+
 
 using namespace MeshGui;
 

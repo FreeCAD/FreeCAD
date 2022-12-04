@@ -20,31 +20,25 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-# include <QMessageBox>
-# include <QPushButton>
-# include <QTextCursor>
 # include <QElapsedTimer>
+# include <QMessageBox>
+# include <QPointer>
+# include <QTextCursor>
 #endif
 
-#include "RemeshGmsh.h"
-#include "ui_RemeshGmsh.h"
+#include <App/Application.h>
+#include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
 #include <Base/Stream.h>
-#include <Base/Tools.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/Widgets.h>
 #include <Gui/ReportView.h>
-#include <Mod/Mesh/App/Mesh.h>
 #include <Mod/Mesh/App/MeshFeature.h>
-#include <Mod/Mesh/App/Core/MeshIO.h>
+
+#include "RemeshGmsh.h"
+#include "ui_RemeshGmsh.h"
+
 
 using namespace MeshGui;
 
