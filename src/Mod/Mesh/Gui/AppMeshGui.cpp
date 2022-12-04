@@ -20,47 +20,40 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Inventor/SoDB.h>
 # include <Inventor/SoInput.h>
-# include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/annex/ForeignFiles/SoSTLFileKit.h>
+# include <Inventor/nodes/SoSeparator.h>
+
 # include <QApplication>
 #endif
 
-#include <Base/Interpreter.h>
 #include <Base/Console.h>
+#include <Base/Interpreter.h>
 #include <Base/PyObjectBase.h>
-
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
-
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/WidgetFactory.h>
 #include <Gui/Language/Translator.h>
 
-#include <Mod/Mesh/App/MeshProperties.h>
-#include <Mod/Mesh/App/Exporter.h>
-
-#include "images.h"
 #include "DlgEvaluateMeshImp.h"
-#include "PropertyEditorMesh.h"
-#include "DlgSettingsMeshView.h"
 #include "DlgSettingsImportExportImp.h"
-#include "SoFCMeshObject.h"
+#include "DlgSettingsMeshView.h"
+#include "images.h"
+#include "PropertyEditorMesh.h"
 #include "SoFCIndexedFaceSet.h"
+#include "SoFCMeshObject.h"
 #include "SoPolygon.h"
 #include "ThumbnailExtension.h"
 #include "ViewProvider.h"
-#include "ViewProviderMeshFaceSet.h"
 #include "ViewProviderCurvature.h"
+#include "ViewProviderDefects.h"
+#include "ViewProviderMeshFaceSet.h"
+#include "ViewProviderPython.h"
 #include "ViewProviderTransform.h"
 #include "ViewProviderTransformDemolding.h"
-#include "ViewProviderDefects.h"
-#include "ViewProviderPython.h"
 #include "Workbench.h"
 
 

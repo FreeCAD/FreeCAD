@@ -20,20 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QDockWidget>
 # include <QMessageBox>
+# include <QPointer>
 # include <QScrollArea>
 #endif
 
-#include "DlgEvaluateMeshImp.h"
-#include "ui_DlgEvaluateMesh.h"
-#include "DlgEvaluateSettings.h"
-
-#include <Base/Interpreter.h>
-#include <Base/Sequencer.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
@@ -42,12 +36,15 @@
 #include <Gui/WaitCursor.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
-
+#include <Mod/Mesh/App/MeshFeature.h>
 #include <Mod/Mesh/App/Core/Evaluation.h>
 #include <Mod/Mesh/App/Core/Degeneration.h>
-#include <Mod/Mesh/App/MeshFeature.h>
-#include <Mod/Mesh/App/FeatureMeshDefects.h>
+
+#include "DlgEvaluateMeshImp.h"
+#include "ui_DlgEvaluateMesh.h"
+#include "DlgEvaluateSettings.h"
 #include "ViewProviderDefects.h"
+
 
 using namespace MeshCore;
 using namespace Mesh;

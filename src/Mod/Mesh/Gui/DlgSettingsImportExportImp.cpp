@@ -22,10 +22,11 @@
 
 #include "PreCompiled.h"
 
-#include "DlgSettingsImportExportImp.h"
-#include "ui_DlgSettingsImportExport.h"
 #include <App/Application.h>
 #include <Mod/Mesh/App/Core/MeshIO.h>
+
+#include "DlgSettingsImportExportImp.h"
+#include "ui_DlgSettingsImportExport.h"
 
 
 using namespace MeshGui;

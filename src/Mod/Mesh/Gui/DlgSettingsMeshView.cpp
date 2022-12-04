@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+
+#include <Gui/Window.h>
 
 #include "DlgSettingsMeshView.h"
 #include "ui_DlgSettingsMeshView.h"
-#include <Gui/PrefWidgets.h>
-#include <Gui/Window.h>
+
 
 using namespace MeshGui;
 
