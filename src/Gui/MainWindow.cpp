@@ -1587,7 +1587,8 @@ QPixmap MainWindow::splashImage() const
         QString title = qApp->applicationName();
         QString major   = QString::fromLatin1(App::Application::Config()["BuildVersionMajor"].c_str());
         QString minor   = QString::fromLatin1(App::Application::Config()["BuildVersionMinor"].c_str());
-        QString version = QString::fromLatin1("%1.%2").arg(major, minor);
+        QString point   = QString::fromLatin1(App::Application::Config()["BuildVersionPoint"].c_str());
+        QString version = QString::fromLatin1("%1.%2.%3").arg(major, minor, point);
         QString position, fontFamily;
 
         std::map<std::string,std::string>::const_iterator te = App::Application::Config().find("SplashInfoExeName");

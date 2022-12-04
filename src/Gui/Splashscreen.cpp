@@ -314,6 +314,7 @@ void AboutDialog::setupLabels()
     banner = banner.left( banner.indexOf(QLatin1Char('\n')) );
     QString major  = QString::fromLatin1(config["BuildVersionMajor"].c_str());
     QString minor  = QString::fromLatin1(config["BuildVersionMinor"].c_str());
+    QString point  = QString::fromLatin1(config["BuildVersionPoint"].c_str());
     QString build  = QString::fromLatin1(config["BuildRevision"].c_str());
     QString disda  = QString::fromLatin1(config["BuildRevisionDate"].c_str());
     QString mturl  = QString::fromLatin1(config["MaintainerUrl"].c_str());
@@ -332,7 +333,7 @@ void AboutDialog::setupLabels()
     }
 
     QString version = ui->labelBuildVersion->text();
-    version.replace(QString::fromLatin1("Unknown"), QString::fromLatin1("%1.%2").arg(major, minor));
+    version.replace(QString::fromLatin1("Unknown"), QString::fromLatin1("%1.%2.%3").arg(major, minor, point));
     ui->labelBuildVersion->setText(version);
 
     QString revision = ui->labelBuildRevision->text();
@@ -725,6 +726,7 @@ void AboutDialog::on_copyButton_clicked()
 
     QString major  = QString::fromLatin1(config["BuildVersionMajor"].c_str());
     QString minor  = QString::fromLatin1(config["BuildVersionMinor"].c_str());
+    QString point  = QString::fromLatin1(config["BuildVersionPoint"].c_str());
     QString build  = QString::fromLatin1(config["BuildRevision"].c_str());
 
     QString deskEnv = QProcessEnvironment::systemEnvironment().value(QStringLiteral("XDG_CURRENT_DESKTOP"), QString());
@@ -741,7 +743,7 @@ void AboutDialog::on_copyButton_clicked()
     str << "[code]\n";
     str << "OS: " << QSysInfo::prettyProductName() << deskInfo << '\n';
     str << "Word size of " << exe << ": " << QSysInfo::WordSize << "-bit\n";
-    str << "Version: " << major << "." << minor << "." << build;
+    str << "Version: " << major << "." << minor << "." << point << "." << build;
     char *appimage = getenv("APPIMAGE");
     if (appimage)
         str << " AppImage";
