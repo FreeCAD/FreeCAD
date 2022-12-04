@@ -24,13 +24,11 @@
 #define MESHGUI_VIEWPROVIDERMESH_H
 
 #include <vector>
-#include <Inventor/fields/SoSFVec2f.h>
 
-#include <Mod/Mesh/App/Core/Elements.h>
-#include <Mod/Mesh/App/Types.h>
-#include <Gui/ViewProviderGeometryObject.h>
 #include <Gui/ViewProviderBuilder.h>
-#include <App/PropertyStandard.h>
+#include <Gui/ViewProviderGeometryObject.h>
+#include <Mod/Mesh/App/Types.h>
+#include <Mod/Mesh/App/Core/Elements.h>
 
 
 class SoGroup;
