@@ -24,9 +24,6 @@
 
 #include <Mod/Part/App/OCCError.h>
 #include <Mod/Part/App/TopoShapePy.h>
-#include <Base/VectorPy.h>
-
-#include "Area.h"
 
 // inclusion of the generated files (generated out of AreaPy.xml)
 #include "AreaPy.h"

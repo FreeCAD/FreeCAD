@@ -22,9 +22,7 @@
 
 #include "PreCompiled.h"
 
-#include <CXX/Objects.hxx>
 #include <Mod/Part/App/TopoShapePy.h>
-#include "FeatureArea.h"
 
 // inclusion of the generated files (generated out of FeatureAreaPy.xml)
 #include "FeatureAreaPy.h"
@@ -32,8 +30,8 @@
 
 #include "AreaPy.h"
 
-using namespace Path;
 
+using namespace Path;
 
 // returns a string which represent the object e.g. when printed in python
 std::string FeatureAreaPy::representation() const

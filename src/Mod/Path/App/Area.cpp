@@ -20,7 +20,6 @@
  *                                                                          *
  ****************************************************************************/
 
-
 #include "PreCompiled.h"
 
 // From Boost 1.75 on the geometry component requires C++14
@@ -28,74 +27,58 @@
 
 #ifndef _PreComp_
 # include <cfloat>
-# include <boost/version.hpp>
-# include <boost/config.hpp>
 
 # include <boost_geometry.hpp>
-# include <boost/geometry/index/rtree.hpp>
-# include <boost/geometry/geometries/geometries.hpp>
 # include <boost/geometry/geometries/register/point.hpp>
-# include <boost/range/adaptor/indexed.hpp>
+# include <boost/geometry/index/rtree.hpp>
 # include <boost/range/adaptor/transformed.hpp>
 
 # include <Bnd_Box.hxx>
-# include <BRepLib.hxx>
 # include <BRep_Builder.hxx>
 # include <BRep_Tool.hxx>
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepAdaptor_Surface.hxx>
 # include <BRepBndLib.hxx>
-# include <BRepBuilderAPI_Copy.hxx>
-# include <BRepBuilderAPI_FindPlane.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepBuilderAPI_MakeVertex.hxx>
 # include <BRepBuilderAPI_MakeWire.hxx>
 # include <BRepExtrema_DistShapeShape.hxx>
+# include <BRepLib.hxx>
 # include <BRepLib_MakeFace.hxx>
 # include <BRepLib_FindSurface.hxx>
-# include <BRepTools.hxx>
 # include <BRepTools_WireExplorer.hxx>
-# include <GeomAbs_JoinType.hxx>
-# include <GeomAPI_ProjectPointOnCurve.hxx>
-# include <Geom_Circle.hxx>
-# include <Geom_Ellipse.hxx>
-# include <Geom_Line.hxx>
-# include <Geom_Plane.hxx>
 # include <GCPnts_QuasiUniformDeflection.hxx>
 # include <GCPnts_UniformAbscissa.hxx>
 # include <GCPnts_UniformDeflection.hxx>
+# include <GeomAPI_ProjectPointOnCurve.hxx>
 # include <gp_Circ.hxx>
-# include <gp_GTrsf.hxx>
-# include <HLRBRep.hxx>
+# include <HLRAlgo_Projector.hxx>
 # include <HLRBRep_Algo.hxx>
 # include <HLRBRep_HLRToShape.hxx>
-# include <HLRAlgo_Projector.hxx>
+# include <Precision.hxx>
+# include <ShapeAnalysis_FreeBounds.hxx>
 # include <ShapeExtend_WireData.hxx>
 # include <ShapeFix_ShapeTolerance.hxx>
 # include <ShapeFix_Wire.hxx>
-# include <ShapeAnalysis_FreeBounds.hxx>
 # include <Standard_Failure.hxx>
 # include <Standard_Version.hxx>
 # include <TopExp.hxx>
 # include <TopExp_Explorer.hxx>
-# include <TopoDS.hxx>
 # include <TopoDS_Compound.hxx>
-# include <TopoDS_Solid.hxx>
-# include <TopoDS_Vertex.hxx>
 # include <TopTools_HSequenceOfShape.hxx>
 #endif
 
-#include <Base/Exception.h>
-#include <Base/Tools.h>
-
 #include <App/Application.h>
 #include <App/Document.h>
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/FaceMakerBullseye.h>
+#include <Base/Exception.h>
 #include <Mod/Part/App/CrossSection.h>
+#include <Mod/Part/App/FaceMakerBullseye.h>
+#include <Mod/Part/App/PartFeature.h>
+#include <Mod/Path/libarea/Area.h>
+
 #include "Area.h"
-#include "../libarea/Area.h"
+
 
 //FIXME: ISO C++11 requires at least one argument for the "..." in a variadic macro
 #if defined(__clang__)

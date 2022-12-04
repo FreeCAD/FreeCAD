@@ -21,21 +21,17 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
-
 #ifndef _PreComp_
 # include <boost/algorithm/string.hpp>
 #endif
 
 #include <Base/Exception.h>
-#include <Base/Vector3D.h>
-#include <Base/VectorPy.h>
 #include <Base/PlacementPy.h>
-#include "Mod/Path/App/Command.h"
 
 // files generated out of CommandPy.xml
 #include "CommandPy.h"
 #include "CommandPy.cpp"
+
 
 using namespace Path;
 

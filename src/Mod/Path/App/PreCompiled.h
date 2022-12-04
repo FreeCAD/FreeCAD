@@ -59,11 +59,10 @@
 
 // Boost
 #include <boost/config.hpp>
-#include <boost/version.hpp>
-
 #include <boost/geometry.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/regex.hpp>
+#include <boost/version.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/geometry/geometries/geometries.hpp>
 #include <boost/geometry/geometries/register/point.hpp>
@@ -100,7 +99,8 @@
 #include <GeomAbs_JoinType.hxx>
 #include <GeomAPI_ProjectPointOnCurve.hxx>
 #include <gp_Circ.hxx>
-#include <gp_GTrsf.hxx>
+#include <gp_Dir.hxx>
+#include <gp_Pnt.hxx>
 #include <HLRAlgo_Projector.hxx>
 #include <HLRBRep.hxx>
 #include <HLRBRep_Algo.hxx>
@@ -113,12 +113,12 @@
 #include <Standard_Version.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Compound.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS_Shape.hxx>
 #include <TopoDS_Solid.hxx>
 #include <TopoDS_Vertex.hxx>
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Edge.hxx>
 #include <TopTools_HSequenceOfShape.hxx>
 
 #endif // _PreComp_

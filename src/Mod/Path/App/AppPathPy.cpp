@@ -21,39 +21,32 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <BRep_Tool.hxx>
+# include <BRepAdaptor_Curve.hxx>
+# include <gp_Circ.hxx>
+# include <gp_Dir.hxx>
+# include <gp_Pnt.hxx>
+# include <TopoDS_Edge.hxx>
+# include <TopoDS_Shape.hxx>
+# include <TopoDS_Vertex.hxx>
+# include <TopExp_Explorer.hxx>
+#endif
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
-
+#include <App/Application.h>
+#include <App/Document.h>
+#include <App/DocumentObjectPy.h>
 #include <Base/Console.h>
-#include <Base/VectorPy.h>
 #include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
 #include <Base/Stream.h>
-#include <App/Document.h>
-#include <App/DocumentObjectPy.h>
-#include <App/Application.h>
-
+#include <Base/VectorPy.h>
 #include <Mod/Part/App/OCCError.h>
-#include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/TopoShapePy.h>
-#include <Mod/Part/App/PartPyCXX.h>
-#include <TopoDS.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <TopoDS_Iterator.hxx>
-#include <TopExp_Explorer.hxx>
-#include <gp_Lin.hxx>
-#include <BRep_Tool.hxx>
-#include <BRepAdaptor_Curve.hxx>
 
-#include "CommandPy.h"
-#include "PathPy.h"
-#include "Path.h"
-#include "FeaturePath.h"
-#include "FeaturePathCompound.h"
 #include "Area.h"
+#include "PathPy.h"
+#include "FeaturePath.h"
 
 
 #define PATH_CATCH catch (Standard_Failure &e)                      \
