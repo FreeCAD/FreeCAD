@@ -4,28 +4,28 @@ AccessModifierOffset: -4
 AlignAfterOpenBracket: Align
 AlignConsecutiveAssignments: None
 AlignOperands: DontAlign
-AllowAllArgumentsOnNextLine: false
-AllowAllConstructorInitializersOnNextLine: false
-AllowAllParametersOfDeclarationOnNextLine: false
-AllowShortBlocksOnASingleLine: Always
+AllowAllParametersOfDeclarationOnNextLine: true
+AllowShortBlocksOnASingleLine: Empty
 AllowShortCaseLabelsOnASingleLine: false
-AllowShortFunctionsOnASingleLine: All
+AllowShortFunctionsOnASingleLine: None
 AllowShortIfStatementsOnASingleLine: Never
-AllowShortLambdasOnASingleLine: All
+AllowShortLambdasOnASingleLine: Empty
 AllowShortLoopsOnASingleLine: false
 AlwaysBreakAfterReturnType: None
 AlwaysBreakTemplateDeclarations: MultiLine
+BinPackArguments: false
 BreakBeforeBraces: Custom
 BraceWrapping:
   AfterCaseLabel: false
   AfterClass: true
+  AfterStruct: true
   AfterControlStatement: Never
   AfterEnum: true
   AfterFunction: true
   AfterNamespace: true
   AfterUnion: true
   BeforeCatch: true
-  BeforeElse: true
+  BeforeElse: false
   IndentBraces: false
   SplitEmptyFunction: false
   SplitEmptyRecord: true
@@ -39,11 +39,13 @@ ContinuationIndentWidth: 4
 IndentCaseLabels: true
 IndentPPDirectives: None
 IndentWidth: 4
+InsertBraces: true
 KeepEmptyLinesAtTheStartOfBlocks: true
 MaxEmptyLinesToKeep: 2
 NamespaceIndentation: None
 ObjCSpaceAfterProperty: false
 ObjCSpaceBeforeProtocolList: true
+PackConstructorInitializers: Never
 PointerAlignment: Left
 ReflowComments: false
 SpaceAfterCStyleCast: false
