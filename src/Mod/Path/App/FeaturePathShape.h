@@ -25,15 +25,12 @@
 #define PATH_FeaturePathShape_H
 
 #include <App/DocumentObject.h>
-#include <App/GeoFeature.h>
-#include <App/PropertyGeo.h>
 #include <App/FeaturePython.h>
-#include "Mod/Part/App/PropertyTopoShape.h"
+#include <App/PropertyGeo.h>
 
-#include "PropertyPath.h"
-#include "FeaturePath.h"
 #include "FeatureArea.h"
-#include "Area.h"
+#include "FeaturePath.h"
+
 
 namespace Path
 {

@@ -23,19 +23,18 @@
 #include "PreCompiled.h"
 
 #include <Base/Console.h>
-#include <Base/PyObjectBase.h>
 #include <Base/Interpreter.h>
 
+#include "AreaPy.h"
 #include "Command.h"
 #include "CommandPy.h"
-#include "Path.h"
-#include "PathPy.h"
-#include "PropertyPath.h"
+#include "FeatureArea.h"
 #include "FeaturePath.h"
 #include "FeaturePathCompound.h"
 #include "FeaturePathShape.h"
-#include "AreaPy.h"
-#include "FeatureArea.h"
+#include "Path.h"
+#include "PathPy.h"
+#include "PropertyPath.h"
 #include "Voronoi.h"
 #include "VoronoiCell.h"
 #include "VoronoiCellPy.h"

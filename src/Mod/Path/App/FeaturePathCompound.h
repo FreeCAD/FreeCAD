@@ -20,18 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PATH_FeatureCompound_H
 #define PATH_FeatureCompound_H
 
-#include <App/GeoFeature.h>
-#include <App/PropertyFile.h>
-#include <App/PropertyGeo.h>
-#include <App/PropertyUnits.h>
+#include <App/PropertyLinks.h>
 
-#include "Path.h"
 #include "FeaturePath.h"
-#include "PropertyPath.h"
+
 
 namespace Path
 {
