@@ -27,7 +27,6 @@
 
 #include <QColor>
 #include <QGraphicsItem>
-#include <QObject>
 #include <QPainterPath>
 #include <QPointF>
 #include <QStyleOptionGraphicsItem>

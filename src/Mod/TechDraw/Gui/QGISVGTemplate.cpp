@@ -23,34 +23,29 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <QFile>
-#include <QFont>
-#include <QPen>
-#include <QSvgRenderer>
-#include <QGraphicsSvgItem>
-#include <QDomDocument>
-#include <QFile>
-#include <QXmlQuery>
-#include <QXmlResultItems>
+# include <QDomDocument>
+# include <QFile>
+# include <QGraphicsSvgItem>
+# include <QPen>
+# include <QSvgRenderer>
+# include <QXmlQuery>
+# include <QXmlResultItems>
 #endif // #ifndef _PreComp_
-
 
 #include <App/Application.h>
 #include <Base/Console.h>
-#include <Base/Exception.h>
 #include <Base/Parameter.h>
-#include <Gui/Command.h>
 
-#include <Mod/TechDraw/App/QDomNodeModel.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
-#include <Mod/TechDraw/App/Geometry.h>
 #include <Mod/TechDraw/App/DrawSVGTemplate.h>
+#include <Mod/TechDraw/App/QDomNodeModel.h>
 
-#include "Rez.h"
-#include "ZVALUE.h"
-#include "QGSPage.h"
-#include "TemplateTextField.h"
 #include "QGISVGTemplate.h"
+#include "QGSPage.h"
+#include "Rez.h"
+#include "TemplateTextField.h"
+#include "ZVALUE.h"
+
 
 using namespace TechDrawGui;
 
