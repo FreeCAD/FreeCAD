@@ -23,51 +23,38 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-  #include <BRep_Builder.hxx>
-  #include <TopoDS_Compound.hxx>
-  # include <TopoDS_Shape.hxx>
-  # include <TopoDS_Edge.hxx>
-  # include <TopoDS.hxx>
-  # include <BRepAdaptor_Curve.hxx>
-  # include <Precision.hxx>
+# include <cmath>
+# include <string>
 
-  # include <QDebug>
-  # include <QGraphicsScene>
-  # include <QGraphicsSceneMouseEvent>
-  # include <QPainter>
-  # include <QPainterPath>
-  # include <QPaintDevice>
-  # include <QSvgGenerator>
-  # include <QApplication>
-
-  # include <cmath>
+# include <QGraphicsScene>
+# include <QGraphicsSceneMouseEvent>
+# include <QPaintDevice>
+# include <QPainter>
+# include <QPainterPath>
+# include <QSvgGenerator>
 #endif
 
 #include <App/Application.h>
-#include <App/Material.h>
 #include <Base/Console.h>
-#include <Base/Exception.h>
 #include <Base/Parameter.h>
 #include <Gui/Command.h>
 #include <Gui/Tools.h>
-#include <string>
-
+#include <Mod/TechDraw/App/ArrowPropEnum.h>
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawViewBalloon.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
-#include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/Geometry.h>
-#include <Mod/TechDraw/App/ArrowPropEnum.h>
 
-#include "Rez.h"
-#include "ZVALUE.h"
+#include "QGIViewBalloon.h"
 #include "PreferencesGui.h"
 #include "QGIArrow.h"
 #include "QGIDimLines.h"
-#include "QGIViewBalloon.h"
+#include "Rez.h"
 #include "ViewProviderBalloon.h"
 #include "ViewProviderViewPart.h"
+#include "ZVALUE.h"
+
 
 //TODO: hide the Qt coord system (+y down).
 

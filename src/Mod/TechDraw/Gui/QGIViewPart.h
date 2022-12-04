@@ -27,7 +27,6 @@
 
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
-#include <Mod/TechDraw/App/Geometry.h>
 
 #include "QGIView.h"
 
