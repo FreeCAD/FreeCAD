@@ -22,16 +22,14 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QPainter>
-#include <QPixmap>
-#include <QRectF>
-#include <QStyleOptionGraphicsItem>
-#include <QtGlobal>
+# include <QPainter>
+# include <QPixmap>
+# include <QRectF>
+# include <QStyleOptionGraphicsItem>
 #endif
 
-#include <Base/Console.h>
-
 #include "QGCustomImage.h"
+
 
 using namespace TechDrawGui;
 

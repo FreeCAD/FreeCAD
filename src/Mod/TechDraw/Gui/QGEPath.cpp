@@ -22,32 +22,26 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QGraphicsScene>
-#include <QGraphicsSceneHoverEvent>
-#include <QKeyEvent>
-#include <QMouseEvent>
-#include <QPainter>
-#include <QPainterPath>
-#include <QPainterPathStroker>
-#include <QStyleOptionGraphicsItem>
-#include <QVector2D>
+# include <QGraphicsScene>
+# include <QGraphicsSceneHoverEvent>
+# include <QKeyEvent>
+# include <QPainterPath>
+# include <QPainterPathStroker>
 #endif
 
-#include <App/Application.h>
 #include <Base/Console.h>
-#include <Base/Parameter.h>
-
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 
+#include "QGEPath.h"
 #include "PreferencesGui.h"
-#include "Rez.h"
-#include "ZVALUE.h"
+#include "QGILeaderLine.h"
 #include "QGIPrimPath.h"
 #include "QGIVertex.h"
 #include "QGIView.h"
-#include "QGILeaderLine.h"
-#include "QGEPath.h"
+#include "Rez.h"
+#include "ZVALUE.h"
+
 
 using namespace TechDrawGui;
 using namespace TechDraw;
