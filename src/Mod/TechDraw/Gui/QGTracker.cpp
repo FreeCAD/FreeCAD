@@ -22,34 +22,29 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <cassert>
-#include <QGraphicsScene>
-#include <QGraphicsView>
-#include <QGraphicsSceneHoverEvent>
-#include <QEvent>
-#include <QMouseEvent>
-#include <QPainter>
-#include <QPainterPath>
-#include <QPainterPathStroker>
-#include <QStyleOptionGraphicsItem>
-#include <QKeyEvent>
-#include <QTransform>
+# include <cassert>
+# include <limits>
+
+# include <QGraphicsScene>
+# include <QGraphicsSceneHoverEvent>
+# include <QGraphicsView>
+# include <QKeyEvent>
+# include <QPainter>
+# include <QPainterPath>
+# include <QStyleOptionGraphicsItem>
+# include <QTransform>
 #endif
 
-#include <limits>
-
 #include <App/Application.h>
-#include <App/Material.h>
 #include <Base/Console.h>
-
 #include <Mod/TechDraw/App/DrawUtil.h>
 
+#include "QGTracker.h"
+#include "QGIView.h"
+#include "QGSPage.h"
 #include "Rez.h"
 #include "ZVALUE.h"
-#include "QGSPage.h"
-#include "DrawGuiUtil.h"
-#include "QGIView.h"
-#include "QGTracker.h"
+
 
 using namespace TechDrawGui;
 
