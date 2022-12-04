@@ -28,8 +28,8 @@
 #include <QGraphicsItem>
 #include <QGraphicsItemGroup>
 #include <QGraphicsPathItem>
-#include <QPen>
 #include <QBrush>
+#include <QPen>
 
 
 QT_BEGIN_NAMESPACE

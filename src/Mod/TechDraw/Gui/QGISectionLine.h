@@ -27,15 +27,15 @@
 
 #include <QColor>
 #include <QFont>
-#include <QPointF>
 #include <QPainterPath>
+#include <QPointF>
 
 #include <Base/Vector3D.h>
-
-#include <Mod/TechDraw/App/DrawComplexSection.h>
+#include <Mod/TechDraw/App/DrawViewSection.h>
 
 #include "QGCustomText.h"
 #include "QGIDecoration.h"
+
 
 namespace TechDrawGui
 {
