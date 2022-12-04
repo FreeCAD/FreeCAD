@@ -20,64 +20,47 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
+# include <algorithm>
+# include <ios>
+# include <sstream>
+# include <QCursor>
+# include <QMenu>
+
 # include <Inventor/SoPickedPoint.h>
-# include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/details/SoFaceDetail.h>
-# include <Inventor/details/SoPointDetail.h>
-# include <Inventor/events/SoMouseButtonEvent.h>
-# include <Inventor/events/SoKeyboardEvent.h>
+# include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/events/SoLocation2Event.h>
+# include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/nodes/SoDrawStyle.h>
 # include <Inventor/nodes/SoIndexedFaceSet.h>
 # include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoMaterialBinding.h>
 # include <Inventor/nodes/SoShapeHints.h>
 # include <Inventor/sensors/SoIdleSensor.h>
-# include <algorithm>
-# include <sstream>
-# include <QEvent>
-# include <QMenu>
-# include <QMessageBox>
-# include <QCursor>
-# include <QToolTip>
-# include <QWhatsThis>
 #endif
 
 # include <boost/range/adaptors.hpp>
-# include <iomanip>
-# include <ios>
 
-// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-#include <Base/Exception.h>
-#include <Base/Sequencer.h>
 #include <App/Annotation.h>
-#include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
+#include <Base/Console.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
-#include <Gui/SoFCSelection.h>
 #include <Gui/SoFCColorBar.h>
+#include <Gui/SoFCSelection.h>
 #include <Gui/View3DInventorViewer.h>
-#include <Gui/ViewProviderGeometryObject.h>
 #include <Gui/Widgets.h>
 
-#include <Mod/Mesh/App/MeshProperties.h>
-#include <Mod/Mesh/App/MeshFeature.h>
 #include <Mod/Mesh/App/FeatureMeshCurvature.h>
-#include <Mod/Mesh/App/MeshProperties.h>
+#include <Mod/Mesh/App/MeshFeature.h>
 
-#include "ViewProvider.h"
 #include "ViewProviderCurvature.h"
+
 
 using namespace Mesh;
 using namespace MeshGui;

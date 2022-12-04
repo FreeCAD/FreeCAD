@@ -23,7 +23,8 @@
 #ifndef MESGUI_VIEWPROVIDERMESHTRANSFORMDEMOLDING_H
 #define MESGUI_VIEWPROVIDERMESHTRANSFORMDEMOLDING_H
 
-#include <Inventor/nodes/SoRotation.h>
+#include "ViewProvider.h"
+
 
 class SoSeparator;
 class SbVec3f;
@@ -41,10 +42,6 @@ class SoTransformerManip;
 namespace Gui {
   class View3DInventorViewer;
 }
-
-
-#include "ViewProvider.h"
-#include <Base/Vector3D.h>
 
 namespace MeshGui {
 
