@@ -484,8 +484,9 @@ void DlgGeneralImp::onImportConfigClicked()
             auto result = QMessageBox::question(
                 this, tr("File exists"),
                 tr("A preference pack with that name already exists. Overwrite?"));
-            if (result == QMessageBox::No) // Maybe someday ask for a new name?
+            if (result == QMessageBox::No) { // Maybe someday ask for a new name?
                 return;
+            }
         }
         Application::Instance->prefPackManager()->importConfig(packName, path);
         recreatePreferencePackMenu();
