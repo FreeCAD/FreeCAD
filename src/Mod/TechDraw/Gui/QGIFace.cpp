@@ -22,46 +22,32 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <cmath>
-#include <QAction>
-#include <QApplication>
-#include <QContextMenuEvent>
-#include <QGraphicsScene>
-#include <QGraphicsView>
-#include <QTransform>
-#include <QMouseEvent>
-#include <QPainterPathStroker>
-#include <QPainter>
-#include <QPainterPath>
-#include <QStyleOptionGraphicsItem>
-#include <QBitmap>
-#include <QFile>
-#include <QFileInfo>
-#include <QTextStream>
-#include <QRectF>
-#include <QPointF>
+# include <cmath>
+
+# include <QFileInfo>
+# include <QGraphicsView>
+# include <QPainter>
+# include <QPainterPath>
+# include <QPointF>
+# include <QRectF>
+# include <QTransform>
 #endif
 
 #include <App/Application.h>
-#include <App/Material.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
-
 #include <Mod/TechDraw/App/DrawUtil.h>
 
-//debug
-#include "QGICMark.h"
-#include "ZVALUE.h"
-//
-#include "Rez.h"
-#include "DrawGuiUtil.h"
+#include "QGIFace.h"
 #include <QByteArrayMatcher>
-#include "QGCustomSvg.h"
 #include "QGCustomImage.h"
 #include "QGCustomRect.h"
-#include "QGIViewPart.h"
+#include "QGCustomSvg.h"
+#include "QGICMark.h"
 #include "QGIPrimPath.h"
-#include "QGIFace.h"
+#include "Rez.h"
+#include "ZVALUE.h"
+
 
 using namespace TechDrawGui;
 using namespace TechDraw;
