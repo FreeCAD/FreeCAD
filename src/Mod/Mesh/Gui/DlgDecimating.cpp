@@ -21,13 +21,15 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+
+#include <Gui/Command.h>
+#include <Gui/Selection.h>
+#include <Gui/WaitCursor.h>
+#include <Mod/Mesh/App/MeshFeature.h>
+
 #include "DlgDecimating.h"
 #include "ui_DlgDecimating.h"
 
-#include <Gui/WaitCursor.h>
-#include <Gui/Command.h>
-#include <Gui/Selection.h>
-#include <Mod/Mesh/App/MeshFeature.h>
 
 using namespace MeshGui;
 
