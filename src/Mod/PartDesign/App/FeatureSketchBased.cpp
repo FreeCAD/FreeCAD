@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Bnd_Box.hxx>
@@ -462,7 +461,7 @@ void ProfileBased::getUpToFace(TopoDS_Face& upToFace,
 
         std::vector<Part::cutFaces> cfaces = Part::findAllFacesCutBy(support, sketchshape, dir);
         if (cfaces.empty())
-            throw Base::ValueError("SketchBased: Up to face: No faces found in this direction");
+            throw Base::ValueError("SketchBased: No faces found in this direction");
 
         // Find nearest/furthest face
         std::vector<Part::cutFaces>::const_iterator it, it_near, it_far;
