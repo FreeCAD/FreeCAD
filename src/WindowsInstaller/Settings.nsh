@@ -17,7 +17,7 @@ SetCompressor /SOLID lzma
 
 !define APP_VERSION_MAJOR 0
 !define APP_VERSION_MINOR 20
-!define APP_VERSION_REVISION 1
+!define APP_VERSION_REVISION 2
 !define APP_VERSION_EMERGENCY "" # use "1" for an emergency release of FreeCAD otherwise ""
 	# alternatively you can use APP_VERSION_EMERGENCY for a custom suffix of the version number
 !define APP_EMERGENCY_DOT "" # use "." for an emergency release of FreeCAD otherwise ""
