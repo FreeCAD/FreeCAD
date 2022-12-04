@@ -20,24 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-# include <qobject.h>
 # include <QGroupBox>
 # include <QLabel>
 #endif
 
-#include "Workbench.h"
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/MenuManager.h>
-#include <Gui/ToolBarManager.h>
 #include <Gui/Selection.h>
+#include <Gui/ToolBarManager.h>
 #include <Gui/TaskView/TaskView.h>
+#include <Mod/Mesh/App/MeshFeature.h>
 
-#include "../App/MeshFeature.h"
+#include "Workbench.h"
+
 
 using namespace MeshGui;
 
