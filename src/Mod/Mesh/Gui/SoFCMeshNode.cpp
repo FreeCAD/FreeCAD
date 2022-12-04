@@ -20,17 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # ifdef FC_OS_WIN32
-# include <windows.h>
+#  include <windows.h>
 # endif
 # ifdef FC_OS_MACOSX
-# include <OpenGL/gl.h>
+#  include <OpenGL/gl.h>
 # else
-# include <GL/gl.h>
+#  include <GL/gl.h>
 # endif
 # include <Inventor/SbBox.h>
 # include <Inventor/SoOutput.h>
@@ -44,17 +42,17 @@
 # include <Inventor/details/SoPointDetail.h>
 # include <Inventor/elements/SoGLCacheContextElement.h>
 # include <Inventor/elements/SoLazyElement.h>
-# include <Inventor/elements/SoLightModelElement.h>
 # include <Inventor/misc/SoState.h>
 #endif
 
 #include <Gui/SoFCInteractiveElement.h>
+#include <Mod/Mesh/App/Mesh.h>
+#include <Mod/Mesh/App/Core/Algorithm.h>
 #include <Mod/Mesh/App/Core/Elements.h>
 #include <Mod/Mesh/App/Core/Grid.h>
-#include <Mod/Mesh/App/Core/Algorithm.h>
-#include <Mod/Mesh/App/Core/MeshIO.h>
-#include <Mod/Mesh/App/Mesh.h>
+
 #include "SoFCMeshNode.h"
+
 
 using namespace MeshGui;
 
@@ -552,7 +550,7 @@ void SoFCMeshNode::computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center)
     const Base::BoundBox3f& cBox = _mesh->getKernel().GetBoundBox();
     box.setBounds(SbVec3f(cBox.MinX,cBox.MinY,cBox.MinZ),
                   SbVec3f(cBox.MaxX,cBox.MaxY,cBox.MaxZ));
-    Base::Vector3f mid = cBox.CalcCenter();
+    Base::Vector3f mid = cBox.GetCenter();
     center.setValue(mid.x,mid.y,mid.z);
   }
   else {
@@ -732,7 +730,7 @@ void SoFCMeshOpenEdge::computeBBox(SoAction *action, SbBox3f &box, SbVec3f &cent
     const Base::BoundBox3f& cBox = _mesh->getKernel().GetBoundBox();
     box.setBounds(SbVec3f(cBox.MinX,cBox.MinY,cBox.MinZ),
 		              SbVec3f(cBox.MaxX,cBox.MaxY,cBox.MaxZ));
-    Base::Vector3f mid = cBox.CalcCenter();
+    Base::Vector3f mid = cBox.GetCenter();
     center.setValue(mid.x,mid.y,mid.z);
   }
   else {
