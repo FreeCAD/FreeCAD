@@ -23,43 +23,29 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <cmath>
-#include <string>
-#include <sstream>
-#include <QDialogButtonBox>
-#include <QGraphicsScene>
-#include <qmath.h>
-#include <QMouseEvent>
-#include <QGraphicsSceneHoverEvent>
-#include <QGraphicsItem>
-#include <QStyleOptionGraphicsItem>
-#include <QGraphicsTextItem>
-#include <QPainterPathStroker>
-#include <QPainter>
-#include <QString>
-#include <QTextOption>
-#include <QVBoxLayout>
-#include <QTextDocument>
-#include <QTextBlock>
-#include <QTextBlockFormat>
-#include <QTextFrame>
-#include <QSizeF>
+# include <cmath>
+# include <regex>
+# include <sstream>
+# include <string>
+
+# include <QDialog>
+# include <QDialogButtonBox>
+# include <QGraphicsScene>
+# include <QGraphicsItem>
+# include <QGraphicsTextItem>
+# include <QString>
+# include <QVBoxLayout>
 #endif
 
-#include <regex>
-
 #include <App/Application.h>
-#include <App/Material.h>
 #include <Base/Console.h>
-#include <Base/Parameter.h>
-#include <Base/Tools.h>
 #include <Gui/Widgets.h>
-
-
 #include <Mod/TechDraw/App/DrawViewAnnotation.h>
-#include "Rez.h"
+
 #include "QGIViewAnnotation.h"
 #include "QGCustomText.h"
+#include "Rez.h"
+
 
 using namespace TechDrawGui;
 

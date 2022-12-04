@@ -47,6 +47,7 @@
 #include <list>
 #include <map>
 #include <queue>
+#include <regex>
 #include <set>
 #include <stack>
 #include <string>
