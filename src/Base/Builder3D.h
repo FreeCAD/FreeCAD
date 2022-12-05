@@ -171,6 +171,7 @@ class BaseExport InventorOutput
 {
 public:
     explicit InventorOutput(std::ostream& result, Indentation& indent);
+    std::ostream& stream();
     std::ostream& write();
     std::ostream& write(const char*);
     std::ostream& write(const std::string&);
@@ -190,11 +191,6 @@ class BaseExport NodeItem
 public:
     virtual ~NodeItem() = default;
     virtual void write(InventorOutput& out) const = 0;
-
-protected:
-    void writeField(const char* field, const std::vector<Vector3f>& vec, InventorOutput& out) const;
-    void writeField(const char* field, const std::vector<ColorRGB>& rgb, InventorOutput& out) const;
-    void writeField(const char* field, const std::vector<float>& value, InventorOutput& out) const;
 };
 
 /*!

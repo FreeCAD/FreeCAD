@@ -130,6 +130,11 @@ InventorOutput::InventorOutput(std::ostream& result, Indentation& indent)
 {
 }
 
+std::ostream& InventorOutput::stream()
+{
+    return result;
+}
+
 std::ostream& InventorOutput::write()
 {
     result << indent;
@@ -178,61 +183,68 @@ void InventorOutput::decreaseIndent()
 
 // -----------------------------------------------------------------------------
 
-void NodeItem::writeField(const char* field, const std::vector<Vector3f>& vec, InventorOutput& out) const
+namespace Base {
+template <class type>
+struct field_traits { };
+
+template <>
+struct field_traits<float> {
+    using field_type = float;
+    static std::ostream& write(std::ostream& out, const field_type& item) {
+        out << item;
+        return out;
+    }
+};
+
+template <>
+struct field_traits<Vector3f> {
+    using field_type = Vector3f;
+    static std::ostream& write(std::ostream& out, const field_type& item) {
+        out << item.x << " " << item.y << " " << item.z;
+        return out;
+    }
+};
+
+template <>
+struct field_traits<ColorRGB> {
+    using field_type = ColorRGB;
+    static std::ostream& write(std::ostream& out, const field_type& item) {
+        out << item.red() << " " << item.green() << " " << item.blue();
+        return out;
+    }
+};
+
+/**
+ * Writes a field type to a stream.
+ * @author Werner Mayer
+ */
+class InventorFieldWriter {
+public:
+    template<typename T>
+    void write(const char* fieldName, const std::vector<T>& fieldData, InventorOutput& out) const;
+};
+
+template<typename T>
+void InventorFieldWriter::write(const char* fieldName, const std::vector<T>& fieldData, InventorOutput& out) const
 {
-    if (vec.empty())
+    if (fieldData.empty())
         return;
 
-    if (vec.size() == 1) {
-        out.write() << field << " " << vec[0].x << " " << vec[0].y << " " << vec[0].z << '\n';
+    if (fieldData.size() == 1) {
+        out.write() << fieldName << " ";
+        field_traits<T>::write(out.stream(), fieldData[0]) << '\n';
     }
     else {
-        out.write() << field << " [\n";
+        out.write() << fieldName << " [\n";
         out.increaseIndent();
-        for (auto it : vec) {
-            out.write() << it.x << " " << it.y << " " << it.z << '\n';
+        for (auto it : fieldData) {
+            out.write();
+            field_traits<T>::write(out.stream(), it) << '\n';
         }
         out.decreaseIndent();
         out.write() << "]\n";
     }
 }
-
-void NodeItem::writeField(const char* field, const std::vector<ColorRGB>& rgb, InventorOutput& out) const
-{
-    if (rgb.empty())
-        return;
-
-    if (rgb.size() == 1) {
-        out.write() << field << " " << rgb[0].red() << " " << rgb[0].green() << " " << rgb[0].blue() << '\n';
-    }
-    else {
-        out.write() << field << " [\n";
-        out.increaseIndent();
-        for (auto it : rgb) {
-            out.write() << it.red() << " " << it.green() << " " << it.blue() << '\n';
-        }
-        out.decreaseIndent();
-        out.write() << "]\n";
-    }
-}
-
-void NodeItem::writeField(const char* field, const std::vector<float>& value, InventorOutput& out) const
-{
-    if (value.empty())
-        return;
-
-    if (value.size() == 1) {
-        out.write() << field << " " << value[0] << '\n';
-    }
-    else {
-        out.write() << field << " [\n";
-        out.increaseIndent();
-        for (auto it : value) {
-            out.write() << it << '\n';
-        }
-        out.decreaseIndent();
-        out.write() << "]\n";
-    }
 }
 
 // -----------------------------------------------------------------------------
@@ -437,32 +449,38 @@ void MaterialItem::endMaterial(InventorOutput& out) const
 
 void MaterialItem::writeAmbientColor(InventorOutput& out) const
 {
-    writeField("ambientColor", ambientColor, out);
+    InventorFieldWriter writer;
+    writer.write<ColorRGB>("ambientColor", ambientColor, out);
 }
 
 void MaterialItem::writeDiffuseColor(InventorOutput& out) const
 {
-    writeField("diffuseColor", diffuseColor, out);
+    InventorFieldWriter writer;
+    writer.write<ColorRGB>("diffuseColor", diffuseColor, out);
 }
 
 void MaterialItem::writeSpecularColor(InventorOutput& out) const
 {
-    writeField("specularColor", specularColor, out);
+    InventorFieldWriter writer;
+    writer.write<ColorRGB>("specularColor", specularColor, out);
 }
 
 void MaterialItem::writeEmissiveColor(InventorOutput& out) const
 {
-    writeField("emissiveColor", emissiveColor, out);
+    InventorFieldWriter writer;
+    writer.write<ColorRGB>("emissiveColor", emissiveColor, out);
 }
 
 void MaterialItem::writeShininess(InventorOutput& out) const
 {
-    writeField("shininess", shininess, out);
+    InventorFieldWriter writer;
+    writer.write<float>("shininess", shininess, out);
 }
 
 void MaterialItem::writeTransparency(InventorOutput& out) const
 {
-    writeField("transparency", transparency, out);
+    InventorFieldWriter writer;
+    writer.write<float>("transparency", transparency, out);
 }
 
 // -----------------------------------------------------------------------------
@@ -543,7 +561,8 @@ void NormalItem::setVector(const std::vector<Base::Vector3f>& vec)
 void NormalItem::write(InventorOutput& out) const
 {
     beginNormal(out);
-    writeField("vector", vector, out);
+    InventorFieldWriter writer;
+    writer.write<Vector3f>("vector", vector, out);
     endNormal(out);
 }
 
