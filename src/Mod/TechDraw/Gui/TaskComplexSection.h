@@ -106,6 +106,8 @@ protected Q_SLOTS:
     void slotViewDirectionChanged(Base::Vector3d newDirection);
 
 private:
+    double requiredRotation(double inputAngle);
+
     void createComplexSection();
     void updateComplexSection();
 

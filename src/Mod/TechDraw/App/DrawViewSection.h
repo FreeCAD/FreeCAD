@@ -170,7 +170,7 @@ public:
     bool showSectionEdges(void);
 
 public Q_SLOTS:
-    void onSectionCutFinished(void);
+    virtual void onSectionCutFinished(void);
 
 protected:
     TopoDS_Compound m_sectionTopoDSFaces;       //needed for hatching

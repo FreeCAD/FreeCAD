@@ -146,7 +146,7 @@ DrawViewSection::DrawViewSection()  :
     static const char *ggroup = "Cut Operation";
 
     //general section properties
-    ADD_PROPERTY_TYPE(SectionSymbol ,(""), sgroup, App::Prop_None, "The identifier for this section");
+    ADD_PROPERTY_TYPE(SectionSymbol ,(""), sgroup, App::Prop_Output, "The identifier for this section");
     ADD_PROPERTY_TYPE(BaseView ,(nullptr), sgroup, App::Prop_None, "2D View source for this Section");
     BaseView.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(SectionNormal ,(0, 0,1.0) ,sgroup, App::Prop_None,
@@ -234,23 +234,31 @@ void DrawViewSection::onChanged(const App::Property* prop)
 
     if (prop == &SectionNormal) {
         Direction.setValue(SectionNormal.getValue());
+        return;
     } else if (prop == &SectionSymbol) {
-        std::string lblText = "Section " +
-                              std::string(SectionSymbol.getValue()) +
-                              " - " +
-                              std::string(SectionSymbol.getValue());
-        Label.setValue(lblText);
+        if (getBaseDVP()) {
+            getBaseDVP()->requestPaint();
+        }
+        return;
     } else if (prop == &CutSurfaceDisplay) {
         if (CutSurfaceDisplay.isValue("PatHatch")) {
             makeLineSets();
         }
+        requestPaint();
+        return;
     } else if (prop == &FileHatchPattern) {
         replaceSvgIncluded(FileHatchPattern.getValue());
+        requestPaint();
+        return;
     } else if (prop == &FileGeomPattern) {
         replacePatIncluded(FileGeomPattern.getValue());
         makeLineSets();
+        requestPaint();
+        return;
     } else if (prop == &NameGeomPattern ) {
         makeLineSets();
+        requestPaint();
+        return;
     }
 
     DrawView::onChanged(prop);
@@ -286,13 +294,29 @@ App::DocumentObjectExecReturn *DrawViewSection::execute()
         return new App::DocumentObjectExecReturn("BaseView object not found");
     }
 
+    if (waitingForCut() || waitingForHlr()) {
+        return DrawView::execute();
+    }
+
     TopoDS_Shape baseShape = getShapeToCut();
 
     if (baseShape.IsNull()) {
         return DrawView::execute();
     }
 
-    m_saveShape = baseShape;        //save shape for 2nd pass
+    //is SectionOrigin valid?
+    Bnd_Box centerBox;
+    BRepBndLib::AddOptimal(baseShape, centerBox);
+    centerBox.SetGap(0.0);
+    Base::Vector3d orgPnt = SectionOrigin.getValue();
+
+    if(!isReallyInBox(gp_Pnt(orgPnt.x, orgPnt.y, orgPnt.z), centerBox)) {
+        Base::Console().Warning("DVS: SectionOrigin doesn't intersect part in %s\n", getNameInDocument());
+    }
+
+    //save important info for later use
+    m_shapeSize = sqrt(centerBox.SquareExtent());
+    m_saveShape = baseShape;
 
     bool haveX = checkXDirection();
     if (!haveX) {
@@ -334,6 +358,8 @@ void DrawViewSection::sectionExec(TopoDS_Shape& baseShape)
         return;
     }
 
+    m_cuttingTool = makeCuttingTool(m_shapeSize);
+
     try {
         //note that &m_cutWatcher in the third parameter is not strictly required, but using the
         //4 parameter signature instead of the 3 parameter signature prevents clazy warning:
@@ -357,18 +383,6 @@ void DrawViewSection::makeSectionCut(TopoDS_Shape &baseShape)
 
     showProgressMessage(getNameInDocument(), "is making section cut");
 
-// cut base shape with tool
-    //is SectionOrigin valid?
-    Bnd_Box centerBox;
-    BRepBndLib::AddOptimal(baseShape, centerBox);
-    centerBox.SetGap(0.0);
-    Base::Vector3d orgPnt = SectionOrigin.getValue();
-
-    if(!isReallyInBox(gp_Pnt(orgPnt.x, orgPnt.y, orgPnt.z), centerBox)) {
-        Base::Console().Warning("DVS: SectionOrigin doesn't intersect part in %s\n", getNameInDocument());
-    }
-   m_shapeSize = sqrt(centerBox.SquareExtent());
-
     // We need to copy the shape to not modify the BRepstructure
     BRepBuilderAPI_Copy BuilderCopy(baseShape);
     TopoDS_Shape myShape = BuilderCopy.Shape();
@@ -377,8 +391,6 @@ void DrawViewSection::makeSectionCut(TopoDS_Shape &baseShape)
     if (debugSection()) {
         BRepTools::Write(myShape, "DVSCopy.brep");            //debug
     }
-
-    m_cuttingTool = makeCuttingTool(m_shapeSize);
 
     if (debugSection()) {
         BRepTools::Write(m_cuttingTool, "DVSTool.brep");              //debug

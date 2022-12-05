@@ -514,6 +514,8 @@ bool TaskComplexSection::apply(bool forceUpdate)
     }
 
     Gui::WaitCursor wc;
+    m_modelIsDirty = true;
+
     if (!m_section) {
         createComplexSection();
     }
@@ -622,6 +624,12 @@ void TaskComplexSection::createComplexSection()
         m_section->SectionDirection.setValue("Aligned");
         m_section->Source.setValues(m_shapes);
         m_section->XSource.setValues(m_xShapes);
+
+        //auto orientation of view relative to base view
+        double viewDirectionAngle = m_compass->positiveValue();
+        double rotation = requiredRotation(viewDirectionAngle);
+        Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Rotation = %.6f",
+                           m_sectionName.c_str(), rotation);
     }
     Gui::Command::commitCommand();
 }
@@ -667,6 +675,12 @@ void TaskComplexSection::updateComplexSection()
             m_section->Source.setValues(m_shapes);
             m_section->XSource.setValues(m_xShapes);
         }
+
+        //auto orientation of view relative to base view
+        double viewDirectionAngle = m_compass->positiveValue();
+        double rotation = requiredRotation(viewDirectionAngle);
+        Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Rotation = %.6f",
+                           m_sectionName.c_str(), rotation);
     }
     Gui::Command::commitCommand();
 }
@@ -703,6 +717,20 @@ bool TaskComplexSection::isSectionValid()
 
     return true;
 }
+
+//get required rotation from input angle in [0, 360]
+//NOTE: shared code with simple section - reuse opportunity
+double TaskComplexSection::requiredRotation(double inputAngle)
+{
+    double rotation = inputAngle - 90.0;
+    if (rotation == 180.0) {
+        //if the view direction is 90/270, then the section is drawn properly and no
+        //rotation is needed.  90.0 becomes 0.0, but 270.0 needs special handling.
+        rotation = 0.0;
+    }
+    return rotation;
+}
+
 //******************************************************************************
 bool TaskComplexSection::accept()
 {

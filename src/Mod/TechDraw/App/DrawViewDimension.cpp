@@ -193,6 +193,7 @@ void DrawViewDimension::onChanged(const App::Property* prop)
                 Base::Console().Warning("%s has no 3D References but is Type: True\n", getNameInDocument());
                 MeasureType.setValue("Projected");
             }
+            return;
         }
         else if (prop == &References3D) {   //have to rebuild the Measurement object
 //            Base::Console().Message("DVD::onChanged - References3D\n");
@@ -202,6 +203,7 @@ void DrawViewDimension::onChanged(const App::Property* prop)
             } else if (MeasureType.isValue("True")) { //empty 3dRefs, but True
                 MeasureType.touch();                       //run MeasureType logic for this case
             }
+            return;
         }
         else if (prop == &Type) {                                    //why??
             FormatSpec.setValue(getDefaultFormatSpec().c_str());
@@ -215,6 +217,7 @@ void DrawViewDimension::onChanged(const App::Property* prop)
                 OverTolerance.setUnit(Base::Unit::Length);
                 UnderTolerance.setUnit(Base::Unit::Length);
             }
+            return;
         }
         else if (prop == &TheoreticalExact) {
             // if TheoreticalExact disable tolerances and set them to zero
@@ -237,7 +240,7 @@ void DrawViewDimension::onChanged(const App::Property* prop)
                     FormatSpecUnderTolerance.setReadOnly(false);
                 }
             }
-            requestPaint();
+            return;
         }
         else if (prop == &EqualTolerance) {
             // if EqualTolerance set negated overtolerance for untertolerance
@@ -261,7 +264,7 @@ void DrawViewDimension::onChanged(const App::Property* prop)
                     FormatSpecUnderTolerance.setReadOnly(false);
                 }
             }
-            requestPaint();
+            return;
         }
         else if (prop == &OverTolerance) {
             // if EqualTolerance set negated overtolerance for untertolerance
@@ -269,27 +272,19 @@ void DrawViewDimension::onChanged(const App::Property* prop)
                 UnderTolerance.setValue(-1.0 * OverTolerance.getValue());
                 UnderTolerance.setUnit(OverTolerance.getUnit());
             }
-            requestPaint();
+            return;
         }
         else if (prop == &FormatSpecOverTolerance) {
             if (!ArbitraryTolerances.getValue()) {
                 FormatSpecUnderTolerance.setValue(FormatSpecOverTolerance.getValue());
             }
-            requestPaint();
+            return;
         }
         else if (prop == &FormatSpecUnderTolerance) {
             if (!ArbitraryTolerances.getValue()) {
                 FormatSpecOverTolerance.setValue(FormatSpecUnderTolerance.getValue());
             }
-            requestPaint();
-        }
-        else if ( (prop == &FormatSpec) ||
-             (prop == &Arbitrary) ||
-             (prop == &ArbitraryTolerances) ||
-             (prop == &MeasureType) ||
-             (prop == &UnderTolerance) ||
-             (prop == &Inverted) ) {
-            requestPaint();
+            return;
         }
     }
 
@@ -353,21 +348,9 @@ void DrawViewDimension::handleChangedPropertyType(Base::XMLReader &reader, const
 short DrawViewDimension::mustExecute() const
 {
     if (!isRestoring()) {
-        if (
-            References2D.isTouched() ||
-            Type.isTouched() ||
-            FormatSpec.isTouched() ||
-            Arbitrary.isTouched() ||
-            FormatSpecOverTolerance.isTouched() ||
-            FormatSpecUnderTolerance.isTouched() ||
-            ArbitraryTolerances.isTouched() ||
-            MeasureType.isTouched() ||
-            TheoreticalExact.isTouched() ||
-            EqualTolerance.isTouched() ||
-            OverTolerance.isTouched() ||
-            UnderTolerance.isTouched() ||
-            Inverted.isTouched()
-        ) {
+        if (References2D.isTouched() ||
+            References3D.isTouched() ||
+            Type.isTouched() ) {
             return true;
         }
     }
@@ -377,6 +360,7 @@ short DrawViewDimension::mustExecute() const
 
 App::DocumentObjectExecReturn *DrawViewDimension::execute()
 {
+//    Base::Console().Message("DVD::execute() - %s\n", getNameInDocument());
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
@@ -396,12 +380,7 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute()
 
     //can't do anything until Source has geometry
     if (!getViewPart()->hasGeometry()) {                              //happens when loading saved document
-        //if (isRestoring() ||
-        //    getDocument()->testStatus(App::Document::Status::Restoring)) {
-            return App::DocumentObject::StdReturn;
-        //} else {
-        //    return App::DocumentObject::StdReturn;
-        //}
+        return App::DocumentObject::StdReturn;
     }
 
     //now we can check if Reference2ds have valid targets.
