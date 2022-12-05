@@ -88,7 +88,6 @@ static TreeWidget* _LastSelectedTreeWidget;
 const int TreeWidget::DocumentType = 1000;
 const int TreeWidget::ObjectType = 1001;
 static bool _DragEventFilter;
-static bool _DraggingActive;
 
 void TreeParams::onItemBackgroundChanged()
 {
@@ -479,7 +478,7 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
 
     setupResizableColumn(this);
     this->header()->setStretchLastSection(false);
-    QObject::connect(this->header(), &QHeaderView::sectionResized, [this](int idx, int, int newSize) {
+    QObject::connect(this->header(), &QHeaderView::sectionResized, [](int idx, int, int newSize) {
         if (idx)
             TreeParams::setColumnSize2(newSize);
         else
