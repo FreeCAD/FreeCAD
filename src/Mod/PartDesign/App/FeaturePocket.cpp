@@ -167,7 +167,7 @@ App::DocumentObjectExecReturn *Pocket::execute()
                 getFaceFromLinkSub(upToFace, UpToFace);
                 upToFace.Move(invObjLoc);
             }
-            getUpToFace(upToFace, base, supportface, profileshape, method, dir);
+            getUpToFace(upToFace, base, profileshape, method, dir);
             addOffsetToFace(upToFace, dir, Offset.getValue());
 
             // BRepFeat_MakePrism(..., 2, 1) in combination with PerForm(upToFace) is buggy when the
