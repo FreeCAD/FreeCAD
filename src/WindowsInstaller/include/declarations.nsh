@@ -35,7 +35,7 @@ Configuration and variables of FreeCAD installer
 !define APP_RUN "bin\${APP_NAME}.exe"
 !define BIN_FREECAD "${APP_NAME}.exe"
 
-!define APP_REGKEY "Software\${APP_NAME}${APP_SERIES_KEY}" # like "FreeCAD0180"
+!define APP_REGKEY "SOFTWARE\${APP_NAME}${APP_SERIES_KEY}" # like "FreeCAD0180"
 !define APP_REGKEY_SETUP "${APP_REGKEY}\Setup"
 !define APP_REGKEY_SETTINGS "${APP_REGKEY}\Settings"
 
