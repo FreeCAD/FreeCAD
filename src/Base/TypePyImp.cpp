@@ -229,8 +229,8 @@ PyObject* TypePy::createInstanceByName (PyObject *args)
     if (!PyArg_ParseTuple(args, "s|O!", &name, &PyBool_Type, &load))
         return nullptr;
 
-    bool bLoad = Base::asBoolean(load);
-    Base::Type type = Base::Type::getTypeIfDerivedFrom(name, Base::BaseClass::getClassTypeId(), bLoad);
+    bool loadModule = Base::asBoolean(load);
+    Base::Type type = Base::Type::getTypeIfDerivedFrom(name, Base::BaseClass::getClassTypeId(), loadModule);
     if (type.isBad())
         Py_Return;
 
