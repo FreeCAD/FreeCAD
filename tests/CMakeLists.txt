@@ -55,6 +55,11 @@ function(SETUP_TESTS)
     foreach(_testname ${ARGN})
         add_executable(${_testname}_Tests_run src/${_testname}.cpp)
         add_test(NAME ${_testname}_Tests_run COMMAND ${_testname}_Tests_run)
+        if(NOT BUILD_DYNAMIC_LINK_PYTHON)
+            list(APPEND ${_testname}_LIBS
+                ${PYTHON_LIBRARIES}
+            )
+        endif()
         target_link_libraries(${_testname}_Tests_run ${QtTest_LIBRARIES} ${${_testname}_LIBS})
     endforeach()
 endfunction()
