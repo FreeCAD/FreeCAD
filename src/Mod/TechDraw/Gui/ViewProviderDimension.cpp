@@ -138,9 +138,9 @@ bool ViewProviderDimension::setEdit(int ModNum)
     return true;
 }
 
-void ViewProviderDimension::updateData(const App::Property* p)
+void ViewProviderDimension::updateData(const App::Property* prop)
 {
-    if (p == &(getViewObject()->Type)) {
+    if (prop == &(getViewObject()->Type)) {
         if (getViewObject()->Type.isValue("DistanceX")) {
             sPixmap = "TechDraw_HorizontalDimension";
         } else if (getViewObject()->Type.isValue("DistanceY")) {
@@ -154,20 +154,33 @@ void ViewProviderDimension::updateData(const App::Property* p)
         } else if (getViewObject()->Type.isValue("Angle3Pt")) {
             sPixmap = "TechDraw_3PtAngleDimension";
         }
+        return;
     }
 
     //Dimension handles X, Y updates differently that other QGIView
     //call QGIViewDimension::updateView
-    if (p == &(getViewObject()->X)  ||
-        p == &(getViewObject()->Y) ){
+    if (prop == &(getViewObject()->X)  ||
+        prop == &(getViewObject()->Y)  ||
+        prop == &(getViewObject()->FormatSpec) ||
+        prop == &(getViewObject()->Arbitrary) ||
+        prop == &(getViewObject()->FormatSpecOverTolerance) ||
+        prop == &(getViewObject()->FormatSpecUnderTolerance) ||
+        prop == &(getViewObject()->ArbitraryTolerances) ||
+        prop == &(getViewObject()->MeasureType) ||
+        prop == &(getViewObject()->TheoreticalExact) ||
+        prop == &(getViewObject()->EqualTolerance) ||
+        prop == &(getViewObject()->OverTolerance) ||
+        prop == &(getViewObject()->UnderTolerance) ||
+        prop == &(getViewObject()->Inverted) ){
         QGIView* qgiv = getQView();
         if (qgiv) {
             qgiv->updateView(true);
         }
+        return;
     }
 
     //Skip QGIView X, Y processing - do not call ViewProviderDrawingView
-    Gui::ViewProviderDocumentObject::updateData(p);
+    Gui::ViewProviderDocumentObject::updateData(prop);
 }
 
 void ViewProviderDimension::onChanged(const App::Property* p)

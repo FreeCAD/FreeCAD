@@ -438,8 +438,7 @@ void DrawViewPart::postHlrTasks(void)
     for (auto& b : bals) {
         b->recomputeFeature();
     }
-    // Dimensions need to be recomputed now, unless their recomputation must be postponed
-    // until face creation, in which case they are recomputed after that
+    // Dimensions need to be recomputed now if face finding is not going to take place.
     if (!handleFaces() || CoarseView.getValue()) {
         std::vector<TechDraw::DrawViewDimension*> dims = getDimensions();
         for (auto& d : dims) {
@@ -467,9 +466,8 @@ void DrawViewPart::postFaceExtractionTasks(void)
     // Some centerlines depend on faces so we could not add CL geometry before now
     addCenterLinesToGeom();
 
-    // Dimensions need to be recomputed here because their
-    // references will be invalid until all the geometry exists,
-    // specifically cosmetic centerlines
+    // Dimensions need to be recomputed because their references will be invalid
+    //  until all the geometry (including centerlines dependent on faces) exists.
     std::vector<TechDraw::DrawViewDimension*> dims = getDimensions();
     for (auto& d : dims) {
         d->recomputeFeature();

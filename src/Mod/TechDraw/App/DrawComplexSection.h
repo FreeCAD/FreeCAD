@@ -58,13 +58,22 @@ public:
     TopoDS_Compound alignSectionFaces(TopoDS_Shape faceIntersections) override;
     std::pair<Base::Vector3d, Base::Vector3d> sectionLineEnds() override;
 
+    void makeSectionCut(TopoDS_Shape &baseShape) override;
+
+    void waitingForAlign(bool s) { m_waitingForAlign = s; }
+    bool waitingForAlign(void) const { return m_waitingForAlign; }
+
+
+public Q_SLOTS:
+    void onSectionCutFinished(void) override;
+
     bool boxesIntersect(TopoDS_Face &face, TopoDS_Shape &shape);
     TopoDS_Shape shapeShapeIntersect(const TopoDS_Shape &shape0, const TopoDS_Shape &shape1);
     std::vector<TopoDS_Face> faceShapeIntersect(const TopoDS_Face &face, const TopoDS_Shape &shape);
     TopoDS_Shape extrudeWireToFace(TopoDS_Wire &wire, gp_Dir extrudeDir, double extrudeDist);
-    TopoDS_Shape makeAlignedPieces(const TopoDS_Shape &rawShape, const TopoDS_Shape &toolFaceShape,
-                                   double extrudeDistance);
-    TopoDS_Shape distributeAlignedPieces(std::vector<TopoDS_Shape> pieces);
+//    void makeAlignedPieces(const TopoDS_Shape &rawShape, const TopoDS_Shape &toolFaceShape,
+//                                   double extrudeDistance);
+    void makeAlignedPieces(const TopoDS_Shape &rawShape);
     TopoDS_Compound singleToolIntersections(const TopoDS_Shape &cutShape);
     TopoDS_Compound alignedToolIntersections(const TopoDS_Shape &cutShape);
 
@@ -94,6 +103,12 @@ private:
     gp_Dir getFaceNormal(TopoDS_Face &face);
 
     TopoDS_Shape m_toolFaceShape;
+    TopoDS_Shape m_alignResult;
+
+    QMetaObject::Connection connectAlignWatcher;
+    QFutureWatcher<void> m_alignWatcher;
+    QFuture<void> m_alignFuture;
+    bool m_waitingForAlign;
 
     static const char *ProjectionStrategyEnums[];
 };
