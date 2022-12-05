@@ -330,8 +330,8 @@ Py::Object ParameterGrpPy::getManager(const Py::Tuple& args)
         // increment the ref count
         return Py::asObject(pcParamGrp);
     }
-    else 
-        return Py::Object();
+
+    return Py::None();
 }
 
 Py::Object ParameterGrpPy::getParent(const Py::Tuple& args)
@@ -347,8 +347,8 @@ Py::Object ParameterGrpPy::getParent(const Py::Tuple& args)
         // increment the ref count
         return Py::asObject(pcParamGrp);
     }
-    else 
-        return Py::Object();
+
+    return Py::None();
 }
 
 Py::Object ParameterGrpPy::getGroupName(const Py::Tuple& args)
