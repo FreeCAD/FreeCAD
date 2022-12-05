@@ -237,8 +237,8 @@ public:
 
 protected:
   // restore from/save to parameters
-  void restorePreferences();
-  void savePreferences();
+  void restorePreferences() override;
+  void savePreferences() override;
   virtual QVariant::Type getParamType() const;
 
 private:
