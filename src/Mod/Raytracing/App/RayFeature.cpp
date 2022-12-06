@@ -20,15 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <Standard.hxx>
 #endif
 
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
 #include <Mod/Part/App/PartFeature.h>
 
 #include "RayFeature.h"

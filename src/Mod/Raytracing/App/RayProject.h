@@ -20,16 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
- 
-
-
 #ifndef _RayProject_h_
 #define _RayProject_h_
 
 #include <App/DocumentObjectGroup.h>
-#include <App/PropertyStandard.h>
 #include <App/PropertyFile.h>
 #include <Mod/Raytracing/RaytracingGlobal.h>
+
 
 namespace Raytracing
 {

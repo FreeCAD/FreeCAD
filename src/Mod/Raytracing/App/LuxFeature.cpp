@@ -20,21 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <ShapeAnalysis_ShapeContents.hxx>
 # include <Standard.hxx>
 #endif
 
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
 #include <Mod/Part/App/PartFeature.h>
 
 #include "LuxFeature.h"
 #include "LuxTools.h"
-
-#include <ShapeAnalysis_ShapeContents.hxx>
 
 
 using namespace Raytracing;
