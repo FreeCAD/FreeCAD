@@ -475,8 +475,9 @@ bool Metadata::satisfies(const Meta::Dependency &dep)
         }
         auto parsedExpression = App::Expression::parse(nullptr, dep.condition);
         auto result = parsedExpression->eval();
-        if (!boost::any_cast<bool>(result->getValueAsAny()))
+        if (!boost::any_cast<bool>(result->getValueAsAny())) {
             return false;
+        }
     }
 
     if (!dep.version_eq.empty()) {
@@ -520,10 +521,12 @@ bool Metadata::supportsCurrentFreeCAD() const
         fcVersion = Meta::Version(ss.str());
     }
 
-    if (_freecadmin != Meta::Version() && _freecadmin > fcVersion)
+    if (_freecadmin != Meta::Version() && _freecadmin > fcVersion) {
         return false;
-    else if (_freecadmax != Meta::Version() && _freecadmax < fcVersion)
+    }
+    else if (_freecadmax != Meta::Version() && _freecadmax < fcVersion) {
         return false;
+    }
     return true;
 }
 
