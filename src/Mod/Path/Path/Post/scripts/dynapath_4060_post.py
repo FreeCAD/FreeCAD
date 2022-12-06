@@ -180,7 +180,7 @@ def processArguments(argstring):
             OUTPUT_LINE_NUMBERS = True
         if args.no_show_editor:
             SHOW_EDITOR = False
-            print("Show editor = %d" % SHOW_EDITOR)
+            print("Show editor = %r" % (SHOW_EDITOR))
         if args.precision is not None:
             PRECISION = args.precision
         if args.preamble is not None:
