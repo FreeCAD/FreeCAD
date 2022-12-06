@@ -20,57 +20,43 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRep_Tool.hxx>
-# include <GeomAPI_ProjectPointOnSurf.hxx>
-# include <GeomLProp_SLProps.hxx>
-# include <Poly_Triangulation.hxx>
-# include <TopoDS_Face.hxx>
-# include <Inventor/SoInput.h>
-# include <Inventor/nodes/SoNode.h>
-# include <Inventor/nodes/SoOrthographicCamera.h>
-# include <Inventor/nodes/SoPerspectiveCamera.h>
+# include <sstream>
+# include <vector>
 # include <QApplication>
 # include <QDir>
 # include <QFile>
 # include <QFileInfo>
 # include <QMessageBox>
-# include <sstream>
-# include <vector>
+
+# include <Inventor/SoInput.h>
+# include <Inventor/nodes/SoCamera.h>
+# include <Inventor/nodes/SoNode.h>
 #endif
 
-#include <Base/Console.h>
-#include <Base/Tools.h>
-#include <Base/Exception.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <App/Material.h>
+#include <Base/Console.h>
+#include <Base/Exception.h>
+#include <Base/Tools.h>
 #include <Gui/Action.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/Document.h>
 #include <Gui/Command.h>
-#include <Gui/FileDialog.h>
-#include <Gui/View.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionObject.h>
+#include <Gui/Document.h>
 #include <Gui/FileDialog.h>
 #include <Gui/MainWindow.h>
-
-#include <Mod/Raytracing/App/RayFeature.h>
-#include <Mod/Raytracing/App/RaySegment.h>
-#include <Mod/Raytracing/App/RayProject.h>
-#include <Mod/Raytracing/App/LuxProject.h>
+#include <Gui/Selection.h>
+#include <Gui/SelectionObject.h>
+#include <Gui/ViewProvider.h>
 #include <Mod/Part/App/PartFeature.h>
+#include <Mod/Raytracing/App/LuxProject.h>
+#include <Mod/Raytracing/App/RayFeature.h>
+#include <Mod/Raytracing/App/RayProject.h>
 
 #include "FreeCADpov.h"
-
-
-//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 //===========================================================================
