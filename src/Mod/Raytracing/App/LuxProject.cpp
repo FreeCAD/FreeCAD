@@ -24,6 +24,7 @@
 
 #ifndef _PreComp_
 # include <Standard.hxx>
+# include <fstream>
 # include <iosfwd>
 # include <string>
 # include <vector>
