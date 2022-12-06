@@ -28,6 +28,7 @@
 #ifdef _PreComp_
 
 // STL
+#include <iosfwd>
 #include <sstream>
 #include <vector>
 
