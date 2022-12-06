@@ -323,12 +323,7 @@ std::vector<DrawPage*> DrawView::findAllParentPages() const
     DrawViewCollection *collection = nullptr;
     std::vector<App::DocumentObject*> parentsAll = getInList();
 
-    //prune the duplicates
-    std::sort(parentsAll.begin(), parentsAll.end());
-    auto last = std::unique(parentsAll.begin(), parentsAll.end());
-    parentsAll.erase(last, parentsAll.end());
-
-    for (auto& parent : parentsAll) {
+   for (auto& parent : parentsAll) {
         if (parent->getTypeId().isDerivedFrom(DrawPage::getClassTypeId())) {
             page = static_cast<TechDraw::DrawPage*>(parent);
         } else if (parent->getTypeId().isDerivedFrom(DrawViewCollection::getClassTypeId())) {
@@ -341,9 +336,13 @@ std::vector<DrawPage*> DrawView::findAllParentPages() const
         }
     }
 
+    //prune the duplicates
+    std::sort(result.begin(), result.end());
+    auto last = std::unique(result.begin(), result.end());
+    result.erase(last, result.end());
+
     return result;
 }
-
 
 bool DrawView::isInClip()
 {
