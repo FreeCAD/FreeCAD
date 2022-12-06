@@ -22,21 +22,17 @@
 
 #include "PreCompiled.h"
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
+#include <App/Application.h>
 
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
 #include <Base/Stream.h>
-#include "PovTools.h"
+#include <Mod/Part/App/TopoShapePy.h>
+
 #include "LuxTools.h"
 // automatically generated.....
 #include "FreeCADpov.h"
-
-#include <Mod/Part/App/TopoShape.h>
-#include <Mod/Part/App/TopoShapePy.h>
-#include <App/Application.h>
 
 
 using namespace std;

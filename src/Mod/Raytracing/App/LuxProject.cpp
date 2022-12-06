@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -28,12 +27,13 @@
 # include <string>
 #endif
 
-#include <Base/FileInfo.h>
-#include <Base/Console.h>
 #include <App/Application.h>
+#include <Base/Console.h>
+#include <Base/FileInfo.h>
+
 #include "LuxProject.h"
 #include "LuxFeature.h"
-#include "LuxTools.h"
+
 
 using namespace Raytracing;
 using namespace std;
