@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QApplication>
@@ -28,8 +27,7 @@
 
 #include "DlgSettingsRayImp.h"
 #include "ui_DlgSettingsRay.h"
-#include <Gui/PrefWidgets.h>
-#include <Base/Console.h>
+
 
 using namespace RaytracingGui;
 

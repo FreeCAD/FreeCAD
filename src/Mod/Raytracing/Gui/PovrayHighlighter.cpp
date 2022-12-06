@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QRegularExpression>
@@ -28,6 +27,7 @@
 #endif
 
 #include "PovrayHighlighter.h"
+
 
 using namespace RaytracingGui;
 

@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef RAYTRACINGGUI_VIEWPROVIDER_H
 #define RAYTRACINGGUI_VIEWPROVIDER_H
 
+#include <QCoreApplication>
 
 #include <Gui/ViewProviderDocumentObjectGroup.h>
-#include <QCoreApplication>
+
 
 namespace RaytracingGui {
 
