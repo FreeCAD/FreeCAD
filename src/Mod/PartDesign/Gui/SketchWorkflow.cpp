@@ -258,9 +258,20 @@ private:
     {
         if (!activeBody) {
             activeBody = PartDesignGui::getBody( /* messageIfNot = */ true );
-            if (!activeBody) {
+            if (activeBody) {
+                tryAddNewBodyToActivePart();
+            }
+            else {
                 throw RejectException();
             }
+        }
+    }
+
+    void tryAddNewBodyToActivePart()
+    {
+        App::Part *activePart = PartDesignGui::getActivePart();
+        if (activePart) {
+            activePart->addObject(activeBody);
         }
     }
 
@@ -498,9 +509,20 @@ private:
         if (!activeBody) {
             App::Document* appdocument = guidocument->getDocument();
             activeBody = PartDesignGui::makeBody(appdocument);
-            if (!activeBody) {
+            if (activeBody) {
+                tryAddNewBodyToActivePart();
+            }
+            else {
                 throw RejectException();
             }
+        }
+    }
+
+    void tryAddNewBodyToActivePart()
+    {
+        App::Part *activePart = PartDesignGui::getActivePart();
+        if (activePart) {
+            activePart->addObject(activeBody);
         }
     }
 
