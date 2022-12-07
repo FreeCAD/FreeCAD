@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PART_PRECOMPILED_H
 #define PART_PRECOMPILED_H
 
@@ -36,69 +35,53 @@
 #	pragma warning( disable : 4786 )  // specifier longer then 255 chars
 #endif
 
-
 #ifdef _PreComp_
 
 // standard
-#include <list>
-#include <iostream>
-#include <sstream>
-#include <fcntl.h>
-
-#include <array>
-#include <vector>
-#include <list>
-#include <set>
-#include <map>
-#include <memory>
-
-#include <fstream>
-#include <string>
-#include <stdexcept>
-#include <tuple>
-
 #include <cassert>
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
 #include <ctime>
 
-// QT
+// STL
+#include <array>
+#include <fcntl.h>
+#include <fstream>
+#include <list>
+#include <iostream>
+#include <map>
+#include <memory>
+#include <sstream>
+#include <stdexcept>
+#include <string>
+#include <vector>
+
+// Qt
 #include <QtGlobal>
 
 // Boost
-#include <boost_signals2.hpp>
-#include <boost/bind/bind.hpp>
-
-#include <boost/utility.hpp>
-#include <boost_graph_adjacency_list.hpp>
-
-#include <boost/program_options.hpp>
-//namespace po = boost::program_options;
-
-#include <boost/filesystem/path.hpp>
-#include <boost/filesystem/operations.hpp>
-#include <boost/filesystem/exception.hpp>
-
 #include <boost/regex.hpp>
+#include <boost/algorithm/string/predicate.hpp>
+#include <boost/core/ignore_unused.hpp>
+#include <boost/math/special_functions/fpclassify.hpp>
+#include <boost/uuid/uuid_generators.hpp>
 #include <boost/uuid/uuid_io.hpp>
 
+// OpenCasCade
 #include "OpenCascadeAll.h"
-#include <math_Gauss.hxx>
-#include <math_Matrix.hxx>
 
 #elif defined(FC_OS_WIN32)
 #define WIN32_LEAN_AND_MEAN
 #ifndef NOMINMAX
-#define NOMINMAX
+# define NOMINMAX
 #endif
 #include <Windows.h>
 #include <io.h>
 #endif //_PreComp_
 
 #ifndef _Standard_Version_HeaderFile
-#include <Standard_Version.hxx>
+# include <Standard_Version.hxx>
 #endif
-
 
 #endif

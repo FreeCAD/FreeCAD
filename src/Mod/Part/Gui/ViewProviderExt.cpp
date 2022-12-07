@@ -66,10 +66,10 @@
 # include <Inventor/nodes/SoPolygonOffset.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoShapeHints.h>
-#endif
 
-#include <boost/algorithm/string/predicate.hpp>
-#include <boost/regex.hpp>
+# include <boost/regex.hpp>
+# include <boost/algorithm/string/predicate.hpp>
+#endif
 
 #include <App/Application.h>
 #include <App/Document.h>

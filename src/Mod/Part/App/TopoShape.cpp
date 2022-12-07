@@ -160,10 +160,9 @@
 # include <BRepAdaptor_HCompCurve.hxx>
 #endif
 
+# include <boost/algorithm/string/predicate.hpp>
+# include <boost/core/ignore_unused.hpp>
 #endif // _PreComp_
-
-#include <boost/algorithm/string/predicate.hpp>
-#include <boost/core/ignore_unused.hpp>
 
 #include <App/Material.h>
 #include <Base/BoundBox.h>

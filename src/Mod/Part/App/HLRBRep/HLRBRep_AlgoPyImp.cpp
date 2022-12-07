@@ -27,11 +27,12 @@
 # include <gp_Ax2.hxx>
 # include <gp_Pnt.hxx>
 # include <HLRAlgo_Projector.hxx>
+
+# include <boost/math/special_functions/fpclassify.hpp>
 #endif
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/VectorPy.h>
-#include <boost/math/special_functions/fpclassify.hpp>
 
 #include "HLRBRep/HLRBRep_AlgoPy.h"
 #include "HLRBRep/HLRBRep_AlgoPy.cpp"
