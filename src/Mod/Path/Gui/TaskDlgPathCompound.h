@@ -23,6 +23,8 @@
 #ifndef PATHGUI_TaskDlgPathCompound_H
 #define PATHGUI_TaskDlgPathCompound_H
 
+#include <vector>
+
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/Path/App/FeaturePathCompound.h>

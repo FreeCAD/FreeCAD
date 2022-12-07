@@ -23,6 +23,7 @@
 #ifndef PATH_DlgProcessorChooser_H
 #define PATH_DlgProcessorChooser_H
 
+#include <vector>
 #include <QDialog>
 
 

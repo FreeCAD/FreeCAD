@@ -21,6 +21,9 @@
  ****************************************************************************/
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <vector>
+#endif
 
 #include <Gui/Application.h>
 #include <Mod/Path/App/FeatureArea.h>
