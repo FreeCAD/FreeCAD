@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <string>
 # include <QIcon>
 # include <QUrl>
 #endif

@@ -21,10 +21,9 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-#include <QTextStream>
-#include <QNetworkCookie>
+# include <QNetworkCookie>
+# include <QTextStream>
 #endif
 
 #include <App/Application.h>

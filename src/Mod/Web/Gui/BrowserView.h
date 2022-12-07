@@ -23,26 +23,24 @@
 #ifndef WEBGUI_BROWSERVIEW_H
 #define WEBGUI_BROWSERVIEW_H
 
+#include <QLineEdit>
+#include <QPointer>
+#if defined(QTWEBENGINE)
+# include <QWebEngineView>
+namespace WebGui {
+ class WebEngineUrlRequestInterceptor;
+}
+#elif defined(QTWEBKIT)
+# include <QWebView>
+#endif
 
 #include <Gui/MDIView.h>
 #include <Gui/Window.h>
 #include <Mod/Web/WebGlobal.h>
-#include <QLineEdit>
-#include <QPointer>
 
-#if defined(QTWEBENGINE)
-#include <QWebEngineView>
-
-namespace WebGui {
-class WebEngineUrlRequestInterceptor;
-}
-#elif defined(QTWEBKIT)
-#include <QWebView>
-#endif
-
-class QUrl;
-class QNetworkRequest;
 class QNetworkReply;
+class QNetworkRequest;
+class QUrl;
 
 namespace WebGui {
 class UrlWidget;
