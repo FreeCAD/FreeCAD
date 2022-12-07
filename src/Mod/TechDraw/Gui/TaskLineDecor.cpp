@@ -21,39 +21,28 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-#include <cmath>
+# include <cmath>
 #endif // #ifndef _PreComp_
 
 #include <Base/Console.h>
 #include <Base/Tools.h>
-#include <Base/Vector3D.h>
-
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
-#include <Gui/Document.h>
 #include <Gui/Selection.h>
 #include <Gui/ViewProvider.h>
-#include <Gui/FileDialog.h>
-
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-
-#include <Mod/TechDraw/App/DrawView.h>
-#include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
-#include <Mod/TechDraw/App/Geometry.h>
+#include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/Cosmetic.h>
+#include <Mod/TechDraw/App/Geometry.h>
 
-#include <Mod/TechDraw/Gui/ui_TaskLineDecor.h>
-#include <Mod/TechDraw/Gui/ui_TaskRestoreLines.h>
-
+#include "TaskLineDecor.h"
+#include "ui_TaskLineDecor.h"
+#include "ui_TaskRestoreLines.h"
 #include "QGIView.h"
 #include "ViewProviderViewPart.h"
-#include "TaskLineDecor.h"
+
 
 using namespace Gui;
 using namespace TechDraw;

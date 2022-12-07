@@ -59,6 +59,7 @@
 #endif
 #include <QGLWidget>
 #include <QPaintEngine>
+#include <QStatusBar>
 #include <QSvgGenerator>
 #include <QTextList>
 #include <QXmlQuery>
@@ -66,8 +67,10 @@
 
 // OpenCasCade
 #include <BRepAdaptor_Surface.hxx>
+#include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepLProp_SLProps.hxx>
 #include <gp_Dir.hxx>
+#include <gp_Pnt.hxx>
 
 // Open Inventor
 #include <Inventor/SbVec3f.h>

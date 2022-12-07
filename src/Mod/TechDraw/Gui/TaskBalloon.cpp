@@ -22,33 +22,22 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-#include <cmath>
+# include <cmath>
 #endif // #ifndef _PreComp_
 
+#include <App/Document.h>
 #include <Base/Console.h>
-
-#include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
-#include <Gui/Selection.h>
-#include <Gui/ViewProvider.h>
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-
-#include <Mod/TechDraw/App/DrawViewBalloon.h>
-#include <Mod/TechDraw/App/DrawPage.h>
-#include <Mod/TechDraw/App/ArrowPropEnum.h>
-
+#include "TaskBalloon.h"
+#include "ui_TaskBalloon.h"
 #include "DrawGuiUtil.h"
 #include "QGIViewBalloon.h"
 #include "ViewProviderBalloon.h"
-#include "TaskBalloon.h"
-#include "ui_TaskBalloon.h"
+
 
 using namespace Gui;
 using namespace TechDraw;

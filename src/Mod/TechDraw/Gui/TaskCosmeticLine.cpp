@@ -21,41 +21,24 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-#include <cmath>
-#include <BRepBndLib.hxx>
-#include <Bnd_Box.hxx>
-#include <QButtonGroup>
-#include <QStatusBar>
+# include <cmath>
+# include <BRepBuilderAPI_MakeEdge.hxx>
 #endif
 
-#include <BRepBuilderAPI_MakeEdge.hxx>
-
 #include <Base/Console.h>
-#include <Base/Tools.h>
-#include <Base/UnitsApi.h>
-
-#include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
-#include <Gui/Control.h>
 #include <Gui/Document.h>
-#include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-
-#include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
-#include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
-#include <Mod/TechDraw/App/Geometry.h>
 #include <Mod/TechDraw/App/Cosmetic.h>
+#include <Mod/TechDraw/App/Geometry.h>
 
-#include <Mod/TechDraw/Gui/ui_TaskCosmeticLine.h>
-
+#include "ui_TaskCosmeticLine.h"
 #include "TaskCosmeticLine.h"
+
 
 using namespace Gui;
 using namespace TechDraw;

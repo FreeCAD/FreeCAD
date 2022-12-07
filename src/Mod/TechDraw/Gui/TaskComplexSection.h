@@ -23,13 +23,13 @@
 #ifndef TECHDRAWGUI_TASKCOMPLEXSECTION_H
 #define TECHDRAWGUI_TASKCOMPLEXSECTION_H
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <QString>
 
 #include <Base/Vector3D.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 
 namespace App
 {
