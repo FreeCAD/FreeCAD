@@ -615,5 +615,3 @@ def parse(pathobj):
                     out += linenumber() + "L%.1f\n" % DWELL_TIME
 
         return out
-
-print(__name__ + " gcode postprocessor loaded.")
