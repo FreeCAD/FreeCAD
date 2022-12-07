@@ -26,21 +26,6 @@
 #include <FCConfig.h>
 
 #ifdef _PreComp_
-// standard
-#include <iostream>
-#include <cassert>
-#include <cmath>
-
-// STL
-#include <vector>
-#include <map>
-#include <string>
-#include <list>
-#include <set>
-#include <algorithm>
-#include <stack>
-#include <queue>
-#include <bitset>
 
 #ifdef FC_OS_WIN32
 # include <windows.h>
