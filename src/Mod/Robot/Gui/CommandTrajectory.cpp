@@ -20,33 +20,26 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QInputDialog>
 # include <QMessageBox>
 #endif
 
-#include <App/Application.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
-#include <Gui/MainWindow.h>
-#include <Gui/FileDialog.h>
-#include <Gui/Selection.h>
 #include <Gui/Document.h>
+#include <Gui/MainWindow.h>
 #include <Gui/Placement.h>
-#include <Gui/Control.h>
-
-
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Robot/App/RobotObject.h>
-#include <Mod/Robot/App/TrajectoryObject.h>
+#include <Gui/Selection.h>
 #include <Mod/Robot/App/Edge2TracObject.h>
-#include <Mod/Robot/App/TrajectoryDressUpObject.h>
+#include <Mod/Robot/App/RobotObject.h>
 #include <Mod/Robot/App/TrajectoryCompound.h>
+#include <Mod/Robot/App/TrajectoryDressUpObject.h>
+#include <Mod/Robot/App/TrajectoryObject.h>
+
 #include "TaskDlgEdge2Trac.h"
 
-#include "TrajectorySimulate.h"
 
 using namespace std;
 using namespace RobotGui;

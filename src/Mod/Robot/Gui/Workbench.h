@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef IMAGE_WORKBENCH_H
 #define IMAGE_WORKBENCH_H
 
 #include <Gui/Workbench.h>
 #include <Gui/TaskView/TaskWatcher.h>
+
 
 namespace RobotGui {
 

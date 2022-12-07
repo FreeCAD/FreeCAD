@@ -20,29 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
+# include <qpalette.h>
+# include <QString>
 #endif
 
-#include <Base/Console.h>
-#include <Base/UnitsApi.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/Placement.h>
+#include <Gui/Selection.h>
 
-#include <QString>
-#include <qpalette.h>
-#include <QSlider>
 #include "ui_TaskRobot6Axis.h"
 #include "TaskRobot6Axis.h"
-
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Gui/Selection.h>
-#include <Gui/Placement.h>
-
 
 
 using namespace RobotGui;

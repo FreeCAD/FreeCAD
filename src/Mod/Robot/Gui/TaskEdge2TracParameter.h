@@ -20,15 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskEdge2TracParameter_H
 #define GUI_TASKVIEW_TaskEdge2TracParameter_H
 
 #include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-
 #include <Mod/Robot/App/Edge2TracObject.h>
-#include <Mod/Robot/App/TrajectoryObject.h>
 
 
 class Ui_TaskEdge2TracParameter;
@@ -42,8 +38,6 @@ class ViewProvider;
 }
 
 namespace RobotGui { 
-
-
 
 class TaskEdge2TracParameter : public Gui::TaskView::TaskBox
 {

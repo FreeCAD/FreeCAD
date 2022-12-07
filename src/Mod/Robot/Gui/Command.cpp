@@ -20,28 +20,23 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QMessageBox>
 #endif
 
-#include <App/Application.h>
 #include <Gui/Application.h>
-#include <Gui/MainWindow.h>
 #include <Gui/Command.h>
-#include <Gui/FileDialog.h>
+#include <Gui/Control.h>
+#include <Gui/Document.h>
+#include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
-#include <Gui/SelectionObject.h>
-#include <Gui/Document.h>
-#include <Gui/Control.h>
-
 #include <Mod/Robot/App/RobotObject.h>
 #include <Mod/Robot/App/TrajectoryObject.h>
 
-#include "TrajectorySimulate.h"
 #include "TaskDlgSimulate.h"
+#include "TrajectorySimulate.h"
 
 
 using namespace std;
