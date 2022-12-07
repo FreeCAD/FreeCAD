@@ -106,6 +106,7 @@
 #endif
 #include <BRepAdaptor_Surface.hxx>
 
+#include <BRepAlgo.hxx>
 #if OCC_VERSION_HEX < 0x070300
 # include <BRepAlgo_Fuse.hxx>
 #endif
@@ -478,6 +479,7 @@
 #include <TopTools_DataMapOfIntegerListOfShape.hxx>
 #include <TopTools_DataMapOfIntegerShape.hxx>
 #include <TopTools_HSequenceOfShape.hxx>
+#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
 #include <TopTools_ListIteratorOfListOfShape.hxx>
 #include <TopTools_ListIteratorOfListOfShape.hxx>
