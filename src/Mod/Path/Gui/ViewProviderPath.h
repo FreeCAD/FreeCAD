@@ -23,8 +23,6 @@
 #ifndef PATH_ViewProviderPath_H
 #define PATH_ViewProviderPath_H
 
-#include <vector>
-
 #include <App/PropertyGeo.h>
 #include <Gui/Selection.h>
 #include <Gui/ViewProviderGeometryObject.h>

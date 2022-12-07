@@ -23,7 +23,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <vector>
 # include <boost/algorithm/string/replace.hpp>
 
 # include <Inventor/SbVec3f.h>

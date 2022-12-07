@@ -46,15 +46,28 @@
 
 #ifdef _PreComp_
 
+// boost
+#include <boost/algorithm/string/replace.hpp>
+
+// standard
+#include <iostream>
+#include <cassert>
+#include <cmath>
+
 // STL
 #include <vector>
+#include <map>
+#include <string>
+#include <list>
+#include <set>
+#include <algorithm>
+#include <stack>
+#include <queue>
+#include <bitset>
 
 #ifdef FC_OS_WIN32
 # include <windows.h>
 #endif
-
-// boost
-#include <boost/algorithm/string/replace.hpp>
 
 // OCC
 #include <TopExp_Explorer.hxx>
@@ -65,17 +78,9 @@
 #endif
 
 // all of Inventor
-#include <Inventor/SbVec3f.h>
-#include <Inventor/details/SoLineDetail.h>
-#include <Inventor/nodes/SoBaseColor.h>
-#include <Inventor/nodes/SoCoordinate3.h>
-#include <Inventor/nodes/SoDrawStyle.h>
-#include <Inventor/nodes/SoMaterial.h>
-#include <Inventor/nodes/SoMaterialBinding.h>
-#include <Inventor/nodes/SoPointSet.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoSwitch.h>
-#include <Inventor/nodes/SoTransform.h>
+#ifndef __InventorAll__
+# include <Gui/InventorAll.h>
+#endif
 
 #endif //_PreComp_
 

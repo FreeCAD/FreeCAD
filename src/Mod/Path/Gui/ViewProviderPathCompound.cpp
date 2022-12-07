@@ -22,8 +22,6 @@
 
 #include "PreCompiled.h"
 
-#include <vector>
-
 #include <Gui/BitmapFactory.h>
 #include <Gui/Control.h>
 
