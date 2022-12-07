@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef APP_PRECOMPILED_H
 #define APP_PRECOMPILED_H
 
@@ -29,24 +28,12 @@
 #ifdef _PreComp_
 
 // standard
-#include <cstdio>
-#include <cassert>
 #include <climits>
-#include <iostream>
 #include <stdexcept>
 
 // STL
-#include <algorithm>
-#include <iostream>
-#include <list>
-#include <map>
 #include <memory>
-#include <queue>
-#include <set>
 #include <sstream>
-#include <stack>
-#include <string>
-#include <vector>
 
 // Qt
 #include <QCoreApplication>

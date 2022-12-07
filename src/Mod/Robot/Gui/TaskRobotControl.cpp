@@ -20,23 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+#include <Gui/BitmapFactory.h>
 
-#include <QString>
-#include <QSlider>
 #include "ui_TaskRobotControl.h"
 #include "TaskRobotControl.h"
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Base/Console.h>
-#include <Gui/Selection.h>
 
 
 using namespace RobotGui;

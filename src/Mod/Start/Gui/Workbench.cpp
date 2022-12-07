@@ -26,19 +26,17 @@
 # include <QCoreApplication>
 #endif
 
-#include "Workbench.h"
-
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
 #include <Base/Tools.h>
-
-#include <Gui/ToolBarManager.h>
-#include <Gui/DockWindowManager.h>
-#include <Gui/Application.h>
 #include <Gui/Command.h>
+#include <Gui/DockWindowManager.h>
 #include <Gui/MainWindow.h>
 #include <Gui/MDIView.h>
+#include <Gui/ToolBarManager.h>
+
+#include "Workbench.h"
 
 
 using namespace StartGui;

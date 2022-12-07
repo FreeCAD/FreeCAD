@@ -2687,14 +2687,16 @@ bool MeshOutput::SaveInventor (std::ostream &rstrOut) const
     // Header info
     Base::InventorBuilder builder(rstrOut);
     builder.beginSeparator();
-    builder.addInfo("Created by FreeCAD <http://www.freecadweb.org>");
+    Base::InfoItem info{"Created by FreeCAD <http://www.freecadweb.org>"};
+    builder.addNode(info);
     std::stringstream str;
     str << "Triangle mesh contains "
         << _rclMesh.CountPoints()
         << " vertices and "
         << _rclMesh.CountFacets()
         << " faces";
-    builder.addLabel(str.str().c_str());
+    Base::LabelItem label{str.str().c_str()};
+    builder.addNode(label);
 
     // write out the normals of the facets
     builder.beginNormal();

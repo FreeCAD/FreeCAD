@@ -20,24 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
+# include <QString>
 #endif
 
-#include <QString>
-#include <QSlider>
-#include "ui_TaskTrajectoryDressUpParameter.h"
-#include "TaskTrajectoryDressUpParameter.h"
-#include <Gui/Application.h>
-#include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Base/Console.h>
-#include <Gui/Selection.h>
 #include <Gui/Placement.h>
+#include <Gui/Selection.h>
+
+#include "TaskTrajectoryDressUpParameter.h"
+#include "ui_TaskTrajectoryDressUpParameter.h"
 
 
 using namespace RobotGui;

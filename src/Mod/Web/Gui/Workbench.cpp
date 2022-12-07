@@ -22,13 +22,12 @@
 
 #include "PreCompiled.h"
 
-#include "Workbench.h"
-
 #include <Gui/Application.h>
 #include <Gui/Command.h>
-#include <Gui/MenuManager.h>
 #include <Gui/Selection.h>
 #include <Gui/ToolBarManager.h>
+
+#include "Workbench.h"
 
 
 using namespace WebGui;

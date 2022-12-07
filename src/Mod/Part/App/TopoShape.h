@@ -228,6 +228,8 @@ public:
     bool findPlane(gp_Pln &pln, double tol=-1) const;
     /// Returns true if the expansion of the shape is infinite, false otherwise
     bool isInfinite() const;
+    /// Checks whether the shape is a planar face
+    bool isPlanar(double tol = 1.0e-7) const;
     //@}
 
     /** @name Boolean operation*/

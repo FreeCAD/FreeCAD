@@ -4247,6 +4247,16 @@ void PropertyTransientFileItem::setEditorData(QWidget *editor, const QVariant& d
 {
     auto fc = qobject_cast<Gui::FileChooser*>(editor);
     fc->setFileName(data.toString());
+
+    const auto prop = static_cast
+        <const App::PropertyFileIncluded*>(getFirstProperty());
+
+    if (prop) {
+        std::string filter = prop->getFilter();
+        if (!filter.empty()) {
+            fc->setFilter(QString::fromStdString(filter));
+        }
+    }
 }
 
 QVariant PropertyTransientFileItem::editorData(QWidget *editor) const

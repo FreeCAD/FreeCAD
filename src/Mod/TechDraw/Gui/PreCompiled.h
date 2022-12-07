@@ -43,13 +43,7 @@
 
 // STL
 #include <algorithm>
-#include <bitset>
-#include <list>
-#include <map>
-#include <queue>
 #include <regex>
-#include <set>
-#include <stack>
 #include <string>
 #include <vector>
 
@@ -76,11 +70,7 @@
 #include <gp_Dir.hxx>
 
 // Open Inventor
-#include <Inventor/misc/SoChildList.h>
-#include <Inventor/nodes/SoDirectionalLight.h>
-#include <Inventor/nodes/SoOrthographicCamera.h>
-#include <Inventor/nodes/SoPerspectiveCamera.h>
-#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/SbVec3f.h>
 
 #endif //_PreComp_
 

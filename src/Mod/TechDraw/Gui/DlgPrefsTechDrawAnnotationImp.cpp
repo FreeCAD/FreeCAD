@@ -23,8 +23,9 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
-#include <vector>
+#ifndef _PreComp_
+# include <vector>
+#endif
 
 #include <Mod/TechDraw/App/LineGroup.h>
 

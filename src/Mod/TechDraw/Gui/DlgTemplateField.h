@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef DRAWINGGUI_DLGTEMPLATEFIELD_H
 #define DRAWINGGUI_DLGTEMPLATEFIELD_H
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
+#include <memory>
 #include <QDialog>
 #include <QString>
-#include <memory>
+
 
 namespace TechDrawGui {
 

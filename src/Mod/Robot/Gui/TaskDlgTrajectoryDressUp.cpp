@@ -20,21 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+#include <Gui/Application.h>
+#include <Gui/Document.h>
 
 #include "TaskDlgTrajectoryDressUp.h"
-#include <Gui/TaskView/TaskSelectLinkProperty.h>
-
-#include <Gui/Document.h>
-#include <Gui/Application.h>
 
 
 using namespace RobotGui;
-
 
 //**************************************************************************
 //**************************************************************************

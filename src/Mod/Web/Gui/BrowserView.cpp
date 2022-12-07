@@ -21,8 +21,9 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
+# include <vector>
+
 # include <QApplication>
 # include <QDesktopServices>
 # include <QFileInfo>
@@ -34,16 +35,15 @@
 # include <QNetworkRequest>
 # include <QRegularExpression>
 # include <QRegularExpressionMatch>
-# include <QScreen>
 # include <QSignalMapper>
 # include <QStatusBar>
 #endif
 
 #if defined(QTWEBENGINE)
 # if QT_VERSION < QT_VERSION_CHECK(6,0,0)
-# include <QWebEngineContextMenuData>
+#  include <QWebEngineContextMenuData>
 # else
-# include <QWebEngineContextMenuRequest>
+#  include <QWebEngineContextMenuRequest>
 # endif
 # include <QWebEnginePage>
 # include <QWebEngineProfile>
