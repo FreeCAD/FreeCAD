@@ -23,45 +23,29 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <QApplication>
-#include <QPushButton>
-#include <QStatusBar>
-#include <QMessageBox>
-#include <QTemporaryFile>
+# include <regex>
+# include <QMessageBox>
+# include <QPushButton>
 #endif // #ifndef _PreComp_
 
-#include <regex>
-
+#include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Tools.h>
-#include <Base/UnitsApi.h>
-
-#include <App/Document.h>
-
-#include <Base/FileInfo.h>
-
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
-#include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-
 #include <Mod/TechDraw/App/DrawPage.h>
-#include <Mod/TechDraw/App/DrawUtil.h>
-#include <Mod/TechDraw/App/DrawView.h>
-#include <Mod/TechDraw/App/DrawViewSymbol.h>
 #include <Mod/TechDraw/App/DrawViewImage.h>
 
-#include <Mod/TechDraw/Gui/ui_TaskActiveView.h>
-
+#include "ui_TaskActiveView.h"
+#include "TaskActiveView.h"
 #include "Grabber3d.h"
 #include "ViewProviderImage.h"
-#include "TaskActiveView.h"
+
 
 using namespace Gui;
 using namespace TechDraw;

@@ -26,7 +26,7 @@
 # include <QList>
 #endif
 
-#include <Base/Console.h>
+#include <Base/Console.h> // for FC_LOG_LEVEL_INIT
 #include <Base/Tools.h>
 
 #include "DlgPageChooser.h"

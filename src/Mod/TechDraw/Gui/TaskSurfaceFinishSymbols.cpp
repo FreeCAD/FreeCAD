@@ -22,9 +22,9 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QLineEdit>
-#include <QGraphicsProxyWidget>
-#include <QComboBox>
+# include <QComboBox>
+# include <QGraphicsProxyWidget>
+# include <QLineEdit>
 #endif
 
 #include <App/Document.h>
