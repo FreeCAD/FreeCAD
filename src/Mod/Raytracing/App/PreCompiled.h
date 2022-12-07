@@ -29,7 +29,6 @@
 
 // STL
 #include <fstream>
-#include <iosfwd>
 #include <sstream>
 #include <vector>
 
