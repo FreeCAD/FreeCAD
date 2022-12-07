@@ -21,51 +21,28 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-#include <cmath>
-#include <BRepBndLib.hxx>
-#include <Bnd_Box.hxx>
-#include <QApplication>
-#include <QGraphicsScene>
-#include <QPushButton>
-#include <QStatusBar>
+# include <cmath>
+# include <QPushButton>
 #endif // #ifndef _PreComp_
 
-
+#include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Tools.h>
-#include <Base/UnitsApi.h>
-
-#include <App/Document.h>
-
-#include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
-#include <Gui/Control.h>
 #include <Gui/Document.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
 
 #include <Mod/TechDraw/App/DrawPage.h>
-#include <Mod/TechDraw/App/DrawUtil.h>
-#include <Mod/TechDraw/App/DrawView.h>
-#include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
-#include <Mod/TechDraw/App/DrawWeldSymbol.h>
-#include <Mod/TechDraw/App/DrawTile.h>
 #include <Mod/TechDraw/App/DrawTileWeld.h>
-#include <Mod/TechDraw/App/Geometry.h>
-#include <Mod/TechDraw/App/Cosmetic.h>
-#include <Mod/TechDraw/Gui/ui_TaskWeldingSymbol.h>
-
-#include "PreferencesGui.h"
-#include "SymbolChooser.h"
+#include <Mod/TechDraw/App/DrawWeldSymbol.h>
 
 #include "TaskWeldingSymbol.h"
 #include "ui_TaskWeldingSymbol.h"
+#include "PreferencesGui.h"
+#include "SymbolChooser.h"
+
 
 using namespace Gui;
 using namespace TechDraw;
