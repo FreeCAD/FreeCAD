@@ -20,35 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-
-#endif
-
-#include "kdl_cp/chain.hpp"
-#include "kdl_cp/frames_io.hpp"
-
-#include <cstdio>
-#include <iostream>
-
-#include <Base/Console.h>
-
-
 #include "Simulation.h"
+
 
 using namespace Robot;
 using namespace std;
 using namespace KDL;
 
-
-
 //===========================================================================
 // Simulation class
 //===========================================================================
-
-
 
 Simulation::Simulation(const Robot::Trajectory &Trac,Robot::Robot6Axis &Rob)
 :Pos(0.0),Trac(Trac),Rob(Rob)

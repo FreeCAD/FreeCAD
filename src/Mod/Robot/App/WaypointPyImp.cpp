@@ -20,21 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-
 #include <Base/PlacementPy.h>
-#include <Base/Placement.h>
-#include <Base/Exception.h>
 #include <Base/UnitsApi.h>
-
-#include "Mod/Robot/App/Waypoint.h"
-
 
 // inclusion of the generated files (generated out of WaypointPy.xml)
 #include "WaypointPy.h"
 #include "WaypointPy.cpp"
+
 
 using namespace Robot;
 using namespace Base;

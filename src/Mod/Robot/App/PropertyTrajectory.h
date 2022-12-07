@@ -20,17 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PROPERTYTRAJECTORY_H
 #define PROPERTYTRAJECTORY_H
 
-#include "Trajectory.h"
 #include <App/Property.h>
 #include <Base/BoundBox.h>
 
+#include "Trajectory.h"
+
+
 namespace Robot
 {
-
 
 /** The part shape property class.
  * @author Werner Mayer

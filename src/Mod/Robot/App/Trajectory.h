@@ -20,18 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef ROBOT_Trajectory_H
 #define ROBOT_Trajectory_H
 
-#include "kdl_cp/trajectory.hpp"
-
-#include "Waypoint.h"
+#include <vector>
 
 #include <Base/Persistence.h>
 #include <Base/Placement.h>
 
-#include <vector>
+#include "Waypoint.h"
+
 
 namespace KDL {class Trajectory_Composite;}
 
