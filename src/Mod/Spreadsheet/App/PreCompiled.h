@@ -26,7 +26,6 @@
 
 #include <FCConfig.h>
 
-
 // point at which warnings of overly long specifiers disabled (needed for VC6)
 #ifdef _MSC_VER
 # pragma warning( disable : 4251 )
@@ -37,24 +36,13 @@
 
 #ifdef _PreComp_
 
-// standard
-#include <cassert>
-#include <cmath>
-#include <iostream>
-
 // STL
-#include <algorithm>
-#include <bitset>
 #include <deque>
-#include <list>
 #include <map>
 #include <memory>
-#include <queue>
 #include <set>
 #include <sstream>
-#include <stack>
 #include <string>
-#include <vector>
 
 // boost
 #include <boost/regex.hpp>
@@ -67,10 +55,8 @@
 # include <windows.h>
 #endif
 
-// Qt Toolkit
-#ifndef __QtAll__
-# include <Gui/QtAll.h>
-#endif
+// Qt
+#include <QLocale>
 
 #endif //_PreComp_
 

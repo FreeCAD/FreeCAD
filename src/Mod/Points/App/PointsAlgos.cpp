@@ -27,12 +27,11 @@
 # endif
 # include <memory>
 # include <sstream>
-#endif
 
-#include <boost/lexical_cast.hpp>
-#include <boost/regex.hpp>
-#include <boost/algorithm/string.hpp>
-#include <boost/math/special_functions/fpclassify.hpp>
+# include <boost/lexical_cast.hpp>
+# include <boost/regex.hpp>
+# include <boost/algorithm/string.hpp>
+#endif
 
 #include <Base/Console.h>
 #include <Base/Converter.h>
@@ -40,9 +39,9 @@
 #include <Base/FileInfo.h>
 #include <Base/Sequencer.h>
 #include <Base/Stream.h>
-#include <E57Format.h>
 
 #include "PointsAlgos.h"
+#include <E57Format.h>
 
 
 using namespace Points;

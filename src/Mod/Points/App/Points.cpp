@@ -25,9 +25,8 @@
 # include <cmath>
 # include <iostream>
 # include <QtConcurrentMap>
+# include <boost/math/special_functions/fpclassify.hpp>
 #endif
-
-#include <boost/math/special_functions/fpclassify.hpp>
 
 #include <Base/Matrix.h>
 #include <Base/Stream.h>
