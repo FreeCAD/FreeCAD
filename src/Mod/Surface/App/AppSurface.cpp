@@ -23,20 +23,19 @@
 #include "PreCompiled.h"
 
 #include <Base/Console.h>
-#include <Base/PyObjectBase.h>
+#include <Base/Interpreter.h>
+#include <Base/Parameter.h>
 
 #include "Blending/BlendCurvePy.h"
 #include "Blending/BlendPointPy.h"
 #include "Blending/FeatureBlendCurve.h"
+
 #include "FeatureCut.h"
 #include "FeatureExtend.h"
 #include "FeatureFilling.h"
 #include "FeatureGeomFillSurface.h"
 #include "FeatureSections.h"
 #include "FeatureSewing.h"
-
-#include <Base/Interpreter.h>
-#include <Base/Parameter.h>
 
 
 namespace Surface

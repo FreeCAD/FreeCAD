@@ -25,14 +25,8 @@
 
 #ifndef _PreComp_
 #include <BRep_Tool.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
-#include <BRepBuilderAPI_MakeWire.hxx>
-#include <BRepBuilderAPI_NurbsConvert.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Wire.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
+#include <BRepBuilderAPI_MakeFace.hxx>
 #include <Geom_BezierCurve.hxx>
 #include <Geom_BezierSurface.hxx>
 #include <Geom_BSplineCurve.hxx>
@@ -49,12 +43,14 @@
 #include <Standard_ConstructionError.hxx>
 #include <StdFail_NotDone.hxx>
 #include <TopExp_Explorer.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS_Face.hxx>
+#include <TopoDS_Wire.hxx>
 #endif
 
-#include <Base/Exception.h>
-#include <Base/Tools.h>
-
 #include "FeatureGeomFillSurface.h"
+
 
 using namespace Surface;
 

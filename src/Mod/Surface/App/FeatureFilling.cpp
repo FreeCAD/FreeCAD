@@ -22,22 +22,18 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <BRepBuilderAPI_MakeFace.hxx>
-#include <BRepBuilderAPI_MakeWire.hxx>
-#include <BRepFill_Filling.hxx>
-#include <BRep_Tool.hxx>
-#include <gp_Pnt.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <Precision.hxx>
+# include <string>
+
+# include <BRepBuilderAPI_MakeWire.hxx>
+# include <BRepFill_Filling.hxx>
+# include <BRep_Tool.hxx>
+# include <gp_Pnt.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Face.hxx>
 #endif
 
 #include "FeatureFilling.h"
-#include <Base/Tools.h>
-#include <Base/Exception.h>
-#include <string>
+
 
 using namespace Surface;
 

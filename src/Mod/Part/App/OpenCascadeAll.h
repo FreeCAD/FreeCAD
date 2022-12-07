@@ -308,6 +308,7 @@
 #include <GeomFill_EvolvedSection.hxx>
 #include <GeomFill_Line.hxx>
 #include <GeomFill_LocationLaw.hxx>
+#include <GeomFill_NSections.hxx>
 #include <GeomFill_Pipe.hxx>
 #include <GeomFill_SectionGenerator.hxx>
 #include <GeomFill_Sweep.hxx>

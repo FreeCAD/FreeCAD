@@ -98,6 +98,7 @@
 #include <Inventor/elements/SoNormalBindingElement.h>
 #include <Inventor/elements/SoNormalElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
+#include <Inventor/elements/SoPointSizeElement.h>
 #include <Inventor/elements/SoProfileCoordinateElement.h>
 #include <Inventor/elements/SoProfileElement.h>
 #include <Inventor/elements/SoProjectionMatrixElement.h>
@@ -110,9 +111,11 @@
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoWindowElement.h>
+#include <Inventor/engines/SoCalculator.h>
 #include <Inventor/engines/SoComposeVec3f.h>
 #include <Inventor/engines/SoComposeRotationFromTo.h>
 #include <Inventor/engines/SoComposeRotation.h>
+#include <Inventor/engines/SoConcatenate.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoError.h>
 #include <Inventor/errors/SoReadError.h>
@@ -136,6 +139,7 @@
 #include <Inventor/manips/SoClipPlaneManip.h>
 #include <Inventor/manips/SoTransformerManip.h>
 #include <Inventor/misc/SoChildList.h>
+#include <Inventor/misc/SoContextHandler.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoAnnotation.h>
 #include <Inventor/nodes/SoAntiSquish.h>
@@ -149,6 +153,7 @@
 #include <Inventor/nodes/SoCoordinate4.h>
 #include <Inventor/nodes/SoCube.h>
 #include <Inventor/nodes/SoCylinder.h>
+#include <Inventor/nodes/SoDepthBuffer.h>
 #include <Inventor/nodes/SoDirectionalLight.h>
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoEnvironment.h>
@@ -173,6 +178,7 @@
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoNormal.h>
 #include <Inventor/nodes/SoNormalBinding.h>
+#include <Inventor/nodes/SoNurbsCurve.h>
 #include <Inventor/nodes/SoNurbsSurface.h>
 #include <Inventor/nodes/SoOrthographicCamera.h>
 #include <Inventor/nodes/SoPerspectiveCamera.h>
@@ -183,6 +189,7 @@
 #include <Inventor/nodes/SoProfileCoordinate2.h>
 #include <Inventor/nodes/SoProfileCoordinate3.h>
 #include <Inventor/nodes/SoQuadMesh.h>
+#include <Inventor/nodes/SoResetTransform.h>
 #include <Inventor/nodes/SoRotation.h>
 #include <Inventor/nodes/SoRotationXYZ.h>
 #include <Inventor/nodes/SoSelection.h>
@@ -201,6 +208,7 @@
 #include <Inventor/nodes/SoTransformation.h>
 #include <Inventor/nodes/SoTranslation.h>
 #include <Inventor/nodes/SoTransparencyType.h>
+#include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/nodekits/SoShapeKit.h>
 #include <Inventor/manips/SoTransformBoxManip.h>
 #include <Inventor/projectors/SbLineProjector.h>
