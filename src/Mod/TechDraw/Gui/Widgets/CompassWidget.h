@@ -25,8 +25,8 @@
 
 #include <QDoubleSpinBox>
 #include <QKeyEvent>
-#include <QWidget>
 #include <QSize>
+#include <QWidget>
 
 QT_BEGIN_NAMESPACE
 class QLabel;
@@ -35,14 +35,15 @@ class QPushButton;
 class QVBoxLayout;
 QT_END_NAMESPACE
 
-namespace TechDrawGui {
+namespace TechDrawGui
+{
 
 class CompassDialWidget;
 
-class CompassWidget : public QWidget
+class CompassWidget: public QWidget
 {
     Q_OBJECT
-    Q_PROPERTY( double angle READ dialAngle WRITE setDialAngle NOTIFY angleChanged)
+    Q_PROPERTY(double angle READ dialAngle WRITE setDialAngle NOTIFY angleChanged)
 
 public:
     CompassWidget(QWidget* parent = 0);
@@ -50,9 +51,11 @@ public:
 
     QSize sizeHint() const override;
     QSize minimumSizeHint() const override;
-    bool eventFilter(QObject *target, QEvent *event) override;
+    bool eventFilter(QObject* target, QEvent* event) override;
     void retranslateUi();
     double dialAngle() const { return m_angle; }
+    double value() const { return m_angle; }
+    double positiveValue() { return m_angle < 0.0 ? m_angle + 360.0 : m_angle; }
     void setDialAngle(double newAngle);
     void setAdvanceIncrement(double newIncrement);
     double advanceIncrement() const { return m_advanceIncrement; }
@@ -63,13 +66,11 @@ Q_SIGNALS:
 
 public Q_SLOTS:
     void slotChangeAngle(double angle) { setDialAngle(angle); }
-    void slotSpinBoxUpdate(double newAngle);
     void slotSpinBoxEnter(double newAngle);
-    void slotUseSpinboxValue();
-    void resetAngle() { setDialAngle(0.0); }    //conventional angles
-    void setToEast()  { setDialAngle(0.0); }
+    void resetAngle() { setDialAngle(0.0); }//conventional angles
+    void setToEast() { setDialAngle(0.0); }
     void setToNorth() { setDialAngle(90.0); }
-    void setToWest()  { setDialAngle(180.0); }
+    void setToWest() { setDialAngle(180.0); }
     void setToSouth() { setDialAngle(270.0); }
     void slotCWAdvance();
     void slotCCWAdvance();
@@ -92,14 +93,12 @@ private:
     QHBoxLayout* compassControlLayout;
 
     CompassDialWidget* compassDial;
-//    DoubleSpinBoxNoEnter* dsbAngle;
+    //    DoubleSpinBoxNoEnter* dsbAngle;
     QDoubleSpinBox* dsbAngle;
     QLabel* compassControlLabel;
-    QPushButton* pbUseCompassSetting;
     QPushButton* pbCWAdvance;
     QPushButton* pbCCWAdvance;
 };
 
-} //namespace TechDrawGui
-#endif // COMPASSWIDGET_H
-
+}//namespace TechDrawGui
+#endif// COMPASSWIDGET_H
