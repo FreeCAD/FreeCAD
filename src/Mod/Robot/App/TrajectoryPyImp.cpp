@@ -20,17 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#include <Base/VectorPy.h>
 #include <Base/PlacementPy.h>
-#include "Mod/Robot/App/Trajectory.h"
 
 // inclusion of the generated files (generated out of TrajectoryPy.xml)
 #include <Mod/Robot/App/TrajectoryPy.h>
 #include <Mod/Robot/App/TrajectoryPy.cpp>
 #include <Mod/Robot/App/WaypointPy.h>
+
 
 using namespace Robot;
 

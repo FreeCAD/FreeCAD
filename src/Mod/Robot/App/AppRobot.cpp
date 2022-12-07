@@ -25,22 +25,19 @@
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
-
+#include "Edge2TracObject.h"
+#include "PropertyTrajectory.h"
 #include "Robot6AxisPy.h"
 #include "Robot6Axis.h"
-#include "Simulation.h"
-#include "TrajectoryPy.h"
-#include "Trajectory.h"
-#include "PropertyTrajectory.h"
-#include "WaypointPy.h"
-#include "Waypoint.h"
 #include "RobotObject.h"
-#include "TrajectoryObject.h"
-#include "Edge2TracObject.h"
+#include "Simulation.h"
+#include "Trajectory.h"
 #include "TrajectoryCompound.h"
 #include "TrajectoryDressUpObject.h"
+#include "TrajectoryObject.h"
+#include "TrajectoryPy.h"
+#include "WaypointPy.h"
+#include "Waypoint.h"
 
 
 namespace Robot {

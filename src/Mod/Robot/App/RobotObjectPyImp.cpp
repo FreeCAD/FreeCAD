@@ -20,14 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
-#include "Mod/Robot/App/RobotObject.h"
 
 // inclusion of the generated files (generated out of RobotObjectPy.xml)
 #include "RobotObjectPy.h"
 #include "RobotObjectPy.cpp"
+
 
 using namespace Robot;
 

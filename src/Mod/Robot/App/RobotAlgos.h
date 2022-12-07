@@ -20,21 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
- 
-
-
 #ifndef _RobotAlgos_h_
 #define _RobotAlgos_h_
 
-#include <Base/Vector3D.h>
-#include <string>
-
-#include "kdl_cp/frames_io.hpp"
 #include <Base/Placement.h>
+#include <Base/Vector3D.h>
+
 
 namespace Robot
 {
-
 
 /** Algo class for projecting shapes and creating SVG output of it
  */

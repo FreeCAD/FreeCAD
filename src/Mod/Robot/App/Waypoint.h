@@ -20,19 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef ROBOT_WAYPOINT_H
 #define ROBOT_WAYPOINT_H
-
-#include "kdl_cp/chain.hpp"
-#include "kdl_cp/jntarray.hpp"
 
 #include <Base/Persistence.h>
 #include <Base/Placement.h>
 
+
 namespace Robot
 {
-
 
 /** The representation of a waypoint in a trajectory
  */

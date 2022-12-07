@@ -19,17 +19,15 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-
  
 #ifndef _Simulation_h_
 #define _Simulation_h_
 
-#include <Base/Vector3D.h>
 #include <Base/Placement.h>
-#include <string>
 
-#include "Trajectory.h"
 #include "Robot6Axis.h"
+#include "Trajectory.h"
+
 
 namespace Robot
 {

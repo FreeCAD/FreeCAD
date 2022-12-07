@@ -20,15 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
-#include "TrajectoryObject.h"
 #include <App/DocumentObjectPy.h>
 #include <Base/Placement.h>
+
+#include "TrajectoryObject.h"
+
 
 using namespace Robot;
 using namespace App;

@@ -20,23 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <sstream>
 #endif
 
-
-#include <Base/Console.h>
-#include <Base/Writer.h>
 #include <Base/Reader.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <Base/Stream.h>
+#include <Base/Writer.h>
 
 #include "PropertyTrajectory.h"
 #include "TrajectoryPy.h"
+
 
 using namespace Robot;
 
