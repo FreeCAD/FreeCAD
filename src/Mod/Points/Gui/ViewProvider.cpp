@@ -21,9 +21,10 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <limits>
+# include <boost/math/special_functions/fpclassify.hpp>
+
 # include <Inventor/errors/SoDebugError.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/nodes/SoCamera.h>
@@ -35,8 +36,6 @@
 # include <Inventor/nodes/SoNormal.h>
 # include <Inventor/nodes/SoPointSet.h>
 #endif
-
-#include <boost/math/special_functions/fpclassify.hpp>
 
 #include <App/Document.h>
 #include <Base/Vector3D.h>
