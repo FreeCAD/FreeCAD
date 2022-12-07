@@ -23,9 +23,9 @@
 #include "PreCompiled.h"
 
 #include <Gui/BitmapFactory.h>
-#include <Mod/Part/Gui/ViewProvider.h>
 
 #include "ViewProviderExtend.h"
+
 
 using namespace SurfaceGui;
 

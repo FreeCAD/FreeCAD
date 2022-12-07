@@ -23,14 +23,14 @@
 #ifndef SURFACEGUI_TASKGEOMFILLSURFACE_H
 #define SURFACEGUI_TASKGEOMFILLSURFACE_H
 
+#include <GeomFill_FillingStyle.hxx>
+
+#include <Gui/DocumentObserver.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
-#include <Gui/SelectionFilter.h>
-#include <Gui/DocumentObserver.h>
-#include <Base/BoundBox.h>
 #include <Mod/Part/Gui/ViewProviderSpline.h>
 #include <Mod/Surface/App/FeatureGeomFillSurface.h>
-#include <GeomFill_FillingStyle.hxx>
+
 
 class QListWidgetItem;
 

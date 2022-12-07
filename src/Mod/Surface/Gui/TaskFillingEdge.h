@@ -24,13 +24,10 @@
 #ifndef SURFACEGUI_TASKFILLINGEDGE_H
 #define SURFACEGUI_TASKFILLINGEDGE_H
 
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/SelectionFilter.h>
 #include <Gui/DocumentObserver.h>
-#include <Base/BoundBox.h>
-#include <Mod/Part/Gui/ViewProviderSpline.h>
+#include <Gui/SelectionFilter.h>
 #include <Mod/Surface/App/FeatureFilling.h>
+
 
 class QListWidgetItem;
 

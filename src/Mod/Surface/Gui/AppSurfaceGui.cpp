@@ -29,6 +29,7 @@
 #include <Gui/Application.h>
 
 #include "Blending/ViewProviderBlendCurve.h"
+
 #include "TaskFilling.h"
 #include "TaskGeomFillSurface.h"
 #include "TaskSections.h"
