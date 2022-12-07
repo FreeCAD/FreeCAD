@@ -26,7 +26,6 @@
 
 #include <FCConfig.h>
 
-
 // point at which warnings of overly long specifiers disabled (needed for VC6)
 #ifdef _MSC_VER
 # pragma warning(disable : 4005)
@@ -38,21 +37,10 @@
 #ifdef _PreComp_
 
 // standard
-#include <cassert>
 #include <cmath>
-#include <iostream>
 
 // STL
-#include <algorithm>
-#include <bitset>
-#include <list>
-#include <map>
-#include <queue>
-#include <set>
 #include <sstream>
-#include <stack>
-#include <string>
-#include <vector>
 
 #ifdef FC_OS_WIN32
 # include <windows.h>
