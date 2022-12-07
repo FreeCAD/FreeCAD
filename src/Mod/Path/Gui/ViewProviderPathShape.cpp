@@ -22,8 +22,6 @@
 
 #include "PreCompiled.h"
 
-#include <vector>
-
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Mod/Path/App/FeaturePathShape.h>

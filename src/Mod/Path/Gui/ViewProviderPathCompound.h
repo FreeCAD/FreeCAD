@@ -20,13 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
+
 #ifndef PATH_ViewProviderPathCompound_H
 #define PATH_ViewProviderPathCompound_H
 
-#include <vector>
-
 #include "ViewProviderPath.h"
-
 
 namespace PathGui
 {
