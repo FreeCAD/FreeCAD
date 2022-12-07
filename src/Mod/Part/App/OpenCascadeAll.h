@@ -377,6 +377,8 @@
 #include <IntTools_FClass2d.hxx>
 #include <Law_Constant.hxx>
 #include <LProp_NotDefined.hxx>
+#include <math_Gauss.hxx>
+#include <math_Matrix.hxx>
 #include <Message_MsgFile.hxx>
 #include <NCollection_List.hxx>
 #include <OSD_OpenFile.hxx>
@@ -413,6 +415,7 @@
 #include <ShapeFix_Shape.hxx>
 #include <ShapeFix_ShapeTolerance.hxx>
 #include <ShapeFix_Wire.hxx>
+#include <ShapeFix_Wireframe.hxx>
 #include <ShapeUpgrade_ShellSewing.hxx>
 #include <ShapeUpgrade_RemoveInternalWires.hxx>
 
