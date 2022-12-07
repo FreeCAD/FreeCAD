@@ -63,7 +63,7 @@
 #include <QAbstractItemModel>
 #include <QStandardItemModel>
 #include <QAbstractTextDocumentLayout>
-#include <qaction.h>
+#include <QAction>
 #include <QActionGroup>
 #include <qapplication.h>
 #include <QBitmap>
@@ -104,8 +104,9 @@
 #include <QMainWindow>
 #include <QMdiArea>
 #include <QMdiSubWindow>
+#include <QMenu>
 #include <qmenubar.h>
-#include <qmessagebox.h>
+#include <QMessageBox>
 #include <QMessageLogContext>
 #include <QMimeData>
 #include <qmovie.h>
