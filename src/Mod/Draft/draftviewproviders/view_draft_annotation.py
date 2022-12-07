@@ -42,12 +42,16 @@ Its edit mode launches the `Draft_Edit` command.
 import json
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
+import PySide.QtCore as QtCore
+import PySide.QtGui as QtGui
+
 import FreeCAD as App
+import FreeCADGui as Gui
+
 import draftutils.utils as utils
 from draftutils.messages import _msg
+from draftutils.translate import translate
 
-if App.GuiUp:
-    import FreeCADGui as Gui
 
 param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
 
@@ -193,27 +197,55 @@ class ViewProviderDraftAnnotation(object):
         """Execute when the object is created or recomputed."""
         return
 
-    def setEdit(self, vobj, mode=0):
+    def setEdit(self, vobj, mode):
         """Execute the code when entering the specific edit mode.
 
-        Currently only mode 0 works.
+        See view_base.py.
         """
-        if mode == 0:
-            Gui.runCommand("Draft_Edit")
-            return True
-        return False
+        if mode != 0:
+            return None
 
-    def unsetEdit(self, vobj, mode=0):
+        if utils.get_type(vobj.Object) in ("AngularDimension", "Label"):
+            return False # Required, else edit mode is entered.
+
+        if not "Draft_Edit" in Gui.listCommands():
+            self.wb_before_edit = Gui.activeWorkbench()
+            Gui.activateWorkbench("DraftWorkbench")
+        Gui.runCommand("Draft_Edit")
+        return True
+
+    def unsetEdit(self, vobj, mode):
         """Execute the code when leaving the specific edit mode.
 
-        Currently only mode 0 works.
-        It runs the finish method of the currently active command, and close
-        the task panel if any.
+        See view_base.py.
         """
-        if App.activeDraftCommand:
+        if mode != 0:
+            return None
+
+        if hasattr(App, "activeDraftCommand") and App.activeDraftCommand:
             App.activeDraftCommand.finish()
         Gui.Control.closeDialog()
-        return False
+        if hasattr(self, "wb_before_edit"):
+            Gui.activateWorkbench(self.wb_before_edit.name())
+            delattr(self, "wb_before_edit")
+        return True
+
+    def doubleClicked(self, vobj):
+        self.edit()
+
+    def setupContextMenu(self, vobj, menu):
+        if utils.get_type(self.Object) in ("AngularDimension", "Label"):
+            return
+
+        action_edit = QtGui.QAction(translate("draft", "Edit"),
+                                    menu)
+        QtCore.QObject.connect(action_edit,
+                               QtCore.SIGNAL("triggered()"),
+                               self.edit)
+        menu.addAction(action_edit)
+
+    def edit(self):
+        Gui.ActiveDocument.setEdit(self.Object, 0)
 
     def getIcon(self):
         """Return the path to the icon used by the view provider."""

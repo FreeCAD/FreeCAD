@@ -458,31 +458,31 @@ class ViewProviderLayer:
 
     def setupContextMenu(self, vobj, menu):
         """Set up actions to perform in the context menu."""
-        action1 = QtGui.QAction(QtGui.QIcon(":/icons/button_right.svg"),
-                                translate("draft", "Activate this layer"),
-                                menu)
-        action1.triggered.connect(self.activate)
-        menu.addAction(action1)
+        action_activate = QtGui.QAction(QtGui.QIcon(":/icons/button_right.svg"),
+                                        translate("draft", "Activate this layer"),
+                                        menu)
+        action_activate.triggered.connect(self.activate)
+        menu.addAction(action_activate)
 
-        action2 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_SelectGroup.svg"),
-                                translate("draft", "Select layer contents"),
-                                menu)
-        action2.triggered.connect(self.select_contents)
-        menu.addAction(action2)
+        action_select = QtGui.QAction(QtGui.QIcon(":/icons/Draft_SelectGroup.svg"),
+                                      translate("draft", "Select layer contents"),
+                                      menu)
+        action_select.triggered.connect(self.select_contents)
+        menu.addAction(action_select)
 
     def activate(self):
         """Activate the selected layer, it becomes the Autogroup."""
-        if hasattr(self, "Object"):
-            Gui.Selection.clearSelection()
-            Gui.Selection.addSelection(self.Object)
-            Gui.runCommand("Draft_AutoGroup")
+        Gui.Selection.clearSelection()
+        Gui.Selection.addSelection(self.Object)
+        if not "Draft_AutoGroup" in Gui.listCommands():
+            Gui.activateWorkbench("DraftWorkbench")
+        Gui.runCommand("Draft_AutoGroup")
 
     def select_contents(self):
         """Select the contents of the layer."""
-        if hasattr(self, "Object"):
-            Gui.Selection.clearSelection()
-            for layer_obj in self.Object.Group:
-                Gui.Selection.addSelection(layer_obj)
+        Gui.Selection.clearSelection()
+        for layer_obj in self.Object.Group:
+            Gui.Selection.addSelection(layer_obj)
 
 
 class ViewProviderLayerContainer:
@@ -502,22 +502,20 @@ class ViewProviderLayerContainer:
 
     def setupContextMenu(self, vobj, menu):
         """Set up actions to perform in the context menu."""
-        action1 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_Layer.svg"),
-                                translate("draft", "Merge layer duplicates"),
-                                menu)
-        action1.triggered.connect(self.merge_by_name)
-        menu.addAction(action1)
-        action2 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_NewLayer.svg"),
-                                translate("draft", "Add new layer"),
-                                menu)
-        action2.triggered.connect(self.add_layer)
-        menu.addAction(action2)
+        action_merge = QtGui.QAction(QtGui.QIcon(":/icons/Draft_Layer.svg"),
+                                     translate("draft", "Merge layer duplicates"),
+                                     menu)
+        action_merge.triggered.connect(self.merge_by_name)
+        menu.addAction(action_merge)
+
+        action_add = QtGui.QAction(QtGui.QIcon(":/icons/Draft_NewLayer.svg"),
+                                   translate("draft", "Add new layer"),
+                                   menu)
+        action_add.triggered.connect(self.add_layer)
+        menu.addAction(action_add)
 
     def merge_by_name(self):
         """Merge the layers that have the same base label."""
-        if not hasattr(self, "Object") or not hasattr(self.Object, "Group"):
-            return
-
         doc = App.ActiveDocument
         doc.openTransaction(translate("draft", "Merge layer duplicates"))
 
