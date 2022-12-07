@@ -23,6 +23,8 @@
 #ifndef PATH_ViewProviderArea_H
 #define PATH_ViewProviderArea_H
 
+#include <vector>
+
 #include <Gui/ViewProviderPythonFeature.h>
 #include <Mod/Part/Gui/ViewProviderPlaneParametric.h>
 

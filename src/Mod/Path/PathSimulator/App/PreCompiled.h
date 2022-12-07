@@ -40,28 +40,9 @@
 
 #ifdef _PreComp_
 
-// standard
-#include <cstdio>
-#include <cassert>
-#include <iostream>
-
 // STL
 #include <algorithm>
-#include <iostream>
-#include <list>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <string>
 #include <vector>
-
-// Boost
-#include <boost/regex.hpp>
-
-// Xerces
-#include <xercesc/util/XercesDefs.hpp>
 
 #endif //_PreComp_
 

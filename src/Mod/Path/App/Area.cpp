@@ -45,8 +45,8 @@
 # include <BRepBuilderAPI_MakeWire.hxx>
 # include <BRepExtrema_DistShapeShape.hxx>
 # include <BRepLib.hxx>
-# include <BRepLib_MakeFace.hxx>
 # include <BRepLib_FindSurface.hxx>
+# include <BRepLib_MakeFace.hxx>
 # include <BRepTools_WireExplorer.hxx>
 # include <GCPnts_QuasiUniformDeflection.hxx>
 # include <GCPnts_UniformAbscissa.hxx>
