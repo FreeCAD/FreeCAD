@@ -21,49 +21,34 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
+# include <QMessageBox>
+# include <gp_Pnt.hxx>
 #endif // #ifndef _PreComp_
 
-#include <QMessageBox>
-#include <QPushButton>
-
-#include <BRep_Tool.hxx>
-#include <gp_Pnt.hxx>
-
 #include <App/Document.h>
-#include <App/DocumentObject.h>
 #include <App/Link.h>
-
 #include <Base/Console.h>
 #include <Base/Tools.h>
-#include <Base/Quantity.h>
-#include <Base/UnitsApi.h>
-
-#include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
-#include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
-#include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
 
+#include <Mod/TechDraw/App/DrawComplexSection.h>
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
-#include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
-#include <Mod/TechDraw/App/DrawComplexSection.h>
 #include <Mod/TechDraw/App/Preferences.h>
-
-#include <Mod/TechDraw/Gui/ui_TaskComplexSection.h>
-
-#include "DrawGuiUtil.h"
 #include "Widgets/CompassWidget.h"
 #include "Widgets/VectorEditWidget.h"
 
 #include "TaskComplexSection.h"
+#include "ui_TaskComplexSection.h"
+#include "DrawGuiUtil.h"
+
 
 using namespace Gui;
 using namespace TechDraw;

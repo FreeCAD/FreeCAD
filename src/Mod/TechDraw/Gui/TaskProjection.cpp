@@ -23,28 +23,23 @@
 //migrated to TechDraw workbench 2022-01-26 by Wandererfan
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-# include <QCheckBox>
 # include <QMessageBox>
 #endif
-
-
-#include <Standard_math.hxx>
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
-#include <Gui/Selection.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
+#include <Gui/Selection.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
-
 #include <Mod/Part/App/PartFeature.h>
 
 #include "TaskProjection.h"
 #include "ui_TaskProjection.h"
+
 
 using namespace TechDrawGui;
 

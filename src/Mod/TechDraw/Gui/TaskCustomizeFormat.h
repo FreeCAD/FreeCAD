@@ -23,10 +23,9 @@
 #ifndef TECHDRAWGUI_TASKCUSTOMIZEFORMAT_H
 #define TECHDRAWGUI_TASKCUSTOMIZEFORMAT_H
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 
 namespace App {

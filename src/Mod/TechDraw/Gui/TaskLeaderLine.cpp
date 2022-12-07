@@ -21,11 +21,9 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-#include <cmath>
-#include <QStatusBar>
-#include <QGraphicsScene>
+# include <cmath>
+# include <QStatusBar>
 #endif
 
 #include <App/Document.h>
@@ -34,34 +32,27 @@
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
-#include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
 #include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
 #include <Mod/TechDraw/App/ArrowPropEnum.h>
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
 #include <Mod/TechDraw/App/DrawPage.h>
-#include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/LineGroup.h>
 
 #include "TaskLeaderLine.h"
 #include "ui_TaskLeaderLine.h"
 #include "DrawGuiUtil.h"
-#include "PreferencesGui.h"
-#include "QGSPage.h"
-#include "QGVPage.h"
-#include "QGIView.h"
-#include "QGIPrimPath.h"
 #include "MDIViewPage.h"
-#include "ViewProviderPage.h"
-#include "ViewProviderLeader.h"
-#include "QGTracker.h"
-#include "QGEPath.h"
+#include "PreferencesGui.h"
 #include "QGILeaderLine.h"
+#include "QGIView.h"
+#include "QGSPage.h"
+#include "QGTracker.h"
 #include "Rez.h"
+#include "ViewProviderLeader.h"
+#include "ViewProviderPage.h"
 
 
 using namespace Gui;
