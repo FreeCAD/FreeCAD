@@ -107,6 +107,7 @@
 # include <GeomFill_SectionLaw.hxx>
 # include <GeomFill_Sweep.hxx>
 # include <GeomLib.hxx>
+# include <GeomLib_IsPlanarSurface.hxx>
 # include <gp_Circ.hxx>
 # include <gp_Pln.hxx>
 # include <GProp_GProps.hxx>
@@ -4187,6 +4188,27 @@ bool TopoShape::isInfinite() const
     catch (Standard_Failure&) {
         return false;
     }
+}
+
+bool TopoShape::isPlanar(double tol) const
+{
+    if (_Shape.IsNull() || _Shape.ShapeType() != TopAbs_FACE) {
+        return false;
+    }
+
+    BRepAdaptor_Surface adapt(TopoDS::Face(_Shape));
+    if (adapt.GetType() == GeomAbs_Plane) {
+        return true;
+    }
+
+    TopLoc_Location loc;
+    Handle(Geom_Surface) surf = BRep_Tool::Surface(TopoDS::Face(_Shape), loc);
+    if (surf.IsNull()) {
+        return false;
+    }
+
+    GeomLib_IsPlanarSurface check(surf, tol);
+    return check.IsPlanar();
 }
 
 bool TopoShape::isCoplanar(const TopoShape &other, double tol) const {
