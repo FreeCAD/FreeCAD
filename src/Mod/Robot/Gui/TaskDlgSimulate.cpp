@@ -20,16 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
-#ifndef _PreComp_
-#endif
 
 #include "TaskDlgSimulate.h"
 
-using namespace RobotGui;
 
+using namespace RobotGui;
 
 //**************************************************************************
 //**************************************************************************
@@ -46,8 +42,9 @@ TaskDlgSimulate::TaskDlgSimulate(Robot::RobotObject *pcRobotObject,Robot::Trajec
     msg  = new TaskRobotMessages(pcRobotObject);
     
     
-    QObject::connect(trac ,SIGNAL(axisChanged(float,float,float,float,float,float,const Base::Placement &)),
-                     rob  ,SLOT  (setAxis(float,float,float,float,float,float,const Base::Placement &)));
+    QObject::connect(
+        trac, SIGNAL(axisChanged(float, float, float, float, float, float, const Base::Placement&)),
+        rob, SLOT(setAxis(float, float, float, float, float, float, const Base::Placement&)));
 
     Content.push_back(rob);
     Content.push_back(ctr);

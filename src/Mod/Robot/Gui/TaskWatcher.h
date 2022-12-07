@@ -20,17 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef ROBOTGUI_TASKWATCHER_H
 #define ROBOTGUI_TASKWATCHER_H
 
-
-
 #include <Gui/TaskView/TaskWatcher.h>
+
 #include "TaskRobot6Axis.h"
 #include "TaskRobotControl.h"
 
-#include <QObject>
 
 namespace RobotGui {
 

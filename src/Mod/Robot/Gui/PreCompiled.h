@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef ROBOTGUI_PRECOMPILED_H
 #define ROBOTGUI_PRECOMPILED_H
 
@@ -31,7 +30,7 @@
 # define RobotExport    __declspec(dllimport)
 # define PartExport     __declspec(dllimport)
 # define PartGuiExport  __declspec(dllimport)
-# define RobotGuiExport    __declspec(dllexport)
+# define RobotGuiExport __declspec(dllexport)
 #else // for Linux
 # define PartExport
 # define RobotExport
@@ -42,37 +41,46 @@
 #include <Standard_math.hxx>
 
 #ifdef _MSC_VER
-#   pragma warning(disable : 4005)
-#   pragma warning(disable : 4273)
+# pragma warning(disable : 4005)
+# pragma warning(disable : 4273)
 #endif
 
 #ifdef _PreComp_
 
-// standard
-#include <iostream>
-#include <cassert>
-#include <cmath>
-
 // STL
-#include <vector>
-#include <map>
-#include <string>
-#include <list>
-#include <set>
-#include <algorithm>
-#include <stack>
-#include <queue>
-#include <bitset>
+#include <sstream>
 
 #ifdef FC_OS_WIN32
 # include <windows.h>
 #endif
 
+// Qt
+#include <QAction>
+#include <QApplication>
+#include <QDir>
+#include <QFile>
+#include <QFileInfo>
+#include <QInputDialog>
+#include <QMenu>
+#include <QMessageBox>
+#include <qobject.h>
+#include <qpalette.h>
+#include <QString>
+#include <QTimer>
 
-// Qt Toolkit
-#ifndef __QtAll__
-# include <Gui/QtAll.h>
-#endif
+// Inventor
+#include <Inventor/SoDB.h>
+#include <Inventor/SoInput.h>
+#include <Inventor/SbVec3f.h>
+#include <Inventor/actions/SoSearchAction.h>
+#include <Inventor/draggers/SoJackDragger.h>
+#include <Inventor/nodes/SoBaseColor.h>
+#include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoDrawStyle.h>
+#include <Inventor/nodes/SoLineSet.h>
+#include <Inventor/nodes/SoMarkerSet.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/VRMLnodes/SoVRMLTransform.h>
 
 #endif //_PreComp_
 

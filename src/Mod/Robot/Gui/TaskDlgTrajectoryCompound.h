@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef ROBOTGUI_TaskDlgTrajectoryCompound_H
 #define ROBOTGUI_TaskDlgTrajectoryCompound_H
 
@@ -31,9 +30,7 @@
 // forward
 namespace Gui { namespace TaskView { class TaskSelectLinkProperty;}}
 
-
 namespace RobotGui {
-
 
 /// simulation dialog for the TaskView
 class RobotGuiExport TaskDlgTrajectoryCompound : public Gui::TaskView::TaskDialog
