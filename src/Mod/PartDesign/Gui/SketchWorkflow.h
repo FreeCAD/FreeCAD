@@ -43,7 +43,7 @@ namespace PartDesignGui {
 class SketchWorkflow
 {
 public:
-    SketchWorkflow(Gui::Document*);
+    explicit SketchWorkflow(Gui::Document*);
     void createSketch();
 
 private:

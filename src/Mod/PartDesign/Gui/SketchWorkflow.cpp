@@ -86,7 +86,7 @@ struct MissingPlanesException
 class SupportFaceValidator
 {
 public:
-    SupportFaceValidator(Gui::SelectionObject faceSelection)
+    explicit SupportFaceValidator(Gui::SelectionObject faceSelection)
         : faceSelection(faceSelection)
     {
     }
@@ -172,7 +172,7 @@ private:
 class SupportPlaneValidator
 {
 public:
-    SupportPlaneValidator(Gui::SelectionObject faceSelection)
+    explicit SupportPlaneValidator(Gui::SelectionObject faceSelection)
         : faceSelection(faceSelection)
     {
     }
@@ -195,7 +195,7 @@ class SketchPreselection
 {
 public:
     SketchPreselection(Gui::Document* guidocument, PartDesign::Body* activeBody,
-                         std::tuple<Gui::SelectionFilter, Gui::SelectionFilter> filter)
+                       std::tuple<Gui::SelectionFilter, Gui::SelectionFilter> filter)
         : guidocument(guidocument)
         , activeBody(activeBody)
         , faceFilter(std::get<0>(filter))
@@ -386,7 +386,7 @@ public:
     {
         App::GeoFeatureGroupExtension *geoGroup = getGroupExtensionOfBody();
         auto datumPlanes( appdocument->getObjectsOfType(PartDesign::Plane::getClassTypeId()) );
-        for (auto plane: datumPlanes) {
+        for (auto plane : datumPlanes) {
             planes.push_back ( plane );
             // Check whether this plane belongs to the active body
             if ( activeBody->hasObject(plane) ) {
