@@ -27,7 +27,19 @@
 # include <QPointer>
 # include <QStatusBar>
 # include <QTimer>
+
+# include <gp_Pnt.hxx>
+# include <TColgp_Array1OfPnt.hxx>
+# include <GeomAPI_PointsToBSpline.hxx>
+# include <Geom_BSplineCurve.hxx>
+# include <BRep_Tool.hxx>
+# include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakePolygon.hxx>
+# include <BRepMesh_IncrementalMesh.hxx>
+# include <Poly_Polygon3D.hxx>
+# include <TopoDS_Edge.hxx>
+# include <TopoDS_Wire.hxx>
+
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/details/SoFaceDetail.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
@@ -67,17 +79,7 @@
 #define HAVE_ATANH
 #endif
 
-#include <gp_Pnt.hxx>
-#include <TColgp_Array1OfPnt.hxx>
-#include <GeomAPI_PointsToBSpline.hxx>
-#include <Geom_BSplineCurve.hxx>
-#include <Standard_Failure.hxx>
-#include <BRep_Tool.hxx>
-#include <BRepBuilderAPI_MakeEdge.hxx>
-#include <BRepMesh_IncrementalMesh.hxx>
-#include <Poly_Polygon3D.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Wire.hxx>
+
 
 /* XPM */
 static const char *cursor_curveonmesh[]={
