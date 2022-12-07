@@ -94,7 +94,6 @@ OUTPUT_HEADER = True
 OUTPUT_LINE_NUMBERS = False
 SHOW_EDITOR = True
 MODAL = False  # if true commands are suppressed if the same as previous line.
-USE_TLO = False  # if true G43 will be output following tool changes
 OUTPUT_DOUBLES = (
     True  # if false duplicate axis values are suppressed if the same as previous line.
 )
@@ -167,7 +166,6 @@ def processArguments(argstring):
     global UNIT_SPEED_FORMAT
     global UNIT_FORMAT
     global MODAL
-    global USE_TLO
     global OUTPUT_DOUBLES
 
     try:
