@@ -23,14 +23,14 @@
 #ifndef SURFACEGUI_TASKSECTIONS_H
 #define SURFACEGUI_TASKSECTIONS_H
 
+#include <memory>
+
+#include <Gui/DocumentObserver.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
-#include <Gui/SelectionFilter.h>
-#include <Gui/DocumentObserver.h>
-#include <Base/BoundBox.h>
 #include <Mod/Part/Gui/ViewProviderSpline.h>
 #include <Mod/Surface/App/FeatureSections.h>
-#include <memory>
+
 
 class QListWidgetItem;
 
