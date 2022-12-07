@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef __PRECOMPILED_GUI__
 #define __PRECOMPILED_GUI__
 
@@ -34,26 +33,13 @@
 
 #ifdef _PreComp_
 
-// standard
-#include <iostream>
-#include <cassert>
-#include <cmath>
-
 // STL
-#include <vector>
-#include <map>
-#include <string>
-#include <list>
-#include <set>
-#include <algorithm>
-#include <stack>
-#include <queue>
-#include <bitset>
+#include <cfloat>
+#include <sstream>
 
 #ifdef FC_OS_WIN32
 # include <windows.h>
 #endif
-
 
 // Qt Toolkit
 #ifndef __QtAll__
@@ -61,7 +47,20 @@
 #endif
 
 // OCCT
+#include <BRep_Builder.hxx>
+#include <BRep_Tool.hxx>
+#include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakePolygon.hxx>
+#include <BRepMesh_IncrementalMesh.hxx>
+#include <Geom_BSplineCurve.hxx>
+#include <GeomAPI_PointsToBSpline.hxx>
+#include <gp_Pnt.hxx>
+#include <Poly_Polygon3D.hxx>
+#include <TColgp_Array1OfPnt.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Compound.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS_Wire.hxx>
 
 #endif //_PreComp_
 
