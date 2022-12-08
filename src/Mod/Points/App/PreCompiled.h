@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef POINTS_PRECOMPILED_H
 #define POINTS_PRECOMPILED_H
 
@@ -35,30 +34,26 @@
 
 #ifdef _PreComp_
 
-// Qt
-# include <QtConcurrentMap>
-
 // standard
 # include <cstdio>
-# include <cassert>
 
 // STL
 # include <algorithm>
-# include <bitset>
-# include <cfloat>
 # include <cmath>
-# include <cstdlib>
 # include <iostream>
-# include <fstream>
-# include <list>
-# include <map>
 # include <memory>
-# include <queue>
 # include <set>
 # include <sstream>
-# include <stack>
-# include <string>
 # include <vector>
+
+// boost
+# include <boost/lexical_cast.hpp>
+# include <boost/math/special_functions/fpclassify.hpp>
+# include <boost/regex.hpp>
+# include <boost/algorithm/string.hpp>
+
+// Qt
+# include <QtConcurrentMap>
 
 #endif //_PreComp_
 
