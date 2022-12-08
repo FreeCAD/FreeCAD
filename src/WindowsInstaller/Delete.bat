@@ -11,6 +11,7 @@ del freetyped.dll
 del libcrypto-3d.dll
 del libEGLd.dll
 del libGLESv2d.dll
+del libssl-3d.dll
 del linguist.exe
 del qdoc.exe
 del Qt53DAnimationd.dll
