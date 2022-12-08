@@ -23,14 +23,11 @@ set(Image_SRCS
     ImageBase.h
     ImagePlane.cpp
     ImagePlane.h
-    PreCompiled.cpp
-    PreCompiled.h
     AppImage.cpp
 )
 
 add_library(Image SHARED ${Image_SRCS})
 target_link_libraries(Image ${Image_LIBS})
-
 
 SET_BIN_DIR(Image Image /Mod/Image)
 SET_PYTHON_PREFIX_SUFFIX(Image)

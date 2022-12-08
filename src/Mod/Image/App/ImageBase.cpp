@@ -15,9 +15,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#include <FCConfig.h>
 
 #include <Base/Exception.h>
+
 #include "ImageBase.h"
 
 
