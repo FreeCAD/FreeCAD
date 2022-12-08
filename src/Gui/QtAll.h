@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef __QtAll__
 #define __QtAll__
 
-// Qt Toolkit
 // QtCore
 #include <qglobal.h>
 #include <QBuffer>
@@ -58,6 +56,7 @@
 #include <QVariant>
 #include <QVariantAnimation>
 #include <QWaitCondition>
+
 // QtGui
 #include <QAbstractEventDispatcher>
 #include <QAbstractItemModel>
@@ -160,18 +159,22 @@
 #include <QWindow>
 #include <QWhatsThis>
 #include <QWhatsThisClickedEvent>
+
 // QtNetwork
 #include <QNetworkAccessManager>
 #include <QTcpServer>
 #include <QTcpSocket>
+
 // QtSvg
 #include <QSvgRenderer>
 #include <QSvgWidget>
+
 // QtWidgets
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QStackedWidget>
 #include <QWidget>
+
 // QtXML
 # include <QDomDocument>
 # include <QDomElement>
