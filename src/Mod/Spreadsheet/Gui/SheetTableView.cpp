@@ -23,6 +23,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <algorithm>
+
 # include <QAction>
 # include <QApplication>
 # include <QClipboard>
@@ -30,8 +32,9 @@
 # include <QMessageBox>
 # include <QMenu>
 # include <QMimeData>
-#endif
 # include <QTextTableCell>
+#endif
+
 
 #include <App/Application.h>
 #include <App/AutoTransaction.h>
