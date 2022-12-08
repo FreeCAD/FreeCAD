@@ -38,11 +38,12 @@ class GuiExport ToolBarItem
 public:
     enum class HideStyle {
         VISIBLE,
+        HIDDEN, // toolbar hidden by default
         FORCE_HIDE // Force a toolbar to be hidden. For when all elements are disabled at some point in a workbench.
     };
 
     ToolBarItem();
-    explicit ToolBarItem(ToolBarItem* item, HideStyle forceHide = HideStyle::VISIBLE);
+    explicit ToolBarItem(ToolBarItem* item, HideStyle visibility = HideStyle::VISIBLE);
     ~ToolBarItem();
 
     void setCommand(const std::string&);
@@ -62,7 +63,7 @@ public:
     ToolBarItem& operator << (const std::string& command);
     QList<ToolBarItem*> getItems() const;
 
-    HideStyle forceHide;
+    HideStyle visibility;
 
 private:
     std::string _name;

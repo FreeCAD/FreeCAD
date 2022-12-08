@@ -37,11 +37,11 @@
 
 using namespace Gui;
 
-ToolBarItem::ToolBarItem() : forceHide(HideStyle::VISIBLE)
+ToolBarItem::ToolBarItem() : visibility(HideStyle::VISIBLE)
 {
 }
 
-ToolBarItem::ToolBarItem(ToolBarItem* item, HideStyle forcehide) : forceHide(forcehide)
+ToolBarItem::ToolBarItem(ToolBarItem* item, HideStyle visibility) : visibility(visibility)
 {
     if ( item )
         item->appendItem(this);
@@ -226,9 +226,9 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
             toolbars.removeAt(index);
         }
 
-        bool visible = hPref->GetBool(toolbarName.c_str(), true) && (*it)->forceHide == ToolBarItem::HideStyle::VISIBLE;
+        bool visible = hPref->GetBool(toolbarName.c_str(), true) && (*it)->visibility == ToolBarItem::HideStyle::VISIBLE;
         toolbar->setVisible(visible);
-        toolbar->toggleViewAction()->setVisible((*it)->forceHide == ToolBarItem::HideStyle::VISIBLE);
+        toolbar->toggleViewAction()->setVisible((*it)->visibility != ToolBarItem::HideStyle::FORCE_HIDE);
 
         // setup the toolbar
         setup(*it, toolbar);
@@ -326,7 +326,7 @@ void ToolBarManager::saveState() const
         QToolBar* toolbar = findToolBar(toolbars, *it);
         if (toolbar) {
             if (!toolbar->toggleViewAction()->isVisible())
-                continue; //if toggleViewAction is not visible it means that the toolbar is forceHide. In which case we do not save settings.
+                continue; //if toggleViewAction is not visible it means that the toolbar is FORCE_HIDE. In which case we do not save settings.
             QByteArray toolbarName = toolbar->objectName().toUtf8();
             hPref->SetBool(toolbarName.constData(), toolbar->isVisible());
         }
