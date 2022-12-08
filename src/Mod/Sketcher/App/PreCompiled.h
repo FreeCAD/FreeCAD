@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef __PRECOMPILED__
 #define __PRECOMPILED__
 
@@ -29,53 +28,33 @@
 #ifdef _PreComp_
 
 // standard
-#include <iostream>
-#include <sstream>
-#include <cstdio>
+#include <algorithm>
+#include <bitset>
+#include <cmath>
 #include <cassert>
-#include <string>
 #include <map>
 #include <memory>
-#include <vector>
+#include <iostream>
 #include <set>
-#include <bitset>
-
-#include <cmath>
-#include <algorithm>
+#include <sstream>
+#include <string>
+#include <vector>
 
 // QT
 #include <QDateTime>
 
 // Boost
-#include <boost/bind/bind.hpp>
+#include <boost/format.hpp>
+#include <boost/uuid/uuid_io.hpp>
 
 // Opencascade
 #include <Mod/Part/App/OpenCascadeAll.h>
 
-// Other needed opencascade
-# include <ShapeFix_Wire.hxx>
-# include <BRepOffsetAPI_NormalProjection.hxx>
-# include <GeomConvert_BSplineCurveKnotSplitting.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Edge.hxx>
-# include <BRepBuilderAPI_MakeWire.hxx>
-#include <BRep_Tool.hxx>
-#include <gp_Pnt.hxx>
-#include <Precision.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
-#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Vertex.hxx>
-
-
 #elif defined(FC_OS_WIN32)
 #ifndef NOMINMAX
-#define NOMINMAX
+# define NOMINMAX
 #endif
-#include <windows.h>
+# include <windows.h>
 #endif // _PreComp_
-#endif
 
+#endif
