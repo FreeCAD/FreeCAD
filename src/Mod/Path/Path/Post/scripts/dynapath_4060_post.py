@@ -20,7 +20,7 @@
 # *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 # *   USA                                                                   *
 # *                                                                         *
-# *   This file has been modified from Sliptonic original Linux CNC post    *
+# *   This file has been modified from Sliptonic original LinuxCNC post    *
 # *   for use with Dynapath Delta 40M,50M,60M controllers. All changes      *
 # *   and modifications (c) luvtofish (luvtofish@gmail.com) 2022            *
 # ***************************************************************************
