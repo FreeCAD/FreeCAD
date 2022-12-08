@@ -37,6 +37,7 @@
 #ifdef _PreComp_
 
 // STL
+#include <algorithm>
 #include <deque>
 #include <map>
 #include <memory>
@@ -51,13 +52,16 @@
 #include <boost/range/adaptor/map.hpp>
 #include <boost/range/algorithm/copy.hpp>
 
-#ifdef FC_OS_WIN32
-# include <windows.h>
-#endif
-
 // Qt
 #include <QLocale>
 
-#endif //_PreComp_
+#elif defined(FC_OS_WIN32)
+#define WIN32_LEAN_AND_MEAN
+#ifndef NOMINMAX
+# define NOMINMAX
+#endif
+#include <Windows.h>
+#include <io.h>
+#endif//_PreComp_
 
 #endif // SPREADSHEET_PRECOMPILED_H
