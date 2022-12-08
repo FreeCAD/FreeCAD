@@ -69,6 +69,12 @@ SET(SurfaceGuiIcon_SVG
     Resources/icons/Surface_Workbench.svg
 )
 
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${SurfaceGui_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(SurfaceGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
+
 link_directories(${OCC_LIBRARY_DIR})
 add_library(SurfaceGui SHARED ${SurfaceGui_SRCS} ${SurfaceGuiIcon_SVG})
 target_link_libraries(SurfaceGui ${SurfaceGui_LIBS})

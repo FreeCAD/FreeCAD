@@ -303,11 +303,13 @@
 #include <GeomConvert_CompCurveToBSplineCurve.hxx>
 #include <GeomFill.hxx>
 #include <GeomFill_AppSurf.hxx>
-#include <GeomFill_Generator.hxx>
 #include <GeomFill_ApproxStyle.hxx>
+#include <GeomFill_BezierCurves.hxx>
+#include <GeomFill_BSplineCurves.hxx>
 #include <GeomFill_CorrectedFrenet.hxx>
 #include <GeomFill_CurveAndTrihedron.hxx>
 #include <GeomFill_EvolvedSection.hxx>
+#include <GeomFill_Generator.hxx>
 #include <GeomFill_Line.hxx>
 #include <GeomFill_LocationLaw.hxx>
 #include <GeomFill_NSections.hxx>
