@@ -42,8 +42,8 @@ and tested on FreeCAD Path workbench bundled with FreeCAD v20.
 This postprocessor, once placed in the appropriate PathScripts folder, can be 
 used directly from inside FreeCAD, via the GUI importer or via python scripts with: 
 
-import delta_post
-delta_post.export(object,"/path/to/file.ncc","")
+import delta_4060_post
+delta_4060_post.export(object,"/path/to/file.ncc","")
 """
 
 parser = argparse.ArgumentParser(prog="delta_post", add_help=False)
