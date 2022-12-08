@@ -55,13 +55,6 @@
 // Qt
 #include <QLocale>
 
-#elif defined(FC_OS_WIN32)
-#define WIN32_LEAN_AND_MEAN
-#ifndef NOMINMAX
-# define NOMINMAX
-#endif
-#include <Windows.h>
-#include <io.h>
 #endif//_PreComp_
 
 #endif // SPREADSHEET_PRECOMPILED_H
