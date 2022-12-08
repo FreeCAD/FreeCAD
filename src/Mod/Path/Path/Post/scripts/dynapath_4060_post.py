@@ -38,7 +38,7 @@ TOOLTIP = """
 This is a postprocessor file for the FreeCAD Path workbench. It is used to
 take a pseudo-gcode fragment outputted by a Path object, and output
 real GCode suitable for Dynapath Delta 40,50, & 60 Controls. It has been written
-and tested on FreeCAD Path workbench bundled with FreeCAD v20.
+and tested on FreeCAD Path workbench bundled with FreeCAD v21.
 This postprocessor, once placed in the appropriate PathScripts folder, can be 
 used directly from inside FreeCAD, via the GUI importer or via python scripts with: 
 
@@ -46,7 +46,7 @@ import delta_4060_post
 delta_4060_post.export(object,"/path/to/file.ncc","")
 """
 
-parser = argparse.ArgumentParser(prog="delta_post", add_help=False)
+parser = argparse.ArgumentParser(prog="delta_4060", add_help=False)
 parser.add_argument("--no-header", action="store_true", help="suppress header output")
 parser.add_argument(
     "--no-comments", action="store_true", help="suppress comment output"
@@ -113,7 +113,7 @@ SPINDLE_SPEED = 0
 UNITS = "G71"  # G71 for metric, G70 for US standard
 UNIT_SPEED_FORMAT = "mm/min"
 UNIT_FORMAT = "mm"
-MACHINE_NAME = "TreeCNC"
+MACHINE_NAME = "Delta 4060"
 CORNER_MIN = {"x": 0, "y": 0, "z": 0}
 CORNER_MAX = {"x": 660, "y": 355, "z": 152}
 PRECISION = 3
