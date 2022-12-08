@@ -25,22 +25,12 @@
 
 #include <FCConfig.h>
 
-#ifdef FC_OS_WIN32
-# ifndef NOMINMAX
-#  define NOMINMAX
-# endif
-#endif
-
 #ifdef _PreComp_
 
 // STL
 # include <algorithm>
 # include <limits>
 # include <memory>
-
-#ifdef FC_OS_WIN32
-# include <windows.h>
-#endif
 
 // boost
 # include <boost/math/special_functions/fpclassify.hpp>
