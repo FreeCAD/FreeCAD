@@ -37,14 +37,18 @@
 #include <cfloat>
 #include <sstream>
 
-#ifdef FC_OS_WIN32
-# include <windows.h>
-#endif
-
 // Qt Toolkit
-#ifndef __QtAll__
-# include <Gui/QtAll.h>
-#endif
+#include <QApplication>
+#include <QFuture>
+#include <QMenu>
+#include <QMessageBox>
+#include <QKeyEvent>
+#include <QMessageBox>
+#include <QPointer>
+#include <QPushButton>
+#include <QStatusBar>
+#include <QtConcurrentMap>
+#include <QTimer>
 
 // OCCT
 #include <BRep_Builder.hxx>
@@ -61,6 +65,17 @@
 #include <TopoDS_Compound.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Wire.hxx>
+
+// Inventor
+#include <Inventor/SoPickedPoint.h>
+#include <Inventor/details/SoFaceDetail.h>
+#include <Inventor/events/SoMouseButtonEvent.h>
+#include <Inventor/nodes/SoBaseColor.h>
+#include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoDrawStyle.h>
+#include <Inventor/nodes/SoLineSet.h>
+#include <Inventor/nodes/SoPointSet.h>
+#include <Inventor/nodes/SoSeparator.h>
 
 #endif //_PreComp_
 
