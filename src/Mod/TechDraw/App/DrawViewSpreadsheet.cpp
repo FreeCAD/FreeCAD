@@ -26,7 +26,7 @@
 #ifndef _PreComp_
 #include <iomanip>
 #include <sstream>
-#include <boost/regex.hpp>
+#include <boost_regex.hpp>
 #endif
 
 #include <App/Property.h>
