@@ -42,11 +42,6 @@
 # include <Inventor/nodes/SoSeparator.h>
 #endif
 
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/Tools.h>
-#include <Mod/Mesh/App/MeshFeature.h>
-#include <Mod/Mesh/App/Core/Algorithm.h>
-#include <Mod/Mesh/App/Core/Grid.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -55,6 +50,11 @@
 #include <Gui/ViewProvider.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
+#include <Mod/Mesh/App/MeshFeature.h>
+#include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/App/Tools.h>
+#include <Mod/Mesh/App/Core/Algorithm.h>
+#include <Mod/Mesh/App/Core/Grid.h>
 
 #include "CrossSections.h"
 #include "ui_CrossSections.h"
