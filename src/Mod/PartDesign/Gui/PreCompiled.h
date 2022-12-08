@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef __PRECOMPILED_GUI__
 #define __PRECOMPILED_GUI__
 
 #include <FCConfig.h>
-
 
 #ifdef _MSC_VER
 #   pragma warning(disable : 4005)
@@ -33,57 +31,31 @@
 
 #ifdef _PreComp_
 
-// standard
-#include <algorithm>
-#include <cassert>
-#include <cmath>
-#include <iostream>
-#include <sstream>
-
-// Boost
-#include <boost/bind/bind.hpp>
-#include <boost/core/ignore_unused.hpp>
-
-// OCC
-#include <Standard_math.hxx>
-#include <Standard_Version.hxx>
-#include <Bnd_Box.hxx>
-#include <BRepBndLib.hxx>
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepMesh_IncrementalMesh.hxx>
-#include <BRep_Tool.hxx>
-#include <GeomLib_IsPlanarSurface.hxx>
-#include <TopoDS.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
-#include <BRepAdaptor_Surface.hxx>
-
-// STL
-#include <vector>
-#include <map>
-#include <string>
-#include <list>
-#include <set>
-#include <algorithm>
-#include <stack>
-#include <queue>
-#include <bitset>
-
 #ifdef FC_OS_WIN32
 # include <windows.h>
 #endif
 
+// Boost
+#include <boost/core/ignore_unused.hpp>
 
-// Qt Toolkit
+// OCC
+#include <Standard_Version.hxx>
+#include <Bnd_Box.hxx>
+#include <BRepAdaptor_Curve.hxx>
+#include <BRepAdaptor_Surface.hxx>
+#include <BRepBndLib.hxx>
+#include <BRep_Tool.hxx>
+#include <BRepMesh_IncrementalMesh.hxx>
+#include <GeomLib_IsPlanarSurface.hxx>
+#include <TopExp.hxx>
+#include <TopExp_Explorer.hxx>
+#include <TopoDS.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
+
+// Qt
 #ifndef __QtAll__
 # include <Gui/QtAll.h>
 #endif
-
-#include <QMessageBox>
-#include <QMenu>
-#include <QAction>
-#include <QMessageBox>
 
 // Inventor
 #ifndef __InventorAll__

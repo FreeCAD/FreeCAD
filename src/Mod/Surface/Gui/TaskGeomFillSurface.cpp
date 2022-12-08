@@ -22,22 +22,24 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#include <QAction>
-#include <QMenu>
-#include <QMessageBox>
-#include <QTimer>
-#include <TopExp.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
+#ifndef _PreComp_
+# include <QAction>
+# include <QMenu>
+# include <QMessageBox>
+# include <QTimer>
+
+# include <TopExp.hxx>
+# include <TopTools_IndexedMapOfShape.hxx>
+#endif
 
 #include <App/Document.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/Command.h>
-#include <Gui/SelectionObject.h>
 #include <Base/Console.h>
-#include <Gui/Control.h>
+#include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
+#include <Gui/Command.h>
+#include <Gui/Control.h>
+#include <Gui/Document.h>
+#include <Gui/SelectionObject.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 
 #include "TaskGeomFillSurface.h"

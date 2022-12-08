@@ -21,8 +21,9 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
+# include <algorithm>
+
 # include <boost/regex.hpp>
 # include <boost/range/adaptor/map.hpp>
 # include <boost/range/algorithm/copy.hpp>

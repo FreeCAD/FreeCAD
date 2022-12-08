@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef __QtAll__
 #define __QtAll__
 
-// Qt Toolkit
 // QtCore
 #include <qglobal.h>
 #include <QBuffer>
@@ -58,12 +56,13 @@
 #include <QVariant>
 #include <QVariantAnimation>
 #include <QWaitCondition>
+
 // QtGui
 #include <QAbstractEventDispatcher>
 #include <QAbstractItemModel>
 #include <QStandardItemModel>
 #include <QAbstractTextDocumentLayout>
-#include <qaction.h>
+#include <QAction>
 #include <QActionGroup>
 #include <qapplication.h>
 #include <QBitmap>
@@ -104,8 +103,9 @@
 #include <QMainWindow>
 #include <QMdiArea>
 #include <QMdiSubWindow>
+#include <QMenu>
 #include <qmenubar.h>
-#include <qmessagebox.h>
+#include <QMessageBox>
 #include <QMessageLogContext>
 #include <QMimeData>
 #include <qmovie.h>
@@ -159,18 +159,22 @@
 #include <QWindow>
 #include <QWhatsThis>
 #include <QWhatsThisClickedEvent>
+
 // QtNetwork
 #include <QNetworkAccessManager>
 #include <QTcpServer>
 #include <QTcpSocket>
+
 // QtSvg
 #include <QSvgRenderer>
 #include <QSvgWidget>
+
 // QtWidgets
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QStackedWidget>
 #include <QWidget>
+
 // QtXML
 # include <QDomDocument>
 # include <QDomElement>

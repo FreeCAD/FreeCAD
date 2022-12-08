@@ -22,45 +22,29 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#include <QGraphicsScene>
-#include <QStatusBar>
-#endif // #ifndef _PreComp_
-
+#include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Tools.h>
-#include <Base/Quantity.h>
 #include <Base/UnitsApi.h>
-
-#include <App/Document.h>
-
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
-#include <Gui/Control.h>
 #include <Gui/Document.h>
-#include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
 #include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-
 #include <Mod/TechDraw/App/DrawPage.h>
-#include <Mod/TechDraw/App/DrawUtil.h>
-#include <Mod/TechDraw/App/DrawView.h>
-#include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawProjGroup.h>
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
 #include <Mod/TechDraw/App/DrawViewDetail.h>
+#include <Mod/TechDraw/App/DrawViewPart.h>
 
-#include <Mod/TechDraw/Gui/ui_TaskDetail.h>
-
-#include "QGSPage.h"
-#include "QGIView.h"
-#include "QGIGhostHighlight.h"
-#include "ViewProviderPage.h"
-#include "Rez.h"
-
+#include "ui_TaskDetail.h"
 #include "TaskDetail.h"
+#include "QGIGhostHighlight.h"
+#include "QGSPage.h"
+#include "Rez.h"
+#include "ViewProviderPage.h"
+
 
 using namespace TechDrawGui;
 using namespace TechDraw;

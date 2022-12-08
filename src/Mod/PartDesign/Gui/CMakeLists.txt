@@ -218,6 +218,8 @@ SET(PartDesignGuiModule_SRCS
     Resources/PartDesign.qrc
     PreCompiled.cpp
     PreCompiled.h
+    SketchWorkflow.cpp
+    SketchWorkflow.h
     Utils.cpp
     Utils.h
     Workbench.cpp

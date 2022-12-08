@@ -54,6 +54,12 @@ SET(PointsGuiIcon_SVG
     Resources/icons/PointsWorkbench.svg
 )
 
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${PointsGui_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(PointsGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
+
 add_library(PointsGui SHARED ${PointsGui_SRCS} ${PointsGui_Scripts} ${PointsGuiIcon_SVG})
 target_link_libraries(PointsGui ${PointsGui_LIBS})
 

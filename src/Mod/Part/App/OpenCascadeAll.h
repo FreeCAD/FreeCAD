@@ -106,6 +106,7 @@
 #endif
 #include <BRepAdaptor_Surface.hxx>
 
+#include <BRepAlgo.hxx>
 #if OCC_VERSION_HEX < 0x070300
 # include <BRepAlgo_Fuse.hxx>
 #endif
@@ -176,6 +177,7 @@
 #include <BRepOffsetAPI_MakePipe.hxx>
 #include <BRepOffsetAPI_MakePipeShell.hxx>
 #include <BRepOffsetAPI_MakeThickSolid.hxx>
+#include <BRepOffsetAPI_NormalProjection.hxx>
 #include <BRepOffsetAPI_ThruSections.hxx>
 
 #include <BRepPrimAPI_MakeBox.hxx>
@@ -296,17 +298,21 @@
 #include <GeomConvert.hxx>
 #include <GeomConvert_ApproxCurve.hxx>
 #include <GeomConvert_ApproxSurface.hxx>
+#include <GeomConvert_BSplineCurveKnotSplitting.hxx>
 #include <GeomConvert_BSplineCurveToBezierCurve.hxx>
 #include <GeomConvert_CompCurveToBSplineCurve.hxx>
 #include <GeomFill.hxx>
 #include <GeomFill_AppSurf.hxx>
-#include <GeomFill_Generator.hxx>
 #include <GeomFill_ApproxStyle.hxx>
+#include <GeomFill_BezierCurves.hxx>
+#include <GeomFill_BSplineCurves.hxx>
 #include <GeomFill_CorrectedFrenet.hxx>
 #include <GeomFill_CurveAndTrihedron.hxx>
 #include <GeomFill_EvolvedSection.hxx>
+#include <GeomFill_Generator.hxx>
 #include <GeomFill_Line.hxx>
 #include <GeomFill_LocationLaw.hxx>
+#include <GeomFill_NSections.hxx>
 #include <GeomFill_Pipe.hxx>
 #include <GeomFill_SectionGenerator.hxx>
 #include <GeomFill_Sweep.hxx>
@@ -376,6 +382,8 @@
 #include <IntTools_FClass2d.hxx>
 #include <Law_Constant.hxx>
 #include <LProp_NotDefined.hxx>
+#include <math_Gauss.hxx>
+#include <math_Matrix.hxx>
 #include <Message_MsgFile.hxx>
 #include <NCollection_List.hxx>
 #include <OSD_OpenFile.hxx>
@@ -412,6 +420,7 @@
 #include <ShapeFix_Shape.hxx>
 #include <ShapeFix_ShapeTolerance.hxx>
 #include <ShapeFix_Wire.hxx>
+#include <ShapeFix_Wireframe.hxx>
 #include <ShapeUpgrade_ShellSewing.hxx>
 #include <ShapeUpgrade_RemoveInternalWires.hxx>
 
@@ -478,6 +487,7 @@
 #include <TopTools_DataMapOfIntegerListOfShape.hxx>
 #include <TopTools_DataMapOfIntegerShape.hxx>
 #include <TopTools_HSequenceOfShape.hxx>
+#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
 #include <TopTools_ListIteratorOfListOfShape.hxx>
 #include <TopTools_ListIteratorOfListOfShape.hxx>

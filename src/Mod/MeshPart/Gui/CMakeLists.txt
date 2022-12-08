@@ -72,6 +72,12 @@ set(FLATMESH_PY_SRCS
     MeshFlatteningCommand.py
 )
 
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${MeshPartGui_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(MeshPartGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
+
 add_library(MeshPartGui SHARED ${MeshPartGui_SRCS} ${MeshPartGui_Scripts} ${FLATMESH_PY_SRCS})
 target_link_libraries(MeshPartGui ${MeshPartGui_LIBS})
 

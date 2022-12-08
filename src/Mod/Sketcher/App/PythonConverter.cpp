@@ -20,13 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
+# include <boost/format.hpp>
 #endif  // #ifndef _PreComp_
-
-#include <boost/format.hpp>
 
 #include <Base/Exception.h>
 
