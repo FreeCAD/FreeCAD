@@ -262,9 +262,10 @@ public:
 
         auto& pylist = wrappers[obj];
         if (std::find_if(pylist.cbegin(), pylist.cend(),
-            [pyobj](const Py::Object& py) {
-                return py.ptr() == pyobj;
-            }) == pylist.end()) {
+                [pyobj](const Py::Object& py) {
+                    return py.ptr() == pyobj;
+                }) == pylist.end()) {
+
             pylist.emplace_back(pyobj);
         }
     }
