@@ -177,6 +177,7 @@
 #include <BRepOffsetAPI_MakePipe.hxx>
 #include <BRepOffsetAPI_MakePipeShell.hxx>
 #include <BRepOffsetAPI_MakeThickSolid.hxx>
+#include <BRepOffsetAPI_NormalProjection.hxx>
 #include <BRepOffsetAPI_ThruSections.hxx>
 
 #include <BRepPrimAPI_MakeBox.hxx>
@@ -297,6 +298,7 @@
 #include <GeomConvert.hxx>
 #include <GeomConvert_ApproxCurve.hxx>
 #include <GeomConvert_ApproxSurface.hxx>
+#include <GeomConvert_BSplineCurveKnotSplitting.hxx>
 #include <GeomConvert_BSplineCurveToBezierCurve.hxx>
 #include <GeomConvert_CompCurveToBSplineCurve.hxx>
 #include <GeomFill.hxx>
