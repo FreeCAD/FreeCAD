@@ -119,10 +119,15 @@ SET(RobotGui_SRCS
     ${RobotGui_SRCS_TaskDlg}
 )
 
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${RobotGui_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(RobotGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
+
 SET(RobotGuiIcon_SVG
     Resources/icons/RobotWorkbench.svg
 )
-
 
 add_library(RobotGui SHARED ${RobotGui_SRCS} ${RobotGuiIcon_SVG})
 target_link_libraries(RobotGui ${RobotGui_LIBS})
