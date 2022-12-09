@@ -23,7 +23,6 @@
 #ifndef MESH_DEGENERATION_H
 #define MESH_DEGENERATION_H
 
-#include <bitset>
 #include <string>
 #include <vector>
 
