@@ -59,6 +59,12 @@ SET(ImageGui_SRCS
     XpmImages.h
 )
 
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${ImageGui_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(ImageGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
+
 SET(ImageGuiIcon_SVG
     Resources/icons/ImageWorkbench.svg
 )

@@ -19,6 +19,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <cmath>
+
 # include <QDebug>
 # include <QMessageBox>
 # include <QOpenGLContext>
