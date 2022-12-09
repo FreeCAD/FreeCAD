@@ -26,6 +26,7 @@
 // QtCore
 #include <qglobal.h>
 #include <QBuffer>
+#include <QDebug>
 #include <QDirIterator>
 #include <QElapsedTimer>
 #include <qeventloop.h>
@@ -109,8 +110,12 @@
 #include <QMessageLogContext>
 #include <QMimeData>
 #include <qmovie.h>
+#include <QOpenGLContext>
+#include <QOpenGLDebugMessage>
+#include <QOpenGLFunctions>
 #include <QOpenGLTexture>
-#include <qpainter.h>
+#include <QPainter>
+#include <QPainterPath>
 #include <qpalette.h>
 #include <qpixmap.h>
 #include <QPdfWriter>
@@ -141,6 +146,7 @@
 #include <qstylefactory.h>
 #include <QStyleOptionButton>
 #include <QStylePainter>
+#include <QSurfaceFormat>
 #include <QSyntaxHighlighter>
 #include <qtabbar.h>
 #include <QTableView>
@@ -149,6 +155,7 @@
 #include <QTextDocument>
 #include <QTextDocumentFragment>
 #include <QTextEdit>
+#include <QTextTableCell>
 #include <QToolBar>
 #include <qtoolbox.h>
 #include <qtoolbutton.h>
