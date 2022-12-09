@@ -51,7 +51,6 @@
 #endif
 // STL
 #include <algorithm>
-#include <bitset>
 #include <iostream>
 #include <iomanip>
 #include <list>
@@ -63,16 +62,14 @@
 #include <string>
 #include <vector>
 
-#ifdef FC_OS_WIN32
-#include <io.h>
-#endif
-
+// boost
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/core/ignore_unused.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/tokenizer.hpp>
 #include <boost/regex.hpp>
 
+// Xerces
 #include <xercesc/util/PlatformUtils.hpp>
 #include <xercesc/util/XercesVersion.hpp>
 #include <xercesc/dom/DOM.hpp>
