@@ -32,7 +32,7 @@ namespace PartDesign {
 class Module : public Py::ExtensionModule<Module>
 {
 public:
-    Module() : Py::ExtensionModule<Module>("_PartDesign")
+    Module() : Py::ExtensionModule<Module>("PartDesign")
     {
         add_varargs_method("makeFilletArc",&Module::makeFilletArc,
             "makeFilletArc(...) -- Fillet arc."

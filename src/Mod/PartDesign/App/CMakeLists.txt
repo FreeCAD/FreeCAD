@@ -144,16 +144,16 @@ SET(PartDesign_SRCS
     ${Python_SRCS}
 )
 
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${PartDesign_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(PartDesign PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
+
 add_library(PartDesign SHARED ${PartDesign_SRCS})
 target_link_libraries(PartDesign ${PartDesign_LIBS})
 
-if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PartDesign_CPP_SRCS ${PartDesign_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(PartDesign PreCompiled.h PreCompiled.cpp PartDesign_CPP_SRCS)
-endif(FREECAD_USE_PCH)
-
-SET_BIN_DIR(PartDesign _PartDesign /Mod/PartDesign)
+SET_BIN_DIR(PartDesign PartDesign /Mod/PartDesign)
 SET_PYTHON_PREFIX_SUFFIX(PartDesign)
 
 INSTALL(TARGETS PartDesign DESTINATION ${CMAKE_INSTALL_LIBDIR})
