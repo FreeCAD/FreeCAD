@@ -546,6 +546,33 @@ void PolygonOffsetItem::write(InventorOutput& out) const
 
 // -----------------------------------------------------------------------------
 
+Coordinate3Item::Coordinate3Item(const std::vector<Vector3f>& points)
+    : points(points)
+{
+}
+
+void Coordinate3Item::write(InventorOutput& out) const
+{
+    beginPoint(out);
+    InventorFieldWriter writer;
+    writer.write<Vector3f>("point", points, out);
+    endPoint(out);
+}
+
+void Coordinate3Item::beginPoint(InventorOutput& out) const
+{
+    out.writeLine("Coordinate3 {");
+    out.increaseIndent();
+}
+
+void Coordinate3Item::endPoint(InventorOutput& out) const
+{
+    out.decreaseIndent();
+    out.writeLine("}");
+}
+
+// -----------------------------------------------------------------------------
+
 void PointSetItem::write(InventorOutput& out) const
 {
     out.writeLine("PointSet { }");

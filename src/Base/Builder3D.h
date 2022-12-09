@@ -355,6 +355,21 @@ private:
 };
 
 /*!
+ * \brief The Coordinate3Item class supports the SoCoordinate3 node.
+ */
+class BaseExport Coordinate3Item : public NodeItem
+{
+public:
+    Coordinate3Item(const std::vector<Vector3f>& points);
+    void write(InventorOutput& out) const override;
+
+private:
+    void beginPoint(InventorOutput& out) const;
+    void endPoint(InventorOutput& out) const;
+    std::vector<Vector3f> points;
+};
+
+/*!
  * \brief The PointSetItem class supports the SoPointSet node.
  */
 class BaseExport PointSetItem : public NodeItem
