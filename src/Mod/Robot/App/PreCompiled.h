@@ -38,13 +38,9 @@
 
 #ifdef _PreComp_
 
-// standard
-#include <cassert>
-#include <iostream>
-#include <map>
+// STL
+#include <memory>
 #include <sstream>
-#include <string>
-#include <vector>
 
 // kdl_cp
 #include "kdl_cp/chain.hpp"
