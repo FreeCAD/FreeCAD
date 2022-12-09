@@ -144,6 +144,12 @@ SET(MeshGui_SRCS
     Workbench.h
 )
 
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${MeshGui_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(MeshGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
+
 SET(MeshGuiIcon_SVG
     Resources/icons/MeshWorkbench.svg
 )
