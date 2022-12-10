@@ -23,7 +23,7 @@
 import FreeCAD
 import Path
 import Path.Main.Stock as PathStock
-import Path.Post.Processor as PostProcessor
+from Path.Post.Processor import PostProcessor
 import json
 
 from FreeCAD import Units
