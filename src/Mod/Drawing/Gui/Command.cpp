@@ -12,6 +12,8 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <sstream>
+# include <vector>
+
 # include <QCoreApplication>
 # include <QDir>
 # include <QFile>
@@ -20,29 +22,24 @@
 # include <QRegExp>
 #endif
 
-#include <vector>
-
-#include <Base/Tools.h>
 #include <App/Document.h>
 #include <App/PropertyGeo.h>
-
+#include <Base/Tools.h>
 #include <Gui/Action.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
-#include <Gui/Selection.h>
-#include <Gui/MainWindow.h>
 #include <Gui/FileDialog.h>
-
-#include <Mod/Part/App/PartFeature.h>
+#include <Gui/MainWindow.h>
+#include <Gui/Selection.h>
 #include <Mod/Drawing/App/FeaturePage.h>
+#include <Mod/Part/App/PartFeature.h>
 #include <Mod/Spreadsheet/App/Sheet.h>
 
-
-#include "DrawingView.h"
 #include "TaskDialog.h"
 #include "TaskOrthoViews.h"
+
 
 using namespace DrawingGui;
 using namespace std;

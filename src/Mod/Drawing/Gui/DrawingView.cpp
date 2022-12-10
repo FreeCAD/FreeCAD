@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <cmath>
+
 # include <QAction>
 # include <QApplication>
-# include <QBuffer>
 # include <QContextMenuEvent>
 # include <QFileInfo>
 # include <QFileDialog>
@@ -37,33 +37,25 @@
 # include <QListWidget>
 # include <QMenu>
 # include <QMessageBox>
-# include <QMouseEvent>
 # include <QPainter>
 # include <QPaintEvent>
 # include <QPrinter>
 # include <QPrintDialog>
 # include <QPrintPreviewDialog>
-# include <QPrintPreviewWidget>
-# include <QScrollArea>
-# include <QSlider>
-# include <QStatusBar>
-# include <QSvgRenderer>
-# include <QSvgWidget>
 # include <QWheelEvent>
-# include <cmath>
+
 #endif
 
-#include "DrawingView.h"
-#include <Base/Parameter.h>
-#include <Base/Stream.h>
-#include <Base/gzstream.h>
-#include <Base/PyObjectBase.h>
 #include <App/Application.h>
 #include <App/Document.h>
+#include <Base/Parameter.h>
 #include <Gui/Document.h>
-#include <Gui/ViewProvider.h>
 #include <Gui/FileDialog.h>
+#include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
+
+#include "DrawingView.h"
+
 
 using namespace DrawingGui;
 

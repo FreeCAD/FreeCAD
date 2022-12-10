@@ -64,6 +64,18 @@ SET(DrawingGuiTaskDlgs_SRCS
 )
 SOURCE_GROUP("TaskDialogs" FILES ${DrawingGuiTaskDlgs_SRCS})
 
+SET(DrawingGuiComplete_SRCS
+    ${DrawingGui_SRCS}
+    ${DrawingGuiView_SRCS}
+    ${DrawingGuiViewProvider_SRCS}
+)
+
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${DrawingGuiComplete_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(DrawingGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
+
 SET(DrawingGuiIcon_SVG
     Resources/icons/DrawingWorkbench.svg
 )

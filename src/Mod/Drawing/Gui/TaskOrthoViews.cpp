@@ -22,21 +22,19 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QCheckBox>
 # include <QLineEdit>
 # include <QMenu>
 #endif
 
-#include "TaskOrthoViews.h"
-#include "ui_TaskOrthoViews.h"
-
 #include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
 #include <Gui/Control.h>
-#include <Mod/Part/App/PartFeature.h>
 #include <Mod/Drawing/App/FeaturePage.h>
+#include <Mod/Part/App/PartFeature.h>
+
+#include "TaskOrthoViews.h"
+#include "ui_TaskOrthoViews.h"
 
 
 using namespace Gui;
