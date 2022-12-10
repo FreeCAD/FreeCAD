@@ -36,9 +36,14 @@ set(Inspection_Scripts
     ../Init.py
 )
 
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${Inspection_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(Inspection PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
+
 add_library(Inspection SHARED ${Inspection_SRCS} ${Inspection_Scripts})
 target_link_libraries(Inspection ${Inspection_LIBS})
-
 
 fc_target_copy_resource_flat(Inspection
     ${CMAKE_CURRENT_SOURCE_DIR}
