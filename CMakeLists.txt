@@ -93,5 +93,20 @@ CreatePackagingTargets()
 PrintFinalReport()
 
 if (BUILD_TEST)
+    include(FetchContent)
+    FetchContent_Declare(
+        googletest
+        # Specify the commit you depend on and update it regularly.
+        GIT_REPOSITORY
+        URL
+        https://github.com/google/googletest/archive/3fa7f983c69f780378b4d1ad44d36030ca951ba6.zip
+    )
+
+    FetchContent_MakeAvailable(googletest)
+    add_executable(Tests_run)
     add_subdirectory(tests)
+    target_link_libraries(Tests_run
+                          gtest
+                          gtest_main
+                          FreeCADApp)
 endif()

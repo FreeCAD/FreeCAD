@@ -281,8 +281,7 @@ SET(FreeCADApp_SRCS
     FreeCADInit.py
     FreeCADTest.py
     PreCompiled.cpp
-    PreCompiled.h
-)
+    PreCompiled.h)
 
 if(FREECAD_USE_PCH)
     add_definitions(-D_PreComp_)
