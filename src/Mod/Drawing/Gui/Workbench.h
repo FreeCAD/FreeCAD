@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef DRAWING_WORKBENCH_H
 #define DRAWING_WORKBENCH_H
 
 #include <Gui/Workbench.h>
+
 
 namespace DrawingGui {
 

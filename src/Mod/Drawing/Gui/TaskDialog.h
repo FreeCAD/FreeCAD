@@ -20,13 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef DRAWINGGUI_TASKDIALOG
 #define DRAWINGGUI_TASKDIALOG
 
 #include <QWidget>
+
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
+
 
 class QCheckBox;
 
