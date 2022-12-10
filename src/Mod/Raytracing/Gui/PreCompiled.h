@@ -39,11 +39,9 @@
 # include <windows.h>
 #endif
 
-// OpenCasCade Base
-#include <Standard_Failure.hxx>
-
-// OpenCascade View
+// OpenCascade
 #include <gp_Vec.hxx>
+#include <Standard_Failure.hxx>
 
 // Qt Toolkit
 # include <QAction>
