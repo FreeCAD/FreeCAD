@@ -20,27 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
+# include <iostream>
 # include <sstream>
 #endif
-
-
-#include <Base/Exception.h>
-#include <Base/Console.h>
-#include <Base/FileInfo.h>
-#include <App/Application.h>
-#include <boost/regex.hpp>
-#include <iostream>
 
 #include "FeatureClip.h"
 #include "FeatureView.h"
 
+
 using namespace Drawing;
 using namespace std;
-
 
 //===========================================================================
 // FeaturePage
@@ -99,8 +90,8 @@ App::DocumentObjectExecReturn *FeatureClip::execute(void)
     svg << "<g clip-path=\"url(#" << Label.getValue() << ")\">" << endl;
 
     // get through the children and collect all the views
-    const std::vector<App::DocumentObject*> &Grp = Group.getValues();
-    for (std::vector<App::DocumentObject*>::const_iterator It= Grp.begin();It!=Grp.end();++It) {
+    const vector<App::DocumentObject*> &Grp = Group.getValues();
+    for (vector<App::DocumentObject*>::const_iterator It= Grp.begin();It!=Grp.end();++It) {
         if ((*It)->getTypeId().isDerivedFrom(Drawing::FeatureView::getClassTypeId())) {
             Drawing::FeatureView *View = static_cast<Drawing::FeatureView *>(*It);
             svg << View->ViewResult.getValue() << endl;

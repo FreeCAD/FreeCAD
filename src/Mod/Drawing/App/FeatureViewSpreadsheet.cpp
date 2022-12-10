@@ -20,25 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
+# include <iomanip>
 # include <sstream>
 #endif
 
-#include <iomanip>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <App/Property.h>
-#include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
-#include "FeatureViewSpreadsheet.h"
+#include <Base/Exception.h>
 #include <Mod/Spreadsheet/App/Cell.h>
 #include <Mod/Spreadsheet/App/Sheet.h>
 
+#include "FeatureViewSpreadsheet.h"
+
+
 using namespace Drawing;
-using namespace std;
 
 //===========================================================================
 // FeatureViewSpreadsheet
@@ -98,35 +94,38 @@ App::DocumentObjectExecReturn *FeatureViewSpreadsheet::execute(void)
     std::vector<std::string> columns;
     std::vector<int> rows;
     try {
-        for (unsigned int i=0; i<scellstart.length(); ++i) {
+        for (unsigned int i = 0; i < scellstart.length(); ++i) {
             if (isdigit(scellstart[i])) {
-                columns.push_back(scellstart.substr(0,i));
-                rows.push_back(std::atoi(scellstart.substr(i,scellstart.length()-1).c_str()));
+                columns.push_back(scellstart.substr(0, i));
+                rows.push_back(std::atoi(scellstart.substr(i, scellstart.length() - 1).c_str()));
             }
         }
-        for (unsigned int i=0; i<scellend.length(); ++i) {
+        for (unsigned int i = 0; i < scellend.length(); ++i) {
             if (isdigit(scellend[i])) {
                 std::string startcol = columns.back();
-                std::string endcol = scellend.substr(0,i);
+                std::string endcol = scellend.substr(0, i);
                 bool valid = false;
-                for (std::vector<std::string>::const_iterator j = availcolumns.begin(); j != availcolumns.end(); ++j) {
-                    if ( (*j) == startcol) {
-                        if ( (*j) != endcol) {
+                for (std::vector<std::string>::const_iterator j = availcolumns.begin();
+                     j != availcolumns.end(); ++j) {
+                    if ((*j) == startcol) {
+                        if ((*j) != endcol) {
                             valid = true;
                         }
-                    } else {
+                    }
+                    else {
                         if (valid) {
-                            if ( (*j) == endcol) {
+                            if ((*j) == endcol) {
                                 columns.push_back((*j));
                                 valid = false;
-                            } else {
+                            }
+                            else {
                                 columns.push_back((*j));
                             }
                         }
                     }
                 }
-                int endrow = std::atoi(scellend.substr(i,scellend.length()-1).c_str());
-                for (int j=rows.back()+1; j<=endrow; ++j) {
+                int endrow = std::atoi(scellend.substr(i, scellend.length() - 1).c_str());
+                for (int j = rows.back() + 1; j <= endrow; ++j) {
                     rows.push_back(j);
                 }
             }
@@ -139,12 +138,13 @@ App::DocumentObjectExecReturn *FeatureViewSpreadsheet::execute(void)
     std::string ViewName = Label.getValue();
     std::stringstream result,hr,hg,hb;
     const App::Color& c = Color.getValue();
-    hr << hex << setfill('0') << setw(2) << (int)(255.0*c.r);
-    hg << hex << setfill('0') << setw(2) << (int)(255.0*c.g);
-    hb << hex << setfill('0') << setw(2) << (int)(255.0*c.b);
-    result  << "<g id=\"" << ViewName << "\" transform=\"translate(" << X.getValue() << "," << Y.getValue() << ")"
-            << " rotate(" << Rotation.getValue() << ")"
-            << " scale(" << Scale.getValue() << ")\">" << endl;
+    hr << std::hex << std::setfill('0') << std::setw(2) << (int)(255.0 * c.r);
+    hg << std::hex << std::setfill('0') << std::setw(2) << (int)(255.0 * c.g);
+    hb << std::hex << std::setfill('0') << std::setw(2) << (int)(255.0 * c.b);
+    result << "<g id=\"" << ViewName << "\" transform=\"translate(" << X.getValue() << ","
+           << Y.getValue() << ")"
+           << " rotate(" << Rotation.getValue() << ")"
+           << " scale(" << Scale.getValue() << ")\">" << std::endl;
 
     // fill the cells
     float rowoffset = 0.0;
@@ -154,9 +154,10 @@ App::DocumentObjectExecReturn *FeatureViewSpreadsheet::execute(void)
     std::string celltext;
     Spreadsheet::Sheet* sheet = static_cast<Spreadsheet::Sheet*>(link); 
     std::vector<std::string> skiplist;   
-    for (std::vector<std::string>::const_iterator col = columns.begin(); col != columns.end(); ++col) {
+    for (std::vector<std::string>::const_iterator col = columns.begin(); col != columns.end();
+         ++col) {
         // create a group for each column
-        result << "  <g id=\"" << ViewName << "_col" << (*col) << "\">" << endl;
+        result << "  <g id=\"" << ViewName << "_col" << (*col) << "\">" << std::endl;
         for (std::vector<int>::const_iterator row = rows.begin(); row != rows.end(); ++row) {
             // get cell size
             std::stringstream srow;
@@ -186,26 +187,26 @@ App::DocumentObjectExecReturn *FeatureViewSpreadsheet::execute(void)
             std::string textstyle = "";
             Spreadsheet::Cell* cell = sheet->getCell(address);
             if (cell) {
-                App::Color f,b;
+                App::Color f, b;
                 std::set<std::string> st;
                 int colspan, rowspan;
                 if (cell->getBackground(b)) {
-                    std::stringstream br,bg,bb;
-                    br << hex << setfill('0') << setw(2) << (int)(255.0*b.r);
-                    bg << hex << setfill('0') << setw(2) << (int)(255.0*b.g);
-                    bb << hex << setfill('0') << setw(2) << (int)(255.0*b.b);
+                    std::stringstream br, bg, bb;
+                    br << std::hex << std::setfill('0') << std::setw(2) << (int)(255.0 * b.r);
+                    bg << std::hex << std::setfill('0') << std::setw(2) << (int)(255.0 * b.g);
+                    bb << std::hex << std::setfill('0') << std::setw(2) << (int)(255.0 * b.b);
                     bcolor = "#" + br.str() + bg.str() + bb.str();
                 }
                 if (cell->getForeground(f)) {
-                    std::stringstream fr,fg,fb;
-                    fr << hex << setfill('0') << setw(2) << (int)(255.0*f.r);
-                    fg << hex << setfill('0') << setw(2) << (int)(255.0*f.g);
-                    fb << hex << setfill('0') << setw(2) << (int)(255.0*f.b);
+                    std::stringstream fr, fg, fb;
+                    fr << std::hex << std::setfill('0') << std::setw(2) << (int)(255.0 * f.r);
+                    fg << std::hex << std::setfill('0') << std::setw(2) << (int)(255.0 * f.g);
+                    fb << std::hex << std::setfill('0') << std::setw(2) << (int)(255.0 * f.b);
                     fcolor = "#" + fr.str() + fg.str() + fb.str();
                 }
                 if (cell->getStyle(st)) {
                     for (std::set<std::string>::const_iterator i = st.begin(); i != st.end(); ++i) {
-                         if ((*i) == "bold")
+                        if ((*i) == "bold")
                             textstyle = textstyle + "font-weight: bold; ";
                         else if ((*i) == "italic")
                             textstyle = textstyle + "font-style: italic; ";
@@ -213,15 +214,15 @@ App::DocumentObjectExecReturn *FeatureViewSpreadsheet::execute(void)
                             textstyle = textstyle + "text-decoration: underline; ";
                     }
                 }
-                if (cell->getSpans(rowspan,colspan)) {
-                    for (int i=0; i<colspan; ++i) {
-                        for (int j=0; j<rowspan; ++j) {
-                            App::CellAddress nextcell(address.row()+j,address.col()+i);
+                if (cell->getSpans(rowspan, colspan)) {
+                    for (int i = 0; i < colspan; ++i) {
+                        for (int j = 0; j < rowspan; ++j) {
+                            App::CellAddress nextcell(address.row() + j, address.col() + i);
                             if (i > 0)
                                 cellwidth = cellwidth + sheet->getColumnWidth(nextcell.col());
                             if (j > 0)
                                 cellheight = cellheight + sheet->getRowHeight(nextcell.row());
-                            if ( (i > 0) || (j > 0) )
+                            if ((i > 0) || (j > 0))
                                 skiplist.push_back(nextcell.toString());
                         }
                     }
@@ -230,27 +231,35 @@ App::DocumentObjectExecReturn *FeatureViewSpreadsheet::execute(void)
             }
             // skip cell if found in skiplist
             if (std::find(skiplist.begin(), skiplist.end(), address.toString()) == skiplist.end()) {
-                result << "    <rect x=\"" << coloffset << "\" y=\"" << rowoffset << "\" width=\"" << cellwidth 
-                       << "\" height=\"" << cellheight << "\" style=\"fill:" << bcolor << ";stroke-width:"
-                       << LineWidth.getValue()/Scale.getValue() << ";stroke:#" << hr.str() << hg.str() << hb.str() << ";\" />" << endl;
+                result << "    <rect x=\"" << coloffset << "\" y=\"" << rowoffset << "\" width=\""
+                       << cellwidth << "\" height=\"" << cellheight << "\" style=\"fill:" << bcolor
+                       << ";stroke-width:" << LineWidth.getValue() / Scale.getValue() << ";stroke:#"
+                       << hr.str() << hg.str() << hb.str() << ";\" />" << std::endl;
                 if (alignment & Spreadsheet::Cell::ALIGNMENT_LEFT)
-                    result << "    <text style=\"" << textstyle << "\" x=\"" << coloffset + FontSize.getValue()/2 << "\" y=\"" << rowoffset + 0.75 * cellheight << "\" font-family=\"" ;
+                    result << "    <text style=\"" << textstyle << "\" x=\""
+                           << coloffset + FontSize.getValue() / 2 << "\" y=\""
+                           << rowoffset + 0.75 * cellheight << "\" font-family=\"";
                 if (alignment & Spreadsheet::Cell::ALIGNMENT_HCENTER)
-                    result << "    <text text-anchor=\"middle\" style=\"" << textstyle << "\" x=\"" << coloffset + cellwidth/2 << "\" y=\"" << rowoffset + 0.75 * cellheight << "\" font-family=\"" ;
+                    result << "    <text text-anchor=\"middle\" style=\"" << textstyle << "\" x=\""
+                           << coloffset + cellwidth / 2 << "\" y=\""
+                           << rowoffset + 0.75 * cellheight << "\" font-family=\"";
                 if (alignment & Spreadsheet::Cell::ALIGNMENT_RIGHT)
-                    result << "    <text text-anchor=\"end\" style=\"" << textstyle << "\" x=\"" << coloffset + (cellwidth - FontSize.getValue()/2) << "\" y=\"" << rowoffset + 0.75 * cellheight << "\" font-family=\"" ;
-                result << Font.getValue() << "\"" << " font-size=\"" << FontSize.getValue() << "\""
-                       << " fill=\"" << fcolor << "\">" << celltext << "</text>" << endl;
+                    result << "    <text text-anchor=\"end\" style=\"" << textstyle << "\" x=\""
+                           << coloffset + (cellwidth - FontSize.getValue() / 2) << "\" y=\""
+                           << rowoffset + 0.75 * cellheight << "\" font-family=\"";
+                result << Font.getValue() << "\""
+                       << " font-size=\"" << FontSize.getValue() << "\""
+                       << " fill=\"" << fcolor << "\">" << celltext << "</text>" << std::endl;
             }
             rowoffset = rowoffset + cellheight;
         }
-        result << "  </g>" << endl;
+        result << "  </g>" << std::endl;
         rowoffset = 0.0;
         coloffset = coloffset + cellwidth;
     }
 
     // close the containing group
-    result << "</g>" << endl;
+    result << "</g>" << std::endl;
 
     // Apply the resulting fragment
     ViewResult.setValue(result.str().c_str());
