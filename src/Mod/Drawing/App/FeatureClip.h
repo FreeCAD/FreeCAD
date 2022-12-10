@@ -20,14 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef _FeatureClip_h_
 #define _FeatureClip_h_
-
 
 #include <App/DocumentObjectGroup.h>
 #include <App/PropertyStandard.h>
 #include <Mod/Drawing/DrawingGlobal.h>
+
 
 namespace Drawing
 {

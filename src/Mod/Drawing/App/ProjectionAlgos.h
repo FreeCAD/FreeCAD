@@ -20,14 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef _ProjectionAlgos_h_
 #define _ProjectionAlgos_h_
 
-#include <Mod/Drawing/DrawingGlobal.h>
-#include <Base/Vector3D.h>
-#include <TopoDS_Shape.hxx>
 #include <string>
+#include <TopoDS_Shape.hxx>
+
+#include <Base/Vector3D.h>
+#include <Mod/Drawing/DrawingGlobal.h>
+
 
 class BRepAdaptor_Curve;
 
