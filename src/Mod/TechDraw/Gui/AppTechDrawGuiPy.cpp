@@ -72,6 +72,9 @@ public:
         add_varargs_method("addQGObjToScene", &Module::addQGObjToScene,
             "addQGObjToScene(Page, QGraphicsObject) -- insert graphics object into Page's scene. Use for QGraphicsItems that have QGraphicsObject as base class."
         );
+        add_varargs_method("getSceneForPage", &Module::getSceneForPage,
+            "QGSPage = getSceneForPage(page) -- get the scene for a DrawPage."
+        );
         initialize("This is a module for displaying drawings"); // register with Python
     }
     ~Module() override {}
@@ -416,7 +419,41 @@ private:
         return Py::None();
     }
 
+    Py::Object getSceneForPage(const Py::Tuple& args)
+    {
+        PyObject *pagePy = nullptr;
+        if (!PyArg_ParseTuple(args.ptr(), "O!", &(TechDraw::DrawPagePy::Type), &pagePy)) {
+            throw Py::TypeError("expected (page)");
+        }
 
+        try {
+           App::DocumentObject* obj = nullptr;
+           Gui::ViewProvider* vp = nullptr;
+           QGSPage* qgsp = nullptr;
+           obj = static_cast<App::DocumentObjectPy*>(pagePy)->getDocumentObjectPtr();
+           vp = Gui::Application::Instance->getViewProvider(obj);
+           if (vp) {
+               TechDrawGui::ViewProviderPage* vpp =
+                            dynamic_cast<TechDrawGui::ViewProviderPage*>(vp);
+               if (vpp) {
+                   qgsp = vpp->getQGSPage();
+                   if (qgsp) {
+                       Gui::PythonWrapper wrap;
+                       if (!wrap.loadGuiModule()) {
+                           throw Py::RuntimeError("Failed to load Python wrapper for Qt::Gui");
+                       }
+                       return wrap.fromQObject(qgsp, "TechDrawGui::QGSPage");
+                    }
+               }
+           }
+        }
+        catch (Base::Exception &e) {
+            e.setPyException();
+            throw Py::Exception();
+        }
+
+        return Py::None();
+    }
 };
 
 PyObject* initModule()
