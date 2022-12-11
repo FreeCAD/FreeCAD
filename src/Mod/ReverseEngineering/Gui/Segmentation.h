@@ -20,15 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef REVERSEENGINEERINGGUI_SEGMENTATION_H
 #define REVERSEENGINEERINGGUI_SEGMENTATION_H
 
+#include <memory>
+
 #include <QWidget>
+
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
-#include <App/DocumentObserver.h>
-#include <memory>
+
 
 // forward declarations
 namespace Mesh { class Feature; }
