@@ -481,7 +481,7 @@ QString TaskComplexSection::sourcesToString()
 //******************************************************************************
 bool TaskComplexSection::apply(bool forceUpdate)
 {
-    //    Base::Console().Message("TCS::apply() - liveUpdate: %d forece: %d\n",
+    //    Base::Console().Message("TCS::apply() - liveUpdate: %d force: %d\n",
     //                            ui->cbLiveUpdate->isChecked(), forceUpdate);
     if (!ui->cbLiveUpdate->isChecked() && !forceUpdate) {
         //nothing to do
