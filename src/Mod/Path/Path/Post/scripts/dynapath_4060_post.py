@@ -442,23 +442,17 @@ def parse(pathobj):
                     if param == "F" and (
                         currLocation[param] != c.Parameters[param] or OUTPUT_DOUBLES
                     ):
-                        if c.Name not in [
-                            "G0",
-                            "G00",
-                        ]:
-                            speed = Units.Quantity(
-                                c.Parameters["F"], FreeCAD.Units.Velocity
-                            )
-                            if speed.getValueAs(UNIT_SPEED_FORMAT) > 0.0:
-                                outstring.append(
-                                    param
-                                    + format(
-                                        float(speed.getValueAs(UNIT_SPEED_FORMAT)),
-                                        precision_string,
-                                    )
+                        speed = Units.Quantity(
+                            c.Parameters["F"], FreeCAD.Units.Velocity
+                        )
+                        if speed.getValueAs(UNIT_SPEED_FORMAT) > 0.0:
+                            outstring.append(
+                                param
+                                + format(
+                                    float(speed.getValueAs(UNIT_SPEED_FORMAT)),
+                                    precision_string,
                                 )
-                        else:
-                            continue
+                            )
                     elif param == "Z" and (
                         c.Parameters["Z"] == clearanceHeight
                         and c.Parameters["Z"] != lastZ
@@ -520,10 +514,8 @@ def parse(pathobj):
                         k = c.Parameters["K"]
                         if ABSOLUTE_CIRCLE_CENTER:
                             k += lastZ
-                            if command == ("G18" or "G19"):
-                                outstring.append(
-                                    param + PostUtils.fmt(k, PRECISION, UNITS)
-                                )
+                        if command == ("G18" or "G19"):
+                            outstring.append(param + PostUtils.fmt(k, PRECISION, UNITS))
                     elif param == "Q":
                         pos = Units.Quantity(c.Parameters["Q"], FreeCAD.Units.Length)
                         outstring.append(
@@ -571,7 +563,6 @@ def parse(pathobj):
                                     float(pos.getValueAs(UNIT_FORMAT)), precision_string
                                 )
                             )
-
             # save the last X, Y values
             if "X" in c.Parameters:
                 lastX = c.Parameters["X"]
