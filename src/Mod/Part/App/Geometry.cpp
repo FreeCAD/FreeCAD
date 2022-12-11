@@ -1602,7 +1602,7 @@ void GeomBSplineCurve::Trim(double u, double v)
     };
 
     try {
-        if (isPeriodic() && (v - u  <= Precision::PConfusion()))
+        if (isPeriodic() && (v < u))
             v = v + myCurve->LastParameter() - myCurve->FirstParameter(); // v needs one extra lap
         splitUnwrappedBSpline(u, v);
     }
