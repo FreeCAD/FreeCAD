@@ -23,17 +23,14 @@
 #ifndef SKETCHER_SKETCH_H
 #define SKETCHER_SKETCH_H
 
-#include <App/PropertyStandard.h>
-#include <App/PropertyFile.h>
-#include <Mod/Part/App/Geometry.h>
-#include <Mod/Part/App/TopoShape.h>
-#include "GeoList.h"
-#include "Constraint.h"
-
-#include "planegcs/GCS.h"
-
 #include <Base/Persistence.h>
 #include <CXX/Objects.hxx>
+#include <Mod/Part/App/TopoShape.h>
+
+#include "Constraint.h"
+#include "GeoList.h"
+#include "planegcs/GCS.h"
+
 
 namespace Sketcher
 {

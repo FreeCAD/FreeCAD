@@ -23,11 +23,13 @@
 #ifndef SKETCHER_SKETCHGEOMETRYEXTENSION_H
 #define SKETCHER_SKETCHGEOMETRYEXTENSION_H
 
-#include <Mod/Part/App/Geometry.h>
-#include <Mod/Sketcher/SketcherGlobal.h>
+#include <array>
 #include <atomic>
 #include <bitset>
-#include <array>
+
+#include <Mod/Part/App/Geometry.h>
+#include <Mod/Sketcher/SketcherGlobal.h>
+
 
 namespace Sketcher
 {
