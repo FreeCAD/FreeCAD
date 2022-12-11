@@ -27,10 +27,8 @@
 #include <Base/PyObjectBase.h>
 #include <Gui/Application.h>
 #include <Gui/Language/Translator.h>
-#include "Workbench.h"
 
-#include <CXX/Extensions.hxx>
-#include <CXX/Objects.hxx>
+#include "Workbench.h"
 
 
 // use a different name to CreateCommand()

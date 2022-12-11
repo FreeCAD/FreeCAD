@@ -20,20 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef REEN_APPROXSURFACE_H
 #define REEN_APPROXSURFACE_H
 
-#include <TColStd_Array1OfReal.hxx>
-#include <TColStd_Array1OfInteger.hxx>
 #include <TColgp_Array1OfPnt.hxx>
 #include <TColgp_Array2OfPnt.hxx>
 #include <TColgp_Array1OfPnt2d.hxx>
+#include <TColStd_Array1OfInteger.hxx>
+#include <TColStd_Array1OfReal.hxx>
 #include <Geom_BSplineSurface.hxx>
 #include <math_Matrix.hxx>
 
 #include <Base/Vector3D.h>
 #include <Mod/ReverseEngineering/ReverseEngineeringGlobal.h>
+
 
 namespace Base {
 class SequencerLauncher;

@@ -28,19 +28,16 @@
 #ifdef _PreComp_
 
 // STL
-#include <fstream>
 #include <sstream>
 #include <vector>
 
 // OpenCascade View
 #include <BRepMesh_IncrementalMesh.hxx>
-#include <gp_Pnt.hxx>
 #include <ShapeAnalysis_ShapeContents.hxx>
 #include <Standard.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Face.hxx>
-#include <TopoDS_Shape.hxx>
 
 #endif //_PreComp_
 

@@ -45,29 +45,31 @@
 **
 ****************************************************************************/
 
-#include <QApplication>
-#include <QScreen>
-#include <QPainter>
-#include <QPushButton>
-#include <QColorDialog>
-#include <QtCore/QMap>
-#include <QLayout>
-#include <QStyle>
-#include <QLabel>
-#include <QToolTip>
-#include <QtGui/QPixmap>
-#include <QtGui/QFocusEvent>
-#include <QtGui/QPaintEvent>
-#include <QGridLayout>
-#include <QtGui/QHideEvent>
-#include <QtGui/QKeyEvent>
-#include <QtGui/QShowEvent>
-#include <QtGui/QMouseEvent>
-#include <cmath>
+#include "PreCompiled.h"
+#ifndef _PreComp_
+# include <cmath>
 
-#include <QScreen>
+# include <QApplication>
+# include <QPainter>
+# include <QPushButton>
+# include <QColorDialog>
+# include <QGridLayout>
+# include <QtCore/QMap>
+# include <QLayout>
+# include <QStyle>
+# include <QtGui/QFocusEvent>
+# include <QtGui/QHideEvent>
+# include <QtGui/QKeyEvent>
+# include <QtGui/QMouseEvent>
+# include <QtGui/QPaintEvent>
+# include <QtGui/QPixmap>
+# include <QtGui/QShowEvent>
+#endif
+
 #include <Gui/FileDialog.h>
+
 #include "qtcolorpicker.h"
+
 
 /*! \class QtColorPicker
 
@@ -149,7 +151,7 @@ class ColorPickerButton : public QFrame
 public:
     ColorPickerButton(QWidget *parent);
 
-signals:
+Q_SIGNALS:
     void clicked();
 
 protected:
@@ -180,7 +182,7 @@ public:
 
     void setSelected(bool);
     bool isSelected() const;
-signals:
+Q_SIGNALS:
     void clicked();
     void selected();
 
@@ -223,7 +225,7 @@ public:
 
     void setLastSel(const QColor & col);
 
-signals:
+Q_SIGNALS:
     void selected(const QColor &);
     void hid();
 
@@ -836,16 +838,16 @@ void ColorPickerPopup::showEvent(QShowEvent *)
 {
     bool foundSelected = false;
     for (int i = 0; i < grid->columnCount(); ++i) {
-    for (int j = 0; j < grid->rowCount(); ++j) {
-        QWidget *w = widgetAt[j][i];
-        if (w && w->inherits("ColorPickerItem")) {
-        if (((ColorPickerItem *)w)->isSelected()) {
-            w->setFocus();
-            foundSelected = true;
-            break;
+        for (int j = 0; j < grid->rowCount(); ++j) {
+            QWidget* w = widgetAt[j][i];
+            if (w && w->inherits("ColorPickerItem")) {
+                if (((ColorPickerItem*)w)->isSelected()) {
+                    w->setFocus();
+                    foundSelected = true;
+                    break;
+                }
+            }
         }
-        }
-    }
     }
 
     if (!foundSelected) {
@@ -905,9 +907,11 @@ void ColorPickerPopup::getColorFromDialog()
     //QRgb rgb = QColorDialog::getRgba(lastSel.rgba(), &ok, parentWidget());
     QColor col;
     if (Gui::DialogOptions::dontUseNativeColorDialog()){
-        col = QColorDialog::getColor(lastSel, parentWidget(), nullptr, QColorDialog::ShowAlphaChannel|QColorDialog::DontUseNativeDialog);
+        col = QColorDialog::getColor(lastSel, parentWidget(), QString(),
+            QColorDialog::ShowAlphaChannel | QColorDialog::DontUseNativeDialog);
     } else {
-        col = QColorDialog::getColor(lastSel, parentWidget(), nullptr, QColorDialog::ShowAlphaChannel);
+        col = QColorDialog::getColor(lastSel, parentWidget(), QString(),
+            QColorDialog::ShowAlphaChannel);
     }
     if (!col.isValid())
     return;

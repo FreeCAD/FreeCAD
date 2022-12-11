@@ -21,18 +21,18 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <sstream>
+# include <QFileInfo>
+# include <QImage>
+# include <QString>
+
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoFaceSet.h>
 # include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoTexture2.h>
 # include <Inventor/nodes/SoTextureCoordinate2.h>
-# include <QFileInfo>
-# include <QImage>
-# include <QString>
 #endif
 
 #include <App/Document.h>

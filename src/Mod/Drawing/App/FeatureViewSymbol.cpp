@@ -20,25 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
+# include <iomanip>
+# include <iterator>
 # include <sstream>
+
+# include <boost/regex.hpp>
 #endif
-
-#include <iomanip>
-#include <iterator>
-#include <boost/regex.hpp>
-
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
 
 #include "FeatureViewSymbol.h"
 
+
 using namespace Drawing;
 using namespace std;
-
 
 //===========================================================================
 // FeatureViewSymbol

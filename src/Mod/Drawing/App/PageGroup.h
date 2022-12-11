@@ -20,22 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
- 
-
-
 #ifndef _PageGroup_h_
 #define _PageGroup_h_
 
-
 #include <App/DocumentObjectGroup.h>
-#include <App/PropertyStandard.h>
 #include <App/PropertyLinks.h>
 #include <Mod/Drawing/DrawingGlobal.h>
 
 
 namespace Drawing
 {
-
 
 /** Base class of all View Features in the drawing module
  */

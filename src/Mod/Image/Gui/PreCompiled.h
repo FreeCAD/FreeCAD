@@ -35,34 +35,17 @@
 
 #ifdef _PreComp_
 
-// standard
-#include <cassert>
+// STL
 #include <cmath>
-#include <iostream>
 #include <sstream>
 
-// STL
-#include <algorithm>
-#include <bitset>
-#include <list>
-#include <map>
-#include <queue>
-#include <set>
-#include <stack>
-#include <string>
-#include <vector>
-
-#ifdef FC_OS_WIN32
-# include <windows.h>
-#endif
-
 // Inventor
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoFaceSet.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoTexture2.h>
-# include <Inventor/nodes/SoTextureCoordinate2.h>
+#include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoFaceSet.h>
+#include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoTexture2.h>
+#include <Inventor/nodes/SoTextureCoordinate2.h>
 
 // Qt Toolkit
 #ifndef __QtAll__

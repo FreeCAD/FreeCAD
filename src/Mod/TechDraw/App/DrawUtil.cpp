@@ -28,7 +28,7 @@
 #include <cstring>
 #include <sstream>
 
-#include <boost/regex.hpp>
+#include <boost_regex.hpp>
 
 #include <QChar>
 #include <QPointF>

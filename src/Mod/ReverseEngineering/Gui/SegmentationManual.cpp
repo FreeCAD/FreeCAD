@@ -20,31 +20,26 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <QPushButton>
 #endif
 
-#include "SegmentationManual.h"
-#include "ui_SegmentationManual.h"
 #include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
-
 #include <Mod/Mesh/App/Core/Approximation.h>
 #include <Mod/Mesh/App/Core/Algorithm.h>
 #include <Mod/Mesh/App/Core/Segmentation.h>
-#include <Mod/Mesh/App/Core/Curvature.h>
-#include <Mod/Mesh/App/Core/Smoothing.h>
-#include <Mod/Mesh/App/Mesh.h>
 #include <Mod/Mesh/App/MeshFeature.h>
 #include <Mod/Mesh/Gui/ViewProvider.h>
 
-using namespace ReverseEngineeringGui;
+#include "SegmentationManual.h"
+#include "ui_SegmentationManual.h"
 
+
+using namespace ReverseEngineeringGui;
 
 SegmentationManual::SegmentationManual(QWidget* parent, Qt::WindowFlags fl)
   : QWidget(parent, fl)

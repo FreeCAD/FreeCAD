@@ -34,7 +34,7 @@
 #include <TopoDS_Wire.hxx>
 #endif
 
-#include <boost/regex.hpp>
+#include <boost_regex.hpp>
 
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectPy.h>
