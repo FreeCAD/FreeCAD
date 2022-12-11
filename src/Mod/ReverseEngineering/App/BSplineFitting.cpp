@@ -20,16 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #if defined(HAVE_PCL_OPENNURBS)
 #ifndef _PreComp_
+# include <map>
+
 # include <Geom_BSplineSurface.hxx>
 # include <TColgp_Array2OfPnt.hxx>
-# include <TColStd_Array2OfReal.hxx>
 # include <TColStd_Array1OfInteger.hxx>
 # include <TColStd_Array1OfReal.hxx>
-# include <map>
+# include <TColStd_Array2OfReal.hxx>
 #endif
 
 #include <Mod/Points/App/PointsPy.h>
