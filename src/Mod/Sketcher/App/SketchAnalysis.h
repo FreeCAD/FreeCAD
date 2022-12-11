@@ -21,14 +21,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef SKETCHER_SKETCHANALYSIS_H
 #define SKETCHER_SKETCHANALYSIS_H
 
-#include <vector>
 #include <memory>
+#include <vector>
+
 #include <Base/Vector3D.h>
+
 #include "Analyse.h"
+
 
 namespace Sketcher {
 

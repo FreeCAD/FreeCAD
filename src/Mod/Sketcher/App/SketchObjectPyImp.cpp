@@ -22,31 +22,27 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <sstream>
-# include <Geom_TrimmedCurve.hxx>
 # include <memory>
+# include <sstream>
+
+# include <Geom_TrimmedCurve.hxx>
 #endif
 
-#include <Mod/Sketcher/App/SketchObject.h>
-#include <Mod/Part/App/LinePy.h>
-#include <Mod/Part/App/Geometry.h>
-#include <Mod/Part/App/DatumFeature.h>
-#include <Base/GeometryPyCXX.h>
-#include <Base/VectorPy.h>
-#include <Base/AxisPy.h>
-#include <Base/Tools.h>
-#include <Base/QuantityPy.h>
 #include <App/Document.h>
-#include <App/OriginFeature.h>
-#include <CXX/Objects.hxx>
+#include <Base/AxisPy.h>
+#include <Base/QuantityPy.h>
+#include <Base/Tools.h>
+#include <Base/VectorPy.h>
+#include <Mod/Part/App/Geometry.h>
+#include <Mod/Part/App/LinePy.h>
 
 // inclusion of the generated files (generated out of SketchObjectSFPy.xml)
 #include "SketchObjectPy.h"
 #include "SketchObjectPy.cpp"
 // other python types
 #include "ConstraintPy.h"
-#include "GeometryFacade.h"
 #include "GeometryFacadePy.h"
+
 
 using namespace Sketcher;
 
@@ -55,7 +51,6 @@ std::string SketchObjectPy::representation() const
 {
     return "<Sketcher::SketchObject>";
 }
-
 
 PyObject* SketchObjectPy::solve(PyObject *args)
 {

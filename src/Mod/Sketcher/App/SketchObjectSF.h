@@ -20,20 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
 #ifndef SKETCH_SKETCHOBJECTSF_H
 #define SKETCH_SKETCHOBJECTSF_H
 
-#include <App/PropertyStandard.h>
 #include <App/PropertyFile.h>
-
 #include <Mod/Part/App/Part2DObject.h>
 #include <Mod/Sketcher/SketcherGlobal.h>
 
+
 namespace Sketcher
 {
-
 
 class SketchObjectSF :public Part::Part2DObject
 {
