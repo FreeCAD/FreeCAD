@@ -2978,7 +2978,6 @@ int SketchObject::split(int GeoId, const Base::Vector3d &point)
     }
 
     const Part::Geometry *geo = getGeometry(GeoId);
-    std::vector<Part::Geometry *> newGeometries;
     std::vector<int> newIds;
     std::vector<Constraint *> newConstraints;
 
@@ -2999,8 +2998,7 @@ int SketchObject::split(int GeoId, const Base::Vector3d &point)
             // create new arc and restrict it
             auto newCurve = getCurveWithLimitParams(curve, startParam, endParam);
             int newId(GeoEnum::GeoUndef);
-            newGeometries.push_back(newCurve);
-            newId = addGeometry(newCurve);
+            newId = addGeometry(std::move(newCurve)); // after here newCurve is a shell
             if (newId >= 0) {
                 newIds.push_back(newId);
                 setConstruction(newId, GeometryFacade::getConstruction(curve));
@@ -3034,8 +3032,7 @@ int SketchObject::split(int GeoId, const Base::Vector3d &point)
             // create new curves
             auto newCurve = getCurveWithLimitParams(curve, startParam, splitParam);
             int newId(GeoEnum::GeoUndef);
-            newGeometries.push_back(newCurve);
-            newId = addGeometry(newCurve);
+            newId = addGeometry(std::move(newCurve));
             if (newId >= 0) {
                 newIds.push_back(newId);
                 setConstruction(newId, GeometryFacade::getConstruction(curve));
@@ -3043,8 +3040,7 @@ int SketchObject::split(int GeoId, const Base::Vector3d &point)
 
                 // the "second" half
                 newCurve = getCurveWithLimitParams(curve, splitParam, endParam);
-                newGeometries.push_back(newCurve);
-                newId = addGeometry(newCurve);
+                newId = addGeometry(std::move(newCurve));
                 if (newId >= 0) {
                     newIds.push_back(newId);
                     setConstruction(newId, GeometryFacade::getConstruction(curve));
@@ -3067,7 +3063,7 @@ int SketchObject::split(int GeoId, const Base::Vector3d &point)
         ok = createGeosFromNonPeriodic(
             static_cast<const Part::GeomBoundedCurve *>(geo),
             [](const Part::GeomCurve* curve, double startParam, double endParam) {
-                auto newArc = static_cast<Part::GeomLineSegment *>(curve->clone());
+                auto newArc = std::unique_ptr<Part::GeomLineSegment>(static_cast<Part::GeomLineSegment *>(curve->copy()));
                 newArc->setRange(startParam, endParam);
                 return newArc;
             },
@@ -3088,7 +3084,7 @@ int SketchObject::split(int GeoId, const Base::Vector3d &point)
         ok = createGeosFromPeriodic(
             static_cast<const Part::GeomCurve *>(geo),
             [](const Part::GeomCurve* curve, double startParam, double endParam) {
-                auto newArc = new Part::GeomArcOfCircle(Handle(Geom_Circle)::DownCast(curve->handle()->Copy()));
+                auto newArc = std::make_unique<Part::GeomArcOfCircle>(Handle(Geom_Circle)::DownCast(curve->handle()->Copy()));
                 newArc->setRange(startParam, endParam, false);
                 return newArc;
             },
@@ -3100,7 +3096,7 @@ int SketchObject::split(int GeoId, const Base::Vector3d &point)
         ok = createGeosFromPeriodic(
             static_cast<const Part::GeomCurve *>(geo),
             [](const Part::GeomCurve* curve, double startParam, double endParam) {
-                auto newArc = new Part::GeomArcOfEllipse(Handle(Geom_Ellipse)::DownCast(curve->handle()->Copy()));
+                auto newArc = std::make_unique<Part::GeomArcOfEllipse>(Handle(Geom_Ellipse)::DownCast(curve->handle()->Copy()));
                 newArc->setRange(startParam, endParam, false);
                 return newArc;
             },
@@ -3112,7 +3108,7 @@ int SketchObject::split(int GeoId, const Base::Vector3d &point)
         ok = createGeosFromNonPeriodic(
             static_cast<const Part::GeomBoundedCurve *>(geo),
             [](const Part::GeomCurve* curve, double startParam, double endParam) {
-                auto newArc = static_cast<Part::GeomArcOfCircle *>(curve->clone());
+                auto newArc = std::unique_ptr<Part::GeomArcOfCircle>(static_cast<Part::GeomArcOfCircle *>(curve->copy()));
                 newArc->setRange(startParam, endParam, false);
                 return newArc;
             },
@@ -3142,7 +3138,7 @@ int SketchObject::split(int GeoId, const Base::Vector3d &point)
         ok = createGeosFromNonPeriodic(
             static_cast<const Part::GeomBoundedCurve *>(geo),
             [](const Part::GeomCurve* curve, double startParam, double endParam) {
-                auto newArc = static_cast<Part::GeomArcOfConic *>(curve->clone());
+                auto newArc = std::unique_ptr<Part::GeomArcOfConic>(static_cast<Part::GeomArcOfConic *>(curve->copy()));
                 newArc->setRange(startParam, endParam);
                 return newArc;
             },
@@ -3171,7 +3167,7 @@ int SketchObject::split(int GeoId, const Base::Vector3d &point)
             ok = createGeosFromPeriodic(
                 static_cast<const Part::GeomCurve *>(geo),
                 [](const Part::GeomCurve* curve, double startParam, double endParam) {
-                    auto newBsp = static_cast<Part::GeomBSplineCurve *>(curve->clone());
+                    auto newBsp = std::unique_ptr<Part::GeomBSplineCurve>(static_cast<Part::GeomBSplineCurve *>(curve->copy()));
                     newBsp->Trim(startParam, endParam);
                     return newBsp;
                 },
@@ -3183,7 +3179,7 @@ int SketchObject::split(int GeoId, const Base::Vector3d &point)
             ok = createGeosFromNonPeriodic(
                 static_cast<const Part::GeomBoundedCurve *>(geo),
                 [](const Part::GeomCurve* curve, double startParam, double endParam) {
-                    auto newBsp = static_cast<Part::GeomBSplineCurve *>(curve->clone());
+                    auto newBsp = std::unique_ptr<Part::GeomBSplineCurve>(static_cast<Part::GeomBSplineCurve *>(curve->copy()));
                     newBsp->Trim(startParam, endParam);
                     return newBsp;
                 },
@@ -3243,13 +3239,16 @@ int SketchObject::split(int GeoId, const Base::Vector3d &point)
 
                 if (geo->isDerivedFrom(Part::GeomArcOfConic::getClassTypeId())) {
                     const Part::Geometry *conGeo = getGeometry(conId);
-                    if (conGeo && conGeo->isDerivedFrom(Part::GeomCurve::getClassTypeId())) {
+
+                    if (conGeo && conGeo->isDerivedFrom(Part::GeomCurve::getClassTypeId())){
                         std::vector<std::pair<Base::Vector3d, Base::Vector3d>> intersections;
                         bool intersects[2];
+                        auto *geo1 = getGeometry(newIds[0]);
+                        auto *geo2 = getGeometry(newIds[1]);
 
-                        intersects[0] = static_cast<const Part::GeomCurve *>(newGeometries[0])->
+                        intersects[0] = static_cast<const Part::GeomCurve *>(geo1)->
                             intersect(static_cast<const Part::GeomCurve *>(conGeo), intersections);
-                        intersects[1] = static_cast<const Part::GeomCurve *>(newGeometries[1])->
+                        intersects[1] = static_cast<const Part::GeomCurve *>(geo2)->
                             intersect(static_cast<const Part::GeomCurve *>(conGeo), intersections);
 
                         initial = longestPart;
@@ -3336,9 +3335,6 @@ int SketchObject::split(int GeoId, const Base::Vector3d &point)
         addConstraints(newConstraints);
     }
 
-    for (auto& geom: newGeometries) {
-        delete geom;
-    }
     for (auto& cons: newConstraints) {
         delete cons;
     }
