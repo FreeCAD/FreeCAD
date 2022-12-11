@@ -20,14 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef SKETCHERGUI_DrawSketchHandlerEllipse_H
 #define SKETCHERGUI_DrawSketchHandlerEllipse_H
 
 #include <cmath>
+#include <QDebug>
+#include <GC_MakeEllipse.hxx>
 
 #include "GeometryCreationMode.h"
-#include "Utils.h"
+
 
 namespace SketcherGui {
 
