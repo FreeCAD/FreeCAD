@@ -21,12 +21,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef SKETCHER_ANALYSE_H
 #define SKETCHER_ANALYSE_H
 
 #include <vector>
-#include <Mod/Sketcher/App/Constraint.h>
+
+#include "Constraint.h"
+
 
 namespace Sketcher {
 

@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef SKETCHER_CONSTRAINT_H
 #define SKETCHER_CONSTRAINT_H
 
@@ -32,6 +31,7 @@
 #include <boost/uuid/uuid_generators.hpp>
 
 #include "GeoEnum.h"
+
 
 namespace Sketcher
 {

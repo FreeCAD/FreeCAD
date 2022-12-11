@@ -26,12 +26,8 @@
 #endif
 
 #include "GeometryFacade.h"
-
-//#include <Base/Console.h> // Only for Debug, when/if necessary
-#include <Base/Exception.h>
-
-
 #include "GeometryFacadePy.h"
+
 
 using namespace Sketcher;
 

@@ -21,15 +21,15 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <sstream>
 #endif
 
-#include "Constraint.h"
+#include <Base/QuantityPy.h>
+
 #include "ConstraintPy.h"
 #include "ConstraintPy.cpp"
-#include <Base/QuantityPy.h>
+
 
 using namespace Sketcher;
 
