@@ -20,13 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef SKETCHERGUI_DrawSketchHandlerSplitting_H
 #define SKETCHERGUI_DrawSketchHandlerSplitting_H
 
-
 #include "GeometryCreationMode.h"
-#include "Utils.h"
+
 
 namespace SketcherGui {
 

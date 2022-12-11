@@ -20,13 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef SKETCHERGUI_DrawSketchHandlerCircle_H
 #define SKETCHERGUI_DrawSketchHandlerCircle_H
 
-
 #include "GeometryCreationMode.h"
-#include "Utils.h"
+
 
 namespace SketcherGui {
 

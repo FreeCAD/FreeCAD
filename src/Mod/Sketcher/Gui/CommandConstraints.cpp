@@ -20,41 +20,37 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <cfloat>
 # include <QMessageBox>
-# include <Precision.hxx>
 # include <QPainter>
+# include <Precision.hxx>
 #endif
 
+#include <App/Application.h>
 #include <Base/Tools.h>
 #include <Base/Tools2D.h>
-#include <App/Application.h>
+#include <Gui/Action.h>
 #include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/CommandT.h>
+#include <Gui/DlgCheckableMessageBox.h>
 #include <Gui/Document.h>
+#include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
 #include <Gui/SelectionObject.h>
-#include <Gui/CommandT.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Action.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/DlgCheckableMessageBox.h>
-
-#include <Mod/Part/App/Geometry.h>
-#include <Mod/Sketcher/App/SketchObject.h>
-#include <Mod/Sketcher/App/Sketch.h>
 #include <Mod/Sketcher/App/GeometryFacade.h>
+#include <Mod/Sketcher/App/SketchObject.h>
 
-#include "Utils.h"
-
-#include "ViewProviderSketch.h"
-#include "DrawSketchHandler.h"
-#include "ui_InsertDatum.h"
-#include "EditDatumDialog.h"
 #include "CommandConstraints.h"
+#include "DrawSketchHandler.h"
+#include "EditDatumDialog.h"
+#include "ui_InsertDatum.h"
+#include "Utils.h"
+#include "ViewProviderSketch.h"
+
 
 using namespace std;
 using namespace SketcherGui;

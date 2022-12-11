@@ -20,41 +20,35 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <cfloat>
 # include <memory>
-# include <QMessageBox>
-# include <Precision.hxx>
+
 # include <QApplication>
 # include <QMessageBox>
 
 # include <Inventor/SbString.h>
 #endif
 
-#include <Base/Console.h>
 #include <App/Application.h>
+#include <Base/Console.h>
+#include <Gui/Action.h>
 #include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/CommandT.h>
 #include <Gui/Document.h>
+#include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionObject.h>
-#include <Gui/CommandT.h>
-#include <Gui/MainWindow.h>
-
-#include <Gui/Action.h>
-#include <Gui/BitmapFactory.h>
-
-#include "ViewProviderSketch.h"
-#include "DrawSketchHandler.h"
-
-#include <Mod/Part/App/Geometry.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/Sketcher/App/SolverGeometryExtension.h>
 
-#include "ViewProviderSketch.h"
+#include "DrawSketchHandler.h"
 #include "SketchRectangularArrayDialog.h"
 #include "Utils.h"
+#include "ViewProviderSketch.h"
+
 
 using namespace std;
 using namespace SketcherGui;
