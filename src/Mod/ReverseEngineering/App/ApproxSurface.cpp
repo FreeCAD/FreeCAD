@@ -20,23 +20,24 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#include <math_Gauss.hxx>
-#include <math_Householder.hxx>
-#include <Geom_BSplineSurface.hxx>
-#include <Precision.hxx>
+#ifndef _PreComp_
+# include <QFuture>
+# include <QFutureWatcher>
+# include <QtConcurrentMap>
 
-#include <QFuture>
-#include <QFutureWatcher>
-#include <QtConcurrentMap>
+# include <Geom_BSplineSurface.hxx>
+# include <math_Gauss.hxx>
+# include <math_Householder.hxx>
+# include <Precision.hxx>
+#endif
 
-#include <Mod/Mesh/App/Core/Approximation.h>
 #include <Base/Sequencer.h>
-#include <Base/Tools2D.h>
 #include <Base/Tools.h>
+#include <Mod/Mesh/App/Core/Approximation.h>
 
 #include "ApproxSurface.h"
+
 
 using namespace Reen;
 namespace bp = boost::placeholders;

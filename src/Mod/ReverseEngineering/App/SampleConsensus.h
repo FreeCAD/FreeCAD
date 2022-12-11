@@ -20,12 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef REEN_SAMPLECONSENSUS_H
 #define REEN_SAMPLECONSENSUS_H
 
-#include <Base/Vector3D.h>
 #include <vector>
+
+#include <Base/Vector3D.h>
+
 
 namespace Points {class PointKernel;}
 
