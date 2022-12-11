@@ -455,6 +455,9 @@ protected:
     // map of geoIds to corresponding solverextensions. This is useful when solved geometry is NOT to be assigned to the SketchObject
     std::vector<std::shared_ptr<SolverGeometryExtension>> solverExtensions;
 
+    // maps a geoid corresponding to an internalgeometry (focus,knot,pole) to the geometry it defines (ellipse, hyperbola, B-Spline)
+    std::map< int, int > internalAlignmentGeometryMap;
+
     std::vector < std::set < std::pair< int, Sketcher::PointPos>>> pDependencyGroups;
 
     // this map is intended to convert a parameter (double *) into a GeoId/PointPos and parameter number
@@ -519,6 +522,8 @@ private:
     void calculateDependentParametersElements();
 
     void clearTemporaryConstraints();
+
+    void buildInternalAlignmentGeometryMap(const std::vector<Constraint *> &constraintList);
 
     int internalSolve(std::string & solvername, int level = 0);
 

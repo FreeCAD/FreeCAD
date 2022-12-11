@@ -111,6 +111,8 @@ void Sketch::clear()
     pDependencyGroups.clear();
     solverExtensions.clear();
 
+    internalAlignmentGeometryMap.clear();
+
     // deleting the geometry copied into this sketch
     for (std::vector<GeoDef>::iterator it = Geoms.begin(); it != Geoms.end(); ++it)
         if (it->geo) delete it->geo;
@@ -230,6 +232,8 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
     Base::Console().Log("\n");
 #endif //DEBUG_BLOCK_CONSTRAINT
 
+    buildInternalAlignmentGeometryMap(ConstraintList);
+
     addGeometry(intGeoList,onlyBlockedGeometry);
     int extStart=Geoms.size();
     addGeometry(extGeoList, true);
@@ -312,6 +316,15 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry *> &GeoList,
     }
 
     return GCSsys.dofsNumber();
+}
+
+void Sketch::buildInternalAlignmentGeometryMap(const std::vector<Constraint *> &constraintList)
+{
+    for(auto* c : constraintList) {
+        if(c->Type==InternalAlignment){
+            internalAlignmentGeometryMap[c->First]=c->Second;
+        }
+    }
 }
 
 void Sketch::fixParametersAndDiagnose(std::vector<double *> &params_to_block)
