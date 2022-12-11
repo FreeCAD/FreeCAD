@@ -27,6 +27,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/Converter.h>
 #include <Base/GeometryPyCXX.h>
 #include <Base/Interpreter.h>
 #include <Mod/Part/App/BSplineSurfacePy.h>
