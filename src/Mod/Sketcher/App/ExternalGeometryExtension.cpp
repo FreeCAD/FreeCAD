@@ -22,12 +22,12 @@
 
 #include "PreCompiled.h"
 
-#include <Base/Writer.h>
 #include <Base/Reader.h>
-
-#include <Mod/Sketcher/App/ExternalGeometryExtensionPy.h>
+#include <Base/Writer.h>
 
 #include "ExternalGeometryExtension.h"
+#include "ExternalGeometryExtensionPy.h"
+
 
 using namespace Sketcher;
 

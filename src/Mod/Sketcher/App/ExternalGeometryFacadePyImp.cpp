@@ -20,31 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-//#ifndef _PreComp_
-//# include <gp.hxx>
-//#endif
-
 #include <Base/GeometryPyCXX.h>
-#include <Base/Matrix.h>
 #include <Base/MatrixPy.h>
+#include <Base/PlacementPy.h>
 #include <Base/Vector3D.h>
 #include <Base/VectorPy.h>
-#include <Base/Rotation.h>
-#include <Base/Placement.h>
-#include <Base/PlacementPy.h>
-
-#include <Mod/Part/App/OCCError.h>
-#include <Mod/Part/App/Geometry.h>
-
 #include <Mod/Part/App/GeometryPy.h>
 #include <Mod/Part/App/GeometryExtensionPy.h>
+#include <Mod/Part/App/OCCError.h>
 
-#include "SketchObject.h"
 #include "ExternalGeometryFacadePy.h"
 #include "ExternalGeometryFacadePy.cpp"
+
 
 using namespace Sketcher;
 

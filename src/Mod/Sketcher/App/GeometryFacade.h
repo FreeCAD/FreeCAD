@@ -20,17 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef SKETCHER_GEOMETRYFACADE_H
 #define SKETCHER_GEOMETRYFACADE_H
 
-#include <Base/BaseClass.h>
-
-#include <Base/Console.h> // Only for Debug - To be removed
 #include <boost/uuid/uuid_io.hpp>
 
-#include <Mod/Part/App/Geometry.h>
-#include <Mod/Sketcher/App/SketchGeometryExtension.h>
+#include <Base/BaseClass.h>
+
+#include "SketchGeometryExtension.h"
+
 
 namespace Sketcher
 {
