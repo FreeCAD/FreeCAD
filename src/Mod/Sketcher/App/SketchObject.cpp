@@ -887,13 +887,21 @@ int SketchObject::addGeometry(const std::vector<Part::Geometry *> &geoList, bool
 
 int SketchObject::addGeometry(const Part::Geometry *geo, bool construction/*=false*/)
 {
+    // this copy has a new random tag (see copy() vs clone())
+    auto geoNew = std::unique_ptr<Part::Geometry>(geo->copy());
+
+    return addGeometry(std::move(geoNew),construction);
+}
+
+int SketchObject::addGeometry(std::unique_ptr<Part::Geometry> newgeo, bool construction/*=false*/)
+{
     Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
 
     const std::vector< Part::Geometry * > &vals = getInternalGeometry();
 
     std::vector< Part::Geometry * > newVals(vals);
 
-    Part::Geometry *geoNew = geo->copy();
+    auto *geoNew = newgeo.release();
 
     if( geoNew->getTypeId() == Part::GeomPoint::getClassTypeId()) {
         // creation mode for points is always construction not to

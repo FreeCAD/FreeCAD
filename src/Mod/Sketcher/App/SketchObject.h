@@ -94,12 +94,23 @@ public:
      */
     bool isSupportedGeometry(const Part::Geometry *geo) const;
     /*!
-     \brief Add geometry to a sketch
+     \brief Add geometry to a sketch - It adds a copy with a different uuid (internally uses copy() instead of clone())
      \param geo - geometry to add
      \param construction - true for construction lines
      \retval int - GeoId of added element
      */
     int addGeometry(const Part::Geometry *geo, bool construction=false);
+
+    /*!
+     \brief Add geometry to a sketch using up the provided newgeo. Caveat: It will use the provided newgeo with the uuid it has.
+     This is different from the addGeometry method with a naked pointer, where a different uuid is ensured. The caller is responsible
+     for provided a new or existing uuid, as necessary.
+     \param geo - geometry to add
+     \param construction - true for construction lines
+     \retval int - GeoId of added element
+     */
+    int addGeometry(std::unique_ptr<Part::Geometry> newgeo, bool construction=false);
+
     /*!
      \brief Add multiple geometry elements to a sketch
      \param geoList - geometry to add
