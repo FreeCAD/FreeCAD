@@ -449,6 +449,7 @@ void ProfileBased::getFaceFromLinkSub(TopoDS_Face& upToFace, const App::Property
 
 void ProfileBased::getUpToFace(TopoDS_Face& upToFace,
                               const TopoDS_Shape& support,
+                              const TopoDS_Face& supportface,
                               const TopoDS_Shape& sketchshape,
                               const std::string& method,
                               const gp_Dir& dir)

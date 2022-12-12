@@ -134,6 +134,7 @@ protected:
     /// Find a valid face to extrude up to
     static void getUpToFace(TopoDS_Face& upToFace,
                             const TopoDS_Shape& support,
+                            const TopoDS_Face& supportface,
                             const TopoDS_Shape& sketchshape,
                             const std::string& method,
                             const gp_Dir& dir);
