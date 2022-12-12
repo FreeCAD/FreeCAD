@@ -3225,7 +3225,7 @@ bool StdCmdTextureMapping::isActive()
 {
     Gui::MDIView* view = getMainWindow()->activeWindow();
     return view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())
-                && (Gui::Control().activeDialog() == nullptr);
+                && (!(Gui::Control().activeDialog()));
 }
 
 DEF_STD_CMD(StdCmdDemoMode)

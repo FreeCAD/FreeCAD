@@ -967,7 +967,7 @@ void TaskSketcherConstraints::on_showHideButton_clicked(bool val)
     bool allSelected = true;
     for (int i = 0; i < ui->listWidgetConstraints->count(); ++i){
         QListWidgetItem* it = ui->listWidgetConstraints->item(i);
-        if (it->isHidden() == false && it->checkState() == Qt::Unchecked) {
+        if (!(it->isHidden()) && it->checkState() == Qt::Unchecked) {
             allSelected = false;
             break;
         }
