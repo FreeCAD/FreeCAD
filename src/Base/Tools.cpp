@@ -72,27 +72,38 @@ struct string_comp
 
 std::string Base::Tools::getUniqueName(const std::string& name, const std::vector<std::string>& names, int d)
 {
-    // find highest suffix
-    std::string num_suffix;
-    for (std::vector<std::string>::const_iterator it = names.begin(); it != names.end(); ++it) {
-        if (it->substr(0, name.length()) == name) { // same prefix
-            std::string suffix(it->substr(name.length()));
-            if (suffix.size() > 0) {
-                std::string::size_type pos = suffix.find_first_not_of("0123456789");
-                if (pos==std::string::npos)
-                    num_suffix = std::max<std::string>(num_suffix, suffix, Base::string_comp());
-            }
+    unsigned int ud{static_cast<unsigned int>(d)};
+    
+    // This lambda creates a name with 0's as suffix until complete the length d
+    auto suffixed = [&](unsigned long n)
+    {
+        auto s = std::to_string(n);
+        if(ud>s.length())
+        {
+            s = std::string(ud - s.length(), '0')+s;
         }
-    }
+        return name+s;
+    };
 
-    std::stringstream str;
-    str << name;
-    if (d > 0) {
-        str.fill('0');
-        str.width(d);
+    std::string result{name};
+    
+    // Count how many times the name apears as prefix in another names. This count will be used for numeric suffix
+    unsigned long instances{static_cast<unsigned long>(
+            std::count_if(names.begin(), names.end(), [&name](string s)->bool{return s.rfind(name,0)==0;}))};
+
+    // If instances > 0 we need to add a numeric suffix
+    if(instances>0)
+    {
+        // Iterate appending numeric suffixes starting on previous count, because previous models can collide due to
+        // the previous naming. Also skip gaps created by deleted names.  The loop will end when no
+        // other objects match the name.
+        unsigned long count{instances};
+        do
+        {
+            result = suffixed(count++);
+        }while(std::count_if(names.begin(), names.end(), [&result](string s)->bool{return s == result;}) > 0);
     }
-    str << Base::string_comp::increment(num_suffix);
-    return str.str();
+    return result;
 }
 
 std::string Base::Tools::addNumber(const std::string& name, unsigned int num, int d)
