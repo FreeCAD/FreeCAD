@@ -20,19 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef SKETCHERGUI_EditModeGeometryCoinManager_H
 #define SKETCHERGUI_EditModeGeometryCoinManager_H
 
-#include <vector>
 #include <functional>
+#include <vector>
 
-#include <Base/Parameter.h>
-#include <App/Application.h>
+#include <Mod/Sketcher/App/GeoList.h>
 
 #include "EditModeCoinManagerParameters.h"
 
-#include <Mod/Sketcher/App/GeoList.h>
 
 class SbVec3f;
 class SoRayPickAction;

@@ -23,8 +23,9 @@
 #ifndef SKETCHERGUI_EditDatumDialog_H
 #define SKETCHERGUI_EditDatumDialog_H
 
-#include <QObject>
 #include <memory>
+#include <QObject>
+
 
 namespace Sketcher {
 class Constraint;
