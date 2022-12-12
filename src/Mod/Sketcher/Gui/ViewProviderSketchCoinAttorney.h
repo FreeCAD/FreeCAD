@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef SKETCHERGUI_ViewProviderSketchCoinAttorney_H
 #define SKETCHERGUI_ViewProviderSketchCoinAttorney_H
 
 #include <vector>
+#include <QFont>
 
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SbVec3f.h>

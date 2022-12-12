@@ -20,13 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef SKETCHERGUI_DrawSketchHandlerArc_H
 #define SKETCHERGUI_DrawSketchHandlerArc_H
 
-
 #include "GeometryCreationMode.h"
-#include "Utils.h"
+
 
 using namespace std;
 

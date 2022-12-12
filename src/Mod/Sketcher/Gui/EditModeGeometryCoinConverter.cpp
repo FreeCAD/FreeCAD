@@ -20,33 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoGroup.h>
-# include <Inventor/nodes/SoSwitch.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoLineSet.h>
-# include <Inventor/nodes/SoFont.h>
-
-# include <Inventor/nodes/SoTranslation.h>
-# include <Inventor/nodes/SoText2.h>
-#endif  // #ifndef _PreComp_
-
-#include <Mod/Part/App/Geometry.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 
-#include <Base/UnitsApi.h>
-
-#include "EditModeCoinManagerParameters.h"
-
-#include "Mod/Sketcher/App/Constraint.h"
-
 #include "EditModeGeometryCoinConverter.h"
+#include "EditModeCoinManagerParameters.h"
 #include "ViewProviderSketchCoinAttorney.h"
 
 

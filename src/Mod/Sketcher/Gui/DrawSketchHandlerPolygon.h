@@ -20,14 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef SKETCHERGUI_DrawSketchHandlerPolygon_H
 #define SKETCHERGUI_DrawSketchHandlerPolygon_H
 
 #include "GeometryCreationMode.h"
-#include "Utils.h"
-
 #include "SketcherRegularPolygonDialog.h"
+
 
 namespace SketcherGui {
 

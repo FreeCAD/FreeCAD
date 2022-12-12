@@ -379,6 +379,45 @@ public:
 };
 
 /*!
+ * \brief The FaceSetItem class supports the SoFaceSet node.
+ */
+class BaseExport FaceSetItem : public NodeItem
+{
+public:
+    FaceSetItem(const std::vector<int>&);
+    void write(InventorOutput& out) const override;
+
+private:
+    std::vector<int> indices;
+};
+
+/*!
+ * \brief The IndexedLineSetItem class supports the SoIndexedLineSet node.
+ */
+class BaseExport IndexedLineSetItem : public NodeItem
+{
+public:
+    IndexedLineSetItem(const std::vector<int>&);
+    void write(InventorOutput& out) const override;
+
+private:
+    std::vector<int> indices;
+};
+
+/*!
+ * \brief The IndexedFaceSetItem class supports the SoIndexedFaceSet node.
+ */
+class BaseExport IndexedFaceSetItem : public NodeItem
+{
+public:
+    IndexedFaceSetItem(const std::vector<int>&);
+    void write(InventorOutput& out) const override;
+
+private:
+    std::vector<int> indices;
+};
+
+/*!
  * \brief The NormalItem class supports the SoNormal node.
  */
 class BaseExport NormalItem : public NodeItem
@@ -449,6 +488,49 @@ public:
 
 private:
     float radius = 2.0F;
+};
+
+/*!
+ * \brief The NurbsSurfaceItem class supports the SoNurbsSurface node.
+ */
+class BaseExport NurbsSurfaceItem : public NodeItem
+{
+public:
+    void setControlPoints(int numU, int numV);
+    void setKnotVector(const std::vector<float>&, const std::vector<float>&);
+    void write(InventorOutput& out) const override;
+
+private:
+    int numUControlPoints = 0;
+    int numVControlPoints = 0;
+    std::vector<float> uKnotVector;
+    std::vector<float> vKnotVector;
+};
+
+/*!
+ * \brief The Text2Item class supports the SoText2 node.
+ */
+class BaseExport Text2Item : public NodeItem
+{
+public:
+    Text2Item(const std::string&);
+    void write(InventorOutput& out) const override;
+
+private:
+    std::string string;
+};
+
+/*!
+ * \brief The TransformItem class supports the SoTransform node.
+ */
+class BaseExport TransformItem : public NodeItem
+{
+public:
+    TransformItem(const Base::Placement&);
+    void write(InventorOutput& out) const override;
+
+private:
+    Base::Placement placement;
 };
 
 /**

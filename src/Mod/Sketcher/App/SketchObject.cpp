@@ -22,43 +22,39 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <TopoDS_Shape.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopoDS_Edge.hxx>
-# include <TopoDS.hxx>
-# include <TopExp_Explorer.hxx>
-# include <gp_Pln.hxx>
+# include <cmath>
+# include <vector>
+
+# include <BRep_Tool.hxx>
+# include <BRepAdaptor_Curve.hxx>
+# include <BRepAdaptor_Surface.hxx>
+# include <BRepBuilderAPI_MakeEdge.hxx>
+# include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepOffsetAPI_NormalProjection.hxx>
+# include <GC_MakeCircle.hxx>
+# include <Geom_BSplineCurve.hxx>
+# include <Geom_Circle.hxx>
+# include <Geom_Ellipse.hxx>
+# include <Geom_Hyperbola.hxx>
+# include <Geom_Line.hxx>
+# include <Geom_Parabola.hxx>
+# include <Geom_Plane.hxx>
+# include <Geom_TrimmedCurve.hxx>
+# include <GeomAPI_ProjectPointOnSurf.hxx>
+# include <GeomConvert_BSplineCurveKnotSplitting.hxx>
 # include <gp_Ax3.hxx>
 # include <gp_Circ.hxx>
 # include <gp_Elips.hxx>
 # include <gp_Hypr.hxx>
 # include <gp_Parab.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <BRepAdaptor_Curve.hxx>
-# include <BRep_Tool.hxx>
-# include <Geom_Line.hxx>
-# include <Geom_Plane.hxx>
-# include <Geom_Circle.hxx>
-# include <Geom_Ellipse.hxx>
-# include <Geom_Hyperbola.hxx>
-# include <Geom_Parabola.hxx>
-# include <Geom_BSplineCurve.hxx>
-# include <Geom_TrimmedCurve.hxx>
-# include <Geom_OffsetCurve.hxx>
-# include <GeomAPI_ProjectPointOnSurf.hxx>
-# include <ProjLib_Plane.hxx>
-# include <BRepOffsetAPI_NormalProjection.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <BRepBuilderAPI_MakeEdge.hxx>
-# include <GeomAPI_IntSS.hxx>
-# include <BRepProj_Projection.hxx>
-# include <GeomConvert_BSplineCurveKnotSplitting.hxx>
-# include <TColStd_Array1OfInteger.hxx>
-# include <GC_MakeCircle.hxx>
+# include <gp_Pln.hxx>
 # include <Standard_Version.hxx>
-# include <cmath>
-# include <string>
-# include <vector>
+# include <TColStd_Array1OfInteger.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Edge.hxx>
+# include <TopoDS_Face.hxx>
+# include <TopoDS_Shape.hxx>
 #endif
 
 #include <App/Application.h>
@@ -69,23 +65,18 @@
 #include <App/ObjectIdentifier.h>
 #include <App/OriginFeature.h>
 #include <App/Part.h>
-#include <Base/Writer.h>
+#include <Base/Console.h>
 #include <Base/Reader.h>
 #include <Base/Tools.h>
-#include <Base/Console.h>
 #include <Base/Vector3D.h>
-
-#include <Mod/Part/App/Geometry.h>
-#include <Mod/Part/App/DatumFeature.h>
+#include <Base/Writer.h>
 #include <Mod/Part/App/BodyBase.h>
+#include <Mod/Part/App/DatumFeature.h>
 #include <Mod/Part/App/GeometryMigrationExtension.h>
 
-#include <Mod/Sketcher/App/Sketch.h>
-#include <Mod/Sketcher/App/SketchObjectPy.h>
-#include <Mod/Sketcher/App/SketchGeometryExtensionPy.h>
-#include <Mod/Sketcher/App/SolverGeometryExtension.h>
-
 #include "SketchObject.h"
+#include "SketchObjectPy.h"
+#include "SolverGeometryExtension.h"
 
 
 #undef DEBUG

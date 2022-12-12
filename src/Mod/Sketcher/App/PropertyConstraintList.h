@@ -20,20 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef APP_PropertyConstraintList_H
 #define APP_PropertyConstraintList_H
 
-// Std. configurations
-
-
-#include <vector>
 #include <string>
-#include <App/Property.h>
-#include <Mod/Part/App/Geometry.h>
-#include "Constraint.h"
+#include <vector>
+
 #include <boost_signals2.hpp>
 #include <boost/unordered/unordered_map.hpp>
+
+#include <App/Property.h>
+#include <Mod/Part/App/Geometry.h>
+
+#include "Constraint.h"
+
 
 namespace Base {
 class Writer;

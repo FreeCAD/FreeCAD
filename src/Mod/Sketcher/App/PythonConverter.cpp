@@ -26,11 +26,8 @@
 #endif  // #ifndef _PreComp_
 
 #include <Base/Exception.h>
-
-#include <Mod/Part/App/Geometry.h>
-#include <Mod/Sketcher/App/GeometryFacade.h>
-
 #include <Mod/Sketcher/App/Constraint.h>
+#include <Mod/Sketcher/App/GeometryFacade.h>
 
 #include "PythonConverter.h"
 

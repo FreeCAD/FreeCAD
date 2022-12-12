@@ -20,72 +20,57 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Inventor/events/SoKeyboardEvent.h>
-# include <Inventor/nodes/SoPickStyle.h>
-# include <QApplication>
-# include <QInputDialog>
-# include <QMessageBox>
-# include <QString>
 # include <cstdlib>
-# include <qdebug.h>
-# include <GC_MakeEllipse.hxx>
-# include <boost/math/special_functions/fpclassify.hpp>
 # include <memory>
-#endif
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Tools.h>
+# include <QApplication>
+# include <QString>
+#endif
 
 #include <App/OriginFeature.h>
 #include <Gui/Action.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/Document.h>
 #include <Gui/CommandT.h>
+#include <Gui/Document.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
-#include <Mod/Sketcher/App/SketchObject.h>
-#include <Mod/Part/App/DatumFeature.h>
-#include <Mod/Part/App/BodyBase.h>
-#include <Mod/Part/App/Geometry2d.h>
-#include <Mod/Sketcher/App/Constraint.h>
-
-#include "ViewProviderSketch.h"
-#include "DrawSketchHandler.h"
-#include "Utils.h"
-
+#include <Gui/SoFCUnifiedSelection.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
-#include <Gui/SoFCUnifiedSelection.h>
-
-#include <Gui/ToolBarManager.h>
+#include <Mod/Part/App/DatumFeature.h>
+#include <Mod/Part/App/Geometry2d.h>
+#include <Mod/Sketcher/App/Constraint.h>
+#include <Mod/Sketcher/App/SketchObject.h>
 
 #include "GeometryCreationMode.h"
+#include "Utils.h"
+#include "ViewProviderSketch.h"
 
-#include "DrawSketchHandlerLine.h"
-#include "DrawSketchHandlerRectangle.h"
-#include "DrawSketchHandlerPolygon.h"
-#include "DrawSketchHandlerLineSet.h"
-#include "DrawSketchHandlerCircle.h"
-#include "DrawSketchHandlerEllipse.h"
+// DrawSketchHandler* must be last includes
+#include "DrawSketchHandler.h"
 #include "DrawSketchHandlerArc.h"
 #include "DrawSketchHandlerArcOfEllipse.h"
 #include "DrawSketchHandlerArcOfHyperbola.h"
 #include "DrawSketchHandlerArcOfParabola.h"
 #include "DrawSketchHandlerBSpline.h"
-#include "DrawSketchHandlerPoint.h"
-#include "DrawSketchHandlerFillet.h"
-#include "DrawSketchHandlerTrimming.h"
-#include "DrawSketchHandlerExtend.h"
-#include "DrawSketchHandlerSplitting.h"
-#include "DrawSketchHandlerExternal.h"
 #include "DrawSketchHandlerCarbonCopy.h"
+#include "DrawSketchHandlerCircle.h"
+#include "DrawSketchHandlerEllipse.h"
+#include "DrawSketchHandlerExtend.h"
+#include "DrawSketchHandlerExternal.h"
+#include "DrawSketchHandlerFillet.h"
+#include "DrawSketchHandlerLine.h"
+#include "DrawSketchHandlerLineSet.h"
+#include "DrawSketchHandlerPoint.h"
+#include "DrawSketchHandlerPolygon.h"
+#include "DrawSketchHandlerRectangle.h"
 #include "DrawSketchHandlerSlot.h"
+#include "DrawSketchHandlerSplitting.h"
+#include "DrawSketchHandlerTrimming.h"
+
 
 using namespace std;
 using namespace SketcherGui;

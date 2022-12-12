@@ -20,22 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
- 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
-
+#include <Base/Console.h>
 
 #include "SketchObjectSF.h"
-#include <Base/Console.h>
 
 
 using namespace Sketcher;
 
-
 PROPERTY_SOURCE(Sketcher::SketchObjectSF, Part::Part2DObject)
-
 
 SketchObjectSF::SketchObjectSF()
 {

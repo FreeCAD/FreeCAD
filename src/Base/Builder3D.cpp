@@ -245,6 +245,30 @@ void InventorFieldWriter::write(const char* fieldName, const std::vector<T>& fie
         out.write() << "]\n";
     }
 }
+
+template<>
+void InventorFieldWriter::write<int>(const char* fieldName, const std::vector<int>& fieldData, InventorOutput& out) const
+{
+    if (fieldData.empty())
+        return;
+
+    out.write() << fieldName << " [\n";
+    out.increaseIndent();
+    std::size_t last_index{fieldData.size()};
+    std::size_t index{};
+    for (auto it : fieldData) {
+        if (index % 8 == 0)
+            out.write();
+        if (index < last_index)
+            out.stream() << it << ", ";
+        else
+            out.stream() << it << " ] \n";
+        if (++index % 8 == 0)
+            out.stream() << '\n';
+    }
+    out.decreaseIndent();
+    out.write() << "]\n";
+}
 }
 
 // -----------------------------------------------------------------------------
@@ -580,6 +604,60 @@ void PointSetItem::write(InventorOutput& out) const
 
 // -----------------------------------------------------------------------------
 
+FaceSetItem::FaceSetItem(const std::vector<int>& indices)
+    : indices(indices)
+{
+
+}
+
+void FaceSetItem::write(InventorOutput &out) const
+{
+    out.write() << "FaceSet {\n";
+    out.increaseIndent();
+    InventorFieldWriter writer;
+    writer.write<int>("numVertices", indices, out);
+    out.decreaseIndent();
+    out.write() << "}";
+}
+
+// -----------------------------------------------------------------------------
+
+IndexedLineSetItem::IndexedLineSetItem(const std::vector<int>& indices)
+    : indices(indices)
+{
+
+}
+
+void IndexedLineSetItem::write(InventorOutput &out) const
+{
+    out.write() << "IndexedLineSet {\n";
+    out.increaseIndent();
+    InventorFieldWriter writer;
+    writer.write<int>("coordIndex", indices, out);
+    out.decreaseIndent();
+    out.write() << "}";
+}
+
+// -----------------------------------------------------------------------------
+
+IndexedFaceSetItem::IndexedFaceSetItem(const std::vector<int>& indices)
+    : indices(indices)
+{
+
+}
+
+void IndexedFaceSetItem::write(InventorOutput &out) const
+{
+    out.write() << "IndexedFaceSet {\n";
+    out.increaseIndent();
+    InventorFieldWriter writer;
+    writer.write<int>("coordIndex", indices, out);
+    out.decreaseIndent();
+    out.write() << "}";
+}
+
+// -----------------------------------------------------------------------------
+
 void NormalItem::setVector(const std::vector<Base::Vector3f>& vec)
 {
     vector = vec;
@@ -666,6 +744,71 @@ void SphereItem::setRadius(float value)
 void SphereItem::write(InventorOutput& out) const
 {
     out.write() << "Sphere { radius " << radius << " }\n";
+}
+
+// -----------------------------------------------------------------------------
+
+void NurbsSurfaceItem::setControlPoints(int numU, int numV)
+{
+    numUControlPoints = numU;
+    numVControlPoints = numV;
+}
+
+void NurbsSurfaceItem::setKnotVector(const std::vector<float>& uKnots,
+                                     const std::vector<float>& vKnots)
+{
+    uKnotVector = uKnots;
+    vKnotVector = vKnots;
+}
+
+void NurbsSurfaceItem::write(InventorOutput& out) const
+{
+    out.write() << "NurbsSurface {\n";
+    out.write() << "  numUControlPoints " << numUControlPoints << '\n';
+    out.write() << "  numVControlPoints " << numVControlPoints << '\n';
+    out.increaseIndent();
+    InventorFieldWriter writer;
+    writer.write<float>("uKnotVector", uKnotVector, out);
+    writer.write<float>("vKnotVector", vKnotVector, out);
+    out.decreaseIndent();
+    out.write() << "}\n";
+}
+
+// -----------------------------------------------------------------------------
+
+Text2Item::Text2Item(const std::string& string)
+    : string(string)
+{
+
+}
+
+void Text2Item::write(InventorOutput& out) const
+{
+    out.write() << "Text2 { string \" " << string << "\" " << "}\n";
+}
+
+// -----------------------------------------------------------------------------
+
+TransformItem::TransformItem(const Base::Placement& placement)
+    : placement(placement)
+{
+
+}
+
+void TransformItem::write(InventorOutput& out) const
+{
+    Base::Vector3d translation = placement.getPosition();
+    Base::Vector3d rotationaxis;
+    double angle{};
+    placement.getRotation().getValue(rotationaxis, angle);
+
+    out.write() << "Transform {\n";
+    out.write() << "  translation "
+         << translation.x << " " << translation.y << " " << translation.z << '\n';
+    out.write() << "  rotation "
+         << rotationaxis.x << " " << rotationaxis.y << " " << rotationaxis.z
+         << " " << angle << '\n';
+    out.write() <<  "}" << '\n';
 }
 
 // -----------------------------------------------------------------------------

@@ -63,6 +63,11 @@
 # include <Gui/InventorAll.h>
 #endif
 
+#elif defined(FC_OS_WIN32)
+#ifndef NOMINMAX
+# define NOMINMAX
+#endif
+#include <Windows.h>
 #endif  //_PreComp_
 
 #endif // MESHGUI_PRECOMPILED_H

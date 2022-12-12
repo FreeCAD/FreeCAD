@@ -46,6 +46,7 @@
 #include <qrunnable.h>
 #include <QSet>
 #include <QSignalMapper>
+#include <QString>
 #include <QTemporaryFile>
 #include <qtextstream.h>
 #include <qthread.h>
@@ -89,6 +90,7 @@
 #include <QGraphicsSvgItem>
 #include <QGraphicsSceneContextMenuEvent>
 #include <QGroupBox>
+#include <QGuiApplication>
 #include <QHeaderView>
 #include <qimage.h>
 #include <QImageWriter>

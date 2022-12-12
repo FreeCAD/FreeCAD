@@ -20,40 +20,36 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
-#ifndef _PreComp_
-
-#endif  // #ifndef _PreComp_
 
 #include "EditModeCoinManagerParameters.h"
 
+
 using namespace SketcherGui;
 
-SbColor DrawingParameters::InformationColor                         (0.0f,1.0f,0.0f);     // #00FF00 -> (  0,255,  0)
-SbColor DrawingParameters::CreateCurveColor                         (0.8f,0.8f,0.8f);     // #CCCCCC -> (204,204,204)
-SbColor DrawingParameters::CrossColorH                              (0.8f,0.4f,0.4f);     // #CC6666 -> (204,102,102)
-SbColor DrawingParameters::CrossColorV                              (0.47f,1.0f,0.51f);   // #83FF83 -> (120,255,131)
-SbColor DrawingParameters::InvalidSketchColor                       (1.0f,0.42f,0.0f);    // #FF6D00 -> (255,109,  0)
-SbColor DrawingParameters::FullyConstrainedColor                    (0.0f,1.0f,0.0f);     // #00FF00 -> (  0,255,  0)
-SbColor DrawingParameters::FullyConstraintInternalAlignmentColor    (0.87f,0.87f,0.78f);  // #DEDEC8 -> (222,222,200)
-SbColor DrawingParameters::InternalAlignedGeoColor                  (0.7f,0.7f,0.5f);     // #B2B27F -> (178,178,127)
-SbColor DrawingParameters::FullyConstraintConstructionPointColor    (1.0f,0.58f,0.50f);   // #FF9580 -> (255,149,128)
-SbColor DrawingParameters::VertexColor                              (1.0f,0.149f,0.0f);   // #FF2600 -> (255, 38,  0)
-SbColor DrawingParameters::FullyConstraintElementColor              (0.50f,0.81f,0.62f);  // #80D0A0 -> (128,208,160)
-SbColor DrawingParameters::CurveColor                               (1.0f,1.0f,1.0f);     // #FFFFFF -> (255,255,255)
-SbColor DrawingParameters::PreselectColor                           (0.88f,0.88f,0.0f);   // #E1E100 -> (225,225,  0)
-SbColor DrawingParameters::SelectColor                              (0.11f,0.68f,0.11f);  // #1CAD1C -> ( 28,173, 28)
-SbColor DrawingParameters::PreselectSelectedColor                   (0.36f,0.48f,0.11f);  // #5D7B1C -> ( 93,123, 28)
-SbColor DrawingParameters::CurveExternalColor                       (0.8f,0.2f,0.6f);     // #CC3399 -> (204, 51,153)
-SbColor DrawingParameters::CurveDraftColor                          (0.0f,0.0f,0.86f);    // #0000DC -> (  0,  0,220)
-SbColor DrawingParameters::FullyConstraintConstructionElementColor  (0.56f,0.66f,0.99f);  // #8FA9FD -> (143,169,253)
+SbColor DrawingParameters::InformationColor                         (0.0f,  1.0f,   0.0f);     // #00FF00 -> (  0,255,  0)
+SbColor DrawingParameters::CreateCurveColor                         (0.8f,  0.8f,   0.8f);     // #CCCCCC -> (204,204,204)
+SbColor DrawingParameters::CrossColorH                              (0.8f,  0.4f,   0.4f);     // #CC6666 -> (204,102,102)
+SbColor DrawingParameters::CrossColorV                              (0.47f, 1.0f,   0.51f);   // #83FF83 -> (120,255,131)
+SbColor DrawingParameters::InvalidSketchColor                       (1.0f,  0.42f,  0.0f);    // #FF6D00 -> (255,109,  0)
+SbColor DrawingParameters::FullyConstrainedColor                    (0.0f,  1.0f,   0.0f);     // #00FF00 -> (  0,255,  0)
+SbColor DrawingParameters::FullyConstraintInternalAlignmentColor    (0.87f, 0.87f,  0.78f);  // #DEDEC8 -> (222,222,200)
+SbColor DrawingParameters::InternalAlignedGeoColor                  (0.7f,  0.7f,   0.5f);     // #B2B27F -> (178,178,127)
+SbColor DrawingParameters::FullyConstraintConstructionPointColor    (1.0f,  0.58f,  0.50f);   // #FF9580 -> (255,149,128)
+SbColor DrawingParameters::VertexColor                              (1.0f,  0.149f, 0.0f);   // #FF2600 -> (255, 38,  0)
+SbColor DrawingParameters::FullyConstraintElementColor              (0.50f, 0.81f,  0.62f);  // #80D0A0 -> (128,208,160)
+SbColor DrawingParameters::CurveColor                               (1.0f,  1.0f,   1.0f);     // #FFFFFF -> (255,255,255)
+SbColor DrawingParameters::PreselectColor                           (0.88f, 0.88f,  0.0f);   // #E1E100 -> (225,225,  0)
+SbColor DrawingParameters::SelectColor                              (0.11f, 0.68f,  0.11f);  // #1CAD1C -> ( 28,173, 28)
+SbColor DrawingParameters::PreselectSelectedColor                   (0.36f, 0.48f,  0.11f);  // #5D7B1C -> ( 93,123, 28)
+SbColor DrawingParameters::CurveExternalColor                       (0.8f,  0.2f,   0.6f);     // #CC3399 -> (204, 51,153)
+SbColor DrawingParameters::CurveDraftColor                          (0.0f,  0.0f,   0.86f);    // #0000DC -> (  0,  0,220)
+SbColor DrawingParameters::FullyConstraintConstructionElementColor  (0.56f, 0.66f,  0.99f);  // #8FA9FD -> (143,169,253)
 
-SbColor DrawingParameters::ConstrDimColor                           (1.0f,0.149f,0.0f);   // #FF2600 -> (255, 38,  0)
-SbColor DrawingParameters::ConstrIcoColor                           (1.0f,0.149f,0.0f);   // #FF2600 -> (255, 38,  0)
-SbColor DrawingParameters::NonDrivingConstrDimColor                 (0.0f,0.149f,1.0f);   // #0026FF -> (  0, 38,255)
-SbColor DrawingParameters::ExprBasedConstrDimColor                  (1.0f,0.5f,0.149f);   // #FF7F26 -> (255, 127,38)
-SbColor DrawingParameters::DeactivatedConstrDimColor                (0.8f,0.8f,0.8f);     // #CCCCCC -> (204,204,204)
+SbColor DrawingParameters::ConstrDimColor                           (1.0f,  0.149f, 0.0f);   // #FF2600 -> (255, 38,  0)
+SbColor DrawingParameters::ConstrIcoColor                           (1.0f,  0.149f, 0.0f);   // #FF2600 -> (255, 38,  0)
+SbColor DrawingParameters::NonDrivingConstrDimColor                 (0.0f,  0.149f, 1.0f);   // #0026FF -> (  0, 38,255)
+SbColor DrawingParameters::ExprBasedConstrDimColor                  (1.0f,  0.5f,   0.149f);   // #FF7F26 -> (255, 127,38)
+SbColor DrawingParameters::DeactivatedConstrDimColor                (0.8f,  0.8f,   0.8f);     // #CCCCCC -> (204,204,204)
 
 const MultiFieldId MultiFieldId::Invalid = MultiFieldId();
