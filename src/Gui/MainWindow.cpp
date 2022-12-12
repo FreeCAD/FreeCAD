@@ -1469,7 +1469,7 @@ void MainWindow::loadWindowSettings()
     }
     std::clog << "Main window restored" << std::endl;
 
-// make menus and tooltips usable in fullscreen under Windows
+// make menus and tooltips usable in fullscreen under Windows, see issue #7563
 #if defined(Q_OS_WIN)
     QWindowsWindowFunctions::setHasBorderInFullScreen(this->windowHandle(), true);
 #endif
