@@ -2699,36 +2699,41 @@ bool MeshOutput::SaveInventor (std::ostream &rstrOut) const
     builder.addNode(label);
 
     // write out the normals of the facets
-    builder.beginNormal();
+    std::vector<Base::Vector3f> normals;
+    normals.reserve(_rclMesh.CountFacets());
 
     clIter.Begin();
     clEnd.End();
 
     while (clIter < clEnd) {
         pclFacet = &(*clIter);
-        builder.addPoint(pclFacet->GetNormal());
+        normals.push_back(pclFacet->GetNormal());
         ++clIter;
 
         seq.next(true); // allow to cancel
     }
 
-    builder.endNormal();
-
+    Base::NormalItem normal;
+    normal.setVector(normals);
+    builder.addNode(normal);
     // coordinates of the vertices
-    builder.addNormalBinding("PER_FACE");
+    Base::NormalBindingItem binding;
+    binding.setValue(Base::BindingElement::Binding::PerFace);
+    builder.addNode(binding);
 
-    builder.beginPoints();
+    std::vector<Base::Vector3f> coords;
+    coords.reserve(_rclMesh.CountPoints());
 
     clPtIter.Begin();
     clPtEnd.End();
 
     while (clPtIter < clPtEnd) {
-        builder.addPoint(*clPtIter);
+        coords.push_back(*clPtIter);
         ++clPtIter;
         seq.next(true); // allow to cancel
     }
 
-    builder.endPoints();
+    builder.addNode(Base::Coordinate3Item{coords});
 
     // and finally the facets with their point indices
     const MeshFacetArray& faces = _rclMesh.GetFacets();
@@ -2740,7 +2745,7 @@ bool MeshOutput::SaveInventor (std::ostream &rstrOut) const
         indices.push_back(static_cast<int>(it->_aulPoints[2]));
         indices.push_back(-1);
     }
-    builder.addIndexedFaceSet(indices);
+    builder.addNode(Base::IndexedFaceSetItem{indices});
     builder.endSeparator();
 
     return true;

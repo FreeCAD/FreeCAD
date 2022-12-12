@@ -554,10 +554,8 @@ void MeshObject::writeInventor(std::ostream& str, float creaseangle) const
     builder.addTransformation(getTransform());
     Base::ShapeHintsItem shapeHints{creaseangle};
     builder.addNode(shapeHints);
-    builder.beginPoints();
-    builder.addPoints(coords);
-    builder.endPoints();
-    builder.addIndexedFaceSet(indices);
+    builder.addNode(Base::Coordinate3Item{coords});
+    builder.addNode(Base::IndexedFaceSetItem{indices});
     builder.endSeparator();
 }
 
