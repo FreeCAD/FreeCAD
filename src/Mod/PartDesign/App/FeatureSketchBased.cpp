@@ -520,18 +520,21 @@ void ProfileBased::getUpToFace(TopoDS_Face& upToFace,
         }
     }
 
-    // Check that the upToFace is not parallel to the extrusion direction
+    // Check that the upToFace is either not parallel to the extrusion direction
+    // and that upToFace is not too near
     BRepAdaptor_Surface upToFaceSurface(TopoDS::Face(upToFace));
-
-    if (upToFaceSurface.GetType() == GeomAbs_Plane) {
-        if (dir.IsNormal(upToFaceSurface.Plane().Axis().Direction(), Precision::Confusion()))
-            throw Base::ValueError("SketchBased: The UpTo-Face must not be parallel to the extrusion direction!");
-    }
-
-    // We must measure from sketchshape, not supportface, here
     BRepExtrema_DistShapeShape distSS(sketchshape, upToFace);
-    if (distSS.Value() < Precision::Confusion())
-        throw Base::ValueError("SketchBased: The UpTo-Face is too close to the sketch");
+    if (upToFaceSurface.GetType() == GeomAbs_Plane) {
+        // Check that the upToFace is not parallel to the extrusion direction
+        if (dir.IsNormal(upToFaceSurface.Plane().Axis().Direction(), Precision::Confusion()))
+            throw Base::ValueError(
+                "SketchBased: The UpTo-Face must not be parallel to the extrusion direction!");
+
+        // Check the distance if the upToFace is normal to the extrusion direction
+        if (dir.IsParallel(upToFaceSurface.Plane().Axis().Direction(), Precision::Confusion()))
+            if (distSS.Value() < Precision::Confusion())
+                throw Base::ValueError("SketchBased: The UpTo-Face is too close to the sketch");
+    }
 }
 
 void ProfileBased::addOffsetToFace(TopoDS_Face& upToFace, const gp_Dir& dir, double offset)
