@@ -32,6 +32,7 @@
 #include <CXX/Objects.hxx>
 
 #include <Base/Console.h>
+#include <Base/Interpreter.h>
 #include <Base/Tools.h>
 #include <Base/VectorPy.h>
 #include <Base/PlacementPy.h>
