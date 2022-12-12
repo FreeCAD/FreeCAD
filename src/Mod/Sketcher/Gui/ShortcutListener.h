@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef SKETCHERGUI_SHORTCUTLISTENER_H
 #define SKETCHERGUI_SHORTCUTLISTENER_H
 

@@ -20,19 +20,23 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef SKETCHERGUI_EditModeConstraintCoinManager_H
 #define SKETCHERGUI_EditModeConstraintCoinManager_H
 
-#include <vector>
 #include <functional>
+#include <vector>
 
-#include <Base/Parameter.h>
-#include <App/Application.h>
+#include <QColor>
+#include <QImage>
+#include <QRect>
+
+# include <Inventor/nodes/SoImage.h>
+# include <Inventor/nodes/SoInfo.h>
 
 #include <Mod/Sketcher/App/GeoList.h>
 
 #include "EditModeCoinManagerParameters.h"
+
 
 class SbVec3f;
 class SoRayPickAction;

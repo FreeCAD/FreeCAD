@@ -20,31 +20,25 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoGroup.h>
-# include <Inventor/nodes/SoSwitch.h>
-# include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoLineSet.h>
 # include <Inventor/nodes/SoFont.h>
-
-# include <Inventor/nodes/SoTranslation.h>
+# include <Inventor/nodes/SoGroup.h>
+# include <Inventor/nodes/SoMaterial.h>
+# include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoSwitch.h>
 # include <Inventor/nodes/SoText2.h>
+# include <Inventor/nodes/SoTranslation.h>
 #endif  // #ifndef _PreComp_
 
-#include <Mod/Part/App/Geometry.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
-
 #include <Base/UnitsApi.h>
 
-#include "EditModeCoinManagerParameters.h"
-
 #include "EditModeInformationOverlayCoinConverter.h"
+#include "EditModeCoinManagerParameters.h"
 #include "ViewProviderSketchCoinAttorney.h"
 
 
@@ -197,7 +191,7 @@ void EditModeInformationOverlayCoinConverter::calculate(const Part::Geometry * g
         std::vector<Base::Vector3d> pointatcomblist;
         pointatcomblist.reserve(ndiv);
 
-        for(int i = 0; i < ndiv; i++) {
+        for (int i = 0; i < ndiv; i++) {
             pointatcomblist.emplace_back(pointatcurvelist[i] - overlayParameters.currentBSplineCombRepresentationScale * curvaturelist[i] * normallist[i]);
         }
 
@@ -206,7 +200,7 @@ void EditModeInformationOverlayCoinConverter::calculate(const Part::Geometry * g
 
         auto zInfoH = ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider) * drawingParameters.zInfo;
 
-        for(int i = 0; i < ndiv; i++) {
+        for (int i = 0; i < ndiv; i++) {
             // note emplace emplaces on the position BEFORE the iterator given.
             curvatureComb.coordinates.emplace_back(pointatcurvelist[i].x, pointatcurvelist[i].y, zInfoH); // radials
             curvatureComb.coordinates.emplace_back(pointatcomblist[i].x, pointatcomblist[i].y, zInfoH); // radials
@@ -214,7 +208,7 @@ void EditModeInformationOverlayCoinConverter::calculate(const Part::Geometry * g
             curvatureComb.indices.emplace_back(2); // line
         }
 
-        for(int i = 0; i < ndiv; i++)
+        for (int i = 0; i < ndiv; i++)
             curvatureComb.coordinates.emplace_back(pointatcomblist[i].x, pointatcomblist[i].y, zInfoH); // // comb endpoint closing segment
 
         curvatureComb.indices.emplace_back(ndiv); // Comb line
@@ -225,7 +219,7 @@ void EditModeInformationOverlayCoinConverter::calculate(const Part::Geometry * g
         std::vector<double> knots = spline->getKnots();
         std::vector<int> mult = spline->getMultiplicities();
 
-        for(size_t i=0; i<knots.size(); i++) {
+        for (size_t i=0; i<knots.size(); i++) {
             knotMultiplicity.positions.emplace_back(spline->pointAtParameter(knots[i]));
 
             std::ostringstream stringStream;
@@ -240,7 +234,7 @@ void EditModeInformationOverlayCoinConverter::calculate(const Part::Geometry * g
         std::vector<Base::Vector3d> poles = spline->getPoles();
         auto weights = spline->getWeights();
 
-        for(size_t i=0; i<poles.size(); i++) {
+        for (size_t i=0; i<poles.size(); i++) {
             poleWeights.positions.emplace_back(poles[i]);
 
             QString WeightString  = QString::fromLatin1("[%1]").arg(weights[i], 0, 'f', Base::UnitsApi::getDecimals());
@@ -254,7 +248,7 @@ void EditModeInformationOverlayCoinConverter::calculate(const Part::Geometry * g
 template <typename Result>
 void EditModeInformationOverlayCoinConverter::addUpdateNode(const Result & result) {
 
-    if(overlayParameters.rebuildInformationLayer)
+    if (overlayParameters.rebuildInformationLayer)
         addNode(result);
     else
         updateNode(result);
@@ -288,11 +282,11 @@ void EditModeInformationOverlayCoinConverter::setPolygon(const Result & result, 
     int32_t *index = polygonlineset->numVertices.startEditing();
     SbVec3f *vts = polygoncoords->point.startEditing();
 
-    for(size_t i = 0; i < result.coordinates.size(); i++)
+    for (size_t i = 0; i < result.coordinates.size(); i++)
         vts[i].setValue(result.coordinates[i].x, result.coordinates[i].y,
                         ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider) * drawingParameters.zInfo);
 
-    for(size_t i = 0; i < result.indices.size(); i++)
+    for (size_t i = 0; i < result.indices.size(); i++)
         index[i] = result.indices[i];
 
     polygoncoords->point.finishEditing();
