@@ -566,88 +566,7 @@ public:
      * \brief Closes the last added separator node.
      */
     void endSeparator();
-    /*!
-     * \brief Sets an info node.
-     * \param str - text set to the info node
-     */
-    void addInfo(const char* str);
-    /*!
-     * \brief Sets a label node.
-     * \param str - text set to the label node
-     */
-    void addLabel(const char* str);
     /** @name Appearance handling */
-    //@{
-    /*!
-     * \brief Sets a base color node. The colors are in the range [0, 1].
-     */
-    void addBaseColor(const ColorRGB& rgb);
-    /*!
-     * \brief Sets a material node. The colors are in the range [0, 1].
-     */
-    void addMaterial(const ColorRGB& rgb, float transparency=0);
-    /*!
-     * \brief Starts a material node. The node must be closed with \ref endMaterial
-     * and the colors must be added with \ref addColor().
-     */
-    void beginMaterial();
-    /*!
-     * \brief Closes a material node.
-     */
-    void endMaterial();
-    /*!
-     * \brief Adds a color to a material node. The colors are in the range [0, 1].
-     */
-    void addColor(const ColorRGB& rgb);
-    /*!
-     * \brief Sets a material binding node.
-     * \param binding - binding of the material.
-     */
-    void addMaterialBinding(BindingElement);
-    /*!
-     * \brief Sets a draw style node.
-     */
-    void addDrawStyle(DrawStyle drawStyle);
-    /*!
-     * \brief Sets a shape hints node.
-     * \param crease - the crease angle in radians
-     */
-    void addShapeHints(float creaseAngle=0.0f);
-    /*!
-     * \brief Sets a polygon offset node.
-     */
-    void addPolygonOffset(PolygonOffset polygonOffset);
-    //@}
-
-    /** @name Add coordinates */
-    //@{
-    /// add a single point
-    void addPoint(const Vector3f& pnt);
-    /// add a list of points
-    void addPoints(const std::vector<Vector3f>& points);
-    //@}
-
-    /** @name Point set handling */
-    //@{
-    /// starts a point set
-    void beginPoints();
-    /// ends the points set operation
-    void endPoints();
-    /// add an SoPointSet node
-    void addPointSet();
-    /// add a single point (without startPoints() & endPoints() )
-    void addSinglePoint(const Base::Vector3f& point, DrawStyle drawStyle, const ColorRGB& color = ColorRGB{1.0F, 1.0F, 1.0F});
-    //@}
-
-    /** @name Normal handling */
-    //@{
-    /// starts a point set
-    void beginNormal();
-    /// ends the points set operation
-    void endNormal();
-    /// add normal binding node
-    void addNormalBinding(const char*);
-    //@}
 
     /** @name Line/Direction handling */
     //@{
@@ -657,8 +576,6 @@ public:
     void addSingleArrow(const Base::Line3f& line, DrawStyle drawStyle, const ColorRGB& rgb = ColorRGB{1.0F, 1.0F, 1.0F});
     /// add a line defined by a list of points whereat always a pair (i.e. a point and the following point) builds a line.
     void addLineSet(const std::vector<Vector3f>& points, DrawStyle drawStyle, const ColorRGB& rgb = ColorRGB{1.0F, 1.0F, 1.0F});
-    /// add an SoLineSet node
-    void addLineSet();
     //@}
 
     /** @name Triangle handling */
@@ -667,18 +584,6 @@ public:
     void addSingleTriangle(const Triangle& triangle, DrawStyle drawStyle, const ColorRGB& rgb = ColorRGB{1.0F, 1.0F, 1.0F});
     void addSinglePlane(const Vector3f& base, const Vector3f& eX, const Vector3f& eY, float length, float width, DrawStyle drawStyle,
                         const ColorRGB& rgb = ColorRGB{1.0F, 1.0F, 1.0F});
-    void addIndexedFaceSet(const std::vector<int>& indices);
-    void addFaceSet(const std::vector<int>& vertices);
-    //@}
-
-    /** @name Surface handling */
-    //@{
-    void addNurbsSurface(const std::vector<Base::Vector3f>& controlPoints,
-        int numUControlPoints, int numVControlPoints,
-        const std::vector<float>& uKnots, const std::vector<float>& vKnots);
-    void addCone(float bottomRadius, float height);
-    void addCylinder(float radius, float height);
-    void addSphere(float radius);
     //@}
 
     /** @name Bounding Box handling */
@@ -697,7 +602,6 @@ public:
     /** @name Text handling */
     //@{
     /// add a text
-    void addText(const char * text);
     void addText(const Vector3f &vec,const char * text, const ColorRGB& rgb = ColorRGB{1.0F, 1.0F, 1.0F});
     //@}
 
