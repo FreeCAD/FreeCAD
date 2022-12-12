@@ -53,6 +53,10 @@
 # include <QPushButton>
 #endif
 
+#if defined(Q_OS_WIN)
+#include <QtPlatformHeaders/QWindowsWindowFunctions>
+#endif
+
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -1464,6 +1468,11 @@ void MainWindow::loadWindowSettings()
         this->restoreState(config.value(QString::fromLatin1("MainWindowState")).toByteArray());
     }
     std::clog << "Main window restored" << std::endl;
+
+#if defined(Q_OS_WIN) /* fix bug where menus and tooltips do not appear in fullscreen under windows operating systems */
+    QWindowsWindowFunctions::setHasBorderInFullScreen(this->windowHandle(), true);
+#endif
+
     bool max = config.value(QString::fromLatin1("Maximized"), false).toBool();
     max ? showMaximized() : show();
 
