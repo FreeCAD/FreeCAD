@@ -54,7 +54,7 @@
 #endif
 
 #if defined(Q_OS_WIN)
-#include <QtPlatformHeaders/QWindowsWindowFunctions>
+# include <QtPlatformHeaders/QWindowsWindowFunctions>
 #endif
 
 #include <App/Application.h>
@@ -1469,7 +1469,8 @@ void MainWindow::loadWindowSettings()
     }
     std::clog << "Main window restored" << std::endl;
 
-#if defined(Q_OS_WIN) /* fix bug where menus and tooltips do not appear in fullscreen under windows operating systems */
+// make menus and tooltips usable in fullscreen under Windows
+#if defined(Q_OS_WIN)
     QWindowsWindowFunctions::setHasBorderInFullScreen(this->windowHandle(), true);
 #endif
 
