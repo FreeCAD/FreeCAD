@@ -169,7 +169,7 @@ App::DocumentObjectExecReturn *FeatureViewSpreadsheet::execute(void)
             // get the text
             App::Property* prop = sheet->getPropertyByName(address.toString().c_str());
             std::stringstream field;
-            if (prop != nullptr) {
+            if (prop) {
                 if (prop->isDerivedFrom((App::PropertyQuantity::getClassTypeId())))
                     field << static_cast<App::PropertyQuantity*>(prop)->getValue();
                 else if (prop->isDerivedFrom((App::PropertyFloat::getClassTypeId())))

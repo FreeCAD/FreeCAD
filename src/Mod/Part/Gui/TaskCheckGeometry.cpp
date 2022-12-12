@@ -172,7 +172,6 @@ QVector<QString> buildBOPCheckResultVector()
   return results;
 }
 
-
 QString getBOPCheckString(const BOPAlgo_CheckStatus &status)
 {
   static QVector<QString> strings = buildBOPCheckResultVector();
@@ -181,7 +180,6 @@ QString getBOPCheckString(const BOPAlgo_CheckStatus &status)
     index = 0;
   return strings.at(index);
 }
-
 
 ResultEntry::ResultEntry()
 {
@@ -204,9 +202,9 @@ ResultEntry::~ResultEntry()
 
 void ResultEntry::buildEntryName()
 {
-  ResultEntry *parentEntry = this;
-    while (parentEntry->parent != nullptr) {
-        ResultEntry *temp = parentEntry->parent;
+    ResultEntry* parentEntry = this;
+    while (parentEntry->parent) {
+        ResultEntry* temp = parentEntry->parent;
         if (!temp->parent)
             break;
         parentEntry = parentEntry->parent;

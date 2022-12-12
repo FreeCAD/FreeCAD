@@ -184,10 +184,10 @@ public:
                 noUnit = false;
             }
 
-            if (noUnit == true &&
-                    (num == plus ||                          // 1+  -> 1mm+
-                     num == minus ||                         // 1-  -> 1mm-
-                    (pos == length - 1 && (pos += 1)))) {    // 1EOL-> 1mmEOL
+            if (noUnit
+                && (num == plus ||                       // 1+  -> 1mm+
+                    num == minus ||                      // 1-  -> 1mm-
+                    (pos == length - 1 && (pos += 1)))) {// 1EOL-> 1mmEOL
                 copy.insert(pos, unitStr);
                 pos += shift = unitStr.length();
                 length += shift;
