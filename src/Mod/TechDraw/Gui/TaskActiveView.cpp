@@ -21,12 +21,12 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-#include <QMessageBox>
-#include <QPushButton>
-#include <regex>
-#endif    // #ifndef _PreComp_
+# include <regex>
+
+# include <QMessageBox>
+# include <QPushButton>
+#endif // #ifndef _PreComp_
 
 #include <App/Document.h>
 #include <Base/Console.h>
@@ -41,10 +41,10 @@
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawViewImage.h>
 
-#include "Grabber3d.h"
 #include "TaskActiveView.h"
-#include "ViewProviderImage.h"
 #include "ui_TaskActiveView.h"
+#include "Grabber3d.h"
+#include "ViewProviderImage.h"
 
 
 using namespace Gui;

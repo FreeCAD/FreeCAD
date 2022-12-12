@@ -21,10 +21,9 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-#include <iomanip>
-#include <sstream>
+# include <iomanip>
+# include <sstream>
 #endif
 
 #include <App/Document.h>
