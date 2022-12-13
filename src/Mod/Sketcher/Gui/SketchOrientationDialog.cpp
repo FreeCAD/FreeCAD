@@ -21,19 +21,16 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-# include <QPixmap>
 # include <QDialog>
 #endif
 
 #include <Gui/BitmapFactory.h>
 #include <Gui/MainWindow.h>
-#include <Base/Tools.h>
-#include <Base/UnitsApi.h>
 
 #include "ui_SketchOrientationDialog.h"
 #include "SketchOrientationDialog.h"
+
 
 using namespace SketcherGui;
 

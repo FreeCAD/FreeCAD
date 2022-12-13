@@ -24,9 +24,9 @@
 #define SKETCHERGUI_SOZOOMTRANSLATION_H
 
 #include <Inventor/nodes/SoTranslation.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/nodes/SoTransformation.h>
+
 #include <Mod/Sketcher/SketcherGlobal.h>
+
 
 namespace SketcherGui {
 
