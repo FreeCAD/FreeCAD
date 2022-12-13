@@ -69,10 +69,12 @@
 
 // Qt
 # include <QApplication>
+# include <QCursor>
 # include <QDebug>
 # include <QGuiApplication>
 # include <QInputDialog>
 # include <QKeyEvent>
+# include <QLocale>
 # include <QMenu>
 # include <QMessageBox>
 # include <QPainter>
@@ -82,6 +84,7 @@
 # include <QShortcut>
 # include <QString>
 # include <QStyledItemDelegate>
+# include <QTextStream>
 
 // all of Inventor
 #ifndef __InventorAll__

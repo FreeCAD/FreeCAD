@@ -26,6 +26,7 @@
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Sketcher/SketcherGlobal.h>
 
+
 namespace SketcherGui {
 
 class SketcherGuiExport ViewProviderSketchGeometryExtension : public Part::GeometryExtension

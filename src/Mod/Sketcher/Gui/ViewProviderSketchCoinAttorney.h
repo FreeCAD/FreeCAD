@@ -30,6 +30,8 @@
 #include <Inventor/SbVec3f.h>
 #include <Inventor/actions/SoRayPickAction.h>
 
+#include "ViewProviderSketch.h"
+
 
 namespace Base {
     template< typename T >
