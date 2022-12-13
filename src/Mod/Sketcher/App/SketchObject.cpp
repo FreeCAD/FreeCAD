@@ -3025,6 +3025,11 @@ int SketchObject::split(int GeoId, const Base::Vector3d &point)
             endParam = curve->getLastParameter();
             // TODO: Using parameter difference as a poor substitute of length.
             // Computing length of an arc of a generic conic would be expensive.
+            if (endParam - splitParam < Precision::PConfusion() ||
+                splitParam - startParam < Precision::PConfusion()) {
+                THROWM(ValueError, "Split point is at one of the end points of the curve.");
+                return false;
+            }
             if (endParam - splitParam > splitParam - startParam) {
                 longestPart = 1;
             }
