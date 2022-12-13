@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2022 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,38 +20,42 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_SketchOrientationDialog_H
-#define SKETCHERGUI_SketchOrientationDialog_H
 
-#include <QDialog>
+#ifndef MESH_IO_WRITER_IV_H
+#define MESH_IO_WRITER_IV_H
 
-#include <Base/Placement.h>
-#include <Mod/Sketcher/SketcherGlobal.h>
+#include <Mod/Mesh/MeshGlobal.h>
+#include <Mod/Mesh/App/Core/MeshIO.h>
 
-
-namespace SketcherGui {
-
-class Ui_SketchOrientationDialog;
-class SketcherGuiExport SketchOrientationDialog : public QDialog
+namespace MeshCore
 {
-    Q_OBJECT
 
+/** Saves the mesh object into OpenInventor v2.1 format. */
+class MeshExport WriterInventor
+{
 public:
-    SketchOrientationDialog();
-    ~SketchOrientationDialog() override;
-
-    Base::Placement Pos;
-    int             DirType;
-
-    void accept() override;
-
-protected Q_SLOTS:
-    void onPreview();
+    /*!
+     * \brief WriterInventor
+     */
+    explicit WriterInventor(const MeshKernel& kernel, const Material*);
+    /*!
+     * \brief Apply a transformation for the exported mesh.
+     */
+    void SetTransform(const Base::Matrix4D&);
+    /*!
+     * \brief Save the mesh to an OpenInventor file.
+     * \return true if the data could be written successfully, false otherwise.
+     */
+    bool Save(std::ostream&);
 
 private:
-    std::unique_ptr<Ui_SketchOrientationDialog> ui;
+    const MeshKernel& _kernel;
+    const Material* _material;
+    Base::Matrix4D _transform;
+    bool apply_transform;
 };
 
-}
+} // namespace MeshCore
 
-#endif // SKETCHERGUI_SketchOrientationDialog_H
+
+#endif  // MESH_IO_WRITER_IV_H

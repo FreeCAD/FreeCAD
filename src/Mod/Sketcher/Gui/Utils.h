@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef SKETCHERGUI_Recompute_H
 #define SKETCHERGUI_Recompute_H
 
@@ -28,7 +27,9 @@
 #include <Base/Tools.h>
 #include <Base/Tools2D.h>
 #include <Mod/Sketcher/App/GeoEnum.h>
+
 #include "AutoConstraint.h"
+
 
 namespace App {
     class DocumentObject;

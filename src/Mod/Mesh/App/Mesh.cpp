@@ -551,7 +551,7 @@ void MeshObject::writeInventor(std::ostream& str, float creaseangle) const
 
     Base::InventorBuilder builder(str);
     builder.beginSeparator();
-    builder.addTransformation(getTransform());
+    builder.addNode(Base::TransformItem{getTransform()});
     Base::ShapeHintsItem shapeHints{creaseangle};
     builder.addNode(shapeHints);
     builder.addNode(Base::Coordinate3Item{coords});
@@ -949,7 +949,7 @@ void MeshObject::offsetSpecial2(float fSize)
     for (std::vector<Base::Vector3f>::iterator It= PointNormals.begin();It != PointNormals.end();++It,i++) {
         Base::Line3f line{_kernel.GetPoint(i), _kernel.GetPoint(i) + It->Normalize() * fSize};
         Base::DrawStyle drawStyle;
-        builder.addSingleLine(line, drawStyle);
+        builder.addNode(Base::LineItem{line, drawStyle});
         // and move each mesh point in the normal direction
         _kernel.MovePoint(i,It->Normalize() * fSize);
     }

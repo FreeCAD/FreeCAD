@@ -104,8 +104,8 @@ private Q_SLOTS:
         Base::MaterialBindingItem item;
         item.setValue(input);
         builder.addNode(item);
-        QString string = QString::fromStdString(output.str());
 
+        QString string = QString::fromStdString(output.str());
         QCOMPARE(string, result);
     }
 
@@ -128,8 +128,8 @@ R"(Label {
 
         Base::LabelItem item{input.toStdString()};
         builder.addNode(item);
-        QString string = QString::fromStdString(output.str());
 
+        QString string = QString::fromStdString(output.str());
         QCOMPARE(string, result);
     }
 
@@ -152,8 +152,28 @@ R"(Info {
 
         Base::InfoItem item{input.toStdString()};
         builder.addNode(item);
-        QString string = QString::fromStdString(output.str());
 
+        QString string = QString::fromStdString(output.str());
+        QCOMPARE(string, result);
+    }
+
+    void test_Text2_data()
+    {
+        auto result = "Text2 { string \"FreeCAD\" }\n";
+        QTest::addColumn<QString>("input");
+        QTest::addColumn<QString>("result");
+        QTest::newRow("Text2") << "FreeCAD" << result;
+    }
+
+    void test_Text2()
+    {
+        QFETCH(QString, input);
+        QFETCH(QString, result);
+
+        Base::Text2Item item{input.toStdString()};
+        builder.addNode(item);
+
+        QString string = QString::fromStdString(output.str());
         QCOMPARE(string, result);
     }
 
@@ -176,8 +196,8 @@ R"(BaseColor {
 
         Base::BaseColorItem item{input};
         builder.addNode(item);
-        QString string = QString::fromStdString(output.str());
 
+        QString string = QString::fromStdString(output.str());
         QCOMPARE(string, result);
     }
 
@@ -201,8 +221,8 @@ R"(Material {
         Base::MaterialItem item;
         item.setDiffuseColor({input});
         builder.addNode(item);
-        QString string = QString::fromStdString(output.str());
 
+        QString string = QString::fromStdString(output.str());
         QCOMPARE(string, result);
     }
 
@@ -234,8 +254,8 @@ R"(Material {
         Base::MaterialItem item;
         item.setDiffuseColor({input1, input2, input3});
         builder.addNode(item);
-        QString string = QString::fromStdString(output.str());
 
+        QString string = QString::fromStdString(output.str());
         QCOMPARE(string, result);
 
         SoNode* node = loadBuffer(output.str());
@@ -277,8 +297,8 @@ R"(DrawStyle {
         style.linePattern = linePattern;
         item.setValue(style);
         builder.addNode(item);
-        QString string = QString::fromStdString(output.str());
 
+        QString string = QString::fromStdString(output.str());
         QCOMPARE(string, result);
     }
 
@@ -301,8 +321,8 @@ R"(ShapeHints {
 
         Base::ShapeHintsItem item{input};
         builder.addNode(item);
-        QString string = QString::fromStdString(output.str());
 
+        QString string = QString::fromStdString(output.str());
         QCOMPARE(string, result);
     }
 
@@ -340,8 +360,8 @@ R"(PolygonOffset {
         offset.on = on;
         item.setValue(offset);
         builder.addNode(item);
-        QString string = QString::fromStdString(output.str());
 
+        QString string = QString::fromStdString(output.str());
         QCOMPARE(string, result);
     }
 
@@ -358,9 +378,98 @@ R"(PolygonOffset {
 
         Base::PointSetItem item;
         builder.addNode(item);
-        QString string = QString::fromStdString(output.str());
 
+        QString string = QString::fromStdString(output.str());
         QCOMPARE(string, result);
+    }
+
+    void test_LineSet_data()
+    {
+        auto result = "LineSet { }\n";
+        QTest::addColumn<QString>("result");
+        QTest::newRow("LineSet") << result;
+    }
+
+    void test_LineSet()
+    {
+        QFETCH(QString, result);
+
+        Base::LineSetItem item;
+        builder.addNode(item);
+
+        QString string = QString::fromStdString(output.str());
+        QCOMPARE(string, result);
+    }
+
+    void test_FaceSet_data()
+    {
+        QTest::addColumn<int>("num");
+        QTest::newRow("FaceSet") << 2;
+    }
+
+    void test_FaceSet()
+    {
+        QFETCH(int, num);
+
+        Base::FaceSetItem item{{num}};
+        builder.addNode(item);
+
+        SoNode* node = loadBuffer(output.str());
+        QVERIFY(node != nullptr);
+    }
+
+    void test_IndexedLineSet_data()
+    {
+        QTest::addColumn<int>("c1");
+        QTest::addColumn<int>("c2");
+        QTest::addColumn<int>("c3");
+        QTest::newRow("IndexedLineSet") << 0 << 1 << 2;
+    }
+
+    void test_IndexedLineSet()
+    {
+        QFETCH(int, c1);
+        QFETCH(int, c2);
+        QFETCH(int, c3);
+
+        Base::IndexedLineSetItem item{{c1, c2, c3}};
+        builder.addNode(item);
+
+        SoNode* node = loadBuffer(output.str());
+        QVERIFY(node != nullptr);
+    }
+
+    void test_IndexedFaceSet_data()
+    {
+        QTest::addColumn<int>("c1");
+        QTest::addColumn<int>("c2");
+        QTest::addColumn<int>("c3");
+        QTest::addColumn<int>("c4");
+        QTest::newRow("IndexedFaceSet") << 0 << 1 << 2 << -1;
+    }
+
+    void test_IndexedFaceSet()
+    {
+        QFETCH(int, c1);
+        QFETCH(int, c2);
+        QFETCH(int, c3);
+        QFETCH(int, c4);
+
+        Base::IndexedFaceSetItem item{{c1, c2, c3, c4}};
+        builder.addNode(item);
+
+        SoNode* node = loadBuffer(output.str());
+        QVERIFY(node != nullptr);
+    }
+
+    void test_Transform()
+    {
+        Base::Placement plm;
+        Base::TransformItem item{plm};
+        builder.addNode(item);
+
+        SoNode* node = loadBuffer(output.str());
+        QVERIFY(node != nullptr);
     }
 
     void test_Normal_data()
@@ -380,11 +489,9 @@ R"(Normal {
         QFETCH(Base::Vector3f, input);
         QFETCH(QString, result);
 
-        Base::NormalItem item;
-        item.setVector({input});
-        builder.addNode(item);
-        QString string = QString::fromStdString(output.str());
+        builder.addNode(Base::NormalItem{{input}});
 
+        QString string = QString::fromStdString(output.str());
         QCOMPARE(string, result);
     }
 
@@ -406,6 +513,28 @@ R"(Normal {
         QVERIFY(node != nullptr);
     }
 
+    void test_MultiLineItem_data()
+    {
+        QTest::addColumn<Base::Vector3f>("p1");
+        QTest::addColumn<Base::Vector3f>("p2");
+        QTest::addColumn<Base::Vector3f>("p3");
+        QTest::addColumn<Base::DrawStyle>("style");
+        QTest::newRow("MultiLineItem") << Base::Vector3f{0,0,0} << Base::Vector3f{1,0,0} << Base::Vector3f{1,1,0} << Base::DrawStyle{};
+    }
+
+    void test_MultiLineItem()
+    {
+        QFETCH(Base::Vector3f, p1);
+        QFETCH(Base::Vector3f, p2);
+        QFETCH(Base::Vector3f, p3);
+        QFETCH(Base::DrawStyle, style);
+        Base::MultiLineItem item{{p1, p2, p3}, style};
+        builder.addNode(item);
+
+        SoNode* node = loadBuffer(output.str());
+        QVERIFY(node != nullptr);
+    }
+
     void test_ArrowItem_data()
     {
         QTest::addColumn<Base::Line3f>("line");
@@ -420,7 +549,46 @@ R"(Normal {
         Base::ArrowItem item{line, style};
         builder.addNode(item);
 
-        qDebug() << QString::fromStdString(output.str());
+        SoNode* node = loadBuffer(output.str());
+        QVERIFY(node != nullptr);
+    }
+
+    void test_BoundingBoxItem_data()
+    {
+        QTest::addColumn<Base::Vector3f>("p1");
+        QTest::addColumn<Base::Vector3f>("p2");
+        QTest::addColumn<Base::DrawStyle>("style");
+        QTest::newRow("BoundingBoxItem") << Base::Vector3f{0,0,0} << Base::Vector3f{1,1,1} << Base::DrawStyle{};
+    }
+
+    void test_BoundingBoxItem()
+    {
+        QFETCH(Base::Vector3f, p1);
+        QFETCH(Base::Vector3f, p2);
+        QFETCH(Base::DrawStyle, style);
+        Base::BoundingBoxItem item{p1, p2, style};
+        builder.addNode(item);
+
+        SoNode* node = loadBuffer(output.str());
+        QVERIFY(node != nullptr);
+    }
+
+    void test_Coordinate3Item_data()
+    {
+        QTest::addColumn<Base::Vector3f>("p1");
+        QTest::addColumn<Base::Vector3f>("p2");
+        QTest::addColumn<Base::Vector3f>("p3");
+        QTest::newRow("Coordinate3Item") << Base::Vector3f{0,0,0} << Base::Vector3f{1,0,0} << Base::Vector3f{1,1,0};
+    }
+
+    void test_Coordinate3Item()
+    {
+        QFETCH(Base::Vector3f, p1);
+        QFETCH(Base::Vector3f, p2);
+        QFETCH(Base::Vector3f, p3);
+        Base::Coordinate3Item item{{p1, p2, p3}};
+        builder.addNode(item);
+
         SoNode* node = loadBuffer(output.str());
         QVERIFY(node != nullptr);
     }
@@ -475,8 +643,8 @@ R"(Normal {
         Base::NormalBindingItem item;
         item.setValue(input);
         builder.addNode(item);
-        QString string = QString::fromStdString(output.str());
 
+        QString string = QString::fromStdString(output.str());
         QCOMPARE(string, result);
     }
 
@@ -505,8 +673,8 @@ R"(Cylinder {
         item.setRadius(radius);
         item.setHeight(height);
         builder.addNode(item);
-        QString string = QString::fromStdString(output.str());
 
+        QString string = QString::fromStdString(output.str());
         QCOMPARE(string, result);
     }
 
@@ -530,8 +698,8 @@ R"(Cylinder {
         item.setBottomRadius(radius);
         item.setHeight(height);
         builder.addNode(item);
-        QString string = QString::fromStdString(output.str());
 
+        QString string = QString::fromStdString(output.str());
         QCOMPARE(string, result);
     }
 
@@ -552,9 +720,32 @@ R"(Cylinder {
         Base::SphereItem item;
         item.setRadius(input);
         builder.addNode(item);
-        QString string = QString::fromStdString(output.str());
 
+        QString string = QString::fromStdString(output.str());
         QCOMPARE(string, result);
+    }
+
+    void test_NurbsSurface_data()
+    {
+        QTest::addColumn<float>("knot1");
+        QTest::addColumn<float>("knot2");
+        QTest::addColumn<int>("poles");
+        QTest::newRow("Nurbs") << 0.0F << 1.0F << 2;
+    }
+
+    void test_NurbsSurface()
+    {
+        QFETCH(float, knot1);
+        QFETCH(float, knot2);
+        QFETCH(int, poles);
+
+        Base::NurbsSurfaceItem item;
+        item.setKnotVector({knot1, knot2}, {knot1, knot2});
+        item.setControlPoints(poles, poles);
+        builder.addNode(item);
+
+        SoNode* node = loadBuffer(output.str());
+        QVERIFY(node != nullptr);
     }
 
 private:

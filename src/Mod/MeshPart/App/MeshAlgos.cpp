@@ -72,7 +72,7 @@ void MeshAlgos::offsetSpecial2(MeshCore::MeshKernel* Mesh, float fSize)
     for(std::vector<Base::Vector3f>::iterator It= PointNormals.begin();It != PointNormals.end();++It,i++) {
         Base::Line3f line{Mesh->GetPoint(i), Mesh->GetPoint(i) + It->Normalize() * fSize};
         Base::DrawStyle drawStyle;
-        builder.addSingleLine(line, drawStyle);
+        builder.addNode(Base::LineItem{line, drawStyle});
         // and move each mesh point in the normal direction
         Mesh->MovePoint(i,It->Normalize() * fSize);
     }

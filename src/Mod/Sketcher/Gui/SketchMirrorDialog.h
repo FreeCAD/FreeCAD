@@ -24,7 +24,9 @@
 #define SKETCHERGUI_SketchMirrorDialog_H
 
 #include <QDialog>
-#include "../App/Constraint.h"
+
+#include <Mod/Sketcher/App/GeoEnum.h>
+
 
 namespace SketcherGui {
 
