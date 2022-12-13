@@ -1142,7 +1142,7 @@ void TopoShape::exportLineSet(std::ostream& str) const
 
         Base::DrawStyle drawStyle;
         drawStyle.lineWidth = 2.0F;
-        builder.addLineSet(vertices, drawStyle, Base::ColorRGB{0, 0, 0});
+        builder.addNode(Base::MultiLineItem{vertices, drawStyle, Base::ColorRGB{0, 0, 0}});
     }
 
     builder.endSeparator();

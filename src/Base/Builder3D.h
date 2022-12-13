@@ -256,6 +256,19 @@ private:
     ColorRGB rgb;
 };
 
+class BaseExport MultiLineItem : public NodeItem
+{
+public:
+    /// add a line defined by a list of points whereat always a pair (i.e. a point and the following point) builds a line.
+    explicit MultiLineItem(const std::vector<Vector3f>& points, DrawStyle drawStyle, const ColorRGB& rgb = ColorRGB{1.0F, 1.0F, 1.0F});
+    void write(InventorOutput& out) const override;
+
+private:
+    std::vector<Vector3f> points;
+    DrawStyle drawStyle;
+    ColorRGB rgb;
+};
+
 class BaseExport ArrowItem : public NodeItem
 {
 public:
@@ -264,6 +277,19 @@ public:
 
 private:
     Base::Line3f line;
+    DrawStyle drawStyle;
+    ColorRGB rgb;
+};
+
+class BaseExport BoundingBoxItem : public NodeItem
+{
+public:
+    explicit BoundingBoxItem(const Vector3f& pt1, const Vector3f& pt2, DrawStyle drawStyle, const ColorRGB& rgb = ColorRGB{1.0F, 1.0F, 1.0F});
+    void write(InventorOutput& out) const override;
+
+private:
+    Vector3f pt1;
+    Vector3f pt2;
     DrawStyle drawStyle;
     ColorRGB rgb;
 };
@@ -308,6 +334,7 @@ class BaseExport MaterialBindingItem : public NodeItem
 {
 public:
     MaterialBindingItem() = default;
+    explicit MaterialBindingItem(BindingElement::Binding);
     void setValue(BindingElement::Binding bind);
     void write(InventorOutput& out) const override;
 
@@ -321,6 +348,8 @@ private:
 class BaseExport DrawStyleItem : public NodeItem
 {
 public:
+    DrawStyleItem() = default;
+    explicit DrawStyleItem(DrawStyle);
     void setValue(DrawStyle value);
     void write(InventorOutput& out) const override;
 
@@ -373,6 +402,15 @@ private:
  * \brief The PointSetItem class supports the SoPointSet node.
  */
 class BaseExport PointSetItem : public NodeItem
+{
+public:
+    void write(InventorOutput& out) const override;
+};
+
+/*!
+ * \brief The LineSetItem class supports the SoLineSet node.
+ */
+class BaseExport LineSetItem : public NodeItem
 {
 public:
     void write(InventorOutput& out) const override;
@@ -525,7 +563,8 @@ private:
 class BaseExport TransformItem : public NodeItem
 {
 public:
-    TransformItem(const Base::Placement&);
+    explicit TransformItem(const Base::Placement&);
+    explicit TransformItem(const Base::Matrix4D&);
     void write(InventorOutput& out) const override;
 
 private:
@@ -566,43 +605,6 @@ public:
      */
     void endSeparator();
     /** @name Appearance handling */
-
-    /** @name Line/Direction handling */
-    //@{
-    /// add a line
-    void addSingleLine(const Base::Line3f& line, DrawStyle drawStyle, const ColorRGB& rgb = ColorRGB{1.0F, 1.0F, 1.0F});
-    /// add a arrow
-    void addSingleArrow(const Base::Line3f& line, DrawStyle drawStyle, const ColorRGB& rgb = ColorRGB{1.0F, 1.0F, 1.0F});
-    /// add a line defined by a list of points whereat always a pair (i.e. a point and the following point) builds a line.
-    void addLineSet(const std::vector<Vector3f>& points, DrawStyle drawStyle, const ColorRGB& rgb = ColorRGB{1.0F, 1.0F, 1.0F});
-    //@}
-
-    /** @name Triangle handling */
-    //@{
-    /// add a (filled) triangle defined by 3 vectors
-    void addSingleTriangle(const Triangle& triangle, DrawStyle drawStyle, const ColorRGB& rgb = ColorRGB{1.0F, 1.0F, 1.0F});
-    void addSinglePlane(const Vector3f& base, const Vector3f& eX, const Vector3f& eY, float length, float width, DrawStyle drawStyle,
-                        const ColorRGB& rgb = ColorRGB{1.0F, 1.0F, 1.0F});
-    //@}
-
-    /** @name Bounding Box handling */
-    //@{
-    void addBoundingBox(const Vector3f& pt1, const Vector3f& pt2, DrawStyle drawStyle,
-                        const ColorRGB& rgb = ColorRGB{1.0F, 1.0F, 1.0F});
-    //@}
-
-    /** @name Transformation */
-    //@{
-    /// adds a transformation
-    void addTransformation(const Matrix4D&);
-    void addTransformation(const Base::Placement&);
-    //@}
-
-    /** @name Text handling */
-    //@{
-    /// add a text
-    void addText(const Vector3f &vec,const char * text, const ColorRGB& rgb = ColorRGB{1.0F, 1.0F, 1.0F});
-    //@}
 
 private:
     void increaseIndent();
