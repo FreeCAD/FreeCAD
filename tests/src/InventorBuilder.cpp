@@ -380,9 +380,7 @@ R"(Normal {
         QFETCH(Base::Vector3f, input);
         QFETCH(QString, result);
 
-        Base::NormalItem item;
-        item.setVector({input});
-        builder.addNode(item);
+        builder.addNode(Base::NormalItem{{input}});
         QString string = QString::fromStdString(output.str());
 
         QCOMPARE(string, result);

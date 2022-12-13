@@ -658,9 +658,9 @@ void IndexedFaceSetItem::write(InventorOutput &out) const
 
 // -----------------------------------------------------------------------------
 
-void NormalItem::setVector(const std::vector<Base::Vector3f>& vec)
+NormalItem::NormalItem(const std::vector<Base::Vector3f>& vec)
+    : vector(vec)
 {
-    vector = vec;
 }
 
 void NormalItem::write(InventorOutput& out) const

@@ -423,8 +423,7 @@ private:
 class BaseExport NormalItem : public NodeItem
 {
 public:
-    explicit NormalItem() = default;
-    void setVector(const std::vector<Base::Vector3f>& vec);
+    explicit NormalItem(const std::vector<Base::Vector3f>& vec);
     void write(InventorOutput& out) const override;
 
 private:

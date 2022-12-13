@@ -2713,14 +2713,13 @@ bool MeshOutput::SaveInventor (std::ostream &rstrOut) const
         seq.next(true); // allow to cancel
     }
 
-    Base::NormalItem normal;
-    normal.setVector(normals);
-    builder.addNode(normal);
-    // coordinates of the vertices
+    builder.addNode(Base::NormalItem{normals});
+
     Base::NormalBindingItem binding;
     binding.setValue(Base::BindingElement::Binding::PerFace);
     builder.addNode(binding);
 
+    // coordinates of the vertices
     std::vector<Base::Vector3f> coords;
     coords.reserve(_rclMesh.CountPoints());
 
@@ -2738,7 +2737,7 @@ bool MeshOutput::SaveInventor (std::ostream &rstrOut) const
     // and finally the facets with their point indices
     const MeshFacetArray& faces = _rclMesh.GetFacets();
     std::vector<int> indices;
-    indices.reserve(4*faces.size());
+    indices.reserve(4 * faces.size());
     for (MeshFacetArray::_TConstIterator it = faces.begin(); it != faces.end(); ++it) {
         indices.push_back(static_cast<int>(it->_aulPoints[0]));
         indices.push_back(static_cast<int>(it->_aulPoints[1]));
