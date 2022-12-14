@@ -37,9 +37,14 @@ SET(WebGuiIcon_SVG
     Resources/icons/WebWorkbench.svg
 )
 
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${WebGui_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(WebGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
+
 add_library(WebGui SHARED ${WebGui_SRCS} ${WebGuiIcon_SVG})
 target_link_libraries(WebGui ${WebGui_LIBS})
-
 
 SET_BIN_DIR(WebGui WebGui /Mod/Web)
 SET_PYTHON_PREFIX_SUFFIX(WebGui)
