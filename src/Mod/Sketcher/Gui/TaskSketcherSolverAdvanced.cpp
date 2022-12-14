@@ -20,26 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <QString>
 #endif
 
-#include "ui_TaskSketcherSolverAdvanced.h"
-#include "TaskSketcherSolverAdvanced.h"
 #include <Gui/Application.h>
-#include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Gui/Selection.h>
-#include <Gui/Command.h>
-
 #include <Mod/Sketcher/App/SketchObject.h>
 
+#include "ui_TaskSketcherSolverAdvanced.h"
+#include "TaskSketcherSolverAdvanced.h"
 #include "ViewProviderSketch.h"
+
 
 #define LM_EPS  1E-10
 #define LM_EPS1 1E-80

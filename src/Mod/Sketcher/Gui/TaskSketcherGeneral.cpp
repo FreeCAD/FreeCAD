@@ -20,23 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
-
-#include "ui_TaskSketcherGeneral.h"
-#include "TaskSketcherGeneral.h"
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Base/Tools.h>
-#include <Base/UnitsApi.h>
 
 #include <QEvent>
 
+#include <Base/Tools.h>
+#include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/ViewProvider.h>
+
+#include "ui_TaskSketcherGeneral.h"
+#include "TaskSketcherGeneral.h"
 #include "ViewProviderSketch.h"
+
 
 using namespace SketcherGui;
 using namespace Gui::TaskView;

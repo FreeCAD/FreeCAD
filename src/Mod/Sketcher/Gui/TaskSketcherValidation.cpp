@@ -20,43 +20,32 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-# include <Standard_math.hxx>
+# include <algorithm>
 # include <QDoubleValidator>
 # include <QLocale>
 # include <QMessageBox>
+# include <Precision.hxx>
+
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoDrawStyle.h>
 # include <Inventor/nodes/SoMarkerSet.h>
 # include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoShapeHints.h>
-# include <BRep_Tool.hxx>
-# include <gp_Pnt.hxx>
-# include <Precision.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
-# include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
-# include <TopExp.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Edge.hxx>
-# include <TopoDS_Vertex.hxx>
-# include <algorithm>
 #endif
 
-#include "ui_TaskSketcherValidation.h"
-#include "TaskSketcherValidation.h"
-#include <Mod/Sketcher/App/SketchObject.h>
-#include <Mod/Part/App/Geometry.h>
 #include <App/Document.h>
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/Application.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
 #include <Gui/Inventor/MarkerBitmaps.h>
+#include <Gui/TaskView/TaskView.h>
+#include <Mod/Sketcher/App/SketchObject.h>
+
+#include "ui_TaskSketcherValidation.h"
+#include "TaskSketcherValidation.h"
+
 
 using namespace SketcherGui;
 using namespace Gui::TaskView;

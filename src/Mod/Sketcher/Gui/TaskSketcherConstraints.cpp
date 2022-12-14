@@ -20,47 +20,41 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <cmath>
+
 # include <QContextMenuEvent>
 # include <QMenu>
+# include <QMessageBox>
+# include <QPainter>
+# include <QPixmapCache>
 # include <QRegularExpression>
 # include <QRegularExpressionMatch>
 # include <QString>
-# include <QMessageBox>
 # include <QStyledItemDelegate>
-# include <QPainter>
-# include <QPixmapCache>
-# include <QStringListModel>
+# include <QWidgetAction>
 #endif
 
-#include "TaskSketcherConstraints.h"
-#include "ui_TaskSketcherConstraints.h"
-#include "EditDatumDialog.h"
-#include "ViewProviderSketch.h"
-
-#include <Mod/Sketcher/App/SketchObject.h>
-#include <Mod/Sketcher/Gui/CommandConstraints.h>
-
-#include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/Expression.h>
 #include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/CommandT.h>
 #include <Gui/Document.h>
+#include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionObject.h>
-#include <Gui/BitmapFactory.h>
 #include <Gui/ViewProvider.h>
-#include <Gui/CommandT.h>
-#include <Gui/MainWindow.h>
-#include <Gui/PrefWidgets.h>
-#include <QWidgetAction>
+#include <Mod/Sketcher/App/SketchObject.h>
 
+#include "TaskSketcherConstraints.h"
+#include "ui_TaskSketcherConstraints.h"
+#include "EditDatumDialog.h"
 #include "Utils.h"
+#include "ViewProviderSketch.h"
+
 
 using namespace SketcherGui;
 using namespace Gui::TaskView;

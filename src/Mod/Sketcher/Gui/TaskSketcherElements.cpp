@@ -20,44 +20,36 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <QContextMenuEvent>
+# include <QImage>
 # include <QMenu>
 # include <QRegularExpression>
 # include <QRegularExpressionMatch>
 # include <QShortcut>
 # include <QString>
-# include <QImage>
-# include <QPixmap>
 # include <QPainter>
+# include <QPixmap>
+# include <QWidgetAction>
 #endif
 
-#include "TaskSketcherElements.h"
-#include "ui_TaskSketcherElements.h"
-#include "EditDatumDialog.h"
-#include "ViewProviderSketch.h"
-
-#include <Mod/Sketcher/App/SketchObject.h>
-#include <Mod/Sketcher/App/GeometryFacade.h>
-
-#include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Gui/Application.h>
-#include <Gui/Document.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/Command.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionObject.h>
-#include <Gui/BitmapFactory.h>
 #include <Gui/ViewProvider.h>
-#include <Gui/BitmapFactory.h>
+#include <Mod/Sketcher/App/GeometryFacade.h>
+#include <Mod/Sketcher/App/SketchObject.h>
 
-#include <Gui/Command.h>
+#include "TaskSketcherElements.h"
+#include "ui_TaskSketcherElements.h"
+#include "ViewProviderSketch.h"
 
-#include <QWidgetAction> //to be put in _PreComp_ once grid PR merge.
 
 using namespace SketcherGui;
 using namespace Gui::TaskView;
