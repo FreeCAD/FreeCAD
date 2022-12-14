@@ -7,7 +7,6 @@ else(MSVC)
     endif()
 endif(MSVC)
 
-
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
@@ -147,7 +146,6 @@ if(FREECAD_USE_PCH)
     GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" Path_CPP_SRCS ${Path_SRCS})
     ADD_MSVC_PRECOMPILED_HEADER(Path PreCompiled.h PreCompiled.cpp Path_CPP_SRCS)
 endif(FREECAD_USE_PCH)
-
 
 SET_BIN_DIR(Path PathApp /Mod/Path)
 SET_PYTHON_PREFIX_SUFFIX(Path)
