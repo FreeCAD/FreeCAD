@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef WEBGUI_PRECOMPILED_H
 #define WEBGUI_PRECOMPILED_H
 
@@ -32,22 +31,24 @@
 #include <string>
 #include <vector>
 
-#ifdef FC_OS_WIN32
-# include <windows.h>
-#endif
-
-// Qt Core
+// Qt
+#include <QApplication>
+#include <QDesktopServices>
+#include <QFileInfo>
+#include <QIcon>
 #include <QLatin1String>
-
-// Qt Toolkit
-#ifndef __QtAll__
-# include <Gui/QtAll.h>
-#endif
-
-// QtWebKit
-#include <QWebFrame>
-#include <QWebView>
-#include <QWebSettings>
+#include <QLineEdit>
+#include <QMenu>
+#include <QMessageBox>
+#include <QMouseEvent>
+#include <QNetworkCookie>
+#include <QNetworkRequest>
+#include <QRegularExpression>
+#include <QRegularExpressionMatch>
+#include <QSignalMapper>
+#include <QStatusBar>
+#include <QTextStream>
+#include <QUrl>
 
 #endif //_PreComp_
 
