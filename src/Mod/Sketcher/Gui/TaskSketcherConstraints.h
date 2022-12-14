@@ -20,19 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskSketcherConstraints_H
 #define GUI_TASKVIEW_TaskSketcherConstraints_H
 
-#include <Base/Parameter.h>
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <boost_signals2.hpp>
 #include <QListWidget>
 
+#include <Base/Parameter.h>
+#include <Gui/Selection.h>
+#include <Gui/TaskView/TaskView.h>
 #include <Mod/Sketcher/App/Constraint.h>
 
 #include "ConstraintFilters.h"
+
 
 namespace App {
 class Property;
