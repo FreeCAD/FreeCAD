@@ -28,7 +28,6 @@
 #ifdef _PreComp_
 
 // standard
-#include <climits>
 #include <stdexcept>
 
 // STL
