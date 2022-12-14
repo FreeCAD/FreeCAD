@@ -25,13 +25,11 @@
 # include <boost/uuid/uuid_io.hpp>
 #endif
 
+#include <Base/Console.h>
+
 #include "ExternalGeometryFacade.h"
-
-#include <Base/Console.h> // Only for Debug - To be removed
-#include <Base/Exception.h>
-
-
 #include "ExternalGeometryFacadePy.h"
+
 
 using namespace Sketcher;
 

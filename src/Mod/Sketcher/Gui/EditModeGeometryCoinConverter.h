@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef SKETCHERGUI_GeometryCoinConverter_H
 #define SKETCHERGUI_GeometryCoinConverter_H
 
 #include <vector>
 
 #include "ViewProviderSketch.h"
+
 
 namespace Base {
     template< typename T >

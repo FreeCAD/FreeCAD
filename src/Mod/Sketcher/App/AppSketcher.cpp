@@ -25,22 +25,22 @@
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 
-#include "SketchObjectSF.h"
-#include "SketchObject.h"
-#include "SketchGeometryExtension.h"
-#include "ExternalGeometryExtension.h"
-#include "SolverGeometryExtension.h"
-#include "GeometryFacade.h"
-#include "ExternalGeometryFacade.h"
 #include "Constraint.h"
-#include "Sketch.h"
 #include "ConstraintPy.h"
-#include "SketchPy.h"
-#include "SketchGeometryExtensionPy.h"
+#include "ExternalGeometryExtension.h"
 #include "ExternalGeometryExtensionPy.h"
-#include "GeometryFacadePy.h"
+#include "ExternalGeometryFacade.h"
 #include "ExternalGeometryFacadePy.h"
+#include "GeometryFacade.h"
+#include "GeometryFacadePy.h"
 #include "PropertyConstraintList.h"
+#include "Sketch.h"
+#include "SketchGeometryExtension.h"
+#include "SketchGeometryExtensionPy.h"
+#include "SketchObject.h"
+#include "SketchObjectSF.h"
+#include "SketchPy.h"
+#include "SolverGeometryExtension.h"
 
 
 namespace Sketcher {

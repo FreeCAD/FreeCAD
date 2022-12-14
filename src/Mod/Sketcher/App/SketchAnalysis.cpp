@@ -21,34 +21,27 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-# include <Standard_math.hxx>
+# include <cmath>
+
 # include <BRep_Tool.hxx>
 # include <gp_Pnt.hxx>
 # include <Precision.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
-# include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 # include <TopExp.hxx>
-# include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
-# include <TopoDS_Edge.hxx>
+# include <TopoDS_Shape.hxx>
 # include <TopoDS_Vertex.hxx>
-# include <algorithm>
-# include <cmath>
+# include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 #endif
 
-#include <Base/Console.h>
 #include <App/Document.h>
-
-#include <Mod/Sketcher/App/Constraint.h>
-#include <Mod/Sketcher/App/SketchObject.h>
-#include <Mod/Sketcher/App/GeometryFacade.h>
-#include <Mod/Part/App/Geometry.h>
+#include <Base/Console.h>
 
 #include "SketchAnalysis.h"
+#include "GeometryFacade.h"
+#include "SketchObject.h"
+
 
 using namespace Sketcher;
 

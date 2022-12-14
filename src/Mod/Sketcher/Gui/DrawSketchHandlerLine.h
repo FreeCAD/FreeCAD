@@ -19,13 +19,11 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-
-
 #ifndef SKETCHERGUI_DrawSketchHandlerLine_H
 #define SKETCHERGUI_DrawSketchHandlerLine_H
 
 #include "GeometryCreationMode.h"
-#include "Utils.h"
+
 
 namespace SketcherGui {
 

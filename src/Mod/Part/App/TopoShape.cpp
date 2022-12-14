@@ -1099,10 +1099,10 @@ void TopoShape::exportFaceSet(double dev, double ca,
             builder.addNode(material);
         }
 
-        builder.beginPoints();
-        builder.addPoints(vertices);
-        builder.endPoints();
-        builder.addIndexedFaceSet(indices);
+        Base::Coordinate3Item coords{vertices};
+        builder.addNode(coords);
+        Base::IndexedFaceSetItem faceSet{indices};
+        builder.addNode(faceSet);
         builder.endSeparator();
     }
     builder.endSeparator();
@@ -1142,7 +1142,7 @@ void TopoShape::exportLineSet(std::ostream& str) const
 
         Base::DrawStyle drawStyle;
         drawStyle.lineWidth = 2.0F;
-        builder.addLineSet(vertices, drawStyle, Base::ColorRGB{0, 0, 0});
+        builder.addNode(Base::MultiLineItem{vertices, drawStyle, Base::ColorRGB{0, 0, 0}});
     }
 
     builder.endSeparator();

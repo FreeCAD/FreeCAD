@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef __PRECOMPILED_GUI__
 #define __PRECOMPILED_GUI__
 
@@ -33,41 +32,34 @@
 #ifdef _PreComp_
 
 // standard
-#include <iostream>
-#include <cassert>
+#include <cfloat>
 #include <cmath>
-
 #include <cstdlib>
 
 // STL
-#include <vector>
-#include <map>
-#include <string>
-#include <list>
-#include <set>
 #include <algorithm>
-#include <stack>
-#include <queue>
 #include <bitset>
+#include <functional>
+#include <map>
+#include <memory>
+#include <vector>
 
 // Boost
 #include <boost/math/special_functions/fpclassify.hpp>
-#include <boost/bind/bind.hpp>
-#include <boost/scoped_ptr.hpp>
 
 #ifdef FC_OS_WIN32
 # define NOMINMAX
 # include <windows.h>
 #endif
 
-// OCC
-#include <Standard_Version.hxx>
-#include <GC_MakeEllipse.hxx>
+// OpenCasCade
 #include <BRep_Tool.hxx>
+#include <GC_MakeEllipse.hxx>
 #include <gp_Pnt.hxx>
 #include <Precision.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
+#include <Standard_Version.hxx>
 #include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
@@ -75,43 +67,29 @@
 #include <TopoDS_Shape.hxx>
 #include <TopoDS_Vertex.hxx>
 
-// Qt Toolkit
-#ifndef __QtAll__
-# include <Gui/QtAll.h>
-#endif
-
+// Qt
+# include <QApplication>
+# include <QCursor>
+# include <QDebug>
 # include <QGuiApplication>
+# include <QInputDialog>
+# include <QKeyEvent>
+# include <QLocale>
+# include <QMenu>
 # include <QMessageBox>
-#include <qdebug.h>
-#include <QString>
+# include <QPainter>
+# include <QPixmapCache>
+# include <QRegularExpression>
+# include <QScreen>
+# include <QShortcut>
+# include <QString>
+# include <QStyledItemDelegate>
+# include <QTextStream>
 
 // all of Inventor
 #ifndef __InventorAll__
 # include <Gui/InventorAll.h>
 #endif
-
-#include <Inventor/SbImage.h>
-#include <Inventor/sensors/SoSensor.h>
-#include <Inventor/actions/SoGetMatrixAction.h>
-#include <Inventor/elements/SoFontNameElement.h>
-#include <Inventor/elements/SoFontSizeElement.h>
-#include <Inventor/elements/SoModelMatrixElement.h>
-#include <Inventor/elements/SoProjectionMatrixElement.h>
-#include <Inventor/elements/SoViewingMatrixElement.h>
-#include <Inventor/elements/SoViewVolumeElement.h>
-#include <Inventor/elements/SoViewportRegionElement.h>
-#include <Inventor/actions/SoGetMatrixAction.h>
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/elements/SoFocalDistanceElement.h>
-#include <Inventor/elements/SoModelMatrixElement.h>
-#include <Inventor/elements/SoProjectionMatrixElement.h>
-#include <Inventor/elements/SoViewingMatrixElement.h>
-#include <Inventor/elements/SoViewVolumeElement.h>
-#include <Inventor/elements/SoViewportRegionElement.h>
-#include <Inventor/nodes/SoCamera.h>
-#include <Inventor/nodes/SoInfo.h>
-#include <Inventor/SbTime.h>
-
 
 #endif //_PreComp_
 

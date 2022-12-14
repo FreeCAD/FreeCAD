@@ -23,12 +23,12 @@
 #ifndef SKETCHER_SOLVERGEOMETRYEXTENSION_H
 #define SKETCHER_SOLVERGEOMETRYEXTENSION_H
 
+#include <Base/Exception.h>
 #include <Mod/Part/App/GeometryExtension.h>
 #include <Mod/Sketcher/SketcherGlobal.h>
 
 #include "GeoEnum.h"
 
-#include <Base/Exception.h>
 
 namespace Sketcher
 {

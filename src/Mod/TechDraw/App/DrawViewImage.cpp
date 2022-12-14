@@ -21,7 +21,6 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <iomanip>
 # include <sstream>
@@ -31,8 +30,8 @@
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
 
-#include "DrawViewImage.h"
 #include "DrawUtil.h"
+#include "DrawViewImage.h"
 
 
 using namespace TechDraw;
@@ -46,13 +45,13 @@ PROPERTY_SOURCE(TechDraw::DrawViewImage, TechDraw::DrawView)
 
 DrawViewImage::DrawViewImage()
 {
-    static const char *vgroup = "Image";
+    static const char* vgroup = "Image";
 
     ADD_PROPERTY_TYPE(ImageFile, (""), vgroup, App::Prop_None, "The file containing this bitmap");
     ADD_PROPERTY_TYPE(ImageIncluded, (""), vgroup, App::Prop_None,
-                                            "Embedded image file. System use only.");   // n/a to end users
-    ADD_PROPERTY_TYPE(Width      ,(100), vgroup, App::Prop_None, "The width of cropped image");
-    ADD_PROPERTY_TYPE(Height     ,(100), vgroup, App::Prop_None, "The height of cropped image");
+                      "Embedded image file. System use only.");// n/a to end users
+    ADD_PROPERTY_TYPE(Width, (100), vgroup, App::Prop_None, "The width of cropped image");
+    ADD_PROPERTY_TYPE(Height, (100), vgroup, App::Prop_None, "The height of cropped image");
 
     ScaleType.setValue("Custom");
     Scale.setStatus(App::Property::Hidden, false);
@@ -66,6 +65,7 @@ void DrawViewImage::onChanged(const App::Property* prop)
 {
     if (isRestoring()) {
         TechDraw::DrawView::onChanged(prop);
+        return;
     }
 
     if (prop == &ImageFile) {
@@ -76,20 +76,17 @@ void DrawViewImage::onChanged(const App::Property* prop)
     TechDraw::DrawView::onChanged(prop);
 }
 
-App::DocumentObjectExecReturn *DrawViewImage::execute()
+App::DocumentObjectExecReturn* DrawViewImage::execute()
 {
     requestPaint();
     return DrawView::execute();
 }
 
-QRectF DrawViewImage::getRect() const
-{
-    return { 0.0, 0.0, Width.getValue(), Height.getValue()};
-}
+QRectF DrawViewImage::getRect() const { return {0.0, 0.0, Width.getValue(), Height.getValue()}; }
 
 void DrawViewImage::replaceImageIncluded(std::string newImageFile)
 {
-//    Base::Console().Message("DVI::replaceImageIncluded(%s)\n", newImageFile.c_str());
+    //    Base::Console().Message("DVI::replaceImageIncluded(%s)\n", newImageFile.c_str());
     if (newImageFile.empty()) {
         return;
     }
@@ -97,27 +94,30 @@ void DrawViewImage::replaceImageIncluded(std::string newImageFile)
     Base::FileInfo tfi(newImageFile);
     if (tfi.isReadable()) {
         ImageIncluded.setValue(newImageFile.c_str());
-    } else {
+    }
+    else {
         throw Base::RuntimeError("Could not read the new image file");
     }
 }
 
 void DrawViewImage::setupObject()
 {
-//    Base::Console().Message("DVI::setupObject()\n");
+    //    Base::Console().Message("DVI::setupObject()\n");
     replaceImageIncluded(ImageFile.getValue());
 }
 
 // Python Drawing feature ---------------------------------------------------------
 
-namespace App {
+namespace App
+{
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawViewImagePython, TechDraw::DrawViewImage)
-template<> const char* TechDraw::DrawViewImagePython::getViewProviderName() const {
+template<> const char* TechDraw::DrawViewImagePython::getViewProviderName() const
+{
     return "TechDrawGui::ViewProviderImage";
 }
 /// @endcond
 
 // explicit template instantiation
 template class TechDrawExport FeaturePythonT<TechDraw::DrawViewImage>;
-}
+}// namespace App

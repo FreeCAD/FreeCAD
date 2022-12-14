@@ -104,6 +104,8 @@ SET(Core_SRCS
     Core/IO/ReaderOBJ.h
     Core/IO/Writer3MF.cpp
     Core/IO/Writer3MF.h
+    Core/IO/WriterInventor.cpp
+    Core/IO/WriterInventor.h
     Core/IO/WriterOBJ.cpp
     Core/IO/WriterOBJ.h
 )

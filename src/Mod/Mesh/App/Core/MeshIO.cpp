@@ -49,6 +49,7 @@
 #include "IO/Reader3MF.h"
 #include "IO/ReaderOBJ.h"
 #include "IO/Writer3MF.h"
+#include "IO/WriterInventor.h"
 #include "IO/WriterOBJ.h"
 #include <zipios++/gzipoutputstream.h>
 #include <zipios++/zipoutputstream.h>
@@ -2671,79 +2672,9 @@ triplot t xt yt zt 'b'
 /** Writes an OpenInventor file. */
 bool MeshOutput::SaveInventor (std::ostream &rstrOut) const
 {
-    if (!rstrOut || rstrOut.bad() || (_rclMesh.CountFacets() == 0))
-        return false;
-
-    MeshFacetIterator clIter(_rclMesh), clEnd(_rclMesh);
-    clIter.Transform(this->_transform);
-    MeshPointIterator clPtIter(_rclMesh), clPtEnd(_rclMesh);
-    clPtIter.Transform(this->_transform);
-    const MeshGeomFacet* pclFacet;
-
-    Base::SequencerLauncher seq("Saving...", _rclMesh.CountFacets() + 1);
-    rstrOut.precision(6);
-    rstrOut.setf(std::ios::fixed | std::ios::showpoint);
-
-    // Header info
-    Base::InventorBuilder builder(rstrOut);
-    builder.beginSeparator();
-    Base::InfoItem info{"Created by FreeCAD <http://www.freecadweb.org>"};
-    builder.addNode(info);
-    std::stringstream str;
-    str << "Triangle mesh contains "
-        << _rclMesh.CountPoints()
-        << " vertices and "
-        << _rclMesh.CountFacets()
-        << " faces";
-    Base::LabelItem label{str.str().c_str()};
-    builder.addNode(label);
-
-    // write out the normals of the facets
-    builder.beginNormal();
-
-    clIter.Begin();
-    clEnd.End();
-
-    while (clIter < clEnd) {
-        pclFacet = &(*clIter);
-        builder.addPoint(pclFacet->GetNormal());
-        ++clIter;
-
-        seq.next(true); // allow to cancel
-    }
-
-    builder.endNormal();
-
-    // coordinates of the vertices
-    builder.addNormalBinding("PER_FACE");
-
-    builder.beginPoints();
-
-    clPtIter.Begin();
-    clPtEnd.End();
-
-    while (clPtIter < clPtEnd) {
-        builder.addPoint(*clPtIter);
-        ++clPtIter;
-        seq.next(true); // allow to cancel
-    }
-
-    builder.endPoints();
-
-    // and finally the facets with their point indices
-    const MeshFacetArray& faces = _rclMesh.GetFacets();
-    std::vector<int> indices;
-    indices.reserve(4*faces.size());
-    for (MeshFacetArray::_TConstIterator it = faces.begin(); it != faces.end(); ++it) {
-        indices.push_back(static_cast<int>(it->_aulPoints[0]));
-        indices.push_back(static_cast<int>(it->_aulPoints[1]));
-        indices.push_back(static_cast<int>(it->_aulPoints[2]));
-        indices.push_back(-1);
-    }
-    builder.addIndexedFaceSet(indices);
-    builder.endSeparator();
-
-    return true;
+    WriterInventor writer(_rclMesh, _material);
+    writer.SetTransform(_transform);
+    return writer.Save(rstrOut);
 }
 
 /** Writes an X3D file. */

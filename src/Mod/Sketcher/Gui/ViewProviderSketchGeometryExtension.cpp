@@ -22,11 +22,10 @@
 
 #include "PreCompiled.h"
 
-#include <Base/Writer.h>
-#include <Base/Reader.h>
 #include <Base/Exception.h>
 
 #include "ViewProviderSketchGeometryExtension.h"
+
 
 using namespace SketcherGui;
 

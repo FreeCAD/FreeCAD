@@ -256,6 +256,19 @@ private:
     ColorRGB rgb;
 };
 
+class BaseExport MultiLineItem : public NodeItem
+{
+public:
+    /// add a line defined by a list of points whereat always a pair (i.e. a point and the following point) builds a line.
+    explicit MultiLineItem(const std::vector<Vector3f>& points, DrawStyle drawStyle, const ColorRGB& rgb = ColorRGB{1.0F, 1.0F, 1.0F});
+    void write(InventorOutput& out) const override;
+
+private:
+    std::vector<Vector3f> points;
+    DrawStyle drawStyle;
+    ColorRGB rgb;
+};
+
 class BaseExport ArrowItem : public NodeItem
 {
 public:
@@ -264,6 +277,19 @@ public:
 
 private:
     Base::Line3f line;
+    DrawStyle drawStyle;
+    ColorRGB rgb;
+};
+
+class BaseExport BoundingBoxItem : public NodeItem
+{
+public:
+    explicit BoundingBoxItem(const Vector3f& pt1, const Vector3f& pt2, DrawStyle drawStyle, const ColorRGB& rgb = ColorRGB{1.0F, 1.0F, 1.0F});
+    void write(InventorOutput& out) const override;
+
+private:
+    Vector3f pt1;
+    Vector3f pt2;
     DrawStyle drawStyle;
     ColorRGB rgb;
 };
@@ -308,6 +334,7 @@ class BaseExport MaterialBindingItem : public NodeItem
 {
 public:
     MaterialBindingItem() = default;
+    explicit MaterialBindingItem(BindingElement::Binding);
     void setValue(BindingElement::Binding bind);
     void write(InventorOutput& out) const override;
 
@@ -321,6 +348,8 @@ private:
 class BaseExport DrawStyleItem : public NodeItem
 {
 public:
+    DrawStyleItem() = default;
+    explicit DrawStyleItem(DrawStyle);
     void setValue(DrawStyle value);
     void write(InventorOutput& out) const override;
 
@@ -379,13 +408,60 @@ public:
 };
 
 /*!
+ * \brief The LineSetItem class supports the SoLineSet node.
+ */
+class BaseExport LineSetItem : public NodeItem
+{
+public:
+    void write(InventorOutput& out) const override;
+};
+
+/*!
+ * \brief The FaceSetItem class supports the SoFaceSet node.
+ */
+class BaseExport FaceSetItem : public NodeItem
+{
+public:
+    FaceSetItem(const std::vector<int>&);
+    void write(InventorOutput& out) const override;
+
+private:
+    std::vector<int> indices;
+};
+
+/*!
+ * \brief The IndexedLineSetItem class supports the SoIndexedLineSet node.
+ */
+class BaseExport IndexedLineSetItem : public NodeItem
+{
+public:
+    IndexedLineSetItem(const std::vector<int>&);
+    void write(InventorOutput& out) const override;
+
+private:
+    std::vector<int> indices;
+};
+
+/*!
+ * \brief The IndexedFaceSetItem class supports the SoIndexedFaceSet node.
+ */
+class BaseExport IndexedFaceSetItem : public NodeItem
+{
+public:
+    IndexedFaceSetItem(const std::vector<int>&);
+    void write(InventorOutput& out) const override;
+
+private:
+    std::vector<int> indices;
+};
+
+/*!
  * \brief The NormalItem class supports the SoNormal node.
  */
 class BaseExport NormalItem : public NodeItem
 {
 public:
-    explicit NormalItem() = default;
-    void setVector(const std::vector<Base::Vector3f>& vec);
+    explicit NormalItem(const std::vector<Base::Vector3f>& vec);
     void write(InventorOutput& out) const override;
 
 private:
@@ -451,6 +527,50 @@ private:
     float radius = 2.0F;
 };
 
+/*!
+ * \brief The NurbsSurfaceItem class supports the SoNurbsSurface node.
+ */
+class BaseExport NurbsSurfaceItem : public NodeItem
+{
+public:
+    void setControlPoints(int numU, int numV);
+    void setKnotVector(const std::vector<float>&, const std::vector<float>&);
+    void write(InventorOutput& out) const override;
+
+private:
+    int numUControlPoints = 0;
+    int numVControlPoints = 0;
+    std::vector<float> uKnotVector;
+    std::vector<float> vKnotVector;
+};
+
+/*!
+ * \brief The Text2Item class supports the SoText2 node.
+ */
+class BaseExport Text2Item : public NodeItem
+{
+public:
+    Text2Item(const std::string&);
+    void write(InventorOutput& out) const override;
+
+private:
+    std::string string;
+};
+
+/*!
+ * \brief The TransformItem class supports the SoTransform node.
+ */
+class BaseExport TransformItem : public NodeItem
+{
+public:
+    explicit TransformItem(const Base::Placement&);
+    explicit TransformItem(const Base::Matrix4D&);
+    void write(InventorOutput& out) const override;
+
+private:
+    Base::Placement placement;
+};
+
 /**
  * This class does basically the same as Builder3D except that it writes the data
  * directly into a given stream without buffering the output data in a string stream.
@@ -484,140 +604,7 @@ public:
      * \brief Closes the last added separator node.
      */
     void endSeparator();
-    /*!
-     * \brief Sets an info node.
-     * \param str - text set to the info node
-     */
-    void addInfo(const char* str);
-    /*!
-     * \brief Sets a label node.
-     * \param str - text set to the label node
-     */
-    void addLabel(const char* str);
     /** @name Appearance handling */
-    //@{
-    /*!
-     * \brief Sets a base color node. The colors are in the range [0, 1].
-     */
-    void addBaseColor(const ColorRGB& rgb);
-    /*!
-     * \brief Sets a material node. The colors are in the range [0, 1].
-     */
-    void addMaterial(const ColorRGB& rgb, float transparency=0);
-    /*!
-     * \brief Starts a material node. The node must be closed with \ref endMaterial
-     * and the colors must be added with \ref addColor().
-     */
-    void beginMaterial();
-    /*!
-     * \brief Closes a material node.
-     */
-    void endMaterial();
-    /*!
-     * \brief Adds a color to a material node. The colors are in the range [0, 1].
-     */
-    void addColor(const ColorRGB& rgb);
-    /*!
-     * \brief Sets a material binding node.
-     * \param binding - binding of the material.
-     */
-    void addMaterialBinding(BindingElement);
-    /*!
-     * \brief Sets a draw style node.
-     */
-    void addDrawStyle(DrawStyle drawStyle);
-    /*!
-     * \brief Sets a shape hints node.
-     * \param crease - the crease angle in radians
-     */
-    void addShapeHints(float creaseAngle=0.0f);
-    /*!
-     * \brief Sets a polygon offset node.
-     */
-    void addPolygonOffset(PolygonOffset polygonOffset);
-    //@}
-
-    /** @name Add coordinates */
-    //@{
-    /// add a single point
-    void addPoint(const Vector3f& pnt);
-    /// add a list of points
-    void addPoints(const std::vector<Vector3f>& points);
-    //@}
-
-    /** @name Point set handling */
-    //@{
-    /// starts a point set
-    void beginPoints();
-    /// ends the points set operation
-    void endPoints();
-    /// add an SoPointSet node
-    void addPointSet();
-    /// add a single point (without startPoints() & endPoints() )
-    void addSinglePoint(const Base::Vector3f& point, DrawStyle drawStyle, const ColorRGB& color = ColorRGB{1.0F, 1.0F, 1.0F});
-    //@}
-
-    /** @name Normal handling */
-    //@{
-    /// starts a point set
-    void beginNormal();
-    /// ends the points set operation
-    void endNormal();
-    /// add normal binding node
-    void addNormalBinding(const char*);
-    //@}
-
-    /** @name Line/Direction handling */
-    //@{
-    /// add a line
-    void addSingleLine(const Base::Line3f& line, DrawStyle drawStyle, const ColorRGB& rgb = ColorRGB{1.0F, 1.0F, 1.0F});
-    /// add a arrow
-    void addSingleArrow(const Base::Line3f& line, DrawStyle drawStyle, const ColorRGB& rgb = ColorRGB{1.0F, 1.0F, 1.0F});
-    /// add a line defined by a list of points whereat always a pair (i.e. a point and the following point) builds a line.
-    void addLineSet(const std::vector<Vector3f>& points, DrawStyle drawStyle, const ColorRGB& rgb = ColorRGB{1.0F, 1.0F, 1.0F});
-    /// add an SoLineSet node
-    void addLineSet();
-    //@}
-
-    /** @name Triangle handling */
-    //@{
-    /// add a (filled) triangle defined by 3 vectors
-    void addSingleTriangle(const Triangle& triangle, DrawStyle drawStyle, const ColorRGB& rgb = ColorRGB{1.0F, 1.0F, 1.0F});
-    void addSinglePlane(const Vector3f& base, const Vector3f& eX, const Vector3f& eY, float length, float width, DrawStyle drawStyle,
-                        const ColorRGB& rgb = ColorRGB{1.0F, 1.0F, 1.0F});
-    void addIndexedFaceSet(const std::vector<int>& indices);
-    void addFaceSet(const std::vector<int>& vertices);
-    //@}
-
-    /** @name Surface handling */
-    //@{
-    void addNurbsSurface(const std::vector<Base::Vector3f>& controlPoints,
-        int numUControlPoints, int numVControlPoints,
-        const std::vector<float>& uKnots, const std::vector<float>& vKnots);
-    void addCone(float bottomRadius, float height);
-    void addCylinder(float radius, float height);
-    void addSphere(float radius);
-    //@}
-
-    /** @name Bounding Box handling */
-    //@{
-    void addBoundingBox(const Vector3f& pt1, const Vector3f& pt2, DrawStyle drawStyle,
-                        const ColorRGB& rgb = ColorRGB{1.0F, 1.0F, 1.0F});
-    //@}
-
-    /** @name Transformation */
-    //@{
-    /// adds a transformation
-    void addTransformation(const Matrix4D&);
-    void addTransformation(const Base::Placement&);
-    //@}
-
-    /** @name Text handling */
-    //@{
-    /// add a text
-    void addText(const char * text);
-    void addText(const Vector3f &vec,const char * text, const ColorRGB& rgb = ColorRGB{1.0F, 1.0F, 1.0F});
-    //@}
 
 private:
     void increaseIndent();

@@ -423,7 +423,7 @@ void TaskComplexSection::enableAll(bool enable)
     ui->cmbScaleType->setEnabled(enable);
     QString qScaleType = ui->cmbScaleType->currentText();
     //Allow or prevent scale changing initially
-    if (qScaleType == QString::fromUtf8("Custom"))	{
+    if (qScaleType == QString::fromUtf8("Custom"))  {
         ui->sbScale->setEnabled(true);
     }
     else {
@@ -746,7 +746,8 @@ bool TaskComplexSection::reject()
     Gui::Command::updateActive();
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
 
-    return false;}
+    return false;
+}
 
 void TaskComplexSection::changeEvent(QEvent* event)
 {

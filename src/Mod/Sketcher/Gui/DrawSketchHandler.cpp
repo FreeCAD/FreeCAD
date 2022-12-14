@@ -20,44 +20,32 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-# include <Standard_math.hxx>
-# include <Inventor/nodes/SoTranslation.h>
-# include <Inventor/nodes/SoText2.h>
-# include <Inventor/nodes/SoFont.h>
-# include <QPainter>
-# include <QGuiApplication>
 # include <cmath>
+
+# include <QGuiApplication>
+# include <QPainter>
 #endif  // #ifndef _PreComp_
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <Base/Console.h>
 #include <Base/Exception.h>
-#include <Base/Interpreter.h>
-#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/CommandT.h>
-#include <Gui/Document.h>
-#include <Gui/Macro.h>
 #include <Gui/MainWindow.h>
-#include <Gui/View3DInventorViewer.h>
 #include <Gui/View3DInventor.h>
-
-#include <Mod/Part/App/Geometry.h>
+#include <Gui/View3DInventorViewer.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
 #include "DrawSketchHandler.h"
-#include "ViewProviderSketch.h"
 #include "CommandConstraints.h"
 #include "Utils.h"
+#include "ViewProviderSketch.h"
+
 
 using namespace SketcherGui;
 using namespace Sketcher;
-
 
 /************************************ Attorney *******************************************/
 

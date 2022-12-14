@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2022 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,45 +20,42 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_EditDatumDialog_H
-#define SKETCHERGUI_EditDatumDialog_H
 
-#include <memory>
-#include <QObject>
+#ifndef MESH_IO_WRITER_IV_H
+#define MESH_IO_WRITER_IV_H
 
+#include <Mod/Mesh/MeshGlobal.h>
+#include <Mod/Mesh/App/Core/MeshIO.h>
 
-namespace Sketcher {
-class Constraint;
-class SketchObject;
-}
+namespace MeshCore
+{
 
-namespace SketcherGui {
-class ViewProviderSketch;
-class Ui_InsertDatum;
-
-class EditDatumDialog : public QObject {
-    Q_OBJECT
-
+/** Saves the mesh object into OpenInventor v2.1 format. */
+class MeshExport WriterInventor
+{
 public:
-    EditDatumDialog(ViewProviderSketch* vp, int ConstrNbr);
-    EditDatumDialog(Sketcher::SketchObject* pcSketch, int ConstrNbr);
-    ~EditDatumDialog() override;
-
-    void exec(bool atCursor=true);
+    /*!
+     * \brief WriterInventor
+     */
+    explicit WriterInventor(const MeshKernel& kernel, const Material*);
+    /*!
+     * \brief Apply a transformation for the exported mesh.
+     */
+    void SetTransform(const Base::Matrix4D&);
+    /*!
+     * \brief Save the mesh to an OpenInventor file.
+     * \return true if the data could be written successfully, false otherwise.
+     */
+    bool Save(std::ostream&);
 
 private:
-    Sketcher::SketchObject* sketch;
-    Sketcher::Constraint* Constr;
-    int ConstrNbr;
-    std::unique_ptr<Ui_InsertDatum> ui_ins_datum;
-
-private Q_SLOTS:
-    void accepted();
-    void rejected();
-    void drivingToggled(bool);
-    void datumChanged();
-    void formEditorOpened(bool);
+    const MeshKernel& _kernel;
+    const Material* _material;
+    Base::Matrix4D _transform;
+    bool apply_transform;
 };
 
-}
-#endif // SKETCHERGUI_DrawSketchHandler_H
+} // namespace MeshCore
+
+
+#endif  // MESH_IO_WRITER_IV_H

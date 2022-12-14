@@ -20,26 +20,24 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
+# include <QMessageBox>
 # include <QPainter>
 # include <QPixmap>
-# include <QMessageBox>
 #endif
+
+#include <App/Application.h>
+#include <Base/Console.h>
+#include <Base/Interpreter.h>
+#include <Gui/Command.h>
 
 #include "SketcherSettings.h"
 #include "ui_SketcherSettings.h"
-#include "ui_SketcherSettingsDisplay.h"
 #include "ui_SketcherSettingsColors.h"
+#include "ui_SketcherSettingsDisplay.h"
 #include "TaskSketcherGeneral.h"
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <App/Application.h>
-#include <Gui/PrefWidgets.h>
-#include <Gui/Inventor/MarkerBitmaps.h>
-#include <Gui/Command.h>
+
 
 using namespace SketcherGui;
 

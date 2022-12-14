@@ -21,7 +21,6 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # ifdef FC_OS_WIN32
 # include <windows.h>
@@ -33,30 +32,26 @@
 # else
 # include <GL/gl.h>
 # endif
-# include <cfloat>
+
 # include <algorithm>
+# include <cfloat>
+# include <cmath>
 # include <QFontMetrics>
 # include <QPainter>
-# include <QPen>
+
 # include <Inventor/SoPrimitiveVertex.h>
 # include <Inventor/actions/SoGLRenderAction.h>
-# include <Inventor/misc/SoState.h>
-# include <cmath>
-# include <Inventor/actions/SoGetMatrixAction.h>
 # include <Inventor/elements/SoFocalDistanceElement.h>
-# include <Inventor/elements/SoFontNameElement.h>
-# include <Inventor/elements/SoFontSizeElement.h>
-# include <Inventor/elements/SoModelMatrixElement.h>
-# include <Inventor/elements/SoProjectionMatrixElement.h>
-# include <Inventor/elements/SoViewingMatrixElement.h>
-# include <Inventor/elements/SoViewVolumeElement.h>
 # include <Inventor/elements/SoViewportRegionElement.h>
+# include <Inventor/elements/SoViewVolumeElement.h>
+# include <Inventor/misc/SoState.h>
 #endif // _PreComp_
 
-
-#include "SoDatumLabel.h"
 #include <Gui/BitmapFactory.h>
 #include <Gui/Tools.h>
+
+#include "SoDatumLabel.h"
+
 
 #define ZCONSTR 0.006f
 

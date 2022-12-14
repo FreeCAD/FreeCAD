@@ -20,46 +20,36 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoGroup.h>
-# include <Inventor/nodes/SoSwitch.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoMaterialBinding.h>
-
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoLineSet.h>
-# include <Inventor/nodes/SoFont.h>
-
-# include <Inventor/nodes/SoMarkerSet.h>
-# include <Inventor/nodes/SoTranslation.h>
-# include <Inventor/nodes/SoText2.h>
-# include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/details/SoPointDetail.h>
-# include <Inventor/details/SoDetail.h>
-# include <Inventor/details/SoLineDetail.h>
-
-# include <Inventor/nodes/SoAnnotation.h>
-# include <Inventor/nodes/SoImage.h>
-# include <Inventor/nodes/SoInfo.h>
-
-# include <Inventor/actions/SoRayPickAction.h>
-
-# include <Inventor/SbVec3f.h>
-# include <Inventor/SbImage.h>
-
+# include <memory>
+# include <QPainter>
 # include <QRegularExpression>
 
-# include <memory>
+# include <Inventor/SbImage.h>
+# include <Inventor/SbVec3f.h>
+# include <Inventor/SoPickedPoint.h>
+# include <Inventor/nodes/SoAnnotation.h>
+# include <Inventor/nodes/SoDrawStyle.h>
+# include <Inventor/nodes/SoGroup.h>
+# include <Inventor/nodes/SoImage.h>
+# include <Inventor/nodes/SoInfo.h>
+# include <Inventor/nodes/SoMaterial.h>
+# include <Inventor/nodes/SoMaterialBinding.h>
+# include <Inventor/nodes/SoPickStyle.h>
+# include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoTranslation.h>
 #endif  // #ifndef _PreComp_
 
+#include <Base/Converter.h>
+#include <Base/Exception.h>
+#include <Base/Tools.h>
+#include <Base/UnitsApi.h>
+#include <Base/Vector3D.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/Tools.h>
+#include <Gui/Utilities.h>
 #include <Gui/Inventor/SmSwitchboard.h>
-
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Sketcher/App/GeometryFacade.h>
 #include <Mod/Sketcher/App/SolverGeometryExtension.h>
@@ -67,38 +57,12 @@
 #include <Mod/Sketcher/App/Constraint.h>
 #include <Mod/Sketcher/App/GeoList.h>
 
-#include <Base/Exception.h>
-#include <Base/Tools2D.h>
-#include <Base/UnitsApi.h>
-#include <Gui/Utilities.h>
-#include <Base/Converter.h>
-#include <Base/Tools.h>
-
-#include <Base/Vector3D.h>
-
-#include <App/ObjectIdentifier.h>
-
-#include <Gui/SoFCBoundingBox.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Inventor/MarkerBitmaps.h>
-#include <Gui/Tools.h>
-
-#include <qpainter.h>
-
-#include "SoZoomTranslation.h"
+#include "EditModeConstraintCoinManager.h"
 #include "SoDatumLabel.h"
-
-#include "EditModeInformationOverlayCoinConverter.h"
-
-#include "EditModeGeometryCoinConverter.h"
-
-#include "EditModeCoinManager.h"
-
+#include "SoZoomTranslation.h"
 #include "ViewProviderSketch.h"
-
 #include "ViewProviderSketchCoinAttorney.h"
 
-#include "EditModeConstraintCoinManager.h"
 
 using namespace SketcherGui;
 using namespace Sketcher;

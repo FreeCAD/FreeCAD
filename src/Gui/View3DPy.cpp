@@ -1469,9 +1469,7 @@ Py::Object View3DInventorPy::getObjectInfo(const Py::Tuple& args)
             dict.setItem("y", Py::Float(pt[1]));
             dict.setItem("z", Py::Float(pt[2]));
 
-            Gui::Document* doc = getView3DIventorPtr()->getViewer()->getDocument();
-            ViewProvider *vp = doc ? doc->getViewProviderByPathFromHead(Point->getPath())
-                    : getView3DIventorPtr()->getViewer()->getViewProviderByPath(Point->getPath());
+            ViewProvider *vp = getView3DIventorPtr()->getViewer()->getViewProviderByPath(Point->getPath());
             if (vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
                 if (!vp->isSelectable())
                     return ret;
@@ -1570,7 +1568,6 @@ Py::Object View3DInventorPy::getObjectsInfo(const Py::Tuple& args)
         action.apply(getView3DIventorPtr()->getViewer()->getSoRenderManager()->getSceneGraph());
         const SoPickedPointList& pp = action.getPickedPointList();
 
-        Gui::Document* doc = getView3DIventorPtr()->getViewer()->getDocument();
         Py::Object ret = Py::None();
         if (pp.getLength() > 0) {
             Py::List list;
@@ -1582,8 +1579,7 @@ Py::Object View3DInventorPy::getObjectsInfo(const Py::Tuple& args)
                 dict.setItem("y", Py::Float(pt[1]));
                 dict.setItem("z", Py::Float(pt[2]));
 
-                ViewProvider *vp = doc ? doc->getViewProviderByPathFromHead(point->getPath())
-                        : getView3DIventorPtr()->getViewer()->getViewProviderByPath(point->getPath());
+                ViewProvider *vp = getView3DIventorPtr()->getViewer()->getViewProviderByPath(point->getPath());
                 if(vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
                     if(!vp->isSelectable())
                         continue;

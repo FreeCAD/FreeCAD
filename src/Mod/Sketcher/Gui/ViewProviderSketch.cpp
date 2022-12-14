@@ -20,38 +20,25 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-# include <Standard_math.hxx>
-
-# include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/SbBox3f.h>
+# include <Inventor/SbLine.h>
+# include <Inventor/SbTime.h>
 # include <Inventor/SoPickedPoint.h>
+# include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/details/SoPointDetail.h>
 # include <Inventor/events/SoKeyboardEvent.h>
 # include <Inventor/nodes/SoCamera.h>
-# include <Inventor/SbLine.h>
-# include <Inventor/SbTime.h>
 
-/// Qt Include Files
-# include <QAction>
 # include <QApplication>
-# include <QColor>
-# include <QDialog>
-# include <QFont>
-# include <QKeyEvent>
 # include <QMenu>
 # include <QMessageBox>
-# include <QPainter>
 # include <QScreen>
 # include <QTextStream>
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <Base/Console.h>
-#include <Base/Tools.h>
 #include <Base/Vector3D.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -63,27 +50,24 @@
 #include <Gui/Selection.h>
 #include <Gui/SelectionObject.h>
 #include <Gui/SoFCUnifiedSelection.h>
+#include "Gui/ToolBarManager.h"
 #include <Gui/Utilities.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
-#include "Gui/ToolBarManager.h"
-
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Sketcher/App/GeoList.h>
 #include <Mod/Sketcher/App/GeometryFacade.h>
-#include <Mod/Sketcher/App/Sketch.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/Sketcher/App/SolverGeometryExtension.h>
 
 #include "ViewProviderSketch.h"
 #include "DrawSketchHandler.h"
-#include "EditModeCoinManager.h"
 #include "EditDatumDialog.h"
+#include "EditModeCoinManager.h"
 #include "TaskDlgEditSketch.h"
 #include "TaskSketcherValidation.h"
 #include "Utils.h"
 #include "ViewProviderSketchGeometryExtension.h"
-
 
 
 FC_LOG_LEVEL_INIT("Sketch",true,true)

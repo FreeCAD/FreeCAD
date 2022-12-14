@@ -20,14 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef SKETCHER_WORKBENCH_H
 #define SKETCHER_WORKBENCH_H
 
-#include <Gui/Workbench.h>
 #include <Gui/MenuManager.h>
 #include <Gui/ToolBarManager.h>
+#include <Gui/Workbench.h>
+
 #include <Mod/Sketcher/SketcherGlobal.h>
+
 
 namespace SketcherGui {
 

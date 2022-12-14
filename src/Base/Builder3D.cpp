@@ -245,6 +245,30 @@ void InventorFieldWriter::write(const char* fieldName, const std::vector<T>& fie
         out.write() << "]\n";
     }
 }
+
+template<>
+void InventorFieldWriter::write<int>(const char* fieldName, const std::vector<int>& fieldData, InventorOutput& out) const
+{
+    if (fieldData.empty())
+        return;
+
+    out.write() << fieldName << " [\n";
+    out.increaseIndent();
+    std::size_t last_index{fieldData.size()};
+    std::size_t index{};
+    for (auto it : fieldData) {
+        if (index % 8 == 0)
+            out.write();
+        if (index < last_index)
+            out.stream() << it << ", ";
+        else
+            out.stream() << it << " ] \n";
+        if (++index % 8 == 0)
+            out.stream() << '\n';
+    }
+    out.decreaseIndent();
+    out.write() << "]\n";
+}
 }
 
 // -----------------------------------------------------------------------------
@@ -343,6 +367,35 @@ void LineItem::write(InventorOutput& out) const
 
 // -----------------------------------------------------------------------------
 
+MultiLineItem::MultiLineItem(const std::vector<Vector3f>& points, DrawStyle drawStyle, const ColorRGB& rgb)
+    : points{points}
+    , drawStyle{drawStyle}
+    , rgb{rgb}
+{
+
+}
+
+void MultiLineItem::write(InventorOutput& out) const
+{
+    std::string pattern = drawStyle.patternAsString();
+
+    out.write() << "Separator {\n";
+    out.write() << "  Material { diffuseColor " << rgb.red() << " "<< rgb.green() << " "<< rgb.blue() << "}\n";
+    out.write() << "  DrawStyle { lineWidth " << drawStyle.lineWidth << " linePattern " << pattern << " }\n";
+    out.write() << "  Coordinate3 {\n";
+
+    InventorFieldWriter writer;
+    writer.write<Vector3f>("point", points, out);
+
+    out.write() << "  }\n";
+    out.write() << "  LineSet {\n";
+    out.write() << "    numVertices [ -1 ]\n";
+    out.write() << "  }\n";
+    out.write() << "}\n";
+}
+
+// -----------------------------------------------------------------------------
+
 ArrowItem::ArrowItem(const Base::Line3f& line, DrawStyle drawStyle, const ColorRGB& rgb)
     : line(line)
     , drawStyle(drawStyle)
@@ -388,6 +441,54 @@ void ArrowItem::write(InventorOutput& out) const
                 << rot.x << " " << rot.y << " " << rot.z << " " << angle << '\n';
     out.write() << "  }\n";
     out.write() << "  Cone { bottomRadius " << coneRadius << " height " << coneLength << "} \n";
+    out.write() << "}\n";
+}
+
+// -----------------------------------------------------------------------------
+
+BoundingBoxItem::BoundingBoxItem(const Vector3f& pt1, const Vector3f& pt2, DrawStyle drawStyle, const ColorRGB& rgb)
+    : pt1{pt1}
+    , pt2{pt2}
+    , drawStyle{drawStyle}
+    , rgb{rgb}
+{
+
+}
+
+void BoundingBoxItem::write(InventorOutput& out) const
+{
+    std::vector<Base::Vector3f> points(8);
+    points[0].Set(pt1.x, pt1.y, pt1.z);
+    points[1].Set(pt1.x, pt1.y, pt2.z);
+    points[2].Set(pt1.x, pt2.y, pt1.z);
+    points[3].Set(pt1.x, pt2.y, pt2.z);
+    points[4].Set(pt2.x, pt1.y, pt1.z);
+    points[5].Set(pt2.x, pt1.y, pt2.z);
+    points[6].Set(pt2.x, pt2.y, pt1.z);
+    points[7].Set(pt2.x, pt2.y, pt2.z);
+
+    std::vector<int> lineset = {
+        0, 2, 6, 4, 0, -1,
+        1, 5, 7, 3, 1, -1,
+        7, 6, 2, 3, 7, -1,
+        3, 2, 0, 1, 3, -1,
+        5, 1, 0, 4, 5, -1
+    };
+
+    out.write() << "Separator {\n";
+    out.write() << "  Material { diffuseColor " << rgb.red() << " "<< rgb.green() << " "<< rgb.blue() << "}\n";
+    out.write() << "  DrawStyle { lineWidth " << drawStyle.lineWidth << "}\n";
+
+    Coordinate3Item coords{points};
+    out.increaseIndent();
+    coords.write(out);
+    out.decreaseIndent();
+
+    IndexedLineSetItem indexed{lineset};
+    out.increaseIndent();
+    indexed.write(out);
+    out.decreaseIndent();
+
     out.write() << "}\n";
 }
 
@@ -485,6 +586,11 @@ void MaterialItem::writeTransparency(InventorOutput& out) const
 
 // -----------------------------------------------------------------------------
 
+MaterialBindingItem::MaterialBindingItem(BindingElement::Binding bind)
+{
+    value.value = bind;
+}
+
 void MaterialBindingItem::setValue(BindingElement::Binding bind)
 {
     value.value = bind;
@@ -497,6 +603,11 @@ void MaterialBindingItem::write(InventorOutput& out) const
 }
 
 // -----------------------------------------------------------------------------
+
+DrawStyleItem::DrawStyleItem(DrawStyle value)
+    : style{value}
+{
+}
 
 void DrawStyleItem::setValue(DrawStyle value)
 {
@@ -580,9 +691,70 @@ void PointSetItem::write(InventorOutput& out) const
 
 // -----------------------------------------------------------------------------
 
-void NormalItem::setVector(const std::vector<Base::Vector3f>& vec)
+void LineSetItem::write(InventorOutput& out) const
 {
-    vector = vec;
+    out.writeLine("LineSet { }");
+}
+
+// -----------------------------------------------------------------------------
+
+FaceSetItem::FaceSetItem(const std::vector<int>& indices)
+    : indices(indices)
+{
+
+}
+
+void FaceSetItem::write(InventorOutput &out) const
+{
+    out.write() << "FaceSet {\n";
+    out.increaseIndent();
+    InventorFieldWriter writer;
+    writer.write<int>("numVertices", indices, out);
+    out.decreaseIndent();
+    out.write() << "}\n";
+}
+
+// -----------------------------------------------------------------------------
+
+IndexedLineSetItem::IndexedLineSetItem(const std::vector<int>& indices)
+    : indices(indices)
+{
+
+}
+
+void IndexedLineSetItem::write(InventorOutput &out) const
+{
+    out.write() << "IndexedLineSet {\n";
+    out.increaseIndent();
+    InventorFieldWriter writer;
+    writer.write<int>("coordIndex", indices, out);
+    out.decreaseIndent();
+    out.write() << "}\n";
+}
+
+// -----------------------------------------------------------------------------
+
+IndexedFaceSetItem::IndexedFaceSetItem(const std::vector<int>& indices)
+    : indices(indices)
+{
+
+}
+
+void IndexedFaceSetItem::write(InventorOutput &out) const
+{
+    out.write() << "IndexedFaceSet {\n";
+    out.increaseIndent();
+    InventorFieldWriter writer;
+    writer.write<int>("coordIndex", indices, out);
+    out.decreaseIndent();
+    out.write() << "}\n";
+}
+
+// -----------------------------------------------------------------------------
+
+NormalItem::NormalItem(const std::vector<Base::Vector3f>& vec)
+    : vector(vec)
+{
 }
 
 void NormalItem::write(InventorOutput& out) const
@@ -670,6 +842,76 @@ void SphereItem::write(InventorOutput& out) const
 
 // -----------------------------------------------------------------------------
 
+void NurbsSurfaceItem::setControlPoints(int numU, int numV)
+{
+    numUControlPoints = numU;
+    numVControlPoints = numV;
+}
+
+void NurbsSurfaceItem::setKnotVector(const std::vector<float>& uKnots,
+                                     const std::vector<float>& vKnots)
+{
+    uKnotVector = uKnots;
+    vKnotVector = vKnots;
+}
+
+void NurbsSurfaceItem::write(InventorOutput& out) const
+{
+    out.write() << "NurbsSurface {\n";
+    out.write() << "  numUControlPoints " << numUControlPoints << '\n';
+    out.write() << "  numVControlPoints " << numVControlPoints << '\n';
+    out.increaseIndent();
+    InventorFieldWriter writer;
+    writer.write<float>("uKnotVector", uKnotVector, out);
+    writer.write<float>("vKnotVector", vKnotVector, out);
+    out.decreaseIndent();
+    out.write() << "}\n";
+}
+
+// -----------------------------------------------------------------------------
+
+Text2Item::Text2Item(const std::string& string)
+    : string(string)
+{
+
+}
+
+void Text2Item::write(InventorOutput& out) const
+{
+    out.write() << "Text2 { string \"" << string << "\" " << "}\n";
+}
+
+// -----------------------------------------------------------------------------
+
+TransformItem::TransformItem(const Base::Placement& placement)
+    : placement(placement)
+{
+
+}
+
+TransformItem::TransformItem(const Matrix4D& transform)
+{
+    placement.fromMatrix(transform);
+}
+
+void TransformItem::write(InventorOutput& out) const
+{
+    Base::Vector3d translation = placement.getPosition();
+    Base::Vector3d rotationaxis;
+    double angle{};
+    placement.getRotation().getValue(rotationaxis, angle);
+
+    out.write() << "Transform {\n";
+    out.write() << "  translation "
+         << translation.x << " " << translation.y << " " << translation.z << '\n';
+    out.write() << "  rotation "
+         << rotationaxis.x << " " << rotationaxis.y << " " << rotationaxis.z
+         << " " << angle << '\n';
+    out.write() <<  "}" << '\n';
+}
+
+// -----------------------------------------------------------------------------
+
 InventorBuilder::InventorBuilder(std::ostream& output)
   : result(output)
 {
@@ -706,543 +948,6 @@ void InventorBuilder::endSeparator()
 {
     decreaseIndent();
     result << indent << "}\n";
-}
-
-void InventorBuilder::addInfo(const char* text)
-{
-    result << indent << "Info { \n";
-    result << indent << "  string \"" << text << "\"\n";
-    result << indent << "} \n";
-}
-
-void InventorBuilder::addLabel(const char* text)
-{
-    result << indent << "Label { \n";
-    result << indent << "  label \"" << text << "\"\n";
-    result << indent << "} \n";
-}
-
-void InventorBuilder::addBaseColor(const ColorRGB& rgb)
-{
-    result << indent << "BaseColor { \n";
-    result << indent << "  rgb "
-           << rgb.red() << " " << rgb.green() << " " << rgb.blue() << '\n';
-    result << indent << "} \n";
-}
-
-void InventorBuilder::addMaterial(const ColorRGB& rgb, float transparency)
-{
-    result << indent << "Material { \n";
-    result << indent << "  diffuseColor "
-           << rgb.red() << " " << rgb.green() << " " << rgb.blue() << '\n';
-    if (transparency > 0)
-        result << indent << "  transparency " << transparency << '\n';
-    result << indent << "} \n";
-}
-
-void InventorBuilder::beginMaterial()
-{
-    result << indent << "Material { \n";
-    increaseIndent();
-    result << indent << "diffuseColor [\n";
-    increaseIndent();
-}
-
-void InventorBuilder::endMaterial()
-{
-    decreaseIndent();
-    result << indent << "]\n";
-    decreaseIndent();
-    result << indent << "}\n";
-}
-
-void InventorBuilder::addColor(const ColorRGB& rgb)
-{
-    result << rgb.red() << " " << rgb.green() << " " << rgb.blue() << '\n';
-}
-
-void InventorBuilder::addMaterialBinding(BindingElement bind)
-{
-    result << indent << "MaterialBinding { value "
-           << bind.bindingAsString() << " } \n";
-}
-
-void InventorBuilder::addDrawStyle(DrawStyle drawStyle)
-{
-    result << indent << "DrawStyle {\n"
-           << indent << "  style " << drawStyle.styleAsString() << '\n'
-           << indent << "  pointSize " << drawStyle.pointSize << '\n'
-           << indent << "  lineWidth " << drawStyle.lineWidth << '\n'
-           << indent << "  linePattern " << drawStyle.linePattern << '\n'
-           << indent << "}\n";
-}
-
-void InventorBuilder::addShapeHints(float creaseAngle)
-{
-    result << indent << "ShapeHints {\n"
-           << indent << "  creaseAngle " << creaseAngle << '\n'
-           << indent << "}\n";
-}
-
-void InventorBuilder::addPolygonOffset(PolygonOffset polygonOffset)
-{
-    result << indent << "PolygonOffset {\n"
-           << indent << "  factor " << polygonOffset.factor << '\n'
-           << indent << "  units " << polygonOffset.units << '\n'
-           << indent << "  styles " << polygonOffset.styleAsString() << '\n'
-           << indent << "  on " << (polygonOffset.on ? "TRUE" : "FALSE") << '\n'
-           << indent << "}\n";
-}
-
-/**
- * Starts the definition of point set.
- * If possible don't make too many beginPoints() and endPoints() calls.
- * Try to put all points in one set.
- * @see endPoints()
- */
-void InventorBuilder::beginPoints()
-{
-    result << indent << "Coordinate3 { \n";
-    increaseIndent();
-    result << indent << "point [ \n";
-    increaseIndent();
-}
-
-/// insert a point in a point set
-void InventorBuilder::addPoint(const Vector3f& pnt)
-{
-    result << indent << pnt.x << " " << pnt.y << " " << pnt.z << ",\n";
-}
-
-void InventorBuilder::addPoints(const std::vector<Vector3f>& points)
-{
-    for (const auto& pnt : points) {
-        addPoint(pnt);
-    }
-}
-
-/**
- * Ends the point set operations and write the resulting inventor string.
- * @see beginPoints()
- */
-void InventorBuilder::endPoints()
-{
-    decreaseIndent();
-    result << indent << "]\n";
-    decreaseIndent();
-    result << indent << "}\n";
-}
-
-/**
- * Adds an SoPointSet node after creating an SoCordinate3 node with
- * beginPoints() and endPoints().
- * @see beginPoints()
- * @see endPoints()
- */
-void InventorBuilder::addPointSet()
-{
-    result << indent << "PointSet { } \n";
-}
-
-void InventorBuilder::addSinglePoint(const Base::Vector3f &point, DrawStyle drawStyle, const ColorRGB& color)
-{
-    result << indent << "Separator { ";
-    result << indent << "  Material { ";
-    result << indent << "    diffuseColor " << color.red() << " "<< color.green() << " "<< color.blue();
-    result << indent << "  }";
-    result << indent << "  MaterialBinding { value PER_PART } ";
-    result << indent << "  DrawStyle { pointSize " << drawStyle.pointSize << "} ";
-    result << indent << "  Coordinate3 { ";
-    result << indent << "    point [ ";
-    result << point.x << " " << point.y << " " << point.z << ",";
-    result << indent << "    ] ";
-    result << indent << "  }";
-    result << indent << "  PointSet { } ";
-    result << indent <<"}";
-}
-
-/**
- * Adds a SoLineSet node after creating a SoCordinate3 node with
- * beginPoints() and endPoints().
- * @see beginPoints()
- * @see endPoints()
- */
-void InventorBuilder::addLineSet()
-{
-    result << indent << "LineSet { } \n";
-}
-
-void InventorBuilder::addText(const char * text)
-{
-    result << indent << "  Text2 { string \" " << text << "\" " << "} \n";
-}
-
-/**
- * Add a Text with a given position to the 3D set. The origin is the
- * lower leftmost corner.
- * @param pos_x,pos_y,pos_z origin of the text
- * @param text the text to display.
- * @param color text color.
- */
-void InventorBuilder::addText(const Vector3f& pnt, const char * text, const ColorRGB& rgb)
-{
-    result << indent << "Separator { \n"
-           << indent << "  Material { diffuseColor "
-           << rgb.red() << " "<< rgb.green() << " "<< rgb.blue() << "} \n"
-           << indent << "  Transform { translation "
-           << pnt.x << " "<< pnt.y << " "<< pnt.z << "} \n"
-           << indent << "  Text2 { string \" " << text << "\" " << "} \n"
-           << indent << "}\n";
-}
-
-void InventorBuilder::addSingleLine(const Base::Line3f& line, Base::DrawStyle drawStyle, const ColorRGB& rgb)
-{
-    std::string pattern = drawStyle.patternAsString();
-
-    result << "  Separator { \n"
-           << "    Material { diffuseColor " << rgb.red() << " "<< rgb.green() << " "<< rgb.blue() << "} \n"
-           << "    DrawStyle { lineWidth " << drawStyle.lineWidth << " linePattern " << pattern << " } \n"
-           << "    Coordinate3 { \n"
-           << "      point [ "
-           <<        line.p1.x << " " << line.p1.y << " " << line.p1.z << ","
-           <<        line.p2.x << " " << line.p2.y << " " << line.p2.z
-           << " ] \n"
-           << "    } \n"
-           << "    LineSet { } \n"
-           << "  } \n";
-}
-
-void InventorBuilder::addSingleArrow(const Base::Line3f& line, Base::DrawStyle drawStyle, const ColorRGB& rgb)
-{
-    float length = line.Length();
-    float coneLength = length / 10.0F;
-    float coneRadius = coneLength / 2.0F;
-    float sf1 = length - coneLength;
-    float sf2 = length - coneLength/2.0F;
-
-    Vector3f dir = line.GetDirection();
-    dir.Normalize();
-    dir.Scale(sf1, sf1, sf1);
-    Vector3f pt2s = line.p1 + dir;
-    dir.Normalize();
-    dir.Scale(sf2, sf2, sf2);
-    Vector3f cpt = line.p1 + dir;
-
-    Vector3f rot = Vector3f(0.0f, 1.0f, 0.0f) % dir;
-    rot.Normalize();
-    float a = Vector3f(0.0f, 1.0f, 0.0f).GetAngle(dir);
-
-    result << indent << "Separator { \n"
-           << indent << "  Material { diffuseColor "
-           << rgb.red() << " "<< rgb.green() << " "<< rgb.blue() << "} \n"
-           << indent << "  DrawStyle { lineWidth "
-           << drawStyle.lineWidth << "} \n"
-           << indent << "  Coordinate3 { \n"
-           << indent << "    point [ "
-           <<        line.p1.x << " " << line.p1.y << " " << line.p1.z << ","
-           <<        pt2s.x << " " << pt2s.y << " " << pt2s.z
-           << " ] \n"
-           << indent << "  } \n"
-           << indent << "  LineSet { } \n"
-           << indent << "  Transform { \n"
-           << indent << "    translation "
-           << cpt.x << " " << cpt.y << " " << cpt.z << " \n"
-           << indent << "    rotation "
-           << rot.x << " " << rot.y << " " << rot.z << " " << a << '\n'
-           << indent << "  } \n"
-           << indent << "  Cone { bottomRadius " << coneRadius << " height " << coneLength << "} \n"
-           << indent << "} \n";
-}
-
-/** Add a line defined by a list of points whereat always a pair (i.e. a point and the following point) builds a line.
- * The size of the list must then be even.
- */
-void InventorBuilder::addLineSet(const std::vector<Vector3f>& points, DrawStyle drawStyle, const ColorRGB& rgb)
-{
-    std::string pattern = drawStyle.patternAsString();
-
-    result << "  Separator { \n"
-           << "    Material { diffuseColor " << rgb.red() << " "<< rgb.green() << " "<< rgb.blue() << "} \n"
-           << "    DrawStyle { lineWidth " << drawStyle.lineWidth << " linePattern " << pattern << " } \n"
-           << "    Coordinate3 { \n"
-           << "      point [ ";
-    std::vector<Vector3f>::const_iterator it = points.begin();
-    if ( it != points.end() )
-    {
-        result << it->x << " " << it->y << " " << it->z;
-        for ( ++it ; it != points.end(); ++it )
-            result << ",\n          " << it->x << " " << it->y << " " << it->z;
-    }
-
-    result << " ] \n"
-           << "    } \n"
-           << "    LineSet { \n"
-           << "      numVertices [ ";
-    result << " -1 ";
-    result << " ] \n"
-           << "    } \n"
-           << "  } \n";
-}
-
-void InventorBuilder::addIndexedFaceSet(const std::vector<int>& indices)
-{
-    if (indices.size() < 4)
-        return;
-
-    result << indent << "IndexedFaceSet { \n"
-           << indent << "  coordIndex [ \n";
-
-    increaseIndent();
-    increaseIndent();
-    std::vector<int>::const_iterator it_last_f = indices.end()-1;
-    int index=0;
-    for (std::vector<int>::const_iterator it = indices.begin(); it != indices.end(); ++it) {
-        if (index % 8 == 0)
-            result << indent;
-        if (it != it_last_f)
-            result << *it << ", ";
-        else
-            result << *it << " ] \n";
-        if (++index % 8 == 0)
-            result << '\n';
-    }
-    decreaseIndent();
-    decreaseIndent();
-
-    result << indent << "} \n";
-}
-
-void InventorBuilder::addFaceSet(const std::vector<int>& vertices)
-{
-    result << indent << "FaceSet { \n"
-           << indent << "  numVertices [ \n";
-
-    increaseIndent();
-    increaseIndent();
-    std::vector<int>::const_iterator it_last_f = vertices.end()-1;
-    int index=0;
-    for (std::vector<int>::const_iterator it = vertices.begin(); it != vertices.end(); ++it) {
-        if (index % 8 == 0)
-            result << indent;
-        if (it != it_last_f)
-            result << *it << ", ";
-        else
-            result << *it << " ] \n";
-        if (++index % 8 == 0)
-            result << '\n';
-    }
-    decreaseIndent();
-    decreaseIndent();
-
-    result << indent << "} \n";
-}
-
-void InventorBuilder::beginNormal()
-{
-    result << indent << "Normal { \n";
-    increaseIndent();
-    result << indent << "vector [ \n";
-    increaseIndent();
-}
-
-void InventorBuilder::endNormal()
-{
-    decreaseIndent();
-    result << indent << "]\n";
-    decreaseIndent();
-    result << indent << "}\n";
-}
-
-void InventorBuilder::addNormalBinding(const char* binding)
-{
-    result << indent << "NormalBinding {\n"
-           << indent << "  value " << binding << '\n'
-           << indent << "}\n";
-}
-
-void InventorBuilder::addSingleTriangle(const Triangle& triangle, DrawStyle drawStyle, const ColorRGB& rgb)
-{
-    std::string fs = "";
-    if (drawStyle.style == DrawStyle::Style::Filled) {
-        fs = "    FaceSet { } ";
-    }
-
-    result << "  Separator { \n"
-           << "    Material { diffuseColor " << rgb.red() << " "<< rgb.green() << " "<< rgb.blue() << "} \n"
-           << "    DrawStyle { lineWidth " << drawStyle.lineWidth << "} \n"
-           << "    Coordinate3 { \n"
-           << "      point [ "
-           <<        triangle.getPoint1().x << " " << triangle.getPoint1().y << " " << triangle.getPoint1().z << ","
-           <<        triangle.getPoint2().x << " " << triangle.getPoint2().y << " " << triangle.getPoint2().z << ","
-           <<        triangle.getPoint3().x << " " << triangle.getPoint3().y << " " << triangle.getPoint3().z
-           << "] \n"
-           << "    } \n"
-           << "    IndexedLineSet { coordIndex[ 0, 1, 2, 0, -1 ] } \n"
-           << fs << '\n'
-           << "  } \n";
-}
-
-void InventorBuilder::addSinglePlane(const Vector3f& base, const Vector3f& eX, const Vector3f& eY,
-                                     float length, float width, DrawStyle drawStyle, const ColorRGB& rgb)
-{
-    Vector3f pt0 = base;
-    Vector3f pt1 = base + length * eX;
-    Vector3f pt2 = base + length * eX + width * eY;
-    Vector3f pt3 = base + width * eY;
-    std::string fs = "";
-    if (drawStyle.style == DrawStyle::Style::Filled) {
-        fs = "    FaceSet { } ";
-    }
-
-    result << "  Separator { \n"
-           << "    Material { diffuseColor " << rgb.red() << " "<< rgb.green() << " " << rgb.blue() << "} \n"
-           << "    DrawStyle { lineWidth " << drawStyle.lineWidth << "} \n"
-           << "    Coordinate3 { \n"
-           << "      point [ "
-           <<        pt0.x << " " << pt0.y << " " << pt0.z << ","
-           <<        pt1.x << " " << pt1.y << " " << pt1.z << ","
-           <<        pt2.x << " " << pt2.y << " " << pt2.z << ","
-           <<        pt3.x << " " << pt3.y << " " << pt3.z
-           << "] \n"
-           << "    } \n"
-           << "    IndexedLineSet { coordIndex[ 0, 1, 2, 3, 0, -1 ] } \n"
-           << fs << '\n'
-           << "  } \n";
-}
-
-/**
- * The number of control points must be numUControlPoints * numVControlPoints.
- * The order in u or v direction of the NURBS surface is implicitly given by
- * number of elements in uKnots - numUControlPoints or
- * number of elements in vKnots - numVControlPoints.
- */
-void InventorBuilder::addNurbsSurface(const std::vector<Base::Vector3f>& controlPoints,
-                                      int numUControlPoints, int numVControlPoints,
-                                      const std::vector<float>& uKnots,
-                                      const std::vector<float>& vKnots)
-{
-    result << "  Separator { \n"
-           << "    Coordinate3 { \n"
-           << "      point [ ";
-    for (std::vector<Base::Vector3f>::const_iterator it =
-        controlPoints.begin(); it != controlPoints.end(); ++it) {
-        if (it != controlPoints.begin())
-            result << ",\n          ";
-        result << it->x << " " << it->y << " " << it->z;
-    }
-
-    result << " ]\n"
-           << "    }\n";
-    result << "    NurbsSurface { \n"
-           << "      numUControlPoints " << numUControlPoints << '\n'
-           << "      numVControlPoints " << numVControlPoints << '\n'
-           << "      uKnotVector [ ";
-    int index = 0;
-    for (std::vector<float>::const_iterator it = uKnots.begin(); it != uKnots.end(); ++it) {
-        result << *it;
-        index++;
-        if ((it+1) < uKnots.end()) {
-            if (index % 4 == 0)
-                result << ",\n          ";
-            else
-                result << ", ";
-        }
-    }
-    result << " ]\n"
-           << "      vKnotVector [ ";
-    for (std::vector<float>::const_iterator it = vKnots.begin(); it != vKnots.end(); ++it) {
-        result << *it;
-        index++;
-        if ((it+1) < vKnots.end()) {
-            if (index % 4 == 0)
-                result << ",\n          ";
-            else
-                result << ", ";
-        }
-    }
-    result << " ]\n"
-           << "    }\n"
-           << "  }\n";
-}
-
-void InventorBuilder::addCone(float bottomRadius, float height)
-{
-    result << indent << "  Cone { bottomRadius " << bottomRadius << " height " << height << "} \n";
-}
-
-void InventorBuilder::addCylinder(float radius, float height)
-{
-    result << indent << "Cylinder {\n"
-           << indent << "  radius " << radius << "\n"
-           << indent << "  height " << height << "\n"
-           << indent << "  parts (SIDES | TOP | BOTTOM)\n"
-           << indent << "}\n";
-}
-
-void InventorBuilder::addSphere(float radius)
-{
-    result << indent << "Sphere {\n"
-           << indent << "  radius " << radius << "\n"
-           << indent << "}\n";
-}
-
-void InventorBuilder::addBoundingBox(const Vector3f& pt1, const Vector3f& pt2, DrawStyle drawStyle, const ColorRGB& rgb)
-{
-    Base::Vector3f pt[8];
-    pt[0].Set(pt1.x, pt1.y, pt1.z);
-    pt[1].Set(pt1.x, pt1.y, pt2.z);
-    pt[2].Set(pt1.x, pt2.y, pt1.z);
-    pt[3].Set(pt1.x, pt2.y, pt2.z);
-    pt[4].Set(pt2.x, pt1.y, pt1.z);
-    pt[5].Set(pt2.x, pt1.y, pt2.z);
-    pt[6].Set(pt2.x, pt2.y, pt1.z);
-    pt[7].Set(pt2.x, pt2.y, pt2.z);
-
-    result << "  Separator { \n"
-           << "    Material { diffuseColor " << rgb.red() << " "<< rgb.green() << " "<< rgb.blue() << "} \n"
-           << "    DrawStyle { lineWidth " << drawStyle.lineWidth << "} \n"
-           << "    Coordinate3 { \n"
-           << "      point [ "
-           << "        " << pt[0].x << " " << pt[0].y << " " << pt[0].z << ",\n"
-           << "        " << pt[1].x << " " << pt[1].y << " " << pt[1].z << ",\n"
-           << "        " << pt[2].x << " " << pt[2].y << " " << pt[2].z << ",\n"
-           << "        " << pt[3].x << " " << pt[3].y << " " << pt[3].z << ",\n"
-           << "        " << pt[4].x << " " << pt[4].y << " " << pt[4].z << ",\n"
-           << "        " << pt[5].x << " " << pt[5].y << " " << pt[5].z << ",\n"
-           << "        " << pt[6].x << " " << pt[6].y << " " << pt[6].z << ",\n"
-           << "        " << pt[7].x << " " << pt[7].y << " " << pt[7].z
-           << "] \n"
-           << "    } \n"
-           << "    IndexedLineSet { coordIndex[ 0, 2, 6, 4, 0, -1\n"
-              "        1, 5, 7, 3, 1, -1,\n"
-              "        5, 4, 6, 7, 5, -1,\n"
-              "        7, 6, 2, 3, 7, -1,\n"
-              "        3, 2, 0, 1, 3, -1,\n"
-              "        5, 1, 0, 4, 5, -1 ] } \n"
-           << "  } \n";
-}
-
-void InventorBuilder::addTransformation(const Matrix4D& transform)
-{
-    Base::Placement placement;
-    placement.fromMatrix(transform);
-    addTransformation(placement);
-}
-
-void InventorBuilder::addTransformation(const Base::Placement& transform)
-{
-    Base::Vector3d translation = transform.getPosition();
-    Base::Vector3d rotationaxis;
-    double angle{};
-    transform.getRotation().getValue(rotationaxis, angle);
-
-    result << indent << "Transform {\n";
-    result << indent << "  translation "
-         << translation.x << " " << translation.y << " " << translation.z << '\n';
-    result << indent << "  rotation "
-         << rotationaxis.x << " " << rotationaxis.y << " " << rotationaxis.z
-         << " " << angle << '\n';
-    result << indent <<  "}" << '\n';
 }
 
 // -----------------------------------------------------------------------------

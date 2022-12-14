@@ -20,13 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef SKETCHERGUI_DrawSketchHandlerBSpline_H
 #define SKETCHERGUI_DrawSketchHandlerBSpline_H
 
+#include <QInputDialog>
+#include <Inventor/events/SoKeyboardEvent.h>
 
 #include "GeometryCreationMode.h"
-#include "Utils.h"
+
 
 namespace SketcherGui {
 
