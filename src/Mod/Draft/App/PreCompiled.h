@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef DRAFTUTILS_PRECOMPILED_H
 #define DRAFTUTILS_PRECOMPILED_H
 
@@ -30,22 +29,4 @@
 # pragma warning(disable : 4275)
 #endif
 
-#ifdef _PreComp_
-
-// standard
-#include <iostream>
-#include <sstream>
-#include <cstdio>
-#include <cassert>
-#include <string>
-#include <map>
-#include <vector>
-#include <set>
-#include <bitset>
-#include <cctype>
-
-#include <Python.h>
-
-#endif // _PreComp_
 #endif
-
