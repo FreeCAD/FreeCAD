@@ -2446,11 +2446,9 @@ QVariant PropertyRotationItem::editorData(QWidget *editor) const
 void PropertyRotationItem::propertyBound()
 {
     if (isBound()) {
-        m_a->bind(App::ObjectIdentifier(getPath())<<App::ObjectIdentifier::String("Rotation")
-                                                  <<App::ObjectIdentifier::String("Angle"));
+        m_a->bind(App::ObjectIdentifier(getPath())<<App::ObjectIdentifier::String("Angle"));
 
-        m_d->bind(App::ObjectIdentifier(getPath())<<App::ObjectIdentifier::String("Rotation")
-                                                  <<App::ObjectIdentifier::String("Axis"));
+        m_d->bind(App::ObjectIdentifier(getPath())<<App::ObjectIdentifier::String("Axis"));
     }
 }
 
