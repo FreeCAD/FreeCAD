@@ -36,6 +36,12 @@ SET(StartGuiIcon_SVG
     Resources/icons/StartWorkbench.svg
 )
 
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${StartGui_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(StartGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
+
 add_library(StartGui SHARED ${StartGui_SRCS} ${StartGuiIcon_SVG})
 target_link_libraries(StartGui ${StartGui_LIBS})
 
