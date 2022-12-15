@@ -138,7 +138,8 @@ def move(objectslist, vector, copy=False):
                 newobj = make_copy.make_copy(obj)
             else:
                 newobj = obj
-            newobj.Center = obj.Start.add(real_vector)
+            newobj.Center = obj.Center.add(real_vector)
+            newobj.Dimline = obj.Dimline.add(real_vector)
 
         elif hasattr(obj, "Placement"):
             if copy:
