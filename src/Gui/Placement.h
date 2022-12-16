@@ -39,6 +39,7 @@ namespace Dialog {
 
 class Ui_Placement;
 class TaskPlacement;
+
 class GuiExport Placement : public QDialog
 {
     Q_OBJECT
@@ -82,13 +83,18 @@ private:
     bool onApply();
     void setPlacementData(const Base::Placement&);
     Base::Placement getPlacementData() const;
+    Base::Rotation getRotationData() const;
+    Base::Vector3d getPositionData() const;
     Base::Vector3d getCenterData() const;
     QString getPlacementString() const;
+    QString getPlacementFromEulerAngles() const;
+    QString getPlacementFromAxisWithAngle() const;
     void applyPlacement(const Base::Placement& p, bool incremental);
     void applyPlacement(const QString& p, bool incremental);
     void revertTransformation();
     void slotActiveDocument(const Gui::Document&);
     QWidget* getInvalidInput() const;
+    void showErrorMessage();
 
 Q_SIGNALS:
     void placementChanged(const QVariant &, bool, bool);

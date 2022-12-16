@@ -77,11 +77,28 @@ public:
         return false;
     }
 
+    static App::PropertyPlacement* getProperty(App::DocumentObject* obj, const std::string& propertyName)
+    {
+        std::map<std::string,App::Property*> props;
+        obj->getPropertyMap(props);
+
+        // search for the placement property
+        std::map<std::string,App::Property*>::iterator jt;
+        jt = std::find_if(props.begin(), props.end(), find_placement(propertyName));
+        if (jt != props.end()) {
+            return dynamic_cast<App::PropertyPlacement*>(jt->second);
+        }
+
+        return nullptr;
+    }
+
     std::string propertyname;
 };
 
 }
 }
+
+// ----------------------------------------------------------------------------
 
 /* TRANSLATOR Gui::Dialog::Placement */
 
@@ -242,13 +259,8 @@ void Placement::revertTransformation()
                 getObjectsOfType(App::DocumentObject::getClassTypeId());
             if (!obj.empty()) {
                 for (const auto & it : obj) {
-                    std::map<std::string,App::Property*> props;
-                    it->getPropertyMap(props);
-                    // search for the placement property
-                    std::map<std::string,App::Property*>::iterator jt;
-                    jt = std::find_if(props.begin(), props.end(), find_placement(this->propertyName));
-                    if (jt != props.end()) {
-                        auto property = static_cast<App::PropertyPlacement*>(jt->second);
+                    auto property = find_placement::getProperty(it, this->propertyName);
+                    if (property) {
                         Base::Placement cur = property->getValue();
                         Gui::ViewProvider* vp = document->getViewProvider(it);
                         if (vp) {
@@ -275,13 +287,8 @@ void Placement::applyPlacement(const Base::Placement& p, bool incremental)
     if (!sel.empty()) {
         // apply transformation only on view matrix not on placement property
         for (const auto & it : sel) {
-            std::map<std::string,App::Property*> props;
-            it->getPropertyMap(props);
-            // search for the placement property
-            std::map<std::string,App::Property*>::iterator jt;
-            jt = std::find_if(props.begin(), props.end(), find_placement(this->propertyName));
-            if (jt != props.end()) {
-                auto property = static_cast<App::PropertyPlacement*>(jt->second);
+            auto property = find_placement::getProperty(it, this->propertyName);
+            if (property) {
                 Base::Placement cur = property->getValue();
                 if (incremental)
                     cur = p * cur;
@@ -328,12 +335,8 @@ void Placement::applyPlacement(const QString& data, bool incremental)
         if (!sel.empty()) {
             document->openCommand(QT_TRANSLATE_NOOP("Command", "Placement"));
             for (const auto & it : sel) {
-                std::map<std::string,App::Property*> props;
-                it->getPropertyMap(props);
-                // search for the placement property
-                std::map<std::string,App::Property*>::iterator jt;
-                jt = std::find_if(props.begin(), props.end(), find_placement(this->propertyName));
-                if (jt != props.end()) {
+                auto property = find_placement::getProperty(it, this->propertyName);
+                if (property) {
                     QString cmd;
                     if (incremental)
                         cmd = QString::fromLatin1(
@@ -638,17 +641,22 @@ void Placement::onApplyButtonClicked()
     onApply();
 }
 
+void Placement::showErrorMessage()
+{
+    QMessageBox msg(this);
+    msg.setWindowTitle(tr("Incorrect quantity"));
+    msg.setIcon(QMessageBox::Critical);
+    msg.setText(tr("There are input fields with incorrect input, please ensure valid placement values!"));
+    msg.exec();
+}
+
 bool Placement::onApply()
 {
     //only process things when we have valid inputs!
     QWidget* input = getInvalidInput();
     if (input) {
         input->setFocus();
-        QMessageBox msg(this);
-        msg.setWindowTitle(tr("Incorrect quantity"));
-        msg.setIcon(QMessageBox::Critical);
-        msg.setText(tr("There are input fields with incorrect input, please ensure valid placement values!"));
-        msg.exec();
+        showErrorMessage();
         return false;
     }
 
@@ -744,7 +752,7 @@ void Placement::setPlacement(const Base::Placement& p)
 
 void Placement::setPlacementData(const Base::Placement& p)
 {
-    signalMapper->blockSignals(true);
+    QSignalBlocker block(signalMapper);
     ui->xPos->setValue(Base::Quantity(p.getPosition().x, Base::Unit::Length));
     ui->yPos->setValue(Base::Quantity(p.getPosition().y, Base::Unit::Length));
     ui->zPos->setValue(Base::Quantity(p.getPosition().z, Base::Unit::Length));
@@ -761,15 +769,38 @@ void Placement::setPlacementData(const Base::Placement& p)
     ui->xAxis->setValue(axis.x);
     ui->yAxis->setValue(axis.y);
     ui->zAxis->setValue(axis.z);
-    ui->angle->setValue(Base::Quantity(angle*180.0/D_PI, Base::Unit::Angle));
-
-    signalMapper->blockSignals(false);
+    ui->angle->setValue(Base::Quantity(Base::toDegrees(angle), Base::Unit::Angle));
 }
 
 Base::Placement Placement::getPlacement() const
 {
     Base::Placement p = getPlacementData();
     return p;
+}
+
+Base::Rotation Placement::getRotationData() const
+{
+    Base::Rotation rot;
+    int index = ui->rotationInput->currentIndex();
+    if (index == 0) {
+        Base::Vector3d dir = getDirection();
+        rot.setValue(Base::Vector3d(dir.x,dir.y,dir.z),Base::toRadians(ui->angle->value().getValue()));
+    }
+    else if (index == 1) { // Euler angles (XY'Z'')
+        rot.setYawPitchRoll(
+            ui->yawAngle->value().getValue(),
+            ui->pitchAngle->value().getValue(),
+            ui->rollAngle->value().getValue());
+    }
+
+    return rot;
+}
+
+Base::Vector3d Placement::getPositionData() const
+{
+    return Base::Vector3d(ui->xPos->value().getValue(),
+                          ui->yPos->value().getValue(),
+                          ui->zPos->value().getValue());
 }
 
 Base::Vector3d Placement::getCenterData() const
@@ -783,62 +814,61 @@ Base::Vector3d Placement::getCenterData() const
 
 Base::Placement Placement::getPlacementData() const
 {
-    int index = ui->rotationInput->currentIndex();
-    Base::Rotation rot;
-    Base::Vector3d pos;
-    Base::Vector3d cnt;
+    Base::Rotation rot = getRotationData();
+    Base::Vector3d pos = getPositionData();
+    Base::Vector3d cnt = getCenterData();
 
-    pos = Base::Vector3d(ui->xPos->value().getValue(),ui->yPos->value().getValue(),ui->zPos->value().getValue());
-    cnt = getCenterData();
+    Base::Placement plm(pos, rot, cnt);
+    return plm;
+}
 
-    if (index == 0) {
-        Base::Vector3d dir = getDirection();
-        rot.setValue(Base::Vector3d(dir.x,dir.y,dir.z),Base::toRadians(ui->angle->value().getValue()));
-    }
-    else if (index == 1) { // Euler angles (XY'Z'')
-        rot.setYawPitchRoll(
-            ui->yawAngle->value().getValue(),
-            ui->pitchAngle->value().getValue(),
-            ui->rollAngle->value().getValue());
-    }
+QString Placement::getPlacementFromEulerAngles() const
+{
+    Base::Vector3d pos = getPositionData();
+    Base::Vector3d cnt = getCenterData();
+    return QString::fromLatin1(
+        "App.Placement(App.Vector(%1,%2,%3), App.Rotation(%4,%5,%6), App.Vector(%7,%8,%9))")
+        .arg(pos.x)
+        .arg(pos.y)
+        .arg(pos.z)
+        .arg(ui->yawAngle->value().getValue())
+        .arg(ui->pitchAngle->value().getValue())
+        .arg(ui->rollAngle->value().getValue())
+        .arg(cnt.x)
+        .arg(cnt.y)
+        .arg(cnt.z);
+}
 
-    Base::Placement p(pos, rot, cnt);
-    return p;
+QString Placement::getPlacementFromAxisWithAngle() const
+{
+    Base::Vector3d pos = getPositionData();
+    Base::Vector3d cnt = getCenterData();
+    Base::Vector3d dir = getDirection();
+    double angle = ui->angle->value().getValue();
+    return QString::fromLatin1(
+        "App.Placement(App.Vector(%1,%2,%3), App.Rotation(App.Vector(%4,%5,%6),%7), App.Vector(%8,%9,%10))")
+        .arg(pos.x)
+        .arg(pos.y)
+        .arg(pos.z)
+        .arg(dir.x)
+        .arg(dir.y)
+        .arg(dir.z)
+        .arg(angle)
+        .arg(cnt.x)
+        .arg(cnt.y)
+        .arg(cnt.z);
 }
 
 QString Placement::getPlacementString() const
 {
     QString cmd;
     int index = ui->rotationInput->currentIndex();
-    Base::Vector3d cnt = getCenterData();
 
     if (index == 0) {
-        Base::Vector3d dir = getDirection();
-        cmd = QString::fromLatin1(
-            "App.Placement(App.Vector(%1,%2,%3), App.Rotation(App.Vector(%4,%5,%6),%7), App.Vector(%8,%9,%10))")
-            .arg(ui->xPos->value().getValue())
-            .arg(ui->yPos->value().getValue())
-            .arg(ui->zPos->value().getValue())
-            .arg(dir.x)
-            .arg(dir.y)
-            .arg(dir.z)
-            .arg(ui->angle->value().getValue())
-            .arg(cnt.x)
-            .arg(cnt.y)
-            .arg(cnt.z);
+        cmd = getPlacementFromAxisWithAngle();
     }
     else if (index == 1) {
-        cmd = QString::fromLatin1(
-            "App.Placement(App.Vector(%1,%2,%3), App.Rotation(%4,%5,%6), App.Vector(%7,%8,%9))")
-            .arg(ui->xPos->value().getValue())
-            .arg(ui->yPos->value().getValue())
-            .arg(ui->zPos->value().getValue())
-            .arg(ui->yawAngle->value().getValue())
-            .arg(ui->pitchAngle->value().getValue())
-            .arg(ui->rollAngle->value().getValue())
-            .arg(cnt.x)
-            .arg(cnt.y)
-            .arg(cnt.z);
+        cmd = getPlacementFromEulerAngles();
     }
 
     return cmd;
