@@ -107,8 +107,7 @@ PlacementHandler::PlacementHandler()
 
 void PlacementHandler::openTransactionIfNeeded()
 {
-    if (propertyName != "Placement") {
-        changeProperty = true;
+    if (changeProperty) {
         openTransaction();
     }
 }
@@ -116,6 +115,9 @@ void PlacementHandler::openTransactionIfNeeded()
 void PlacementHandler::setPropertyName(const std::string& name)
 {
     propertyName = name;
+    // Only the Placement property it's possible to directly change the Inventor representation.
+    // For other placement properties with a different name the standard property handling must be used.
+    changeProperty = (propertyName != "Placement");
 }
 
 const std::string& PlacementHandler::getPropertyName() const
@@ -192,7 +194,6 @@ void PlacementHandler::applyPlacement(const Base::Placement& p, bool incremental
 
     std::vector<App::DocumentObject*> sel = getSelectedObjects(document);
     if (!sel.empty()) {
-        // apply transformation only on view matrix not on placement property
         for (const auto & it : sel) {
             applyPlacement(document, it, p, incremental);
         }
