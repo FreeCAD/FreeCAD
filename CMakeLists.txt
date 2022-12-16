@@ -1,5 +1,5 @@
-# March 2021, the oldest we have to support : Ununtu 18.04 LTS
-cmake_minimum_required(VERSION 3.10.2 FATAL_ERROR)
+# Dec 2022 Bumped min (ubuntu 20.04: 3.16.3-1ubuntu1.20.04.1)
+cmake_minimum_required(VERSION 3.16.3 FATAL_ERROR)
 
 # policy CMP0072 was introduced with CMake 3.11
 # relates to FindOpenGL module
