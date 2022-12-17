@@ -29,6 +29,7 @@
 
 
 class QString;
+class QColor;
 
 namespace App
 {
@@ -39,50 +40,59 @@ namespace TechDraw
 {
 
 //getters for parameters used in multiple places.
-class TechDrawExport Preferences {
+class TechDrawExport Preferences
+{
 
 public:
-static std::string labelFont();
-static QString     labelFontQString();
-static double      labelFontSizeMM();
-static double      dimFontSizeMM();
+    static std::string labelFont();
+    static QString labelFontQString();
+    static double labelFontSizeMM();
+    static double dimFontSizeMM();
 
-static App::Color  normalColor();
-static App::Color  selectColor();
-static App::Color  preselectColor();
-static App::Color  vertexColor();
-static double      vertexScale();
-static int         scaleType();
-static double      scale();
-static bool        useGlobalDecimals();
-static bool        keepPagesUpToDate();
+    static App::Color normalColor();
+    static App::Color selectColor();
+    static App::Color preselectColor();
+    static App::Color vertexColor();
+    static double vertexScale();
+    static int scaleType();
+    static double scale();
+    static bool useGlobalDecimals();
+    static bool keepPagesUpToDate();
 
-static int         projectionAngle();
-static int         lineGroup();
+    static int projectionAngle();
+    static int lineGroup();
 
-static int         balloonArrow();
+    static int balloonArrow();
 
-static QString     defaultTemplate();
-static QString     defaultTemplateDir();
-static std::string lineGroupFile();
+    static QString defaultTemplate();
+    static QString defaultTemplateDir();
+    static std::string lineGroupFile();
 
-static const double DefaultFontSizeInMM;
+    static const double DefaultFontSizeInMM;
 
-static std::string  formatSpec();
-static int          altDecimals();
+    static std::string formatSpec();
+    static int altDecimals();
 
-static int         mattingStyle();
+    static int mattingStyle();
 
-static std::string svgFile();
-static std::string patFile();
+    static std::string svgFile();
+    static std::string patFile();
 
-static std::string bitmapFill();
+    static std::string bitmapFill();
 
-static double      GapISO();
-static double      GapASME();
+    static double GapISO();
+    static double GapASME();
 
-static bool        reportProgress();
+    static bool reportProgress();
+
+    static bool lightOnDark();
+    static void lightOnDark(bool state);
+    static bool monochrome();
+    static void monochrome(bool state);
+    static App::Color lightTextColor();
+    static App::Color lightenColor(App::Color orig);
+    static App::Color getAccessibleColor(App::Color orig);
 };
 
-} //end namespace TechDraw
+}//end namespace TechDraw
 #endif

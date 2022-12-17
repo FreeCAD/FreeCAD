@@ -49,6 +49,7 @@ set(TechDrawGui_LIBS
 qt_add_resources(TechDrawGui_SRCS Resources/TechDraw.qrc)
 
 set(TechDrawGui_UIC_SRCS
+    DlgStringListEditor.ui
     DlgPageChooser.ui
     DlgPrefsTechDrawAdvanced.ui
     DlgPrefsTechDrawAnnotation.ui
@@ -115,6 +116,9 @@ SET(TechDrawGui_SRCS
     TaskProjGroup.ui
     TaskProjGroup.cpp
     TaskProjGroup.h
+    DlgStringListEditor.ui
+    DlgStringListEditor.cpp
+    DlgStringListEditor.h
     DlgPageChooser.ui
     DlgPageChooser.cpp
     DlgPageChooser.h

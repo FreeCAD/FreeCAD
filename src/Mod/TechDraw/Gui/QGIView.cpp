@@ -200,7 +200,7 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
             m_colCurrent = getSelectColor();
 //            m_selectState = 2;
         } else {
-            m_colCurrent = PreferencesGui::normalQColor();
+            m_colCurrent = PreferencesGui::getAccessibleQColor(PreferencesGui::normalQColor());
 //            m_selectState = 0;
         }
         drawBorder();
@@ -268,7 +268,7 @@ void QGIView::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
     if(isSelected()) {
         m_colCurrent = getSelectColor();
     } else {
-        m_colCurrent = PreferencesGui::normalQColor();
+        m_colCurrent = PreferencesGui::getAccessibleQColor(PreferencesGui::normalQColor());
     }
     drawBorder();
 }
@@ -709,17 +709,17 @@ void QGIView::setStackFromVP()
 
 QColor QGIView::prefNormalColor()
 {
-    return PreferencesGui::normalQColor();
+    return PreferencesGui::getAccessibleQColor(PreferencesGui::normalQColor());
 }
 
 QColor QGIView::getPreColor()
 {
-    return PreferencesGui::preselectQColor();
+    return PreferencesGui::getAccessibleQColor(PreferencesGui::preselectQColor());
 }
 
 QColor QGIView::getSelectColor()
 {
-    return PreferencesGui::selectQColor();
+    return PreferencesGui::getAccessibleQColor(PreferencesGui::selectQColor());
 }
 
 Base::Reference<ParameterGrp> QGIView::getParmGroupCol()

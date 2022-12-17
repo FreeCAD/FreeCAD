@@ -32,7 +32,8 @@ class QSvgRenderer;
 class QFile;
 class QString;
 
-namespace TechDraw {
+namespace TechDraw
+{
 class DrawSVGTemplate;
 }
 
@@ -42,33 +43,36 @@ namespace TechDrawGui
 {
 class QGSPage;
 
-class TechDrawGuiExport QGISVGTemplate : public QGITemplate
+class TechDrawGuiExport QGISVGTemplate: public QGITemplate
 {
     Q_OBJECT
 
 public:
     explicit QGISVGTemplate(QGSPage* scene);
-    virtual ~QGISVGTemplate();
+    ~QGISVGTemplate() override;
 
-    enum {Type = QGraphicsItem::UserType + 153};
+    enum
+    {
+        Type = QGraphicsItem::UserType + 153
+    };
     int type() const { return Type; }
 
     void draw();
-    virtual void updateView(bool update = false);
+    void updateView(bool update = false) override;
 
-    TechDraw::DrawSVGTemplate *getSVGTemplate();
+    TechDraw::DrawSVGTemplate* getSVGTemplate();
 
 protected:
-    void openFile(const QFile &file);
-    void load (const QByteArray& svgCode);
+    void openFile(const QFile& file);
+    void load(const QByteArray& svgCode);
     void createClickHandles(void);
 
 protected:
     bool firstTime;
-    QGraphicsSvgItem *m_svgItem;
-    QSvgRenderer *m_svgRender;
-};  // class QGISVGTemplate
+    QGraphicsSvgItem* m_svgItem;
+    QSvgRenderer* m_svgRender;
+};// class QGISVGTemplate
 
-}
+}// namespace TechDrawGui
 
-#endif // DRAWINGGUI_QGRAPHICSITEMSVGTEMPLATE_H
+#endif// DRAWINGGUI_QGRAPHICSITEMSVGTEMPLATE_H

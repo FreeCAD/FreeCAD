@@ -39,6 +39,7 @@
 #include <Base/Console.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 
+#include "PreferencesGui.h"
 #include "QGTracker.h"
 #include "QGIView.h"
 #include "QGSPage.h"
@@ -480,7 +481,7 @@ QColor QGTracker::getTrackerColor()
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                                     GetGroup("Preferences")->GetGroup("Mod/TechDraw/Tracker");
     App::Color trackColor = App::Color((uint32_t) hGrp->GetUnsigned("TrackerColor", 0xFF000000));
-    result = trackColor.asValue<QColor>();
+    result = PreferencesGui::getAccessibleQColor(trackColor.asValue<QColor>());
     return result;
 }
 
