@@ -39,13 +39,15 @@
 
 #include <App/Application.h>
 #include <Base/Console.h>
+#include <Gui/MainWindow.h>
 #include <Gui/Widgets.h>
 #include <Mod/TechDraw/App/DrawViewAnnotation.h>
+#include <Mod/TechDraw/App/Preferences.h>
 
 #include "QGIViewAnnotation.h"
 #include "QGCustomText.h"
 #include "Rez.h"
-
+#include "DlgStringListEditor.h"
 
 using namespace TechDrawGui;
 
@@ -135,6 +137,7 @@ void QGIViewAnnotation::drawAnnotation()
     }
     ss << "line-height:" << viewAnno->LineSpace.getValue() << "%; ";
     App::Color c = viewAnno->TextColor.getValue();
+    c = TechDraw::Preferences::getAccessibleColor(c);
     ss << "color:" << c.asHexString() << "; ";
     ss << "}\n</style>\n</head>\n<body>\n<p>";
     for(std::vector<std::string>::const_iterator it = annoText.begin(); it != annoText.end(); it++) {
@@ -173,44 +176,11 @@ void QGIViewAnnotation::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
     }
 
     const std::vector<std::string> &values = annotation->Text.getValues();
-    QString text;
-    if (!values.empty()) {
-        text = QString::fromUtf8(values[0].c_str());
-
-        for (unsigned int i = 1; i < values.size(); ++i) {
-            text += QChar::fromLatin1('\n');
-            text += QString::fromUtf8(values[i].c_str());
-        }
-    }
-
-    QDialog dialog(nullptr);
-    dialog.setWindowTitle(tr("Text"));
-
-    Gui::PropertyListEditor editor(&dialog);
-    editor.setPlainText(text);
-
-    QDialogButtonBox buttonBox(&dialog);
-    buttonBox.setStandardButtons(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
-
-    QVBoxLayout boxLayout(&dialog);
-    boxLayout.addWidget(&editor);
-    boxLayout.addWidget(&buttonBox);
-
-    connect(&buttonBox, SIGNAL(accepted()), &dialog, SLOT(accept()));
-    connect(&buttonBox, SIGNAL(rejected()), &dialog, SLOT(reject()));
-    if (dialog.exec() == QDialog::Accepted) {
-        QString newText = editor.toPlainText();
-        if (newText != text) {
-            QStringList list = newText.split(QChar::fromLatin1('\n'));
-            std::vector<std::string> newValues;
-
-            for (int i = 0; i < list.size(); ++i) {
-                newValues.push_back(list[i].toStdString());
-            }
-
-            App::GetApplication().setActiveTransaction("Set Annotation Text");
-            annotation->Text.setValues(newValues);
-            App::GetApplication().closeActiveTransaction();
-        }
+    DlgStringListEditor dlg(values, Gui::getMainWindow());
+    dlg.setWindowTitle(QString::fromUtf8("Annotation Text Editor"));
+    if (dlg.exec() == QDialog::Accepted) {
+        App::GetApplication().setActiveTransaction("Set Annotation Text");
+        annotation->Text.setValues(dlg.getTexts());
+        App::GetApplication().closeActiveTransaction();
     }
 }

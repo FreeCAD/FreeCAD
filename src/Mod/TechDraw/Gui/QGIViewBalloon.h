@@ -38,15 +38,17 @@
 #include "QGIView.h"
 
 
-namespace TechDraw {
+namespace TechDraw
+{
 class DrawViewBalloon;
 class DrawView;
-}
+}// namespace TechDraw
 
-namespace TechDraw {
+namespace TechDraw
+{
 class BaseGeom;
 class AOC;
-}
+}// namespace TechDraw
 
 namespace TechDrawGui
 {
@@ -54,29 +56,43 @@ class QGIArrow;
 class QGIDimLines;
 class QGIViewBalloon;
 
-class QGIBalloonLabel : public QGraphicsObject
+class QGIBalloonLabel: public QGraphicsObject
 {
-Q_OBJECT
+    Q_OBJECT
 
 public:
     QGIBalloonLabel();
     ~QGIBalloonLabel() = default;
 
-    enum {Type = QGraphicsItem::UserType + 141};
-    int type() const override { return Type;}
+    enum
+    {
+        Type = QGraphicsItem::UserType + 141
+    };
+    int type() const override
+    {
+        return Type;
+    }
 
     QRectF boundingRect() const override;
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
-    void paint( QPainter *painter,
-                        const QStyleOptionGraphicsItem *option,
-                        QWidget *widget = nullptr ) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
+               QWidget* widget = nullptr) override;
     void setLabelCenter();
-    void setPosFromCenter(const double &xCenter, const double &yCenter);
-    double X() const { return posX; }
-    double Y() const { return posY; }              //minus posY?
+    void setPosFromCenter(const double& xCenter, const double& yCenter);
+    double X() const
+    {
+        return posX;
+    }
+    double Y() const
+    {
+        return posY;
+    }//minus posY?
 
     void setFont(QFont font);
-    QFont getFont() { return m_labelText->font(); }
+    QFont getFont()
+    {
+        return m_labelText->font();
+    }
     void setDimString(QString text);
     void setDimString(QString text, qreal maxWidth);
     void setPrettySel();
@@ -84,16 +100,37 @@ public:
     void setPrettyNormal();
     void setColor(QColor color);
 
-    void setQBalloon(QGIViewBalloon* qBalloon) { parent = qBalloon;}
+    void setQBalloon(QGIViewBalloon* qBalloon)
+    {
+        parent = qBalloon;
+    }
 
 
-    QGCustomText* getDimText() { return m_labelText; }
+    QGCustomText* getDimText()
+    {
+        return m_labelText;
+    }
 
-    void setDimText(QGCustomText* newText) { m_labelText = newText; }
-    bool getVerticalSep() const { return verticalSep; }
-    void setVerticalSep(bool sep) { verticalSep = sep; }
-    std::vector<int> getSeps() const { return seps; }
-    void setSeps(std::vector<int> newSeps) { seps = newSeps; }
+    void setDimText(QGCustomText* newText)
+    {
+        m_labelText = newText;
+    }
+    bool getVerticalSep() const
+    {
+        return verticalSep;
+    }
+    void setVerticalSep(bool sep)
+    {
+        verticalSep = sep;
+    }
+    std::vector<int> getSeps() const
+    {
+        return seps;
+    }
+    void setSeps(std::vector<int> newSeps)
+    {
+        seps = newSeps;
+    }
 
 Q_SIGNALS:
     void dragging(bool state);
@@ -102,16 +139,16 @@ Q_SIGNALS:
     void dragFinished();
 
 protected:
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
-    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
-    void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
-    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
-    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
+    QVariant itemChange(GraphicsItemChange change, const QVariant& value) override;
+    void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+    void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) override;
 
 private:
     bool hasHover;
 
-    QGIViewBalloon *parent;
+    QGIViewBalloon* parent;
     bool verticalSep;
     std::vector<int> seps;
 
@@ -126,24 +163,29 @@ private:
 
 //*******************************************************************
 
-class TechDrawGuiExport QGIViewBalloon : public QGIView
+class TechDrawGuiExport QGIViewBalloon: public QGIView
 {
     Q_OBJECT
 
 public:
-    enum {Type = QGraphicsItem::UserType + 140};
+    enum
+    {
+        Type = QGraphicsItem::UserType + 140
+    };
 
     explicit QGIViewBalloon();
     ~QGIViewBalloon() = default;
 
-    void setViewPartFeature(TechDraw::DrawViewBalloon *balloonFeat);
-    int type() const override { return Type;}
+    void setViewPartFeature(TechDraw::DrawViewBalloon* balloonFeat);
+    int type() const override
+    {
+        return Type;
+    }
 
     void drawBorder() override;
     void updateView(bool update = false) override;
-    void paint( QPainter * painter,
-                        const QStyleOptionGraphicsItem * option,
-                        QWidget * widget = nullptr ) override;
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
+               QWidget* widget = nullptr) override;
 
     QString getLabelText();
     void placeBalloon(QPointF pos);
@@ -152,12 +194,20 @@ public:
     void setPrettyNormal();
 
     void setGroupSelection(bool isSelected) override;
-    virtual QGIBalloonLabel* getBalloonLabel() { return balloonLabel; }
+    virtual QGIBalloonLabel* getBalloonLabel()
+    {
+        return balloonLabel;
+    }
 
+    void setNormalColorAll();
     QColor prefNormalColor();
     int prefDefaultArrow() const;
     bool prefOrthoPyramid() const;
-    TechDraw::DrawViewBalloon* getBalloonFeat() { return dvBalloon; }
+
+    TechDraw::DrawViewBalloon* getBalloonFeat()
+    {
+        return dvBalloon;
+    }
 
 public Q_SLOTS:
     void balloonLabelDragged(bool ctrl);
@@ -169,16 +219,15 @@ public Q_SLOTS:
 protected:
     void draw() override;
     void drawBalloon(bool dragged = false);
-    QVariant itemChange( GraphicsItemChange change,
-                                 const QVariant &value ) override;
+    QVariant itemChange(GraphicsItemChange change, const QVariant& value) override;
     virtual void setSvgPens();
     virtual void setPens();
     QString getPrecision();
-    void parentViewMousePressed(QGIView *view, QPointF pos);
+    void parentViewMousePressed(QGIView* view, QPointF pos);
     TechDraw::DrawView* getSourceView() const;
 
 private:
-    TechDraw::DrawViewBalloon *dvBalloon;
+    TechDraw::DrawViewBalloon* dvBalloon;
     bool hasHover;
     QGIBalloonLabel* balloonLabel;
     QGIDimLines* balloonLines;
@@ -186,7 +235,7 @@ private:
     QGIArrow* arrow;
     double m_lineWidth;
     bool m_obtuse;
-    QGIView *parent;           //used to create edit dialog
+    QGIView* parent;//used to create edit dialog
 
     bool m_dragInProgress;
     bool m_originDragged = false;
@@ -194,6 +243,6 @@ private:
     Base::Vector3d m_saveOffset;
 };
 
-} // namespace
+}// namespace TechDrawGui
 
-#endif // TECHDRAWGUI_QGIVBALLOON_H
+#endif// TECHDRAWGUI_QGIVBALLOON_H

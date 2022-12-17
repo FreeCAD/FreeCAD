@@ -34,7 +34,7 @@
 #include <Base/Parameter.h>
 
 #include "QGICMark.h"
-
+#include "PreferencesGui.h"
 
 using namespace TechDrawGui;
 
@@ -68,10 +68,7 @@ void QGICMark::setThick(float t)
 
 QColor QGICMark::getCMarkColor()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
-    App::Color fcColor = App::Color((uint32_t) hGrp->GetUnsigned("CMarkColor", 0x08080800));
-    return fcColor.asValue<QColor>();
+    return PreferencesGui::centerQColor();
 }
 
 void QGICMark::setPrettyNormal() {
