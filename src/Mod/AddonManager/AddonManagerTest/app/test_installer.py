@@ -38,12 +38,7 @@ from addonmanager_git import GitManager, initialize_git
 
 from Addon import Addon
 
-
-class MockAddon:
-    def __init__(self):
-        self.name = "TestAddon"
-        self.url = "https://github.com/FreeCAD/FreeCAD-addons"
-        self.branch = "master"
+from AddonManagerTest.app.mocks import MockAddon, MockMacro
 
 
 class TestAddonInstaller(unittest.TestCase):
@@ -359,28 +354,21 @@ class TestMacroInstaller(unittest.TestCase):
     MODULE = "test_installer"  # file name without extension
 
     def setUp(self):
-        class MacroMock:
-            def install(self, location: os.PathLike):
-                with open(
-                    os.path.join(location, "MACRO_INSTALLATION_TEST"),
-                    "w",
-                    encoding="utf-8",
-                ) as f:
-                    f.write("Test file for macro installation unit tests")
-                return True, []
+        """Set up the mock objects"""
 
-        class AddonMock:
-            def __init__(self):
-                self.macro = MacroMock()
-
-        self.mock = AddonMock()
+        self.mock = MockAddon()
+        self.mock.macro = MockMacro()
 
     def test_installation(self):
+        """Test the wrapper around the macro installer"""
+
+        # Note that this doesn't test the underlying Macro object's install function, it only
+        # tests whether that function is called appropriately by the MacroInstaller wrapper.
         with tempfile.TemporaryDirectory() as temp_dir:
             installer = MacroInstaller(self.mock)
             installer.installation_path = temp_dir
             installation_succeeded = installer.run()
             self.assertTrue(installation_succeeded)
             self.assertTrue(
-                os.path.exists(os.path.join(temp_dir, "MACRO_INSTALLATION_TEST"))
+                os.path.exists(os.path.join(temp_dir, self.mock.macro.filename))
             )

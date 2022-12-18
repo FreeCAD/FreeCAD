@@ -24,6 +24,7 @@ SET(AddonManager_SRCS
     addonmanager_installer_gui.py
     addonmanager_macro.py
     addonmanager_update_all_gui.py
+    addonmanager_uninstaller.py
     addonmanager_utilities.py
     addonmanager_workers_installation.py
     addonmanager_workers_startup.py
@@ -77,12 +78,14 @@ SET(AddonManagerTests_SRCS
 
 SET(AddonManagerTestsApp_SRCS
     AddonManagerTest/app/__init__.py
+    AddonManagerTest/app/mocks.py
     AddonManagerTest/app/test_addon.py
     AddonManagerTest/app/test_dependency_installer.py
     AddonManagerTest/app/test_git.py
     AddonManagerTest/app/test_installer.py
     AddonManagerTest/app/test_macro.py
     AddonManagerTest/app/test_utilities.py
+    AddonManagerTest/app/test_uninstaller.py
 )
 
 SET(AddonManagerTestsGui_SRCS
