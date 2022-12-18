@@ -262,7 +262,7 @@ class Predictor:
         for name in valid_names:
             full_path = os.path.join(self.path, name)
             if os.path.exists(full_path):
-                with open(full_path, "r", encoding="utf-8") as f:
+                with open(full_path, encoding="utf-8") as f:
                     self.readme_data = f.read()
                     return
 
@@ -279,7 +279,7 @@ class Predictor:
         for name in valid_names:
             full_path = os.path.join(self.path.replace("/", os.path.sep), name)
             if os.path.isfile(full_path):
-                with open(full_path, "r", encoding="utf-8") as f:
+                with open(full_path, encoding="utf-8") as f:
                     self.license_data = f.read()
                     self.license_file = name
                     return

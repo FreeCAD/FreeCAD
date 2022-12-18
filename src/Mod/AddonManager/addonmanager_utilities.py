@@ -280,7 +280,7 @@ def get_macro_version_from_file(filename: str) -> str:
     as well as a reference to __date__"""
 
     date = ""
-    with open(filename, "r", errors="ignore", encoding="utf-8") as f:
+    with open(filename, errors="ignore", encoding="utf-8") as f:
         line_counter = 0
         max_lines_to_scan = 200
         while line_counter < max_lines_to_scan:

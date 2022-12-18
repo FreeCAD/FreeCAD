@@ -607,7 +607,7 @@ class DeveloperMode:
                 if filename.endswith(".py"):
 
                     with open(
-                        os.path.join(dirpath, filename), "r", encoding="utf-8"
+                        os.path.join(dirpath, filename), encoding="utf-8"
                     ) as f:
                         contents = f.read()
                         version_strings = vermin.version_strings(
@@ -677,8 +677,7 @@ class DeveloperMode:
                     vendor_path,
                     "vermin",
                 ],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
+                capture_output=True,
                 check=True,
             )
             FreeCAD.Console.PrintMessage(proc.stdout.decode())
