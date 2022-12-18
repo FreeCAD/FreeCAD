@@ -76,7 +76,7 @@ class AddonInstaller(QtCore.QObject):
         addon_to_install = MyAddon() # Some class with name, url, and branch attributes
 
         self.worker_thread = QtCore.QThread()
-        self.installer = AddonInstaller(addon_to_install, list_of_known_addons)
+        self.installer = AddonInstaller(addon_to_install)
         self.installer.moveToThread(self.worker_thread)
         self.installer.success.connect(self.installation_succeeded)
         self.installer.failure.connect(self.installation_failed)
@@ -90,9 +90,9 @@ class AddonInstaller(QtCore.QObject):
 
     Recommended non-GUI usage (blocks until complete):
 
-        installer = AddonInstaller(list_of_known_addons)
         addon_to_install = MyAddon() # Some class with name, url, and branch attributes
-        installer.install(addon_to_install)
+        installer = AddonInstaller(addon_to_install)
+        installer.run()
 
     """
 
@@ -115,9 +115,7 @@ class AddonInstaller(QtCore.QObject):
 
     allowed_packages = set()
 
-    def __init__(
-        self, addon: object, addons: List[object] = None, allow_list: List[str] = None
-    ):
+    def __init__(self, addon: object, allow_list: List[str] = None):
         """Initialize the installer with an optional list of addons. If provided, then installation
         by name is supported, as long as the objects in the list contain a "name" and "url"
         property. In most use cases it is expected that addons is a List of Addon objects, but that
@@ -125,7 +123,6 @@ class AddonInstaller(QtCore.QObject):
         packages list with a custom list. It is mostly for unit testing purposes."""
         super().__init__()
         self.addon_to_install = addon
-        self.addons = addons if addons is not None else []
 
         self.git_manager = initialize_git()
 

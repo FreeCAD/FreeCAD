@@ -105,7 +105,7 @@ class TestAddonInstaller(unittest.TestCase):
 
     def test_update_metadata(self):
         """If a metadata file exists in the installation location, it should be loaded."""
-        installer = AddonInstaller(self.mock_addon, [], [])
+        installer = AddonInstaller(self.mock_addon, [])
         with tempfile.TemporaryDirectory() as temp_dir:
             installer.installation_path = temp_dir
             addon_dir = os.path.join(temp_dir, self.mock_addon.name)
@@ -116,7 +116,7 @@ class TestAddonInstaller(unittest.TestCase):
             )
             installer._update_metadata()  # Does nothing, but should not crash
 
-        installer = AddonInstaller(self.real_addon, [], [])
+        installer = AddonInstaller(self.real_addon, [])
         with tempfile.TemporaryDirectory() as temp_dir:
             installer.installation_path = temp_dir
             installer._update_metadata()
@@ -137,7 +137,7 @@ class TestAddonInstaller(unittest.TestCase):
             non_gh_mock = MockAddon()
             non_gh_mock.url = test_simple_repo
             non_gh_mock.name = "NonGitHubMock"
-            installer = AddonInstaller(non_gh_mock, [], [])
+            installer = AddonInstaller(non_gh_mock, [])
             installer.installation_path = temp_dir
             installer._finalize_zip_installation(test_simple_repo)
             expected_location = os.path.join(temp_dir, non_gh_mock.name, "README")
@@ -149,7 +149,7 @@ class TestAddonInstaller(unittest.TestCase):
             test_github_style_repo = os.path.join(
                 self.test_data_dir, "test_github_style_repo.zip"
             )
-            installer = AddonInstaller(self.mock_addon, [], [])
+            installer = AddonInstaller(self.mock_addon, [])
             installer.installation_path = temp_dir
             installer._finalize_zip_installation(test_github_style_repo)
             expected_location = os.path.join(temp_dir, self.mock_addon.name, "README")
@@ -175,7 +175,7 @@ class TestAddonInstaller(unittest.TestCase):
             mock_addon = MockAddon()
             mock_addon.url = os.path.join(temp_dir, "test_repo")
             mock_addon.branch = "main"
-            installer = AddonInstaller(mock_addon, [], [])
+            installer = AddonInstaller(mock_addon, [])
             installer.installation_path = os.path.join(temp_dir, "installed_addon")
             installer._install_by_git()
 
@@ -195,7 +195,7 @@ class TestAddonInstaller(unittest.TestCase):
             mock_addon = MockAddon()
             mock_addon.url = os.path.join(temp_dir, "test_repo")
             mock_addon.branch = "main"
-            installer = AddonInstaller(mock_addon, [], [])
+            installer = AddonInstaller(mock_addon, [])
             installer.addon_to_install = mock_addon
             installer.installation_path = os.path.join(temp_dir, "installed_addon")
             installer._install_by_copy()
@@ -210,7 +210,7 @@ class TestAddonInstaller(unittest.TestCase):
         """Test which install methods are accepted for a local path"""
 
         with tempfile.TemporaryDirectory() as temp_dir:
-            installer = AddonInstaller(self.mock_addon, [], [])
+            installer = AddonInstaller(self.mock_addon, [])
             method = installer._determine_install_method(
                 temp_dir, InstallationMethod.COPY
             )
@@ -234,7 +234,7 @@ class TestAddonInstaller(unittest.TestCase):
         """Test which install methods are accepted for a file:// url"""
 
         with tempfile.TemporaryDirectory() as temp_dir:
-            installer = AddonInstaller(self.mock_addon, [], [])
+            installer = AddonInstaller(self.mock_addon, [])
             temp_dir = "file://" + temp_dir.replace(os.path.sep, "/")
             method = installer._determine_install_method(
                 temp_dir, InstallationMethod.COPY
@@ -259,7 +259,7 @@ class TestAddonInstaller(unittest.TestCase):
         """Test which install methods are accepted for a local path to a zipfile"""
 
         with tempfile.TemporaryDirectory() as temp_dir:
-            installer = AddonInstaller(self.mock_addon, [], [])
+            installer = AddonInstaller(self.mock_addon, [])
             temp_file = os.path.join(temp_dir, "dummy.zip")
             method = installer._determine_install_method(
                 temp_file, InstallationMethod.COPY
@@ -281,7 +281,7 @@ class TestAddonInstaller(unittest.TestCase):
     def test_determine_install_method_remote_zip(self):
         """Test which install methods are accepted for a remote path to a zipfile"""
 
-        installer = AddonInstaller(self.mock_addon, [], [])
+        installer = AddonInstaller(self.mock_addon, [])
 
         temp_file = "https://freecad.org/dummy.zip"  # Doesn't have to actually exist!
 
@@ -297,7 +297,7 @@ class TestAddonInstaller(unittest.TestCase):
     def test_determine_install_method_https_known_sites(self):
         """Test which install methods are accepted for an https github URL"""
 
-        installer = AddonInstaller(self.mock_addon, [], [])
+        installer = AddonInstaller(self.mock_addon, [])
 
         for site in ["github.org", "gitlab.org", "framagit.org", "salsa.debian.org"]:
             temp_file = f"https://{site}/dummy/dummy"  # Doesn't have to actually exist!
@@ -344,7 +344,7 @@ class TestAddonInstaller(unittest.TestCase):
             mock_addon.url = os.path.join(
                 self.test_data_dir, "test_addon_with_fcmacro.zip"
             )
-            installer = AddonInstaller(mock_addon, [], [])
+            installer = AddonInstaller(mock_addon, [])
             installer.installation_path = temp_dir
             installer.macro_installation_path = os.path.join(temp_dir, "Macros")
             installer.run()
