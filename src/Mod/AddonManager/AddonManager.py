@@ -1026,8 +1026,8 @@ class CommandAddonManager:
             self.dialog,
             translate("AddonsInstaller", "Confirm remove"),
             translate(
-                "AddonsInstaller", "Are you sure you want to uninstall this Addon?"
-            ),
+                "AddonsInstaller", "Are you sure you want to uninstall {}?"
+            ).format(repo.display_name),
             QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.Cancel,
         )
         if confirm == QtWidgets.QMessageBox.Cancel:

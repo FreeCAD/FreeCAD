@@ -40,6 +40,10 @@ from AddonManagerTest.app.test_installer import (
 from AddonManagerTest.app.test_dependency_installer import (
     TestDependencyInstaller as AddonManagerTestDependencyInstaller,
 )
+from AddonManagerTest.app.test_uninstaller import (
+    TestAddonUninstaller as AddonManagerTestAddonUninstaller,
+    TestMacroUninstaller as AddonManagerTestMacroUninstaller,
+)
 
 # dummy usage to get flake8 and lgtm quiet
 False if AddonManagerTestUtilities.__name__ else True
@@ -49,3 +53,5 @@ False if AddonManagerTestGit.__name__ else True
 False if AddonManagerTestAddonInstaller.__name__ else True
 False if AddonManagerTestMacroInstaller.__name__ else True
 False if AddonManagerTestDependencyInstaller.__name__ else True
+False if AddonManagerTestAddonUninstaller.__name__ else True
+False if AddonManagerTestMacroUninstaller.__name__ else True
