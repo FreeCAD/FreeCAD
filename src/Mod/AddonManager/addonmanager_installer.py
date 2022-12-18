@@ -168,7 +168,7 @@ class AddonInstaller(QtCore.QObject):
             os.path.dirname(__file__), "ALLOWED_PYTHON_PACKAGES.txt"
         )
         if os.path.exists(allow_file):
-            with open(allow_file, "r", encoding="utf8") as f:
+            with open(allow_file, encoding="utf8") as f:
                 lines = f.readlines()
                 for line in lines:
                     if line and len(line) > 0 and line[0] != "#":

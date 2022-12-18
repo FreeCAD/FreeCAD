@@ -518,7 +518,7 @@ class CommandAddonManager:
         use_cache = not self.update_cache
         if use_cache:
             if os.path.isfile(utils.get_cache_file_name("package_cache.json")):
-                with open(utils.get_cache_file_name("package_cache.json"), "r") as f:
+                with open(utils.get_cache_file_name("package_cache.json")) as f:
                     data = f.read()
                     try:
                         from_json = json.loads(data)
@@ -1072,7 +1072,7 @@ class CommandAddonManager:
             uninstall_script = os.path.join(clonedir, "uninstall.py")
             if os.path.exists(uninstall_script):
                 try:
-                    with open(uninstall_script, "r") as f:
+                    with open(uninstall_script) as f:
                         exec(f.read())
                 except Exception:
                     FreeCAD.Console.PrintError(
