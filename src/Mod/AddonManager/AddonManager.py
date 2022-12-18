@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 # ***************************************************************************
 # *                                                                         *
@@ -26,16 +25,14 @@
 
 import os
 import functools
-import shutil
 import stat
-import sys
 import tempfile
 import hashlib
 import threading
 import json
 import re  # Needed for py 3.6 and earlier, can remove later, search for "re."
 from datetime import date, timedelta
-from typing import Dict, List
+from typing import Dict
 
 from PySide import QtGui, QtCore, QtWidgets
 import FreeCAD
@@ -49,20 +46,15 @@ from addonmanager_workers_startup import (
     CacheMacroCodeWorker,
 )
 from addonmanager_workers_installation import (
-    InstallWorkbenchWorker,
-    DependencyInstallationWorker,
     UpdateMetadataCacheWorker,
-    UpdateAllWorker,
 )
+from addonmanager_installer_gui import AddonInstallerGUI, MacroInstallerGUI
+from addonmanager_update_all_gui import UpdateAllGUI
 import addonmanager_utilities as utils
 import AddonManager_rc
 from package_list import PackageList, PackageListItemModel
 from package_details import PackageDetails
 from Addon import Addon
-from install_to_toolbar import (
-    ask_to_install_toolbar_button,
-    remove_custom_toolbar_button,
-)
 from manage_python_dependencies import (
     PythonPackageManager,
 )
@@ -96,8 +88,8 @@ Fetches various types of addons from a variety of sources. Built-in sources are:
 
 Additional git sources may be configure via user preferences.
 
-You need a working internet connection, and optionally the GitPython package
-installed.
+You need a working internet connection, and optionally git -- if git is not available, ZIP archives
+are downloaded instead.
 """
 
 #  \defgroup ADDONMANAGER AddonManager
@@ -117,11 +109,9 @@ class CommandAddonManager:
         "show_worker",
         "showmacro_worker",
         "macro_worker",
-        "install_worker",
         "update_metadata_cache_worker",
         "load_macro_metadata_worker",
         "update_all_worker",
-        "dependency_installation_worker",
         "check_for_python_package_updates_worker",
     ]
 
@@ -129,40 +119,16 @@ class CommandAddonManager:
     restart_required = False
 
     def __init__(self):
-        # FreeCADGui.addPreferencePage(
-        #    os.path.join(os.path.dirname(__file__), "AddonManagerOptions.ui"),
-        #    translate("AddonsInstaller", "Addon Manager"),
-        # )
         FreeCADGui.addPreferencePage(
             AddonManagerOptions,
             translate("AddonsInstaller", "Addon Manager"),
         )
 
-        self.allowed_packages = set()
-        allow_file = os.path.join(
-            os.path.dirname(__file__), "ALLOWED_PYTHON_PACKAGES.txt"
-        )
-        if os.path.exists(allow_file):
-            with open(allow_file, "r", encoding="utf8") as f:
-                lines = f.readlines()
-                for line in lines:
-                    if line and len(line) > 0 and line[0] != "#":
-                        self.allowed_packages.add(line.strip())
-        else:
-            FreeCAD.PrintWarning(
-                translate(
-                    "AddonsInstaller",
-                    "Addon Manager installation problem: could not locate ALLOWED_PYTHON_PACKAGES.txt",
-                )
-                + "\n"
-            )
-
-        # Silence some pylint errors:
         self.check_worker = None
         self.check_for_python_package_updates_worker = None
-        self.install_worker = None
         self.update_all_worker = None
         self.developer_mode = None
+        self.installer_gui = None
 
         # Set up the connection checker
         self.connection_checker = ConnectionCheckerGUI()
@@ -173,6 +139,7 @@ class CommandAddonManager:
         INSTANCE = self
 
     def GetResources(self) -> Dict[str, str]:
+        """FreeCAD-required function: get the core resource information for this Mod."""
         return {
             "Pixmap": "AddonManager",
             "MenuText": QT_TRANSLATE_NOOP("Std_AddonMgr", "&Addon manager"),
@@ -184,13 +151,11 @@ class CommandAddonManager:
         }
 
     def Activated(self) -> None:
-
+        """FreeCAD-required function: called when the command is activated."""
         NetworkManager.InitializeNetworkManager()
-
         firstRunDialog = FirstRunDialog()
         if not firstRunDialog.exec():
             return
-
         self.connection_checker.start()
 
     def launch(self) -> None:
@@ -268,9 +233,6 @@ class CommandAddonManager:
         else:
             self.dialog.buttonDevTools.hide()
 
-        # Only shown if there are available Python package updates
-        # self.dialog.buttonUpdateDependencies.hide()
-
         # connect slots
         self.dialog.rejected.connect(self.reject)
         self.dialog.buttonUpdateAll.clicked.connect(self.update_all)
@@ -287,7 +249,7 @@ class CommandAddonManager:
         self.packageList.itemSelected.connect(self.table_row_activated)
         self.packageList.setEnabled(False)
         self.packageDetails.execute.connect(self.executemacro)
-        self.packageDetails.install.connect(self.resolve_dependencies)
+        self.packageDetails.install.connect(self.launch_installer_gui)
         self.packageDetails.uninstall.connect(self.remove)
         self.packageDetails.update.connect(self.update)
         self.packageDetails.back.connect(self.on_buttonBack_clicked)
@@ -314,7 +276,7 @@ class CommandAddonManager:
             self.connection_check_message.close()
 
         # rock 'n roll!!!
-        self.dialog.exec_()
+        self.dialog.exec()
 
     def cleanup_workers(self) -> None:
         """Ensure that no workers are running by explicitly asking them to stop and waiting for them until they do"""
@@ -528,9 +490,6 @@ class CommandAddonManager:
                 2, functools.partial(self.select_addon, selection)
             )
             pref.SetString("SelectedAddon", "")
-        # TODO: migrate this to the developer mode tools
-        # if ADDON_MANAGER_DEVELOPER_MODE:
-        #    self.startup_sequence.append(self.validate)
         self.current_progress_region = 0
         self.number_of_progress_regions = len(self.startup_sequence)
         self.do_next_startup_phase()
@@ -559,7 +518,7 @@ class CommandAddonManager:
         use_cache = not self.update_cache
         if use_cache:
             if os.path.isfile(utils.get_cache_file_name("package_cache.json")):
-                with open(utils.get_cache_file_name("package_cache.json"), "r") as f:
+                with open(utils.get_cache_file_name("package_cache.json")) as f:
                     data = f.read()
                     try:
                         from_json = json.loads(data)
@@ -681,10 +640,7 @@ class CommandAddonManager:
         self.update_cache = True
         cache_path = FreeCAD.getUserCachePath()
         am_path = os.path.join(cache_path, "AddonManager")
-        try:
-            shutil.rmtree(am_path, onerror=self.remove_readonly)
-        except Exception:
-            pass
+        utils.rmdir(am_path)
         self.dialog.buttonUpdateCache.setEnabled(False)
         self.dialog.buttonUpdateCache.setText(
             translate("AddonsInstaller", "Updating cache...")
@@ -809,7 +765,6 @@ class CommandAddonManager:
         self.dialog.buttonCheckForUpdates.setEnabled(True)
 
     def check_python_updates(self) -> None:
-        self.update_allowed_packages_list()  # Not really the best place for it...
         PythonPackageManager.migrate_old_am_installations()  # Migrate 0.20 to 0.21
         self.do_next_startup_phase()
 
@@ -918,445 +873,10 @@ class CommandAddonManager:
 
     def append_to_repos_list(self, repo: Addon) -> None:
         """this function allows threads to update the main list of workbenches"""
-
         self.item_model.append_item(repo)
 
-    # @dataclass(frozen)
-    class MissingDependencies:
-        """Encapsulates a group of four types of dependencies:
-        * Internal workbenches -> wbs
-        * External addons -> external_addons
-        * Required Python packages -> python_requires
-        * Optional Python packages -> python_optional
-        """
-
-        def __init__(self, repo: Addon, all_repos: List[Addon]):
-
-            deps = Addon.Dependencies()
-            repo_name_dict = {}
-            for r in all_repos:
-                repo_name_dict[r.name] = r
-                repo_name_dict[r.display_name] = r
-
-            repo.walk_dependency_tree(repo_name_dict, deps)
-
-            self.external_addons = []
-            for dep in deps.required_external_addons:
-                if dep.status() == Addon.Status.NOT_INSTALLED:
-                    self.external_addons.append(dep.name)
-
-            # Now check the loaded addons to see if we are missing an internal workbench:
-            wbs = [wb.lower() for wb in FreeCADGui.listWorkbenches()]
-
-            self.wbs = []
-            for dep in deps.internal_workbenches:
-                if dep.lower() + "workbench" not in wbs:
-                    if dep.lower() == "plot":
-                        # Special case for plot, which is no longer a full workbench:
-                        try:
-                            __import__("Plot")
-                        except ImportError:
-                            # Plot might fail for a number of reasons
-                            self.wbs.append(dep)
-                            FreeCAD.Console.PrintLog("Failed to import Plot module")
-                    else:
-                        self.wbs.append(dep)
-
-            # Check the Python dependencies:
-            self.python_min_version = deps.python_min_version
-            self.python_requires = []
-            for py_dep in deps.python_requires:
-                if py_dep not in self.python_requires:
-                    try:
-                        __import__(py_dep)
-                    except ImportError:
-                        self.python_requires.append(py_dep)
-
-            self.python_optional = []
-            for py_dep in deps.python_optional:
-                try:
-                    __import__(py_dep)
-                except ImportError:
-                    self.python_optional.append(py_dep)
-
-            self.wbs.sort()
-            self.external_addons.sort()
-            self.python_requires.sort()
-            self.python_optional.sort()
-            self.python_optional = [
-                option
-                for option in self.python_optional
-                if option not in self.python_requires
-            ]
-
-    def update_allowed_packages_list(self) -> None:
-        FreeCAD.Console.PrintLog(
-            "Attempting to fetch remote copy of ALLOWED_PYTHON_PACKAGES.txt...\n"
-        )
-        p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(
-            "https://raw.githubusercontent.com/FreeCAD/FreeCAD-addons/master/ALLOWED_PYTHON_PACKAGES.txt"
-        )
-        if p:
-            FreeCAD.Console.PrintLog(
-                "Remote ALLOWED_PYTHON_PACKAGES.txt file located, overriding locally-installed copy\n"
-            )
-            p = p.data().decode("utf8")
-            lines = p.split("\n")
-            self.allowed_packages.clear()  # Unset the locally-defined list
-            for line in lines:
-                if line and len(line) > 0 and line[0] != "#":
-                    self.allowed_packages.add(line.strip())
-        else:
-            FreeCAD.Console.PrintLog(
-                "Could not fetch remote ALLOWED_PYTHON_PACKAGES.txt, using local copy\n"
-            )
-
-    def handle_disallowed_python(self, python_requires: List[str]) -> bool:
-        """Determine if we are missing any required Python packages that are not in the allowed
-        packages list. If so, display a message to the user, and return True. Otherwise return
-        False."""
-
-        bad_packages = []
-        # self.update_allowed_packages_list()
-        for dep in python_requires:
-            if dep not in self.allowed_packages:
-                bad_packages.append(dep)
-
-        for dep in bad_packages:
-            python_requires.remove(dep)
-
-        if bad_packages:
-            message = (
-                "<p>"
-                + translate(
-                    "AddonsInstaller",
-                    "This addon requires Python packages that are not installed, and cannot be installed automatically. To use this workbench you must install the following Python packages manually:",
-                )
-                + "</p><ul>"
-            )
-            if len(bad_packages) < 15:
-                for dep in bad_packages:
-                    message += f"<li>{dep}</li>"
-            else:
-                message += (
-                    "<li>("
-                    + translate("AddonsInstaller", "Too many to list")
-                    + ")</li>"
-                )
-            message += "</ul>"
-            message += "To ignore this error and install anyway, press OK."
-            r = QtWidgets.QMessageBox.critical(
-                self.dialog,
-                translate("AddonsInstaller", "Missing Requirement"),
-                message,
-                QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel,
-            )
-            FreeCAD.Console.PrintMessage(
-                translate(
-                    "AddonsInstaller",
-                    "The following Python packages are allowed to be automatically installed",
-                )
-                + ":\n"
-            )
-            for package in self.allowed_packages:
-                FreeCAD.Console.PrintMessage(f"  * {package}\n")
-
-            if r == QtWidgets.QMessageBox.Ok:
-                # Force the installation to proceed
-                return False
-            else:
-                return True
-        else:
-            return False
-
-    def report_missing_workbenches(self, addon_name: str, wbs) -> bool:
-        if len(wbs) == 1:
-            name = wbs[0]
-            message = translate(
-                "AddonsInstaller",
-                "Addon '{}' requires '{}', which is not available in your copy of FreeCAD.",
-            ).format(addon_name, name)
-        else:
-            message = (
-                "<p>"
-                + translate(
-                    "AddonsInstaller",
-                    "Addon '{}' requires the following workbenches, which are not available in your copy of FreeCAD:",
-                ).format(addon_name)
-                + "</p><ul>"
-            )
-            for wb in wbs:
-                message += "<li>" + wb + "</li>"
-            message += "</ul>"
-            message += translate("AddonsInstaller", "Press OK to install anyway.")
-        r = QtWidgets.QMessageBox.critical(
-            self.dialog,
-            translate("AddonsInstaller", "Missing Requirement"),
-            message,
-            QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel,
-        )
-        if r == QtWidgets.QMessageBox.Ok:
-            return True
-        else:
-            return False
-
-    def display_dep_resolution_dialog(self, missing, repo: Addon) -> None:
-        self.dependency_dialog = FreeCADGui.PySideUic.loadUi(
-            os.path.join(os.path.dirname(__file__), "dependency_resolution_dialog.ui")
-        )
-        self.dependency_dialog.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
-
-        for addon in missing.external_addons:
-            self.dependency_dialog.listWidgetAddons.addItem(addon)
-        for mod in missing.python_requires:
-            self.dependency_dialog.listWidgetPythonRequired.addItem(mod)
-        for mod in missing.python_optional:
-            item = QtWidgets.QListWidgetItem(mod)
-            item.setFlags(item.flags() | QtCore.Qt.ItemIsUserCheckable)
-            item.setCheckState(QtCore.Qt.Unchecked)
-            self.dependency_dialog.listWidgetPythonOptional.addItem(item)
-
-        self.dependency_dialog.buttonBox.button(
-            QtWidgets.QDialogButtonBox.Yes
-        ).clicked.connect(functools.partial(self.dependency_dialog_yes_clicked, repo))
-        self.dependency_dialog.buttonBox.button(
-            QtWidgets.QDialogButtonBox.Ignore
-        ).clicked.connect(
-            functools.partial(self.dependency_dialog_ignore_clicked, repo)
-        )
-        self.dependency_dialog.buttonBox.button(
-            QtWidgets.QDialogButtonBox.Cancel
-        ).setDefault(True)
-        self.dependency_dialog.exec()
-
-    def resolve_dependencies(self, repo: Addon) -> None:
-        if not repo:
-            return
-
-        missing = CommandAddonManager.MissingDependencies(repo, self.item_model.repos)
-        if self.handle_disallowed_python(missing.python_requires):
-            return
-
-        # For now only look at the minor version, since major is always Python 3
-        minor_required = missing.python_min_version["minor"]
-        if sys.version_info.minor < minor_required:
-            QtWidgets.QMessageBox.critical(
-                self.dialog,
-                translate("AddonsInstaller", "Incompatible Python version"),
-                translate(
-                    "AddonsInstaller",
-                    "This Addon (or one if its dependencies) requires Python {}.{}, and your system is running {}.{}. Installation cancelled.",
-                ).format(
-                    missing.python_min_version["major"],
-                    missing.python_min_version["minor"],
-                    sys.version_info.major,
-                    sys.version_info.minor,
-                ),
-                QtWidgets.QMessageBox.Cancel,
-            )
-            return
-
-        good_packages = []
-        for dep in missing.python_optional:
-            if dep in self.allowed_packages:
-                good_packages.append(dep)
-            else:
-                FreeCAD.Console.PrintWarning(
-                    translate(
-                        "AddonsInstaller",
-                        "Optional dependency on {} ignored because it is not in the allow-list\n",
-                    ).format(dep)
-                )
-        missing.python_optional = good_packages
-
-        if missing.wbs:
-            r = self.report_missing_workbenches(repo.display_name, missing.wbs)
-            if r == False:
-                return
-        if (
-            missing.external_addons
-            or missing.python_requires
-            or missing.python_optional
-        ):
-            # Recoverable: ask the user if they want to install the missing deps
-            self.display_dep_resolution_dialog(missing, repo)
-        else:
-            # No missing deps, just install
-            self.install(repo)
-
-    def dependency_dialog_yes_clicked(self, installing_repo: Addon) -> None:
-        # Get the lists out of the dialog:
-        addons = []
-        for row in range(self.dependency_dialog.listWidgetAddons.count()):
-            item = self.dependency_dialog.listWidgetAddons.item(row)
-            name = item.text()
-            for repo in self.item_model.repos:
-                if repo.name == name or repo.display_name == name:
-                    addons.append(repo)
-
-        python_requires = []
-        for row in range(self.dependency_dialog.listWidgetPythonRequired.count()):
-            item = self.dependency_dialog.listWidgetPythonRequired.item(row)
-            python_requires.append(item.text())
-
-        python_optional = []
-        for row in range(self.dependency_dialog.listWidgetPythonOptional.count()):
-            item = self.dependency_dialog.listWidgetPythonOptional.item(row)
-            if item.checkState() == QtCore.Qt.Checked:
-                python_optional.append(item.text())
-
-        self.dependency_installation_worker = DependencyInstallationWorker(
-            addons, python_requires, python_optional
-        )
-        self.dependency_installation_worker.no_python_exe.connect(
-            functools.partial(self.no_python_exe, installing_repo)
-        )
-        self.dependency_installation_worker.no_pip.connect(
-            functools.partial(self.no_pip, repo=installing_repo)
-        )
-        self.dependency_installation_worker.failure.connect(
-            self.dependency_installation_failure
-        )
-        self.dependency_installation_worker.success.connect(
-            functools.partial(self.install, installing_repo)
-        )
-        self.dependency_installation_dialog = QtWidgets.QMessageBox(
-            QtWidgets.QMessageBox.Information,
-            translate("AddonsInstaller", "Installing dependencies"),
-            translate("AddonsInstaller", "Installing dependencies") + "...",
-            QtWidgets.QMessageBox.Cancel,
-            self.dialog,
-        )
-        self.dependency_installation_dialog.rejected.connect(
-            self.cancel_dependency_installation
-        )
-        self.dependency_installation_dialog.show()
-        self.dependency_installation_worker.start()
-
-    def no_python_exe(self, repo: Addon) -> None:
-        if hasattr(self, "dependency_installation_dialog"):
-            self.dependency_installation_dialog.hide()
-        result = QtWidgets.QMessageBox.critical(
-            self.dialog,
-            translate("AddonsInstaller", "Cannot execute Python"),
-            translate(
-                "AddonsInstaller",
-                "Failed to automatically locate your Python executable, or the path is set incorrectly. Please check the Addon Manager preferences setting for the path to Python.",
-            )
-            + "\n\n"
-            + translate(
-                "AddonsInstaller",
-                "Dependencies could not be installed. Continue with installation of {} anyway?",
-            ).format(repo.name),
-            QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
-        )
-        if result == QtWidgets.QMessageBox.Yes:
-            self.install(repo)
-
-    def no_pip(self, command: str, repo: Addon) -> None:
-        if hasattr(self, "dependency_installation_dialog"):
-            self.dependency_installation_dialog.hide()
-        result = QtWidgets.QMessageBox.critical(
-            self.dialog,
-            translate("AddonsInstaller", "Cannot execute pip"),
-            translate(
-                "AddonsInstaller",
-                "Failed to execute pip, which may be missing from your Python installation. Please ensure your system has pip installed and try again. The failed command was: ",
-            )
-            + f"\n\n{command}\n\n"
-            + translate(
-                "AddonsInstaller",
-                "Continue with installation of {} anyway?",
-            ).format(repo.name),
-            QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
-        )
-        if result == QtWidgets.QMessageBox.Yes:
-            self.install(repo)
-
-    def dependency_installation_failure(self, short_message: str, details: str) -> None:
-        if hasattr(self, "dependency_installation_dialog"):
-            self.dependency_installation_dialog.hide()
-        FreeCAD.Console.PrintError(details)
-        QtWidgets.QMessageBox.critical(
-            self.dialog,
-            translate("AddonsInstaller", "Package installation failed"),
-            short_message
-            + "\n\n"
-            + translate("AddonsInstaller", "See Report View for detailed failure log."),
-            QtWidgets.QMessageBox.Cancel,
-        )
-
-    def dependency_dialog_ignore_clicked(self, repo: Addon) -> None:
-        self.install(repo)
-
-    def cancel_dependency_installation(self) -> None:
-        self.dependency_installation_worker.blockSignals(True)
-        self.dependency_installation_worker.requestInterruption()
-        self.dependency_installation_dialog.hide()
-
-    def install(self, repo: Addon) -> None:
-        """installs or updates a workbench, macro, or package"""
-
-        if hasattr(self, "install_worker") and self.install_worker:
-            if self.install_worker.isRunning():
-                return
-
-        if hasattr(self, "dependency_installation_dialog"):
-            self.dependency_installation_dialog.hide()
-
-        if not repo:
-            return
-
-        if (
-            repo.repo_type == Addon.Kind.WORKBENCH
-            or repo.repo_type == Addon.Kind.PACKAGE
-        ):
-            self.show_progress_widgets()
-            self.install_worker = InstallWorkbenchWorker(repo)
-            self.install_worker.status_message.connect(self.show_information)
-            self.current_progress_region = 1
-            self.number_of_progress_regions = 1
-            self.install_worker.progress_made.connect(self.update_progress_bar)
-            self.install_worker.success.connect(self.on_package_installed)
-            self.install_worker.failure.connect(self.on_installation_failed)
-            self.install_worker.start()
-        elif repo.repo_type == Addon.Kind.MACRO:
-            macro = repo.macro
-
-            # To try to ensure atomicity, test the installation into a temp directory first,
-            # and assume if that worked we have good odds of the real installation working
-            failed = False
-            errors = []
-            with tempfile.TemporaryDirectory() as dir:
-                temp_install_succeeded, error_list = macro.install(dir)
-                if not temp_install_succeeded:
-                    failed = True
-                    errors = error_list
-
-            if not failed:
-                real_install_succeeded, errors = macro.install(self.macro_repo_dir)
-                if not real_install_succeeded:
-                    failed = True
-                else:
-                    utils.update_macro_installation_details(repo)
-
-            if not failed:
-                message = translate(
-                    "AddonsInstaller",
-                    "Macro successfully installed. The macro is now available from the Macros dialog.",
-                )
-                self.on_package_installed(repo, message)
-            else:
-                message = (
-                    translate("AddonsInstaller", "Installation of macro failed") + ":"
-                )
-                for error in errors:
-                    message += "\n  * "
-                    message += error
-                self.on_installation_failed(repo, message)
-
     def update(self, repo: Addon) -> None:
-        self.install(repo)
+        self.launch_installer_gui(repo)
 
     def mark_repo_update_available(self, repo: Addon, available: bool) -> None:
         if available:
@@ -1366,103 +886,46 @@ class CommandAddonManager:
         self.item_model.reload_item(repo)
         self.packageDetails.show_repo(repo)
 
-    def update_all(self) -> None:
-        """Asynchronously apply all available updates: individual failures are noted, but do not stop other updates"""
-
-        if hasattr(self, "update_all_worker") and self.update_all_worker:
-            if self.update_all_worker.isRunning():
-                return
-
-        self.subupdates_succeeded = []
-        self.subupdates_failed = []
-
-        self.show_progress_widgets()
-        self.current_progress_region = 1
-        self.number_of_progress_regions = 1
-        self.update_all_worker = UpdateAllWorker(self.packages_with_updates)
-        self.update_all_worker.progress_made.connect(self.update_progress_bar)
-        self.update_all_worker.status_message.connect(self.show_information)
-        self.update_all_worker.success.connect(self.subupdates_succeeded.append)
-        self.update_all_worker.failure.connect(self.subupdates_failed.append)
-        self.update_all_worker.finished.connect(self.on_update_all_completed)
-        self.update_all_worker.start()
-
-    def on_update_all_completed(self) -> None:
-        self.hide_progress_widgets()
-
-        def get_package_list(message: str, repos: List[Addon], threshold: int):
-            """To ensure that the list doesn't get too long for the dialog, cut it off at some threshold"""
-            num_updates = len(repos)
-            if num_updates < threshold:
-                result = "".join([repo.name + "\n" for repo in repos])
-            else:
-                result = translate(
-                    "AddonsInstaller",
-                    "{} total, see Report view for list",
-                    "Describes the number of updates that were completed ('{}' is replaced by the number of updates)",
-                ).format(num_updates)
-                for repo in repos:
-                    FreeCAD.Console.PrintMessage(f"{message}: {repo.name}\n")
-            return result
-
-        if not self.subupdates_failed:
-            message = (
+    def launch_installer_gui(self, addon: Addon) -> None:
+        if self.installer_gui is not None:
+            FreeCAD.Console.PrintError(
                 translate(
                     "AddonsInstaller",
-                    "All packages were successfully updated",
+                    "Cannot launch a new installer until the previous one has finished.",
                 )
-                + ": \n"
             )
-            message += get_package_list(
-                translate("AddonsInstaller", "Succeeded"), self.subupdates_succeeded, 15
-            )
-        elif not self.subupdates_succeeded:
-            message = (
-                translate("AddonsInstaller", "All packages updates failed:") + "\n"
-            )
-            message += get_package_list(
-                translate("AddonsInstaller", "Failed"), self.subupdates_failed, 15
-            )
+            return
+        if addon.macro is not None:
+            self.installer_gui = MacroInstallerGUI(addon)
         else:
-            message = (
+            self.installer_gui = AddonInstallerGUI(addon, self.item_model.repos)
+        self.installer_gui.success.connect(self.on_package_installed)
+        self.installer_gui.finished.connect(self.cleanup_installer)
+        self.installer_gui.run()  # Does not block
+
+    def cleanup_installer(self) -> None:
+        QtCore.QTimer.singleShot(500, self.no_really_clean_up_the_installer)
+
+    def no_really_clean_up_the_installer(self) -> None:
+        self.installer_gui = None
+
+    def update_all(self) -> None:
+        """Asynchronously apply all available updates: individual failures are noted, but do not
+        stop other updates"""
+
+        if self.installer_gui is not None:
+            FreeCAD.Console.PrintError(
                 translate(
                     "AddonsInstaller",
-                    "Some packages updates failed.",
+                    "Cannot launch a new installer until the previous one has finished.",
                 )
-                + "\n\n"
-                + translate(
-                    "AddonsInstaller",
-                    "Succeeded",
-                )
-                + ":\n"
             )
-            message += get_package_list(
-                translate("AddonsInstaller", "Succeeded"), self.subupdates_succeeded, 8
-            )
-            message += "\n\n"
-            message += translate("AddonsInstaller", "Failed") + ":\n"
-            message += get_package_list(
-                translate("AddonsInstaller", "Failed"), self.subupdates_failed, 8
-            )
+            return
 
-        for installed_repo in self.subupdates_succeeded:
-            if installed_repo.contains_workbench():
-                self.restart_required = True
-                installed_repo.set_status(Addon.Status.PENDING_RESTART)
-            else:
-                installed_repo.set_status(Addon.Status.NO_UPDATE_AVAILABLE)
-            self.item_model.reload_item(installed_repo)
-            for requested_repo in self.packages_with_updates:
-                if installed_repo.name == requested_repo.name:
-                    self.packages_with_updates.remove(installed_repo)
-                    break
-        self.enable_updates(len(self.packages_with_updates))
-        QtWidgets.QMessageBox.information(
-            self.dialog,
-            translate("AddonsInstaller", "Update report"),
-            message,
-            QtWidgets.QMessageBox.Close,
-        )
+        self.installer_gui = UpdateAllGUI(self.item_model.repos)
+        self.installer_gui.addon_updated.connect(self.on_package_installed)
+        self.installer_gui.finished.connect(self.cleanup_installer)
+        self.installer_gui.run()  # Does not block
 
     def hide_progress_widgets(self) -> None:
         """hides the progress bar and related widgets"""
@@ -1516,14 +979,7 @@ class CommandAddonManager:
                 "AddonManager recaches."
             )
 
-    def on_package_installed(self, repo: Addon, message: str) -> None:
-        self.hide_progress_widgets()
-        QtWidgets.QMessageBox.information(
-            self.dialog,
-            translate("AddonsInstaller", "Installation succeeded"),
-            message,
-            QtWidgets.QMessageBox.Close,
-        )
+    def on_package_installed(self, repo: Addon) -> None:
         if repo.contains_workbench():
             repo.set_status(Addon.Status.PENDING_RESTART)
             self.restart_required = True
@@ -1531,20 +987,9 @@ class CommandAddonManager:
             repo.set_status(Addon.Status.NO_UPDATE_AVAILABLE)
         self.item_model.reload_item(repo)
         self.packageDetails.show_repo(repo)
-        if repo.repo_type == Addon.Kind.MACRO:
-            ask_to_install_toolbar_button(repo)
         if repo in self.packages_with_updates:
             self.packages_with_updates.remove(repo)
             self.enable_updates(len(self.packages_with_updates))
-
-    def on_installation_failed(self, _: Addon, message: str) -> None:
-        self.hide_progress_widgets()
-        QtWidgets.QMessageBox.warning(
-            self.dialog,
-            translate("AddonsInstaller", "Installation failed"),
-            message,
-            QtWidgets.QMessageBox.Close,
-        )
 
     def executemacro(self, repo: Addon) -> None:
         """executes a selected macro"""
@@ -1573,12 +1018,6 @@ class CommandAddonManager:
                     FreeCADGui.open(str(macro_path))
                     self.dialog.hide()
                     FreeCADGui.SendMsgToActiveView("Run")
-
-    def remove_readonly(self, func, path, _) -> None:
-        """Remove a read-only file."""
-
-        os.chmod(path, stat.S_IWRITE)
-        func(path)
 
     def remove(self, repo: Addon) -> None:
         """uninstalls a macro or workbench"""
@@ -1633,7 +1072,7 @@ class CommandAddonManager:
             uninstall_script = os.path.join(clonedir, "uninstall.py")
             if os.path.exists(uninstall_script):
                 try:
-                    with open(uninstall_script, "r") as f:
+                    with open(uninstall_script) as f:
                         exec(f.read())
                 except Exception:
                     FreeCAD.Console.PrintError(
@@ -1645,7 +1084,7 @@ class CommandAddonManager:
                     )
 
             if os.path.exists(clonedir):
-                shutil.rmtree(clonedir, onerror=self.remove_readonly)
+                utils.rmdir(clonedir)
                 self.item_model.update_item_status(
                     repo.name, Addon.Status.NOT_INSTALLED
                 )
@@ -1663,7 +1102,7 @@ class CommandAddonManager:
         elif repo.repo_type == Addon.Kind.MACRO:
             macro = repo.macro
             if macro.remove():
-                remove_custom_toolbar_button(repo)
+                # TODO: reimplement when refactored... remove_custom_toolbar_button(repo)
                 FreeCAD.Console.PrintMessage(
                     translate("AddonsInstaller", "Successfully uninstalled {}").format(
                         repo.name
@@ -1682,4 +1121,6 @@ class CommandAddonManager:
                     ).format(repo.name)
                     + "\n"
                 )
+
+
 # @}

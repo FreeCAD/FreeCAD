@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2018 Gaël Écorchard <galou_breizh@yahoo.fr>             *
@@ -418,7 +417,7 @@ class Macro:
         try:
             with codecs.open(macro_path, "w", "utf-8") as macrofile:
                 macrofile.write(self.code)
-        except IOError:
+        except OSError:
             return False, [f"Failed to write {macro_path}"]
         # Copy related files, which are supposed to be given relative to
         # self.src_filename.
@@ -447,7 +446,7 @@ class Macro:
                 )
                 try:
                     shutil.copy(self.icon, dst_file)
-                except IOError:
+                except OSError:
                     warnings.append(f"Failed to copy icon to {dst_file}")
             elif self.icon not in self.other_files:
                 self.other_files.append(self.icon)
@@ -479,7 +478,7 @@ class Macro:
             self._fetch_single_file(other_file, src_file, dst_file, warnings)
             try:
                 shutil.copy(src_file, dst_file)
-            except IOError:
+            except OSError:
                 warnings.append(f"Failed to copy {src_file} to {dst_file}")
         return True  # No fatal errors, but some files may have failed to copy
 

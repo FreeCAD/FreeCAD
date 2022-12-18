@@ -75,7 +75,7 @@ protected:
 
     bool apply(bool forceUpdate = false);
     void applyQuick(std::string dir);
-    void applyAligned(Base::Vector3d localUnit);
+    void applyAligned();
 
     void setUiPrimary();
     void setUiEdit();
@@ -106,6 +106,8 @@ protected Q_SLOTS:
     void slotViewDirectionChanged(Base::Vector3d newDirection);
 
 private:
+    double requiredRotation(double inputAngle);
+
     void createComplexSection();
     void updateComplexSection();
 
@@ -137,11 +139,11 @@ private:
     Base::Vector3d m_normal;
 
     int m_applyDeferred;
-    Base::Vector3d m_localUnit;
     CompassWidget* m_compass;
     double m_angle;
     VectorEditWidget* m_viewDirectionWidget;
     bool m_directionIsSet;
+    bool m_modelIsDirty;
 
 };
 

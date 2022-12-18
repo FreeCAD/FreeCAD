@@ -50,23 +50,31 @@ public:
     TopoDS_Shape makeCuttingTool(double dMax) override;
     gp_Ax2 getCSFromBase(const std::string sectionName) const override;
     bool isBaseValid() const override;
-    TopoDS_Compound findSectionPlaneIntersections(const TopoDS_Shape &cutShape) override;
-    TopoDS_Shape prepareShape(const TopoDS_Shape &cutShape, double shapeSize) override;
+    TopoDS_Compound findSectionPlaneIntersections(const TopoDS_Shape& cutShape) override;
+    TopoDS_Shape prepareShape(const TopoDS_Shape& cutShape, double shapeSize) override;
     TopoDS_Shape getShapeToPrepare() const override;
     TopoDS_Shape getShapeToIntersect() override;
     gp_Pln getSectionPlane() const override;
     TopoDS_Compound alignSectionFaces(TopoDS_Shape faceIntersections) override;
     std::pair<Base::Vector3d, Base::Vector3d> sectionLineEnds() override;
 
-    bool boxesIntersect(TopoDS_Face &face, TopoDS_Shape &shape);
-    TopoDS_Shape shapeShapeIntersect(const TopoDS_Shape &shape0, const TopoDS_Shape &shape1);
-    std::vector<TopoDS_Face> faceShapeIntersect(const TopoDS_Face &face, const TopoDS_Shape &shape);
-    TopoDS_Shape extrudeWireToFace(TopoDS_Wire &wire, gp_Dir extrudeDir, double extrudeDist);
-    TopoDS_Shape makeAlignedPieces(const TopoDS_Shape &rawShape, const TopoDS_Shape &toolFaceShape,
-                                   double extrudeDistance);
-    TopoDS_Shape distributeAlignedPieces(std::vector<TopoDS_Shape> pieces);
-    TopoDS_Compound singleToolIntersections(const TopoDS_Shape &cutShape);
-    TopoDS_Compound alignedToolIntersections(const TopoDS_Shape &cutShape);
+    void makeSectionCut(TopoDS_Shape& baseShape) override;
+
+    void waitingForAlign(bool s) { m_waitingForAlign = s; }
+    bool waitingForAlign(void) const { return m_waitingForAlign; }
+
+    TopoDS_Shape getShapeForDetail() const override;
+
+public Q_SLOTS:
+    void onSectionCutFinished(void) override;
+
+    bool boxesIntersect(TopoDS_Face& face, TopoDS_Shape& shape);
+    TopoDS_Shape shapeShapeIntersect(const TopoDS_Shape& shape0, const TopoDS_Shape& shape1);
+    std::vector<TopoDS_Face> faceShapeIntersect(const TopoDS_Face& face, const TopoDS_Shape& shape);
+    TopoDS_Shape extrudeWireToFace(TopoDS_Wire& wire, gp_Dir extrudeDir, double extrudeDist);
+    void makeAlignedPieces(const TopoDS_Shape& rawShape);
+    TopoDS_Compound singleToolIntersections(const TopoDS_Shape& cutShape);
+    TopoDS_Compound alignedToolIntersections(const TopoDS_Shape& cutShape);
 
     BaseGeomPtrVector makeSectionLineGeometry();
     std::pair<Base::Vector3d, Base::Vector3d> sectionArrowDirs();
@@ -75,27 +83,34 @@ public:
     ChangePointVector getChangePointsFromSectionLine() override;
 
     bool validateProfilePosition(TopoDS_Wire profileWire, gp_Ax2 sectionCS,
-                                 gp_Dir &gClosestBasis) const;
+                                 gp_Dir& gClosestBasis) const;
     bool showSegment(gp_Dir segmentNormal) const;
     gp_Vec projectVector(const gp_Vec& vec) const;
 
     TopoDS_Wire makeProfileWire() const;
-    static TopoDS_Wire makeProfileWire(App::DocumentObject *toolObj);
+    static TopoDS_Wire makeProfileWire(App::DocumentObject* toolObj);
     static TopoDS_Wire makeNoseToTailWire(TopoDS_Wire inWire);
     static gp_Vec makeProfileVector(TopoDS_Wire profileWire);
-    static bool isProfileObject(App::DocumentObject *obj);
-    static bool isMultiSegmentProfile(App::DocumentObject *obj);
-    static bool isLinearProfile(App::DocumentObject *obj);
+    static bool isProfileObject(App::DocumentObject* obj);
+    static bool isMultiSegmentProfile(App::DocumentObject* obj);
+    static bool isLinearProfile(App::DocumentObject* obj);
     static bool isTrulyEmpty(TopoDS_Shape inShape);
     static bool canBuild(gp_Ax2 sectionCS, App::DocumentObject* profileObject);
     static gp_Vec projectVector(const gp_Vec& vec, gp_Ax2 sectionCS);
 
 private:
-    gp_Dir getFaceNormal(TopoDS_Face &face);
+    gp_Dir getFaceNormal(TopoDS_Face& face);
 
     TopoDS_Shape m_toolFaceShape;
+    TopoDS_Shape m_alignResult;
+    TopoDS_Shape m_preparedShape;//saved for detail views
 
-    static const char *ProjectionStrategyEnums[];
+    QMetaObject::Connection connectAlignWatcher;
+    QFutureWatcher<void> m_alignWatcher;
+    QFuture<void> m_alignFuture;
+    bool m_waitingForAlign;
+
+    static const char* ProjectionStrategyEnums[];
 };
 
 using DrawComplexSectionPython = App::FeaturePythonT<DrawComplexSection>;

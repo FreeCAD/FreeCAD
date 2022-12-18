@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2018 Gaël Écorchard <galou_breizh@yahoo.fr>             *
@@ -26,6 +25,8 @@
 import os
 import platform
 import shutil
+import stat
+import subprocess
 import re
 import ctypes
 from typing import Optional, Any
@@ -35,7 +36,24 @@ from urllib.parse import urlparse
 from PySide import QtCore, QtWidgets
 
 import FreeCAD
-import FreeCADGui
+
+if FreeCAD.GuiUp:
+    import FreeCADGui
+
+    # If the GUI is up, we can use the NetworkManager to handle our downloads. If there is no event
+    # loop running this is not possible, so fall back to requests (if available), or the native
+    # Python urllib.request (if requests is not available).
+    import NetworkManager  # Requires an event loop, so is only available with the GUI
+else:
+    has_requests = False
+    try:
+        import requests
+
+        has_requests = True
+    except ImportError:
+        has_requests = False
+        import urllib.request
+        import ssl
 
 
 #  @package AddonManager_utilities
@@ -45,6 +63,10 @@ import FreeCADGui
 
 
 translate = FreeCAD.Qt.translate
+
+
+class ProcessInterrupted(RuntimeError):
+    """An interruption request was received and the process killed because if it."""
 
 
 def symlink(source, link_name):
@@ -70,6 +92,21 @@ def symlink(source, link_name):
             flags += 2
             if csl(link_name, source, flags) == 0:
                 raise ctypes.WinError()
+
+
+def rmdir(path: os.PathLike) -> bool:
+    try:
+        shutil.rmtree(path, onerror=remove_readonly)
+    except Exception:
+        return False
+    return True
+
+
+def remove_readonly(func, path, _) -> None:
+    """Remove a read-only file."""
+
+    os.chmod(path, stat.S_IWRITE)
+    func(path)
 
 
 def update_macro_details(old_macro, new_macro):
@@ -122,9 +159,9 @@ def get_zip_url(repo):
     if parsed_url.netloc in ["gitlab.com", "framagit.org", "salsa.debian.org"]:
         return f"{repo.url}/-/archive/{repo.branch}/{repo.name}-{repo.branch}.zip"
     FreeCAD.Console.PrintLog(
-        "Debug: addonmanager_utilities.get_zip_url: Unknown git host fetching zip URL:",
-        parsed_url.netloc,
-        "\n",
+        "Debug: addonmanager_utilities.get_zip_url: Unknown git host fetching zip URL:"
+        + parsed_url.netloc
+        + "\n"
     )
     return f"{repo.url}/-/archive/{repo.branch}/{repo.name}-{repo.branch}.zip"
 
@@ -243,7 +280,7 @@ def get_macro_version_from_file(filename: str) -> str:
     as well as a reference to __date__"""
 
     date = ""
-    with open(filename, "r", errors="ignore", encoding="utf-8") as f:
+    with open(filename, errors="ignore", encoding="utf-8") as f:
         line_counter = 0
         max_lines_to_scan = 200
         while line_counter < max_lines_to_scan:
@@ -359,3 +396,58 @@ def get_cache_file_name(file: str) -> str:
     am_path = os.path.join(cache_path, "AddonManager")
     os.makedirs(am_path, exist_ok=True)
     return os.path.join(am_path, file)
+
+
+def blocking_get(url: str, method=None) -> str:
+    """Wrapper around three possible ways of accessing data, depending on the current run mode and
+    Python installation. Blocks until complete, and returns the text results of the call if it
+    succeeded, or an empty string if it failed, or returned no data. The method argument is
+    provided mainly for testing purposes."""
+    p = ""
+    if FreeCAD.GuiUp and method is None or method == "networkmanager":
+        NetworkManager.InitializeNetworkManager()
+        p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(url)
+    elif has_requests and method is None or method == "requests":
+        response = requests.get(url)
+        if response.status_code == 200:
+            p = response.text
+    else:
+        ctx = ssl.create_default_context()
+        with urllib.request.urlopen(url, context=ctx) as f:
+            p = f.read().decode("utf-8")
+    return p
+
+
+def run_interruptable_subprocess(args) -> object:
+    """Wrap subprocess call so it can be interrupted gracefully."""
+    creationflags = 0
+    if hasattr(subprocess, "CREATE_NO_WINDOW"):
+        # Added in Python 3.7 -- only used on Windows
+        creationflags = subprocess.CREATE_NO_WINDOW
+    try:
+        p = subprocess.Popen(
+            args,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            creationflags=creationflags,
+            text=True,
+            encoding="utf-8",
+        )
+    except OSError as e:
+        raise subprocess.CalledProcessError(-1, args, "", e.strerror)
+    stdout = ""
+    stderr = ""
+    return_code = None
+    while return_code is None:
+        try:
+            stdout, stderr = p.communicate(timeout=0.1)
+            return_code = p.returncode if p.returncode is not None else -1
+        except subprocess.TimeoutExpired:
+            if QtCore.QThread.currentThread().isInterruptionRequested():
+                p.kill()
+                stdout, stderr = p.communicate()
+                return_code = -1
+                raise ProcessInterrupted()
+    if return_code is None or return_code != 0:
+        raise subprocess.CalledProcessError(return_code, args, stdout, stderr)
+    return subprocess.CompletedProcess(args, return_code, stdout, stderr)
