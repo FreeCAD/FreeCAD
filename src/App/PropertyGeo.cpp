@@ -606,17 +606,17 @@ void PropertyPlacement::setPathValue(const ObjectIdentifier &path, const boost::
         rot.getYawPitchRoll(yaw, pitch, roll);
         if (index == 0) {
             if (angle < -180.0 || angle > 180.0)
-                throw Base::ValueError("Yaw angle outside range [-180, +180]");
+                throw Base::ValueError("Yaw angle is out of range [-180, +180]");
             yaw = angle;
         }
         else if (index == 1) {
             if (angle < -90.0 || angle > 90.0)
-                throw Base::ValueError("Roll angle outside range [-90, +90]");
+                throw Base::ValueError("Pitch angle is out of range [-90, +90]");
             pitch = angle;
         }
         else if (index == 2) {
             if (angle < -180.0 || angle > 180.0)
-                throw Base::ValueError("Roll angle outside range [-180, +180]");
+                throw Base::ValueError("Roll angle is out of range [-180, +180]");
             roll = angle;
         }
         rot.setYawPitchRoll(yaw, pitch, roll);
