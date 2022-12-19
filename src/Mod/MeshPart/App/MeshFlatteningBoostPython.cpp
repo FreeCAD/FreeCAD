@@ -56,24 +56,24 @@ const TopoDS_Face& getTopoDSFace(const py::object& face)
 {
     if (PyObject_TypeCheck(face.ptr(), &(Part::TopoShapeFacePy::Type)))
     {
-        const Part::TopoShapeFacePy* f = static_cast<Part::TopoShapeFacePy*>(face.ptr());
-        const TopoDS_Face& myFace = TopoDS::Face(f->getTopoShapePtr()->getShape());
+        const Part::TopoShapeFacePy* fpy = static_cast<Part::TopoShapeFacePy*>(face.ptr());
+        const TopoDS_Face& myFace = TopoDS::Face(fpy->getTopoShapePtr()->getShape());
         return myFace;
     }
-    else
-        throw std::invalid_argument("must be a face");
+
+    throw std::invalid_argument("must be a face");
 }
 
 const TopoDS_Edge& getTopoDSEdge(py::object* edge)
 {
     if (PyObject_TypeCheck(edge->ptr(), &(Part::TopoShapeEdgePy::Type)))
     {
-        const Part::TopoShapeEdgePy* e = static_cast<Part::TopoShapeEdgePy*>(edge->ptr());
-        const TopoDS_Edge& myEdge = TopoDS::Edge(e->getTopoShapePtr()->getShape());
+        const Part::TopoShapeEdgePy* epy = static_cast<Part::TopoShapeEdgePy*>(edge->ptr());
+        const TopoDS_Edge& myEdge = TopoDS::Edge(epy->getTopoShapePtr()->getShape());
         return myEdge;
     }
-    else
-        throw std::invalid_argument("must be an edge");
+
+    throw std::invalid_argument("must be an edge");
 }
 
 Py::Object makeEdge(const TopoDS_Edge& edge)
@@ -84,7 +84,7 @@ Py::Object makeEdge(const TopoDS_Edge& edge)
 std::shared_ptr<FaceUnwrapper> FaceUnwrapper_face(const py::object& face)
 {
     const TopoDS_Face& myFace = getTopoDSFace(face);
-    return std::shared_ptr<FaceUnwrapper>(new FaceUnwrapper(myFace));
+    return std::make_shared<FaceUnwrapper>(myFace);
 }
 
 std::shared_ptr<FaceUnwrapper> FaceUnwrapper_mesh(const py::object& points,
@@ -148,7 +148,7 @@ boost::python::list getFlatBoundaryNodesPy(FaceUnwrapper& instance)
     std::vector<ColMat<double, 3>> mat_array = instance.getFlatBoundaryNodes();
 
     boost::python::list ary;
-    for (auto mat : mat_array) {
+    for (auto& mat : mat_array) {
         boost::python::list plist;
         auto cols = mat.cols();
         auto rows = mat.rows();
