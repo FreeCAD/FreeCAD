@@ -516,6 +516,7 @@ void QuantitySpinBox::openFormulaDialog()
 
     Q_D(const QuantitySpinBox);
     auto box = new Gui::Dialog::DlgExpressionInput(getPath(), getExpression(), d->unit, this);
+    box->setRange(d->minimum, d->maximum);
     QObject::connect(box, &Gui::Dialog::DlgExpressionInput::finished, [=]() {
         if (box->result() == QDialog::Accepted)
             setExpression(box->getExpression());
