@@ -198,6 +198,7 @@ struct ApplicationP
     /// Handles all commands
     CommandManager commandManager;
     ViewProviderMap viewproviderMap;
+    std::bitset<32> StatusBits;
 };
 
 static PyObject *
@@ -2287,6 +2288,16 @@ void Application::runApplication()
     }
 
     Base::Console().Log("Finish: Event loop left\n");
+}
+
+bool Application::testStatus(Status pos) const
+{
+    return d->StatusBits.test((size_t)pos);
+}
+
+void Application::setStatus(Status pos, bool on)
+{
+    d->StatusBits.set((size_t)pos, on);
 }
 
 void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
