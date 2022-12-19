@@ -116,7 +116,6 @@ public:
         if (orbit == Trackball)
             return rot;
         else if (orbit == Turntable) {
-            // 0000333: Turntable camera rotation
             SbVec3f axis;
             float angle;
             rot.getValue(axis, angle);
