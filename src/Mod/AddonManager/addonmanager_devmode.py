@@ -606,9 +606,7 @@ class DeveloperMode:
             for filename in filenames:
                 if filename.endswith(".py"):
 
-                    with open(
-                        os.path.join(dirpath, filename), encoding="utf-8"
-                    ) as f:
+                    with open(os.path.join(dirpath, filename), encoding="utf-8") as f:
                         contents = f.read()
                         version_strings = vermin.version_strings(
                             vermin.detect(contents)

@@ -25,6 +25,7 @@ SET(AddonManager_SRCS
     addonmanager_macro.py
     addonmanager_update_all_gui.py
     addonmanager_uninstaller.py
+    addonmanager_uninstaller_gui.py
     addonmanager_utilities.py
     addonmanager_workers_installation.py
     addonmanager_workers_startup.py
@@ -94,6 +95,7 @@ SET(AddonManagerTestsGui_SRCS
     AddonManagerTest/gui/test_gui.py
     AddonManagerTest/gui/test_installer_gui.py
     AddonManagerTest/gui/test_update_all_gui.py
+    AddonManagerTest/gui/test_uninstaller_gui.py
     AddonManagerTest/gui/test_workers_startup.py
     AddonManagerTest/gui/test_workers_utility.py
 )
@@ -120,13 +122,13 @@ SET(AddonManagerTestsFiles_SRCS
 )
 
 SET(AddonManagerTests_ALL
-	${AddonManagerTests_SRCS}
-	${AddonManagerTestsApp_SRCS}
-	${AddonManagerTestsFiles_SRCS}
+    ${AddonManagerTests_SRCS}
+    ${AddonManagerTestsApp_SRCS}
+    ${AddonManagerTestsFiles_SRCS}
 	)
 
 IF (BUILD_GUI)
-	LIST(APPEND AddonManagerTests_ALL ${AddonManagerTestsGui_SRCS})
+    LIST(APPEND AddonManagerTests_ALL ${AddonManagerTestsGui_SRCS})
 ENDIF (BUILD_GUI)
 
 ADD_CUSTOM_TARGET(AddonManager ALL

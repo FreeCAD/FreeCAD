@@ -32,6 +32,7 @@ import FreeCAD
 from PySide import QtCore
 
 import addonmanager_utilities as utils
+from Addon import Addon
 
 translate = FreeCAD.Qt.translate
 
@@ -58,7 +59,7 @@ class AddonUninstaller(QtCore.QObject):
         addon_to_remove = MyAddon() # Some class with 'name' attribute
 
         self.worker_thread = QtCore.QThread()
-        self.uninstaller = AddonInstaller(addon_to_remove)
+        self.uninstaller = AddonUninstaller(addon_to_remove)
         self.uninstaller.moveToThread(self.worker_thread)
         self.uninstaller.success.connect(self.removal_succeeded)
         self.uninstaller.failure.connect(self.removal_failed)
@@ -100,7 +101,7 @@ class AddonUninstaller(QtCore.QObject):
         """Remove an addon. Returns True if the addon was removed cleanly, or False if not. Emits
         either success or failure prior to returning."""
         success = False
-        error_message = translate("AddonsInstaller", "An unknown error occured")
+        error_message = translate("AddonsInstaller", "An unknown error occurred")
         if hasattr(self.addon_to_remove, "name") and self.addon_to_remove.name:
             # Make sure we don't accidentally remove the Mod directory
             path_to_remove = os.path.normpath(
@@ -124,6 +125,7 @@ class AddonUninstaller(QtCore.QObject):
             self.success.emit(self.addon_to_remove)
         else:
             self.failure.emit(self.addon_to_remove, error_message)
+        self.addon_to_remove.set_status(Addon.Status.NOT_INSTALLED)
         self.finished.emit()
 
     def run_uninstall_script(self, path_to_remove):
@@ -248,6 +250,7 @@ class MacroUninstaller(QtCore.QObject):
             self.success.emit(self.addon_to_remove)
         else:
             self.failure.emit(self.addon_to_remove, "\n".join(errors))
+        self.addon_to_remove.set_status(Addon.Status.NOT_INSTALLED)
         self.finished.emit()
 
     def _get_files_to_remove(self) -> List[os.PathLike]:
