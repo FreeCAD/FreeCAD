@@ -115,7 +115,7 @@ class TestAddonInstaller(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp_dir:
             installer.installation_path = temp_dir
             installer._update_metadata()
-            addon_dir = os.path.join(temp_dir, self.mock_addon.name)
+            addon_dir = os.path.join(temp_dir, self.real_addon.name)
             os.mkdir(addon_dir)
             shutil.copy(
                 os.path.join(self.test_data_dir, "good_package.xml"),
@@ -125,7 +125,7 @@ class TestAddonInstaller(unittest.TestCase):
             installer._update_metadata()
             self.assertEqual(self.real_addon.installed_version, good_metadata.Version)
 
-    def test_finalize_zip_installation(self):
+    def test_finalize_zip_installation_non_github(self):
         """Ensure that zipfiles are correctly extracted."""
         with tempfile.TemporaryDirectory() as temp_dir:
             test_simple_repo = os.path.join(self.test_data_dir, "test_simple_repo.zip")
@@ -140,12 +140,15 @@ class TestAddonInstaller(unittest.TestCase):
                 os.path.isfile(expected_location), "Non-GitHub zip extraction failed"
             )
 
+    def test_finalize_zip_installation_github(self):
         with tempfile.TemporaryDirectory() as temp_dir:
             test_github_style_repo = os.path.join(
                 self.test_data_dir, "test_github_style_repo.zip"
             )
             installer = AddonInstaller(self.mock_addon, [])
             installer.installation_path = temp_dir
+            self.mock_addon.url = test_github_style_repo
+            self.mock_addon.branch = "master"
             installer._finalize_zip_installation(test_github_style_repo)
             expected_location = os.path.join(temp_dir, self.mock_addon.name, "README")
             self.assertTrue(

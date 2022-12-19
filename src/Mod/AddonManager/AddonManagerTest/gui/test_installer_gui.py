@@ -19,6 +19,7 @@
 # *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
+
 import os
 import tempfile
 import unittest
@@ -28,78 +29,18 @@ from PySide import QtCore, QtWidgets
 
 from addonmanager_installer_gui import AddonInstallerGUI, MacroInstallerGUI
 
+from AddonManagerTest.gui.gui_mocks import DialogWatcher, DialogInteractor
+from AddonManagerTest.app.mocks import MockAddon
+
 translate = FreeCAD.Qt.translate
-
-
-class DialogWatcher(QtCore.QObject):
-    def __init__(self, dialog_to_watch_for, button):
-        super().__init__()
-        self.dialog_found = False
-        self.has_run = False
-        self.dialog_to_watch_for = dialog_to_watch_for
-        self.button = button
-
-    def run(self):
-        widget = QtWidgets.QApplication.activeModalWidget()
-        if widget:
-            # Is this the widget we are looking for?
-            if (
-                hasattr(widget, "windowTitle")
-                and callable(widget.windowTitle)
-                and widget.windowTitle() == self.dialog_to_watch_for
-            ):
-                # Found the dialog we are looking for: now try to "click" the appropriate button
-                self.click_button(widget)
-                self.dialog_found = True
-        self.has_run = True
-
-    def click_button(self, widget):
-        buttons = widget.findChildren(QtWidgets.QPushButton)
-        for button in buttons:
-            text = button.text().replace("&", "")
-            if text == self.button:
-                button.click()
-
-
-class DialogInteractor(DialogWatcher):
-    def __init__(self, dialog_to_watch_for, interaction):
-        """Takes the title of the dialog, a button string, and a callable."""
-        super().__init__(dialog_to_watch_for, None)
-        self.interaction = interaction
-
-    def run(self):
-        widget = QtWidgets.QApplication.activeModalWidget()
-        if widget:
-            # Is this the widget we are looking for?
-            if (
-                hasattr(widget, "windowTitle")
-                and callable(widget.windowTitle)
-                and widget.windowTitle() == self.dialog_to_watch_for
-            ):
-                # Found the dialog we are looking for: now try to "click" the appropriate button
-                self.dialog_found = True
-        if self.dialog_found:
-            self.has_run = True
-            if self.interaction is not None and callable(self.interaction):
-                self.interaction(widget)
 
 
 class TestInstallerGui(unittest.TestCase):
 
     MODULE = "test_installer_gui"  # file name without extension
 
-    class MockAddon:
-        def __init__(self):
-            test_dir = os.path.join(
-                FreeCAD.getHomePath(), "Mod", "AddonManager", "AddonManagerTest", "data"
-            )
-            self.name = "MockAddon"
-            self.display_name = "Mock Addon"
-            self.url = os.path.join(test_dir, "test_simple_repo.zip")
-            self.branch = "main"
-
     def setUp(self):
-        self.addon_to_install = TestInstallerGui.MockAddon()
+        self.addon_to_install = MockAddon()
         self.installer_gui = AddonInstallerGUI(self.addon_to_install)
         self.finalized_thread = False
 

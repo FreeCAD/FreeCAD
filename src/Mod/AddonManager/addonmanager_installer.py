@@ -154,6 +154,14 @@ class AddonInstaller(QtCore.QObject):
                 success = self._install_by_copy()
         except utils.ProcessInterrupted:
             pass
+        if success:
+            if (
+                hasattr(self.addon_to_install, "contains_workbench")
+                and self.addon_to_install.contains_workbench()
+            ):
+                self.addon_to_install.set_status(Addon.Status.PENDING_RESTART)
+            else:
+                self.addon_to_install.set_status(Addon.Status.NO_UPDATE_AVAILABLE)
         self.finished.emit()
         return success
 
@@ -491,6 +499,7 @@ class MacroInstaller(QtCore.QObject):
                 dst = os.path.join(self.installation_path, item)
                 shutil.move(src, dst)
         self.success.emit(self.addon_to_install)
+        self.addon_to_install.set_status(Addon.Status.NO_UPDATE_AVAILABLE)
         self.finished.emit()
         return True
 

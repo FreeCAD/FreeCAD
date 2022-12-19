@@ -25,7 +25,6 @@
 
 import os
 import functools
-import stat
 import tempfile
 import hashlib
 import threading
@@ -49,9 +48,10 @@ from addonmanager_workers_installation import (
     UpdateMetadataCacheWorker,
 )
 from addonmanager_installer_gui import AddonInstallerGUI, MacroInstallerGUI
+from addonmanager_uninstaller_gui import AddonUninstallerGUI
 from addonmanager_update_all_gui import UpdateAllGUI
 import addonmanager_utilities as utils
-import AddonManager_rc
+import AddonManager_rc  # This is required by Qt, it's not unused
 from package_list import PackageList, PackageListItemModel
 from package_details import PackageDetails
 from Addon import Addon
@@ -129,6 +129,10 @@ class CommandAddonManager:
         self.update_all_worker = None
         self.developer_mode = None
         self.installer_gui = None
+
+        self.update_cache = False
+        self.dialog = None
+        self.startup_sequence = []
 
         # Set up the connection checker
         self.connection_checker = ConnectionCheckerGUI()
@@ -272,14 +276,12 @@ class CommandAddonManager:
         # set the label text to start with
         self.show_information(translate("AddonsInstaller", "Loading addon information"))
 
-        if hasattr(self, "connection_check_message") and self.connection_check_message:
-            self.connection_check_message.close()
-
         # rock 'n roll!!!
         self.dialog.exec()
 
     def cleanup_workers(self) -> None:
-        """Ensure that no workers are running by explicitly asking them to stop and waiting for them until they do"""
+        """Ensure that no workers are running by explicitly asking them to stop and waiting for
+        them until they do"""
         for worker in self.workers:
             if hasattr(self, worker):
                 thread = getattr(self, worker)
@@ -305,16 +307,15 @@ class CommandAddonManager:
         """Determine whether we need to update the cache, based on user preference, and previous
         cache update status. Sets self.update_cache to either True or False."""
 
-        # Figure out our cache update frequency: there is a combo box in the preferences dialog with three
-        # options: never, daily, and weekly. Check that first, but allow it to be overridden by a more specific
-        # DaysBetweenUpdates selection, if the user has provided it. For that parameter we use:
+        # Figure out our cache update frequency: there is a combo box in the preferences dialog
+        # with three options: never, daily, and weekly. Check that first, but allow it to be
+        # overridden by a more specific DaysBetweenUpdates selection, if the user has provided it.
+        # For that parameter we use:
         # -1: Only manual updates (default)
         #  0: Update every launch
         # >0: Update every n days
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
         self.update_cache = False
-        if hasattr(self, "trigger_recache") and self.trigger_recache:
-            self.update_cache = True
         update_frequency = pref.GetInt("UpdateFrequencyComboEntry", 0)
         if update_frequency == 0:
             days_between_updates = -1
@@ -421,7 +422,8 @@ class CommandAddonManager:
         else:
             self.write_cache_stopfile()
             FreeCAD.Console.PrintLog(
-                "Not writing the cache because a process was forcibly terminated and the state is unknown.\n"
+                "Not writing the cache because a process was forcibly terminated and the state is "
+                "unknown.\n"
             )
 
         if self.restart_required:
@@ -450,29 +452,30 @@ class CommandAddonManager:
     def startup(self) -> None:
         """Downloads the available packages listings and populates the table
 
-        This proceeds in four stages: first, the main GitHub repository is queried for a list of possible
-        addons. Each addon is specified as a git submodule with name and branch information. The actual specific
-        commit ID of the submodule (as listed on Github) is ignored. Any extra repositories specified by the
-        user are appended to this list.
+        This proceeds in four stages: first, the main GitHub repository is queried for a list of
+        possible addons. Each addon is specified as a git submodule with name and branch
+        information. The actual specific commit ID of the submodule (as listed on Github) is
+        ignored. Any extra repositories specified by the user are appended to this list.
 
-        Second, the list of macros is downloaded from the FreeCAD/FreeCAD-macros repository and the wiki
+        Second, the list of macros is downloaded from the FreeCAD/FreeCAD-macros repository and
+        the wiki.
 
-        Third, each of these items is queried for a package.xml metadata file. If that file exists it is
-        downloaded, cached, and any icons that it references are also downloaded and cached.
+        Third, each of these items is queried for a package.xml metadata file. If that file exists
+        it is downloaded, cached, and any icons that it references are also downloaded and cached.
 
-        Finally, for workbenches that are not contained within a package (e.g. they provide no metadata), an
-        additional git query is made to see if an update is available. Macros are checked for file changes.
+        Finally, for workbenches that are not contained within a package (e.g. they provide no
+        metadata), an additional git query is made to see if an update is available. Macros are
+        checked for file changes.
 
-        Each of these stages is launched in a separate thread to ensure that the UI remains responsive, and
-        the operation can be cancelled.
+        Each of these stages is launched in a separate thread to ensure that the UI remains
+        responsive, and the operation can be cancelled.
 
-        Each stage is also subject to caching, so may return immediately, if no cache update has been requested.
+        Each stage is also subject to caching, so may return immediately, if no cache update has
+        been requested."""
 
-        """
-
-        # Each function in this list is expected to launch a thread and connect its completion signal
-        # to self.do_next_startup_phase, or to shortcut to calling self.do_next_startup_phase if it
-        # is not launching a worker
+        # Each function in this list is expected to launch a thread and connect its completion
+        # signal to self.do_next_startup_phase, or to shortcut to calling
+        # self.do_next_startup_phase if it is not launching a worker
         self.startup_sequence = [
             self.populate_packages_table,
             self.activate_table_widgets,
@@ -518,7 +521,9 @@ class CommandAddonManager:
         use_cache = not self.update_cache
         if use_cache:
             if os.path.isfile(utils.get_cache_file_name("package_cache.json")):
-                with open(utils.get_cache_file_name("package_cache.json")) as f:
+                with open(
+                    utils.get_cache_file_name("package_cache.json"), encoding="utf-8"
+                ) as f:
                     data = f.read()
                     try:
                         from_json = json.loads(data)
@@ -530,7 +535,10 @@ class CommandAddonManager:
                 use_cache = False
 
         if not use_cache:
-            self.update_cache = True  # Make sure to trigger the other cache updates, if the json file was missing
+            self.update_cache = (
+                True  # Make sure to trigger the other cache updates, if the json
+            )
+            # file was missing
             self.create_addon_list_worker = CreateAddonListWorker()
             self.create_addon_list_worker.status_message.connect(self.show_information)
             self.create_addon_list_worker.addon_repo.connect(self.add_addon_repo)
@@ -558,7 +566,7 @@ class CommandAddonManager:
     def write_package_cache(self):
         if hasattr(self, "package_cache"):
             package_cache_path = utils.get_cache_file_name("package_cache.json")
-            with open(package_cache_path, "w") as f:
+            with open(package_cache_path, "w", encoding="utf-8") as f:
                 f.write(json.dumps(self.package_cache, indent="  "))
 
     def activate_table_widgets(self) -> None:
@@ -575,7 +583,10 @@ class CommandAddonManager:
                 cache_is_bad = False
         if cache_is_bad:
             if not self.update_cache:
-                self.update_cache = True  # Make sure to trigger the other cache updates, if the json file was missing
+                self.update_cache = (
+                    True  # Make sure to trigger the other cache updates, if the
+                )
+                # json file was missing
                 self.create_addon_list_worker = CreateAddonListWorker()
                 self.create_addon_list_worker.status_message.connect(
                     self.show_information
@@ -587,7 +598,8 @@ class CommandAddonManager:
                 )  # Link to step 2
                 self.create_addon_list_worker.start()
             else:
-                # It's already been done in the previous step (TODO: Refactor to eliminate this step)
+                # It's already been done in the previous step (TODO: Refactor to eliminate this
+                # step)
                 self.do_next_startup_phase()
         else:
             self.macro_worker = LoadMacrosFromCacheWorker(
@@ -611,7 +623,7 @@ class CommandAddonManager:
         if not hasattr(self, "macro_cache"):
             return
         macro_cache_path = utils.get_cache_file_name("macro_cache.json")
-        with open(macro_cache_path, "w") as f:
+        with open(macro_cache_path, "w", encoding="utf-8") as f:
             f.write(json.dumps(self.macro_cache, indent="  "))
             self.macro_cache = []
 
@@ -791,7 +803,8 @@ class CommandAddonManager:
             addon_repo.icon = self.get_icon(addon_repo)
         for repo in self.item_model.repos:
             if repo.name == addon_repo.name:
-                # self.item_model.reload_item(repo) # If we want to have later additions supersede earlier
+                # self.item_model.reload_item(repo) # If we want to have later additions superseded
+                # earlier
                 return
         self.item_model.append_item(addon_repo)
 
@@ -899,7 +912,7 @@ class CommandAddonManager:
             self.installer_gui = MacroInstallerGUI(addon)
         else:
             self.installer_gui = AddonInstallerGUI(addon, self.item_model.repos)
-        self.installer_gui.success.connect(self.on_package_installed)
+        self.installer_gui.success.connect(self.on_package_status_changed)
         self.installer_gui.finished.connect(self.cleanup_installer)
         self.installer_gui.run()  # Does not block
 
@@ -923,7 +936,7 @@ class CommandAddonManager:
             return
 
         self.installer_gui = UpdateAllGUI(self.item_model.repos)
-        self.installer_gui.addon_updated.connect(self.on_package_installed)
+        self.installer_gui.addon_updated.connect(self.on_package_status_changed)
         self.installer_gui.finished.connect(self.cleanup_installer)
         self.installer_gui.run()  # Does not block
 
@@ -979,12 +992,9 @@ class CommandAddonManager:
                 "AddonManager recaches."
             )
 
-    def on_package_installed(self, repo: Addon) -> None:
-        if repo.contains_workbench():
-            repo.set_status(Addon.Status.PENDING_RESTART)
+    def on_package_status_changed(self, repo: Addon) -> None:
+        if repo.status() == Addon.Status.PENDING_RESTART:
             self.restart_required = True
-        else:
-            repo.set_status(Addon.Status.NO_UPDATE_AVAILABLE)
         self.item_model.reload_item(repo)
         self.packageDetails.show_repo(repo)
         if repo in self.packages_with_updates:
@@ -1011,116 +1021,28 @@ class CommandAddonManager:
                         "AddonsInstaller",
                         "Execution of macro failed. See console for failure details.",
                     )
-                    self.on_installation_failed(repo, message)
                     return
-                else:
-                    macro_path = os.path.join(dir, macro.filename)
-                    FreeCADGui.open(str(macro_path))
-                    self.dialog.hide()
-                    FreeCADGui.SendMsgToActiveView("Run")
+                macro_path = os.path.join(dir, macro.filename)
+                FreeCADGui.open(str(macro_path))
+                self.dialog.hide()
+                FreeCADGui.SendMsgToActiveView("Run")
 
-    def remove(self, repo: Addon) -> None:
-        """uninstalls a macro or workbench"""
-
-        confirm = QtWidgets.QMessageBox.question(
-            self.dialog,
-            translate("AddonsInstaller", "Confirm remove"),
-            translate(
-                "AddonsInstaller", "Are you sure you want to uninstall {}?"
-            ).format(repo.display_name),
-            QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.Cancel,
-        )
-        if confirm == QtWidgets.QMessageBox.Cancel:
+    def remove(self, addon: Addon) -> None:
+        """Remove this addon."""
+        if self.installer_gui is not None:
+            FreeCAD.Console.PrintError(
+                translate(
+                    "AddonsInstaller",
+                    "Cannot launch a new installer until the previous one has finished.",
+                )
+            )
             return
-
-        if (
-            repo.repo_type == Addon.Kind.WORKBENCH
-            or repo.repo_type == Addon.Kind.PACKAGE
-        ):
-            basedir = FreeCAD.getUserAppDataDir()
-            moddir = basedir + os.sep + "Mod"
-            clonedir = moddir + os.sep + repo.name
-
-            # First remove any macros that were copied or symlinked in, as long as they have not been modified
-            macro_dir = FreeCAD.getUserMacroDir(True)
-            if os.path.exists(macro_dir) and os.path.exists(clonedir):
-                for macro_filename in os.listdir(clonedir):
-                    if macro_filename.lower().endswith(".fcmacro"):
-                        mod_macro_path = os.path.join(clonedir, macro_filename)
-                        macro_path = os.path.join(macro_dir, macro_filename)
-
-                        if not os.path.isfile(macro_path):
-                            continue
-
-                        # Load both files (one may be a symlink of the other, this will still work in that case)
-                        with open(mod_macro_path) as f1:
-                            f1_contents = f1.read()
-                        with open(macro_path) as f2:
-                            f2_contents = f2.read()
-
-                        if f1_contents == f2_contents:
-                            os.remove(macro_path)
-                        else:
-                            FreeCAD.Console.PrintMessage(
-                                translate(
-                                    "AddonsInstaller",
-                                    "Macro {} has local changes in the macros directory, so is not being removed by this uninstall process.\n",
-                                ).format(macro_filename)
-                            )
-
-            # Second, run the Addon's "uninstall.py" script, if it exists
-            uninstall_script = os.path.join(clonedir, "uninstall.py")
-            if os.path.exists(uninstall_script):
-                try:
-                    with open(uninstall_script) as f:
-                        exec(f.read())
-                except Exception:
-                    FreeCAD.Console.PrintError(
-                        translate(
-                            "AddonsInstaller",
-                            "Execution of Addon's uninstall.py script failed. Proceeding with uninstall...",
-                        )
-                        + "\n"
-                    )
-
-            if os.path.exists(clonedir):
-                utils.rmdir(clonedir)
-                self.item_model.update_item_status(
-                    repo.name, Addon.Status.NOT_INSTALLED
-                )
-                if repo.contains_workbench():
-                    self.restart_required = True
-                self.packageDetails.show_repo(repo)
-            else:
-                self.dialog.textBrowserReadMe.setText(
-                    translate(
-                        "AddonsInstaller",
-                        "Unable to remove this addon with the Addon Manager.",
-                    )
-                )
-
-        elif repo.repo_type == Addon.Kind.MACRO:
-            macro = repo.macro
-            if macro.remove():
-                # TODO: reimplement when refactored... remove_custom_toolbar_button(repo)
-                FreeCAD.Console.PrintMessage(
-                    translate("AddonsInstaller", "Successfully uninstalled {}").format(
-                        repo.name
-                    )
-                    + "\n"
-                )
-                self.item_model.update_item_status(
-                    repo.name, Addon.Status.NOT_INSTALLED
-                )
-                self.packageDetails.show_repo(repo)
-            else:
-                FreeCAD.Console.PrintMessage(
-                    translate(
-                        "AddonsInstaller",
-                        "Failed to uninstall {}. Please remove manually.",
-                    ).format(repo.name)
-                    + "\n"
-                )
+        self.installer_gui = AddonUninstallerGUI(addon)
+        self.installer_gui.finished.connect(self.cleanup_installer)
+        self.installer_gui.finished.connect(
+            functools.partial(self.on_package_status_changed, addon)
+        )
+        self.installer_gui.run()  # Does not block
 
 
 # @}

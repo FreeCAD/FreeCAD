@@ -25,15 +25,25 @@
 import os
 import shutil
 
+import FreeCAD
+
 
 class MockAddon:
     """Minimal Addon class"""
 
     def __init__(self):
-        self.name = "TestAddon"
-        self.url = "https://github.com/FreeCAD/FreeCAD-addons"
-        self.branch = "master"
+        test_dir = os.path.join(
+            FreeCAD.getHomePath(), "Mod", "AddonManager", "AddonManagerTest", "data"
+        )
+        self.name = "MockAddon"
+        self.display_name = "Mock Addon"
+        self.url = os.path.join(test_dir, "test_simple_repo.zip")
+        self.branch = "main"
         self.macro = None
+        self.status = None
+
+    def set_status(self, status):
+        self.status = status
 
 
 class MockMacro:

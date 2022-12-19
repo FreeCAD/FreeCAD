@@ -33,7 +33,7 @@ from addonmanager_dependency_installer import DependencyInstaller
 class CompleteProcessMock(subprocess.CompletedProcess):
     def __init__(self):
         super().__init__(["fake_arg"], 0)
-        self.stdout = "Mock suprocess call stdout result"
+        self.stdout = "Mock subprocess call stdout result"
 
 
 class SubprocessMock:

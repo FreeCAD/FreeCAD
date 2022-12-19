@@ -449,10 +449,15 @@ class TestMacroUninstaller(unittest.TestCase):
             self.assertTrue(os.path.exists(f))
             os.chmod(f, S_IREAD | S_IRGRP | S_IROTH)
             self.test_object.run()
-            os.chmod(f, S_IWUSR | S_IREAD)
 
-            self.assertIn("failure", self.signals_caught)
-            self.assertNotIn("success", self.signals_caught)
+            if os.path.exists(f):
+                os.chmod(f, S_IWUSR | S_IREAD)
+                self.assertNotIn("success", self.signals_caught)
+                self.assertIn("failure", self.signals_caught)
+            else:
+                # In some cases we managed to delete it anyway:
+                self.assertIn("success", self.signals_caught)
+                self.assertNotIn("failure", self.signals_caught)
             self.assertIn("finished", self.signals_caught)
 
     def test_cleanup_directories_multiple_empty(self):
