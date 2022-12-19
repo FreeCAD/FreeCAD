@@ -599,6 +599,31 @@ void PropertyPlacement::setPathValue(const ObjectIdentifier &path, const boost::
         setValue(plm);
     };
 
+    auto updateYawPitchRoll = [=](int index, double angle) {
+        Base::Vector3d base = _cPos.getPosition();
+        Base::Rotation rot = _cPos.getRotation();
+        double yaw, pitch, roll;
+        rot.getYawPitchRoll(yaw, pitch, roll);
+        if (index == 0) {
+            if (angle < -180.0 || angle > 180.0)
+                throw Base::ValueError("Yaw angle outside range [-180, +180]");
+            yaw = angle;
+        }
+        else if (index == 1) {
+            if (angle < -90.0 || angle > 90.0)
+                throw Base::ValueError("Roll angle outside range [-90, +90]");
+            pitch = angle;
+        }
+        else if (index == 2) {
+            if (angle < -180.0 || angle > 180.0)
+                throw Base::ValueError("Roll angle outside range [-180, +180]");
+            roll = angle;
+        }
+        rot.setYawPitchRoll(yaw, pitch, roll);
+        Base::Placement plm(base, rot);
+        setValue(plm);
+    };
+
     std::string subpath = path.getSubPathStr();
     if (subpath == ".Rotation.Angle") {
         double avalue = toDouble(value);
@@ -612,6 +637,15 @@ void PropertyPlacement::setPathValue(const ObjectIdentifier &path, const boost::
     }
     else if (subpath == ".Rotation.Axis.z") {
         updateAxis(2, toDouble(value));
+    }
+    else if (subpath == ".Rotation.Yaw") {
+        updateYawPitchRoll(0, toDouble(value));
+    }
+    else if (subpath == ".Rotation.Pitch") {
+        updateYawPitchRoll(1, toDouble(value));
+    }
+    else if (subpath == ".Rotation.Roll") {
+        updateYawPitchRoll(2, toDouble(value));
     }
     else {
         Property::setPathValue(path, value);
@@ -627,6 +661,14 @@ const boost::any PropertyPlacement::getPathValue(const ObjectIdentifier &path) c
         rot.getRawValue(axis, angle);
         return axis;
     };
+
+    auto getYawPitchRoll = [](const Base::Placement& plm) {
+        Base::Vector3d ypr;
+        const Base::Rotation& rot = plm.getRotation();
+        rot.getYawPitchRoll(ypr.x, ypr.y, ypr.z);
+        return ypr;
+    };
+
     std::string p = path.getSubPathStr();
 
     if (p == ".Rotation.Angle") {
@@ -646,6 +688,15 @@ const boost::any PropertyPlacement::getPathValue(const ObjectIdentifier &path) c
     else if (p == ".Rotation.Axis.z") {
         return getAxis(_cPos).z;
     }
+    else if (p == ".Rotation.Yaw") {
+        return getYawPitchRoll(_cPos).x;
+    }
+    else if (p == ".Rotation.Pitch") {
+        return getYawPitchRoll(_cPos).y;
+    }
+    else if (p == ".Rotation.Roll") {
+        return getYawPitchRoll(_cPos).z;
+    }
     else {
         return Property::getPathValue(path);
     }
@@ -659,6 +710,13 @@ bool PropertyPlacement::getPyPathValue(const ObjectIdentifier &path, Py::Object 
         const Base::Rotation& rot = plm.getRotation();
         rot.getRawValue(axis, angle);
         return axis;
+    };
+
+    auto getYawPitchRoll = [](const Base::Placement& plm) {
+        Base::Vector3d ypr;
+        const Base::Rotation& rot = plm.getRotation();
+        rot.getYawPitchRoll(ypr.x, ypr.y, ypr.z);
+        return ypr;
     };
 
     std::string p = path.getSubPathStr();
@@ -690,6 +748,18 @@ bool PropertyPlacement::getPyPathValue(const ObjectIdentifier &path, Py::Object 
     }
     else if (p == ".Rotation.Axis.z") {
         res = Py::Float(getAxis(_cPos).z);
+        return true;
+    }
+    else if (p == ".Rotation.Yaw") {
+        res = Py::Float(getYawPitchRoll(_cPos).x);
+        return true;
+    }
+    else if (p == ".Rotation.Pitch") {
+        res = Py::Float(getYawPitchRoll(_cPos).y);
+        return true;
+    }
+    else if (p == ".Rotation.Roll") {
+        res = Py::Float(getYawPitchRoll(_cPos).z);
         return true;
     }
 
