@@ -355,9 +355,18 @@ void Placement::setupUnits()
     ui->yCnt->setValue(Base::Quantity(0, Base::Unit::Length));
     ui->zCnt->setValue(Base::Quantity(0, Base::Unit::Length));
     ui->angle->setUnit(Base::Unit::Angle);
+    ui->yawAngle->setMaximum(180.0F);
+    ui->yawAngle->setMinimum(-180.0F);
     ui->yawAngle->setUnit(Base::Unit::Angle);
+    ui->yawAngle->checkRangeInExpression(true);
+    ui->pitchAngle->setMaximum(90.0F);
+    ui->pitchAngle->setMinimum(-90.0F);
     ui->pitchAngle->setUnit(Base::Unit::Angle);
+    ui->pitchAngle->checkRangeInExpression(true);
+    ui->rollAngle->setMaximum(180.0F);
+    ui->rollAngle->setMinimum(-180.0F);
     ui->rollAngle->setUnit(Base::Unit::Angle);
+    ui->rollAngle->checkRangeInExpression(true);
 }
 
 void Placement::setupSignalMapper()

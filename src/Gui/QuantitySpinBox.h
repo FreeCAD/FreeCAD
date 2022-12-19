@@ -114,6 +114,8 @@ public:
     void selectNumber();
 
     void setRange(double min, double max);
+    void checkRangeInExpression(bool);
+    bool isCheckedRangeInExpresion() const;
 
     Base::Quantity valueFromText(const QString &text) const;
     QString textFromValue(const Base::Quantity& val) const;

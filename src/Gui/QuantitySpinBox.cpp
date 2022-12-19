@@ -64,6 +64,7 @@ public:
     QuantitySpinBoxPrivate(QuantitySpinBox *q) :
       validInput(true),
       pendingEmit(false),
+      checkRangeInExpression(false),
       unitValue(0),
       maximum(DOUBLE_MAX),
       minimum(-DOUBLE_MAX),
@@ -230,6 +231,7 @@ public:
     QLocale locale;
     bool validInput;
     bool pendingEmit;
+    bool checkRangeInExpression;
     QString validStr;
     Base::Quantity quantity;
     Base::Quantity cached;
@@ -516,7 +518,9 @@ void QuantitySpinBox::openFormulaDialog()
 
     Q_D(const QuantitySpinBox);
     auto box = new Gui::Dialog::DlgExpressionInput(getPath(), getExpression(), d->unit, this);
-    box->setRange(d->minimum, d->maximum);
+    if (d->checkRangeInExpression) {
+        box->setRange(d->minimum, d->maximum);
+    }
     QObject::connect(box, &Gui::Dialog::DlgExpressionInput::finished, [=]() {
         if (box->result() == QDialog::Accepted)
             setExpression(box->getExpression());
@@ -637,6 +641,19 @@ void QuantitySpinBox::setRange(double minimum, double maximum)
     d->minimum = minimum;
     d->maximum = maximum;
 }
+
+void QuantitySpinBox::checkRangeInExpression(bool on)
+{
+    Q_D(QuantitySpinBox);
+    d->checkRangeInExpression = on;
+}
+
+bool QuantitySpinBox::isCheckedRangeInExpresion() const
+{
+    Q_D(const QuantitySpinBox);
+    return d->checkRangeInExpression;
+}
+
 
 int QuantitySpinBox::decimals() const
 {
