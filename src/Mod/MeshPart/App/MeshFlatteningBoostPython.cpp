@@ -26,20 +26,18 @@
 # include <memory>
 # include <stdexcept>
 # include <vector>
-
 # include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
 # include <TopoDS_Face.hxx>
-
-# include <boost/python.hpp>
-# include <boost/python/call.hpp>
-# include <boost/python/class.hpp>
-# include <boost/python/copy_const_reference.hpp>
-# include <boost/python/module.hpp>
-# include <boost/python/return_value_policy.hpp>
-# include <boost/python/wrapper.hpp>
 #endif
 
+#include <boost/python.hpp>
+#include <boost/python/call.hpp>
+#include <boost/python/class.hpp>
+#include <boost/python/copy_const_reference.hpp>
+#include <boost/python/module.hpp>
+#include <boost/python/return_value_policy.hpp>
+#include <boost/python/wrapper.hpp>
 #include <Eigen/Core>
 #include <Eigen/Geometry>
 #include <Eigen/Sparse>
