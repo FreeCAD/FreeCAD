@@ -512,7 +512,7 @@ def onOrbit():
         pView.SetInt("OrbitStyle", 0)
     elif aTrackball.isChecked():
         pView.SetInt("OrbitStyle", 1)
-    else:
+    elif aFreeTurntable.isChecked():
         pView.SetInt("OrbitStyle", 2)
 
 
@@ -520,11 +520,11 @@ def onOrbitShow():
     """Set turntable or trackball orbit style."""
 
     gOrbit.blockSignals(True)
-    if pView.GetInt("OrbitStyle", 1):
-        aTrackball.setChecked(True)
-    elif pView.GetInt("OrbitStyle", 0):
+    if pView.GetInt("OrbitStyle", 0):
         aTurntable.setChecked(True)
-    else:
+    elif pView.GetInt("OrbitStyle", 1):
+        aTrackball.setChecked(True)
+    elif pView.GetInt("OrbitStyle", 2):
         aFreeTurntable.setChecked(True)
     gOrbit.blockSignals(False)
 
