@@ -39,6 +39,7 @@
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/SelectionObject.h>
+#include <Gui/Widgets.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 
 #include "TaskFillingEdge.h"

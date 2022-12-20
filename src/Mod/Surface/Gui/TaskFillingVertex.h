@@ -23,15 +23,18 @@
 #ifndef SURFACEGUI_TASKFILLINGVERTEX_H
 #define SURFACEGUI_TASKFILLINGVERTEX_H
 
+#include <QWidget>
 #include <Gui/DocumentObserver.h>
 #include <Gui/SelectionFilter.h>
-#include <Gui/Widgets.h>
-#include <Base/BoundBox.h>
-#include <Mod/Part/Gui/ViewProviderSpline.h>
 #include <Mod/Surface/App/FeatureFilling.h>
 
 
 class QListWidgetItem;
+
+namespace Gui
+{
+class ButtonGroup;
+}
 
 namespace SurfaceGui
 {
@@ -79,7 +82,7 @@ protected:
 private Q_SLOTS:
     void on_buttonVertexAdd_toggled(bool checked);
     void on_buttonVertexRemove_toggled(bool checked);
-    void onDeleteVertex(void);
+    void onDeleteVertex();
     void clearSelection();
 
 private:

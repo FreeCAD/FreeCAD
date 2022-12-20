@@ -24,16 +24,18 @@
 #define SURFACEGUI_TASKFILLING_H
 
 #include <Gui/DocumentObserver.h>
-#include <Gui/SelectionFilter.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
-#include <Gui/Widgets.h>
-#include <Base/BoundBox.h>
 #include <Mod/Part/Gui/ViewProviderSpline.h>
 #include <Mod/Surface/App/FeatureFilling.h>
 
 
 class QListWidgetItem;
+
+namespace Gui
+{
+class ButtonGroup;
+}
 
 namespace SurfaceGui
 {

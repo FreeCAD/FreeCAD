@@ -26,16 +26,18 @@
 #include <memory>
 
 #include <Gui/DocumentObserver.h>
-#include <Gui/SelectionFilter.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
-#include <Gui/Widgets.h>
-#include <Base/BoundBox.h>
 #include <Mod/Part/Gui/ViewProviderSpline.h>
 #include <Mod/Surface/App/FeatureSections.h>
 
 
 class QListWidgetItem;
+
+namespace Gui
+{
+class ButtonGroup;
+}
 
 namespace SurfaceGui
 {
@@ -97,7 +99,7 @@ protected:
 private Q_SLOTS:
     void on_buttonEdgeAdd_toggled(bool checked);
     void on_buttonEdgeRemove_toggled(bool checked);
-    void onDeleteEdge(void);
+    void onDeleteEdge();
     void clearSelection();
     void onIndexesMoved();
 

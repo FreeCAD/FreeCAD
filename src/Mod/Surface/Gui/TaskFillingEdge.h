@@ -24,15 +24,18 @@
 #ifndef SURFACEGUI_TASKFILLINGEDGE_H
 #define SURFACEGUI_TASKFILLINGEDGE_H
 
+#include <QWidget>
 #include <Gui/DocumentObserver.h>
 #include <Gui/SelectionFilter.h>
-#include <Gui/Widgets.h>
-#include <Base/BoundBox.h>
-#include <Mod/Part/Gui/ViewProviderSpline.h>
 #include <Mod/Surface/App/FeatureFilling.h>
 
 
 class QListWidgetItem;
+
+namespace Gui
+{
+class ButtonGroup;
+}
 
 namespace SurfaceGui
 {
