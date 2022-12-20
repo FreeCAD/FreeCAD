@@ -117,12 +117,6 @@ FillingVertexPanel::FillingVertexPanel(ViewProviderFilling* vp, Surface::Filling
     checkCommand = true;
     setEditedObject(obj);
 
-    // Set up button group
-    buttonGroup = new Gui::ButtonGroup(this);
-    buttonGroup->setExclusive(true);
-    buttonGroup->addButton(ui->buttonVertexAdd, (int)SelectionMode::AppendVertex);
-    buttonGroup->addButton(ui->buttonVertexRemove, (int)SelectionMode::RemoveVertex);
-
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
     action->setShortcut(QString::fromLatin1("Del"));
@@ -140,6 +134,12 @@ FillingVertexPanel::~FillingVertexPanel()
     // no need to delete child widgets, Qt does it all for us
     delete ui;
     Gui::Selection().rmvSelectionGate();
+}
+
+void FillingVertexPanel::appendButtons(Gui::ButtonGroup* buttonGroup)
+{
+    buttonGroup->addButton(ui->buttonVertexAdd, int(SelectionMode::AppendVertex));
+    buttonGroup->addButton(ui->buttonVertexRemove, int(SelectionMode::RemoveVertex));
 }
 
 // stores object pointer, its old fill type and adjusts radio buttons according to it.
@@ -233,9 +233,9 @@ void FillingVertexPanel::slotDeletedObject(const Gui::ViewProviderDocumentObject
 void FillingVertexPanel::on_buttonVertexAdd_toggled(bool checked)
 {
     if (checked) {
-        selectionMode = AppendVertex;
         // 'selectionMode' is passed by reference and changed when the filter is deleted
         Gui::Selection().addSelectionGate(new VertexSelection(selectionMode, editedObject));
+        selectionMode = AppendVertex;
     }
     else if (selectionMode == AppendVertex) {
         exitSelectionMode();
@@ -245,9 +245,9 @@ void FillingVertexPanel::on_buttonVertexAdd_toggled(bool checked)
 void FillingVertexPanel::on_buttonVertexRemove_toggled(bool checked)
 {
     if (checked) {
-        selectionMode = RemoveVertex;
         // 'selectionMode' is passed by reference and changed when the filter is deleted
         Gui::Selection().addSelectionGate(new VertexSelection(selectionMode, editedObject));
+        selectionMode = RemoveVertex;
     }
     else if (selectionMode == RemoveVertex) {
         exitSelectionMode();

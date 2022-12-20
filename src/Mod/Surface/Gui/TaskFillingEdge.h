@@ -64,7 +64,6 @@ protected:
 private:
     Ui_TaskFillingEdge* ui;
     ViewProviderFilling* vp;
-    Gui::ButtonGroup *buttonGroup;
 
 public:
     FillingEdgePanel(ViewProviderFilling* vp, Surface::Filling* obj);
@@ -75,6 +74,7 @@ public:
     bool accept();
     bool reject();
     void setEditedObject(Surface::Filling* obj);
+    void appendButtons(Gui::ButtonGroup *);
 
 protected:
     void changeEvent(QEvent *e) override;

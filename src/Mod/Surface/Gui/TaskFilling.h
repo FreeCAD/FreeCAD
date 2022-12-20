@@ -80,7 +80,6 @@ protected:
 private:
     Ui_TaskFilling* ui;
     ViewProviderFilling* vp;
-    Gui::ButtonGroup *buttonGroup;
 
 public:
     FillingPanel(ViewProviderFilling* vp, Surface::Filling* obj);
@@ -91,6 +90,7 @@ public:
     bool accept();
     bool reject();
     void setEditedObject(Surface::Filling* obj);
+    void appendButtons(Gui::ButtonGroup *);
 
 protected:
     void changeEvent(QEvent *e) override;
@@ -138,6 +138,7 @@ public:
     { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel; }
 
 private:
+    Gui::ButtonGroup* buttonGroup;
     FillingPanel* widget1;
     FillingEdgePanel* widget2;
     FillingVertexPanel* widget3;

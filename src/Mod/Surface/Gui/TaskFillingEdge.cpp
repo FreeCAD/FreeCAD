@@ -125,12 +125,6 @@ FillingEdgePanel::FillingEdgePanel(ViewProviderFilling* vp, Surface::Filling* ob
     checkCommand = true;
     setEditedObject(obj);
 
-    // Set up button group
-    buttonGroup = new Gui::ButtonGroup(this);
-    buttonGroup->setExclusive(true);
-    buttonGroup->addButton(ui->buttonUnboundEdgeAdd, (int)SelectionMode::AppendEdge);
-    buttonGroup->addButton(ui->buttonUnboundEdgeRemove, (int)SelectionMode::RemoveEdge);
-
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
     action->setShortcut(QString::fromLatin1("Del"));
@@ -148,6 +142,12 @@ FillingEdgePanel::~FillingEdgePanel()
     // no need to delete child widgets, Qt does it all for us
     delete ui;
     Gui::Selection().rmvSelectionGate();
+}
+
+void FillingEdgePanel::appendButtons(Gui::ButtonGroup* buttonGroup)
+{
+    buttonGroup->addButton(ui->buttonUnboundEdgeAdd, int(SelectionMode::AppendEdge));
+    buttonGroup->addButton(ui->buttonUnboundEdgeRemove, int(SelectionMode::RemoveEdge));
 }
 
 // stores object pointer, its old fill type and adjusts radio buttons according to it.
@@ -296,9 +296,9 @@ bool FillingEdgePanel::reject()
 void FillingEdgePanel::on_buttonUnboundEdgeAdd_toggled(bool checked)
 {
     if (checked) {
-        selectionMode = AppendEdge;
         // 'selectionMode' is passed by reference and changed when the filter is deleted
         Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject));
+        selectionMode = AppendEdge;
     }
     else if (selectionMode == AppendEdge) {
         exitSelectionMode();
@@ -308,9 +308,9 @@ void FillingEdgePanel::on_buttonUnboundEdgeAdd_toggled(bool checked)
 void FillingEdgePanel::on_buttonUnboundEdgeRemove_toggled(bool checked)
 {
     if (checked) {
-        selectionMode = RemoveEdge;
         // 'selectionMode' is passed by reference and changed when the filter is deleted
         Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject));
+        selectionMode = RemoveEdge;
     }
     else if (selectionMode == RemoveEdge) {
         exitSelectionMode();

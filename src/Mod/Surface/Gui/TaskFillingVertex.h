@@ -63,7 +63,6 @@ protected:
 private:
     Ui_TaskFillingVertex* ui;
     ViewProviderFilling* vp;
-    Gui::ButtonGroup *buttonGroup;
 
 public:
     FillingVertexPanel(ViewProviderFilling* vp, Surface::Filling* obj);
@@ -73,6 +72,7 @@ public:
     void reject();
     void checkOpenCommand();
     void setEditedObject(Surface::Filling* obj);
+    void appendButtons(Gui::ButtonGroup *);
 
 protected:
     void changeEvent(QEvent *e) override;
