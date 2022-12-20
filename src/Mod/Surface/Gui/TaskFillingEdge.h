@@ -28,6 +28,7 @@
 #include <Gui/DocumentObserver.h>
 #include <Gui/SelectionFilter.h>
 #include <Mod/Surface/App/FeatureFilling.h>
+#include <Mod/Surface/Gui/SelectionMode.h>
 
 
 class QListWidgetItem;
@@ -51,7 +52,11 @@ class FillingEdgePanel : public QWidget,
 
 protected:
     class ShapeSelection;
-    enum SelectionMode { None, AppendEdge, RemoveEdge };
+    enum SelectionMode {
+        None = SurfaceGui::SelectionMode::None,
+        AppendEdge = SurfaceGui::SelectionMode::AppendEdgeConstraint,
+        RemoveEdge = SurfaceGui::SelectionMode::RemoveEdgeConstraint
+    };
     SelectionMode selectionMode;
     Surface::Filling* editedObject;
     bool checkCommand;

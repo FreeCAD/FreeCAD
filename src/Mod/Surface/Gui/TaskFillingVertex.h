@@ -27,6 +27,7 @@
 #include <Gui/DocumentObserver.h>
 #include <Gui/SelectionFilter.h>
 #include <Mod/Surface/App/FeatureFilling.h>
+#include <Mod/Surface/Gui/SelectionMode.h>
 
 
 class QListWidgetItem;
@@ -50,7 +51,11 @@ class FillingVertexPanel : public QWidget,
 
 protected:
     class VertexSelection;
-    enum SelectionMode { None, AppendVertex, RemoveVertex };
+    enum SelectionMode {
+        None = SurfaceGui::SelectionMode::None,
+        AppendVertex = SurfaceGui::SelectionMode::AppendVertexConstraint,
+        RemoveVertex = SurfaceGui::SelectionMode::RemoveVertexConstraint
+    };
     SelectionMode selectionMode;
     Surface::Filling* editedObject;
     bool checkCommand;

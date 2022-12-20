@@ -28,6 +28,7 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/Part/Gui/ViewProviderSpline.h>
 #include <Mod/Surface/App/FeatureFilling.h>
+#include <Mod/Surface/Gui/SelectionMode.h>
 
 
 class QListWidgetItem;
@@ -66,7 +67,12 @@ class FillingPanel : public QWidget,
 
 protected:
     class ShapeSelection;
-    enum SelectionMode { None, InitFace, AppendEdge, RemoveEdge };
+    enum SelectionMode {
+        None = SurfaceGui::SelectionMode::None,
+        InitFace = SurfaceGui::SelectionMode::InitFace,
+        AppendEdge = SurfaceGui::SelectionMode::AppendEdge,
+        RemoveEdge = SurfaceGui::SelectionMode::RemoveEdge
+    };
     SelectionMode selectionMode;
     Surface::Filling* editedObject;
     bool checkCommand;
