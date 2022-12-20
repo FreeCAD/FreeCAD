@@ -26,14 +26,23 @@ from PySide import QtCore, QtWidgets
 class DialogWatcher(QtCore.QObject):
     """Examine the running GUI and look for a modal dialog with a given title, containing a button
     with a given label. Click that button, which is expected to close the dialog. Generally run on
-    a one-shot QTimer to allow the dialog time to open up."""
+    a one-shot QTimer to allow the dialog time to open up. If the specified dialog is found, but
+    it does not contain the expected button, button_found will be false, and the dialog will be
+    closed with a reject() slot."""
 
-    def __init__(self, dialog_to_watch_for, button):
+    def __init__(self, dialog_to_watch_for, button=QtWidgets.QDialogButtonBox.NoButton):
         super().__init__()
+
+        # Status variables for tests to check:
         self.dialog_found = False
         self.has_run = False
+        self.button_found = False
+
         self.dialog_to_watch_for = dialog_to_watch_for
-        self.button = button
+        if button != QtWidgets.QDialogButtonBox.NoButton:
+            self.button = button
+        else:
+            self.button = QtWidgets.QDialogButtonBox.Cancel
 
     def run(self):
         widget = QtWidgets.QApplication.activeModalWidget()
@@ -50,11 +59,16 @@ class DialogWatcher(QtCore.QObject):
         self.has_run = True
 
     def click_button(self, widget):
-        buttons = widget.findChildren(QtWidgets.QPushButton)
-        for button in buttons:
-            text = button.text().replace("&", "")
-            if text == self.button:
-                button.click()
+        button_boxes = widget.findChildren(QtWidgets.QDialogButtonBox)
+        if len(button_boxes) == 1:  # There should be one, and only one
+            button_to_click = button_boxes[0].button(self.button)
+            if button_to_click:
+                self.button_found = True
+                button_to_click.click()
+            else:
+                widget.reject()
+        else:
+            widget.reject()
 
 
 class DialogInteractor(DialogWatcher):
