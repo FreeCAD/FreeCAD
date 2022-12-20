@@ -597,11 +597,6 @@ Hagyja üresen a dokumentum összes objektumának használatát</translation>
       <translation>Szögek vesszővel ellátott listája az alakzatok kipróbálásához és forgatásához</translation>
     </message>
     <message>
-      <location filename="../ui/ArchNest.ui" line="135"/>
-      <source>0,90,180,270</source>
-      <translation>0,90,180,270</translation>
-    </message>
-    <message>
       <location filename="../ui/ArchNest.ui" line="145"/>
       <source>Nesting operation</source>
       <translation>Hálózó művelet</translation>
@@ -825,11 +820,6 @@ Hagyja üresen a dokumentum összes objektumának használatát</translation>
 to projections of hidden objects.</source>
       <translation>Ez az alkalmazandó SVG körvonal-szaggatott tömb tulajdonság
 a rejtett tárgyak kivetítéseihez.</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-arch.ui" line="589"/>
-      <source>30, 10</source>
-      <translation>30, 10</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="625"/>

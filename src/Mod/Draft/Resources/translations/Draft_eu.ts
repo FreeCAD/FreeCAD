@@ -990,11 +990,6 @@ value by using the [ and ] keys while drawing</source>
       <translation>Aurpegien gardentasuna</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="186"/>
-      <source> %</source>
-      <translation> %</translation>
-    </message>
-    <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="199"/>
       <source>Annotations</source>
       <translation>Oharpenak</translation>
@@ -1158,11 +1153,6 @@ value by using the [ and ] keys while drawing</source>
       <location filename="../ui/dialogHatch.ui" line="64"/>
       <source>Rotation:</source>
       <translation>Biraketa:</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialogHatch.ui" line="71"/>
-      <source>°</source>
-      <translation>°</translation>
     </message>
   </context>
   <context>
@@ -1477,29 +1467,14 @@ Kontuan izan eragiketa horren euskarria ez dela osoa, eta zenbait objektu ez dir
       <translation>SVG lerro-estiloaren definizio bat</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="398"/>
-      <source>0.09,0.05</source>
-      <translation>0.09,0.05</translation>
-    </message>
-    <message>
       <location filename="../ui/preferences-draftvisual.ui" line="418"/>
       <source>Dashdot line definition</source>
       <translation>Marra-puntuz osatutako lerroen definizioa</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="441"/>
-      <source>0.09,0.05,0.02,0.05</source>
-      <translation>0.09,0.05,0.02,0.05</translation>
-    </message>
-    <message>
       <location filename="../ui/preferences-draftvisual.ui" line="461"/>
       <source>Dotted line definition</source>
       <translation>Puntuz osatutako lerroen definizioa</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="484"/>
-      <source>0.02,0.02</source>
-      <translation>0.02,0.02</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="14"/>
@@ -2522,11 +2497,6 @@ Horrek huts egin dezake DXF R12 ondoko txantiloiekin.</translation>
       <translation>Ziklo-atxikitzea</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftinterface.ui" line="608"/>
-      <source>`</source>
-      <translation>`</translation>
-    </message>
-    <message>
       <location filename="../ui/preferences-draftinterface.ui" line="630"/>
       <source>Global</source>
       <translation>Globala</translation>
@@ -2540,11 +2510,6 @@ Horrek huts egin dezake DXF R12 ondoko txantiloiekin.</translation>
       <location filename="../ui/preferences-draftinterface.ui" line="674"/>
       <source>Undo</source>
       <translation>Desegin</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftinterface.ui" line="696"/>
-      <source>/</source>
-      <translation>/</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="718"/>
@@ -2562,19 +2527,9 @@ Horrek huts egin dezake DXF R12 ondoko txantiloiekin.</translation>
       <translation>Handitu erradioa</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftinterface.ui" line="784"/>
-      <source>[</source>
-      <translation>[</translation>
-    </message>
-    <message>
       <location filename="../ui/preferences-draftinterface.ui" line="806"/>
       <source>Decrease Radius</source>
       <translation>Txikitu erradioa</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftinterface.ui" line="828"/>
-      <source>]</source>
-      <translation>]</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="850"/>

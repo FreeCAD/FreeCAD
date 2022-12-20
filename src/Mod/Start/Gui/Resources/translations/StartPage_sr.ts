@@ -36,7 +36,7 @@
     <message>
       <location filename="TranslationTexts.py" line="48"/>
       <source>Adjust the number of recent files to be shown here in menu Edit -&gt; Preferences -&gt; General -&gt; Size of recent file list</source>
-      <translation>Подесите број недавних датотека које ће бити приказане овде у менију Уреди -&gt; Подешавања -&gt; Опште -&gt; Величина листе недавнo отвараних датотека</translation>
+      <translation>Подеси број недавних датотека које ће бити приказане овде у менију Уреди -&gt; Подешавања -&gt; Опште -&gt; Величина листе недавнo отвараних датотека</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="49"/>
@@ -146,12 +146,12 @@
     <message>
       <location filename="TranslationTexts.py" line="70"/>
       <source>Below are the latest changes added to the &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD source code&lt;/a&gt;. These changes might not reflect yet in the FreeCAD version that you are currently running. Check the &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt;available options&lt;/a&gt; if you wish to obtain a development version.</source>
-      <translation>Испод се налазе последње измене додате &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;изворном коду FreeCAD-а&lt;/a&gt;. Ове промене се можда још увек неће одразити на верзију FreeCAD-а коју тренутно користите. Проверите &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt;доступне опције&lt;/a&gt; ако желите да набавите развојну верзију.</translation>
+      <translation>Испод се налазе последње измене додате &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;изворном коду FreeCAD-а&lt;/a&gt;. Ове промене се можда још увек неће одразити на верзију FreeCAD-а коју тренутно користите. Провери &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt;доступне опције&lt;/a&gt; ако желите да набавите развојну верзију.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="71"/>
       <source>See all commits on github</source>
-      <translation>Видите све потврде на github</translation>
+      <translation>Види све потврде на github</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="72"/>
@@ -171,7 +171,7 @@
     <message>
       <location filename="TranslationTexts.py" line="75"/>
       <source>Create new...</source>
-      <translation>Направите нови...</translation>
+      <translation>Направи нови...</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="76"/>
@@ -211,7 +211,7 @@
     <message>
       <location filename="TranslationTexts.py" line="83"/>
       <source>Open start page preferences</source>
-      <translation>Отворите подешавање почетне странице</translation>
+      <translation>Отвори подешавање почетне странице</translation>
     </message>
   </context>
   <context>
@@ -270,7 +270,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="55"/>
       <source>Show examples folder contents</source>
-      <translation>Прикажи садржај фолдера са примерима</translation>
+      <translation>Прикажи садржај фасцикле са примерима</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="62"/>
@@ -285,7 +285,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="91"/>
       <source>If this is checked, the latest posts from the FreeCAD forum will be displayed on the Activity tab</source>
-      <translation>Ако је ово изабрано, последње објаве са FreeCAD форума биће приказане у картици активности</translation>
+      <translation>Ако је ово чекирано, последње објаве са FreeCAD форума биће приказане у картици активности</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="110"/>
@@ -362,7 +362,7 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="319"/>
       <source>If this is checked and a style sheet is specified in General preferences, it will be used and override the colors below</source>
-      <translation>Ако је ово означено и листа стилова је наведена у општим подешавањима, она ће се користити и заменити боје испод</translation>
+      <translation>Ако је ово чекирано и листа стилова је наведена у општим подешавањима, она ће се користити и заменити боје испод</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="338"/>
@@ -412,7 +412,7 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="502"/>
       <source>Open links</source>
-      <translation>Отворите везе</translation>
+      <translation>Отвори везе</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="509"/>
@@ -422,7 +422,7 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="516"/>
       <source>Use FreeCAD style sheet</source>
-      <translation>Користите FreeCAD листу стилова</translation>
+      <translation>Користи FreeCAD листу стилова</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="523"/>
@@ -467,12 +467,12 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="607"/>
       <source>Choose which workbench to switch to after the program launches</source>
-      <translation>Изаберите на који радно окружење желите да се пребаците након покретања програма</translation>
+      <translation>Изабери на који радно окружење желите да се пребаците након покретања програма</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="614"/>
       <source>If checked, will automatically close the Start page when FreeCAD launches</source>
-      <translation>Ако је потврђено, аутоматски ће затворити почетну страницу када се FreeCAD покрене</translation>
+      <translation>Ако је чекирано, аутоматски ће затворити почетну страницу када се FreeCAD покрене</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="633"/>
@@ -482,17 +482,17 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="640"/>
       <source>Close start page after loading</source>
-      <translation>Затворите почетну страницу након учитавања</translation>
+      <translation>Затвори почетну страницу након учитавања</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="647"/>
       <source>Close and switch on opening file</source>
-      <translation>Затворите и промените приликом отварање датотеке</translation>
+      <translation>Затвори и промени приликом отварање датотеке</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="654"/>
       <source>If application is started by opening a file, apply the two settings above</source>
-      <translation>Ако је апликација покренута отварањем датотеке, примени две горње поставке</translation>
+      <translation>Ако је апликација покренута отварањем датотеке, примените две горње поставке</translation>
     </message>
   </context>
 </TS>

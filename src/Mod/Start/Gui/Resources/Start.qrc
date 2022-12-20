@@ -42,5 +42,6 @@
         <file>translations/StartPage_es-AR.qm</file>
         <file>translations/StartPage_bg.qm</file>
         <file>translations/StartPage_ka.qm</file>
+        <file>translations/StartPage_sr-CS.qm</file>
     </qresource>
 </RCC>

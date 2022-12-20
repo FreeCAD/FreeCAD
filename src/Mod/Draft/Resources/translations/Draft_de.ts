@@ -919,7 +919,7 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="94"/>
       <source>Draw style</source>
-      <translation>Zeichenstil</translation>
+      <translation>Darstellungsart</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="101"/>
@@ -995,11 +995,6 @@ value by using the [ and ] keys while drawing</source>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="183"/>
       <source>The transparency of faces</source>
       <translation>Die Transparenz von Oberflächen</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="186"/>
-      <source> %</source>
-      <translation> %</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="199"/>
@@ -1165,11 +1160,6 @@ value by using the [ and ] keys while drawing</source>
       <location filename="../ui/dialogHatch.ui" line="64"/>
       <source>Rotation:</source>
       <translation>Drehung:</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialogHatch.ui" line="71"/>
-      <source>°</source>
-      <translation>°</translation>
     </message>
   </context>
   <context>
@@ -1484,29 +1474,14 @@ Beachten Sie, dass dies nicht vollständig unterstützt wird und viele Objekte m
       <translation>Eine SVG-Linienart-Definition</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="398"/>
-      <source>0.09,0.05</source>
-      <translation>0.09,0.05</translation>
-    </message>
-    <message>
       <location filename="../ui/preferences-draftvisual.ui" line="418"/>
       <source>Dashdot line definition</source>
       <translation>Strich-Punkt-Linien-Definition</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="441"/>
-      <source>0.09,0.05,0.02,0.05</source>
-      <translation>0.09,0.05,0.02,0.05</translation>
-    </message>
-    <message>
       <location filename="../ui/preferences-draftvisual.ui" line="461"/>
       <source>Dotted line definition</source>
       <translation>Gepunktete-Linien-Definition</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="484"/>
-      <source>0.02,0.02</source>
-      <translation>0.02,0.02</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="14"/>
@@ -1736,12 +1711,12 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-svg.ui" line="65"/>
       <source>Use default color and linewidth</source>
-      <translation>Benutze Standard Farbe und Linienstärke</translation>
+      <translation>Standardfarbe und -linienbreite verwenden</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="70"/>
       <source>Original color and linewidth</source>
-      <translation>Ursprüngliche Farbe und Linienstärke</translation>
+      <translation>Ursprüngliche Farbe und Linienbreite</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="82"/>
@@ -2529,11 +2504,6 @@ This might fail for post DXF R12 templates.</source>
       <translation>Zyklus-Einrasten</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftinterface.ui" line="608"/>
-      <source>`</source>
-      <translation>`</translation>
-    </message>
-    <message>
       <location filename="../ui/preferences-draftinterface.ui" line="630"/>
       <source>Global</source>
       <translation>Global</translation>
@@ -2547,11 +2517,6 @@ This might fail for post DXF R12 templates.</source>
       <location filename="../ui/preferences-draftinterface.ui" line="674"/>
       <source>Undo</source>
       <translation>Rückgängig machen</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftinterface.ui" line="696"/>
-      <source>/</source>
-      <translation>/</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="718"/>
@@ -2569,19 +2534,9 @@ This might fail for post DXF R12 templates.</source>
       <translation>Radius vergrößern</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftinterface.ui" line="784"/>
-      <source>[</source>
-      <translation>[</translation>
-    </message>
-    <message>
       <location filename="../ui/preferences-draftinterface.ui" line="806"/>
       <source>Decrease Radius</source>
       <translation>Radius verkleinern</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftinterface.ui" line="828"/>
-      <source>]</source>
-      <translation>]</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="850"/>

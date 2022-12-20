@@ -87,7 +87,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="215"/>
       <source>stdout pipe (requires OpenSCAD &gt;= 2021.1)</source>
-      <translation type="unfinished">stdout pipe (requires OpenSCAD &gt;= 2021.1)</translation>
+      <translation>stdout Pipe (erfordert OpenSCAD &gt;= 2021.1)</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="227"/>
@@ -119,11 +119,6 @@
       <location filename="../ui/openscadprefs-base.ui" line="289"/>
       <source>angular (fa)</source>
       <translation>winkelig (Fa)</translation>
-    </message>
-    <message>
-      <location filename="../ui/openscadprefs-base.ui" line="299"/>
-      <source>°</source>
-      <translation>°</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="328"/>

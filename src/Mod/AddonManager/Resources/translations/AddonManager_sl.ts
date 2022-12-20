@@ -74,12 +74,6 @@
       <source>Optional?</source>
       <translation>Neobvezno?</translation>
     </message>
-    <message>
-      <location filename="../../developer_mode_dependencies.ui" line="72"/>
-      <location filename="../../developer_mode_dependencies.ui" line="79"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
   </context>
   <context>
     <name>DependencyResolutionDialog</name>
@@ -134,7 +128,7 @@ Ali želite, da jih upravljalinik dodatkov namesti samodejno? Izberite &quot;Pre
     <message>
       <location filename="../../developer_mode.ui" line="54"/>
       <source>Metadata</source>
-      <translation>Metapodatki</translation>
+      <translation>Samopodatki</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="65"/>
@@ -189,12 +183,12 @@ Ali želite, da jih upravljalinik dodatkov namesti samodejno? Izberite &quot;Pre
       <location filename="../../developer_mode.ui" line="139"/>
       <location filename="../../developer_mode.ui" line="225"/>
       <source>Displayed in the Addon Manager&apos;s list of Addons. Should not include the word &quot;FreeCAD&quot;, and must be a valid directory name on all support operating systems.</source>
-      <translation type="unfinished">Displayed in the Addon Manager&apos;s list of Addons. Should not include the word &quot;FreeCAD&quot;, and must be a valid directory name on all support operating systems.</translation>
+      <translation>Prikazano v seznamu dodatkov iz Upravljalnika dodatkov. Ne sme vsebovati besede &quot;FreeCAD&quot; in mora biti veljavno ime mape v vseh podprtih operacijskih sistemih.</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="153"/>
       <source>README URL</source>
-      <translation type="unfinished">README URL</translation>
+      <translation>README URL</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="166"/>
@@ -209,17 +203,17 @@ Ali želite, da jih upravljalinik dodatkov namesti samodejno? Izberite &quot;Pre
     <message>
       <location filename="../../developer_mode.ui" line="204"/>
       <source>Website URL</source>
-      <translation type="unfinished">Website URL</translation>
+      <translation>Naslov spletne strani</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="211"/>
       <source>Documentation URL</source>
-      <translation type="unfinished">Documentation URL</translation>
+      <translation>Spletni naslov dokumentacije</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="228"/>
       <source>Addon Name</source>
-      <translation type="unfinished">Addon Name</translation>
+      <translation>Ime dodatka</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="235"/>
@@ -229,33 +223,27 @@ Ali želite, da jih upravljalinik dodatkov namesti samodejno? Izberite &quot;Pre
     <message>
       <location filename="../../developer_mode.ui" line="242"/>
       <source>(Recommended)</source>
-      <translation type="unfinished">(Recommended)</translation>
+      <translation>(Priporočljivo)</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="249"/>
       <source>Minimum Python</source>
-      <translation type="unfinished">Minimum Python</translation>
+      <translation>Najmanj Python</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="258"/>
       <source>(Optional, only 3.x version supported)</source>
-      <translation type="unfinished">(Optional, only 3.x version supported)</translation>
+      <translation>(Izbirno, podprta le različica 3.x)</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="265"/>
       <source>Detect...</source>
-      <translation type="unfinished">Detect...</translation>
+      <translation>Zaznaj...</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="277"/>
       <source>Addon Contents</source>
-      <translation type="unfinished">Addon Contents</translation>
-    </message>
-    <message>
-      <location filename="../../developer_mode.ui" line="301"/>
-      <location filename="../../developer_mode.ui" line="308"/>
-      <source>...</source>
-      <translation>...</translation>
+      <translation>Vsebina dodatka</translation>
     </message>
   </context>
   <context>
@@ -273,7 +261,7 @@ Ali želite, da jih upravljalinik dodatkov namesti samodejno? Izberite &quot;Pre
     <message>
       <location filename="../../AddonManager.ui" line="71"/>
       <source>Pause cache update</source>
-      <translation type="unfinished">Pause cache update</translation>
+      <translation>Premor posodabljanja predpomnilnika</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="103"/>
@@ -288,27 +276,27 @@ Ali želite, da jih upravljalinik dodatkov namesti samodejno? Izberite &quot;Pre
     <message>
       <location filename="../../AddonManager.ui" line="113"/>
       <source>Update all Addons</source>
-      <translation type="unfinished">Update all Addons</translation>
+      <translation>Posodobi vse dodatke</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="120"/>
       <source>Check for updates</source>
-      <translation type="unfinished">Check for updates</translation>
+      <translation>Preveri posodobitve</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="130"/>
       <source>View and update Python package dependencies</source>
-      <translation type="unfinished">View and update Python package dependencies</translation>
+      <translation>Poglej in posodobi odvisnosti Pythonovega paketa</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="133"/>
       <source>Python dependencies...</source>
-      <translation type="unfinished">Python dependencies...</translation>
+      <translation>Pythonove odvisnosti ...</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="140"/>
       <source>Developer tools...</source>
-      <translation type="unfinished">Developer tools...</translation>
+      <translation>Orodja za razvijalce...</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="160"/>
@@ -323,27 +311,27 @@ Ali želite, da jih upravljalinik dodatkov namesti samodejno? Izberite &quot;Pre
     <message>
       <location filename="../../first_run.ui" line="17"/>
       <source>Welcome to the Addon Manager</source>
-      <translation type="unfinished">Welcome to the Addon Manager</translation>
+      <translation>Dobrodošli v upravitelju dodatkov</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="23"/>
       <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
-      <translation type="unfinished">The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</translation>
+      <translation>Dodatki, ki jih lahko namestite tukaj, niso uradni del programa FreeCAD in jih ekipa programa FreeCAD ne pregleduje. Prepričajte se, da veste, kaj nameščate!</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="46"/>
       <source>Download Settings</source>
-      <translation type="unfinished">Download Settings</translation>
+      <translation>Nastavitve prenosa</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="53"/>
       <source>Automatically check installed Addons for updates</source>
-      <translation type="unfinished">Automatically check installed Addons for updates</translation>
+      <translation>Samodejno preverjanje nameščenih dodatkov za posodobitve</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="60"/>
       <source>Download Macro metadata (approximately 10MB)</source>
-      <translation type="unfinished">Download Macro metadata (approximately 10MB)</translation>
+      <translation>Prenesite samopodatke o makrih (približno 10 MB)</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="70"/>
@@ -353,32 +341,32 @@ Ali želite, da jih upravljalinik dodatkov namesti samodejno? Izberite &quot;Pre
     <message>
       <location filename="../../first_run.ui" line="75"/>
       <source>System proxy</source>
-      <translation type="unfinished">System proxy</translation>
+      <translation>Sistemski posredniški strežnik</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="80"/>
       <source>User-defined proxy:</source>
-      <translation type="unfinished">User-defined proxy:</translation>
+      <translation>Posredniški strežnik, ki ga določi uporabnik:</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="93"/>
       <source>These and other settings are available in the FreeCAD Preferences window.</source>
-      <translation type="unfinished">These and other settings are available in the FreeCAD Preferences window.</translation>
+      <translation>Te in druge nastavitve so na voljo v splošnih FreeCAD nastavitvah.</translation>
     </message>
     <message>
       <location filename="../../developer_mode_tags.ui" line="14"/>
       <source>Edit Tags</source>
-      <translation type="unfinished">Edit Tags</translation>
+      <translation>Uredi značke</translation>
     </message>
     <message>
       <location filename="../../developer_mode_tags.ui" line="20"/>
       <source>Comma-separated list of tags describing this item:</source>
-      <translation type="unfinished">Comma-separated list of tags describing this item:</translation>
+      <translation>Z vejico ločen seznam značk, ki opisujejo ta predmet:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_tags.ui" line="35"/>
       <source>HINT: Common tags include &quot;Assembly&quot;, &quot;FEM&quot;, &quot;Mesh&quot;, &quot;NURBS&quot;, etc.</source>
-      <translation type="unfinished">HINT: Common tags include &quot;Assembly&quot;, &quot;FEM&quot;, &quot;Mesh&quot;, &quot;NURBS&quot;, etc.</translation>
+      <translation>Namig: Običajne oznake vključujejo &quot;Assembly&quot;, &quot;FEM&quot;, &quot;Mesh&quot;, &quot;NURBS&quot; itd.</translation>
     </message>
   </context>
   <context>
@@ -386,37 +374,37 @@ Ali želite, da jih upravljalinik dodatkov namesti samodejno? Izberite &quot;Pre
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="14"/>
       <source>Edit Dependency</source>
-      <translation type="unfinished">Edit Dependency</translation>
+      <translation>Uredi odvisnosti</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="20"/>
       <source>Dependency Type</source>
-      <translation type="unfinished">Dependency Type</translation>
+      <translation>Vrsta odvisnosti</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="30"/>
       <source>Dependency</source>
-      <translation type="unfinished">Dependency</translation>
+      <translation>Odvisnost</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="42"/>
       <source>Package name, if &quot;Other...&quot;</source>
-      <translation type="unfinished">Package name, if &quot;Other...&quot;</translation>
+      <translation>Ime paketa, če &quot;Drugo ...&quot;</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="54"/>
       <source>NOTE: If &quot;Other...&quot; is selected, the package is not in the ALLOWED_PYTHON_PACKAGES.txt file, and will not be automatically installed by the Addon Manager. Submit a PR at &lt;a href=&quot;https://github.com/FreeCAD/FreeCAD-addons&quot;&gt;https://github.com/FreeCAD/FreeCAD-addons&lt;/a&gt; to request addition of a package.</source>
-      <translation type="unfinished">NOTE: If &quot;Other...&quot; is selected, the package is not in the ALLOWED_PYTHON_PACKAGES.txt file, and will not be automatically installed by the Addon Manager. Submit a PR at &lt;a href=&quot;https://github.com/FreeCAD/FreeCAD-addons&quot;&gt;https://github.com/FreeCAD/FreeCAD-addons&lt;/a&gt; to request addition of a package.</translation>
+      <translation>OPOMB: Če je izbrano &quot;Drugo ...&quot;, paketa ni v datoteki ALLOWED_PYTHON_PACKAGES.txt in ga bo upravljalnik vtičnikov samodejno namestil. Če želite zaprosti za dodajanje paketa, oddajte predobjavo na &lt;a href=&quot;https://github.com/FreeCAD/FreeCAD-addons&quot;&gt;https://github.com/FreeCAD/FreeCAD-addons&lt;/a&gt;.</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="69"/>
       <source>If this is an optional dependency, the Addon Manager will offer to install it (when possible), but will not block installation if the user chooses not to, or cannot, install the package.</source>
-      <translation type="unfinished">If this is an optional dependency, the Addon Manager will offer to install it (when possible), but will not block installation if the user chooses not to, or cannot, install the package.</translation>
+      <translation>To je neobvezna odvisnost, ki jo bo upravljalnik dodatkov ponudil namestiti, (ko je to mogoče) vendar ne bo onemogočil namestitve, če uporabnik ne bo želel ali mogel namestiti paketa.</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="72"/>
       <source>Optional</source>
-      <translation type="unfinished">Optional</translation>
+      <translation>Neobvezno</translation>
     </message>
   </context>
   <context>
@@ -434,7 +422,7 @@ Ali želite, da jih upravljalinik dodatkov namesti samodejno? Izberite &quot;Pre
     <message>
       <location filename="../../expanded_view.ui" line="101"/>
       <source>&lt;h1&gt;Package Name&lt;/h1&gt;</source>
-      <translation type="unfinished">&lt;h1&gt;Package Name&lt;/h1&gt;</translation>
+      <translation>&lt;h1&gt;Naziv paketa&lt;/h1&gt;</translation>
     </message>
     <message>
       <location filename="../../expanded_view.ui" line="114"/>
@@ -444,7 +432,7 @@ Ali želite, da jih upravljalinik dodatkov namesti samodejno? Izberite &quot;Pre
     <message>
       <location filename="../../expanded_view.ui" line="121"/>
       <source>(tags)</source>
-      <translation type="unfinished">(tags)</translation>
+      <translation>(značke)</translation>
     </message>
     <message>
       <location filename="../../expanded_view.ui" line="149"/>
@@ -473,7 +461,7 @@ Ali želite, da jih upravljalinik dodatkov namesti samodejno? Izberite &quot;Pre
     <message>
       <location filename="../../developer_mode_licenses_table.ui" line="38"/>
       <source>Licenses</source>
-      <translation type="unfinished">Licenses</translation>
+      <translation>Licence</translation>
     </message>
     <message>
       <location filename="../../developer_mode_licenses_table.ui" line="69"/>
@@ -483,25 +471,17 @@ Ali želite, da jih upravljalinik dodatkov namesti samodejno? Izberite &quot;Pre
     <message>
       <location filename="../../developer_mode_licenses_table.ui" line="74"/>
       <source>License file</source>
-      <translation type="unfinished">License file</translation>
-    </message>
-    <message>
-      <location filename="../../developer_mode_licenses_table.ui" line="97"/>
-      <location filename="../../developer_mode_licenses_table.ui" line="107"/>
-      <location filename="../../developer_mode_people_table.ui" line="90"/>
-      <location filename="../../developer_mode_people_table.ui" line="100"/>
-      <source>...</source>
-      <translation>...</translation>
+      <translation>Datoteka z licenco</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people_table.ui" line="26"/>
       <source>People</source>
-      <translation type="unfinished">People</translation>
+      <translation>Osebe</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people_table.ui" line="57"/>
       <source>Kind</source>
-      <translation type="unfinished">Kind</translation>
+      <translation>Vrsta</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people_table.ui" line="62"/>
@@ -511,7 +491,7 @@ Ali želite, da jih upravljalinik dodatkov namesti samodejno? Izberite &quot;Pre
     <message>
       <location filename="../../developer_mode_people_table.ui" line="67"/>
       <source>Email</source>
-      <translation type="unfinished">Email</translation>
+      <translation>E-pošta</translation>
     </message>
   </context>
   <context>
@@ -519,28 +499,22 @@ Ali želite, da jih upravljalinik dodatkov namesti samodejno? Izberite &quot;Pre
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="14"/>
       <source>Advanced Version Mapping</source>
-      <translation type="unfinished">Advanced Version Mapping</translation>
+      <translation>Preslikava napredne različice</translation>
     </message>
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="20"/>
       <source>Upcoming versions of the FreeCAD Addon Manager will support developers&apos; setting a specific branch or tag for use with a specific version of FreeCAD (e.g. setting a specific tag as the last version of your Addon to support v0.19, etc.)</source>
-      <translation type="unfinished">Upcoming versions of the FreeCAD Addon Manager will support developers&apos; setting a specific branch or tag for use with a specific version of FreeCAD (e.g. setting a specific tag as the last version of your Addon to support v0.19, etc.)</translation>
+      <translation>Prihajajoče različice FreeCADovega upravljalnika dodatkov bodo podpirale razvijalce z nastavitvijo določene veje ali značke za delo s točno določeno različico FreeCADa (npr. nastavitev posebne značke, da zadnja različica vašega vtičnika podpira v0.19 itn.)</translation>
     </message>
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="43"/>
       <source>FreeCAD Version</source>
-      <translation type="unfinished">FreeCAD Version</translation>
+      <translation>Rezličica FreeCADa</translation>
     </message>
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="48"/>
       <source>Best-available branch, tag, or commit</source>
-      <translation type="unfinished">Best-available branch, tag, or commit</translation>
-    </message>
-    <message>
-      <location filename="../../developer_mode_advanced_freecad_versions.ui" line="71"/>
-      <location filename="../../developer_mode_advanced_freecad_versions.ui" line="78"/>
-      <source>...</source>
-      <translation>...</translation>
+      <translation>Najprimernejša razpoložljiva veja, značka ali predaja</translation>
     </message>
   </context>
   <context>
@@ -548,28 +522,28 @@ Ali želite, da jih upravljalinik dodatkov namesti samodejno? Izberite &quot;Pre
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="14"/>
       <source>Supported FreeCAD Versions</source>
-      <translation type="unfinished">Supported FreeCAD Versions</translation>
+      <translation>Podprte FreeCAD različice</translation>
     </message>
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="20"/>
       <source>Minimum FreeCAD Version Supported</source>
-      <translation type="unfinished">Minimum FreeCAD Version Supported</translation>
+      <translation>Najstarejša še podprta različica FreeCADa</translation>
     </message>
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="27"/>
       <location filename="../../developer_mode_freecad_versions.ui" line="41"/>
       <source>Optional</source>
-      <translation type="unfinished">Optional</translation>
+      <translation>Neobvezno</translation>
     </message>
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="34"/>
       <source>Maximum FreeCAD Version Supported</source>
-      <translation type="unfinished">Maximum FreeCAD Version Supported</translation>
+      <translation>Najnovejša podprta različica FreeCADa</translation>
     </message>
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="48"/>
       <source>Advanced version mapping...</source>
-      <translation type="unfinished">Advanced version mapping...</translation>
+      <translation>Preslikava napredne različice ...</translation>
     </message>
   </context>
   <context>
@@ -577,114 +551,102 @@ Ali želite, da jih upravljalinik dodatkov namesti samodejno? Izberite &quot;Pre
     <message>
       <location filename="../../AddonManagerOptions.ui" line="14"/>
       <source>Addon manager options</source>
-      <translation type="unfinished">Addon manager options</translation>
+      <translation>Nastavitve urejevalnika dodatkov</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="20"/>
       <source>If this option is selected, when launching the Addon Manager,
 installed addons will be checked for available updates
 (this requires the GitPython package installed on your system)</source>
-      <translation type="unfinished">If this option is selected, when launching the Addon Manager,
-installed addons will be checked for available updates
-(this requires the GitPython package installed on your system)</translation>
+      <translation>Če je izbrana ta možnost, bo pri zagonu upravljalnik dodatkov
+preveril razpoložljivost posodobitev za nameščene dodatke
+(za to je potrebna namestitev GitPython paketa na vašem sistemu)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="25"/>
       <source>Automatically check for updates at start (requires git)</source>
-      <translation type="unfinished">Automatically check for updates at start (requires git)</translation>
+      <translation>Samodejno preveri posodobitve ob zagonu (potreben git)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="41"/>
       <source>Download Macro metadata (approximately 10MB)</source>
-      <translation type="unfinished">Download Macro metadata (approximately 10MB)</translation>
+      <translation>Prenesite samopodatke o makrih (približno 10 MB)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="44"/>
-      <source>DownloadMacros</source>
-      <translation type="unfinished">DownloadMacros</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManagerOptions.ui" line="47"/>
       <location filename="../../AddonManagerOptions.ui" line="373"/>
       <location filename="../../AddonManagerOptions.ui" line="386"/>
       <source>Addons</source>
-      <translation type="unfinished">Addons</translation>
+      <translation>Dodatki</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="56"/>
       <source>Cache update frequency</source>
-      <translation type="unfinished">Cache update frequency</translation>
+      <translation>Pogostnost posodobitve predpomnilnika</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="76"/>
       <source>Manual (no automatic updates)</source>
-      <translation type="unfinished">Manual (no automatic updates)</translation>
+      <translation>Ročno (brez samodejnih posodobitev)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="81"/>
       <source>Daily</source>
-      <translation type="unfinished">Daily</translation>
+      <translation>Dnevno</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="86"/>
       <source>Weekly</source>
-      <translation type="unfinished">Weekly</translation>
+      <translation>Tedensko</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="96"/>
       <source>Hide Addons marked Python 2 Only</source>
-      <translation type="unfinished">Hide Addons marked Python 2 Only</translation>
+      <translation>Skrij dodatke z oznako Le Python 2</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="112"/>
       <source>Hide Addons marked Obsolete</source>
-      <translation type="unfinished">Hide Addons marked Obsolete</translation>
+      <translation>Skrij dodatke z oznako Zastarelo</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="128"/>
       <source>Hide Addons that require a newer version of FreeCAD</source>
-      <translation type="unfinished">Hide Addons that require a newer version of FreeCAD</translation>
+      <translation>Skrij dodatke, ki zahtevajo novejšo različico FreeCADa</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="150"/>
       <source>Custom repositories</source>
-      <translation type="unfinished">Custom repositories</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManagerOptions.ui" line="188"/>
-      <location filename="../../AddonManagerOptions.ui" line="195"/>
-      <source>...</source>
-      <translation>...</translation>
+      <translation>Skladišča po meri</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="354"/>
       <source>Show option to change branches (requires git)</source>
-      <translation type="unfinished">Show option to change branches (requires git)</translation>
+      <translation>Prikaži možnost spreminjanja veje (potreben git)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="367"/>
       <source>Disable git (fall back to ZIP downloads only)</source>
-      <translation type="unfinished">Disable git (fall back to ZIP downloads only)</translation>
+      <translation>Onemogoči git (vrnitev na prenos le ZIPa)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="370"/>
       <source>disableGit</source>
-      <translation type="unfinished">disableGit</translation>
+      <translation>onemogoči Git</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="380"/>
       <source>Activate Addon Manager options intended for developers of new Addons.</source>
-      <translation type="unfinished">Activate Addon Manager options intended for developers of new Addons.</translation>
+      <translation>Omogoči možnosti upravljalnika dodatkov, ki so namenjene razvijalcem novih dodatkov.</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="383"/>
       <source>Addon developer mode</source>
-      <translation type="unfinished">Addon developer mode</translation>
+      <translation>Razvijalski način dodatkov</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="389"/>
       <source>developerMode</source>
-      <translation type="unfinished">developerMode</translation>
+      <translation>razvijalski način</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="204"/>
@@ -699,12 +661,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManagerOptions.ui" line="226"/>
       <source>User system proxy</source>
-      <translation type="unfinished">User system proxy</translation>
+      <translation>Posredniški strežnik uporabniškega okolja</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="239"/>
       <source>User-defined proxy:</source>
-      <translation type="unfinished">User-defined proxy:</translation>
+      <translation>Posredniški strežnik, ki ga določi uporabnik:</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="276"/>
@@ -714,17 +676,17 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManagerOptions.ui" line="295"/>
       <source>The path to the Python executable for package installation with pip. Autodetected if needed and not specified.</source>
-      <translation type="unfinished">The path to the Python executable for package installation with pip. Autodetected if needed and not specified.</translation>
+      <translation>Pot do Pythonove izvršljive datoteke za namestitev paketov s sliko v sliki. Samodejni popravki, če so potrebni niso določeni.</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="308"/>
       <source>git executable (optional):</source>
-      <translation type="unfinished">git executable (optional):</translation>
+      <translation>git izvršljiva datoteka (možnostno):</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="327"/>
       <source>The path to the git executable. Autodetected if needed and not specified.</source>
-      <translation type="unfinished">The path to the git executable. Autodetected if needed and not specified.</translation>
+      <translation>Pot do git-ove izvršljive datoteke. Samodejno popravljanje, če je potrebno in ni določeno.</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="348"/>
@@ -738,11 +700,6 @@ installed addons will be checked for available updates
       <location filename="../../package_details.ui" line="14"/>
       <source>Form</source>
       <translation>Oblika</translation>
-    </message>
-    <message>
-      <location filename="../../package_details.ui" line="29"/>
-      <source>...</source>
-      <translation>...</translation>
     </message>
     <message>
       <location filename="../../package_details.ui" line="49"/>
@@ -780,42 +737,42 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="14"/>
       <source>Manage Python Dependencies</source>
-      <translation type="unfinished">Manage Python Dependencies</translation>
+      <translation>Upravljaj Pythonove odvisnosti</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="20"/>
       <source>The following Python packages have been installed locally by the Addon Manager to satisfy Addon dependencies. Installation location:</source>
-      <translation type="unfinished">The following Python packages have been installed locally by the Addon Manager to satisfy Addon dependencies. Installation location:</translation>
+      <translation>Upravljalnik dodatkov je za zadostitev odvisnosti vtičnika krajevno namestil naslednje Pythonove pakete. Mesto namestitve:</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="59"/>
       <source>Package name</source>
-      <translation type="unfinished">Package name</translation>
+      <translation>Ime paketa</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="64"/>
       <source>Installed version</source>
-      <translation type="unfinished">Installed version</translation>
+      <translation>Nameščena različica</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="69"/>
       <source>Available version</source>
-      <translation type="unfinished">Available version</translation>
+      <translation>Razpoložljiva različica</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="74"/>
       <source>Used by</source>
-      <translation type="unfinished">Used by</translation>
+      <translation>Uporablja</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="87"/>
       <source>An asterisk (*) in the &quot;Used by&quot; column indicates an optional dependency. Note that Used by only records direct imports in the Addon. Other Python packages that those packages depend upon may have been installed as well.</source>
-      <translation type="unfinished">An asterisk (*) in the &quot;Used by&quot; column indicates an optional dependency. Note that Used by only records direct imports in the Addon. Other Python packages that those packages depend upon may have been installed as well.</translation>
+      <translation>Zvezdica (*) v stolpcu &quot;Uporablja&quot; pomeni neobvezno odvisnost. Pozor, seznam &quot;Uporablja&quot; navaja neposredne uvoze v dodatke. Možno je, da so nameščeni tudi drugi Pythonovi paketi, ki so od teh paketov odvisni.</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="99"/>
       <source>Update all available</source>
-      <translation type="unfinished">Update all available</translation>
+      <translation>Posodobi vse razpoložljive</translation>
     </message>
   </context>
   <context>
@@ -832,16 +789,29 @@ installed addons will be checked for available updates
     </message>
   </context>
   <context>
+    <name>UpdateAllDialog</name>
+    <message>
+      <location filename="../../update_all.ui" line="14"/>
+      <source>Updating Addons</source>
+      <translation type="unfinished">Updating Addons</translation>
+    </message>
+    <message>
+      <location filename="../../update_all.ui" line="23"/>
+      <source>Updating out-of-date addons...</source>
+      <translation type="unfinished">Updating out-of-date addons...</translation>
+    </message>
+  </context>
+  <context>
     <name>addContentDialog</name>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="14"/>
       <source>Content Item</source>
-      <translation type="unfinished">Content Item</translation>
+      <translation>Predmeti vsebine</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="25"/>
       <source>Content type:</source>
-      <translation type="unfinished">Content type:</translation>
+      <translation>Vrsta vsebine:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="33"/>
@@ -851,7 +821,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="38"/>
       <source>Preference Pack</source>
-      <translation type="unfinished">Preference Pack</translation>
+      <translation>Prednastavitveni sveženj</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="43"/>
@@ -861,22 +831,22 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="51"/>
       <source>If this is the only thing in the Addon, all other metadata can be inherited from the top level, and does not need to be specified here.</source>
-      <translation type="unfinished">If this is the only thing in the Addon, all other metadata can be inherited from the top level, and does not need to be specified here.</translation>
+      <translation>Če je to edina stvar v dodatku, se lahko vsi ostali samopodatki prenesejo z višje ravni in jih ni treba posebej navajati.</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="54"/>
       <source>This is the only item in the Addon</source>
-      <translation type="unfinished">This is the only item in the Addon</translation>
+      <translation>To je edni predmet v dodatku</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="86"/>
       <source>Main macro file</source>
-      <translation type="unfinished">Main macro file</translation>
+      <translation>Glavna datoteka makra</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="93"/>
       <source>The file with the macro&apos;s metadata in it</source>
-      <translation type="unfinished">The file with the macro&apos;s metadata in it</translation>
+      <translation>Datoteka z makrovimi samopodatki</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="100"/>
@@ -888,12 +858,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="111"/>
       <source>Preference Pack Name</source>
-      <translation type="unfinished">Preference Pack Name</translation>
+      <translation>Ime prednastavitvenega svežnja</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="125"/>
       <source>Workbench class name</source>
-      <translation type="unfinished">Workbench class name</translation>
+      <translation>Ime razreda delovnega okolja</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="132"/>
@@ -903,12 +873,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="145"/>
       <source>Subdirectory</source>
-      <translation type="unfinished">Subdirectory</translation>
+      <translation>Podmapa</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="154"/>
       <source>Optional, defaults to name of content item</source>
-      <translation type="unfinished">Optional, defaults to name of content item</translation>
+      <translation>Po meri, privzeto na ime vsebovanega predmeta</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="170"/>
@@ -928,22 +898,22 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="206"/>
       <source>Tags...</source>
-      <translation type="unfinished">Tags...</translation>
+      <translation>Značke...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="213"/>
       <source>Dependencies...</source>
-      <translation type="unfinished">Dependencies...</translation>
+      <translation>Odvisnosti ...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="220"/>
       <source>FreeCAD Versions...</source>
-      <translation type="unfinished">FreeCAD Versions...</translation>
+      <translation>Rezličica FreeCADa ...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="258"/>
       <source>Other Metadata</source>
-      <translation type="unfinished">Other Metadata</translation>
+      <translation>Drugi sampodatki</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="264"/>
@@ -978,7 +948,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="330"/>
       <source>Any fields left blank are inherited from the top-level Addon metadata, so technically they are all optional. For Addons with multiple content items, each item should provide a unique Display Name and Description.</source>
-      <translation type="unfinished">Any fields left blank are inherited from the top-level Addon metadata, so technically they are all optional. For Addons with multiple content items, each item should provide a unique Display Name and Description.</translation>
+      <translation>Vsa polja, ki jih pustite prazna, prevzamejo vsebino nadrejenih samopodatkov Dodatka, zato bi lahko rekli, da so neobvezna. Pri Dodatkih z večimi vsebinskimi predmeti mora vsak tak predmet omogočati edinstveno ime in opis.</translation>
     </message>
   </context>
   <context>
@@ -1027,17 +997,17 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_copyright_info.ui" line="14"/>
       <source>Copyright Information</source>
-      <translation type="unfinished">Copyright Information</translation>
+      <translation>Podatki o avtorskih pravicah</translation>
     </message>
     <message>
       <location filename="../../developer_mode_copyright_info.ui" line="22"/>
       <source>Copyright holder:</source>
-      <translation type="unfinished">Copyright holder:</translation>
+      <translation>Imetnik avtorskih pravic:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_copyright_info.ui" line="32"/>
       <source>Copyright year:</source>
-      <translation type="unfinished">Copyright year:</translation>
+      <translation>Leto avtorskih pravic:</translation>
     </message>
   </context>
   <context>
@@ -1045,12 +1015,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_people.ui" line="14"/>
       <source>Add Person</source>
-      <translation type="unfinished">Add Person</translation>
+      <translation>Dodaj osebo</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people.ui" line="20"/>
       <source>A maintainer is someone with current commit access on this project. An author is anyone else you&apos;d like to give credit to.</source>
-      <translation type="unfinished">A maintainer is someone with current commit access on this project. An author is anyone else you&apos;d like to give credit to.</translation>
+      <translation>Vzdrževalec je tisti, ki ima odobren dostop do projekta. Ustvarjalec pa je vsak, ki mu želite priznati zasluge.</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people.ui" line="29"/>
@@ -1060,7 +1030,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_people.ui" line="39"/>
       <source>Email:</source>
-      <translation type="unfinished">Email:</translation>
+      <translation>E-pošta:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people.ui" line="46"/>
@@ -1116,27 +1086,27 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_license.ui" line="14"/>
       <source>Select a license</source>
-      <translation type="unfinished">Select a license</translation>
+      <translation>Izberi licenco</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="35"/>
       <source>About...</source>
-      <translation type="unfinished">About...</translation>
+      <translation>O programu ...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="46"/>
       <source>License name:</source>
-      <translation type="unfinished">License name:</translation>
+      <translation>Ime licence:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="60"/>
       <source>Path to license file:</source>
-      <translation type="unfinished">Path to license file:</translation>
+      <translation>Pot do datoteke z licenco:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="67"/>
       <source>(if required by license)</source>
-      <translation type="unfinished">(if required by license)</translation>
+      <translation>(če je zahtevano po licenci)</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="74"/>
@@ -1146,7 +1116,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_license.ui" line="81"/>
       <source>Create...</source>
-      <translation type="unfinished">Create...</translation>
+      <translation>Ustvari...</translation>
     </message>
   </context>
   <context>

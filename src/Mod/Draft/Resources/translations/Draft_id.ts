@@ -872,7 +872,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="254"/>
       <source>Previous</source>
-      <translation type="unfinished">Previous</translation>
+      <translation>Sebelumnya</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="14"/>
@@ -1000,11 +1000,6 @@ value by using the [ and ] keys while drawing</translation>
       <translation type="unfinished">The transparency of faces</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="186"/>
-      <source> %</source>
-      <translation> %</translation>
-    </message>
-    <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="199"/>
       <source>Annotations</source>
       <translation>Anotasi</translation>
@@ -1022,7 +1017,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="225"/>
       <source>Text size</source>
-      <translation type="unfinished">Text size</translation>
+      <translation>Ukuran teks</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="232"/>
@@ -1162,17 +1157,12 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/dialogHatch.ui" line="44"/>
       <source>Scale:</source>
-      <translation type="unfinished">Scale:</translation>
+      <translation>Skala:</translation>
     </message>
     <message>
       <location filename="../ui/dialogHatch.ui" line="64"/>
       <source>Rotation:</source>
       <translation>Rotasi:</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialogHatch.ui" line="71"/>
-      <source>°</source>
-      <translation>°</translation>
     </message>
   </context>
   <context>
@@ -1487,29 +1477,14 @@ Note that this is not fully supported, and many object will be not editable with
       <translation>Definisi SVG linestyle</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="398"/>
-      <source>0.09,0.05</source>
-      <translation>0.09,0.05</translation>
-    </message>
-    <message>
       <location filename="../ui/preferences-draftvisual.ui" line="418"/>
       <source>Dashdot line definition</source>
       <translation>Dashdot baris definisi</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="441"/>
-      <source>0.09,0.05,0.02,0.05</source>
-      <translation>0,09,0,05,0,02,0,05</translation>
-    </message>
-    <message>
       <location filename="../ui/preferences-draftvisual.ui" line="461"/>
       <source>Dotted line definition</source>
       <translation>Definisi garis putus-putus</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="484"/>
-      <source>0.02,0.02</source>
-      <translation>0,02,0.02</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="14"/>
@@ -2422,7 +2397,7 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="88"/>
       <source>Continue</source>
-      <translation type="unfinished">Continue</translation>
+      <translation>Lanjutkan</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="110"/>
@@ -2472,7 +2447,7 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="322"/>
       <source>Exit</source>
-      <translation type="unfinished">Exit</translation>
+      <translation>Keluar</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="344"/>
@@ -2535,11 +2510,6 @@ This might fail for post DXF R12 templates.</translation>
       <translation type="unfinished">Cycle Snap</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftinterface.ui" line="608"/>
-      <source>`</source>
-      <translation type="unfinished">`</translation>
-    </message>
-    <message>
       <location filename="../ui/preferences-draftinterface.ui" line="630"/>
       <source>Global</source>
       <translation>Global</translation>
@@ -2553,11 +2523,6 @@ This might fail for post DXF R12 templates.</translation>
       <location filename="../ui/preferences-draftinterface.ui" line="674"/>
       <source>Undo</source>
       <translation>Urung</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftinterface.ui" line="696"/>
-      <source>/</source>
-      <translation type="unfinished">/</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="718"/>
@@ -2575,19 +2540,9 @@ This might fail for post DXF R12 templates.</translation>
       <translation type="unfinished">Increase Radius</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftinterface.ui" line="784"/>
-      <source>[</source>
-      <translation type="unfinished">[</translation>
-    </message>
-    <message>
       <location filename="../ui/preferences-draftinterface.ui" line="806"/>
       <source>Decrease Radius</source>
       <translation type="unfinished">Decrease Radius</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftinterface.ui" line="828"/>
-      <source>]</source>
-      <translation type="unfinished">]</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="850"/>

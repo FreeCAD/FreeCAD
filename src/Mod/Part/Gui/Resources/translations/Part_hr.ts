@@ -2760,8 +2760,8 @@ to unutar svojstva položaja.</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="107"/>
-      <source>Use legacy exporter</source>
-      <translation>Koristi naslijeđen izvoznik</translation>
+      <source>Use legacy export function</source>
+      <translation type="unfinished">Use legacy export function</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="120"/>
@@ -3079,7 +3079,7 @@ If both lengths are zero, magnitude of direction is used.</source>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="264"/>
       <source>Chamfer type</source>
-      <translation type="unfinished">Chamfer type</translation>
+      <translation>Vrsta žlijeba</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="265"/>
@@ -3114,12 +3114,12 @@ If both lengths are zero, magnitude of direction is used.</source>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="271"/>
       <source>Size2</source>
-      <translation type="unfinished">Size2</translation>
+      <translation>Veličina2</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="275"/>
       <source>Fillet type</source>
-      <translation type="unfinished">Fillet type</translation>
+      <translation>Vrsta obruba</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="276"/>
@@ -3506,11 +3506,6 @@ tijekom čitanja datoteke (sporije, ali veći detalji).</translation>
       <source>File Name</source>
       <translation>Naziv datoteke</translation>
     </message>
-    <message>
-      <location filename="../../DlgPartImportIges.ui" line="54"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
   </context>
   <context>
     <name>PartGui::DlgPartImportIgesImp</name>
@@ -3536,11 +3531,6 @@ tijekom čitanja datoteke (sporije, ali veći detalji).</translation>
       <location filename="../../DlgPartImportStep.ui" line="20"/>
       <source>File Name</source>
       <translation>Naziv datoteke</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPartImportStep.ui" line="54"/>
-      <source>...</source>
-      <translation>...</translation>
     </message>
   </context>
   <context>
@@ -4157,8 +4147,8 @@ tijekom čitanja datoteke (sporije, ali veći detalji).</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="49"/>
-      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Popločenje&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;definira maksimalnu devijacija teselacijske mreže na površinu. Manja vrijednost je sporija brzina renderiranja što rezultira povećanim detaljima/rezolucijom.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="52"/>
@@ -4166,19 +4156,9 @@ tijekom čitanja datoteke (sporije, ali veći detalji).</translation>
       <translation>Maksimalno odstupanje ovisno o graničnom okviru modela</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPart.ui" line="59"/>
-      <source> %</source>
-      <translation> %</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="87"/>
       <source>Maximum angular deflection</source>
       <translation>Maksimalno kutno odstupanje</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettings3DViewPart.ui" line="94"/>
-      <source> °</source>
-      <translation> °</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPartImp.cpp" line="68"/>
@@ -4239,22 +4219,22 @@ tijekom čitanja datoteke (sporije, ali veći detalji).</translation>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="26"/>
       <source>Measurement settings</source>
-      <translation type="unfinished">Measurement settings</translation>
+      <translation>Postavke mjerenja</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="51"/>
       <source>3D color</source>
-      <translation type="unfinished">3D color</translation>
+      <translation>3D Boja</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="88"/>
       <source>Delta color</source>
-      <translation type="unfinished">Delta color</translation>
+      <translation>Delta boja</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="112"/>
       <source>Angular color</source>
-      <translation type="unfinished">Angular color</translation>
+      <translation>Boja kuta</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="145"/>
@@ -4274,7 +4254,7 @@ tijekom čitanja datoteke (sporije, ali veći detalji).</translation>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="189"/>
       <source>defaultFont</source>
-      <translation type="unfinished">defaultFont</translation>
+      <translation>Zadano pismo</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="202"/>
@@ -4284,7 +4264,7 @@ tijekom čitanja datoteke (sporije, ali veći detalji).</translation>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="213"/>
       <source>Refresh existing measurements</source>
-      <translation type="unfinished">Refresh existing measurements</translation>
+      <translation>Osvježite postojeća mjerenja</translation>
     </message>
   </context>
   <context>
@@ -4322,17 +4302,12 @@ tijekom čitanja datoteke (sporije, ali veći detalji).</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="83"/>
       <source>Shape transparency</source>
-      <translation type="unfinished">Shape transparency</translation>
+      <translation>Prozirnost oblika</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="90"/>
       <source>The default transparency for new shapes</source>
-      <translation type="unfinished">The default transparency for new shapes</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsObjectColor.ui" line="93"/>
-      <source>%</source>
-      <translation>%</translation>
+      <translation>Zadana prozirost za nove oblike</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="118"/>
@@ -4626,17 +4601,17 @@ u suprotnom koristit će se normalni vektor ravnine skice
   <context>
     <name>PartGui::ResultModel</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="342"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="340"/>
       <source>Name</source>
       <translation>Ime</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="344"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="342"/>
       <source>Type</source>
       <translation>Tip</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="346"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="344"/>
       <source>Error</source>
       <translation>Pogreška</translation>
     </message>
@@ -4719,11 +4694,6 @@ Radi samo ako svi objekti imaju iste vrijednosti.
       <translation>Prozirnost</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.ui" line="342"/>
-      <source>0 %</source>
-      <translation>0 %</translation>
-    </message>
-    <message>
       <location filename="../../SectionCutting.ui" line="367"/>
       <source>Refreshes the list of visible objects</source>
       <translation>Osvježava popis vidljivih objekata
@@ -4750,7 +4720,7 @@ bit će vidljivi samo stvoreni rezovi
       <translation>Pri zatvaranju neka budu vidljivi samo rezovi</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.cpp" line="407"/>
+      <location filename="../../SectionCutting.cpp" line="429"/>
       <source>Sliders are disabled for assemblies</source>
       <translation>Klizači su onemogućeni za sklopove</translation>
     </message>
@@ -4760,12 +4730,12 @@ bit će vidljivi samo stvoreni rezovi
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="215"/>
       <source>Unsupported</source>
-      <translation type="unfinished">Unsupported</translation>
+      <translation>Nije podržano</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="215"/>
       <source>Box selection for shells is not supported</source>
-      <translation type="unfinished">Box selection for shells is not supported</translation>
+      <translation>Okvir odabira  za ljuske nije podržan</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="224"/>
@@ -5136,35 +5106,35 @@ predmeta koji se pridružuje.</translation>
   <context>
     <name>PartGui::TaskCheckGeometryDialog</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1000"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="998"/>
       <source>Shape Content</source>
       <translation>Sadržaj oblika</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1008"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="1202"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1006"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1200"/>
       <source>Settings</source>
       <translation>Postavke</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1012"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1010"/>
       <source>Skip settings page</source>
       <translation>Preskoči stranicu postavki</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1013"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1011"/>
       <source>Skip this settings page and run the geometry check automatically.
 Default: false</source>
       <translation>Preskočite ovu stranicu postavki i automatski pokrenite provjeru geometrije.
 Zadano: netočno</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1022"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1020"/>
       <source>Run BOP check</source>
       <translation>Pokreni BOP provjeru</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1023"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1021"/>
       <source>Extra boolean operations check that can sometimes find errors that
 the standard BRep geometry check misses. These errors do not always 
 mean the checked object is unusable.  Default: false</source>
@@ -5173,154 +5143,154 @@ standardna BRep provjera geometrije promaši. Ove greške ne znače uvijek
 da je provjereni objekt neupotrebljiv. Zadano: netočno</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1033"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1031"/>
       <source>Single-threaded</source>
       <translation>Jednoredno</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1034"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1032"/>
       <source>Run the geometry check in a single thread.  This is slower,
 but more stable.  Default: false</source>
       <translation>Pokrenite provjeru geometrije u jednom slijedu. Ovo je sporije,
 ali stabilnije. Zadano: netočno</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1043"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1041"/>
       <source>Log errors</source>
       <translation>Dnevnik grešaka</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1044"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1042"/>
       <source>Log errors to report view.  Default: true</source>
       <translation>Zabilježite pogreške za pregled izvješća. Zadano: točno</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1051"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1049"/>
       <source>Expand shape content</source>
       <translation>Proširi sadržaj oblika</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1052"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1050"/>
       <source>Expand shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation>Proširite sadržaj oblika. Promjene će stupiti na snagu sljedeći put kada koristite
 alat za provjeru geometrije. Zadano: netočno</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1061"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1059"/>
       <source>Advanced shape content</source>
       <translation>Napredni sadržaj oblika</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1062"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1060"/>
       <source>Show advanced shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation>Prikazuje napredni sadržaj oblika. Promjene će stupiti na snagu sljedeći put kada koristite
 alat za provjeru geometrije. Zadano: netočno</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1070"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1068"/>
       <source>
 Individual BOP Checks:</source>
       <translation>Pojedinačne BOP provjere:</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1073"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1071"/>
       <source>  Bad type</source>
       <translation>Pogrešna vrsta</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1074"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1072"/>
       <source>Check for bad argument types.  Default: true</source>
       <translation>Provjerava pogrešni argument vrste. Zadano:istina</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1081"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1079"/>
       <source>  Self-intersect</source>
       <translation>  Samo-preklapanje</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1082"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1080"/>
       <source>Check for self-intersections.  Default: true</source>
       <translation>Provjerava za samo-preklapanje. Zadano:istina</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1089"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1087"/>
       <source>  Too small edge</source>
       <translation>Premali rub</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1090"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1088"/>
       <source>Check for edges that are too small.  Default: true</source>
       <translation>Provjerite ima li rubova koji su premali. Zadano: istina</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1097"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1095"/>
       <source>  Nonrecoverable face</source>
       <translation>Nepopravljivo lice</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1098"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1096"/>
       <source>Check for nonrecoverable faces.  Default: true</source>
       <translation>Provjerava za nepopravljivo lice. Zadano:istina</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1105"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1103"/>
       <source>  Continuity</source>
       <translation>  Kontinuitet</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1106"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1104"/>
       <source>Check for continuity.  Default: true</source>
       <translation>Provjerava za  kontinuitet. Zadano:istina</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1113"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1111"/>
       <source>  Incompatibility of face</source>
       <translation>Nekompatibilnost lica</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1114"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1112"/>
       <source>Check for incompatible faces.  Default: true</source>
       <translation>Provjerava za nekompatibilnost lica. Zadano:istina</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1121"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1119"/>
       <source>  Incompatibility of vertex</source>
       <translation>Nekompatibilnost tjemene točke</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1122"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1120"/>
       <source>Check for incompatible vertices.  Default: true</source>
       <translation>Provjerava za nekompatibilnost tjemene točke. Zadano:istina</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1129"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1127"/>
       <source>  Incompatibility of edge</source>
       <translation>Nekompatibilnost ruba</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1130"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1128"/>
       <source>Check for incompatible edges.  Default: true</source>
       <translation>Provjerava za nekompatibilnost rubova. Zadano:istina</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1137"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1135"/>
       <source>  Invalid curve on surface</source>
       <translation>Nevažeća krivulja na površini</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1138"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1136"/>
       <source>Check for invalid curves on surfaces.  Default: true</source>
       <translation>Provjerava za nevažeće krivulje na površini. Zadano:istina</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1201"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1199"/>
       <source>Run check</source>
       <translation>Pokreni provjeru</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1207"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1205"/>
       <source>Results</source>
       <translation>Rezultati</translation>
     </message>
@@ -5328,18 +5298,18 @@ Individual BOP Checks:</source>
   <context>
     <name>PartGui::TaskCheckGeometryResults</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="377"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="375"/>
       <source>Check Geometry Results</source>
       <translation>Provjeri geometrijske rezultate</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="396"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="394"/>
       <source>Check is running...</source>
       <translation>Provjera je u tijeku...</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="420"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="424"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="418"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="422"/>
       <source>Check geometry</source>
       <translation>Provjerite geometriju</translation>
     </message>
@@ -5357,7 +5327,7 @@ Individual BOP Checks:</source>
     <message>
       <location filename="../../DlgExportStep.cpp" line="213"/>
       <source>Don't show this dialog again</source>
-      <translation type="unfinished">Don't show this dialog again</translation>
+      <translation>Ne prikazuj više ovaj dijalog</translation>
     </message>
   </context>
   <context>
@@ -5551,7 +5521,7 @@ povlačenjem pravokutnika odabira u 3D prikazu</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="101"/>
       <source>Box selection...</source>
-      <translation type="unfinished">Box selection...</translation>
+      <translation>Okvir odabira...</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="121"/>
@@ -5665,12 +5635,12 @@ u 3D pogledu kao putanju za Sweep.</translation>
       <translation>Napravi posebnu ravninu lica od svake žice samostalno. Nema podršku za rupe; žice mogu biti na različitim ravninama.</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMakerCheese.cpp" line="246"/>
+      <location filename="../../../App/FaceMakerCheese.cpp" line="247"/>
       <source>Cheese facemaker</source>
       <translation>Sir, dotjerivanje izgleda</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMakerCheese.cpp" line="251"/>
+      <location filename="../../../App/FaceMakerCheese.cpp" line="252"/>
       <source>Supports making planar faces with holes, but no islands inside holes.</source>
       <translation>Podržava stvaranje ravani lica s rupama i otocima, ali nema otoka unutar rupe.</translation>
     </message>
@@ -5694,21 +5664,21 @@ u 3D pogledu kao putanju za Sweep.</translation>
       <translation>Uređivanje %1</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="211"/>
+      <location filename="../../AppPartGui.cpp" line="224"/>
       <source>Part and Part Design workbench</source>
-      <translation type="unfinished">Part and Part Design workbench</translation>
+      <translation>Radni stol Djelovi i Izrada djelova</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="212"/>
-      <location filename="../../AppPartGui.cpp" line="213"/>
-      <location filename="../../AppPartGui.cpp" line="214"/>
-      <location filename="../../AppPartGui.cpp" line="215"/>
+      <location filename="../../AppPartGui.cpp" line="225"/>
+      <location filename="../../AppPartGui.cpp" line="226"/>
+      <location filename="../../AppPartGui.cpp" line="227"/>
+      <location filename="../../AppPartGui.cpp" line="228"/>
       <source>Part/Part Design</source>
-      <translation type="unfinished">Part/Part Design</translation>
+      <translation>Djelovi/Izrada djelova</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="216"/>
-      <location filename="../../AppPartGui.cpp" line="217"/>
+      <location filename="../../AppPartGui.cpp" line="229"/>
+      <location filename="../../AppPartGui.cpp" line="230"/>
       <source>Import-Export</source>
       <translation>Uvoz / izvoz</translation>
     </message>
@@ -6068,8 +6038,8 @@ Do you want to continue?</source>
       <translation>BOPAlgo NijeIspravno</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="456"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="698"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="454"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="696"/>
       <source>Invalid</source>
       <translation>Nevažeće</translation>
     </message>

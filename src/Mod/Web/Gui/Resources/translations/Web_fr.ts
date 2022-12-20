@@ -128,13 +128,13 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppWebGui.cpp" line="85"/>
-      <location filename="../../BrowserView.cpp" line="786"/>
+      <location filename="../../AppWebGui.cpp" line="86"/>
+      <location filename="../../BrowserView.cpp" line="805"/>
       <source>Browser</source>
       <translation>Navigateur</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="598"/>
+      <location filename="../../BrowserView.cpp" line="613"/>
       <source>File does not exist!</source>
       <translation>Le fichier n'existe pas !</translation>
     </message>
@@ -142,24 +142,24 @@
   <context>
     <name>WebGui::BrowserView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="586"/>
-      <location filename="../../BrowserView.cpp" line="591"/>
-      <location filename="../../BrowserView.cpp" line="594"/>
+      <location filename="../../BrowserView.cpp" line="601"/>
+      <location filename="../../BrowserView.cpp" line="606"/>
+      <location filename="../../BrowserView.cpp" line="609"/>
       <source>Error</source>
       <translation>Erreur</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="591"/>
+      <location filename="../../BrowserView.cpp" line="606"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
       <translation>Des erreurs sont survenues lors du chargement du fichier. Certaines données pourraient avoir été modifiées, ou pas récupérées du tout. Consultez la vue rapport pour plus d’informations sur les objets concernés.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="594"/>
+      <location filename="../../BrowserView.cpp" line="609"/>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
       <translation>Il y a eu de sérieuses erreurs lors du chargement du fichier. Certaines données ont peut-être été modifiées ou pas du tout récupérées. L'enregistrement du projet entraînera très probablement une perte de données.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="754"/>
+      <location filename="../../BrowserView.cpp" line="773"/>
       <source>Loading %1...</source>
       <translation>Chargement %1...</translation>
     </message>
@@ -167,17 +167,17 @@
   <context>
     <name>WebGui::WebView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="353"/>
+      <location filename="../../BrowserView.cpp" line="364"/>
       <source>Open in External Browser</source>
       <translation>Ouvrir dans un navigateur externe</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="357"/>
+      <location filename="../../BrowserView.cpp" line="368"/>
       <source>Open in new window</source>
       <translation>Ouvrir dans une nouvelle fenêtre</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="389"/>
+      <location filename="../../BrowserView.cpp" line="404"/>
       <source>View source</source>
       <translation>Afficher la source</translation>
     </message>
@@ -185,7 +185,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="37"/>
+      <location filename="../../Workbench.cpp" line="36"/>
       <source>Navigation</source>
       <translation>Navigation</translation>
     </message>

@@ -66,12 +66,12 @@
   <context>
     <name>ImageGui::GLImageBox</name>
     <message>
-      <location filename="../../OpenGLImageBox.cpp" line="392"/>
+      <location filename="../../OpenGLImageBox.cpp" line="393"/>
       <source>Image pixel format</source>
       <translation>Formatul pixelilor pentru imagine</translation>
     </message>
     <message>
-      <location filename="../../OpenGLImageBox.cpp" line="393"/>
+      <location filename="../../OpenGLImageBox.cpp" line="394"/>
       <source>Undefined type of colour space for image viewing</source>
       <translation>Tip de spațiu de culoare nedefinit pentru vizualizarea imaginii</translation>
     </message>
@@ -117,60 +117,60 @@
   <context>
     <name>ImageGui::ImageView</name>
     <message>
-      <location filename="../../ImageView.cpp" line="107"/>
+      <location filename="../../ImageView.cpp" line="108"/>
       <source>&amp;Fit image</source>
       <translation>Potrivește imaginea întreagă în fereastră</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="109"/>
+      <location filename="../../ImageView.cpp" line="110"/>
       <source>Stretch the image to fit the view</source>
       <translation>Deformează imaginea pentru a umple fereastra</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="113"/>
+      <location filename="../../ImageView.cpp" line="114"/>
       <source>&amp;1:1 scale</source>
       <translation>Scara &amp;1:1</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="115"/>
+      <location filename="../../ImageView.cpp" line="116"/>
       <source>Display the image at a 1:1 scale</source>
       <translation>Afișează imaginea la scara 1:1</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="124"/>
+      <location filename="../../ImageView.cpp" line="125"/>
       <source>Standard</source>
       <translation>Standard</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="142"/>
+      <location filename="../../ImageView.cpp" line="143"/>
       <source>Ready...</source>
       <translation>Gata...</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="543"/>
+      <location filename="../../ImageView.cpp" line="544"/>
       <source>grey</source>
       <translation>gri</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="544"/>
-      <location filename="../../ImageView.cpp" line="547"/>
-      <location filename="../../ImageView.cpp" line="557"/>
-      <location filename="../../ImageView.cpp" line="562"/>
-      <location filename="../../ImageView.cpp" line="572"/>
-      <location filename="../../ImageView.cpp" line="577"/>
-      <location filename="../../ImageView.cpp" line="588"/>
-      <location filename="../../ImageView.cpp" line="593"/>
-      <location filename="../../ImageView.cpp" line="604"/>
-      <location filename="../../ImageView.cpp" line="609"/>
+      <location filename="../../ImageView.cpp" line="545"/>
+      <location filename="../../ImageView.cpp" line="548"/>
+      <location filename="../../ImageView.cpp" line="558"/>
+      <location filename="../../ImageView.cpp" line="563"/>
+      <location filename="../../ImageView.cpp" line="573"/>
+      <location filename="../../ImageView.cpp" line="578"/>
+      <location filename="../../ImageView.cpp" line="589"/>
+      <location filename="../../ImageView.cpp" line="594"/>
+      <location filename="../../ImageView.cpp" line="605"/>
+      <location filename="../../ImageView.cpp" line="610"/>
       <source>zoom</source>
       <translation>zoom</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="547"/>
-      <location filename="../../ImageView.cpp" line="557"/>
-      <location filename="../../ImageView.cpp" line="572"/>
-      <location filename="../../ImageView.cpp" line="588"/>
-      <location filename="../../ImageView.cpp" line="604"/>
+      <location filename="../../ImageView.cpp" line="548"/>
+      <location filename="../../ImageView.cpp" line="558"/>
+      <location filename="../../ImageView.cpp" line="573"/>
+      <location filename="../../ImageView.cpp" line="589"/>
+      <location filename="../../ImageView.cpp" line="605"/>
       <source>outside image</source>
       <translation>în afara imaginii</translation>
     </message>
@@ -209,7 +209,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="32"/>
+      <location filename="../../Workbench.cpp" line="33"/>
       <source>Image</source>
       <translation>Imagine</translation>
     </message>

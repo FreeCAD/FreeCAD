@@ -6,12 +6,12 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="14"/>
       <source>Arch material</source>
-      <translation type="unfinished">Arch material</translation>
+      <translation>Kaaren materiaali</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="26"/>
       <source>Choose a preset card</source>
-      <translation type="unfinished">Choose a preset card</translation>
+      <translation>Valitse esiasetus</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="30"/>
@@ -26,7 +26,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="48"/>
       <source>Copy existing...</source>
-      <translation type="unfinished">Copy existing...</translation>
+      <translation>Kopioi olemassaoleva...</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="58"/>
@@ -61,7 +61,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="139"/>
       <source>Section Color</source>
-      <translation type="unfinished">Section Color</translation>
+      <translation>Osion väri</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="163"/>
@@ -76,7 +76,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="184"/>
       <source>Standard code</source>
-      <translation type="unfinished">Standard code</translation>
+      <translation>Standardikoodi</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="191"/>
@@ -96,7 +96,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="236"/>
       <source>A URL describing this material</source>
-      <translation type="unfinished">A URL describing this material</translation>
+      <translation>URL-osoite, joka kuvaa tätä materiaalia</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="249"/>
@@ -203,7 +203,7 @@
     <message>
       <location filename="../ui/ArchSchedule.ui" line="29"/>
       <source>Unnamed schedule</source>
-      <translation type="unfinished">Unnamed schedule</translation>
+      <translation>Nimetön aikataulu</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="60"/>
@@ -213,7 +213,7 @@
     <message>
       <location filename="../ui/ArchSchedule.ui" line="63"/>
       <source>A description for this operation</source>
-      <translation type="unfinished">A description for this operation</translation>
+      <translation>Tämän toiminnon kuvaus</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="68"/>
@@ -285,7 +285,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="124"/>
       <source>Detailed results</source>
-      <translation type="unfinished">Detailed results</translation>
+      <translation>Yksityiskohtaiset tulokset</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="135"/>
@@ -295,22 +295,22 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="138"/>
       <source>Add row</source>
-      <translation type="unfinished">Add row</translation>
+      <translation>Lisää rivi</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="150"/>
       <source>Deletes the selected line</source>
-      <translation type="unfinished">Deletes the selected line</translation>
+      <translation>Poistaa valitun rivin</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="153"/>
       <source>Del row</source>
-      <translation type="unfinished">Del row</translation>
+      <translation>Poista rivi</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="165"/>
       <source>Clears the whole list</source>
-      <translation type="unfinished">Clears the whole list</translation>
+      <translation>Tyhjentää koko luettelon</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="168"/>
@@ -454,7 +454,7 @@ Leave blank to use all objects from the document</translation>
       <location filename="../ui/GitTaskPanel.ui" line="112"/>
       <location filename="../ui/GitTaskPanel.ui" line="147"/>
       <source>Commit</source>
-      <translation type="unfinished">Commit</translation>
+      <translation>Lähetä muutokset</translation>
     </message>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="120"/>
@@ -484,7 +484,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="21"/>
       <source>Copy existing...</source>
-      <translation type="unfinished">Copy existing...</translation>
+      <translation>Kopioi olemassaoleva...</translation>
     </message>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="29"/>
@@ -504,7 +504,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="59"/>
       <source>Total thickness</source>
-      <translation type="unfinished">Total thickness</translation>
+      <translation>Kokonaispaksuus</translation>
     </message>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="68"/>
@@ -544,7 +544,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/ArchNest.ui" line="36"/>
       <source>Pick selected</source>
-      <translation type="unfinished">Pick selected</translation>
+      <translation>Valitse valittu</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="46"/>
@@ -595,11 +595,6 @@ Leave blank to use all objects from the document</translation>
       <location filename="../ui/ArchNest.ui" line="132"/>
       <source>A comma-separated list of angles to try and rotate the shapes</source>
       <translation>Pilkulla erotettu luettelo kulmista yritettäväksi kiertää muotoja</translation>
-    </message>
-    <message>
-      <location filename="../ui/ArchNest.ui" line="135"/>
-      <source>0,90,180,270</source>
-      <translation>0,90,180,270</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="145"/>
@@ -825,11 +820,6 @@ Leave blank to use all objects from the document</translation>
 to projections of hidden objects.</source>
       <translation type="unfinished">This is the SVG stroke-dasharray property to apply
 to projections of hidden objects.</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-arch.ui" line="589"/>
-      <source>30, 10</source>
-      <translation>30, 10</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="625"/>
@@ -1476,7 +1466,7 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</tran
     <message>
       <location filename="../ui/preferences-dae.ui" line="267"/>
       <source>Allows optimization</source>
-      <translation type="unfinished">Allows optimization</translation>
+      <translation>Sallii optimoinnin</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="270"/>

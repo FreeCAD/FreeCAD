@@ -76,7 +76,7 @@
     <message>
       <location filename="TranslationTexts.py" line="56"/>
       <source>This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</source>
-      <translation>Цей розділ містить матеріали для розробників: Як самостійно встановити FreeCAD, як структурувати вихідний код FreeCAD + як орієнтуватися в ньому, як розробляти нові робочі середовища та / або вбудовувати FreeCAD у свій власний додаток.</translation>
+      <translation>Цей розділ містить матеріали для розробників: Як самостійно встановити FreeCAD, як структурувати початковий код FreeCAD + як орієнтуватися в ньому, як розробляти нові робочі середовища та / або вбудовувати FreeCAD у свій власний додаток.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="57"/>
@@ -146,7 +146,7 @@
     <message>
       <location filename="TranslationTexts.py" line="70"/>
       <source>Below are the latest changes added to the &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD source code&lt;/a&gt;. These changes might not reflect yet in the FreeCAD version that you are currently running. Check the &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt;available options&lt;/a&gt; if you wish to obtain a development version.</source>
-      <translation>Нижче наведено останні зміни, додані до &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt; FreeCAD-коду&lt;/a&gt;. Ці зміни можуть поки що не відображатися у версії FreeCAD, яку ви зараз використовуєте. Перевірте &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt;доступні варіанти&lt;/a&gt;, якщо хочете отримати версію для розробки.</translation>
+      <translation>Нижче наведено останні зміни, додані до &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt; початковго FreeCAD-коду&lt;/a&gt;. Ці зміни можуть поки що не відображатися у версії FreeCAD, яку ви зараз використовуєте. Перевірте &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt;доступні варіанти&lt;/a&gt;, якщо хочете отримати версію для розробки.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="71"/>

@@ -175,5 +175,6 @@
         <file>translations/Path_es-AR.qm</file>
         <file>translations/Path_bg.qm</file>
         <file>translations/Path_ka.qm</file>
+        <file>translations/Path_sr-CS.qm</file>
     </qresource>
 </RCC>

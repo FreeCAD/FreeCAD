@@ -127,5 +127,6 @@
         <file>translations/Tux_es-AR.qm</file>
         <file>translations/Tux_bg.qm</file>
         <file>translations/Tux_ka.qm</file>
+        <file>translations/Tux_sr-CS.qm</file>
     </qresource>
 </RCC>

@@ -263,12 +263,12 @@
     <message>
       <location filename="../../Command.cpp" line="898"/>
       <source>Constraint transform</source>
-      <translation>Contrainte de transformation</translation>
+      <translation>Contrainte de déformation</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="899"/>
       <source>Create FEM constraint for transforming a face</source>
-      <translation>Créer une contrainte FEM de transformation d'une face</translation>
+      <translation>Créer une contrainte FEM de déformation d'une face</translation>
     </message>
   </context>
   <context>
@@ -651,7 +651,7 @@
     <message>
       <location filename="../../Command.cpp" line="914"/>
       <source>Make FEM constraint transform on face</source>
-      <translation>Crée une contrainte FEM de transformation sur une face</translation>
+      <translation>Crée une contrainte FEM de déformation sur une face</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1003"/>
@@ -738,12 +738,6 @@
       <location filename="../../TaskPanelInitialTemperature.ui" line="43"/>
       <source>Temperature:</source>
       <translation>Température :</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPanelConstraintTemperature.ui" line="52"/>
-      <location filename="../../TaskPanelInitialTemperature.ui" line="56"/>
-      <source>25</source>
-      <translation>25</translation>
     </message>
     <message>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="68"/>
@@ -886,119 +880,119 @@
       <translation>Nombre de CPU à utiliser</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="329"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="323"/>
       <source>Matrix solver</source>
       <translation>Solveur de matrice</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="349"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="343"/>
       <source>Default</source>
       <translation>Défaut</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="354"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="348"/>
       <source>Spooles</source>
-      <translation>SPOOLES</translation>
+      <translation>Solveur d'équations de Spooles</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="359"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="353"/>
       <source>Iterative Scaling</source>
       <translation>Mise à l'échelle itérative</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="364"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="358"/>
       <source>Iterative Cholesky</source>
-      <translation>Cholesky itératif</translation>
+      <translation>Solveur itératif de Cholesky</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="372"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="366"/>
       <source>Non-linear geometry</source>
       <translation>Géométrie non linéaire</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="379"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="373"/>
       <source>Use non-linear geometry</source>
       <translation>Utiliser la géométrie non-linéaire</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="395"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="389"/>
       <source>Time incrementation control parameter</source>
       <translation>Paramètre de contrôle de l'incrémentation du temps</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="402"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="396"/>
       <source>Use non ccx defaults</source>
       <translation>Utiliser les valeurs par défaut non-CalculiX</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="418"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="412"/>
       <source>Time Initial Step</source>
       <translation>Intervalle de temps initial</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="466"/>
-      <location filename="../../DlgSettingsFemCcx.ui" line="505"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="460"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="499"/>
       <source>s</source>
       <translation>s</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="473"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="467"/>
       <source>Time End</source>
       <translation>Heure de fin</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="512"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="506"/>
       <source>Beam, shell element 3D output format </source>
       <translation>Format de sortie d'éléments 3D de type poutre et coque </translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="519"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="513"/>
       <source>3D Output, unchecked for 2D</source>
       <translation>Sortie 3D, décoché pour 2D</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="540"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="534"/>
       <source>Thermo mechanical defaults</source>
       <translation>Valeurs thermodynamiques par défaut</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="548"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="542"/>
       <source>Analysis type (transient or steady state)</source>
       <translation>Type d'analyse (état transitoire ou stable)</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="555"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="549"/>
       <source>Use steady state</source>
       <translation>Utiliser un état stable</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="571"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="565"/>
       <source>Maximum number of iterations</source>
       <translation>Nombre maximum d'itérations</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="605"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="599"/>
       <source>Frequency defaults</source>
       <translation>Fréquence par défaut</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="613"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="607"/>
       <source>Eigenmode number</source>
       <translation>Numéro de mode propre</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="658"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="652"/>
       <source>High frequency limit</source>
       <translation>Limite fréquence haute</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="696"/>
-      <location filename="../../DlgSettingsFemCcx.ui" line="744"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="690"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="738"/>
       <source>Hz</source>
       <translation>Hz</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="703"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="697"/>
       <source>Low frequency limit</source>
       <translation>Limite fréquence basse</translation>
     </message>
@@ -1075,7 +1069,7 @@ Veuillez spécifiez un autre fichier.</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="208"/>
       <source>CPU cores to be used:</source>
-      <translation>Nombre de cœurs du CPU à utiliser :</translation>
+      <translation>Cœurs de CPU à utiliser :</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="218"/>
@@ -1099,24 +1093,24 @@ Specify another file please.</source>
 Veuillez spécifiez un autre fichier.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="120"/>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="130"/>
-      <source>Not suitable for mulithreading</source>
-      <translation>Ne convient pas pour le mulithreading</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="121"/>
-      <source>You use more than one CPU core.
-Therefore an executable with the suffix '_mpi.exe' is required.</source>
-      <translation>Vous utilisez plus d'un cœur du CPU.
-Par conséquent, un exécutable avec le suffixe '_mpi.exe' est requis.</translation>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="131"/>
+      <source>FEM Elmer: Not suitable for multithreading</source>
+      <translation>Elmer FEM : ne convient pas pour le multithreading</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="131"/>
-      <source>You use more than one CPU core.
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="122"/>
+      <source>Wrong Elmer setting: You use more than one CPU core.
+Therefore an executable with the suffix '_mpi.exe' is required.</source>
+      <translation>Paramètre Elmer erroné : Vous utilisez plus d’un processeur.
+Un exécutable avec le suffixe « _mpi.exe » est donc requis.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="132"/>
+      <source>Wrong Elmer setting: You use more than one CPU core.
 Therefore an executable with the suffix '_mpi' is required.</source>
-      <translation>Vous utilisez plus d'un cœur du CPU.
-Par conséquent, un exécutable avec le suffixe '_mpi' est requis.</translation>
+      <translation>Paramètre Elmer erroné : vous utilisez plus d’un processeur.
+Un exécutable avec le suffixe « _mpi » est donc requis.</translation>
     </message>
   </context>
   <context>
@@ -1449,7 +1443,7 @@ spécifié seront listées comme étant disponibles.</translation>
       <source>Material cards appear sorted by their resources (locations).
 If unchecked, they will be sorted by their name.</source>
       <translation>Les cartes de matériaux apparaissent triées par leurs ressources (emplacements).
-Si non cochées, elles seront triées par leur nom.</translation>
+Si elles ne sont pas cochées, elles seront triées par leur nom.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="177"/>
@@ -1536,7 +1530,7 @@ Veuillez spécifiez un autre fichier.</translation>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="111"/>
       <source>Leave blank to use default Z88 z88r binary file</source>
-      <translation>Laisser vide pour utiliser le fichier binaire de Z88 z88r par défaut</translation>
+      <translation>Laisser vide pour utiliser le fichier binaire Z88, z88r par défaut</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="138"/>
@@ -1571,7 +1565,7 @@ Veuillez spécifiez un autre fichier.</translation>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="196"/>
       <source>Max places in stiffness matrix</source>
-      <translation>Taille maximale dans la matrice de rigidité</translation>
+      <translation>Nombre maximum de points dans une matrice de rigidité</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="209"/>
@@ -1617,8 +1611,8 @@ indiquant que "MAXKOI" doit être augmenté.</translation>
 Specify another file please.</source>
       <translation>L'exécutable z88r 
 '%1'
- spécifié n'existe pas !
-Veuillez spécifiez un autre fichier.</translation>
+ spécifié n'existe pas!
+Veuillez spécifier un autre fichier.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="116"/>
@@ -1634,7 +1628,7 @@ Veuillez spécifiez un autre fichier.</translation>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="123"/>
       <source>You must specify the path to the z88r!</source>
-      <translation>Vous devez spécifier le chemin vers le z88r !</translation>
+      <translation>Vous devez spécifier le chemin vers Z88!</translation>
     </message>
   </context>
   <context>
@@ -2372,7 +2366,7 @@ Veuillez spécifiez un autre fichier.</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="141"/>
       <source>The transformable faces have changed. Please add only the transformable faces and remove non-transformable faces!</source>
-      <translation>Les faces transformables ont changé. Veuillez ajouter uniquement les faces transformables et supprimer les faces non transformables !</translation>
+      <translation>Les faces déformables ont changé. Veuillez ajouter uniquement les faces déformables et supprimer les faces non déformables!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="231"/>
@@ -2398,7 +2392,7 @@ Veuillez spécifiez un autre fichier.</translation>
       <location filename="../../TaskFemConstraintTransform.cpp" line="236"/>
       <location filename="../../TaskFemConstraintTransform.cpp" line="242"/>
       <source>Only one face for rectangular transform constraint!</source>
-      <translation>Une seule face pour une contrainte de transformation rectangulaire !</translation>
+      <translation>Une seule face pour une contrainte de déformation rectangulaire !</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="255"/>
@@ -2424,7 +2418,7 @@ Veuillez spécifiez un autre fichier.</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="303"/>
       <source>Only transformable faces can be selected! Apply displacement constraint to surface first then apply constraint to surface</source>
-      <translation>Seules les faces transformables peuvent être sélectionnées ! Appliquez d'abord la contrainte de déplacement à la surface puis appliquez la contrainte à la surface</translation>
+      <translation>Seules les faces déformables peuvent être sélectionnées! Appliquez d'abord la contrainte de déplacement à la surface puis appliquez la contrainte à la surface</translation>
     </message>
   </context>
   <context>
@@ -2885,31 +2879,6 @@ Veuillez spécifiez un autre fichier.</translation>
       <location filename="../ui/ElementFluid1D.ui" line="613"/>
       <source>Pump Characteristic</source>
       <translation>Caractéristique de la pompe</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElementFluid1D.ui" line="621"/>
-      <source>1</source>
-      <translation>1</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElementFluid1D.ui" line="626"/>
-      <source>2</source>
-      <translation>2</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElementFluid1D.ui" line="631"/>
-      <source>3</source>
-      <translation>3</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElementFluid1D.ui" line="636"/>
-      <source>4</source>
-      <translation>4</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElementFluid1D.ui" line="641"/>
-      <source>5</source>
-      <translation>5</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="646"/>
@@ -3452,7 +3421,7 @@ Veuillez spécifiez un autre fichier.</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="487"/>
       <source>Constraint transform</source>
-      <translation>Contrainte de transformation</translation>
+      <translation>Contrainte de déformation</translation>
     </message>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="271"/>
@@ -3753,11 +3722,6 @@ Pour les variables possibles, voir la zone de description ci-dessous.</translati
       <location filename="../ui/SolverCalculix.ui" line="20"/>
       <source>Working directory</source>
       <translation>Répertoire de travail</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverCalculix.ui" line="45"/>
-      <source>...</source>
-      <translation>...</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculix.ui" line="55"/>
@@ -4560,11 +4524,6 @@ vecteur normal de la face est utilisée comme sens</translation>
       <translation>Rigidité suivant la normale</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintSpring.ui" line="88"/>
-      <source>0 </source>
-      <translation>0 </translation>
-    </message>
-    <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="104"/>
       <source>Tangential Stiffness</source>
       <translation>Rigidité tangentielle</translation>
@@ -4619,12 +4578,12 @@ vecteur normal de la face est utilisée comme sens</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="22"/>
       <source>Rectangular transform</source>
-      <translation>Transformation rectangulaire</translation>
+      <translation>Déformation rectangulaire</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="32"/>
       <source>Cylindrical transform</source>
-      <translation>Transformation cylindrique</translation>
+      <translation>Déformation cylindrique</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="44"/>
@@ -4941,16 +4900,6 @@ vecteur normal de la face est utilisée comme sens</translation>
       <location filename="../../TaskPostScalarClip.ui" line="121"/>
       <source>Max scalar</source>
       <translation>Scalaire maximum</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPostScalarClip.ui" line="144"/>
-      <source>-100000</source>
-      <translation>-100000</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPostScalarClip.ui" line="188"/>
-      <source>0</source>
-      <translation>0</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="209"/>

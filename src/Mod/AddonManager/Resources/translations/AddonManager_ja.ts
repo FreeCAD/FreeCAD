@@ -6,17 +6,17 @@
     <message>
       <location filename="../../AddonManagerOptions_AddCustomRepository.ui" line="14"/>
       <source>Custom repository</source>
-      <translation type="unfinished">Custom repository</translation>
+      <translation>カスタムリポジトリ</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions_AddCustomRepository.ui" line="20"/>
       <source>Repository URL</source>
-      <translation type="unfinished">Repository URL</translation>
+      <translation>リポジトリのURL</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions_AddCustomRepository.ui" line="30"/>
       <source>Branch</source>
-      <translation type="unfinished">Branch</translation>
+      <translation>ブランチ</translation>
     </message>
   </context>
   <context>
@@ -49,7 +49,7 @@
     <message>
       <location filename="../../compact_view.ui" line="102"/>
       <source>UpdateAvailable</source>
-      <translation type="unfinished">UpdateAvailable</translation>
+      <translation>利用可能なものを更新</translation>
     </message>
   </context>
   <context>
@@ -73,12 +73,6 @@
       <location filename="../../developer_mode_dependencies.ui" line="49"/>
       <source>Optional?</source>
       <translation type="unfinished">Optional?</translation>
-    </message>
-    <message>
-      <location filename="../../developer_mode_dependencies.ui" line="72"/>
-      <location filename="../../developer_mode_dependencies.ui" line="79"/>
-      <source>...</source>
-      <translation>...</translation>
     </message>
   </context>
   <context>
@@ -118,23 +112,23 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="14"/>
       <source>Addon Developer Tools</source>
-      <translation type="unfinished">Addon Developer Tools</translation>
+      <translation>アドオン開発者ツール</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="25"/>
       <source>Path to Addon</source>
-      <translation type="unfinished">Path to Addon</translation>
+      <translation>アドオンのパス</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="45"/>
       <location filename="../../developer_mode.ui" line="195"/>
       <source>Browse...</source>
-      <translation type="unfinished">Browse...</translation>
+      <translation>参照...</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="54"/>
       <source>Metadata</source>
-      <translation type="unfinished">Metadata</translation>
+      <translation>メタデータ</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="65"/>
@@ -155,7 +149,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="90"/>
       <source>Discussion URL</source>
-      <translation type="unfinished">Discussion URL</translation>
+      <translation>議論用のURL</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="97"/>
@@ -165,7 +159,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="104"/>
       <source>Bugtracker URL</source>
-      <translation type="unfinished">Bugtracker URL</translation>
+      <translation>バグトラッカーのURL</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="113"/>
@@ -183,7 +177,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../developer_mode.ui" line="180"/>
       <location filename="../../developer_mode.ui" line="218"/>
       <source>(Optional)</source>
-      <translation type="unfinished">(Optional)</translation>
+      <translation>(オプション)</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="139"/>
@@ -194,7 +188,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="153"/>
       <source>README URL</source>
-      <translation type="unfinished">README URL</translation>
+      <translation>READMEのURL</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="166"/>
@@ -204,22 +198,22 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="173"/>
       <source>Repository URL</source>
-      <translation type="unfinished">Repository URL</translation>
+      <translation>リポジトリのURL</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="204"/>
       <source>Website URL</source>
-      <translation type="unfinished">Website URL</translation>
+      <translation>WebサイトのURL</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="211"/>
       <source>Documentation URL</source>
-      <translation type="unfinished">Documentation URL</translation>
+      <translation>ドキュメントのURL</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="228"/>
       <source>Addon Name</source>
-      <translation type="unfinished">Addon Name</translation>
+      <translation>アドオン名</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="235"/>
@@ -229,7 +223,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="242"/>
       <source>(Recommended)</source>
-      <translation type="unfinished">(Recommended)</translation>
+      <translation>(推奨)</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="249"/>
@@ -244,18 +238,12 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="265"/>
       <source>Detect...</source>
-      <translation type="unfinished">Detect...</translation>
+      <translation>検出...</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="277"/>
       <source>Addon Contents</source>
       <translation type="unfinished">Addon Contents</translation>
-    </message>
-    <message>
-      <location filename="../../developer_mode.ui" line="301"/>
-      <location filename="../../developer_mode.ui" line="308"/>
-      <source>...</source>
-      <translation>...</translation>
     </message>
   </context>
   <context>
@@ -298,7 +286,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../AddonManager.ui" line="130"/>
       <source>View and update Python package dependencies</source>
-      <translation type="unfinished">View and update Python package dependencies</translation>
+      <translation>Pythonパッケージの依存関係の表示と更新</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="133"/>
@@ -308,7 +296,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../AddonManager.ui" line="140"/>
       <source>Developer tools...</source>
-      <translation type="unfinished">Developer tools...</translation>
+      <translation>開発者ツール...</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="160"/>
@@ -343,7 +331,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../first_run.ui" line="60"/>
       <source>Download Macro metadata (approximately 10MB)</source>
-      <translation type="unfinished">Download Macro metadata (approximately 10MB)</translation>
+      <translation>マクロメタデータ（約10MB）をダウンロード</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="70"/>
@@ -416,7 +404,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="72"/>
       <source>Optional</source>
-      <translation type="unfinished">Optional</translation>
+      <translation>オプション</translation>
     </message>
   </context>
   <context>
@@ -459,7 +447,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../expanded_view.ui" line="186"/>
       <source>UpdateAvailable</source>
-      <translation type="unfinished">UpdateAvailable</translation>
+      <translation>利用可能なものを更新</translation>
     </message>
   </context>
   <context>
@@ -473,7 +461,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_licenses_table.ui" line="38"/>
       <source>Licenses</source>
-      <translation type="unfinished">Licenses</translation>
+      <translation>ライセンス</translation>
     </message>
     <message>
       <location filename="../../developer_mode_licenses_table.ui" line="69"/>
@@ -483,15 +471,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_licenses_table.ui" line="74"/>
       <source>License file</source>
-      <translation type="unfinished">License file</translation>
-    </message>
-    <message>
-      <location filename="../../developer_mode_licenses_table.ui" line="97"/>
-      <location filename="../../developer_mode_licenses_table.ui" line="107"/>
-      <location filename="../../developer_mode_people_table.ui" line="90"/>
-      <location filename="../../developer_mode_people_table.ui" line="100"/>
-      <source>...</source>
-      <translation>...</translation>
+      <translation>ライセンスファイル</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people_table.ui" line="26"/>
@@ -511,7 +491,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_people_table.ui" line="67"/>
       <source>Email</source>
-      <translation type="unfinished">Email</translation>
+      <translation>Eメール</translation>
     </message>
   </context>
   <context>
@@ -529,18 +509,12 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="43"/>
       <source>FreeCAD Version</source>
-      <translation type="unfinished">FreeCAD Version</translation>
+      <translation>FreeCAD バージョン</translation>
     </message>
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="48"/>
       <source>Best-available branch, tag, or commit</source>
       <translation type="unfinished">Best-available branch, tag, or commit</translation>
-    </message>
-    <message>
-      <location filename="../../developer_mode_advanced_freecad_versions.ui" line="71"/>
-      <location filename="../../developer_mode_advanced_freecad_versions.ui" line="78"/>
-      <source>...</source>
-      <translation>...</translation>
     </message>
   </context>
   <context>
@@ -548,7 +522,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="14"/>
       <source>Supported FreeCAD Versions</source>
-      <translation type="unfinished">Supported FreeCAD Versions</translation>
+      <translation>サポートされている FreeCAD バージョン</translation>
     </message>
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="20"/>
@@ -559,7 +533,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../developer_mode_freecad_versions.ui" line="27"/>
       <location filename="../../developer_mode_freecad_versions.ui" line="41"/>
       <source>Optional</source>
-      <translation type="unfinished">Optional</translation>
+      <translation>オプション</translation>
     </message>
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="34"/>
@@ -589,24 +563,18 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManagerOptions.ui" line="25"/>
       <source>Automatically check for updates at start (requires git)</source>
-      <translation type="unfinished">Automatically check for updates at start (requires git)</translation>
+      <translation>開始時に更新を自動確認 (Gitが必要)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="41"/>
       <source>Download Macro metadata (approximately 10MB)</source>
-      <translation type="unfinished">Download Macro metadata (approximately 10MB)</translation>
+      <translation>マクロメタデータ（約10MB）をダウンロード</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="44"/>
-      <source>DownloadMacros</source>
-      <translation type="unfinished">DownloadMacros</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManagerOptions.ui" line="47"/>
       <location filename="../../AddonManagerOptions.ui" line="373"/>
       <location filename="../../AddonManagerOptions.ui" line="386"/>
       <source>Addons</source>
-      <translation type="unfinished">Addons</translation>
+      <translation>アドオン</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="56"/>
@@ -649,12 +617,6 @@ installed addons will be checked for available updates
       <translation type="unfinished">Custom repositories</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="188"/>
-      <location filename="../../AddonManagerOptions.ui" line="195"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
-    <message>
       <location filename="../../AddonManagerOptions.ui" line="354"/>
       <source>Show option to change branches (requires git)</source>
       <translation type="unfinished">Show option to change branches (requires git)</translation>
@@ -677,12 +639,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManagerOptions.ui" line="383"/>
       <source>Addon developer mode</source>
-      <translation type="unfinished">Addon developer mode</translation>
+      <translation>アドオン開発者モード</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="389"/>
       <source>developerMode</source>
-      <translation type="unfinished">developerMode</translation>
+      <translation>開発者モード</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="204"/>
@@ -707,27 +669,27 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManagerOptions.ui" line="276"/>
       <source>Python executable (optional):</source>
-      <translation type="unfinished">Python executable (optional):</translation>
+      <translation>Python実行ファイル (オプション)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="295"/>
       <source>The path to the Python executable for package installation with pip. Autodetected if needed and not specified.</source>
-      <translation type="unfinished">The path to the Python executable for package installation with pip. Autodetected if needed and not specified.</translation>
+      <translation>PIPによるパッケージインストール用のPython実行ファイルのパス。指定されていない場合には必要時に自動検出されます。</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="308"/>
       <source>git executable (optional):</source>
-      <translation type="unfinished">git executable (optional):</translation>
+      <translation>Git実行ファイル (オプション)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="327"/>
       <source>The path to the git executable. Autodetected if needed and not specified.</source>
-      <translation type="unfinished">The path to the git executable. Autodetected if needed and not specified.</translation>
+      <translation>Git実行ファイルのパス。指定されていない場合には必要時に自動検出されます。</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="348"/>
       <source>Advanced Options</source>
-      <translation type="unfinished">Advanced Options</translation>
+      <translation>詳細設定</translation>
     </message>
   </context>
   <context>
@@ -738,14 +700,9 @@ installed addons will be checked for available updates
       <translation>フォーム</translation>
     </message>
     <message>
-      <location filename="../../package_details.ui" line="29"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
-    <message>
       <location filename="../../package_details.ui" line="49"/>
       <source>Uninstalls a selected macro or workbench</source>
-      <translation type="unfinished">Uninstalls a selected macro or workbench</translation>
+      <translation>選択したマクロ、ワークベンチをアンインストール</translation>
     </message>
     <message>
       <location filename="../../package_details.ui" line="52"/>
@@ -770,7 +727,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_details.ui" line="80"/>
       <source>Change branch</source>
-      <translation type="unfinished">Change branch</translation>
+      <translation>ブランチの変更</translation>
     </message>
   </context>
   <context>
@@ -778,27 +735,27 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="14"/>
       <source>Manage Python Dependencies</source>
-      <translation type="unfinished">Manage Python Dependencies</translation>
+      <translation>Python依存関係の管理</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="20"/>
       <source>The following Python packages have been installed locally by the Addon Manager to satisfy Addon dependencies. Installation location:</source>
-      <translation type="unfinished">The following Python packages have been installed locally by the Addon Manager to satisfy Addon dependencies. Installation location:</translation>
+      <translation>以下の Python パッケージはアドオンの依存関係を満たすようにアドオン・マネージャーによってローカルにインストールされています。インストール場所:</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="59"/>
       <source>Package name</source>
-      <translation type="unfinished">Package name</translation>
+      <translation>パッケージ名</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="64"/>
       <source>Installed version</source>
-      <translation type="unfinished">Installed version</translation>
+      <translation>インストール済のバージョン</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="69"/>
       <source>Available version</source>
-      <translation type="unfinished">Available version</translation>
+      <translation>利用可能なバージョン</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="74"/>
@@ -813,7 +770,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="99"/>
       <source>Update all available</source>
-      <translation type="unfinished">Update all available</translation>
+      <translation>利用可能な全てを更新</translation>
     </message>
   </context>
   <context>
@@ -827,6 +784,19 @@ installed addons will be checked for available updates
       <location filename="../../developer_mode_select_from_list.ui" line="20"/>
       <source>TextLabel</source>
       <translation>テキストラベル</translation>
+    </message>
+  </context>
+  <context>
+    <name>UpdateAllDialog</name>
+    <message>
+      <location filename="../../update_all.ui" line="14"/>
+      <source>Updating Addons</source>
+      <translation type="unfinished">Updating Addons</translation>
+    </message>
+    <message>
+      <location filename="../../update_all.ui" line="23"/>
+      <source>Updating out-of-date addons...</source>
+      <translation type="unfinished">Updating out-of-date addons...</translation>
     </message>
   </context>
   <context>
@@ -869,19 +839,19 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="86"/>
       <source>Main macro file</source>
-      <translation type="unfinished">Main macro file</translation>
+      <translation>メインマクロファイル</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="93"/>
       <source>The file with the macro&apos;s metadata in it</source>
-      <translation type="unfinished">The file with the macro&apos;s metadata in it</translation>
+      <translation>マクロのメタデータを含むファイル</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="100"/>
       <location filename="../../developer_mode_add_content.ui" line="161"/>
       <location filename="../../developer_mode_add_content.ui" line="193"/>
       <source>Browse...</source>
-      <translation type="unfinished">Browse...</translation>
+      <translation>参照...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="111"/>
@@ -891,17 +861,17 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="125"/>
       <source>Workbench class name</source>
-      <translation type="unfinished">Workbench class name</translation>
+      <translation>ワークベンチのクラス名</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="132"/>
       <source>Class that defines &quot;Icon&quot; data member</source>
-      <translation type="unfinished">Class that defines &quot;Icon&quot; data member</translation>
+      <translation>&quot;Icon&quot; データメンバを定義するクラス</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="145"/>
       <source>Subdirectory</source>
-      <translation type="unfinished">Subdirectory</translation>
+      <translation>サブディレクトリ</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="154"/>
@@ -926,7 +896,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="206"/>
       <source>Tags...</source>
-      <translation type="unfinished">Tags...</translation>
+      <translation>タグ...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="213"/>
@@ -994,12 +964,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../add_toolbar_button_dialog.ui" line="32"/>
       <source>Yes</source>
-      <translation type="unfinished">Yes</translation>
+      <translation>はい</translation>
     </message>
     <message>
       <location filename="../../add_toolbar_button_dialog.ui" line="39"/>
       <source>No</source>
-      <translation type="unfinished">No</translation>
+      <translation>いいえ</translation>
     </message>
     <message>
       <location filename="../../add_toolbar_button_dialog.ui" line="46"/>
@@ -1025,17 +995,17 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_copyright_info.ui" line="14"/>
       <source>Copyright Information</source>
-      <translation type="unfinished">Copyright Information</translation>
+      <translation>著作権情報</translation>
     </message>
     <message>
       <location filename="../../developer_mode_copyright_info.ui" line="22"/>
       <source>Copyright holder:</source>
-      <translation type="unfinished">Copyright holder:</translation>
+      <translation>著作権者:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_copyright_info.ui" line="32"/>
       <source>Copyright year:</source>
-      <translation type="unfinished">Copyright year:</translation>
+      <translation>著作権年:</translation>
     </message>
   </context>
   <context>
@@ -1058,7 +1028,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_people.ui" line="39"/>
       <source>Email:</source>
-      <translation type="unfinished">Email:</translation>
+      <translation>Eメール:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people.ui" line="46"/>
@@ -1114,37 +1084,37 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_license.ui" line="14"/>
       <source>Select a license</source>
-      <translation type="unfinished">Select a license</translation>
+      <translation>ライセンスを選択</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="35"/>
       <source>About...</source>
-      <translation type="unfinished">About...</translation>
+      <translation>このプログラムについて...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="46"/>
       <source>License name:</source>
-      <translation type="unfinished">License name:</translation>
+      <translation>ライセンス名:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="60"/>
       <source>Path to license file:</source>
-      <translation type="unfinished">Path to license file:</translation>
+      <translation>ライセンスファイルへのパス:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="67"/>
       <source>(if required by license)</source>
-      <translation type="unfinished">(if required by license)</translation>
+      <translation>(ライセンスで要求された場合)</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="74"/>
       <source>Browse...</source>
-      <translation type="unfinished">Browse...</translation>
+      <translation>参照...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="81"/>
       <source>Create...</source>
-      <translation type="unfinished">Create...</translation>
+      <translation>作成...</translation>
     </message>
   </context>
   <context>
@@ -1152,17 +1122,17 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../select_toolbar_dialog.ui" line="14"/>
       <source>Select Toolbar</source>
-      <translation type="unfinished">Select Toolbar</translation>
+      <translation>ツールバーを選択</translation>
     </message>
     <message>
       <location filename="../../select_toolbar_dialog.ui" line="26"/>
       <source>Select a toolbar to add this macro to:</source>
-      <translation type="unfinished">Select a toolbar to add this macro to:</translation>
+      <translation>このマクロを追加するツールバーを選択:</translation>
     </message>
     <message>
       <location filename="../../select_toolbar_dialog.ui" line="36"/>
       <source>Ask every time</source>
-      <translation type="unfinished">Ask every time</translation>
+      <translation>毎回確認する</translation>
     </message>
   </context>
   <context>
@@ -1180,12 +1150,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../toolbar_button.ui" line="32"/>
       <source>Yes</source>
-      <translation type="unfinished">Yes</translation>
+      <translation>はい</translation>
     </message>
     <message>
       <location filename="../../toolbar_button.ui" line="39"/>
       <source>No</source>
-      <translation type="unfinished">No</translation>
+      <translation>いいえ</translation>
     </message>
     <message>
       <location filename="../../toolbar_button.ui" line="46"/>

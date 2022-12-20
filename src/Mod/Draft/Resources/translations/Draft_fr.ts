@@ -36,7 +36,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="110"/>
       <source>Deletes the selected style</source>
-      <translation>Supprime le filtre sélectionné</translation>
+      <translation>Supprime le style sélectionné</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="113"/>
@@ -104,13 +104,13 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="248"/>
       <source>Scale multiplier</source>
-      <translation>Multiplicateur d’échelle</translation>
+      <translation>Facteur d'échelle</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="268"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="278"/>
       <source>If it is checked it will show the unit next to the dimension value</source>
-      <translation>Coché, elle affichera l'unité à côté de la valeur de la dimension</translation>
+      <translation>Coché, elle affichera l'unité après la valeur de la cote</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="271"/>
@@ -121,12 +121,12 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="291"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="301"/>
       <source>Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</source>
-      <translation>Spécifiez une unité de longueur valide par exemple en mm, m, in, ft, pour forcer l'affichage de la valeur de la dimension dans cette unité</translation>
+      <translation>Spécifiez une unité de longueur valide par exemple en mm, m, in, ft, pour forcer l'affichage de la valeur de la cote dans cette unité</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="294"/>
       <source>Unit override</source>
-      <translation>Substitution d’unité</translation>
+      <translation>Remplacement d’unité</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="308"/>
@@ -238,7 +238,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="487"/>
       <source>Dimension overshoot</source>
-      <translation>Dépassement de la ligne de cotes</translation>
+      <translation>Dépassement des lignes de cote</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="504"/>
@@ -260,7 +260,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="527"/>
       <source>Extension overshoot</source>
-      <translation>Dépassement de la ligne d’extension</translation>
+      <translation>Dépassement des lignes d’extension</translation>
     </message>
   </context>
   <context>
@@ -629,7 +629,7 @@ Une répétition de lien est plus efficace lors de la création de plusieurs cop
     <message>
       <location filename="../ui/TaskShapeString.ui" line="26"/>
       <source>ShapeString</source>
-      <translation>Forme de Texte</translation>
+      <translation>Formes à partir de texte</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="46"/>
@@ -735,7 +735,7 @@ Or choose one of the options below</source>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="61"/>
       <source>Sets the working plane facing the current view</source>
-      <translation>Positionne le plan de travail face à la vue actuelle</translation>
+      <translation>Positionne le plan de travail face à la vue en cours</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="64"/>
@@ -746,7 +746,7 @@ Or choose one of the options below</source>
       <location filename="../ui/TaskSelectPlane.ui" line="71"/>
       <source>The working plane will align to the current
 view each time a command is started</source>
-      <translation>Le plan de travail s’alignera sur la vue actuelle
+      <translation>Le plan de travail s’alignera sur la vue en cours
 chaque fois qu’une commande est lancée</translation>
     </message>
     <message>
@@ -775,7 +775,7 @@ des boutons ci-dessus</translation>
 centered on the current view when pressing one
 of the buttons above</source>
       <translation>Si ceci est sélectionné, le plan de travail sera
-centré sur la vue actuelle en appuyant sur un
+centré sur la vue en cours en appuyant sur un
 des boutons ci-dessus</translation>
     </message>
     <message>
@@ -981,7 +981,7 @@ en utilisant les touches [ et ] lors du dessin</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="162"/>
       <source>Shape color</source>
-      <translation>Couleur de la forme</translation>
+      <translation>Couleur des formes</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="169"/>
@@ -997,11 +997,6 @@ en utilisant les touches [ et ] lors du dessin</translation>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="183"/>
       <source>The transparency of faces</source>
       <translation>La transparence des faces</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="186"/>
-      <source> %</source>
-      <translation>%</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="199"/>
@@ -1031,7 +1026,7 @@ en utilisant les touches [ et ] lors du dessin</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="242"/>
       <source>Text spacing</source>
-      <translation>Espacement de texte</translation>
+      <translation>Espacement du texte</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="249"/>
@@ -1116,7 +1111,7 @@ en utilisant les touches [ et ] lors du dessin</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="363"/>
       <source>Unit override</source>
-      <translation>Substitution d’unité</translation>
+      <translation>Remplacement d’unité</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="370"/>
@@ -1167,11 +1162,6 @@ en utilisant les touches [ et ] lors du dessin</translation>
       <location filename="../ui/dialogHatch.ui" line="64"/>
       <source>Rotation:</source>
       <translation>Rotation :</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialogHatch.ui" line="71"/>
-      <source>°</source>
-      <translation>°</translation>
     </message>
   </context>
   <context>
@@ -1360,7 +1350,7 @@ Notez que ce n'est pas entièrement supporté et que de nombreux objets ne seron
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="26"/>
       <source>Visual Settings</source>
-      <translation>Paramètres Visuels</translation>
+      <translation>Paramètres visuels</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="34"/>
@@ -1470,12 +1460,12 @@ Notez que ce n'est pas entièrement supporté et que de nombreux objets ne seron
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="367"/>
       <source>Drawing view line definitions</source>
-      <translation>Définitions de ligne de vue dessin</translation>
+      <translation>Définitions des lignes de la vue du dessin</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="375"/>
       <source>Dashed line definition</source>
-      <translation>Définition de la ligne en pointillés</translation>
+      <translation>Définition des lignes avec tirets</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="395"/>
@@ -1485,29 +1475,14 @@ Notez que ce n'est pas entièrement supporté et que de nombreux objets ne seron
       <translation>Une définition de style de ligne SVG</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="398"/>
-      <source>0.09,0.05</source>
-      <translation>0.09,0.05</translation>
-    </message>
-    <message>
       <location filename="../ui/preferences-draftvisual.ui" line="418"/>
       <source>Dashdot line definition</source>
-      <translation>Définition de ligne de Point-tiret</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="441"/>
-      <source>0.09,0.05,0.02,0.05</source>
-      <translation>0.09,0.05,0.02,0.05</translation>
+      <translation>Définition des lignes en point-tirets</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="461"/>
       <source>Dotted line definition</source>
-      <translation>Définition de la ligne pointillée</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="484"/>
-      <source>0.02,0.02</source>
-      <translation>0.02,0.02</translation>
+      <translation>Définition des lignes en pointillés</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="14"/>
@@ -1517,7 +1492,7 @@ Notez que ce n'est pas entièrement supporté et que de nombreux objets ne seron
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="26"/>
       <source>Text settings</source>
-      <translation>Paramètres de texte</translation>
+      <translation>Paramètres pour le texte</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="34"/>
@@ -1565,7 +1540,7 @@ comme "Arial:Bold"</translation>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="116"/>
       <source>Dimension settings</source>
-      <translation>Paramètres de cotation</translation>
+      <translation>Paramètres pour les cotations</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="124"/>
@@ -1590,12 +1565,12 @@ comme "Arial:Bold"</translation>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="201"/>
       <source>Extension lines size</source>
-      <translation>Taille de lignes d’extension</translation>
+      <translation>Taille des lignes d'extension</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="208"/>
       <source>The default size of dimensions extension lines</source>
-      <translation>La taille par défaut des extensions des lignes de cote</translation>
+      <translation>La taille par défaut des lignes d'extension des cotes</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="237"/>
@@ -1610,7 +1585,7 @@ comme "Arial:Bold"</translation>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="273"/>
       <source>Dimension line overshoot</source>
-      <translation>Dépassement de la ligne de cote</translation>
+      <translation>Dépassement des lignes de cote</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="280"/>
@@ -1650,7 +1625,7 @@ comme "Arial:Bold"</translation>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="355"/>
       <source>Arrows size</source>
-      <translation>Taille de flèches</translation>
+      <translation>Taille des flèches</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="362"/>
@@ -1680,7 +1655,7 @@ comme "Arial:Bold"</translation>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="422"/>
       <source>Text spacing</source>
-      <translation>Espacement de texte</translation>
+      <translation>Espacement du texte</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="429"/>
@@ -1690,7 +1665,7 @@ comme "Arial:Bold"</translation>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="455"/>
       <source>Show the unit suffix in dimensions</source>
-      <translation>Afficher le suffixe de l'unité aux dimensions</translation>
+      <translation>Afficher le suffixe de l'unité dans les cotes</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="475"/>
@@ -1705,7 +1680,7 @@ comme "Arial:Bold"</translation>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="513"/>
       <source>ShapeString settings</source>
-      <translation>Paramètres de Forme de Texte</translation>
+      <translation>Paramètres pour Formes à partir de texte</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="521"/>
@@ -1725,7 +1700,7 @@ comme "Arial:Bold"</translation>
     <message>
       <location filename="../ui/preferences-svg.ui" line="40"/>
       <source>Import style</source>
-      <translation>Import de style</translation>
+      <translation>Style d'importation</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="47"/>
@@ -1811,12 +1786,12 @@ Cette valeur est la longueur maximale du segment. </translation>
     <message>
       <location filename="../ui/preferences-oca.ui" line="46"/>
       <source>Check this if you want the areas (3D faces) to be imported too.</source>
-      <translation>Cochez cette case si vous souhaitez que les aires (faces 3D) soient importées également.</translation>
+      <translation>Cochez cette case si vous souhaitez que les surfaces (faces 3D) soient importées également.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-oca.ui" line="49"/>
       <source>Import OCA areas</source>
-      <translation>Importer les aires OCA</translation>
+      <translation>Importer les surfaces OCA</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="14"/>
@@ -1831,36 +1806,36 @@ Cette valeur est la longueur maximale du segment. </translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="38"/>
       <source>Show this dialog when importing and exporting</source>
-      <translation>Afficher cette boîte de dialogue lors de l'importation et l'exportation</translation>
+      <translation>Afficher la boîte de dialogue lors de l'importation et l'exportation</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="51"/>
       <source>Python importer is used, otherwise the newer C++ is used.
 Note: C++ importer is faster, but is not as featureful yet</source>
-      <translation>L'importateur Python est utilisé, sinon le nouvel importateur C++ est utilisé.
-Note: L'importateur C++ est plus rapide, mais n'est pas encore aussi fonctionnel</translation>
+      <translation>L'outil d'importation de Python est utilisé, sinon le nouvel outil d'importation de C++ est utilisé.
+Remarque : l'outil d'importation de C++ est plus rapide, mais n'est pas encore aussi fonctionnel</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="55"/>
       <source>Use legacy python importer</source>
-      <translation>Utiliser l'importateur Python historique</translation>
+      <translation>Utiliser l'outil d'importation de Python historique</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="71"/>
       <source>Python exporter is used, otherwise the newer C++ is used.
 Note: C++ exporter is faster, but is not as featureful yet</source>
-      <translation>L’exportateur Python est utilisé, sinon le nouvel exportateur C++ est utilisé.
-Remarque : l’exportateur C++ est plus rapide, mais n'est pas encore aussi fonctionnel</translation>
+      <translation>L’outil d'exportation de Python Python est utilisé, sinon le nouvel outil d'exportation de C++ est utilisé.
+Remarque : l’outil d'exportation de C++ est plus rapide, mais n'est pas encore aussi fonctionnel</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="75"/>
       <source>Use legacy python exporter</source>
-      <translation>Utiliser l'exportateur Python historique</translation>
+      <translation>Utiliser l'outil d'exportation de Python historique</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="88"/>
       <source>Automatic update (legacy importer only)</source>
-      <translation>Mise à jour automatique (ancien importateur uniquement)</translation>
+      <translation>Mise à jour automatique (ancien outil d'importation uniquement)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="96"/>
@@ -1868,8 +1843,8 @@ Remarque : l’exportateur C++ est plus rapide, mais n'est pas encore aussi fon
 You can also do this manually by installing the "dxf_library" workbench
 from the Addon Manager.</source>
       <translation>Permettre à FreeCAD de télécharger le convertisseur Python pour l'importation et l'exportation DXF.
-Vous pouvez également le faire manuellement en installant l'établi "dxf_library"
-à partir du gestionnaire d'extension.</translation>
+Vous pouvez également le faire manuellement en installant l'atelier "dxf_library"
+à partir du gestionnaire des extensions.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="101"/>
@@ -1886,7 +1861,7 @@ Vous pouvez également le faire manuellement en installant l'établi "dxf_librar
     <message>
       <location filename="../ui/preferences-dxf.ui" line="140"/>
       <source>Note: Not all the options below are used by the new importer yet</source>
-      <translation>Remarque : Toutes les options ci-dessous ne sont pas encore utilisées par le nouvel importateur</translation>
+      <translation>Remarque : toutes les options ci-dessous ne sont pas encore utilisées par le nouvel outil d'importation</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="149"/>
@@ -1998,7 +1973,8 @@ Otherwise default colors will be applied. </source>
       <location filename="../ui/preferences-dxf.ui" line="359"/>
       <source>FreeCAD will try to join coincident objects into wires.
 Note that this can take a while!</source>
-      <translation>FreeCAD essaiera de joindre les objets coïncidants en fils. Attention, cela peut prendre un certain temps!</translation>
+      <translation>FreeCAD essaiera de rassembler les objets coïncidents en polylignes.
+Notez que cela peut prendre un certain temps !</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="363"/>
@@ -2014,7 +1990,7 @@ turning the display faster, but making them less easily editable </source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="384"/>
       <source>Group layers into blocks</source>
-      <translation>Grouper les couches dans des blocs</translation>
+      <translation>Grouper les calques dans des blocs</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="401"/>
@@ -2113,7 +2089,7 @@ Cela pourrait échouer pour les modèles DXF R12.</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="611"/>
       <source>Exported objects will be projected to reflect the current view direction</source>
-      <translation>Les objets exportés seront projetés suivant la direction de la vue actuelle</translation>
+      <translation>Les objets exportés seront projetés suivant la direction de la vue en cours</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="614"/>
@@ -2244,12 +2220,12 @@ Cela pourrait échouer pour les modèles DXF R12.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="338"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, the outline of a human figure is displayed at the bottom left corner of the grid. This option is only effective if the BIM workbench is installed and if &amp;quot;Show grid border&amp;quot; option is enabled.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Si coché, le contour d'une silhouette humaine est affiché en bas à gauche de la grille. Cette option n'est effective que si l'établi BIM est installé et si l'option &amp;quot;Afficher la bordure de la grille&amp;quot; est activée.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Si coché, le contour d'une figure humaine est affiché en bas à gauche de la grille. Cette option n'est efficace que si l'établi BIM est installé et si l'option &amp;quot;Afficher la bordure de la grille&amp;quot; est activée.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="341"/>
       <source>Show human figure</source>
-      <translation>Ajouter un personnage humain</translation>
+      <translation>Montrer la figure humaine</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="357"/>
@@ -2324,7 +2300,7 @@ Cela pourrait échouer pour les modèles DXF R12.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="621"/>
       <source>Maximum number of contemporary edited objects</source>
-      <translation>Nombre maximum d'objets édités contemporains</translation>
+      <translation>Nombre maximum d'objets édités en même temps</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="644"/>
@@ -2334,7 +2310,7 @@ Cela pourrait échouer pour les modèles DXF R12.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="691"/>
       <source>Draft edit pick radius</source>
-      <translation>Draft modifier le rayon de sélection</translation>
+      <translation>Modifier le rayon de sélection</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="714"/>
@@ -2359,7 +2335,7 @@ Cela pourrait échouer pour les modèles DXF R12.</translation>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="41"/>
       <source>This is the method FreeCAD will use to convert DWG files to DXF. If "Automatic" is chosen, FreeCAD will try to find one of the following converters in the same order as they are shown here. If FreeCAD is unable to find any, you might need to choose a specific converter and indicate its path here under. Choose the "dwg2dxf" utility if using LibreDWG, "ODAFileConverter" if using the ODA file converter, or the "dwg2dwg" utility if using the pro version of QCAD.</source>
-      <translation>C'est la méthode que FreeCAD utilisera pour convertir des fichiers DWG en DXF. Si "Automatique" est choisi, FreeCAD essaiera de trouver un des convertisseurs suivants dans le même ordre que celui qui est affiché ici. Si FreeCAD ne parvient pas à en trouver, vous devrez peut-être choisir un convertisseur spécifique et indiquer son chemin de fichier ci-dessous. Choisissez l'utilitaire "dwg2dxf" si vous utilisez LibreDWG, autrement "ODAFileConverter" si vous utilisez le convertisseur de fichier ODA, ou encore l'utilitaire "dwg2dwg" si vous utilisez la version pro de QCAD.</translation>
+      <translation>C'est la méthode que FreeCAD utilisera pour convertir des fichiers DWG en DXF. Si "Automatique" est choisi, FreeCAD essaiera de trouver un des convertisseurs suivants dans le même ordre que celui qui est affiché ici. Si FreeCAD ne parvient pas à en trouver, vous devrez peut-être choisir un convertisseur spécifique et indiquer son chemin ci-dessous. Choisissez l'utilitaire "dwg2dxf" si vous utilisez LibreDWG, "ODAFileConverter" si vous utilisez le convertisseur de fichier ODA, ou l'utilitaire "dwg2dwg" si vous utilisez la version pro de QCAD.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="51"/>
@@ -2369,7 +2345,7 @@ Cela pourrait échouer pour les modèles DXF R12.</translation>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="56"/>
       <source>LibreDWG</source>
-      <translation>LibreDWG</translation>
+      <translation>Libre DWG</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="61"/>
@@ -2394,7 +2370,7 @@ Cela pourrait échouer pour les modèles DXF R12.</translation>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="100"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; DXF options apply to DWG files as well.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt; Remarque :&lt;/span&gt; Les options DXF s'appliquent également aux fichiers DWG.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt; Remarque :&lt;/span&gt; les options DXF s'appliquent également aux fichiers DWG.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="14"/>
@@ -2532,11 +2508,6 @@ Cela pourrait échouer pour les modèles DXF R12.</translation>
       <translation>Fréquence d'aimantation</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftinterface.ui" line="608"/>
-      <source>`</source>
-      <translation>`</translation>
-    </message>
-    <message>
       <location filename="../ui/preferences-draftinterface.ui" line="630"/>
       <source>Global</source>
       <translation>Global</translation>
@@ -2550,11 +2521,6 @@ Cela pourrait échouer pour les modèles DXF R12.</translation>
       <location filename="../ui/preferences-draftinterface.ui" line="674"/>
       <source>Undo</source>
       <translation>Annuler</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftinterface.ui" line="696"/>
-      <source>/</source>
-      <translation>/</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="718"/>
@@ -2572,19 +2538,9 @@ Cela pourrait échouer pour les modèles DXF R12.</translation>
       <translation>Augmenter le rayon</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftinterface.ui" line="784"/>
-      <source>[</source>
-      <translation>[</translation>
-    </message>
-    <message>
       <location filename="../ui/preferences-draftinterface.ui" line="806"/>
       <source>Decrease Radius</source>
       <translation>Diminuer le rayon</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftinterface.ui" line="828"/>
-      <source>]</source>
-      <translation>]</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="850"/>

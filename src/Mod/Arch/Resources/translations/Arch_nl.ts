@@ -597,11 +597,6 @@ Laat deze leeg om alle objecten uit het document te gebruiken</translation>
       <translation>Een door komma gescheiden lijst van hoeken om de vormen te proberen te draaien</translation>
     </message>
     <message>
-      <location filename="../ui/ArchNest.ui" line="135"/>
-      <source>0,90,180,270</source>
-      <translation>0,90,180,270</translation>
-    </message>
-    <message>
       <location filename="../ui/ArchNest.ui" line="145"/>
       <source>Nesting operation</source>
       <translation>Nest operatie</translation>
@@ -825,11 +820,6 @@ Laat deze leeg om alle objecten uit het document te gebruiken</translation>
 to projections of hidden objects.</source>
       <translation>Dit is de eigenschap van de SVG stroke-dasharray om toe te passen
 op projecties van verborgen voorwerpen.</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-arch.ui" line="589"/>
-      <source>30, 10</source>
-      <translation>30, 10</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="625"/>

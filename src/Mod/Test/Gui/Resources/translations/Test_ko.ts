@@ -102,12 +102,12 @@
   <context>
     <name>TestGui::UnitTestDialog</name>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="155"/>
+      <location filename="../../UnitTestImp.cpp" line="151"/>
       <source>Help</source>
       <translation>도움말</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="155"/>
+      <location filename="../../UnitTestImp.cpp" line="151"/>
       <source>Enter the name of a callable object which, when called, will return a TestCase.
 Click 'start', and the test thus produced will be run.
 
@@ -118,12 +118,12 @@ Double click on an error in the tree view to see more information about it, incl
 트리 뷰의 오류를 더블 클릭하면 스택 추적을 포함하여 더 자세한 정보를 확인할 수 있습니다</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="167"/>
+      <location filename="../../UnitTestImp.cpp" line="163"/>
       <source>About FreeCAD UnitTest</source>
       <translation>FreeCAD 유닛테스트에 대하여</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="167"/>
+      <location filename="../../UnitTestImp.cpp" line="163"/>
       <source>Copyright (c) Werner Mayer
 
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>

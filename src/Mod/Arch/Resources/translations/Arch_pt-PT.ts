@@ -597,11 +597,6 @@ Leave blank to use all objects from the document</translation>
       <translation>Uma lista separada por vírgulas, de ângulos nos quais as peças podem ser rodadas</translation>
     </message>
     <message>
-      <location filename="../ui/ArchNest.ui" line="135"/>
-      <source>0,90,180,270</source>
-      <translation>0,90,180,270</translation>
-    </message>
-    <message>
       <location filename="../ui/ArchNest.ui" line="145"/>
       <source>Nesting operation</source>
       <translation>Operação de otimização (nesting)</translation>
@@ -825,11 +820,6 @@ Leave blank to use all objects from the document</translation>
 to projections of hidden objects.</source>
       <translation type="unfinished">This is the SVG stroke-dasharray property to apply
 to projections of hidden objects.</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-arch.ui" line="589"/>
-      <source>30, 10</source>
-      <translation>30, 10</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="625"/>

@@ -1801,7 +1801,7 @@ into its X, Y, and Z components.</source>
     <message>
       <location filename="../../Command.cpp" line="1374"/>
       <source>Make face from wires</source>
-      <translation>Tellerden yüz yap</translation>
+      <translation>Tellerden yüzey yap</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1375"/>
@@ -2742,8 +2742,8 @@ it inside the Placement property.</source>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="107"/>
-      <source>Use legacy exporter</source>
-      <translation>Eski python dışa aktarımcısını kullanın</translation>
+      <source>Use legacy export function</source>
+      <translation type="unfinished">Use legacy export function</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="120"/>
@@ -3048,12 +3048,12 @@ If both lengths are zero, magnitude of direction is used.</translation>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="263"/>
       <source>Chamfer Parameter</source>
-      <translation type="unfinished">Chamfer Parameter</translation>
+      <translation>Pah Değişkeni</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="264"/>
       <source>Chamfer type</source>
-      <translation type="unfinished">Chamfer type</translation>
+      <translation>Pah türü</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="265"/>
@@ -3088,12 +3088,12 @@ If both lengths are zero, magnitude of direction is used.</translation>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="271"/>
       <source>Size2</source>
-      <translation type="unfinished">Size2</translation>
+      <translation>Boyut2</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="275"/>
       <source>Fillet type</source>
-      <translation type="unfinished">Fillet type</translation>
+      <translation>Yuvarlama biçimi</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="276"/>
@@ -3481,11 +3481,6 @@ during file reading (slower but higher details).</source>
       <source>File Name</source>
       <translation>Dosya adı</translation>
     </message>
-    <message>
-      <location filename="../../DlgPartImportIges.ui" line="54"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
   </context>
   <context>
     <name>PartGui::DlgPartImportIgesImp</name>
@@ -3511,11 +3506,6 @@ during file reading (slower but higher details).</source>
       <location filename="../../DlgPartImportStep.ui" line="20"/>
       <source>File Name</source>
       <translation>Dosya adı</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPartImportStep.ui" line="54"/>
-      <source>...</source>
-      <translation>...</translation>
     </message>
   </context>
   <context>
@@ -4132,8 +4122,8 @@ during file reading (slower but higher details).</source>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="49"/>
-      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Mozaikli ağın, yüzeye olan en fazla sapmasını tanımlar. Değer ne kadar küçük olursa, ayrıntı / çözünürlük artışıyla sonuçlanan oluşturma hızı o kadar yavaş olur.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Mozaik&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Mozaik ağın yüzeye maksimum sapmasını tanımlar. Değer ne kadar küçük olursa, işleme hızı o kadar yavaş olur ve bu da artan ayrıntı/çözünürlükle sonuçlanır.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="52"/>
@@ -4141,19 +4131,9 @@ during file reading (slower but higher details).</source>
       <translation>Model sınırlama kutusuna bağlı olarak maksimum sapma</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPart.ui" line="59"/>
-      <source> %</source>
-      <translation> %</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="87"/>
       <source>Maximum angular deflection</source>
       <translation>Maksimum açısal sapma</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettings3DViewPart.ui" line="94"/>
-      <source> °</source>
-      <translation> °</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPartImp.cpp" line="68"/>
@@ -4214,22 +4194,22 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="26"/>
       <source>Measurement settings</source>
-      <translation type="unfinished">Measurement settings</translation>
+      <translation>Ölçüm ayarları</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="51"/>
       <source>3D color</source>
-      <translation type="unfinished">3D color</translation>
+      <translation>3D renk</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="88"/>
       <source>Delta color</source>
-      <translation type="unfinished">Delta color</translation>
+      <translation>Delta rengi</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="112"/>
       <source>Angular color</source>
-      <translation type="unfinished">Angular color</translation>
+      <translation>Açı rengi</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="145"/>
@@ -4249,7 +4229,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="189"/>
       <source>defaultFont</source>
-      <translation type="unfinished">defaultFont</translation>
+      <translation>varsayılanYazıtipi</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="202"/>
@@ -4259,7 +4239,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="213"/>
       <source>Refresh existing measurements</source>
-      <translation type="unfinished">Refresh existing measurements</translation>
+      <translation>Mevcut ölçümleri yenile</translation>
     </message>
   </context>
   <context>
@@ -4297,17 +4277,12 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="83"/>
       <source>Shape transparency</source>
-      <translation type="unfinished">Shape transparency</translation>
+      <translation>Şekil şeffaflığı</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="90"/>
       <source>The default transparency for new shapes</source>
-      <translation type="unfinished">The default transparency for new shapes</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsObjectColor.ui" line="93"/>
-      <source>%</source>
-      <translation>%</translation>
+      <translation>Yeni şekiller için varsayılan şeffaflık</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="118"/>
@@ -4597,17 +4572,17 @@ yoksa eskiz düzlemine dik vektör kullanılacak</translation>
   <context>
     <name>PartGui::ResultModel</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="342"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="340"/>
       <source>Name</source>
       <translation>Isim</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="344"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="342"/>
       <source>Type</source>
       <translation>Türü</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="346"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="344"/>
       <source>Error</source>
       <translation>Hata</translation>
     </message>
@@ -4617,12 +4592,12 @@ yoksa eskiz düzlemine dik vektör kullanılacak</translation>
     <message>
       <location filename="../../SectionCutting.ui" line="20"/>
       <source>Permanent Section Cutting</source>
-      <translation type="unfinished">Permanent Section Cutting</translation>
+      <translation>Kalıcı bölüm kesimi</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="32"/>
       <source>Cutting X</source>
-      <translation type="unfinished">Cutting X</translation>
+      <translation>X ekseninde kes</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="44"/>
@@ -4641,22 +4616,22 @@ yoksa eskiz düzlemine dik vektör kullanılacak</translation>
     <message>
       <location filename="../../SectionCutting.ui" line="106"/>
       <source>Cutting Y</source>
-      <translation type="unfinished">Cutting Y</translation>
+      <translation>Y ekseninde kes</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="174"/>
       <source>Cutting Z</source>
-      <translation type="unfinished">Cutting Z</translation>
+      <translation>Z ekseninde kes</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="242"/>
       <source>Cut face</source>
-      <translation type="unfinished">Cut face</translation>
+      <translation>Kesim Yüzeyi</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="254"/>
       <source>Color of cut face</source>
-      <translation type="unfinished">Color of cut face</translation>
+      <translation>Kesim yüzeyi rengi</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="257"/>
@@ -4668,9 +4643,9 @@ yoksa eskiz düzlemine dik vektör kullanılacak</translation>
       <source>If checked, the color and transparency
 will be taken from the cut objects.
 Works only if all objects have the same values.</source>
-      <translation type="unfinished">If checked, the color and transparency
-will be taken from the cut objects.
-Works only if all objects have the same values.</translation>
+      <translation>İşaretlenirse, kesilen nesnelerden
+renk ve saydamlık alınacaktır. Yalnızca 
+tüm nesneler aynı değerlere sahipse çalışır.</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="307"/>
@@ -4680,7 +4655,7 @@ Works only if all objects have the same values.</translation>
     <message>
       <location filename="../../SectionCutting.ui" line="329"/>
       <source>Transparency of cut face</source>
-      <translation type="unfinished">Transparency of cut face</translation>
+      <translation>Kesim yüzeyi şeffaflığı</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="332"/>
@@ -4688,34 +4663,29 @@ Works only if all objects have the same values.</translation>
       <translation>Şeffaflık</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.ui" line="342"/>
-      <source>0 %</source>
-      <translation type="unfinished">0 %</translation>
-    </message>
-    <message>
       <location filename="../../SectionCutting.ui" line="367"/>
       <source>Refreshes the list of visible objects</source>
-      <translation type="unfinished">Refreshes the list of visible objects</translation>
+      <translation>Görünür nesnelerin listesini yeniler</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="370"/>
       <source>Refresh view</source>
-      <translation type="unfinished">Refresh view</translation>
+      <translation>Görünümü yenile</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="400"/>
       <source>When the dialog is closed,
 only created cuts will be visible</source>
-      <translation type="unfinished">When the dialog is closed,
-only created cuts will be visible</translation>
+      <translation>İletişim kutusu kapatıldığında, 
+yalnızca oluşturulan kesimler görünür</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="404"/>
       <source>Keep only cuts visible when closing</source>
-      <translation type="unfinished">Keep only cuts visible when closing</translation>
+      <translation>Kapatırken yalnızca kesimleri görünür tutun</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.cpp" line="407"/>
+      <location filename="../../SectionCutting.cpp" line="429"/>
       <source>Sliders are disabled for assemblies</source>
       <translation type="unfinished">Sliders are disabled for assemblies</translation>
     </message>
@@ -4725,7 +4695,7 @@ only created cuts will be visible</translation>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="215"/>
       <source>Unsupported</source>
-      <translation type="unfinished">Unsupported</translation>
+      <translation>Desteklenmiyor</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="215"/>
@@ -4806,12 +4776,12 @@ only created cuts will be visible</translation>
     <message>
       <location filename="../../ShapeFromMesh.ui" line="14"/>
       <source>Shape from mesh</source>
-      <translation type="unfinished">Shape from mesh</translation>
+      <translation>Mesh'ten şekil</translation>
     </message>
     <message>
       <location filename="../../ShapeFromMesh.ui" line="20"/>
       <source>Sew shape</source>
-      <translation type="unfinished">Sew shape</translation>
+      <translation>Dikiş şekli</translation>
     </message>
     <message>
       <location filename="../../ShapeFromMesh.ui" line="32"/>
@@ -4849,7 +4819,7 @@ only created cuts will be visible</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="334"/>
       <source>Select one or more edges from a single object.</source>
-      <translation type="unfinished">Select one or more edges from a single object.</translation>
+      <translation>Tek bir nesneden bir veya daha fazla kenar seçin.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="341"/>
@@ -5093,187 +5063,187 @@ Not: Yerleşim, eklenen nesnenin yerel koordinat sisteminde ifade edilir.</trans
   <context>
     <name>PartGui::TaskCheckGeometryDialog</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1000"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="998"/>
       <source>Shape Content</source>
       <translation>Şekil İçeriği</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1008"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="1202"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1006"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1200"/>
       <source>Settings</source>
       <translation>Ayarlar</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1012"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1010"/>
       <source>Skip settings page</source>
       <translation>Ayarlar sayfasını atla</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1013"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1011"/>
       <source>Skip this settings page and run the geometry check automatically.
 Default: false</source>
       <translation>Bu ayarlar sayfasını atlayın ve geometri kontrolünü otomatik olarak çalıştırın. Varsayılan: yanlış</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1022"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1020"/>
       <source>Run BOP check</source>
       <translation>BOP kontrolünü çalıştır</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1023"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1021"/>
       <source>Extra boolean operations check that can sometimes find errors that
 the standard BRep geometry check misses. These errors do not always 
 mean the checked object is unusable.  Default: false</source>
       <translation>Harici mantık operatörleri, bazen standart BRep geometri denetiminin gözden kaçırdığı hataları denetler. Bu hatalar, kontrol edilen nesnenin her zaman kullanılamaz olduğu anlamına gelmez. Varsayılan: false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1033"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1031"/>
       <source>Single-threaded</source>
       <translation>Tek vida dişli</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1034"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1032"/>
       <source>Run the geometry check in a single thread.  This is slower,
 but more stable.  Default: false</source>
       <translation>Tek vida dişinde geometri kontrolünü çalıştırın. Bu yöntem, daha yavaş ama daha kararlıdır. Varsayılan: false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1043"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1041"/>
       <source>Log errors</source>
       <translation>Veritabanı günlüğü hataları</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1044"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1042"/>
       <source>Log errors to report view.  Default: true</source>
       <translation>Rapor görünümü için hataları veritabanı günlüğüne kaydedin. Varsayılan: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1051"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1049"/>
       <source>Expand shape content</source>
       <translation>Şekil içeriğini genişlet</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1052"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1050"/>
       <source>Expand shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation>Şekil içeriğini genişletin. Değişiklikler bir sonraki kullanımınızda geçerli olacak
 geometri aracını kontrol edin. Varsayılan: false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1061"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1059"/>
       <source>Advanced shape content</source>
       <translation>Gelişmiş şekil içeriği</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1062"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1060"/>
       <source>Show advanced shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation>Gelişmiş şekil içeriğini göster. Değişiklikler, geometriyi kontrol etme aracını bir sonraki kullanışınızda geçerli olacaktır. Varsayılan: false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1070"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1068"/>
       <source>
 Individual BOP Checks:</source>
       <translation>
 Bireysel BOP Kontrolleri:</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1073"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1071"/>
       <source>  Bad type</source>
       <translation>  Kötü tip</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1074"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1072"/>
       <source>Check for bad argument types.  Default: true</source>
       <translation>Kötü argüman türlerini kontrol edin. Varsayılan: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1081"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1079"/>
       <source>  Self-intersect</source>
       <translation>  Kendiyle kesişen</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1082"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1080"/>
       <source>Check for self-intersections.  Default: true</source>
       <translation>Kendi kendine kesişme olup olmadığını kontrol edin. Varsayılan: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1089"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1087"/>
       <source>  Too small edge</source>
       <translation>  Çok küçük kenar</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1090"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1088"/>
       <source>Check for edges that are too small.  Default: true</source>
       <translation>Çok küçük kenarları kontrol edin. Varsayılan: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1097"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1095"/>
       <source>  Nonrecoverable face</source>
       <translation>  Kurtarılamaz yüz</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1098"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1096"/>
       <source>Check for nonrecoverable faces.  Default: true</source>
       <translation>Kurtarılamaz yüzleri kontrol edin. Varsayılan: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1105"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1103"/>
       <source>  Continuity</source>
       <translation>  Süreklilik</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1106"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1104"/>
       <source>Check for continuity.  Default: true</source>
       <translation>Sürekliliği kontrol edin. Varsayılan: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1113"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1111"/>
       <source>  Incompatibility of face</source>
       <translation>  Yüz uyumsuzluğu</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1114"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1112"/>
       <source>Check for incompatible faces.  Default: true</source>
       <translation>Uyumsuz yüzleri kontrol edin. Varsayılan: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1121"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1119"/>
       <source>  Incompatibility of vertex</source>
       <translation>  Köşe uyumsuzluğu</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1122"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1120"/>
       <source>Check for incompatible vertices.  Default: true</source>
       <translation>Uyumsuz köşeleri kontrol edin. Varsayılan: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1129"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1127"/>
       <source>  Incompatibility of edge</source>
       <translation>  Kenar uyumsuzluğu</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1130"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1128"/>
       <source>Check for incompatible edges.  Default: true</source>
       <translation>Uyumsuz kenarları kontrol edin. Varsayılan: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1137"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1135"/>
       <source>  Invalid curve on surface</source>
       <translation>  Yüzeyde geçersiz eğri</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1138"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1136"/>
       <source>Check for invalid curves on surfaces.  Default: true</source>
       <translation>Yüzeylerde geçersiz eğriler olup olmadığını kontrol edin. Varsayılan: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1201"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1199"/>
       <source>Run check</source>
       <translation>Kontrolü çalıştır</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1207"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1205"/>
       <source>Results</source>
       <translation>Sonuçlar</translation>
     </message>
@@ -5281,18 +5251,18 @@ Bireysel BOP Kontrolleri:</translation>
   <context>
     <name>PartGui::TaskCheckGeometryResults</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="377"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="375"/>
       <source>Check Geometry Results</source>
       <translation>Geometri Sonuçlarını Kontrol Et</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="396"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="394"/>
       <source>Check is running...</source>
       <translation>Kontrol çalışıyor...</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="420"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="424"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="418"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="422"/>
       <source>Check geometry</source>
       <translation>Geometriyi kontrol et</translation>
     </message>
@@ -5310,7 +5280,7 @@ Bireysel BOP Kontrolleri:</translation>
     <message>
       <location filename="../../DlgExportStep.cpp" line="213"/>
       <source>Don't show this dialog again</source>
-      <translation type="unfinished">Don't show this dialog again</translation>
+      <translation>Bu iletişim kutusunu tekrar gösterme</translation>
     </message>
   </context>
   <context>
@@ -5501,7 +5471,7 @@ by dragging a selection rectangle in the 3D view</source>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="101"/>
       <source>Box selection...</source>
-      <translation type="unfinished">Box selection...</translation>
+      <translation>Seçim kutusu...</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="121"/>
@@ -5615,12 +5585,12 @@ bir veya daha fazla profil seçin ilave kenar veya tel seçin.</translation>
       <translation>Ayrı düzlemi yüzünü her telden bağımsız olarak yapar. Delikler için destek yok; teller farklı düzlemlerde olabilir.</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMakerCheese.cpp" line="246"/>
+      <location filename="../../../App/FaceMakerCheese.cpp" line="247"/>
       <source>Cheese facemaker</source>
       <translation>Peynir makyajcısı</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMakerCheese.cpp" line="251"/>
+      <location filename="../../../App/FaceMakerCheese.cpp" line="252"/>
       <source>Supports making planar faces with holes, but no islands inside holes.</source>
       <translation>Delikli düzlemsel yüzeyler oluşturmayı destekler, ancak deliklerin içinde adalar yoktur.</translation>
     </message>
@@ -5644,21 +5614,21 @@ bir veya daha fazla profil seçin ilave kenar veya tel seçin.</translation>
       <translation>%1'i düzenle</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="211"/>
+      <location filename="../../AppPartGui.cpp" line="224"/>
       <source>Part and Part Design workbench</source>
-      <translation type="unfinished">Part and Part Design workbench</translation>
+      <translation>Part and Part Design Çalışma Tezgahı</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="212"/>
-      <location filename="../../AppPartGui.cpp" line="213"/>
-      <location filename="../../AppPartGui.cpp" line="214"/>
-      <location filename="../../AppPartGui.cpp" line="215"/>
+      <location filename="../../AppPartGui.cpp" line="225"/>
+      <location filename="../../AppPartGui.cpp" line="226"/>
+      <location filename="../../AppPartGui.cpp" line="227"/>
+      <location filename="../../AppPartGui.cpp" line="228"/>
       <source>Part/Part Design</source>
-      <translation type="unfinished">Part/Part Design</translation>
+      <translation>Part/Part Design</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="216"/>
-      <location filename="../../AppPartGui.cpp" line="217"/>
+      <location filename="../../AppPartGui.cpp" line="229"/>
+      <location filename="../../AppPartGui.cpp" line="230"/>
       <source>Import-Export</source>
       <translation>İçe-Dışa Aktar</translation>
     </message>
@@ -6019,8 +5989,8 @@ Devam etmek istiyor musun?</translation>
       <translation>BOPAlgo Geçersiz</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="456"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="698"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="454"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="696"/>
       <source>Invalid</source>
       <translation>Geçersiz</translation>
     </message>
@@ -6039,7 +6009,7 @@ Devam etmek istiyor musun?</translation>
     <message>
       <location filename="../../TaskDimension.cpp" line="1420"/>
       <source>Selection </source>
-      <translation type="unfinished">Selection </translation>
+      <translation>Seçim </translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="1504"/>
@@ -6157,7 +6127,7 @@ Devam etmek istiyor musun?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
       <source>Create a copy</source>
-      <translation type="unfinished">Create a copy</translation>
+      <translation>Kopya oluştur</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>

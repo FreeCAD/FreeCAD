@@ -4,17 +4,17 @@
   <context>
     <name>CmdMeshPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="269"/>
+      <location filename="../../Command.cpp" line="268"/>
       <source>MeshPart</source>
       <translation>メッシュパート</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="270"/>
+      <location filename="../../Command.cpp" line="269"/>
       <source>Cross-sections...</source>
       <translation>断面...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="271"/>
+      <location filename="../../Command.cpp" line="270"/>
       <source>Cross-sections</source>
       <translation>断面</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdMeshPartCurveOnMesh</name>
     <message>
-      <location filename="../../Command.cpp" line="305"/>
+      <location filename="../../Command.cpp" line="304"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="306"/>
+      <location filename="../../Command.cpp" line="305"/>
       <source>Curve on mesh...</source>
       <translation>メッシュ上の曲線...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="307"/>
+      <location filename="../../Command.cpp" line="306"/>
       <source>Creates an approximated curve on top of a mesh.
 This command only works with a 'mesh' object.</source>
       <translation>メッシュの上に近似曲線を作成します。
@@ -42,17 +42,17 @@ This command only works with a 'mesh' object.</source>
   <context>
     <name>CmdMeshPartMesher</name>
     <message>
-      <location filename="../../Command.cpp" line="59"/>
+      <location filename="../../Command.cpp" line="58"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="60"/>
+      <location filename="../../Command.cpp" line="59"/>
       <source>Create mesh from shape...</source>
       <translation>シェイプからメッシュを作成...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="61"/>
+      <location filename="../../Command.cpp" line="60"/>
       <source>Tessellate shape</source>
       <translation>シェイプをテッセレーションします。</translation>
     </message>
@@ -60,17 +60,17 @@ This command only works with a 'mesh' object.</source>
   <context>
     <name>CmdMeshPartSection</name>
     <message>
-      <location filename="../../Command.cpp" line="185"/>
+      <location filename="../../Command.cpp" line="184"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="186"/>
+      <location filename="../../Command.cpp" line="185"/>
       <source>Create section from mesh and plane</source>
       <translation>メッシュと平面から断面を作成</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="187"/>
+      <location filename="../../Command.cpp" line="186"/>
       <source>Section</source>
       <translation>セクション</translation>
     </message>
@@ -78,18 +78,18 @@ This command only works with a 'mesh' object.</source>
   <context>
     <name>CmdMeshPartTrimByPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="84"/>
+      <location filename="../../Command.cpp" line="83"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="85"/>
+      <location filename="../../Command.cpp" line="84"/>
       <source>Trim mesh with a plane</source>
       <translation>平面上のメッシュをトリム</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="85"/>
       <location filename="../../Command.cpp" line="86"/>
-      <location filename="../../Command.cpp" line="87"/>
       <source>Trims a mesh with a plane</source>
       <translation>平面上のメッシュを1つトリム</translation>
     </message>
@@ -97,12 +97,12 @@ This command only works with a 'mesh' object.</source>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="129"/>
+      <location filename="../../Command.cpp" line="128"/>
       <source>Trim with plane</source>
       <translation>平面でトリム</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="208"/>
+      <location filename="../../Command.cpp" line="207"/>
       <source>Section with plane</source>
       <translation>平面で切断</translation>
     </message>
@@ -170,7 +170,7 @@ This command only works with a 'mesh' object.</source>
       <translation>距離が小さい場合はエッジを接続する</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="344"/>
+      <location filename="../../CrossSections.cpp" line="343"/>
       <source>Failure</source>
       <translation>失敗</translation>
     </message>
@@ -485,32 +485,32 @@ A value in the range of 0.2-10.</source>
       <translation>パネルを開いたままにする</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="63"/>
+      <location filename="../../Tessellation.cpp" line="61"/>
       <source>Gmsh</source>
       <translation>Gmsh</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="214"/>
-      <location filename="../../Tessellation.cpp" line="220"/>
+      <location filename="../../Tessellation.cpp" line="212"/>
+      <location filename="../../Tessellation.cpp" line="218"/>
       <source>No active document</source>
       <translation>アクティブなドキュメントがありません</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="248"/>
+      <location filename="../../Tessellation.cpp" line="246"/>
       <source>You have selected a body without tip.
 Either set the tip of the body or select a different shape, please.</source>
       <translation>チップのないボディを選択しました。
 ボディの先端を設定するか、別の形を選択してください。</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="252"/>
+      <location filename="../../Tessellation.cpp" line="250"/>
       <source>You have selected a shape without faces.
 Select a different shape, please.</source>
       <translation>面のないシェイプを選択しました。
 別のシェイプを選択してください。</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="256"/>
+      <location filename="../../Tessellation.cpp" line="254"/>
       <source>Select a shape for meshing, first.</source>
       <translation>最初にメッシュにするシェイプを選択してください。</translation>
     </message>
@@ -518,12 +518,12 @@ Select a different shape, please.</source>
   <context>
     <name>MeshPart_Section</name>
     <message>
-      <location filename="../../Command.cpp" line="198"/>
+      <location filename="../../Command.cpp" line="197"/>
       <source>Select plane</source>
       <translation>平面を選択</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="199"/>
+      <location filename="../../Command.cpp" line="198"/>
       <source>Please select a plane at which you section the mesh.</source>
       <translation>メッシュの分割を行う平面を選択してください。</translation>
     </message>
@@ -531,37 +531,37 @@ Select a different shape, please.</source>
   <context>
     <name>MeshPart_TrimByPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="96"/>
+      <location filename="../../Command.cpp" line="95"/>
       <source>Select plane</source>
       <translation>平面を選択</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="97"/>
+      <location filename="../../Command.cpp" line="96"/>
       <source>Please select a plane at which you trim the mesh.</source>
       <translation>メッシュのトリムを行う平面を選択してください。</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="103"/>
+      <location filename="../../Command.cpp" line="102"/>
       <source>Trim by plane</source>
       <translation>平面でトリム</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="104"/>
+      <location filename="../../Command.cpp" line="103"/>
       <source>Select the side you want to keep.</source>
       <translation>維持したい側面を選択してください。</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="105"/>
+      <location filename="../../Command.cpp" line="104"/>
       <source>Below</source>
       <translation>下側</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="106"/>
+      <location filename="../../Command.cpp" line="105"/>
       <source>Above</source>
       <translation>上側</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="107"/>
+      <location filename="../../Command.cpp" line="106"/>
       <source>Split</source>
       <translation>スプリット</translation>
     </message>

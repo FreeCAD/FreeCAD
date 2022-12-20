@@ -114,5 +114,6 @@
         <file>translations/AddonManager_es-AR.qm</file>
         <file>translations/AddonManager_bg.qm</file>
         <file>translations/AddonManager_ka.qm</file>
+        <file>translations/AddonManager_sr-CS.qm</file>
     </qresource>
 </RCC>

@@ -464,7 +464,7 @@
       <location filename="../../Command.cpp" line="1226"/>
       <source>Linearized Stresses</source>
       <comment>Plot title</comment>
-      <translation type="unfinished">Linearized Stresses</translation>
+      <translation>Doğrusallaştırılmış Gerilmeler</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1227"/>
@@ -740,12 +740,6 @@
       <translation>Sıcaklık:</translation>
     </message>
     <message>
-      <location filename="../../TaskPanelConstraintTemperature.ui" line="52"/>
-      <location filename="../../TaskPanelInitialTemperature.ui" line="56"/>
-      <source>25</source>
-      <translation>25</translation>
-    </message>
-    <message>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="68"/>
       <location filename="../../TaskPanelInitialTemperature.ui" line="72"/>
       <source>ºC</source>
@@ -883,129 +877,129 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="294"/>
       <source>Number of CPU's to use</source>
-      <translation type="unfinished">Number of CPU's to use</translation>
+      <translation>Kullanılacak CPU sayısı</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="329"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="323"/>
       <source>Matrix solver</source>
       <translation>Matris çözücü</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="349"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="343"/>
       <source>Default</source>
       <translation>Varsayılan</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="354"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="348"/>
       <source>Spooles</source>
       <translation>Biriktirmeler</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="359"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="353"/>
       <source>Iterative Scaling</source>
       <translation>Tekrarlı Ölçekleme</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="364"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="358"/>
       <source>Iterative Cholesky</source>
       <translation>Tekrarlı Cholesky</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="372"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="366"/>
       <source>Non-linear geometry</source>
       <translation>Doğrusal olmayan geometri</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="379"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="373"/>
       <source>Use non-linear geometry</source>
       <translation>Doğrusal olmayan geometri kullan</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="395"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="389"/>
       <source>Time incrementation control parameter</source>
       <translation>Zaman artırma denetimi parametresi</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="402"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="396"/>
       <source>Use non ccx defaults</source>
       <translation>ccx olmayan varsayılanları kullan</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="418"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="412"/>
       <source>Time Initial Step</source>
       <translation>Başlanıç Adımının Zamanı</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="466"/>
-      <location filename="../../DlgSettingsFemCcx.ui" line="505"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="460"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="499"/>
       <source>s</source>
-      <translation type="unfinished">s</translation>
+      <translation>s</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="473"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="467"/>
       <source>Time End</source>
       <translation>Bitiş zamanı</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="512"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="506"/>
       <source>Beam, shell element 3D output format </source>
       <translation>Kiriş, kabuk elemanı 3D çıktı biçimi </translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="519"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="513"/>
       <source>3D Output, unchecked for 2D</source>
       <translation>2B için işaretlenmemiş 3B Çıktı</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="540"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="534"/>
       <source>Thermo mechanical defaults</source>
       <translation>Termo mekanik varsayılanlar</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="548"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="542"/>
       <source>Analysis type (transient or steady state)</source>
       <translation>Analiz tipi (geçici veya sabit durum)</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="555"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="549"/>
       <source>Use steady state</source>
       <translation>Sabit durum kullan</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="571"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="565"/>
       <source>Maximum number of iterations</source>
       <translation>En çok tekrarlama sayısı</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="605"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="599"/>
       <source>Frequency defaults</source>
       <translation>Frekans varsayılanları</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="613"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="607"/>
       <source>Eigenmode number</source>
       <translation>Eigenmode numarası</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="658"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="652"/>
       <source>High frequency limit</source>
       <translation>Yüksek frekans sınırı</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="696"/>
-      <location filename="../../DlgSettingsFemCcx.ui" line="744"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="690"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="738"/>
       <source>Hz</source>
       <translation>Hz</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="703"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="697"/>
       <source>Low frequency limit</source>
       <translation>Yüksek frekans sınırı</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcxImp.cpp" line="145"/>
       <source>File does not exist</source>
-      <translation type="unfinished">File does not exist</translation>
+      <translation>Dosya mevcut değil</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcxImp.cpp" line="146"/>
@@ -1013,10 +1007,10 @@
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation type="unfinished">The specified executable 
+      <translation>Belirtilen uygulama 
 '%1'
- does not exist!
-Specify another file please.</translation>
+ mevcut değil!
+Lütfen başka bir dosya belirtin.</translation>
     </message>
   </context>
   <context>
@@ -1070,12 +1064,12 @@ Specify another file please.</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="196"/>
       <source>Multithreading:</source>
-      <translation type="unfinished">Multithreading:</translation>
+      <translation>Çoklu kullanım:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="208"/>
       <source>CPU cores to be used:</source>
-      <translation type="unfinished">CPU cores to be used:</translation>
+      <translation>Kullanılacak CPU çekirdekleri:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="218"/>
@@ -1085,7 +1079,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="102"/>
       <source>File does not exist</source>
-      <translation type="unfinished">File does not exist</translation>
+      <translation>Dosya mevcut değil</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="103"/>
@@ -1093,29 +1087,29 @@ Specify another file please.</translation>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation type="unfinished">The specified executable 
+      <translation>Belirtilen uygulama 
 '%1'
- does not exist!
-Specify another file please.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="120"/>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="130"/>
-      <source>Not suitable for mulithreading</source>
-      <translation type="unfinished">Not suitable for mulithreading</translation>
+ mevcut değil!
+Lütfen başka bir dosya belirtin.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="121"/>
-      <source>You use more than one CPU core.
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="131"/>
+      <source>FEM Elmer: Not suitable for multithreading</source>
+      <translation type="unfinished">FEM Elmer: Not suitable for multithreading</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="122"/>
+      <source>Wrong Elmer setting: You use more than one CPU core.
 Therefore an executable with the suffix '_mpi.exe' is required.</source>
-      <translation type="unfinished">You use more than one CPU core.
+      <translation type="unfinished">Wrong Elmer setting: You use more than one CPU core.
 Therefore an executable with the suffix '_mpi.exe' is required.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="131"/>
-      <source>You use more than one CPU core.
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="132"/>
+      <source>Wrong Elmer setting: You use more than one CPU core.
 Therefore an executable with the suffix '_mpi' is required.</source>
-      <translation type="unfinished">You use more than one CPU core.
+      <translation type="unfinished">Wrong Elmer setting: You use more than one CPU core.
 Therefore an executable with the suffix '_mpi' is required.</translation>
     </message>
   </context>
@@ -1304,7 +1298,7 @@ Her kısıtlama ve farklı malzemeler varsa; malzeme, kısıtlamanın veya malze
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="79"/>
       <source>File does not exist</source>
-      <translation type="unfinished">File does not exist</translation>
+      <translation>Dosya mevcut değil</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="80"/>
@@ -1312,10 +1306,10 @@ Her kısıtlama ve farklı malzemeler varsa; malzeme, kısıtlamanın veya malze
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation type="unfinished">The specified executable 
+      <translation>Belirtilen uygulama 
 '%1'
- does not exist!
-Specify another file please.</translation>
+ mevcut değil!
+Lütfen başka bir dosya belirtin.</translation>
     </message>
   </context>
   <context>
@@ -1448,7 +1442,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="177"/>
       <source>Sort by resources</source>
-      <translation type="unfinished">Sort by resources</translation>
+      <translation>Kaynaklara göre sırala</translation>
     </message>
   </context>
   <context>
@@ -1486,12 +1480,12 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="119"/>
       <source>Write comments to input file</source>
-      <translation type="unfinished">Write comments to input file</translation>
+      <translation>Giriş dosyasına yorum yazın</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystranImp.cpp" line="81"/>
       <source>File does not exist</source>
-      <translation type="unfinished">File does not exist</translation>
+      <translation>Dosya mevcut değil</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystranImp.cpp" line="82"/>
@@ -1499,10 +1493,10 @@ If unchecked, they will be sorted by their name.</translation>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation type="unfinished">The specified executable 
+      <translation>Belirtilen uygulama 
 '%1'
- does not exist!
-Specify another file please.</translation>
+ mevcut değil!
+Lütfen başka bir dosya belirtin.</translation>
     </message>
   </context>
   <context>
@@ -1535,17 +1529,17 @@ Specify another file please.</translation>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="138"/>
       <source>Solver settings</source>
-      <translation type="unfinished">Solver settings</translation>
+      <translation>Çözücü ayarları</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="149"/>
       <source>Solver method</source>
-      <translation type="unfinished">Solver method</translation>
+      <translation>Çözücü yöntemi</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="165"/>
       <source>Solver method to be used</source>
-      <translation type="unfinished">Solver method to be used</translation>
+      <translation>Kullanılacak çözücü yöntemi</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="178"/>
@@ -1603,7 +1597,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="104"/>
       <source>File does not exist</source>
-      <translation type="unfinished">File does not exist</translation>
+      <translation>Dosya mevcut değil</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="105"/>
@@ -1620,17 +1614,17 @@ Specify another file please.</translation>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="116"/>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="122"/>
       <source>Wrong file</source>
-      <translation type="unfinished">Wrong file</translation>
+      <translation>Yanlış dosya</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="117"/>
       <source>You must specify the path to the z88r.exe!</source>
-      <translation type="unfinished">You must specify the path to the z88r.exe!</translation>
+      <translation>z88r.exe dosyasının yolunu belirtmelisiniz!</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="123"/>
       <source>You must specify the path to the z88r!</source>
-      <translation type="unfinished">You must specify the path to the z88r!</translation>
+      <translation>z88r'nin yolunu belirtmelisiniz!</translation>
     </message>
   </context>
   <context>
@@ -2610,7 +2604,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/Material.ui" line="174"/>
       <source>0 kg/m^3</source>
-      <translation type="unfinished">0 kg/m^3</translation>
+      <translation>0 kg/m^3</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="210"/>
@@ -2625,7 +2619,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/Material.ui" line="240"/>
       <source>0 Pa</source>
-      <translation type="unfinished">0 Pa</translation>
+      <translation>0 Pa</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="265"/>
@@ -2645,7 +2639,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/Material.ui" line="344"/>
       <source>0 m^2/s</source>
-      <translation type="unfinished">0 m^2/s</translation>
+      <translation>0 m^2/s</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="380"/>
@@ -2660,7 +2654,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/Material.ui" line="410"/>
       <source>0 W/m/K</source>
-      <translation type="unfinished">0 W/m/K</translation>
+      <translation>0 W/m/K</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="435"/>
@@ -2671,7 +2665,7 @@ Specify another file please.</translation>
       <location filename="../ui/Material.ui" line="454"/>
       <location filename="../ui/Material.ui" line="542"/>
       <source>0 m/m/K</source>
-      <translation type="unfinished">0 m/m/K</translation>
+      <translation>0 m/m/K</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="479"/>
@@ -2681,7 +2675,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/Material.ui" line="498"/>
       <source>0 J/kg/K</source>
-      <translation type="unfinished">0 J/kg/K</translation>
+      <translation>0 J/kg/K</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="523"/>
@@ -2826,7 +2820,7 @@ Specify another file please.</translation>
       <location filename="../ui/ElementFluid1D.ui" line="278"/>
       <location filename="../ui/ElementFluid1D.ui" line="348"/>
       <source>0 kg/s</source>
-      <translation type="unfinished">0 kg/s</translation>
+      <translation>0 kg/s</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="297"/>
@@ -2881,31 +2875,6 @@ Specify another file please.</translation>
       <location filename="../ui/ElementFluid1D.ui" line="613"/>
       <source>Pump Characteristic</source>
       <translation>Pompa Karakteristiği</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElementFluid1D.ui" line="621"/>
-      <source>1</source>
-      <translation>1</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElementFluid1D.ui" line="626"/>
-      <source>2</source>
-      <translation>2</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElementFluid1D.ui" line="631"/>
-      <source>3</source>
-      <translation>3</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElementFluid1D.ui" line="636"/>
-      <source>4</source>
-      <translation>4</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElementFluid1D.ui" line="641"/>
-      <source>5</source>
-      <translation>5</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="646"/>
@@ -2990,7 +2959,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="80"/>
       <source>0 1/s</source>
-      <translation type="unfinished">0 1/s</translation>
+      <translation>0 1/s</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="92"/>
@@ -3014,7 +2983,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/BodyHeatSource.ui" line="20"/>
       <source>Body heat in W/kg:</source>
-      <translation type="unfinished">Body heat in W/kg:</translation>
+      <translation>W/kg cinsinden vücut ısısı:</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="22"/>
@@ -3129,7 +3098,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/ElementRotation1D.ui" line="61"/>
       <source>0 degree</source>
-      <translation type="unfinished">0 degree</translation>
+      <translation>0 derece</translation>
     </message>
     <message>
       <location filename="../ui/ElementRotation1D.ui" line="89"/>
@@ -3222,7 +3191,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/InitialPressure.ui" line="20"/>
       <source>Pressure:</source>
-      <translation type="unfinished">Pressure:</translation>
+      <translation>Basınç:</translation>
     </message>
   </context>
   <context>
@@ -3463,7 +3432,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="111"/>
       <source>Edges</source>
-      <translation type="unfinished">Edges</translation>
+      <translation>Kenarlar</translation>
     </message>
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="112"/>
@@ -3473,7 +3442,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="113"/>
       <source>Polygons</source>
-      <translation type="unfinished">Polygons</translation>
+      <translation>Çokgenler</translation>
     </message>
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="114"/>
@@ -3483,7 +3452,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="115"/>
       <source>Polyhedrons</source>
-      <translation type="unfinished">Polyhedrons</translation>
+      <translation>Çokyüzlüler</translation>
     </message>
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="116"/>
@@ -3559,7 +3528,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/ResultShow.ui" line="130"/>
       <source>Equivalent Plastic Strain</source>
-      <translation type="unfinished">Equivalent Plastic Strain</translation>
+      <translation>Eşdeğer Plastik Gerinim</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="137"/>
@@ -3628,7 +3597,7 @@ and colors the result mesh accordingly</translation>
     <message>
       <location filename="../ui/ResultShow.ui" line="336"/>
       <source>Calculate</source>
-      <translation type="unfinished">Calculate</translation>
+      <translation>Hesapla</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="355"/>
@@ -3700,7 +3669,7 @@ For possible variables, see the description box below.</translation>
     <message>
       <location filename="../ui/ResultHints.ui" line="198"/>
       <source>max principal stress: P1</source>
-      <translation type="unfinished">max principal stress: P1</translation>
+      <translation>en fazla ana gerilim: P1</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="208"/>
@@ -3749,11 +3718,6 @@ For possible variables, see the description box below.</translation>
       <location filename="../ui/SolverCalculix.ui" line="20"/>
       <source>Working directory</source>
       <translation>Çalışma dizini</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverCalculix.ui" line="45"/>
-      <source>...</source>
-      <translation>...</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculix.ui" line="55"/>
@@ -4450,7 +4414,7 @@ yön olarak kullanılır</translation>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="156"/>
       <source>1 W/m^2</source>
-      <translation type="unfinished">1 W/m^2</translation>
+      <translation>1 W/m^2</translation>
     </message>
   </context>
   <context>
@@ -4558,11 +4522,6 @@ yön olarak kullanılır</translation>
       <location filename="../../TaskFemConstraintSpring.ui" line="81"/>
       <source>Normal Stiffness</source>
       <translation>Normal Rijitlik</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintSpring.ui" line="88"/>
-      <source>0 </source>
-      <translation>0 </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="104"/>
@@ -4717,7 +4676,7 @@ yön olarak kullanılır</translation>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="20"/>
       <source>Coordinates</source>
-      <translation type="unfinished">Coordinates</translation>
+      <translation>Koordinatlar</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="26"/>
@@ -4737,12 +4696,12 @@ yön olarak kullanılır</translation>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="62"/>
       <source>Point 1</source>
-      <translation type="unfinished">Point 1</translation>
+      <translation>Nokta 1</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="108"/>
       <source>Point 2</source>
-      <translation type="unfinished">Point 2</translation>
+      <translation>Nokta 2</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="151"/>
@@ -4941,16 +4900,6 @@ yön olarak kullanılır</translation>
       <location filename="../../TaskPostScalarClip.ui" line="121"/>
       <source>Max scalar</source>
       <translation>En büyük skaler</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPostScalarClip.ui" line="144"/>
-      <source>-100000</source>
-      <translation>-100000</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPostScalarClip.ui" line="188"/>
-      <source>0</source>
-      <translation>0</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="209"/>

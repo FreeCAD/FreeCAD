@@ -6,17 +6,17 @@
     <message>
       <location filename="../../AddonManagerOptions_AddCustomRepository.ui" line="14"/>
       <source>Custom repository</source>
-      <translation type="unfinished">Custom repository</translation>
+      <translation>Özel depo</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions_AddCustomRepository.ui" line="20"/>
       <source>Repository URL</source>
-      <translation type="unfinished">Repository URL</translation>
+      <translation>Depo URL' si</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions_AddCustomRepository.ui" line="30"/>
       <source>Branch</source>
-      <translation type="unfinished">Branch</translation>
+      <translation>Dal</translation>
     </message>
   </context>
   <context>
@@ -34,7 +34,7 @@
     <message>
       <location filename="../../compact_view.ui" line="66"/>
       <source>&lt;b&gt;Package Name&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Package Name&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;Paket Adı&lt;/b&gt;</translation>
     </message>
     <message>
       <location filename="../../compact_view.ui" line="73"/>
@@ -49,7 +49,7 @@
     <message>
       <location filename="../../compact_view.ui" line="102"/>
       <source>UpdateAvailable</source>
-      <translation type="unfinished">UpdateAvailable</translation>
+      <translation>Güncelleme Mevcut</translation>
     </message>
   </context>
   <context>
@@ -57,12 +57,12 @@
     <message>
       <location filename="../../developer_mode_dependencies.ui" line="14"/>
       <source>Dependencies</source>
-      <translation type="unfinished">Dependencies</translation>
+      <translation>Bağımlılıklar</translation>
     </message>
     <message>
       <location filename="../../developer_mode_dependencies.ui" line="39"/>
       <source>Dependency type</source>
-      <translation type="unfinished">Dependency type</translation>
+      <translation>Bağımlılık türü</translation>
     </message>
     <message>
       <location filename="../../developer_mode_dependencies.ui" line="44"/>
@@ -72,13 +72,7 @@
     <message>
       <location filename="../../developer_mode_dependencies.ui" line="49"/>
       <source>Optional?</source>
-      <translation type="unfinished">Optional?</translation>
-    </message>
-    <message>
-      <location filename="../../developer_mode_dependencies.ui" line="72"/>
-      <location filename="../../developer_mode_dependencies.ui" line="79"/>
-      <source>...</source>
-      <translation>...</translation>
+      <translation>İsteğe bağlı?</translation>
     </message>
   </context>
   <context>
@@ -86,31 +80,31 @@
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="17"/>
       <source>Resolve Dependencies</source>
-      <translation type="unfinished">Resolve Dependencies</translation>
+      <translation>Bağımlılıkları Çöz</translation>
     </message>
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="29"/>
       <source>This Addon has the following required and optional dependencies. You must install them before this Addon can be used.
 
 Do you want the Addon Manager to install them automatically? Choose &quot;Ignore&quot; to install the Addon without installing the dependencies.</source>
-      <translation type="unfinished">This Addon has the following required and optional dependencies. You must install them before this Addon can be used.
+      <translation>Bu Eklenti aşağıdaki gerekli ve isteğe bağlı bağımlılıklara sahiptir. Bu Eklentinin kullanılabilmesi için bunları yüklemeniz gerekir.
 
-Do you want the Addon Manager to install them automatically? Choose &quot;Ignore&quot; to install the Addon without installing the dependencies.</translation>
+Eklenti Yöneticisinin bunları otomatik olarak kurmasını istiyor musunuz? Eklentiyi bağımlılıklar olmadan kurmak için &quot; Yoksay &quot; seçin.</translation>
     </message>
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="43"/>
       <source>FreeCAD Addons</source>
-      <translation type="unfinished">FreeCAD Addons</translation>
+      <translation>FreeCAD Eklentileri</translation>
     </message>
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="55"/>
       <source>Required Python modules</source>
-      <translation type="unfinished">Required Python modules</translation>
+      <translation>Gerekli Python modülleri</translation>
     </message>
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="67"/>
       <source>Optional Python modules</source>
-      <translation type="unfinished">Optional Python modules</translation>
+      <translation>İsteğe bağlı Python modülleri</translation>
     </message>
   </context>
   <context>
@@ -118,28 +112,28 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="14"/>
       <source>Addon Developer Tools</source>
-      <translation type="unfinished">Addon Developer Tools</translation>
+      <translation>Eklenti Geliştirici Araçları</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="25"/>
       <source>Path to Addon</source>
-      <translation type="unfinished">Path to Addon</translation>
+      <translation>Eklentiyi giden yol</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="45"/>
       <location filename="../../developer_mode.ui" line="195"/>
       <source>Browse...</source>
-      <translation type="unfinished">Browse...</translation>
+      <translation>Gözat...</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="54"/>
       <source>Metadata</source>
-      <translation type="unfinished">Metadata</translation>
+      <translation>Üst veri</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="65"/>
       <source>Primary branch</source>
-      <translation type="unfinished">Primary branch</translation>
+      <translation>Birincil dal</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="77"/>
@@ -155,7 +149,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="90"/>
       <source>Discussion URL</source>
-      <translation type="unfinished">Discussion URL</translation>
+      <translation>Tartışma URL'si</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="97"/>
@@ -165,17 +159,17 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="104"/>
       <source>Bugtracker URL</source>
-      <translation type="unfinished">Bugtracker URL</translation>
+      <translation>Hata İzleyici URL'si</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="113"/>
       <source>Semantic (1.2.3-beta) or CalVer (2022.08.30) styles supported</source>
-      <translation type="unfinished">Semantic (1.2.3-beta) or CalVer (2022.08.30) styles supported</translation>
+      <translation>Semantic (1.2.3-beta) ya da CalVer (2022.08.30) stilleri desteklenir</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="120"/>
       <source>Set to today (CalVer style)</source>
-      <translation type="unfinished">Set to today (CalVer style)</translation>
+      <translation>Bugüne ayarla (CalVer stili)</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="132"/>
@@ -183,7 +177,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../developer_mode.ui" line="180"/>
       <location filename="../../developer_mode.ui" line="218"/>
       <source>(Optional)</source>
-      <translation type="unfinished">(Optional)</translation>
+      <translation>(Isteğe bağlı)</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="139"/>
@@ -194,7 +188,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="153"/>
       <source>README URL</source>
-      <translation type="unfinished">README URL</translation>
+      <translation>BENIOKU URL'si</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="166"/>
@@ -204,22 +198,22 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="173"/>
       <source>Repository URL</source>
-      <translation type="unfinished">Repository URL</translation>
+      <translation>Depo URL' si</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="204"/>
       <source>Website URL</source>
-      <translation type="unfinished">Website URL</translation>
+      <translation>Web Sitesi URL’si</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="211"/>
       <source>Documentation URL</source>
-      <translation type="unfinished">Documentation URL</translation>
+      <translation>Döküman URL'si</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="228"/>
       <source>Addon Name</source>
-      <translation type="unfinished">Addon Name</translation>
+      <translation>Eklenti Adı</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="235"/>
@@ -229,33 +223,27 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="242"/>
       <source>(Recommended)</source>
-      <translation type="unfinished">(Recommended)</translation>
+      <translation>(Önerilen)</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="249"/>
       <source>Minimum Python</source>
-      <translation type="unfinished">Minimum Python</translation>
+      <translation>Min. Python</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="258"/>
       <source>(Optional, only 3.x version supported)</source>
-      <translation type="unfinished">(Optional, only 3.x version supported)</translation>
+      <translation>(İsteğe bağlı, yalnızca 3.x sürümü desteklenir)</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="265"/>
       <source>Detect...</source>
-      <translation type="unfinished">Detect...</translation>
+      <translation>Algıla...</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="277"/>
       <source>Addon Contents</source>
-      <translation type="unfinished">Addon Contents</translation>
-    </message>
-    <message>
-      <location filename="../../developer_mode.ui" line="301"/>
-      <location filename="../../developer_mode.ui" line="308"/>
-      <source>...</source>
-      <translation>...</translation>
+      <translation>Eklenti İçeriği</translation>
     </message>
   </context>
   <context>
@@ -273,7 +261,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../AddonManager.ui" line="71"/>
       <source>Pause cache update</source>
-      <translation type="unfinished">Pause cache update</translation>
+      <translation>Önbellek güncellemesini duraklat</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="103"/>
@@ -288,27 +276,27 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../AddonManager.ui" line="113"/>
       <source>Update all Addons</source>
-      <translation type="unfinished">Update all Addons</translation>
+      <translation>Tüm Eklentileri Güncelle</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="120"/>
       <source>Check for updates</source>
-      <translation type="unfinished">Check for updates</translation>
+      <translation>Güncellemeleri denetle</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="130"/>
       <source>View and update Python package dependencies</source>
-      <translation type="unfinished">View and update Python package dependencies</translation>
+      <translation>Python paketi bağımlılıklarını görüntüleyin ve güncelleyin</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="133"/>
       <source>Python dependencies...</source>
-      <translation type="unfinished">Python dependencies...</translation>
+      <translation>Python bağımlılıkları...</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="140"/>
       <source>Developer tools...</source>
-      <translation type="unfinished">Developer tools...</translation>
+      <translation>Geliştirici araçları...</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="160"/>
@@ -323,27 +311,27 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../first_run.ui" line="17"/>
       <source>Welcome to the Addon Manager</source>
-      <translation type="unfinished">Welcome to the Addon Manager</translation>
+      <translation>Eklenti Yöneticisine Hoş Geldiniz</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="23"/>
       <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
-      <translation type="unfinished">The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</translation>
+      <translation>Buraya kurulabilen eklentiler resmi olarak FreeCAD'in bir parçası değildir ve FreeCAD ekibi tarafından incelenmez. Ne yüklediğinizi bildiğinizden emin olun!</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="46"/>
       <source>Download Settings</source>
-      <translation type="unfinished">Download Settings</translation>
+      <translation>İndirme Ayarları</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="53"/>
       <source>Automatically check installed Addons for updates</source>
-      <translation type="unfinished">Automatically check installed Addons for updates</translation>
+      <translation>Güncellemeler için yüklü Eklentileri otomatik olarak kontrol edin</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="60"/>
       <source>Download Macro metadata (approximately 10MB)</source>
-      <translation type="unfinished">Download Macro metadata (approximately 10MB)</translation>
+      <translation>Makro MetaVerilerini indirin (yaklaşık 10MB)</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="70"/>
@@ -353,27 +341,27 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../first_run.ui" line="75"/>
       <source>System proxy</source>
-      <translation type="unfinished">System proxy</translation>
+      <translation>Sistem vekil sunucusu</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="80"/>
       <source>User-defined proxy:</source>
-      <translation type="unfinished">User-defined proxy:</translation>
+      <translation>Kullanıcı tanımlı vekil sunucu:</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="93"/>
       <source>These and other settings are available in the FreeCAD Preferences window.</source>
-      <translation type="unfinished">These and other settings are available in the FreeCAD Preferences window.</translation>
+      <translation>Bu ve diğer ayarlar FreeCAD Tercihler penceresinde mevcuttur.</translation>
     </message>
     <message>
       <location filename="../../developer_mode_tags.ui" line="14"/>
       <source>Edit Tags</source>
-      <translation type="unfinished">Edit Tags</translation>
+      <translation>Etiketleri Düzenle</translation>
     </message>
     <message>
       <location filename="../../developer_mode_tags.ui" line="20"/>
       <source>Comma-separated list of tags describing this item:</source>
-      <translation type="unfinished">Comma-separated list of tags describing this item:</translation>
+      <translation>Bu öğeyi açıklayan virgülle ayrılmış etiketler listesi:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_tags.ui" line="35"/>
@@ -386,22 +374,22 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="14"/>
       <source>Edit Dependency</source>
-      <translation type="unfinished">Edit Dependency</translation>
+      <translation>Bağımlılığı Düzenle</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="20"/>
       <source>Dependency Type</source>
-      <translation type="unfinished">Dependency Type</translation>
+      <translation>Bağımlılığı Biçimi</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="30"/>
       <source>Dependency</source>
-      <translation type="unfinished">Dependency</translation>
+      <translation>Bağımlılık</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="42"/>
       <source>Package name, if &quot;Other...&quot;</source>
-      <translation type="unfinished">Package name, if &quot;Other...&quot;</translation>
+      <translation>Paket adı, eğer &quot;Diğer...&quot;</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="54"/>
@@ -416,7 +404,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="72"/>
       <source>Optional</source>
-      <translation type="unfinished">Optional</translation>
+      <translation>Isteğe bağlı</translation>
     </message>
   </context>
   <context>
@@ -434,7 +422,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../expanded_view.ui" line="101"/>
       <source>&lt;h1&gt;Package Name&lt;/h1&gt;</source>
-      <translation type="unfinished">&lt;h1&gt;Package Name&lt;/h1&gt;</translation>
+      <translation>&lt;h1&gt;Paket Adı&lt;/h1&gt;</translation>
     </message>
     <message>
       <location filename="../../expanded_view.ui" line="114"/>
@@ -444,7 +432,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../expanded_view.ui" line="121"/>
       <source>(tags)</source>
-      <translation type="unfinished">(tags)</translation>
+      <translation>(etiketler)</translation>
     </message>
     <message>
       <location filename="../../expanded_view.ui" line="149"/>
@@ -459,7 +447,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../expanded_view.ui" line="186"/>
       <source>UpdateAvailable</source>
-      <translation type="unfinished">UpdateAvailable</translation>
+      <translation>Güncelleme Mevcut</translation>
     </message>
   </context>
   <context>
@@ -473,7 +461,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_licenses_table.ui" line="38"/>
       <source>Licenses</source>
-      <translation type="unfinished">Licenses</translation>
+      <translation>Lisanslar</translation>
     </message>
     <message>
       <location filename="../../developer_mode_licenses_table.ui" line="69"/>
@@ -483,25 +471,17 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_licenses_table.ui" line="74"/>
       <source>License file</source>
-      <translation type="unfinished">License file</translation>
-    </message>
-    <message>
-      <location filename="../../developer_mode_licenses_table.ui" line="97"/>
-      <location filename="../../developer_mode_licenses_table.ui" line="107"/>
-      <location filename="../../developer_mode_people_table.ui" line="90"/>
-      <location filename="../../developer_mode_people_table.ui" line="100"/>
-      <source>...</source>
-      <translation>...</translation>
+      <translation>Lisans dosyası</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people_table.ui" line="26"/>
       <source>People</source>
-      <translation type="unfinished">People</translation>
+      <translation>Kişiler</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people_table.ui" line="57"/>
       <source>Kind</source>
-      <translation type="unfinished">Kind</translation>
+      <translation>Tür</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people_table.ui" line="62"/>
@@ -511,7 +491,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_people_table.ui" line="67"/>
       <source>Email</source>
-      <translation type="unfinished">Email</translation>
+      <translation>E-Posta</translation>
     </message>
   </context>
   <context>
@@ -519,7 +499,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="14"/>
       <source>Advanced Version Mapping</source>
-      <translation type="unfinished">Advanced Version Mapping</translation>
+      <translation>Gelişmiş Sürüm Eşleme</translation>
     </message>
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="20"/>
@@ -529,18 +509,12 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="43"/>
       <source>FreeCAD Version</source>
-      <translation type="unfinished">FreeCAD Version</translation>
+      <translation>FreeCAD Sürümü</translation>
     </message>
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="48"/>
       <source>Best-available branch, tag, or commit</source>
       <translation type="unfinished">Best-available branch, tag, or commit</translation>
-    </message>
-    <message>
-      <location filename="../../developer_mode_advanced_freecad_versions.ui" line="71"/>
-      <location filename="../../developer_mode_advanced_freecad_versions.ui" line="78"/>
-      <source>...</source>
-      <translation>...</translation>
     </message>
   </context>
   <context>
@@ -548,23 +522,23 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="14"/>
       <source>Supported FreeCAD Versions</source>
-      <translation type="unfinished">Supported FreeCAD Versions</translation>
+      <translation>Desteklenen FreeCAD Sürümleri</translation>
     </message>
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="20"/>
       <source>Minimum FreeCAD Version Supported</source>
-      <translation type="unfinished">Minimum FreeCAD Version Supported</translation>
+      <translation>Desteklenen En Düşük FreeCAD Sürümü</translation>
     </message>
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="27"/>
       <location filename="../../developer_mode_freecad_versions.ui" line="41"/>
       <source>Optional</source>
-      <translation type="unfinished">Optional</translation>
+      <translation>Isteğe bağlı</translation>
     </message>
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="34"/>
       <source>Maximum FreeCAD Version Supported</source>
-      <translation type="unfinished">Maximum FreeCAD Version Supported</translation>
+      <translation>Desteklenen En Yüksek FreeCAD Sürümü</translation>
     </message>
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="48"/>
@@ -577,7 +551,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../AddonManagerOptions.ui" line="14"/>
       <source>Addon manager options</source>
-      <translation type="unfinished">Addon manager options</translation>
+      <translation>Eklenti yöneticisi seçenekleri</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="20"/>
@@ -596,39 +570,33 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManagerOptions.ui" line="41"/>
       <source>Download Macro metadata (approximately 10MB)</source>
-      <translation type="unfinished">Download Macro metadata (approximately 10MB)</translation>
+      <translation>Makro MetaVerilerini indirin (yaklaşık 10MB)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="44"/>
-      <source>DownloadMacros</source>
-      <translation type="unfinished">DownloadMacros</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManagerOptions.ui" line="47"/>
       <location filename="../../AddonManagerOptions.ui" line="373"/>
       <location filename="../../AddonManagerOptions.ui" line="386"/>
       <source>Addons</source>
-      <translation type="unfinished">Addons</translation>
+      <translation>Eklentiler</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="56"/>
       <source>Cache update frequency</source>
-      <translation type="unfinished">Cache update frequency</translation>
+      <translation>Arabellek güncelleme sıklığı</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="76"/>
       <source>Manual (no automatic updates)</source>
-      <translation type="unfinished">Manual (no automatic updates)</translation>
+      <translation>Elle (otomatik güncellemeler yok)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="81"/>
       <source>Daily</source>
-      <translation type="unfinished">Daily</translation>
+      <translation>Günlük</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="86"/>
       <source>Weekly</source>
-      <translation type="unfinished">Weekly</translation>
+      <translation>Haftalık</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="96"/>
@@ -648,13 +616,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManagerOptions.ui" line="150"/>
       <source>Custom repositories</source>
-      <translation type="unfinished">Custom repositories</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManagerOptions.ui" line="188"/>
-      <location filename="../../AddonManagerOptions.ui" line="195"/>
-      <source>...</source>
-      <translation>...</translation>
+      <translation>Özel depolar</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="354"/>
@@ -704,7 +666,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManagerOptions.ui" line="239"/>
       <source>User-defined proxy:</source>
-      <translation type="unfinished">User-defined proxy:</translation>
+      <translation>Kullanıcı tanımlı vekil sunucu:</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="276"/>
@@ -738,11 +700,6 @@ installed addons will be checked for available updates
       <location filename="../../package_details.ui" line="14"/>
       <source>Form</source>
       <translation>Şekil:</translation>
-    </message>
-    <message>
-      <location filename="../../package_details.ui" line="29"/>
-      <source>...</source>
-      <translation>...</translation>
     </message>
     <message>
       <location filename="../../package_details.ui" line="49"/>
@@ -780,7 +737,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="14"/>
       <source>Manage Python Dependencies</source>
-      <translation type="unfinished">Manage Python Dependencies</translation>
+      <translation>Python Bağımlılıklarını Yönet</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="20"/>
@@ -790,12 +747,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="59"/>
       <source>Package name</source>
-      <translation type="unfinished">Package name</translation>
+      <translation>Paket adı</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="64"/>
       <source>Installed version</source>
-      <translation type="unfinished">Installed version</translation>
+      <translation>Kurulu sürüm</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="69"/>
@@ -829,6 +786,19 @@ installed addons will be checked for available updates
       <location filename="../../developer_mode_select_from_list.ui" line="20"/>
       <source>TextLabel</source>
       <translation>MetinEtiketi</translation>
+    </message>
+  </context>
+  <context>
+    <name>UpdateAllDialog</name>
+    <message>
+      <location filename="../../update_all.ui" line="14"/>
+      <source>Updating Addons</source>
+      <translation type="unfinished">Updating Addons</translation>
+    </message>
+    <message>
+      <location filename="../../update_all.ui" line="23"/>
+      <source>Updating out-of-date addons...</source>
+      <translation type="unfinished">Updating out-of-date addons...</translation>
     </message>
   </context>
   <context>
@@ -871,7 +841,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="86"/>
       <source>Main macro file</source>
-      <translation type="unfinished">Main macro file</translation>
+      <translation>Ana makro dosyası</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="93"/>
@@ -883,7 +853,7 @@ installed addons will be checked for available updates
       <location filename="../../developer_mode_add_content.ui" line="161"/>
       <location filename="../../developer_mode_add_content.ui" line="193"/>
       <source>Browse...</source>
-      <translation type="unfinished">Browse...</translation>
+      <translation>Gözat...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="111"/>
@@ -893,7 +863,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="125"/>
       <source>Workbench class name</source>
-      <translation type="unfinished">Workbench class name</translation>
+      <translation>Tezgah sınıfı adı</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="132"/>
@@ -903,7 +873,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="145"/>
       <source>Subdirectory</source>
-      <translation type="unfinished">Subdirectory</translation>
+      <translation>Alt dizin</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="154"/>
@@ -928,22 +898,22 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="206"/>
       <source>Tags...</source>
-      <translation type="unfinished">Tags...</translation>
+      <translation>Etiketler...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="213"/>
       <source>Dependencies...</source>
-      <translation type="unfinished">Dependencies...</translation>
+      <translation>Bağımlılık...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="220"/>
       <source>FreeCAD Versions...</source>
-      <translation type="unfinished">FreeCAD Versions...</translation>
+      <translation>FreeCAD Sürümü...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="258"/>
       <source>Other Metadata</source>
-      <translation type="unfinished">Other Metadata</translation>
+      <translation>Diğer meta veriler</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="264"/>
@@ -963,12 +933,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="297"/>
       <source>Semantic (1.2.3-beta) or CalVer (2022.08.30) styles supported</source>
-      <translation type="unfinished">Semantic (1.2.3-beta) or CalVer (2022.08.30) styles supported</translation>
+      <translation>Semantic (1.2.3-beta) ya da CalVer (2022.08.30) stilleri desteklenir</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="304"/>
       <source>Set to today (CalVer style)</source>
-      <translation type="unfinished">Set to today (CalVer style)</translation>
+      <translation>Bugüne ayarla (CalVer stili)</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="313"/>
@@ -991,7 +961,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../add_toolbar_button_dialog.ui" line="20"/>
       <source>Add a toolbar button for this macro?</source>
-      <translation type="unfinished">Add a toolbar button for this macro?</translation>
+      <translation>Bu makro için bir araç çubuğu düğmesi eklensin mi?</translation>
     </message>
     <message>
       <location filename="../../add_toolbar_button_dialog.ui" line="32"/>
@@ -1027,17 +997,17 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_copyright_info.ui" line="14"/>
       <source>Copyright Information</source>
-      <translation type="unfinished">Copyright Information</translation>
+      <translation>Telif Hakkı Bilgisi</translation>
     </message>
     <message>
       <location filename="../../developer_mode_copyright_info.ui" line="22"/>
       <source>Copyright holder:</source>
-      <translation type="unfinished">Copyright holder:</translation>
+      <translation>Telif hakkı sahibi:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_copyright_info.ui" line="32"/>
       <source>Copyright year:</source>
-      <translation type="unfinished">Copyright year:</translation>
+      <translation>Telif Hakkı Yılı:</translation>
     </message>
   </context>
   <context>
@@ -1045,12 +1015,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_people.ui" line="14"/>
       <source>Add Person</source>
-      <translation type="unfinished">Add Person</translation>
+      <translation>Kişi Ekle</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people.ui" line="20"/>
       <source>A maintainer is someone with current commit access on this project. An author is anyone else you&apos;d like to give credit to.</source>
-      <translation type="unfinished">A maintainer is someone with current commit access on this project. An author is anyone else you&apos;d like to give credit to.</translation>
+      <translation>Geliştirici, bu projede geçerli taahhüt erişimine sahip olan kişidir. Bir yazar, kredi vermek istediğiniz herhangi bir kişidir.</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people.ui" line="29"/>
@@ -1060,12 +1030,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_people.ui" line="39"/>
       <source>Email:</source>
-      <translation type="unfinished">Email:</translation>
+      <translation>E-Posta:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people.ui" line="46"/>
       <source>Email is required for maintainers, and optional for authors.</source>
-      <translation type="unfinished">Email is required for maintainers, and optional for authors.</translation>
+      <translation>E-posta, geliştiriciler için gereklidir, yazarlar için isteğe bağlıdır.</translation>
     </message>
   </context>
   <context>
@@ -1073,27 +1043,27 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../proxy_authentication.ui" line="14"/>
       <source>Proxy login required</source>
-      <translation type="unfinished">Proxy login required</translation>
+      <translation>Vekil sunucu girişi gerekli</translation>
     </message>
     <message>
       <location filename="../../proxy_authentication.ui" line="20"/>
       <source>Proxy requires authentication</source>
-      <translation type="unfinished">Proxy requires authentication</translation>
+      <translation>Vekil sunucu kimlik doğrulaması gerektiriyor</translation>
     </message>
     <message>
       <location filename="../../proxy_authentication.ui" line="29"/>
       <source>Proxy:</source>
-      <translation type="unfinished">Proxy:</translation>
+      <translation>Vekil Sunucu:</translation>
     </message>
     <message>
       <location filename="../../proxy_authentication.ui" line="42"/>
       <source>Placeholder for proxy address</source>
-      <translation type="unfinished">Placeholder for proxy address</translation>
+      <translation>Vekil sunucu adresi için yer tutucu</translation>
     </message>
     <message>
       <location filename="../../proxy_authentication.ui" line="49"/>
       <source>Realm:</source>
-      <translation type="unfinished">Realm:</translation>
+      <translation>Erişim Alanı:</translation>
     </message>
     <message>
       <location filename="../../proxy_authentication.ui" line="56"/>
@@ -1116,37 +1086,37 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_license.ui" line="14"/>
       <source>Select a license</source>
-      <translation type="unfinished">Select a license</translation>
+      <translation>Bir lisans seçin</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="35"/>
       <source>About...</source>
-      <translation type="unfinished">About...</translation>
+      <translation>Hakkında...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="46"/>
       <source>License name:</source>
-      <translation type="unfinished">License name:</translation>
+      <translation>Lisans adı:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="60"/>
       <source>Path to license file:</source>
-      <translation type="unfinished">Path to license file:</translation>
+      <translation>Lisans dosyasının yolu:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="67"/>
       <source>(if required by license)</source>
-      <translation type="unfinished">(if required by license)</translation>
+      <translation>(lisans gerektiriyorsa)</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="74"/>
       <source>Browse...</source>
-      <translation type="unfinished">Browse...</translation>
+      <translation>Gözat...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="81"/>
       <source>Create...</source>
-      <translation type="unfinished">Create...</translation>
+      <translation>Oluştur...</translation>
     </message>
   </context>
   <context>
@@ -1177,7 +1147,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../toolbar_button.ui" line="20"/>
       <source>Add a toolbar button for this macro?</source>
-      <translation type="unfinished">Add a toolbar button for this macro?</translation>
+      <translation>Bu makro için bir araç çubuğu düğmesi eklensin mi?</translation>
     </message>
     <message>
       <location filename="../../toolbar_button.ui" line="32"/>

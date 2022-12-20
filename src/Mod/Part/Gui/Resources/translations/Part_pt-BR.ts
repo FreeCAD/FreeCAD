@@ -2742,8 +2742,8 @@ será importada como uma propriedade da forma geométrica, em vez de ser colocad
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="107"/>
-      <source>Use legacy exporter</source>
-      <translation>Use o exportador legado</translation>
+      <source>Use legacy export function</source>
+      <translation type="unfinished">Use legacy export function</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="120"/>
@@ -3484,11 +3484,6 @@ durante a leitura de arquivos. A importação levará mais tempo e mais detalhes
       <source>File Name</source>
       <translation>Nome do arquivo</translation>
     </message>
-    <message>
-      <location filename="../../DlgPartImportIges.ui" line="54"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
   </context>
   <context>
     <name>PartGui::DlgPartImportIgesImp</name>
@@ -3514,11 +3509,6 @@ durante a leitura de arquivos. A importação levará mais tempo e mais detalhes
       <location filename="../../DlgPartImportStep.ui" line="20"/>
       <source>File Name</source>
       <translation>Nome do arquivo</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPartImportStep.ui" line="54"/>
-      <source>...</source>
-      <translation>...</translation>
     </message>
   </context>
   <context>
@@ -4131,8 +4121,8 @@ durante a leitura de arquivos. A importação levará mais tempo e mais detalhes
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="49"/>
-      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tesselação&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Define o desvio máximo da malha tesselada para a superfície. Quanto menor o valor, menor a velocidade de renderização, o que resulta em maior detalhe / resolução.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="52"/>
@@ -4140,19 +4130,9 @@ durante a leitura de arquivos. A importação levará mais tempo e mais detalhes
       <translation>Desvio máximo dependendo da caixa de volume</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPart.ui" line="59"/>
-      <source> %</source>
-      <translation> %</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="87"/>
       <source>Maximum angular deflection</source>
       <translation>Deflexão angular máxima</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettings3DViewPart.ui" line="94"/>
-      <source> °</source>
-      <translation> °</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPartImp.cpp" line="68"/>
@@ -4302,11 +4282,6 @@ durante a leitura de arquivos. A importação levará mais tempo e mais detalhes
       <location filename="../../DlgSettingsObjectColor.ui" line="90"/>
       <source>The default transparency for new shapes</source>
       <translation type="unfinished">The default transparency for new shapes</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsObjectColor.ui" line="93"/>
-      <source>%</source>
-      <translation>%</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="118"/>
@@ -4596,17 +4571,17 @@ o vetor normal ao plano de esboço será usado</translation>
   <context>
     <name>PartGui::ResultModel</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="342"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="340"/>
       <source>Name</source>
       <translation>Nome</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="344"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="342"/>
       <source>Type</source>
       <translation>Tipo</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="346"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="344"/>
       <source>Error</source>
       <translation>Erro</translation>
     </message>
@@ -4687,11 +4662,6 @@ Works only if all objects have the same values.</translation>
       <translation>Transparência</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.ui" line="342"/>
-      <source>0 %</source>
-      <translation type="unfinished">0 %</translation>
-    </message>
-    <message>
       <location filename="../../SectionCutting.ui" line="367"/>
       <source>Refreshes the list of visible objects</source>
       <translation type="unfinished">Refreshes the list of visible objects</translation>
@@ -4714,7 +4684,7 @@ only created cuts will be visible</translation>
       <translation type="unfinished">Keep only cuts visible when closing</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.cpp" line="407"/>
+      <location filename="../../SectionCutting.cpp" line="429"/>
       <source>Sliders are disabled for assemblies</source>
       <translation type="unfinished">Sliders are disabled for assemblies</translation>
     </message>
@@ -5092,35 +5062,35 @@ Nota: As coordenadas da posição são relacionadas ao sistema local de coordena
   <context>
     <name>PartGui::TaskCheckGeometryDialog</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1000"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="998"/>
       <source>Shape Content</source>
       <translation>Conteúdo da forma</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1008"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="1202"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1006"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1200"/>
       <source>Settings</source>
       <translation>Configurações</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1012"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1010"/>
       <source>Skip settings page</source>
       <translation>Ignorar página de configurações</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1013"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1011"/>
       <source>Skip this settings page and run the geometry check automatically.
 Default: false</source>
       <translation>Ignore esta página de configurações e executar a verificação de geometrias automaticamente.
 Padrão: falso</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1022"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1020"/>
       <source>Run BOP check</source>
       <translation>Executar verificação BOP</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1023"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1021"/>
       <source>Extra boolean operations check that can sometimes find errors that
 the standard BRep geometry check misses. These errors do not always 
 mean the checked object is unusable.  Default: false</source>
@@ -5128,155 +5098,155 @@ mean the checked object is unusable.  Default: false</source>
 significam que o objeto analisado é imprestável. Padrão: falso</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1033"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1031"/>
       <source>Single-threaded</source>
       <translation>Um histórico</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1034"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1032"/>
       <source>Run the geometry check in a single thread.  This is slower,
 but more stable.  Default: false</source>
       <translation>Execute a verificação de geometria em um único histórico. Isto é mais lento,
 mas mais estável. Padrão: falso</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1043"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1041"/>
       <source>Log errors</source>
       <translation>Log de erros</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1044"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1042"/>
       <source>Log errors to report view.  Default: true</source>
       <translation>Registrar os erros na visualização de relatório. Padrão: verdadeiro</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1051"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1049"/>
       <source>Expand shape content</source>
       <translation>Expandir conteúdo da forma</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1052"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1050"/>
       <source>Expand shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation>Expandir o conteúdo da forma. As alterações terão efeito na próxima vez que você usar 
 a ferramenta de verificação de geometria. Padrão: falso</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1061"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1059"/>
       <source>Advanced shape content</source>
       <translation>Conteúdo avançado de forma</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1062"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1060"/>
       <source>Show advanced shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation>Exibe o conteúdo avançado da forma. As alterações terão efeito na próxima vez que você usar 
 a ferramenta de verificação de geometria. Padrão: falso</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1070"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1068"/>
       <source>
 Individual BOP Checks:</source>
       <translation>
 Verificações individuais do BOP:</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1073"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1071"/>
       <source>  Bad type</source>
       <translation>  Tipo inválido</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1074"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1072"/>
       <source>Check for bad argument types.  Default: true</source>
       <translation>Verificar por tipos de argumento inválidos. Padrão: verdadeiro</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1081"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1079"/>
       <source>  Self-intersect</source>
       <translation>  Auto-intersecção</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1082"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1080"/>
       <source>Check for self-intersections.  Default: true</source>
       <translation>Verificar auto-intersecções. Padrão: verdadeiro</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1089"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1087"/>
       <source>  Too small edge</source>
       <translation>  Aresta muito pequena</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1090"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1088"/>
       <source>Check for edges that are too small.  Default: true</source>
       <translation>Verificar arestas muito pequenas. Padrão: verdadeiro</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1097"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1095"/>
       <source>  Nonrecoverable face</source>
       <translation>  Face não-recuperável</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1098"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1096"/>
       <source>Check for nonrecoverable faces.  Default: true</source>
       <translation>Verificar faces não recuperáveis. Padrão: verdadeiro</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1105"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1103"/>
       <source>  Continuity</source>
       <translation>  Continuidade</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1106"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1104"/>
       <source>Check for continuity.  Default: true</source>
       <translation>Verificar continuidade. Padrão: verdadeiro</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1113"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1111"/>
       <source>  Incompatibility of face</source>
       <translation>  Incompatibilidade de face</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1114"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1112"/>
       <source>Check for incompatible faces.  Default: true</source>
       <translation>Verificação de faces incompatíveis. Padrão: verdadeiro</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1121"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1119"/>
       <source>  Incompatibility of vertex</source>
       <translation>  Incompatibilidade de vértice</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1122"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1120"/>
       <source>Check for incompatible vertices.  Default: true</source>
       <translation>Verificação de vértices incompatíveis. Padrão: verdadeiro</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1129"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1127"/>
       <source>  Incompatibility of edge</source>
       <translation>  Incompatibilidade de aresta</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1130"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1128"/>
       <source>Check for incompatible edges.  Default: true</source>
       <translation>Verificar arestas incompatíveis. Padrão: verdadeiro</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1137"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1135"/>
       <source>  Invalid curve on surface</source>
       <translation>  Curva inválida na superfície</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1138"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1136"/>
       <source>Check for invalid curves on surfaces.  Default: true</source>
       <translation>Verificar curvas inválidas em superfícies. Padrão: verdadeiro</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1201"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1199"/>
       <source>Run check</source>
       <translation>Executar verificação</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1207"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1205"/>
       <source>Results</source>
       <translation>Resultados</translation>
     </message>
@@ -5284,18 +5254,18 @@ Verificações individuais do BOP:</translation>
   <context>
     <name>PartGui::TaskCheckGeometryResults</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="377"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="375"/>
       <source>Check Geometry Results</source>
       <translation>Verificar geometria</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="396"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="394"/>
       <source>Check is running...</source>
       <translation>Verificação em execução...</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="420"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="424"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="418"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="422"/>
       <source>Check geometry</source>
       <translation>Verificar a geometria</translation>
     </message>
@@ -5618,12 +5588,12 @@ in the 3D view for the sweep path.</source>
       <translation>Faz faces planas separadas de cada arame independentemente. Não há suporte para furos; os arames podem estar em diferentes planos.</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMakerCheese.cpp" line="246"/>
+      <location filename="../../../App/FaceMakerCheese.cpp" line="247"/>
       <source>Cheese facemaker</source>
       <translation>Facemaker Queijo</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMakerCheese.cpp" line="251"/>
+      <location filename="../../../App/FaceMakerCheese.cpp" line="252"/>
       <source>Supports making planar faces with holes, but no islands inside holes.</source>
       <translation>Suporta fazer faces planas com buracos, mas não há ilhas dentro de buracos.</translation>
     </message>
@@ -5647,21 +5617,21 @@ in the 3D view for the sweep path.</source>
       <translation>Editar %1</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="211"/>
+      <location filename="../../AppPartGui.cpp" line="224"/>
       <source>Part and Part Design workbench</source>
       <translation type="unfinished">Part and Part Design workbench</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="212"/>
-      <location filename="../../AppPartGui.cpp" line="213"/>
-      <location filename="../../AppPartGui.cpp" line="214"/>
-      <location filename="../../AppPartGui.cpp" line="215"/>
+      <location filename="../../AppPartGui.cpp" line="225"/>
+      <location filename="../../AppPartGui.cpp" line="226"/>
+      <location filename="../../AppPartGui.cpp" line="227"/>
+      <location filename="../../AppPartGui.cpp" line="228"/>
       <source>Part/Part Design</source>
       <translation type="unfinished">Part/Part Design</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="216"/>
-      <location filename="../../AppPartGui.cpp" line="217"/>
+      <location filename="../../AppPartGui.cpp" line="229"/>
+      <location filename="../../AppPartGui.cpp" line="230"/>
       <source>Import-Export</source>
       <translation>Importação e exportação</translation>
     </message>
@@ -6022,8 +5992,8 @@ Deseja continuar?</translation>
       <translation>BOPAlgo NotValid</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="456"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="698"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="454"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="696"/>
       <source>Invalid</source>
       <translation>Inválido</translation>
     </message>

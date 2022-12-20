@@ -4,17 +4,17 @@
   <context>
     <name>CmdPathArea</name>
     <message>
-      <location filename="../../Command.cpp" line="56"/>
+      <location filename="../../Command.cpp" line="46"/>
       <source>Path</source>
       <translation>Szerszámpálya</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="57"/>
+      <location filename="../../Command.cpp" line="47"/>
       <source>Area</source>
       <translation>Terület</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="58"/>
+      <location filename="../../Command.cpp" line="48"/>
       <source>Creates a feature area from selected objects</source>
       <translation>Függvényterület létrehozása kijelölt objektumokból</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdPathAreaWorkplane</name>
     <message>
-      <location filename="../../Command.cpp" line="138"/>
+      <location filename="../../Command.cpp" line="128"/>
       <source>Path</source>
       <translation>Szerszámpálya</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="139"/>
+      <location filename="../../Command.cpp" line="129"/>
       <source>Area workplane</source>
       <translation>Terület munkasík</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="140"/>
+      <location filename="../../Command.cpp" line="130"/>
       <source>Select a workplane for a FeatureArea</source>
       <translation>Munkasík kiválasztása a Tulajdonságterület-hez</translation>
     </message>
@@ -40,17 +40,17 @@
   <context>
     <name>CmdPathCompound</name>
     <message>
-      <location filename="../../Command.cpp" line="228"/>
+      <location filename="../../Command.cpp" line="218"/>
       <source>Path</source>
       <translation>Szerszámpálya</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="229"/>
+      <location filename="../../Command.cpp" line="219"/>
       <source>Compound</source>
       <translation>Összetétel</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="230"/>
+      <location filename="../../Command.cpp" line="220"/>
       <source>Creates a compound from selected paths</source>
       <translation>A kijelölt útvonalakból hozza össze az összetett szerszámpálya útvonalat</translation>
     </message>
@@ -58,17 +58,17 @@
   <context>
     <name>CmdPathShape</name>
     <message>
-      <location filename="../../Command.cpp" line="280"/>
+      <location filename="../../Command.cpp" line="270"/>
       <source>Path</source>
       <translation>Szerszámpálya</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="281"/>
+      <location filename="../../Command.cpp" line="271"/>
       <source>From Shape</source>
       <translation>Alakzatból</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="282"/>
+      <location filename="../../Command.cpp" line="272"/>
       <source>Creates a path from a selected shape</source>
       <translation>Létrehoz egy szerszámpálya útvonalat a kijelölt alakzattal</translation>
     </message>
@@ -76,27 +76,27 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="107"/>
+      <location filename="../../Command.cpp" line="97"/>
       <source>Create Path Area View</source>
       <translation>Szerszámpálya terület nézet létrehozása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="116"/>
+      <location filename="../../Command.cpp" line="106"/>
       <source>Create Path Area</source>
       <translation>Szerszámpálya terület létrehozása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="204"/>
+      <location filename="../../Command.cpp" line="194"/>
       <source>Select Workplane for Path Area</source>
       <translation>Munkasík kiválasztása a Szerszámpálya területhez</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="255"/>
+      <location filename="../../Command.cpp" line="245"/>
       <source>Create Path Compound</source>
       <translation>Szerszámpálya összekapcsolás létrehozása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="325"/>
+      <location filename="../../Command.cpp" line="315"/>
       <source>Create Path Shape</source>
       <translation>Szerszámpálya alakzat létrehozása</translation>
     </message>
@@ -680,7 +680,7 @@
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="257"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;I checked the path is constrained by the solid. Otherwise the volume of the solid describes a &amp;quot;keep out&amp;quot; zone.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;I checked the path is constrained by the solid. Otherwise the volume of the solid describes a &amp;quot;keep out&amp;quot; zone.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ellenőriztem, hogy az útvonalat a szilárd anyag kényszerti-e. Ellenkező esetben a szilárd anyag térfogata ler egy &amp;quot;távoltartási&amp;quot; zónát.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="260"/>
@@ -843,15 +843,6 @@
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A kiválasztott funkció Z értékének átvitele a művelet kezdő mélységeként.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../panels/PageDepthsEdit.ui" line="62"/>
-      <location filename="../panels/PageDepthsEdit.ui" line="108"/>
-      <location filename="../panels/PageDiametersEdit.ui" line="46"/>
-      <location filename="../panels/PageDiametersEdit.ui" line="83"/>
-      <location filename="../panels/PageOpProbeEdit.ui" line="155"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
-    <message>
       <location filename="../panels/PageDepthsEdit.ui" line="85"/>
       <location filename="../panels/SetupGlobal.ui" line="50"/>
       <source>Final Depth</source>
@@ -998,22 +989,22 @@
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="55"/>
       <source>Cut Region</source>
-      <translation type="unfinished">Cut Region</translation>
+      <translation>Vágandó terület</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="62"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cut inside or outside of the selected shapes&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cut inside or outside of the selected shapes&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Vágás a kijelölt alakzatokon belül vagy kívül&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="69"/>
       <source>Operation Type</source>
-      <translation type="unfinished">Operation Type</translation>
+      <translation>Művelettípus</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="76"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Type of adaptive operation&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Type of adaptive operation&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Az adaptív művelet típusa&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="83"/>
@@ -1024,77 +1015,77 @@
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="90"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optimal value for tool stepover&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optimal value for tool stepover&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optimális szerszámlépésérték&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="112"/>
       <source>Accuracy vs Performance</source>
-      <translation type="unfinished">Accuracy vs Performance</translation>
+      <translation>Pontosság vs. teljesítmény</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="119"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Influences calculation performance vs stability and accuracy&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Influences calculation performance vs stability and accuracy&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A számítási teljesítményre gyakorolt hatás, valamint a stabilitás és a pontosság&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="147"/>
       <source>Helix Ramp Angle</source>
-      <translation type="unfinished">Helix Ramp Angle</translation>
+      <translation>Spirál dőlésszöge</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="154"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Angle of the helix ramp entry&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Angle of the helix ramp entry&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Spirál rámpa bejárati szöge&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="161"/>
       <source>Helix Cone Angle</source>
-      <translation type="unfinished">Helix Cone Angle</translation>
+      <translation>Spirál kúp szöge</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="168"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Angle of the helix entry cone&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Angle of the helix entry cone&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Spirál belépő kúpszög&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="175"/>
       <source>Helix Max Diameter</source>
-      <translation type="unfinished">Helix Max Diameter</translation>
+      <translation>Spirál max átmérő</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="182"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If &amp;gt;0 it limits the helix ramp diameter&lt;/p&gt;&lt;p&gt;otherwise the 75 percent of tool diameter is used&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If &amp;gt;0 it limits the helix ramp diameter&lt;/p&gt;&lt;p&gt;otherwise the 75 percent of tool diameter is used&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A &amp;gt;0 érték korlátozza a spirál rámpa átmérőjét&lt;/p&gt;&lt;p&gt;, különben a szerszám átmérőjének 75% -át használják:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="189"/>
       <source>Lift Distance</source>
-      <translation type="unfinished">Lift Distance</translation>
+      <translation>Emelési távolság</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="196"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;How much to lift the tool up during the rapid linking moves over cleared regions.&lt;/p&gt;&lt;p&gt;If linking path is not clear tool is raised to clearence height.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;How much to lift the tool up during the rapid linking moves over cleared regions.&lt;/p&gt;&lt;p&gt;If linking path is not clear tool is raised to clearence height.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Milyen magasra kell emelni a szerszámot a tisztított területeken végzett gyors összekötő mozgások során.&lt;/p&gt; &lt;p&gt;Ha az összekötő út nem szabad, a szerszámot a távolságtartó magasságára emelik.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="203"/>
       <source>Keep Tool Down Ratio</source>
-      <translation type="unfinished">Keep Tool Down Ratio</translation>
+      <translation>A szerszám le tényező fenntartása</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="210"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Max length of keep-tool-down linking path compared to direct distance between points.&lt;/p&gt;&lt;p&gt;If exceeded link will be done by raising the tool to clearence height.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Max length of keep-tool-down linking path compared to direct distance between points.&lt;/p&gt;&lt;p&gt;If exceeded link will be done by raising the tool to clearence height.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A szerszám által lenyomott összekötő út maximális hossza a pontok közötti közvetlen távolsághoz viszonyítva.&lt;/p&gt; &lt;p&gt;Ha túllépik, az illesztést úgy hajtják végre, hogy a szerszámot a távolságtartó magasságába emelik.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="217"/>
       <source>Stock to Leave</source>
-      <translation type="unfinished">Stock to Leave</translation>
+      <translation>Kitöltendő mennyiség</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="224"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;How much material to leave (i.e. for finishing operation)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;How much material to leave (i.e. for finishing operation)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A távozó többlet mennyisége (pl. befejező művelethez)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="231"/>
@@ -1104,7 +1095,7 @@
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="238"/>
       <source>Finishing Profile</source>
-      <translation type="unfinished">Finishing Profile</translation>
+      <translation>Profil befejezése</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="245"/>
@@ -1246,7 +1237,7 @@
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="159"/>
       <source>Chip Break</source>
-      <translation type="unfinished">Chip Break</translation>
+      <translation>Forgácstörés</translation>
     </message>
     <message>
       <location filename="../panels/PageOpEngraveEdit.ui" line="63"/>
@@ -1996,7 +1987,7 @@
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="32"/>
       <source>Thread</source>
-      <translation type="unfinished">Thread</translation>
+      <translation>Téma</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="38"/>
@@ -2017,12 +2008,12 @@
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="85"/>
       <source>Major Diameter</source>
-      <translation type="unfinished">Major Diameter</translation>
+      <translation>Max átmérő</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="99"/>
       <source>Minor Diameter</source>
-      <translation type="unfinished">Minor Diameter</translation>
+      <translation>Min átmérő</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="113"/>
@@ -2097,17 +2088,17 @@
       <translation type="unfinished">Point Edit</translation>
     </message>
     <message>
-      <location filename="../panels/PointEdit.ui" line="23"/>
+      <location filename="../panels/PointEdit.ui" line="22"/>
       <source>Global X</source>
       <translation>Globális X</translation>
     </message>
     <message>
-      <location filename="../panels/PointEdit.ui" line="30"/>
+      <location filename="../panels/PointEdit.ui" line="29"/>
       <source>Global Y</source>
       <translation>Globális Y</translation>
     </message>
     <message>
-      <location filename="../panels/PointEdit.ui" line="40"/>
+      <location filename="../panels/PointEdit.ui" line="39"/>
       <source>Global Z</source>
       <translation>Globális Z</translation>
     </message>
@@ -2124,7 +2115,7 @@
     <message>
       <location filename="../panels/PropertyBag.ui" line="62"/>
       <source>Add...</source>
-      <translation type="unfinished">Add...</translation>
+      <translation>Hozzáadás...</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="20"/>
@@ -2152,23 +2143,10 @@
       <translation type="unfinished">Length Offset</translation>
     </message>
     <message>
-      <location filename="../panels/ToolEditor.ui" line="74"/>
-      <location filename="../panels/ToolEditor.ui" line="131"/>
-      <location filename="../panels/ToolEditor.ui" line="141"/>
-      <location filename="../panels/ToolEditor.ui" line="151"/>
-      <location filename="../panels/ToolEditor.ui" line="171"/>
-      <location filename="../panels/ToolEditor.ui" line="203"/>
-      <location filename="../panels/ToolEditor.ui" line="220"/>
-      <location filename="../panels/ToolEditor.ui" line="237"/>
-      <location filename="../panels/ToolEditor.ui" line="277"/>
-      <source>0.00</source>
-      <translation type="unfinished">0.00</translation>
-    </message>
-    <message>
       <location filename="../panels/ToolEditor.ui" line="87"/>
       <location filename="../panels/ToolEditor.ui" line="184"/>
       <source>Tool Parameter</source>
-      <translation type="unfinished">Tool Parameter</translation>
+      <translation>Szerszámadatok</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="103"/>
@@ -2188,19 +2166,7 @@
     <message>
       <location filename="../panels/ToolEditor.ui" line="124"/>
       <source>Cutting Edge Height</source>
-      <translation type="unfinished">Cutting Edge Height</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolEditor.ui" line="161"/>
-      <location filename="../panels/ToolEditor.ui" line="254"/>
-      <source>180°</source>
-      <translation type="unfinished">180°</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolEditor.ui" line="164"/>
-      <location filename="../panels/ToolEditor.ui" line="257"/>
-      <source>°</source>
-      <translation>°</translation>
+      <translation>Maximális fogásmélység</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="196"/>
@@ -2216,11 +2182,6 @@
       <location filename="../panels/ToolEditor.ui" line="230"/>
       <source>H =</source>
       <translation type="unfinished">H =</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolEditor.ui" line="247"/>
-      <source>α = </source>
-      <translation type="unfinished">α = </translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="267"/>
@@ -2240,7 +2201,7 @@
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="26"/>
       <source>Default Width</source>
-      <translation type="unfinished">Default Width</translation>
+      <translation>Alapértelmezett szélesség</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="33"/>
@@ -2250,7 +2211,7 @@
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="40"/>
       <source>Default Height</source>
-      <translation type="unfinished">Default Height</translation>
+      <translation>Alapértelmezett hossz</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="47"/>
@@ -2275,7 +2236,7 @@
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="87"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Radius of the fillet on the tag's top edge.&lt;/p&gt;&lt;p&gt;If the radius is bigger than that which the tag shape itself supports, the resulting shape will be that of a dome.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Radius of the fillet on the tag's top edge.&lt;/p&gt;&lt;p&gt;If the radius is bigger than that which the tag shape itself supports, the resulting shape will be that of a dome.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A lekerekrás sugara a címke felső szélén.&lt;/p&gt; &lt;p&gt;Ha a sugár nagyobb, mint amit maga a címkeforma támogat, akkor a kapott alak egy kupola alakja lesz.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="97"/>
@@ -2321,13 +2282,6 @@
       <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Path to look for templates, post processors, tool tables and other external files.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;If left empty the macro directory is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="58"/>
-      <location filename="../preferences/PathJob.ui" line="79"/>
-      <location filename="../preferences/PathJob.ui" line="200"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
-    <message>
       <location filename="../preferences/PathJob.ui" line="65"/>
       <source>Template</source>
       <translation>Sablon</translation>
@@ -2343,204 +2297,204 @@
       <translation>Geometria</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="98"/>
+      <location filename="../preferences/PathJob.ui" line="97"/>
       <source>Default Geometry Tolerance</source>
       <translation type="unfinished">Default Geometry Tolerance</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="105"/>
+      <location filename="../preferences/PathJob.ui" line="104"/>
       <source>Default value for new Jobs, used for computing Paths.  Smaller increases accuracy, but slows down computation</source>
       <translation type="unfinished">Default value for new Jobs, used for computing Paths.  Smaller increases accuracy, but slows down computation</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="112"/>
+      <location filename="../preferences/PathJob.ui" line="111"/>
       <source>Default Curve Accuracy</source>
       <translation type="unfinished">Default Curve Accuracy</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="150"/>
-      <location filename="../preferences/PathJob.ui" line="265"/>
+      <location filename="../preferences/PathJob.ui" line="148"/>
+      <location filename="../preferences/PathJob.ui" line="249"/>
       <source>Post Processor</source>
       <translation>Utófeldolgozó</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="162"/>
+      <location filename="../preferences/PathJob.ui" line="160"/>
       <source>Output File</source>
-      <translation type="unfinished">Output File</translation>
+      <translation>Kimeneti fájl</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="174"/>
+      <location filename="../preferences/PathJob.ui" line="171"/>
       <source>Default Path</source>
       <translation type="unfinished">Default Path</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="193"/>
+      <location filename="../preferences/PathJob.ui" line="182"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter a path and optionally file name (see below) to be used as the default for the post processor export.&lt;/p&gt;&lt;p&gt;The following substitutions are performed before the name is resolved at the time of the post processing:&lt;/p&gt;&lt;p&gt;Substitution allows the following:&lt;/p&gt;&lt;p&gt;%D ... directory of the active document&lt;/p&gt;&lt;p&gt;%d ... name of the active document (with extension)&lt;/p&gt;&lt;p&gt;%M ... user macro directory&lt;/p&gt;&lt;p&gt;%j ... name of the active Job object&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The Following can be used if output is being split. If Output is not split&lt;/p&gt;&lt;p&gt;these will be ignored.  &lt;/p&gt;&lt;p&gt;%T ... Tool Number&lt;/p&gt;&lt;p&gt;%t ... Tool Controller label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%W ... Work Coordinate System&lt;/p&gt;&lt;p&gt;%O ... Operation Label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;When splitting output, a sequence number will always be added.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%S ... Sequence Number&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):&lt;/p&gt;&lt;p&gt;&amp;quot;/home/cnc/%d.g-code&amp;quot;&lt;/p&gt;&lt;p&gt;See the file save policy below on how to deal with name conflicts.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter a path and optionally file name (see below) to be used as the default for the post processor export.&lt;/p&gt;&lt;p&gt;The following substitutions are performed before the name is resolved at the time of the post processing:&lt;/p&gt;&lt;p&gt;Substitution allows the following:&lt;/p&gt;&lt;p&gt;%D ... directory of the active document&lt;/p&gt;&lt;p&gt;%d ... name of the active document (with extension)&lt;/p&gt;&lt;p&gt;%M ... user macro directory&lt;/p&gt;&lt;p&gt;%j ... name of the active Job object&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The Following can be used if output is being split. If Output is not split&lt;/p&gt;&lt;p&gt;these will be ignored.  &lt;/p&gt;&lt;p&gt;%T ... Tool Number&lt;/p&gt;&lt;p&gt;%t ... Tool Controller label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%W ... Work Coordinate System&lt;/p&gt;&lt;p&gt;%O ... Operation Label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;When splitting output, a sequence number will always be added.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%S ... Sequence Number&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):&lt;/p&gt;&lt;p&gt;&amp;quot;/home/cnc/%d.g-code&amp;quot;&lt;/p&gt;&lt;p&gt;See the file save policy below on how to deal with name conflicts.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Adjon meg egy elérési utat és opcionálisan fájlnevet (lásd alább), amelyet alapértelmezettként szeretne használni a processzor utáni exportáláshoz.&lt;/p&gt;&lt;p&gt;A következő helyettesítéseket hajtjuk végre, mielőtt a név az utófeldolgozáskor megoldódna&lt;/p&gt;&lt;p&gt;A helyettesítés a következőket teszi lehetővé:&lt;/p&gt;&lt;p&gt;%D ... az aktív dokumentum könyvtára&lt;/p&gt;&lt;p&gt;%d ... az aktív dokumentum neve (kiterjesztéssel)&lt;/p&gt;&lt;p&gt;%M ... Felhasználói makró könyvtár&lt;/p&gt;&lt;p&gt;%j ... az aktív feladatobjektum neve&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;A kimenet felosztása esetén a következő használható. Ha a kimenet nincs felosztva&lt;/p&gt;&lt;p&gt;, ezeket a rendszer figyelmen kívül hagyja.  &lt;/p&gt;&lt;p&gt;%T ... Szerszám száma&lt;/p&gt;&lt;p&gt;%t ... Szerszámvezérlő címke&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%W ... Munka koordináta-rendszer&lt;/p&gt;&lt;p&gt;%O ... Művelet címkéje&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;A kimenet felosztásakor a rendszer mindig hozzáad egy sorszámot.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;ha az %S értéket is tartalmazza, megadhatja, hogy hol történjen a szám.  Enélkül a szám hozzáadódik a karakterlánc végéhez.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%S ... Sorszám&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;A következő példa az összes fájlt ugyanazzal a névvel tárolja, mint a dokumentumot a könyvtár /home/freecad (kérjük, távolítsa el az idézőjeleket):&lt;/p&gt;&lt;p&gt;&amp;quot;/home/cnc/%d.g-code&amp;quot;&lt;/p&gt;&lt;p&gt;Lásd az alábbi fájlmentési irányelvet a névütközések kezeléséről.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="213"/>
+      <location filename="../preferences/PathJob.ui" line="200"/>
       <source>File Save Policy</source>
       <translation type="unfinished">File Save Policy</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="232"/>
+      <location filename="../preferences/PathJob.ui" line="217"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose how to deal with potential file name conflicts. Always open a dialog, only open a dialog if the output file already exists, overwrite any existing file or add a unique (3 digit) sequential ID to the file name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose how to deal with potential file name conflicts. Always open a dialog, only open a dialog if the output file already exists, overwrite any existing file or add a unique (3 digit) sequential ID to the file name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="236"/>
+      <location filename="../preferences/PathJob.ui" line="221"/>
       <source>Open File Dialog</source>
       <translation type="unfinished">Open File Dialog</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="241"/>
+      <location filename="../preferences/PathJob.ui" line="226"/>
       <source>Open File Dialog on conflict</source>
       <translation type="unfinished">Open File Dialog on conflict</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="246"/>
+      <location filename="../preferences/PathJob.ui" line="231"/>
       <source>Overwrite existing file</source>
       <translation type="unfinished">Overwrite existing file</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="251"/>
+      <location filename="../preferences/PathJob.ui" line="236"/>
       <source>Append Unique ID on conflict</source>
       <translation type="unfinished">Append Unique ID on conflict</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="274"/>
+      <location filename="../preferences/PathJob.ui" line="258"/>
       <source>Post Processors Selection </source>
       <translation type="unfinished">Post Processors Selection </translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="284"/>
+      <location filename="../preferences/PathJob.ui" line="268"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;It doesn't seem there are any post processor scripts installed. Please add some into your macro directory and make sure the file name ends with &amp;quot;_post.py&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;It doesn't seem there are any post processor scripts installed. Please add some into your macro directory and make sure the file name ends with &amp;quot;_post.py&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="291"/>
+      <location filename="../preferences/PathJob.ui" line="275"/>
       <source>Default Post Processor</source>
       <translation type="unfinished">Default Post Processor</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="298"/>
+      <location filename="../preferences/PathJob.ui" line="282"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select one of the post processors as the default.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select one of the post processors as the default.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="301"/>
+      <location filename="../preferences/PathJob.ui" line="285"/>
       <source>DefaultPostProcessor</source>
       <translation type="unfinished">DefaultPostProcessor</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="304"/>
+      <location filename="../preferences/PathJob.ui" line="288"/>
       <source>Mod/Path</source>
       <translation type="unfinished">Mod/Path</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="311"/>
+      <location filename="../preferences/PathJob.ui" line="295"/>
       <source>Default Arguments</source>
       <translation type="unfinished">Default Arguments</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="318"/>
+      <location filename="../preferences/PathJob.ui" line="302"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optional arguments passed to the default Post Processor specified above. See the Post Processor's documentation for supported arguments.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optional arguments passed to the default Post Processor specified above. See the Post Processor's documentation for supported arguments.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="356"/>
+      <location filename="../preferences/PathJob.ui" line="340"/>
       <source>Setup</source>
       <translation type="unfinished">Setup</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="362"/>
+      <location filename="../preferences/PathJob.ui" line="346"/>
       <source>Stock</source>
       <translation>Készlet</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="381"/>
+      <location filename="../preferences/PathJob.ui" line="365"/>
       <source>Create Box</source>
       <translation>Mező létrehozása</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="386"/>
+      <location filename="../preferences/PathJob.ui" line="370"/>
       <source>Create Cylinder</source>
       <translation>Henger létrehozása</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="391"/>
+      <location filename="../preferences/PathJob.ui" line="375"/>
       <source>Extend Model's Bound Box</source>
       <translation>A modellt körülvevő keret kiterjesztése</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="415"/>
+      <location filename="../preferences/PathJob.ui" line="399"/>
       <source>Ext. X</source>
       <translation>Kit. X</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="435"/>
+      <location filename="../preferences/PathJob.ui" line="419"/>
       <source>Ext. Y</source>
       <translation>Kit. Y</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="448"/>
+      <location filename="../preferences/PathJob.ui" line="432"/>
       <source>Ext. Z</source>
       <translation>Kit. Z</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="467"/>
+      <location filename="../preferences/PathJob.ui" line="451"/>
       <source>Radius</source>
       <translation>Sugár</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="477"/>
-      <location filename="../preferences/PathJob.ui" line="513"/>
+      <location filename="../preferences/PathJob.ui" line="461"/>
+      <location filename="../preferences/PathJob.ui" line="497"/>
       <source>Height</source>
       <translation>Magasság</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="493"/>
+      <location filename="../preferences/PathJob.ui" line="477"/>
       <source>Length</source>
       <translation>Hossz</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="503"/>
+      <location filename="../preferences/PathJob.ui" line="487"/>
       <source>Width</source>
       <translation>Szélesség</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="539"/>
+      <location filename="../preferences/PathJob.ui" line="523"/>
       <source>Placement</source>
       <translation>Elhelyezés</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="551"/>
+      <location filename="../preferences/PathJob.ui" line="535"/>
       <source>Angle</source>
       <translation>Szög</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="561"/>
+      <location filename="../preferences/PathJob.ui" line="545"/>
       <source>Axis</source>
       <translation>Tengely</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="589"/>
+      <location filename="../preferences/PathJob.ui" line="573"/>
       <source>Position</source>
       <translation>Pozíció</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="633"/>
+      <location filename="../preferences/PathJob.ui" line="617"/>
       <source>Tools</source>
       <translation>Eszközök</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="639"/>
+      <location filename="../preferences/PathJob.ui" line="623"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;References to Tool Bits and their shapes can either be stored with an absolute path or with a relative path to the search path.&lt;/p&gt;&lt;p&gt;Generally it is recommended to use relative paths due to their flexibility and robustness to layout changes.&lt;/p&gt;&lt;p&gt;Should multiple tools or tool shapes with the same name exist in different directories it can be required to use absolute paths. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;References to Tool Bits and their shapes can either be stored with an absolute path or with a relative path to the search path.&lt;/p&gt;&lt;p&gt;Generally it is recommended to use relative paths due to their flexibility and robustness to layout changes.&lt;/p&gt;&lt;p&gt;Should multiple tools or tool shapes with the same name exist in different directories it can be required to use absolute paths. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="642"/>
+      <location filename="../preferences/PathJob.ui" line="626"/>
       <source>Store Absolute Paths</source>
       <translation type="unfinished">Store Absolute Paths</translation>
     </message>
@@ -2548,8 +2502,8 @@
   <context>
     <name>PathGui::DlgProcessorChooser</name>
     <message>
-      <location filename="../../DlgProcessorChooser.cpp" line="49"/>
-      <location filename="../../DlgProcessorChooser.cpp" line="76"/>
+      <location filename="../../DlgProcessorChooser.cpp" line="42"/>
+      <location filename="../../DlgProcessorChooser.cpp" line="69"/>
       <source>None</source>
       <translation>Egyik sem</translation>
     </message>
@@ -2649,7 +2603,7 @@
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="374"/>
       <source>Default path shape selection behavior in 3D viewer</source>
-      <translation type="unfinished">Default path shape selection behavior in 3D viewer</translation>
+      <translation>Alapértelmezett útvonalforma-kiválasztási viselkedés a 3D-s megtekintőben</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="384"/>
@@ -2776,7 +2730,7 @@ p, li { white-space: pre-wrap; }
   <context>
     <name>PathGui::TaskWidgetPathCompound</name>
     <message>
-      <location filename="../../TaskDlgPathCompound.cpp" line="54"/>
+      <location filename="../../TaskDlgPathCompound.cpp" line="49"/>
       <source>Compound paths</source>
       <translation>Összetett útvonalak</translation>
     </message>
@@ -3014,7 +2968,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DogboneEdit.ui" line="121"/>
       <source>adaptive</source>
-      <translation type="unfinished">adaptive</translation>
+      <translation>alkalmazkodó</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="126"/>
@@ -3134,7 +3088,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="133"/>
       <source>Add...</source>
-      <translation type="unfinished">Add...</translation>
+      <translation>Hozzáadás...</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="143"/>
@@ -3297,11 +3251,6 @@ p, li { white-space: pre-wrap; }
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the filename containing the probe data&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the filename containing the probe data&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
-    <message>
-      <location filename="../panels/ZCorrectEdit.ui" line="64"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
   </context>
   <context>
     <name>TaskPathSimulator</name>
@@ -3377,11 +3326,6 @@ p, li { white-space: pre-wrap; }
       <translation type="unfinished">Accuracy:</translation>
     </message>
     <message>
-      <location filename="../panels/TaskPathSimulator.ui" line="261"/>
-      <source>%</source>
-      <translation>%</translation>
-    </message>
-    <message>
       <location filename="../panels/TaskPathSimulator.ui" line="278"/>
       <source>Job:</source>
       <translation type="unfinished">Job:</translation>
@@ -3399,12 +3343,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/TaskPathCamoticsSim.ui" line="68"/>
       <source>Launch Camotics</source>
-      <translation type="unfinished">Launch Camotics</translation>
+      <translation>Indítsa el a Camotics-ot</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathCamoticsSim.ui" line="75"/>
       <source>Make Camotics File</source>
-      <translation type="unfinished">Make Camotics File</translation>
+      <translation>Camotics fájl létrehozás</translation>
     </message>
   </context>
   <context>
@@ -3460,11 +3404,6 @@ p, li { white-space: pre-wrap; }
       <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Change file defining type and shape of Tool Bit.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../panels/ToolBitEditor.ui" line="109"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
-    <message>
       <location filename="../panels/ToolBitEditor.ui" line="122"/>
       <source>Parameter</source>
       <translation>Paraméter</translation>
@@ -3475,19 +3414,9 @@ p, li { white-space: pre-wrap; }
       <translation type="unfinished">Point/Tip Angle</translation>
     </message>
     <message>
-      <location filename="../panels/ToolBitEditor.ui" line="138"/>
-      <source>0 °</source>
-      <translation type="unfinished">0 °</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolBitEditor.ui" line="141"/>
-      <source>°</source>
-      <translation>°</translation>
-    </message>
-    <message>
       <location filename="../panels/ToolBitEditor.ui" line="148"/>
       <source>Cutting Edge Height</source>
-      <translation type="unfinished">Cutting Edge Height</translation>
+      <translation>Maximális fogásmélység</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="155"/>
@@ -3535,7 +3464,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitSelector.ui" line="104"/>
       <source>Add To Job</source>
-      <translation type="unfinished">Add To Job</translation>
+      <translation>Hozzáadás a munkához</translation>
     </message>
   </context>
   <context>
@@ -3543,7 +3472,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="14"/>
       <source>Job Edit</source>
-      <translation type="unfinished">Job Edit</translation>
+      <translation>Munka szerkesztés</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="21"/>
@@ -3590,14 +3519,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="134"/>
       <source>Output File</source>
-      <translation type="unfinished">Output File</translation>
-    </message>
-    <message>
-      <location filename="../panels/PathEdit.ui" line="148"/>
-      <location filename="../panels/PathEdit.ui" line="1406"/>
-      <location filename="../panels/PathEdit.ui" line="1417"/>
-      <source>...</source>
-      <translation>...</translation>
+      <translation>Kimeneti fájl</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="155"/>
@@ -3642,7 +3564,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="141"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter a path and optionally file name (see below) to be used as the default for the post processor export.&lt;/p&gt;&lt;p&gt;The following substitutions are performed before the name is resolved at the time of the post processing:&lt;/p&gt;&lt;p&gt;Substitution allows the following:&lt;/p&gt;&lt;p&gt;%D ... directory of the active document&lt;/p&gt;&lt;p&gt;%d ... name of the active document (with extension)&lt;/p&gt;&lt;p&gt;%M ... user macro directory&lt;/p&gt;&lt;p&gt;%j ... name of the active Job object&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The Following can be used if output is being split. If Output is not split&lt;/p&gt;&lt;p&gt;these will be ignored.  &lt;/p&gt;&lt;p&gt;%T ... Tool Number&lt;/p&gt;&lt;p&gt;%t ... Tool Controller label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%W ... Work Coordinate System&lt;/p&gt;&lt;p&gt;%O ... Operation Label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;When splitting output, a sequence number will always be added.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%S ... Sequence Number&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):&lt;/p&gt;&lt;p&gt;&amp;quot;/home/cnc/%d.g-code&amp;quot;&lt;/p&gt;&lt;p&gt;See the file save policy below on how to deal with name conflicts.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter a path and optionally file name (see below) to be used as the default for the post processor export.&lt;/p&gt;&lt;p&gt;The following substitutions are performed before the name is resolved at the time of the post processing:&lt;/p&gt;&lt;p&gt;Substitution allows the following:&lt;/p&gt;&lt;p&gt;%D ... directory of the active document&lt;/p&gt;&lt;p&gt;%d ... name of the active document (with extension)&lt;/p&gt;&lt;p&gt;%M ... user macro directory&lt;/p&gt;&lt;p&gt;%j ... name of the active Job object&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The Following can be used if output is being split. If Output is not split&lt;/p&gt;&lt;p&gt;these will be ignored.  &lt;/p&gt;&lt;p&gt;%T ... Tool Number&lt;/p&gt;&lt;p&gt;%t ... Tool Controller label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%W ... Work Coordinate System&lt;/p&gt;&lt;p&gt;%O ... Operation Label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;When splitting output, a sequence number will always be added.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%S ... Sequence Number&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):&lt;/p&gt;&lt;p&gt;&amp;quot;/home/cnc/%d.g-code&amp;quot;&lt;/p&gt;&lt;p&gt;See the file save policy below on how to deal with name conflicts.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Adjon meg egy elérési utat és opcionálisan fájlnevet (lásd alább), amelyet alapértelmezettként szeretne használni a processzor utáni exportáláshoz.&lt;/p&gt;&lt;p&gt;A következő helyettesítéseket hajtjuk végre, mielőtt a név az utófeldolgozáskor megoldódna&lt;/p&gt;&lt;p&gt;A helyettesítés a következőket teszi lehetővé:&lt;/p&gt;&lt;p&gt;%D ... az aktív dokumentum könyvtára&lt;/p&gt;&lt;p&gt;%d ... az aktív dokumentum neve (kiterjesztéssel)&lt;/p&gt;&lt;p&gt;%M ... Felhasználói makró könyvtár&lt;/p&gt;&lt;p&gt;%j ... az aktív feladatobjektum neve&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;A kimenet felosztása esetén a következő használható. Ha a kimenet nincs felosztva&lt;/p&gt;&lt;p&gt;, ezeket a rendszer figyelmen kívül hagyja.  &lt;/p&gt;&lt;p&gt;%T ... Szerszám száma&lt;/p&gt;&lt;p&gt;%t ... Szerszámvezérlő címke&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%W ... Munka koordináta-rendszer&lt;/p&gt;&lt;p&gt;%O ... Művelet címkéje&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;A kimenet felosztásakor a rendszer mindig hozzáad egy sorszámot.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;ha az %S értéket is tartalmazza, megadhatja, hogy hol történjen a szám.  Enélkül a szám hozzáadódik a karakterlánc végéhez.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%S ... Sorszám&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;A következő példa az összes fájlt ugyanazzal a névvel tárolja, mint a dokumentumot a könyvtár /home/freecad (kérjük, távolítsa el az idézőjeleket):&lt;/p&gt;&lt;p&gt;&amp;quot;/home/cnc/%d.g-code&amp;quot;&lt;/p&gt;&lt;p&gt;Lásd az alábbi fájlmentési irányelvet a névütközések kezeléséről.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="366"/>
@@ -3778,7 +3700,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="669"/>
       <source>Z-Axis</source>
-      <translation type="unfinished">Z-Axis</translation>
+      <translation>Z-tengely</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="676"/>
@@ -3808,7 +3730,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="865"/>
       <source>Rotate - XY</source>
-      <translation type="unfinished">Rotate - XY</translation>
+      <translation>Forgatás - XY</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="921"/>
@@ -3936,12 +3858,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1196"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Horizontal Feed&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Horizontal Feed&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Vízszintes adagolás&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1208"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Vertical Feed&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Vertical Feed&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Függőleges adagolás&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1217"/>
@@ -3991,7 +3913,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1356"/>
       <source>Active Tool </source>
-      <translation type="unfinished">Active Tool </translation>
+      <translation>Aktív szerszám</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1469"/>

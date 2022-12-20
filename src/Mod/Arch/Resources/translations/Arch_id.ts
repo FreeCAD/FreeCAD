@@ -61,7 +61,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="139"/>
       <source>Section Color</source>
-      <translation type="unfinished">Section Color</translation>
+      <translation>Bagian Warna</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="163"/>
@@ -86,7 +86,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="204"/>
       <source>Opens a browser dialog to choose a class from a BIM standard</source>
-      <translation type="unfinished">Opens a browser dialog to choose a class from a BIM standard</translation>
+      <translation>Membuka dialog broswer untuk memilih kelas dari standar BIM</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="223"/>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="268"/>
       <source>Father</source>
-      <translation type="unfinished">Father</translation>
+      <translation>Ayah</translation>
     </message>
   </context>
   <context>
@@ -198,12 +198,12 @@
     <message>
       <location filename="../ui/ArchSchedule.ui" line="22"/>
       <source>Schedule name:</source>
-      <translation type="unfinished">Schedule name:</translation>
+      <translation>Nama jadwal:</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="29"/>
       <source>Unnamed schedule</source>
-      <translation type="unfinished">Unnamed schedule</translation>
+      <translation>Jadwal tanpa nama</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="60"/>
@@ -226,10 +226,7 @@
 Can be "Count" to count the objects, or property names
 like "Length" or "Shape.Volume" to retrieve
 a certain property.</source>
-      <translation type="unfinished">The property to retrieve from each object.
-Can be "Count" to count the objects, or property names
-like "Length" or "Shape.Volume" to retrieve
-a certain property.</translation>
+      <translation>Nilai yang diambil untuk setiap objek. Dapat "diperhitungkan" untuk menghitung objek, atau nama properti seperti panjang atau bentuk. Isi untuk mengambil properti tertentu.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="79"/>
@@ -239,7 +236,7 @@ a certain property.</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="82"/>
       <source>An optional unit to express the resulting value. Ex: m^3 (you can also write m³ or m3)</source>
-      <translation type="unfinished">An optional unit to express the resulting value. Ex: m^3 (you can also write m³ or m3)</translation>
+      <translation>Sebuah unit pilihan untuk mengekspresikan nilai yang dihasilkan. Contoh: m^3 (Anda juga dapat menulis m³ atau m3)</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="87"/>
@@ -252,10 +249,10 @@ a certain property.</translation>
 (internal names, not labels), to be considered by this operation.
 If the list contains groups, children will be added.
 Leave blank to use all objects from the document</source>
-      <translation type="unfinished">An optional semicolon (;) separated list of object names
-(internal names, not labels), to be considered by this operation.
-If the list contains groups, children will be added.
-Leave blank to use all objects from the document</translation>
+      <translation>Sebuah pilihan Titik koma (;) daftar nama objek yang dipisahkan
+(nama internal, bukan label), untuk dipertimbangkan oleh operasi ini.
+Jika daftar berisi grup, anak-anak akan ditambahkan.
+Biarkan kosong untuk menggunakan semua objek dari dokumen</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="98"/>
@@ -285,7 +282,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="124"/>
       <source>Detailed results</source>
-      <translation type="unfinished">Detailed results</translation>
+      <translation>Rincian Hasil</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="135"/>
@@ -325,7 +322,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="183"/>
       <source>Add selection</source>
-      <translation type="unfinished">Add selection</translation>
+      <translation>Tambahkan Pilihan</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="190"/>
@@ -385,22 +382,22 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="22"/>
       <source>IFC UUID:</source>
-      <translation type="unfinished">IFC UUID:</translation>
+      <translation>IFC UUID:</translation>
     </message>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="29"/>
       <source>Leave this empty to generate one at export</source>
-      <translation type="unfinished">Leave this empty to generate one at export</translation>
+      <translation>Tinggalkan ini kosong untuk menghasilkan satu pada saat export</translation>
     </message>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="38"/>
       <source>List of IFC properties for this object. Double-click to edit, drag and drop to reorganize</source>
-      <translation type="unfinished">List of IFC properties for this object. Double-click to edit, drag and drop to reorganize</translation>
+      <translation>Daftar properti IFC untuk objek tersebut. Tekan klik dua kali untuk mengubah, tarik dan lepas untuk mengorganisir ulang</translation>
     </message>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="63"/>
       <source>Delete selected property/set</source>
-      <translation type="unfinished">Delete selected property/set</translation>
+      <translation>Hapus properti/set yang terpilih</translation>
     </message>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="76"/>
@@ -595,11 +592,6 @@ Leave blank to use all objects from the document</translation>
       <location filename="../ui/ArchNest.ui" line="132"/>
       <source>A comma-separated list of angles to try and rotate the shapes</source>
       <translation>Daftar sudut yang dipisahkan koma untuk mencoba dan memutar bentuknya</translation>
-    </message>
-    <message>
-      <location filename="../ui/ArchNest.ui" line="135"/>
-      <source>0,90,180,270</source>
-      <translation>0,90,180,270</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="145"/>
@@ -825,11 +817,6 @@ Leave blank to use all objects from the document</translation>
 to projections of hidden objects.</source>
       <translation type="unfinished">This is the SVG stroke-dasharray property to apply
 to projections of hidden objects.</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-arch.ui" line="589"/>
-      <source>30, 10</source>
-      <translation>30, 10</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="625"/>
