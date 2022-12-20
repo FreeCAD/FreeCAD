@@ -74,12 +74,6 @@
         <source>Optional?</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../../developer_mode_dependencies.ui" line="72"/>
-        <location filename="../../developer_mode_dependencies.ui" line="79"/>
-        <source>...</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>DependencyResolutionDialog</name>
@@ -247,12 +241,6 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
         <location filename="../../developer_mode.ui" line="277"/>
         <source>Addon Contents</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../developer_mode.ui" line="301"/>
-        <location filename="../../developer_mode.ui" line="308"/>
-        <source>...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -484,14 +472,6 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../developer_mode_licenses_table.ui" line="97"/>
-        <location filename="../../developer_mode_licenses_table.ui" line="107"/>
-        <location filename="../../developer_mode_people_table.ui" line="90"/>
-        <location filename="../../developer_mode_people_table.ui" line="100"/>
-        <source>...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../developer_mode_people_table.ui" line="26"/>
         <source>People</source>
         <translation type="unfinished"></translation>
@@ -532,12 +512,6 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
         <location filename="../../developer_mode_advanced_freecad_versions.ui" line="48"/>
         <source>Best-available branch, tag, or commit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../developer_mode_advanced_freecad_versions.ui" line="71"/>
-        <location filename="../../developer_mode_advanced_freecad_versions.ui" line="78"/>
-        <source>...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -595,12 +569,6 @@ installed addons will be checked for available updates
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../AddonManagerOptions.ui" line="44"/>
-        <source>DownloadMacros</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../AddonManagerOptions.ui" line="47"/>
         <location filename="../../AddonManagerOptions.ui" line="373"/>
         <location filename="../../AddonManagerOptions.ui" line="386"/>
         <source>Addons</source>
@@ -644,12 +612,6 @@ installed addons will be checked for available updates
     <message>
         <location filename="../../AddonManagerOptions.ui" line="150"/>
         <source>Custom repositories</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../AddonManagerOptions.ui" line="188"/>
-        <location filename="../../AddonManagerOptions.ui" line="195"/>
-        <source>...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -736,11 +698,6 @@ installed addons will be checked for available updates
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../package_details.ui" line="29"/>
-        <source>...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../package_details.ui" line="49"/>
         <source>Uninstalls a selected macro or workbench</source>
         <translation type="unfinished"></translation>
@@ -824,6 +781,19 @@ installed addons will be checked for available updates
     <message>
         <location filename="../../developer_mode_select_from_list.ui" line="20"/>
         <source>TextLabel</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UpdateAllDialog</name>
+    <message>
+        <location filename="../../update_all.ui" line="14"/>
+        <source>Updating Addons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../update_all.ui" line="23"/>
+        <source>Updating out-of-date addons...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

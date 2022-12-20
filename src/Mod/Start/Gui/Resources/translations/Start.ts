@@ -276,7 +276,7 @@ By using &quot;;;&quot; to separate paths, you can add several folders here</sou
 <context>
     <name>Workbench</name>
     <message>
-        <location filename="../../Workbench.cpp" line="69"/>
+        <location filename="../../Workbench.cpp" line="66"/>
         <source>Start page</source>
         <translation type="unfinished"></translation>
     </message>
