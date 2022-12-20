@@ -279,10 +279,11 @@ Select a set and then press the button to view said configurations.</string>
         <property name="toolTip">
          <string>Rotation orbit style.
 Trackball: moving the mouse horizontally will rotate the part around the y-axis
-Turntable: the part will be rotated around the z-axis.</string>
+Turntable: the part will be rotated around the z-axis (with constrained axes).
+Free Turntable: the part will be rotated around the z-axis.</string>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <item>
          <property name="text">
@@ -292,6 +293,11 @@ Turntable: the part will be rotated around the z-axis.</string>
         <item>
          <property name="text">
           <string>Trackball</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Free Turntable</string>
          </property>
         </item>
        </widget>

@@ -85,7 +85,8 @@ class FCSphereSheetProjector : public SbSphereSheetProjector {
 public:
     enum OrbitStyle {
         Turntable,
-        Trackball
+        Trackball,
+        FreeTurntable
     };
 
     FCSphereSheetProjector(const SbSphere & sph, const SbBool orienttoeye = true)
@@ -114,33 +115,46 @@ public:
         SbRotation rot = inherited::getRotation(point1, point2);
         if (orbit == Trackball)
             return rot;
-
-        // 0000333: Turntable camera rotation
-        SbVec3f axis;
-        float angle;
-        rot.getValue(axis, angle);
-        SbVec3f dif = point1 - point2;
-        if (fabs(dif[1]) > fabs(dif[0])) {
-            SbVec3f xaxis(1,0,0);
-            if (dif[1] < 0)
-                angle = -angle;
-            rot.setValue(xaxis, angle);
-        }
-        else {
-            SbVec3f zaxis(0,0,1);
-            this->worldToScreen.multDirMatrix(zaxis, zaxis);
-            if (zaxis[1] < 0) {
-                if (dif[0] < 0)
+        else if (orbit == Turntable) {
+            SbVec3f axis;
+            float angle;
+            rot.getValue(axis, angle);
+            SbVec3f dif = point1 - point2;
+            if (fabs(dif[1]) > fabs(dif[0])) {
+                SbVec3f xaxis(1,0,0);
+                if (dif[1] < 0)
                     angle = -angle;
+                rot.setValue(xaxis, angle);
             }
             else {
-                if (dif[0] > 0)
-                    angle = -angle;
+                SbVec3f zaxis(0,0,1);
+                this->worldToScreen.multDirMatrix(zaxis, zaxis);
+                if (zaxis[1] < 0) {
+                    if (dif[0] < 0)
+                        angle = -angle;
+                }
+                else {
+                    if (dif[0] > 0)
+                        angle = -angle;
+                }
+                rot.setValue(zaxis, angle);
             }
-            rot.setValue(zaxis, angle);
-        }
 
-        return rot;
+            return rot;
+        } else {
+            // Turntable without constraints
+            SbRotation zrot, xrot;
+            SbVec3f dif = point1 - point2;
+
+            SbVec3f zaxis(1,0,0);
+            zrot.setValue(zaxis, dif[1]);
+
+            SbVec3f xaxis(0,0,1);
+            this->worldToScreen.multDirMatrix(xaxis, xaxis);
+            xrot.setValue(xaxis, -dif[0]);
+
+            return zrot * xrot;
+        }
     }
 
     void setOrbitStyle(OrbitStyle style)
