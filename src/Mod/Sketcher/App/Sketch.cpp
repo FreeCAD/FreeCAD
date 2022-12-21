@@ -1722,27 +1722,26 @@ int Sketch::addConstraint(const Constraint *constraint)
             //simple tangency
             rtn = addTangentConstraint(constraint->First,constraint->Second);
         }
-        else {
+        else if (constraint->FirstPos == PointPos::start &&
+                 constraint->SecondPos == PointPos::none &&
+                 constraint->Third == GeoEnum::GeoUndef) {
             // check for B-Spline Knot to curve tangency
-            if (constraint->FirstPos == PointPos::none &&
-                constraint->SecondPos == PointPos::none &&
-                constraint->ThirdPos == PointPos::start) {
-                auto knotgeoId = checkGeoId(constraint->Third);
-                if (Geoms[knotgeoId].type == Point) {
-                    auto *point = static_cast<const GeomPoint*>(Geoms[knotgeoId].geo);
+            auto knotgeoId = checkGeoId(constraint->First);
+            if (Geoms[knotgeoId].type == Point) {
+                auto *point = static_cast<const GeomPoint*>(Geoms[knotgeoId].geo);
 
-                    if (GeometryFacade::isInternalType(point,InternalType::BSplineKnotPoint)) {
-                        auto bsplinegeoid = internalAlignmentGeometryMap.at(constraint->Third);
+                if (GeometryFacade::isInternalType(point,InternalType::BSplineKnotPoint)) {
+                    auto bsplinegeoid = internalAlignmentGeometryMap.at(constraint->First);
 
-                        bsplinegeoid = checkGeoId(bsplinegeoid);
+                    bsplinegeoid = checkGeoId(bsplinegeoid);
 
-                        auto linegeoid = checkGeoId(constraint->Second);
+                    auto linegeoid = checkGeoId(constraint->Second);
 
-                        return addTangentLineAtBSplineKnotConstraint(linegeoid, bsplinegeoid, knotgeoId);
-                    }
+                    rtn = addTangentLineAtBSplineKnotConstraint(linegeoid, bsplinegeoid, knotgeoId);
                 }
             }
-
+        }
+        else {
             //any other point-wise tangency (endpoint-to-curve, endpoint-to-endpoint, tangent-via-point)
             c.value = new double(constraint->getValue());
             if(c.driving)
