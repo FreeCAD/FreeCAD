@@ -4226,33 +4226,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
             }
 
             if (isSimpleVertex(Obj, GeoId1, PosId1)) {
-                if (isBsplineKnot(Obj, GeoId1)) {
-                    // find the B-spline and treat as TangentViaPoint
-                    openCommand(QT_TRANSLATE_NOOP("Command", "Add tangent constraint"));
-                    const std::vector<Constraint *> &constraints = Obj->Constraints.getValues();
-                    for (const auto& constraint: constraints) {
-                        // TODO: wrap around with try-catch
-                        if (constraint->Type == Sketcher::ConstraintType::InternalAlignment &&
-                            constraint->First == GeoId1 &&
-                            constraint->AlignmentType == Sketcher::InternalAlignmentType::BSplineKnotPoint) {
-                            int GeoId3 = constraint->Second;
-                            // TODO: ensure C1 continuity at point
-                            if(! IsPointAlreadyOnCurve(GeoId2, GeoId1, PosId1, Obj)){
-                                Gui::cmdAppObjectArgs(selection[0].getObject(), "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
-                                                      GeoId1,static_cast<int>(PosId1),GeoId2);
-                            }
-
-                            Gui::cmdAppObjectArgs(selection[0].getObject(), "addConstraint(Sketcher.Constraint('TangentViaPoint',%d,%d,%d,%d)) ",
-                                                  GeoId3,GeoId2,GeoId1,static_cast<int>(PosId1));
-                            commitCommand();
-                            tryAutoRecompute(Obj);
-
-                            getSelection().clearSelection();
-                            return;
-                        }
-                    }
-                }
-                else {
+                if (!isBsplineKnot(Obj, GeoId1)) {
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                                          QObject::tr("Cannot add a tangency constraint at an unconnected point!"));
                     return;
