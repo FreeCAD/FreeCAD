@@ -1331,6 +1331,32 @@ void E57Reader::read(const std::string& filename)
             e57::VectorNode data3D(root.get("data3D"));
             for (int child = 0; child < data3D.childCount(); ++child) {
                 e57::StructureNode            scan_data(data3D.get(child));
+
+                Base::Placement plm;
+                bool hasPlacement{false};
+                if (scan_data.isDefined("pose")) {
+                    e57::StructureNode pose(scan_data.get("pose"));
+                    if (pose.isDefined("rotation")) {
+                        e57::StructureNode rotNode(pose.get("rotation"));
+                        double quaternion[4];
+                        quaternion[0] = e57::FloatNode(rotNode.get("x")).value();
+                        quaternion[1] = e57::FloatNode(rotNode.get("y")).value();
+                        quaternion[2] = e57::FloatNode(rotNode.get("z")).value();
+                        quaternion[3] = e57::FloatNode(rotNode.get("w")).value();
+                        Base::Rotation rotate(quaternion);
+                        plm.setRotation(rotate);
+                        hasPlacement = true;
+                    }
+                    if (pose.isDefined("translation")) {
+                        Base::Vector3d move;
+                        e57::StructureNode transNode(pose.get("translation"));
+                        move.x = e57::FloatNode(transNode.get("x")).value();
+                        move.y = e57::FloatNode(transNode.get("y")).value();
+                        move.z = e57::FloatNode(transNode.get("z")).value();
+                        plm.setPosition(move);
+                        hasPlacement = true;
+                    }
+                }
                 e57::CompressedVectorNode     cvn(scan_data.get("points"));
                 e57::StructureNode            prototype(cvn.prototype());
                 // create buffers for the compressed vector reader
@@ -1496,6 +1522,9 @@ void E57Reader::read(const std::string& filename)
                             pt.x = xyz[ptr_xyz[0] * buf_size + i];
                             pt.y = xyz[ptr_xyz[1] * buf_size + i];
                             pt.z = xyz[ptr_xyz[2] * buf_size + i];
+                            if (hasPlacement) {
+                                plm.multVec(pt, pt);
+                            }
                             if ((!filter) && (cnt_pts > 0)) {
                                 if (Base::Distance(last, pt) < minDistance) {
                                     filter = true;
