@@ -110,6 +110,7 @@ class PathWorkbench(Workbench):
             "Path_Profile",
             "Path_Pocket_Shape",
             "Path_Drilling",
+            "Path_Tapping",
             "Path_MillFace",
             "Path_Helix",
             "Path_Adaptive",

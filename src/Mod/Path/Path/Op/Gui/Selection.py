@@ -131,6 +131,16 @@ class DRILLGate(PathBaseGate):
             return False
         return Drillable.isDrillable(shape, subobj, vector=None)
 
+class TAPGate(PathBaseGate):
+    def allow(self, doc, obj, sub):
+        Path.Log.debug("obj: {} sub: {}".format(obj, sub))
+        if not hasattr(obj, "Shape"):
+            return False
+        shape = obj.Shape
+        subobj = shape.getElement(sub)
+        if subobj.ShapeType not in ["Edge", "Face"]:
+            return False
+        return Drillable.isDrillable(shape, subobj, vector=None)
 
 class FACEGate(PathBaseGate):
     def allow(self, doc, obj, sub):
@@ -269,6 +279,10 @@ def drillselect():
     if not Path.Preferences.suppressSelectionModeWarning():
         FreeCAD.Console.PrintWarning("Drilling Select Mode\n")
 
+def tapselect():
+    FreeCADGui.Selection.addSelectionGate(TAPGate())
+    if not Path.Preferences.suppressSelectionModeWarning():
+        FreeCAD.Console.PrintWarning("Tapping Select Mode\n")
 
 def engraveselect():
     FreeCADGui.Selection.addSelectionGate(ENGRAVEGate())
@@ -349,6 +363,7 @@ def select(op):
     opsel["Contour"] = contourselect  # deprecated
     opsel["Deburr"] = chamferselect
     opsel["Drilling"] = drillselect
+    opsel["Tapping"] = tapselect
     opsel["Engrave"] = engraveselect
     opsel["Helix"] = drillselect
     opsel["MillFace"] = pocketselect

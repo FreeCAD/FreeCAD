@@ -169,6 +169,7 @@ SET(PathPythonOp_SRCS
     Path/Op/EngraveBase.py
     Path/Op/FeatureExtension.py
     Path/Op/Drilling.py
+    Path/Op/Tapping.py
     Path/Op/Helix.py
     Path/Op/MillFace.py
     Path/Op/Pocket.py
@@ -196,6 +197,7 @@ SET(PathPythonOpGui_SRCS
     Path/Op/Gui/Custom.py
     Path/Op/Gui/Deburr.py
     Path/Op/Gui/Drilling.py
+    Path/Op/Gui/Tapping.py
     Path/Op/Gui/Engrave.py
     Path/Op/Gui/FeatureExtension.py
     Path/Op/Gui/Helix.py
@@ -227,6 +229,7 @@ SET(PathScripts_SRCS
 SET(PathPythonBaseGenerator_SRCS
     Path/Base/Generator/dogboneII.py
     Path/Base/Generator/drill.py
+    Path/Base/Generator/tapping.py
     Path/Base/Generator/helix.py
     Path/Base/Generator/rotation.py
     Path/Base/Generator/threadmilling.py
@@ -246,6 +249,7 @@ SET(Tools_Bit_SRCS
     Tools/Bit/45degree_chamfer.fctb
     Tools/Bit/5mm-thread-cutter.fctb
     Tools/Bit/5mm_Drill.fctb
+    Tools/Bit/375-18_Tap.fctb
     Tools/Bit/5mm_Endmill.fctb
     Tools/Bit/60degree_Vbit.fctb
     Tools/Bit/6mm_Ball_End.fctb
@@ -261,6 +265,7 @@ SET(Tools_Library_SRCS
 SET(Tools_Shape_SRCS
     Tools/Shape/ballend.fcstd
     Tools/Shape/bullnose.fcstd
+    Tools/Shape/tap.fcstd
     Tools/Shape/drill.fcstd
     Tools/Shape/chamfer.fcstd
     Tools/Shape/endmill.fcstd
@@ -275,7 +280,9 @@ SET(PathTests_SRCS
     PathTests/boxtest.fcstd
     PathTests/boxtest1.fcstd
     PathTests/Drilling_1.FCStd
+    PathTests/Tapping_1.FCStd
     PathTests/drill_test1.FCStd
+    PathTests/tapping_test1.FCStd
     PathTests/PathTestUtils.py
     PathTests/test_adaptive.fcstd
     PathTests/test_centroid_00.ngc
@@ -294,6 +301,7 @@ SET(PathTests_SRCS
     PathTests/TestPathDressupDogboneII.py
     PathTests/TestPathDressupHoldingTags.py
     PathTests/TestPathDrillGenerator.py
+    PathTests/TestPathTapGenerator.py
     PathTests/TestPathDrillable.py
     PathTests/TestPathGeneratorDogboneII.py
     PathTests/TestPathGeom.py

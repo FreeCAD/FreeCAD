@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "name": "375-18_Tap",
+  "shape": "tap.FCStd",
+  "parameter": {
+    "Coating": "None",
+    "CuttingEdgeLength": "1.063 \"",
+    "Diameter": "0.375 \"",
+    "Flutes": "3",
+    "Length": "3.000 \"",
+    "ShankDiameter": "0.250 \"",
+    "TipAngle": "45",
+    "Type": "HSS"
+  },
+  "attribute": {}
+}
