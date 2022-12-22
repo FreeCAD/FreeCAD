@@ -1336,9 +1336,19 @@ public:
         return colors;
     }
 
+    std::vector<float> getItensity() const
+    {
+        return intensity;
+    }
+
     const PointKernel& getPoints() const
     {
         return points;
+    }
+
+    const std::vector<Base::Vector3f>& getNormals() const
+    {
+        return normals;
     }
 
 private:
@@ -1361,11 +1371,16 @@ private:
         bool inty = false;
         bool inv_state = false;
         unsigned cnt_xyz = 0;
+        unsigned cnt_nor = 0;
         unsigned cnt_rgb = 0;
 
         std::vector<double> xData;
         std::vector<double> yData;
         std::vector<double> zData;
+
+        std::vector<double> xNormal;
+        std::vector<double> yNormal;
+        std::vector<double> zNormal;
 
         std::vector<unsigned> redData;
         std::vector<unsigned> greenData;
@@ -1387,6 +1402,9 @@ private:
             e57::Node node(prototype.get(i));
             if ((node.type() == e57::E57_FLOAT) || (node.type() == e57::E57_SCALED_INTEGER)) {
                 if (readCartesian(node, proto)) {
+
+                }
+                else if (readNormal(node, proto)) {
 
                 }
                 else if (readItensity(node, proto)) {
@@ -1446,6 +1464,51 @@ private:
                     imfi
                     , node.elementName()
                     , proto.zData.data()
+                    , buf_size
+                    , true
+                    , true
+
+            );
+            return true;
+        }
+
+        return false;
+    }
+
+    bool readNormal(const e57::Node& node, Proto& proto)
+    {
+        if (node.elementName() == "nor:normalX") {
+            proto.cnt_nor++;
+            proto.sdb.emplace_back(
+                    imfi
+                    , node.elementName()
+                    , proto.xNormal.data()
+                    , buf_size
+                    , true
+                    , true
+
+            );
+            return true;
+        }
+        else if (node.elementName() == "nor:normalY") {
+            proto.cnt_nor++;
+            proto.sdb.emplace_back(
+                    imfi
+                    , node.elementName()
+                    , proto.yNormal.data()
+                    , buf_size
+                    , true
+                    , true
+
+            );
+            return true;
+        }
+        else if (node.elementName() == "nor:normalZ") {
+            proto.cnt_nor++;
+            proto.sdb.emplace_back(
+                    imfi
+                    , node.elementName()
+                    , proto.zNormal.data()
                     , buf_size
                     , true
                     , true
@@ -1563,6 +1626,8 @@ private:
         Base::Vector3d pt, last;
         e57::CompressedVectorReader cvr(cvn.reader(proto.sdb));
         bool hasColor = (proto.cnt_rgb == 3) && useColor;
+        bool hasItensity = proto.inty;
+        bool hasNormal = (proto.cnt_nor == 3);
         bool hasState = proto.inv_state && checkState;
         bool filter = false;
 
@@ -1587,6 +1652,12 @@ private:
                     if (hasColor) {
                         colors.push_back(getColor(proto, i));
                     }
+                    if (hasItensity) {
+                        intensity.push_back(proto.intensity[i]);
+                    }
+                    if (hasNormal) {
+                        normals.push_back(getNormal(proto, i, hasPlacement, plm.getRotation()));
+                    }
                 }
             }
         }
@@ -1604,15 +1675,24 @@ private:
         return pt;
     }
 
+    Base::Vector3f getNormal(const Proto& proto, size_t index, bool hasPlacement, const Base::Rotation& rot) const
+    {
+        Base::Vector3f pt;
+        pt.x = proto.xNormal[index];
+        pt.y = proto.yNormal[index];
+        pt.z = proto.zNormal[index];
+        if (hasPlacement) {
+            rot.multVec(pt, pt);
+        }
+        return pt;
+    }
+
     App::Color getColor(const Proto& proto, size_t index) const
     {
         App::Color c;
         c.r = static_cast<float>(proto.redData[index]) / 255.0f;
         c.g = static_cast<float>(proto.greenData[index]) / 255.0f;
         c.b = static_cast<float>(proto.blueData[index]) / 255.0f;
-        if (proto.inty) {
-            c.a = proto.intensity[index];
-        }
         return c;
     }
 
@@ -1621,6 +1701,10 @@ private:
         proto.xData.resize(buf_size);
         proto.yData.resize(buf_size);
         proto.zData.resize(buf_size);
+
+        proto.xNormal.resize(buf_size);
+        proto.yNormal.resize(buf_size);
+        proto.zNormal.resize(buf_size);
 
         proto.redData.resize(buf_size);
         proto.greenData.resize(buf_size);
@@ -1668,7 +1752,9 @@ private:
     double minDistance;
     const size_t buf_size = 1024;
     std::vector<App::Color> colors;
+    std::vector<float> intensity;
     PointKernel points;
+    std::vector<Base::Vector3f> normals;
 };
 }
 
@@ -1689,7 +1775,9 @@ void E57Reader::read(const std::string& filename)
         E57ReaderImp reader(filename, useColor, checkState, minDistance);
         reader.read();
         points = reader.getPoints();
+        normals = reader.getNormals();
         colors = reader.getColors();
+        intensity = reader.getItensity();
     }
     catch (const Base::BadFormatError&) {
         throw;
