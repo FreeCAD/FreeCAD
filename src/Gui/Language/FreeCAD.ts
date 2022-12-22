@@ -182,8 +182,8 @@
     </message>
     <message>
         <location filename="../Transform.cpp" line="105"/>
-        <location filename="../ViewProviderAnnotation.cpp" line="416"/>
         <location filename="../ViewProviderDragger.cpp" line="222"/>
+        <location filename="../ViewProviderAnnotation.cpp" line="416"/>
         <source>Transform</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8538,9 +8538,9 @@ Do you want to specify another directory?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../Document.cpp" line="205"/>
         <location filename="../CommandDoc.cpp" line="164"/>
         <location filename="../CommandDoc.cpp" line="169"/>
-        <location filename="../Document.cpp" line="204"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8575,8 +8575,8 @@ Do you want to specify another directory?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="1189"/>
         <location filename="../MainWindow.cpp" line="587"/>
+        <location filename="../CommandDoc.cpp" line="1189"/>
         <source>Unsaved document</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8836,81 +8836,81 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="130"/>
+        <location filename="../Document.cpp" line="131"/>
         <source>Do you want to skip confirmation of further critical message notifications while loading the file?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="131"/>
+        <location filename="../Document.cpp" line="132"/>
         <source>Critical Message</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="189"/>
+        <location filename="../Document.cpp" line="190"/>
         <source>Too many message notifications. Notification temporarily stopped. Look at the report view for more information.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="208"/>
+        <location filename="../Document.cpp" line="209"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="212"/>
+        <location filename="../Document.cpp" line="213"/>
         <source>Information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="216"/>
+        <location filename="../Document.cpp" line="217"/>
         <source>Critical</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="1220"/>
+        <location filename="../Document.cpp" line="1221"/>
         <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
 
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="1221"/>
+        <location filename="../Document.cpp" line="1222"/>
         <source>Are you sure you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="1240"/>
+        <location filename="../Document.cpp" line="1241"/>
         <source>Please check report view for more...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="1243"/>
+        <location filename="../Document.cpp" line="1244"/>
         <source>Physical path:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="1245"/>
-        <location filename="../Document.cpp" line="1251"/>
+        <location filename="../Document.cpp" line="1246"/>
+        <location filename="../Document.cpp" line="1252"/>
         <source>Document:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="1247"/>
-        <location filename="../Document.cpp" line="1253"/>
+        <location filename="../Document.cpp" line="1248"/>
+        <location filename="../Document.cpp" line="1254"/>
         <source>Path:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="1262"/>
+        <location filename="../Document.cpp" line="1263"/>
         <source>Identical physical path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="1270"/>
+        <location filename="../Document.cpp" line="1271"/>
         <source>Could not save document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="1271"/>
+        <location filename="../Document.cpp" line="1272"/>
         <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
 
 &quot;%1&quot;
@@ -8919,102 +8919,102 @@ Would you like to save the file with a different name?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="1281"/>
-        <location filename="../Document.cpp" line="1413"/>
-        <location filename="../Document.cpp" line="1496"/>
+        <location filename="../Document.cpp" line="1282"/>
+        <location filename="../Document.cpp" line="1414"/>
+        <location filename="../Document.cpp" line="1497"/>
         <source>Saving aborted</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="1328"/>
+        <location filename="../Document.cpp" line="1329"/>
         <source>Save dependent files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="1329"/>
+        <location filename="../Document.cpp" line="1330"/>
         <source>The file contains external dependencies. Do you want to save the dependent files, too?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="1363"/>
-        <location filename="../Document.cpp" line="1407"/>
+        <location filename="../Document.cpp" line="1364"/>
+        <location filename="../Document.cpp" line="1408"/>
         <source>Saving document failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="1377"/>
+        <location filename="../Document.cpp" line="1378"/>
         <source>Save document under new filename...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="1380"/>
-        <location filename="../Document.cpp" line="1481"/>
+        <location filename="../Document.cpp" line="1381"/>
+        <location filename="../Document.cpp" line="1482"/>
         <source>Save %1 Document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="1382"/>
+        <location filename="../Document.cpp" line="1383"/>
         <source>Document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="1426"/>
-        <location filename="../Document.cpp" line="1467"/>
+        <location filename="../Document.cpp" line="1427"/>
+        <location filename="../Document.cpp" line="1468"/>
         <source>Failed to save document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="1427"/>
+        <location filename="../Document.cpp" line="1428"/>
         <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="1478"/>
+        <location filename="../Document.cpp" line="1479"/>
         <source>Save a copy of the document under new filename...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="1483"/>
+        <location filename="../Document.cpp" line="1484"/>
         <source>%1 document (*.FCStd)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="2132"/>
+        <location filename="../Document.cpp" line="2133"/>
         <source>Document not closable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="2133"/>
+        <location filename="../Document.cpp" line="2134"/>
         <source>The document is not closable for the moment.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="2170"/>
+        <location filename="../Document.cpp" line="2171"/>
         <source>Document not saved</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="2171"/>
+        <location filename="../Document.cpp" line="2172"/>
         <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="2499"/>
+        <location filename="../Document.cpp" line="2500"/>
         <source>Undo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="2499"/>
+        <location filename="../Document.cpp" line="2500"/>
         <source>Redo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="2501"/>
+        <location filename="../Document.cpp" line="2502"/>
         <source>There are grouped transactions in the following documents with other preceding transactions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="2504"/>
+        <location filename="../Document.cpp" line="2505"/>
         <source>Choose &apos;Yes&apos; to roll back all preceding transactions.
 Choose &apos;No&apos; to roll back in the active document only.
 Choose &apos;Abort&apos; to abort</source>
@@ -10306,8 +10306,8 @@ the current copy will be lost.
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DocumentRecovery.cpp" line="391"/>
         <location filename="../MainWindow.cpp" line="1917"/>
+        <location filename="../DocumentRecovery.cpp" line="391"/>
         <source>Unnamed</source>
         <translation type="unfinished"></translation>
     </message>

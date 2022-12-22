@@ -2292,8 +2292,20 @@ invalid constraints, degenerated geometry, etc.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../CommandSketcherVirtualSpace.cpp" line="111"/>
+        <location filename="../../CommandSketcherVirtualSpace.cpp" line="119"/>
+        <location filename="../../CommandSketcherVirtualSpace.cpp" line="142"/>
         <location filename="../../CommandAlterGeometry.cpp" line="141"/>
         <location filename="../../CommandAlterGeometry.cpp" line="149"/>
+        <location filename="../../CommandSketcherBSpline.cpp" line="464"/>
+        <location filename="../../CommandSketcherBSpline.cpp" line="535"/>
+        <location filename="../../CommandSketcherBSpline.cpp" line="613"/>
+        <location filename="../../CommandSketcherBSpline.cpp" line="664"/>
+        <location filename="../../CommandSketcherBSpline.cpp" line="720"/>
+        <location filename="../../CommandSketcherBSpline.cpp" line="802"/>
+        <location filename="../../CommandSketcherBSpline.cpp" line="843"/>
+        <location filename="../../CommandSketcherBSpline.cpp" line="1180"/>
+        <location filename="../../CommandSketcherBSpline.cpp" line="1291"/>
         <location filename="../../CommandConstraints.cpp" line="147"/>
         <location filename="../../CommandConstraints.cpp" line="153"/>
         <location filename="../../CommandConstraints.cpp" line="912"/>
@@ -2426,15 +2438,6 @@ invalid constraints, degenerated geometry, etc.</source>
         <location filename="../../CommandConstraints.cpp" line="7498"/>
         <location filename="../../CommandConstraints.cpp" line="7571"/>
         <location filename="../../CommandConstraints.cpp" line="7582"/>
-        <location filename="../../CommandSketcherBSpline.cpp" line="464"/>
-        <location filename="../../CommandSketcherBSpline.cpp" line="535"/>
-        <location filename="../../CommandSketcherBSpline.cpp" line="613"/>
-        <location filename="../../CommandSketcherBSpline.cpp" line="664"/>
-        <location filename="../../CommandSketcherBSpline.cpp" line="720"/>
-        <location filename="../../CommandSketcherBSpline.cpp" line="802"/>
-        <location filename="../../CommandSketcherBSpline.cpp" line="843"/>
-        <location filename="../../CommandSketcherBSpline.cpp" line="1180"/>
-        <location filename="../../CommandSketcherBSpline.cpp" line="1291"/>
         <location filename="../../CommandSketcherTools.cpp" line="90"/>
         <location filename="../../CommandSketcherTools.cpp" line="737"/>
         <location filename="../../CommandSketcherTools.cpp" line="849"/>
@@ -2450,9 +2453,6 @@ invalid constraints, degenerated geometry, etc.</source>
         <location filename="../../CommandSketcherTools.cpp" line="2041"/>
         <location filename="../../CommandSketcherTools.cpp" line="2050"/>
         <location filename="../../CommandSketcherTools.cpp" line="2095"/>
-        <location filename="../../CommandSketcherVirtualSpace.cpp" line="111"/>
-        <location filename="../../CommandSketcherVirtualSpace.cpp" line="119"/>
-        <location filename="../../CommandSketcherVirtualSpace.cpp" line="142"/>
         <source>Wrong selection</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2633,6 +2633,8 @@ invalid constraints, degenerated geometry, etc.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../CommandSketcherBSpline.cpp" line="836"/>
+        <location filename="../../CommandSketcherBSpline.cpp" line="1309"/>
         <location filename="../../CommandConstraints.cpp" line="1674"/>
         <location filename="../../CommandConstraints.cpp" line="1719"/>
         <location filename="../../CommandConstraints.cpp" line="3486"/>
@@ -2640,8 +2642,6 @@ invalid constraints, degenerated geometry, etc.</source>
         <location filename="../../CommandConstraints.cpp" line="4184"/>
         <location filename="../../CommandConstraints.cpp" line="4692"/>
         <location filename="../../CommandConstraints.cpp" line="6939"/>
-        <location filename="../../CommandSketcherBSpline.cpp" line="836"/>
-        <location filename="../../CommandSketcherBSpline.cpp" line="1309"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3123,9 +3123,9 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../DrawSketchHandlerFillet.h" line="239"/>
         <location filename="../../CommandSketcherBSpline.cpp" line="702"/>
         <location filename="../../CommandSketcherBSpline.cpp" line="1052"/>
-        <location filename="../../DrawSketchHandlerFillet.h" line="239"/>
         <source>CAD Kernel Error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5967,6 +5967,19 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</sour
     <message>
         <location filename="../../Workbench.cpp" line="39"/>
         <source>Sketcher virtual space</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Sketcher_ProfilesHexagon1</name>
+    <message>
+        <location filename="../../../Profiles.py" line="53"/>
+        <source>Creates a hexagonal profile</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../Profiles.py" line="58"/>
+        <source>Creates a hexagonal profile in the sketch</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

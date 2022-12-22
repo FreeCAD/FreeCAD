@@ -214,4 +214,55 @@
         <translation type="unfinished"></translation>
     </message>
 </context>
+<context>
+    <name>Image_Scaling</name>
+    <message>
+        <location filename="../../../ImageTools/_CommandImageScaling.py" line="55"/>
+        <source>Scale image plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ImageTools/_CommandImageScaling.py" line="59"/>
+        <source>Scales an image plane by defining a distance between two points</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Dialog</name>
+    <message>
+        <location filename="../../../ImageTools/_CommandImageScaling.py" line="139"/>
+        <source>Scale image plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ImageTools/_CommandImageScaling.py" line="140"/>
+        <source>Distance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ImageTools/_CommandImageScaling.py" line="141"/>
+        <source>Select first point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ImageTools/_CommandImageScaling.py" line="156"/>
+        <source>Enter distance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ImageTools/_CommandImageScaling.py" line="159"/>
+        <source>Select ImagePlane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ImageTools/_CommandImageScaling.py" line="184"/>
+        <source>Select second point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../ImageTools/_CommandImageScaling.py" line="193"/>
+        <source>Select Image Plane and type distance</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
 </TS>
