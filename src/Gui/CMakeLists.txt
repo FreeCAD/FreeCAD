@@ -1060,12 +1060,14 @@ SOURCE_GROUP("Params" FILES ${Params_SRCS})
 SET(View_CPP_SRCS
     MDIView.cpp
     MDIViewPy.cpp
+    MDIViewPyWrap.cpp
     GraphvizView.cpp
     ActiveObjectList.cpp
 )
 SET(View_HPP_SRCS
     MDIView.h
     MDIViewPy.h
+    MDIViewPyWrap.h
     GraphvizView.h
     ActiveObjectList.h
 )
