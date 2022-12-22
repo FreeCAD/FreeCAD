@@ -136,7 +136,7 @@ def find_tools(noobsolete=True):
         elif (os.system("pylupdate6 --version") == 0):
             PYLUPDATE = "pylupdate6"
             if noobsolete:
-                PYLUPDATE += " -noobsolete"
+                PYLUPDATE += " -no-obsolete"
         elif (os.system("pylupdate5 -version") == 0):
             PYLUPDATE = "pylupdate5"
             if noobsolete:
@@ -147,7 +147,7 @@ def find_tools(noobsolete=True):
                 PYLUPDATE += " -noobsolete"
         elif (os.system("pyside2-lupdate -version") == 0):
             PYLUPDATE = "pyside2-lupdate"
-            raise Exception("Please do not use pyside2-lupdate at the moment, as it shows encoding problems. Please use pylupdate5 instead.")
+            raise Exception("Please do not use pyside2-lupdate at the moment, as it shows encoding problems. Please use pylupdate5 or 6 instead.")
         else:
             raise Exception("Cannot find pylupdate")
     else:
@@ -182,6 +182,7 @@ def update_translation(entry):
         print ("=============================================",flush=True)
         execline = []
         execline.append (f"touch dummy_cpp_file_for_lupdate.cpp") #lupdate 5.x requires at least one source file to process the UI files
+        execline.append (f"touch {tsBasename}py.ts")
         execline.append (f"{QMAKE} -project -o {project_filename} -r")
         execline.append (f"{LUPDATE} {project_filename} -ts {tsBasename}.ts {log_redirect}")
         execline.append (f"sed 's/<translation.*>.*<\/translation>/<translation type=\"unfinished\"><\/translation>/g' {tsBasename}.ts > {tsBasename}.ts.temp")
