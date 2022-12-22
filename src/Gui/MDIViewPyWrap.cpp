@@ -45,7 +45,7 @@ public:
         : pyobject{pyobject}
     {
         Base::PyGILStateLocker lock;
-        std::vector<std::string> methods = {"onMsg", "onHasMsg", "canClose", "printDocument", "print", "printPdf", "printPreview", "redoActions", "undoActions"};
+        std::vector<std::string> methods = {"widget", "onMsg", "onHasMsg", "canClose", "printDocument", "print", "printPdf", "printPreview", "redoActions", "undoActions"};
 
         for (const auto& it : methods) {
             if (pyobject.hasAttr(it)) {
@@ -59,6 +59,19 @@ public:
         Base::PyGILStateLocker lock;
         pyobject = Py::None();
         func.clear();
+    }
+
+    QWidget* widget()
+    {
+        Base::PyGILStateLocker lock;
+        PythonWrapper wrap;
+        wrap.loadWidgetsModule();
+        if (func.count("widget") == 0) {
+            throw Py::AttributeError("Object has no attribute 'widget'");
+        }
+        Py::Callable target(func.at("widget"));
+        Py::Object pywidget(target.apply(Py::Tuple()));
+        return qobject_cast<QWidget*>(wrap.toQObject(pywidget));
     }
 
     bool onMsg(const char* pMsg)
@@ -156,17 +169,14 @@ MDIViewPyWrap::MDIViewPyWrap(Py::Object py, Gui::Document* pcDocument,QWidget* p
   : MDIView(pcDocument, parent, wflags)
   , ptr(std::make_unique<MDIViewPyWrapImp>(py))
 {
-    Base::PyGILStateLocker lock;
     try {
-        PythonWrapper wrap;
-        wrap.loadWidgetsModule();
-        Py::Object pywidget = py.callMemberFunction("widget");
-        QWidget* widget = qobject_cast<QWidget*>(wrap.toQObject(pywidget));
+        QWidget* widget = ptr->widget();
         if (widget) {
             setCentralWidget(widget);
         }
     }
     catch (Py::Exception&) {
+        Base::PyGILStateLocker lock;
         Base::PyException e;
         e.ReportException();
     }
