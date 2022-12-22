@@ -118,11 +118,12 @@ CORNER_MIN = {"x": 0, "y": 0, "z": 0}
 CORNER_MAX = {"x": 660, "y": 355, "z": 152}
 PRECISION = 3
 ABSOLUTE_CIRCLE_CENTER = True
+# Dynapath requires absolute coordinates for arcs.
 # possible values:
 #                  True      use absolute values for the circle center in commands G2, G3
 #                  False     values for I & J are incremental from last point
 
-# Create Map/ for renaming Fixture Commands from Gxx to Exx
+# Create Map / for renaming Fixture Commands from Gxx to Exx as needed by Dynapath.
 GCODE_MAP = {
     "G54": "E01",
     "G55": "E02",
@@ -147,6 +148,7 @@ G17
 G90
 M30
 """
+# Creat following variable for use with the 2nd reference plane.
 clearanceHeight = None
 
 # to distinguish python built-in open function from the one declared below
@@ -227,7 +229,8 @@ def export(objectslist, filename, argstring):
     if OUTPUT_HEADER:
         gcode += "(%s)\n" % str.upper(
             obj.Document.Label[0:8]
-        )  # Added program name entry and limited to 8 chars.
+        )  # Added program name entry and limited to 8 chars as first line in program.
+        # Insert "T" in front of comments to signify "textfield" (comment).
         gcode += linenumber() + "(T)" + "EXPORTED BY FREECAD$\n"
         gcode += linenumber() + "(T)" + str.upper("Post Processor: " + __name__) + "$\n"
         gcode += linenumber() + "(T)" + str.upper("Output Time:") + str(now) + "$\n"
@@ -251,11 +254,11 @@ def export(objectslist, filename, argstring):
         if hasattr(obj, "ClearanceHeight"):
             clearanceHeight = obj.ClearanceHeight.Value
 
-        # Fix fixture Offset label...
+        # Fix fixture Offset label. Needed by Dynapath.
         if obj.Label in GCODE_MAP:
             obj.Label = GCODE_MAP[obj.Label]
 
-        # do the pre_op
+        # do the pre_op. Inserts "(T)" in comment to signify textfield.
         if OUTPUT_COMMENTS:
             gcode += (
                 linenumber()
@@ -294,8 +297,8 @@ def export(objectslist, filename, argstring):
                 )
         if coolantMode == "Flood":
             gcode += linenumber() + "M8" + "\n"
-        # if coolantMode == "Mist":
-        #    gcode += linenumber() + "M7" + "\n"
+        if coolantMode == "Mist":
+            gcode += linenumber() + "M7" + "\n"
 
         # process the operation gcode
         gcode += parse(obj)
@@ -325,6 +328,8 @@ def export(objectslist, filename, argstring):
         gcode += linenumber() + "(T)" + "BEGIN POSTAMBLE$\n"
     for line in POSTAMBLE.splitlines(True):
         gcode += linenumber() + line
+    # Following is required by Dyanpath Controls to signfiy "EOF" when loading in to control
+    # from external media. The control strips the "E" off as part of the load process.
     gcode += "E\n"
 
     if FreeCAD.GuiUp and SHOW_EDITOR:
@@ -348,6 +353,7 @@ def export(objectslist, filename, argstring):
     return final
 
 
+# Modified for Dynapath to Include a 4 digit field that begins with an "N".
 def linenumber():
     global LINENR
     if OUTPUT_LINE_NUMBERS is True:
@@ -377,6 +383,9 @@ def parse(pathobj):
     currLocation = {}  # keep track for no doubles
 
     # the order of parameters
+    # Added O and L since these are needed by Dynapath.
+    # "O" is used as a 2nd reference plane in canned Cycles.
+    # "L" is equivelent to "P" for dwell entries.
     # params = ['X','Y','Z','A','B','I','J','K','F','S'] #This list control the order of parameters
     params = [
         "X",
@@ -387,15 +396,15 @@ def parse(pathobj):
         "C",
         "I",
         "J",
+        "K",
         "F",
         "S",
         "T",
         "Q",
+        "O",
         "R",
         "L",
-        "K",
         "P",
-        "O",
     ]
 
     firstmove = Path.Command("G0", {"X": -1, "Y": -1, "Z": -1, "F": 0.0})
@@ -422,6 +431,7 @@ def parse(pathobj):
             if command in GCODE_MAP:
                 command = GCODE_MAP[command]
 
+            # Inserts "(T)" in front of comments to signify textfield (dyanapath)
             if command.startswith("("):
                 if OUTPUT_COMMENTS:
                     command = "(T)" + str.upper(command) + "$"
@@ -453,6 +463,9 @@ def parse(pathobj):
                                     precision_string,
                                 )
                             )
+                    # Inserts "X0 Y0" in front of a G0 Z + clearanceHeight movement.
+                    # This fixes an error thrown by Dynapath due to missing and
+                    # required XYZ move after Toolchange.
                     elif param == "Z" and (
                         c.Parameters["Z"] == clearanceHeight
                         and c.Parameters["Z"] != lastZ
@@ -486,19 +499,22 @@ def parse(pathobj):
                             )
                         )
                     # Remove X and Y betwen QCYCLE's since we already included them.
+                    # This is needed to prevent Path of inserting additional XY codes between
+                    # Canned cycle holes.
                     elif lastcommand in QCYCLE_RANGE and (param == "X" or "Y"):
                         outstring = []
                     elif param == "S":
                         SPINDLE_SPEED = c.Parameters["S"]
                         outstring.append(
                             param + "{:.0f}".format(c.Parameters["S"])
-                        )  # Added formating to strip trailing .000 from RPM
+                        )  # Added formating to strip trailing .000 from RPM (needed by dynapath)
                     elif param == "T":
                         outstring.append(
                             param + "{:.0f}".format(c.Parameters["T"])
-                        )  # Added formating to strip trailing .000 from Tool number
+                        )  # Added formating to strip trailing .000 from Tool number (needed by dynapath)
                     elif param == "I" and (command == "G2" or command == "G3"):
                         # Convert incremental arc center to absolute in I and J
+                        # Dynapath requires "absolute" arcs in (G2,G3)
                         i = c.Parameters["I"]
                         if ABSOLUTE_CIRCLE_CENTER:
                             i += lastX
@@ -514,8 +530,11 @@ def parse(pathobj):
                         k = c.Parameters["K"]
                         if ABSOLUTE_CIRCLE_CENTER:
                             k += lastZ
-                        if command == ("G18" or "G19"):
+                        if command == (
+                            "G18" or "G19"
+                        ):  # Dynapath supports G18/G19 for Z axis arcs in Y or X.
                             outstring.append(param + PostUtils.fmt(k, PRECISION, UNITS))
+                    # Converts "Q" to "K" as needed by Dynapath.
                     elif param == "Q":
                         pos = Units.Quantity(c.Parameters["Q"], FreeCAD.Units.Length)
                         outstring.append(
@@ -524,6 +543,10 @@ def parse(pathobj):
                                 float(pos.getValueAs(UNIT_FORMAT)), precision_string
                             )
                         )
+                    # Following inserts a 2nd reference plane in all canned cycles (dynapath).
+                    # This provides the ability to manually go in and bump up the "O" offset in
+                    # order to avoid obstacles. The "O" overrides "R", so set them both equal if you
+                    # don't need the 2nd reference plane.
                     elif (param == "R") and ((command in QCYCLE_RANGE)):
                         pos = Units.Quantity(
                             pathobj.ClearanceHeight.Value, FreeCAD.Units.Length
@@ -545,7 +568,7 @@ def parse(pathobj):
                     elif param == "P":
                         outstring.append(
                             "L" + format(c.Parameters[param], precision_string)
-                        )
+                        )  # Converts "P" to "L" for dynapath.
                     else:
                         if (
                             (not OUTPUT_DOUBLES)
@@ -600,6 +623,7 @@ def parse(pathobj):
                 out += "\n"
 
             # Add a DWELL after spindle start based on RPM.
+            # Used by Dynapath for implementing a scalable dwell time.
             if DWELL_TIME > 0.0:
                 if command in ["M3", "M03", "M4", "M04"]:
                     DWELL_TIME = (SPINDLE_SPEED / 100) / 10
