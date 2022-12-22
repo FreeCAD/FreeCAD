@@ -307,6 +307,21 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../developer_mode_tags.ui" line="14"/>
+        <source>Edit Tags</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../developer_mode_tags.ui" line="20"/>
+        <source>Comma-separated list of tags describing this item:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../developer_mode_tags.ui" line="35"/>
+        <source>HINT: Common tags include &quot;Assembly&quot;, &quot;FEM&quot;, &quot;Mesh&quot;, &quot;NURBS&quot;, etc.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../first_run.ui" line="17"/>
         <source>Welcome to the Addon Manager</source>
         <translation type="unfinished"></translation>
@@ -349,21 +364,6 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
         <location filename="../../first_run.ui" line="93"/>
         <source>These and other settings are available in the FreeCAD Preferences window.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../developer_mode_tags.ui" line="14"/>
-        <source>Edit Tags</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../developer_mode_tags.ui" line="20"/>
-        <source>Comma-separated list of tags describing this item:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../developer_mode_tags.ui" line="35"/>
-        <source>HINT: Common tags include &quot;Assembly&quot;, &quot;FEM&quot;, &quot;Mesh&quot;, &quot;NURBS&quot;, etc.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -569,12 +569,6 @@ installed addons will be checked for available updates
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../AddonManagerOptions.ui" line="373"/>
-        <location filename="../../AddonManagerOptions.ui" line="386"/>
-        <source>Addons</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../AddonManagerOptions.ui" line="56"/>
         <source>Cache update frequency</source>
         <translation type="unfinished"></translation>
@@ -612,36 +606,6 @@ installed addons will be checked for available updates
     <message>
         <location filename="../../AddonManagerOptions.ui" line="150"/>
         <source>Custom repositories</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../AddonManagerOptions.ui" line="354"/>
-        <source>Show option to change branches (requires git)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../AddonManagerOptions.ui" line="367"/>
-        <source>Disable git (fall back to ZIP downloads only)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../AddonManagerOptions.ui" line="370"/>
-        <source>disableGit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../AddonManagerOptions.ui" line="380"/>
-        <source>Activate Addon Manager options intended for developers of new Addons.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../AddonManagerOptions.ui" line="383"/>
-        <source>Addon developer mode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../AddonManagerOptions.ui" line="389"/>
-        <source>developerMode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -687,6 +651,42 @@ installed addons will be checked for available updates
     <message>
         <location filename="../../AddonManagerOptions.ui" line="348"/>
         <source>Advanced Options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../AddonManagerOptions.ui" line="354"/>
+        <source>Show option to change branches (requires git)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../AddonManagerOptions.ui" line="367"/>
+        <source>Disable git (fall back to ZIP downloads only)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../AddonManagerOptions.ui" line="370"/>
+        <source>disableGit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../AddonManagerOptions.ui" line="373"/>
+        <location filename="../../AddonManagerOptions.ui" line="386"/>
+        <source>Addons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../AddonManagerOptions.ui" line="380"/>
+        <source>Activate Addon Manager options intended for developers of new Addons.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../AddonManagerOptions.ui" line="383"/>
+        <source>Addon developer mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../AddonManagerOptions.ui" line="389"/>
+        <source>developerMode</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -129,12 +129,12 @@
     <name>QObject</name>
     <message>
         <location filename="../../AppWebGui.cpp" line="86"/>
-        <location filename="../../BrowserView.cpp" line="805"/>
+        <location filename="../../BrowserView.cpp" line="808"/>
         <source>Browser</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../BrowserView.cpp" line="613"/>
+        <location filename="../../BrowserView.cpp" line="616"/>
         <source>File does not exist!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -142,24 +142,24 @@
 <context>
     <name>WebGui::BrowserView</name>
     <message>
-        <location filename="../../BrowserView.cpp" line="601"/>
-        <location filename="../../BrowserView.cpp" line="606"/>
+        <location filename="../../BrowserView.cpp" line="604"/>
         <location filename="../../BrowserView.cpp" line="609"/>
+        <location filename="../../BrowserView.cpp" line="612"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../BrowserView.cpp" line="606"/>
+        <location filename="../../BrowserView.cpp" line="609"/>
         <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../BrowserView.cpp" line="609"/>
+        <location filename="../../BrowserView.cpp" line="612"/>
         <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../BrowserView.cpp" line="773"/>
+        <location filename="../../BrowserView.cpp" line="776"/>
         <source>Loading %1...</source>
         <translation type="unfinished"></translation>
     </message>

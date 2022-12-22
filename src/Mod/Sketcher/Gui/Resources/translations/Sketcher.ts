@@ -1973,7 +1973,7 @@ invalid constraints, degenerated geometry, etc.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DrawSketchHandlerSplitting.h" line="93"/>
+        <location filename="../../DrawSketchHandlerSplitting.h" line="133"/>
         <source>Split edge</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2125,6 +2125,19 @@ invalid constraints, degenerated geometry, etc.</source>
     </message>
 </context>
 <context>
+    <name>CriticalMessages</name>
+    <message>
+        <location filename="../../../App/SketchObject.cpp" line="8322"/>
+        <source>Sketch:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/SketchObject.cpp" line="8323"/>
+        <source>Parabolas were migrated. Migrated files won&apos;t open in previous versions of FreeCAD!!</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Exceptions</name>
     <message>
         <location filename="../../../App/SketchAnalysis.cpp" line="449"/>
@@ -2162,59 +2175,59 @@ invalid constraints, degenerated geometry, etc.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/SketchObject.cpp" line="1971"/>
+        <location filename="../../../App/SketchObject.cpp" line="1979"/>
         <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/SketchObject.cpp" line="5833"/>
-        <location filename="../../../App/SketchObject.cpp" line="6007"/>
+        <location filename="../../../App/SketchObject.cpp" line="5860"/>
+        <location filename="../../../App/SketchObject.cpp" line="6034"/>
         <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/SketchObject.cpp" line="5836"/>
+        <location filename="../../../App/SketchObject.cpp" line="5863"/>
         <source>You are requesting no change in knot multiplicity.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/SketchObject.cpp" line="5841"/>
-        <location filename="../../../App/SketchObject.cpp" line="6015"/>
+        <location filename="../../../App/SketchObject.cpp" line="5868"/>
+        <location filename="../../../App/SketchObject.cpp" line="6042"/>
         <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/SketchObject.cpp" line="5848"/>
+        <location filename="../../../App/SketchObject.cpp" line="5875"/>
         <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/SketchObject.cpp" line="5855"/>
+        <location filename="../../../App/SketchObject.cpp" line="5882"/>
         <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/SketchObject.cpp" line="5858"/>
+        <location filename="../../../App/SketchObject.cpp" line="5885"/>
         <source>The multiplicity cannot be decreased beyond zero.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/SketchObject.cpp" line="5870"/>
+        <location filename="../../../App/SketchObject.cpp" line="5897"/>
         <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/SketchObject.cpp" line="6010"/>
+        <location filename="../../../App/SketchObject.cpp" line="6037"/>
         <source>Knot cannot have zero multiplicity.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/SketchObject.cpp" line="6024"/>
+        <location filename="../../../App/SketchObject.cpp" line="6051"/>
         <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/SketchObject.cpp" line="6027"/>
+        <location filename="../../../App/SketchObject.cpp" line="6054"/>
         <source>Knot cannot be inserted outside the BSpline parameter range.</source>
         <translation type="unfinished"></translation>
     </message>

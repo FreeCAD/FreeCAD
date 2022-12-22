@@ -110,17 +110,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Application.cpp" line="617"/>
+        <location filename="../Application.cpp" line="618"/>
         <source>Import</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="1283"/>
+        <location filename="../CommandDoc.cpp" line="1289"/>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="1842"/>
+        <location filename="../CommandDoc.cpp" line="1848"/>
         <source>Paste expressions</source>
         <translation type="unfinished"></translation>
     </message>
@@ -403,22 +403,22 @@
 <context>
     <name>EditMode</name>
     <message>
-        <location filename="../Application.h" line="243"/>
+        <location filename="../Application.h" line="252"/>
         <source>Default</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Application.h" line="244"/>
+        <location filename="../Application.h" line="253"/>
         <source>Transform</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Application.h" line="245"/>
+        <location filename="../Application.h" line="254"/>
         <source>Cutting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Application.h" line="246"/>
+        <location filename="../Application.h" line="255"/>
         <source>Color</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7971,46 +7971,51 @@ Do you want to specify another directory?</source>
     </message>
     <message>
         <location filename="Translator.cpp" line="168"/>
-        <source>Slovak</source>
+        <source>Serbian, Latin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="Translator.cpp" line="169"/>
-        <source>Slovenian</source>
+        <source>Slovak</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="Translator.cpp" line="170"/>
-        <source>Spanish</source>
+        <source>Slovenian</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="Translator.cpp" line="171"/>
-        <source>Spanish, Argentina</source>
+        <source>Spanish</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="Translator.cpp" line="172"/>
-        <source>Swedish</source>
+        <source>Spanish, Argentina</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="Translator.cpp" line="173"/>
-        <source>Turkish</source>
+        <source>Swedish</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="Translator.cpp" line="174"/>
-        <source>Ukrainian</source>
+        <source>Turkish</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="Translator.cpp" line="175"/>
-        <source>Valencian</source>
+        <source>Ukrainian</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="Translator.cpp" line="176"/>
+        <source>Valencian</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Translator.cpp" line="177"/>
         <source>Vietnamese</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8490,35 +8495,35 @@ Do you want to specify another directory?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Application.cpp" line="582"/>
-        <location filename="../Application.cpp" line="674"/>
-        <location filename="../Application.cpp" line="744"/>
+        <location filename="../Application.cpp" line="583"/>
+        <location filename="../Application.cpp" line="675"/>
+        <location filename="../Application.cpp" line="745"/>
         <source>Unknown filetype</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Application.cpp" line="583"/>
-        <location filename="../Application.cpp" line="675"/>
+        <location filename="../Application.cpp" line="584"/>
+        <location filename="../Application.cpp" line="676"/>
         <source>Cannot open unknown filetype: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Application.cpp" line="737"/>
+        <location filename="../Application.cpp" line="738"/>
         <source>Export failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Application.cpp" line="745"/>
+        <location filename="../Application.cpp" line="746"/>
         <source>Cannot save to unknown filetype: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Application.cpp" line="1426"/>
+        <location filename="../Application.cpp" line="1427"/>
         <source>Workbench failure</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Application.cpp" line="1427"/>
+        <location filename="../Application.cpp" line="1428"/>
         <source>%1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8533,96 +8538,97 @@ Do you want to specify another directory?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="158"/>
-        <location filename="../CommandDoc.cpp" line="163"/>
+        <location filename="../CommandDoc.cpp" line="164"/>
+        <location filename="../CommandDoc.cpp" line="169"/>
+        <location filename="../Document.cpp" line="204"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="159"/>
+        <location filename="../CommandDoc.cpp" line="165"/>
         <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="164"/>
+        <location filename="../CommandDoc.cpp" line="170"/>
         <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="227"/>
+        <location filename="../CommandDoc.cpp" line="233"/>
         <source>Import file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="472"/>
+        <location filename="../CommandDoc.cpp" line="478"/>
         <source>Export file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="852"/>
+        <location filename="../CommandDoc.cpp" line="858"/>
         <source>Printing...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="913"/>
+        <location filename="../CommandDoc.cpp" line="919"/>
         <source>Exporting PDF...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="1183"/>
+        <location filename="../CommandDoc.cpp" line="1189"/>
         <location filename="../MainWindow.cpp" line="587"/>
         <source>Unsaved document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="1184"/>
+        <location filename="../CommandDoc.cpp" line="1190"/>
         <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="1385"/>
-        <location filename="../CommandDoc.cpp" line="1389"/>
+        <location filename="../CommandDoc.cpp" line="1391"/>
+        <location filename="../CommandDoc.cpp" line="1395"/>
         <source>Delete failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="1439"/>
+        <location filename="../CommandDoc.cpp" line="1445"/>
         <source>Dependency error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="1728"/>
+        <location filename="../CommandDoc.cpp" line="1734"/>
         <source>Copy selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="1729"/>
+        <location filename="../CommandDoc.cpp" line="1735"/>
         <source>Copy active document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="1730"/>
+        <location filename="../CommandDoc.cpp" line="1736"/>
         <source>Copy all documents</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="1731"/>
+        <location filename="../CommandDoc.cpp" line="1737"/>
         <source>Paste</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="1836"/>
+        <location filename="../CommandDoc.cpp" line="1842"/>
         <source>Expression error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="1837"/>
+        <location filename="../CommandDoc.cpp" line="1843"/>
         <source>Failed to parse some of the expressions.
 Please check the Report View for more details.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="1861"/>
+        <location filename="../CommandDoc.cpp" line="1867"/>
         <source>Failed to paste expressions</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8830,51 +8836,81 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="1047"/>
+        <location filename="../Document.cpp" line="130"/>
+        <source>Do you want to skip confirmation of further critical message notifications while loading the file?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Document.cpp" line="131"/>
+        <source>Critical Message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Document.cpp" line="189"/>
+        <source>Too many message notifications. Notification temporarily stopped. Look at the report view for more information.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Document.cpp" line="208"/>
+        <source>Warning</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Document.cpp" line="212"/>
+        <source>Information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Document.cpp" line="216"/>
+        <source>Critical</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Document.cpp" line="1220"/>
         <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
 
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="1048"/>
+        <location filename="../Document.cpp" line="1221"/>
         <source>Are you sure you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="1067"/>
+        <location filename="../Document.cpp" line="1240"/>
         <source>Please check report view for more...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="1070"/>
+        <location filename="../Document.cpp" line="1243"/>
         <source>Physical path:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="1072"/>
-        <location filename="../Document.cpp" line="1078"/>
+        <location filename="../Document.cpp" line="1245"/>
+        <location filename="../Document.cpp" line="1251"/>
         <source>Document:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="1074"/>
-        <location filename="../Document.cpp" line="1080"/>
+        <location filename="../Document.cpp" line="1247"/>
+        <location filename="../Document.cpp" line="1253"/>
         <source>Path:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="1089"/>
+        <location filename="../Document.cpp" line="1262"/>
         <source>Identical physical path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="1097"/>
+        <location filename="../Document.cpp" line="1270"/>
         <source>Could not save document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="1098"/>
+        <location filename="../Document.cpp" line="1271"/>
         <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
 
 &quot;%1&quot;
@@ -8883,102 +8919,102 @@ Would you like to save the file with a different name?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="1108"/>
-        <location filename="../Document.cpp" line="1240"/>
-        <location filename="../Document.cpp" line="1323"/>
+        <location filename="../Document.cpp" line="1281"/>
+        <location filename="../Document.cpp" line="1413"/>
+        <location filename="../Document.cpp" line="1496"/>
         <source>Saving aborted</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="1155"/>
+        <location filename="../Document.cpp" line="1328"/>
         <source>Save dependent files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="1156"/>
+        <location filename="../Document.cpp" line="1329"/>
         <source>The file contains external dependencies. Do you want to save the dependent files, too?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="1190"/>
-        <location filename="../Document.cpp" line="1234"/>
+        <location filename="../Document.cpp" line="1363"/>
+        <location filename="../Document.cpp" line="1407"/>
         <source>Saving document failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="1204"/>
+        <location filename="../Document.cpp" line="1377"/>
         <source>Save document under new filename...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="1207"/>
-        <location filename="../Document.cpp" line="1308"/>
+        <location filename="../Document.cpp" line="1380"/>
+        <location filename="../Document.cpp" line="1481"/>
         <source>Save %1 Document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="1209"/>
+        <location filename="../Document.cpp" line="1382"/>
         <source>Document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="1253"/>
-        <location filename="../Document.cpp" line="1294"/>
+        <location filename="../Document.cpp" line="1426"/>
+        <location filename="../Document.cpp" line="1467"/>
         <source>Failed to save document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="1254"/>
+        <location filename="../Document.cpp" line="1427"/>
         <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="1305"/>
+        <location filename="../Document.cpp" line="1478"/>
         <source>Save a copy of the document under new filename...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="1310"/>
+        <location filename="../Document.cpp" line="1483"/>
         <source>%1 document (*.FCStd)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="1960"/>
+        <location filename="../Document.cpp" line="2132"/>
         <source>Document not closable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="1961"/>
+        <location filename="../Document.cpp" line="2133"/>
         <source>The document is not closable for the moment.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="1998"/>
+        <location filename="../Document.cpp" line="2170"/>
         <source>Document not saved</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="1999"/>
+        <location filename="../Document.cpp" line="2171"/>
         <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="2327"/>
+        <location filename="../Document.cpp" line="2499"/>
         <source>Undo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="2327"/>
+        <location filename="../Document.cpp" line="2499"/>
         <source>Redo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="2329"/>
+        <location filename="../Document.cpp" line="2501"/>
         <source>There are grouped transactions in the following documents with other preceding transactions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Document.cpp" line="2332"/>
+        <location filename="../Document.cpp" line="2504"/>
         <source>Choose &apos;Yes&apos; to roll back all preceding transactions.
 Choose &apos;No&apos; to roll back in the active document only.
 Choose &apos;Abort&apos; to abort</source>
@@ -9449,13 +9485,13 @@ the current copy will be lost.
 <context>
     <name>StdCmdAlignment</name>
     <message>
-        <location filename="../CommandDoc.cpp" line="1570"/>
+        <location filename="../CommandDoc.cpp" line="1576"/>
         <source>Alignment...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="1571"/>
-        <location filename="../CommandDoc.cpp" line="1572"/>
+        <location filename="../CommandDoc.cpp" line="1577"/>
+        <location filename="../CommandDoc.cpp" line="1578"/>
         <source>Align the selected objects</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9543,13 +9579,13 @@ the current copy will be lost.
 <context>
     <name>StdCmdCopy</name>
     <message>
-        <location filename="../CommandDoc.cpp" line="1074"/>
+        <location filename="../CommandDoc.cpp" line="1080"/>
         <source>C&amp;opy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="1075"/>
-        <location filename="../CommandDoc.cpp" line="1077"/>
+        <location filename="../CommandDoc.cpp" line="1081"/>
+        <location filename="../CommandDoc.cpp" line="1083"/>
         <source>Copy operation</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9557,13 +9593,13 @@ the current copy will be lost.
 <context>
     <name>StdCmdCut</name>
     <message>
-        <location filename="../CommandDoc.cpp" line="1046"/>
+        <location filename="../CommandDoc.cpp" line="1052"/>
         <source>&amp;Cut</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="1047"/>
-        <location filename="../CommandDoc.cpp" line="1049"/>
+        <location filename="../CommandDoc.cpp" line="1053"/>
+        <location filename="../CommandDoc.cpp" line="1055"/>
         <source>Cut out</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9571,13 +9607,13 @@ the current copy will be lost.
 <context>
     <name>StdCmdDelete</name>
     <message>
-        <location filename="../CommandDoc.cpp" line="1268"/>
+        <location filename="../CommandDoc.cpp" line="1274"/>
         <source>&amp;Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="1269"/>
-        <location filename="../CommandDoc.cpp" line="1271"/>
+        <location filename="../CommandDoc.cpp" line="1275"/>
+        <location filename="../CommandDoc.cpp" line="1277"/>
         <source>Deletes the selected objects</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9599,13 +9635,13 @@ the current copy will be lost.
 <context>
     <name>StdCmdDependencyGraph</name>
     <message>
-        <location filename="../CommandDoc.cpp" line="567"/>
+        <location filename="../CommandDoc.cpp" line="573"/>
         <source>Dependency graph...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="568"/>
-        <location filename="../CommandDoc.cpp" line="569"/>
+        <location filename="../CommandDoc.cpp" line="574"/>
+        <location filename="../CommandDoc.cpp" line="575"/>
         <source>Show the dependency graph of the objects in the active document</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9725,13 +9761,13 @@ the current copy will be lost.
 <context>
     <name>StdCmdDuplicateSelection</name>
     <message>
-        <location filename="../CommandDoc.cpp" line="1149"/>
+        <location filename="../CommandDoc.cpp" line="1155"/>
         <source>Duplicate selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="1150"/>
-        <location filename="../CommandDoc.cpp" line="1152"/>
+        <location filename="../CommandDoc.cpp" line="1156"/>
+        <location filename="../CommandDoc.cpp" line="1158"/>
         <source>Put duplicates of the selected objects to the active document</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9739,17 +9775,17 @@ the current copy will be lost.
 <context>
     <name>StdCmdEdit</name>
     <message>
-        <location filename="../CommandDoc.cpp" line="1640"/>
+        <location filename="../CommandDoc.cpp" line="1646"/>
         <source>Toggle &amp;Edit mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="1641"/>
+        <location filename="../CommandDoc.cpp" line="1647"/>
         <source>Toggles the selected object&apos;s edit mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="1643"/>
+        <location filename="../CommandDoc.cpp" line="1649"/>
         <source>Activates or Deactivates the selected object&apos;s edit mode</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9757,23 +9793,23 @@ the current copy will be lost.
 <context>
     <name>StdCmdExport</name>
     <message>
-        <location filename="../CommandDoc.cpp" line="267"/>
+        <location filename="../CommandDoc.cpp" line="273"/>
         <source>&amp;Export...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="268"/>
-        <location filename="../CommandDoc.cpp" line="270"/>
+        <location filename="../CommandDoc.cpp" line="274"/>
+        <location filename="../CommandDoc.cpp" line="276"/>
         <source>Export an object in the active document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="408"/>
+        <location filename="../CommandDoc.cpp" line="414"/>
         <source>No selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="409"/>
+        <location filename="../CommandDoc.cpp" line="415"/>
         <source>Select the objects to export before choosing Export.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9781,9 +9817,9 @@ the current copy will be lost.
 <context>
     <name>StdCmdExpression</name>
     <message>
-        <location filename="../CommandDoc.cpp" line="1684"/>
-        <location filename="../CommandDoc.cpp" line="1685"/>
-        <location filename="../CommandDoc.cpp" line="1687"/>
+        <location filename="../CommandDoc.cpp" line="1690"/>
+        <location filename="../CommandDoc.cpp" line="1691"/>
+        <location filename="../CommandDoc.cpp" line="1693"/>
         <source>Expression actions</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9955,23 +9991,23 @@ the current copy will be lost.
 <context>
     <name>StdCmdImport</name>
     <message>
-        <location filename="../CommandDoc.cpp" line="181"/>
+        <location filename="../CommandDoc.cpp" line="187"/>
         <source>&amp;Import...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="182"/>
-        <location filename="../CommandDoc.cpp" line="184"/>
+        <location filename="../CommandDoc.cpp" line="188"/>
+        <location filename="../CommandDoc.cpp" line="190"/>
         <source>Import a file in the active document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="195"/>
+        <location filename="../CommandDoc.cpp" line="201"/>
         <source>Supported formats</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="196"/>
+        <location filename="../CommandDoc.cpp" line="202"/>
         <source>All files (*.*)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10233,25 +10269,25 @@ the current copy will be lost.
 <context>
     <name>StdCmdMergeProjects</name>
     <message>
-        <location filename="../CommandDoc.cpp" line="514"/>
+        <location filename="../CommandDoc.cpp" line="520"/>
         <source>Merge project...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="515"/>
-        <location filename="../CommandDoc.cpp" line="517"/>
-        <location filename="../CommandDoc.cpp" line="527"/>
-        <location filename="../CommandDoc.cpp" line="536"/>
+        <location filename="../CommandDoc.cpp" line="521"/>
+        <location filename="../CommandDoc.cpp" line="523"/>
+        <location filename="../CommandDoc.cpp" line="533"/>
+        <location filename="../CommandDoc.cpp" line="542"/>
         <source>Merge project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="528"/>
+        <location filename="../CommandDoc.cpp" line="534"/>
         <source>%1 document (*.FCStd)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="537"/>
+        <location filename="../CommandDoc.cpp" line="543"/>
         <source>Cannot merge project with itself.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10259,13 +10295,13 @@ the current copy will be lost.
 <context>
     <name>StdCmdNew</name>
     <message>
-        <location filename="../CommandDoc.cpp" line="599"/>
+        <location filename="../CommandDoc.cpp" line="605"/>
         <source>&amp;New</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="600"/>
-        <location filename="../CommandDoc.cpp" line="602"/>
+        <location filename="../CommandDoc.cpp" line="606"/>
+        <location filename="../CommandDoc.cpp" line="608"/>
         <source>Create a new empty document</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10354,13 +10390,13 @@ the current copy will be lost.
 <context>
     <name>StdCmdPaste</name>
     <message>
-        <location filename="../CommandDoc.cpp" line="1109"/>
+        <location filename="../CommandDoc.cpp" line="1115"/>
         <source>&amp;Paste</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="1110"/>
-        <location filename="../CommandDoc.cpp" line="1112"/>
+        <location filename="../CommandDoc.cpp" line="1116"/>
+        <location filename="../CommandDoc.cpp" line="1118"/>
         <source>Paste operation</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10368,13 +10404,13 @@ the current copy will be lost.
 <context>
     <name>StdCmdPlacement</name>
     <message>
-        <location filename="../CommandDoc.cpp" line="1491"/>
+        <location filename="../CommandDoc.cpp" line="1497"/>
         <source>Placement...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="1492"/>
-        <location filename="../CommandDoc.cpp" line="1493"/>
+        <location filename="../CommandDoc.cpp" line="1498"/>
+        <location filename="../CommandDoc.cpp" line="1499"/>
         <source>Place the selected objects</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10382,13 +10418,13 @@ the current copy will be lost.
 <context>
     <name>StdCmdPrint</name>
     <message>
-        <location filename="../CommandDoc.cpp" line="839"/>
+        <location filename="../CommandDoc.cpp" line="845"/>
         <source>&amp;Print...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="840"/>
-        <location filename="../CommandDoc.cpp" line="842"/>
+        <location filename="../CommandDoc.cpp" line="846"/>
+        <location filename="../CommandDoc.cpp" line="848"/>
         <source>Print the document</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10396,13 +10432,13 @@ the current copy will be lost.
 <context>
     <name>StdCmdPrintPdf</name>
     <message>
-        <location filename="../CommandDoc.cpp" line="901"/>
+        <location filename="../CommandDoc.cpp" line="907"/>
         <source>&amp;Export PDF...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="902"/>
-        <location filename="../CommandDoc.cpp" line="904"/>
+        <location filename="../CommandDoc.cpp" line="908"/>
+        <location filename="../CommandDoc.cpp" line="910"/>
         <source>Export the document as PDF</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10410,17 +10446,17 @@ the current copy will be lost.
 <context>
     <name>StdCmdPrintPreview</name>
     <message>
-        <location filename="../CommandDoc.cpp" line="871"/>
+        <location filename="../CommandDoc.cpp" line="877"/>
         <source>&amp;Print preview...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="872"/>
+        <location filename="../CommandDoc.cpp" line="878"/>
         <source>Print the document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="874"/>
+        <location filename="../CommandDoc.cpp" line="880"/>
         <source>Print preview</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10428,13 +10464,13 @@ the current copy will be lost.
 <context>
     <name>StdCmdProjectInfo</name>
     <message>
-        <location filename="../CommandDoc.cpp" line="781"/>
+        <location filename="../CommandDoc.cpp" line="787"/>
         <source>Project i&amp;nformation...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="782"/>
-        <location filename="../CommandDoc.cpp" line="784"/>
+        <location filename="../CommandDoc.cpp" line="788"/>
+        <location filename="../CommandDoc.cpp" line="790"/>
         <source>Show details of the currently active project</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10442,13 +10478,13 @@ the current copy will be lost.
 <context>
     <name>StdCmdProjectUtil</name>
     <message>
-        <location filename="../CommandDoc.cpp" line="812"/>
+        <location filename="../CommandDoc.cpp" line="818"/>
         <source>Project utility...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="813"/>
-        <location filename="../CommandDoc.cpp" line="814"/>
+        <location filename="../CommandDoc.cpp" line="819"/>
+        <location filename="../CommandDoc.cpp" line="820"/>
         <source>Utility to extract or create project files</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10470,13 +10506,13 @@ the current copy will be lost.
 <context>
     <name>StdCmdQuit</name>
     <message>
-        <location filename="../CommandDoc.cpp" line="933"/>
+        <location filename="../CommandDoc.cpp" line="939"/>
         <source>E&amp;xit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="934"/>
-        <location filename="../CommandDoc.cpp" line="936"/>
+        <location filename="../CommandDoc.cpp" line="940"/>
+        <location filename="../CommandDoc.cpp" line="942"/>
         <source>Quits the application</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10522,13 +10558,13 @@ the current copy will be lost.
 <context>
     <name>StdCmdRedo</name>
     <message>
-        <location filename="../CommandDoc.cpp" line="1003"/>
+        <location filename="../CommandDoc.cpp" line="1009"/>
         <source>&amp;Redo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="1004"/>
-        <location filename="../CommandDoc.cpp" line="1006"/>
+        <location filename="../CommandDoc.cpp" line="1010"/>
+        <location filename="../CommandDoc.cpp" line="1012"/>
         <source>Redoes a previously undone action</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10536,13 +10572,13 @@ the current copy will be lost.
 <context>
     <name>StdCmdRefresh</name>
     <message>
-        <location filename="../CommandDoc.cpp" line="1411"/>
+        <location filename="../CommandDoc.cpp" line="1417"/>
         <source>&amp;Refresh</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="1412"/>
-        <location filename="../CommandDoc.cpp" line="1414"/>
+        <location filename="../CommandDoc.cpp" line="1418"/>
+        <location filename="../CommandDoc.cpp" line="1420"/>
         <source>Recomputes the current active document</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10564,13 +10600,13 @@ the current copy will be lost.
 <context>
     <name>StdCmdRevert</name>
     <message>
-        <location filename="../CommandDoc.cpp" line="742"/>
+        <location filename="../CommandDoc.cpp" line="748"/>
         <source>Revert</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="743"/>
-        <location filename="../CommandDoc.cpp" line="745"/>
+        <location filename="../CommandDoc.cpp" line="749"/>
+        <location filename="../CommandDoc.cpp" line="751"/>
         <source>Reverts to the saved version of this file</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10578,13 +10614,13 @@ the current copy will be lost.
 <context>
     <name>StdCmdSave</name>
     <message>
-        <location filename="../CommandDoc.cpp" line="629"/>
+        <location filename="../CommandDoc.cpp" line="635"/>
         <source>&amp;Save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="630"/>
-        <location filename="../CommandDoc.cpp" line="632"/>
+        <location filename="../CommandDoc.cpp" line="636"/>
+        <location filename="../CommandDoc.cpp" line="638"/>
         <source>Save the active document</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10592,13 +10628,13 @@ the current copy will be lost.
 <context>
     <name>StdCmdSaveAll</name>
     <message>
-        <location filename="../CommandDoc.cpp" line="714"/>
+        <location filename="../CommandDoc.cpp" line="720"/>
         <source>Save All</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="715"/>
-        <location filename="../CommandDoc.cpp" line="717"/>
+        <location filename="../CommandDoc.cpp" line="721"/>
+        <location filename="../CommandDoc.cpp" line="723"/>
         <source>Save all opened document</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10606,13 +10642,13 @@ the current copy will be lost.
 <context>
     <name>StdCmdSaveAs</name>
     <message>
-        <location filename="../CommandDoc.cpp" line="658"/>
+        <location filename="../CommandDoc.cpp" line="664"/>
         <source>Save &amp;As...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="659"/>
-        <location filename="../CommandDoc.cpp" line="661"/>
+        <location filename="../CommandDoc.cpp" line="665"/>
+        <location filename="../CommandDoc.cpp" line="667"/>
         <source>Save the active document under a new file name</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10620,13 +10656,13 @@ the current copy will be lost.
 <context>
     <name>StdCmdSaveCopy</name>
     <message>
-        <location filename="../CommandDoc.cpp" line="687"/>
+        <location filename="../CommandDoc.cpp" line="693"/>
         <source>Save a &amp;Copy...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="688"/>
-        <location filename="../CommandDoc.cpp" line="690"/>
+        <location filename="../CommandDoc.cpp" line="694"/>
+        <location filename="../CommandDoc.cpp" line="696"/>
         <source>Save a copy of the active document under a new file name</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10690,13 +10726,13 @@ the current copy will be lost.
 <context>
     <name>StdCmdSelectAll</name>
     <message>
-        <location filename="../CommandDoc.cpp" line="1237"/>
+        <location filename="../CommandDoc.cpp" line="1243"/>
         <source>Select &amp;All</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="1238"/>
-        <location filename="../CommandDoc.cpp" line="1240"/>
+        <location filename="../CommandDoc.cpp" line="1244"/>
+        <location filename="../CommandDoc.cpp" line="1246"/>
         <source>Select all</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10924,13 +10960,13 @@ the current copy will be lost.
 <context>
     <name>StdCmdTransform</name>
     <message>
-        <location filename="../CommandDoc.cpp" line="1465"/>
+        <location filename="../CommandDoc.cpp" line="1471"/>
         <source>Transform...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="1466"/>
-        <location filename="../CommandDoc.cpp" line="1467"/>
+        <location filename="../CommandDoc.cpp" line="1472"/>
+        <location filename="../CommandDoc.cpp" line="1473"/>
         <source>Transform the geometry of selected objects</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10938,13 +10974,13 @@ the current copy will be lost.
 <context>
     <name>StdCmdTransformManip</name>
     <message>
-        <location filename="../CommandDoc.cpp" line="1536"/>
+        <location filename="../CommandDoc.cpp" line="1542"/>
         <source>Transform</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="1537"/>
-        <location filename="../CommandDoc.cpp" line="1538"/>
+        <location filename="../CommandDoc.cpp" line="1543"/>
+        <location filename="../CommandDoc.cpp" line="1544"/>
         <source>Transform the selected object in the 3d view</source>
         <translation type="unfinished"></translation>
     </message>
@@ -11008,13 +11044,13 @@ the current copy will be lost.
 <context>
     <name>StdCmdUndo</name>
     <message>
-        <location filename="../CommandDoc.cpp" line="959"/>
+        <location filename="../CommandDoc.cpp" line="965"/>
         <source>&amp;Undo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="960"/>
-        <location filename="../CommandDoc.cpp" line="962"/>
+        <location filename="../CommandDoc.cpp" line="966"/>
+        <location filename="../CommandDoc.cpp" line="968"/>
         <source>Undo exactly one action</source>
         <translation type="unfinished"></translation>
     </message>
@@ -11798,7 +11834,7 @@ the current copy will be lost.
 <context>
     <name>Std_Delete</name>
     <message>
-        <location filename="../CommandDoc.cpp" line="1341"/>
+        <location filename="../CommandDoc.cpp" line="1347"/>
         <source>The following referencing objects might break.
 
 Are you sure you want to continue?
@@ -11806,7 +11842,7 @@ Are you sure you want to continue?
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="1350"/>
+        <location filename="../CommandDoc.cpp" line="1356"/>
         <source>Object dependencies</source>
         <translation type="unfinished"></translation>
     </message>
@@ -11814,7 +11850,7 @@ Are you sure you want to continue?
 <context>
     <name>Std_DependencyGraph</name>
     <message>
-        <location filename="../CommandDoc.cpp" line="580"/>
+        <location filename="../CommandDoc.cpp" line="586"/>
         <source>Dependency graph</source>
         <translation type="unfinished"></translation>
     </message>
@@ -11895,12 +11931,12 @@ Are you sure you want to continue?
 <context>
     <name>Std_DuplicateSelection</name>
     <message>
-        <location filename="../CommandDoc.cpp" line="1201"/>
+        <location filename="../CommandDoc.cpp" line="1207"/>
         <source>Object dependencies</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="1202"/>
+        <location filename="../CommandDoc.cpp" line="1208"/>
         <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
         <translation type="unfinished"></translation>
@@ -11917,7 +11953,7 @@ Do you want to save the document now?</source>
 <context>
     <name>Std_Refresh</name>
     <message>
-        <location filename="../CommandDoc.cpp" line="1440"/>
+        <location filename="../CommandDoc.cpp" line="1446"/>
         <source>The document contains dependency cycles.
 Please check the Report View for more details.
 
@@ -11928,17 +11964,17 @@ Do you still want to proceed?</source>
 <context>
     <name>Std_Revert</name>
     <message>
-        <location filename="../CommandDoc.cpp" line="755"/>
+        <location filename="../CommandDoc.cpp" line="761"/>
         <source>Revert document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="756"/>
+        <location filename="../CommandDoc.cpp" line="762"/>
         <source>This will discard all the changes since last file save.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="757"/>
+        <location filename="../CommandDoc.cpp" line="763"/>
         <source>Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
