@@ -24,6 +24,7 @@
 
 #ifndef _PreComp_
 # include <cctype>
+# include <mutex>
 # include <QApplication>
 # include <QFileInfo>
 # include <QMessageBox>
