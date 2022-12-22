@@ -135,7 +135,7 @@ public:
         Py::Callable target(func.at("undoActions"));
         Py::List list(target.apply(Py::Tuple()));
         QStringList actions;
-        for (auto it : list) {
+        for (const auto& it : list) {
             Py::String str(it);
             actions << QString::fromStdString(str);
         }
@@ -148,7 +148,7 @@ public:
         Py::Callable target(func.at("redoActions"));
         Py::List list(target.apply(Py::Tuple()));
         QStringList actions;
-        for (auto it : list) {
+        for (const auto& it : list) {
             Py::String str(it);
             actions << QString::fromStdString(str);
         }
@@ -165,7 +165,7 @@ private:
 
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::MDIViewPyWrap,Gui::MDIView)
 
-MDIViewPyWrap::MDIViewPyWrap(Py::Object py, Gui::Document* pcDocument,QWidget* parent, Qt::WindowFlags wflags)
+MDIViewPyWrap::MDIViewPyWrap(const Py::Object& py, Gui::Document* pcDocument,QWidget* parent, Qt::WindowFlags wflags)
   : MDIView(pcDocument, parent, wflags)
   , ptr(std::make_unique<MDIViewPyWrapImp>(py))
 {
@@ -177,8 +177,8 @@ MDIViewPyWrap::MDIViewPyWrap(Py::Object py, Gui::Document* pcDocument,QWidget* p
     }
     catch (Py::Exception&) {
         Base::PyGILStateLocker lock;
-        Base::PyException e;
-        e.ReportException();
+        Base::PyException exc;
+        exc.ReportException();
     }
 }
 
@@ -205,8 +205,8 @@ bool MDIViewPyWrap::onMsg(const char* pMsg,const char** ppReturn)
     }
     catch (Py::Exception&) {
         Base::PyGILStateLocker lock;
-        Base::PyException e;
-        e.ReportException();
+        Base::PyException exc;
+        exc.ReportException();
         return false;
     }
 }
@@ -224,8 +224,8 @@ bool MDIViewPyWrap::onHasMsg(const char* pMsg) const
     }
     catch (Py::Exception&) {
         Base::PyGILStateLocker lock;
-        Base::PyException e;
-        e.ReportException();
+        Base::PyException exc;
+        exc.ReportException();
         return false;
     }
 }
@@ -240,8 +240,8 @@ bool MDIViewPyWrap::canClose()
     }
     catch (Py::Exception&) {
         Base::PyGILStateLocker lock;
-        Base::PyException e;
-        e.ReportException();
+        Base::PyException exc;
+        exc.ReportException();
         return false;
     }
 }
@@ -256,8 +256,8 @@ void MDIViewPyWrap::print(QPrinter* printer)
     }
     catch (Py::Exception&) {
         Base::PyGILStateLocker lock;
-        Base::PyException e;
-        e.ReportException();
+        Base::PyException exc;
+        exc.ReportException();
     }
 }
 
@@ -271,8 +271,8 @@ void MDIViewPyWrap::print()
     }
     catch (Py::Exception&) {
         Base::PyGILStateLocker lock;
-        Base::PyException e;
-        e.ReportException();
+        Base::PyException exc;
+        exc.ReportException();
     }
 }
 
@@ -286,8 +286,8 @@ void MDIViewPyWrap::printPdf()
     }
     catch (Py::Exception&) {
         Base::PyGILStateLocker lock;
-        Base::PyException e;
-        e.ReportException();
+        Base::PyException exc;
+        exc.ReportException();
     }
 }
 
@@ -301,8 +301,8 @@ void MDIViewPyWrap::printPreview()
     }
     catch (Py::Exception&) {
         Base::PyGILStateLocker lock;
-        Base::PyException e;
-        e.ReportException();
+        Base::PyException exc;
+        exc.ReportException();
     }
 }
 
@@ -316,8 +316,8 @@ QStringList MDIViewPyWrap::undoActions() const
     }
     catch (Py::Exception&) {
         Base::PyGILStateLocker lock;
-        Base::PyException e;
-        e.ReportException();
+        Base::PyException exc;
+        exc.ReportException();
         return MDIView::undoActions();
     }
 }
@@ -332,8 +332,8 @@ QStringList MDIViewPyWrap::redoActions() const
     }
     catch (Py::Exception&) {
         Base::PyGILStateLocker lock;
-        Base::PyException e;
-        e.ReportException();
+        Base::PyException exc;
+        exc.ReportException();
         return MDIView::redoActions();
     }
 }

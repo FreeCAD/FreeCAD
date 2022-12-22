@@ -44,7 +44,7 @@ public:
      * the view will attach to the active document. Be aware, there isn't
      * always an active document.
      */
-    MDIViewPyWrap(Py::Object py, Gui::Document* pcDocument, QWidget* parent=nullptr, Qt::WindowFlags wflags=Qt::WindowFlags());
+    explicit MDIViewPyWrap(const Py::Object& py, Gui::Document* pcDocument, QWidget* parent=nullptr, Qt::WindowFlags wflags=Qt::WindowFlags());
     /** View destructor
      * Detach the view from the document, if attached.
      */
