@@ -8507,13 +8507,25 @@ bool SketchObject::AutoLockTangencyAndPerpty(Constraint *cstr, bool bForce, bool
             geoIdPt = cstr->Third;
             posPt = cstr->ThirdPos;
             if (geoIdPt == GeoEnum::GeoUndef){//not tangent-via-point, try endpoint-to-endpoint...
+
+                // First check if it is a tangency at knot constraint, if not continue with checking for endpoints.
+                // Endpoint constraints make use of the AngleViaPoint framework at solver level, so they need locking
+                // angle calculation, tangency at knot constraint does not.
+                auto geof = getGeometryFacade(cstr->First);
+                if(geof->isInternalType(InternalType::BSplineKnotPoint)) {
+                    // there is point that is a B-Spline knot in a two element constraint
+                    // this is not implement using AngleViaPoint (TangencyViaPoint)
+                    return false;
+                }
+
                 geoIdPt = cstr->First;
                 posPt = cstr->FirstPos;
             }
             if (posPt == PointPos::none){//not endpoint-to-curve and not endpoint-to-endpoint tangent (is simple tangency)
                 //no tangency lockdown is implemented for simple tangency. Do nothing.
                 return false;
-            } else {
+            }
+            else {
                 Base::Vector3d p = getPoint(geoIdPt, posPt);
 
                 //this piece of code is also present in Sketch.cpp, correct for offset
