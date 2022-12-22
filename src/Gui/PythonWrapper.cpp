@@ -28,6 +28,7 @@
 # include <QApplication>
 # include <QDir>
 # include <QIcon>
+# include <QPrinter>
 # include <QWidget>
 #endif
 
