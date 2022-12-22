@@ -4226,7 +4226,15 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
             }
 
             if (isSimpleVertex(Obj, GeoId1, PosId1)) {
-                if (!isBsplineKnot(Obj, GeoId1)) {
+                if (isBsplineKnot(Obj, GeoId1)) {
+                    const Part::Geometry *geom2 = Obj->getGeometry(GeoId2);
+                    if (!geom2 || geom2->getTypeId() !=Part::GeomLineSegment::getClassTypeId()) {
+                        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                             QObject::tr("Tangent constraint at B-spline knot is only supported with lines!"));
+                        return;
+                    }
+                }
+                else {
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                                          QObject::tr("Cannot add a tangency constraint at an unconnected point!"));
                     return;
