@@ -166,6 +166,8 @@ public:
 
     bool isInternalAligned() const { return this->getInternalType() != InternalType::None; }
 
+    bool isInternalType(InternalType::InternalType type) const { return this->getInternalType() == type; }
+
     // Geometry Extension Information
     inline const std::string &getExtensionName () const {return SketchGeoExtension->getName();}
 
