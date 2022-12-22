@@ -1737,7 +1737,9 @@ int Sketch::addConstraint(const Constraint *constraint)
 
                     auto linegeoid = checkGeoId(constraint->Second);
 
-                    rtn = addTangentLineAtBSplineKnotConstraint(linegeoid, bsplinegeoid, knotgeoId);
+                    if (Geoms[linegeoid].type == Line)
+                        rtn = addTangentLineAtBSplineKnotConstraint(
+                            linegeoid, bsplinegeoid, knotgeoId);
                 }
             }
         }
