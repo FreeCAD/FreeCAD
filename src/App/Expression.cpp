@@ -3337,7 +3337,6 @@ Expression * App::ExpressionParser::parse(const App::DocumentObject *owner, cons
     else {
         delete ScanResult;
         throw Expression::Exception("Expression can not evaluate to a value.");
-        return nullptr;
     }
 }
 
@@ -3389,7 +3388,6 @@ UnitExpression * ExpressionParser::parseUnit(const App::DocumentObject *owner, c
     else {
         delete simplified;
         throw Expression::Exception("Expression is not a unit.");
-        return nullptr;
     }
 }
 
@@ -3400,10 +3398,7 @@ bool ExpressionParser::isTokenAnIndentifier(const std::string & str)
     int status = ExpressionParserlex();
     ExpressionParser_delete_buffer(buf);
 
-    if (status == 0 && (token == IDENTIFIER || token == CELLADDRESS ))
-        return true;
-    else
-        return false;
+    return (status == 0 && (token == IDENTIFIER || token == CELLADDRESS ));
 }
 
 bool ExpressionParser::isTokenAUnit(const std::string & str)
@@ -3413,10 +3408,7 @@ bool ExpressionParser::isTokenAUnit(const std::string & str)
     int status = ExpressionParserlex();
     ExpressionParser_delete_buffer(buf);
 
-    if (status == 0 && token == UNIT)
-        return true;
-    else
-        return false;
+    return (status == 0 && token == UNIT);
 }
 
 #if defined(__clang__)
