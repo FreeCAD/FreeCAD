@@ -1,6 +1,7 @@
 # ***************************************************************************
 # *   Copyright (c) 2020 Carlo Pavan <carlopav@gmail.com>                   *
 # *   Copyright (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
+# *   Copyright (c) 2022 FreeCAD Project Association                        *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -72,6 +73,8 @@ class ViewProviderDraftAnnotation(object):
         """Set the properties only if they don't already exist."""
         properties = vobj.PropertiesList
         self.set_annotation_properties(vobj, properties)
+        self.set_text_properties(vobj, properties)
+        self.set_units_properties(vobj, properties)
         self.set_graphics_properties(vobj, properties)
 
     def set_annotation_properties(self, vobj, properties):
@@ -112,6 +115,37 @@ class ViewProviderDraftAnnotation(object):
 
             vobj.AnnotationStyle = [""] + styles
 
+    def set_text_properties(self, vobj, properties):
+        """Set text properties only if they don't already exist."""
+        if "FontName" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "Font name")
+            vobj.addProperty("App::PropertyFont",
+                             "FontName",
+                             "Text",
+                             _tip)
+            vobj.FontName = utils.get_param("textfont", "sans")
+
+        if "FontSize" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "Font size")
+            vobj.addProperty("App::PropertyLength",
+                             "FontSize",
+                             "Text",
+                             _tip)
+            vobj.FontSize = utils.get_param("textheight", 1)
+
+        if "TextColor" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "Text color")
+            vobj.addProperty("App::PropertyColor",
+                             "TextColor",
+                             "Text",
+                             _tip)
+
+    def set_units_properties(self, vobj, properties):
+        return
+
     def set_graphics_properties(self, vobj, properties):
         """Set graphics properties only if they don't already exist."""
         if "LineWidth" not in properties:
@@ -146,8 +180,11 @@ class ViewProviderDraftAnnotation(object):
 
     def getDisplayModes(self, vobj):
         """Return the display modes that this viewprovider supports."""
-        modes = []
-        return modes
+        return ["World", "Screen"]
+
+    def getDefaultDisplayMode(self):
+        """Return the default display mode."""
+        return "World"
 
     def setDisplayMode(self, mode):
         """Return the saved display mode."""
@@ -159,7 +196,7 @@ class ViewProviderDraftAnnotation(object):
         meta = vobj.Object.Document.Meta
 
         if prop == "AnnotationStyle" and "AnnotationStyle" in properties:
-            if not vobj.AnnotationStyle or vobj.AnnotationStyle == " ":
+            if not vobj.AnnotationStyle or vobj.AnnotationStyle == "":
                 # unset style
                 _msg(16 * "-")
                 _msg("Unset style")
@@ -250,22 +287,5 @@ class ViewProviderDraftAnnotation(object):
     def getIcon(self):
         """Return the path to the icon used by the view provider."""
         return ":/icons/Draft_Text.svg"
-
-    def claimChildren(self):
-        """Return objects that will be placed under it in the tree view.
-
-        Editor: perhaps this is not useful???
-        """
-        objs = []
-        if hasattr(self.Object, "Base"):
-            objs.append(self.Object.Base)
-        if hasattr(self.Object, "Objects"):
-            objs.extend(self.Object.Objects)
-        if hasattr(self.Object, "Components"):
-            objs.extend(self.Object.Components)
-        if hasattr(self.Object, "Group"):
-            objs.extend(self.Object.Group)
-
-        return objs
 
 ## @}

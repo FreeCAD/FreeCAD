@@ -356,7 +356,7 @@ def make_label(target_point=App.Vector(0, 0, 0),
     if App.GuiUp:
         ViewProviderLabel(new_obj.ViewObject)
         h = utils.get_param("textheight", 0.20)
-        new_obj.ViewObject.TextSize = h
+        new_obj.ViewObject.FontSize = h
 
         gui_utils.format_object(new_obj)
         gui_utils.select(new_obj)

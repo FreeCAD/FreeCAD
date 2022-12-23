@@ -39,7 +39,7 @@ class Text(DraftAnnotation):
     """The Draft Text object."""
 
     def __init__(self, obj):
-        super(Text, self).__init__(obj, "Text")
+        super().__init__(obj, "Text")
         self.set_properties(obj)
         obj.Proxy = self
 
@@ -68,13 +68,6 @@ class Text(DraftAnnotation):
                             "Base",
                             _tip)
             obj.Text = []
-
-    def onDocumentRestored(self, obj):
-        """Execute code when the document is restored.
-
-        It calls the parent class to add missing annotation properties.
-        """
-        super(Text, self).onDocumentRestored(obj)
 
 
 # Alias for compatibility with v0.18 and earlier

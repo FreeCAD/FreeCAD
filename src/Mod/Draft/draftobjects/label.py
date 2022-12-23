@@ -33,8 +33,11 @@
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
-
 from FreeCAD import Units as U
+
+from draftutils.messages import _wrn
+from draftutils.translate import translate
+
 from draftobjects.draft_annotation import DraftAnnotation
 
 
@@ -42,7 +45,7 @@ class Label(DraftAnnotation):
     """The Draft Label object."""
 
     def __init__(self, obj):
-        super(Label, self).__init__(obj, "Label")
+        super().__init__(obj, "Label")
         self.set_properties(obj)
         obj.Proxy = self
 
@@ -221,14 +224,38 @@ class Label(DraftAnnotation):
 
     def onDocumentRestored(self, obj):
         """Execute code when the document is restored.
-
-        It calls the parent class to add missing annotation properties.
         """
-        super(Label, self).onDocumentRestored(obj)
+        super().onDocumentRestored(obj)
+
+        if not hasattr(obj, "ViewObject"):
+            return
+        vobj = obj.ViewObject
+        if not vobj:
+            return
+        if hasattr(vobj, "FontName") and hasattr(vobj, "FontSize"):
+            return
+
+        self.update_properties_0v21(obj, vobj)
+
+    def update_properties_0v21(self, obj, vobj):
+        old_fontname = vobj.TextFont
+        old_fontsize = vobj.TextSize
+        vobj.removeProperty("TextFont")
+        vobj.removeProperty("TextSize")
+
+        vobj.Proxy.set_text_properties(vobj, vobj.PropertiesList)
+        vobj.FontName = old_fontname
+        vobj.FontSize = old_fontsize
+        # The DisplayMode is updated automatically but the new values are
+        # switched: "2D text" becomes "World" and "3D text" becomes "Screen".
+        # It should be the other way around:
+        vobj.DisplayMode = "World" if vobj.DisplayMode == "Screen" else "Screen"
+        _wrn("v0.21, " + obj.Label + ", " + translate("draft", "updated view property 'TextFont' to 'FontName'"))
+        _wrn("v0.21, " + obj.Label + ", " + translate("draft", "updated view property 'TextSize' to 'FontSize'"))
 
     def onChanged(self, obj, prop):
         """Execute when a property is changed."""
-        super(Label, self).onChanged(obj, prop)
+        super().onChanged(obj, prop)
         self.show_and_hide(obj, prop)
 
     def show_and_hide(self, obj, prop):

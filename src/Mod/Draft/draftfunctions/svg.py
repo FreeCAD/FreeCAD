@@ -227,7 +227,7 @@ def _svg_shape(svg, obj, plane,
 
 
 def _svg_dimension(obj, plane, scale, linewidth, fontsize,
-                   stroke, pointratio, techdraw, rotation):
+                   stroke, tstroke, pointratio, techdraw, rotation):
     """Return the SVG representation of a linear dimension."""
     if not App.GuiUp:
         _wrn("'{}': SVG can only be generated "
@@ -280,7 +280,7 @@ def _svg_dimension(obj, plane, scale, linewidth, fontsize,
     if not nolines:
         svg += '<path '
 
-    if vobj.DisplayMode == "2D":
+    if vobj.DisplayMode == "World":
         tangle = angle
         if tangle > math.pi/2:
             tangle = tangle-math.pi
@@ -361,7 +361,7 @@ def _svg_dimension(obj, plane, scale, linewidth, fontsize,
 
     # drawing text
     svg += svgtext.get_text(plane, techdraw,
-                            stroke, fontsize, vobj.FontName,
+                            tstroke, fontsize, vobj.FontName,
                             tangle, tbase, prx.string)
 
     return svg
@@ -505,7 +505,7 @@ def get_svg(obj,
 
     elif utils.get_type(obj) in ["Dimension", "LinearDimension"]:
         svg = _svg_dimension(obj, plane, scale, linewidth, fontsize,
-                             stroke, pointratio, techdraw, rotation)
+                             stroke, tstroke, pointratio, techdraw, rotation)
 
     elif utils.get_type(obj) == "AngularDimension":
         if not App.GuiUp:
@@ -518,7 +518,7 @@ def get_svg(obj,
 
                     # drawing arc
                     fill = "none"
-                    if obj.ViewObject.DisplayMode == "2D":
+                    if obj.ViewObject.DisplayMode == "World":
                         svg += get_path(obj, plane,
                                         fill, pathdata, stroke, linewidth,
                                         lstyle, fill_opacity=None,
@@ -573,7 +573,7 @@ def get_svg(obj,
                                          angle2)
 
                     # drawing text
-                    if obj.ViewObject.DisplayMode == "2D":
+                    if obj.ViewObject.DisplayMode == "World":
                         _diff = (prx.circle.LastParameter
                                  - prx.circle.FirstParameter)
                         t = prx.circle.tangentAt(prx.circle.FirstParameter
@@ -597,7 +597,7 @@ def get_svg(obj,
                         tbase = get_proj(prx.tbase, plane)
 
                     svg += svgtext.get_text(plane, techdraw,
-                                            stroke, fontsize,
+                                            tstroke, fontsize,
                                             obj.ViewObject.FontName,
                                             tangle, tbase, prx.string)
 
@@ -637,13 +637,13 @@ def get_svg(obj,
 
         # print text
         if App.GuiUp:
-            fontname = obj.ViewObject.TextFont
+            fontname = obj.ViewObject.FontName
             position = get_proj(obj.Placement.Base, plane)
             rotation = obj.Placement.Rotation
             justification = obj.ViewObject.Justification
             text = obj.Text
             svg += svgtext.get_text(plane, techdraw,
-                                    stroke, fontsize, fontname,
+                                    tstroke, fontsize, fontname,
                                     rotation, position, text,
                                     linespacing, justification)
 

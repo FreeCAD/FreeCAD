@@ -65,44 +65,27 @@ class DraftAnnotation(object):
         Check if new properties are present after the object is restored
         in order to migrate older objects.
         """
-        if hasattr(obj, "ViewObject") and obj.ViewObject:
-            vobj = obj.ViewObject
-            self.add_missing_properties_0v19(obj, vobj)
+        if not hasattr(obj, "ViewObject"):
+            return
+        vobj = obj.ViewObject
+        if not vobj:
+            return
+        if hasattr(vobj, "ScaleMultiplier") and hasattr(vobj, "AnnotationStyle"):
+            return
+
+        self.add_missing_properties_0v19(obj, vobj)
 
     def add_missing_properties_0v19(self, obj, vobj):
-        """Provide missing annotation properties, if they don't exist."""
-        vproperties = vobj.PropertiesList
-
-        if 'ScaleMultiplier' not in vproperties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "General scaling factor that affects "
-                                     "the annotation consistently\n"
-                                     "because it scales the text, "
-                                     "and the line decorations, if any,\n"
-                                     "in the same proportion.")
-            vobj.addProperty("App::PropertyFloat",
-                             "ScaleMultiplier",
-                             "Annotation",
-                             _tip)
-            vobj.ScaleMultiplier = 1.00
-
-            _wrn("v0.19, " + obj.Label + ", " + translate("draft","added view property 'ScaleMultiplier'"))
-
-        if 'AnnotationStyle' not in vproperties:
-            _tip = QT_TRANSLATE_NOOP("App::Property","Annotation style to apply to this object.\nWhen using a saved style some of the view properties will become read-only;\nthey will only be editable by changing the style through the 'Annotation style editor' tool.")
-            vobj.addProperty("App::PropertyEnumeration",
-                             "AnnotationStyle",
-                             "Annotation",
-                             _tip)
-            styles = []
-            for key in obj.Document.Meta.keys():
-                if key.startswith("Draft_Style_"):
-                    styles.append(key[12:])
-
-            vobj.AnnotationStyle = [""] + styles
-
-            _info = "added view property 'AnnotationStyle'"
-            _wrn("v0.19, " + obj.Label + ", " + translate("draft","added view property 'ScaleMultiplier'"))
+        """Provide missing annotation properties."""
+        multiplier = None
+        if not hasattr(vobj, "ScaleMultiplier"):
+            multiplier = 1.00
+            _wrn("v0.19, " + obj.Label + ", " + translate("draft", "added view property 'ScaleMultiplier'"))
+        if not hasattr(vobj, "AnnotationStyle"):
+            _wrn("v0.19, " + obj.Label + ", " + translate("draft", "added view property 'AnnotationStyle'"))
+        vobj.Proxy.set_annotation_properties(vobj, vobj.PropertiesList)
+        if multiplier is not None:
+            vobj.ScaleMultiplier = multiplier
 
     def __getstate__(self):
         """Return a tuple of objects to save or None.

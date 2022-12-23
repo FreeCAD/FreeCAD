@@ -108,6 +108,9 @@ import DraftVecUtils
 import DraftGeomUtils
 import draftutils.utils as utils
 
+from draftutils.messages import _wrn
+from draftutils.translate import translate
+
 from draftobjects.draft_annotation import DraftAnnotation
 
 
@@ -122,7 +125,7 @@ class DimensionBase(DraftAnnotation):
     """
 
     def __init__(self, obj, tp="Dimension"):
-        super(DimensionBase, self).__init__(obj, tp)
+        super().__init__(obj, tp)
         self.set_properties(obj)
         obj.Proxy = self
 
@@ -195,11 +198,23 @@ class DimensionBase(DraftAnnotation):
 
     def onDocumentRestored(self, obj):
         """Execute code when the document is restored.
-
-        It calls the parent class to add missing annotation properties.
         """
-        super(DimensionBase, self).onDocumentRestored(obj)
+        super().onDocumentRestored(obj)
 
+        if not hasattr(obj, "ViewObject"):
+            return
+        vobj = obj.ViewObject
+        if not vobj:
+            return
+        if hasattr(vobj, "TextColor"):
+            return
+
+        self.update_properties_0v21(obj, vobj)
+
+    def update_properties_0v21(self, obj, vobj):
+        vobj.Proxy.set_text_properties(vobj, vobj.PropertiesList)
+        vobj.TextColor = vobj.LineColor
+        _wrn("v0.21, " + obj.Label + ", " + translate("draft", "added view property 'TextColor'"))
 
 class LinearDimension(DimensionBase):
     """The linear dimension object.
@@ -212,13 +227,12 @@ class LinearDimension(DimensionBase):
     """
 
     def __init__(self, obj):
-        super(LinearDimension, self).__init__(obj, "LinearDimension")
-        super(LinearDimension, self).set_properties(obj)
-        self.set_properties(obj)
-        obj.Proxy = self
+        super().__init__(obj, "LinearDimension")
 
     def set_properties(self, obj):
         """Set basic properties only if they don't exist."""
+        super().set_properties(obj)
+
         properties = obj.PropertiesList
 
         if "Start" not in properties:
@@ -289,13 +303,6 @@ class LinearDimension(DimensionBase):
                             "Radial dimension",
                             _tip)
             obj.Diameter = False
-
-    def onDocumentRestored(self, obj):
-        """Execute code when the document is restored.
-
-        It calls the parent class to add missing dimension properties.
-        """
-        super(LinearDimension, self).onDocumentRestored(obj)
 
     def onChanged(self, obj, prop):
         """Execute when a property is changed.
@@ -486,17 +493,12 @@ class AngularDimension(DimensionBase):
     """
 
     def __init__(self, obj):
-        super(AngularDimension, self).__init__(obj, "AngularDimension")
-        super(AngularDimension, self).set_properties(obj)
-        self.set_properties(obj)
-        obj.Proxy = self
-
-        # Inherited properties from the parent class
-        obj.Normal = App.Vector(0, 0, 1)
-        obj.Dimline = App.Vector(0, 1, 0)
+        super().__init__(obj, "AngularDimension")
 
     def set_properties(self, obj):
         """Set basic properties only if they don't exist."""
+        super().set_properties(obj)
+
         properties = obj.PropertiesList
 
         if "FirstAngle" not in properties:
@@ -549,13 +551,6 @@ class AngularDimension(DimensionBase):
                             "Angular dimension",
                             _tip)
             obj.Angle = 0
-
-    def onDocumentRestored(self, obj):
-        """Execute code when the document is restored.
-
-        It calls the parent class to add missing dimension properties.
-        """
-        super(AngularDimension, self).onDocumentRestored(obj)
 
     def execute(self, obj):
         """Execute when the object is created or recomputed.

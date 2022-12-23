@@ -51,44 +51,13 @@ param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
 class ViewProviderLabel(ViewProviderDraftAnnotation):
     """Viewprovider for the Label annotation object."""
 
-    def __init__(self, vobj):
-        super(ViewProviderLabel, self).__init__(vobj)
-
-        self.set_properties(vobj)
-        self.Object = vobj.Object
-        vobj.Proxy = self
-
-    def set_properties(self, vobj):
-        """Set the properties only if they don't already exist."""
-        super(ViewProviderLabel, self).set_properties(vobj)
-
-        properties = vobj.PropertiesList
-        self.set_text_properties(vobj, properties)
-        self.set_graphics_properties(vobj, properties)
-
     def set_text_properties(self, vobj, properties):
         """Set text properties only if they don't already exist."""
-        if "TextSize" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "The size of the text")
-            vobj.addProperty("App::PropertyLength",
-                             "TextSize",
-                             "Text",
-                             _tip)
-            vobj.TextSize = utils.get_param("textheight", 1)
-
-        if "TextFont" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "The font of the text")
-            vobj.addProperty("App::PropertyFont",
-                             "TextFont",
-                             "Text",
-                             _tip)
-            vobj.TextFont = utils.get_param("textfont")
+        super().set_text_properties(vobj, properties)
 
         if "TextAlignment" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "The vertical alignment of the text")
+                                     "Vertical alignment")
             vobj.addProperty("App::PropertyEnumeration",
                              "TextAlignment",
                              "Text",
@@ -96,17 +65,9 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
             vobj.TextAlignment = ["Top", "Middle", "Bottom"]
             vobj.TextAlignment = "Bottom"
 
-        if "TextColor" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "Text color")
-            vobj.addProperty("App::PropertyColor",
-                             "TextColor",
-                             "Text",
-                             _tip)
-
         if "MaxChars" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "The maximum number of characters "
+                                     "Maximum number of characters "
                                      "on each line of the text box")
             vobj.addProperty("App::PropertyInteger",
                              "MaxChars",
@@ -115,7 +76,7 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
 
         if "Justification" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "The vertical alignment of the text")
+                                     "Horizontal alignment")
             vobj.addProperty("App::PropertyEnumeration",
                              "Justification",
                              "Text",
@@ -133,9 +94,11 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
 
     def set_graphics_properties(self, vobj, properties):
         """Set graphics properties only if they don't already exist."""
+        super().set_graphics_properties(vobj, properties)
+
         if "ArrowSize" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "The size of the arrow")
+                                     "Arrow size")
             vobj.addProperty("App::PropertyLength",
                              "ArrowSize",
                              "Graphics",
@@ -144,13 +107,13 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
 
         if "ArrowType" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "The type of arrow of this label")
+                                     "Arrow type")
             vobj.addProperty("App::PropertyEnumeration",
                              "ArrowType",
                              "Graphics",
                              _tip)
             vobj.ArrowType = utils.ARROW_TYPES
-            vobj.ArrowType = utils.ARROW_TYPES[utils.get_param("dimsymbol")]
+            vobj.ArrowType = utils.ARROW_TYPES[utils.get_param("dimsymbol", 0)]
 
         if "Frame" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
@@ -171,33 +134,14 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
                              _tip)
             vobj.Line = True
 
-        if "LineWidth" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "Line width")
-            vobj.addProperty("App::PropertyFloat",
-                             "LineWidth",
-                             "Graphics",
-                             _tip)
-            vobj.LineWidth = utils.get_param("linewidth", 1)
-
-        if "LineColor" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "Line color")
-            vobj.addProperty("App::PropertyColor",
-                             "LineColor",
-                             "Graphics",
-                             _tip)
-
     def getIcon(self):
         """Return the path to the icon used by the viewprovider."""
         return ":/icons/Draft_Label.svg"
 
-    def claimChildren(self):
-        """Return objects that will be placed under it in the tree view."""
-        return []
-
     def attach(self, vobj):
         """Set up the scene sub-graph of the viewprovider."""
+        self.Object = vobj.Object
+
         # Attributes of the Coin scenegraph
         self.arrow = coin.SoSeparator()
         self.arrowpos = coin.SoTransform()
@@ -215,8 +159,8 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
         self.mattext = coin.SoMaterial()
         self.textpos = coin.SoTransform()
         self.font = coin.SoFont()
-        self.text2d = coin.SoText2()  # Faces the camera always
-        self.text3d = coin.SoAsciiText()  # Can be oriented in 3D space
+        self.text_wld = coin.SoAsciiText() # World orientation. Can be oriented in 3D space.
+        self.text_scr = coin.SoText2()     # Screen orientation. Always faces the camera.
 
         self.fcoords = coin.SoCoordinate3()
         self.frame = coin.SoType.fromName("SoBrepEdgeSet").createInstance()
@@ -229,9 +173,9 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
 
         # The text string needs to be initialized to something,
         # otherwise it crashes
-        self.text2d.string = self.text3d.string = "Label"
-        self.text2d.justification = coin.SoText2.RIGHT
-        self.text3d.justification = coin.SoAsciiText.RIGHT
+        self.text_wld.string = self.text_scr.string = "Label"
+        self.text_wld.justification = coin.SoAsciiText.RIGHT
+        self.text_scr.justification = coin.SoText2.RIGHT
         self.font.name = utils.get_param("textfont")
 
         switchnode = coin.SoSeparator()
@@ -239,64 +183,51 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
         self.lineswitch.addChild(switchnode)
         self.lineswitch.whichChild = 0
 
-        self.node2dtxt = coin.SoGroup()
-        self.node2dtxt.addChild(self.font)
-        self.node2dtxt.addChild(self.text2d)
+        self.node_wld_txt = coin.SoGroup()
+        self.node_wld_txt.addChild(self.font)
+        self.node_wld_txt.addChild(self.text_wld)
 
-        self.node2d = coin.SoGroup()
-        self.node2d.addChild(self.matline)
-        self.node2d.addChild(self.arrow)
-        self.node2d.addChild(self.drawstyle)
-        self.node2d.addChild(self.lcoords)
-        self.node2d.addChild(self.lineswitch)
-        self.node2d.addChild(self.mattext)
-        self.node2d.addChild(textdrawstyle)
-        self.node2d.addChild(self.textpos)
-        self.node2d.addChild(self.node2dtxt)
-        self.node2d.addChild(self.matline)
-        self.node2d.addChild(self.drawstyle)
-        self.node2d.addChild(self.fcoords)
-        self.node2d.addChild(self.frame)
+        self.node_wld = coin.SoGroup()
+        self.node_wld.addChild(self.matline)
+        self.node_wld.addChild(self.arrow)
+        self.node_wld.addChild(self.drawstyle)
+        self.node_wld.addChild(self.lcoords)
+        self.node_wld.addChild(self.lineswitch)
+        self.node_wld.addChild(self.mattext)
+        self.node_wld.addChild(textdrawstyle)
+        self.node_wld.addChild(self.textpos)
+        self.node_wld.addChild(self.node_wld_txt)
+        self.node_wld.addChild(self.matline)
+        self.node_wld.addChild(self.drawstyle)
+        self.node_wld.addChild(self.fcoords)
+        self.node_wld.addChild(self.frame)
 
-        self.node3dtxt = coin.SoGroup()
-        self.node3dtxt.addChild(self.font)
-        self.node3dtxt.addChild(self.text3d)
+        self.node_scr_txt = coin.SoGroup()
+        self.node_scr_txt.addChild(self.font)
+        self.node_scr_txt.addChild(self.text_scr)
 
-        self.node3d = coin.SoGroup()
-        self.node3d.addChild(self.matline)
-        self.node3d.addChild(self.arrow)
-        self.node3d.addChild(self.drawstyle)
-        self.node3d.addChild(self.lcoords)
-        self.node3d.addChild(self.lineswitch)
-        self.node3d.addChild(self.mattext)
-        self.node3d.addChild(textdrawstyle)
-        self.node3d.addChild(self.textpos)
-        self.node3d.addChild(self.node3dtxt)
-        self.node3d.addChild(self.matline)
-        self.node3d.addChild(self.drawstyle)
-        self.node3d.addChild(self.fcoords)
-        self.node3d.addChild(self.frame)
+        self.node_scr = coin.SoGroup()
+        self.node_scr.addChild(self.matline)
+        self.node_scr.addChild(self.arrow)
+        self.node_scr.addChild(self.drawstyle)
+        self.node_scr.addChild(self.lcoords)
+        self.node_scr.addChild(self.lineswitch)
+        self.node_scr.addChild(self.mattext)
+        self.node_scr.addChild(textdrawstyle)
+        self.node_scr.addChild(self.textpos)
+        self.node_scr.addChild(self.node_scr_txt)
+        self.node_scr.addChild(self.matline)
+        self.node_scr.addChild(self.drawstyle)
+        self.node_scr.addChild(self.fcoords)
+        self.node_scr.addChild(self.frame)
 
-        vobj.addDisplayMode(self.node2d, "2D text")
-        vobj.addDisplayMode(self.node3d, "3D text")
+        vobj.addDisplayMode(self.node_wld, "World")
+        vobj.addDisplayMode(self.node_scr, "Screen")
         self.onChanged(vobj, "LineColor")
         self.onChanged(vobj, "TextColor")
         self.onChanged(vobj, "LineWidth")
         self.onChanged(vobj, "ArrowSize")
         self.onChanged(vobj, "Line")
-        self.Object = vobj.Object
-
-    def getDisplayModes(self, vobj):
-        """Return the display modes that this viewprovider supports."""
-        return ["2D text", "3D text"]
-
-    def getDefaultDisplayMode(self):
-        """Return the default display mode."""
-        return "3D text"
-
-    def getDisplayMode(self, mode):
-        """Return the saved display mode."""
-        return mode
 
     def updateData(self, obj, prop):
         """Execute when a property from the Proxy class is changed."""
@@ -311,28 +242,28 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
                 self.onChanged(obj.ViewObject, "ArrowType")
 
             if obj.StraightDistance > 0:
-                self.text2d.justification = coin.SoText2.RIGHT
-                self.text3d.justification = coin.SoAsciiText.RIGHT
+                self.text_wld.justification = coin.SoAsciiText.RIGHT
+                self.text_scr.justification = coin.SoText2.RIGHT
             else:
-                self.text2d.justification = coin.SoText2.LEFT
-                self.text3d.justification = coin.SoAsciiText.LEFT
+                self.text_wld.justification = coin.SoAsciiText.LEFT
+                self.text_scr.justification = coin.SoText2.LEFT
 
             self.onChanged(obj.ViewObject, "DisplayMode") # Property to trigger update_label and update_frame.
                                                           # We could have used a different property.
 
         elif prop == "Text" and obj.Text:
-            self.text2d.string.setValue("")
-            self.text3d.string.setValue("")
+            self.text_wld.string.setValue("")
+            self.text_scr.string.setValue("")
 
             _list = [l for l in obj.Text if l]
 
-            self.text2d.string.setValues(_list)
-            self.text3d.string.setValues(_list)
+            self.text_wld.string.setValues(_list)
+            self.text_scr.string.setValues(_list)
             self.onChanged(obj.ViewObject, "DisplayMode")
 
     def onChanged(self, vobj, prop):
         """Execute when a view property is changed."""
-        super(ViewProviderLabel, self).onChanged(vobj, prop)
+        super().onChanged(vobj, prop)
 
         obj = vobj.Object
         properties = vobj.PropertiesList
@@ -341,8 +272,8 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
                             and "LineSpacing" in properties
                             and "ScaleMultiplier" in properties
                             and "TextAlignment" in properties # Top, Middle or Bottom.
-                            and "TextFont" in properties
-                            and "TextSize" in properties)
+                            and "FontName" in properties
+                            and "FontSize" in properties)
         can_update_frame = (can_update_label
                             and "Frame" in properties)
 
@@ -367,14 +298,14 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
         elif prop == "LineWidth" and "LineWidth" in properties:
             self.drawstyle.lineWidth = vobj.LineWidth
 
-        elif prop == "TextFont" and "TextFont" in properties:
-            self.font.name = vobj.TextFont.encode("utf8")
+        elif prop == "FontName" and "FontName" in properties:
+            self.font.name = vobj.FontName.encode("utf8")
             if can_update_label:
                 self.update_label(obj, vobj)
             if can_update_frame:
                 self.update_frame(obj, vobj)
 
-        elif prop in ["DisplayMode", "Frame", "TextAlignment", "TextSize"]:
+        elif prop in ["DisplayMode", "Frame", "TextAlignment", "FontSize"]:
             if can_update_label:
                 self.update_label(obj, vobj)
             if can_update_frame:
@@ -399,18 +330,18 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
 
         elif prop == "Justification" and "Justification" in properties:
             if vobj.Justification == "Left":
-                self.text2d.justification = coin.SoText2.LEFT
-                self.text3d.justification = coin.SoAsciiText.LEFT
+                self.text_wld.justification = coin.SoAsciiText.LEFT
+                self.text_scr.justification = coin.SoText2.LEFT
             elif vobj.Justification == "Right":
-                self.text2d.justification = coin.SoText2.RIGHT
-                self.text3d.justification = coin.SoAsciiText.RIGHT
+                self.text_wld.justification = coin.SoAsciiText.RIGHT
+                self.text_scr.justification = coin.SoText2.RIGHT
             else:
-                self.text2d.justification = coin.SoText2.CENTER
-                self.text3d.justification = coin.SoAsciiText.CENTER
+                self.text_wld.justification = coin.SoAsciiText.CENTER
+                self.text_scr.justification = coin.SoText2.CENTER
 
         elif prop == "LineSpacing" and "LineSpacing" in properties:
-            self.text2d.spacing = max(1, vobj.LineSpacing)
-            self.text3d.spacing = max(1, vobj.LineSpacing)
+            self.text_wld.spacing = max(1, vobj.LineSpacing)
+            self.text_scr.spacing = max(1, vobj.LineSpacing)
             if can_update_label:
                 self.update_label(obj, vobj)
             if can_update_frame:
@@ -418,10 +349,10 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
 
     def get_text_size(self, vobj):
         """Return the bounding box of the text element."""
-        if vobj.DisplayMode == "3D text":
-            node = self.node3dtxt
+        if vobj.DisplayMode == "World":
+            node = self.node_wld_txt
         else:
-            node = self.node2dtxt
+            node = self.node_scr_txt
 
         region = coin.SbViewportRegion()
         action = coin.SoGetBoundingBoxAction(region)
@@ -431,10 +362,10 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
 
     def update_label(self, obj, vobj):
         """Update the label including text size and multiplier."""
-        size = vobj.TextSize.Value * vobj.ScaleMultiplier
+        size = vobj.FontSize.Value * vobj.ScaleMultiplier
         self.font.size = size
 
-        if vobj.DisplayMode == "2D text":
+        if vobj.DisplayMode == "Screen":
             self.textpos.translation.setValue(obj.Placement.Base)
             return
 
@@ -505,10 +436,10 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
 
         if vobj.Frame == "None":
             return
-        if vobj.DisplayMode == "2D text":
+        if vobj.DisplayMode == "Screen":
             return
 
-        size = vobj.TextSize.Value * vobj.ScaleMultiplier
+        size = vobj.FontSize.Value * vobj.ScaleMultiplier
         self.font.size = size
 
         line_height = size * max(1, vobj.LineSpacing)
