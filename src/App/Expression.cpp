@@ -3391,23 +3391,29 @@ UnitExpression * ExpressionParser::parseUnit(const App::DocumentObject *owner, c
     }
 }
 
+namespace {
+std::tuple<int, int> getTokenAndStatus(const std::string & str)
+{
+    ExpressionParser::YY_BUFFER_STATE buf = ExpressionParser::ExpressionParser_scan_string(str.c_str());
+    int token = ExpressionParser::ExpressionParserlex();
+    int status = ExpressionParser::ExpressionParserlex();
+    ExpressionParser::ExpressionParser_delete_buffer(buf);
+
+    return std::make_tuple(token, status);
+}
+}
+
 bool ExpressionParser::isTokenAnIndentifier(const std::string & str)
 {
-    ExpressionParser::YY_BUFFER_STATE buf = ExpressionParser_scan_string(str.c_str());
-    int token = ExpressionParserlex();
-    int status = ExpressionParserlex();
-    ExpressionParser_delete_buffer(buf);
-
-    return (status == 0 && (token == IDENTIFIER || token == CELLADDRESS ));
+    int token{}, status{};
+    std::tie(token, status) = getTokenAndStatus(str);
+    return (status == 0 && (token == IDENTIFIER || token == CELLADDRESS));
 }
 
 bool ExpressionParser::isTokenAUnit(const std::string & str)
 {
-    ExpressionParser::YY_BUFFER_STATE buf = ExpressionParser_scan_string(str.c_str());
-    int token = ExpressionParserlex();
-    int status = ExpressionParserlex();
-    ExpressionParser_delete_buffer(buf);
-
+    int token{}, status{};
+    std::tie(token, status) = getTokenAndStatus(str);
     return (status == 0 && token == UNIT);
 }
 
