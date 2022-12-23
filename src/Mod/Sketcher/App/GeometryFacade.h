@@ -237,7 +237,7 @@ private:
 //
 // GeometryTypedFacade
 
-/** @brief  It provides all the funcionality of GeometryFacade (derives from it), but in addition
+/** @brief  It provides all the functionality of GeometryFacade (derives from it), but in addition
  * allows to indicate the type of a Part::Geometry derived class.
  *
  * @details
