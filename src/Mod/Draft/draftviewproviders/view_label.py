@@ -284,6 +284,7 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
         self.onChanged(vobj, "LineWidth")
         self.onChanged(vobj, "ArrowSize")
         self.onChanged(vobj, "Line")
+        self.Object = vobj.Object
 
     def getDisplayModes(self, vobj):
         """Return the display modes that this viewprovider supports."""
