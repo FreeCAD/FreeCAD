@@ -256,6 +256,7 @@ private:
 // ----------------------------------------------------------------------------
 
 FillingPanel::FillingPanel(ViewProviderFilling* vp, Surface::Filling* obj)
+    : editedObject(obj)
 {
     ui = new Ui_TaskFilling();
     ui->setupUi(this);
@@ -462,14 +463,16 @@ bool FillingPanel::accept()
 
 bool FillingPanel::reject()
 {
-    this->vp->highlightReferences(ViewProviderFilling::Edge,
-        editedObject->BoundaryEdges.getSubListValues(), false);
+    if (!editedObject.expired()) {
+        this->vp->highlightReferences(ViewProviderFilling::Edge,
+            editedObject->BoundaryEdges.getSubListValues(), false);
 
-    // unhighlight the referenced face
-    std::vector<App::PropertyLinkSubList::SubSet> links;
-    links.emplace_back(editedObject->InitialFace.getValue(),
-                                   editedObject->InitialFace.getSubValues());
-    this->vp->highlightReferences(ViewProviderFilling::Face, links, false);
+        // unhighlight the referenced face
+        std::vector<App::PropertyLinkSubList::SubSet> links;
+        links.emplace_back(editedObject->InitialFace.getValue(),
+                                       editedObject->InitialFace.getSubValues());
+        this->vp->highlightReferences(ViewProviderFilling::Face, links, false);
+    }
 
     selectionMode = None;
     Gui::Selection().rmvSelectionGate();
@@ -496,7 +499,7 @@ void FillingPanel::on_lineInitFaceName_textChanged(const QString& text)
 void FillingPanel::on_buttonInitFace_clicked()
 {
     // 'selectionMode' is passed by reference and changed when the filter is deleted
-    Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject));
+    Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject.get()));
     selectionMode = InitFace;
 }
 
@@ -504,7 +507,7 @@ void FillingPanel::on_buttonEdgeAdd_toggled(bool checked)
 {
     if (checked) {
         // 'selectionMode' is passed by reference and changed when the filter is deleted
-        Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject));
+        Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject.get()));
         selectionMode = AppendEdge;
     }
     else if (selectionMode == AppendEdge) {
@@ -516,7 +519,7 @@ void FillingPanel::on_buttonEdgeRemove_toggled(bool checked)
 {
     if (checked) {
         // 'selectionMode' is passed by reference and changed when the filter is deleted
-        Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject));
+        Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject.get()));
         selectionMode = RemoveEdge;
     }
     else if (selectionMode == RemoveEdge) {

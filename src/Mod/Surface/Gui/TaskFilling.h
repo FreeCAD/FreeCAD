@@ -23,6 +23,7 @@
 #ifndef SURFACEGUI_TASKFILLING_H
 #define SURFACEGUI_TASKFILLING_H
 
+#include <App/DocumentObserver.h>
 #include <Gui/DocumentObserver.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
@@ -74,7 +75,7 @@ protected:
         RemoveEdge = SurfaceGui::SelectionMode::RemoveEdge
     };
     SelectionMode selectionMode;
-    Surface::Filling* editedObject;
+    App::WeakPtrT<Surface::Filling> editedObject;
     bool checkCommand;
 
 private:
