@@ -42,11 +42,11 @@ class ViewProviderShapeString(ViewProviderDraft):
         if mode != 0:
             return None
 
-        self.wb_before_edit = Gui.activeWorkbench()
-        Gui.activateWorkbench("DraftWorkbench")
+        if not "Draft_Edit" in Gui.listCommands(): # Using Draft_Edit to detect if the Draft, Arch or BIM WB has been loaded.
+            self.wb_before_edit = Gui.activeWorkbench()
+            Gui.activateWorkbench("DraftWorkbench")
         self.task = ShapeStringTaskPanelEdit(vobj)
         Gui.Control.showDialog(self.task)
-
         return True
 
     def unsetEdit(self, vobj, mode):
@@ -54,6 +54,7 @@ class ViewProviderShapeString(ViewProviderDraft):
             return None
 
         self.task.finish()
-        Gui.activateWorkbench(self.wb_before_edit.name())
-
+        if hasattr(self, "wb_before_edit"):
+            Gui.activateWorkbench(self.wb_before_edit.name())
+            delattr(self, "wb_before_edit")
         return True

@@ -165,6 +165,7 @@ Translator::Translator()
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Romanian"             )] = "ro";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Russian"              )] = "ru";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Serbian"              )] = "sr";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Serbian, Latin"       )] = "sr-CS";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Slovak"               )] = "sk";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Slovenian"            )] = "sl";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Spanish"              )] = "es-ES";

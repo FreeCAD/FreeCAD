@@ -40,7 +40,6 @@ SET(MeasureModule_SRCS
 
 SOURCE_GROUP("Module" FILES ${MeasureModule_SRCS})
 
-
 SET(Measure_SRCS
     ${MeasureModule_SRCS}
     ${Python_SRCS}
@@ -82,6 +81,5 @@ fc_target_copy_resource_flat(Measure
 
 SET_BIN_DIR(Measure Measure /Mod/Measure)
 SET_PYTHON_PREFIX_SUFFIX(Measure)
-
 
 INSTALL(TARGETS Measure DESTINATION ${CMAKE_INSTALL_LIBDIR})

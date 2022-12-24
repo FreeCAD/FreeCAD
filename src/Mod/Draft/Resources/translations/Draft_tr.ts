@@ -1000,11 +1000,6 @@ sırasında değiştirebilirsiniz</translation>
       <translation>Yüzlerin şeffaflığı</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="186"/>
-      <source> %</source>
-      <translation> %</translation>
-    </message>
-    <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="199"/>
       <source>Annotations</source>
       <translation>Açıklamalar</translation>
@@ -1162,17 +1157,12 @@ sırasında değiştirebilirsiniz</translation>
     <message>
       <location filename="../ui/dialogHatch.ui" line="44"/>
       <source>Scale:</source>
-      <translation type="unfinished">Scale:</translation>
+      <translation>Ölçek:</translation>
     </message>
     <message>
       <location filename="../ui/dialogHatch.ui" line="64"/>
       <source>Rotation:</source>
       <translation>Döndürme:</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialogHatch.ui" line="71"/>
-      <source>°</source>
-      <translation>°</translation>
     </message>
   </context>
   <context>
@@ -1487,29 +1477,14 @@ Bunun tam olarak desteklenmediğini ve birçok nesnenin Taslak Değiştiricilerl
       <translation>Bir SVG linestyle tanımı</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="398"/>
-      <source>0.09,0.05</source>
-      <translation>0.09,0.05</translation>
-    </message>
-    <message>
       <location filename="../ui/preferences-draftvisual.ui" line="418"/>
       <source>Dashdot line definition</source>
       <translation>Kesik çizgi tanımı</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="441"/>
-      <source>0.09,0.05,0.02,0.05</source>
-      <translation>0.09,0.05,0.02,0.05</translation>
-    </message>
-    <message>
       <location filename="../ui/preferences-draftvisual.ui" line="461"/>
       <source>Dotted line definition</source>
       <translation>Kesik çizgi tanımı</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="484"/>
-      <source>0.02,0.02</source>
-      <translation>0.02,0.02</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="14"/>
@@ -2246,7 +2221,7 @@ Bu, DXF R12 şablonları sonrası için başarısız olabilir.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="338"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, the outline of a human figure is displayed at the bottom left corner of the grid. This option is only effective if the BIM workbench is installed and if &amp;quot;Show grid border&amp;quot; option is enabled.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, the outline of a human figure is displayed at the bottom left corner of the grid. This option is only effective if the BIM workbench is installed and if &amp;quot;Show grid border&amp;quot; option is enabled.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Kontrol ederseniz, insan figürünün dış hatları ızgaranın sol alt köşesinde görüntüleniyor. Bu seçenek sadece, BIM tezgahı yüklüyse ve &amp;quot;Izgara kenarlarını göster&amp;quot; seçeneği etkinse etkilidir.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="341"/>
@@ -2361,7 +2336,7 @@ Bu, DXF R12 şablonları sonrası için başarısız olabilir.</translation>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="41"/>
       <source>This is the method FreeCAD will use to convert DWG files to DXF. If "Automatic" is chosen, FreeCAD will try to find one of the following converters in the same order as they are shown here. If FreeCAD is unable to find any, you might need to choose a specific converter and indicate its path here under. Choose the "dwg2dxf" utility if using LibreDWG, "ODAFileConverter" if using the ODA file converter, or the "dwg2dwg" utility if using the pro version of QCAD.</source>
-      <translation type="unfinished">This is the method FreeCAD will use to convert DWG files to DXF. If "Automatic" is chosen, FreeCAD will try to find one of the following converters in the same order as they are shown here. If FreeCAD is unable to find any, you might need to choose a specific converter and indicate its path here under. Choose the "dwg2dxf" utility if using LibreDWG, "ODAFileConverter" if using the ODA file converter, or the "dwg2dwg" utility if using the pro version of QCAD.</translation>
+      <translation>Bu yöntem FreeCAD'in, DWG dosyalarını DXF'ye dönüştürmede kullanacağı yöntemdir. "Otomatik" seçiliyse, FreeCAD aşağıdaki dönüştürücülerden birini burada gösterildikleri aynı sırayla bulmayı deneyecektir. Eğer FreeCAD herhangi birini bulamazsa, özel bir dönüştürücü seçmeniz ve yolunu burada altta belirtmeniz gerekecektir. LibreDWG kullanıyorsanız "dwg2dxf" yazılımını, ODA dosya dönüştürücü kullanıyorsanız "ODAFileConverter"ı ya da QCAD'in pro sürümünü kullanıyorsanız "dwg2dwg" yazılımını seçin.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="51"/>
@@ -2386,12 +2361,12 @@ Bu, DXF R12 şablonları sonrası için başarısız olabilir.</translation>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="78"/>
       <source>Path to file converter</source>
-      <translation type="unfinished">Path to file converter</translation>
+      <translation>Dosya dönüştürücüsünün yolu</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="85"/>
       <source>The path to your DWG file converter executable</source>
-      <translation type="unfinished">The path to your DWG file converter executable</translation>
+      <translation>DWG dosya dönüştürücünüzün çalıştırılabilir dosyasının yolu</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="100"/>
@@ -2534,11 +2509,6 @@ Bu, DXF R12 şablonları sonrası için başarısız olabilir.</translation>
       <translation>Döngü Yakala</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftinterface.ui" line="608"/>
-      <source>`</source>
-      <translation>`</translation>
-    </message>
-    <message>
       <location filename="../ui/preferences-draftinterface.ui" line="630"/>
       <source>Global</source>
       <translation>Küresel</translation>
@@ -2552,11 +2522,6 @@ Bu, DXF R12 şablonları sonrası için başarısız olabilir.</translation>
       <location filename="../ui/preferences-draftinterface.ui" line="674"/>
       <source>Undo</source>
       <translation>Geri al</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftinterface.ui" line="696"/>
-      <source>/</source>
-      <translation type="unfinished">/</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="718"/>
@@ -2574,19 +2539,9 @@ Bu, DXF R12 şablonları sonrası için başarısız olabilir.</translation>
       <translation>Yarıçapı artır</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftinterface.ui" line="784"/>
-      <source>[</source>
-      <translation>[</translation>
-    </message>
-    <message>
       <location filename="../ui/preferences-draftinterface.ui" line="806"/>
       <source>Decrease Radius</source>
       <translation>Yarıçapı Azalt</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftinterface.ui" line="828"/>
-      <source>]</source>
-      <translation>]</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="850"/>

@@ -8,6 +8,7 @@ SET(AddonManager_SRCS
     AddonManager.py
     AddonManager.ui
     addonmanager_connection_checker.py
+    addonmanager_dependency_installer.py
     addonmanager_devmode.py
     addonmanager_devmode_add_content.py
     addonmanager_devmode_license_selector.py
@@ -19,7 +20,12 @@ SET(AddonManager_SRCS
     addonmanager_devmode_validators.py
     addonmanager_firstrun.py
     addonmanager_git.py
+    addonmanager_installer.py
+    addonmanager_installer_gui.py
     addonmanager_macro.py
+    addonmanager_update_all_gui.py
+    addonmanager_uninstaller.py
+    addonmanager_uninstaller_gui.py
     addonmanager_utilities.py
     addonmanager_workers_installation.py
     addonmanager_workers_startup.py
@@ -58,6 +64,7 @@ SET(AddonManager_SRCS
     PythonDependencyUpdateDialog.ui
     select_toolbar_dialog.ui
     TestAddonManagerApp.py
+    update_all.ui
 )
 IF (BUILD_GUI)
 	LIST(APPEND AddonManager_SRCS TestAddonManagerGui.py)
@@ -72,16 +79,23 @@ SET(AddonManagerTests_SRCS
 
 SET(AddonManagerTestsApp_SRCS
     AddonManagerTest/app/__init__.py
+    AddonManagerTest/app/mocks.py
     AddonManagerTest/app/test_addon.py
+    AddonManagerTest/app/test_dependency_installer.py
     AddonManagerTest/app/test_git.py
+    AddonManagerTest/app/test_installer.py
     AddonManagerTest/app/test_macro.py
     AddonManagerTest/app/test_utilities.py
+    AddonManagerTest/app/test_uninstaller.py
 )
 
 SET(AddonManagerTestsGui_SRCS
     AddonManagerTest/gui/__init__.py
+    AddonManagerTest/gui/gui_mocks.py
     AddonManagerTest/gui/test_gui.py
-    AddonManagerTest/gui/test_workers_installation.py
+    AddonManagerTest/gui/test_installer_gui.py
+    AddonManagerTest/gui/test_update_all_gui.py
+    AddonManagerTest/gui/test_uninstaller_gui.py
     AddonManagerTest/gui/test_workers_startup.py
     AddonManagerTest/gui/test_workers_utility.py
 )
@@ -98,20 +112,23 @@ SET(AddonManagerTestsFiles_SRCS
     AddonManagerTest/data/macro_template.FCStd
     AddonManagerTest/data/missing_macro_metadata.FCStd
     AddonManagerTest/data/prefpack_only.xml
+    AddonManagerTest/data/test_addon_with_fcmacro.zip
+    AddonManagerTest/data/test_github_style_repo.zip
     AddonManagerTest/data/test_repo.zip
+    AddonManagerTest/data/test_simple_repo.zip
     AddonManagerTest/data/TestWorkbench.zip
     AddonManagerTest/data/test_version_detection.xml
     AddonManagerTest/data/workbench_only.xml
 )
 
 SET(AddonManagerTests_ALL
-	${AddonManagerTests_SRCS}
-	${AddonManagerTestsApp_SRCS}
-	${AddonManagerTestsFiles_SRCS}
+    ${AddonManagerTests_SRCS}
+    ${AddonManagerTestsApp_SRCS}
+    ${AddonManagerTestsFiles_SRCS}
 	)
 
 IF (BUILD_GUI)
-	LIST(APPEND AddonManagerTests_ALL ${AddonManagerTestsGui_SRCS})
+    LIST(APPEND AddonManagerTests_ALL ${AddonManagerTestsGui_SRCS})
 ENDIF (BUILD_GUI)
 
 ADD_CUSTOM_TARGET(AddonManager ALL

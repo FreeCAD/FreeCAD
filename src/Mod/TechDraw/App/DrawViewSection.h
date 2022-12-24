@@ -25,9 +25,9 @@
 #ifndef DrawViewSection_h_
 #define DrawViewSection_h_
 
-#include <gp_Ax2.hxx>
 #include <TopoDS_Compound.hxx>
 #include <TopoDS_Shape.hxx>
+#include <gp_Ax2.hxx>
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
@@ -80,7 +80,7 @@ private:
 
 using ChangePointVector = std::vector<ChangePoint>;
 
-class TechDrawExport DrawViewSection : public DrawViewPart
+class TechDrawExport DrawViewSection: public DrawViewPart
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::DrawViewSection);
 
@@ -88,39 +88,40 @@ public:
     DrawViewSection();
     ~DrawViewSection() override;
 
-    App::PropertyLink   BaseView;
+    App::PropertyLink BaseView;
     App::PropertyVector SectionNormal;
     App::PropertyVector SectionOrigin;
     App::PropertyString SectionSymbol;
 
 
-    App::PropertyEnumeration SectionDirection;      //to be made obsolete eventually
-    App::PropertyEnumeration CutSurfaceDisplay;        //new v019
-    App::PropertyFile   FileHatchPattern;
-    App::PropertyFile   FileGeomPattern;               //new v019
+    App::PropertyEnumeration SectionDirection; //to be made obsolete eventually
+    App::PropertyEnumeration CutSurfaceDisplay;//new v019
+    App::PropertyFile FileHatchPattern;
+    App::PropertyFile FileGeomPattern;//new v019
     App::PropertyFileIncluded SvgIncluded;
     App::PropertyFileIncluded PatIncluded;
     App::PropertyString NameGeomPattern;
-    App::PropertyFloat  HatchScale;
-    App::PropertyFloat  HatchRotation;
+    App::PropertyFloat HatchScale;
+    App::PropertyFloat HatchRotation;
     App::PropertyVector HatchOffset;
 
-    App::PropertyBool   FuseBeforeCut;
-    App::PropertyBool   TrimAfterCut;                   //new v021
+    App::PropertyBool FuseBeforeCut;
+    App::PropertyBool TrimAfterCut;//new v021
 
-    bool isReallyInBox (const Base::Vector3d v, const Base::BoundBox3d bb) const;
-    bool isReallyInBox (const gp_Pnt p, const Bnd_Box& bb) const;
+    bool isReallyInBox(const Base::Vector3d v, const Base::BoundBox3d bb) const;
+    bool isReallyInBox(const gp_Pnt p, const Bnd_Box& bb) const;
 
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
     void onChanged(const App::Property* prop) override;
-    const char* getViewProviderName() const override {
+    const char* getViewProviderName() const override
+    {
         return "TechDrawGui::ViewProviderViewSection";
     }
     void unsetupObject() override;
     short mustExecute() const override;
 
     void sectionExec(TopoDS_Shape& s);
-    virtual void makeSectionCut(TopoDS_Shape &baseShape);
+    virtual void makeSectionCut(TopoDS_Shape& baseShape);
     void postHlrTasks(void) override;
     virtual void postSectionCutTasks();
     void waitingForCut(bool s) { m_waitingForCut = s; }
@@ -130,8 +131,7 @@ public:
     virtual TopoDS_Shape makeCuttingTool(double shapeSize);
     virtual TopoDS_Shape getShapeToCut();
     virtual bool isBaseValid() const;
-    virtual TopoDS_Shape  prepareShape(const TopoDS_Shape& rawShape,
-                                       double shapeSize);
+    virtual TopoDS_Shape prepareShape(const TopoDS_Shape& rawShape, double shapeSize);
     virtual TopoDS_Shape getShapeToPrepare() const { return m_cutPieces; }
 
     //CS related methods
@@ -141,25 +141,27 @@ public:
     void setCSFromLocalUnit(const Base::Vector3d localUnit);
     virtual gp_Ax2 getCSFromBase(const std::string sectionName) const;
     gp_Ax2 getSectionCS() const;
-    Base::Vector3d getXDirection() const override;       //don't use XDirection.getValue()
+    Base::Vector3d getXDirection() const override;//don't use XDirection.getValue()
 
     TechDraw::DrawViewPart* getBaseDVP() const;
     TechDraw::DrawProjGroupItem* getBaseDPGI() const;
 
     //section face related methods
-    TopoDS_Compound getSectionTFaces() { return m_sectionTopoDSFaces;}
-    std::vector<TechDraw::FacePtr> getTDFaceGeometry() {return m_tdSectionFaces;}
+    TopoDS_Compound getSectionTFaces() { return m_sectionTopoDSFaces; }
+    std::vector<TechDraw::FacePtr> getTDFaceGeometry() { return m_tdSectionFaces; }
     TopoDS_Face getSectionTopoDSFace(int i);
     virtual TopoDS_Compound alignSectionFaces(TopoDS_Shape faceIntersections);
     TopoDS_Compound mapToPage(TopoDS_Shape& shapeToAlign);
     virtual std::vector<TechDraw::FacePtr> makeTDSectionFaces(TopoDS_Compound topoDSFaces);
     virtual TopoDS_Shape getShapeToIntersect() { return m_cutPieces; }
 
-    void makeLineSets(void) ;
+    void makeLineSets(void);
     std::vector<LineSet> getDrawableLines(int i = 0);
     std::vector<PATLineSpec> getDecodedSpecsFromFile(std::string fileSpec, std::string myPattern);
 
-    TopoDS_Shape getCutShape() {return m_cutShape;}
+    TopoDS_Shape getCutShape() const { return m_cutShape; }
+
+    TopoDS_Shape getShapeForDetail() const override;
 
     static const char* SectionDirEnums[];
     static const char* CutSurfaceEnums[];
@@ -170,10 +172,10 @@ public:
     bool showSectionEdges(void);
 
 public Q_SLOTS:
-    void onSectionCutFinished(void);
+    virtual void onSectionCutFinished(void);
 
 protected:
-    TopoDS_Compound m_sectionTopoDSFaces;       //needed for hatching
+    TopoDS_Compound m_sectionTopoDSFaces;//needed for hatching
     std::vector<LineSet> m_lineSets;
     std::vector<TechDraw::FacePtr> m_tdSectionFaces;
 
@@ -192,9 +194,9 @@ protected:
     void replaceSvgIncluded(std::string newSvgFile);
     void replacePatIncluded(std::string newPatFile);
 
-    TopoDS_Shape m_cutPieces;                //the shape after cutting, but before centering & scaling
+    TopoDS_Shape m_cutPieces;//the shape after cutting, but before centering & scaling
     gp_Ax2 m_projectionCS;
-    TopoDS_Shape m_preparedShape;             //the shape after cutting, centering, scaling etc
+    TopoDS_Shape m_preparedShape;//the shape after cutting, centering, scaling etc
 
     QMetaObject::Connection connectCutWatcher;
     QFutureWatcher<void> m_cutWatcher;
@@ -206,6 +208,6 @@ protected:
 
 using DrawViewSectionPython = App::FeaturePythonT<DrawViewSection>;
 
-} //namespace TechDraw
+}//namespace TechDraw
 
 #endif

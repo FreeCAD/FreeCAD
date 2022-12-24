@@ -4,17 +4,17 @@
   <context>
     <name>CmdPathArea</name>
     <message>
-      <location filename="../../Command.cpp" line="56"/>
+      <location filename="../../Command.cpp" line="46"/>
       <source>Path</source>
       <translation>路徑</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="57"/>
+      <location filename="../../Command.cpp" line="47"/>
       <source>Area</source>
       <translation type="unfinished">Area</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="58"/>
+      <location filename="../../Command.cpp" line="48"/>
       <source>Creates a feature area from selected objects</source>
       <translation type="unfinished">Creates a feature area from selected objects</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdPathAreaWorkplane</name>
     <message>
-      <location filename="../../Command.cpp" line="138"/>
+      <location filename="../../Command.cpp" line="128"/>
       <source>Path</source>
       <translation>路徑</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="139"/>
+      <location filename="../../Command.cpp" line="129"/>
       <source>Area workplane</source>
       <translation type="unfinished">Area workplane</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="140"/>
+      <location filename="../../Command.cpp" line="130"/>
       <source>Select a workplane for a FeatureArea</source>
       <translation type="unfinished">Select a workplane for a FeatureArea</translation>
     </message>
@@ -40,17 +40,17 @@
   <context>
     <name>CmdPathCompound</name>
     <message>
-      <location filename="../../Command.cpp" line="228"/>
+      <location filename="../../Command.cpp" line="218"/>
       <source>Path</source>
       <translation>路徑</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="229"/>
+      <location filename="../../Command.cpp" line="219"/>
       <source>Compound</source>
       <translation>複合</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="230"/>
+      <location filename="../../Command.cpp" line="220"/>
       <source>Creates a compound from selected paths</source>
       <translation type="unfinished">Creates a compound from selected paths</translation>
     </message>
@@ -58,17 +58,17 @@
   <context>
     <name>CmdPathShape</name>
     <message>
-      <location filename="../../Command.cpp" line="280"/>
+      <location filename="../../Command.cpp" line="270"/>
       <source>Path</source>
       <translation>路徑</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="281"/>
+      <location filename="../../Command.cpp" line="271"/>
       <source>From Shape</source>
       <translation type="unfinished">From Shape</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="282"/>
+      <location filename="../../Command.cpp" line="272"/>
       <source>Creates a path from a selected shape</source>
       <translation type="unfinished">Creates a path from a selected shape</translation>
     </message>
@@ -76,27 +76,27 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="107"/>
+      <location filename="../../Command.cpp" line="97"/>
       <source>Create Path Area View</source>
       <translation type="unfinished">Create Path Area View</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="116"/>
+      <location filename="../../Command.cpp" line="106"/>
       <source>Create Path Area</source>
       <translation type="unfinished">Create Path Area</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="204"/>
+      <location filename="../../Command.cpp" line="194"/>
       <source>Select Workplane for Path Area</source>
       <translation type="unfinished">Select Workplane for Path Area</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="255"/>
+      <location filename="../../Command.cpp" line="245"/>
       <source>Create Path Compound</source>
       <translation type="unfinished">Create Path Compound</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="325"/>
+      <location filename="../../Command.cpp" line="315"/>
       <source>Create Path Shape</source>
       <translation type="unfinished">Create Path Shape</translation>
     </message>
@@ -146,7 +146,7 @@
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="14"/>
       <source>Job Template Export</source>
-      <translation type="unfinished">Job Template Export</translation>
+      <translation>輸出工作模板</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="20"/>
@@ -221,7 +221,7 @@
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="121"/>
       <source>Coolant Mode</source>
-      <translation type="unfinished">Coolant Mode</translation>
+      <translation>冷卻劑模式</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="131"/>
@@ -276,7 +276,7 @@
     <message>
       <location filename="../panels/DlgSelectPostProcessor.ui" line="14"/>
       <source>Post Processor</source>
-      <translation type="unfinished">Post Processor</translation>
+      <translation>後處理器：</translation>
     </message>
     <message>
       <location filename="../panels/DlgSelectPostProcessor.ui" line="42"/>
@@ -301,32 +301,32 @@
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="67"/>
       <source>Horiz. Feed</source>
-      <translation type="unfinished">Horiz. Feed</translation>
+      <translation>水平進刀</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="96"/>
       <source>Vert. Feed</source>
-      <translation type="unfinished">Vert. Feed</translation>
+      <translation>垂直進刀</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="125"/>
       <source>Horiz Rapid</source>
-      <translation type="unfinished">Horiz Rapid</translation>
+      <translation>水平快速進刀</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="154"/>
       <source>Vert Rapid</source>
-      <translation type="unfinished">Vert Rapid</translation>
+      <translation>垂直快速進刀</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="186"/>
       <source>Spindle</source>
-      <translation type="unfinished">Spindle</translation>
+      <translation>主軸</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="196"/>
       <source>Forward</source>
-      <translation type="unfinished">Forward</translation>
+      <translation>正轉</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="201"/>
@@ -416,12 +416,12 @@
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="14"/>
       <source>Library Manager</source>
-      <translation type="unfinished">Library Manager</translation>
+      <translation>刀具庫管理</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="35"/>
       <source>Create Toolbit</source>
-      <translation type="unfinished">Create Toolbit</translation>
+      <translation>建立刀具</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="52"/>
@@ -494,7 +494,7 @@
     <message>
       <location filename="../panels/DlgToolCopy.ui" line="23"/>
       <source>Copy Selected Tools</source>
-      <translation type="unfinished">Copy Selected Tools</translation>
+      <translation>複製已選刀具</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolCopy.ui" line="29"/>
@@ -507,17 +507,17 @@
     <message>
       <location filename="../../DlgProcessorChooser.ui" line="14"/>
       <source>Choose a processor</source>
-      <translation type="unfinished">Choose a processor</translation>
+      <translation>選擇前處理器</translation>
     </message>
     <message>
       <location filename="../../DlgProcessorChooser.ui" line="20"/>
       <source>Processor</source>
-      <translation type="unfinished">Processor</translation>
+      <translation>前處理器</translation>
     </message>
     <message>
       <location filename="../../DlgProcessorChooser.ui" line="33"/>
       <source>Arguments</source>
-      <translation type="unfinished">Arguments</translation>
+      <translation>參數</translation>
     </message>
   </context>
   <context>
@@ -554,7 +554,7 @@
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="20"/>
       <source>Boundary Body</source>
-      <translation type="unfinished">Boundary Body</translation>
+      <translation>工件邊界</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="38"/>
@@ -564,12 +564,12 @@
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="45"/>
       <source>Create Box</source>
-      <translation type="unfinished">Create Box</translation>
+      <translation>建立箱型工作區</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="50"/>
       <source>Create Cylinder</source>
-      <translation type="unfinished">Create Cylinder</translation>
+      <translation>建立圓柱型工作區</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="55"/>
@@ -828,7 +828,7 @@
       <location filename="../panels/PageDepthsEdit.ui" line="39"/>
       <location filename="../panels/SetupGlobal.ui" line="36"/>
       <source>Start Depth</source>
-      <translation type="unfinished">Start Depth</translation>
+      <translation>起始深度</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="46"/>
@@ -843,19 +843,10 @@
       <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Transfer the Z value of the selected feature as the Start Depth for the operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../panels/PageDepthsEdit.ui" line="62"/>
-      <location filename="../panels/PageDepthsEdit.ui" line="108"/>
-      <location filename="../panels/PageDiametersEdit.ui" line="46"/>
-      <location filename="../panels/PageDiametersEdit.ui" line="83"/>
-      <location filename="../panels/PageOpProbeEdit.ui" line="155"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
-    <message>
       <location filename="../panels/PageDepthsEdit.ui" line="85"/>
       <location filename="../panels/SetupGlobal.ui" line="50"/>
       <source>Final Depth</source>
-      <translation type="unfinished">Final Depth</translation>
+      <translation>最終深度</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="92"/>
@@ -873,7 +864,7 @@
       <location filename="../panels/PageDepthsEdit.ui" line="131"/>
       <location filename="../panels/SetupGlobal.ui" line="64"/>
       <source>Step Down</source>
-      <translation type="unfinished">Step Down</translation>
+      <translation>步進深度</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="138"/>
@@ -883,7 +874,7 @@
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="163"/>
       <source>Finish Step Down</source>
-      <translation type="unfinished">Finish Step Down</translation>
+      <translation>最終步進深度</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="170"/>
@@ -893,17 +884,17 @@
     <message>
       <location filename="../panels/PageDiametersEdit.ui" line="20"/>
       <source>Min Diameter</source>
-      <translation type="unfinished">Min Diameter</translation>
+      <translation>最小直徑</translation>
     </message>
     <message>
       <location filename="../panels/PageDiametersEdit.ui" line="57"/>
       <source>Max Diameter</source>
-      <translation type="unfinished">Max Diameter</translation>
+      <translation>最大直徑</translation>
     </message>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="24"/>
       <source>Safe Height</source>
-      <translation type="unfinished">Safe Height</translation>
+      <translation>安全高度</translation>
     </message>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="31"/>
@@ -970,12 +961,12 @@
       <location filename="../panels/SetupGlobal.ui" line="241"/>
       <location filename="../panels/SetupGlobal.ui" line="247"/>
       <source>Coolant Mode</source>
-      <translation type="unfinished">Coolant Mode</translation>
+      <translation>冷卻劑模式</translation>
     </message>
     <message>
       <location filename="../panels/PageOpCustomEdit.ui" line="62"/>
       <source>G Gode</source>
-      <translation type="unfinished">G Gode</translation>
+      <translation> G 碼</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="23"/>
@@ -993,12 +984,12 @@
       <location filename="../panels/PageOpHelixEdit.ui" line="43"/>
       <location filename="../panels/SetupGlobal.ui" line="235"/>
       <source>Coolant</source>
-      <translation type="unfinished">Coolant</translation>
+      <translation>冷卻劑</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="55"/>
       <source>Cut Region</source>
-      <translation type="unfinished">Cut Region</translation>
+      <translation>切削區域</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="62"/>
@@ -1019,7 +1010,7 @@
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="83"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="176"/>
       <source>Step Over Percent</source>
-      <translation type="unfinished">Step Over Percent</translation>
+      <translation>路徑重疊百分比</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="90"/>
@@ -1407,7 +1398,7 @@
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="124"/>
       <source>ZigZag</source>
-      <translation type="unfinished">ZigZag</translation>
+      <translation>之字形</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="134"/>
@@ -2097,17 +2088,17 @@
       <translation type="unfinished">Point Edit</translation>
     </message>
     <message>
-      <location filename="../panels/PointEdit.ui" line="23"/>
+      <location filename="../panels/PointEdit.ui" line="22"/>
       <source>Global X</source>
       <translation>全域X</translation>
     </message>
     <message>
-      <location filename="../panels/PointEdit.ui" line="30"/>
+      <location filename="../panels/PointEdit.ui" line="29"/>
       <source>Global Y</source>
       <translation>全域Y</translation>
     </message>
     <message>
-      <location filename="../panels/PointEdit.ui" line="40"/>
+      <location filename="../panels/PointEdit.ui" line="39"/>
       <source>Global Z</source>
       <translation>全域Z</translation>
     </message>
@@ -2152,19 +2143,6 @@
       <translation type="unfinished">Length Offset</translation>
     </message>
     <message>
-      <location filename="../panels/ToolEditor.ui" line="74"/>
-      <location filename="../panels/ToolEditor.ui" line="131"/>
-      <location filename="../panels/ToolEditor.ui" line="141"/>
-      <location filename="../panels/ToolEditor.ui" line="151"/>
-      <location filename="../panels/ToolEditor.ui" line="171"/>
-      <location filename="../panels/ToolEditor.ui" line="203"/>
-      <location filename="../panels/ToolEditor.ui" line="220"/>
-      <location filename="../panels/ToolEditor.ui" line="237"/>
-      <location filename="../panels/ToolEditor.ui" line="277"/>
-      <source>0.00</source>
-      <translation type="unfinished">0.00</translation>
-    </message>
-    <message>
       <location filename="../panels/ToolEditor.ui" line="87"/>
       <location filename="../panels/ToolEditor.ui" line="184"/>
       <source>Tool Parameter</source>
@@ -2191,18 +2169,6 @@
       <translation type="unfinished">Cutting Edge Height</translation>
     </message>
     <message>
-      <location filename="../panels/ToolEditor.ui" line="161"/>
-      <location filename="../panels/ToolEditor.ui" line="254"/>
-      <source>180°</source>
-      <translation type="unfinished">180°</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolEditor.ui" line="164"/>
-      <location filename="../panels/ToolEditor.ui" line="257"/>
-      <source>°</source>
-      <translation>°</translation>
-    </message>
-    <message>
       <location filename="../panels/ToolEditor.ui" line="196"/>
       <source>D = </source>
       <translation type="unfinished">D = </translation>
@@ -2216,11 +2182,6 @@
       <location filename="../panels/ToolEditor.ui" line="230"/>
       <source>H =</source>
       <translation type="unfinished">H =</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolEditor.ui" line="247"/>
-      <source>α = </source>
-      <translation type="unfinished">α = </translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="267"/>
@@ -2270,7 +2231,7 @@
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="80"/>
       <source>Default Radius</source>
-      <translation type="unfinished">Default Radius</translation>
+      <translation>預設半徑</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="87"/>
@@ -2321,13 +2282,6 @@
       <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Path to look for templates, post processors, tool tables and other external files.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;If left empty the macro directory is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="58"/>
-      <location filename="../preferences/PathJob.ui" line="79"/>
-      <location filename="../preferences/PathJob.ui" line="200"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
-    <message>
       <location filename="../preferences/PathJob.ui" line="65"/>
       <source>Template</source>
       <translation>模板</translation>
@@ -2340,207 +2294,207 @@
     <message>
       <location filename="../preferences/PathJob.ui" line="89"/>
       <source>Geometry</source>
-      <translation type="unfinished">Geometry</translation>
+      <translation>幾何</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="98"/>
+      <location filename="../preferences/PathJob.ui" line="97"/>
       <source>Default Geometry Tolerance</source>
       <translation type="unfinished">Default Geometry Tolerance</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="105"/>
+      <location filename="../preferences/PathJob.ui" line="104"/>
       <source>Default value for new Jobs, used for computing Paths.  Smaller increases accuracy, but slows down computation</source>
       <translation type="unfinished">Default value for new Jobs, used for computing Paths.  Smaller increases accuracy, but slows down computation</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="112"/>
+      <location filename="../preferences/PathJob.ui" line="111"/>
       <source>Default Curve Accuracy</source>
       <translation type="unfinished">Default Curve Accuracy</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="150"/>
-      <location filename="../preferences/PathJob.ui" line="265"/>
+      <location filename="../preferences/PathJob.ui" line="148"/>
+      <location filename="../preferences/PathJob.ui" line="249"/>
       <source>Post Processor</source>
-      <translation type="unfinished">Post Processor</translation>
+      <translation>後處理器：</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="162"/>
+      <location filename="../preferences/PathJob.ui" line="160"/>
       <source>Output File</source>
       <translation type="unfinished">Output File</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="174"/>
+      <location filename="../preferences/PathJob.ui" line="171"/>
       <source>Default Path</source>
       <translation type="unfinished">Default Path</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="193"/>
+      <location filename="../preferences/PathJob.ui" line="182"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter a path and optionally file name (see below) to be used as the default for the post processor export.&lt;/p&gt;&lt;p&gt;The following substitutions are performed before the name is resolved at the time of the post processing:&lt;/p&gt;&lt;p&gt;Substitution allows the following:&lt;/p&gt;&lt;p&gt;%D ... directory of the active document&lt;/p&gt;&lt;p&gt;%d ... name of the active document (with extension)&lt;/p&gt;&lt;p&gt;%M ... user macro directory&lt;/p&gt;&lt;p&gt;%j ... name of the active Job object&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The Following can be used if output is being split. If Output is not split&lt;/p&gt;&lt;p&gt;these will be ignored.  &lt;/p&gt;&lt;p&gt;%T ... Tool Number&lt;/p&gt;&lt;p&gt;%t ... Tool Controller label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%W ... Work Coordinate System&lt;/p&gt;&lt;p&gt;%O ... Operation Label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;When splitting output, a sequence number will always be added.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%S ... Sequence Number&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):&lt;/p&gt;&lt;p&gt;&amp;quot;/home/cnc/%d.g-code&amp;quot;&lt;/p&gt;&lt;p&gt;See the file save policy below on how to deal with name conflicts.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter a path and optionally file name (see below) to be used as the default for the post processor export.&lt;/p&gt;&lt;p&gt;The following substitutions are performed before the name is resolved at the time of the post processing:&lt;/p&gt;&lt;p&gt;Substitution allows the following:&lt;/p&gt;&lt;p&gt;%D ... directory of the active document&lt;/p&gt;&lt;p&gt;%d ... name of the active document (with extension)&lt;/p&gt;&lt;p&gt;%M ... user macro directory&lt;/p&gt;&lt;p&gt;%j ... name of the active Job object&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The Following can be used if output is being split. If Output is not split&lt;/p&gt;&lt;p&gt;these will be ignored.  &lt;/p&gt;&lt;p&gt;%T ... Tool Number&lt;/p&gt;&lt;p&gt;%t ... Tool Controller label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%W ... Work Coordinate System&lt;/p&gt;&lt;p&gt;%O ... Operation Label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;When splitting output, a sequence number will always be added.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%S ... Sequence Number&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):&lt;/p&gt;&lt;p&gt;&amp;quot;/home/cnc/%d.g-code&amp;quot;&lt;/p&gt;&lt;p&gt;See the file save policy below on how to deal with name conflicts.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="213"/>
+      <location filename="../preferences/PathJob.ui" line="200"/>
       <source>File Save Policy</source>
       <translation type="unfinished">File Save Policy</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="232"/>
+      <location filename="../preferences/PathJob.ui" line="217"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose how to deal with potential file name conflicts. Always open a dialog, only open a dialog if the output file already exists, overwrite any existing file or add a unique (3 digit) sequential ID to the file name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose how to deal with potential file name conflicts. Always open a dialog, only open a dialog if the output file already exists, overwrite any existing file or add a unique (3 digit) sequential ID to the file name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="236"/>
+      <location filename="../preferences/PathJob.ui" line="221"/>
       <source>Open File Dialog</source>
       <translation type="unfinished">Open File Dialog</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="241"/>
+      <location filename="../preferences/PathJob.ui" line="226"/>
       <source>Open File Dialog on conflict</source>
       <translation type="unfinished">Open File Dialog on conflict</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="246"/>
+      <location filename="../preferences/PathJob.ui" line="231"/>
       <source>Overwrite existing file</source>
       <translation type="unfinished">Overwrite existing file</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="251"/>
+      <location filename="../preferences/PathJob.ui" line="236"/>
       <source>Append Unique ID on conflict</source>
       <translation type="unfinished">Append Unique ID on conflict</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="274"/>
+      <location filename="../preferences/PathJob.ui" line="258"/>
       <source>Post Processors Selection </source>
       <translation type="unfinished">Post Processors Selection </translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="284"/>
+      <location filename="../preferences/PathJob.ui" line="268"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;It doesn't seem there are any post processor scripts installed. Please add some into your macro directory and make sure the file name ends with &amp;quot;_post.py&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;It doesn't seem there are any post processor scripts installed. Please add some into your macro directory and make sure the file name ends with &amp;quot;_post.py&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="291"/>
+      <location filename="../preferences/PathJob.ui" line="275"/>
       <source>Default Post Processor</source>
       <translation type="unfinished">Default Post Processor</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="298"/>
+      <location filename="../preferences/PathJob.ui" line="282"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select one of the post processors as the default.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select one of the post processors as the default.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="301"/>
+      <location filename="../preferences/PathJob.ui" line="285"/>
       <source>DefaultPostProcessor</source>
       <translation type="unfinished">DefaultPostProcessor</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="304"/>
+      <location filename="../preferences/PathJob.ui" line="288"/>
       <source>Mod/Path</source>
       <translation type="unfinished">Mod/Path</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="311"/>
+      <location filename="../preferences/PathJob.ui" line="295"/>
       <source>Default Arguments</source>
       <translation type="unfinished">Default Arguments</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="318"/>
+      <location filename="../preferences/PathJob.ui" line="302"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optional arguments passed to the default Post Processor specified above. See the Post Processor's documentation for supported arguments.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optional arguments passed to the default Post Processor specified above. See the Post Processor's documentation for supported arguments.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="356"/>
+      <location filename="../preferences/PathJob.ui" line="340"/>
       <source>Setup</source>
       <translation type="unfinished">Setup</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="362"/>
+      <location filename="../preferences/PathJob.ui" line="346"/>
       <source>Stock</source>
       <translation type="unfinished">Stock</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="381"/>
+      <location filename="../preferences/PathJob.ui" line="365"/>
       <source>Create Box</source>
-      <translation type="unfinished">Create Box</translation>
+      <translation>建立箱型工作區</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="386"/>
+      <location filename="../preferences/PathJob.ui" line="370"/>
       <source>Create Cylinder</source>
-      <translation type="unfinished">Create Cylinder</translation>
+      <translation>建立圓柱型工作區</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="391"/>
+      <location filename="../preferences/PathJob.ui" line="375"/>
       <source>Extend Model's Bound Box</source>
       <translation type="unfinished">Extend Model's Bound Box</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="415"/>
+      <location filename="../preferences/PathJob.ui" line="399"/>
       <source>Ext. X</source>
       <translation type="unfinished">Ext. X</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="435"/>
+      <location filename="../preferences/PathJob.ui" line="419"/>
       <source>Ext. Y</source>
       <translation type="unfinished">Ext. Y</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="448"/>
+      <location filename="../preferences/PathJob.ui" line="432"/>
       <source>Ext. Z</source>
       <translation type="unfinished">Ext. Z</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="467"/>
+      <location filename="../preferences/PathJob.ui" line="451"/>
       <source>Radius</source>
       <translation>半徑</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="477"/>
-      <location filename="../preferences/PathJob.ui" line="513"/>
+      <location filename="../preferences/PathJob.ui" line="461"/>
+      <location filename="../preferences/PathJob.ui" line="497"/>
       <source>Height</source>
       <translation>高度</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="493"/>
+      <location filename="../preferences/PathJob.ui" line="477"/>
       <source>Length</source>
       <translation>間距</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="503"/>
+      <location filename="../preferences/PathJob.ui" line="487"/>
       <source>Width</source>
       <translation>寬度</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="539"/>
+      <location filename="../preferences/PathJob.ui" line="523"/>
       <source>Placement</source>
       <translation>佈置</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="551"/>
+      <location filename="../preferences/PathJob.ui" line="535"/>
       <source>Angle</source>
       <translation>角度</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="561"/>
+      <location filename="../preferences/PathJob.ui" line="545"/>
       <source>Axis</source>
       <translation>軸</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="589"/>
+      <location filename="../preferences/PathJob.ui" line="573"/>
       <source>Position</source>
       <translation>位置</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="633"/>
+      <location filename="../preferences/PathJob.ui" line="617"/>
       <source>Tools</source>
       <translation>工具</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="639"/>
+      <location filename="../preferences/PathJob.ui" line="623"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;References to Tool Bits and their shapes can either be stored with an absolute path or with a relative path to the search path.&lt;/p&gt;&lt;p&gt;Generally it is recommended to use relative paths due to their flexibility and robustness to layout changes.&lt;/p&gt;&lt;p&gt;Should multiple tools or tool shapes with the same name exist in different directories it can be required to use absolute paths. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;References to Tool Bits and their shapes can either be stored with an absolute path or with a relative path to the search path.&lt;/p&gt;&lt;p&gt;Generally it is recommended to use relative paths due to their flexibility and robustness to layout changes.&lt;/p&gt;&lt;p&gt;Should multiple tools or tool shapes with the same name exist in different directories it can be required to use absolute paths. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="642"/>
+      <location filename="../preferences/PathJob.ui" line="626"/>
       <source>Store Absolute Paths</source>
       <translation type="unfinished">Store Absolute Paths</translation>
     </message>
@@ -2548,8 +2502,8 @@
   <context>
     <name>PathGui::DlgProcessorChooser</name>
     <message>
-      <location filename="../../DlgProcessorChooser.cpp" line="49"/>
-      <location filename="../../DlgProcessorChooser.cpp" line="76"/>
+      <location filename="../../DlgProcessorChooser.cpp" line="42"/>
+      <location filename="../../DlgProcessorChooser.cpp" line="69"/>
       <source>None</source>
       <translation>無</translation>
     </message>
@@ -2559,7 +2513,7 @@
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="14"/>
       <source>GUI</source>
-      <translation type="unfinished">GUI</translation>
+      <translation>圖形使用者介面</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="23"/>
@@ -2776,7 +2730,7 @@ p, li { white-space: pre-wrap; }
   <context>
     <name>PathGui::TaskWidgetPathCompound</name>
     <message>
-      <location filename="../../TaskDlgPathCompound.cpp" line="54"/>
+      <location filename="../../TaskDlgPathCompound.cpp" line="49"/>
       <source>Compound paths</source>
       <translation type="unfinished">Compound paths</translation>
     </message>
@@ -2938,7 +2892,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DogboneEdit.ui" line="14"/>
       <source>Dogbones</source>
-      <translation type="unfinished">Dogbones</translation>
+      <translation>逃角</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="35"/>
@@ -2964,22 +2918,22 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DogboneEdit.ui" line="57"/>
       <source>T-bone horizontal</source>
-      <translation type="unfinished">T-bone horizontal</translation>
+      <translation>水平T型逃角</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="62"/>
       <source>T-bone vertical</source>
-      <translation type="unfinished">T-bone vertical</translation>
+      <translation>垂直T型逃角</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="67"/>
       <source>T-bone long edge</source>
-      <translation type="unfinished">T-bone long edge</translation>
+      <translation>長邊T型逃角</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="72"/>
       <source>T-bone short edge</source>
-      <translation type="unfinished">T-bone short edge</translation>
+      <translation>短邊T型逃角</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="80"/>
@@ -3094,7 +3048,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="40"/>
       <source>Angle            </source>
-      <translation type="unfinished">Angle            </translation>
+      <translation>角度            </translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="47"/>
@@ -3129,7 +3083,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="126"/>
       <source>Edit...</source>
-      <translation type="unfinished">Edit...</translation>
+      <translation>編輯...</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="133"/>
@@ -3139,7 +3093,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="143"/>
       <source>Auto Generate</source>
-      <translation type="unfinished">Auto Generate</translation>
+      <translation>自動生成</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="159"/>
@@ -3210,22 +3164,22 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="136"/>
       <source>Start Depth</source>
-      <translation type="unfinished">Start Depth</translation>
+      <translation>起始深度</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="150"/>
       <source>Final Depth</source>
-      <translation type="unfinished">Final Depth</translation>
+      <translation>最終深度</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="164"/>
       <source>Step Down</source>
-      <translation type="unfinished">Step Down</translation>
+      <translation>步進深度</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="178"/>
       <source>Finish Step Down</source>
-      <translation type="unfinished">Finish Step Down</translation>
+      <translation>最終步進深度</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="198"/>
@@ -3235,7 +3189,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="214"/>
       <source>Safe Height</source>
-      <translation type="unfinished">Safe Height</translation>
+      <translation>安全高度</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="228"/>
@@ -3255,7 +3209,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="273"/>
       <source>Coolant Mode</source>
-      <translation type="unfinished">Coolant Mode</translation>
+      <translation>冷卻劑模式</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="280"/>
@@ -3297,11 +3251,6 @@ p, li { white-space: pre-wrap; }
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the filename containing the probe data&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the filename containing the probe data&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
-    <message>
-      <location filename="../panels/ZCorrectEdit.ui" line="64"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
   </context>
   <context>
     <name>TaskPathSimulator</name>
@@ -3309,12 +3258,12 @@ p, li { white-space: pre-wrap; }
       <location filename="../panels/TaskPathCamoticsSim.ui" line="14"/>
       <location filename="../panels/TaskPathSimulator.ui" line="14"/>
       <source>Path Simulator</source>
-      <translation type="unfinished">Path Simulator</translation>
+      <translation>路徑模擬</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="35"/>
       <source>Stop running simulation</source>
-      <translation type="unfinished">Stop running simulation</translation>
+      <translation>停止目前模擬程序</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="38"/>
@@ -3334,12 +3283,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="75"/>
       <source>Pause simulation</source>
-      <translation type="unfinished">Pause simulation</translation>
+      <translation>暫停模擬</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="78"/>
       <source>Pause</source>
-      <translation type="unfinished">Pause</translation>
+      <translation>暫停</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="95"/>
@@ -3375,11 +3324,6 @@ p, li { white-space: pre-wrap; }
       <location filename="../panels/TaskPathSimulator.ui" line="229"/>
       <source>Accuracy:</source>
       <translation type="unfinished">Accuracy:</translation>
-    </message>
-    <message>
-      <location filename="../panels/TaskPathSimulator.ui" line="261"/>
-      <source>%</source>
-      <translation>％</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="278"/>
@@ -3460,11 +3404,6 @@ p, li { white-space: pre-wrap; }
       <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Change file defining type and shape of Tool Bit.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../panels/ToolBitEditor.ui" line="109"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
-    <message>
       <location filename="../panels/ToolBitEditor.ui" line="122"/>
       <source>Parameter</source>
       <translation>參數</translation>
@@ -3475,16 +3414,6 @@ p, li { white-space: pre-wrap; }
       <translation type="unfinished">Point/Tip Angle</translation>
     </message>
     <message>
-      <location filename="../panels/ToolBitEditor.ui" line="138"/>
-      <source>0 °</source>
-      <translation type="unfinished">0 °</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolBitEditor.ui" line="141"/>
-      <source>°</source>
-      <translation>°</translation>
-    </message>
-    <message>
       <location filename="../panels/ToolBitEditor.ui" line="148"/>
       <source>Cutting Edge Height</source>
       <translation type="unfinished">Cutting Edge Height</translation>
@@ -3492,7 +3421,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="155"/>
       <source>0 mm</source>
-      <translation type="unfinished">0 mm</translation>
+      <translation>0 mm</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="158"/>
@@ -3515,7 +3444,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitSelector.ui" line="20"/>
       <source>Tool Selector</source>
-      <translation type="unfinished">Tool Selector</translation>
+      <translation>刀具選擇器</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitSelector.ui" line="30"/>
@@ -3535,7 +3464,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitSelector.ui" line="104"/>
       <source>Add To Job</source>
-      <translation type="unfinished">Add To Job</translation>
+      <translation>新增到工作</translation>
     </message>
   </context>
   <context>
@@ -3580,7 +3509,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="118"/>
       <source>Template Export</source>
-      <translation type="unfinished">Template Export</translation>
+      <translation>模板輸出</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="128"/>
@@ -3593,21 +3522,14 @@ p, li { white-space: pre-wrap; }
       <translation type="unfinished">Output File</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="148"/>
-      <location filename="../panels/PathEdit.ui" line="1406"/>
-      <location filename="../panels/PathEdit.ui" line="1417"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
-    <message>
       <location filename="../panels/PathEdit.ui" line="155"/>
       <source>Processor</source>
-      <translation type="unfinished">Processor</translation>
+      <translation>前處理器</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="165"/>
       <source>Arguments</source>
-      <translation type="unfinished">Arguments</translation>
+      <translation>參數</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="172"/>
@@ -3617,7 +3539,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="185"/>
       <source>Work Coordinate Systems</source>
-      <translation type="unfinished">Work Coordinate Systems</translation>
+      <translation>工作座標系統</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="191"/>
@@ -3667,7 +3589,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="414"/>
       <source>Layout</source>
-      <translation type="unfinished">Layout</translation>
+      <translation>配罝 </translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="420"/>
@@ -3677,12 +3599,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="441"/>
       <source>Create Box</source>
-      <translation type="unfinished">Create Box</translation>
+      <translation>建立箱型工作區</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="446"/>
       <source>Create Cylinder</source>
-      <translation type="unfinished">Create Cylinder</translation>
+      <translation>建立圓柱型工作區</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="451"/>
@@ -3738,17 +3660,17 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="612"/>
       <source>Alignment</source>
-      <translation type="unfinished">Alignment</translation>
+      <translation>對齊</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="618"/>
       <source>Move to Origin</source>
-      <translation type="unfinished">Move to Origin</translation>
+      <translation>移到原點</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="625"/>
       <source>Set Origin</source>
-      <translation type="unfinished">Set Origin</translation>
+      <translation>設定原點</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="632"/>
@@ -3819,7 +3741,7 @@ p, li { white-space: pre-wrap; }
       <location filename="../panels/PathEdit.ui" line="981"/>
       <location filename="../panels/PathEdit.ui" line="1268"/>
       <source>Default Values</source>
-      <translation type="unfinished">Default Values</translation>
+      <translation>預設值</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="987"/>
@@ -3829,7 +3751,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="993"/>
       <source>Start Depth</source>
-      <translation type="unfinished">Start Depth</translation>
+      <translation>起始深度</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1000"/>
@@ -3839,7 +3761,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1007"/>
       <source>Final Depth</source>
-      <translation type="unfinished">Final Depth</translation>
+      <translation>最終深度</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1014"/>
@@ -3849,7 +3771,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1021"/>
       <source>Step Down</source>
-      <translation type="unfinished">Step Down</translation>
+      <translation>步進深度</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1028"/>
@@ -3904,12 +3826,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1109"/>
       <source>Coolant</source>
-      <translation type="unfinished">Coolant</translation>
+      <translation>冷卻劑</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1115"/>
       <source>Coolant Mode</source>
-      <translation type="unfinished">Coolant Mode</translation>
+      <translation>冷卻劑模式</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1146"/>
@@ -3931,22 +3853,22 @@ p, li { white-space: pre-wrap; }
       <location filename="../panels/PathEdit.ui" line="1193"/>
       <location filename="../panels/PathEdit.ui" line="1205"/>
       <source>Feed</source>
-      <translation type="unfinished">Feed</translation>
+      <translation>進刀</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1196"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Horizontal Feed&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Horizontal Feed&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;水平進刀&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1208"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Vertical Feed&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Vertical Feed&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;垂直進刀&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1217"/>
       <source>Spindle</source>
-      <translation type="unfinished">Spindle</translation>
+      <translation>主軸</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1237"/>
@@ -3986,7 +3908,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1344"/>
       <source>Workplan</source>
-      <translation type="unfinished">Workplan</translation>
+      <translation>工作平面</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1356"/>

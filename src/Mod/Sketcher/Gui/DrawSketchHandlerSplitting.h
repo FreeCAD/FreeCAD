@@ -52,9 +52,20 @@ public:
             const Part::Geometry *geom = Sketch->getGeometry(GeoId);
             if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()
                 || geom->getTypeId() == Part::GeomCircle::getClassTypeId()
-                || geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                || geom->getTypeId() == Part::GeomEllipse::getClassTypeId()
+                || geom->isDerivedFrom(Part::GeomArcOfConic::getClassTypeId())
+                || geom->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
                 return true;
             }
+        }
+        else if (element.substr(0,6) == "Vertex") {
+            int VertId = std::atoi(element.substr(6,4000).c_str()) - 1;
+            int GeoId = Sketcher::GeoEnum::GeoUndef;
+            Sketcher::PointPos PosId = Sketcher::PointPos::none;
+            Sketcher::SketchObject *Sketch = static_cast<Sketcher::SketchObject*>(object);
+            Sketch->getGeoVertexIndex(VertId, GeoId, PosId);
+            if (isBsplineKnot(Sketch, GeoId))
+                return true;
         }
         return  false;
     }
@@ -83,23 +94,51 @@ public:
 
     bool releaseButton(Base::Vector2d onSketchPos) override
     {
-        int GeoId = getPreselectCurve();
-        if (GeoId >= 0) {
-            const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(GeoId);
+        int GeoId = Sketcher::GeoEnum::GeoUndef;
+
+        int curveGeoId = getPreselectCurve();
+        if (curveGeoId >= 0) {
+            const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(curveGeoId);
             if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()
                 || geom->getTypeId() == Part::GeomCircle::getClassTypeId()
-                || geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
-                try {
-                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Split edge"));
-                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "split(%d,App.Vector(%f,%f,0))",
-                              GeoId, onSketchPos.x, onSketchPos.y);
-                    Gui::Command::commitCommand();
-                    tryAutoRecompute(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
-                }
-                catch (const Base::Exception& e) {
-                    Base::Console().Error("Failed to split edge: %s\n", e.what());
-                    Gui::Command::abortCommand();
-                }
+                || geom->getTypeId() == Part::GeomEllipse::getClassTypeId()
+                || geom->isDerivedFrom(Part::GeomArcOfConic::getClassTypeId())
+                || geom->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+                GeoId = curveGeoId;
+            }
+        }
+        else {
+            // No curve of interest is pre-selected. Try pre-selected point.
+            int pointGeoId = getPreselectPoint();
+
+            if (pointGeoId >=0) {
+                // TODO: This has to be a knot. Find the spline.
+
+                const auto& constraints = getSketchObject()->Constraints.getValues();
+                const auto& conIt = std::find_if(
+                    constraints.begin(), constraints.end(),
+                    [pointGeoId](auto constr) {
+                        return (constr->Type == Sketcher::InternalAlignment &&
+                                constr->AlignmentType == Sketcher::BSplineKnotPoint &&
+                                constr->First == pointGeoId);
+                    });
+
+                if (conIt != constraints.end())
+                    GeoId = (*conIt)->Second;
+            }
+        }
+
+        if (GeoId >= 0) {
+            try {
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Split edge"));
+                Gui::cmdAppObjectArgs(sketchgui->getObject(), "split(%d,App.Vector(%f,%f,0))",
+                                      GeoId, onSketchPos.x, onSketchPos.y);
+                Gui::Command::commitCommand();
+                tryAutoRecompute(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
+            }
+            catch (const Base::Exception& e) {
+                Base::Console().Error("Failed to split edge: %s\n", e.what());
+                Gui::Command::abortCommand();
             }
         }
         else {

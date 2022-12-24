@@ -6,12 +6,12 @@
     <message>
       <location filename="../../AddonManagerOptions_AddCustomRepository.ui" line="14"/>
       <source>Custom repository</source>
-      <translation>Eigene Repository</translation>
+      <translation>Eigenes Projektarchiv</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions_AddCustomRepository.ui" line="20"/>
       <source>Repository URL</source>
-      <translation>Repository-URL</translation>
+      <translation>URL des Projektarchivs</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions_AddCustomRepository.ui" line="30"/>
@@ -74,12 +74,6 @@
       <source>Optional?</source>
       <translation>Optional?</translation>
     </message>
-    <message>
-      <location filename="../../developer_mode_dependencies.ui" line="72"/>
-      <location filename="../../developer_mode_dependencies.ui" line="79"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
   </context>
   <context>
     <name>DependencyResolutionDialog</name>
@@ -100,7 +94,7 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="43"/>
       <source>FreeCAD Addons</source>
-      <translation>FreeCAD-Erweiterungen</translation>
+      <translation>FreeCAD-Addons</translation>
     </message>
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="55"/>
@@ -118,7 +112,7 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
     <message>
       <location filename="../../developer_mode.ui" line="14"/>
       <source>Addon Developer Tools</source>
-      <translation type="unfinished">Addon Developer Tools</translation>
+      <translation>Addon-Entwicklungswerkzeuge</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="25"/>
@@ -145,7 +139,7 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
       <location filename="../../developer_mode.ui" line="77"/>
       <location filename="../../developer_mode.ui" line="160"/>
       <source>Explanation of what this Addon provides. Displayed in the Addon Manager. It is not necessary for this to state that this is a FreeCAD Addon.</source>
-      <translation type="unfinished">Explanation of what this Addon provides. Displayed in the Addon Manager. It is not necessary for this to state that this is a FreeCAD Addon.</translation>
+      <translation>Erläuterung dessen, was dieses Addon zur Verfügung stellt. Wird im Addon-Manager angezeigt. Es ist nicht notwendig anzugeben, dass dies ein FreeCAD-Addon ist.</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="80"/>
@@ -204,7 +198,7 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
     <message>
       <location filename="../../developer_mode.ui" line="173"/>
       <source>Repository URL</source>
-      <translation>Repository-URL</translation>
+      <translation>URL des Projektarchivs</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="204"/>
@@ -219,7 +213,7 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
     <message>
       <location filename="../../developer_mode.ui" line="228"/>
       <source>Addon Name</source>
-      <translation type="unfinished">Addon Name</translation>
+      <translation>Addon-Name</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="235"/>
@@ -249,13 +243,7 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
     <message>
       <location filename="../../developer_mode.ui" line="277"/>
       <source>Addon Contents</source>
-      <translation type="unfinished">Addon Contents</translation>
-    </message>
-    <message>
-      <location filename="../../developer_mode.ui" line="301"/>
-      <location filename="../../developer_mode.ui" line="308"/>
-      <source>...</source>
-      <translation>...</translation>
+      <translation>Addon-Inhalte</translation>
     </message>
   </context>
   <context>
@@ -288,7 +276,7 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
     <message>
       <location filename="../../AddonManager.ui" line="113"/>
       <source>Update all Addons</source>
-      <translation>Alle Erweiterungen aktualisieren</translation>
+      <translation>Alle Addons aktualisieren</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="120"/>
@@ -298,7 +286,7 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
     <message>
       <location filename="../../AddonManager.ui" line="130"/>
       <source>View and update Python package dependencies</source>
-      <translation type="unfinished">View and update Python package dependencies</translation>
+      <translation>Python-Paket-Abhängigkeiten anzeigen und aktualisieren</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="133"/>
@@ -338,7 +326,7 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
     <message>
       <location filename="../../first_run.ui" line="53"/>
       <source>Automatically check installed Addons for updates</source>
-      <translation>Für installierte Addons automatisch nach Updates suchen</translation>
+      <translation>Automatisch nach Updates für installierte Addons suchen</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="60"/>
@@ -486,14 +474,6 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
       <translation>Lizenzdatei</translation>
     </message>
     <message>
-      <location filename="../../developer_mode_licenses_table.ui" line="97"/>
-      <location filename="../../developer_mode_licenses_table.ui" line="107"/>
-      <location filename="../../developer_mode_people_table.ui" line="90"/>
-      <location filename="../../developer_mode_people_table.ui" line="100"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
-    <message>
       <location filename="../../developer_mode_people_table.ui" line="26"/>
       <source>People</source>
       <translation type="unfinished">People</translation>
@@ -535,12 +515,6 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="48"/>
       <source>Best-available branch, tag, or commit</source>
       <translation type="unfinished">Best-available branch, tag, or commit</translation>
-    </message>
-    <message>
-      <location filename="../../developer_mode_advanced_freecad_versions.ui" line="71"/>
-      <location filename="../../developer_mode_advanced_freecad_versions.ui" line="78"/>
-      <source>...</source>
-      <translation>...</translation>
     </message>
   </context>
   <context>
@@ -584,12 +558,12 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
       <source>If this option is selected, when launching the Addon Manager,
 installed addons will be checked for available updates
 (this requires the GitPython package installed on your system)</source>
-      <translation>Wenn diese Option ausgewählt ist, wird beim Starten des Addon-Managers für installierte Addons nach verfügbaren Updates gesucht. (Dafür muss das GitPython-Paket dazu auf dem System installiert sein)</translation>
+      <translation>Wenn diese Option ausgewählt ist, wird beim Starten des Addon-Managers nach verfügbaren Updates für installierte Addons gesucht. (Dies erfordert ein auf dem System installiertes GitPython-Paket)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="25"/>
       <source>Automatically check for updates at start (requires git)</source>
-      <translation type="unfinished">Automatically check for updates at start (requires git)</translation>
+      <translation>Beim Start automatisch nach Updates suchen (erfordert git)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="41"/>
@@ -597,12 +571,6 @@ installed addons will be checked for available updates
       <translation>Makro-Metadaten herunterladen (ca. 10 MB)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="44"/>
-      <source>DownloadMacros</source>
-      <translation>Makros herunterladen</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManagerOptions.ui" line="47"/>
       <location filename="../../AddonManagerOptions.ui" line="373"/>
       <location filename="../../AddonManagerOptions.ui" line="386"/>
       <source>Addons</source>
@@ -631,28 +599,22 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManagerOptions.ui" line="96"/>
       <source>Hide Addons marked Python 2 Only</source>
-      <translation>Nur für Python 2 markierte Erweiterungen ausblenden</translation>
+      <translation>Nur für Python 2 markierte Addons ausblenden</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="112"/>
       <source>Hide Addons marked Obsolete</source>
-      <translation>Veraltete Erweiterungen ausblenden</translation>
+      <translation>Veraltete Addons ausblenden</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="128"/>
       <source>Hide Addons that require a newer version of FreeCAD</source>
-      <translation>Erweiterungen ausblenden, die eine neuere Version von FreeCAD voraussetzen</translation>
+      <translation>Addons ausblenden, die eine neuere Version von FreeCAD voraussetzen</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="150"/>
       <source>Custom repositories</source>
       <translation type="unfinished">Custom repositories</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManagerOptions.ui" line="188"/>
-      <location filename="../../AddonManagerOptions.ui" line="195"/>
-      <source>...</source>
-      <translation>...</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="354"/>
@@ -662,7 +624,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManagerOptions.ui" line="367"/>
       <source>Disable git (fall back to ZIP downloads only)</source>
-      <translation type="unfinished">Disable git (fall back to ZIP downloads only)</translation>
+      <translation>Git deaktivieren (reine ZIP-Downloads)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="370"/>
@@ -672,12 +634,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManagerOptions.ui" line="380"/>
       <source>Activate Addon Manager options intended for developers of new Addons.</source>
-      <translation type="unfinished">Activate Addon Manager options intended for developers of new Addons.</translation>
+      <translation>Aktivieren Sie Addon-Manager-Optionen für Entwickler neuer Addons.</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="383"/>
       <source>Addon developer mode</source>
-      <translation type="unfinished">Addon developer mode</translation>
+      <translation>Addon-Entwickler-Modus</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="389"/>
@@ -736,11 +698,6 @@ installed addons will be checked for available updates
       <location filename="../../package_details.ui" line="14"/>
       <source>Form</source>
       <translation>Form</translation>
-    </message>
-    <message>
-      <location filename="../../package_details.ui" line="29"/>
-      <source>...</source>
-      <translation>...</translation>
     </message>
     <message>
       <location filename="../../package_details.ui" line="49"/>
@@ -813,7 +770,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="99"/>
       <source>Update all available</source>
-      <translation type="unfinished">Update all available</translation>
+      <translation>Update verfügbar</translation>
     </message>
   </context>
   <context>
@@ -827,6 +784,19 @@ installed addons will be checked for available updates
       <location filename="../../developer_mode_select_from_list.ui" line="20"/>
       <source>TextLabel</source>
       <translation>TextLabel</translation>
+    </message>
+  </context>
+  <context>
+    <name>UpdateAllDialog</name>
+    <message>
+      <location filename="../../update_all.ui" line="14"/>
+      <source>Updating Addons</source>
+      <translation type="unfinished">Updating Addons</translation>
+    </message>
+    <message>
+      <location filename="../../update_all.ui" line="23"/>
+      <source>Updating out-of-date addons...</source>
+      <translation type="unfinished">Updating out-of-date addons...</translation>
     </message>
   </context>
   <context>
@@ -891,7 +861,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="125"/>
       <source>Workbench class name</source>
-      <translation type="unfinished">Workbench class name</translation>
+      <translation>Name der Klasse des Arbeitsbereichs</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="132"/>

@@ -31,7 +31,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="82"/>
       <source>Print debug information in the Console</source>
-      <translation>Одштампајте информације о отклањању грешака у конзоли</translation>
+      <translation>Одштампај информације о отклањању грешака у конзоли</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="99"/>
@@ -46,18 +46,18 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="119"/>
       <source>If this is checked, Multmatrix Object will be Parametric</source>
-      <translation>Ако је чекирано, Мултиматрикc објекат ће бити параметарcки</translation>
+      <translation>Ако је чекирано, Multmatrix објекат ће бити параметарcки</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="122"/>
       <source>Use Multmatrix Feature</source>
-      <translation>Кориcти Мultmatrix типски облик</translation>
+      <translation>Кориcти Multmatrix Cвојcтво</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="139"/>
       <location filename="../ui/openscadprefs-base.ui" line="162"/>
       <source>The maximum number of faces of a polygon, prism or frustum. If fn is greater than this value the object is considered to be a circular. Set to 0 for no limit</source>
-      <translation>Максималан број страница полигона, призме или фрустума. Ако је фн већи од ове вредности, објекат се сматра кружним. Поставите на 0 без ограничења</translation>
+      <translation>Максималан број страница полигона, призме или фрустума. Ако је fn већи од ове вредности, објекат се сматра кружним. Поставите на 0 без ограничења</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="142"/>
@@ -67,7 +67,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="182"/>
       <source>Send to OpenSCAD via:</source>
-      <translation>Пошаљите у OpenSCAD преко:</translation>
+      <translation>Пошаљи у OpenSCAD преко:</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="195"/>
@@ -119,11 +119,6 @@
       <location filename="../ui/openscadprefs-base.ui" line="289"/>
       <source>angular (fa)</source>
       <translation>угаони (fa)</translation>
-    </message>
-    <message>
-      <location filename="../ui/openscadprefs-base.ui" line="299"/>
-      <source>°</source>
-      <translation>°</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="328"/>

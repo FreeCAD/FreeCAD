@@ -148,32 +148,30 @@ def isAligned(edge, axis="x"):
 
     The axis can be 'x', 'y' or 'z'.
     """
+    def is_same(a, b):
+      return round(a, precision()) == round(b, precision())
+
     if axis == "x":
         if isinstance(edge, Part.Edge):
             if len(edge.Vertexes) == 2:
-                if edge.Vertexes[0].X == edge.Vertexes[-1].X:
-                    return True
+                return is_same(edge.Vertexes[0].X, edge.Vertexes[-1].X)
         elif isinstance(edge, Part.LineSegment):
-            if edge.StartPoint.x == edge.EndPoint.x:
-                return True
+            return is_same(edge.StartPoint.x, edge.EndPoint.x)
 
     elif axis == "y":
         if isinstance(edge, Part.Edge):
             if len(edge.Vertexes) == 2:
-                if edge.Vertexes[0].Y == edge.Vertexes[-1].Y:
-                    return True
+                return is_same(edge.Vertexes[0].Y, edge.Vertexes[-1].Y)
         elif isinstance(edge, Part.LineSegment):
-            if edge.StartPoint.y == edge.EndPoint.y:
-                return True
+            return is_same(edge.StartPoint.y, edge.EndPoint.y)
 
     elif axis == "z":
         if isinstance(edge, Part.Edge):
             if len(edge.Vertexes) == 2:
-                if edge.Vertexes[0].Z == edge.Vertexes[-1].Z:
-                    return True
+                return is_same(edge.Vertexes[0].Z, edge.Vertexes[-1].Z)
         elif isinstance(edge, Part.LineSegment):
-            if edge.StartPoint.z == edge.EndPoint.z:
-                return True
+            return is_same(edge.StartPoint.z, edge.EndPoint.z)
+
     return False
 
 

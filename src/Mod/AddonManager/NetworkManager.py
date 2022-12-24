@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2022 FreeCAD Project Association                        *
@@ -548,7 +546,7 @@ if HAVE_QTNETWORK:
                 f = self.file_buffers[index]
             try:
                 f.write(buffer.data())
-            except IOError as e:
+            except OSError as e:
                 if HAVE_FREECAD:
                     FreeCAD.Console.PrintError(
                         f"Network Manager internal error: {str(e)}"

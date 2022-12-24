@@ -31,6 +31,7 @@
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/SelectionObject.h>
+#include <Gui/Widgets.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 
 #include "TaskFillingVertex.h"
@@ -135,6 +136,12 @@ FillingVertexPanel::~FillingVertexPanel()
     Gui::Selection().rmvSelectionGate();
 }
 
+void FillingVertexPanel::appendButtons(Gui::ButtonGroup* buttonGroup)
+{
+    buttonGroup->addButton(ui->buttonVertexAdd, int(SelectionMode::AppendVertex));
+    buttonGroup->addButton(ui->buttonVertexRemove, int(SelectionMode::RemoveVertex));
+}
+
 // stores object pointer, its old fill type and adjusts radio buttons according to it.
 void FillingVertexPanel::setEditedObject(Surface::Filling* obj)
 {
@@ -223,18 +230,28 @@ void FillingVertexPanel::slotDeletedObject(const Gui::ViewProviderDocumentObject
     }
 }
 
-void FillingVertexPanel::on_buttonVertexAdd_clicked()
+void FillingVertexPanel::on_buttonVertexAdd_toggled(bool checked)
 {
-    // 'selectionMode' is passed by reference and changed when the filter is deleted
-    Gui::Selection().addSelectionGate(new VertexSelection(selectionMode, editedObject));
-    selectionMode = AppendVertex;
+    if (checked) {
+        // 'selectionMode' is passed by reference and changed when the filter is deleted
+        Gui::Selection().addSelectionGate(new VertexSelection(selectionMode, editedObject));
+        selectionMode = AppendVertex;
+    }
+    else if (selectionMode == AppendVertex) {
+        exitSelectionMode();
+    }
 }
 
-void FillingVertexPanel::on_buttonVertexRemove_clicked()
+void FillingVertexPanel::on_buttonVertexRemove_toggled(bool checked)
 {
-    // 'selectionMode' is passed by reference and changed when the filter is deleted
-    Gui::Selection().addSelectionGate(new VertexSelection(selectionMode, editedObject));
-    selectionMode = RemoveVertex;
+    if (checked) {
+        // 'selectionMode' is passed by reference and changed when the filter is deleted
+        Gui::Selection().addSelectionGate(new VertexSelection(selectionMode, editedObject));
+        selectionMode = RemoveVertex;
+    }
+    else if (selectionMode == RemoveVertex) {
+        exitSelectionMode();
+    }
 }
 
 void FillingVertexPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -341,6 +358,13 @@ void FillingVertexPanel::onDeleteVertex()
         this->vp->highlightReferences(ViewProviderFilling::Vertex,
             editedObject->Points.getSubListValues(), true);
     }
+}
+
+void FillingVertexPanel::exitSelectionMode()
+{
+    // 'selectionMode' is passed by reference to the filter and changed when the filter is deleted
+    Gui::Selection().clearSelection();
+    Gui::Selection().rmvSelectionGate();
 }
 
 }

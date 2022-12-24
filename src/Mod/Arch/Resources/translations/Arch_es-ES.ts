@@ -601,11 +601,6 @@ Ifc Type: Pared. Sólo considerará aquellos objetos cuyo Tipo de Ifc es Pared.
       <translation>Una lista separada por comas de los ángulos para probar y rotar las formas</translation>
     </message>
     <message>
-      <location filename="../ui/ArchNest.ui" line="135"/>
-      <source>0,90,180,270</source>
-      <translation>0,90,180,270</translation>
-    </message>
-    <message>
       <location filename="../ui/ArchNest.ui" line="145"/>
       <source>Nesting operation</source>
       <translation>Operación de anidación</translation>
@@ -828,11 +823,6 @@ Ifc Type: Pared. Sólo considerará aquellos objetos cuyo Tipo de Ifc es Pared.
       <source>This is the SVG stroke-dasharray property to apply
 to projections of hidden objects.</source>
       <translation>Esta es la propiedad SVG trazo-matriz de puntos que se aplica a las proyecciones de objetos ocultos.</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-arch.ui" line="589"/>
-      <source>30, 10</source>
-      <translation>30,10</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="625"/>

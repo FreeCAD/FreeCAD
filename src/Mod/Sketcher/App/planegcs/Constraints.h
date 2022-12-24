@@ -118,7 +118,7 @@ namespace GCS
 
         inline VEC_pD params() { return pvec; }
 
-        void redirectParams(MAP_pD_pD redirectionmap);
+        void redirectParams(const MAP_pD_pD & redirectionmap);
         void revertParams();
         void setTag(int tagId) { tag = tagId; }
         int getTag() { return tag; }

@@ -62,8 +62,8 @@
         <file>icons/WebTools_workbench_icon.svg</file>
         <file>icons/workfeature_workbench_icon.svg</file>
         <file>icons/yaml-workspace_workbench_icon.svg</file>
-        <file>icons/expanded_view.svg</file>
         <file>icons/compact_view.svg</file>
+        <file>icons/expanded_view.svg</file>
 		<file>licenses/Apache-2.0.txt</file>
 		<file>licenses/BSD-2-Clause.txt</file>
 		<file>licenses/BSD-3-Clause.txt</file>
@@ -114,5 +114,6 @@
         <file>translations/AddonManager_es-AR.qm</file>
         <file>translations/AddonManager_bg.qm</file>
         <file>translations/AddonManager_ka.qm</file>
+        <file>translations/AddonManager_sr-CS.qm</file>
     </qresource>
 </RCC>

@@ -20,13 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskSketcherGerneral_H
 #define GUI_TASKVIEW_TaskSketcherGerneral_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
 #include <boost_signals2.hpp>
+
+#include <Gui/Selection.h>
+#include <Gui/TaskView/TaskView.h>
+
 
 namespace App {
 class Property;

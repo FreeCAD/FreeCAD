@@ -20,16 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskSketcherElements_H
 #define GUI_TASKVIEW_TaskSketcherElements_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <boost_signals2.hpp>
-#include <QListWidget>
-#include <QIcon>
 #include <QStyledItemDelegate>
+#include <QListWidget>
+
+#include <boost_signals2.hpp>
+
+#include <Gui/Selection.h>
+#include <Gui/TaskView/TaskView.h>
+
 
 namespace App {
 class Property;

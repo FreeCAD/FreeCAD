@@ -57,6 +57,7 @@
         <file>translations/Spreadsheet_es-AR.qm</file>
         <file>translations/Spreadsheet_bg.qm</file>
         <file>translations/Spreadsheet_ka.qm</file>
+        <file>translations/Spreadsheet_sr-CS.qm</file>
         <file>icons/SpreadsheetAlias.svg</file>
     </qresource>
 </RCC>

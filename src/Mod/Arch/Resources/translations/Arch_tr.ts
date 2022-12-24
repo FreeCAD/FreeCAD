@@ -594,11 +594,6 @@ Filtrenin etkilerinin tersine çevirmek için basına ünlem(!) koyun(fitreyle u
       <translation>Denemek ve şekillerin döndürme açıları, virgülle ayrılmış listesini</translation>
     </message>
     <message>
-      <location filename="../ui/ArchNest.ui" line="135"/>
-      <source>0,90,180,270</source>
-      <translation>0,90,180,270</translation>
-    </message>
-    <message>
       <location filename="../ui/ArchNest.ui" line="145"/>
       <source>Nesting operation</source>
       <translation>Yapıştırma işlemi</translation>
@@ -821,11 +816,6 @@ Filtrenin etkilerinin tersine çevirmek için basına ünlem(!) koyun(fitreyle u
       <source>This is the SVG stroke-dasharray property to apply
 to projections of hidden objects.</source>
       <translation>Bu, gizli nesnelerin projeksiyonlarına uygulanacak SVG kontur-çizgidizisi özelliğidir.</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-arch.ui" line="589"/>
-      <source>30, 10</source>
-      <translation>30, 10</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="625"/>

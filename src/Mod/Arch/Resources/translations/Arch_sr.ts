@@ -6,27 +6,27 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="14"/>
       <source>Arch material</source>
-      <translation type="unfinished">Arch material</translation>
+      <translation>Arch материјал</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="26"/>
       <source>Choose a preset card</source>
-      <translation type="unfinished">Choose a preset card</translation>
+      <translation>Изабери унапред дефинисан материјал</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="30"/>
       <source>Choose preset...</source>
-      <translation type="unfinished">Choose preset...</translation>
+      <translation>Изабери већ дефинисан...</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="44"/>
       <source>Copy values from an existing material in the document</source>
-      <translation type="unfinished">Copy values from an existing material in the document</translation>
+      <translation>Копирај вредности из постојећег материјала у документу</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="48"/>
       <source>Copy existing...</source>
-      <translation type="unfinished">Copy existing...</translation>
+      <translation>Копирај постојеће...</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="58"/>
@@ -36,7 +36,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="65"/>
       <source>The name/label of this material</source>
-      <translation type="unfinished">The name/label of this material</translation>
+      <translation>Назив/ознака овог материјала</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="94"/>
@@ -46,7 +46,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="101"/>
       <source>An optional description for this material</source>
-      <translation type="unfinished">An optional description for this material</translation>
+      <translation>Необавезни опис за овај материјал</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="112"/>
@@ -56,57 +56,57 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="125"/>
       <source>The color of this material</source>
-      <translation type="unfinished">The color of this material</translation>
+      <translation>Боја овог материјала</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="139"/>
       <source>Section Color</source>
-      <translation type="unfinished">Section Color</translation>
+      <translation>Боја пресека</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="163"/>
       <source>Transparency</source>
-      <translation type="unfinished">Transparency</translation>
+      <translation>Провидност</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="170"/>
       <source>A transparency value for this material</source>
-      <translation type="unfinished">A transparency value for this material</translation>
+      <translation>Вредност провидности за овај материјал</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="184"/>
       <source>Standard code</source>
-      <translation type="unfinished">Standard code</translation>
+      <translation>Стандардни код</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="191"/>
       <source>A standard (MasterFormat, Omniclass...) code for this material</source>
-      <translation type="unfinished">A standard (MasterFormat, Omniclass...) code for this material</translation>
+      <translation>Стандардни (MasterFormat, Omniclass...) код за овај материјал</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="204"/>
       <source>Opens a browser dialog to choose a class from a BIM standard</source>
-      <translation type="unfinished">Opens a browser dialog to choose a class from a BIM standard</translation>
+      <translation>Отвара прозор за дијалог прегледача за одабир класе из БИМ стандарда</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="223"/>
       <source>URL</source>
-      <translation>URL</translation>
+      <translation>URL адреса</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="236"/>
       <source>A URL describing this material</source>
-      <translation type="unfinished">A URL describing this material</translation>
+      <translation>УРЛ адреса која описује овај материјал</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="249"/>
       <source>Opens the URL in a browser</source>
-      <translation type="unfinished">Opens the URL in a browser</translation>
+      <translation>Отвара URL адресу у прегледачу</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="268"/>
       <source>Father</source>
-      <translation type="unfinished">Father</translation>
+      <translation>Отац</translation>
     </message>
   </context>
   <context>
@@ -114,27 +114,27 @@
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="14"/>
       <source>BimServer</source>
-      <translation type="unfinished">BimServer</translation>
+      <translation>Bim-сервер</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="20"/>
       <source>Server</source>
-      <translation type="unfinished">Server</translation>
+      <translation>Сервер</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="28"/>
       <source>The name of the BimServer you are currently connecting to. Change settings in Arch Preferences</source>
-      <translation type="unfinished">The name of the BimServer you are currently connecting to. Change settings in Arch Preferences</translation>
+      <translation>Име Bim-сервера са којим сте тренутно повезани. Промени у подешавањима Arch радног окружења</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="31"/>
       <source>Bim Server</source>
-      <translation type="unfinished">Bim Server</translation>
+      <translation>Bim-сервер</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="38"/>
       <source>Connect</source>
-      <translation type="unfinished">Connect</translation>
+      <translation>Повежите</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="55"/>
@@ -144,17 +144,17 @@
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="79"/>
       <source>Open in browser</source>
-      <translation>Отворите у прегледачу</translation>
+      <translation>Отвори у прегледачу</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="90"/>
       <source>Project</source>
-      <translation>Projekt</translation>
+      <translation>Пројекат</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="97"/>
       <source>The list of projects present on the Bim Server</source>
-      <translation type="unfinished">The list of projects present on the Bim Server</translation>
+      <translation>Листа пројеката присутних на Бим-серверу</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="109"/>
@@ -164,7 +164,7 @@
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="115"/>
       <source>Available revisions:</source>
-      <translation type="unfinished">Available revisions:</translation>
+      <translation>Доступне ревизије:</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="144"/>
@@ -175,12 +175,12 @@
       <location filename="../ui/BimServerTaskPanel.ui" line="156"/>
       <location filename="../ui/BimServerTaskPanel.ui" line="205"/>
       <source>Upload</source>
-      <translation type="unfinished">Upload</translation>
+      <translation>Отпреми</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="164"/>
       <source>Root object:</source>
-      <translation type="unfinished">Root object:</translation>
+      <translation>Основни објекат:</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="178"/>
@@ -193,17 +193,17 @@
     <message>
       <location filename="../ui/ArchSchedule.ui" line="14"/>
       <source>Schedule definition</source>
-      <translation type="unfinished">Schedule definition</translation>
+      <translation>Дефиниција распореда</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="22"/>
       <source>Schedule name:</source>
-      <translation type="unfinished">Schedule name:</translation>
+      <translation>Име распореда:</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="29"/>
       <source>Unnamed schedule</source>
-      <translation type="unfinished">Unnamed schedule</translation>
+      <translation>Неименовани распоред</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="60"/>
@@ -213,7 +213,7 @@
     <message>
       <location filename="../ui/ArchSchedule.ui" line="63"/>
       <source>A description for this operation</source>
-      <translation type="unfinished">A description for this operation</translation>
+      <translation>Опис ове операције</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="68"/>
@@ -226,10 +226,10 @@
 Can be "Count" to count the objects, or property names
 like "Length" or "Shape.Volume" to retrieve
 a certain property.</source>
-      <translation type="unfinished">The property to retrieve from each object.
-Can be "Count" to count the objects, or property names
-like "Length" or "Shape.Volume" to retrieve
-a certain property.</translation>
+      <translation>Својство преузето од сваког објекта.
+Може бити "Count" за бројање објеката или имена својстава
+као што је "Length" или "Shape.Volume" за преузимање
+одређеног својства.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="79"/>
@@ -239,7 +239,7 @@ a certain property.</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="82"/>
       <source>An optional unit to express the resulting value. Ex: m^3 (you can also write m³ or m3)</source>
-      <translation type="unfinished">An optional unit to express the resulting value. Ex: m^3 (you can also write m³ or m3)</translation>
+      <translation>Необавезна јединица за изражавање резултујуће вредности. На пример: м^3 (можете написати и м³ или м3)</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="87"/>
@@ -252,65 +252,65 @@ a certain property.</translation>
 (internal names, not labels), to be considered by this operation.
 If the list contains groups, children will be added.
 Leave blank to use all objects from the document</source>
-      <translation type="unfinished">An optional semicolon (;) separated list of object names
-(internal names, not labels), to be considered by this operation.
-If the list contains groups, children will be added.
-Leave blank to use all objects from the document</translation>
+      <translation>Необавезни листа имена објеката (интерна имена, а не ознаке)
+одвојена тачка зарезом (;), које треба узети у обзир у овој операцији.
+Ако листа садржи групе, подређени (деца) ће бити додати.
+Оставите празно да бисте користили све објекте из документа</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="98"/>
       <source>Filter</source>
-      <translation type="unfinished">Filter</translation>
+      <translation>Филтер</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="101"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filer (exclude objects that match the filter). Objects whose property contains the value will be matched. Examples of valid filters (everything is case-insensitive):&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Name:Wall&lt;/span&gt; - Will only consider objects with &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Name:Wall&lt;/span&gt; - Will only consider objects which DON'T have &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Description:Win&lt;/span&gt; - Will only consider objects with &amp;quot;win&amp;quot; in their description&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Label:Win&lt;/span&gt; - Will only consider objects which DO NOT have &amp;quot;win&amp;quot; in their label&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;IfcType:Wall&lt;/span&gt; - Will only consider objects which Ifc Type is &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Tag:Wall&lt;/span&gt; - Will only consider objects which tag is NOT &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;If you leave this field empty, no filtering is applied&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filer (exclude objects that match the filter). Objects whose property contains the value will be matched. Examples of valid filters (everything is case-insensitive):&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Name:Wall&lt;/span&gt; - Will only consider objects with &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Name:Wall&lt;/span&gt; - Will only consider objects which DON'T have &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Description:Win&lt;/span&gt; - Will only consider objects with &amp;quot;win&amp;quot; in their description&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Label:Win&lt;/span&gt; - Will only consider objects which DO NOT have &amp;quot;win&amp;quot; in their label&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;IfcType:Wall&lt;/span&gt; - Will only consider objects which Ifc Type is &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Tag:Wall&lt;/span&gt; - Will only consider objects which tag is NOT &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;If you leave this field empty, no filtering is applied&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Необавезна листа филтера својство:вредност одвојених тачка зарезом (;). Ставите ! испред имена својства да бисте инвертовали ефекат филера (изузмете објекте који одговарају филтеру). Објекти чије својство садржи вредност биће упарени. Примери важећих филтера (све је неосетљиво на велика и мала слова)::&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Name:Wall&lt;/span&gt; - Разматраће само објекте са &amp;quot;Wall&amp;quot; у њиховом имену (интерно име)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Name:Wall&lt;/span&gt; - Узеће у обзир само објекте који НЕМАЈУ &amp;quot;wall&amp;quot; у њиховом имену (интерно име)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Description:Win&lt;/span&gt; - Разматраће само објекте са &amp;quot;win&amp;quot; у њиховом опису&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Label:Win&lt;/span&gt; - Узеће у обзир само објекте који НЕМАЈУ &amp;quot;win&amp;quot; у њиховој ознаци&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;IfcType:Wall&lt;/span&gt; - Узеће у обзир само објекте чији је Ifc Type &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Tag:Wall&lt;/span&gt; - Узеће у обзир само објекте чија ознака НИЈЕ &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;Ако ово поље оставите празно, филтрирање се не примењује&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="111"/>
       <source>If this is enabled, an associated spreadsheet containing the results will be maintained together with this schedule object</source>
-      <translation type="unfinished">If this is enabled, an associated spreadsheet containing the results will be maintained together with this schedule object</translation>
+      <translation>Ако је чекирано, повезана табела која садржи резултате биће одржавана заједно са овим објектом распореда</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="114"/>
       <source>Associate spreadsheet</source>
-      <translation type="unfinished">Associate spreadsheet</translation>
+      <translation>Повезана табела</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="121"/>
       <source>If this is turned on, additional lines will be filled with each object considered. If not, only the totals.</source>
-      <translation type="unfinished">If this is turned on, additional lines will be filled with each object considered. If not, only the totals.</translation>
+      <translation>Ако је укључено, додатни редови ће бити попуњени са сваким објектом који се разматра. Ако не, само укупне вредности.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="124"/>
       <source>Detailed results</source>
-      <translation type="unfinished">Detailed results</translation>
+      <translation>Детаљни резултати</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="135"/>
       <source>Adds a line below the selected line/cell</source>
-      <translation type="unfinished">Adds a line below the selected line/cell</translation>
+      <translation>Додаје линију испод изабране линије/ћелије</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="138"/>
       <source>Add row</source>
-      <translation type="unfinished">Add row</translation>
+      <translation>Додај ред</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="150"/>
       <source>Deletes the selected line</source>
-      <translation type="unfinished">Deletes the selected line</translation>
+      <translation>Брише изабрану линију</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="153"/>
       <source>Del row</source>
-      <translation type="unfinished">Del row</translation>
+      <translation>Обриши ред</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="165"/>
       <source>Clears the whole list</source>
-      <translation type="unfinished">Clears the whole list</translation>
+      <translation>Брише целу листу</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="168"/>
@@ -320,17 +320,17 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="180"/>
       <source>Put selected objects into the "Objects" column of the selected row</source>
-      <translation type="unfinished">Put selected objects into the "Objects" column of the selected row</translation>
+      <translation>Стави изабране објекте у колону „Објекти“ изабраног реда</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="183"/>
       <source>Add selection</source>
-      <translation type="unfinished">Add selection</translation>
+      <translation>Додај избор</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="190"/>
       <source>Imports the contents of a CSV file</source>
-      <translation type="unfinished">Imports the contents of a CSV file</translation>
+      <translation>Увози садржај CSV датотеке</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="193"/>
@@ -340,7 +340,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="205"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This exports the results to a CSV or Markdown file. &lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note for CSV export:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;In Libreoffice, you can keep this CSV file linked by right-clicking the Sheets tab bar -&amp;gt; New sheet -&amp;gt; From file -&amp;gt; Link (Note: as of LibreOffice v6.x the correct path now is: Sheet -&amp;gt; Insert Sheet... -&amp;gt; From file -&amp;gt; Browse...)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This exports the results to a CSV or Markdown file. &lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note for CSV export:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;In Libreoffice, you can keep this CSV file linked by right-clicking the Sheets tab bar -&amp;gt; New sheet -&amp;gt; From file -&amp;gt; Link (Note: as of LibreOffice v6.x the correct path now is: Sheet -&amp;gt; Insert Sheet... -&amp;gt; From file -&amp;gt; Browse...)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ово извози резултате у CSV или Markdown датотеку. &lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Напомена за CSV извоз:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;У Libreoffice програму, ову CSV датотеку можете да задржите повезаном тако што ћете десним тастером миша кликнути на језичак картице Sheets -&amp;gt; New sheet -&amp;gt;From file -&amp;gt; Link (Напомена: од LibreOffice v6.x тачна путања је: Sheet -&amp;gt; Insert Sheet... -&amp;gt; From file -&amp;gt; Browse...)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="208"/>
@@ -350,17 +350,17 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="14"/>
       <source>BimServer Login</source>
-      <translation type="unfinished">BimServer Login</translation>
+      <translation>Bim-сервер пријава</translation>
     </message>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="22"/>
       <source>BimServer URL:</source>
-      <translation type="unfinished">BimServer URL:</translation>
+      <translation>Bim-сервер URL адреса:</translation>
     </message>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="36"/>
       <source>Login (email):</source>
-      <translation type="unfinished">Login (email):</translation>
+      <translation>Пријава (е-пошта):</translation>
     </message>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="50"/>
@@ -370,7 +370,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="62"/>
       <source>Keep me logged in across FreeCAD sessions</source>
-      <translation type="unfinished">Keep me logged in across FreeCAD sessions</translation>
+      <translation>Одржавај ме пријављеним кроз све FreeCAD сесије</translation>
     </message>
     <message>
       <location filename="../ui/DialogDisplayText.ui" line="14"/>
@@ -380,37 +380,37 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="14"/>
       <source>IFC properties editor</source>
-      <translation type="unfinished">IFC properties editor</translation>
+      <translation>IFC уређивач својстава</translation>
     </message>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="22"/>
       <source>IFC UUID:</source>
-      <translation type="unfinished">IFC UUID:</translation>
+      <translation>IFC UUID:</translation>
     </message>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="29"/>
       <source>Leave this empty to generate one at export</source>
-      <translation type="unfinished">Leave this empty to generate one at export</translation>
+      <translation>Оставите ово празно ако хоћете да га направите приликом извоза</translation>
     </message>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="38"/>
       <source>List of IFC properties for this object. Double-click to edit, drag and drop to reorganize</source>
-      <translation type="unfinished">List of IFC properties for this object. Double-click to edit, drag and drop to reorganize</translation>
+      <translation>Листа IFC својстава за овај објекат. Двапут кликните да бисте уредили, превуците и отпустите да бисте реорганизовали</translation>
     </message>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="63"/>
       <source>Delete selected property/set</source>
-      <translation type="unfinished">Delete selected property/set</translation>
+      <translation>Избришите изабрана својства</translation>
     </message>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="76"/>
       <source>Force exporting geometry as BREP</source>
-      <translation type="unfinished">Force exporting geometry as BREP</translation>
+      <translation>Присилно извози геометрију као BREP</translation>
     </message>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="83"/>
       <source>Force export full FreeCAD parametric data</source>
-      <translation type="unfinished">Force export full FreeCAD parametric data</translation>
+      <translation>Принудни извоз свих FreeCAD параметарских података</translation>
     </message>
   </context>
   <context>
@@ -418,7 +418,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="14"/>
       <source>Git</source>
-      <translation type="unfinished">Git</translation>
+      <translation>Git</translation>
     </message>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="20"/>
@@ -428,7 +428,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="48"/>
       <source>Log</source>
-      <translation type="unfinished">Log</translation>
+      <translation>Дневник</translation>
     </message>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="55"/>
@@ -448,7 +448,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="100"/>
       <source>Select all</source>
-      <translation>Изаберите cве</translation>
+      <translation>Изабери cве</translation>
     </message>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="112"/>
@@ -469,42 +469,42 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="183"/>
       <source>Pull</source>
-      <translation type="unfinished">Pull</translation>
+      <translation>Повуци</translation>
     </message>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="190"/>
       <source>Push</source>
-      <translation type="unfinished">Push</translation>
+      <translation>Гурни</translation>
     </message>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="14"/>
       <source>Multimaterial definition</source>
-      <translation type="unfinished">Multimaterial definition</translation>
+      <translation>Дефиниције група материјала</translation>
     </message>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="21"/>
       <source>Copy existing...</source>
-      <translation type="unfinished">Copy existing...</translation>
+      <translation>Копирај постојеће...</translation>
     </message>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="29"/>
       <source>Edit definition</source>
-      <translation type="unfinished">Edit definition</translation>
+      <translation>Уреди дефинисање</translation>
     </message>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="37"/>
       <source>Name:</source>
-      <translation type="unfinished">Name:</translation>
+      <translation>Име:</translation>
     </message>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="49"/>
       <source>Composition:</source>
-      <translation type="unfinished">Composition:</translation>
+      <translation>Састав:</translation>
     </message>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="59"/>
       <source>Total thickness</source>
-      <translation type="unfinished">Total thickness</translation>
+      <translation>Укупна дебљина</translation>
     </message>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="68"/>
@@ -524,7 +524,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="89"/>
       <source>Del</source>
-      <translation type="unfinished">Del</translation>
+      <translation>Обриши</translation>
     </message>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="96"/>
@@ -534,17 +534,17 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/ArchNest.ui" line="14"/>
       <source>Nesting</source>
-      <translation type="unfinished">Nesting</translation>
+      <translation>Слагање</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="20"/>
       <source>Container</source>
-      <translation type="unfinished">Container</translation>
+      <translation>Контејнер</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="36"/>
       <source>Pick selected</source>
-      <translation type="unfinished">Pick selected</translation>
+      <translation>Изабери</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="46"/>
@@ -554,7 +554,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/ArchNest.ui" line="57"/>
       <source>Add selected</source>
-      <translation type="unfinished">Add selected</translation>
+      <translation>Додај избор</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="64"/>
@@ -564,7 +564,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/ArchNest.ui" line="76"/>
       <source>Nesting parameters</source>
-      <translation type="unfinished">Nesting parameters</translation>
+      <translation>Параметри слагања</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="82"/>
@@ -574,42 +574,37 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/ArchNest.ui" line="89"/>
       <source>Closer than this, two points are considered equal</source>
-      <translation type="unfinished">Closer than this, two points are considered equal</translation>
+      <translation>Ближе од овога, две тачке се сматрају једнаким</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="102"/>
       <source>Arcs subdivisions</source>
-      <translation type="unfinished">Arcs subdivisions</translation>
+      <translation>Сегментирање лука</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="109"/>
       <source>The number of segments to divide non-linear edges into, for calculations. If curved shapes overlap, try raising this value</source>
-      <translation type="unfinished">The number of segments to divide non-linear edges into, for calculations. If curved shapes overlap, try raising this value</translation>
+      <translation>Број сегмената на које треба поделити нелинеарне ивице приликом прорачуна. Ако се закривљени облици преклапају, покушајте да повећате ову вредност</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="125"/>
       <source>Rotations</source>
-      <translation type="unfinished">Rotations</translation>
+      <translation>Ротације</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="132"/>
       <source>A comma-separated list of angles to try and rotate the shapes</source>
-      <translation type="unfinished">A comma-separated list of angles to try and rotate the shapes</translation>
-    </message>
-    <message>
-      <location filename="../ui/ArchNest.ui" line="135"/>
-      <source>0,90,180,270</source>
-      <translation>0,90,180,270</translation>
+      <translation>Листа углова раздвојених зарезима ѕа које ће се облици ротирати приликом прорачуна</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="145"/>
       <source>Nesting operation</source>
-      <translation type="unfinished">Nesting operation</translation>
+      <translation>Операција слагања</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="154"/>
       <source>pass %p</source>
-      <translation type="unfinished">pass %p</translation>
+      <translation>прошао %p</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="163"/>
@@ -637,7 +632,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="26"/>
       <source>Object creation</source>
-      <translation type="unfinished">Object creation</translation>
+      <translation>Стварање објекта</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="32"/>
@@ -647,37 +642,37 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="48"/>
       <source>If this is checked, when 2 similar walls are being connected, their underlying sketches will be joined into one, and the two walls will become one</source>
-      <translation>Ако је ово обележено, када cе два cлична зида cпајају, њихове оcновне cкице ће бити cпојене у једну и два зида ће поcтати један</translation>
+      <translation>Ако је ово чекирано, када cе два cлична зида cпајају, њихове cкице основа ће бити cпојене у једну и два зида ће поcтати један</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="51"/>
       <source>Join walls base sketches when possible</source>
-      <translation>Cпоји оcновне cкице зидова када је могуће</translation>
+      <translation>Cпоји cкице основа зидова када је могуће</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="64"/>
       <source>Two possible strategies to avoid circular dependencies: Create one more object (unchecked) or remove external geometry of base sketch (checked)</source>
-      <translation type="unfinished">Two possible strategies to avoid circular dependencies: Create one more object (unchecked) or remove external geometry of base sketch (checked)</translation>
+      <translation>Две могуће стратегије за избегавање цикличне зависности: Креирајте још један објекат (није чекирано) или уклоните спољну геометрију основне скице (чекирано)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="67"/>
       <source>Remove external geometry of base sketches when needed</source>
-      <translation type="unfinished">Remove external geometry of base sketches when needed</translation>
+      <translation>Уклони спољну геометрију основних скица када је то потребно</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="80"/>
       <source>If this is checked, when an object becomes Subtraction or Addition of an Arch object, it will receive the Draft Construction color.</source>
-      <translation type="unfinished">If this is checked, when an object becomes Subtraction or Addition of an Arch object, it will receive the Draft Construction color.</translation>
+      <translation>Ако је чекирано, када објекат настане одузимањем или додавањем Arch објекта, добиће боју Draft помоћне геометрије.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="83"/>
       <source>Apply Draft construction style to subcomponents</source>
-      <translation type="unfinished">Apply Draft construction style to subcomponents</translation>
+      <translation>Примени стил Draft помоћне геометрије на подкомпоненте</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="114"/>
       <source>Do not compute areas for object with more than:</source>
-      <translation type="unfinished">Do not compute areas for object with more than:</translation>
+      <translation>Немој израчунавати површине за објекат са више од:</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="121"/>
@@ -687,47 +682,47 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="157"/>
       <source>Interval between file checks for references</source>
-      <translation type="unfinished">Interval between file checks for references</translation>
+      <translation>Интервал између провера повезаних датотека</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="164"/>
       <source> seconds</source>
-      <translation type="unfinished"> seconds</translation>
+      <translation> секунде</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="188"/>
       <source>By default, new objects will have their "Move with host" property set to False, which means they won't move when their host object is moved.</source>
-      <translation type="unfinished">By default, new objects will have their "Move with host" property set to False, which means they won't move when their host object is moved.</translation>
+      <translation>Подразумевано је да ће нови објекти имати својство „Померајте се са домаћином“ постављено на Нетачно, што значи да се неће померати када се њихов објекат домаћин премести.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="191"/>
       <source>Set "Move with host" property to True by default</source>
-      <translation type="unfinished">Set "Move with host" property to True by default</translation>
+      <translation>Подеси да је својство „Померајте се са домаћином“ постављено на Истинито</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="207"/>
       <source>Set "Move base" property to True by default</source>
-      <translation type="unfinished">Set "Move base" property to True by default</translation>
+      <translation>Подеси да је својство „Померајте основу“ постављено на Истинито</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="223"/>
       <source>If this is checked, when an Arch object has a material, the object will take the color of the material. This can be overridden for each object.</source>
-      <translation type="unfinished">If this is checked, when an Arch object has a material, the object will take the color of the material. This can be overridden for each object.</translation>
+      <translation>Ако је ово чекирано, када Arch објекат има материјал, објекат ће попримити боју материјала. Ово се може заменити за сваки објекат.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="226"/>
       <source>Use material color as shape color</source>
-      <translation type="unfinished">Use material color as shape color</translation>
+      <translation>Користи боју материјала као боју облика</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="260"/>
       <source>IFC version</source>
-      <translation type="unfinished">IFC version</translation>
+      <translation>IFC верзија</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="280"/>
       <source>The IFC version will change which attributes and products are supported</source>
-      <translation type="unfinished">The IFC version will change which attributes and products are supported</translation>
+      <translation>IFC верзија ће променити који атрибути и производи су подржани</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="290"/>
@@ -742,12 +737,12 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="308"/>
       <source>Mesh to Shape Conversion</source>
-      <translation type="unfinished">Mesh to Shape Conversion</translation>
+      <translation>Конверзија мреже у облик</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="316"/>
       <source>If this is checked, conversion is faster but the result might still contain triangulated faces</source>
-      <translation type="unfinished">If this is checked, conversion is faster but the result might still contain triangulated faces</translation>
+      <translation>Ако је чекирано, конверзија је бржа, али резултат може и даље да садржи троугаоне странице</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="319"/>
@@ -757,32 +752,32 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="335"/>
       <source>Tolerance:</source>
-      <translation>Tolerancija:</translation>
+      <translation>Толеранција:</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="345"/>
       <source>Tolerance value to use when checking if 2 adjacent faces as planar</source>
-      <translation type="unfinished">Tolerance value to use when checking if 2 adjacent faces as planar</translation>
+      <translation>Вредност толеранције коју треба користити приликом провере да ли су 2 суседне странице равне</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="368"/>
       <source>If this is checked, flat groups of faces will be force-flattened, resulting in possible gaps and non-solid results</source>
-      <translation type="unfinished">If this is checked, flat groups of faces will be force-flattened, resulting in possible gaps and non-solid results</translation>
+      <translation>Ако је чекирано, групе равних страница ће бити силом изравнане, што ће резултирати могућим процепима и због тога објектима који не могу постати тела</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="371"/>
       <source>Force flat faces</source>
-      <translation type="unfinished">Force flat faces</translation>
+      <translation>Принуди да странице буду равне</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="388"/>
       <source>If this is checked, holes in faces will be performed by subtraction rather than using wires orientation</source>
-      <translation type="unfinished">If this is checked, holes in faces will be performed by subtraction rather than using wires orientation</translation>
+      <translation>Ако је чекирано, рупе у страницама ће бити изведене радије одузимањем, него помоћу оријентације жица</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="391"/>
       <source>Cut method</source>
-      <translation type="unfinished">Cut method</translation>
+      <translation>Метод исецања</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="412"/>
@@ -792,12 +787,12 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="420"/>
       <source>Show debug information during 2D rendering</source>
-      <translation type="unfinished">Show debug information during 2D rendering</translation>
+      <translation>Прикажи информације о отклањању грешака током 2D рендеровања</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="423"/>
       <source>Show renderer debug messages</source>
-      <translation type="unfinished">Show renderer debug messages</translation>
+      <translation>Прикажи поруке о отклањању грешака</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="456"/>
@@ -827,11 +822,6 @@ to projections of hidden objects.</source>
 to projections of hidden objects.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="589"/>
-      <source>30, 10</source>
-      <translation>30, 10</translation>
-    </message>
-    <message>
       <location filename="../ui/preferences-arch.ui" line="625"/>
       <source>Pattern scale</source>
       <translation type="unfinished">Pattern scale</translation>
@@ -846,7 +836,7 @@ a Footprint display mode</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="673"/>
       <source>Bim server</source>
-      <translation type="unfinished">Bim server</translation>
+      <translation>Bim-сервер</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="681"/>
@@ -856,41 +846,41 @@ a Footprint display mode</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="688"/>
       <source>The URL of a bim server instance (www.bimserver.org) to connect to.</source>
-      <translation type="unfinished">The URL of a bim server instance (www.bimserver.org) to connect to.</translation>
+      <translation>URL адреса Bim-сервера (www.bimserver.org) за повезивање.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="691"/>
       <source>http://localhost:8082</source>
-      <translation type="unfinished">http://localhost:8082</translation>
+      <translation>http://localhost:8082</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="708"/>
       <source>If this is selected, the "Open BimServer in browser"
 button will open the Bim Server interface in an external browser
 instead of the FreeCAD web workbench</source>
-      <translation type="unfinished">If this is selected, the "Open BimServer in browser"
-button will open the Bim Server interface in an external browser
-instead of the FreeCAD web workbench</translation>
+      <translation>Ако је чекирано, „Отвори Bim-Сервер у прегледачу“
+дугме ће отворити интерфејс Bim-сервера у екстерном прегледачу
+уместо у FreeCAD веб радном окружењу</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="713"/>
       <source>Open in external browser</source>
-      <translation type="unfinished">Open in external browser</translation>
+      <translation>Отвори у екстерном прегледачу</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="731"/>
       <source>Survey</source>
-      <translation type="unfinished">Survey</translation>
+      <translation>Анкета</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="739"/>
       <source>If this is checked, the text that gets placed in the clipboard will include the unit. Otherwise, it will be a simple number expressed in internal units (millimeters)</source>
-      <translation type="unfinished">If this is checked, the text that gets placed in the clipboard will include the unit. Otherwise, it will be a simple number expressed in internal units (millimeters)</translation>
+      <translation>Ако је ово чекирано, текст који се ставља у привремену меморију ће укључивати и јединицу. У супротном, то ће бити једноставан број изражен у унутрашњим јединицама (милиметрима)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="742"/>
       <source>Include unit when sending measurements to clipboard</source>
-      <translation type="unfinished">Include unit when sending measurements to clipboard</translation>
+      <translation>Када шаљете мерења у привремену меморију укључите и јединицу мере</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="14"/>
@@ -939,7 +929,7 @@ instead of the FreeCAD web workbench</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="103"/>
       <source>Use sketches</source>
-      <translation type="unfinished">Use sketches</translation>
+      <translation>Користи скице</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="132"/>
@@ -953,12 +943,12 @@ instead of the FreeCAD web workbench</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="139"/>
       <source>This is the default color for new Wall objects</source>
-      <translation>Ово је подразумевана боја за нове објекте зида</translation>
+      <translation>Ово је подразумевана боја за нове Зид објекте</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="164"/>
       <source>Structures</source>
-      <translation>Структуре</translation>
+      <translation>Конструкције</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="172"/>
@@ -970,12 +960,12 @@ instead of the FreeCAD web workbench</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="300"/>
       <source>This is the default color for new Structure objects</source>
-      <translation>Ово је подразумевана боја за нове објекте конструкције</translation>
+      <translation>Ово је подразумевана боја за нове Конструкција објекте</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="325"/>
       <source>Rebars</source>
-      <translation>Арматуре</translation>
+      <translation>Арматура</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="333"/>
@@ -995,12 +985,12 @@ instead of the FreeCAD web workbench</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="459"/>
       <source>The default width for new windows</source>
-      <translation type="unfinished">The default width for new windows</translation>
+      <translation>Подразумевана ширина нових прозора</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="501"/>
       <source>The default height for new windows</source>
-      <translation type="unfinished">The default height for new windows</translation>
+      <translation>Подразумевана висина нових прозора</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="536"/>
@@ -1010,13 +1000,13 @@ instead of the FreeCAD web workbench</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="543"/>
       <source>The default thickness for new windows</source>
-      <translation type="unfinished">The default thickness for new windows</translation>
+      <translation>Подразумевана дебљина нових прозора</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="582"/>
       <location filename="../ui/preferences-archdefaults.ui" line="1079"/>
       <source>Transparency:</source>
-      <translation>Прозирност:</translation>
+      <translation>Провидност:</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="602"/>
@@ -1036,7 +1026,7 @@ instead of the FreeCAD web workbench</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="784"/>
       <source>Number of steps:</source>
-      <translation>Број облика:</translation>
+      <translation>Број корака:</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="812"/>
@@ -1059,7 +1049,7 @@ instead of the FreeCAD web workbench</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="970"/>
       <source>Pipes</source>
-      <translation type="unfinished">Pipes</translation>
+      <translation>Цеви</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="978"/>
@@ -1069,22 +1059,22 @@ instead of the FreeCAD web workbench</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="1025"/>
       <source>Helpers (grids, axes, etc...)</source>
-      <translation type="unfinished">Helpers (grids, axes, etc...)</translation>
+      <translation>Испомоћ (координатне мреже, осе, итд.)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="1071"/>
       <source>Spaces</source>
-      <translation type="unfinished">Spaces</translation>
+      <translation>Размаци</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="1118"/>
       <source>Line style:</source>
-      <translation type="unfinished">Line style:</translation>
+      <translation>Врста линије:</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="1135"/>
       <source>Solid</source>
-      <translation>Пуно тело</translation>
+      <translation>Пуна</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="1140"/>
@@ -1109,36 +1099,36 @@ instead of the FreeCAD web workbench</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="14"/>
       <source>IFC import</source>
-      <translation type="unfinished">IFC import</translation>
+      <translation>IFC увоз</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="41"/>
       <source>Show this dialog when importing</source>
-      <translation type="unfinished">Show this dialog when importing</translation>
+      <translation>Прикажи овај прозор приликом увоза</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="54"/>
       <source>Shows verbose debug messages during import and export
 of IFC files in the Report view panel</source>
-      <translation type="unfinished">Shows verbose debug messages during import and export
-of IFC files in the Report view panel</translation>
+      <translation>Приказује опширне поруке о отклањању грешака у панелу Прегледача објава током увоза и извоза
+ IFC датотека</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="58"/>
       <source>Show debug messages</source>
-      <translation type="unfinished">Show debug messages</translation>
+      <translation>Прикажи поруке о отклањању грешака</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="71"/>
       <source>Clones are used when objects have shared geometry
 One object is the base object, the others are clones.</source>
-      <translation type="unfinished">Clones are used when objects have shared geometry
-One object is the base object, the others are clones.</translation>
+      <translation>Клонови се користе када објекти имају заједничку геометрију
+Један објекат је основни објекат, други су клонови.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="75"/>
       <source>Create clones when objects have shared geometry</source>
-      <translation type="unfinished">Create clones when objects have shared geometry</translation>
+      <translation>Направи клонове када објекти имају заједничку геометрију</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="99"/>
@@ -1151,19 +1141,19 @@ for example, 3 if you have a 4-core CPU.
 
 Set it to 1 to use multicore mode in single-core mode; this is safer
 if you start getting crashes when you set multiple cores.</source>
-      <translation type="unfinished">EXPERIMENTAL
-The number of cores to use in multicore mode.
-Keep 0 to disable multicore mode.
-The maximum value should be your number of cores minus 1,
-for example, 3 if you have a 4-core CPU.
+      <translation>ЕКСПЕРИМЕНТАЛНО
+Број језгара за употребу у вишејезгарном режиму.
+Задржите 0 да бисте онемогућили вишејезгарни режим.
+Максимална вредност треба да буде ваш број језгара минус 1,
+на пример, 3 ако имате 4-језгарни процесор.
 
-Set it to 1 to use multicore mode in single-core mode; this is safer
-if you start getting crashes when you set multiple cores.</translation>
+Подеси га на 1 да бисте користили вишејезгарни режим у режиму са једним језгром; ово је сигурније
+ако дође до грешака када сте задали вишејезгарни режим.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="129"/>
       <source>Number of cores to use (experimental)</source>
-      <translation type="unfinished">Number of cores to use (experimental)</translation>
+      <translation>Број језгара које се користе (експериментално)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="157"/>
@@ -1173,30 +1163,30 @@ if you start getting crashes when you set multiple cores.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="165"/>
       <source>Import arch IFC objects as</source>
-      <translation type="unfinished">Import arch IFC objects as</translation>
+      <translation>Увези Arch IFC објекте као</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="172"/>
       <location filename="../ui/preferences-ifc.ui" line="221"/>
       <source>Specifies what kind of objects will be created in FreeCAD</source>
-      <translation type="unfinished">Specifies what kind of objects will be created in FreeCAD</translation>
+      <translation>Одређује које врсте објеката ће бити створене у FreeCAD-у</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="182"/>
       <source>Parametric Arch objects</source>
-      <translation type="unfinished">Parametric Arch objects</translation>
+      <translation>Параметарски Arch објекти</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="187"/>
       <location filename="../ui/preferences-ifc.ui" line="231"/>
       <source>Non-parametric Arch objects</source>
-      <translation type="unfinished">Non-parametric Arch objects</translation>
+      <translation>Непараметарски Arch објекти</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="192"/>
       <location filename="../ui/preferences-ifc.ui" line="236"/>
       <source>Simple Part shapes</source>
-      <translation type="unfinished">Simple Part shapes</translation>
+      <translation>Једноставни Part облици</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="197"/>
@@ -1206,12 +1196,12 @@ if you start getting crashes when you set multiple cores.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="202"/>
       <source>Do not import Arch objects</source>
-      <translation type="unfinished">Do not import Arch objects</translation>
+      <translation>Немој увозити Arch објекте</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="214"/>
       <source>Import struct IFC objects as</source>
-      <translation type="unfinished">Import struct IFC objects as</translation>
+      <translation>Увези структурлне IFC објекте као</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="241"/>
@@ -1221,105 +1211,105 @@ if you start getting crashes when you set multiple cores.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="246"/>
       <source>Do not import structural objects</source>
-      <translation type="unfinished">Do not import structural objects</translation>
+      <translation>Не увози структурне објекте</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="258"/>
       <source>Root element:</source>
-      <translation type="unfinished">Root element:</translation>
+      <translation>Основни елемент:</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="265"/>
       <source>Only subtypes of the specified element will be imported.
 Keep the element IfcProduct to import all building elements.</source>
-      <translation type="unfinished">Only subtypes of the specified element will be imported.
-Keep the element IfcProduct to import all building elements.</translation>
+      <translation>Биће увезени само подтипови наведеног елемента.
+Задржите елемент IfcProduct да бисте увезли све елементе зграде.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="284"/>
       <source>Openings will be imported as subtractions, otherwise wall shapes
 will already have their openings subtracted</source>
-      <translation type="unfinished">Openings will be imported as subtractions, otherwise wall shapes
-will already have their openings subtracted</translation>
+      <translation>Отвори ће бити увезени као засебно одузимање, у супротном зидови
+ће већ имати одузете отворе</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="288"/>
       <source>Separate openings</source>
-      <translation type="unfinished">Separate openings</translation>
+      <translation>Засебни отвори</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="301"/>
       <source>The importer will try to detect extrusions.
 Note that this might slow things down.</source>
-      <translation type="unfinished">The importer will try to detect extrusions.
-Note that this might slow things down.</translation>
+      <translation>Увозник ће покушати да открије додавање извлачењем.
+Имајте на уму да би ово могло успорити рад.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="305"/>
       <source>Detect extrusions</source>
-      <translation type="unfinished">Detect extrusions</translation>
+      <translation>Детектуј додавање извлачењем</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="318"/>
       <source>Split walls made of multiple layers</source>
-      <translation type="unfinished">Split walls made of multiple layers</translation>
+      <translation>Раздвој зидове који се направљени од више слојева</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="321"/>
       <source>Split multilayer walls</source>
-      <translation type="unfinished">Split multilayer walls</translation>
+      <translation>Раздвој вишеслојне зидове</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="334"/>
       <source>Object names will be prefixed with the IFC ID number</source>
-      <translation type="unfinished">Object names will be prefixed with the IFC ID number</translation>
+      <translation>Имена објеката ће имати префикс са IFC ID бројем</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="337"/>
       <source>Prefix names with ID number</source>
-      <translation type="unfinished">Prefix names with ID number</translation>
+      <translation>Префикс имена са ID бројем</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="350"/>
       <source>If several materials with the same name and color are found in the IFC file,
 they will be treated as one.</source>
-      <translation type="unfinished">If several materials with the same name and color are found in the IFC file,
-they will be treated as one.</translation>
+      <translation>Ако се у IFC датотеци нађе неколико материјала са истим именом и бојом,
+они ће се третирати као један материјал.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="354"/>
       <source>Merge materials with same name and same color</source>
-      <translation type="unfinished">Merge materials with same name and same color</translation>
+      <translation>Споји материјале истог имена и исте боје</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="367"/>
       <source>Each object will have their IFC properties stored in a spreadsheet object</source>
-      <translation type="unfinished">Each object will have their IFC properties stored in a spreadsheet object</translation>
+      <translation>Сваки објекат ће имати своја IFC својства смештена у табели</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="370"/>
       <source>Import IFC properties in spreadsheet</source>
-      <translation type="unfinished">Import IFC properties in spreadsheet</translation>
+      <translation>Увези IFC својства у табели</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="383"/>
       <source>IFC files can contain unclean or non-solid geometry. If this option is checked, all the geometry is imported, regardless of their validity.</source>
-      <translation type="unfinished">IFC files can contain unclean or non-solid geometry. If this option is checked, all the geometry is imported, regardless of their validity.</translation>
+      <translation>IFC датотеке могу да садрже објекте која нису тела. Ако је ова опција чекирана, увози се сва геометрија, без обзира на њену валидност.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="386"/>
       <source>Allow invalid shapes</source>
-      <translation type="unfinished">Allow invalid shapes</translation>
+      <translation>Дозволи неважеће облике</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="401"/>
       <source>Exclude list:</source>
-      <translation type="unfinished">Exclude list:</translation>
+      <translation>Lista izuzetaka:</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="408"/>
       <source>Comma-separated list of IFC entities to be excluded from imports</source>
-      <translation type="unfinished">Comma-separated list of IFC entities to be excluded from imports</translation>
+      <translation>Листа IFC ентитета раздвојених зарезима које треба искључити приликом увоза</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="429"/>
@@ -1337,13 +1327,13 @@ This will slow down the import, but one can watch the import.</translation>
       <location filename="../ui/preferences-ifc.ui" line="446"/>
       <source>Creates a full parametric model on import using stored
 FreeCAD object properties</source>
-      <translation type="unfinished">Creates a full parametric model on import using stored
-FreeCAD object properties</translation>
+      <translation>Ствара потпуно параметарски модел приликом увоза користећи сачувана
+FreeCAD својства објекта</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="450"/>
       <source>Import full FreeCAD parametric definitions if available</source>
-      <translation type="unfinished">Import full FreeCAD parametric definitions if available</translation>
+      <translation>Увези потпуно параметарске FreeCAD дефиниције ако су доступне</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="463"/>
@@ -1364,23 +1354,23 @@ are placed in a 'Group' instead.
     <message>
       <location filename="../ui/preferences-dae.ui" line="14"/>
       <source>DAE</source>
-      <translation type="unfinished">DAE</translation>
+      <translation>DAE</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="26"/>
       <location filename="../ui/preferences-ifc-export.ui" line="57"/>
       <source>Export options</source>
-      <translation type="unfinished">Export options</translation>
+      <translation>Опције извоза</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="34"/>
       <source>Scaling factor</source>
-      <translation>Razmera</translation>
+      <translation>Коефицијент скалирања</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="41"/>
       <source>All dimensions in the file will be scaled with this factor</source>
-      <translation type="unfinished">All dimensions in the file will be scaled with this factor</translation>
+      <translation>Све димензије у датотеци ће бити скалиране овим коефицијентом</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="67"/>
@@ -1391,13 +1381,13 @@ are placed in a 'Group' instead.
       <location filename="../ui/preferences-dae.ui" line="74"/>
       <source>Meshing program that should be used.
 If using Netgen, make sure that it is available.</source>
-      <translation type="unfinished">Meshing program that should be used.
-If using Netgen, make sure that it is available.</translation>
+      <translation>Програм за генерисање мреже који треба користити.
+Ако користите Нетген, уверите се да је доступан.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="85"/>
       <source>Builtin</source>
-      <translation type="unfinished">Builtin</translation>
+      <translation>Уграђен</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="90"/>
@@ -1412,7 +1402,7 @@ If using Netgen, make sure that it is available.</translation>
     <message>
       <location filename="../ui/preferences-dae.ui" line="108"/>
       <source>Builtin and mefisto mesher options</source>
-      <translation type="unfinished">Builtin and mefisto mesher options</translation>
+      <translation>Опције уграђеног и мефисто генератора мреже</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="116"/>
@@ -1422,51 +1412,51 @@ If using Netgen, make sure that it is available.</translation>
     <message>
       <location filename="../ui/preferences-dae.ui" line="123"/>
       <source>Tessellation value to use with the Builtin and the Mefisto meshing program.</source>
-      <translation type="unfinished">Tessellation value to use with the Builtin and the Mefisto meshing program.</translation>
+      <translation>Вредност поплочавања за коришћење са уграђеним и Мефисто генератором мреже.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="147"/>
       <source>Netgen mesher options</source>
-      <translation type="unfinished">Netgen mesher options</translation>
+      <translation>Опције Netgen генератора мреже</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="155"/>
       <source>Grading</source>
-      <translation>градиранје</translation>
+      <translation>Класификовање</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="162"/>
       <source>Grading value to use for meshing using Netgen.
 This value describes how fast the mesh size decreases.
 The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</source>
-      <translation type="unfinished">Grading value to use for meshing using Netgen.
-This value describes how fast the mesh size decreases.
-The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</translation>
+      <translation>Мерило класификовања које се користи приликом генерисања мреже Нетген-ом.
+Ова вредност описује колико се брзо смањује величина мреже.
+Градијент локалне величине мреже h(x) је везан за |Δh(x)| ≤ 1/вредност.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="187"/>
       <source>Segments per edge</source>
-      <translation type="unfinished">Segments per edge</translation>
+      <translation>Сегменти по ивици</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="194"/>
       <source>Maximum number of segments per edge</source>
-      <translation type="unfinished">Maximum number of segments per edge</translation>
+      <translation>Максиманлни број сегмената по ивици</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="217"/>
       <source>Segments per radius</source>
-      <translation type="unfinished">Segments per radius</translation>
+      <translation>Сегменти по полупречнику</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="224"/>
       <source>Number of segments per radius</source>
-      <translation type="unfinished">Number of segments per radius</translation>
+      <translation>Број сегмената по полупречнику</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="247"/>
       <source>Allow a second order mesh</source>
-      <translation type="unfinished">Allow a second order mesh</translation>
+      <translation>Дозволи мрежу другог реда</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="250"/>
@@ -1476,27 +1466,27 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</tran
     <message>
       <location filename="../ui/preferences-dae.ui" line="267"/>
       <source>Allows optimization</source>
-      <translation type="unfinished">Allows optimization</translation>
+      <translation>Дозволи оптимизацију</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="270"/>
       <source>Optimize</source>
-      <translation>Оптимизирати</translation>
+      <translation>Оптимизуј</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="290"/>
       <source>Allow quadrilateral faces</source>
-      <translation type="unfinished">Allow quadrilateral faces</translation>
+      <translation>Дозволи четвороугаоне странице</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="293"/>
       <source>Allow quads</source>
-      <translation type="unfinished">Allow quads</translation>
+      <translation>Дозволи четвороуглове</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="14"/>
       <source>IFC export</source>
-      <translation type="unfinished">IFC export</translation>
+      <translation>IFC извоз</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="35"/>
@@ -1507,7 +1497,7 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</tran
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="41"/>
       <source>Show this dialog when exporting</source>
-      <translation type="unfinished">Show this dialog when exporting</translation>
+      <translation>Прикажи овај прозор приликом извоза</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="65"/>
@@ -1516,80 +1506,80 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</tran
 - Standard model: solid objects.
 - Structural analysis: wireframe model for structural calculations.
 - Standard + structural: both types of models.</source>
-      <translation type="unfinished">The type of objects that you wish to export:
-- Standard model: solid objects.
-- Structural analysis: wireframe model for structural calculations.
-- Standard + structural: both types of models.</translation>
+      <translation>Врсте објеката које желите да извезете:
+- Стандардни модел: тела.
+- Структурална анализа: жичани модел за прорачуне конструкција.
+- Стандардни + структурални: обе врсте модела.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="71"/>
       <source>Export type</source>
-      <translation type="unfinished">Export type</translation>
+      <translation>Тип извоза</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="91"/>
       <source>Standard model</source>
-      <translation type="unfinished">Standard model</translation>
+      <translation>Стандардни модел</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="96"/>
       <source>Structural analysis</source>
-      <translation type="unfinished">Structural analysis</translation>
+      <translation>Структурална анализа</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="101"/>
       <source>Standard + structural</source>
-      <translation type="unfinished">Standard + structural</translation>
+      <translation>Стандардни + Структурална</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="111"/>
       <source>Some IFC viewers don't like objects exported as extrusions.
 Use this to force all objects to be exported as BREP geometry.</source>
-      <translation type="unfinished">Some IFC viewers don't like objects exported as extrusions.
-Use this to force all objects to be exported as BREP geometry.</translation>
+      <translation>Неки IFC приказивачи не воле објекте који се извозе као извлачење.
+Користите ово да присилите све објекте да буду извезени као BREP геометрија.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="115"/>
       <source>Force export as Brep</source>
-      <translation type="unfinished">Force export as Brep</translation>
+      <translation>Присилно извези као BREP</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="128"/>
       <source>Use triangulation options set in the DAE options page</source>
-      <translation type="unfinished">Use triangulation options set in the DAE options page</translation>
+      <translation>Користи опције триангулације постављене на картици DAE</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="131"/>
       <source>Use DAE triangulation options</source>
-      <translation type="unfinished">Use DAE triangulation options</translation>
+      <translation>Користи опције DAE триангулације</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="144"/>
       <source>Curved shapes that cannot be represented as curves in IFC
 are decomposed into flat facets.
 If this is checked, an additional calculation is done to join coplanar facets.</source>
-      <translation type="unfinished">Curved shapes that cannot be represented as curves in IFC
-are decomposed into flat facets.
-If this is checked, an additional calculation is done to join coplanar facets.</translation>
+      <translation>Закривљени облици који се не могу представити као криве у IFC-у
+биће записане као скуп раванских фасета.
+Ако је ово чекирано, врши се додатни прорачун за спајање компланарних фасета.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="149"/>
       <source>Join coplanar facets when triangulating</source>
-      <translation type="unfinished">Join coplanar facets when triangulating</translation>
+      <translation>Споји копланарне фасете приликом триангулације</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="162"/>
       <source>When exporting objects without unique ID (UID), the generated UID
 will be stored inside the FreeCAD object for reuse next time that object
 is exported. This leads to smaller differences between file versions.</source>
-      <translation type="unfinished">When exporting objects without unique ID (UID), the generated UID
-will be stored inside the FreeCAD object for reuse next time that object
-is exported. This leads to smaller differences between file versions.</translation>
+      <translation>Када извозите објекте без јединственог ID (UID), генерисани UID
+ће бити сачуван унутар FreeCAD објекта за употребу следећи пут када се буде тај објекат
+извозио. Ово доводи до мањих разлика између верзија датотека.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="167"/>
       <source>Store IFC unique ID in FreeCAD objects</source>
-      <translation type="unfinished">Store IFC unique ID in FreeCAD objects</translation>
+      <translation>Чувати IFC јединствени ID у FreeCAD објектима</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="183"/>
@@ -1597,49 +1587,49 @@ is exported. This leads to smaller differences between file versions.</translati
 Its serializer functionality allows to give it an OCC shape and it will
 produce adequate IFC geometry: NURBS, faceted, or anything else.
 Note: The serializer is still an experimental feature!</source>
-      <translation type="unfinished">IFCOpenShell is a library that allows to import IFC files.
-Its serializer functionality allows to give it an OCC shape and it will
-produce adequate IFC geometry: NURBS, faceted, or anything else.
-Note: The serializer is still an experimental feature!</translation>
+      <translation>IFCOpenShell је библиотека која омогућава увоз IFC датотека.
+Његова функционалност као серијализатора омогућава да му се да облик OCC и то ће 
+произвести адекватну IFC геометрију: NURBS, фасетирану или било шта друго.
+Напомена: серијализатор је још увек експериментална функција!</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="189"/>
       <source>Use IfcOpenShell serializer if available</source>
-      <translation type="unfinished">Use IfcOpenShell serializer if available</translation>
+      <translation>Користи IfcOpenShell серијализатор ако је доступан</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="202"/>
       <source>2D objects will be exported as IfcAnnotation</source>
-      <translation type="unfinished">2D objects will be exported as IfcAnnotation</translation>
+      <translation>2Д објекти ће бити извезени као IfcAnnotation</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="205"/>
       <source>Export 2D objects as IfcAnnotations</source>
-      <translation type="unfinished">Export 2D objects as IfcAnnotations</translation>
+      <translation>Извези 2Д објекте као IfcAnnotations</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="221"/>
       <source>All FreeCAD object properties will be stored inside the exported objects,
 allowing to recreate a full parametric model on reimport.</source>
-      <translation type="unfinished">All FreeCAD object properties will be stored inside the exported objects,
-allowing to recreate a full parametric model on reimport.</translation>
+      <translation>Сва својства FreeCAD објеката биће ускладиштена унутар извезених објеката,
+што ће омогућити стварање потпуно параметарског модела при поновном увозу.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="225"/>
       <source>Export full FreeCAD parametric model</source>
-      <translation type="unfinished">Export full FreeCAD parametric model</translation>
+      <translation>Извези потпуно параметарски FreeCAD модел</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="238"/>
       <source>When possible, similar entities will be used only once in the file if possible.
 This can reduce the file size a lot, but will make it less easily readable.</source>
-      <translation type="unfinished">When possible, similar entities will be used only once in the file if possible.
-This can reduce the file size a lot, but will make it less easily readable.</translation>
+      <translation>Када је могуће, слични ентитети ће се користити само једном у датотеци ако је могуће.
+Ово може знатно смањити величину датотеке, али ће је учинити мање читљивом.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="242"/>
       <source>Reuse similar entities</source>
-      <translation type="unfinished">Reuse similar entities</translation>
+      <translation>Поново користи сличне ентитете</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="258"/>
@@ -1647,15 +1637,15 @@ This can reduce the file size a lot, but will make it less easily readable.</tra
 exported as IfcRectangleProfileDef.
 However, some other applications might have problems importing that entity.
 If this is your case, you can disable this and then all profiles will be exported as IfcArbitraryClosedProfileDef.</source>
-      <translation type="unfinished">When possible, IFC objects that are extruded rectangles will be
-exported as IfcRectangleProfileDef.
-However, some other applications might have problems importing that entity.
-If this is your case, you can disable this and then all profiles will be exported as IfcArbitraryClosedProfileDef.</translation>
+      <translation>Када је могуће, IFC објекти који су извучени правоугаоници ће бити
+извезени као IfcRectangleProfileDef.
+Међутим, неке друге апликације могу имати проблема са увозом тог ентитета.
+Ако је ово ваш случај, можете да онемогућите ово и тада ће сви профили бити извезени као IfcArbitraryClosedProfileDef.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="264"/>
       <source>Disable IfcRectangleProfileDef</source>
-      <translation type="unfinished">Disable IfcRectangleProfileDef</translation>
+      <translation>Онемогући IfcRectangleProfileDef</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="277"/>
@@ -1663,53 +1653,53 @@ If this is your case, you can disable this and then all profiles will be exporte
 like IfcWallStandardCase or IfcBeamStandardCase.
 If this option is turned on, FreeCAD will automatically export such objects
 as standard cases when the necessary conditions are met.</source>
-      <translation type="unfinished">Some IFC types such as IfcWall or IfcBeam have special standard versions
-like IfcWallStandardCase or IfcBeamStandardCase.
-If this option is turned on, FreeCAD will automatically export such objects
-as standard cases when the necessary conditions are met.</translation>
+      <translation>Неки IFC типови као што су IfcWall или IfcBeam имају посебне стандардне верзије
+попут IfcWallStandardCase или IfcBeamStandardCase.
+Ако је ова опција укључена, FreeCAD ће аутоматски извести такве објекте
+као стандардни случајеви када су испуњени потребни услови.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="283"/>
       <source>Auto-detect and export as standard cases when applicable</source>
-      <translation type="unfinished">Auto-detect and export as standard cases when applicable</translation>
+      <translation>Аутоматско откривање и извоз као стандардни случајеви када је применљиво</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="296"/>
       <source>If no site is found in the FreeCAD document, a default one will be added.
 A site is not mandatory but a common practice is to have at least one in the file.</source>
-      <translation type="unfinished">If no site is found in the FreeCAD document, a default one will be added.
-A site is not mandatory but a common practice is to have at least one in the file.</translation>
+      <translation>Ако у FreeCAD документу није пронађенa парцела, додаће се једна.
+Парцела није обавезна, али је уобичајена пракса да се има бар једна.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="300"/>
       <source>Add default site if one is not found in the document</source>
-      <translation type="unfinished">Add default site if one is not found in the document</translation>
+      <translation>Додај почетну парцелу ако она није пронађена у документу</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="313"/>
       <source>If no building is found in the FreeCAD document, a default one will be added.
 Warning: The IFC standard asks for at least one building in each file. By turning this option off, you will produce a non-standard IFC file.
 However, at FreeCAD, we believe having a building should not be mandatory, and this option is there to have a chance to demonstrate our point of view.</source>
-      <translation type="unfinished">If no building is found in the FreeCAD document, a default one will be added.
-Warning: The IFC standard asks for at least one building in each file. By turning this option off, you will produce a non-standard IFC file.
-However, at FreeCAD, we believe having a building should not be mandatory, and this option is there to have a chance to demonstrate our point of view.</translation>
+      <translation>Ако у FreeCAD документу није пронађена зграда, додаће се једна.
+Упозорење: IFC стандард тражи најмање једну зграду у свакој датотеци. Искључивањем ове опције направићете нестандардну IFC датотеку.
+Међутим, у FreeCAD-у верујемо да постојање зграде не би требало да буде обавезно, а ова опција је ту да бисмо имали прилику да покажемо своје гледиште.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="318"/>
       <source>Add default building if one is not found in the document (no standard)</source>
-      <translation type="unfinished">Add default building if one is not found in the document (no standard)</translation>
+      <translation>Додај почетну зграду ако она није пронађена у документу (нема стандарда)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="334"/>
       <source>If no building storey is found in the FreeCAD document, a default one will be added.
 A building storey is not mandatory but a common practice to have at least one in the file.</source>
-      <translation type="unfinished">If no building storey is found in the FreeCAD document, a default one will be added.
-A building storey is not mandatory but a common practice to have at least one in the file.</translation>
+      <translation>Ако у FreeCAD документу није пронађен ниједан спрат зграде, додаће се један.
+Зграда не мора да има спратове, али је уобичајена пракса да се има бар један.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="338"/>
       <source>Add default building storey if one is not found in the document</source>
-      <translation type="unfinished">Add default building storey if one is not found in the document</translation>
+      <translation>Додај почетни спрат зграде ако ниједан није пронађен у документу</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="353"/>
@@ -1720,17 +1710,17 @@ Note that IFC files are ALWAYS written in metric units; imperial units
 are only a conversion factor applied on top of them.
 However, some BIM applications will use this factor to choose which
 unit to work with when opening the file.</source>
-      <translation type="unfinished">The units you want your IFC file to be exported to.
+      <translation>Мерне јединице у које желите да се извезе ваша IFC датотека.
 
-Note that IFC files are ALWAYS written in metric units; imperial units
-are only a conversion factor applied on top of them.
-However, some BIM applications will use this factor to choose which
-unit to work with when opening the file.</translation>
+Имајте на уму да су IFC датотеке УВЕК написане у метричким јединицама; империјалне јединице
+су само коефицијент конверзије који се примењује на њих.
+Међутим, неке БИМ апликације ће користити овај коефицијент да одреде са којим
+јединицама треба радити приликом отварања датотеке.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="361"/>
       <source>IFC file units</source>
-      <translation type="unfinished">IFC file units</translation>
+      <translation>Мерне јединице IFC датотеке</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="383"/>

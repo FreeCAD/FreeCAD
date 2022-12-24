@@ -28,6 +28,7 @@
 # include <QApplication>
 # include <QDir>
 # include <QIcon>
+# include <QPrinter>
 # include <QWidget>
 #endif
 
@@ -108,6 +109,7 @@ PyTypeObject** SbkPySide_QtGuiTypes=nullptr;
 PyTypeObject** SbkPySide2_QtCoreTypes=nullptr;
 PyTypeObject** SbkPySide2_QtGuiTypes=nullptr;
 PyTypeObject** SbkPySide2_QtWidgetsTypes=nullptr;
+PyTypeObject** SbkPySide2_QtPrintSupportTypes=nullptr;
 # endif // HAVE_PYSIDE2
 #endif // HAVE_SHIBOKEN2
 
@@ -585,6 +587,34 @@ QDir* PythonWrapper::toQDir(PyObject* pyobj)
     return nullptr;
 }
 
+Py::Object PythonWrapper::fromQPrinter(QPrinter* printer)
+{
+    if (!printer)
+        return Py::None();
+#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
+    // Access shiboken/PySide via C++
+    //
+    PyTypeObject * type = getPyTypeObjectForTypeName<QPrinter>();
+    if (!type) {
+        type = Shiboken::Conversions::getPythonTypeObject("QPrinter");
+    }
+    if (type) {
+        auto sbk_type = reinterpret_cast<SbkObjectType*>(type);
+        PyObject* pyobj = Shiboken::Object::newObject(sbk_type, printer, false, false, "QPrinter");
+        return Py::asObject(pyobj);
+    }
+
+    throw Py::RuntimeError("Failed to wrap object");
+#else
+    // Access shiboken2/PySide2 via Python
+    //
+    return qt_wrapInstance<QPrinter*>(printer, "QPrinter", "shiboken2", "PySide2.QtCore", "wrapInstance");
+#endif
+#ifdef HAVE_PYQT // Unwrapping using sip/PyQt
+    return qt_wrapInstance<QPrinter*>(printer, "QPrinter", "sip", "PyQt5.QtCore", "wrapinstance");
+#endif
+}
+
 Py::Object PythonWrapper::fromQObject(QObject* object, const char* className)
 {
     if (!object)
@@ -725,6 +755,20 @@ bool PythonWrapper::loadWidgetsModule()
         if (requiredModule.isNull())
             return false;
         SbkPySide2_QtWidgetsTypes = Shiboken::Module::getTypes(requiredModule);
+    }
+#endif
+    return true;
+}
+
+bool PythonWrapper::loadPrintSupportModule()
+{
+#if defined (HAVE_SHIBOKEN2) && defined(HAVE_PYSIDE2)
+    // QtPrintSupport
+    if (!SbkPySide2_QtPrintSupportTypes) {
+        Shiboken::AutoDecRef requiredModule(Shiboken::Module::import("PySide2.QtPrintSupport"));
+        if (requiredModule.isNull())
+            return false;
+        SbkPySide2_QtPrintSupportTypes = Shiboken::Module::getTypes(requiredModule);
     }
 #endif
     return true;

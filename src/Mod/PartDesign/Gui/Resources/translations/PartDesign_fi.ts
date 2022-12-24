@@ -84,17 +84,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignAdditiveHelix</name>
     <message>
-      <location filename="../../Command.cpp" line="1745"/>
+      <location filename="../../Command.cpp" line="1414"/>
       <source>PartDesign</source>
       <translation>OsanSuunnittelu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1746"/>
+      <location filename="../../Command.cpp" line="1415"/>
       <source>Additive helix</source>
       <translation type="unfinished">Additive helix</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1747"/>
+      <location filename="../../Command.cpp" line="1416"/>
       <source>Sweep a selected sketch along a helix</source>
       <translation type="unfinished">Sweep a selected sketch along a helix</translation>
     </message>
@@ -102,17 +102,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignAdditiveLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="1644"/>
+      <location filename="../../Command.cpp" line="1313"/>
       <source>PartDesign</source>
       <translation>OsanSuunnittelu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1645"/>
+      <location filename="../../Command.cpp" line="1314"/>
       <source>Additive loft</source>
       <translation>Lisäävä profiilivenytys</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1646"/>
+      <location filename="../../Command.cpp" line="1315"/>
       <source>Loft a selected profile through other profile sections</source>
       <translation>Venytä valittu profiili muiden profiilileikkausten kanssa muodoksi</translation>
     </message>
@@ -120,17 +120,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignAdditivePipe</name>
     <message>
-      <location filename="../../Command.cpp" line="1542"/>
+      <location filename="../../Command.cpp" line="1211"/>
       <source>PartDesign</source>
       <translation>OsanSuunnittelu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1543"/>
+      <location filename="../../Command.cpp" line="1212"/>
       <source>Additive pipe</source>
       <translation>Lisäävä putkimuoto</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1544"/>
+      <location filename="../../Command.cpp" line="1213"/>
       <source>Sweep a selected sketch along a path or to other profiles</source>
       <translation>Pyyhkäise valitulla luonnoksella pitkin polkua tai toiseen profiiliin</translation>
     </message>
@@ -156,17 +156,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="2638"/>
+      <location filename="../../Command.cpp" line="2307"/>
       <source>PartDesign</source>
       <translation>OsanSuunnittelu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2639"/>
+      <location filename="../../Command.cpp" line="2308"/>
       <source>Boolean operation</source>
       <translation>Boolen operaatio</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2640"/>
+      <location filename="../../Command.cpp" line="2309"/>
       <source>Boolean operation with two or more bodies</source>
       <translation>Boolen operaatio kahdella tai useammalla kappaleella</translation>
     </message>
@@ -174,17 +174,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignCS</name>
     <message>
-      <location filename="../../Command.cpp" line="245"/>
+      <location filename="../../Command.cpp" line="246"/>
       <source>PartDesign</source>
       <translation>OsanSuunnittelu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="246"/>
+      <location filename="../../Command.cpp" line="247"/>
       <source>Create a local coordinate system</source>
       <translation>Luo paikallinen koordinaatisto</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="247"/>
+      <location filename="../../Command.cpp" line="248"/>
       <source>Create a new local coordinate system</source>
       <translation>Luo uusi paikallinen koordinaatisto</translation>
     </message>
@@ -192,17 +192,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignChamfer</name>
     <message>
-      <location filename="../../Command.cpp" line="2038"/>
+      <location filename="../../Command.cpp" line="1707"/>
       <source>PartDesign</source>
       <translation>OsanSuunnittelu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2039"/>
+      <location filename="../../Command.cpp" line="1708"/>
       <source>Chamfer</source>
       <translation>Viiste</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2040"/>
+      <location filename="../../Command.cpp" line="1709"/>
       <source>Chamfer the selected edges of a shape</source>
       <translation>Viiste valittuihin muotoihin reunoista</translation>
     </message>
@@ -210,17 +210,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignClone</name>
     <message>
-      <location filename="../../Command.cpp" line="427"/>
+      <location filename="../../Command.cpp" line="428"/>
       <source>PartDesign</source>
       <translation>OsanSuunnittelu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="428"/>
+      <location filename="../../Command.cpp" line="429"/>
       <source>Create a clone</source>
       <translation>Luo klooni</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="429"/>
+      <location filename="../../Command.cpp" line="430"/>
       <source>Create a new clone</source>
       <translation>Luo uusi klooni</translation>
     </message>
@@ -228,17 +228,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignDraft</name>
     <message>
-      <location filename="../../Command.cpp" line="2067"/>
+      <location filename="../../Command.cpp" line="1736"/>
       <source>PartDesign</source>
       <translation>OsanSuunnittelu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2068"/>
+      <location filename="../../Command.cpp" line="1737"/>
       <source>Draft</source>
       <translation>Syväys (vesirajasta pohjaan)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2069"/>
+      <location filename="../../Command.cpp" line="1738"/>
       <source>Make a draft on a face</source>
       <translation>Tee vedos tahkon päälle</translation>
     </message>
@@ -264,17 +264,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignFillet</name>
     <message>
-      <location filename="../../Command.cpp" line="2010"/>
+      <location filename="../../Command.cpp" line="1679"/>
       <source>PartDesign</source>
       <translation>OsanSuunnittelu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2011"/>
+      <location filename="../../Command.cpp" line="1680"/>
       <source>Fillet</source>
       <translation>Pyöristä</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2012"/>
+      <location filename="../../Command.cpp" line="1681"/>
       <source>Make a fillet on an edge, face or body</source>
       <translation>Tee pyöristys reunaan, pintaan tai runkoon</translation>
     </message>
@@ -282,17 +282,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignGroove</name>
     <message>
-      <location filename="../../Command.cpp" line="1475"/>
+      <location filename="../../Command.cpp" line="1144"/>
       <source>PartDesign</source>
       <translation>OsanSuunnittelu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1476"/>
+      <location filename="../../Command.cpp" line="1145"/>
       <source>Groove</source>
       <translation>Ura</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1477"/>
+      <location filename="../../Command.cpp" line="1146"/>
       <source>Groove a selected sketch</source>
       <translation>Urita valittu luonnos</translation>
     </message>
@@ -300,17 +300,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignHole</name>
     <message>
-      <location filename="../../Command.cpp" line="1369"/>
+      <location filename="../../Command.cpp" line="1038"/>
       <source>PartDesign</source>
       <translation>OsanSuunnittelu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1370"/>
+      <location filename="../../Command.cpp" line="1039"/>
       <source>Hole</source>
       <translation>Reikä</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1371"/>
+      <location filename="../../Command.cpp" line="1040"/>
       <source>Create a hole with the selected sketch</source>
       <translation>Luo reikä valitulla luonnoksella</translation>
     </message>
@@ -318,17 +318,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignLine</name>
     <message>
-      <location filename="../../Command.cpp" line="189"/>
+      <location filename="../../Command.cpp" line="190"/>
       <source>PartDesign</source>
       <translation>OsanSuunnittelu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="190"/>
+      <location filename="../../Command.cpp" line="191"/>
       <source>Create a datum line</source>
       <translation>Luo apuviiva</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="191"/>
+      <location filename="../../Command.cpp" line="192"/>
       <source>Create a new datum line</source>
       <translation>Luo uusi apuviiva</translation>
     </message>
@@ -336,17 +336,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignLinearPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2336"/>
+      <location filename="../../Command.cpp" line="2005"/>
       <source>PartDesign</source>
       <translation>OsanSuunnittelu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2337"/>
+      <location filename="../../Command.cpp" line="2006"/>
       <source>LinearPattern</source>
       <translation>LinearPattern</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2338"/>
+      <location filename="../../Command.cpp" line="2007"/>
       <source>Create a linear pattern feature</source>
       <translation>Luo lineaarinen piirresarja</translation>
     </message>
@@ -372,17 +372,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignMirrored</name>
     <message>
-      <location filename="../../Command.cpp" line="2274"/>
+      <location filename="../../Command.cpp" line="1943"/>
       <source>PartDesign</source>
       <translation>OsanSuunnittelu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2275"/>
+      <location filename="../../Command.cpp" line="1944"/>
       <source>Mirrored</source>
       <translation>Peilattu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2276"/>
+      <location filename="../../Command.cpp" line="1945"/>
       <source>Create a mirrored feature</source>
       <translation>Luo peilattu piirre</translation>
     </message>
@@ -444,17 +444,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignMultiTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="2514"/>
+      <location filename="../../Command.cpp" line="2183"/>
       <source>PartDesign</source>
       <translation>OsanSuunnittelu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2515"/>
+      <location filename="../../Command.cpp" line="2184"/>
       <source>Create MultiTransform</source>
       <translation>Luo monimuunnos</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2516"/>
+      <location filename="../../Command.cpp" line="2185"/>
       <source>Create a multitransform feature</source>
       <translation>Luo monimuunnospiirre</translation>
     </message>
@@ -462,17 +462,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignNewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="485"/>
+      <location filename="../../Command.cpp" line="486"/>
       <source>PartDesign</source>
       <translation>OsanSuunnittelu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="486"/>
+      <location filename="../../Command.cpp" line="487"/>
       <source>Create sketch</source>
       <translation>Luo luonnos</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="487"/>
+      <location filename="../../Command.cpp" line="488"/>
       <source>Create a new sketch</source>
       <translation>Luo uusi luonnos</translation>
     </message>
@@ -480,17 +480,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignPad</name>
     <message>
-      <location filename="../../Command.cpp" line="1305"/>
+      <location filename="../../Command.cpp" line="974"/>
       <source>PartDesign</source>
       <translation>OsanSuunnittelu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1306"/>
+      <location filename="../../Command.cpp" line="975"/>
       <source>Pad</source>
       <translation>Pursota</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1307"/>
+      <location filename="../../Command.cpp" line="976"/>
       <source>Pad a selected sketch</source>
       <translation>Pursota valittu luonnos</translation>
     </message>
@@ -498,17 +498,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="161"/>
+      <location filename="../../Command.cpp" line="162"/>
       <source>PartDesign</source>
       <translation>OsanSuunnittelu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="162"/>
+      <location filename="../../Command.cpp" line="163"/>
       <source>Create a datum plane</source>
       <translation>Luo aputaso</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="163"/>
+      <location filename="../../Command.cpp" line="164"/>
       <source>Create a new datum plane</source>
       <translation>Luo uusi aputaso</translation>
     </message>
@@ -516,17 +516,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignPocket</name>
     <message>
-      <location filename="../../Command.cpp" line="1337"/>
+      <location filename="../../Command.cpp" line="1006"/>
       <source>PartDesign</source>
       <translation>OsanSuunnittelu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1338"/>
+      <location filename="../../Command.cpp" line="1007"/>
       <source>Pocket</source>
       <translation>Tasku</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1339"/>
+      <location filename="../../Command.cpp" line="1008"/>
       <source>Create a pocket with the selected sketch</source>
       <translation>Leikkaa kuoppa valitulla luonnoksella</translation>
     </message>
@@ -534,17 +534,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignPoint</name>
     <message>
-      <location filename="../../Command.cpp" line="217"/>
+      <location filename="../../Command.cpp" line="218"/>
       <source>PartDesign</source>
       <translation>OsanSuunnittelu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="218"/>
+      <location filename="../../Command.cpp" line="219"/>
       <source>Create a datum point</source>
       <translation>Luo apupiste</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="219"/>
+      <location filename="../../Command.cpp" line="220"/>
       <source>Create a new datum point</source>
       <translation>Luo uusi apupiste</translation>
     </message>
@@ -552,17 +552,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2400"/>
+      <location filename="../../Command.cpp" line="2069"/>
       <source>PartDesign</source>
       <translation>OsanSuunnittelu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2401"/>
+      <location filename="../../Command.cpp" line="2070"/>
       <source>PolarPattern</source>
       <translation>Ympyräsäännöllinen toistokuvio</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2402"/>
+      <location filename="../../Command.cpp" line="2071"/>
       <source>Create a polar pattern feature</source>
       <translation>Luo ympyräsäännöllinen toistopiirre</translation>
     </message>
@@ -570,17 +570,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignRevolution</name>
     <message>
-      <location filename="../../Command.cpp" line="1416"/>
+      <location filename="../../Command.cpp" line="1085"/>
       <source>PartDesign</source>
       <translation>OsanSuunnittelu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1417"/>
+      <location filename="../../Command.cpp" line="1086"/>
       <source>Revolution</source>
       <translation>Kiertoliike</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1418"/>
+      <location filename="../../Command.cpp" line="1087"/>
       <source>Revolve a selected sketch</source>
       <translation>Valitun sketsin pyöräytys</translation>
     </message>
@@ -588,17 +588,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignScaled</name>
     <message>
-      <location filename="../../Command.cpp" line="2465"/>
+      <location filename="../../Command.cpp" line="2134"/>
       <source>PartDesign</source>
       <translation>OsanSuunnittelu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2466"/>
+      <location filename="../../Command.cpp" line="2135"/>
       <source>Scaled</source>
       <translation>Skaalattu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2467"/>
+      <location filename="../../Command.cpp" line="2136"/>
       <source>Create a scaled feature</source>
       <translation>Luo skaalattu piirre</translation>
     </message>
@@ -606,17 +606,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignShapeBinder</name>
     <message>
-      <location filename="../../Command.cpp" line="277"/>
+      <location filename="../../Command.cpp" line="278"/>
       <source>PartDesign</source>
       <translation>OsanSuunnittelu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="278"/>
+      <location filename="../../Command.cpp" line="279"/>
       <source>Create a shape binder</source>
       <translation>Luo muodonliimaaja</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="279"/>
+      <location filename="../../Command.cpp" line="280"/>
       <source>Create a new shape binder</source>
       <translation>Luo uusi muodonliittäjä</translation>
     </message>
@@ -624,13 +624,13 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignSubShapeBinder</name>
     <message>
-      <location filename="../../Command.cpp" line="343"/>
+      <location filename="../../Command.cpp" line="344"/>
       <source>PartDesign</source>
       <translation>OsanSuunnittelu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="344"/>
       <location filename="../../Command.cpp" line="345"/>
+      <location filename="../../Command.cpp" line="346"/>
       <source>Create a sub-object(s) shape binder</source>
       <translation type="unfinished">Create a sub-object(s) shape binder</translation>
     </message>
@@ -638,17 +638,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignSubtractiveHelix</name>
     <message>
-      <location filename="../../Command.cpp" line="1822"/>
+      <location filename="../../Command.cpp" line="1491"/>
       <source>PartDesign</source>
       <translation>OsanSuunnittelu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1823"/>
+      <location filename="../../Command.cpp" line="1492"/>
       <source>Subtractive helix</source>
       <translation type="unfinished">Subtractive helix</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1824"/>
+      <location filename="../../Command.cpp" line="1493"/>
       <source>Sweep a selected sketch along a helix and remove it from the body</source>
       <translation type="unfinished">Sweep a selected sketch along a helix and remove it from the body</translation>
     </message>
@@ -656,17 +656,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignSubtractiveLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="1695"/>
+      <location filename="../../Command.cpp" line="1364"/>
       <source>PartDesign</source>
       <translation>OsanSuunnittelu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1696"/>
+      <location filename="../../Command.cpp" line="1365"/>
       <source>Subtractive loft</source>
       <translation>Poistava profiilivenytys</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1697"/>
+      <location filename="../../Command.cpp" line="1366"/>
       <source>Loft a selected profile through other profile sections and remove it from the body</source>
       <translation>Venytä valittu profiili muiden profiilileikkausten kanssa ja leikkaa tulos irti kappaleesta</translation>
     </message>
@@ -674,17 +674,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignSubtractivePipe</name>
     <message>
-      <location filename="../../Command.cpp" line="1593"/>
+      <location filename="../../Command.cpp" line="1262"/>
       <source>PartDesign</source>
       <translation>OsanSuunnittelu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1594"/>
+      <location filename="../../Command.cpp" line="1263"/>
       <source>Subtractive pipe</source>
       <translation>Leikkaava putkimuoto</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1595"/>
+      <location filename="../../Command.cpp" line="1264"/>
       <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
       <translation>Pyyhkäise valitulla luonnoksella pitkin polkua tai toiseen profiiliin, ja leikkaa tulos irti kappaleesta</translation>
     </message>
@@ -692,17 +692,17 @@ so that self intersection is avoided.</translation>
   <context>
     <name>CmdPartDesignThickness</name>
     <message>
-      <location filename="../../Command.cpp" line="2125"/>
+      <location filename="../../Command.cpp" line="1794"/>
       <source>PartDesign</source>
       <translation>OsanSuunnittelu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2126"/>
+      <location filename="../../Command.cpp" line="1795"/>
       <source>Thickness</source>
       <translation>Paksuus</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2127"/>
+      <location filename="../../Command.cpp" line="1796"/>
       <source>Make a thick solid</source>
       <translation>Luo paksunnettu kappale</translation>
     </message>
@@ -818,48 +818,48 @@ so that self intersection is avoided.</translation>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="298"/>
+      <location filename="../../Command.cpp" line="299"/>
       <source>Edit ShapeBinder</source>
       <translation type="unfinished">Edit ShapeBinder</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="307"/>
+      <location filename="../../Command.cpp" line="308"/>
       <source>Create ShapeBinder</source>
       <translation type="unfinished">Create ShapeBinder</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="390"/>
+      <location filename="../../Command.cpp" line="391"/>
       <source>Create SubShapeBinder</source>
       <translation type="unfinished">Create SubShapeBinder</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="445"/>
+      <location filename="../../Command.cpp" line="446"/>
       <source>Create Clone</source>
       <translation>Luo klooni</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="642"/>
-      <location filename="../../Command.cpp" line="1205"/>
+      <location filename="../../Command.cpp" line="874"/>
+      <location filename="../../SketchWorkflow.cpp" line="297"/>
       <source>Make copy</source>
       <translation>Tee kopio</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="666"/>
+      <location filename="../../SketchWorkflow.cpp" line="247"/>
       <source>Create a Sketch on Face</source>
       <translation type="unfinished">Create a Sketch on Face</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="687"/>
+      <location filename="../../SketchWorkflow.cpp" line="487"/>
       <source>Create a new Sketch</source>
       <translation type="unfinished">Create a new Sketch</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2564"/>
+      <location filename="../../Command.cpp" line="2233"/>
       <source>Convert to MultiTransform feature</source>
       <translation type="unfinished">Convert to MultiTransform feature</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2656"/>
+      <location filename="../../Command.cpp" line="2325"/>
       <source>Create Boolean</source>
       <translation type="unfinished">Create Boolean</translation>
     </message>
@@ -1033,7 +1033,7 @@ so that self intersection is avoided.</translation>
   <context>
     <name>PartDesign::Hole</name>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1651"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1670"/>
       <source>The requested feature cannot be created. The reason may be that:
   - the active Body does not contain a base shape, so there is no
   material to be removed;
@@ -1718,39 +1718,39 @@ click again to end selection</translation>
   <context>
     <name>PartDesignGui::TaskExtrudeParameters</name>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="902"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="899"/>
       <source>No face selected</source>
       <translation>Yhtään tahkoa ei ole avlittu</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="156"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="739"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="155"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="737"/>
       <source>Face</source>
       <translation>Tahko</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="360"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="359"/>
       <source>Sketch normal</source>
       <translation type="unfinished">Sketch normal</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="362"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="361"/>
       <source>Face normal</source>
       <translation type="unfinished">Face normal</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="365"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="364"/>
       <source>Select reference...</source>
       <translation>Valitse viite...</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="369"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="371"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="368"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="370"/>
       <source>Custom direction</source>
       <translation type="unfinished">Custom direction</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="897"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="894"/>
       <source>Click on a face in the model</source>
       <translation type="unfinished">Click on a face in the model</translation>
     </message>
@@ -2074,51 +2074,41 @@ click again to end selection</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="49"/>
-      <source>Cheesehead (deprecated)</source>
-      <translation type="unfinished">Cheesehead (deprecated)</translation>
+      <source>Counterdrill</source>
+      <translation type="unfinished">Counterdrill</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="50"/>
-      <source>Countersink socket screw (deprecated)</source>
-      <translation type="unfinished">Countersink socket screw (deprecated)</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.cpp" line="51"/>
-      <source>Cap screw (deprecated)</source>
-      <translation type="unfinished">Cap screw (deprecated)</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.cpp" line="55"/>
+      <location filename="../../TaskHoleParameters.cpp" line="53"/>
       <source>Hole parameters</source>
       <translation>Reikäparametrit</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="65"/>
+      <location filename="../../TaskHoleParameters.cpp" line="63"/>
       <source>None</source>
       <translation>Ei mitään</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="66"/>
+      <location filename="../../TaskHoleParameters.cpp" line="64"/>
       <source>ISO metric regular profile</source>
       <translation type="unfinished">ISO metric regular profile</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="67"/>
+      <location filename="../../TaskHoleParameters.cpp" line="65"/>
       <source>ISO metric fine profile</source>
       <translation>ISO metrinen hieno profiili</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="68"/>
+      <location filename="../../TaskHoleParameters.cpp" line="66"/>
       <source>UTS coarse profile</source>
       <translation>UTS karkea profiili</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="69"/>
+      <location filename="../../TaskHoleParameters.cpp" line="67"/>
       <source>UTS fine profile</source>
       <translation>UTS hieno profiili</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="70"/>
+      <location filename="../../TaskHoleParameters.cpp" line="68"/>
       <source>UTS extra fine profile</source>
       <translation>UTS erittäin hieno profiili</translation>
     </message>
@@ -2922,19 +2912,19 @@ measured along the specified direction</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="30"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="139"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="138"/>
       <source>Base X axis</source>
       <translation>Perustan X-akseli</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="35"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="140"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="139"/>
       <source>Base Y axis</source>
       <translation>Perustan Y-akseli</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="40"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="141"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="140"/>
       <source>Base Z axis</source>
       <translation>Perustan Z-akseli</translation>
     </message>
@@ -2950,7 +2940,7 @@ measured along the specified direction</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="55"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="148"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="147"/>
       <source>Select reference...</source>
       <translation>Valitse viite...</translation>
     </message>
@@ -2975,7 +2965,7 @@ measured along the specified direction</translation>
       <translation>Päivitä näkymä</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="49"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="50"/>
       <source>Revolution parameters</source>
       <translation>Kiertoliikkeen parametrit</translation>
     </message>
@@ -3463,76 +3453,76 @@ click again to end selection</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="138"/>
+      <location filename="../../Command.cpp" line="139"/>
       <source>Invalid selection</source>
       <translation>Virheellinen valinta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="138"/>
+      <location filename="../../Command.cpp" line="139"/>
       <source>There are no attachment modes that fit selected objects. Select something else.</source>
       <translation>Valituille kohteille ei ole soveltuvaa kiinnitystapaa. Valitse jotain muuta.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="144"/>
-      <location filename="../../Command.cpp" line="147"/>
-      <location filename="../../Command.cpp" line="149"/>
+      <location filename="../../Command.cpp" line="145"/>
+      <location filename="../../Command.cpp" line="148"/>
+      <location filename="../../Command.cpp" line="150"/>
       <source>Error</source>
       <translation>Virhe</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="144"/>
+      <location filename="../../Command.cpp" line="145"/>
       <source>There is no active body. Please make a body active before inserting a datum entity.</source>
       <translation>Aktiivista kappaletta ei ole valittu. Aktivoi jokin kappale ennenkuin luot apumuodon.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="408"/>
+      <location filename="../../Command.cpp" line="409"/>
       <source>Sub-Shape Binder</source>
       <translation type="unfinished">Sub-Shape Binder</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="590"/>
+      <location filename="../../SketchWorkflow.cpp" line="651"/>
       <source>Several sub-elements selected</source>
       <translation>Valittu useita alielementtejä</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="591"/>
+      <location filename="../../SketchWorkflow.cpp" line="652"/>
       <source>You have to select a single face as support for a sketch!</source>
       <translation>Sinun on valittava yksittäinen pinta sketsille!</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="601"/>
+      <location filename="../../SketchWorkflow.cpp" line="655"/>
       <source>No support face selected</source>
       <translation>Pintaa ei ole valittu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="602"/>
+      <location filename="../../SketchWorkflow.cpp" line="656"/>
       <source>You have to select a face as support for a sketch!</source>
       <translation>Sinun on valittava pinta sketsille!</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="611"/>
+      <location filename="../../SketchWorkflow.cpp" line="659"/>
       <source>No planar support</source>
       <translation>Ei tukea tasoille</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="612"/>
+      <location filename="../../SketchWorkflow.cpp" line="660"/>
       <source>You need a planar face as support for a sketch!</source>
       <translation>Tarvitset tasopinnan tuen sketsille!</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="797"/>
+      <location filename="../../SketchWorkflow.cpp" line="663"/>
       <source>No valid planes in this document</source>
       <translation>Asiakirjassa ei ole soveltuvaa tasomuotoa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="798"/>
+      <location filename="../../SketchWorkflow.cpp" line="664"/>
       <source>Please create a plane first or select a face to sketch on</source>
       <translation>Luo ensin taso tai valitse pinta jolle luonnos tehdään</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="811"/>
-      <location filename="../../Command.cpp" line="1226"/>
-      <location filename="../../Command.cpp" line="2225"/>
+      <location filename="../../Command.cpp" line="895"/>
+      <location filename="../../Command.cpp" line="1894"/>
+      <location filename="../../SketchWorkflow.cpp" line="591"/>
       <location filename="../../ViewProvider.cpp" line="98"/>
       <location filename="../../ViewProviderBoolean.cpp" line="80"/>
       <location filename="../../ViewProviderDatum.cpp" line="246"/>
@@ -3543,9 +3533,9 @@ click again to end selection</translation>
       <translation>Valintaikkuna on jo avoinna tehtäväpaneelissa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="812"/>
-      <location filename="../../Command.cpp" line="1227"/>
-      <location filename="../../Command.cpp" line="2226"/>
+      <location filename="../../Command.cpp" line="896"/>
+      <location filename="../../Command.cpp" line="1895"/>
+      <location filename="../../SketchWorkflow.cpp" line="592"/>
       <location filename="../../ViewProvider.cpp" line="99"/>
       <location filename="../../ViewProviderBoolean.cpp" line="81"/>
       <location filename="../../ViewProviderDatum.cpp" line="247"/>
@@ -3556,96 +3546,96 @@ click again to end selection</translation>
       <translation>Haluatko sulkea tämän valintaikkunan?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1106"/>
+      <location filename="../../Command.cpp" line="775"/>
       <source>Cannot use this command as there is no solid to subtract from.</source>
       <translation type="unfinished">Cannot use this command as there is no solid to subtract from.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1107"/>
+      <location filename="../../Command.cpp" line="776"/>
       <source>Ensure that the body contains a feature before attempting a subtractive command.</source>
       <translation type="unfinished">Ensure that the body contains a feature before attempting a subtractive command.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1128"/>
+      <location filename="../../Command.cpp" line="797"/>
       <source>Cannot use selected object. Selected object must belong to the active body</source>
       <translation type="unfinished">Cannot use selected object. Selected object must belong to the active body</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1129"/>
+      <location filename="../../Command.cpp" line="798"/>
       <source>Consider using a ShapeBinder or a BaseFeature to reference external geometry in a body.</source>
       <translation type="unfinished">Consider using a ShapeBinder or a BaseFeature to reference external geometry in a body.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1151"/>
+      <location filename="../../Command.cpp" line="820"/>
       <source>No sketch to work on</source>
       <translation>Ei työstettävää luonnosta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1152"/>
+      <location filename="../../Command.cpp" line="821"/>
       <source>No sketch is available in the document</source>
       <translation>Dokumentissa ei ole käytettävissä luonnoksia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1890"/>
-      <location filename="../../Command.cpp" line="1894"/>
-      <location filename="../../Command.cpp" line="1920"/>
-      <location filename="../../Command.cpp" line="1950"/>
+      <location filename="../../Command.cpp" line="1559"/>
+      <location filename="../../Command.cpp" line="1563"/>
+      <location filename="../../Command.cpp" line="1589"/>
+      <location filename="../../Command.cpp" line="1619"/>
       <source>Wrong selection</source>
       <translation>Virheellinen valinta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1891"/>
+      <location filename="../../Command.cpp" line="1560"/>
       <source>Select an edge, face, or body.</source>
       <translation type="unfinished">Select an edge, face, or body.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1895"/>
+      <location filename="../../Command.cpp" line="1564"/>
       <source>Select an edge, face, or body from a single body.</source>
       <translation type="unfinished">Select an edge, face, or body from a single body.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1899"/>
-      <location filename="../../Command.cpp" line="2252"/>
+      <location filename="../../Command.cpp" line="1568"/>
+      <location filename="../../Command.cpp" line="1921"/>
       <source>Selection is not in Active Body</source>
       <translation>Valittu objekti ei ole aktiivisessa kappaleessa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1900"/>
+      <location filename="../../Command.cpp" line="1569"/>
       <source>Select an edge, face, or body from an active body.</source>
       <translation type="unfinished">Select an edge, face, or body from an active body.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1910"/>
+      <location filename="../../Command.cpp" line="1579"/>
       <source>Wrong object type</source>
       <translation>Väärä objektityyppi</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1911"/>
+      <location filename="../../Command.cpp" line="1580"/>
       <source>%1 works only on parts.</source>
       <translation>%1 toimii ainoastaan osille.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1921"/>
+      <location filename="../../Command.cpp" line="1590"/>
       <source>Shape of the selected Part is empty</source>
       <translation>Valitun osan muoto on tyhjä</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1951"/>
+      <location filename="../../Command.cpp" line="1620"/>
       <source> not possible on selected faces/edges.</source>
       <translation> ei ole mahdollista valituilla pinnoilla/särmillä.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2243"/>
+      <location filename="../../Command.cpp" line="1912"/>
       <source>No valid features in this document</source>
       <translation>Tässä asiakirjassa ei ole käypiä ominaisuuksia</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2244"/>
+      <location filename="../../Command.cpp" line="1913"/>
       <source>Please create a feature first.</source>
       <translation type="unfinished">Please create a feature first.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2253"/>
+      <location filename="../../Command.cpp" line="1922"/>
       <source>Please select only one feature in an active body.</source>
       <translation type="unfinished">Please select only one feature in an active body.</translation>
     </message>
@@ -3826,19 +3816,19 @@ Tämä voi johtaa odottamattomiin tuloksiin.</translation>
       <translation>Ei ole mahdollista tehdä leikkaavaa piirrettä ilman olemassaolevaa peruspiirrettä</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="124"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="123"/>
       <location filename="../../TaskTransformedParameters.cpp" line="287"/>
       <source>Vertical sketch axis</source>
       <translation>Pystysuuntaisen luonnoksen akseli</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="125"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="124"/>
       <location filename="../../TaskTransformedParameters.cpp" line="288"/>
       <source>Horizontal sketch axis</source>
       <translation>Vaakasuuntaisen luonnoksen akseli</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="127"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="126"/>
       <source>Construction line %1</source>
       <translation>Rakennuslinja %1</translation>
     </message>
@@ -4470,20 +4460,20 @@ Only available for holes without thread</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="251"/>
-      <location filename="../../TaskHoleParameters.cpp" line="593"/>
+      <location filename="../../TaskHoleParameters.cpp" line="591"/>
       <source>Standard</source>
       <translation>Standardi</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="256"/>
-      <location filename="../../TaskHoleParameters.cpp" line="594"/>
-      <location filename="../../TaskHoleParameters.cpp" line="605"/>
+      <location filename="../../TaskHoleParameters.cpp" line="592"/>
+      <location filename="../../TaskHoleParameters.cpp" line="603"/>
       <source>Close</source>
       <translation>Sulje</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="261"/>
-      <location filename="../../TaskHoleParameters.cpp" line="595"/>
+      <location filename="../../TaskHoleParameters.cpp" line="593"/>
       <source>Wide</source>
       <translation type="unfinished">Wide</translation>
     </message>
@@ -4630,12 +4620,12 @@ over 90: larger hole radius at the bottom</translation>
       <translation>Käänteinen</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="604"/>
+      <location filename="../../TaskHoleParameters.cpp" line="602"/>
       <source>Normal</source>
       <translation>Normaali</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="606"/>
+      <location filename="../../TaskHoleParameters.cpp" line="604"/>
       <source>Loose</source>
       <translation type="unfinished">Loose</translation>
     </message>

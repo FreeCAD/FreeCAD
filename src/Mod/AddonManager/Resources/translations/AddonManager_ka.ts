@@ -74,12 +74,6 @@
       <source>Optional?</source>
       <translation>არასავალდებულო?</translation>
     </message>
-    <message>
-      <location filename="../../developer_mode_dependencies.ui" line="72"/>
-      <location filename="../../developer_mode_dependencies.ui" line="79"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
   </context>
   <context>
     <name>DependencyResolutionDialog</name>
@@ -251,12 +245,6 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <source>Addon Contents</source>
       <translation>დამატების საკონტაქტო ინფორმაცია</translation>
     </message>
-    <message>
-      <location filename="../../developer_mode.ui" line="301"/>
-      <location filename="../../developer_mode.ui" line="308"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
   </context>
   <context>
     <name>Dialog</name>
@@ -406,7 +394,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="54"/>
       <source>NOTE: If &quot;Other...&quot; is selected, the package is not in the ALLOWED_PYTHON_PACKAGES.txt file, and will not be automatically installed by the Addon Manager. Submit a PR at &lt;a href=&quot;https://github.com/FreeCAD/FreeCAD-addons&quot;&gt;https://github.com/FreeCAD/FreeCAD-addons&lt;/a&gt; to request addition of a package.</source>
-      <translation type="unfinished">NOTE: If &quot;Other...&quot; is selected, the package is not in the ALLOWED_PYTHON_PACKAGES.txt file, and will not be automatically installed by the Addon Manager. Submit a PR at &lt;a href=&quot;https://github.com/FreeCAD/FreeCAD-addons&quot;&gt;https://github.com/FreeCAD/FreeCAD-addons&lt;/a&gt; to request addition of a package.</translation>
+      <translation>შენიშვნა: თუ არჩეულია &quot;სხვა&quot; პაკეტი, რომელიც ALLOWED_PYTHON_PACKAGES.txt ფაილში მოყვანლი არაა, ავტომატურად არ იქნება დაყენებული დამატებების მმართველის მიერ. პაკეტის დასამატებლად გახსენით PR მისამართზე &lt;a href=&quot;https://github.com/FreeCAD/FreeCAD-addons&quot;&gt;https://github.com/FreeCAD/FreeCAD-addons&lt;/a&gt;.</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="69"/>
@@ -486,14 +474,6 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <translation>ლიცენზიის ფაილი</translation>
     </message>
     <message>
-      <location filename="../../developer_mode_licenses_table.ui" line="97"/>
-      <location filename="../../developer_mode_licenses_table.ui" line="107"/>
-      <location filename="../../developer_mode_people_table.ui" line="90"/>
-      <location filename="../../developer_mode_people_table.ui" line="100"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
-    <message>
       <location filename="../../developer_mode_people_table.ui" line="26"/>
       <source>People</source>
       <translation>ხალხი</translation>
@@ -524,7 +504,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="20"/>
       <source>Upcoming versions of the FreeCAD Addon Manager will support developers&apos; setting a specific branch or tag for use with a specific version of FreeCAD (e.g. setting a specific tag as the last version of your Addon to support v0.19, etc.)</source>
-      <translation type="unfinished">Upcoming versions of the FreeCAD Addon Manager will support developers&apos; setting a specific branch or tag for use with a specific version of FreeCAD (e.g. setting a specific tag as the last version of your Addon to support v0.19, etc.)</translation>
+      <translation>FreeCAD-ის დამატებების მმართველის მომავალ ვერსიებს დამატებების ბრენჩის ან ჭდის მითითების საშუალება ექნება, რათა საშუალება მოგცეთ, ის FreeCAD-ის მითითებულ ვერსიაში გამოიყენოთ (მაგალითდ, გამოიყენეთ ჭდეები, რომ აირჩიოთ დამატება, რომელსაც 0.19-ის მხარდაჭერა გააჩნია და ა.შ.)</translation>
     </message>
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="43"/>
@@ -535,12 +515,6 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="48"/>
       <source>Best-available branch, tag, or commit</source>
       <translation>საუკეთესო ხელმისაწვდომი ბრენჩი, ჭდე ან კომიტი</translation>
-    </message>
-    <message>
-      <location filename="../../developer_mode_advanced_freecad_versions.ui" line="71"/>
-      <location filename="../../developer_mode_advanced_freecad_versions.ui" line="78"/>
-      <source>...</source>
-      <translation>...</translation>
     </message>
   </context>
   <context>
@@ -598,12 +572,6 @@ installed addons will be checked for available updates
       <translation>მაკროს მეტამონაცემების გადმოწერა (დაახლ. 10მბ)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="44"/>
-      <source>DownloadMacros</source>
-      <translation>მაკროების გადმოწერა</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManagerOptions.ui" line="47"/>
       <location filename="../../AddonManagerOptions.ui" line="373"/>
       <location filename="../../AddonManagerOptions.ui" line="386"/>
       <source>Addons</source>
@@ -648,12 +616,6 @@ installed addons will be checked for available updates
       <location filename="../../AddonManagerOptions.ui" line="150"/>
       <source>Custom repositories</source>
       <translation>ხელით მითითებული რეპოზიტორიები</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManagerOptions.ui" line="188"/>
-      <location filename="../../AddonManagerOptions.ui" line="195"/>
-      <source>...</source>
-      <translation>...</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="354"/>
@@ -739,11 +701,6 @@ installed addons will be checked for available updates
       <translation>ფორმა</translation>
     </message>
     <message>
-      <location filename="../../package_details.ui" line="29"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
-    <message>
       <location filename="../../package_details.ui" line="49"/>
       <source>Uninstalls a selected macro or workbench</source>
       <translation>მონიშნული მაკროს ან სამუშაო მაგიდის წაშლა</translation>
@@ -810,7 +767,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="87"/>
       <source>An asterisk (*) in the &quot;Used by&quot; column indicates an optional dependency. Note that Used by only records direct imports in the Addon. Other Python packages that those packages depend upon may have been installed as well.</source>
-      <translation type="unfinished">An asterisk (*) in the &quot;Used by&quot; column indicates an optional dependency. Note that Used by only records direct imports in the Addon. Other Python packages that those packages depend upon may have been installed as well.</translation>
+      <translation>ვარსკვლავი (*), &quot;გამოყენებული&quot; სვეტის მიერ, დამატებითი დამოკიდებულებების არსებობას აღნიშნავს. გაითვალისწინეთ, რომ ის გამოიყენება მხოლოდ ჩანაწერების მიერ, რომლებიც დამატებაში პირდაპირაა შემოტანილი. Python-ის სხვა პაკეტები, რომლებზეც ისინი არიან დამოკიდებულები, ასევე დადგება.</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="99"/>
@@ -829,6 +786,19 @@ installed addons will be checked for available updates
       <location filename="../../developer_mode_select_from_list.ui" line="20"/>
       <source>TextLabel</source>
       <translation>ტექსტური წარწერა</translation>
+    </message>
+  </context>
+  <context>
+    <name>UpdateAllDialog</name>
+    <message>
+      <location filename="../../update_all.ui" line="14"/>
+      <source>Updating Addons</source>
+      <translation type="unfinished">Updating Addons</translation>
+    </message>
+    <message>
+      <location filename="../../update_all.ui" line="23"/>
+      <source>Updating out-of-date addons...</source>
+      <translation type="unfinished">Updating out-of-date addons...</translation>
     </message>
   </context>
   <context>

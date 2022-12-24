@@ -274,7 +274,7 @@
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="915"/>
+      <location filename="../../qtcolorpicker.cpp" line="920"/>
       <source>Custom Color</source>
       <translation>Prilagođena boja</translation>
     </message>
@@ -352,25 +352,25 @@
       <translation>Uredi ćeliju</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="322"/>
-      <location filename="../../SheetTableView.cpp" line="354"/>
+      <location filename="../../SheetTableView.cpp" line="325"/>
+      <location filename="../../SheetTableView.cpp" line="357"/>
       <source>Insert rows</source>
       <translation>Umetni redove</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="373"/>
-      <location filename="../../SheetTableView.cpp" line="446"/>
+      <location filename="../../SheetTableView.cpp" line="376"/>
+      <location filename="../../SheetTableView.cpp" line="449"/>
       <source>Remove rows</source>
       <translation>Ukloni redove</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="394"/>
-      <location filename="../../SheetTableView.cpp" line="427"/>
+      <location filename="../../SheetTableView.cpp" line="397"/>
+      <location filename="../../SheetTableView.cpp" line="430"/>
       <source>Insert columns</source>
       <translation>Umetni stupce</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="615"/>
+      <location filename="../../SheetTableView.cpp" line="632"/>
       <location filename="../../SpreadsheetView.cpp" line="159"/>
       <source>Clear cell(s)</source>
       <translation>Obriši ćeliju(e)</translation>
@@ -458,14 +458,14 @@ Izraz mora dati vrijednost nizu neke adrese ćelije.
       <source>The dependency with the referenced spreadsheet will
 be hidden to the dependency checking.
 Useful to avoid cyclic dependencies, but use with caution!</source>
-      <translation type="unfinished">The dependency with the referenced spreadsheet will
-be hidden to the dependency checking.
-Useful to avoid cyclic dependencies, but use with caution!</translation>
+      <translation>Ovisnost s referentnom proračunskom tablicom će
+biti skriven za provjeru ovisnosti.
+Korisno za izbjegavanje cikličkih ovisnosti, ali koristite s oprezom!</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="131"/>
       <source>Hide dependency of binding</source>
-      <translation type="unfinished">Hide dependency of binding</translation>
+      <translation>Sakrij ovisnost vezanja</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="140"/>
@@ -488,7 +488,7 @@ Useful to avoid cyclic dependencies, but use with caution!</translation>
     <message>
       <location filename="../../DlgSheetConf.ui" line="14"/>
       <source>Setup Configuration Table</source>
-      <translation type="unfinished">Setup Configuration Table</translation>
+      <translation>Postavke Konfiguracijske tablice</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="20"/>
@@ -506,15 +506,14 @@ property for user to dynamically switch configuration.
 The first row of the range will be bound to whatever row (indirectly) selected
 by that property.
 </source>
-      <translation type="unfinished">Starting cell address.
+      <translation>Početna adresa ćelije.
 
-The first column of the range is assumed to contain a list of configuration
-names, which will be used to generate a string list and bind to the given
-property for user to dynamically switch configuration.
+Pretpostavlja se da prvi stupac raspona sadrži popis konfiguracija
+imena, koja će se koristiti za generiranje popisa nizova i vezanje na dano
+svojstvo za korisnika da dinamički mijenja konfiguraciju.
 
-The first row of the range will be bound to whatever row (indirectly) selected
-by that property.
-</translation>
+Prvi redak raspona bit će vezan za bilo koji (neizravno) odabrani redak
+tim svojstvom.</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="42"/>
@@ -527,27 +526,26 @@ property for user to dynamically switch configuration.
 The first row of the range will be bound to whatever row (indirectly) selected
 by that property.
 </source>
-      <translation type="unfinished">Ending cell address.
+      <translation>Završna adresa ćelije.
 
-The first column of the range is assumed to contain a list of configuration
-names, which will be used to generate a string list and bind to the given
-property for user to dynamically switch configuration.
+Pretpostavlja se da prvi stupac raspona sadrži popis konfiguracija
+imena, koja će se koristiti za generiranje popisa nizova i vezanje na dano
+svojstvo za korisnika da dinamički mijenja konfiguraciju.
 
-The first row of the range will be bound to whatever row (indirectly) selected
-by that property.
-</translation>
+Prvi redak raspona bit će vezan za bilo koji (neizravno) odabrani redak
+tim svojstvom.</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="57"/>
       <source>Property:</source>
-      <translation type="unfinished">Property:</translation>
+      <translation>Svojstvo:</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="64"/>
       <source>Type in an expression to specify the object and property name to dynamically
 switch the design configuration. The property will be created if not exist.</source>
-      <translation type="unfinished">Type in an expression to specify the object and property name to dynamically
-switch the design configuration. The property will be created if not exist.</translation>
+      <translation>Upišite izraz za dinamičko određivanje naziva objekta i svojstva
+promijeniti konfiguraciju dizajna. Objekt će se stvoriti ako ne postoji.</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="72"/>
@@ -557,12 +555,14 @@ switch the design configuration. The property will be created if not exist.</tra
     <message>
       <location filename="../../DlgSheetConf.ui" line="79"/>
       <source>Optional property group name.</source>
-      <translation type="unfinished">Optional property group name.</translation>
+      <translation>Opcionalni naziv grupe svojstava.
+
+</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="88"/>
       <source>Unsetup</source>
-      <translation type="unfinished">Unsetup</translation>
+      <translation>Poništite postavku</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="95"/>
@@ -725,7 +725,7 @@ switch the design configuration. The property will be created if not exist.</tra
       <translation>Postavlja boju pozadine ćelije proračunske tablice</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="735"/>
+      <location filename="../../SheetTableView.cpp" line="752"/>
       <source>Copy &amp; Paste failed</source>
       <translation>Copy &amp; Paste nije uspjelo</translation>
     </message>
@@ -749,110 +749,110 @@ Spreadsheet.my_alias_name umjesto Spreadsheet.B1
   <context>
     <name>QtColorPicker</name>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="283"/>
-      <location filename="../../qtcolorpicker.cpp" line="410"/>
-      <location filename="../../qtcolorpicker.cpp" line="520"/>
+      <location filename="../../qtcolorpicker.cpp" line="286"/>
+      <location filename="../../qtcolorpicker.cpp" line="413"/>
+      <location filename="../../qtcolorpicker.cpp" line="523"/>
       <source>Black</source>
       <translation>Crna</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="411"/>
-      <location filename="../../qtcolorpicker.cpp" line="521"/>
+      <location filename="../../qtcolorpicker.cpp" line="414"/>
+      <location filename="../../qtcolorpicker.cpp" line="524"/>
       <source>White</source>
       <translation>Bijela</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="412"/>
-      <location filename="../../qtcolorpicker.cpp" line="522"/>
+      <location filename="../../qtcolorpicker.cpp" line="415"/>
+      <location filename="../../qtcolorpicker.cpp" line="525"/>
       <source>Red</source>
       <translation>Crvena</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="413"/>
-      <location filename="../../qtcolorpicker.cpp" line="523"/>
+      <location filename="../../qtcolorpicker.cpp" line="416"/>
+      <location filename="../../qtcolorpicker.cpp" line="526"/>
       <source>Dark red</source>
       <translation>Tamno crvena</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="414"/>
-      <location filename="../../qtcolorpicker.cpp" line="524"/>
+      <location filename="../../qtcolorpicker.cpp" line="417"/>
+      <location filename="../../qtcolorpicker.cpp" line="527"/>
       <source>Green</source>
       <translation>Zelena</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="415"/>
-      <location filename="../../qtcolorpicker.cpp" line="525"/>
+      <location filename="../../qtcolorpicker.cpp" line="418"/>
+      <location filename="../../qtcolorpicker.cpp" line="528"/>
       <source>Dark green</source>
       <translation>Tamno zelena</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="416"/>
-      <location filename="../../qtcolorpicker.cpp" line="526"/>
+      <location filename="../../qtcolorpicker.cpp" line="419"/>
+      <location filename="../../qtcolorpicker.cpp" line="529"/>
       <source>Blue</source>
       <translation>Plava</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="417"/>
-      <location filename="../../qtcolorpicker.cpp" line="527"/>
+      <location filename="../../qtcolorpicker.cpp" line="420"/>
+      <location filename="../../qtcolorpicker.cpp" line="530"/>
       <source>Dark blue</source>
       <translation>Tamno plava</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="418"/>
-      <location filename="../../qtcolorpicker.cpp" line="528"/>
+      <location filename="../../qtcolorpicker.cpp" line="421"/>
+      <location filename="../../qtcolorpicker.cpp" line="531"/>
       <source>Cyan</source>
       <translation>Modra</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="419"/>
-      <location filename="../../qtcolorpicker.cpp" line="529"/>
+      <location filename="../../qtcolorpicker.cpp" line="422"/>
+      <location filename="../../qtcolorpicker.cpp" line="532"/>
       <source>Dark cyan</source>
       <translation>Tamno modra</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="420"/>
-      <location filename="../../qtcolorpicker.cpp" line="530"/>
+      <location filename="../../qtcolorpicker.cpp" line="423"/>
+      <location filename="../../qtcolorpicker.cpp" line="533"/>
       <source>Magenta</source>
       <translation>Ružičasta</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="421"/>
-      <location filename="../../qtcolorpicker.cpp" line="531"/>
+      <location filename="../../qtcolorpicker.cpp" line="424"/>
+      <location filename="../../qtcolorpicker.cpp" line="534"/>
       <source>Dark magenta</source>
       <translation>Tamno ružičasta</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="422"/>
-      <location filename="../../qtcolorpicker.cpp" line="532"/>
+      <location filename="../../qtcolorpicker.cpp" line="425"/>
+      <location filename="../../qtcolorpicker.cpp" line="535"/>
       <source>Yellow</source>
       <translation>Žuta</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="423"/>
-      <location filename="../../qtcolorpicker.cpp" line="533"/>
+      <location filename="../../qtcolorpicker.cpp" line="426"/>
+      <location filename="../../qtcolorpicker.cpp" line="536"/>
       <source>Dark yellow</source>
       <translation>Tamno žuta</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="424"/>
-      <location filename="../../qtcolorpicker.cpp" line="534"/>
+      <location filename="../../qtcolorpicker.cpp" line="427"/>
+      <location filename="../../qtcolorpicker.cpp" line="537"/>
       <source>Gray</source>
       <translation>Siva</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="425"/>
-      <location filename="../../qtcolorpicker.cpp" line="535"/>
+      <location filename="../../qtcolorpicker.cpp" line="428"/>
+      <location filename="../../qtcolorpicker.cpp" line="538"/>
       <source>Dark gray</source>
       <translation>Tamno siva</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="426"/>
-      <location filename="../../qtcolorpicker.cpp" line="536"/>
+      <location filename="../../qtcolorpicker.cpp" line="429"/>
+      <location filename="../../qtcolorpicker.cpp" line="539"/>
       <source>Light gray</source>
       <translation>Svjetlo siva</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="448"/>
+      <location filename="../../qtcolorpicker.cpp" line="451"/>
       <source>Custom Color</source>
       <translation>Prilagođena boja</translation>
     </message>
@@ -889,16 +889,16 @@ Spreadsheet.my_alias_name umjesto Spreadsheet.B1
     <message>
       <location filename="../../DlgBindSheet.cpp" line="197"/>
       <source>Bind cells</source>
-      <translation type="unfinished">Bind cells</translation>
+      <translation>Poveži ćelije</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="198"/>
       <source>Source and target cell count mismatch. Partial binding may still work.
 
 Do you want to continue?</source>
-      <translation type="unfinished">Source and target cell count mismatch. Partial binding may still work.
+      <translation>Neusklađenost broja izvornih i ciljnih stanica. Djelomično uvezivanje još uvijek može funkcionirati.
 
-Do you want to continue?</translation>
+Želite li nastaviti?</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="225"/>
@@ -914,7 +914,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="243"/>
       <source>Unbind cells</source>
-      <translation type="unfinished">Unbind cells</translation>
+      <translation>Poništite povezivanje ćelija</translation>
     </message>
   </context>
   <context>
@@ -945,16 +945,6 @@ Do you want to continue?</translation>
       <translation>tab</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="79"/>
-      <source>;</source>
-      <translation>;</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettings.ui" line="84"/>
-      <source>,</source>
-      <translation>,</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettings.ui" line="98"/>
       <source>Quote Character: </source>
       <translation>Citat znak:</translation>
@@ -963,11 +953,6 @@ Do you want to continue?</translation>
       <location filename="../../DlgSettings.ui" line="105"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Znak koji se koristi za razgraničenje nizova, obično je jednostruki navodnik (') ili dvostruki navodnik (&amp;quot;). Mora biti jedan znak.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettings.ui" line="111"/>
-      <source>"</source>
-      <translation>"</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="130"/>
@@ -979,23 +964,18 @@ Do you want to continue?</translation>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape znak, obično obrnuta kosa crta (\), koji se koristi za označavanje posebnih znakova koji se ne mogu ispisivati, npr. \t = tab. Mora biti jedan znak.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
-    <message>
-      <location filename="../../DlgSettings.ui" line="140"/>
-      <source>\</source>
-      <translation>\</translation>
-    </message>
   </context>
   <context>
     <name>SpreadsheetGui::DlgSheetConf</name>
     <message>
       <location filename="../../DlgSheetConf.cpp" line="247"/>
       <source>Setup configuration table</source>
-      <translation type="unfinished">Setup configuration table</translation>
+      <translation>Postavke Konfiguracijske tablice</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.cpp" line="294"/>
       <source>Unsetup configuration table</source>
-      <translation type="unfinished">Unsetup configuration table</translation>
+      <translation>Poništite postavke Konfiguracijske tablice</translation>
     </message>
   </context>
   <context>
@@ -1082,61 +1062,61 @@ Do you want to continue?</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="169"/>
-      <location filename="../../SheetTableView.cpp" line="596"/>
+      <location filename="../../SheetTableView.cpp" line="613"/>
       <source>Properties...</source>
       <translation>Svojstva...</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="181"/>
-      <location filename="../../SheetTableView.cpp" line="597"/>
+      <location filename="../../SheetTableView.cpp" line="614"/>
       <source>Recompute</source>
-      <translation type="unfinished">Recompute</translation>
+      <translation>Preračunaj</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="185"/>
-      <location filename="../../SheetTableView.cpp" line="605"/>
+      <location filename="../../SheetTableView.cpp" line="622"/>
       <source>Bind...</source>
-      <translation type="unfinished">Bind...</translation>
+      <translation>Poveži...</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="189"/>
-      <location filename="../../SheetTableView.cpp" line="598"/>
+      <location filename="../../SheetTableView.cpp" line="615"/>
       <source>Configuration table...</source>
-      <translation type="unfinished">Configuration table...</translation>
+      <translation>Konfiguracijska tablica...</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="197"/>
-      <location filename="../../SheetTableView.cpp" line="599"/>
+      <location filename="../../SheetTableView.cpp" line="616"/>
       <source>Merge cells</source>
       <translation>Spajanje ćelija</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="199"/>
-      <location filename="../../SheetTableView.cpp" line="600"/>
+      <location filename="../../SheetTableView.cpp" line="617"/>
       <source>Split cells</source>
       <translation>Razdvoji ćelije</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="203"/>
-      <location filename="../../SheetTableView.cpp" line="603"/>
+      <location filename="../../SheetTableView.cpp" line="620"/>
       <source>Cut</source>
       <translation>Isječak</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="205"/>
-      <location filename="../../SheetTableView.cpp" line="601"/>
+      <location filename="../../SheetTableView.cpp" line="618"/>
       <source>Copy</source>
       <translation>Kopiraj</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="207"/>
-      <location filename="../../SheetTableView.cpp" line="602"/>
+      <location filename="../../SheetTableView.cpp" line="619"/>
       <source>Paste</source>
       <translation>Umetni</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="209"/>
-      <location filename="../../SheetTableView.cpp" line="604"/>
+      <location filename="../../SheetTableView.cpp" line="621"/>
       <source>Delete</source>
       <translation>Izbriši</translation>
     </message>

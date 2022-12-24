@@ -22,8 +22,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <stdexcept>
 # include <memory>
+# include <stdexcept>
 # include <QCoreApplication>
 # include <QTcpSocket>
 #endif

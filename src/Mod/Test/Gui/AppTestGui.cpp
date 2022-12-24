@@ -22,13 +22,14 @@
 
 #include "PreCompiled.h"
 
-#include "UnitTestPy.h"
-#include "UnitTestImp.h"
-
-#include <Gui/Language/Translator.h>
 #include <Base/Console.h>
 #include <Base/ConsoleObserver.h>
 #include <Base/Interpreter.h>
+#include <Gui/Language/Translator.h>
+
+#include "UnitTestImp.h"
+#include "UnitTestPy.h"
+
 
 class ILoggerBlockerTest : public Base::ILogger
 {

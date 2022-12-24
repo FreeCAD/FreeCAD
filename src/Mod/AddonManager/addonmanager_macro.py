@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2018 Gaël Écorchard <galou_breizh@yahoo.fr>             *
@@ -35,7 +34,7 @@ import FreeCAD
 import NetworkManager
 from PySide import QtCore
 
-from addonmanager_utilities import remove_directory_if_empty, is_float
+from addonmanager_utilities import is_float
 
 translate = FreeCAD.Qt.translate
 
@@ -418,7 +417,7 @@ class Macro:
         try:
             with codecs.open(macro_path, "w", "utf-8") as macrofile:
                 macrofile.write(self.code)
-        except IOError:
+        except OSError:
             return False, [f"Failed to write {macro_path}"]
         # Copy related files, which are supposed to be given relative to
         # self.src_filename.
@@ -447,7 +446,7 @@ class Macro:
                 )
                 try:
                     shutil.copy(self.icon, dst_file)
-                except IOError:
+                except OSError:
                     warnings.append(f"Failed to copy icon to {dst_file}")
             elif self.icon not in self.other_files:
                 self.other_files.append(self.icon)
@@ -479,7 +478,7 @@ class Macro:
             self._fetch_single_file(other_file, src_file, dst_file, warnings)
             try:
                 shutil.copy(src_file, dst_file)
-            except IOError:
+            except OSError:
                 warnings.append(f"Failed to copy {src_file} to {dst_file}")
         return True  # No fatal errors, but some files may have failed to copy
 
@@ -509,89 +508,6 @@ class Macro:
                         "Could not locate macro-specified file {} (should have been at {})",
                     ).format(other_file, src_file)
                 )
-
-    def remove(self) -> bool:
-        """Remove a macro and all its related files
-
-        Returns True if the macro was removed correctly.
-        """
-
-        if not self.is_installed():
-            # Macro not installed, nothing to do.
-            return True
-        macro_dir = FreeCAD.getUserMacroDir(True)
-
-        try:
-            self._remove_core_macro_file(macro_dir)
-            self._remove_xpm_data(macro_dir)
-            self._remove_other_files(macro_dir)
-        except IsADirectoryError:
-            FreeCAD.Console.PrintError(
-                translate(
-                    "AddonsInstaller",
-                    "Tried to remove a directory when a file was expected\n",
-                )
-            )
-            return False
-        except FileNotFoundError:
-            FreeCAD.Console.PrintError(
-                translate(
-                    "AddonsInstaller",
-                    "Macro file could not be found, nothing to remove\n",
-                )
-            )
-            return False
-        return True
-
-    def _remove_other_files(self, macro_dir):
-        # Remove related files, which are supposed to be given relative to
-        # self.src_filename.
-        for other_file in self.other_files:
-            if not other_file:
-                continue
-            FreeCAD.Console.PrintMessage(other_file + "...")
-            dst_file = os.path.join(macro_dir, other_file)
-            if not dst_file or not os.path.exists(dst_file):
-                FreeCAD.Console.PrintMessage("X\n")
-                continue
-            try:
-                os.remove(dst_file)
-                remove_directory_if_empty(os.path.dirname(dst_file))
-                FreeCAD.Console.PrintMessage("✓\n")
-            except IsADirectoryError:
-                FreeCAD.Console.PrintMessage(" is a directory, not removed\n")
-            except FileNotFoundError:
-                FreeCAD.Console.PrintMessage(" could not be found, nothing to remove\n")
-        if os.path.isabs(self.icon):
-            dst_file = os.path.normpath(
-                os.path.join(macro_dir, os.path.basename(self.icon))
-            )
-            if os.path.exists(dst_file):
-                try:
-                    FreeCAD.Console.PrintMessage(os.path.basename(self.icon) + "...")
-                    os.remove(dst_file)
-                    FreeCAD.Console.PrintMessage("✓\n")
-                except IsADirectoryError:
-                    FreeCAD.Console.PrintMessage(" is a directory, not removed\n")
-                except FileNotFoundError:
-                    FreeCAD.Console.PrintMessage(
-                        " could not be found, nothing to remove\n"
-                    )
-        return True
-
-    def _remove_core_macro_file(self, macro_dir):
-        macro_path = os.path.join(macro_dir, self.filename)
-        macro_path_with_macro_prefix = os.path.join(macro_dir, "Macro_" + self.filename)
-        if os.path.exists(macro_path):
-            os.remove(macro_path)
-        elif os.path.exists(macro_path_with_macro_prefix):
-            os.remove(macro_path_with_macro_prefix)
-
-    def _remove_xpm_data(self, macro_dir):
-        if self.xpm:
-            xpm_file = os.path.join(macro_dir, self.name + "_icon.xpm")
-            if os.path.exists(xpm_file):
-                os.remove(xpm_file)
 
     def parse_wiki_page_for_icon(self, page_data: str) -> None:
         """Attempt to find a url for the icon in the wiki page. Sets self.icon if found."""

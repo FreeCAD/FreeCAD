@@ -4,17 +4,17 @@
   <context>
     <name>CmdPathArea</name>
     <message>
-      <location filename="../../Command.cpp" line="56"/>
+      <location filename="../../Command.cpp" line="46"/>
       <source>Path</source>
       <translation>Trayectoria</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="57"/>
+      <location filename="../../Command.cpp" line="47"/>
       <source>Area</source>
       <translation>Área</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="58"/>
+      <location filename="../../Command.cpp" line="48"/>
       <source>Creates a feature area from selected objects</source>
       <translation>Crea un área de características a partir de los objetos seleccionados</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdPathAreaWorkplane</name>
     <message>
-      <location filename="../../Command.cpp" line="138"/>
+      <location filename="../../Command.cpp" line="128"/>
       <source>Path</source>
       <translation>Trayectoria</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="139"/>
+      <location filename="../../Command.cpp" line="129"/>
       <source>Area workplane</source>
       <translation>Plano de trabajo de área</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="140"/>
+      <location filename="../../Command.cpp" line="130"/>
       <source>Select a workplane for a FeatureArea</source>
       <translation>Seleccione un plano de trabajo para una ÁreaPresentada</translation>
     </message>
@@ -40,17 +40,17 @@
   <context>
     <name>CmdPathCompound</name>
     <message>
-      <location filename="../../Command.cpp" line="228"/>
+      <location filename="../../Command.cpp" line="218"/>
       <source>Path</source>
       <translation>Trayectoria</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="229"/>
+      <location filename="../../Command.cpp" line="219"/>
       <source>Compound</source>
       <translation>Compuesto</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="230"/>
+      <location filename="../../Command.cpp" line="220"/>
       <source>Creates a compound from selected paths</source>
       <translation>Crea una combinación de las trayectorias seleccionadas</translation>
     </message>
@@ -58,17 +58,17 @@
   <context>
     <name>CmdPathShape</name>
     <message>
-      <location filename="../../Command.cpp" line="280"/>
+      <location filename="../../Command.cpp" line="270"/>
       <source>Path</source>
       <translation>Trayectoria</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="281"/>
+      <location filename="../../Command.cpp" line="271"/>
       <source>From Shape</source>
       <translation>Desde Forma</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="282"/>
+      <location filename="../../Command.cpp" line="272"/>
       <source>Creates a path from a selected shape</source>
       <translation>Crea una trayectoria desde una forma seleccionada</translation>
     </message>
@@ -76,27 +76,27 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="107"/>
+      <location filename="../../Command.cpp" line="97"/>
       <source>Create Path Area View</source>
       <translation>Crear Vista de Área de Ruta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="116"/>
+      <location filename="../../Command.cpp" line="106"/>
       <source>Create Path Area</source>
       <translation>Crear Área de Ruta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="204"/>
+      <location filename="../../Command.cpp" line="194"/>
       <source>Select Workplane for Path Area</source>
       <translation>Seleccionar Plano de Trabajo para el Área de Ruta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="255"/>
+      <location filename="../../Command.cpp" line="245"/>
       <source>Create Path Compound</source>
       <translation>Crear Ruta Compuesta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="325"/>
+      <location filename="../../Command.cpp" line="315"/>
       <source>Create Path Shape</source>
       <translation>Crear Forma de Ruta</translation>
     </message>
@@ -680,7 +680,7 @@
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="257"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;I checked the path is constrained by the solid. Otherwise the volume of the solid describes a &amp;quot;keep out&amp;quot; zone.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;I checked the path is constrained by the solid. Otherwise the volume of the solid describes a &amp;quot;keep out&amp;quot; zone.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Si se comprueba que la ruta está restringida por el sólido. De lo contrario, el volumen del sólido describe una &amp;quot;zona de exclusión&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="260"/>
@@ -841,15 +841,6 @@
       <location filename="../panels/PageDiametersEdit.ui" line="43"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Transfer the Z value of the selected feature as the Start Depth for the operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Transferir el valor Z de la característica seleccionada como la Profundidad de Inicio para la operación.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageDepthsEdit.ui" line="62"/>
-      <location filename="../panels/PageDepthsEdit.ui" line="108"/>
-      <location filename="../panels/PageDiametersEdit.ui" line="46"/>
-      <location filename="../panels/PageDiametersEdit.ui" line="83"/>
-      <location filename="../panels/PageOpProbeEdit.ui" line="155"/>
-      <source>...</source>
-      <translation>...</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="85"/>
@@ -2097,17 +2088,17 @@
       <translation>Editar Punto</translation>
     </message>
     <message>
-      <location filename="../panels/PointEdit.ui" line="23"/>
+      <location filename="../panels/PointEdit.ui" line="22"/>
       <source>Global X</source>
       <translation>X global</translation>
     </message>
     <message>
-      <location filename="../panels/PointEdit.ui" line="30"/>
+      <location filename="../panels/PointEdit.ui" line="29"/>
       <source>Global Y</source>
       <translation>Y global</translation>
     </message>
     <message>
-      <location filename="../panels/PointEdit.ui" line="40"/>
+      <location filename="../panels/PointEdit.ui" line="39"/>
       <source>Global Z</source>
       <translation>Z global</translation>
     </message>
@@ -2152,19 +2143,6 @@
       <translation>Desplazamiento de longitud</translation>
     </message>
     <message>
-      <location filename="../panels/ToolEditor.ui" line="74"/>
-      <location filename="../panels/ToolEditor.ui" line="131"/>
-      <location filename="../panels/ToolEditor.ui" line="141"/>
-      <location filename="../panels/ToolEditor.ui" line="151"/>
-      <location filename="../panels/ToolEditor.ui" line="171"/>
-      <location filename="../panels/ToolEditor.ui" line="203"/>
-      <location filename="../panels/ToolEditor.ui" line="220"/>
-      <location filename="../panels/ToolEditor.ui" line="237"/>
-      <location filename="../panels/ToolEditor.ui" line="277"/>
-      <source>0.00</source>
-      <translation>0.00</translation>
-    </message>
-    <message>
       <location filename="../panels/ToolEditor.ui" line="87"/>
       <location filename="../panels/ToolEditor.ui" line="184"/>
       <source>Tool Parameter</source>
@@ -2191,18 +2169,6 @@
       <translation>Altura del Borde de Corte</translation>
     </message>
     <message>
-      <location filename="../panels/ToolEditor.ui" line="161"/>
-      <location filename="../panels/ToolEditor.ui" line="254"/>
-      <source>180°</source>
-      <translation>180°</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolEditor.ui" line="164"/>
-      <location filename="../panels/ToolEditor.ui" line="257"/>
-      <source>°</source>
-      <translation>°</translation>
-    </message>
-    <message>
       <location filename="../panels/ToolEditor.ui" line="196"/>
       <source>D = </source>
       <translation>D = </translation>
@@ -2216,11 +2182,6 @@
       <location filename="../panels/ToolEditor.ui" line="230"/>
       <source>H =</source>
       <translation>H =</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolEditor.ui" line="247"/>
-      <source>α = </source>
-      <translation>α = </translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="267"/>
@@ -2275,7 +2236,7 @@
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="87"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Radius of the fillet on the tag's top edge.&lt;/p&gt;&lt;p&gt;If the radius is bigger than that which the tag shape itself supports, the resulting shape will be that of a dome.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Radius of the fillet on the tag's top edge.&lt;/p&gt;&lt;p&gt;If the radius is bigger than that which the tag shape itself supports, the resulting shape will be that of a dome.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Radio del redondeo en el borde superior de la etiqueta.&lt;/p&gt;&lt;p&gt;Si el radio es mayor que el que soporta la forma de la etiqueta, la forma resultante será la de una cúpula.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="97"/>
@@ -2321,13 +2282,6 @@
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ruta para buscar plantillas, postprocesadores, tablas de herramientas y otros archivos externos.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Si se deja vacío, el directorio macro es usado.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="58"/>
-      <location filename="../preferences/PathJob.ui" line="79"/>
-      <location filename="../preferences/PathJob.ui" line="200"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
-    <message>
       <location filename="../preferences/PathJob.ui" line="65"/>
       <source>Template</source>
       <translation>Plantilla</translation>
@@ -2343,204 +2297,204 @@
       <translation>Geometría</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="98"/>
+      <location filename="../preferences/PathJob.ui" line="97"/>
       <source>Default Geometry Tolerance</source>
       <translation>Tolerancia de Geometría por Defecto</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="105"/>
+      <location filename="../preferences/PathJob.ui" line="104"/>
       <source>Default value for new Jobs, used for computing Paths.  Smaller increases accuracy, but slows down computation</source>
       <translation>Valor predeterminado para nuevos trabajos, usado para calcular rutas. Más pequeño aumenta la precisión, pero ralentiza el cálculo</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="112"/>
+      <location filename="../preferences/PathJob.ui" line="111"/>
       <source>Default Curve Accuracy</source>
       <translation>Precisión de la curva por defecto</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="150"/>
-      <location filename="../preferences/PathJob.ui" line="265"/>
+      <location filename="../preferences/PathJob.ui" line="148"/>
+      <location filename="../preferences/PathJob.ui" line="249"/>
       <source>Post Processor</source>
       <translation>Post Procesador</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="162"/>
+      <location filename="../preferences/PathJob.ui" line="160"/>
       <source>Output File</source>
       <translation>Archivo de salida</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="174"/>
+      <location filename="../preferences/PathJob.ui" line="171"/>
       <source>Default Path</source>
       <translation>Ruta por defecto</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="193"/>
+      <location filename="../preferences/PathJob.ui" line="182"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter a path and optionally file name (see below) to be used as the default for the post processor export.&lt;/p&gt;&lt;p&gt;The following substitutions are performed before the name is resolved at the time of the post processing:&lt;/p&gt;&lt;p&gt;Substitution allows the following:&lt;/p&gt;&lt;p&gt;%D ... directory of the active document&lt;/p&gt;&lt;p&gt;%d ... name of the active document (with extension)&lt;/p&gt;&lt;p&gt;%M ... user macro directory&lt;/p&gt;&lt;p&gt;%j ... name of the active Job object&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The Following can be used if output is being split. If Output is not split&lt;/p&gt;&lt;p&gt;these will be ignored.  &lt;/p&gt;&lt;p&gt;%T ... Tool Number&lt;/p&gt;&lt;p&gt;%t ... Tool Controller label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%W ... Work Coordinate System&lt;/p&gt;&lt;p&gt;%O ... Operation Label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;When splitting output, a sequence number will always be added.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%S ... Sequence Number&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):&lt;/p&gt;&lt;p&gt;&amp;quot;/home/cnc/%d.g-code&amp;quot;&lt;/p&gt;&lt;p&gt;See the file save policy below on how to deal with name conflicts.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter a path and optionally file name (see below) to be used as the default for the post processor export.&lt;/p&gt;&lt;p&gt;The following substitutions are performed before the name is resolved at the time of the post processing:&lt;/p&gt;&lt;p&gt;Substitution allows the following:&lt;/p&gt;&lt;p&gt;%D ... directory of the active document&lt;/p&gt;&lt;p&gt;%d ... name of the active document (with extension)&lt;/p&gt;&lt;p&gt;%M ... user macro directory&lt;/p&gt;&lt;p&gt;%j ... name of the active Job object&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The Following can be used if output is being split. If Output is not split&lt;/p&gt;&lt;p&gt;these will be ignored.  &lt;/p&gt;&lt;p&gt;%T ... Tool Number&lt;/p&gt;&lt;p&gt;%t ... Tool Controller label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%W ... Work Coordinate System&lt;/p&gt;&lt;p&gt;%O ... Operation Label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;When splitting output, a sequence number will always be added.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%S ... Sequence Number&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):&lt;/p&gt;&lt;p&gt;&amp;quot;/home/cnc/%d.g-code&amp;quot;&lt;/p&gt;&lt;p&gt;See the file save policy below on how to deal with name conflicts.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Introduzca una ruta y opcionalmente nombre de archivo (ver abajo) para ser utilizado como predeterminado para la exportación del post procesador.&lt;/p&gt;&lt;p&gt;Las siguientes sustituciones se realizan antes de que el nombre se resuelva en el momento del post procesamiento &lt;/p&gt;&lt;p&gt;La sustitución permite lo siguiente:&lt;/p&gt;&lt;p&gt;%D . . directorio del documento activo&lt;/p&gt;&lt;p&gt;%d ... nombre del documento activo (con extensión)&lt;/p&gt;&lt;p&gt;%M ... directorio macro de usuario&lt;/p&gt;&lt;p&gt;%j . . nombre del objeto de Job activo&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Puede utilizarse si la salida se está dividiendo. Si la salida no está dividida&lt;/p&gt;&lt;p&gt;, estos serán ignorados.  &lt;/p&gt;&lt;p&gt;%T ... Número de herramienta&lt;/p&gt;&lt;p&gt;%t ... Etiqueta del controlador de herramientas&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%W . . Sistema de coordenadas de trabajo&lt;/p&gt;&lt;p&gt;%O . . Etiqueta de operación&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Al dividir la salida, siempre se añadirá un número de secuencia.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;si %S está incluido, puede especificar dónde aparece el número. Sin ella, el número se añadirá al final de la cadena.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%S ... Número de secuencia&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;El siguiente ejemplo almacena todos los archivos con el mismo nombre que el documento el directorio /home/freecad (por favor, elimina las comillas):&lt;/p&gt;&lt;p&gt;&amp;quot;/home/cnc/%d.g-code&amp;quot;&lt;/p&gt;&lt;p&gt;Ver la política de guardado de archivos abajo sobre cómo hacer frente a conflictos de nombres.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="213"/>
+      <location filename="../preferences/PathJob.ui" line="200"/>
       <source>File Save Policy</source>
       <translation>Política de Guardado de Archivos</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="232"/>
+      <location filename="../preferences/PathJob.ui" line="217"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose how to deal with potential file name conflicts. Always open a dialog, only open a dialog if the output file already exists, overwrite any existing file or add a unique (3 digit) sequential ID to the file name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Elija cómo hacer frente a potenciales conflictos de nombres de archivo. Abrir siempre un diálogo, solo abrir un diálogo si el archivo de salida ya existe, sobreescribir cualquier archivo existente o añadir un ID secuencial único (3 dígitos) al nombre del archivo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="236"/>
+      <location filename="../preferences/PathJob.ui" line="221"/>
       <source>Open File Dialog</source>
       <translation>Abrir Diálogo de Archivo</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="241"/>
+      <location filename="../preferences/PathJob.ui" line="226"/>
       <source>Open File Dialog on conflict</source>
       <translation>Abrir Diálogo de Archivos en Conflicto</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="246"/>
+      <location filename="../preferences/PathJob.ui" line="231"/>
       <source>Overwrite existing file</source>
       <translation>Sobrescribir Archivo Existente</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="251"/>
+      <location filename="../preferences/PathJob.ui" line="236"/>
       <source>Append Unique ID on conflict</source>
       <translation>Añadir ID Único en conflicto</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="274"/>
+      <location filename="../preferences/PathJob.ui" line="258"/>
       <source>Post Processors Selection </source>
       <translation>Selección de Postprocesadores </translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="284"/>
+      <location filename="../preferences/PathJob.ui" line="268"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;It doesn't seem there are any post processor scripts installed. Please add some into your macro directory and make sure the file name ends with &amp;quot;_post.py&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Parece que no hay ningún texto postprocesador instalado. Por favor, añada algo en su directorio macro y asegúrese de que el nombre del archivo termine con &amp;quot;_post. y&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="291"/>
+      <location filename="../preferences/PathJob.ui" line="275"/>
       <source>Default Post Processor</source>
       <translation>Post-procesador Por Defecto</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="298"/>
+      <location filename="../preferences/PathJob.ui" line="282"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select one of the post processors as the default.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Seleccione uno de los postprocesadores como el predeterminado.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="301"/>
+      <location filename="../preferences/PathJob.ui" line="285"/>
       <source>DefaultPostProcessor</source>
       <translation>Procesador Por Defecto</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="304"/>
+      <location filename="../preferences/PathJob.ui" line="288"/>
       <source>Mod/Path</source>
       <translation>Mod/Ruta</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="311"/>
+      <location filename="../preferences/PathJob.ui" line="295"/>
       <source>Default Arguments</source>
       <translation>Argumentos Por Defecto</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="318"/>
+      <location filename="../preferences/PathJob.ui" line="302"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optional arguments passed to the default Post Processor specified above. See the Post Processor's documentation for supported arguments.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Argumentos opcionales pasados al Postprocesador por defecto especificado arriba. Vea la documentación del Postprocesador para argumentos soportados.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="356"/>
+      <location filename="../preferences/PathJob.ui" line="340"/>
       <source>Setup</source>
       <translation>Configuración</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="362"/>
+      <location filename="../preferences/PathJob.ui" line="346"/>
       <source>Stock</source>
       <translation>Inventario</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="381"/>
+      <location filename="../preferences/PathJob.ui" line="365"/>
       <source>Create Box</source>
       <translation>Crear Caja</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="386"/>
+      <location filename="../preferences/PathJob.ui" line="370"/>
       <source>Create Cylinder</source>
       <translation>Crear Cilindro</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="391"/>
+      <location filename="../preferences/PathJob.ui" line="375"/>
       <source>Extend Model's Bound Box</source>
       <translation>Extender la Caja de Enlaces del Modelo</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="415"/>
+      <location filename="../preferences/PathJob.ui" line="399"/>
       <source>Ext. X</source>
       <translation>Ext. X</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="435"/>
+      <location filename="../preferences/PathJob.ui" line="419"/>
       <source>Ext. Y</source>
       <translation>Ext. Y</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="448"/>
+      <location filename="../preferences/PathJob.ui" line="432"/>
       <source>Ext. Z</source>
       <translation>Ext. Z</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="467"/>
+      <location filename="../preferences/PathJob.ui" line="451"/>
       <source>Radius</source>
       <translation>Radio</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="477"/>
-      <location filename="../preferences/PathJob.ui" line="513"/>
+      <location filename="../preferences/PathJob.ui" line="461"/>
+      <location filename="../preferences/PathJob.ui" line="497"/>
       <source>Height</source>
       <translation>Altura</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="493"/>
+      <location filename="../preferences/PathJob.ui" line="477"/>
       <source>Length</source>
       <translation>Longitud</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="503"/>
+      <location filename="../preferences/PathJob.ui" line="487"/>
       <source>Width</source>
       <translation>Ancho</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="539"/>
+      <location filename="../preferences/PathJob.ui" line="523"/>
       <source>Placement</source>
       <translation>Ubicación</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="551"/>
+      <location filename="../preferences/PathJob.ui" line="535"/>
       <source>Angle</source>
       <translation>Ángulo</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="561"/>
+      <location filename="../preferences/PathJob.ui" line="545"/>
       <source>Axis</source>
       <translation>Eje</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="589"/>
+      <location filename="../preferences/PathJob.ui" line="573"/>
       <source>Position</source>
       <translation>Posición</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="633"/>
+      <location filename="../preferences/PathJob.ui" line="617"/>
       <source>Tools</source>
       <translation>Herramientas</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="639"/>
+      <location filename="../preferences/PathJob.ui" line="623"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;References to Tool Bits and their shapes can either be stored with an absolute path or with a relative path to the search path.&lt;/p&gt;&lt;p&gt;Generally it is recommended to use relative paths due to their flexibility and robustness to layout changes.&lt;/p&gt;&lt;p&gt;Should multiple tools or tool shapes with the same name exist in different directories it can be required to use absolute paths. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Referencias a Herramientas Bit y sus formas pueden almacenarse con una ruta absoluta o con una ruta relativa a la ruta de búsqueda.&lt;/p&gt;&lt;p&gt;Generalmente se recomienda utilizar rutas relativas debido a su flexibilidad y robustez a los cambios de diseño.&lt;/p&gt;&lt;p&gt;Si existen múltiples herramientas o formas de herramientas con el mismo nombre en diferentes directorios, puede ser necesario utilizar rutas absolutas. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="642"/>
+      <location filename="../preferences/PathJob.ui" line="626"/>
       <source>Store Absolute Paths</source>
       <translation>Almacenar Rutas Absolutas</translation>
     </message>
@@ -2548,8 +2502,8 @@
   <context>
     <name>PathGui::DlgProcessorChooser</name>
     <message>
-      <location filename="../../DlgProcessorChooser.cpp" line="49"/>
-      <location filename="../../DlgProcessorChooser.cpp" line="76"/>
+      <location filename="../../DlgProcessorChooser.cpp" line="42"/>
+      <location filename="../../DlgProcessorChooser.cpp" line="69"/>
       <source>None</source>
       <translation>Ninguno</translation>
     </message>
@@ -2776,7 +2730,7 @@ p, li { white-space: pre-wrap; }
   <context>
     <name>PathGui::TaskWidgetPathCompound</name>
     <message>
-      <location filename="../../TaskDlgPathCompound.cpp" line="54"/>
+      <location filename="../../TaskDlgPathCompound.cpp" line="49"/>
       <source>Compound paths</source>
       <translation>Trayectorias compuestas</translation>
     </message>
@@ -3297,11 +3251,6 @@ p, li { white-space: pre-wrap; }
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the filename containing the probe data&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Introduzca el nombre del archivo que contiene los datos de la sondeo&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
-    <message>
-      <location filename="../panels/ZCorrectEdit.ui" line="64"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
   </context>
   <context>
     <name>TaskPathSimulator</name>
@@ -3375,11 +3324,6 @@ p, li { white-space: pre-wrap; }
       <location filename="../panels/TaskPathSimulator.ui" line="229"/>
       <source>Accuracy:</source>
       <translation>Precisión:</translation>
-    </message>
-    <message>
-      <location filename="../panels/TaskPathSimulator.ui" line="261"/>
-      <source>%</source>
-      <translation>%</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="278"/>
@@ -3460,11 +3404,6 @@ p, li { white-space: pre-wrap; }
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cambiar el tipo de definición y forma de la Herramienta Bit.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../panels/ToolBitEditor.ui" line="109"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
-    <message>
       <location filename="../panels/ToolBitEditor.ui" line="122"/>
       <source>Parameter</source>
       <translation>Parámetro</translation>
@@ -3473,16 +3412,6 @@ p, li { white-space: pre-wrap; }
       <location filename="../panels/ToolBitEditor.ui" line="131"/>
       <source>Point/Tip Angle</source>
       <translation>Ángulo de punto/punta</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolBitEditor.ui" line="138"/>
-      <source>0 °</source>
-      <translation>0 °</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolBitEditor.ui" line="141"/>
-      <source>°</source>
-      <translation>°</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="148"/>
@@ -3593,13 +3522,6 @@ p, li { white-space: pre-wrap; }
       <translation>Archivo de salida</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="148"/>
-      <location filename="../panels/PathEdit.ui" line="1406"/>
-      <location filename="../panels/PathEdit.ui" line="1417"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
-    <message>
       <location filename="../panels/PathEdit.ui" line="155"/>
       <source>Processor</source>
       <translation>Procesador</translation>
@@ -3642,7 +3564,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="141"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter a path and optionally file name (see below) to be used as the default for the post processor export.&lt;/p&gt;&lt;p&gt;The following substitutions are performed before the name is resolved at the time of the post processing:&lt;/p&gt;&lt;p&gt;Substitution allows the following:&lt;/p&gt;&lt;p&gt;%D ... directory of the active document&lt;/p&gt;&lt;p&gt;%d ... name of the active document (with extension)&lt;/p&gt;&lt;p&gt;%M ... user macro directory&lt;/p&gt;&lt;p&gt;%j ... name of the active Job object&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The Following can be used if output is being split. If Output is not split&lt;/p&gt;&lt;p&gt;these will be ignored.  &lt;/p&gt;&lt;p&gt;%T ... Tool Number&lt;/p&gt;&lt;p&gt;%t ... Tool Controller label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%W ... Work Coordinate System&lt;/p&gt;&lt;p&gt;%O ... Operation Label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;When splitting output, a sequence number will always be added.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%S ... Sequence Number&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):&lt;/p&gt;&lt;p&gt;&amp;quot;/home/cnc/%d.g-code&amp;quot;&lt;/p&gt;&lt;p&gt;See the file save policy below on how to deal with name conflicts.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter a path and optionally file name (see below) to be used as the default for the post processor export.&lt;/p&gt;&lt;p&gt;The following substitutions are performed before the name is resolved at the time of the post processing:&lt;/p&gt;&lt;p&gt;Substitution allows the following:&lt;/p&gt;&lt;p&gt;%D ... directory of the active document&lt;/p&gt;&lt;p&gt;%d ... name of the active document (with extension)&lt;/p&gt;&lt;p&gt;%M ... user macro directory&lt;/p&gt;&lt;p&gt;%j ... name of the active Job object&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The Following can be used if output is being split. If Output is not split&lt;/p&gt;&lt;p&gt;these will be ignored.  &lt;/p&gt;&lt;p&gt;%T ... Tool Number&lt;/p&gt;&lt;p&gt;%t ... Tool Controller label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%W ... Work Coordinate System&lt;/p&gt;&lt;p&gt;%O ... Operation Label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;When splitting output, a sequence number will always be added.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%S ... Sequence Number&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):&lt;/p&gt;&lt;p&gt;&amp;quot;/home/cnc/%d.g-code&amp;quot;&lt;/p&gt;&lt;p&gt;See the file save policy below on how to deal with name conflicts.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Introduzca una ruta y opcionalmente nombre de archivo (ver abajo) para ser utilizado como predeterminado para la exportación del post procesador.&lt;/p&gt;&lt;p&gt;Las siguientes sustituciones se realizan antes de que el nombre se resuelva en el momento del post procesamiento &lt;/p&gt;&lt;p&gt;La sustitución permite lo siguiente:&lt;/p&gt;&lt;p&gt;%D . . directorio del documento activo&lt;/p&gt;&lt;p&gt;%d ... nombre del documento activo (con extensión)&lt;/p&gt;&lt;p&gt;%M ... directorio macro de usuario&lt;/p&gt;&lt;p&gt;%j . . nombre del objeto de Job activo&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Puede utilizarse si la salida se está dividiendo. Si la salida no está dividida&lt;/p&gt;&lt;p&gt;, estos serán ignorados.  &lt;/p&gt;&lt;p&gt;%T ... Número de herramienta&lt;/p&gt;&lt;p&gt;%t ... Etiqueta del controlador de herramientas&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%W . . Sistema de coordenadas de trabajo&lt;/p&gt;&lt;p&gt;%O . . Etiqueta de operación&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Al dividir la salida, siempre se añadirá un número de secuencia.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;si %S está incluido, puede especificar dónde aparece el número. Sin ella, el número se añadirá al final de la cadena.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%S ... Número de secuencia&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;El siguiente ejemplo almacena todos los archivos con el mismo nombre que el documento el directorio /home/freecad (por favor, elimina las comillas):&lt;/p&gt;&lt;p&gt;&amp;quot;/home/cnc/%d.g-code&amp;quot;&lt;/p&gt;&lt;p&gt;Ver la política de guardado de archivos abajo sobre cómo hacer frente a conflictos de nombres.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="366"/>
@@ -3941,7 +3863,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1208"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Vertical Feed&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Vertical Feed&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Avance vertical&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1217"/>

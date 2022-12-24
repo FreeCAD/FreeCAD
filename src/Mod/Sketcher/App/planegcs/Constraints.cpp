@@ -41,7 +41,7 @@ Constraint::Constraint()
 {
 }
 
-void Constraint::redirectParams(MAP_pD_pD redirectionmap)
+void Constraint::redirectParams(const MAP_pD_pD & redirectionmap)
 {
     int i=0;
     for (VEC_pD::iterator param=origpvec.begin();

@@ -6,7 +6,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="14"/>
       <source>Annotation Styles Editor</source>
-      <translation>Уредник изгледа натписа</translation>
+      <translation>Уредник изгледа напомена</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="20"/>
@@ -26,7 +26,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="79"/>
       <source>Renames the selected style</source>
-      <translation>Преименујте изабрани стил</translation>
+      <translation>Преименује изабрани стил</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="82"/>
@@ -36,7 +36,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="110"/>
       <source>Deletes the selected style</source>
-      <translation>Обришите изабрани стил</translation>
+      <translation>Брише изабрани стил</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="113"/>
@@ -46,12 +46,12 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="120"/>
       <source>Import styles from json file</source>
-      <translation>Увезите стилове из json датотеке</translation>
+      <translation>Увези стилове из json датотеке</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="130"/>
       <source>Export styles to json file</source>
-      <translation>Извезите стилове у json датотеку</translation>
+      <translation>Извези стилове у json датотеку</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="164"/>
@@ -62,7 +62,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="170"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="192"/>
       <source>The font to use for texts and dimensions</source>
-      <translation>Фонт којиће се користити за текст и коте</translation>
+      <translation>Фонт који ће се користити за текст и коте</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="173"/>
@@ -99,18 +99,18 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="245"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="255"/>
       <source>A multiplier factor that affects the size of texts and markers</source>
-      <translation>Мултипликатор који утиче на величину текста и ознака</translation>
+      <translation>Множилац који утиче на величину текста и ознака</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="248"/>
       <source>Scale multiplier</source>
-      <translation>Мултипликатор размере</translation>
+      <translation>Множилац размере</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="268"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="278"/>
       <source>If it is checked it will show the unit next to the dimension value</source>
-      <translation>Ако је означено, приказаће јединицу мере поред вредности коте</translation>
+      <translation>Ако је чекирано, приказаће јединицу мере поред вредности коте</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="271"/>
@@ -320,14 +320,14 @@ It must be at least 2.</source>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="129"/>
       <source>Symmetry</source>
-      <translation>Симетрија</translation>
+      <translation>Симетричност</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="151"/>
       <source>The coordinates of the point through which the axis of rotation passes.
 Change the direction of the axis itself in the property editor.</source>
       <translation>Координате тачке кроз коју пролази оса ротације.
-Промените смер осе у уреднику својстава.</translation>
+Промени смер осе у уреднику својстава.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="155"/>
@@ -352,18 +352,18 @@ Change the direction of the axis itself in the property editor.</source>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="225"/>
       <source>Reset the coordinates of the center of rotation.</source>
-      <translation>Ресетујте координате центра ротације.</translation>
+      <translation>Ресетуј координате центра ротације.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="228"/>
       <source>Reset point</source>
-      <translation>Ресетујте тачку</translation>
+      <translation>Ресетуј тачку</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="240"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation>Ако је означено, резултујући објекти после умножавања ће бити спојени ако се додирују.
+      <translation>Ако је чекирано, резултујући објекти после умножавања ће бити спојени ако се додирују.
 Ово ради само ако је "Умножавање веза" искључено.</translation>
     </message>
     <message>
@@ -375,7 +375,7 @@ This only works if "Link array" is off.</source>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="251"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>Ако је означено, резултујући објекат ће бити „Умножавање веза“ уместо обичног умножавања.
+      <translation>Ако је чекирано, резултујући објекат ће бити „Умножавање веза“ уместо обичног умножавања.
 Умножавање веза је ефикасније када се направи више копија, али се не може спојити заједно.</translation>
     </message>
     <message>
@@ -451,12 +451,12 @@ Negative values will result in copies produced in the negative direction.</sourc
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="288"/>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="379"/>
       <source>Reset the distances.</source>
-      <translation>Ресетујте растојања.</translation>
+      <translation>Ресетуј растојања.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="200"/>
       <source>Reset X</source>
-      <translation>Ресетујте X</translation>
+      <translation>Ресетуј X</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="210"/>
@@ -475,7 +475,7 @@ Negative values will result in copies produced in the negative direction.</sourc
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="291"/>
       <source>Reset Y</source>
-      <translation>Ресетујте Y</translation>
+      <translation>Ресетуј Y</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="301"/>
@@ -494,13 +494,13 @@ Negative values will result in copies produced in the negative direction.</sourc
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="382"/>
       <source>Reset Z</source>
-      <translation>Ресетујте Z</translation>
+      <translation>Ресетуј Z</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="394"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation>Ако је означено, резултујући објекти после умножавања ће бити спојени ако се додирују.
+      <translation>Ако је чекирано, резултујући објекти после умножавања ће бити спојени ако се додирују.
 Ово ради само ако је "Умножавање веза" искључено.</translation>
     </message>
     <message>
@@ -512,7 +512,7 @@ This only works if "Link array" is off.</source>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="405"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>Ако је означено, резултујући објекат ће бити „Умножавање веза“ уместо обичног умножавања.
+      <translation>Ако је чекирано, резултујући објекат ће бити „Умножавање веза“ уместо обичног умножавања.
 Умножавање веза је ефикасније када се направи више копија, али се не може спојити заједно.</translation>
     </message>
     <message>
@@ -566,7 +566,7 @@ It must be at least 2.</source>
       <source>The coordinates of the point through which the axis of rotation passes.
 Change the direction of the axis itself in the property editor.</source>
       <translation>Координате тачке кроз коју пролази оса ротације.
-Промените смер осе у уреднику својстава.</translation>
+Промени смер осе у уреднику својстава.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="117"/>
@@ -591,18 +591,18 @@ Change the direction of the axis itself in the property editor.</source>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="187"/>
       <source>Reset the coordinates of the center of rotation.</source>
-      <translation>Ресетујте координате центра ротације.</translation>
+      <translation>Ресетуј координате центра ротације.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="190"/>
       <source>Reset point</source>
-      <translation>Ресетујте тачку</translation>
+      <translation>Ресетуј тачку</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="202"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation>Ако је означено, резултујући објекти после умножавања ће бити спојени ако се додирују.
+      <translation>Ако је чекирано, резултујући објекти после умножавања ће бити спојени ако се додирују.
 Ово ради само ако је "Умножавање веза" искључено.</translation>
     </message>
     <message>
@@ -614,7 +614,7 @@ This only works if "Link array" is off.</source>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="213"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>Ако је означено, резултујући објекат ће бити „Умножавање веза“ уместо обичног умножавања.
+      <translation>Ако је чекирано, резултујући објекат ће бити „Умножавање веза“ уместо обичног умножавања.
 Умножавање веза је ефикасније када се направи више копија, али се не може спојити заједно.</translation>
     </message>
     <message>
@@ -640,7 +640,7 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
       <location filename="../ui/TaskShapeString.ui" line="70"/>
       <location filename="../ui/TaskShapeString.ui" line="87"/>
       <source>Enter coordinates or select point with mouse.</source>
-      <translation>Унесите координате или изаберите тачку мишем.</translation>
+      <translation>Унеси координате или изабери тачку мишем.</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="63"/>
@@ -655,12 +655,12 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
     <message>
       <location filename="../ui/TaskShapeString.ui" line="114"/>
       <source>Reset 3d point selection</source>
-      <translation>Ресетујте избор 3Д тачке</translation>
+      <translation>Ресетуј избор 3Д тачке</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="120"/>
       <source>Reset Point</source>
-      <translation>Ресетујте тачку</translation>
+      <translation>Ресетуј тачку</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="131"/>
@@ -699,7 +699,7 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
       <location filename="../ui/TaskSelectPlane.ui" line="20"/>
       <source>Select a face or working plane proxy or 3 vertices.
 Or choose one of the options below</source>
-      <translation>Одаберите страницу, заменску радну раван или 3 темена. Или изаберите једну од опција испод</translation>
+      <translation>Изабери страницу, заменску радну раван или 3 темена. Или изаберите једну од опција испод</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="31"/>
@@ -739,7 +739,7 @@ Or choose one of the options below</source>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="64"/>
       <source>Align to view</source>
-      <translation>Поравнајте са погледом</translation>
+      <translation>Поравнај са погледом</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="71"/>
@@ -751,7 +751,7 @@ view each time a command is started</source>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="78"/>
       <source>Automatic</source>
-      <translation type="unfinished">Automatic</translation>
+      <translation>Аутоматски</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="87"/>
@@ -764,7 +764,7 @@ view each time a command is started</source>
 above its base position. Use this together with one
 of the buttons above</source>
       <translation>Опциони одмак који се даје радној равни
-изнад свог основног положаја. Користите заједно са једним
+изнад свог основног положаја. Користи заједно са једним
 од дугмади изнад</translation>
     </message>
     <message>
@@ -780,7 +780,7 @@ of the buttons above</source>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="111"/>
       <source>Center plane on view</source>
-      <translation>Центрирајте раван у односу на поглед</translation>
+      <translation>Центрирај раван у односу на поглед</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="135"/>
@@ -803,7 +803,7 @@ will be moved to the center of the view</source>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="152"/>
       <source>Move working plane</source>
-      <translation>Померите радну раван</translation>
+      <translation>Помери радну раван</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="161"/>
@@ -855,7 +855,7 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="241"/>
       <source>Centers the view on the current working plane</source>
-      <translation>Центрирај поглед на тренутну радну раван</translation>
+      <translation>Центрира поглед на тренутну радну раван</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="244"/>
@@ -930,7 +930,7 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="105"/>
       <source>Solid</source>
-      <translation>Пуно тело</translation>
+      <translation>Пуна</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="110"/>
@@ -990,17 +990,12 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="176"/>
       <source>Transparency</source>
-      <translation type="unfinished">Transparency</translation>
+      <translation>Провидност</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="183"/>
       <source>The transparency of faces</source>
       <translation>Провидност страница</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="186"/>
-      <source> %</source>
-      <translation> %</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="199"/>
@@ -1015,7 +1010,7 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="218"/>
       <source>The font to use for texts and dimensions</source>
-      <translation>Фонт којиће се користити за текст и коте</translation>
+      <translation>Фонт који ће се користити за текст и коте</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="225"/>
@@ -1140,7 +1135,7 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/dialogHatch.ui" line="14"/>
       <source>Hatch</source>
-      <translation type="unfinished">Hatch</translation>
+      <translation>Шрафура</translation>
     </message>
     <message>
       <location filename="../ui/dialogHatch.ui" line="20"/>
@@ -1167,11 +1162,6 @@ value by using the [ and ] keys while drawing</source>
       <source>Rotation:</source>
       <translation>Ротација:</translation>
     </message>
-    <message>
-      <location filename="../ui/dialogHatch.ui" line="71"/>
-      <source>°</source>
-      <translation>°</translation>
-    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsDraft</name>
@@ -1188,7 +1178,7 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/preferences-draft.ui" line="40"/>
       <source>Default working plane</source>
-      <translation>Подразумевана радна површина</translation>
+      <translation>Подразумевана радна раван</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="67"/>
@@ -1198,17 +1188,17 @@ value by using the [ and ] keys while drawing</source>
     <message>
       <location filename="../ui/preferences-draft.ui" line="72"/>
       <source>XY (Top)</source>
-      <translation>'XY' (врх)</translation>
+      <translation>XY (врх)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="77"/>
       <source>XZ (Front)</source>
-      <translation>'XZ' (предњи)</translation>
+      <translation>XZ (предњи)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="82"/>
       <source>YZ (Side)</source>
-      <translation>'YZ' (Са стране)</translation>
+      <translation>YZ (Са стране)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="94"/>
@@ -1240,7 +1230,7 @@ Values with differences below this value will be treated as same. This value wil
     <message>
       <location filename="../ui/preferences-draft.ui" line="197"/>
       <source>Show groups in layers list drop-down button</source>
-      <translation>Прикажите групе у падајућој листи слојева</translation>
+      <translation>Прикажи групе у падајућој листи слојева</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="216"/>
@@ -1257,7 +1247,7 @@ This allows to point the direction and type the distance.</source>
     <message>
       <location filename="../ui/preferences-draft.ui" line="234"/>
       <source>Set focus on Length instead of X coordinate</source>
-      <translation>Поставите фокус на дужину уместо на X координате</translation>
+      <translation>Поdesi фокус на дужину уместо на X координате</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="247"/>
@@ -1269,7 +1259,7 @@ If this option is checked, the base objects will be selected instead.</source>
     <message>
       <location filename="../ui/preferences-draft.ui" line="251"/>
       <source>Select base objects after copying</source>
-      <translation>Одабери објекте темеља након копирања</translation>
+      <translation>Изабери основне објекте после копирања</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="264"/>
@@ -1279,7 +1269,7 @@ If this option is checked, the base objects will be selected instead.</source>
     <message>
       <location filename="../ui/preferences-draft.ui" line="267"/>
       <source>Set the Support property when possible</source>
-      <translation>Поставите својство „Основа“ када је то могуће</translation>
+      <translation>Поdesi својство „Основа“ када је то могуће</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="280"/>
@@ -1303,7 +1293,7 @@ otherwise commands will always start in no-copy mode</translation>
     <message>
       <location filename="../ui/preferences-draft.ui" line="304"/>
       <source>Global copy mode</source>
-      <translation>Свеопшти режим копирања</translation>
+      <translation>Општи режим копирања</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="320"/>
@@ -1315,7 +1305,7 @@ Note that this is not fully supported, and many object will be not editable with
     <message>
       <location filename="../ui/preferences-draft.ui" line="324"/>
       <source>Use Part Primitives when available</source>
-      <translation>Користите Part примитиве када је то могуће</translation>
+      <translation>Користи Part примитиве када је то могуће</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="341"/>
@@ -1335,12 +1325,12 @@ Note that this is not fully supported, and many object will be not editable with
     <message>
       <location filename="../ui/preferences-draft.ui" line="387"/>
       <source>This is the default group name for construction geometry</source>
-      <translation>Ово је подразумевано име групе за геометрију изградње</translation>
+      <translation>Ово је подразумевано име групе за помоћну геометрију</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="390"/>
       <source>Construction</source>
-      <translation>Конструкција</translation>
+      <translation>Помоћна геометрија</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="407"/>
@@ -1350,7 +1340,7 @@ Note that this is not fully supported, and many object will be not editable with
     <message>
       <location filename="../ui/preferences-draft.ui" line="427"/>
       <source>This is the default color for objects being drawn while in construction mode.</source>
-      <translation>Ово је подразумевана боја за цртање објеката док сте у режиму изградње.</translation>
+      <translation>Ово је подразумевана боја за цртање објеката док сте у режиму помоћне геометрије.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="14"/>
@@ -1390,12 +1380,12 @@ Note that this is not fully supported, and many object will be not editable with
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="111"/>
       <source>Check this if you want to use the color/linewidth from the toolbar as default</source>
-      <translation type="unfinished">Check this if you want to use the color/linewidth from the toolbar as default</translation>
+      <translation>Чекирајте ако желите да користите боју/ширину линије палете са алаткама као подразумевану</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="114"/>
       <source>Save current color and linewidth across sessions</source>
-      <translation>Сачувај тренутну боју и дебљину линије кроз више 'сесија'</translation>
+      <translation>Сачувај тренутну боју и ширину линије у различитим сесијама</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="131"/>
@@ -1405,7 +1395,7 @@ Note that this is not fully supported, and many object will be not editable with
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="134"/>
       <source>Show Working Plane tracker</source>
-      <translation>Наговестите радну раван при цртању</translation>
+      <translation>Наговести радну раван при цртању</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="151"/>
@@ -1415,62 +1405,62 @@ Note that this is not fully supported, and many object will be not editable with
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="177"/>
       <source>The default template to use when creating a new drawing sheet</source>
-      <translation>Подразумевани предложак за коришћење приликом креирања новог листа цртежа</translation>
+      <translation>Подразумевани шаблон за коришћење приликом прављења новог листа цртежа</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="194"/>
       <source>Alternate SVG patterns location</source>
-      <translation type="unfinished">Alternate SVG patterns location</translation>
+      <translation>Локација алтернативних SVG шара</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="220"/>
       <source>Here you can specify a directory with custom SVG files containing &lt;pattern&gt; definitions to be added to the standard patterns</source>
-      <translation type="unfinished">Here you can specify a directory with custom SVG files containing &lt;pattern&gt; definitions to be added to the standard patterns</translation>
+      <translation>Овде можете навести фасциклу са сопственим SVG датотекама које садрже &lt;pattern&gt; дефиниције које треба додати стандардним шарама</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="237"/>
       <source>SVG pattern resolution</source>
-      <translation type="unfinished">SVG pattern resolution</translation>
+      <translation>Резолуција SVG шаре</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="257"/>
       <source>The resolution to draw the patterns in. Default value is 128. Higher values give better resolutions, lower values make drawing faster</source>
-      <translation type="unfinished">The resolution to draw the patterns in. Default value is 128. Higher values give better resolutions, lower values make drawing faster</translation>
+      <translation>Резолуција за цртање шара. Подразумевана вредност је 128. Више вредности дају боље резолуције, ниже вредности чине цртање бржим</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="280"/>
       <source>SVG pattern default size</source>
-      <translation type="unfinished">SVG pattern default size</translation>
+      <translation>Подразумевана величина SVG шаре</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="300"/>
       <source>The default size for SVG patterns</source>
-      <translation type="unfinished">The default size for SVG patterns</translation>
+      <translation>Подразумевана величина за SVG шаре</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="326"/>
       <source>Check this if you want to preserve colors of faces while doing downgrade and upgrade (splitFaces and makeShell only)</source>
-      <translation type="unfinished">Check this if you want to preserve colors of faces while doing downgrade and upgrade (splitFaces and makeShell only)</translation>
+      <translation>Чекирајте ако желите да сачувате боје страница док враћате на стару/прелазите на нову верзију (само splitFaces и makeShell)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="329"/>
       <source>Preserve colors of faces during downgrade/upgrade</source>
-      <translation type="unfinished">Preserve colors of faces during downgrade/upgrade</translation>
+      <translation>Сачувај боје страница током враћања на стару/преласка на нову верзију</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="346"/>
       <source>Check this if you want the face names to derive from the originating object name and vice versa while doing downgrade/upgrade (splitFaces and makeShell only)</source>
-      <translation type="unfinished">Check this if you want the face names to derive from the originating object name and vice versa while doing downgrade/upgrade (splitFaces and makeShell only)</translation>
+      <translation>Чекирајте ако желите да имена страница потичу из имена изворног објекта и обрнуто док враћате на стару/прелазите на нову верзију (само splitFaces и makeShell)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="349"/>
       <source>Preserve names of faces during downgrade/upgrade</source>
-      <translation type="unfinished">Preserve names of faces during downgrade/upgrade</translation>
+      <translation>Сачувај имена страница током враћања на стару/преласка на нову верзију</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="367"/>
       <source>Drawing view line definitions</source>
-      <translation type="unfinished">Drawing view line definitions</translation>
+      <translation>Дефиниције линија цртежа</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="375"/>
@@ -1485,29 +1475,14 @@ Note that this is not fully supported, and many object will be not editable with
       <translation>Дефинисање изгледа SVG линија</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="398"/>
-      <source>0.09,0.05</source>
-      <translation>0.09,0.05</translation>
-    </message>
-    <message>
       <location filename="../ui/preferences-draftvisual.ui" line="418"/>
       <source>Dashdot line definition</source>
       <translation>Дефинисање црта-тачка линије</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="441"/>
-      <source>0.09,0.05,0.02,0.05</source>
-      <translation>0.09,0.05,0.02,0.05</translation>
-    </message>
-    <message>
       <location filename="../ui/preferences-draftvisual.ui" line="461"/>
       <source>Dotted line definition</source>
       <translation>Дефинисање тачкасте линије</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="484"/>
-      <source>0.02,0.02</source>
-      <translation>0.02,0.02</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="14"/>
@@ -1530,7 +1505,10 @@ Note that this is not fully supported, and many object will be not editable with
 It can be a font name such as "Arial", a default style such as "sans", "serif"
 or "mono", or a family such as "Arial,Helvetica,sans" or a name with a style
 such as "Arial:Bold"</source>
-      <translation>Ово је подразумевано име словописа за све нацрте текстова и димензије. То може да буде име фонта, као што су "Ариал", подразумевани стил као што је "Санс", "сериф", или "Моно", или породица, као што су "Ариал, Хелветица, санс" или име са стилом као што су " ариал: задебљано "</translation>
+      <translation>Ово је подразумевани фонт за текст и димензије у цртежима. 
+То може да буде име фонта, као што су "Arial", подразумевани стил као што је "sans", "serif"
+или "mono", или фамилија, као што су "Arial,Helvetica,sans" или име са стилом 
+као што су "Arial:Bold"</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="59"/>
@@ -1545,7 +1523,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="89"/>
       <source>Default height for texts and dimensions</source>
-      <translation>Подразумевана висина за текстове и димензије</translation>
+      <translation>Подразумевана висина за текст и димензије</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="92"/>
@@ -1577,7 +1555,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="149"/>
       <source> text inside (3D)</source>
-      <translation> текcт унутар (3D)</translation>
+      <translation> текcт унутар (3Д)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="161"/>
@@ -1687,7 +1665,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="455"/>
       <source>Show the unit suffix in dimensions</source>
-      <translation>Прикажите јединице иза котног броја</translation>
+      <translation>Прикажи јединице иза котног броја</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="475"/>
@@ -1697,7 +1675,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="495"/>
       <source>By leaving this field blank, the dimension measurements will be shown in the current unit defined in FreeCAD. By indicating a unit here such as m or cm, you can force new dimensions to be shown in that unit.</source>
-      <translation type="unfinished">By leaving this field blank, the dimension measurements will be shown in the current unit defined in FreeCAD. By indicating a unit here such as m or cm, you can force new dimensions to be shown in that unit.</translation>
+      <translation>Ако ово поље оставите празним, коте ће бити приказане у тренутно предефинисаним јединицама у FreeCAD-у. Назначавањем јединице овде као што је м или цм, можете натерати да се нове димензије прикажу у тој јединици.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="513"/>
@@ -1712,7 +1690,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="534"/>
       <source>Select a font file</source>
-      <translation>Одабери датотеку фонта</translation>
+      <translation>Изабери датотеку фонта</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="14"/>
@@ -1727,7 +1705,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-svg.ui" line="47"/>
       <source>Method chosen for importing SVG object color to FreeCAD</source>
-      <translation type="unfinished">Method chosen for importing SVG object color to FreeCAD</translation>
+      <translation>Метод изабран за увоз боје SVG објекта у FreeCAD</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="60"/>
@@ -1748,18 +1726,18 @@ such as "Arial:Bold"</source>
       <location filename="../ui/preferences-svg.ui" line="82"/>
       <source>If checked, no units conversion will occur.
 One unit in the SVG file will translate as one millimeter. </source>
-      <translation type="unfinished">If checked, no units conversion will occur.
-One unit in the SVG file will translate as one millimeter. </translation>
+      <translation>Ако је чекирано, неће доћи до конверзије јединица.
+Једна јединица у SVG датотеци ће се превести као један милиметар. </translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="86"/>
       <source>Disable units scaling</source>
-      <translation type="unfinished">Disable units scaling</translation>
+      <translation>Онемогући скалирање јединица</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="121"/>
       <source>Export style</source>
-      <translation>Извезите стил</translation>
+      <translation>Извези стил</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="128"/>
@@ -1774,12 +1752,12 @@ One unit in the SVG file will translate as one millimeter. </translation>
     <message>
       <location filename="../ui/preferences-svg.ui" line="146"/>
       <source>Raw (for CAM)</source>
-      <translation type="unfinished">Raw (for CAM)</translation>
+      <translation>Необрађени подаци (за CAM)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="158"/>
       <source>All white lines will appear in black in the SVG for better readability against white backgrounds</source>
-      <translation type="unfinished">All white lines will appear in black in the SVG for better readability against white backgrounds</translation>
+      <translation>Све беле линије ће се појавити као црне у SVG-у ради боље видљивости на белој позадини</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="161"/>
@@ -1789,7 +1767,7 @@ One unit in the SVG file will translate as one millimeter. </translation>
     <message>
       <location filename="../ui/preferences-svg.ui" line="181"/>
       <source>Max segment length for discretized arcs</source>
-      <translation type="unfinished">Max segment length for discretized arcs</translation>
+      <translation>Максимална дужина сегмента за апроксимиране лукове</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="204"/>
@@ -1808,12 +1786,12 @@ This value is the maximum segment length. </source>
     <message>
       <location filename="../ui/preferences-oca.ui" line="46"/>
       <source>Check this if you want the areas (3D faces) to be imported too.</source>
-      <translation>Активирајте ову опцију ако желите да се и области (3Д лица) увезу.</translation>
+      <translation>Чекирај ако желиш да се увезу и области (3Д странице).</translation>
     </message>
     <message>
       <location filename="../ui/preferences-oca.ui" line="49"/>
       <source>Import OCA areas</source>
-      <translation type="unfinished">Import OCA areas</translation>
+      <translation>Увези OCA области</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="14"/>
@@ -1828,7 +1806,7 @@ This value is the maximum segment length. </source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="38"/>
       <source>Show this dialog when importing and exporting</source>
-      <translation>Прикажите ова подешавања приликом увоза и извоза</translation>
+      <translation>Прикажи ова подешавања приликом увоза и извоза</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="51"/>
@@ -1840,7 +1818,7 @@ Note: C++ importer is faster, but is not as featureful yet</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="55"/>
       <source>Use legacy python importer</source>
-      <translation>Користите застарели Python importer</translation>
+      <translation>Користи застарели Python importer</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="71"/>
@@ -1852,7 +1830,7 @@ Note: C++ exporter is faster, but is not as featureful yet</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="75"/>
       <source>Use legacy python exporter</source>
-      <translation>Користите застарели Python exporter</translation>
+      <translation>Користи застарели Python exporter</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="88"/>
@@ -1871,7 +1849,7 @@ from the Addon Manager.</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="101"/>
       <source>Allow FreeCAD to automatically download and update the DXF libraries</source>
-      <translation>Дозволи FreeCAD-у да аутоматcки преузима и ажурира DXF библиотеке</translation>
+      <translation>Дозволите FreeCAD-у да аутоматcки преузима и ажурира DXF библиотеке</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="119"/>
@@ -1883,7 +1861,7 @@ from the Addon Manager.</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="140"/>
       <source>Note: Not all the options below are used by the new importer yet</source>
-      <translation type="unfinished">Note: Not all the options below are used by the new importer yet</translation>
+      <translation>Напомена: Приликом увоза, још увек се не користе све опције испод</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="149"/>
@@ -1893,7 +1871,7 @@ from the Addon Manager.</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="156"/>
       <source>If unchecked, texts and mtexts won't be imported</source>
-      <translation type="unfinished">If unchecked, texts and mtexts won't be imported</translation>
+      <translation>Ако није чекирано, текст и мтекст неће бити увезени</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="159"/>
@@ -1903,7 +1881,7 @@ from the Addon Manager.</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="172"/>
       <source>If unchecked, points won't be imported</source>
-      <translation type="unfinished">If unchecked, points won't be imported</translation>
+      <translation>Ако није чекирано, тачке се неће увозити</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="175"/>
@@ -1913,17 +1891,17 @@ from the Addon Manager.</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="188"/>
       <source>If checked, paper space objects will be imported too</source>
-      <translation type="unfinished">If checked, paper space objects will be imported too</translation>
+      <translation>Ако је чекирано, биће увезени и празни листови цртежа</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="191"/>
       <source>layouts</source>
-      <translation type="unfinished">layouts</translation>
+      <translation>слојеви</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="204"/>
       <source>If you want the non-named blocks (beginning with a *) to be imported too</source>
-      <translation type="unfinished">If you want the non-named blocks (beginning with a *) to be imported too</translation>
+      <translation>Ако желите да се увезу и неименовани блокови (који почињу са *)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="207"/>
@@ -1938,17 +1916,17 @@ from the Addon Manager.</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="231"/>
       <source>Only standard Part objects will be created (fastest)</source>
-      <translation type="unfinished">Only standard Part objects will be created (fastest)</translation>
+      <translation>Само стандардни Part облици ће бити створени (најбрже)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="234"/>
       <source>simple Part shapes</source>
-      <translation type="unfinished">simple Part shapes</translation>
+      <translation>једноставни Part облици</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="250"/>
       <source>Parametric Draft objects will be created whenever possible</source>
-      <translation type="unfinished">Parametric Draft objects will be created whenever possible</translation>
+      <translation>Параметарски Draft објекти ће бићи створени кад год је то могуће</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="253"/>
@@ -1985,8 +1963,8 @@ Example: for files in millimeters: 1, in centimeters: 10,
       <location filename="../ui/preferences-dxf.ui" line="338"/>
       <source>Colors will be retrieved from the DXF objects whenever possible.
 Otherwise default colors will be applied. </source>
-      <translation type="unfinished">Colors will be retrieved from the DXF objects whenever possible.
-Otherwise default colors will be applied. </translation>
+      <translation>Боје ће бити преузете из DXF објеката кад год је то могуће.
+У супротном ће се применити предефинисане боје. </translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="342"/>
@@ -1997,20 +1975,20 @@ Otherwise default colors will be applied. </translation>
       <location filename="../ui/preferences-dxf.ui" line="359"/>
       <source>FreeCAD will try to join coincident objects into wires.
 Note that this can take a while!</source>
-      <translation type="unfinished">FreeCAD will try to join coincident objects into wires.
-Note that this can take a while!</translation>
+      <translation>FreeCAD ће покушати да споји објекте чији се крајеви подударају у жице.
+Имајте на уму да ово може потрајати!</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="363"/>
       <source>Join geometry</source>
-      <translation type="unfinished">Join geometry</translation>
+      <translation>Споји геометрију</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="380"/>
       <source>Objects from the same layers will be joined into Draft Blocks,
 turning the display faster, but making them less easily editable </source>
-      <translation type="unfinished">Objects from the same layers will be joined into Draft Blocks,
-turning the display faster, but making them less easily editable </translation>
+      <translation>Објекти из истих слојева биће спојени у Draft блокове,
+приказиваће се брже на екрану, али ће бити сложенији за уређивање </translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="384"/>
@@ -2021,33 +1999,33 @@ turning the display faster, but making them less easily editable </translation>
       <location filename="../ui/preferences-dxf.ui" line="401"/>
       <source>Imported texts will get the standard Draft Text size,
 instead of the size they have in the DXF document</source>
-      <translation type="unfinished">Imported texts will get the standard Draft Text size,
-instead of the size they have in the DXF document</translation>
+      <translation>Увезени текстови ће добити предефинисану Draft величину текста,
+уместо величине коју имају у DXF документу</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="405"/>
       <source>Use standard font size for texts</source>
-      <translation>Корист стандардну величину фонта за текст</translation>
+      <translation>Користи стандардну величину фонта за текст</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="422"/>
       <source>If this is checked, DXF layers will be imported as Draft Layers</source>
-      <translation type="unfinished">If this is checked, DXF layers will be imported as Draft Layers</translation>
+      <translation>Ако је ово чекирано, DXF слојеви ће бити импортовани као Draft слојеви</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="425"/>
       <source>Use Layers</source>
-      <translation>Користите слојеве</translation>
+      <translation>Користи слојеве</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="445"/>
       <source>Hatches will be converted into simple wires</source>
-      <translation type="unfinished">Hatches will be converted into simple wires</translation>
+      <translation>Шрафуре ће бити конвертоване у једноставне жице</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="448"/>
       <source>Import hatch boundaries as wires</source>
-      <translation type="unfinished">Import hatch boundaries as wires</translation>
+      <translation>Увези границе шрафуре као жице</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="465"/>
@@ -2059,7 +2037,7 @@ as closed wires with correct width</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="469"/>
       <source>Render polylines with width</source>
-      <translation>Прикажите полилиније са дебљином</translation>
+      <translation>Прикажи полилиније са дебљином</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="486"/>
@@ -2087,17 +2065,17 @@ If it is set to '0' the whole spline is treated as a straight segment.</source>
       <location filename="../ui/preferences-dxf.ui" line="559"/>
       <location filename="../ui/preferences-svg.ui" line="107"/>
       <source>Export options</source>
-      <translation type="unfinished">Export options</translation>
+      <translation>Опције извоза</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="567"/>
       <source>All objects containing faces will be exported as 3D polyfaces</source>
-      <translation>Сви објекти који садрже странице биће извезени као 3D мрежа повезаних страница</translation>
+      <translation>Сви објекти који садрже странице биће извезени као 3Д мрежа повезаних страница</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="570"/>
       <source>Export 3D objects as polyface meshes</source>
-      <translation>Извезите 3D објекат као мрежу повезаних страница</translation>
+      <translation>Извези 3Д објекат као мрежу повезаних страница</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="587"/>
@@ -2109,7 +2087,7 @@ This might fail for post DXF R12 templates.</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="591"/>
       <source>Export Drawing Views as blocks</source>
-      <translation>Извезите погледе цртежа као блокове</translation>
+      <translation>Извези погледе цртежа као блокове</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="611"/>
@@ -2119,7 +2097,7 @@ This might fail for post DXF R12 templates.</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="614"/>
       <source>Project exported objects along current view direction</source>
-      <translation>Пројектујте извезене објекте дуж тренутног правца приказа</translation>
+      <translation>Пројектуј извезене објекте дуж тренутног правца приказа</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="14"/>
@@ -2200,12 +2178,12 @@ This might fail for post DXF R12 templates.</source>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="231"/>
       <source>Show Draft Snap toolbar</source>
-      <translation>Прикажите палету алатки Draft хватање</translation>
+      <translation>Прикажи палету алатки Draft хватање</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="251"/>
       <source>Hide Draft snap toolbar after use</source>
-      <translation>Сакријте палету алатки Draft хватање после употребе</translation>
+      <translation>Сакриј палету алатки Draft хватање после употребе</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="272"/>
@@ -2230,7 +2208,7 @@ This might fail for post DXF R12 templates.</source>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="303"/>
       <source>Always show the grid</source>
-      <translation>Увек приказуј координатну мрежу</translation>
+      <translation>Увек приказујте координатну мрежу</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="319"/>
@@ -2240,7 +2218,7 @@ This might fail for post DXF R12 templates.</source>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="322"/>
       <source>Show grid border</source>
-      <translation>Покажи оквир координатне мреже</translation>
+      <translation>Прикажи оквир координатне мреже</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="338"/>
@@ -2250,7 +2228,7 @@ This might fail for post DXF R12 templates.</source>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="341"/>
       <source>Show human figure</source>
-      <translation>Покажите људску фигуру</translation>
+      <translation>Прикажи људску фигуру</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="357"/>
@@ -2260,7 +2238,7 @@ This might fail for post DXF R12 templates.</source>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="360"/>
       <source>Use colored axes</source>
-      <translation>Користите обојене координатне осе</translation>
+      <translation>Користи обојене координатне осе</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="381"/>
@@ -2330,7 +2308,7 @@ This might fail for post DXF R12 templates.</source>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="644"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the maximum number of objects Draft Edit&lt;/p&gt;&lt;p&gt;can process at the same time&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Задаје максимални број Draft објеката &lt;/p&gt;&lt;p&gt;које можете истовремено уређивати&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Подешава максимални број Draft објеката &lt;/p&gt;&lt;p&gt;које можете истовремено уређивати&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="691"/>
@@ -2360,12 +2338,12 @@ This might fail for post DXF R12 templates.</source>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="41"/>
       <source>This is the method FreeCAD will use to convert DWG files to DXF. If "Automatic" is chosen, FreeCAD will try to find one of the following converters in the same order as they are shown here. If FreeCAD is unable to find any, you might need to choose a specific converter and indicate its path here under. Choose the "dwg2dxf" utility if using LibreDWG, "ODAFileConverter" if using the ODA file converter, or the "dwg2dwg" utility if using the pro version of QCAD.</source>
-      <translation>Ово је метод који ће FreeCAD користити за претварање DWG датотека у DXF. Ако се изабере „Аутоматски“, FreeCAD ће покушати да пронађе један од следећих конвертера у истом редоследу као што су приказани овде. Ако FreeCAD не може да пронађе ниједан, можда ћете морати да изаберете одређени конвертор и наведете његову путању овде испод. Изаберите услужни програм „dwg2dxf“ ако користите LibreDWG, „ODAFileConverter“ ако користите ОДА converter датотека или „dwg2dwg“ услужни програм ако користите про верзију QCAD-а.</translation>
+      <translation>Ово је метод који ће FreeCAD користити за претварање DWG датотека у DXF. Ако се изабере „Аутоматски“, FreeCAD ће покушати да пронађе један од следећих конвертера у истом редоследу као што су приказани овде. Ако FreeCAD не може да пронађе ниједан, можда ћете морати да изаберете одређени конвертор и наведете његову путању овде испод. Изабери услужни програм „dwg2dxf“ ако користите LibreDWG, „ODAFileConverter“ ако користите ОДА converter датотека или „dwg2dwg“ услужни програм ако користите про верзију QCAD-а.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="51"/>
       <source>Automatic</source>
-      <translation type="unfinished">Automatic</translation>
+      <translation>Аутоматски</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="56"/>
@@ -2440,7 +2418,7 @@ This might fail for post DXF R12 templates.</source>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="190"/>
       <source>Copy</source>
-      <translation>Умножи</translation>
+      <translation>Копирај</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="212"/>
@@ -2480,7 +2458,7 @@ This might fail for post DXF R12 templates.</source>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="366"/>
       <source>Select Edge</source>
-      <translation>Изаберите ивицу</translation>
+      <translation>Изабери ивицу</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="388"/>
@@ -2520,7 +2498,7 @@ This might fail for post DXF R12 templates.</source>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="542"/>
       <source>Set WP</source>
-      <translation>Задајте радну раван</translation>
+      <translation>Задај радну раван</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="564"/>
@@ -2530,12 +2508,7 @@ This might fail for post DXF R12 templates.</source>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="586"/>
       <source>Cycle Snap</source>
-      <translation>Ухватите заклоњено</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftinterface.ui" line="608"/>
-      <source>`</source>
-      <translation>`</translation>
+      <translation>Ухвати заклоњено</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="630"/>
@@ -2550,17 +2523,12 @@ This might fail for post DXF R12 templates.</source>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="674"/>
       <source>Undo</source>
-      <translation type="unfinished">Undo</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftinterface.ui" line="696"/>
-      <source>/</source>
-      <translation>/</translation>
+      <translation>Поништи</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="718"/>
       <source>Snap</source>
-      <translation>Хватање</translation>
+      <translation>Ухвати</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="740"/>
@@ -2570,27 +2538,17 @@ This might fail for post DXF R12 templates.</source>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="762"/>
       <source>Increase Radius</source>
-      <translation>Повећајте полупречник</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftinterface.ui" line="784"/>
-      <source>[</source>
-      <translation>[</translation>
+      <translation>Повећај полупречник</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="806"/>
       <source>Decrease Radius</source>
-      <translation>Смањите полупречник</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftinterface.ui" line="828"/>
-      <source>]</source>
-      <translation>]</translation>
+      <translation>Смањи полупречник</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="850"/>
       <source>Restrict X</source>
-      <translation>Ограничите X</translation>
+      <translation>Ограничи X</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="872"/>
@@ -2600,7 +2558,7 @@ This might fail for post DXF R12 templates.</source>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="894"/>
       <source>Restrict Y</source>
-      <translation>Ограничите Y</translation>
+      <translation>Ограничи Y</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="916"/>
@@ -2610,7 +2568,7 @@ This might fail for post DXF R12 templates.</source>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="938"/>
       <source>Restrict Z</source>
-      <translation>Ограничите Z</translation>
+      <translation>Ограничи Z</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="960"/>
@@ -2635,12 +2593,12 @@ This might fail for post DXF R12 templates.</source>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="1023"/>
       <source>Enable draft statusbar annotation scale widget</source>
-      <translation>Омогућите графички елемент размере натписа на статусној траци</translation>
+      <translation>Омогућите графички елемент размере напомене на статусној траци</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="1026"/>
       <source>Annotation scale widget</source>
-      <translation>Графички елемент размере натписа</translation>
+      <translation>Графички елемент размере напомене</translation>
     </message>
   </context>
 </TS>

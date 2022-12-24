@@ -441,7 +441,7 @@ class LoadPackagesFromCacheWorker(QtCore.QThread):
     def run(self):
         """Rarely called directly: create an instance and call start() on it instead to
         launch in a new thread"""
-        with open(self.cache_file, "r", encoding="utf-8") as f:
+        with open(self.cache_file, encoding="utf-8") as f:
             data = f.read()
             if data:
                 dict_data = json.loads(data)
@@ -480,7 +480,7 @@ class LoadMacrosFromCacheWorker(QtCore.QThread):
         """Rarely called directly: create an instance and call start() on it instead to
         launch in a new thread"""
 
-        with open(self.cache_file, "r", encoding="utf-8") as f:
+        with open(self.cache_file, encoding="utf-8") as f:
             data = f.read()
             dict_data = json.loads(data)
             for item in dict_data:

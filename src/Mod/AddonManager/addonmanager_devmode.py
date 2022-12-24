@@ -442,7 +442,7 @@ class DeveloperMode:
         if self.dialog.minPythonLineEdit.text():
             self.metadata.PythonMin = self.dialog.minPythonLineEdit.text()
         else:
-            self.metadata.PythonMin = "0.0.0" # Code for "unset"
+            self.metadata.PythonMin = "0.0.0"  # Code for "unset"
 
         # Content, people, and licenses should already be sync'ed
 
@@ -598,7 +598,7 @@ class DeveloperMode:
             )
             + "...\n"
         )
-        #pylint: disable=import-outside-toplevel
+        # pylint: disable=import-outside-toplevel
         import vermin
 
         required_minor_version = 0
@@ -606,9 +606,7 @@ class DeveloperMode:
             for filename in filenames:
                 if filename.endswith(".py"):
 
-                    with open(
-                        os.path.join(dirpath, filename), "r", encoding="utf-8"
-                    ) as f:
+                    with open(os.path.join(dirpath, filename), encoding="utf-8") as f:
                         contents = f.read()
                         version_strings = vermin.version_strings(
                             vermin.detect(contents)
@@ -640,10 +638,10 @@ class DeveloperMode:
 
     def _ensure_vermin_loaded(self) -> bool:
         try:
-            #pylint: disable=import-outside-toplevel,unused-import
+            # pylint: disable=import-outside-toplevel,unused-import
             import vermin
         except ImportError:
-            #pylint: disable=line-too-long
+            # pylint: disable=line-too-long
             response = QMessageBox.question(
                 self.dialog,
                 translate("AddonsInstaller", "Install Vermin?"),
@@ -677,8 +675,7 @@ class DeveloperMode:
                     vendor_path,
                     "vermin",
                 ],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
+                capture_output=True,
                 check=True,
             )
             FreeCAD.Console.PrintMessage(proc.stdout.decode())
@@ -695,7 +692,7 @@ class DeveloperMode:
                 )
                 return False
         try:
-            #pylint: disable=import-outside-toplevel
+            # pylint: disable=import-outside-toplevel
             import vermin
         except ImportError:
             response = QMessageBox.critical(

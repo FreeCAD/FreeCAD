@@ -74,12 +74,6 @@
       <source>Optional?</source>
       <translation>Facultatif ?</translation>
     </message>
-    <message>
-      <location filename="../../developer_mode_dependencies.ui" line="72"/>
-      <location filename="../../developer_mode_dependencies.ui" line="79"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
   </context>
   <context>
     <name>DependencyResolutionDialog</name>
@@ -93,14 +87,14 @@
       <source>This Addon has the following required and optional dependencies. You must install them before this Addon can be used.
 
 Do you want the Addon Manager to install them automatically? Choose &quot;Ignore&quot; to install the Addon without installing the dependencies.</source>
-      <translation>Cet Addon a les dépendances requises et facultatives suivantes. Vous devez les installer avant que cet Addon puisse être utilisé.
+      <translation>Cette extension a les dépendances requises et facultatives suivantes. Vous devez les installer avant que cette extension puisse être utilisée.
 
-Voulez-vous que le gestionnaire d'extensions les installe automatiquement ? Choisissez &quot;Ignorer&quot; pour installer le module sans installer les dépendances.</translation>
+Voulez-vous que le gestionnaire des extensions les installe automatiquement ? Choisissez &quot;Ignorer&quot; pour installer l'extension sans installer les dépendances.</translation>
     </message>
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="43"/>
       <source>FreeCAD Addons</source>
-      <translation>Addons FreeCAD</translation>
+      <translation>Extensions FreeCAD</translation>
     </message>
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="55"/>
@@ -118,12 +112,12 @@ Voulez-vous que le gestionnaire d'extensions les installe automatiquement ? Choi
     <message>
       <location filename="../../developer_mode.ui" line="14"/>
       <source>Addon Developer Tools</source>
-      <translation>Outils pour les développeurs d'addons</translation>
+      <translation>Outils pour le développeur d'extensions</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="25"/>
       <source>Path to Addon</source>
-      <translation>Chemin vers l'addon</translation>
+      <translation>Chemin vers l'extension</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="45"/>
@@ -145,7 +139,7 @@ Voulez-vous que le gestionnaire d'extensions les installe automatiquement ? Choi
       <location filename="../../developer_mode.ui" line="77"/>
       <location filename="../../developer_mode.ui" line="160"/>
       <source>Explanation of what this Addon provides. Displayed in the Addon Manager. It is not necessary for this to state that this is a FreeCAD Addon.</source>
-      <translation>Explication de ce que cette extension fournit. Affiché dans le gestionnaire d'extensions. Il n'est pas nécessaire pour cela d'indiquer qu'il s'agit d'un module FreeCAD.</translation>
+      <translation>Explication de ce que cette extension fournit. Affiché dans le gestionnaire des extensions. Il n'est pas nécessaire pour cela d'indiquer qu'il s'agit d'un module FreeCAD.</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="80"/>
@@ -189,17 +183,17 @@ Voulez-vous que le gestionnaire d'extensions les installe automatiquement ? Choi
       <location filename="../../developer_mode.ui" line="139"/>
       <location filename="../../developer_mode.ui" line="225"/>
       <source>Displayed in the Addon Manager&apos;s list of Addons. Should not include the word &quot;FreeCAD&quot;, and must be a valid directory name on all support operating systems.</source>
-      <translation>Affiché dans la liste des addons du gestionnaire d'addons. Ne doit pas inclure le mot &quot;FreeCAD&quot; et doit être un nom de répertoire valide sur tous les systèmes d'exploitation pris en charge.</translation>
+      <translation>Affiché dans la liste des extensions du gestionnaire des extensions. Ne doit pas inclure le mot &quot;FreeCAD&quot; et doit être un nom de répertoire valide sur tous les systèmes d'exploitation pris en charge.</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="153"/>
       <source>README URL</source>
-      <translation>URL de README</translation>
+      <translation>URL du README</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="166"/>
       <source>TIP: Since this is displayed within FreeCAD, in the Addon Manager, it is not necessary to take up space saying things like &quot;This is a FreeCAD Addon...&quot; -- just say what it does.</source>
-      <translation>ASTUCE : puisque ceci est affiché dans FreeCAD, dans le gestionnaire d'addons, il n'est pas nécessaire de prendre de la place en disant des choses comme &quot;Ceci est un addon FreeCAD...&amp;quot ; -- dites simplement ce qu'il fait.</translation>
+      <translation>ASTUCE : puisque ceci est affiché dans FreeCAD, dans le gestionnaire des extensions, il n'est pas nécessaire de prendre de la place en disant des choses comme &quot;Ceci est une extension de FreeCAD...&amp;quot ; -- dites simplement ce qu'il fait.</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="173"/>
@@ -251,12 +245,6 @@ Voulez-vous que le gestionnaire d'extensions les installe automatiquement ? Choi
       <source>Addon Contents</source>
       <translation>Contenu de l’extension</translation>
     </message>
-    <message>
-      <location filename="../../developer_mode.ui" line="301"/>
-      <location filename="../../developer_mode.ui" line="308"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
   </context>
   <context>
     <name>Dialog</name>
@@ -288,7 +276,7 @@ Voulez-vous que le gestionnaire d'extensions les installe automatiquement ? Choi
     <message>
       <location filename="../../AddonManager.ui" line="113"/>
       <source>Update all Addons</source>
-      <translation>Mettre à jour tous les Addons</translation>
+      <translation>Mettre à jour tous les extensions</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="120"/>
@@ -313,7 +301,7 @@ Voulez-vous que le gestionnaire d'extensions les installe automatiquement ? Choi
     <message>
       <location filename="../../AddonManager.ui" line="160"/>
       <source>Close the Addon Manager</source>
-      <translation>Fermer le Gestionnaire d'Addon</translation>
+      <translation>Fermer le gestionnaire des extensions</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="163"/>
@@ -323,12 +311,12 @@ Voulez-vous que le gestionnaire d'extensions les installe automatiquement ? Choi
     <message>
       <location filename="../../first_run.ui" line="17"/>
       <source>Welcome to the Addon Manager</source>
-      <translation>Bienvenue dans le Gestionnaire d'Addon</translation>
+      <translation>Bienvenue dans le gestionnaire des extensions</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="23"/>
       <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
-      <translation>Les addons qui peuvent être installés ici ne font pas officiellement partie de FreeCAD, et ne sont pas vérifiés par l'équipe de FreeCAD. Assurez-vous de savoir ce que vous êtes en train d'installer !</translation>
+      <translation>Les extensions qui peuvent être installées ici ne font pas officiellement partie de FreeCAD, et ne sont pas vérifiés par l'équipe de FreeCAD. Assurez-vous de savoir ce que vous êtes en train d'installer !</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="46"/>
@@ -338,7 +326,7 @@ Voulez-vous que le gestionnaire d'extensions les installe automatiquement ? Choi
     <message>
       <location filename="../../first_run.ui" line="53"/>
       <source>Automatically check installed Addons for updates</source>
-      <translation>Vérifier automatiquement les mises à jour des Addons installés</translation>
+      <translation>Vérifier automatiquement les mises à jour des extensions installées</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="60"/>
@@ -406,12 +394,12 @@ Voulez-vous que le gestionnaire d'extensions les installe automatiquement ? Choi
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="54"/>
       <source>NOTE: If &quot;Other...&quot; is selected, the package is not in the ALLOWED_PYTHON_PACKAGES.txt file, and will not be automatically installed by the Addon Manager. Submit a PR at &lt;a href=&quot;https://github.com/FreeCAD/FreeCAD-addons&quot;&gt;https://github.com/FreeCAD/FreeCAD-addons&lt;/a&gt; to request addition of a package.</source>
-      <translation>REMARQUE : si l'option &quot;Other...&quot; est sélectionnée, le paquet ne figure pas dans le fichier ALLOWED_PYTHON_PACKAGES.txt et ne sera pas automatiquement installé par le gestionnaire d'addons. Soumettez un PR sur &lt;a href=&quot;https://github.com/FreeCAD/FreeCAD-addons&quot;&gt;https://github.com/FreeCAD/FreeCAD-addons&lt;/a&gt; pour demander l'ajout d'un paquet.</translation>
+      <translation>REMARQUE : si l'option &quot;Other...&quot; est sélectionnée, le paquet ne figure pas dans le fichier ALLOWED_PYTHON_PACKAGES.txt et ne sera pas automatiquement installé par le gestionnaire des extensions. Soumettez un PR sur &lt;a href=&quot;https://github.com/FreeCAD/FreeCAD-addons&quot;&gt;https://github.com/FreeCAD/FreeCAD-addons&lt;/a&gt; pour demander l'ajout d'un paquet.</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="69"/>
       <source>If this is an optional dependency, the Addon Manager will offer to install it (when possible), but will not block installation if the user chooses not to, or cannot, install the package.</source>
-      <translation>S'il s'agit d'une dépendance optionnelle, le gestionnaire d'addons proposera de l'installer (quand c'est possible), mais ne bloquera pas l'installation si l'utilisateur choisit de ne pas installer le paquet ou s'il ne peut pas le faire.</translation>
+      <translation>S'il s'agit d'une dépendance optionnelle, le gestionnaire des extensions proposera de l'installer (quand c'est possible), mais ne bloquera pas l'installation si l'utilisateur choisit de ne pas installer le paquet ou s'il ne peut pas le faire.</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="72"/>
@@ -486,14 +474,6 @@ Voulez-vous que le gestionnaire d'extensions les installe automatiquement ? Choi
       <translation>Fichier de licence</translation>
     </message>
     <message>
-      <location filename="../../developer_mode_licenses_table.ui" line="97"/>
-      <location filename="../../developer_mode_licenses_table.ui" line="107"/>
-      <location filename="../../developer_mode_people_table.ui" line="90"/>
-      <location filename="../../developer_mode_people_table.ui" line="100"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
-    <message>
       <location filename="../../developer_mode_people_table.ui" line="26"/>
       <source>People</source>
       <translation>Personnes</translation>
@@ -524,7 +504,7 @@ Voulez-vous que le gestionnaire d'extensions les installe automatiquement ? Choi
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="20"/>
       <source>Upcoming versions of the FreeCAD Addon Manager will support developers&apos; setting a specific branch or tag for use with a specific version of FreeCAD (e.g. setting a specific tag as the last version of your Addon to support v0.19, etc.)</source>
-      <translation>Les prochaines versions du gestionnaire d'addons de FreeCAD permettront aux développeurs de définir une branche ou une balise spécifique à utiliser avec une version spécifique de FreeCAD (par exemple, définir une balise spécifique comme la dernière version de votre addon pour supporter la v0.19, etc.)</translation>
+      <translation>Les prochaines versions du gestionnaire des extensions de FreeCAD permettront aux développeurs de définir une branche ou une balise spécifique à utiliser avec une version spécifique de FreeCAD (par exemple, définir une balise spécifique comme la dernière version de votre extension pour supporter la v0.19, etc.)</translation>
     </message>
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="43"/>
@@ -535,12 +515,6 @@ Voulez-vous que le gestionnaire d'extensions les installe automatiquement ? Choi
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="48"/>
       <source>Best-available branch, tag, or commit</source>
       <translation>Branche, tag ou commit le plus disponible</translation>
-    </message>
-    <message>
-      <location filename="../../developer_mode_advanced_freecad_versions.ui" line="71"/>
-      <location filename="../../developer_mode_advanced_freecad_versions.ui" line="78"/>
-      <source>...</source>
-      <translation>...</translation>
     </message>
   </context>
   <context>
@@ -577,15 +551,15 @@ Voulez-vous que le gestionnaire d'extensions les installe automatiquement ? Choi
     <message>
       <location filename="../../AddonManagerOptions.ui" line="14"/>
       <source>Addon manager options</source>
-      <translation>Options du gestionnaire d'Addons</translation>
+      <translation>Options du gestionnaire des extensions</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="20"/>
       <source>If this option is selected, when launching the Addon Manager,
 installed addons will be checked for available updates
 (this requires the GitPython package installed on your system)</source>
-      <translation>Si cette option est sélectionnée, lors du lancement du gestionnaire d'Addons,
-les mises à jour disponibles seront vérifiées pour les greffons installés
+      <translation>Si cette option est sélectionnée, lors du lancement du gestionnaire des extensions,
+les mises à jour disponibles seront vérifiées pour les extensions installées
 (cela nécessite l'installation du paquet GitPython sur votre système)</translation>
     </message>
     <message>
@@ -599,16 +573,10 @@ les mises à jour disponibles seront vérifiées pour les greffons installés
       <translation>Télécharger les métadonnées des macros (environ 10 Mo)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="44"/>
-      <source>DownloadMacros</source>
-      <translation>Télécharger les Macros</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManagerOptions.ui" line="47"/>
       <location filename="../../AddonManagerOptions.ui" line="373"/>
       <location filename="../../AddonManagerOptions.ui" line="386"/>
       <source>Addons</source>
-      <translation>Addons</translation>
+      <translation>Extensions</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="56"/>
@@ -633,28 +601,22 @@ les mises à jour disponibles seront vérifiées pour les greffons installés
     <message>
       <location filename="../../AddonManagerOptions.ui" line="96"/>
       <source>Hide Addons marked Python 2 Only</source>
-      <translation>Masquer les Addons marqués Python 2 uniquement</translation>
+      <translation>Masquer les extensions marquées Python 2 uniquement</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="112"/>
       <source>Hide Addons marked Obsolete</source>
-      <translation>Masquer les Addons marqués comme obsolètes</translation>
+      <translation>Masquer les extensions marquées comme obsolètes</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="128"/>
       <source>Hide Addons that require a newer version of FreeCAD</source>
-      <translation>Masquer les Addons qui nécessitent une version plus récente de FreeCAD</translation>
+      <translation>Masquer les extensions qui nécessitent une version plus récente de FreeCAD</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="150"/>
       <source>Custom repositories</source>
       <translation>Dépôts personnalisés</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManagerOptions.ui" line="188"/>
-      <location filename="../../AddonManagerOptions.ui" line="195"/>
-      <source>...</source>
-      <translation>...</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="354"/>
@@ -669,17 +631,17 @@ les mises à jour disponibles seront vérifiées pour les greffons installés
     <message>
       <location filename="../../AddonManagerOptions.ui" line="370"/>
       <source>disableGit</source>
-      <translation>désactiver git</translation>
+      <translation>désactiver Git</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="380"/>
       <source>Activate Addon Manager options intended for developers of new Addons.</source>
-      <translation>Activez les options du gestionnaire d'addons destinées aux développeurs de nouveaux addons.</translation>
+      <translation>Activez les options du gestionnaire des extensions destinées aux développeurs de nouveaux extensions.</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="383"/>
       <source>Addon developer mode</source>
-      <translation>Activer le mode développeur de l’extension</translation>
+      <translation>Activer le mode développeur des extensions</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="389"/>
@@ -740,11 +702,6 @@ les mises à jour disponibles seront vérifiées pour les greffons installés
       <translation>Forme</translation>
     </message>
     <message>
-      <location filename="../../package_details.ui" line="29"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
-    <message>
       <location filename="../../package_details.ui" line="49"/>
       <source>Uninstalls a selected macro or workbench</source>
       <translation>Désinstalle une macro ou un atelier sélectionné</translation>
@@ -785,7 +742,7 @@ les mises à jour disponibles seront vérifiées pour les greffons installés
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="20"/>
       <source>The following Python packages have been installed locally by the Addon Manager to satisfy Addon dependencies. Installation location:</source>
-      <translation>Les paquets Python suivants ont été installés localement par le gestionnaire d'extensions pour satisfaire les dépendances de l'extension. Emplacement d'installation :</translation>
+      <translation>Les paquets Python suivants ont été installés localement par le gestionnaire des extensions pour satisfaire les dépendances de l'extension. Emplacement d'installation :</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="59"/>
@@ -810,7 +767,7 @@ les mises à jour disponibles seront vérifiées pour les greffons installés
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="87"/>
       <source>An asterisk (*) in the &quot;Used by&quot; column indicates an optional dependency. Note that Used by only records direct imports in the Addon. Other Python packages that those packages depend upon may have been installed as well.</source>
-      <translation>Un astérisque (*) dans la colonne &quot;Used by&quot; indique une dépendance facultative. Notez que Used by n'enregistre que les importations directes dans l'addon. D'autres paquets Python dont dépendent ces paquets peuvent également avoir été installés.</translation>
+      <translation>Un astérisque (*) dans la colonne &quot;Utilisé par&quot; indique une dépendance facultative. Remarquez que Utilisé par n'enregistre que les importations directes dans l'extension. D'autres paquets Python dont dépendent ces paquets peuvent également avoir été installés.</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="99"/>
@@ -829,6 +786,19 @@ les mises à jour disponibles seront vérifiées pour les greffons installés
       <location filename="../../developer_mode_select_from_list.ui" line="20"/>
       <source>TextLabel</source>
       <translation>TextLabel</translation>
+    </message>
+  </context>
+  <context>
+    <name>UpdateAllDialog</name>
+    <message>
+      <location filename="../../update_all.ui" line="14"/>
+      <source>Updating Addons</source>
+      <translation type="unfinished">Updating Addons</translation>
+    </message>
+    <message>
+      <location filename="../../update_all.ui" line="23"/>
+      <source>Updating out-of-date addons...</source>
+      <translation type="unfinished">Updating out-of-date addons...</translation>
     </message>
   </context>
   <context>
@@ -861,17 +831,17 @@ les mises à jour disponibles seront vérifiées pour les greffons installés
     <message>
       <location filename="../../developer_mode_add_content.ui" line="51"/>
       <source>If this is the only thing in the Addon, all other metadata can be inherited from the top level, and does not need to be specified here.</source>
-      <translation>Si c'est le seul élément de l'addon, toutes les autres métadonnées peuvent être héritées du niveau supérieur et n'ont pas besoin d'être spécifiées ici.</translation>
+      <translation>Si c'est le seul élément de l'extension, toutes les autres métadonnées peuvent être héritées du niveau supérieur et n'ont pas besoin d'être spécifiées ici.</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="54"/>
       <source>This is the only item in the Addon</source>
-      <translation>C'est le seul élément de l'addon</translation>
+      <translation>C'est le seul élément de l'extension</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="86"/>
       <source>Main macro file</source>
-      <translation>Fichier de la macro principale</translation>
+      <translation>Fichier de la macro principal</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="93"/>
@@ -948,7 +918,7 @@ les mises à jour disponibles seront vérifiées pour les greffons installés
     <message>
       <location filename="../../developer_mode_add_content.ui" line="264"/>
       <source>Displayed in the Addon Manager&apos;s list of Addons. Should not include the word &quot;FreeCAD&quot;.</source>
-      <translation>Affiché dans la liste des addons du gestionnaire d'addons. Ne doit pas inclure le mot &quot;FreeCAD&quot;.</translation>
+      <translation>Affiché dans la liste des extensions du gestionnaire des extensions. Ne doit pas inclure le mot &quot;FreeCAD&quot;.</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="278"/>
@@ -978,7 +948,7 @@ les mises à jour disponibles seront vérifiées pour les greffons installés
     <message>
       <location filename="../../developer_mode_add_content.ui" line="330"/>
       <source>Any fields left blank are inherited from the top-level Addon metadata, so technically they are all optional. For Addons with multiple content items, each item should provide a unique Display Name and Description.</source>
-      <translation>Tous les champs laissés vides sont hérités des métadonnées de l'addon de premier niveau, et sont donc techniquement facultatifs. Pour les addons comportant plusieurs éléments de contenu, chaque élément doit avoir un nom d'affichage et une description uniques.</translation>
+      <translation>Tous les champs laissés vides sont hérités des métadonnées de l'extension de premier niveau, et sont donc techniquement facultatifs. Pour les extensions comportant plusieurs éléments de contenu, chaque élément doit avoir un nom d'affichage et une description uniques.</translation>
     </message>
   </context>
   <context>

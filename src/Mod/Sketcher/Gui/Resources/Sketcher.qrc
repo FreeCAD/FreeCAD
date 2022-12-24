@@ -283,5 +283,6 @@
         <file>translations/Sketcher_es-AR.qm</file>
         <file>translations/Sketcher_bg.qm</file>
         <file>translations/Sketcher_ka.qm</file>
+        <file>translations/Sketcher_sr-CS.qm</file>
     </qresource>
 </RCC>

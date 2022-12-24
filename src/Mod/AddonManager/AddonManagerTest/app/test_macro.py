@@ -31,12 +31,15 @@ from typing import Dict
 
 from addonmanager_macro import Macro
 
+
 class TestMacro(unittest.TestCase):
 
     MODULE = "test_macro"  # file name without extension
 
     def setUp(self):
-        self.test_dir = os.path.join(FreeCAD.getHomePath(), "Mod", "AddonManager", "AddonManagerTest", "data")
+        self.test_dir = os.path.join(
+            FreeCAD.getHomePath(), "Mod", "AddonManager", "AddonManagerTest", "data"
+        )
 
     def test_basic_metadata(self):
         replacements = {
@@ -100,7 +103,7 @@ class TestMacro(unittest.TestCase):
                 if "VERSION" in line:
                     line = "__Version__ = __Date__"
                 output_lines.append(line)
-        with open(outfile,"w") as f:
+        with open(outfile, "w") as f:
             f.write("\n".join(output_lines))
         m = Macro("Unit Test Macro")
         m.fill_details_from_file(outfile)
@@ -115,7 +118,7 @@ class TestMacro(unittest.TestCase):
                 if "VERSION" in line:
                     line = "__Version__ = 1.23"
                 output_lines.append(line)
-        with open(outfile,"w") as f:
+        with open(outfile, "w") as f:
             f.write("\n".join(output_lines))
         m = Macro("Unit Test Macro")
         m.fill_details_from_file(outfile)
@@ -130,7 +133,7 @@ class TestMacro(unittest.TestCase):
                 if "VERSION" in line:
                     line = "__Version__ = 1"
                 output_lines.append(line)
-        with open(outfile,"w") as f:
+        with open(outfile, "w") as f:
             f.write("\n".join(output_lines))
         m = Macro("Unit Test Macro")
         m.fill_details_from_file(outfile)
@@ -153,28 +156,27 @@ static char * blarg_xpm[] = {
 };"""
         with open(outfile) as f:
             contents = f.read()
-            contents += f"\n__xpm__ = \"\"\"{xpm_data}\"\"\"\n"
+            contents += f'\n__xpm__ = """{xpm_data}"""\n'
 
-        with open(outfile,"w") as f:
+        with open(outfile, "w") as f:
             f.write(contents)
         m = Macro("Unit Test Macro")
         m.fill_details_from_file(outfile)
         self.assertEqual(m.xpm, xpm_data)
 
-
-    def generate_macro_file(self, replacements:Dict[str,str] = {}) -> os.PathLike:
-        with open(os.path.join(self.test_dir,"macro_template.FCStd")) as f:
+    def generate_macro_file(self, replacements: Dict[str, str] = {}) -> os.PathLike:
+        with open(os.path.join(self.test_dir, "macro_template.FCStd")) as f:
             lines = f.readlines()
-            outfile = tempfile.NamedTemporaryFile(mode="wt",delete=False)
+            outfile = tempfile.NamedTemporaryFile(mode="wt", delete=False)
             for line in lines:
-                for key,value in replacements.items():
-                    line = line.replace(key,value)
+                for key, value in replacements.items():
+                    line = line.replace(key, value)
 
                 outfile.write(line)
             outfile.close()
             return outfile.name
 
-    def generate_macro(self, replacements:Dict[str,str] = {}) -> Macro:
+    def generate_macro(self, replacements: Dict[str, str] = {}) -> Macro:
         outfile = self.generate_macro_file(replacements)
         m = Macro("Unit Test Macro")
         m.fill_details_from_file(outfile)
@@ -182,19 +184,22 @@ static char * blarg_xpm[] = {
         return m
 
     def test_fetch_raw_code_no_data(self):
-
-        class MockNetworkManagerNoData():
+        class MockNetworkManagerNoData:
             def __init__(self):
                 self.fetched_url = None
+
             def blocking_get(self, url):
                 self.fetched_url = url
                 return None
+
         nmNoData = MockNetworkManagerNoData()
         m = Macro("Unit Test Macro")
         Macro.network_manager = nmNoData
-        returned_data = m._fetch_raw_code("rawcodeurl <a href=\"https://fake_url.com\">Totally fake</a>")
+        returned_data = m._fetch_raw_code(
+            'rawcodeurl <a href="https://fake_url.com">Totally fake</a>'
+        )
         self.assertIsNone(returned_data)
-        self.assertEqual(nmNoData.fetched_url,"https://fake_url.com")
+        self.assertEqual(nmNoData.fetched_url, "https://fake_url.com")
 
         nmNoData.fetched_url = None
         returned_data = m._fetch_raw_code("Fake pagedata with no URL at all.")
@@ -204,13 +209,14 @@ static char * blarg_xpm[] = {
         Macro.network_manager = None
 
     def test_fetch_raw_code_with_data(self):
-
-        class MockNetworkManagerWithData():
+        class MockNetworkManagerWithData:
             class MockQByteArray:
                 def data(self):
                     return "Data returned to _fetch_raw_code".encode("utf-8")
+
             def __init__(self):
                 self.fetched_url = None
+
             def blocking_get(self, url):
                 self.fetched_url = url
                 return MockNetworkManagerWithData.MockQByteArray()
@@ -218,7 +224,9 @@ static char * blarg_xpm[] = {
         nmWithData = MockNetworkManagerWithData()
         m = Macro("Unit Test Macro")
         Macro.network_manager = nmWithData
-        returned_data = m._fetch_raw_code("rawcodeurl <a href=\"https://fake_url.com\">Totally fake</a>")
-        self.assertEqual(returned_data,"Data returned to _fetch_raw_code")
+        returned_data = m._fetch_raw_code(
+            'rawcodeurl <a href="https://fake_url.com">Totally fake</a>'
+        )
+        self.assertEqual(returned_data, "Data returned to _fetch_raw_code")
 
         Macro.network_manager = None

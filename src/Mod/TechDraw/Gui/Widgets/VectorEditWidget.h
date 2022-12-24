@@ -72,9 +72,9 @@ protected:
 
 protected Q_SLOTS:
     void slotExpandButtonToggled(bool checked);
-    void xValueChanged(double newValue);
-    void yValueChanged(double newValue);
-    void zValueChanged(double newValue);
+    void slotXValueChanged(double newValue);
+    void slotYValueChanged(double newValue);
+    void slotZValueChanged(double newValue);
 
     void updateDisplay();
 

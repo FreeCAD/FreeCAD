@@ -275,13 +275,13 @@
        </widget>
       </item>
       <item row="5" column="1">
-       <widget class="QSpinBox" name="LineSpacing">
+       <widget class="QDoubleSpinBox" name="LineSpacing">
         <property name="toolTip">
          <string>The spacing between different lines of text</string>
         </property>
        </widget>
       </item>
-     <item row="6" column="0">
+      <item row="6" column="0">
        <widget class="QLabel" name="label_6">
         <property name="text">
          <string>Arrow style</string>

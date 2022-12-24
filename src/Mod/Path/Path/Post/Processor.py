@@ -22,6 +22,7 @@
 
 import Path
 import sys
+from importlib import reload
 
 Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
@@ -50,14 +51,8 @@ class PostProcessor:
         # should the script have been imported for the first time above
         # then the initialization code of the script gets executed twice
         # resulting in 2 load messages if the script outputs one of those.
-        try:
-            # Python 2.7
-            exec("reload(%s)" % "current_post")
-        except NameError:
-            # Python 3.4+
-            from importlib import reload
 
-            exec("reload(%s)" % "current_post")
+        exec("reload(%s)" % "current_post")
 
         sys.path = syspath
 

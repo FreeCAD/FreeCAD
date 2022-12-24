@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # ***************************************************************************
 # *   Copyright (c) 2022 FreeCAD Project Association                        *
 # *                                                                         *
@@ -31,13 +29,24 @@ from AddonManagerTest.gui.test_workers_utility import (
 from AddonManagerTest.gui.test_workers_startup import (
     TestWorkersStartup as AddonManagerTestWorkersStartup,
 )
-from AddonManagerTest.gui.test_workers_installation import (
-    TestWorkersInstallation as AddonManagerTestWorkersInstallation,
+from AddonManagerTest.gui.test_installer_gui import (
+    TestInstallerGui as AddonManagerTestInstallerGui,
 )
-
+from AddonManagerTest.gui.test_installer_gui import (
+    TestMacroInstallerGui as AddonManagerTestMacroInstallerGui,
+)
+from AddonManagerTest.gui.test_update_all_gui import (
+    TestUpdateAllGui as AddonManagerTestUpdateAllGui,
+)
+from AddonManagerTest.gui.test_uninstaller_gui import (
+    TestUninstallerGUI as AddonManagerTestUninstallerGUI,
+)
 
 # dummy usage to get flake8 and lgtm quiet
 False if AddonManagerTestGui.__name__ else True
 False if AddonManagerTestWorkersUtility.__name__ else True
 False if AddonManagerTestWorkersStartup.__name__ else True
-False if AddonManagerTestWorkersInstallation.__name__ else True
+False if AddonManagerTestInstallerGui.__name__ else True
+False if AddonManagerTestMacroInstallerGui.__name__ else True
+False if AddonManagerTestUpdateAllGui.__name__ else True
+False if AddonManagerTestUninstallerGUI.__name__ else True

@@ -740,12 +740,6 @@
       <translation>Temperatura:</translation>
     </message>
     <message>
-      <location filename="../../TaskPanelConstraintTemperature.ui" line="52"/>
-      <location filename="../../TaskPanelInitialTemperature.ui" line="56"/>
-      <source>25</source>
-      <translation>25</translation>
-    </message>
-    <message>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="68"/>
       <location filename="../../TaskPanelInitialTemperature.ui" line="72"/>
       <source>ºC</source>
@@ -886,119 +880,119 @@
       <translation>Numero dei Core della CPU da utilizzare</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="329"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="323"/>
       <source>Matrix solver</source>
       <translation>Risolutore matrice</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="349"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="343"/>
       <source>Default</source>
       <translation>Predefinito</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="354"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="348"/>
       <source>Spooles</source>
       <translation type="unfinished">Spooles</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="359"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="353"/>
       <source>Iterative Scaling</source>
       <translation>Scala Iterativa</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="364"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="358"/>
       <source>Iterative Cholesky</source>
       <translation type="unfinished">Iterative Cholesky</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="372"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="366"/>
       <source>Non-linear geometry</source>
       <translation>Geometria non lineare</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="379"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="373"/>
       <source>Use non-linear geometry</source>
       <translation>Usa geometria non lineare</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="395"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="389"/>
       <source>Time incrementation control parameter</source>
       <translation>Parametro di controllo dell'incremento temporale</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="402"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="396"/>
       <source>Use non ccx defaults</source>
       <translation>Usa valori predefiniti non ccx</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="418"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="412"/>
       <source>Time Initial Step</source>
       <translation>Tempo passo iniziale</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="466"/>
-      <location filename="../../DlgSettingsFemCcx.ui" line="505"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="460"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="499"/>
       <source>s</source>
       <translation>s</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="473"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="467"/>
       <source>Time End</source>
       <translation>Tempo finale</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="512"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="506"/>
       <source>Beam, shell element 3D output format </source>
       <translation type="unfinished">Beam, shell element 3D output format </translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="519"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="513"/>
       <source>3D Output, unchecked for 2D</source>
       <translation>Esito 3D, non controllato per 2D</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="540"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="534"/>
       <source>Thermo mechanical defaults</source>
       <translation type="unfinished">Thermo mechanical defaults</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="548"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="542"/>
       <source>Analysis type (transient or steady state)</source>
       <translation>Tipo di analisi (transitorio o stato stazionario)</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="555"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="549"/>
       <source>Use steady state</source>
       <translation>Usa stato stazionario</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="571"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="565"/>
       <source>Maximum number of iterations</source>
       <translation>Numero massimo di iterazioni</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="605"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="599"/>
       <source>Frequency defaults</source>
       <translation>Frequenza predefinita</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="613"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="607"/>
       <source>Eigenmode number</source>
       <translation>Numero Eigenmode</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="658"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="652"/>
       <source>High frequency limit</source>
       <translation>Limite di alta frequenza</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="696"/>
-      <location filename="../../DlgSettingsFemCcx.ui" line="744"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="690"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="738"/>
       <source>Hz</source>
       <translation>Hz</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="703"/>
+      <location filename="../../DlgSettingsFemCcx.ui" line="697"/>
       <source>Low frequency limit</source>
       <translation>Limite di bassa frequenza</translation>
     </message>
@@ -1099,24 +1093,24 @@ Specify another file please.</source>
 Specificare un altro file, per favore.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="120"/>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="130"/>
-      <source>Not suitable for mulithreading</source>
-      <translation>Non adatto per il mulithreading</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="121"/>
-      <source>You use more than one CPU core.
-Therefore an executable with the suffix '_mpi.exe' is required.</source>
-      <translation>Si utilizza più di un core della CPU.
-Pertanto è richiesto un eseguibile con il suffisso '_mpi.exe'.</translation>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="131"/>
+      <source>FEM Elmer: Not suitable for multithreading</source>
+      <translation type="unfinished">FEM Elmer: Not suitable for multithreading</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="131"/>
-      <source>You use more than one CPU core.
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="122"/>
+      <source>Wrong Elmer setting: You use more than one CPU core.
+Therefore an executable with the suffix '_mpi.exe' is required.</source>
+      <translation type="unfinished">Wrong Elmer setting: You use more than one CPU core.
+Therefore an executable with the suffix '_mpi.exe' is required.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="132"/>
+      <source>Wrong Elmer setting: You use more than one CPU core.
 Therefore an executable with the suffix '_mpi' is required.</source>
-      <translation>Usi più di un core della CPU.
-Pertanto è richiesto un eseguibile con il suffisso '_mpi'.</translation>
+      <translation type="unfinished">Wrong Elmer setting: You use more than one CPU core.
+Therefore an executable with the suffix '_mpi' is required.</translation>
     </message>
   </context>
   <context>
@@ -2892,31 +2886,6 @@ Specificare un altro file, per favore.</translation>
       <translation>Caratteristica pompa</translation>
     </message>
     <message>
-      <location filename="../ui/ElementFluid1D.ui" line="621"/>
-      <source>1</source>
-      <translation>1</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElementFluid1D.ui" line="626"/>
-      <source>2</source>
-      <translation>2</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElementFluid1D.ui" line="631"/>
-      <source>3</source>
-      <translation>3</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElementFluid1D.ui" line="636"/>
-      <source>4</source>
-      <translation>4</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElementFluid1D.ui" line="641"/>
-      <source>5</source>
-      <translation>5</translation>
-    </message>
-    <message>
       <location filename="../ui/ElementFluid1D.ui" line="646"/>
       <source>Flow rate [mm^3/s]</source>
       <translation>Portata [mm^3/s]</translation>
@@ -3760,11 +3729,6 @@ Per le variabili possibili, vedere la casella di descrizione qui sotto.</transla
       <translation>Cartella di lavoro</translation>
     </message>
     <message>
-      <location filename="../ui/SolverCalculix.ui" line="45"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
-    <message>
       <location filename="../ui/SolverCalculix.ui" line="55"/>
       <source>Analysis type</source>
       <translation>Tipo di analisi</translation>
@@ -4569,11 +4533,6 @@ normale della faccia è usata come direzione</translation>
       <translation>Rigidità normale</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintSpring.ui" line="88"/>
-      <source>0 </source>
-      <translation>0 </translation>
-    </message>
-    <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="104"/>
       <source>Tangential Stiffness</source>
       <translation>Rigidità tangenziale</translation>
@@ -4950,16 +4909,6 @@ normale della faccia è usata come direzione</translation>
       <location filename="../../TaskPostScalarClip.ui" line="121"/>
       <source>Max scalar</source>
       <translation>Max scalare</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPostScalarClip.ui" line="144"/>
-      <source>-100000</source>
-      <translation>-100000</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPostScalarClip.ui" line="188"/>
-      <source>0</source>
-      <translation>0</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="209"/>

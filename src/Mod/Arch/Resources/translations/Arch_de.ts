@@ -602,11 +602,6 @@ Deaktivieren um alle Objekte des Dokuments zu verwenden</translation>
       <translation>Eine kommagetrennte Liste von Winkeln, um die Formen zu drehen und zu prüfen</translation>
     </message>
     <message>
-      <location filename="../ui/ArchNest.ui" line="135"/>
-      <source>0,90,180,270</source>
-      <translation>0,90,180,270</translation>
-    </message>
-    <message>
       <location filename="../ui/ArchNest.ui" line="145"/>
       <source>Nesting operation</source>
       <translation>Schachtelungsvorgang</translation>
@@ -829,11 +824,6 @@ Deaktivieren um alle Objekte des Dokuments zu verwenden</translation>
       <source>This is the SVG stroke-dasharray property to apply
 to projections of hidden objects.</source>
       <translation>Dies ist die 'gestrichelte Linie' Eigenschaft welche auf die Projektionen verdeckter Objekte angewandt wird.</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-arch.ui" line="589"/>
-      <source>30, 10</source>
-      <translation>30, 10</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="625"/>

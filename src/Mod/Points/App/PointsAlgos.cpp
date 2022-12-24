@@ -1310,6 +1310,454 @@ void PcdReader::readBinary(bool transpose,
 
 // ----------------------------------------------------------------------------
 
+namespace {
+class E57ReaderImp
+{
+public:
+    E57ReaderImp(const std::string& filename, bool color, bool state, double distance)
+        : imfi(filename, "r")
+        , useColor{color}
+        , checkState{state}
+        , minDistance{distance}
+    {
+    }
+
+    void read()
+    {
+        e57::StructureNode root = imfi.root();
+        if (root.isDefined("data3D")) {
+            e57::VectorNode data3D(root.get("data3D"));
+            readData3D(data3D);
+        }
+    }
+
+    std::vector<App::Color> getColors() const
+    {
+        return colors;
+    }
+
+    std::vector<float> getItensity() const
+    {
+        return intensity;
+    }
+
+    const PointKernel& getPoints() const
+    {
+        return points;
+    }
+
+    const std::vector<Base::Vector3f>& getNormals() const
+    {
+        return normals;
+    }
+
+private:
+    void readData3D(const  e57::VectorNode& data3D)
+    {
+        for (int child = 0; child < data3D.childCount(); ++child) {
+            e57::StructureNode scan_data(data3D.get(child));
+            Base::Placement plm;
+            bool hasPlacement = getPlacement(scan_data, plm);
+
+            e57::CompressedVectorNode     cvn(scan_data.get("points"));
+            e57::StructureNode            prototype(cvn.prototype());
+            Proto proto = readProto(prototype);
+            processProto(cvn, proto, hasPlacement, plm);
+        }
+    }
+
+    struct Proto
+    {
+        bool inty = false;
+        bool inv_state = false;
+        unsigned cnt_xyz = 0;
+        unsigned cnt_nor = 0;
+        unsigned cnt_rgb = 0;
+
+        std::vector<double> xData;
+        std::vector<double> yData;
+        std::vector<double> zData;
+
+        std::vector<double> xNormal;
+        std::vector<double> yNormal;
+        std::vector<double> zNormal;
+
+        std::vector<unsigned> redData;
+        std::vector<unsigned> greenData;
+        std::vector<unsigned> blueData;
+
+        std::vector<double> intensity;
+        std::vector<int64_t> state;
+        std::vector<int64_t> nil;
+
+        std::vector<e57::SourceDestBuffer> sdb;
+    };
+
+    Proto readProto(const e57::StructureNode& prototype)
+    {
+        Proto proto;
+        resizeArrays(proto);
+
+        for (int i = 0; i < prototype.childCount(); ++i) {
+            e57::Node node(prototype.get(i));
+            if ((node.type() == e57::E57_FLOAT) || (node.type() == e57::E57_SCALED_INTEGER)) {
+                if (readCartesian(node, proto)) {
+
+                }
+                else if (readNormal(node, proto)) {
+
+                }
+                else if (readItensity(node, proto)) {
+
+                }
+                else {
+                    readOther(node, proto);
+                }
+            }
+            else if (node.type() == e57::E57_INTEGER) {
+                if (readColor(node, proto)) {
+
+                }
+                else if (readCartesianInvalidState(node, proto)) {
+
+                }
+                else {
+                    readOther(node, proto);
+                }
+            }
+        }
+
+        return proto;
+    }
+
+    bool readCartesian(const e57::Node& node, Proto& proto)
+    {
+        if (node.elementName() == "cartesianX") {
+            proto.cnt_xyz++;
+            proto.sdb.emplace_back(
+                    imfi
+                    , node.elementName()
+                    , proto.xData.data()
+                    , buf_size
+                    , true
+                    , true
+
+            );
+            return true;
+        }
+        else if (node.elementName() == "cartesianY") {
+            proto.cnt_xyz++;
+            proto.sdb.emplace_back(
+                    imfi
+                    , node.elementName()
+                    , proto.yData.data()
+                    , buf_size
+                    , true
+                    , true
+
+            );
+            return true;
+        }
+        else if (node.elementName() == "cartesianZ") {
+            proto.cnt_xyz++;
+            proto.sdb.emplace_back(
+                    imfi
+                    , node.elementName()
+                    , proto.zData.data()
+                    , buf_size
+                    , true
+                    , true
+
+            );
+            return true;
+        }
+
+        return false;
+    }
+
+    bool readNormal(const e57::Node& node, Proto& proto)
+    {
+        if (node.elementName() == "nor:normalX") {
+            proto.cnt_nor++;
+            proto.sdb.emplace_back(
+                    imfi
+                    , node.elementName()
+                    , proto.xNormal.data()
+                    , buf_size
+                    , true
+                    , true
+
+            );
+            return true;
+        }
+        else if (node.elementName() == "nor:normalY") {
+            proto.cnt_nor++;
+            proto.sdb.emplace_back(
+                    imfi
+                    , node.elementName()
+                    , proto.yNormal.data()
+                    , buf_size
+                    , true
+                    , true
+
+            );
+            return true;
+        }
+        else if (node.elementName() == "nor:normalZ") {
+            proto.cnt_nor++;
+            proto.sdb.emplace_back(
+                    imfi
+                    , node.elementName()
+                    , proto.zNormal.data()
+                    , buf_size
+                    , true
+                    , true
+
+            );
+            return true;
+        }
+
+        return false;
+    }
+
+    bool readCartesianInvalidState(const e57::Node& node, Proto& proto)
+    {
+        if (node.elementName() == "cartesianInvalidState") {
+            proto.inv_state = true;
+            proto.sdb.emplace_back(
+                    imfi
+                    , node.elementName()
+                    , proto.state.data()
+                    , buf_size
+                    , true
+                    , true
+
+            );
+            return true;
+        }
+
+        return false;
+    }
+
+    bool readColor(const e57::Node& node, Proto& proto)
+    {
+        if (node.elementName() == "colorRed") {
+            proto.cnt_rgb++;
+            proto.sdb.emplace_back(
+                    imfi
+                    , node.elementName()
+                    , proto.redData.data()
+                    , buf_size
+                    , true
+                    , true
+
+            );
+            return true;
+        }
+        else if (node.elementName() == "colorGreen") {
+            proto.cnt_rgb++;
+            proto.sdb.emplace_back(
+                    imfi
+                    , node.elementName()
+                    , proto.greenData.data()
+                    , buf_size
+                    , true
+                    , true
+
+            );
+            return true;
+        }
+        else if (node.elementName() == "colorBlue") {
+            proto.cnt_rgb++;
+            proto.sdb.emplace_back(
+                    imfi
+                    , node.elementName()
+                    , proto.blueData.data()
+                    , buf_size
+                    , true
+                    , true
+
+            );
+            return true;
+        }
+
+        return false;
+    }
+
+    bool readItensity(const e57::Node& node, Proto& proto)
+    {
+        if (node.elementName() == "intensity") {
+            proto.inty = true;
+            proto.sdb.emplace_back(
+                    imfi
+                    , node.elementName()
+                    , proto.intensity.data()
+                    , buf_size
+                    , true
+                    , true
+
+            );
+            return true;
+        }
+
+        return false;
+    }
+
+    void readOther(const e57::Node& node, Proto& proto)
+    {
+        proto.sdb.emplace_back(
+                imfi
+                , node.elementName()
+                , proto.nil.data()
+                , buf_size
+                , true
+                , true
+
+        );
+    }
+
+    void processProto(e57::CompressedVectorNode& cvn, const Proto& proto, bool hasPlacement, const Base::Placement& plm)
+    {
+        if (proto.cnt_xyz != 3) {
+            throw Base::BadFormatError("Missing channels xyz");
+        }
+        unsigned count;
+        unsigned cnt_pts = 0;
+        Base::Vector3d pt, last;
+        e57::CompressedVectorReader cvr(cvn.reader(proto.sdb));
+        bool hasColor = (proto.cnt_rgb == 3) && useColor;
+        bool hasItensity = proto.inty;
+        bool hasNormal = (proto.cnt_nor == 3);
+        bool hasState = proto.inv_state && checkState;
+        bool filter = false;
+
+        while ((count = cvr.read())) {
+            for (size_t i = 0; i < count; ++i) {
+                filter = false;
+                if (hasState) {
+                    if (proto.state[i] != 0) { filter = true; }
+                }
+
+                pt = getCoord(proto, i, hasPlacement, plm);
+
+                if ((!filter) && (cnt_pts > 0)) {
+                    if (Base::Distance(last, pt) < minDistance) {
+                        filter = true;
+                    }
+                }
+                if (!filter) {
+                    cnt_pts++;
+                    points.push_back(pt);
+                    last = pt;
+                    if (hasColor) {
+                        colors.push_back(getColor(proto, i));
+                    }
+                    if (hasItensity) {
+                        intensity.push_back(proto.intensity[i]);
+                    }
+                    if (hasNormal) {
+                        normals.push_back(getNormal(proto, i, hasPlacement, plm.getRotation()));
+                    }
+                }
+            }
+        }
+    }
+
+    Base::Vector3d getCoord(const Proto& proto, size_t index, bool hasPlacement, const Base::Placement& plm) const
+    {
+        Base::Vector3d pt;
+        pt.x = proto.xData[index];
+        pt.y = proto.yData[index];
+        pt.z = proto.zData[index];
+        if (hasPlacement) {
+            plm.multVec(pt, pt);
+        }
+        return pt;
+    }
+
+    Base::Vector3f getNormal(const Proto& proto, size_t index, bool hasPlacement, const Base::Rotation& rot) const
+    {
+        Base::Vector3f pt;
+        pt.x = proto.xNormal[index];
+        pt.y = proto.yNormal[index];
+        pt.z = proto.zNormal[index];
+        if (hasPlacement) {
+            rot.multVec(pt, pt);
+        }
+        return pt;
+    }
+
+    App::Color getColor(const Proto& proto, size_t index) const
+    {
+        App::Color c;
+        c.r = static_cast<float>(proto.redData[index]) / 255.0f;
+        c.g = static_cast<float>(proto.greenData[index]) / 255.0f;
+        c.b = static_cast<float>(proto.blueData[index]) / 255.0f;
+        return c;
+    }
+
+    void resizeArrays(Proto& proto)
+    {
+        proto.xData.resize(buf_size);
+        proto.yData.resize(buf_size);
+        proto.zData.resize(buf_size);
+
+        proto.xNormal.resize(buf_size);
+        proto.yNormal.resize(buf_size);
+        proto.zNormal.resize(buf_size);
+
+        proto.redData.resize(buf_size);
+        proto.greenData.resize(buf_size);
+        proto.blueData.resize(buf_size);
+
+        proto.intensity.resize(buf_size);
+        proto.state.resize(buf_size);
+        proto.nil.resize(buf_size);
+    }
+
+    bool getPlacement(const e57::StructureNode& scan_data, Base::Placement& plm) const
+    {
+        bool hasPlacement{false};
+        if (scan_data.isDefined("pose")) {
+            e57::StructureNode pose(scan_data.get("pose"));
+            if (pose.isDefined("rotation")) {
+                e57::StructureNode rotNode(pose.get("rotation"));
+                double quaternion[4];
+                quaternion[0] = e57::FloatNode(rotNode.get("x")).value();
+                quaternion[1] = e57::FloatNode(rotNode.get("y")).value();
+                quaternion[2] = e57::FloatNode(rotNode.get("z")).value();
+                quaternion[3] = e57::FloatNode(rotNode.get("w")).value();
+                Base::Rotation rotate(quaternion);
+                plm.setRotation(rotate);
+                hasPlacement = true;
+            }
+            if (pose.isDefined("translation")) {
+                Base::Vector3d move;
+                e57::StructureNode transNode(pose.get("translation"));
+                move.x = e57::FloatNode(transNode.get("x")).value();
+                move.y = e57::FloatNode(transNode.get("y")).value();
+                move.z = e57::FloatNode(transNode.get("z")).value();
+                plm.setPosition(move);
+                hasPlacement = true;
+            }
+        }
+
+        return hasPlacement;
+    }
+
+private:
+    e57::ImageFile imfi;
+    bool useColor;
+    bool checkState;
+    double minDistance;
+    const size_t buf_size = 1024;
+    std::vector<App::Color> colors;
+    std::vector<float> intensity;
+    PointKernel points;
+    std::vector<Base::Vector3f> normals;
+};
+}
+
 E57Reader::E57Reader(const bool& Color, const bool& State, const float& Distance)
 {
     useColor = Color;
@@ -1324,208 +1772,18 @@ E57Reader::~E57Reader()
 void E57Reader::read(const std::string& filename)
 {
     try {
-        // read file
-        e57::ImageFile imfi(filename, "r");
-        e57::StructureNode root = imfi.root();
-        if (root.isDefined("data3D")) {
-            e57::VectorNode data3D(root.get("data3D"));
-            for (int child = 0; child < data3D.childCount(); ++child) {
-                e57::StructureNode            scan_data(data3D.get(child));
-                e57::CompressedVectorNode     cvn(scan_data.get("points"));
-                e57::StructureNode            prototype(cvn.prototype());
-                // create buffers for the compressed vector reader
-                const size_t buf_size = 1024;
-                double xyz[buf_size * 3];
-                double intensity[buf_size];
-                int64_t state[buf_size];
-                unsigned rgb[buf_size * 3];
-                int64_t nil[buf_size];
-
-                // check the channels which are needed
-                unsigned ptr_xyz[3];
-                unsigned ptr_rgb[3];
-                bool inty = false;
-                bool inv_state = false;
-                unsigned cnt_xyz = 0;
-                unsigned cnt_rgb = 0;
-                std::vector<e57::SourceDestBuffer> sdb;
-                for (int i = 0; i < prototype.childCount(); ++i) {
-                    e57::Node n(prototype.get(i));
-                    if ((n.type() == e57::E57_FLOAT) || (n.type() == e57::E57_SCALED_INTEGER)) {
-                        if (n.elementName() == "cartesianX") {
-                            ptr_xyz[0] = cnt_xyz++;
-                            sdb.emplace_back(
-                                    imfi
-                                    , n.elementName()
-                                    , &(xyz[0])
-                                    , buf_size
-                                    , true
-                                    , true
-
-                            );
-                        }
-                        else if (n.elementName() == "cartesianY") {
-                            ptr_xyz[1] = cnt_xyz++;
-                            sdb.emplace_back(
-                                    imfi
-                                    , n.elementName()
-                                    , &(xyz[buf_size])
-                                    , buf_size
-                                    , true
-                                    , true
-
-                            );
-                        }
-                        else if (n.elementName() == "cartesianZ") {
-                            ptr_xyz[2] = cnt_xyz++;
-                            sdb.emplace_back(
-                                    imfi
-                                    , n.elementName()
-                                    , &(xyz[2 * buf_size])
-                                    , buf_size
-                                    , true
-                                    , true
-
-                            );
-                        }
-                        else if (n.elementName() == "intensity") {
-                            inty = true;
-                            sdb.emplace_back(
-                                    imfi
-                                    , n.elementName()
-                                    , &(intensity[0])
-                                    , buf_size
-                                    , true
-                                    , true
-
-                            );
-                        }
-                        else {
-                            sdb.emplace_back(
-                                    imfi
-                                    , n.elementName()
-                                    , &(nil[0])
-                                    , buf_size
-                                    , true
-                                    , true
-
-                            );
-                        }
-
-                    }
-                    else if (n.type() == e57::E57_INTEGER) {
-                        if (n.elementName() == "colorRed") {
-                            ptr_rgb[0] = cnt_rgb++;
-                            sdb.emplace_back(
-                                    imfi
-                                    , n.elementName()
-                                    , &(rgb[0])
-                                    , buf_size
-                                    , true
-                                    , true
-
-                            );
-                        }
-                        else if (n.elementName() == "colorGreen") {
-                            ptr_rgb[1] = cnt_rgb++;
-                            sdb.emplace_back(
-                                    imfi
-                                    , n.elementName()
-                                    , &(rgb[buf_size])
-                                    , buf_size
-                                    , true
-                                    , true
-
-                            );
-                        }
-                        else if (n.elementName() == "colorBlue") {
-                            ptr_rgb[2] = cnt_rgb++;
-                            sdb.emplace_back(
-                                    imfi
-                                    , n.elementName()
-                                    , &(rgb[2 * buf_size])
-                                    , buf_size
-                                    , true
-                                    , true
-
-                            );
-                        }
-                        else if (n.elementName() == "cartesianInvalidState") {
-                            inv_state = true;
-                            sdb.emplace_back(
-                                    imfi
-                                    , n.elementName()
-                                    , &(state[0])
-                                    , buf_size
-                                    , true
-                                    , true
-
-                            );
-                        }
-                        else {
-                            sdb.emplace_back(
-                                    imfi
-                                    , n.elementName()
-                                    , &(nil[0])
-                                    , buf_size
-                                    , true
-                                    , true
-
-                            );
-                        }
-                    }
-                }
-
-                // read the data
-
-                if (cnt_xyz == 3) {
-                    unsigned count;
-                    unsigned cnt_pts = 0;
-                    Base::Vector3d pt, last;
-                    e57::CompressedVectorReader cvr(cvn.reader(sdb));
-                    bool hasColor = (cnt_rgb == 3) && useColor;
-                    bool hasState = inv_state && checkState;
-                    bool filter = false;
-
-                    while ((count = cvr.read())) {
-                        for (size_t i = 0; i < count; ++i) {
-                            filter = false;
-                            if (hasState) {
-                                if (state[i] != 0) { filter = true; }
-                            }
-                            pt.x = xyz[ptr_xyz[0] * buf_size + i];
-                            pt.y = xyz[ptr_xyz[1] * buf_size + i];
-                            pt.z = xyz[ptr_xyz[2] * buf_size + i];
-                            if ((!filter) && (cnt_pts > 0)) {
-                                if (Base::Distance(last, pt) < minDistance) {
-                                    filter = true;
-                                }
-                            }
-                            if (!filter) {
-                                cnt_pts++;
-                                points.push_back(pt);
-                                last = pt;
-                                if (hasColor) {
-                                    App::Color c;
-                                    c.r = static_cast<float>(rgb[ptr_rgb[0] * buf_size + i]) / 255.0f;
-                                    c.g = static_cast<float>(rgb[ptr_rgb[1] * buf_size + i]) / 255.0f;
-                                    c.b = static_cast<float>(rgb[ptr_rgb[2] * buf_size + i]) / 255.0f;
-                                    if (inty) { c.a = intensity[i]; }
-                                    colors.push_back(c);
-                                }
-                            }
-                        }
-                    }
-                }
-                else {
-                    Base::Console().Error("Missing channels xyz.");
-                }
-            }
-        }
+        E57ReaderImp reader(filename, useColor, checkState, minDistance);
+        reader.read();
+        points = reader.getPoints();
+        normals = reader.getNormals();
+        colors = reader.getColors();
+        intensity = reader.getItensity();
+    }
+    catch (const Base::BadFormatError&) {
+        throw;
     }
     catch (...) {
-        points.clear();
-        throw Base::BadFormatError("E57");
+        throw Base::BadFormatError("Reading E57 file failed");
     }
 }
 

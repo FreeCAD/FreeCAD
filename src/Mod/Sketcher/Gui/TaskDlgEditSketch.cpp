@@ -20,16 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
+#include <Gui/Command.h>
 
 #include "TaskDlgEditSketch.h"
 #include "ViewProviderSketch.h"
-#include <Gui/Command.h>
+
 
 using namespace SketcherGui;
-
 
 //**************************************************************************
 //**************************************************************************

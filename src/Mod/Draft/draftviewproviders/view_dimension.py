@@ -300,10 +300,6 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
         """Execute when a view property is changed."""
         super(ViewProviderDimensionBase, self).onChanged(vobj, prop)
 
-    def doubleClicked(self, vobj):
-        """Execute when double clicking the icon in the tree view."""
-        self.setEdit(vobj)
-
     def getDisplayModes(self, vobj):
         """Return the display modes that this viewprovider supports."""
         return ["2D", "3D"]

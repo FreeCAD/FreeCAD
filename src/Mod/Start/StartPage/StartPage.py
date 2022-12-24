@@ -36,6 +36,13 @@ import urllib.parse
 from . import TranslationTexts
 from PySide import QtCore, QtGui
 
+try:
+    from addonmanager_macro import Macro as AM_Macro
+    has_am_macro = True
+except ImportError:
+    has_am_macro = False
+
+
 FreeCADGui.addLanguagePath(":/translations")
 FreeCADGui.updateLocale()
 
@@ -175,16 +182,31 @@ def getInfo(filename):
                         thumb.close()
                         iconbank[filename] = image
 
-        # use image itself as icon if it's an image file
-        if os.path.splitext(filename)[1].lower() in [".jpg",".jpeg",".png",".svg"]:
+        elif filename.lower().endswith(".fcmacro"):
+            # For FreeCAD macros, use the Macro Editor icon (but we have to have it in a file for
+            # the web view to load it)
+            image = os.path.join(tempfolder,"fcmacro_icon.svg")
+            if not os.path.exists(image):
+                f = QtCore.QFile(":/icons/MacroEditor.svg")
+                f.copy(image)
+            iconbank[filename] = image
+
+            if has_am_macro:
+                macro = AM_Macro(os.path.basename(filename))
+                macro.fill_details_from_file(filename)
+                author = macro.author
+
+        elif QtGui.QImageReader.imageFormat(filename):
+            # use image itself as icon if it's an image file
             image = filename
             iconbank[filename] = image
 
-        # use freedesktop thumbnail if available
-        fdthumb = getFreeDesktopThumbnail(filename)
-        if fdthumb:
-            image = fdthumb
-            iconbank[filename] = fdthumb
+        else:
+            # use freedesktop thumbnail if available
+            fdthumb = getFreeDesktopThumbnail(filename)
+            if fdthumb:
+                image = fdthumb
+                iconbank[filename] = fdthumb
 
         # retrieve default mime icon if needed
         if not image:

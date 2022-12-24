@@ -102,12 +102,12 @@
   <context>
     <name>TestGui::UnitTestDialog</name>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="155"/>
+      <location filename="../../UnitTestImp.cpp" line="151"/>
       <source>Help</source>
       <translation>Žinynas</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="155"/>
+      <location filename="../../UnitTestImp.cpp" line="151"/>
       <source>Enter the name of a callable object which, when called, will return a TestCase.
 Click 'start', and the test thus produced will be run.
 
@@ -117,12 +117,12 @@ Double click on an error in the tree view to see more information about it, incl
 Dukart spustelėkite klaidą medžio rodinyje ir gausite išsamų aprašą apie apie ja, įskaitant dėklo pėdsaką.</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="167"/>
+      <location filename="../../UnitTestImp.cpp" line="163"/>
       <source>About FreeCAD UnitTest</source>
       <translation>Apie FreeCAD modulių patikrą</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="167"/>
+      <location filename="../../UnitTestImp.cpp" line="163"/>
       <source>Copyright (c) Werner Mayer
 
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>
