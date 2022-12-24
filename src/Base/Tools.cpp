@@ -81,7 +81,12 @@ std::string Base::Tools::getUniqueName(const std::string& name, const std::vecto
             s = std::string(ud - s.length(), '0')+s;
         return name+s;
     };
-    std::string result{name};
+    std::string result;
+    auto pos = name.find_last_not_of("0123456789");
+    if ( pos == std::string::npos )
+        result = name;
+    else
+        result = name.substr(0,pos);
 
     // Count how many times the name apears as prefix in another names. This count will be used for numeric suffix
     unsigned long instances{static_cast<unsigned long>(
