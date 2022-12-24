@@ -8,7 +8,7 @@
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
 # *   as published by the Free Software Foundation; either version 2 of     *
 # *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
+# *   for detail see the LICENSE text file.                                 *
 # *                                                                         *
 # *   FreeCAD is distributed in the hope that it will be useful,            *
 # *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
@@ -35,11 +35,11 @@ import shlex
 import Path.Post.Utils as PostUtils
 
 TOOLTIP = """
-This is a postprocessor file for the FreeCAD Path workbench. It is used to
+This is a post processor file for the FreeCAD Path workbench. It is used to
 take a pseudo-gcode fragment outputted by a Path object, and output
 real GCode suitable for Dynapath Delta 40,50, & 60 Controls. It has been written
 and tested on FreeCAD Path workbench bundled with FreeCAD v21.
-This postprocessor, once placed in the appropriate PathScripts folder, can be 
+This post processor, once placed in the appropriate PathScripts folder, can be 
 used directly from inside FreeCAD, via the GUI importer or via python scripts with: 
 
 import delta_4060_post
@@ -98,7 +98,7 @@ OUTPUT_DOUBLES = (
     True  # if false duplicate axis values are suppressed if the same as previous line.
 )
 COMMAND_SPACE = ""
-LINENR = 0  # line number starting value
+LINENR = 0  # Line number starting value.
 DWELL_TIME = 1  # Number of seconds to allow spindle to come up to speed.
 RETRACT_MODE = False
 QCYCLE_RANGE = (
@@ -148,7 +148,7 @@ G17
 G90
 M30
 """
-# Creat following variable for use with the 2nd reference plane.
+# Create following variable for use with the 2nd reference plane.
 clearanceHeight = None
 
 # to distinguish python built-in open function from the one declared below
@@ -328,7 +328,7 @@ def export(objectslist, filename, argstring):
         gcode += linenumber() + "(T)" + "BEGIN POSTAMBLE$\n"
     for line in POSTAMBLE.splitlines(True):
         gcode += linenumber() + line
-    # Following is required by Dyanpath Controls to signfiy "EOF" when loading in to control
+    # Following is required by Dynapath Controls to signify "EOF" when loading in to control
     # from external media. The control strips the "E" off as part of the load process.
     gcode += "E\n"
 
@@ -358,9 +358,7 @@ def linenumber():
     global LINENR
     if OUTPUT_LINE_NUMBERS is True:
         LINENR += 1
-        return "N" + "%04d" % (
-            LINENR
-        )  # + " "  # Added formating for 4 digit line number.
+        return "N" + "%04d" % (LINENR)  # Added formatting for 4 digit line number.
     return ""
 
 
@@ -385,8 +383,7 @@ def parse(pathobj):
     # the order of parameters
     # Added O and L since these are needed by Dynapath.
     # "O" is used as a 2nd reference plane in canned Cycles.
-    # "L" is equivelent to "P" for dwell entries.
-    # params = ['X','Y','Z','A','B','I','J','K','F','S'] #This list control the order of parameters
+    # "L" is equivalent to "P" for dwell entries.
     params = [
         "X",
         "Y",
@@ -431,7 +428,7 @@ def parse(pathobj):
             if command in GCODE_MAP:
                 command = GCODE_MAP[command]
 
-            # Inserts "(T)" in front of comments to signify textfield (dyanapath)
+            # Inserts "(T)" in front of comments to signify textfield (Dynapath)
             if command.startswith("("):
                 if OUTPUT_COMMENTS:
                     command = "(T)" + str.upper(command) + "$"
@@ -465,7 +462,7 @@ def parse(pathobj):
                             )
                     # Inserts "X0 Y0" in front of a G0 Z + clearanceHeight movement.
                     # This fixes an error thrown by Dynapath due to missing and
-                    # required XYZ move after Toolchange.
+                    # required XYZ move after Tool change.
                     elif param == "Z" and (
                         c.Parameters["Z"] == clearanceHeight
                         and c.Parameters["Z"] != lastZ
@@ -498,7 +495,7 @@ def parse(pathobj):
                                 float(pos.getValueAs(UNIT_FORMAT)), precision_string
                             )
                         )
-                    # Remove X and Y betwen QCYCLE's since we already included them.
+                    # Remove X and Y between QCYCLE's since we already included them.
                     # This is needed to prevent Path of inserting additional XY codes between
                     # Canned cycle holes.
                     elif lastcommand in QCYCLE_RANGE and (param == "X" or "Y"):
@@ -507,11 +504,11 @@ def parse(pathobj):
                         SPINDLE_SPEED = c.Parameters["S"]
                         outstring.append(
                             param + "{:.0f}".format(c.Parameters["S"])
-                        )  # Added formating to strip trailing .000 from RPM (needed by dynapath)
+                        )  # Added formatting to strip trailing .000 from RPM (needed by dynapath)
                     elif param == "T":
                         outstring.append(
                             param + "{:.0f}".format(c.Parameters["T"])
-                        )  # Added formating to strip trailing .000 from Tool number (needed by dynapath)
+                        )  # Added formatting to strip trailing .000 from Tool number (needed by dynapath)
                     elif param == "I" and (command == "G2" or command == "G3"):
                         # Convert incremental arc center to absolute in I and J
                         # Dynapath requires "absolute" arcs in (G2,G3)
