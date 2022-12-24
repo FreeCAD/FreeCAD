@@ -72,36 +72,30 @@ struct string_comp
 
 std::string Base::Tools::getUniqueName(const std::string& name, const std::vector<std::string>& names, int d)
 {
-    unsigned int ud{static_cast<unsigned int>(d)};
-    
+    unsigned int ud{ static_cast< unsigned int >(d)};
+
     // This lambda creates a name with 0's as suffix until complete the length d
-    auto suffixed = [&](unsigned long n)
-    {
+    auto suffixed = [&](unsigned long n){
         auto s = std::to_string(n);
         if(ud>s.length())
-        {
             s = std::string(ud - s.length(), '0')+s;
-        }
         return name+s;
     };
-
     std::string result{name};
-    
+
     // Count how many times the name apears as prefix in another names. This count will be used for numeric suffix
     unsigned long instances{static_cast<unsigned long>(
             std::count_if(names.begin(), names.end(), [&name](string s)->bool{return s.rfind(name,0)==0;}))};
 
     // If instances > 0 we need to add a numeric suffix
-    if(instances>0)
-    {
+    if (instances > 0){
+
         // Iterate appending numeric suffixes starting on previous count, because previous models can collide due to
         // the previous naming. Also skip gaps created by deleted names.  The loop will end when no
         // other objects match the name.
         unsigned long count{instances};
-        do
-        {
-            result = suffixed(count++);
-        }while(std::count_if(names.begin(), names.end(), [&result](string s)->bool{return s == result;}) > 0);
+        while (static_cast<void>(result = suffixed(count++)),
+                std::find_if(names.begin(), names.end(), [&result](string s)->bool {return s==result;})!=end(names));
     }
     return result;
 }
