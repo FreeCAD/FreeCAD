@@ -82,7 +82,7 @@ std::string Base::Tools::getUniqueName(const std::string& name, const std::vecto
         return name+s;
     };
     std::string result;
-    auto pos = name.find_last_not_of("0123456789");
+    auto pos = name.find_first_of("0123456789");
     if ( pos == std::string::npos )
         result = name;
     else
