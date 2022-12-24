@@ -275,6 +275,19 @@ QString UnitTestDialog::getUnitTest() const
 }
 
 /**
+ * Runs the currently selected test and closes the dialog afterwards.
+ * It returns true if all tests have passed and false otherwise.
+ */
+bool UnitTestDialog::runCurrentTest()
+{
+    clearErrorList();
+    on_startButton_clicked();
+    int count = ui->treeViewFailure->topLevelItemCount();
+    reject();
+    return (count == 0);
+}
+
+/**
  * Sets the text in the status bar.
  */
 void UnitTestDialog::setStatusText(const QString& text)
