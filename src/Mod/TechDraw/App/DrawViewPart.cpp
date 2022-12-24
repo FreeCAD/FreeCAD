@@ -925,7 +925,11 @@ TopoDS_Shape DrawViewPart::getShape() const
             builder.Add(result, geometryObject->getVisSmooth());
         }
     }
-    return result;
+        //check for empty compound
+    if (!result.IsNull() && TopoDS_Iterator(result).More()) {
+        return result;
+    }
+    return TopoDS_Shape();
 }
 
 //returns the (unscaled) size of the visible lines along the alignment vector.
@@ -935,6 +939,9 @@ double DrawViewPart::getSizeAlongVector(Base::Vector3d alignmentVector)
     //    Base::Console().Message("DVP::GetSizeAlongVector(%s)\n", DrawUtil::formatVector(alignmentVector).c_str());
     double alignmentAngle = atan2(alignmentVector.y, alignmentVector.x) * -1.0;
     gp_Ax2 OXYZ;//shape has already been projected and we will rotate around Z
+    if (getShape().IsNull()) {
+        return 1.0;
+    }
     TopoDS_Shape rotatedShape = rotateShape(getShape(), OXYZ, alignmentAngle * 180.0 / M_PI);
     Bnd_Box shapeBox;
     shapeBox.SetGap(0.0);
