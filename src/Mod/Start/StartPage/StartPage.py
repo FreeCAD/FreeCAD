@@ -343,7 +343,7 @@ def handle():
     # get FreeCAD version
 
     v = FreeCAD.Version()
-    VERSIONSTRING = TranslationTexts.T_VERSION + " " + v[0] + "." + v[1] + " " + TranslationTexts.T_BUILD + " " + v[2]
+    VERSIONSTRING = TranslationTexts.T_VERSION + " " + v[0] + "." + v[1] + "." + v[2] +" " + TranslationTexts.T_BUILD + " " + v[3]
     HTML = HTML.replace("VERSIONSTRING",VERSIONSTRING)
 
     # translate texts
