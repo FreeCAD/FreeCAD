@@ -8492,7 +8492,7 @@ int SketchObject::port_reversedExternalArcs(bool justAnalyze)
 /// false - fail (this indicates an error, or that a constraint locking isn't supported).
 bool SketchObject::AutoLockTangencyAndPerpty(Constraint *cstr, bool bForce, bool bLock)
 {
-    try{
+    try {
         //assert ( cstr->Type == Tangent  ||  cstr->Type == Perpendicular);
         if(cstr->getValue() != 0.0 && ! bForce) /*tangency type already set. If not bForce - don't touch.*/
             return true;
@@ -8507,13 +8507,25 @@ bool SketchObject::AutoLockTangencyAndPerpty(Constraint *cstr, bool bForce, bool
             geoIdPt = cstr->Third;
             posPt = cstr->ThirdPos;
             if (geoIdPt == GeoEnum::GeoUndef){//not tangent-via-point, try endpoint-to-endpoint...
+
+                // First check if it is a tangency at knot constraint, if not continue with checking for endpoints.
+                // Endpoint constraints make use of the AngleViaPoint framework at solver level, so they need locking
+                // angle calculation, tangency at knot constraint does not.
+                auto geof = getGeometryFacade(cstr->First);
+                if(geof->isInternalType(InternalType::BSplineKnotPoint)) {
+                    // there is point that is a B-Spline knot in a two element constraint
+                    // this is not implement using AngleViaPoint (TangencyViaPoint)
+                    return false;
+                }
+
                 geoIdPt = cstr->First;
                 posPt = cstr->FirstPos;
             }
             if (posPt == PointPos::none){//not endpoint-to-curve and not endpoint-to-endpoint tangent (is simple tangency)
                 //no tangency lockdown is implemented for simple tangency. Do nothing.
                 return false;
-            } else {
+            }
+            else {
                 Base::Vector3d p = getPoint(geoIdPt, posPt);
 
                 //this piece of code is also present in Sketch.cpp, correct for offset
@@ -8536,7 +8548,8 @@ bool SketchObject::AutoLockTangencyAndPerpty(Constraint *cstr, bool bForce, bool
                 cstr->setValue(angleDesire + angleOffset); //external tangency. The angle stored is offset by Pi/2 so that a value of 0.0 is invalid and treated as "undecided".
             }
         }
-    } catch (Base::Exception& e){
+    }
+    catch (Base::Exception& e){
         //failure to determine tangency type is not a big deal, so a warning.
         Base::Console().Warning("Error in AutoLockTangency. %s \n", e.what());
         return false;

@@ -300,11 +300,21 @@ namespace GCS
         void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt) override;
         BSpline* Copy() override;
         /// finds the value B_i(x) such that spline(x) = sum(poles[i] * B_i(x))
-        /// i is index of control point
         /// x is the point at which combination is needed
         /// k is the range in `flattenedknots` that contains x
-        double getLinCombFactor(double x, size_t k, size_t i);
+        /// i is index of control point
+        /// p is the degree
+        double getLinCombFactor(double x, size_t k, size_t i, unsigned int p);
+        inline double getLinCombFactor(double x, size_t k, size_t i)
+        { return getLinCombFactor(x, k, i, degree); }
         void setupFlattenedKnots();
+        /// finds spline(x) for the given parameter and knot/pole vector
+        /// x is the point at which combination is needed
+        /// k is the range in `flattenedknots` that contains x
+        /// p is the degree
+        /// d is the vector of (relevant) poles (this will be changed)
+        /// flatknots is the vector of knots
+        static double splineValue(double x, size_t k, unsigned int p, VEC_D& d, const VEC_D& flatknots);
     };
 
 } //namespace GCS

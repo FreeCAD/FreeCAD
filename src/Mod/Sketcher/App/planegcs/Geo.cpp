@@ -712,7 +712,7 @@ BSpline* BSpline::Copy()
     return crv;
 }
 
-double BSpline::getLinCombFactor(double x, size_t k, size_t i)
+double BSpline::getLinCombFactor(double x, size_t k, size_t i, unsigned int p)
 {
     // Adapted to C++ from the python implementation in the Wikipedia page for de Boor algorithm
     // https://en.wikipedia.org/wiki/De_Boor%27s_algorithm.
@@ -727,23 +727,37 @@ double BSpline::getLinCombFactor(double x, size_t k, size_t i)
     if (flattenedknots.empty())
         setupFlattenedKnots();
 
-    std::vector d(degree + 1, 0.0);
+    std::vector d(p + 1, 0.0);
     // Ensure this is within range
-    int idxOfPole = static_cast<int>(i) + degree - static_cast<int>(k);
-    if (idxOfPole < 0 || idxOfPole > degree)
+    int idxOfPole = static_cast<int>(i) + p - static_cast<int>(k);
+    if (idxOfPole < 0 || idxOfPole > static_cast<int>(p))
         return 0.0;
     d[idxOfPole] = 1.0;
 
-    for (size_t r = 1; static_cast<int>(r) < degree + 1; ++r) {
-        for (size_t j = degree; j > r - 1; --j) {
+    for (size_t r = 1; r < p + 1; ++r) {
+        for (size_t j = p; j > r - 1; --j) {
             double alpha =
-                (x - flattenedknots[j + k - degree]) /
-                (flattenedknots[j + 1 + k - r] - flattenedknots[j + k - degree]);
+                (x - flattenedknots[j + k - p]) /
+                (flattenedknots[j + 1 + k - r] - flattenedknots[j + k - p]);
             d[j] = (1.0 - alpha) * d[j-1] + alpha * d[j];
         }
     }
 
-    return d[degree];
+    return d[p];
+}
+
+double BSpline::splineValue(double x, size_t k, unsigned int p, VEC_D& d, const VEC_D& flatknots)
+{
+    for (size_t r = 1; r < p + 1; ++r) {
+        for (size_t j = p; j > r - 1; --j) {
+            double alpha =
+                (x - flatknots[j + k - p]) /
+                (flatknots[j + 1 + k - r] - flatknots[j + k - p]);
+            d[j] = (1.0 - alpha) * d[j-1] + alpha * d[j];
+        }
+    }
+
+    return d[p];
 }
 
 void BSpline::setupFlattenedKnots()

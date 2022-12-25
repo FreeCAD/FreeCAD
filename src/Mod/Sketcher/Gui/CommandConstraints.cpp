@@ -4198,7 +4198,8 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
         };
         strError = QObject::tr("With 3 objects, there must be 2 curves and 1 point.", "tangent constraint");
 
-    } else if (SubNames.size() == 2) {
+    }
+    else if (SubNames.size() == 2) {
 
         if (isVertex(GeoId1,PosId1) && isVertex(GeoId2,PosId2)) { // endpoint-to-endpoint tangency
 
@@ -4218,16 +4219,26 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
             return;
         }
         else if ((isVertex(GeoId1,PosId1) && isEdge(GeoId2,PosId2)) ||
-                 (isEdge(GeoId1,PosId1) && isVertex(GeoId2,PosId2))) { // endpoint-to-curve tangency
+                 (isEdge(GeoId1,PosId1) && isVertex(GeoId2,PosId2))) { // endpoint-to-curve/knot-to-curve tangency
             if (isVertex(GeoId2,PosId2)) {
                 std::swap(GeoId1,GeoId2);
                 std::swap(PosId1,PosId2);
             }
 
             if (isSimpleVertex(Obj, GeoId1, PosId1)) {
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                    QObject::tr("Cannot add a tangency constraint at an unconnected point!"));
-                return;
+                if (isBsplineKnot(Obj, GeoId1)) {
+                    const Part::Geometry *geom2 = Obj->getGeometry(GeoId2);
+                    if (!geom2 || geom2->getTypeId() !=Part::GeomLineSegment::getClassTypeId()) {
+                        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                             QObject::tr("Tangent constraint at B-spline knot is only supported with lines!"));
+                        return;
+                    }
+                }
+                else {
+                    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                         QObject::tr("Cannot add a tangency constraint at an unconnected point!"));
+                    return;
+                }
             }
 
             const Part::Geometry *geom2 = Obj->getGeometry(GeoId2);

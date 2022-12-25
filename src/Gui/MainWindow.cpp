@@ -1291,15 +1291,26 @@ void MainWindow::delayedStartup()
 {
     // automatically run unit tests in Gui
     if (App::Application::Config()["RunMode"] == "Internal") {
-        try {
-            Base::Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADTest"));
-        }
-        catch (const Base::SystemExitException&) {
-            throw;
-        }
-        catch (const Base::Exception& e) {
-            e.ReportException();
-        }
+        QTimer::singleShot(1000, this, []{
+            try {
+                Base::Interpreter().runString(
+                    "import sys\n"
+                    "import FreeCAD\n"
+                    "import QtUnitGui\n\n"
+                    "testCase = FreeCAD.ConfigGet(\"TestCase\")\n"
+                    "QtUnitGui.addTest(testCase)\n"
+                    "QtUnitGui.setTest(testCase)\n"
+                    "result = QtUnitGui.runTest()\n"
+                    "sys.stdout.flush()\n"
+                    "sys.exit(0 if result else 1)");
+            }
+            catch (const Base::SystemExitException&) {
+                throw;
+            }
+            catch (const Base::Exception& e) {
+                e.ReportException();
+            }
+        });
         return;
     }
 

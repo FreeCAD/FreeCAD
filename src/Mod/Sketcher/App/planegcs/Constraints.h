@@ -70,7 +70,8 @@ namespace GCS
         EqualFocalDistance = 24,
         EqualLineLength = 25,
         CenterOfGravity = 26,
-        WeightedLinearCombination = 27
+        WeightedLinearCombination = 27,
+        SlopeAtBSplineKnot = 28
     };
 
     enum InternalAlignmentType {
@@ -203,6 +204,31 @@ namespace GCS
         double grad(double *) override;
     private:
         std::vector<double> factors;
+        size_t numpoles;
+    };
+
+    // Slope at knot
+    class ConstraintSlopeAtBSplineKnot : public Constraint
+    {
+    private:
+        inline double* polexat(size_t i) { return pvec[i]; }
+        inline double* poleyat(size_t i) { return pvec[numpoles + i]; }
+        inline double* weightat(size_t i) { return pvec[2*numpoles + i]; }
+        inline double* linep1x() { return pvec[3*numpoles + 0]; }
+        inline double* linep1y() { return pvec[3*numpoles + 1]; }
+        inline double* linep2x() { return pvec[3*numpoles + 2]; }
+        inline double* linep2y() { return pvec[3*numpoles + 3]; }
+    public:
+        // TODO: Should be able to make the geometries passed const
+        // Constrains the slope at a (C1 continuous) knot of the b-spline
+        ConstraintSlopeAtBSplineKnot(BSpline& b, Line& l, size_t knotindex);
+        ConstraintType getTypeId() override;
+        void rescale(double coef=1.) override;
+        double error() override;
+        double grad(double *) override;
+    private:
+        std::vector<double> factors;
+        std::vector<double> slopefactors;
         size_t numpoles;
     };
 
