@@ -336,7 +336,7 @@ GeometryObjectPtr DrawViewPart::makeGeometryForShape(TopoDS_Shape& shape)
         scaledShape = TechDraw::rotateShape(scaledShape, viewAxis,
                                             Rotation.getValue());//conventional rotation
     }
-    BRepTools::Write(scaledShape, "DVPScaled.brep");//debug
+
     GeometryObjectPtr go = buildGeometryObject(scaledShape, viewAxis);
     return go;
 }
@@ -536,7 +536,6 @@ void DrawViewPart::extractFaces()
                 getNameInDocument());
         }
         else {
-            BRepTools::Write(DrawUtil::vectorToCompound(sortedWires), "DVPSortedWires.brep");//debug
             constexpr double minWireArea = 0.000001;//arbitrary very small face size
             std::vector<TopoDS_Wire>::iterator itWire = sortedWires.begin();
             for (; itWire != sortedWires.end(); itWire++) {
