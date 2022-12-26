@@ -563,6 +563,11 @@ QGraphicsItem* PythonWrapper::toQGraphicsItem(PyObject* pyPtr)
     return nullptr;
 }
 
+QGraphicsItem* PythonWrapper::toQGraphicsItem(const Py::Object& pyobject)
+{
+    return toQGraphicsItem(pyobject.ptr());
+}
+
 QGraphicsObject* PythonWrapper::toQGraphicsObject(PyObject* pyPtr)
 {
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
@@ -575,6 +580,12 @@ QGraphicsObject* PythonWrapper::toQGraphicsObject(PyObject* pyPtr)
 #endif
     return nullptr;
 }
+
+QGraphicsObject* PythonWrapper::toQGraphicsObject(const Py::Object& pyobject)
+{
+return toQGraphicsObject(pyobject.ptr());
+}
+
 
 Py::Object PythonWrapper::fromQIcon(const QIcon* icon)
 {
