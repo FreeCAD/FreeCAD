@@ -265,15 +265,13 @@ class TestBuildPostList(unittest.TestCase):
 
     """
 
-    testfile = FreeCAD.getHomePath() + "Mod/Path/PathTests/test_filenaming.fcstd"
-    doc = FreeCAD.open(testfile)
-    job = doc.getObjectsByLabel("MainJob")[0]
-
     def setUp(self):
-        pass
+        self.testfile = FreeCAD.getHomePath() + "Mod/Path/PathTests/test_filenaming.fcstd"
+        self.doc = FreeCAD.open(self.testfile)
+        self.job = self.doc.getObjectsByLabel("MainJob")[0]
 
     def tearDown(self):
-        pass
+        FreeCAD.closeDocument(self.doc.Name)
 
     def test000(self):
 
@@ -395,13 +393,18 @@ class TestOutputNameSubstitution(unittest.TestCase):
 
     """
 
-    testfile = FreeCAD.getHomePath() + "Mod/Path/PathTests/test_filenaming.fcstd"
-    testfilepath, testfilename = os.path.split(testfile)
-    testfilename, ext = os.path.splitext(testfilename)
+    def setUp(self):
+        self.testfile = FreeCAD.getHomePath() + "Mod/Path/PathTests/test_filenaming.fcstd"
+        self.testfilepath, self.testfilename = os.path.split(self.testfile)
+        self.testfilename, self.ext = os.path.splitext(self.testfilename)
 
-    doc = FreeCAD.open(testfile)
-    job = doc.getObjectsByLabel("MainJob")[0]
-    macro = FreeCAD.getUserMacroDir()
+        self.doc = FreeCAD.open(self.testfile)
+        self.job = self.doc.getObjectsByLabel("MainJob")[0]
+        self.macro = FreeCAD.getUserMacroDir()
+        self.job.SplitOutput = False
+
+    def tearDown(self):
+        FreeCAD.closeDocument(self.doc.Name)
 
     def test000(self):
         # Test basic name generation with empty string
@@ -411,7 +414,6 @@ class TestOutputNameSubstitution(unittest.TestCase):
         Path.Preferences.setOutputFileDefaults(
             teststring, "Append Unique ID on conflict"
         )
-        self.job.SplitOutput = False
         outlist = PathPost.buildPostList(self.job)
 
         self.assertTrue(len(outlist) == 1)
@@ -427,7 +429,6 @@ class TestOutputNameSubstitution(unittest.TestCase):
         Path.Preferences.setOutputFileDefaults(
             teststring, "Append Unique ID on conflict"
         )
-        self.job.SplitOutput = False
         outlist = PathPost.buildPostList(self.job)
 
         self.assertTrue(len(outlist) == 1)
