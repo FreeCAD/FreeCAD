@@ -485,7 +485,10 @@ def get_femelement_sets(
     # fem_objects = FreeCAD FEM document objects
     # get femelements for reference shapes of each obj.References
     count_femelements = 0
-    referenced_femelements = np.zeros((max(femelement_table.keys())+1,),dtype=np.int)
+    referenced_femelements = np.zeros(
+        (max(femelement_table.keys()) + 1,),
+        dtype=int
+    )
     has_remaining_femelements = None
     for fem_object_i, fem_object in enumerate(fem_objects):
         obj = fem_object["Object"]
