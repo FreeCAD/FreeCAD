@@ -489,7 +489,7 @@ def get_femelement_sets(
     count_femelements = 0
     referenced_femelements = np.zeros(
         (max(femelement_table.keys()) + 1,),
-        dtype=np.int
+        dtype=int
     )
     has_remaining_femelements = None
     for fem_object_i, fem_object in enumerate(fem_objects):
