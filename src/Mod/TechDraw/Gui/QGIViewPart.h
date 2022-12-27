@@ -25,6 +25,8 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
+#include <Mod/TechDraw/App/Geometry.h>
+
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
 
@@ -38,12 +40,14 @@ class DrawHatch;
 class DrawGeomHatch;
 class DrawViewDetail;
 class DrawView;
+
 }
 
 namespace TechDrawGui
 {
 class QGIFace;
 class QGIEdge;
+class QGIHighlight;
 
 class TechDrawGuiExport QGIViewPart : public QGIView
 {
@@ -76,6 +80,7 @@ public:
     void draw() override;
     void rotateView() override;
 
+    virtual void highlightMoved(QGIHighlight* highlight, QPointF newPos);
 
     static QPainterPath geomToPainterPath(TechDraw::BaseGeomPtr baseGeom, double rotation = 0.0);
     /// Helper for pathArc()

@@ -106,8 +106,7 @@ short DrawViewDetail::mustExecute() const
         TechDraw::DrawView::mustExecute();
     }
 
-    if (AnchorPoint.isTouched() || Radius.isTouched() || BaseView.isTouched()
-        || Reference.isTouched()) {
+    if (AnchorPoint.isTouched() || Radius.isTouched() || BaseView.isTouched()) {
         return 1;
     }
 
@@ -124,13 +123,6 @@ void DrawViewDetail::onChanged(const App::Property* prop)
     if (prop == &Reference) {
         std::string lblText = "Detail " + std::string(Reference.getValue());
         Label.setValue(lblText);
-    }
-    if (prop == &Reference || prop == &Radius || prop == &BaseView) {
-        requestPaint();
-    }
-    if (prop == &AnchorPoint) {
-        // to see AnchorPoint changes repainting is not enough, we must recompute
-        recomputeFeature(true);
     }
 
     DrawViewPart::onChanged(prop);
@@ -159,13 +151,6 @@ App::DocumentObjectExecReturn* DrawViewDetail::execute()
     if (dvp->isDerivedFrom(TechDraw::DrawViewSection::getClassTypeId())) {
         dvs = static_cast<TechDraw::DrawViewSection*>(dvp);
     }
-    //    TopoDS_Shape shape;
-    //        shape = dvs->getCutShape();
-    //    }
-    //    else {
-    //        //getSourceShapeFused will complain if called on section
-    //        shape = dvp->getSourceShapeFused();
-    //    }
 
     if (shape.IsNull()) {
         return DrawView::execute();

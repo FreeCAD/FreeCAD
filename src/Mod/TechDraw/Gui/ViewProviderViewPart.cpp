@@ -132,6 +132,16 @@ ViewProviderViewPart::~ViewProviderViewPart()
 
 void ViewProviderViewPart::onChanged(const App::Property* prop)
 {
+    if (getViewPart()->isDerivedFrom(TechDraw::DrawViewDetail::getClassTypeId()) &&
+        prop == &(HighlightAdjust)) {
+        auto detail = static_cast<DrawViewDetail*>(getViewPart());
+        auto baseDvp = dynamic_cast<DrawViewPart*>(detail->BaseView.getValue());
+        if (baseDvp) {
+            baseDvp->requestPaint();
+        }
+        return;
+    }
+
     if (prop == &(LineWidth)   ||
         prop == &(HiddenWidth) ||
         prop == &(IsoWidth) ||
