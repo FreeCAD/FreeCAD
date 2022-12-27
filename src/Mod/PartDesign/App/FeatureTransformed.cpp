@@ -229,8 +229,9 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             TopoDS_Shape shape = copy.Shape();
 
             BRepBuilderAPI_Transform mkTrf(shape, *transformIter, false); // No need to copy, now
-            if (!mkTrf.IsDone())
-                return shapeTools;
+            if (!mkTrf.IsDone()) {
+                throw Base::CADKernelError("Transformation failed");
+            }
             shape = mkTrf.Shape();
 
             shapes.emplace_back(shape);
@@ -273,35 +274,35 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             TopTools_ListOfShape shapeArguments;
             shapeArguments.Append(current);
             TopTools_ListOfShape shapeTools = getTransformedCompShape(fuseShape.getShape());
-            if (shapeTools.Size() == 0)
-                return new App::DocumentObjectExecReturn("Transformation failed", (*o));
-            std::unique_ptr<BRepAlgoAPI_BooleanOperation> mkBool(new BRepAlgoAPI_Fuse());
-            mkBool->SetArguments(shapeArguments);
-            mkBool->SetTools(shapeTools);
-            mkBool->Build();
-            if (!mkBool->IsDone()) {
-                std::stringstream error;
-                error << "Boolean operation failed";
-                return new App::DocumentObjectExecReturn(error.str());
+            if (!shapeTools.IsEmpty()) {
+                std::unique_ptr<BRepAlgoAPI_BooleanOperation> mkBool(new BRepAlgoAPI_Fuse());
+                mkBool->SetArguments(shapeArguments);
+                mkBool->SetTools(shapeTools);
+                mkBool->Build();
+                if (!mkBool->IsDone()) {
+                    std::stringstream error;
+                    error << "Boolean operation failed";
+                    return new App::DocumentObjectExecReturn(error.str());
+                }
+                current = mkBool->Shape();
             }
-            current = mkBool->Shape();
         }
         if (!cutShape.isNull()) {
             TopTools_ListOfShape shapeArguments;
             shapeArguments.Append(current);
             TopTools_ListOfShape shapeTools = getTransformedCompShape(cutShape.getShape());
-            if (shapeTools.Size() == 0)
-                return new App::DocumentObjectExecReturn("Transformation failed", (*o));
-            std::unique_ptr<BRepAlgoAPI_BooleanOperation> mkBool(new BRepAlgoAPI_Cut());
-            mkBool->SetArguments(shapeArguments);
-            mkBool->SetTools(shapeTools);
-            mkBool->Build();
-            if (!mkBool->IsDone()) {
-                std::stringstream error;
-                error << "Boolean operation failed";
-                return new App::DocumentObjectExecReturn(error.str());
+            if (!shapeTools.IsEmpty()) {
+                std::unique_ptr<BRepAlgoAPI_BooleanOperation> mkBool(new BRepAlgoAPI_Cut());
+                mkBool->SetArguments(shapeArguments);
+                mkBool->SetTools(shapeTools);
+                mkBool->Build();
+                if (!mkBool->IsDone()) {
+                    std::stringstream error;
+                    error << "Boolean operation failed";
+                    return new App::DocumentObjectExecReturn(error.str());
+                }
+                current = mkBool->Shape();
             }
-            current = mkBool->Shape();
         }
 
         support = current; // Use result of this operation for fuse/cut of next original
