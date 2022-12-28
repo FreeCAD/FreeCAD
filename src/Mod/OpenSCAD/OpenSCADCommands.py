@@ -457,7 +457,7 @@ class OpenSCADMeshBooleanWidget(QtGui.QWidget):
         self.rb_hull = QtGui.QRadioButton("Hull")
         self.rb_group.addButton(self.rb_hull)
         self.rb_group_box_layout.addWidget(self.rb_hull)
-        self.rb_minkowski = QtGui.QRadioButton("Minkowski")
+        self.rb_minkowski = QtGui.QRadioButton("Minkowski sum")
         self.rb_group.addButton(self.rb_minkowski)
         self.rb_group_box_layout.addWidget(self.rb_minkowski)
         layouth=QtGui.QHBoxLayout()
@@ -471,6 +471,7 @@ class OpenSCADMeshBooleanWidget(QtGui.QWidget):
     def retranslateUi(self, widget=None):
         self.buttonadd.setText(translate('OpenSCAD','Perform'))
         self.setWindowTitle(translate('OpenSCAD','Mesh Boolean'))
+        self.rb_minkowski.setText(translate('OpenSCAD','Minkowski sum'))
 
 class OpenSCADMeshBooleanTask:
     def __init__(self):
@@ -549,7 +550,7 @@ class Hull:
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_Hull',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_Hull', 'Hull'),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_Hull', 'Perform Hull')}
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_Hull', 'Use OpenSCAD to create a hull')}
 
 class Minkowski:
     def IsActive(self):
@@ -567,8 +568,8 @@ class Minkowski:
         FreeCAD.ActiveDocument.recompute()
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_Minkowski',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_Minkowski', 'Minkowski'),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_Minkowski', 'Perform Minkowski')}
+                'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_Minkowski', 'Minkowski sum'),
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_Minkowski', 'Use OpenSCAD to create a Minkowski sum')}
 
 FreeCADGui.addCommand('OpenSCAD_ColorCodeShape',ColorCodeShape())
 FreeCADGui.addCommand('OpenSCAD_ExplodeGroup',ExplodeGroup())

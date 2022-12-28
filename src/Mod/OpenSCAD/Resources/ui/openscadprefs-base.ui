@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>575</width>
-    <height>629</height>
+    <width>577</width>
+    <height>636</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -45,7 +45,7 @@
          </widget>
         </item>
         <item>
-         <widget class="Gui::PrefFileChooser" name="gui::preffilechooser">
+         <widget class="Gui::PrefFileChooser" name="gui::preffilechooser" native="true">
           <property name="minimumSize">
            <size>
             <width>300</width>
@@ -229,7 +229,7 @@
          </widget>
         </item>
         <item>
-         <widget class="Gui::PrefFileChooser" name="gui::preffilechooser">
+         <widget class="Gui::PrefFileChooser" name="gui::preffilechooser" native="true">
           <property name="minimumSize">
            <size>
             <width>300</width>
@@ -263,7 +263,7 @@
         <item>
          <widget class="QLabel" name="label">
           <property name="text">
-           <string>maximum fragment size</string>
+           <string>Maximum fragment size</string>
           </property>
          </widget>
         </item>
@@ -382,7 +382,7 @@
         <item>
          <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>convexity</string>
+           <string>Convexity</string>
           </property>
          </widget>
         </item>
@@ -453,7 +453,7 @@
           </property>
          </widget>
         </item>
-       <item row="1" column="2">
+        <item row="1" column="2">
          <widget class="Gui::PrefDoubleSpinBox" name="doubleSpinBox_2a">
           <property name="toolTip">
            <string>Deflection</string>
@@ -475,7 +475,7 @@
           </property>
          </widget>
         </item>
-        </layout>
+       </layout>
       </item>
      </layout>
     </widget>
