@@ -90,7 +90,7 @@ except ImportError:
         FreeCAD.Console.PrintError(
             translate(
                 "AddonsInstaller",
-                'Could not import QtNetwork -- it does not appear to be installed on your system. Your provider may have a package for this dependency (often called e.g. "python3-pyside2.qtnetwork", for example)',
+                'Could not import QtNetwork -- it does not appear to be installed on your system. Your provider may have a package for this dependency (often called "python3-pyside2.qtnetwork")',
             )
             + "\n"
         )
