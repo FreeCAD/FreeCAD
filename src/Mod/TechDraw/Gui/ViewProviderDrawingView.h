@@ -31,6 +31,7 @@
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Mod/TechDraw/App/DrawView.h>
 
+#include "ViewProviderDrawingViewExtension.h"
 
 namespace TechDraw {
 class DrawView;
@@ -41,7 +42,8 @@ class QGIView;
 class MDIViewPage;
 class ViewProviderPage;
 
-class TechDrawGuiExport ViewProviderDrawingView : public Gui::ViewProviderDocumentObject
+class TechDrawGuiExport ViewProviderDrawingView : public Gui::ViewProviderDocumentObject,
+                                                  public ViewProviderDrawingViewExtension
 {
     PROPERTY_HEADER_WITH_OVERRIDE(TechDrawGui::ViewProviderDrawingView);
 
@@ -61,6 +63,8 @@ public:
     /// Show the object in the view
     void show() override;
     bool isShow() const override;
+
+    void dropObject(App::DocumentObject* docObj) override;
 
     void onChanged(const App::Property *prop) override;
     void updateData(const App::Property*) override;
@@ -93,11 +97,13 @@ public:
     virtual void stackBottom();
     virtual int getZ() {return StackOrder.getValue();}
 
+    const char* whoAmI() const;
+
 private:
     void multiParentPaint(std::vector<TechDraw::DrawPage*>& pages);
     void singleParentPaint(const TechDraw::DrawView* dv);
 
-
+    std::string m_myName;
 };
 
 } // namespace TechDrawGui

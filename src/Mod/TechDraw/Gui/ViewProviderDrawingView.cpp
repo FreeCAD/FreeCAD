@@ -42,6 +42,7 @@
 #include <Mod/TechDraw/App/DrawView.h>
 
 #include "ViewProviderDrawingView.h"
+#include "ViewProviderDrawingViewExtension.h"
 #include "MDIViewPage.h"
 #include "QGIView.h"
 #include "QGSPage.h"
@@ -52,9 +53,12 @@ namespace bp = boost::placeholders;
 
 PROPERTY_SOURCE(TechDrawGui::ViewProviderDrawingView, Gui::ViewProviderDocumentObject)
 
-ViewProviderDrawingView::ViewProviderDrawingView()
+ViewProviderDrawingView::ViewProviderDrawingView() :
+    m_myName(std::string())
 {
 //    Base::Console().Message("VPDV::VPDV\n");
+    initExtension(this);
+
     sPixmap = "TechDraw_TreeView";
     static const char *group = "Base";
 
@@ -79,6 +83,7 @@ void ViewProviderDrawingView::attach(App::DocumentObject *pcFeat)
     auto bndProgressMessage = boost::bind(&ViewProviderDrawingView::onProgressMessage, this, bp::_1, bp::_2, bp::_3);
     auto feature = getViewObject();
     if (feature) {
+        m_myName = feature->getNameInDocument();
         connectGuiRepaint = feature->signalGuiPaint.connect(bnd);
         connectProgressMessage = feature->signalProgressMessage.connect(bndProgressMessage);
         //TODO: would be good to start the QGIV creation process here, but no guarantee we actually have
@@ -185,6 +190,11 @@ QGIView* ViewProviderDrawingView::getQView()
 bool ViewProviderDrawingView::isShow() const
 {
     return Visibility.getValue();
+}
+
+void ViewProviderDrawingView::dropObject(App::DocumentObject* docObj)
+{
+    getViewProviderPage()->dropObject(docObj);
 }
 
 void ViewProviderDrawingView::startRestoring()
@@ -415,6 +425,11 @@ void ViewProviderDrawingView::stackBottom()
     }
     StackOrder.setValue(minZ - 1);
     qView->setStack(minZ - 1);
+}
+
+const char*  ViewProviderDrawingView::whoAmI() const
+{
+    return m_myName.c_str();
 }
 
 TechDraw::DrawView* ViewProviderDrawingView::getViewObject() const

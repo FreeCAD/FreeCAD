@@ -156,7 +156,7 @@ def cmdCreateImageScaling(name, trackers):
                 self.label1.setText("<font color='red'>" + translate("Dialog", "Enter distance", None) + "</font>")
                 return
             except (IndexError, AttributeError):
-                self.label1.setText("<font color='red'>" + translate("Dialog", "Select ImagePlane", None) + "</font>")
+                self.label1.setText("<font color='red'>" + translate("Dialog", "Select image plane", None) + "</font>")
                 return
 
         def reject(self):

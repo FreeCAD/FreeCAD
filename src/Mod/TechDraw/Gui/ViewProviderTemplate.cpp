@@ -56,20 +56,30 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderTemplate, Gui::ViewProviderDocumentObje
 //**************************************************************************
 // Construction/Destruction
 
-ViewProviderTemplate::ViewProviderTemplate()
+ViewProviderTemplate::ViewProviderTemplate() :
+    m_myName(std::string())
 {
+    initExtension(this);
+
     sPixmap = "TechDraw_TreePageTemplate";
 
     DisplayMode.setStatus(App::Property::Hidden, true);
 }
 
-ViewProviderTemplate::~ViewProviderTemplate()
+void ViewProviderTemplate::attach(App::DocumentObject *pcFeat)
 {
+//    Base::Console().Message("VPT::attach(%s)\n", pcFeat->getNameInDocument());
+    ViewProviderDocumentObject::attach(pcFeat);
+
+    auto feature = getTemplate();
+    if (feature) {
+        m_myName = feature->getNameInDocument();
+    }
 }
 
 void ViewProviderTemplate::updateData(const App::Property* prop)
 {
-    //This doesn't belong here.  Should be in attach?
+    //This doesn't belong here.  Should be in a ViewProviderSvgTemplate?
     if (getTemplate()->isDerivedFrom(TechDraw::DrawSVGTemplate::getClassTypeId())) {
         auto t = static_cast<TechDraw::DrawSVGTemplate*>(getTemplate());
         if (prop == &(t->Template)) {
@@ -216,4 +226,9 @@ Gui::MDIView *ViewProviderTemplate::getMDIView() const
 TechDraw::DrawTemplate* ViewProviderTemplate::getTemplate() const
 {
     return dynamic_cast<TechDraw::DrawTemplate*>(pcObject);
+}
+
+const char*  ViewProviderTemplate::whoAmI() const
+{
+    return m_myName.c_str();
 }

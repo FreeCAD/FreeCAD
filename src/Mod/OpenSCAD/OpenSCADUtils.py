@@ -718,7 +718,7 @@ def process_ObjectsViaOpenSCAD(doc,children,name):
     else:
         import FreeCAD
         FreeCAD.Console.PrintError( translate('OpenSCAD',\
-            "Error all shapes must be either 2D or both must be 3D")+u'\n')
+            "Error: either all shapes must be 2D or all shapes must be 3D")+u'\n')
 
 
 def removesubtree(objs):

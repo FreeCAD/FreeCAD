@@ -470,6 +470,19 @@ bool DrawPage::canUpdate() const
     return result;
 }
 
+//true if object belongs to this page
+bool DrawPage::hasObject(App::DocumentObject* obj)
+{
+    for (auto& outObj : getOutList()) {
+        //TODO: check if pointer comparision is reliable enough
+        if (outObj == obj) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 //allow/prevent drawing updates for all Pages
 bool DrawPage::GlobalUpdateDrawings(void)
 {

@@ -274,8 +274,9 @@ class AddonInstallerGUI(QtCore.QObject):
                 FreeCAD.Console.PrintWarning(
                     translate(
                         "AddonsInstaller",
-                        "Optional dependency on {} ignored because it is not in the allow-list\n",
+                        "Optional dependency on {} ignored because it is not in the allow-list",
                     ).format(dep)
+                    + "\n"
                 )
         missing.python_optional = good_packages
 

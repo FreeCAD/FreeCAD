@@ -336,7 +336,7 @@ GeometryObjectPtr DrawViewPart::makeGeometryForShape(TopoDS_Shape& shape)
         scaledShape = TechDraw::rotateShape(scaledShape, viewAxis,
                                             Rotation.getValue());//conventional rotation
     }
-    BRepTools::Write(scaledShape, "DVPScaled.brep");//debug
+
     GeometryObjectPtr go = buildGeometryObject(scaledShape, viewAxis);
     return go;
 }
@@ -536,7 +536,6 @@ void DrawViewPart::extractFaces()
                 getNameInDocument());
         }
         else {
-            BRepTools::Write(DrawUtil::vectorToCompound(sortedWires), "DVPSortedWires.brep");//debug
             constexpr double minWireArea = 0.000001;//arbitrary very small face size
             std::vector<TopoDS_Wire>::iterator itWire = sortedWires.begin();
             for (; itWire != sortedWires.end(); itWire++) {
@@ -925,7 +924,11 @@ TopoDS_Shape DrawViewPart::getShape() const
             builder.Add(result, geometryObject->getVisSmooth());
         }
     }
-    return result;
+        //check for empty compound
+    if (!result.IsNull() && TopoDS_Iterator(result).More()) {
+        return result;
+    }
+    return TopoDS_Shape();
 }
 
 //returns the (unscaled) size of the visible lines along the alignment vector.
@@ -935,6 +938,9 @@ double DrawViewPart::getSizeAlongVector(Base::Vector3d alignmentVector)
     //    Base::Console().Message("DVP::GetSizeAlongVector(%s)\n", DrawUtil::formatVector(alignmentVector).c_str());
     double alignmentAngle = atan2(alignmentVector.y, alignmentVector.x) * -1.0;
     gp_Ax2 OXYZ;//shape has already been projected and we will rotate around Z
+    if (getShape().IsNull()) {
+        return 1.0;
+    }
     TopoDS_Shape rotatedShape = rotateShape(getShape(), OXYZ, alignmentAngle * 180.0 / M_PI);
     Bnd_Box shapeBox;
     shapeBox.SetGap(0.0);
