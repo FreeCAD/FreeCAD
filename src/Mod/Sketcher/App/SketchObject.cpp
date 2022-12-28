@@ -259,7 +259,6 @@ int SketchObject::solve(bool updateGeoAfterSolving/*=true*/)
     lastDoF = solvedSketch.setUpSketch(getCompleteGeometry(), Constraints.getValues(),
                                   getExternalGeometryCount());
 
-    FullyConstrained.setValue(lastDoF == 0);
     // At this point we have the solver information about conflicting/redundant/over-constrained, but the sketch is NOT solved.
     // Some examples:
     // Redundant: a vertical line, a horizontal line and an angle constraint of 90 degrees between the two lines
@@ -310,6 +309,12 @@ int SketchObject::solve(bool updateGeoAfterSolving/*=true*/)
 
     lastSolveTime=solvedSketch.getSolveTime();
 
+    // In uncommon situations, the analysis of QR decomposition leads to full rank, but the result does not converge.
+    // We avoid marking a sketch as fully constrained when no convergence is achieved.
+    if(err == 0) {
+        FullyConstrained.setValue(lastDoF == 0);
+    }
+    
     if (err == 0 && updateGeoAfterSolving) {
         // set the newly solved geometry
         std::vector<Part::Geometry *> geomlist = solvedSketch.extractGeometry();
