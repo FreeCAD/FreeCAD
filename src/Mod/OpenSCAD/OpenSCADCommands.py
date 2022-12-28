@@ -271,7 +271,7 @@ class IncreaseToleranceFeature:
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_IncreaseToleranceFeature',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_IncreaseToleranceFeature', 'Increase Tolerance Feature'),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_IncreaseToleranceFeature', 'Create Feature that allows to increase the tolerance')}
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_IncreaseToleranceFeature', 'Create Feature that allows increasing the tolerance')}
 
 class ExpandPlacements:
     '''This should aid interactive repair in the future
@@ -288,7 +288,7 @@ class ExpandPlacements:
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_ExpandPlacements',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ExpandPlacements', 'Expand Placements'),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ExpandPlacements', 'Expand all placements downwards the FeatureTree')}
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ExpandPlacements', 'Expand all placements downwards in the Tree view')}
 
 class ReplaceObject:
     def IsActive(self):
@@ -309,7 +309,7 @@ class ReplaceObject:
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_ReplaceObject',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ReplaceObject', 'Replace Object'),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ReplaceObject', 'Replace an object in the Feature Tree. Please select old, new, and parent object')}
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ReplaceObject', 'Replace an object in the Tree view. Please select old, new, and parent object')}
 
 class RemoveSubtree:
     def IsActive(self):

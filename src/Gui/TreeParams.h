@@ -395,7 +395,7 @@ public:
     //@{
     /// Accessor for parameter HideScrollBar
     ///
-    /// Hide tree view scroll bar in dock overlay
+    /// Hide tree view scroll bar in dock overlay.
     static const bool & getHideScrollBar();
     static const bool & defaultHideScrollBar();
     static void removeHideScrollBar();
@@ -407,7 +407,7 @@ public:
     //@{
     /// Accessor for parameter HideHeaderView
     ///
-    /// Hide tree view header view in dock overlay
+    /// Hide tree view header view in dock overlay.
     static const bool & getHideHeaderView();
     static const bool & defaultHideHeaderView();
     static void removeHideHeaderView();
@@ -419,7 +419,7 @@ public:
     //@{
     /// Accessor for parameter ResizableColumn
     ///
-    /// Allow tree view columns to be manually resized
+    /// Allow tree view columns to be manually resized.
     static const bool & getResizableColumn();
     static const bool & defaultResizableColumn();
     static void removeResizableColumn();
