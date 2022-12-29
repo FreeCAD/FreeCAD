@@ -71,13 +71,6 @@ public:
         IgnoreErrorOnRecompute = 12, // Don't report errors if the recompute failed
     };
 
-    enum class NotificationType {
-        Information,
-        Warning,
-        Error,
-        Critical,
-    };
-
     /** @name Properties */
     //@{
     /// holds the long name of the document (utf-8 coded)
@@ -177,8 +170,6 @@ public:
     boost::signals2::signal<void (const App::Document&, const std::vector<App::DocumentObject*>&)> signalSkipRecompute;
     boost::signals2::signal<void (const App::DocumentObject&)> signalFinishRestoreObject;
     boost::signals2::signal<void (const App::Document&,const App::Property&)> signalChangePropertyEditor;
-    // signal user message
-    boost::signals2::signal<void (const App::DocumentObject&, const QString &, NotificationType)> signalUserMessage;
     //@}
     boost::signals2::signal<void (std::string)> signalLinkXsetValue;
 
