@@ -74,6 +74,8 @@
         <file>edit-undo.svg</file>
         <file>edit-edit.svg</file>
         <file>edit-cleartext.svg</file>
+        <file>info.svg</file>
+        <file>critical-info.svg</file>
         <file>tree-item-drag.svg</file>
         <file>tree-goto-sel.svg</file>
         <file>tree-rec-sel.svg</file>
@@ -98,6 +100,7 @@
         <file>accessories-text-editor.svg</file>
         <file>accessories-calculator.svg</file>
         <file>internet-web-browser.svg</file>
+        <file>InTray.svg</file>
         <file>view-select.svg</file>
         <file>view-unselectable.svg</file>
         <file>view-refresh.svg</file>
@@ -251,6 +254,7 @@
         <file>Std_UserEditModeTransform.svg</file>
         <file>Std_UserEditModeCutting.svg</file>
         <file>Std_UserEditModeColor.svg</file>
+        <file>Warning.svg</file>
     </qresource>
     <!-- Demonstrating support for an embedded icon theme -->
     <!-- See also http://permalink.gmane.org/gmane.comp.lib.qt.general/26374 -->
