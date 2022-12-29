@@ -80,6 +80,7 @@
 #include "DownloadManager.h"
 #include "FileDialog.h"
 #include "MenuManager.h"
+#include "NotificationArea.h"
 #include "ProgressBar.h"
 #include "PropertyView.h"
 #include "PythonConsole.h"
@@ -251,7 +252,6 @@ protected:
 
 } // namespace Gui
 
-
 /* TRANSLATOR Gui::MainWindow */
 
 MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
@@ -302,6 +302,11 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     QProgressBar* progressBar = Gui::SequencerBar::instance()->getProgressBar(statusBar());
     statusBar()->addPermanentWidget(progressBar, 0);
     statusBar()->addPermanentWidget(d->sizeLabel, 0);
+    
+    NotificationArea* notificationArea = new NotificationArea(statusBar());
+    notificationArea->setObjectName(QString::fromLatin1("notificationArea"));
+    notificationArea->setIcon(QIcon(QString::fromLatin1(":/icons/InTray.svg")));
+    statusBar()->addPermanentWidget(notificationArea);
 
     // clears the action label
     d->actionTimer = new QTimer( this );
