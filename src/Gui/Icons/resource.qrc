@@ -251,6 +251,7 @@
         <file>Std_UserEditModeTransform.svg</file>
         <file>Std_UserEditModeCutting.svg</file>
         <file>Std_UserEditModeColor.svg</file>
+        <file>Warning.svg</file>
     </qresource>
     <!-- Demonstrating support for an embedded icon theme -->
     <!-- See also http://permalink.gmane.org/gmane.comp.lib.qt.general/26374 -->
