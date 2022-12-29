@@ -153,7 +153,7 @@ class OpenSCADWorkbench(Workbench):
         )
         self.appendMenu("OpenSCAD", commands)
         self.appendToolbar(
-            QT_TRANSLATE_NOOP("Workbench", "OpenSCAD Part tools"), parttoolbarcommands
+            QT_TRANSLATE_NOOP("Workbench", "Frequently-used Part WB tools"), parttoolbarcommands
         )
         # self.appendMenu('OpenSCAD',["AddOpenSCADElement"])
         ###self.appendCommandbar("&Generic Tools",["ColorCodeShape"])
