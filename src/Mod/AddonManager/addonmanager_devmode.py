@@ -587,9 +587,10 @@ class DeveloperMode:
             FreeCAD.Console.PrintWarning(
                 translate(
                     "AddonsInstaller",
-                    "No Vermin, cancelling operation.\n",
-                    "'Vermin' is a Python package - do not translate",
+                    "No Vermin, cancelling operation.",
+                    "NOTE: Vermin is a Python package and proper noun - do not translate",
                 )
+                + "\n"
             )
             return
         FreeCAD.Console.PrintMessage(
