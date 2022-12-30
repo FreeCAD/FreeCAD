@@ -68,35 +68,76 @@ struct string_comp
         return n;
     }
 };
+
+class unique_name
+{
+public:
+    unique_name(const std::string& name, const std::vector<std::string>& names, int padding)
+        : base_name{name}
+        , padding{padding}
+    {
+        removeDigitsFromEnd();
+        findHighestSuffix(names);
+    }
+
+    std::string get() const
+    {
+        return appendSuffix();
+    }
+
+private:
+    void removeDigitsFromEnd()
+    {
+        std::string::size_type pos = base_name.find_last_not_of("0123456789");
+        if (pos != std::string::npos && (pos +1) < base_name.size()) {
+            num_suffix = base_name.substr(pos + 1);
+            base_name.erase(pos + 1);
+        }
+    }
+
+    void findHighestSuffix(const std::vector<std::string>& names)
+    {
+        for (std::vector<std::string>::const_iterator it = names.begin(); it != names.end(); ++it) {
+            if (it->substr(0, base_name.length()) == base_name) { // same prefix
+                std::string suffix(it->substr(base_name.length()));
+                if (suffix.size() > 0) {
+                    std::string::size_type pos = suffix.find_first_not_of("0123456789");
+                    if (pos == std::string::npos) {
+                        num_suffix = std::max<std::string>(num_suffix, suffix, Base::string_comp());
+                    }
+                }
+            }
+        }
+    }
+
+    std::string appendSuffix() const
+    {
+        std::stringstream str;
+        str << base_name;
+        if (padding > 0) {
+            str.fill('0');
+            str.width(padding);
+        }
+        str << Base::string_comp::increment(num_suffix);
+        return str.str();
+    }
+
+private:
+    std::string num_suffix;
+    std::string base_name;
+    int padding;
+};
+
 }
 
-std::string Base::Tools::getUniqueName(const std::string& name, const std::vector<std::string>& names, int d)
+std::string Base::Tools::getUniqueName(const std::string& name, const std::vector<std::string>& names, int pad)
 {
     if (names.empty()) {
         return name;
     }
 
-    // find highest suffix
-    std::string num_suffix;
-    for (std::vector<std::string>::const_iterator it = names.begin(); it != names.end(); ++it) {
-        if (it->substr(0, name.length()) == name) { // same prefix
-            std::string suffix(it->substr(name.length()));
-            if (suffix.size() > 0) {
-                std::string::size_type pos = suffix.find_first_not_of("0123456789");
-                if (pos==std::string::npos)
-                    num_suffix = std::max<std::string>(num_suffix, suffix, Base::string_comp());
-            }
-        }
-    }
-
-    std::stringstream str;
-    str << name;
-    if (d > 0) {
-        str.fill('0');
-        str.width(d);
-    }
-    str << Base::string_comp::increment(num_suffix);
-    return str.str();
+    Base::unique_name unique(name, names, pad);
+    return unique.get();
 }
 
 std::string Base::Tools::addNumber(const std::string& name, unsigned int num, int d)
