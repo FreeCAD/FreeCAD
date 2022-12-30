@@ -28,6 +28,8 @@
 # include <QMessageBox>
 
 # include <Inventor/SbString.h>
+
+# include <Standard_Version.hxx>
 #endif
 
 #include <App/Application.h>
