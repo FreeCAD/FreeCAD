@@ -72,6 +72,10 @@ struct string_comp
 
 std::string Base::Tools::getUniqueName(const std::string& name, const std::vector<std::string>& names, int d)
 {
+    if (names.empty()) {
+        return name;
+    }
+
     // find highest suffix
     std::string num_suffix;
     for (std::vector<std::string>::const_iterator it = names.begin(); it != names.end(); ++it) {
