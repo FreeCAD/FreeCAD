@@ -281,7 +281,7 @@ std::vector<std::weak_ptr<const GeometryExtension>> Geometry::getExtensions() co
     return wp;
 }
 
-bool Geometry::hasExtension(Base::Type type) const
+bool Geometry::hasExtension(const Base::Type & type) const
 {
     for(const auto& ext : extensions) {
         if(ext->getTypeId() == type)
@@ -301,7 +301,7 @@ bool Geometry::hasExtension(const std::string & name) const
     return false;
 }
 
-std::weak_ptr<GeometryExtension> Geometry::getExtension(Base::Type type)
+std::weak_ptr<GeometryExtension> Geometry::getExtension(const Base::Type & type)
 {
     for(const auto& ext : extensions) {
         if(ext->getTypeId() == type)
@@ -321,7 +321,7 @@ std::weak_ptr<GeometryExtension> Geometry::getExtension(const std::string & name
     throw Base::ValueError("No geometry extension with the requested name.");
 }
 
-std::weak_ptr<const GeometryExtension> Geometry::getExtension(Base::Type type) const
+std::weak_ptr<const GeometryExtension> Geometry::getExtension(const Base::Type & type) const
 {
     return const_cast<Geometry*>(this)->getExtension(type).lock();
 }
@@ -353,7 +353,7 @@ void Geometry::setExtension(std::unique_ptr<GeometryExtension> && geoext )
     }
 }
 
-void Geometry::deleteExtension(Base::Type type)
+void Geometry::deleteExtension(const Base::Type & type)
 {
     extensions.erase(
         std::remove_if( extensions.begin(),
