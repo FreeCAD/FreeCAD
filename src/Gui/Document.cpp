@@ -122,9 +122,18 @@ void MessageManager::slotUserMessage(const App::DocumentObject& obj, const QStri
 
         if(button == QMessageBox::Yes)
             requireConfirmationCriticalMessageDuringRestoring = false;
+
+        // The user has already acknowledged it, so record it as a Warning
+        showInNotificationArea(obj, msg, App::Document::NotificationType::Warning);
     }
     else { // Non-critical errors and warnings redirected to the notification area
-        showInNotificationArea(obj, msg, notificationtype);
+        if(notificationtype == App::Document::NotificationType::Critical) {
+            // The user has already acknowledged it, so record it as a Warning
+            showInNotificationArea(obj, msg, App::Document::NotificationType::Warning);
+        }
+        else {
+            showInNotificationArea(obj, msg, notificationtype);
+        }
     }
 }
 
