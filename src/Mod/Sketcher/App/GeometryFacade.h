@@ -197,12 +197,12 @@ public:
     boost::uuids::uuid getTag() const {return getGeo()->getTag();}
 
     std::vector<std::weak_ptr<const Part::GeometryExtension>> getExtensions() const {return getGeo()->getExtensions();}
-    bool hasExtension(Base::Type type) const {return getGeo()->hasExtension(type);}
+    bool hasExtension(const Base::Type & type) const {return getGeo()->hasExtension(type);}
     bool hasExtension(const std::string & name) const {return getGeo()->hasExtension(name);}
-    std::weak_ptr<const Part::GeometryExtension> getExtension(Base::Type type) const {return getGeo()->getExtension(type);}
-    std::weak_ptr<const Part::GeometryExtension> getExtension(std::string name) const {return getGeo()->getExtension(name);}
+    std::weak_ptr<const Part::GeometryExtension> getExtension(const Base::Type & type) const {return getGeo()->getExtension(type);}
+    std::weak_ptr<const Part::GeometryExtension> getExtension(const std::string & name) const {return getGeo()->getExtension(name);}
     void setExtension(std::unique_ptr<Part::GeometryExtension> &&geo) {return getGeo()->setExtension(std::move(geo));}
-    void deleteExtension(Base::Type type) {return getGeo()->deleteExtension(type);}
+    void deleteExtension(const Base::Type & type) {return getGeo()->deleteExtension(type);}
     void deleteExtension(const std::string & name) {return getGeo()->deleteExtension(name);}
 
     void mirror(const Base::Vector3d & point) {return getGeo()->mirror(point);}
@@ -272,16 +272,20 @@ class SketcherExport GeometryTypedFacade : public GeometryFacade
 
 public: // Factory methods
     static std::unique_ptr<GeometryTypedFacade<GeometryT>> getTypedFacade(GeometryT * geometry, bool owner = false) {
-        if(geometry)
+        if(geometry) {
             return std::unique_ptr<GeometryTypedFacade<GeometryT>>(new GeometryTypedFacade(geometry, owner));
-        else
+        }
+        else {
             return std::unique_ptr<GeometryTypedFacade<GeometryT>>(nullptr);
+        }
     }
     static std::unique_ptr<const GeometryTypedFacade<GeometryT>> getTypedFacade(const GeometryT * geometry) {
-        if(geometry)
+        if(geometry) {
             return std::unique_ptr<const GeometryTypedFacade<GeometryT>>(new GeometryTypedFacade(geometry));
-        else
+        }
+        else {
             return std::unique_ptr<const GeometryTypedFacade<GeometryT>>(nullptr);
+        }
     }
 
     // This function takes direct ownership of the object it creates.
