@@ -28,6 +28,7 @@
 # include <QActionEvent>
 # include <QEvent>
 # include <QHBoxLayout>
+# include <QHeaderView>
 # include <QMenu>
 # include <QStringList>
 # include <QTreeWidget>
@@ -49,7 +50,10 @@ class NotificationItem : public QTreeWidgetItem
 {
 public:
     NotificationItem(NotificationArea::NotificationType notificationtype, QString notifiername, QString message):
-        notificationType(notificationtype), notifierName(std::move(notifiername)), msg(std::move(message)){}
+        notificationType(notificationtype), notifierName(std::move(notifiername)){
+            message = message.simplified();
+            msg = std::move(message);
+        }
 
     QVariant data(int column, int role) const override {
         // property name
@@ -101,6 +105,7 @@ private:
 struct NotificationAreaP
 {
     int currentlyNotifyingIndex = 0;
+    unsigned int unread = 0;
     std::mutex mutexNotification;
     const unsigned int notificationExpirationTime = 5000;
     QMenu * menu;
@@ -161,7 +166,10 @@ protected:
 
         layout->addWidget(tableWidget);
 
-        //tableWidget->installEventFilter(this);
+        tableWidget->setMaximumSize(1200,600);
+        tableWidget->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
+        tableWidget->header()->setStretchLastSection(false);
+        tableWidget->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
         return notificationsWidget;
     }
@@ -173,6 +181,7 @@ private:
 
 NotificationArea::NotificationArea(QWidget *parent):QPushButton(parent)
 {
+    setText(0);
     setFlat(true);
 
     d = std::make_unique<NotificationAreaP>();
@@ -187,16 +196,35 @@ NotificationArea::NotificationArea(QWidget *parent):QPushButton(parent)
     d->menu->addAction(na);
 
     d->table = na->getTable();
+
+    QObject::connect(d->menu, &QMenu::aboutToHide,
+                     [&]() {
+                         std::lock_guard<std::mutex> g(d->mutexNotification); // guard to avoid modifying the notification list and indices while creating the tooltip
+                         d->unread = 0;
+                         d->table->clearSelection();
+                         setText(QString::number(d->unread));
+                     });
+
+    QObject::connect(d->menu, &QMenu::aboutToShow,
+                     [&]() {
+                         std::lock_guard<std::mutex> g(d->mutexNotification); // guard to avoid modifying the notification list and indices while creating the tooltip
+
+                         for (unsigned int i=0; i < d->unread; i++) {
+                             d->table->topLevelItem(i)->setSelected(true);
+                         }
+                     });
 }
 
 void NotificationArea::pushNotification(NotificationType notificationtype, const QString & notifiername, const QString & message)
 {
     auto * item = new NotificationItem(notificationtype, notifiername, message);
 
-    std::lock_guard<std::mutex> g(d->mutexNotification); // guard to avoid modifying the notification list and start index while creating the tooltip
+    std::lock_guard<std::mutex> g(d->mutexNotification); // guard to avoid modifying the notification list and indices while creating the tooltip
 
     d->table->insertTopLevelItem(0,item);
     d->currentlyNotifyingIndex++;
+    d->unread++;
+    setText(QString::number(d->unread));
 
     showInNotificationArea();
 
