@@ -375,7 +375,7 @@ public:
     /** Observes its parameter group. */
     void OnChange(Base::Subject<const char*> &rCaller, const char * sReason) override;
 
-    void SendLog(const std::string& msg, Base::LogStyle level) override;
+    void SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level) override;
 
     /// name of the observer
     const char *Name() override {return "StatusBar";}

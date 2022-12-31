@@ -2123,8 +2123,10 @@ void StatusBarObserver::OnChange(Base::Subject<const char*> &rCaller, const char
     }
 }
 
-void StatusBarObserver::SendLog(const std::string& msg, Base::LogStyle level)
+void StatusBarObserver::SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level)
 {
+    (void) notifiername;
+    
     int messageType = -1;
     switch(level){
         case Base::LogStyle::Warning:

@@ -123,8 +123,10 @@ public:
     {
         return "SplashObserver";
     }
-    void SendLog(const std::string& msg, Base::LogStyle level) override
+    void SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level) override
     {
+        Q_UNUSED(notifiername)
+        
 #ifdef FC_DEBUG
         Log(msg.c_str());
         Q_UNUSED(level)

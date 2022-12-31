@@ -42,7 +42,7 @@ public:
     ConsoleObserverFile(const char *sFileName);
     ~ConsoleObserverFile() override;
 
-    void SendLog(const std::string& message, LogStyle level) override;
+    void SendLog(const std::string& notifiername, const std::string& message, LogStyle level) override;
     const char* Name() override {return "File";}
 
 protected:
@@ -57,7 +57,7 @@ class BaseExport ConsoleObserverStd: public ILogger
 public:
     ConsoleObserverStd();
     ~ConsoleObserverStd() override;
-    void SendLog(const std::string& message, LogStyle level) override;
+    void SendLog(const std::string& notifiername, const std::string& message, LogStyle level) override;
     const char* Name() override {return "Console";}
 protected:
     bool useColorStderr;

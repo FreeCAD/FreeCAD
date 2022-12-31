@@ -49,10 +49,11 @@ namespace Base {
 class ConsoleEvent : public QEvent {
 public:
     ConsoleSingleton::FreeCAD_ConsoleMsgType msgtype;
+    std::string notifier;
     std::string msg;
 
-    ConsoleEvent(ConsoleSingleton::FreeCAD_ConsoleMsgType type, const std::string& msg)
-        : QEvent(QEvent::User), msgtype(type), msg(msg)
+    ConsoleEvent(ConsoleSingleton::FreeCAD_ConsoleMsgType type, const std::string& notifier, const std::string& msg)
+        : QEvent(QEvent::User), msgtype(type), notifier(notifier),msg(msg)
     {
     }
     ~ConsoleEvent() override = default;
@@ -76,16 +77,16 @@ public:
             ConsoleEvent* ce = static_cast<ConsoleEvent*>(ev);
             switch (ce->msgtype) {
             case ConsoleSingleton::MsgType_Txt:
-                Console().NotifyMessage(ce->msg.c_str());
+                Console().NotifyMessage(ce->msg.c_str(), ce->notifier.c_str());
                 break;
             case ConsoleSingleton::MsgType_Log:
-                Console().NotifyLog(ce->msg.c_str());
+                Console().NotifyLog(ce->msg.c_str(), ce->notifier.c_str());
                 break;
             case ConsoleSingleton::MsgType_Wrn:
-                Console().NotifyWarning(ce->msg.c_str());
+                Console().NotifyWarning(ce->msg.c_str(), ce->notifier.c_str());
                 break;
             case ConsoleSingleton::MsgType_Err:
-                Console().NotifyError(ce->msg.c_str());
+                Console().NotifyError(ce->msg.c_str(), ce->notifier.c_str());
                 break;
             }
         }
@@ -243,6 +244,22 @@ void ConsoleSingleton::SetConnectionMode(ConnectionMode mode)
  */
 void ConsoleSingleton::Message( const char *pMsg, ... )
 {
+    va_list namelessVars;
+    va_start(namelessVars, pMsg);
+    MessageV("", pMsg, namelessVars);
+    va_end(namelessVars);
+}
+
+void ConsoleSingleton::MessageS ( const std::string & notifier, const char * pMsg, ... )
+{
+    va_list namelessVars;
+    va_start(namelessVars, pMsg);
+    MessageV(notifier, pMsg, namelessVars);
+    va_end(namelessVars);
+}
+
+void ConsoleSingleton::MessageV ( const std::string & notifier, const char * pMsg, va_list args )
+{
 #define FC_CONSOLE_FMT(_type,_type2) \
     char format[BufferSize];\
     format[sizeof(format)-4] = '.';\
@@ -250,17 +267,14 @@ void ConsoleSingleton::Message( const char *pMsg, ... )
     format[sizeof(format)-2] = '\n';\
     format[sizeof(format)-1] = 0;\
     const unsigned int format_len = sizeof(format)-4;\
-    va_list namelessVars;\
-    va_start(namelessVars, pMsg);\
-    vsnprintf(format, format_len, pMsg, namelessVars);\
+    vsnprintf(format, format_len, pMsg, args);\
     format[sizeof(format)-5] = '.';\
-    va_end(namelessVars);\
     if (connectionMode == Direct)\
-        Notify##_type(format);\
+        Notify##_type(format, notifier);\
     else\
-        QCoreApplication::postEvent(ConsoleOutput::getInstance(), new ConsoleEvent(MsgType_##_type2, format));
+        QCoreApplication::postEvent(ConsoleOutput::getInstance(), new ConsoleEvent(MsgType_##_type2, notifier, format));
 
-    FC_CONSOLE_FMT(Message,Txt);
+    FC_CONSOLE_FMT(Message,Txt);    
 }
 
 /** Prints a Message
@@ -279,6 +293,22 @@ void ConsoleSingleton::Message( const char *pMsg, ... )
  *  @see Log
  */
 void ConsoleSingleton::Warning( const char *pMsg, ... )
+{
+    va_list namelessVars;
+    va_start(namelessVars, pMsg);
+    WarningV("", pMsg, namelessVars);
+    va_end(namelessVars);
+}
+
+void ConsoleSingleton::WarningS ( const std::string & notifier, const char * pMsg, ... )
+{
+    va_list namelessVars;
+    va_start(namelessVars, pMsg);
+    WarningV(notifier, pMsg, namelessVars);
+    va_end(namelessVars);
+}
+
+void ConsoleSingleton::WarningV( const std::string & notifier, const char *pMsg, va_list args )
 {
     FC_CONSOLE_FMT(Warning,Wrn);
 }
@@ -300,9 +330,24 @@ void ConsoleSingleton::Warning( const char *pMsg, ... )
  */
 void ConsoleSingleton::Error( const char *pMsg, ... )
 {
-    FC_CONSOLE_FMT(Error,Err);
+    va_list namelessVars;
+    va_start(namelessVars, pMsg);
+    ErrorV("", pMsg, namelessVars);
+    va_end(namelessVars);
 }
 
+void ConsoleSingleton::ErrorS ( const std::string & notifier, const char * pMsg, ... )
+{
+    va_list namelessVars;
+    va_start(namelessVars, pMsg);
+    ErrorV(notifier, pMsg, namelessVars);
+    va_end(namelessVars);
+}
+
+void ConsoleSingleton::ErrorV( const std::string & notifier, const char *pMsg, va_list args )
+{
+    FC_CONSOLE_FMT(Error,Err);
+}
 
 /** Prints a Message
  *  This method is appropriate for development and tracking purposes.
@@ -318,9 +363,23 @@ void ConsoleSingleton::Error( const char *pMsg, ... )
  *  @see Warning
  *  @see Error
  */
-
-
 void ConsoleSingleton::Log( const char *pMsg, ... )
+{
+    va_list namelessVars;
+    va_start(namelessVars, pMsg);
+    LogV("", pMsg, namelessVars);
+    va_end(namelessVars);
+}
+
+void ConsoleSingleton::LogS ( const std::string & notifier, const char * pMsg, ... )
+{
+    va_list namelessVars;
+    va_start(namelessVars, pMsg);
+    LogV(notifier, pMsg, namelessVars);
+    va_end(namelessVars);
+}
+
+void ConsoleSingleton::LogV( const std::string & notifier, const char *pMsg, va_list args )
 {
     if (_bVerbose)
     {
@@ -357,35 +416,35 @@ void ConsoleSingleton::DetachObserver(ILogger *pcObserver)
     _aclObservers.erase(pcObserver);
 }
 
-void ConsoleSingleton::NotifyMessage(const char *sMsg)
+void ConsoleSingleton::NotifyMessage(const char *sMsg, const std::string & notifiername)
 {
     for (std::set<ILogger * >::iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();++Iter) {
         if ((*Iter)->bMsg)
-            (*Iter)->SendLog(sMsg, LogStyle::Message);   // send string to the listener
+            (*Iter)->SendLog(notifiername, sMsg, LogStyle::Message);   // send string to the listener
     }
 }
 
-void ConsoleSingleton::NotifyWarning(const char *sMsg)
+void ConsoleSingleton::NotifyWarning(const char *sMsg, const std::string & notifiername)
 {
     for (std::set<ILogger * >::iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();++Iter) {
         if ((*Iter)->bWrn)
-            (*Iter)->SendLog(sMsg, LogStyle::Warning);   // send string to the listener
+            (*Iter)->SendLog(notifiername, sMsg, LogStyle::Warning);   // send string to the listener
     }
 }
 
-void ConsoleSingleton::NotifyError(const char *sMsg)
+void ConsoleSingleton::NotifyError(const char *sMsg, const std::string & notifiername)
 {
     for (std::set<ILogger * >::iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();++Iter) {
         if ((*Iter)->bErr)
-            (*Iter)->SendLog(sMsg, LogStyle::Error);   // send string to the listener
+            (*Iter)->SendLog(notifiername, sMsg, LogStyle::Error);   // send string to the listener
     }
 }
 
-void ConsoleSingleton::NotifyLog(const char *sMsg)
+void ConsoleSingleton::NotifyLog(const char *sMsg, const std::string & notifiername)
 {
     for (std::set<ILogger * >::iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();++Iter) {
         if ((*Iter)->bLog)
-            (*Iter)->SendLog(sMsg, LogStyle::Log);   // send string to the listener
+            (*Iter)->SendLog(notifiername, sMsg, LogStyle::Log);   // send string to the listener
     }
 }
 

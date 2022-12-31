@@ -47,7 +47,7 @@ public:
   GUIConsole();
   /// Destructor
   ~GUIConsole() override;
-  void SendLog(const std::string& msg, Base::LogStyle level) override;
+  void SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level) override;
   const char* Name() override {return "GUIConsole";}
 
 protected:

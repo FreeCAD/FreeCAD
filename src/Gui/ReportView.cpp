@@ -449,8 +449,10 @@ void ReportOutput::restoreFont()
     setFont(serifFont);
 }
 
-void ReportOutput::SendLog(const std::string& msg, Base::LogStyle level)
+void ReportOutput::SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level)
 {
+    (void) notifiername;
+    
     ReportHighlighter::Paragraph style = ReportHighlighter::LogText;
     switch (level) {
         case Base::LogStyle::Warning:
