@@ -276,6 +276,30 @@ PyObject* DocumentPy::mdiViewsOfType(PyObject *args)
     PY_CATCH;
 }
 
+PyObject* DocumentPy::save(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    PY_TRY {
+        bool ok = getDocumentPtr()->save();
+        return Py::new_reference_to(Py::Boolean(ok));
+    }
+    PY_CATCH;
+}
+
+PyObject* DocumentPy::saveAs(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    PY_TRY {
+        bool ok = getDocumentPtr()->saveAs();
+        return Py::new_reference_to(Py::Boolean(ok));
+    }
+    PY_CATCH;
+}
+
 PyObject* DocumentPy::sendMsgToViews(PyObject *args)
 {
     char* msg;
