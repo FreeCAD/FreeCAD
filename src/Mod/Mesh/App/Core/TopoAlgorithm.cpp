@@ -26,6 +26,7 @@
 # include <algorithm>
 # include <queue>
 # include <utility>
+# include <boost/core/ignore_unused.hpp>
 #endif
 
 #include <Base/Console.h>
@@ -1740,4 +1741,5 @@ void MeshComponents::SearchForComponents(TMode tMode, const std::vector<FacetInd
   // sort components by size (descending order)
   std::sort(aclConnectComp.begin(), aclConnectComp.end(), CNofFacetsCompare());
   aclT = aclConnectComp;
+  boost::ignore_unused(ulVisited);
 }

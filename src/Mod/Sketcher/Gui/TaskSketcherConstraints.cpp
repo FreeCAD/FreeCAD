@@ -23,7 +23,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <cmath>
-
+# include <boost/core/ignore_unused.hpp>
 # include <QContextMenuEvent>
 # include <QMenu>
 # include <QMessageBox>
@@ -1243,7 +1243,7 @@ void TaskSketcherConstraints::onSelectionChanged(const Gui::SelectionChanges& ms
                 QRegularExpression rx(QString::fromLatin1("^Constraint(\\d+)$"));
                 QRegularExpressionMatch match;
                 QString expr = QString::fromLatin1(msg.pSubName);
-                expr.indexOf(rx, 0, &match);
+                boost::ignore_unused(expr.indexOf(rx, 0, &match));
                 if (match.hasMatch()) { // is a constraint
                     bool ok;
                     int ConstrId = match.captured(1).toInt(&ok) - 1;
@@ -1316,7 +1316,7 @@ void TaskSketcherConstraints::getSelectionGeoId(QString expr, int & geoid, Sketc
 {
     QRegularExpression rxEdge(QString::fromLatin1("^Edge(\\d+)$"));
     QRegularExpressionMatch match;
-    expr.indexOf(rxEdge, 0, &match);
+    boost::ignore_unused(expr.indexOf(rxEdge, 0, &match));
     geoid = Sketcher::GeoEnum::GeoUndef;
     pointpos = Sketcher::PointPos::none;
 
@@ -1329,7 +1329,7 @@ void TaskSketcherConstraints::getSelectionGeoId(QString expr, int & geoid, Sketc
     }
     else {
         QRegularExpression rxVertex(QString::fromLatin1("^Vertex(\\d+)$"));
-        expr.indexOf(rxVertex, 0, &match);
+        boost::ignore_unused(expr.indexOf(rxVertex, 0, &match));
 
         if (match.hasMatch()) {
             bool ok;

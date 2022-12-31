@@ -32,6 +32,7 @@
 # include <Inventor/nodes/SoCamera.h>
 
 # include <QApplication>
+# include <QFontMetricsF>
 # include <QMenu>
 # include <QMessageBox>
 # include <QScreen>
@@ -3648,7 +3649,8 @@ QFont ViewProviderSketch::getApplicationFont() const
 
 int ViewProviderSketch::defaultFontSizePixels() const
 {
-    return QApplication::fontMetrics().height();
+    QFontMetricsF metrics(QApplication::font());
+    return static_cast<int>(metrics.height());
 }
 
 int ViewProviderSketch::getApplicationLogicalDPIX() const {
