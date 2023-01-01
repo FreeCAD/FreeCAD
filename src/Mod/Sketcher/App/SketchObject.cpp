@@ -8316,8 +8316,6 @@ void SketchObject::migrateSketch()
 
             Constraints.setValues(std::move(newconstraints));
 
-            Base::Console().Warning("In Sketch %s, parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!\n",this->Label.getStrValue().c_str());
-
             this->getDocument()->signalUserMessage(*this, QString::fromLatin1(QT_TRANSLATE_NOOP("CriticalMessages","Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!")), App::Document::NotificationType::Critical);
         }
     }
