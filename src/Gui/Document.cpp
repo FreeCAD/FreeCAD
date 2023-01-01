@@ -90,7 +90,7 @@ public:
     void slotUserMessage(const App::DocumentObject&, const QString &, App::Document::NotificationType);
 
 private:
-    void showInNotificationArea(const App::DocumentObject& obj, const QString & msg, App::Document::NotificationType notificationtype);
+    void redirectToConsole(const App::DocumentObject& obj, const QString & msg, App::Document::NotificationType notificationtype);
 
 private:
     using Connection = boost::signals2::connection;
@@ -113,7 +113,7 @@ void MessageManager::setDocument(Gui::Document * pDocument)
 }
 
 void MessageManager::slotUserMessage(const App::DocumentObject& obj, const QString & msg, App::Document::NotificationType notificationtype)
-{  
+{
     auto userInitiatedRestore = Application::Instance->testStatus(Gui::Application::UserInitiatedOpenDocument);
 
     if(notificationtype == App::Document::NotificationType::Critical && userInitiatedRestore && requireConfirmationCriticalMessageDuringRestoring) {
@@ -124,44 +124,32 @@ void MessageManager::slotUserMessage(const App::DocumentObject& obj, const QStri
             requireConfirmationCriticalMessageDuringRestoring = false;
 
         // The user has already acknowledged it, so record it as a Warning
-        showInNotificationArea(obj, msg, App::Document::NotificationType::Warning);
+        redirectToConsole(obj, msg, App::Document::NotificationType::Warning);
     }
     else { // Non-critical errors and warnings redirected to the notification area
         if(notificationtype == App::Document::NotificationType::Critical) {
             // The user has already acknowledged it, so record it as a Warning
-            showInNotificationArea(obj, msg, App::Document::NotificationType::Warning);
+            notificationtype = App::Document::NotificationType::Warning;
         }
-        else {
-            showInNotificationArea(obj, msg, notificationtype);
-        }
+
+        redirectToConsole(obj, msg, notificationtype);
     }
 }
 
-void MessageManager::showInNotificationArea(const App::DocumentObject& obj, const QString & msg, App::Document::NotificationType notificationtype)
+void MessageManager::redirectToConsole(const App::DocumentObject& obj, const QString & msg, App::Document::NotificationType notificationtype)
 {
-    auto mw = getMainWindow();
-    auto statusbar = mw->statusBar();
-    
-    auto narea = statusbar->findChild<NotificationArea *>(QString::fromLatin1("notificationArea"));
-    
-    NotificationArea::NotificationType ntype;
-    
     switch(notificationtype) {
         case App::Document::NotificationType::Critical:
-            ntype = NotificationArea::NotificationType::Error;
+        case App::Document::NotificationType::Warning:
+            Base::Console().WarningS(obj.getFullName(), msg.toStdString().c_str());
             break;
         case App::Document::NotificationType::Error:
-            ntype = NotificationArea::NotificationType::Error;
-            break;
-        case App::Document::NotificationType::Warning:
-            ntype = NotificationArea::NotificationType::Warning;
+            Base::Console().ErrorS(obj.getFullName(), msg.toStdString().c_str());
             break;
         case App::Document::NotificationType::Information:
-            ntype = NotificationArea::NotificationType::Message;
+            Base::Console().MessageS(obj.getFullName(), msg.toStdString().c_str());
             break;
     }
-    
-    narea->pushNotification(ntype, QString::fromLatin1(obj.getFullName().c_str()), msg);
 }
 
 
