@@ -126,12 +126,19 @@ Voronoi::segment_type Voronoi::diagram_type::retrieveSegment(const Voronoi::diag
   return segments[index];
 }
 
+static int voronoi_id_ = 0;
 
 // Voronoi
 
 Voronoi::Voronoi()
-  :vd(new diagram_type)
+  : vd{new diagram_type}
+  , id_{++voronoi_id_}
 {
+#if 0
+  if (id_ == 1) {
+    fprintf(stderr, "diagram,x0,y0,x1,y1\n");
+  }
+#endif
 }
 
 Voronoi::~Voronoi()
@@ -148,11 +155,18 @@ void Voronoi::addPoint(const Voronoi::point_type &p) {
 
 void Voronoi::addSegment(const Voronoi::segment_type &s) {
   Voronoi::point_type pil, pih;
-  pil.x(low(s).x() * vd->getScale());
-  pil.y(low(s).y() * vd->getScale());
-  pih.x(high(s).x() * vd->getScale());
-  pih.y(high(s).y() * vd->getScale());
-  vd->segments.emplace_back(pil, pih);
+  pil.x(round(low(s).x() * vd->getScale()));
+  pil.y(round(low(s).y() * vd->getScale()));
+  pih.x(round(high(s).x() * vd->getScale()));
+  pih.y(round(high(s).y() * vd->getScale()));
+  int dx = pil.x() - pih.x();
+  int dy = pil.y() - pih.y();
+  if (dx != 0 || dy != 0) {
+    vd->segments.emplace_back(pil, pih);
+#if 0
+    fprintf(stderr, "%2d, %9.2f, %9.2f, %9.2f, %9.2f\n", id_, pil.x(), pil.y(), pih.x(), pih.y());
+#endif
+  }
 }
 
 long Voronoi::numPoints() const {

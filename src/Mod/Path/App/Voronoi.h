@@ -129,6 +129,7 @@ namespace Path
     Base::Reference<diagram_type> vd;
     friend class VoronoiPy;
     void colorExterior(const Voronoi::diagram_type::edge_type *edge, std::size_t colorValue);
+    int id_;
   };
 
 } //namespace Path

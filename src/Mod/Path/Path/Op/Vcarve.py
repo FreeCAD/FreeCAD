@@ -317,6 +317,8 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                 wires = _sortVoronoiWires(wires)
             voronoiWires.extend(wires)
 
+            self.vd.append(vd)
+
         if _sorting == "global":
             voronoiWires = _sortVoronoiWires(voronoiWires)
 
@@ -334,6 +336,8 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
     def opExecute(self, obj):
         """opExecute(obj) ... process engraving operation"""
         Path.Log.track()
+
+        self.vd = []
 
         if not hasattr(obj.ToolController.Tool, "CuttingEdgeAngle"):
             Path.Log.error(
