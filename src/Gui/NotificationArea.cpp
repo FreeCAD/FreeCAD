@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2022 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com      *
+ *   Copyright (c) 2022 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -33,13 +33,13 @@
 # include <QStringList>
 # include <QTreeWidget>
 # include <QTimer>
-# include <QToolTip>
 # include <QWidgetAction>
 #endif
 
 #include <Base/Console.h>
 
 #include "BitmapFactory.h"
+#include "NotificationBox.h"
 
 #include "NotificationArea.h"
 
@@ -107,7 +107,7 @@ struct NotificationAreaP
     int currentlyNotifyingIndex = 0;
     unsigned int unread = 0;
     std::mutex mutexNotification;
-    const unsigned int notificationExpirationTime = 5000;
+    const unsigned int notificationExpirationTime = 10000;
     QMenu * menu;
     QTreeWidget * table;
 
@@ -230,14 +230,16 @@ void NotificationArea::pushNotification(NotificationType notificationtype, const
 
     QTimer::singleShot(d->notificationExpirationTime, [this](){
         std::lock_guard<std::mutex> g(d->mutexNotification); // guard to avoid modifying the notification start index while creating the tooltip
-        d->currentlyNotifyingIndex--;
+        if(d->currentlyNotifyingIndex > 0)
+            d->currentlyNotifyingIndex--;
     });
 
 }
 
 void NotificationArea::showInNotificationArea()
 {
-    QString msgw = QString::fromLatin1("<style>p { margin: 0 0 0 0 }</style><p style='white-space:nowrap'>              \
+    QString msgw = QString::fromLatin1("<style>p { margin: 0 0 0 0 } td { padding: 0 15px }</style>                     \
+    <p style='white-space:nowrap'>                                                                                      \
     <table>                                                                                                             \
      <tr>                                                                                                               \
       <th><small>%1</small></th>                                                                                        \
@@ -262,20 +264,17 @@ void NotificationArea::showInNotificationArea()
 
         msgw += QString::fromLatin1("                                                                                   \
         <tr>                                                                                                            \
-        <td align='center'><img width=\"16\" height=\"16\" src='%1'></td>                                               \
-        <td align='center'>%2</td>                                                                                      \
-        <td align='center'>%3</td>                                                                                      \
+        <td align='left'><img width=\"16\" height=\"16\" src='%1'></td>                                               \
+        <td align='left'>%2</td>                                                                                      \
+        <td align='left'>%3</td>                                                                                      \
         </tr>")
             .arg(iconstr)
             .arg(item->notifierName)
             .arg(item->msg);
     }
 
-
-
     msgw += QString::fromLatin1("</table></p>");
 
 
-    QToolTip::hideText(); // ensure the tooltip is not being shown
-    QToolTip::showText( this->mapToGlobal( QPoint( ) ), msgw);
+    NotificationBox::showText( this->mapToGlobal( QPoint( ) ), msgw, d->notificationExpirationTime);
 }
