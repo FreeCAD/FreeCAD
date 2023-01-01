@@ -70,6 +70,10 @@ public:
     QDir* toQDir(PyObject* pyobj);
     static void createChildrenNameAttributes(PyObject* root, QObject* object);
     static void setParent(PyObject* pyWdg, QObject* parent);
+
+private:
+    static std::string shiboken;
+    static std::string PySide;
 };
 
 } // namespace Gui
