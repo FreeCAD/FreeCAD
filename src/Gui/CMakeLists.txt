@@ -167,11 +167,7 @@ IF(OCULUS_FOUND)
 ENDIF(OCULUS_FOUND)
 
 if(FREECAD_USE_SHIBOKEN)
-    if (FREECAD_QT_MAJOR_VERSION EQUAL 5)
-        add_definitions(-DHAVE_SHIBOKEN2)
-    else()
-        add_definitions(-DHAVE_SHIBOKEN${FREECAD_QT_MAJOR_VERSION})
-    endif()
+    add_definitions(-DHAVE_SHIBOKEN${PYSIDE_MAJOR_VERSION})
     include_directories(
         ${SHIBOKEN_INCLUDE_DIR}
     )
@@ -216,11 +212,7 @@ if(FREECAD_USE_PYSIDE)
     include_directories(
         ${PYSIDE_INCLUDE_DIR}/QtWidgets
     )
-    if (FREECAD_QT_MAJOR_VERSION EQUAL 5)
-        add_definitions(-DHAVE_PYSIDE2)
-    else()
-        add_definitions(-DHAVE_PYSIDE${FREECAD_QT_MAJOR_VERSION})
-    endif()
+    add_definitions(-DHAVE_PYSIDE${PYSIDE_MAJOR_VERSION})
 endif(FREECAD_USE_PYSIDE)
 
 generate_from_xml(DocumentPy)
