@@ -92,7 +92,7 @@ macro(SetupShibokenAndPyside)
             file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtWebEngineWidgets.py  "from PySide${PYSIDE_MAJOR_VERSION}.QtWebEngineWidgets import *\n")
         else()
             file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtWebEngineWidgets.py  "from PySide${PYSIDE_MAJOR_VERSION}.QtWebEngineWidgets import *\n"
-                                                                             "from PySide${PYSIDE_MAJOR_VERSION}.QtWebEingineCore import QWebEnginePage\n")
+                                                                             "from PySide${PYSIDE_MAJOR_VERSION}.QtWebEngineCore import QWebEnginePage\n")
         endif()
     endif()
 
