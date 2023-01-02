@@ -23,16 +23,16 @@
 #ifndef TECHDRAWGUI_VIEWPROVIDERDRAWINGVIEWEXTENSION_H
 #define TECHDRAWGUI_VIEWPROVIDERDRAWINGVIEWEXTENSION_H
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
 #include <Gui/ViewProviderExtension.h>
 #include <Gui/ViewProviderExtensionPy.h>
 #include <Gui/ViewProviderExtensionPython.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 namespace TechDrawGui
 {
 class ViewProviderDrawingView;
 
-class TechDrawGuiExport ViewProviderDrawingViewExtension : public Gui::ViewProviderExtension
+class TechDrawGuiExport ViewProviderDrawingViewExtension: public Gui::ViewProviderExtension
 {
     EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderDrawingViewExtension);
 
@@ -54,10 +54,9 @@ public:
 private:
 };
 
-using ViewProviderDrawingViewExtensionPython = Gui::ViewProviderExtensionPythonT<ViewProviderDrawingViewExtension>;
+using ViewProviderDrawingViewExtensionPython =
+    Gui::ViewProviderExtensionPythonT<TechDrawGui::ViewProviderDrawingViewExtension>;
 
-} //namespace Gui
+}// namespace TechDrawGui
 
-#endif // TECHDRAWGUI_VIEWPROVIDERDRAWINGVIEWEXTENSION_H
-
-
+#endif// TECHDRAWGUI_VIEWPROVIDERDRAWINGVIEWEXTENSION_H

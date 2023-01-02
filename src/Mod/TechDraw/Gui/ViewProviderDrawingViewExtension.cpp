@@ -23,7 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QMessageBox>
+#include <QMessageBox>
 #endif
 
 #include <App/Document.h>
@@ -34,8 +34,8 @@
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawTemplate.h>
 
-#include "ViewProviderDrawingViewExtension.h"
 #include "ViewProviderDrawingView.h"
+#include "ViewProviderDrawingViewExtension.h"
 #include "ViewProviderPage.h"
 
 using namespace TechDrawGui;
@@ -47,41 +47,40 @@ ViewProviderDrawingViewExtension::ViewProviderDrawingViewExtension()
     initExtensionType(ViewProviderDrawingViewExtension::getExtensionClassTypeId());
 }
 
-ViewProviderDrawingViewExtension::~ViewProviderDrawingViewExtension()
-{
-}
+ViewProviderDrawingViewExtension::~ViewProviderDrawingViewExtension() {}
 
-bool ViewProviderDrawingViewExtension::extensionCanDragObjects() const {
-    return true;
-}
+bool ViewProviderDrawingViewExtension::extensionCanDragObjects() const { return true; }
 
 //we don't support dragging children of Views (Dimensions, Balloons, Hatches, etc) now, but we don't want another
 //extension to drag our children and cause problems
-bool ViewProviderDrawingViewExtension::extensionCanDragObject(App::DocumentObject* docObj) const {
+bool ViewProviderDrawingViewExtension::extensionCanDragObject(App::DocumentObject* docObj) const
+{
     (void)docObj;
     return true;
 }
 
 //the default drag will remove the object from the document until it is dropped and re-added, so we claim
 //to do the dragging.
-void ViewProviderDrawingViewExtension::extensionDragObject(App::DocumentObject* obj) {
-    (void)obj;
-}
+void ViewProviderDrawingViewExtension::extensionDragObject(App::DocumentObject* obj) { (void)obj; }
 
 //we don't support dropping of new children of Views (Dimensions, Balloons, Hatches, etc) now, but we don't want another
 //extension to try to drop on us and cause problems
-bool ViewProviderDrawingViewExtension::extensionCanDropObjects() const {
-    return true;
+bool ViewProviderDrawingViewExtension::extensionCanDropObjects() const { return true; }
+
+//let the page have any drops we receive
+bool ViewProviderDrawingViewExtension::extensionCanDropObject(App::DocumentObject* obj) const
+{
+    return getViewProviderDrawingView()
+        ->getViewProviderPage()
+        ->getVPPExtension()
+        ->extensionCanDropObject(obj);
 }
 
 //let the page have any drops we receive
-bool ViewProviderDrawingViewExtension::extensionCanDropObject(App::DocumentObject* obj) const {
-    return getViewProviderDrawingView()->getViewProviderPage()->getVPPExtension()->extensionCanDropObject(obj);
-}
-
-//let the page have any drops we receive
-void ViewProviderDrawingViewExtension::extensionDropObject(App::DocumentObject* obj) {
-    getViewProviderDrawingView()->getViewProviderPage()->getVPPExtension()->extensionDropObject(obj);
+void ViewProviderDrawingViewExtension::extensionDropObject(App::DocumentObject* obj)
+{
+    getViewProviderDrawingView()->getViewProviderPage()->getVPPExtension()->extensionDropObject(
+        obj);
 }
 
 const ViewProviderDrawingView* ViewProviderDrawingViewExtension::getViewProviderDrawingView() const
@@ -89,7 +88,7 @@ const ViewProviderDrawingView* ViewProviderDrawingViewExtension::getViewProvider
     return dynamic_cast<const ViewProviderDrawingView*>(getExtendedViewProvider());
 }
 
-const char*  ViewProviderDrawingViewExtension::whoAmI() const
+const char* ViewProviderDrawingViewExtension::whoAmI() const
 {
     auto parent = getViewProviderDrawingView();
     if (parent) {
@@ -98,11 +97,12 @@ const char*  ViewProviderDrawingViewExtension::whoAmI() const
     return nullptr;
 }
 
-namespace Gui {
-EXTENSION_PROPERTY_SOURCE_TEMPLATE(ViewProviderDrawingViewExtensionPython, ViewProviderDrawingViewExtension)
+namespace Gui
+{
+EXTENSION_PROPERTY_SOURCE_TEMPLATE(TechDrawGui::ViewProviderDrawingViewExtensionPython,
+                                   TechDrawGui::ViewProviderDrawingViewExtension)
 
 // explicit template instantiation
-template class GuiExport ViewProviderExtensionPythonT<ViewProviderDrawingViewExtension>;
-}
-
-
+template class TechDrawGuiExport
+    ViewProviderExtensionPythonT<TechDrawGui::ViewProviderDrawingViewExtension>;
+}// namespace Gui

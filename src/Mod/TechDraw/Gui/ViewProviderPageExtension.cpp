@@ -23,7 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QMessageBox>
+#include <QMessageBox>
 #endif
 
 #include <App/Document.h>
@@ -32,11 +32,11 @@
 #include <Base/Tools.h>
 
 #include <Mod/TechDraw/App/DrawPage.h>
-#include <Mod/TechDraw/App/DrawTemplate.h>
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
+#include <Mod/TechDraw/App/DrawTemplate.h>
 
-#include "ViewProviderPageExtension.h"
 #include "ViewProviderPage.h"
+#include "ViewProviderPageExtension.h"
 
 using namespace TechDrawGui;
 
@@ -47,36 +47,30 @@ ViewProviderPageExtension::ViewProviderPageExtension()
     initExtensionType(ViewProviderPageExtension::getExtensionClassTypeId());
 }
 
-ViewProviderPageExtension::~ViewProviderPageExtension()
-{
-}
+ViewProviderPageExtension::~ViewProviderPageExtension() {}
 
-bool ViewProviderPageExtension::extensionCanDragObjects() const {
-    return true;
-}
+bool ViewProviderPageExtension::extensionCanDragObjects() const { return true; }
 
 //we don't want another extension to drag our objects, so we say that we can handle this object
-bool ViewProviderPageExtension::extensionCanDragObject(App::DocumentObject* docObj) const {
-    (void) docObj;
+bool ViewProviderPageExtension::extensionCanDragObject(App::DocumentObject* docObj) const
+{
+    (void)docObj;
     return true;
 }
 
 //we don't take any action on drags.  everything is handling in drop
-void ViewProviderPageExtension::extensionDragObject(App::DocumentObject* obj) {
-    (void) obj;
-}
+void ViewProviderPageExtension::extensionDragObject(App::DocumentObject* obj) { (void)obj; }
 
 //we handle our own drops
-bool ViewProviderPageExtension::extensionCanDropObjects() const {
-    return true;
-}
+bool ViewProviderPageExtension::extensionCanDropObjects() const { return true; }
 
-bool ViewProviderPageExtension::extensionCanDropObject(App::DocumentObject* obj) const {
+bool ViewProviderPageExtension::extensionCanDropObject(App::DocumentObject* obj) const
+{
     //only DrawView objects can live on pages (except special case Template)
-    if ( obj->isDerivedFrom(TechDraw::DrawView::getClassTypeId()) ) {
+    if (obj->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
         return true;
     }
-    if ( obj->isDerivedFrom(TechDraw::DrawTemplate::getClassTypeId()) ) {
+    if (obj->isDerivedFrom(TechDraw::DrawTemplate::getClassTypeId())) {
         //don't let another extension try to drop templates
         return true;
     }
@@ -84,8 +78,9 @@ bool ViewProviderPageExtension::extensionCanDropObject(App::DocumentObject* obj)
     return false;
 }
 
-void ViewProviderPageExtension::extensionDropObject(App::DocumentObject* obj) {
-    if ( obj->isDerivedFrom(TechDraw::DrawView::getClassTypeId()) ) {
+void ViewProviderPageExtension::extensionDropObject(App::DocumentObject* obj)
+{
+    if (obj->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
         dropObject(obj);
         return;
     }
@@ -98,7 +93,7 @@ void ViewProviderPageExtension::dropObject(App::DocumentObject* docObj)
         //DPGI can not be dropped onto the Page as it belongs to DPG, not Page
         return;
     }
-    if (docObj->isDerivedFrom(TechDraw::DrawView::getClassTypeId()) ) {
+    if (docObj->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
         auto dv = static_cast<TechDraw::DrawView*>(docObj);
         if (dv->findParentPage()) {
             dv->findParentPage()->removeView(dv);
@@ -116,7 +111,7 @@ const ViewProviderPage* ViewProviderPageExtension::getViewProviderPage() const
 }
 
 
-const char*  ViewProviderPageExtension::whoAmI() const
+const char* ViewProviderPageExtension::whoAmI() const
 {
     auto parent = getViewProviderPage();
     if (parent) {
@@ -125,10 +120,12 @@ const char*  ViewProviderPageExtension::whoAmI() const
     return nullptr;
 }
 
-namespace Gui {
-EXTENSION_PROPERTY_SOURCE_TEMPLATE(ViewProviderPageExtensionPython, ViewProviderPageExtension)
+namespace Gui
+{
+EXTENSION_PROPERTY_SOURCE_TEMPLATE(TechDrawGui::ViewProviderPageExtensionPython,
+                                   TechDrawGui::ViewProviderPageExtension)
 
 // explicit template instantiation
-template class GuiExport ViewProviderExtensionPythonT<ViewProviderPageExtension>;
-}
-
+template class TechDrawGuiExport
+    ViewProviderExtensionPythonT<TechDrawGui::ViewProviderPageExtension>;
+}// namespace Gui
