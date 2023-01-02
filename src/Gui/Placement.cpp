@@ -378,7 +378,7 @@ void Placement::setupSignalMapper()
     int id = 1;
     QList<Gui::QuantitySpinBox*> sb = this->findChildren<Gui::QuantitySpinBox*>();
     for (const auto & it : sb) {
-        connect(it, SIGNAL(valueChanged(double)), signalMapper, SLOT(map()));
+        connect(it, qOverload<double>(&QuantitySpinBox::valueChanged), signalMapper, qOverload<>(&QSignalMapper::map));
         signalMapper->setMapping(it, id++);
     }
 
@@ -1021,8 +1021,7 @@ TaskPlacement::TaskPlacement()
     taskbox->groupLayout()->addWidget(widget);
 
     Content.push_back(taskbox);
-    connect(widget, SIGNAL(placementChanged(const QVariant &, bool, bool)),
-            this, SLOT(slotPlacementChanged(const QVariant &, bool, bool)));
+    connect(widget, &Placement::placementChanged, this, &TaskPlacement::slotPlacementChanged);
 }
 
 TaskPlacement::~TaskPlacement()
