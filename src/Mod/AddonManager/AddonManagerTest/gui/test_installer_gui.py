@@ -44,6 +44,7 @@ class TestInstallerGui(unittest.TestCase):
         self.installer_gui = AddonInstallerGUI(self.addon_to_install)
         self.finalized_thread = False
 
+
     def tearDown(self):
         pass
 
@@ -53,7 +54,6 @@ class TestInstallerGui(unittest.TestCase):
             translate("AddonsInstaller", "Success"),
             QtWidgets.QDialogButtonBox.Ok,
         )
-        QtCore.QTimer.singleShot(10, dialog_watcher.run)
         self.installer_gui._installation_succeeded()
         self.assertTrue(
             dialog_watcher.dialog_found, "Failed to find the expected dialog box"
@@ -68,7 +68,6 @@ class TestInstallerGui(unittest.TestCase):
             translate("AddonsInstaller", "Installation Failed"),
             QtWidgets.QDialogButtonBox.Cancel,
         )
-        QtCore.QTimer.singleShot(10, dialog_watcher.run)
         self.installer_gui._installation_failed(
             self.addon_to_install, "Test of installation failure"
         )
@@ -85,7 +84,6 @@ class TestInstallerGui(unittest.TestCase):
             translate("AddonsInstaller", "Cannot execute Python"),
             QtWidgets.QDialogButtonBox.No,
         )
-        QtCore.QTimer.singleShot(10, dialog_watcher.run)
         self.installer_gui._report_no_python_exe()
         self.assertTrue(
             dialog_watcher.dialog_found, "Failed to find the expected dialog box"
@@ -100,7 +98,6 @@ class TestInstallerGui(unittest.TestCase):
             translate("AddonsInstaller", "Cannot execute pip"),
             QtWidgets.QDialogButtonBox.No,
         )
-        QtCore.QTimer.singleShot(10, dialog_watcher.run)
         self.installer_gui._report_no_pip("pip not actually run, this was a test")
         self.assertTrue(
             dialog_watcher.dialog_found, "Failed to find the expected dialog box"
@@ -115,7 +112,6 @@ class TestInstallerGui(unittest.TestCase):
             translate("AddonsInstaller", "Package installation failed"),
             QtWidgets.QDialogButtonBox.No,
         )
-        QtCore.QTimer.singleShot(10, dialog_watcher.run)
         self.installer_gui._report_dependency_failure(
             "Unit test", "Nothing really failed, this is a test of the dialog box"
         )
@@ -150,7 +146,6 @@ class TestInstallerGui(unittest.TestCase):
             translate("AddonsInstaller", "Missing Requirement"),
             QtWidgets.QDialogButtonBox.Cancel,
         )
-        QtCore.QTimer.singleShot(10, dialog_watcher.run)
         self.installer_gui._handle_disallowed_python(disallowed_packages)
         self.assertTrue(
             dialog_watcher.dialog_found, "Failed to find the expected dialog box"
@@ -168,7 +163,6 @@ class TestInstallerGui(unittest.TestCase):
             translate("AddonsInstaller", "Missing Requirement"),
             QtWidgets.QDialogButtonBox.Cancel,
         )
-        QtCore.QTimer.singleShot(10, dialog_watcher.run)
         self.installer_gui._handle_disallowed_python(disallowed_packages)
         self.assertTrue(
             dialog_watcher.dialog_found, "Failed to find the expected dialog box"
@@ -184,7 +178,6 @@ class TestInstallerGui(unittest.TestCase):
             translate("AddonsInstaller", "Missing Requirement"),
             QtWidgets.QDialogButtonBox.Cancel,
         )
-        QtCore.QTimer.singleShot(10, dialog_watcher.run)
         self.installer_gui._report_missing_workbenches(wbs)
         self.assertTrue(
             dialog_watcher.dialog_found, "Failed to find the expected dialog box"
@@ -200,7 +193,6 @@ class TestInstallerGui(unittest.TestCase):
             translate("AddonsInstaller", "Missing Requirement"),
             QtWidgets.QDialogButtonBox.Cancel,
         )
-        QtCore.QTimer.singleShot(10, dialog_watcher.run)
         self.installer_gui._report_missing_workbenches(wbs)
         self.assertTrue(
             dialog_watcher.dialog_found, "Failed to find the expected dialog box"
@@ -221,7 +213,6 @@ class TestInstallerGui(unittest.TestCase):
             translate("DependencyResolutionDialog", "Resolve Dependencies"),
             QtWidgets.QDialogButtonBox.Cancel,
         )
-        QtCore.QTimer.singleShot(10, dialog_watcher.run)
         self.installer_gui._resolve_dependencies_then_install(missing)
         self.assertTrue(
             dialog_watcher.dialog_found, "Failed to find the expected dialog box"
@@ -240,7 +231,6 @@ class TestInstallerGui(unittest.TestCase):
             translate("AddonsInstaller", "Incompatible Python version"),
             QtWidgets.QDialogButtonBox.Cancel,
         )
-        QtCore.QTimer.singleShot(10, dialog_watcher.run)
         stop_installing = self.installer_gui._check_python_version(missing)
         self.assertTrue(
             dialog_watcher.dialog_found, "Failed to find the expected dialog box"
@@ -464,7 +454,6 @@ class TestMacroInstallerGui(unittest.TestCase):
             translate("select_toolbar_dialog", "Select Toolbar"),
             QtWidgets.QDialogButtonBox.Cancel,
         )
-        QtCore.QTimer.singleShot(10, dialog_watcher.run)
         result = self.installer._ask_for_toolbar([])
         self.assertIsNone(result)
 
@@ -481,7 +470,6 @@ class TestMacroInstallerGui(unittest.TestCase):
             translate("select_toolbar_dialog", "Select Toolbar"),
             QtWidgets.QDialogButtonBox.Ok,
         )
-        QtCore.QTimer.singleShot(10, dialog_watcher.run)
         result = self.installer._ask_for_toolbar([])
         self.assertIsNotNone(result)
         self.assertTrue(hasattr(result, "get"))
@@ -501,7 +489,6 @@ class TestMacroInstallerGui(unittest.TestCase):
             translate("select_toolbar_dialog", "Select Toolbar"),
             self.interactor_selection_option_and_checkbox,
         )
-        QtCore.QTimer.singleShot(10, dialog_interactor.run)
         ut_tb_1 = self.installer.toolbar_params.GetGroup("UT_TB_1")
         ut_tb_2 = self.installer.toolbar_params.GetGroup("UT_TB_2")
         ut_tb_3 = self.installer.toolbar_params.GetGroup("UT_TB_3")
@@ -561,7 +548,6 @@ class TestMacroInstallerGui(unittest.TestCase):
             translate("toolbar_button", "Add button?"),
             QtWidgets.QDialogButtonBox.No,
         )
-        QtCore.QTimer.singleShot(10, dialog_watcher.run)
         self.installer._ask_to_install_toolbar_button()  # Blocks until killed by watcher
         self.assertTrue(dialog_watcher.dialog_found)
 

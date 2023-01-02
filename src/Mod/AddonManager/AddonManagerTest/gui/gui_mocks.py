@@ -44,6 +44,11 @@ class DialogWatcher(QtCore.QObject):
         else:
             self.button = QtWidgets.QDialogButtonBox.Cancel
 
+        self.execution_counter = 0
+        self.timer = QtCore.QTimer()
+        self.timer.timeout.connect(self.run)
+        self.timer.start(10)
+
     def run(self):
         widget = QtWidgets.QApplication.activeModalWidget()
         if widget:
@@ -56,7 +61,12 @@ class DialogWatcher(QtCore.QObject):
                 # Found the dialog we are looking for: now try to "click" the appropriate button
                 self.click_button(widget)
                 self.dialog_found = True
+                self.timer.stop()
         self.has_run = True
+        self.execution_counter += 1
+        if self.execution_counter > 100:
+            print("Stopper timer after 100 iterations")
+            self.timer.stop()
 
     def click_button(self, widget):
         button_boxes = widget.findChildren(QtWidgets.QDialogButtonBox)
