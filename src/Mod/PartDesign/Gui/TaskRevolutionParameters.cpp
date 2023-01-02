@@ -114,12 +114,12 @@ void TaskRevolutionParameters::fillAxisCombo(bool forceRefill)
         ui->axis->clear();
         axesInList.clear();
 
-        //add sketch axes
         auto *pcFeat = dynamic_cast<PartDesign::ProfileBased*>(vp->getObject());
         if (!pcFeat)
             throw Base::TypeError("The object is not ProfileBased.");
-        auto *pcSketch = static_cast<Part::Part2DObject*>(pcFeat->Profile.getValue());
-        if (pcSketch){
+
+        //add sketch axes
+        if (auto *pcSketch = dynamic_cast<Part::Part2DObject*>(pcFeat->Profile.getValue())) {
             addAxisToCombo(pcSketch, "V_Axis", QObject::tr("Vertical sketch axis"));
             addAxisToCombo(pcSketch, "H_Axis", QObject::tr("Horizontal sketch axis"));
             for (int i=0; i < pcSketch->getAxisCount(); i++) {
@@ -130,9 +130,8 @@ void TaskRevolutionParameters::fillAxisCombo(bool forceRefill)
             }
         }
 
-        //add part axes
-        PartDesign::Body * body = PartDesign::Body::findBodyOf ( pcFeat );
-        if (body) {
+        //add origin axes
+        if (PartDesign::Body * body = PartDesign::Body::findBodyOf(pcFeat)) {
             try {
                 App::Origin* orig = body->getOrigin();
                 addAxisToCombo(orig->getX(), std::string(), tr("Base X axis"));
