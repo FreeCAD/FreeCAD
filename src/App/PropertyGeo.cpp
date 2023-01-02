@@ -803,7 +803,7 @@ void PropertyPlacement::Save (Base::Writer &writer) const
                     << "\" Q3=\"" <<  _cPos.getRotation()[3] << "\"";
     Vector3d axis;
     double rfAngle;
-    _cPos.getRotation().getValue(axis, rfAngle);
+    _cPos.getRotation().getRawValue(axis, rfAngle);
     writer.Stream() << " A=\"" <<  rfAngle
                     << "\" Ox=\"" <<  axis.x
                     << "\" Oy=\"" <<  axis.y
@@ -1190,7 +1190,7 @@ void PropertyRotation::Save (Base::Writer &writer) const
 {
     Vector3d axis;
     double rfAngle;
-    _rot.getValue(axis, rfAngle);
+    _rot.getRawValue(axis, rfAngle);
 
     writer.Stream() << writer.ind() << "<PropertyRotation";
     writer.Stream() << " A=\"" <<  rfAngle << "\""

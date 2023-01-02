@@ -258,6 +258,28 @@ class DocumentBasicCases(unittest.TestCase):
     cpy = self.Doc.copyObject(obj)
     self.assertListEqual(obj.PlmList, cpy.PlmList)
 
+  def testRawAxis(self):
+    obj = self.Doc.addObject("App::FeaturePython","Label")
+    obj.addProperty("App::PropertyPlacement", "Plm")
+    obj.addProperty("App::PropertyRotation", "Rot")
+    obj.Plm.Rotation.Axis = (1,2,3)
+    obj.Rot.Axis = (3,2,1)
+
+    # saving and restoring
+    SaveName = tempfile.gettempdir() + os.sep + "CreateTest.FCStd"
+    self.Doc.saveAs(SaveName)
+    FreeCAD.closeDocument("CreateTest")
+    self.Doc = FreeCAD.open(SaveName)
+    obj = self.Doc.ActiveObject
+
+    self.assertEqual(obj.Plm.Rotation.RawAxis.x, 1)
+    self.assertEqual(obj.Plm.Rotation.RawAxis.y, 2)
+    self.assertEqual(obj.Plm.Rotation.RawAxis.z, 3)
+
+    self.assertEqual(obj.Rot.RawAxis.x, 3)
+    self.assertEqual(obj.Rot.RawAxis.y, 2)
+    self.assertEqual(obj.Rot.RawAxis.z, 1)
+
   def testAddRemove(self):
     L1 = self.Doc.addObject("App::FeatureTest","Label_1")
     # must delete object
