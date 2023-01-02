@@ -118,7 +118,7 @@ void TaskRevolutionParameters::fillAxisCombo(bool forceRefill)
         auto *pcFeat = dynamic_cast<PartDesign::ProfileBased*>(vp->getObject());
         if (!pcFeat)
             throw Base::TypeError("The object is not ProfileBased.");
-        auto *pcSketch = static_cast<Part::Part2DObject*>(pcFeat->Profile.getValue());
+        auto *pcSketch = dynamic_cast<Part::Part2DObject*>(pcFeat->Profile.getValue());
         if (pcSketch){
             addAxisToCombo(pcSketch, "V_Axis", QObject::tr("Vertical sketch axis"));
             addAxisToCombo(pcSketch, "H_Axis", QObject::tr("Horizontal sketch axis"));
