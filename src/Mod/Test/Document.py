@@ -1632,6 +1632,12 @@ class DocumentExpressionCases(unittest.TestCase):
       FreeCAD.closeDocument(self.Doc.Name)
       self.Doc = FreeCAD.openDocument(SaveName)
 
+  def testCyclicDependencyOnPlacement(self):
+    obj = self.Doc.addObject("App::FeaturePython","Python")
+    obj.addProperty("App::PropertyPlacement", "Placement")
+    obj.setExpression('.Placement.Base.x', '.Placement.Base.y + 10mm')
+    with self.assertRaises(RuntimeError):
+      obj.setExpression('.Placement.Base.y', '.Placement.Base.x + 10mm')
 
   def tearDown(self):
     #closing doc
