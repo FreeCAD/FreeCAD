@@ -140,6 +140,8 @@ public:
     std::string getExportName(bool forced=false) const;
     /// Return the object full name of the form DocName#ObjName
     std::string getFullName() const override;
+    /// Return the object full label in the form DocName#ObjName
+    std::string getFullLabel() const;
     bool isAttachedToDocument() const override;
     const char* detachFromDocument() override;
     /// gets the document in which this Object is handled
