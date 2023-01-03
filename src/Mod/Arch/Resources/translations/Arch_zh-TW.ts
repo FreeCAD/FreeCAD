@@ -597,11 +597,6 @@ Leave blank to use all objects from the document</source>
       <translation>以逗號分隔的角度列表，用於嘗試和旋轉形狀</translation>
     </message>
     <message>
-      <location filename="../ui/ArchNest.ui" line="135"/>
-      <source>0,90,180,270</source>
-      <translation>0,90,180,270</translation>
-    </message>
-    <message>
       <location filename="../ui/ArchNest.ui" line="145"/>
       <source>Nesting operation</source>
       <translation>巢狀操作</translation>
@@ -824,11 +819,6 @@ Leave blank to use all objects from the document</source>
       <source>This is the SVG stroke-dasharray property to apply
 to projections of hidden objects.</source>
       <translation>這是 SVG stroke-dasharray 屬性套用在隱藏物件的投影。</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-arch.ui" line="589"/>
-      <source>30, 10</source>
-      <translation>30, 10</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="625"/>

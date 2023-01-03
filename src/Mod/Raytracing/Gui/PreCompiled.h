@@ -35,6 +35,9 @@
 #include <sstream>
 #include <vector>
 
+// Boost
+#include <boost/core/ignore_unused.hpp>
+
 #ifdef FC_OS_WIN32
 # include <windows.h>
 #endif

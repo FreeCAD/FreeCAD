@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <boost/core/ignore_unused.hpp>
 # include <QRegularExpression>
 # include <QRegularExpressionMatch>
 #endif
@@ -98,7 +99,7 @@ void PovrayHighlighter::highlightBlock(const QString &text)
             else if (text.mid(i,1) == QLatin1String("#")) {
                 QRegularExpression rx(QLatin1String("#\\s*(\\w*)"));
                 QRegularExpressionMatch match;
-                text.indexOf(rx, i, &match);
+                boost::ignore_unused(text.indexOf(rx, i, &match));
                 if (match.hasMatch()) {
                     if (d->keywords.contains(match.captured(1)) != 0)
                         setFormat(i, match.capturedLength(), this->colorByType(SyntaxHighlighter::Keyword));

@@ -4,18 +4,18 @@
   <context>
     <name>CmdDrawingAnnotation</name>
     <message>
-      <location filename="../../Command.cpp" line="478"/>
+      <location filename="../../Command.cpp" line="475"/>
       <source>Drawing</source>
       <translation>Tekening</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="479"/>
+      <location filename="../../Command.cpp" line="476"/>
       <source>&amp;Annotation</source>
       <translation>Aantekening </translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="480"/>
-      <location filename="../../Command.cpp" line="482"/>
+      <location filename="../../Command.cpp" line="477"/>
+      <location filename="../../Command.cpp" line="479"/>
       <source>Inserts an Annotation view in the active drawing</source>
       <translation>Voeg een aantekening toe aan de actieve tekening</translation>
     </message>
@@ -23,18 +23,18 @@
   <context>
     <name>CmdDrawingClip</name>
     <message>
-      <location filename="../../Command.cpp" line="526"/>
+      <location filename="../../Command.cpp" line="523"/>
       <source>Drawing</source>
       <translation>Tekening</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="527"/>
+      <location filename="../../Command.cpp" line="524"/>
       <source>&amp;Clip</source>
       <translation>&amp;Clip</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="528"/>
-      <location filename="../../Command.cpp" line="530"/>
+      <location filename="../../Command.cpp" line="525"/>
+      <location filename="../../Command.cpp" line="527"/>
       <source>Inserts a clip group in the active drawing</source>
       <translation>Voegt een clipgroep in de actieve tekening in</translation>
     </message>
@@ -42,18 +42,18 @@
   <context>
     <name>CmdDrawingDraftView</name>
     <message>
-      <location filename="../../Command.cpp" line="717"/>
+      <location filename="../../Command.cpp" line="714"/>
       <source>Drawing</source>
       <translation>Tekening</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="718"/>
+      <location filename="../../Command.cpp" line="715"/>
       <source>&amp;Draft View</source>
       <translation>&amp;Concept weergave</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="719"/>
-      <location filename="../../Command.cpp" line="721"/>
+      <location filename="../../Command.cpp" line="716"/>
+      <location filename="../../Command.cpp" line="718"/>
       <source>Inserts a Draft view of the selected object(s) in the active drawing</source>
       <translation>Hiermee voegt u een conceptweergave van het/de geselecteerde object(en) in de actieve tekening</translation>
     </message>
@@ -61,18 +61,18 @@
   <context>
     <name>CmdDrawingExportPage</name>
     <message>
-      <location filename="../../Command.cpp" line="628"/>
+      <location filename="../../Command.cpp" line="625"/>
       <source>File</source>
       <translation>Bestand</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="629"/>
+      <location filename="../../Command.cpp" line="626"/>
       <source>&amp;Export page...</source>
       <translation>&amp;Exporteer pagina...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="630"/>
-      <location filename="../../Command.cpp" line="632"/>
+      <location filename="../../Command.cpp" line="627"/>
+      <location filename="../../Command.cpp" line="629"/>
       <source>Export a page to an SVG file</source>
       <translation>Een pagina naar een SVG-bestand exporteren</translation>
     </message>
@@ -80,13 +80,13 @@
   <context>
     <name>CmdDrawingNewA3Landscape</name>
     <message>
-      <location filename="../../Command.cpp" line="272"/>
+      <location filename="../../Command.cpp" line="269"/>
       <source>Drawing</source>
       <translation>Tekening</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="273"/>
-      <location filename="../../Command.cpp" line="274"/>
+      <location filename="../../Command.cpp" line="270"/>
+      <location filename="../../Command.cpp" line="271"/>
       <source>Insert new A3 landscape drawing</source>
       <translation>Nieuwe A3-liggend invoegen</translation>
     </message>
@@ -94,13 +94,13 @@
   <context>
     <name>CmdDrawingNewPage</name>
     <message>
-      <location filename="../../Command.cpp" line="94"/>
+      <location filename="../../Command.cpp" line="91"/>
       <source>Drawing</source>
       <translation>Tekening</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="95"/>
-      <location filename="../../Command.cpp" line="96"/>
+      <location filename="../../Command.cpp" line="92"/>
+      <location filename="../../Command.cpp" line="93"/>
       <source>Insert new drawing</source>
       <translation>Nieuwe tekening invoegen</translation>
     </message>
@@ -108,17 +108,17 @@
   <context>
     <name>CmdDrawingNewView</name>
     <message>
-      <location filename="../../Command.cpp" line="311"/>
+      <location filename="../../Command.cpp" line="308"/>
       <source>Drawing</source>
       <translation>Tekening</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="312"/>
+      <location filename="../../Command.cpp" line="309"/>
       <source>Insert view in drawing</source>
       <translation>Een weergave in de tekening invoegen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="313"/>
+      <location filename="../../Command.cpp" line="310"/>
       <source>Insert a new View of a Part in the active drawing</source>
       <translation>Een nieuwe weergave van een onderdeel in de actieve tekening invoegen</translation>
     </message>
@@ -126,17 +126,17 @@
   <context>
     <name>CmdDrawingOpen</name>
     <message>
-      <location filename="../../Command.cpp" line="61"/>
+      <location filename="../../Command.cpp" line="58"/>
       <source>Drawing</source>
       <translation>Tekening</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="62"/>
+      <location filename="../../Command.cpp" line="59"/>
       <source>Open SVG...</source>
       <translation>Open SVG...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="63"/>
+      <location filename="../../Command.cpp" line="60"/>
       <source>Open a scalable vector graphic</source>
       <translation>Open een scalable vector graphic</translation>
     </message>
@@ -144,18 +144,18 @@
   <context>
     <name>CmdDrawingOpenBrowserView</name>
     <message>
-      <location filename="../../Command.cpp" line="440"/>
+      <location filename="../../Command.cpp" line="437"/>
       <source>Drawing</source>
       <translation>Tekening</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="441"/>
+      <location filename="../../Command.cpp" line="438"/>
       <source>Open &amp;browser view</source>
       <translation>Open &amp;browser scherm</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="442"/>
-      <location filename="../../Command.cpp" line="444"/>
+      <location filename="../../Command.cpp" line="439"/>
+      <location filename="../../Command.cpp" line="441"/>
       <source>Opens the selected page in a browser view</source>
       <translation>Hiermee opent u de geselecteerde pagina in een browserweergave</translation>
     </message>
@@ -163,17 +163,17 @@
   <context>
     <name>CmdDrawingOrthoViews</name>
     <message>
-      <location filename="../../Command.cpp" line="390"/>
+      <location filename="../../Command.cpp" line="387"/>
       <source>Drawing</source>
       <translation>Tekening</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="391"/>
+      <location filename="../../Command.cpp" line="388"/>
       <source>Insert orthographic views</source>
       <translation>Orthografische weergaves invoegen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="392"/>
+      <location filename="../../Command.cpp" line="389"/>
       <source>Insert an orthographic projection of a part in the active drawing</source>
       <translation>Voeg een orthografische projectie van een onderdeel in de actieve tekening in</translation>
     </message>
@@ -181,18 +181,18 @@
   <context>
     <name>CmdDrawingProjectShape</name>
     <message>
-      <location filename="../../Command.cpp" line="681"/>
+      <location filename="../../Command.cpp" line="678"/>
       <source>Drawing</source>
       <translation>Tekening</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="682"/>
+      <location filename="../../Command.cpp" line="679"/>
       <source>Project shape...</source>
       <translation>Projectvorm...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="683"/>
-      <location filename="../../Command.cpp" line="684"/>
+      <location filename="../../Command.cpp" line="680"/>
+      <location filename="../../Command.cpp" line="681"/>
       <source>Project shape onto a user-defined plane</source>
       <translation>Projecteer vorm op een door de gebruiker gedefinieerd vlak</translation>
     </message>
@@ -200,18 +200,18 @@
   <context>
     <name>CmdDrawingSpreadsheetView</name>
     <message>
-      <location filename="../../Command.cpp" line="748"/>
+      <location filename="../../Command.cpp" line="745"/>
       <source>Drawing</source>
       <translation>Tekening</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="749"/>
+      <location filename="../../Command.cpp" line="746"/>
       <source>&amp;Spreadsheet View</source>
       <translation>&amp;Rekenbladweergave</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="750"/>
-      <location filename="../../Command.cpp" line="752"/>
+      <location filename="../../Command.cpp" line="747"/>
+      <location filename="../../Command.cpp" line="749"/>
       <source>Inserts a view of a selected spreadsheet in the active drawing</source>
       <translation>Voegt een weergave van een geselecteerd werkblad in de actieve tekening in</translation>
     </message>
@@ -219,18 +219,18 @@
   <context>
     <name>CmdDrawingSymbol</name>
     <message>
-      <location filename="../../Command.cpp" line="571"/>
+      <location filename="../../Command.cpp" line="568"/>
       <source>Drawing</source>
       <translation>Tekening</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="572"/>
+      <location filename="../../Command.cpp" line="569"/>
       <source>&amp;Symbol</source>
       <translation>&amp;Symbool</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="573"/>
-      <location filename="../../Command.cpp" line="575"/>
+      <location filename="../../Command.cpp" line="570"/>
+      <location filename="../../Command.cpp" line="572"/>
       <source>Inserts a symbol from a svg file in the active drawing</source>
       <translation>Voegt een symbool van een svg-bestand in de actieve tekening in</translation>
     </message>
@@ -238,127 +238,127 @@
   <context>
     <name>DrawingGui::DrawingView</name>
     <message>
-      <location filename="../../DrawingView.cpp" line="217"/>
+      <location filename="../../DrawingView.cpp" line="209"/>
       <source>&amp;Background</source>
       <translation>&amp;Achtergrond</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="223"/>
+      <location filename="../../DrawingView.cpp" line="215"/>
       <source>&amp;Outline</source>
       <translation>&amp;Omtrek</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="229"/>
+      <location filename="../../DrawingView.cpp" line="221"/>
       <source>&amp;Native</source>
       <translation>&amp;Eigen</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="233"/>
+      <location filename="../../DrawingView.cpp" line="225"/>
       <source>&amp;OpenGL</source>
       <translation>&amp;OpenGL</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="236"/>
+      <location filename="../../DrawingView.cpp" line="228"/>
       <source>&amp;Image</source>
       <translation>&amp;Afbeelding</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="240"/>
+      <location filename="../../DrawingView.cpp" line="232"/>
       <source>&amp;High Quality Antialiasing</source>
       <translation>Hoge kwaliteit Antialiasing</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="277"/>
+      <location filename="../../DrawingView.cpp" line="269"/>
       <source>Open SVG File</source>
       <translation>Open SVG-bestand</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="278"/>
+      <location filename="../../DrawingView.cpp" line="270"/>
       <source>Could not open file '%1'.</source>
       <translation>Kon bestand '%1' niet openen.</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="365"/>
+      <location filename="../../DrawingView.cpp" line="357"/>
       <source>&amp;Renderer</source>
       <translation>Renderer</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="470"/>
+      <location filename="../../DrawingView.cpp" line="462"/>
       <source>Export PDF</source>
       <translation>Exporteren als PDF</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="471"/>
+      <location filename="../../DrawingView.cpp" line="463"/>
       <source>PDF file</source>
       <translation>PDF-bestand</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="487"/>
+      <location filename="../../DrawingView.cpp" line="479"/>
       <source>Page sizes</source>
       <translation>Paginaformaten</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="488"/>
+      <location filename="../../DrawingView.cpp" line="480"/>
       <source>A0</source>
       <translation>A0</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="490"/>
+      <location filename="../../DrawingView.cpp" line="482"/>
       <source>A1</source>
       <translation>A1</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="492"/>
+      <location filename="../../DrawingView.cpp" line="484"/>
       <source>A2</source>
       <translation>A2</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="494"/>
+      <location filename="../../DrawingView.cpp" line="486"/>
       <source>A3</source>
       <translation>A3</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="496"/>
+      <location filename="../../DrawingView.cpp" line="488"/>
       <source>A4</source>
       <translation>A4</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="498"/>
+      <location filename="../../DrawingView.cpp" line="490"/>
       <source>A5</source>
       <translation>A5</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="581"/>
+      <location filename="../../DrawingView.cpp" line="573"/>
       <source>Different orientation</source>
       <translation>Verschillende oriëntatie</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="582"/>
+      <location filename="../../DrawingView.cpp" line="574"/>
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
       <translation>De printer gebruikt een andere richting dan de tekening.
 Wil je doorgaan?</translation>
     </message>
     <message>
+      <location filename="../../DrawingView.cpp" line="581"/>
       <location filename="../../DrawingView.cpp" line="589"/>
-      <location filename="../../DrawingView.cpp" line="597"/>
       <source>Different paper size</source>
       <translation>Ander papierformaat</translation>
     </message>
     <message>
+      <location filename="../../DrawingView.cpp" line="582"/>
       <location filename="../../DrawingView.cpp" line="590"/>
-      <location filename="../../DrawingView.cpp" line="598"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>De printer gebruikt een ander papierfromaat dan de tekening. Wilt u toch doorgaan?</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="609"/>
+      <location filename="../../DrawingView.cpp" line="601"/>
       <source>Opening file failed</source>
       <translation>Bestand openen mislukt</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="610"/>
+      <location filename="../../DrawingView.cpp" line="602"/>
       <source>Can't open file '%1' for writing.</source>
       <translation>Kan bestand '%1' niet openen om te schrijven.</translation>
     </message>
@@ -556,77 +556,77 @@ Do you want to continue?</source>
   <context>
     <name>DrawingGui::TaskProjection</name>
     <message>
-      <location filename="../../TaskDialog.cpp" line="51"/>
+      <location filename="../../TaskDialog.cpp" line="48"/>
       <source>Visible sharp edges</source>
       <translation>Zichtbare scherpe randen</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="52"/>
+      <location filename="../../TaskDialog.cpp" line="49"/>
       <source>Visible smooth edges</source>
       <translation>Zichtbare gladde randen</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="53"/>
+      <location filename="../../TaskDialog.cpp" line="50"/>
       <source>Visible sewn edges</source>
       <translation>Zichtbare genaaide randen</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="54"/>
+      <location filename="../../TaskDialog.cpp" line="51"/>
       <source>Visible outline edges</source>
       <translation>Zichtbare omtrekranden</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="55"/>
+      <location filename="../../TaskDialog.cpp" line="52"/>
       <source>Visible isoparameters</source>
       <translation>Zichtbare ISO-parameters</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="56"/>
+      <location filename="../../TaskDialog.cpp" line="53"/>
       <source>Hidden sharp edges</source>
       <translation>Verborgen scherpe randen</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="57"/>
+      <location filename="../../TaskDialog.cpp" line="54"/>
       <source>Hidden smooth edges</source>
       <translation>Verborgen gladde randen</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="58"/>
+      <location filename="../../TaskDialog.cpp" line="55"/>
       <source>Hidden sewn edges</source>
       <translation>Verborgen genaaide randen</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="59"/>
+      <location filename="../../TaskDialog.cpp" line="56"/>
       <source>Hidden outline edges</source>
       <translation>Verborgen omtrekranden</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="60"/>
+      <location filename="../../TaskDialog.cpp" line="57"/>
       <source>Hidden isoparameters</source>
       <translation>Verborgen ISO-parameters</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="77"/>
+      <location filename="../../TaskDialog.cpp" line="74"/>
       <source>Project shapes</source>
       <translation>Projecteer vormen </translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="91"/>
+      <location filename="../../TaskDialog.cpp" line="88"/>
       <source>No active document</source>
       <translation>Geen actief document</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="92"/>
+      <location filename="../../TaskDialog.cpp" line="89"/>
       <source>There is currently no active document to complete the operation</source>
       <translation>Er is momenteel geen actief document om de operatie te voltooien</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="97"/>
+      <location filename="../../TaskDialog.cpp" line="94"/>
       <source>No active view</source>
       <translation>Geen actieve weergave</translation>
     </message>
     <message>
-      <location filename="../../TaskDialog.cpp" line="98"/>
+      <location filename="../../TaskDialog.cpp" line="95"/>
       <source>There is currently no active view to complete the operation</source>
       <translation>Er is momenteel geen actieve weergave om de bewerking te voltooien</translation>
     </message>
@@ -634,32 +634,32 @@ Do you want to continue?</source>
   <context>
     <name>Drawing_NewPage</name>
     <message>
-      <location filename="../../Command.cpp" line="220"/>
+      <location filename="../../Command.cpp" line="217"/>
       <source>Landscape</source>
       <translation>Liggend</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="222"/>
+      <location filename="../../Command.cpp" line="219"/>
       <source>Portrait</source>
       <translation>Staand</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="226"/>
+      <location filename="../../Command.cpp" line="223"/>
       <source>%1%2 %3</source>
       <translation>%1%2 %3</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="231"/>
+      <location filename="../../Command.cpp" line="228"/>
       <source>Insert new %1%2 %3 drawing</source>
       <translation>Nieuwe %1%2 %3 -tekening invoegen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="238"/>
+      <location filename="../../Command.cpp" line="235"/>
       <source>%1%2 %3 (%4)</source>
       <translation>%1%2 %3 (%4)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="244"/>
+      <location filename="../../Command.cpp" line="241"/>
       <source>Insert new %1%2 %3 (%4) drawing</source>
       <translation>Nieuwe %1%2 %3 (%4)-tekening invoegen</translation>
     </message>
@@ -667,98 +667,98 @@ Do you want to continue?</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="73"/>
-      <location filename="../../Command.cpp" line="592"/>
+      <location filename="../../Command.cpp" line="70"/>
+      <location filename="../../Command.cpp" line="589"/>
       <source>Choose an SVG file to open</source>
       <translation>Kies een SVG-bestand om te openen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="74"/>
-      <location filename="../../Command.cpp" line="593"/>
-      <location filename="../../Command.cpp" line="647"/>
+      <location filename="../../Command.cpp" line="71"/>
+      <location filename="../../Command.cpp" line="590"/>
+      <location filename="../../Command.cpp" line="644"/>
       <source>Scalable Vector Graphic</source>
       <translation>Schaalbare vectorafbeelding</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="324"/>
-      <location filename="../../Command.cpp" line="403"/>
-      <location filename="../../Command.cpp" line="453"/>
-      <location filename="../../Command.cpp" line="641"/>
-      <location filename="../../Command.cpp" line="761"/>
+      <location filename="../../Command.cpp" line="321"/>
+      <location filename="../../Command.cpp" line="400"/>
+      <location filename="../../Command.cpp" line="450"/>
+      <location filename="../../Command.cpp" line="638"/>
+      <location filename="../../Command.cpp" line="758"/>
       <source>Wrong selection</source>
       <translation>Verkeerde selectie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="325"/>
+      <location filename="../../Command.cpp" line="322"/>
       <source>Select a Part object.</source>
       <translation>Selecteer een onderdeel-object.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="333"/>
-      <location filename="../../Command.cpp" line="412"/>
-      <location filename="../../Command.cpp" line="493"/>
-      <location filename="../../Command.cpp" line="541"/>
-      <location filename="../../Command.cpp" line="586"/>
-      <location filename="../../Command.cpp" line="767"/>
+      <location filename="../../Command.cpp" line="330"/>
+      <location filename="../../Command.cpp" line="409"/>
+      <location filename="../../Command.cpp" line="490"/>
+      <location filename="../../Command.cpp" line="538"/>
+      <location filename="../../Command.cpp" line="583"/>
+      <location filename="../../Command.cpp" line="764"/>
       <source>No page found</source>
       <translation>Geen pagina gevonden</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="334"/>
-      <location filename="../../Command.cpp" line="413"/>
-      <location filename="../../Command.cpp" line="494"/>
-      <location filename="../../Command.cpp" line="542"/>
-      <location filename="../../Command.cpp" line="587"/>
-      <location filename="../../Command.cpp" line="768"/>
+      <location filename="../../Command.cpp" line="331"/>
+      <location filename="../../Command.cpp" line="410"/>
+      <location filename="../../Command.cpp" line="491"/>
+      <location filename="../../Command.cpp" line="539"/>
+      <location filename="../../Command.cpp" line="584"/>
+      <location filename="../../Command.cpp" line="765"/>
       <source>Create a page first.</source>
       <translation>Maak eerst een pagina.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="404"/>
+      <location filename="../../Command.cpp" line="401"/>
       <source>Select exactly one Part object.</source>
       <translation>Selecteer slechts één deel object.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="454"/>
-      <location filename="../../Command.cpp" line="642"/>
+      <location filename="../../Command.cpp" line="451"/>
+      <location filename="../../Command.cpp" line="639"/>
       <source>Select one Page object.</source>
       <translation>Selecteer een pagina-object.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="648"/>
+      <location filename="../../Command.cpp" line="645"/>
       <source>All Files</source>
       <translation>Alle bestanden</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="650"/>
+      <location filename="../../Command.cpp" line="647"/>
       <source>Export page</source>
       <translation>Exporteer pagina</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="762"/>
+      <location filename="../../Command.cpp" line="759"/>
       <source>Select exactly one Spreadsheet object.</source>
       <translation>Selecteer exact één Spreadsheet-object.</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="48"/>
-      <location filename="../../TaskOrthoViews.cpp" line="971"/>
+      <location filename="../../TaskOrthoViews.cpp" line="46"/>
+      <location filename="../../TaskOrthoViews.cpp" line="969"/>
       <source>Make axonometric...</source>
       <translation>Axonometrisch maken...</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="49"/>
-      <location filename="../../TaskOrthoViews.cpp" line="972"/>
+      <location filename="../../TaskOrthoViews.cpp" line="47"/>
+      <location filename="../../TaskOrthoViews.cpp" line="970"/>
       <source>Edit axonometric settings...</source>
       <translation>Axonometrische instellingen bewerken...</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="50"/>
-      <location filename="../../TaskOrthoViews.cpp" line="973"/>
+      <location filename="../../TaskOrthoViews.cpp" line="48"/>
+      <location filename="../../TaskOrthoViews.cpp" line="971"/>
       <source>Make orthographic</source>
       <translation>Orthografische maken</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="152"/>
+      <location filename="../../ViewProviderPage.cpp" line="141"/>
       <source>Show drawing</source>
       <translation>Toon tekening</translation>
     </message>
@@ -766,7 +766,7 @@ Do you want to continue?</source>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="37"/>
+      <location filename="../../Workbench.cpp" line="34"/>
       <source>Drawing</source>
       <translation>Tekening</translation>
     </message>

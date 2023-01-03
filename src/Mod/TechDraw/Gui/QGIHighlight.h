@@ -48,28 +48,28 @@ public:
     enum {Type = QGraphicsItem::UserType + 176};
     int type() const override { return Type;}
 
-    virtual void paint(QPainter * painter,
-                       const QStyleOptionGraphicsItem * option,
-                       QWidget * widget = nullptr ) override;
+    void paint(QPainter * painter,
+               const QStyleOptionGraphicsItem * option,
+               QWidget * widget = nullptr ) override;
 
     void setBounds(double x1, double y1, double x2, double y2);
     void setReference(const char* sym);
     void setFont(QFont f, double fsize);
     virtual void draw() override;
     void setInteractive(bool state);
+    void setFeatureName(std::string name) { m_featureName = name; }
+    std::string getFeatureName() { return m_featureName; }
+    void setReferenceAngle(double angle) { m_referenceAngle = angle; }
+
+    void onDragFinished() override;
 
 protected:
-/*    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;*/
-/*    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;*/
-/*    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;*/
     QColor getHighlightColor();
     Qt::PenStyle getHighlightStyle();
     void makeHighlight();
     void makeReference();
     void setTools();
     int getHoleStyle(void);
-
-/*    bool m_dragging;*/
 
 private:
     QString            m_refText;
@@ -81,6 +81,8 @@ private:
     double             m_refSize;
     QPointF            m_start;
     QPointF            m_end;
+    std::string        m_featureName;
+    double             m_referenceAngle;
 };
 
 }

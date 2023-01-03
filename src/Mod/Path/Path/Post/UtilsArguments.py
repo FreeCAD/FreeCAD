@@ -34,8 +34,6 @@ import argparse
 import os
 import shlex
 
-import FreeCAD
-
 from FreeCAD import Units
 
 # to distinguish python built-in open function from the one declared below
@@ -131,10 +129,7 @@ def init_shared_arguments(values, argument_defaults, arguments_visible):
         arguments_visible["axis-modal"],
     )
     if arguments_visible["axis-precision"]:
-        help_message = (
-            "Number of digits of precision for axis moves, default is "
-            + str(values["DEFAULT_AXIS_PRECISION"])
-        )
+        help_message = f'Number of digits of precision for axis moves, default is {str(values["DEFAULT_AXIS_PRECISION"])}'
     else:
         help_message = argparse.SUPPRESS
     shared.add_argument(
@@ -162,9 +157,7 @@ def init_shared_arguments(values, argument_defaults, arguments_visible):
         arguments_visible["comments"],
     )
     if arguments_visible["feed-precision"]:
-        help_message = "Number of digits of precision for feed rate, default is " + str(
-            values["DEFAULT_FEED_PRECISION"]
-        )
+        help_message = f'Number of digits of precision for feed rate, default is {str(values["DEFAULT_FEED_PRECISION"])}'
     else:
         help_message = argparse.SUPPRESS
     shared.add_argument(
@@ -219,35 +212,21 @@ def init_shared_arguments(values, argument_defaults, arguments_visible):
         arguments_visible["output_visible_arguments"],
     )
     if arguments_visible["postamble"]:
-        help_message = (
-            'Set commands to be issued after the last command, default is "'
-            + values["POSTAMBLE"]
-            + '"'
-        )
+        help_message = f'Set commands to be issued after the last command, default is "{values["POSTAMBLE"]}"'
     else:
         help_message = argparse.SUPPRESS
     shared.add_argument("--postamble", help=help_message)
     if arguments_visible["preamble"]:
-        help_message = (
-            'Set commands to be issued before the first command, default is "'
-            + values["PREAMBLE"]
-            + '"'
-        )
+        help_message = f'Set commands to be issued before the first command, default is "{values["PREAMBLE"]}"'
     else:
         help_message = argparse.SUPPRESS
     shared.add_argument("--preamble", help=help_message)
-    # The --precision argument is included for backwards compatibility with
-    # some postprocessors.  If both --axis-precision and --precision are provided,
-    # the --axis-precision value "wins".  If both --feed-precision and --precision
-    # are provided, the --feed-precision value "wins".
+    # The --precision argument is included for backwards compatibility with some
+    # postprocessors.  If both --axis-precision and --precision are provided, the
+    # --axis-precision value "wins".  If both --feed-precision and --precision are
+    # provided, the --feed-precision value "wins".
     if arguments_visible["precision"]:
-        help_message = (
-            "Number of digits of precision for both feed rate and axis moves, default is "
-            + str(values["DEFAULT_AXIS_PRECISION"])
-            + " for metric or "
-            + str(values["DEFAULT_INCH_AXIS_PRECISION"])
-            + " for inches"
-        )
+        help_message = f'Number of digits of precision for both feed rate and axis moves, default is {str(values["DEFAULT_AXIS_PRECISION"])} for metric or {str(values["DEFAULT_INCH_AXIS_PRECISION"])} for inches'
     else:
         help_message = argparse.SUPPRESS
     shared.add_argument(
@@ -314,10 +293,10 @@ def init_shared_values(values):
     #
     values["AXIS_PRECISION"] = 3
     #
-    # How far to move up (in millimeters) in the Z axis when chipbreaking with a G73 command.
+    # How far to move up (in millimeters) in the Z axis when chipbreaking
+    # with a G73 command.
     #
-    values["CHIPBREAKING_AMOUNT"] = Units.Quantity(0.25, FreeCAD.Units.Length)
-
+    values["CHIPBREAKING_AMOUNT"] = Units.Quantity(0.25, Units.Length)
     #
     # If this is set to "", all spaces are removed from between commands and parameters.
     #
@@ -354,7 +333,7 @@ def init_shared_values(values):
     # If TRANSLATE_DRILL_CYCLES is True, these are the drill cycles
     # that get translated to G0 and G1 commands.
     #
-    values["DRILL_CYCLES_TO_TRANSLATE"] = ("G73", "G81", "G82", "G83")
+    values["DRILL_CYCLES_TO_TRANSLATE"] = ["G73", "G81", "G82", "G83"]
     #
     # The default value of drill retractations (CURRENT_Z).
     # The other possible value is G99.
@@ -439,8 +418,8 @@ def init_shared_values(values):
     #
     values["OUTPUT_COMMENTS"] = True
     #
-    # if False duplicate axis values are suppressed if they are the same as
-    # the previous line.
+    # if False duplicate axis values are suppressed if they are the same
+    # as the previous line.
     #
     values["OUTPUT_DOUBLES"] = True
     #
@@ -626,7 +605,7 @@ def process_shared_arguments(values, parser, argstring, all_visible, filename):
         if values["UNITS"] == "G21":
             values["UNIT_FORMAT"] = "mm"
             values["UNIT_SPEED_FORMAT"] = "mm/min"
-        if values["UNITS"] == "G20":
+        elif values["UNITS"] == "G20":
             values["UNIT_FORMAT"] = "in"
             values["UNIT_SPEED_FORMAT"] = "in/min"
         # The precision-related arguments need to be processed
@@ -651,7 +630,7 @@ def process_shared_arguments(values, parser, argstring, all_visible, filename):
         else:
             if values["UNITS"] == "G21":
                 values["FEED_PRECISION"] = values["DEFAULT_FEED_PRECISION"]
-            if values["UNITS"] == "G20":
+            elif values["UNITS"] == "G20":
                 values["FEED_PRECISION"] = values["DEFAULT_INCH_FEED_PRECISION"]
         if args.axis_modal:
             values["OUTPUT_DOUBLES"] = False
@@ -782,8 +761,8 @@ def process_shared_arguments(values, parser, argstring, all_visible, filename):
 #
 # G10                       P D H R
 #
-# G65                       P L arguments (arguments are A-Z excluding G, L, N, O, and P)
-# G65                       "program.cnc" L arguments
+# G65                       P L args (args are A-Z excluding G, L, N, O, and P)
+# G65                       "program.cnc" L args
 #
 # G117, G118, G119          P X Y Z I J K P Q
 #

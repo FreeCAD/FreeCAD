@@ -40,7 +40,8 @@ using namespace TechDraw;
 QGIDecoration::QGIDecoration() :
     m_colCurrent(Qt::black),
     m_styleCurrent(Qt::SolidLine),
-    m_brushCurrent(Qt::SolidPattern)
+    m_brushCurrent(Qt::SolidPattern),
+    m_dragState(DECORNODRAG)
 {
     setCacheMode(QGraphicsItem::NoCache);
     setAcceptHoverEvents(false);
@@ -118,4 +119,34 @@ void QGIDecoration::makeMark(Base::Vector3d v)
     makeMark(v.x, v.y);
 }
 
+void QGIDecoration::mousePressEvent(QGraphicsSceneMouseEvent * event)
+{
+//    Base::Console().Message("QGID::mousePressEvent() - %s\n", getViewName());
+    m_dragState = DECORDRAGSTARTED;
 
+    QGraphicsItem::mousePressEvent(event);
+}
+
+void QGIDecoration::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
+{
+    if (m_dragState == DECORDRAGSTARTED) {
+        m_dragState = DECORDRAGGING;
+    }
+    QGraphicsItem::mouseMoveEvent(event);
+}
+
+void QGIDecoration::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
+{
+//    Base::Console().Message("QGID::mouseReleaseEvent() - %s\n", getViewName());
+    if (m_dragState == DECORDRAGGING) {
+        onDragFinished();
+    }
+    m_dragState = DECORNODRAG;
+
+    QGraphicsItem::mouseReleaseEvent(event);
+}
+
+void QGIDecoration::onDragFinished()
+{
+    //override this
+}

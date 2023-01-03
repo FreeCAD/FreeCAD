@@ -26,7 +26,7 @@ import unittest
 import os
 import FreeCAD
 from addonmanager_workers_utility import ConnectionChecker
-from PySide2 import QtCore
+from PySide import QtCore
 
 import NetworkManager
 

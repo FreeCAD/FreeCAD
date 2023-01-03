@@ -31,6 +31,8 @@
 # include <TopoDS_Face.hxx>
 #endif
 
+// boost is purposely not in the precompiled headers, see
+// https://github.com/FreeCAD/FreeCAD/pull/7979#issuecomment-1358123252
 #include <boost/python.hpp>
 #include <boost/python/call.hpp>
 #include <boost/python/class.hpp>

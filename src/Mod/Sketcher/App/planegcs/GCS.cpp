@@ -812,6 +812,14 @@ int System::addConstraintTangentCircumf(Point &p1, Point &p2, double *rad1, doub
     return addConstraint(constr);
 }
 
+int System::addConstraintTangentAtBSplineKnot(BSpline &b, Line &l, unsigned int knotindex, int tagId, bool driving)
+{
+    Constraint *constr = new ConstraintSlopeAtBSplineKnot(b, l, knotindex);
+    constr->setTag(tagId);
+    constr->setDriving(driving);
+    return addConstraint(constr);
+}
+
 // derived constraints
 
 int System::addConstraintP2PCoincident(Point &p1, Point &p2, int tagId, bool driving)

@@ -54,6 +54,10 @@ class ViewProviderDocumentObject;
 class GuiExport Application
 {
 public:
+    enum Status {
+        UserInitiatedOpenDocument = 0
+    };
+
     /// construction
     explicit Application(bool GUIenabled);
     /// destruction
@@ -232,7 +236,12 @@ public:
     static void runApplication();
     void tryClose( QCloseEvent * e );
     //@}
-    
+
+    /// return the status bits
+    bool testStatus(Status pos) const;
+    /// set the status bits
+    void setStatus(Status pos, bool on);
+
     /** @name User edit mode */
     //@{
 protected:
@@ -320,7 +329,7 @@ public:
 
     static PyObject* sAddDocObserver           (PyObject *self,PyObject *args);
     static PyObject* sRemoveDocObserver        (PyObject *self,PyObject *args);
-    
+
     static PyObject* sListUserEditModes        (PyObject *self,PyObject *args);
     static PyObject* sGetUserEditMode          (PyObject *self,PyObject *args);
     static PyObject* sSetUserEditMode          (PyObject *self,PyObject *args);

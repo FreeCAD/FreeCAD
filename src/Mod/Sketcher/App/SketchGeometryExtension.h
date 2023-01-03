@@ -47,6 +47,7 @@ namespace Sketcher
             ParabolaFocus           = 8,
             BSplineControlPoint     = 9,
             BSplineKnotPoint        = 10,
+            ParabolaFocalAxis       = 11,
             NumInternalGeometryType        // Must be the last
         };
     }
@@ -104,7 +105,7 @@ public:
     int getGeometryLayerId() const override { return GeometryLayer;}
     void setGeometryLayerId(int geolayer) override { GeometryLayer = geolayer;}
 
-    constexpr static std::array<const char *,InternalType::NumInternalGeometryType> internaltype2str {{ "None", "EllipseMajorDiameter", "EllipseMinorDiameter","EllipseFocus1", "EllipseFocus2", "HyperbolaMajor", "HyperbolaMinor", "HyperbolaFocus", "ParabolaFocus", "BSplineControlPoint", "BSplineKnotPoint" }};
+    constexpr static std::array<const char *,InternalType::NumInternalGeometryType> internaltype2str {{ "None", "EllipseMajorDiameter", "EllipseMinorDiameter","EllipseFocus1", "EllipseFocus2", "HyperbolaMajor", "HyperbolaMinor", "HyperbolaFocus", "ParabolaFocus", "BSplineControlPoint", "BSplineKnotPoint", "ParabolaFocalAxis" }};
 
     constexpr static std::array<const char *,GeometryMode::NumGeometryMode> geometrymode2str {{ "Blocked", "Construction" }};
 

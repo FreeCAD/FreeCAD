@@ -1137,7 +1137,7 @@ void TreeParams::removeItemSpacing() {
 // Auto generated code (Tools/params_utils.py:288)
 const char *TreeParams::docItemBackground() {
     return QT_TRANSLATE_NOOP("TreeParams",
-"Tree view item background. Only effecitve in overlay.");
+"Tree view item background. Only effective in overlay.");
 }
 
 // Auto generated code (Tools/params_utils.py:294)
@@ -1221,7 +1221,7 @@ void TreeParams::removeHideColumn() {
 // Auto generated code (Tools/params_utils.py:288)
 const char *TreeParams::docHideScrollBar() {
     return QT_TRANSLATE_NOOP("TreeParams",
-"Hide tree view scroll bar in dock overlay");
+"Hide tree view scroll bar in dock overlay.");
 }
 
 // Auto generated code (Tools/params_utils.py:294)
@@ -1249,7 +1249,7 @@ void TreeParams::removeHideScrollBar() {
 // Auto generated code (Tools/params_utils.py:288)
 const char *TreeParams::docHideHeaderView() {
     return QT_TRANSLATE_NOOP("TreeParams",
-"Hide tree view header view in dock overlay");
+"Hide tree view header view in dock overlay.");
 }
 
 // Auto generated code (Tools/params_utils.py:294)
@@ -1277,7 +1277,7 @@ void TreeParams::removeHideHeaderView() {
 // Auto generated code (Tools/params_utils.py:288)
 const char *TreeParams::docResizableColumn() {
     return QT_TRANSLATE_NOOP("TreeParams",
-"Allow tree view columns to be manually resized");
+"Allow tree view columns to be manually resized.");
 }
 
 // Auto generated code (Tools/params_utils.py:294)

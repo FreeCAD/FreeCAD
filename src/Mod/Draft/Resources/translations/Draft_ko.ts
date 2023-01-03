@@ -6,7 +6,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="14"/>
       <source>Annotation Styles Editor</source>
-      <translation type="unfinished">Annotation Styles Editor</translation>
+      <translation>주석 스타일 편집기</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="20"/>
@@ -16,7 +16,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="38"/>
       <source>The name of your style. Existing style names can be edited.</source>
-      <translation type="unfinished">The name of your style. Existing style names can be edited.</translation>
+      <translation>스타일 이름입니다. 기존 스타일 이름을 편집할 수 있습니다.</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="50"/>
@@ -26,7 +26,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="79"/>
       <source>Renames the selected style</source>
-      <translation type="unfinished">Renames the selected style</translation>
+      <translation>선택한 스타일의 이름 바꾸기</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="82"/>
@@ -36,7 +36,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="110"/>
       <source>Deletes the selected style</source>
-      <translation type="unfinished">Deletes the selected style</translation>
+      <translation>선택한 스타일을 삭제합니다.</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="113"/>
@@ -46,12 +46,12 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="120"/>
       <source>Import styles from json file</source>
-      <translation type="unfinished">Import styles from json file</translation>
+      <translation>json 파일에서 스타일 가져오기</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="130"/>
       <source>Export styles to json file</source>
-      <translation type="unfinished">Export styles to json file</translation>
+      <translation>스타일을 json 파일로 내보내기</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="164"/>
@@ -62,7 +62,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="170"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="192"/>
       <source>The font to use for texts and dimensions</source>
-      <translation type="unfinished">The font to use for texts and dimensions</translation>
+      <translation>텍스트 및 치수에 사용할 글꼴</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="173"/>
@@ -73,7 +73,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="199"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="209"/>
       <source>Font size in the system units</source>
-      <translation type="unfinished">Font size in the system units</translation>
+      <translation>시스템 단위의 글꼴 크기</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="202"/>
@@ -83,12 +83,12 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="219"/>
       <source>Line spacing in system units</source>
-      <translation type="unfinished">Line spacing in system units</translation>
+      <translation>시스템 단위의 줄 간격</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="222"/>
       <source>Line spacing</source>
-      <translation type="unfinished">Line spacing</translation>
+      <translation>줄 간격</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="239"/>
@@ -110,56 +110,56 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="268"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="278"/>
       <source>If it is checked it will show the unit next to the dimension value</source>
-      <translation type="unfinished">If it is checked it will show the unit next to the dimension value</translation>
+      <translation>선택하면 치수 값 옆에 장치가 표시됩니다.</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="271"/>
       <source>Show unit</source>
-      <translation type="unfinished">Show unit</translation>
+      <translation>단위 표시</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="291"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="301"/>
       <source>Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</source>
-      <translation type="unfinished">Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</translation>
+      <translation>mm, m, in, ft와 같은 유효한 길이 단위를 지정하여 이 단위에 치수 값을 표시합니다.</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="294"/>
       <source>Unit override</source>
-      <translation type="unfinished">Unit override</translation>
+      <translation>단위 재정의</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="308"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="318"/>
       <source>The number of decimals to show for dimension values</source>
-      <translation type="unfinished">The number of decimals to show for dimension values</translation>
+      <translation>치수 값에 대해 표시할 소수점 수</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="311"/>
       <source>Decimals</source>
-      <translation type="unfinished">Decimals</translation>
+      <translation>소수점</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="331"/>
       <source>Line and arrows</source>
-      <translation type="unfinished">Line and arrows</translation>
+      <translation>선 및 화살표</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="337"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="347"/>
       <source>If it is checked it will display the dimension line</source>
-      <translation type="unfinished">If it is checked it will display the dimension line</translation>
+      <translation>이 옵션을 선택하면 치수 선이 표시됩니다.</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="340"/>
       <source>Show lines</source>
-      <translation type="unfinished">Show lines</translation>
+      <translation>선 보이기</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="363"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="373"/>
       <source>The width of the dimension lines</source>
-      <translation type="unfinished">The width of the dimension lines</translation>
+      <translation>치수 선의 너비</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="366"/>
@@ -175,7 +175,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="386"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="396"/>
       <source>The color of dimension lines, arrows and texts</source>
-      <translation type="unfinished">The color of dimension lines, arrows and texts</translation>
+      <translation>치수 선, 화살표 및 텍스트 색상</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="389"/>
@@ -233,7 +233,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="484"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="494"/>
       <source>The distance that the dimension line is additionally extended</source>
-      <translation type="unfinished">The distance that the dimension line is additionally extended</translation>
+      <translation>치수선이 추가로 연장된 거리</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="487"/>
@@ -244,18 +244,18 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="504"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="514"/>
       <source>The length of the extension lines</source>
-      <translation type="unfinished">The length of the extension lines</translation>
+      <translation>연장선의 길이</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="507"/>
       <source>Extension lines</source>
-      <translation type="unfinished">Extension lines</translation>
+      <translation>연장선</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="524"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="534"/>
       <source>The distance that the extension lines are additionally extended beyond the dimension line</source>
-      <translation type="unfinished">The distance that the extension lines are additionally extended beyond the dimension line</translation>
+      <translation>확장선이 치수선을 넘어 추가로 연장되는 거리</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="527"/>
@@ -268,23 +268,23 @@
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="26"/>
       <source>Circular array</source>
-      <translation type="unfinished">Circular array</translation>
+      <translation>원형 배열</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="44"/>
       <source>(Placeholder for the icon)</source>
-      <translation type="unfinished">(Placeholder for the icon)</translation>
+      <translation>(아이콘의 자리 표시자)</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="53"/>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="63"/>
       <source>Distance from one layer of objects to the next layer of objects.</source>
-      <translation type="unfinished">Distance from one layer of objects to the next layer of objects.</translation>
+      <translation>오브젝트의 한 계층에서 다음 계층까지의 거리입니다.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="56"/>
       <source>Radial distance</source>
-      <translation type="unfinished">Radial distance</translation>
+      <translation>반지름 거리</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="76"/>
@@ -297,7 +297,7 @@ It cannot be zero.</translation>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="80"/>
       <source>Tangential distance</source>
-      <translation type="unfinished">Tangential distance</translation>
+      <translation>접선 거리</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="101"/>
@@ -310,13 +310,13 @@ It must be at least 2.</translation>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="105"/>
       <source>Number of circular layers</source>
-      <translation type="unfinished">Number of circular layers</translation>
+      <translation>원형 도면층 수</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="126"/>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="136"/>
       <source>The number of symmetry lines in the circular array.</source>
-      <translation type="unfinished">The number of symmetry lines in the circular array.</translation>
+      <translation>원형 배열의 대칭 선 수입니다.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="129"/>
@@ -327,13 +327,13 @@ It must be at least 2.</translation>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="151"/>
       <source>The coordinates of the point through which the axis of rotation passes.
 Change the direction of the axis itself in the property editor.</source>
-      <translation type="unfinished">The coordinates of the point through which the axis of rotation passes.
-Change the direction of the axis itself in the property editor.</translation>
+      <translation>회전축이 통과하는 점의 좌표입니다.
+특성 편집기에서 축 자체의 방향을 변경합니다.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="155"/>
       <source>Center of rotation</source>
-      <translation type="unfinished">Center of rotation</translation>
+      <translation>회전 중심</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="163"/>
@@ -353,19 +353,19 @@ Change the direction of the axis itself in the property editor.</translation>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="225"/>
       <source>Reset the coordinates of the center of rotation.</source>
-      <translation type="unfinished">Reset the coordinates of the center of rotation.</translation>
+      <translation>회전 중심의 좌표를 재설정합니다.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="228"/>
       <source>Reset point</source>
-      <translation type="unfinished">Reset point</translation>
+      <translation>재설정점</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="240"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation type="unfinished">If checked, the resulting objects in the array will be fused if they touch each other.
-This only works if "Link array" is off.</translation>
+      <translation>이 옵션을 선택하면 배열의 결과 개체가 서로 닿으면 결합됩니다.
+이것은 "연결 배열"이(가) 꺼져 있는 경우에만 작동합니다.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="244"/>
@@ -376,13 +376,13 @@ This only works if "Link array" is off.</translation>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="251"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation type="unfinished">If checked, the resulting object will be a "Link array" instead of a regular array.
-A Link array is more efficient when creating multiple copies, but it cannot be fused together.</translation>
+      <translation>이 옵션을 선택하면 결과 개체가 일반 배열 대신 "연결 배열"이 됩니다.
+여러 복사본을 만들 때 링크 배열이 더 효율적이지만 함께 결합할 수는 없습니다.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="255"/>
       <source>Link array</source>
-      <translation type="unfinished">Link array</translation>
+      <translation>연결 배열</translation>
     </message>
   </context>
   <context>
@@ -390,24 +390,24 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="26"/>
       <source>Orthogonal array</source>
-      <translation type="unfinished">Orthogonal array</translation>
+      <translation>직교 배열</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="44"/>
       <source>(Placeholder for the icon)</source>
-      <translation type="unfinished">(Placeholder for the icon)</translation>
+      <translation>(아이콘의 자리 표시자)</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="51"/>
       <source>Number of elements in the array in the specified direction, including a copy of the original object.
 The number must be at least 1 in each direction.</source>
-      <translation type="unfinished">Number of elements in the array in the specified direction, including a copy of the original object.
-The number must be at least 1 in each direction.</translation>
+      <translation>원래 개체의 복사본을 포함하여 지정된 방향의 배열에 있는 요소 수입니다.
+숫자는 각 방향에서 1 이상이어야 합니다.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="55"/>
       <source>Number of elements</source>
-      <translation type="unfinished">Number of elements</translation>
+      <translation>요소의 수</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="63"/>
@@ -438,71 +438,71 @@ The number must be at least 1 in each direction.</translation>
       <source>Distance between the elements in the X direction.
 Normally, only the X value is necessary; the other two values can give an additional shift in their respective directions.
 Negative values will result in copies produced in the negative direction.</source>
-      <translation type="unfinished">Distance between the elements in the X direction.
-Normally, only the X value is necessary; the other two values can give an additional shift in their respective directions.
-Negative values will result in copies produced in the negative direction.</translation>
+      <translation>X 방향의 요소 사이의 거리입니다.
+일반적으로 X 값만 필요하며, 나머지 두 값은 각각의 방향으로 추가적인 이동을 제공할 수 있습니다.
+음수 값을 지정하면 음수 방향으로 복사본이 생성됩니다.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="124"/>
       <source>X intervals</source>
-      <translation type="unfinished">X intervals</translation>
+      <translation>X 간격</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="197"/>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="288"/>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="379"/>
       <source>Reset the distances.</source>
-      <translation type="unfinished">Reset the distances.</translation>
+      <translation>거리를 초기화합니다.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="200"/>
       <source>Reset X</source>
-      <translation type="unfinished">Reset X</translation>
+      <translation>X 초기화</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="210"/>
       <source>Distance between the elements in the Y direction.
 Normally, only the Y value is necessary; the other two values can give an additional shift in their respective directions.
 Negative values will result in copies produced in the negative direction.</source>
-      <translation type="unfinished">Distance between the elements in the Y direction.
-Normally, only the Y value is necessary; the other two values can give an additional shift in their respective directions.
-Negative values will result in copies produced in the negative direction.</translation>
+      <translation>Y 방향의 요소 사이의 거리입니다.
+일반적으로 Y 값만 필요하며, 나머지 두 값은 각각의 방향으로 추가적인 이동을 제공할 수 있습니다.
+음수 값을 지정하면 음수 방향으로 복사본이 생성됩니다.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="215"/>
       <source>Y intervals</source>
-      <translation type="unfinished">Y intervals</translation>
+      <translation>Y 간격</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="291"/>
       <source>Reset Y</source>
-      <translation type="unfinished">Reset Y</translation>
+      <translation>Y 초기화</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="301"/>
       <source>Distance between the elements in the Z direction.
 Normally, only the Z value is necessary; the other two values can give an additional shift in their respective directions.
 Negative values will result in copies produced in the negative direction.</source>
-      <translation type="unfinished">Distance between the elements in the Z direction.
-Normally, only the Z value is necessary; the other two values can give an additional shift in their respective directions.
-Negative values will result in copies produced in the negative direction.</translation>
+      <translation>Z 방향의 요소 사이의 거리입니다.
+일반적으로 Z 값만 필요하며, 나머지 두 값은 각각의 방향으로 추가적인 이동을 제공할 수 있습니다.
+음수 값을 지정하면 음수 방향으로 복사본이 생성됩니다.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="306"/>
       <source>Z intervals</source>
-      <translation type="unfinished">Z intervals</translation>
+      <translation>Z 간격</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="382"/>
       <source>Reset Z</source>
-      <translation type="unfinished">Reset Z</translation>
+      <translation>Z 초기화</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="394"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation type="unfinished">If checked, the resulting objects in the array will be fused if they touch each other.
-This only works if "Link array" is off.</translation>
+      <translation>이 옵션을 선택하면 배열의 결과 개체가 서로 닿으면 결합됩니다.
+이것은 "연결 배열"이(가) 꺼져 있는 경우에만 작동합니다.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="398"/>
@@ -513,13 +513,13 @@ This only works if "Link array" is off.</translation>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="405"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation type="unfinished">If checked, the resulting object will be a "Link array" instead of a regular array.
-A Link array is more efficient when creating multiple copies, but it cannot be fused together.</translation>
+      <translation>이 옵션을 선택하면 결과 개체가 일반 배열 대신 "연결 배열"이 됩니다.
+여러 복사본을 만들 때 링크 배열이 더 효율적이지만 함께 결합할 수는 없습니다.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="409"/>
       <source>Link array</source>
-      <translation type="unfinished">Link array</translation>
+      <translation>연결 배열</translation>
     </message>
   </context>
   <context>
@@ -527,12 +527,12 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="26"/>
       <source>Polar array</source>
-      <translation type="unfinished">Polar array</translation>
+      <translation>극 배열</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="44"/>
       <source>(Placeholder for the icon)</source>
-      <translation type="unfinished">(Placeholder for the icon)</translation>
+      <translation>(아이콘의 자리 표시자)</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="53"/>
@@ -547,32 +547,32 @@ The maximum absolute value is 360 degrees.</translation>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="58"/>
       <source>Polar angle</source>
-      <translation type="unfinished">Polar angle</translation>
+      <translation>편각</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="86"/>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="97"/>
       <source>Number of elements in the array, including a copy of the original object.
 It must be at least 2.</source>
-      <translation type="unfinished">Number of elements in the array, including a copy of the original object.
-It must be at least 2.</translation>
+      <translation>원래 개체의 복사본을 포함하여 배열에 있는 요소 수입니다.
+최소 2개 이상이어야 합니다.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="90"/>
       <source>Number of elements</source>
-      <translation type="unfinished">Number of elements</translation>
+      <translation>요소의 수</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="113"/>
       <source>The coordinates of the point through which the axis of rotation passes.
 Change the direction of the axis itself in the property editor.</source>
-      <translation type="unfinished">The coordinates of the point through which the axis of rotation passes.
-Change the direction of the axis itself in the property editor.</translation>
+      <translation>회전축이 통과하는 점의 좌표입니다.
+특성 편집기에서 축 자체의 방향을 변경합니다.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="117"/>
       <source>Center of rotation</source>
-      <translation type="unfinished">Center of rotation</translation>
+      <translation>회전 중심</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="125"/>
@@ -592,19 +592,19 @@ Change the direction of the axis itself in the property editor.</translation>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="187"/>
       <source>Reset the coordinates of the center of rotation.</source>
-      <translation type="unfinished">Reset the coordinates of the center of rotation.</translation>
+      <translation>회전 중심의 좌표를 재설정합니다.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="190"/>
       <source>Reset point</source>
-      <translation type="unfinished">Reset point</translation>
+      <translation>재설정점</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="202"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation type="unfinished">If checked, the resulting objects in the array will be fused if they touch each other.
-This only works if "Link array" is off.</translation>
+      <translation>이 옵션을 선택하면 배열의 결과 개체가 서로 닿으면 결합됩니다.
+이것은 "연결 배열"이(가) 꺼져 있는 경우에만 작동합니다.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="206"/>
@@ -615,13 +615,13 @@ This only works if "Link array" is off.</translation>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="213"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation type="unfinished">If checked, the resulting object will be a "Link array" instead of a regular array.
-A Link array is more efficient when creating multiple copies, but it cannot be fused together.</translation>
+      <translation>이 옵션을 선택하면 결과 개체가 일반 배열 대신 "연결 배열"이 됩니다.
+여러 복사본을 만들 때 링크 배열이 더 효율적이지만 함께 결합할 수는 없습니다.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="217"/>
       <source>Link array</source>
-      <translation type="unfinished">Link array</translation>
+      <translation>연결 배열</translation>
     </message>
   </context>
   <context>
@@ -641,7 +641,7 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
       <location filename="../ui/TaskShapeString.ui" line="70"/>
       <location filename="../ui/TaskShapeString.ui" line="87"/>
       <source>Enter coordinates or select point with mouse.</source>
-      <translation type="unfinished">Enter coordinates or select point with mouse.</translation>
+      <translation>좌표를 입력하거나 마우스로 점을 선택합니다.</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="63"/>
@@ -656,12 +656,12 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
     <message>
       <location filename="../ui/TaskShapeString.ui" line="114"/>
       <source>Reset 3d point selection</source>
-      <translation type="unfinished">Reset 3d point selection</translation>
+      <translation>3D 포인트 선택 초기화</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="120"/>
       <source>Reset Point</source>
-      <translation type="unfinished">Reset Point</translation>
+      <translation>포인트 초기화</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="131"/>
@@ -681,7 +681,7 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
     <message>
       <location filename="../ui/TaskShapeString.ui" line="156"/>
       <source>Height of the result</source>
-      <translation type="unfinished">Height of the result</translation>
+      <translation>결과의 높이</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="176"/>
@@ -694,7 +694,7 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="14"/>
       <source>Working plane setup</source>
-      <translation type="unfinished">Working plane setup</translation>
+      <translation>작업 기준면 설정</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="20"/>
@@ -706,7 +706,7 @@ Or choose one of the options below</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="31"/>
       <source>Sets the working plane to the XY plane (ground plane)</source>
-      <translation type="unfinished">Sets the working plane to the XY plane (ground plane)</translation>
+      <translation>작업 평면을 XY 평면으로 설정합니다.(접지면)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="34"/>
@@ -716,7 +716,7 @@ Or choose one of the options below</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="41"/>
       <source>Sets the working plane to the XZ plane (front plane)</source>
-      <translation type="unfinished">Sets the working plane to the XZ plane (front plane)</translation>
+      <translation>작업 평면을 XZ 평면으로 설정합니다.(전면)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="44"/>
@@ -726,7 +726,7 @@ Or choose one of the options below</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="51"/>
       <source>Sets the working plane to the YZ plane (side plane)</source>
-      <translation type="unfinished">Sets the working plane to the YZ plane (side plane)</translation>
+      <translation>작업 평면을 YZ 평면으로 설정합니다.(측면)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="54"/>
@@ -736,19 +736,19 @@ Or choose one of the options below</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="61"/>
       <source>Sets the working plane facing the current view</source>
-      <translation type="unfinished">Sets the working plane facing the current view</translation>
+      <translation>현재 뷰를 향하는 작업 기준면을 설정합니다.</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="64"/>
       <source>Align to view</source>
-      <translation type="unfinished">Align to view</translation>
+      <translation>뷰에 맞춤</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="71"/>
       <source>The working plane will align to the current
 view each time a command is started</source>
-      <translation type="unfinished">The working plane will align to the current
-view each time a command is started</translation>
+      <translation>작업 평면이 전류에 맞춰 정렬됩니다.
+명령이 시작될 때마다의 뷰</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="78"/>
@@ -758,16 +758,16 @@ view each time a command is started</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="87"/>
       <source>Offset</source>
-      <translation type="unfinished">Offset</translation>
+      <translation>오프셋</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="94"/>
       <source>An optional offset to give to the working plane
 above its base position. Use this together with one
 of the buttons above</source>
-      <translation type="unfinished">An optional offset to give to the working plane
-above its base position. Use this together with one
-of the buttons above</translation>
+      <translation>작업 기준면에 제공할 선택적 오프셋
+기본 위치보다 위에. 이것을 하나와 함께 사용하세요.
+위에 있는 버튼의</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="106"/>
@@ -775,43 +775,41 @@ of the buttons above</translation>
       <source>If this is selected, the working plane will be
 centered on the current view when pressing one
 of the buttons above</source>
-      <translation type="unfinished">If this is selected, the working plane will be
-centered on the current view when pressing one
-of the buttons above</translation>
+      <translation>이 옵션을 선택하면 작업 기준면이 됩니다.
+1을 누를 때 현재 뷰 중심
+위에 있는 버튼의</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="111"/>
       <source>Center plane on view</source>
-      <translation type="unfinished">Center plane on view</translation>
+      <translation>중심 평면 뷰</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="135"/>
       <source>Or select a single vertex to move the current
 working plane without changing its orientation.
 Then, press the button below</source>
-      <translation type="unfinished">Or select a single vertex to move the current
-working plane without changing its orientation.
-Then, press the button below</translation>
+      <translation>또는 단일 정점을 선택하여 방향을 변경하지 않고 현재 작업 평면을 이동할 수 있습니다.
+그리고 나서, 아래 버튼을 누르세요.</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="147"/>
       <source>Moves the working plane without changing its
 orientation. If no point is selected, the plane
 will be moved to the center of the view</source>
-      <translation type="unfinished">Moves the working plane without changing its
-orientation. If no point is selected, the plane
-will be moved to the center of the view</translation>
+      <translation>방향을 변경하지 않고 작업 기준면을 이동합니다.
+점을 선택하지 않으면 평면이 뷰의 중앙으로 이동합니다.</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="152"/>
       <source>Move working plane</source>
-      <translation type="unfinished">Move working plane</translation>
+      <translation>작업 기준면 이동</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="161"/>
       <location filename="../ui/TaskSelectPlane.ui" line="171"/>
       <source>The spacing between the smaller grid lines</source>
-      <translation type="unfinished">The spacing between the smaller grid lines</translation>
+      <translation>더 작은 그리드 선 사이의 간격</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="164"/>
@@ -822,22 +820,22 @@ will be moved to the center of the view</translation>
       <location filename="../ui/TaskSelectPlane.ui" line="181"/>
       <location filename="../ui/TaskSelectPlane.ui" line="191"/>
       <source>The number of squares between each main line of the grid</source>
-      <translation type="unfinished">The number of squares between each main line of the grid</translation>
+      <translation>그리드의 각 주선 사이의 제곱수</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="184"/>
       <source>Main line every</source>
-      <translation type="unfinished">Main line every</translation>
+      <translation>본선 간격</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="198"/>
       <source>Grid extension</source>
-      <translation type="unfinished">Grid extension</translation>
+      <translation>그리드 확장</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="205"/>
       <source> lines</source>
-      <translation type="unfinished"> lines</translation>
+      <translation>선</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="218"/>
@@ -845,59 +843,57 @@ will be moved to the center of the view</translation>
       <source>The distance at which a point can be snapped to
 when approaching the mouse. You can also change this
 value by using the [ and ] keys while drawing</source>
-      <translation type="unfinished">The distance at which a point can be snapped to
-when approaching the mouse. You can also change this
-value by using the [ and ] keys while drawing</translation>
+      <translation>마우스에 접근할 때 점을 스냅할 수 있는 거리입니다. 그림을 그리는 동안 [and] 키를 사용하여 이 값을 변경할 수도 있습니다.</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="223"/>
       <source>Snapping radius</source>
-      <translation type="unfinished">Snapping radius</translation>
+      <translation>스냅 반경</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="241"/>
       <source>Centers the view on the current working plane</source>
-      <translation type="unfinished">Centers the view on the current working plane</translation>
+      <translation>뷰를 현재 작업 기준면의 중앙에 배치합니다.</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="244"/>
       <source>Center view</source>
-      <translation type="unfinished">Center view</translation>
+      <translation>센터 뷰</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="251"/>
       <source>Resets the working plane to its previous position</source>
-      <translation type="unfinished">Resets the working plane to its previous position</translation>
+      <translation>작업 기준면을 이전 위치로 재설정합니다.</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="254"/>
       <source>Previous</source>
-      <translation type="unfinished">Previous</translation>
+      <translation>이전</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="14"/>
       <source>Style settings</source>
-      <translation type="unfinished">Style settings</translation>
+      <translation>스타일 설정</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="22"/>
       <source>Fills the values below with a stored style preset</source>
-      <translation type="unfinished">Fills the values below with a stored style preset</translation>
+      <translation>아래 값을 저장된 스타일 사전 설정으로 채웁니다.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="26"/>
       <source>Load preset</source>
-      <translation type="unfinished">Load preset</translation>
+      <translation>프리셋 불러오기</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="40"/>
       <source>Save current style as a preset...</source>
-      <translation type="unfinished">Save current style as a preset...</translation>
+      <translation>현재 스타일을 프리셋으로 저장...</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="57"/>
       <source>Lines and faces</source>
-      <translation type="unfinished">Lines and faces</translation>
+      <translation>선 및 면</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="66"/>
@@ -907,7 +903,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="73"/>
       <source>The color of lines</source>
-      <translation type="unfinished">The color of lines</translation>
+      <translation>선의 색상</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="80"/>
@@ -927,7 +923,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="101"/>
       <source>The line style</source>
-      <translation type="unfinished">The line style</translation>
+      <translation>라인 스타일</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="105"/>
@@ -952,17 +948,17 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="128"/>
       <source>Display mode</source>
-      <translation type="unfinished">Display mode</translation>
+      <translation>디스플레이 모드</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="135"/>
       <source>The display mode for faces</source>
-      <translation type="unfinished">The display mode for faces</translation>
+      <translation>면의 표시 모드</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="139"/>
       <source>Flat Lines</source>
-      <translation type="unfinished">Flat Lines</translation>
+      <translation>플랫 라인</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="144"/>
@@ -982,12 +978,12 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="162"/>
       <source>Shape color</source>
-      <translation type="unfinished">Shape color</translation>
+      <translation>모양 색상</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="169"/>
       <source>The color of faces</source>
-      <translation type="unfinished">The color of faces</translation>
+      <translation>면의 색깔</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="176"/>
@@ -997,12 +993,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="183"/>
       <source>The transparency of faces</source>
-      <translation type="unfinished">The transparency of faces</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="186"/>
-      <source> %</source>
-      <translation> %</translation>
+      <translation>면의 투명도</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="199"/>
@@ -1012,22 +1003,22 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="205"/>
       <source>Text font</source>
-      <translation type="unfinished">Text font</translation>
+      <translation>텍스트 글꼴</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="218"/>
       <source>The font to use for texts and dimensions</source>
-      <translation type="unfinished">The font to use for texts and dimensions</translation>
+      <translation>텍스트 및 치수에 사용할 글꼴</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="225"/>
       <source>Text size</source>
-      <translation type="unfinished">Text size</translation>
+      <translation>텍스트 크기</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="232"/>
       <source>The size of texts and dimension texts</source>
-      <translation type="unfinished">The size of texts and dimension texts</translation>
+      <translation>텍스트 및 차원 텍스트의 크기</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="242"/>
@@ -1037,37 +1028,37 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="249"/>
       <source>The space between the text and the dimension line</source>
-      <translation type="unfinished">The space between the text and the dimension line</translation>
+      <translation>텍스트와 치수선 사이의 공간</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="259"/>
       <source>Text color</source>
-      <translation type="unfinished">Text color</translation>
+      <translation>텍스트 색</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="266"/>
       <source>The color of texts and dimension texts</source>
-      <translation type="unfinished">The color of texts and dimension texts</translation>
+      <translation>텍스트 및 치수 텍스트의 색상</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="273"/>
       <source>Line spacing</source>
-      <translation type="unfinished">Line spacing</translation>
+      <translation>줄 간격</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="280"/>
       <source>The spacing between different lines of text</source>
-      <translation type="unfinished">The spacing between different lines of text</translation>
+      <translation>다른 텍스트 행 사이의 간격</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="287"/>
       <source>Arrow style</source>
-      <translation type="unfinished">Arrow style</translation>
+      <translation>화살표 스타일</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="294"/>
       <source>The type of dimension arrows</source>
-      <translation type="unfinished">The type of dimension arrows</translation>
+      <translation>치수 화살표 유형</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="298"/>
@@ -1102,32 +1093,32 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="333"/>
       <source>The size of dimension arrows</source>
-      <translation type="unfinished">The size of dimension arrows</translation>
+      <translation>치수 화살표의 크기</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="343"/>
       <source>Show unit</source>
-      <translation type="unfinished">Show unit</translation>
+      <translation>단위 표시</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="350"/>
       <source>If the unit suffix is shown on dimension texts or not</source>
-      <translation type="unfinished">If the unit suffix is shown on dimension texts or not</translation>
+      <translation>단위 접미사가 치수 문자에 표시되는지 여부</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="363"/>
       <source>Unit override</source>
-      <translation type="unfinished">Unit override</translation>
+      <translation>단위 재정의</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="370"/>
       <source>The unit to use for dimensions. Leave blank to use current FreeCAD unit</source>
-      <translation type="unfinished">The unit to use for dimensions. Leave blank to use current FreeCAD unit</translation>
+      <translation>치수에 사용할 단위입니다. 현재 FreeCAD 장치를 사용하려면 비워 두십시오.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="382"/>
       <source>Apply above style to selected object(s)</source>
-      <translation type="unfinished">Apply above style to selected object(s)</translation>
+      <translation>선택한 개체에 위의 스타일 적용</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="385"/>
@@ -1168,11 +1159,6 @@ value by using the [ and ] keys while drawing</translation>
       <location filename="../ui/dialogHatch.ui" line="64"/>
       <source>Rotation:</source>
       <translation>회전:</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialogHatch.ui" line="71"/>
-      <source>°</source>
-      <translation>°</translation>
     </message>
   </context>
   <context>
@@ -1220,7 +1206,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/preferences-draft.ui" line="120"/>
       <source>The number of decimals in internal coordinates operations (for ex. 3 = 0.001). Values between 6 and 8 are usually considered the best trade-off among FreeCAD users.</source>
-      <translation type="unfinished">The number of decimals in internal coordinates operations (for ex. 3 = 0.001). Values between 6 and 8 are usually considered the best trade-off among FreeCAD users.</translation>
+      <translation>내부 좌표 연산의 소수(예: 3 = 0.001)입니다. 6과 8 사이의 값은 일반적으로 FreeCAD 사용자들 사이에서 가장 좋은 절충안으로 간주됩니다.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="143"/>
@@ -1231,42 +1217,42 @@ value by using the [ and ] keys while drawing</translation>
       <location filename="../ui/preferences-draft.ui" line="169"/>
       <source>This is the value used by functions that use a tolerance.
 Values with differences below this value will be treated as same. This value will be obsoleted soon so the precision level above controls both.</source>
-      <translation type="unfinished">This is the value used by functions that use a tolerance.
-Values with differences below this value will be treated as same. This value will be obsoleted soon so the precision level above controls both.</translation>
+      <translation>이 값은 공차를 사용하는 함수에서 사용되는 값입니다.
+차이가 이 값보다 작은 값은 동일하게 처리됩니다. 이 값은 곧 사라지므로 위의 정밀도 레벨이 두 가지 모두를 제어합니다.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="194"/>
       <source>If this option is checked, the layers drop-down list will also show groups, allowing you to automatically add objects to groups too.</source>
-      <translation type="unfinished">If this option is checked, the layers drop-down list will also show groups, allowing you to automatically add objects to groups too.</translation>
+      <translation>이 옵션을 선택하면 계층 드롭다운 목록에도 그룹이 표시되므로 그룹에도 개체를 자동으로 추가할 수 있습니다.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="197"/>
       <source>Show groups in layers list drop-down button</source>
-      <translation type="unfinished">Show groups in layers list drop-down button</translation>
+      <translation>계층 목록에 그룹 표시 드롭다운 버튼</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="216"/>
       <source>Draft tools options</source>
-      <translation type="unfinished">Draft tools options</translation>
+      <translation>초안 도구 옵션</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="230"/>
       <source>When drawing lines, set focus on Length instead of X coordinate.
 This allows to point the direction and type the distance.</source>
-      <translation type="unfinished">When drawing lines, set focus on Length instead of X coordinate.
-This allows to point the direction and type the distance.</translation>
+      <translation>선을 그릴 때 X 좌표 대신 길이에 포커스를 설정합니다.
+이렇게 하면 방향을 가리키고 거리를 입력할 수 있습니다.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="234"/>
       <source>Set focus on Length instead of X coordinate</source>
-      <translation type="unfinished">Set focus on Length instead of X coordinate</translation>
+      <translation>X 좌표 대신 길이에 포커스 설정</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="247"/>
       <source>Normally, after copying objects, the copies get selected.
 If this option is checked, the base objects will be selected instead.</source>
-      <translation type="unfinished">Normally, after copying objects, the copies get selected.
-If this option is checked, the base objects will be selected instead.</translation>
+      <translation>일반적으로 개체를 복사한 후에는 복사본이 선택됩니다.
+이 옵션을 선택하면 기본 개체가 대신 선택됩니다.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="251"/>
@@ -1276,19 +1262,19 @@ If this option is checked, the base objects will be selected instead.</translati
     <message>
       <location filename="../ui/preferences-draft.ui" line="264"/>
       <source>If this option is set, when creating Draft objects on top of an existing face of another object, the "Support" property of the Draft object will be set to the base object. This was the standard behaviour before FreeCAD 0.19</source>
-      <translation type="unfinished">If this option is set, when creating Draft objects on top of an existing face of another object, the "Support" property of the Draft object will be set to the base object. This was the standard behaviour before FreeCAD 0.19</translation>
+      <translation>이 옵션을 설정하면 다른 오브젝트의 기존 면 위에 초안 객체를 작성할 때 초안 오브젝트의 "Support" 속성이 기본 오브젝트로 설정됩니다. 이는 FreeCAD 0.19 이전의 표준 동작입니다.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="267"/>
       <source>Set the Support property when possible</source>
-      <translation type="unfinished">Set the Support property when possible</translation>
+      <translation>가능한 경우 지원 속성 설정</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="280"/>
       <source>If this is checked, objects will appear as filled by default.
 Otherwise, they will appear as wireframe</source>
-      <translation type="unfinished">If this is checked, objects will appear as filled by default.
-Otherwise, they will appear as wireframe</translation>
+      <translation>이 옵션을 선택하면 개체가 기본적으로 채워진 것으로 표시됩니다.
+그렇지 않으면 와이어프레임으로 표시됩니다.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="284"/>
@@ -1299,8 +1285,8 @@ Otherwise, they will appear as wireframe</translation>
       <location filename="../ui/preferences-draft.ui" line="300"/>
       <source>If this is checked, copy mode will be kept across command,
 otherwise commands will always start in no-copy mode</source>
-      <translation type="unfinished">If this is checked, copy mode will be kept across command,
-otherwise commands will always start in no-copy mode</translation>
+      <translation>이 옵션을 선택하면 명령 간에 복사 모드가 유지됩니다.
+그렇지 않으면 명령은 항상 복사 금지 모드에서 시작됩니다.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="304"/>
@@ -1311,13 +1297,13 @@ otherwise commands will always start in no-copy mode</translation>
       <location filename="../ui/preferences-draft.ui" line="320"/>
       <source>Force Draft Tools to create Part primitives instead of Draft objects.
 Note that this is not fully supported, and many object will be not editable with Draft Modifiers.</source>
-      <translation type="unfinished">Force Draft Tools to create Part primitives instead of Draft objects.
-Note that this is not fully supported, and many object will be not editable with Draft Modifiers.</translation>
+      <translation>임시 도구가 임시 객체 대신 부품 원시 요소를 작성하도록 합니다.
+이것은 완전히 지원되지 않으며, 초안 수정자를 사용하여 많은 오브젝트를 편집할 수 없습니다.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="324"/>
       <source>Use Part Primitives when available</source>
-      <translation type="unfinished">Use Part Primitives when available</translation>
+      <translation>사용 가능한 경우 부품 원시 요소 사용</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="341"/>
@@ -1357,17 +1343,17 @@ Note that this is not fully supported, and many object will be not editable with
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="14"/>
       <source>Visual settings</source>
-      <translation type="unfinished">Visual settings</translation>
+      <translation>시각적 설정</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="26"/>
       <source>Visual Settings</source>
-      <translation type="unfinished">Visual Settings</translation>
+      <translation>시각적 설정</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="34"/>
       <source>Snap symbols style</source>
-      <translation type="unfinished">Snap symbols style</translation>
+      <translation>스냅 기호 스타일</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="54"/>
@@ -1387,12 +1373,12 @@ Note that this is not fully supported, and many object will be not editable with
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="87"/>
       <source>The default color for snap symbols</source>
-      <translation type="unfinished">The default color for snap symbols</translation>
+      <translation>스냅 기호의 기본 색상</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="111"/>
       <source>Check this if you want to use the color/linewidth from the toolbar as default</source>
-      <translation type="unfinished">Check this if you want to use the color/linewidth from the toolbar as default</translation>
+      <translation>도구 모음의 색상/선 너비를 기본값으로 사용하려면 이 항목을 선택합니다.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="114"/>
@@ -1402,12 +1388,12 @@ Note that this is not fully supported, and many object will be not editable with
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="131"/>
       <source>If checked, a widget indicating the current working plane orientation appears during drawing operations</source>
-      <translation type="unfinished">If checked, a widget indicating the current working plane orientation appears during drawing operations</translation>
+      <translation>이 항목을 선택하면 그리기 작업 중에 현재 작업 기준면 방향을 나타내는 위젯이 나타납니다.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="134"/>
       <source>Show Working Plane tracker</source>
-      <translation type="unfinished">Show Working Plane tracker</translation>
+      <translation>작업 기준면 추적기 표시</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="151"/>
@@ -1422,37 +1408,37 @@ Note that this is not fully supported, and many object will be not editable with
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="194"/>
       <source>Alternate SVG patterns location</source>
-      <translation type="unfinished">Alternate SVG patterns location</translation>
+      <translation>대체 SVG 패턴 위치</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="220"/>
       <source>Here you can specify a directory with custom SVG files containing &lt;pattern&gt; definitions to be added to the standard patterns</source>
-      <translation type="unfinished">Here you can specify a directory with custom SVG files containing &lt;pattern&gt; definitions to be added to the standard patterns</translation>
+      <translation>여기서 표준 패턴에 추가할 &lt;패턴&gt; 정의를 포함하는 사용자 정의 SVG 파일이 있는 디렉토리를 지정할 수 있습니다.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="237"/>
       <source>SVG pattern resolution</source>
-      <translation type="unfinished">SVG pattern resolution</translation>
+      <translation>SVG 패턴 해상도</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="257"/>
       <source>The resolution to draw the patterns in. Default value is 128. Higher values give better resolutions, lower values make drawing faster</source>
-      <translation type="unfinished">The resolution to draw the patterns in. Default value is 128. Higher values give better resolutions, lower values make drawing faster</translation>
+      <translation>패턴을 그릴 해상도입니다. 기본값은 128입니다. 값이 클수록 해상도가 향상되고 값이 낮을수록 그리는 속도가 빨라집니다.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="280"/>
       <source>SVG pattern default size</source>
-      <translation type="unfinished">SVG pattern default size</translation>
+      <translation>SVG 패턴 기본 크기</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="300"/>
       <source>The default size for SVG patterns</source>
-      <translation type="unfinished">The default size for SVG patterns</translation>
+      <translation>SVG 패턴의 기본 크기</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="326"/>
       <source>Check this if you want to preserve colors of faces while doing downgrade and upgrade (splitFaces and makeShell only)</source>
-      <translation type="unfinished">Check this if you want to preserve colors of faces while doing downgrade and upgrade (splitFaces and makeShell only)</translation>
+      <translation>다운그레이드 및 업그레이드를 수행하는 동안 면의 색상을 유지하려면 이 항목을 선택합니다(splitFaces 및 makeShell만 해당).</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="329"/>
@@ -1477,39 +1463,24 @@ Note that this is not fully supported, and many object will be not editable with
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="375"/>
       <source>Dashed line definition</source>
-      <translation type="unfinished">Dashed line definition</translation>
+      <translation>점선 정의</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="395"/>
       <location filename="../ui/preferences-draftvisual.ui" line="438"/>
       <location filename="../ui/preferences-draftvisual.ui" line="481"/>
       <source>An SVG linestyle definition</source>
-      <translation type="unfinished">An SVG linestyle definition</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="398"/>
-      <source>0.09,0.05</source>
-      <translation>0.09,0.05</translation>
+      <translation>SVG 라인 스타일 정의</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="418"/>
       <source>Dashdot line definition</source>
-      <translation type="unfinished">Dashdot line definition</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="441"/>
-      <source>0.09,0.05,0.02,0.05</source>
-      <translation>0.09,0.05,0.02,0.05</translation>
+      <translation>대시도트 선 정의</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="461"/>
       <source>Dotted line definition</source>
-      <translation type="unfinished">Dotted line definition</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="484"/>
-      <source>0.02,0.02</source>
-      <translation>0.02,0.02</translation>
+      <translation>점선 정의</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="14"/>
@@ -1519,7 +1490,7 @@ Note that this is not fully supported, and many object will be not editable with
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="26"/>
       <source>Text settings</source>
-      <translation type="unfinished">Text settings</translation>
+      <translation>텍스트 설정</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="34"/>
@@ -1564,32 +1535,32 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="116"/>
       <source>Dimension settings</source>
-      <translation type="unfinished">Dimension settings</translation>
+      <translation>치수 설정</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="124"/>
       <source>Display mode</source>
-      <translation type="unfinished">Display mode</translation>
+      <translation>디스플레이 모드</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="144"/>
       <source>text above (2D)</source>
-      <translation type="unfinished">text above (2D)</translation>
+      <translation>위의 텍스트(2D)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="149"/>
       <source> text inside (3D)</source>
-      <translation type="unfinished"> text inside (3D)</translation>
+      <translation>텍스트 내부(3D)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="161"/>
       <source>Number of decimals</source>
-      <translation type="unfinished">Number of decimals</translation>
+      <translation>소수점수</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="201"/>
       <source>Extension lines size</source>
-      <translation type="unfinished">Extension lines size</translation>
+      <translation>연장선 크기</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="208"/>
@@ -1604,7 +1575,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="244"/>
       <source>The default length of extension line above dimension line</source>
-      <translation type="unfinished">The default length of extension line above dimension line</translation>
+      <translation>치수선 위의 확장선 기본 길이</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="273"/>
@@ -1619,7 +1590,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="309"/>
       <source>Arrows style</source>
-      <translation type="unfinished">Arrows style</translation>
+      <translation>화살표 스타일</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="323"/>
@@ -1649,7 +1620,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="355"/>
       <source>Arrows size</source>
-      <translation type="unfinished">Arrows size</translation>
+      <translation>화살표 크기</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="362"/>
@@ -1659,7 +1630,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="388"/>
       <source>Text orientation</source>
-      <translation type="unfinished">Text orientation</translation>
+      <translation>텍스트 방향</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="395"/>
@@ -1766,12 +1737,12 @@ One unit in the SVG file will translate as one millimeter. </translation>
     <message>
       <location filename="../ui/preferences-svg.ui" line="128"/>
       <source>Style of SVG file to write when exporting a sketch</source>
-      <translation type="unfinished">Style of SVG file to write when exporting a sketch</translation>
+      <translation>스케치를 내보낼 때 쓸 SVG 파일 스타일</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="141"/>
       <source>Translated (for print &amp; display)</source>
-      <translation type="unfinished">Translated (for print &amp; display)</translation>
+      <translation>번역됨(인쇄 및 디스플레이용)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="146"/>
@@ -1781,12 +1752,12 @@ One unit in the SVG file will translate as one millimeter. </translation>
     <message>
       <location filename="../ui/preferences-svg.ui" line="158"/>
       <source>All white lines will appear in black in the SVG for better readability against white backgrounds</source>
-      <translation type="unfinished">All white lines will appear in black in the SVG for better readability against white backgrounds</translation>
+      <translation>흰색 배경에 대한 가독성을 높이기 위해 SVG에서 모든 흰색 선이 검은색으로 표시됩니다.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="161"/>
       <source>Translate white line color to black</source>
-      <translation type="unfinished">Translate white line color to black</translation>
+      <translation>흰색 선 색상을 검은색으로 변환</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="181"/>
@@ -1825,19 +1796,19 @@ This value is the maximum segment length. </translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="35"/>
       <source>This preferences dialog will be shown when importing/ exporting DXF files</source>
-      <translation type="unfinished">This preferences dialog will be shown when importing/ exporting DXF files</translation>
+      <translation>이 기본 설정 대화상자는 DXF 파일을 가져오거나 내보낼 때 표시됩니다.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="38"/>
       <source>Show this dialog when importing and exporting</source>
-      <translation type="unfinished">Show this dialog when importing and exporting</translation>
+      <translation>가져오기 및 내보내기를 할 때 이 대화 상자 표시</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="51"/>
       <source>Python importer is used, otherwise the newer C++ is used.
 Note: C++ importer is faster, but is not as featureful yet</source>
-      <translation type="unfinished">Python importer is used, otherwise the newer C++ is used.
-Note: C++ importer is faster, but is not as featureful yet</translation>
+      <translation>파이썬 가져오기가 사용되고, 그렇지 않으면 최신 C++가 사용된다.
+참고: C++ 가져오기가 더 빠르지만 아직 기능이 부족합니다.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="55"/>
@@ -1848,8 +1819,8 @@ Note: C++ importer is faster, but is not as featureful yet</translation>
       <location filename="../ui/preferences-dxf.ui" line="71"/>
       <source>Python exporter is used, otherwise the newer C++ is used.
 Note: C++ exporter is faster, but is not as featureful yet</source>
-      <translation type="unfinished">Python exporter is used, otherwise the newer C++ is used.
-Note: C++ exporter is faster, but is not as featureful yet</translation>
+      <translation>파이썬 내보내기가 사용되고, 그렇지 않으면 최신 C++가 사용된다.
+참고: C++ 내보내기는 더 빠르지만 아직 기능이 부족합니다.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="75"/>
@@ -1895,7 +1866,7 @@ from the Addon Manager.</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="156"/>
       <source>If unchecked, texts and mtexts won't be imported</source>
-      <translation type="unfinished">If unchecked, texts and mtexts won't be imported</translation>
+      <translation>선택하지 않으면 텍스트 및 m텍스트를 가져오지 않습니다.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="159"/>
@@ -1905,7 +1876,7 @@ from the Addon Manager.</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="172"/>
       <source>If unchecked, points won't be imported</source>
-      <translation type="unfinished">If unchecked, points won't be imported</translation>
+      <translation>선택하지 않으면  포인트를 가져오지 않습니다.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="175"/>
@@ -1915,12 +1886,12 @@ from the Addon Manager.</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="188"/>
       <source>If checked, paper space objects will be imported too</source>
-      <translation type="unfinished">If checked, paper space objects will be imported too</translation>
+      <translation>이 항목을 선택하면 용지 공간 오브젝트도 가져옵니다.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="191"/>
       <source>layouts</source>
-      <translation type="unfinished">layouts</translation>
+      <translation>레이아웃</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="204"/>
@@ -1940,7 +1911,7 @@ from the Addon Manager.</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="231"/>
       <source>Only standard Part objects will be created (fastest)</source>
-      <translation type="unfinished">Only standard Part objects will be created (fastest)</translation>
+      <translation>표준 부품 개체만 생성됩니다(가장 빠름)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="234"/>
@@ -2297,7 +2268,7 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="511"/>
       <source> lines</source>
-      <translation type="unfinished"> lines</translation>
+      <translation>선</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="534"/>
@@ -2535,11 +2506,6 @@ This might fail for post DXF R12 templates.</translation>
       <translation type="unfinished">Cycle Snap</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftinterface.ui" line="608"/>
-      <source>`</source>
-      <translation>`</translation>
-    </message>
-    <message>
       <location filename="../ui/preferences-draftinterface.ui" line="630"/>
       <source>Global</source>
       <translation>전역</translation>
@@ -2553,11 +2519,6 @@ This might fail for post DXF R12 templates.</translation>
       <location filename="../ui/preferences-draftinterface.ui" line="674"/>
       <source>Undo</source>
       <translation type="unfinished">Undo</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftinterface.ui" line="696"/>
-      <source>/</source>
-      <translation>/</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="718"/>
@@ -2575,19 +2536,9 @@ This might fail for post DXF R12 templates.</translation>
       <translation type="unfinished">Increase Radius</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftinterface.ui" line="784"/>
-      <source>[</source>
-      <translation>[</translation>
-    </message>
-    <message>
       <location filename="../ui/preferences-draftinterface.ui" line="806"/>
       <source>Decrease Radius</source>
       <translation type="unfinished">Decrease Radius</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftinterface.ui" line="828"/>
-      <source>]</source>
-      <translation>]</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="850"/>

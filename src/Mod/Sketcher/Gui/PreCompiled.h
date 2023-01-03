@@ -46,6 +46,7 @@
 
 // Boost
 #include <boost/math/special_functions/fpclassify.hpp>
+#include <boost/core/ignore_unused.hpp>
 
 #ifdef FC_OS_WIN32
 # define NOMINMAX

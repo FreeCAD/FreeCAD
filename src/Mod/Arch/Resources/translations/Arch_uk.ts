@@ -596,11 +596,6 @@ Leave blank to use all objects from the document</source>
       <translation>Список кутів, розділених комами, для спроби обертання фігур</translation>
     </message>
     <message>
-      <location filename="../ui/ArchNest.ui" line="135"/>
-      <source>0,90,180,270</source>
-      <translation>0,90,180,270</translation>
-    </message>
-    <message>
       <location filename="../ui/ArchNest.ui" line="145"/>
       <source>Nesting operation</source>
       <translation>Операція вкладання</translation>
@@ -824,11 +819,6 @@ Leave blank to use all objects from the document</source>
 to projections of hidden objects.</source>
       <translation>Це властивість SVG штрихпунктирних ліній щоб застосувати
 до проекцій прихованих об'єктів.</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-arch.ui" line="589"/>
-      <source>30, 10</source>
-      <translation>30, 10</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="625"/>

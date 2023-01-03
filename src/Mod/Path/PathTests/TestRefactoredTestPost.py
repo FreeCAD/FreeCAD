@@ -90,15 +90,17 @@ class TestRefactoredTestPost(PathTestUtils.PathTestBase):
 
     def single_compare(self, path, expected, args, debug=False):
         """Perform a test with a single comparison."""
+        nl = "\n"
         self.docobj.Path = Path.Path(path)
         postables = [self.docobj]
         gcode = postprocessor.export(postables, "gcode.tmp", args)
         if debug:
-            print("--------\n" + gcode + "--------\n")
+            print(f"--------{nl}{gcode}--------{nl}")
         self.assertEqual(gcode, expected)
 
     def compare_third_line(self, path_string, expected, args, debug=False):
-        """Perform a test with a single comparison only to the third line of the output."""
+        """Perform a test with a single comparison to the third line of the output."""
+        nl = "\n"
         if path_string:
             self.docobj.Path = Path.Path([Path.Command(path_string)])
         else:
@@ -106,7 +108,7 @@ class TestRefactoredTestPost(PathTestUtils.PathTestBase):
         postables = [self.docobj]
         gcode = postprocessor.export(postables, "gcode.tmp", args)
         if debug:
-            print("--------\n" + gcode + "--------\n")
+            print(f"--------{nl}{gcode}--------{nl}")
         self.assertEqual(gcode.splitlines()[2], expected)
 
     #
@@ -885,7 +887,7 @@ G52 X0.0000 Y0.0000 Z0.0000 A0.0000 B0.0000 C0.0000 U0.0000 V0.0000 W0.0000
         """Test G59 command Generation."""
         self.compare_third_line("G59", "G59", "")
         #
-        # Some gcode interpreters us G59 P- to select additional
+        # Some gcode interpreters use G59 P- to select additional
         # work coordinate systems.  This is considered somewhat
         # obsolete and is being replaces by G54.1 P- instead.
         #

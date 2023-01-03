@@ -24,10 +24,13 @@
 
 #ifndef _PreComp_
 # include <boost_signals2.hpp>
+# include <boost/core/ignore_unused.hpp>
 # include <QApplication>
 # include <QEvent>
 # include <QCloseEvent>
 # include <QMdiSubWindow>
+# include <QPrintDialog>
+# include <QPrintPreviewDialog>
 # include <QPrinter>
 # include <QPrinterInfo>
 # include <QRegularExpression>
@@ -41,6 +44,7 @@
 #include "MDIViewPy.h"
 #include "Application.h"
 #include "Document.h"
+#include "FileDialog.h"
 #include "MainWindow.h"
 #include "ViewProviderDocumentObject.h"
 
@@ -148,12 +152,12 @@ void MDIView::onRelabel(Gui::Document *pDoc)
         QRegularExpression rx(QLatin1String("(\\s\\:\\s\\d+\\[\\*\\])$"));
         QRegularExpressionMatch match;
         //int pos =
-        cap.lastIndexOf(rx, -1, &match);
+        boost::ignore_unused(cap.lastIndexOf(rx, -1, &match));
         if (!match.hasMatch()) {
             // ... or not
             rx.setPattern(QLatin1String("(\\s\\:\\s\\d+)$"));
             //pos =
-            cap.lastIndexOf(rx, -1, &match);
+            boost::ignore_unused(cap.lastIndexOf(rx, -1, &match));
         }
         if (match.hasMatch()) {
             cap = QString::fromUtf8(pDoc->getDocument()->Label.getValue());
@@ -236,17 +240,33 @@ void MDIView::print(QPrinter* printer)
 
 void MDIView::print()
 {
-    std::cerr << "Printing not implemented for " << this->metaObject()->className() << std::endl;
+    QPrinter printer(QPrinter::ScreenResolution);
+    printer.setFullPage(true);
+    QPrintDialog dlg(&printer, this);
+    if (dlg.exec() == QDialog::Accepted) {
+        print(&printer);
+    }
 }
 
 void MDIView::printPdf()
 {
-    std::cerr << "Printing PDF not implemented for " << this->metaObject()->className() << std::endl;
+    QString filename = FileDialog::getSaveFileName(this, tr("Export PDF"), QString(),
+        QString::fromLatin1("%1 (*.pdf)").arg(tr("PDF file")));
+    if (!filename.isEmpty()) {
+        QPrinter printer(QPrinter::ScreenResolution);
+        printer.setOutputFormat(QPrinter::PdfFormat);
+        printer.setOutputFileName(filename);
+        print(&printer);
+    }
 }
 
 void MDIView::printPreview()
 {
-    std::cerr << "Printing preview not implemented for " << this->metaObject()->className() << std::endl;
+    QPrinter printer(QPrinter::ScreenResolution);
+    QPrintPreviewDialog dlg(&printer, this);
+    connect(&dlg, SIGNAL(paintRequested (QPrinter *)),
+            this, SLOT(print(QPrinter *)));
+    dlg.exec();
 }
 
 void MDIView::savePrinterSettings(QPrinter* printer)

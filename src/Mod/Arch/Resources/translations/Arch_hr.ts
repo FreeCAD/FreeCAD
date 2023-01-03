@@ -602,11 +602,6 @@ Ostavite prazno da biste koristili sve predmete iz dokumenta</translation>
       <translation>Jedan zarezom odvojena lista kutova za ispitivanje i za rotiranje oblika</translation>
     </message>
     <message>
-      <location filename="../ui/ArchNest.ui" line="135"/>
-      <source>0,90,180,270</source>
-      <translation>0,90,180,270</translation>
-    </message>
-    <message>
       <location filename="../ui/ArchNest.ui" line="145"/>
       <source>Nesting operation</source>
       <translation>Operacija Gniježđenja</translation>
@@ -832,11 +827,6 @@ to projections of hidden objects.</source>
       <translation>Ovo je SVG stroke-dasharray svojstvo koje treba primijeniti
 na projekcije skrivenih objekata.
 </translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-arch.ui" line="589"/>
-      <source>30, 10</source>
-      <translation>30, 10</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="625"/>

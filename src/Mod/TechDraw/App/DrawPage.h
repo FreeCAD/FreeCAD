@@ -107,6 +107,8 @@ public:
 
     bool canUpdate() const;
 
+    bool hasObject(App::DocumentObject* obj);
+
 protected:
     void onBeforeChange(const App::Property* prop) override;
     void onChanged(const App::Property* prop) override;

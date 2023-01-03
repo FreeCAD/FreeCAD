@@ -562,9 +562,9 @@ Py::Object PyResource::value(const Py::Tuple& args)
     }
 
     Py::Object item = Py::None();
-    switch (v.type())
+    switch (v.userType())
     {
-    case QVariant::StringList:
+    case QMetaType::QStringList:
         {
             QStringList str = v.toStringList();
             int nSize = str.count();
@@ -574,21 +574,21 @@ Py::Object PyResource::value(const Py::Tuple& args)
             }
             item = slist;
         }   break;
-    case QVariant::ByteArray:
+    case QMetaType::QByteArray:
         break;
-    case QVariant::String:
+    case QMetaType::QString:
         item = Py::String(v.toString().toLatin1());
         break;
-    case QVariant::Double:
+    case QMetaType::Double:
         item = Py::Float(v.toDouble());
         break;
-    case QVariant::Bool:
+    case QMetaType::Bool:
         item = Py::Boolean(v.toBool() ? 1 : 0);
         break;
-    case QVariant::UInt:
+    case QMetaType::UInt:
         item = Py::Long(static_cast<unsigned long>(v.toUInt()));
         break;
-    case QVariant::Int:
+    case QMetaType::Int:
         item = Py::Int(v.toInt());
         break;
     default:

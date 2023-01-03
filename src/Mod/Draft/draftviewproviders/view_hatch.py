@@ -49,6 +49,11 @@ class ViewProviderDraftHatch:
 
         return None
 
+    def attach(self, vobj):
+
+        self.Object = vobj.Object
+        return
+
     def setEdit(self, vobj, mode):
         # EditMode 1 and 2 are handled by the Part::FeaturePython code.
         # EditMode 3 (Color) does not make sense for hatches (which do not
@@ -74,16 +79,26 @@ class ViewProviderDraftHatch:
         return True
 
     def setupContextMenu(self, vobj, menu):
-        action1 = QtGui.QAction(Gui.getIcon("Std_TransformManip.svg"),
-                                translate("Command", "Transform"), # Context `Command` instead of `draft`.
-                                menu)
-        QtCore.QObject.connect(action1,
+        action_edit = QtGui.QAction(translate("draft", "Edit"),
+                                    menu)
+        QtCore.QObject.connect(action_edit,
+                               QtCore.SIGNAL("triggered()"),
+                               self.edit)
+        menu.addAction(action_edit)
+
+        action_transform = QtGui.QAction(Gui.getIcon("Std_TransformManip.svg"),
+                                         translate("Command", "Transform"), # Context `Command` instead of `draft`.
+                                         menu)
+        QtCore.QObject.connect(action_transform,
                                QtCore.SIGNAL("triggered()"),
                                self.transform)
-        menu.addAction(action1)
+        menu.addAction(action_transform)
 
         return True # Removes `Transform` and `Set colors` from the default
-                    # Part::FeaturePython context menu.
+                    # Part::FeaturePython context menu. See view_base.py.
+
+    def edit(self):
+        Gui.ActiveDocument.setEdit(self.Object, 0)
 
     def transform(self):
-        Gui.runCommand("Std_TransformManip", 0)
+        Gui.ActiveDocument.setEdit(self.Object, 1)

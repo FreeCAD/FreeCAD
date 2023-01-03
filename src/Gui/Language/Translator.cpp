@@ -165,6 +165,7 @@ Translator::Translator()
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Romanian"             )] = "ro";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Russian"              )] = "ru";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Serbian"              )] = "sr";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Serbian, Latin"       )] = "sr-CS";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Slovak"               )] = "sk";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Slovenian"            )] = "sl";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Spanish"              )] = "es-ES";
@@ -371,7 +372,11 @@ bool Translator::eventFilter(QObject* obj, QEvent* ev)
         if ((mod & Qt::KeypadModifier) && (key == Qt::Key_Period || key == Qt::Key_Comma)) {
             if (ev->spontaneous()) {
                 auto dp = QString(QLocale().decimalPoint());
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
                 int dpcode = QKeySequence(dp)[0];
+#else
+                int dpcode = QKeySequence(dp)[0].key();
+#endif
                 if (kev->text() != dp) {
                     QKeyEvent modifiedKeyEvent(kev->type(), dpcode, mod, dp, kev->isAutoRepeat(), kev->count());
                     qApp->sendEvent(obj, &modifiedKeyEvent);

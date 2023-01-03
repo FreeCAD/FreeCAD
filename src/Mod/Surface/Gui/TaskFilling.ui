@@ -63,6 +63,9 @@
           <property name="text">
            <string>Add Edge</string>
           </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
           <property name="checked">
            <bool>false</bool>
           </property>
@@ -78,6 +81,9 @@
           </property>
           <property name="text">
            <string>Remove Edge</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
           </property>
          </widget>
         </item>

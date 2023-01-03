@@ -172,6 +172,7 @@
         <file>translations/Draft_es-AR.qm</file>
         <file>translations/Draft_bg.qm</file>
         <file>translations/Draft_ka.qm</file>
+        <file>translations/Draft_sr-CS.qm</file>
         <file>ui/preferences-draft.ui</file>
         <file>ui/preferences-draftinterface.ui</file>
         <file>ui/preferences-draftsnap.ui</file>

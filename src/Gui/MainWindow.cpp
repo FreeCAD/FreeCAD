@@ -290,7 +290,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     setCentralWidget(d->mdiArea);
 
     statusBar()->setObjectName(QString::fromLatin1("statusBar"));
-    connect(statusBar(), SIGNAL(messageChanged(const QString &)), this, SLOT(statusMessageChanged()));
+    connect(statusBar(), &QStatusBar::messageChanged, this, &MainWindow::statusMessageChanged);
 
     // labels and progressbar
     d->status = new StatusBarObserver();
@@ -306,31 +306,38 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     // clears the action label
     d->actionTimer = new QTimer( this );
     d->actionTimer->setObjectName(QString::fromLatin1("actionTimer"));
-    connect(d->actionTimer, SIGNAL(timeout()), d->actionLabel, SLOT(clear()));
+    connect(d->actionTimer, &QTimer::timeout, d->actionLabel, &QLabel::clear);
 
     // clear status type
     d->statusTimer = new QTimer( this );
     d->statusTimer->setObjectName(QString::fromLatin1("statusTimer"));
-    connect(d->statusTimer, SIGNAL(timeout()), this, SLOT(clearStatus()));
+    connect(d->statusTimer, &QTimer::timeout, this, &MainWindow::clearStatus);
 
     // update gui timer
     d->activityTimer = new QTimer(this);
     d->activityTimer->setObjectName(QString::fromLatin1("activityTimer"));
-    connect(d->activityTimer, SIGNAL(timeout()),this, SLOT(_updateActions()));
+    connect(d->activityTimer, &QTimer::timeout, this, &MainWindow::_updateActions);
     d->activityTimer->setSingleShot(false);
     d->activityTimer->start(150);
 
     // update view-sensitive commands when clipboard has changed
     QClipboard *clipbd = QApplication::clipboard();
-    connect(clipbd, SIGNAL(dataChanged()), this, SLOT(updateEditorActions()));
+    connect(clipbd, &QClipboard::dataChanged, this, &MainWindow::updateEditorActions);
 
     d->windowMapper = new QSignalMapper(this);
 
     // connection between workspace, window menu and tab bar
-    connect(d->windowMapper, SIGNAL(mapped(QWidget *)),
-            this, SLOT(onSetActiveSubWindow(QWidget*)));
-    connect(d->mdiArea, SIGNAL(subWindowActivated(QMdiSubWindow*)),
-            this, SLOT(onWindowActivated(QMdiSubWindow* )));
+#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
+    connect(d->windowMapper, qOverload<QWidget*>(&QSignalMapper::mapped),
+            this, &MainWindow::onSetActiveSubWindow);
+#else
+    connect(d->windowMapper, &QSignalMapper::mappedObject,
+            this, [=](QObject* object) {
+        onSetActiveSubWindow(qobject_cast<QWidget*>(object));
+    });
+#endif
+    connect(d->mdiArea, &QMdiArea::subWindowActivated,
+            this, &MainWindow::onWindowActivated);
 
     setupDockWindows();
 
@@ -944,7 +951,7 @@ void MainWindow::addWindow(MDIView* view)
         }
 
         QAction* action = menu->addAction(tr("Close All"));
-        connect(action, SIGNAL(triggered()), d->mdiArea, SLOT(closeAllSubWindows()));
+        connect(action, &QAction::triggered, d->mdiArea, &QMdiArea::closeAllSubWindows);
         d->mdiArea->addSubWindow(child);
     }
 
@@ -1105,7 +1112,7 @@ void MainWindow::onWindowsMenuAboutToShow()
         for (const auto & action : actions) {
             if (action == last)
                 break; // this is a separator
-            connect(action, SIGNAL(triggered()), d->windowMapper, SLOT(map()));
+            connect(action, &QAction::triggered, d->windowMapper, qOverload<>(&QSignalMapper::map));
         }
     }
 
@@ -1291,15 +1298,26 @@ void MainWindow::delayedStartup()
 {
     // automatically run unit tests in Gui
     if (App::Application::Config()["RunMode"] == "Internal") {
-        try {
-            Base::Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADTest"));
-        }
-        catch (const Base::SystemExitException&) {
-            throw;
-        }
-        catch (const Base::Exception& e) {
-            e.ReportException();
-        }
+        QTimer::singleShot(1000, this, []{
+            try {
+                Base::Interpreter().runString(
+                    "import sys\n"
+                    "import FreeCAD\n"
+                    "import QtUnitGui\n\n"
+                    "testCase = FreeCAD.ConfigGet(\"TestCase\")\n"
+                    "QtUnitGui.addTest(testCase)\n"
+                    "QtUnitGui.setTest(testCase)\n"
+                    "result = QtUnitGui.runTest()\n"
+                    "sys.stdout.flush()\n"
+                    "sys.exit(0 if result else 1)");
+            }
+            catch (const Base::SystemExitException&) {
+                throw;
+            }
+            catch (const Base::Exception& e) {
+                e.ReportException();
+            }
+        });
         return;
     }
 

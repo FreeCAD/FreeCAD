@@ -74,12 +74,6 @@
       <source>Optional?</source>
       <translation>Opcjonalne?</translation>
     </message>
-    <message>
-      <location filename="../../developer_mode_dependencies.ui" line="72"/>
-      <location filename="../../developer_mode_dependencies.ui" line="79"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
   </context>
   <context>
     <name>DependencyResolutionDialog</name>
@@ -250,12 +244,6 @@ Czy chcesz, aby Menadżer dodatków zainstalował je automatycznie? Wybierz &quo
       <location filename="../../developer_mode.ui" line="277"/>
       <source>Addon Contents</source>
       <translation>Zawartość dodatku</translation>
-    </message>
-    <message>
-      <location filename="../../developer_mode.ui" line="301"/>
-      <location filename="../../developer_mode.ui" line="308"/>
-      <source>...</source>
-      <translation>...</translation>
     </message>
   </context>
   <context>
@@ -486,14 +474,6 @@ Czy chcesz, aby Menadżer dodatków zainstalował je automatycznie? Wybierz &quo
       <translation>Plik licencji</translation>
     </message>
     <message>
-      <location filename="../../developer_mode_licenses_table.ui" line="97"/>
-      <location filename="../../developer_mode_licenses_table.ui" line="107"/>
-      <location filename="../../developer_mode_people_table.ui" line="90"/>
-      <location filename="../../developer_mode_people_table.ui" line="100"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
-    <message>
       <location filename="../../developer_mode_people_table.ui" line="26"/>
       <source>People</source>
       <translation>Twórcy</translation>
@@ -535,12 +515,6 @@ Czy chcesz, aby Menadżer dodatków zainstalował je automatycznie? Wybierz &quo
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="48"/>
       <source>Best-available branch, tag, or commit</source>
       <translation>Najlepsza dostępna gałąź, tag lub commit</translation>
-    </message>
-    <message>
-      <location filename="../../developer_mode_advanced_freecad_versions.ui" line="71"/>
-      <location filename="../../developer_mode_advanced_freecad_versions.ui" line="78"/>
-      <source>...</source>
-      <translation>...</translation>
     </message>
   </context>
   <context>
@@ -599,12 +573,6 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
       <translation>Pobierz metadane makrodefinicji (około 10 MB)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="44"/>
-      <source>DownloadMacros</source>
-      <translation>Pobieranie makrodefinicji</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManagerOptions.ui" line="47"/>
       <location filename="../../AddonManagerOptions.ui" line="373"/>
       <location filename="../../AddonManagerOptions.ui" line="386"/>
       <source>Addons</source>
@@ -651,12 +619,6 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
       <translation>Repozytoria użytkownika</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="188"/>
-      <location filename="../../AddonManagerOptions.ui" line="195"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
-    <message>
       <location filename="../../AddonManagerOptions.ui" line="354"/>
       <source>Show option to change branches (requires git)</source>
       <translation>Pokaż opcję zmiany gałęzi (wymaga git)</translation>
@@ -679,7 +641,7 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
     <message>
       <location filename="../../AddonManagerOptions.ui" line="383"/>
       <source>Addon developer mode</source>
-      <translation>Tryb dewelopera dodatków</translation>
+      <translation>Tryb deweloperski dodatków</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="389"/>
@@ -719,7 +681,7 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
     <message>
       <location filename="../../AddonManagerOptions.ui" line="308"/>
       <source>git executable (optional):</source>
-      <translation>plik wykonywalny git (opcjonalnie):</translation>
+      <translation>Plik wykonywalny Git (opcjonalnie):</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="327"/>
@@ -738,11 +700,6 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
       <location filename="../../package_details.ui" line="14"/>
       <source>Form</source>
       <translation>Formularz</translation>
-    </message>
-    <message>
-      <location filename="../../package_details.ui" line="29"/>
-      <source>...</source>
-      <translation>...</translation>
     </message>
     <message>
       <location filename="../../package_details.ui" line="49"/>
@@ -829,6 +786,19 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
       <location filename="../../developer_mode_select_from_list.ui" line="20"/>
       <source>TextLabel</source>
       <translation>Etykieta tekstu</translation>
+    </message>
+  </context>
+  <context>
+    <name>UpdateAllDialog</name>
+    <message>
+      <location filename="../../update_all.ui" line="14"/>
+      <source>Updating Addons</source>
+      <translation type="unfinished">Updating Addons</translation>
+    </message>
+    <message>
+      <location filename="../../update_all.ui" line="23"/>
+      <source>Updating out-of-date addons...</source>
+      <translation type="unfinished">Updating out-of-date addons...</translation>
     </message>
   </context>
   <context>

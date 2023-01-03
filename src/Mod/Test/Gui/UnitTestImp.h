@@ -44,6 +44,7 @@ public:
     void setUnitTest(const QString& unit);
     void clearUnitTests();
     QString getUnitTest() const;
+    bool runCurrentTest();
     void setStatusText(const QString& text);
     void setProgressFraction(float fraction, const QString& = QString());
     void clearErrorList();

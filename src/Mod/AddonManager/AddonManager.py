@@ -299,8 +299,9 @@ class CommandAddonManager:
                             FreeCAD.Console.PrintWarning(
                                 translate(
                                     "AddonsInstaller",
-                                    "Worker process {} is taking a long time to stop...\n",
+                                    "Worker process {} is taking a long time to stop...",
                                 ).format(worker)
+                                + "\n"
                             )
 
     def determine_cache_update_status(self) -> None:

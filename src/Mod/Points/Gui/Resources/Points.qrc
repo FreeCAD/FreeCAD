@@ -46,5 +46,6 @@
         <file>translations/Points_es-AR.qm</file>
         <file>translations/Points_bg.qm</file>
         <file>translations/Points_ka.qm</file>
+        <file>translations/Points_sr-CS.qm</file>
     </qresource>
 </RCC>

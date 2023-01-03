@@ -166,6 +166,8 @@ public:
 
     bool isInternalAligned() const { return this->getInternalType() != InternalType::None; }
 
+    bool isInternalType(InternalType::InternalType type) const { return this->getInternalType() == type; }
+
     // Geometry Extension Information
     inline const std::string &getExtensionName () const {return SketchGeoExtension->getName();}
 
@@ -237,7 +239,7 @@ private:
 //
 // GeometryTypedFacade
 
-/** @brief  It provides all the funcionality of GeometryFacade (derives from it), but in addition
+/** @brief  It provides all the functionality of GeometryFacade (derives from it), but in addition
  * allows to indicate the type of a Part::Geometry derived class.
  *
  * @details

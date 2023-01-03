@@ -430,33 +430,6 @@ bool Rotation::operator!=(const Rotation & q) const
     return !(*this == q);
 }
 
-bool Rotation::isSame(const Rotation& q) const
-{
-    if ((this->quat[0] == q.quat[0] &&
-         this->quat[1] == q.quat[1] &&
-         this->quat[2] == q.quat[2] &&
-         this->quat[3] == q.quat[3]) ||
-        (this->quat[0] == -q.quat[0] &&
-         this->quat[1] == -q.quat[1] &&
-         this->quat[2] == -q.quat[2] &&
-         this->quat[3] == -q.quat[3]))
-        return true;
-    return false;
-}
-
-bool Rotation::isSame(const Rotation& q, double tol) const
-{
-    // This follows the implementation of Coin3d where the norm
-    // (x1-y1)**2 + ... + (x4-y4)**2 is computed.
-    // This term can be simplified to
-    // 2 - 2*(x1*y1 + ... + x4*y4) so that for the equality we have to check
-    // 1 - tol/2 <= x1*y1 + ... + x4*y4
-    // Because a quaternion (x1,x2,x3,x4) is equal to (-x1,-x2,-x3,-x4) we use the
-    // absolute value of the scalar product
-    double dot = q.quat[0]*quat[0]+q.quat[1]*quat[1]+q.quat[2]*quat[2]+q.quat[3]*quat[3];
-    return fabs(dot) >= 1.0 - tol/2;
-}
-
 Vector3d Rotation::multVec(const Vector3d & src) const
 {
     Vector3d dst;
@@ -758,6 +731,33 @@ void Rotation::getYawPitchRoll(double& y, double& p, double& r) const
     r = (r/D_PI)*180;
 }
 
+bool Rotation::isSame(const Rotation& q) const
+{
+    if ((this->quat[0] == q.quat[0] &&
+         this->quat[1] == q.quat[1] &&
+         this->quat[2] == q.quat[2] &&
+         this->quat[3] == q.quat[3]) ||
+        (this->quat[0] == -q.quat[0] &&
+         this->quat[1] == -q.quat[1] &&
+         this->quat[2] == -q.quat[2] &&
+         this->quat[3] == -q.quat[3]))
+        return true;
+    return false;
+}
+
+bool Rotation::isSame(const Rotation& q, double tol) const
+{
+    // This follows the implementation of Coin3d where the norm
+    // (x1-y1)**2 + ... + (x4-y4)**2 is computed.
+    // This term can be simplified to
+    // 2 - 2*(x1*y1 + ... + x4*y4) so that for the equality we have to check
+    // 1 - tol/2 <= x1*y1 + ... + x4*y4
+    // Because a quaternion (x1,x2,x3,x4) is equal to (-x1,-x2,-x3,-x4) we use the
+    // absolute value of the scalar product
+    double dot = q.quat[0]*quat[0]+q.quat[1]*quat[1]+q.quat[2]*quat[2]+q.quat[3]*quat[3];
+    return fabs(dot) >= 1.0 - tol/2;
+}
+
 bool Rotation::isIdentity() const
 {
     return ((this->quat[0] == 0.0  &&
@@ -765,6 +765,11 @@ bool Rotation::isIdentity() const
              this->quat[2] == 0.0) &&
             (this->quat[3] == 1.0 ||
              this->quat[3] == -1.0));
+}
+
+bool Rotation::isIdentity(double tol) const
+{
+    return isSame(Rotation(), tol);
 }
 
 bool Rotation::isNull() const

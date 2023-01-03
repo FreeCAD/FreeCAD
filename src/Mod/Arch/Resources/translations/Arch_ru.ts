@@ -597,11 +597,6 @@ Leave blank to use all objects from the document</source>
       <translation>Список углов, разделённый запятыми для попытки и поворота фигур</translation>
     </message>
     <message>
-      <location filename="../ui/ArchNest.ui" line="135"/>
-      <source>0,90,180,270</source>
-      <translation>0,90,180,270</translation>
-    </message>
-    <message>
       <location filename="../ui/ArchNest.ui" line="145"/>
       <source>Nesting operation</source>
       <translation>Вложенная операция</translation>
@@ -825,11 +820,6 @@ Leave blank to use all objects from the document</source>
 to projections of hidden objects.</source>
       <translation>Это свойство пунктирной обводки "stroke-dasharray" файла SVG для применения
 к проекциям скрытых объектов.</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-arch.ui" line="589"/>
-      <source>30, 10</source>
-      <translation>30, 10</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="625"/>

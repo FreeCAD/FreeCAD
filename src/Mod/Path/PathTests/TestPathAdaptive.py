@@ -46,25 +46,30 @@ class TestPathAdaptive(PathTestBase):
         This method does not have access to the class `self` reference, but it
         is able to call static methods within this same class.
         """
+        cls.needsInit = True
 
+
+    @classmethod
+    def initClass(cls):
         # Open existing FreeCAD document with test geometry
-        doc = FreeCAD.open(
+        cls.needsInit = False
+        cls.doc = FreeCAD.open(
             FreeCAD.getHomePath() + "Mod/Path/PathTests/test_adaptive.fcstd"
         )
 
         # Create Job object, adding geometry objects from file opened above
-        job = PathJob.Create("Job", [doc.Fusion], None)
-        job.GeometryTolerance.Value = 0.001
+        cls.job = PathJob.Create("Job", [cls.doc.Fusion], None)
+        cls.job.GeometryTolerance.Value = 0.001
         if FreeCAD.GuiUp:
             job.ViewObject.Proxy = PathJobGui.ViewProvider(job.ViewObject)
 
         # Instantiate an Adaptive operation for querying available properties
-        prototype = PathAdaptive.Create("Adaptive")
-        prototype.Base = [(doc.Fusion, ["Face3"])]
-        prototype.Label = "Prototype"
-        _addViewProvider(prototype)
+        cls.prototype = PathAdaptive.Create("Adaptive")
+        cls.prototype.Base = [(cls.doc.Fusion, ["Face3"])]
+        cls.prototype.Label = "Prototype"
+        _addViewProvider(cls.prototype)
 
-        doc.recompute()
+        cls.doc.recompute()
 
     @classmethod
     def tearDownClass(cls):
@@ -77,7 +82,8 @@ class TestPathAdaptive(PathTestBase):
         # FreeCAD.Console.PrintMessage("TestPathAdaptive.tearDownClass()\n")
 
         # Close geometry document without saving
-        FreeCAD.closeDocument(FreeCAD.ActiveDocument.Name)
+        if not cls.needsInit:
+            FreeCAD.closeDocument(cls.doc.Name)
 
     # Setup and tear down methods called before and after each unit test
     def setUp(self):
@@ -85,8 +91,8 @@ class TestPathAdaptive(PathTestBase):
         This method is called prior to each `test()` method.  Add code and objects here
         that are needed for multiple `test()` methods.
         """
-        self.doc = FreeCAD.ActiveDocument
-        self.con = FreeCAD.Console
+        if self.needsInit:
+            self.initClass()
 
     def tearDown(self):
         """tearDown()...
@@ -127,7 +133,7 @@ class TestPathAdaptive(PathTestBase):
 
         # moves = getGcodeMoves(adaptive.Path.Commands, includeRapids=False)
         # operationMoves = ";  ".join(moves)
-        # self.con.PrintMessage("test00_moves: " + operationMoves + "\n")
+        # FreeCAD.Console.PrintMessage("test00_moves: " + operationMoves + "\n")
 
         # self.assertTrue(expected_moves_test01 == operationMoves,
         #                "expected_moves_test01: {}\noperationMoves: {}".format(expected_moves_test01, operationMoves))

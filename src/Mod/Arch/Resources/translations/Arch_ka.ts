@@ -595,11 +595,6 @@ Leave blank to use all objects from the document</source>
       <translation>მძიმეებით გამოყოფილი კუთხეების სია მონახაზების საცდელად და დასატრიალებლად</translation>
     </message>
     <message>
-      <location filename="../ui/ArchNest.ui" line="135"/>
-      <source>0,90,180,270</source>
-      <translation>0,90,180,270</translation>
-    </message>
-    <message>
       <location filename="../ui/ArchNest.ui" line="145"/>
       <source>Nesting operation</source>
       <translation>ერთმანეთში ჩასმული ოპერაციები</translation>
@@ -824,11 +819,6 @@ Leave blank to use all objects from the document</source>
 to projections of hidden objects.</source>
       <translation>ეს არის დამალულ ობიექტების პროექციებზე გადასატარებელი 
 SVG წყვეტილ-წერტილოვანი მასივი-თვისება.</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-arch.ui" line="589"/>
-      <source>30, 10</source>
-      <translation>30, 10</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="625"/>

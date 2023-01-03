@@ -760,7 +760,7 @@ QVariant PropertyStringItem::value(const App::Property* prop) const
 void PropertyStringItem::setValue(const QVariant& value)
 {
     if(!hasExpression())  {
-        if (!value.canConvert(QVariant::String))
+        if (!value.canConvert<QString>())
             return;
         QString val = value.toString();
         val = QString::fromUtf8(Base::Interpreter().strToPython(val.toUtf8()).c_str());
@@ -813,7 +813,7 @@ QVariant PropertyFontItem::value(const App::Property* prop) const
 
 void PropertyFontItem::setValue(const QVariant& value)
 {
-    if (hasExpression() || !value.canConvert(QVariant::String))
+    if (hasExpression() || !value.canConvert<QString>())
         return;
     QString val = value.toString();
     QString data = QString::fromLatin1("\"%1\"").arg(val);
@@ -832,8 +832,11 @@ QWidget* PropertyFontItem::createEditor(QWidget* parent, const QObject* receiver
 void PropertyFontItem::setEditorData(QWidget *editor, const QVariant& data) const
 {
     auto cb = qobject_cast<QComboBox*>(editor);
-    QFontDatabase fdb;
-    QStringList familyNames = fdb.families(QFontDatabase::Any);
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
+    QStringList familyNames = QFontDatabase().families(QFontDatabase::Any);
+#else
+    QStringList familyNames = QFontDatabase::families(QFontDatabase::Any);
+#endif
     cb->addItems(familyNames);
     int index = familyNames.indexOf(data.toString());
     cb->setCurrentIndex(index);
@@ -877,7 +880,7 @@ void PropertyIntegerItem::setValue(const QVariant& value)
 {
     //if the item has an expression it issues the python code
     if (!hasExpression()) {
-        if (!value.canConvert(QVariant::Int))
+        if (!value.canConvert<int>())
             return;
         int val = value.toInt();
         QString data = QString::fromLatin1("%1").arg(val);
@@ -944,7 +947,7 @@ void PropertyIntegerConstraintItem::setValue(const QVariant& value)
 {
     //if the item has an expression it issues the python code
     if (!hasExpression()) {
-        if (!value.canConvert(QVariant::Int))
+        if (!value.canConvert<int>())
             return;
         int val = value.toInt();
         QString data = QString::fromLatin1("%1").arg(val);
@@ -1038,7 +1041,7 @@ void PropertyFloatItem::setValue(const QVariant& value)
 {
     //if the item has an expression it issues the python code
     if (!hasExpression()) {
-        if (!value.canConvert(QVariant::Double))
+        if (!value.canConvert<double>())
             return;
         double val = value.toDouble();
         QString data = QString::fromLatin1("%1").arg(val, 0, 'f', decimals());
@@ -1214,7 +1217,7 @@ void PropertyFloatConstraintItem::setValue(const QVariant& value)
 {
     //if the item has an expression it issues the python code
     if (!hasExpression()) {
-        if (!value.canConvert(QVariant::Double))
+        if (!value.canConvert<double>())
             return;
         double val = value.toDouble();
         QString data = QString::fromLatin1("%1").arg(val, 0, 'f', decimals());
@@ -1313,7 +1316,7 @@ QVariant PropertyBoolItem::value(const App::Property* prop) const
 
 void PropertyBoolItem::setValue(const QVariant& value)
 {
-    if (hasExpression() || !value.canConvert(QVariant::Bool))
+    if (hasExpression() || !value.canConvert<bool>())
         return;
     bool val = value.toBool();
     QString data = (val ? QLatin1String("True") : QLatin1String("False"));
@@ -2827,7 +2830,7 @@ void PropertyEnumItem::setValue(const QVariant& value)
 
     QString data;
 
-    if (value.type() == QVariant::StringList) {
+    if (value.userType() == QMetaType::QStringList) {
         QStringList values = value.toStringList();
         QTextStream str(&data);
         str << "[";
@@ -2841,7 +2844,7 @@ void PropertyEnumItem::setValue(const QVariant& value)
         }
         str << "]";
     }
-    else if (value.canConvert(QVariant::String)) {
+    else if (value.canConvert<QString>()) {
         QByteArray val = value.toString().toUtf8();
         std::string str = Base::Tools::escapedUnicodeFromUtf8(val);
         data = QString::fromLatin1("u\"%1\"").arg(QString::fromStdString(str));
@@ -3058,7 +3061,7 @@ QVariant PropertyStringListItem::value(const App::Property* prop) const
 
 void PropertyStringListItem::setValue(const QVariant& value)
 {
-    if (hasExpression() || !value.canConvert(QVariant::StringList))
+    if (hasExpression() || !value.canConvert<QStringList>())
         return;
     QStringList values = value.toStringList();
     QString data;
@@ -3137,7 +3140,7 @@ QVariant PropertyFloatListItem::value(const App::Property* prop) const
 
 void PropertyFloatListItem::setValue(const QVariant& value)
 {
-    if (hasExpression() || !value.canConvert(QVariant::StringList))
+    if (hasExpression() || !value.canConvert<QStringList>())
         return;
     QStringList values = value.toStringList();
     QString data;
@@ -3212,7 +3215,7 @@ QVariant PropertyIntegerListItem::value(const App::Property* prop) const
 
 void PropertyIntegerListItem::setValue(const QVariant& value)
 {
-    if (hasExpression() || !value.canConvert(QVariant::StringList))
+    if (hasExpression() || !value.canConvert<QStringList>())
         return;
     QStringList values = value.toStringList();
     QString data;
@@ -4109,7 +4112,7 @@ QVariant PropertyFileItem::value(const App::Property* prop) const
 
 void PropertyFileItem::setValue(const QVariant& value)
 {
-    if (hasExpression() || !value.canConvert(QVariant::String))
+    if (hasExpression() || !value.canConvert<QString>())
         return;
     QString val = value.toString();
     QString data = QString::fromLatin1("\"%1\"").arg(val);
@@ -4168,7 +4171,7 @@ QVariant PropertyPathItem::value(const App::Property* prop) const
 
 void PropertyPathItem::setValue(const QVariant& value)
 {
-    if (hasExpression() || !value.canConvert(QVariant::String))
+    if (hasExpression() || !value.canConvert<QString>())
         return;
     QString val = value.toString();
     QString data = QString::fromLatin1("\"%1\"").arg(val);
@@ -4220,7 +4223,7 @@ QVariant PropertyTransientFileItem::value(const App::Property* prop) const
 
 void PropertyTransientFileItem::setValue(const QVariant& value)
 {
-    if (hasExpression() || !value.canConvert(QVariant::String))
+    if (hasExpression() || !value.canConvert<QString>())
         return;
     QString val = value.toString();
     QString data = QString::fromLatin1("\"%1\"").arg(val);

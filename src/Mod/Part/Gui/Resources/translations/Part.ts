@@ -2734,7 +2734,7 @@ it inside the Placement property.</source>
     </message>
     <message>
         <location filename="../../DlgExportStep.ui" line="107"/>
-        <source>Use legacy exporter</source>
+        <source>Use legacy export function</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3468,11 +3468,6 @@ during file reading (slower but higher details).</source>
         <source>File Name</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../../DlgPartImportIges.ui" line="54"/>
-        <source>...</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>PartGui::DlgPartImportIgesImp</name>
@@ -3497,11 +3492,6 @@ during file reading (slower but higher details).</source>
     <message>
         <location filename="../../DlgPartImportStep.ui" line="20"/>
         <source>File Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DlgPartImportStep.ui" line="54"/>
-        <source>...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4115,7 +4105,7 @@ during file reading (slower but higher details).</source>
     </message>
     <message>
         <location filename="../../DlgSettings3DViewPart.ui" line="49"/>
-        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4124,18 +4114,8 @@ during file reading (slower but higher details).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgSettings3DViewPart.ui" line="59"/>
-        <source> %</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../DlgSettings3DViewPart.ui" line="87"/>
         <source>Maximum angular deflection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DlgSettings3DViewPart.ui" line="94"/>
-        <source> °</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4285,11 +4265,6 @@ during file reading (slower but higher details).</source>
     <message>
         <location filename="../../DlgSettingsObjectColor.ui" line="90"/>
         <source>The default transparency for new shapes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DlgSettingsObjectColor.ui" line="93"/>
-        <source>%</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4578,17 +4553,17 @@ the sketch plane&apos;s normal vector will be used</source>
 <context>
     <name>PartGui::ResultModel</name>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="342"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="340"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="344"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="342"/>
         <source>Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="346"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="344"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4667,11 +4642,6 @@ Works only if all objects have the same values.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../SectionCutting.ui" line="342"/>
-        <source>0 %</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../SectionCutting.ui" line="367"/>
         <source>Refreshes the list of visible objects</source>
         <translation type="unfinished"></translation>
@@ -4693,7 +4663,7 @@ only created cuts will be visible</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../SectionCutting.cpp" line="407"/>
+        <location filename="../../SectionCutting.cpp" line="429"/>
         <source>Sliders are disabled for assemblies</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5068,185 +5038,185 @@ of object being attached.</source>
 <context>
     <name>PartGui::TaskCheckGeometryDialog</name>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1000"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="998"/>
         <source>Shape Content</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1008"/>
-        <location filename="../../TaskCheckGeometry.cpp" line="1202"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1006"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1200"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1012"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1010"/>
         <source>Skip settings page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1013"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1011"/>
         <source>Skip this settings page and run the geometry check automatically.
 Default: false</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1022"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1020"/>
         <source>Run BOP check</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1023"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1021"/>
         <source>Extra boolean operations check that can sometimes find errors that
 the standard BRep geometry check misses. These errors do not always 
 mean the checked object is unusable.  Default: false</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1033"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1031"/>
         <source>Single-threaded</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1034"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1032"/>
         <source>Run the geometry check in a single thread.  This is slower,
 but more stable.  Default: false</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1043"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1041"/>
         <source>Log errors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1044"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1042"/>
         <source>Log errors to report view.  Default: true</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1051"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1049"/>
         <source>Expand shape content</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1052"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1050"/>
         <source>Expand shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1061"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1059"/>
         <source>Advanced shape content</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1062"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1060"/>
         <source>Show advanced shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1070"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1068"/>
         <source>
 Individual BOP Checks:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1073"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1071"/>
         <source>  Bad type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1074"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1072"/>
         <source>Check for bad argument types.  Default: true</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1081"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1079"/>
         <source>  Self-intersect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1082"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1080"/>
         <source>Check for self-intersections.  Default: true</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1089"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1087"/>
         <source>  Too small edge</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1090"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1088"/>
         <source>Check for edges that are too small.  Default: true</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1097"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1095"/>
         <source>  Nonrecoverable face</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1098"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1096"/>
         <source>Check for nonrecoverable faces.  Default: true</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1105"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1103"/>
         <source>  Continuity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1106"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1104"/>
         <source>Check for continuity.  Default: true</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1113"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1111"/>
         <source>  Incompatibility of face</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1114"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1112"/>
         <source>Check for incompatible faces.  Default: true</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1121"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1119"/>
         <source>  Incompatibility of vertex</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1122"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1120"/>
         <source>Check for incompatible vertices.  Default: true</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1129"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1127"/>
         <source>  Incompatibility of edge</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1130"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1128"/>
         <source>Check for incompatible edges.  Default: true</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1137"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1135"/>
         <source>  Invalid curve on surface</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1138"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1136"/>
         <source>Check for invalid curves on surfaces.  Default: true</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1201"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1199"/>
         <source>Run check</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="1207"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="1205"/>
         <source>Results</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5254,18 +5224,18 @@ Individual BOP Checks:</source>
 <context>
     <name>PartGui::TaskCheckGeometryResults</name>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="377"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="375"/>
         <source>Check Geometry Results</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="396"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="394"/>
         <source>Check is running...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="420"/>
-        <location filename="../../TaskCheckGeometry.cpp" line="424"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="418"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="422"/>
         <source>Check geometry</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5587,12 +5557,12 @@ in the 3D view for the sweep path.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FaceMakerCheese.cpp" line="246"/>
+        <location filename="../../../App/FaceMakerCheese.cpp" line="247"/>
         <source>Cheese facemaker</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FaceMakerCheese.cpp" line="251"/>
+        <location filename="../../../App/FaceMakerCheese.cpp" line="252"/>
         <source>Supports making planar faces with holes, but no islands inside holes.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5610,27 +5580,29 @@ in the 3D view for the sweep path.</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../ViewProvider.cpp" line="50"/>
+        <location filename="../../../BasicShapes/ViewProviderShapes.py" line="47"/>
+        <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
         <location filename="../../ViewProviderPrimitive.cpp" line="56"/>
+        <location filename="../../ViewProvider.cpp" line="50"/>
         <source>Edit %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../AppPartGui.cpp" line="211"/>
+        <location filename="../../AppPartGui.cpp" line="224"/>
         <source>Part and Part Design workbench</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../AppPartGui.cpp" line="212"/>
-        <location filename="../../AppPartGui.cpp" line="213"/>
-        <location filename="../../AppPartGui.cpp" line="214"/>
-        <location filename="../../AppPartGui.cpp" line="215"/>
+        <location filename="../../AppPartGui.cpp" line="225"/>
+        <location filename="../../AppPartGui.cpp" line="226"/>
+        <location filename="../../AppPartGui.cpp" line="227"/>
+        <location filename="../../AppPartGui.cpp" line="228"/>
         <source>Part/Part Design</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../AppPartGui.cpp" line="216"/>
-        <location filename="../../AppPartGui.cpp" line="217"/>
+        <location filename="../../AppPartGui.cpp" line="229"/>
+        <location filename="../../AppPartGui.cpp" line="230"/>
         <source>Import-Export</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5702,20 +5674,20 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskAttacher.cpp" line="75"/>
         <location filename="../../TaskCheckGeometry.cpp" line="81"/>
+        <location filename="../../TaskAttacher.cpp" line="75"/>
         <source>Face</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskAttacher.cpp" line="78"/>
         <location filename="../../TaskCheckGeometry.cpp" line="83"/>
+        <location filename="../../TaskAttacher.cpp" line="78"/>
         <source>Edge</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskAttacher.cpp" line="81"/>
         <location filename="../../TaskCheckGeometry.cpp" line="84"/>
+        <location filename="../../TaskAttacher.cpp" line="81"/>
         <source>Vertex</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5990,8 +5962,8 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="456"/>
-        <location filename="../../TaskCheckGeometry.cpp" line="698"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="454"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="696"/>
         <source>Invalid</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6072,6 +6044,11 @@ Do you want to continue?</source>
         <source>Attachment editor</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../../../BasicShapes/CommandShapes.py" line="52"/>
+        <source>Create tube</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Workbench</name>
@@ -6133,6 +6110,376 @@ Do you want to continue?</source>
     <message>
         <location filename="../../Workbench.cpp" line="44"/>
         <source>Measure</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Part_Tube</name>
+    <message>
+        <location filename="../../../BasicShapes/CommandShapes.py" line="44"/>
+        <source>Create tube</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BasicShapes/CommandShapes.py" line="50"/>
+        <source>Creates a tube</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Part_JoinFeatures</name>
+    <message>
+        <location filename="../../../BOPTools/JoinFeatures.py" line="78"/>
+        <source>Computing the result failed with an error:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BOPTools/JoinFeatures.py" line="79"/>
+        <source>Click &apos;Continue&apos; to create the feature anyway, or &apos;Abort&apos; to cancel.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BOPTools/JoinFeatures.py" line="80"/>
+        <location filename="../../../BOPTools/JoinFeatures.py" line="199"/>
+        <location filename="../../../BOPTools/JoinFeatures.py" line="295"/>
+        <location filename="../../../BOPTools/JoinFeatures.py" line="389"/>
+        <source>Bad selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BOPTools/JoinFeatures.py" line="82"/>
+        <source>Continue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BOPTools/JoinFeatures.py" line="198"/>
+        <source>Select at least two objects, or one or more compounds</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BOPTools/JoinFeatures.py" line="294"/>
+        <source>Select base object, then the object to embed, and then invoke this tool.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BOPTools/JoinFeatures.py" line="388"/>
+        <source>Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Part_JoinConnect</name>
+    <message>
+        <location filename="../../../BOPTools/JoinFeatures.py" line="186"/>
+        <source>Connect objects</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BOPTools/JoinFeatures.py" line="191"/>
+        <source>Fuses objects, taking care to preserve voids.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Part_JoinEmbed</name>
+    <message>
+        <location filename="../../../BOPTools/JoinFeatures.py" line="282"/>
+        <source>Embed object</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BOPTools/JoinFeatures.py" line="287"/>
+        <source>Fuses one object into another, taking care to preserve voids.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Part_JoinCutout</name>
+    <message>
+        <location filename="../../../BOPTools/JoinFeatures.py" line="376"/>
+        <source>Cutout for object</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BOPTools/JoinFeatures.py" line="381"/>
+        <source>Makes a cutout in one object to fit another object.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Part_SplitFeatures</name>
+    <message>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="155"/>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="298"/>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="492"/>
+        <source>Computing the result failed with an error:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="156"/>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="299"/>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="493"/>
+        <source>Click &apos;Continue&apos; to create the feature anyway, or &apos;Abort&apos; to cancel.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="157"/>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="199"/>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="300"/>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="354"/>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="385"/>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="494"/>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="535"/>
+        <source>Bad selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="159"/>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="302"/>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="496"/>
+        <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="114"/>
+        <source>Continue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="180"/>
+        <source>Boolean fragments</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="189"/>
+        <source>Create a &apos;Boolean Fragments&apos; object from two or more selected objects,
+or from the shapes inside a compound.
+This is a boolean union which is then sliced at the intersections
+of the original shapes.
+A &apos;Compound Filter&apos; can be used to extract the individual slices.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="534"/>
+        <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="337"/>
+        <source>Slice to compound</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="344"/>
+        <source>Slice a selected object by using other objects as cutting tools.
+The resulting pieces will be stored in a compound.
+A &apos;Compound Filter&apos; can be used to extract the individual slices.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="353"/>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="384"/>
+        <source>Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="369"/>
+        <source>Slice apart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="375"/>
+        <source>Slice a selected object by other objects, and split it apart.
+It will create a &apos;Compound Filter&apos; for each slice.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="517"/>
+        <source>Boolean XOR</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="525"/>
+        <source>Perform an &apos;exclusive OR&apos; boolean operation with two or more selected objects,
+or with the shapes inside a compound.
+This means the overlapping volumes of the shapes will be removed.
+A &apos;Compound Filter&apos; can be used to extract the remaining pieces.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Part_CompoundFilter</name>
+    <message>
+        <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="51"/>
+        <source>Compound Filter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="61"/>
+        <source>Filter out objects from a selected compound by characteristics like volume,
+area, or length, or by choosing specific items.
+If a second object is selected, it will be used as reference, for example,
+for collision or distance filtering.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="70"/>
+        <source>First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="71"/>
+        <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="112"/>
+        <source>Bad selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="110"/>
+        <source>Computing the result failed with an error:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="111"/>
+        <source>Click &apos;Continue&apos; to create the feature anyway, or &apos;Abort&apos; to cancel.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Part_ExplodeCompound</name>
+    <message>
+        <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="50"/>
+        <source>Explode compound</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="56"/>
+        <source>Split up a compound of shapes into separate objects.
+It will create a &apos;Compound Filter&apos; for each shape.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="62"/>
+        <source>First select a shape that is a compound.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="63"/>
+        <source>Bad selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>AttachmentEditor</name>
+    <message>
+        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="87"/>
+        <source>No object named {}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="91"/>
+        <source>Failed to parse link (more than one colon encountered)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="204"/>
+        <source>Object {} is neither movable nor attachable, can&apos;t edit attachment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="214"/>
+        <source>{} is not attachable. You can still use attachment editor dialog to align the object, but the attachment won&apos;t be parametric.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="215"/>
+        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="228"/>
+        <source>Attachment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="217"/>
+        <source>Continue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="272"/>
+        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="317"/>
+        <source>Edit attachment of {}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="362"/>
+        <source>Ignored. Can&apos;t attach object to itself!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="365"/>
+        <source>{} depends on object being attached, can&apos;t use it for attachment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="505"/>
+        <source>{} (add {})</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="507"/>
+        <source>{} (add more references)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="537"/>
+        <source>Reference combinations:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="553"/>
+        <source>Reference{}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="558"/>
+        <source>Selecting...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="582"/>
+        <source>Failed to resolve links. {}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="590"/>
+        <source>Not attached</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="593"/>
+        <source>Attached with mode {}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="599"/>
+        <source>Error: {}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="602"/>
+        <source>Attachment Offset (in local coordinates):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="605"/>
+        <source>Attachment Offset (inactive - not attached):</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Part_EditAttachment</name>
+    <message>
+        <location filename="../../../AttachmentEditor/Commands.py" line="79"/>
+        <source>Attachment...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../AttachmentEditor/Commands.py" line="83"/>
+        <source>Edit attachment of selected object.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

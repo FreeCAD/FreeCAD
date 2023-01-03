@@ -597,11 +597,6 @@ Leave blank to use all objects from the document</translation>
       <translation>Una llista d'angles separats per comes per a provar i girar les formes</translation>
     </message>
     <message>
-      <location filename="../ui/ArchNest.ui" line="135"/>
-      <source>0,90,180,270</source>
-      <translation>0,90,180,270</translation>
-    </message>
-    <message>
       <location filename="../ui/ArchNest.ui" line="145"/>
       <source>Nesting operation</source>
       <translation>Operació d'imbricació</translation>
@@ -824,11 +819,6 @@ Leave blank to use all objects from the document</translation>
       <source>This is the SVG stroke-dasharray property to apply
 to projections of hidden objects.</source>
       <translation>Aquesta és la propietat «traç-matriu de guions» SVG que s'aplica a les projeccions d'objectes amagats.</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-arch.ui" line="589"/>
-      <source>30, 10</source>
-      <translation>30, 10</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="625"/>

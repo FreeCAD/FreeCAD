@@ -28,10 +28,12 @@
 
 #include <Base/TypePy.h>
 
+#include "DocumentPy.h"
 #include "MainWindowPy.h"
 #include "MainWindow.h"
 #include "MDIView.h"
 #include "MDIViewPy.h"
+#include "MDIViewPyWrap.h"
 #include "PythonWrapper.h"
 
 
@@ -52,6 +54,8 @@ void MainWindowPy::init_type()
     add_varargs_method("getWindowsOfType",&MainWindowPy::getWindowsOfType,"getWindowsOfType(typeid)");
     add_varargs_method("setActiveWindow", &MainWindowPy::setActiveWindow, "setActiveWindow(MDIView)");
     add_varargs_method("getActiveWindow", &MainWindowPy::getActiveWindow, "getActiveWindow()");
+    add_varargs_method("addWindow", &MainWindowPy::addWindow, "addWindow(MDIView)");
+    add_varargs_method("removeWindow", &MainWindowPy::removeWindow, "removeWindow(MDIView)");
 }
 
 PyObject *MainWindowPy::extension_object_new(struct _typeobject * /*type*/, PyObject * /*args*/, PyObject * /*kwds*/)
@@ -83,7 +87,7 @@ Py::Object MainWindowPy::createWrapper(MainWindow *mw)
     }
 
     // copy attributes
-    std::list<std::string> attr = {"getWindows", "getWindowsOfType", "setActiveWindow", "getActiveWindow"};
+    std::list<std::string> attr = {"getWindows", "getWindowsOfType", "setActiveWindow", "getActiveWindow", "addWindow", "removeWindow"};
 
     Py::Object py = wrap.fromQWidget(mw, "QMainWindow");
     Py::ExtensionObject<MainWindowPy> inst(create(mw));
@@ -175,6 +179,43 @@ Py::Object MainWindowPy::getActiveWindow(const Py::Tuple& args)
         if (mdi) {
             return Py::asObject(mdi->getPyObject());
         }
+    }
+    return Py::None();
+}
+
+Py::Object MainWindowPy::addWindow(const Py::Tuple& args)
+{
+    PyObject* obj;
+    if (!PyArg_ParseTuple(args.ptr(), "O", &obj))
+        throw Py::Exception();
+
+    if (_mw) {
+        Py::Object py(obj);
+        Gui::Document* document{nullptr};
+        // Check if the py object has a reference to a Gui document
+        if (py.hasAttr("document")) {
+            Py::Object attr(py.getAttr("document"));
+            if (PyObject_TypeCheck(attr.ptr(), &DocumentPy::Type)) {
+                document = static_cast<DocumentPy*>(attr.ptr())->getDocumentPtr();
+            }
+        }
+
+        MDIViewPyWrap* mdi = new MDIViewPyWrap(py, document);
+        _mw->addWindow(mdi);
+        return Py::asObject(mdi->getPyObject());
+    }
+    return Py::None();
+}
+
+Py::Object MainWindowPy::removeWindow(const Py::Tuple& args)
+{
+    PyObject* obj;
+    if (!PyArg_ParseTuple(args.ptr(), "O!", MDIViewPy::type_object(), &obj))
+        throw Py::Exception();
+
+    if (_mw) {
+        MDIViewPy* mdi = static_cast<MDIViewPy*>(obj);
+        _mw->removeWindow(mdi->getMDIViewPtr());
     }
     return Py::None();
 }

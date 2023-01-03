@@ -31,11 +31,13 @@ the same basic behavior."""
 ## \addtogroup draftviewproviders
 # @{
 import PySide.QtCore as QtCore
+import PySide.QtGui as QtGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
+from draftutils.translate import translate
 
 if App.GuiUp:
     from pivy import coin
@@ -360,89 +362,114 @@ class ViewProviderDraft(object):
         """
         return
 
-    def setEdit(self, vobj, mode=0):
-        """Enter edit mode of the object.
-
-        Override this method to define a custom command to run when entering
-        the edit mode of the object in the tree view.
-        It must return `True` to successfully enter edit mode.
-        If the conditions to edit are not met, it should return `False`,
-        in which case the edit mode is not started.
-
-        By default it runs the `Draft_Edit` GuiCommand.
-        ::
-            Gui.runCommand('Draft_Edit')
+    def setEdit(self, vobj, mode):
+        """Enter the edit mode of the object.
 
         Parameters
         ----------
         vobj : the view provider of the scripted object.
             This is `obj.ViewObject`.
 
-        mode : int, optional
-            It defaults to 0, in which case
-            it runs the `Draft_Edit` GuiCommand.
-            It indicates the type of edit in the underlying C++ code.
+        mode : int
+            0, 1, 2 or 3. See the `Std_UserEditMode` command.
 
         Returns
         -------
         bool or None
-            It is `True` if `mode` is 0, and `Draft_Edit` ran successfully.
-            None if mode is not zero.
-            It is `False` otherwise.
+            `False`: NOT USED HERE.
+                     Do not enter edit mode (unsetEdit is not called).
+            `True` : Handled edit mode.
+                     Handled modes are 0 and 3, and only for certain objects.
+                     The unsetEdit function should then also return `True`.
+            `None` : Unhandled edit mode.
+                     Handling is left to Part::FeaturePython code.
+                     The unsetEdit function should then also return `None`.
         """
-        if mode != 0:
-            # Act like this function doesn't even exist, so the command falls back to Part (e.g. in the
-            # case of an unrecognized context menu action)
+        if mode == 1 or mode == 2:
             return None
-        elif App.GuiUp and "Draft_Edit" in Gui.listCommands(): # remove App.GuiUp guard after splitting every viewprovider
+
+        tp = utils.get_type(vobj.Object)
+
+        if tp in ("Wire", "Circle", "Ellipse", "Rectangle", "Polygon",
+                  "BSpline", "BezCurve"): # Facebinder and ShapeString objects have their own setEdit.
+            if not "Draft_Edit" in Gui.listCommands():
+                self.wb_before_edit = Gui.activeWorkbench()
+                Gui.activateWorkbench("DraftWorkbench")
             Gui.runCommand("Draft_Edit")
             return True
-        else:
-            App.Console.PrintWarning(QT_TRANSLATE_NOOP("draft",
-                                                       "Please load the Draft Workbench to enable editing this object"))
-            return False
 
-    def unsetEdit(self, vobj, mode=0):
+        if tp in ("Fillet", "Point", "Shape2DView"):
+            Gui.runCommand("Std_TransformManip")
+            return True
+
+        return None
+
+    def unsetEdit(self, vobj, mode):
         """Terminate the edit mode of the object.
 
-        Override this method to define a custom command to run when
-        terminating the edit mode of the object in the tree view.
-
-        It should return `True` to indicate that the method already
-        cleaned up everything and there is no need to call
-        the `usetEdit` method of the base class.
-        It should return `False` to indicate that cleanup
-        is still required, so the `unsetEdit` method of the base class
-        is invoked to do the rest.
-
-        By default it runs the `finish` method of the active
-        Draft GuiCommand, and closes the task panel.
-        ::
-            App.activeDraftCommand.finish()
-            Gui.Control.closeDialog()
-
-        Parameters
-        ----------
-        vobj : the view provider of the scripted object.
-            This is `obj.ViewObject`.
-
-        mode : int, optional
-            It defaults to 0.
-            It indicates the type of edit in the underlying C++ code.
-
-        Returns
-        -------
-        bool
-            This method always returns `False` so it passes
-            control to the base class to finish the edit mode.
+        See setEdit.
         """
-        if mode != 0:
-            return False
-        if App.activeDraftCommand:
-            App.activeDraftCommand.finish()
-        if App.GuiUp: # remove guard after splitting every viewprovider
+        if mode == 1 or mode == 2:
+            return None
+
+        tp = utils.get_type(vobj.Object)
+
+        if tp in ("Wire", "Circle", "Ellipse", "Rectangle", "Polygon",
+                  "BSpline", "BezCurve"): # Facebinder and ShapeString objects have their own setEdit.
+            if hasattr(App, "activeDraftCommand") and App.activeDraftCommand:
+                App.activeDraftCommand.finish()
             Gui.Control.closeDialog()
-        return False
+            if hasattr(self, "wb_before_edit"):
+                Gui.activateWorkbench(self.wb_before_edit.name())
+                delattr(self, "wb_before_edit")
+            return True
+
+        if tp in ("Fillet", "Point", "Shape2DView"):
+            return True
+
+        return None
+
+    def setupContextMenu(self, vobj, menu):
+        tp = utils.get_type(self.Object)
+
+        if tp in ("Wire", "Circle", "Ellipse", "Rectangle", "Polygon",
+                  "BSpline", "BezCurve", "Facebinder", "ShapeString"):
+            action_edit = QtGui.QAction(translate("draft", "Edit"),
+                                        menu)
+            QtCore.QObject.connect(action_edit,
+                                   QtCore.SIGNAL("triggered()"),
+                                   self.edit)
+            menu.addAction(action_edit)
+
+        if tp == "Wire":
+            action_flatten = QtGui.QAction(translate("draft", "Flatten"),
+                                           menu)
+            QtCore.QObject.connect(action_flatten,
+                                   QtCore.SIGNAL("triggered()"),
+                                   self.flatten) # The flatten function is defined in view_wire.py.
+            menu.addAction(action_flatten)
+
+        # The default Part::FeaturePython context menu contains a `Set colors`
+        # option. This option makes no sense for objects without a face or that
+        # can only have a single face. In those cases we override this menu and
+        # have to add our own `Transform` item.
+        # To override the default menu this function must return `True`.
+        if tp in ("Wire", "Circle", "Ellipse", "Rectangle", "Polygon",
+                  "BSpline","BezCurve", "Fillet", "Point", "Shape2DView"):
+            action_transform = QtGui.QAction(Gui.getIcon("Std_TransformManip.svg"),
+                                             translate("Command", "Transform"), # Context `Command` instead of `draft`.
+                                             menu)
+            QtCore.QObject.connect(action_transform,
+                                   QtCore.SIGNAL("triggered()"),
+                                   self.transform)
+            menu.addAction(action_transform)
+            return True
+
+    def edit(self):
+        Gui.ActiveDocument.setEdit(self.Object, 0)
+
+    def transform(self):
+        Gui.ActiveDocument.setEdit(self.Object, 1)
 
     def getIcon(self):
         """Return the path to the icon used by the view provider.
@@ -461,16 +488,15 @@ class ViewProviderDraft(object):
         str
             `':/icons/Draft_Draft.svg'`
         """
-        if hasattr(self.Object,"Proxy") and hasattr(self.Object.Proxy,"Type"):
-            tp = self.Object.Proxy.Type
-            if tp in ('Line', 'Wire', 'Polyline'):
-                return ":/icons/Draft_N-Linear.svg"
-            elif tp in ('Rectangle', 'Polygon'):
-                return ":/icons/Draft_N-Polygon.svg"
-            elif tp in ('Circle', 'Ellipse', 'BSpline', 'BezCurve', 'Fillet'):
-                return ":/icons/Draft_N-Curve.svg"
-            elif tp in ("ShapeString"):
-                return ":/icons/Draft_ShapeString_tree.svg"
+        tp = utils.get_type(self.Object)
+        if tp in ("Line", "Wire", "Polyline"):
+            return ":/icons/Draft_N-Linear.svg"
+        if tp in ("Rectangle", "Polygon"):
+            return ":/icons/Draft_N-Polygon.svg"
+        if tp in ("Circle", "Ellipse", "BSpline", "BezCurve", "Fillet"):
+            return ":/icons/Draft_N-Curve.svg"
+        if tp in ("ShapeString"):
+            return ":/icons/Draft_ShapeString_tree.svg"
         if hasattr(self.Object,"AutoUpdate") and not self.Object.AutoUpdate:
             import TechDrawGui
             return ":/icons/TechDraw_TreePageUnsync.svg"
@@ -513,6 +539,8 @@ class ViewProviderDraftAlt(ViewProviderDraft):
     """A view provider that doesn't absorb its base object in the tree view.
 
     The `claimChildren` method is overridden to return an empty list.
+
+    Only used by the `Shape2DView` object.
     """
 
     def __init__(self, vobj):
@@ -531,6 +559,8 @@ class ViewProviderDraftPart(ViewProviderDraftAlt):
     """A view provider that displays a Part icon instead of a Draft icon.
 
     The `getIcon` method is overridden to provide `Part_3D_object.svg`.
+
+    Only used by the `Block` object.
     """
 
     def __init__(self, vobj):
@@ -538,6 +568,12 @@ class ViewProviderDraftPart(ViewProviderDraftAlt):
 
     def getIcon(self):
         return ":/icons/Part_3D_object.svg"
+
+    def setEdit(self, vobj, mode):
+        return None
+
+    def unsetEdit(self, vobj, mode):
+        return None
 
 
 # Alias for compatibility with v0.18 and earlier

@@ -47,14 +47,18 @@ protected Q_SLOTS:
   void animate();
 
 protected:
-  virtual void paintEvent ( QPaintEvent * event );
-  virtual void enterEvent ( QEvent * event );
-  virtual void leaveEvent ( QEvent * event );
-  virtual void mouseReleaseEvent ( QMouseEvent * event );
-  virtual void keyPressEvent ( QKeyEvent * event );
-  virtual void keyReleaseEvent ( QKeyEvent * event );
+  void paintEvent ( QPaintEvent * event ) override;
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
+  void enterEvent ( QEvent * event ) override;
+#else
+  void enterEvent ( QEnterEvent * event ) override;
+#endif
+  void leaveEvent ( QEvent * event ) override;
+  void mouseReleaseEvent ( QMouseEvent * event ) override;
+  void keyPressEvent ( QKeyEvent * event ) override;
+  void keyReleaseEvent ( QKeyEvent * event ) override;
 
-  bool eventFilter(QObject *obj, QEvent *event);
+  bool eventFilter(QObject *obj, QEvent *event) override;
 
   void changeIcons();
 

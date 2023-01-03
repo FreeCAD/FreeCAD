@@ -282,6 +282,7 @@ public:
     int addPerpendicularConstraint(int geoId1, int geoId2);
     /// add a tangency constraint between two geometries
     int addTangentConstraint(int geoId1, int geoId2);
+    int addTangentLineAtBSplineKnotConstraint(int checkedlinegeoId, int checkedbsplinegeoId, int checkedknotgeoid);
     int addAngleAtPointConstraint(
             int geoId1, PointPos pos1,
             int geoId2, PointPos pos2,
@@ -374,6 +375,7 @@ public:
     int addInternalAlignmentHyperbolaMinorDiameter(int geoId1, int geoId2);
     int addInternalAlignmentHyperbolaFocus(int geoId1, int geoId2);
     int addInternalAlignmentParabolaFocus(int geoId1, int geoId2);
+    int addInternalAlignmentParabolaFocalDistance(int geoId1, int geoId2);
     int addInternalAlignmentBSplineControlPoint(int geoId1, int geoId2, int poleindex);
     int addInternalAlignmentKnotPoint(int geoId1, int geoId2, int knotindex);
     //@}
@@ -454,6 +456,9 @@ protected:
     // map of geoIds to corresponding solverextensions. This is useful when solved geometry is NOT to be assigned to the SketchObject
     std::vector<std::shared_ptr<SolverGeometryExtension>> solverExtensions;
 
+    // maps a geoid corresponding to an internalgeometry (focus,knot,pole) to the geometry it defines (ellipse, hyperbola, B-Spline)
+    std::map< int, int > internalAlignmentGeometryMap;
+
     std::vector < std::set < std::pair< int, Sketcher::PointPos>>> pDependencyGroups;
 
     // this map is intended to convert a parameter (double *) into a GeoId/PointPos and parameter number
@@ -518,6 +523,8 @@ private:
     void calculateDependentParametersElements();
 
     void clearTemporaryConstraints();
+
+    void buildInternalAlignmentGeometryMap(const std::vector<Constraint *> &constraintList);
 
     int internalSolve(std::string & solvername, int level = 0);
 
