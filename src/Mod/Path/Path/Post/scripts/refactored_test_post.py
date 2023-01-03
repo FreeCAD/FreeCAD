@@ -145,7 +145,8 @@ def init_arguments(values, argument_defaults, arguments_visible):
         values, argument_defaults, arguments_visible
     )
     #
-    # Add any argument definitions that are not shared with all other postprocessors here.
+    # Add any argument definitions that are not shared with all other
+    # postprocessors here.
     #
     return parser
 
