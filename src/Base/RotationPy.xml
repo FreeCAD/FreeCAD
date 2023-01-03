@@ -160,8 +160,10 @@ Returns True if all values in the quaternion representation are zero.</UserDocu>
         </Methode>
         <Methode Name="isIdentity" Const="true">
             <Documentation>
-                <UserDocu>isIdentity() -> bool\n
-Returns True if the rotation equals the 4D identity matrix.</UserDocu>
+                <UserDocu>isIdentity(tol=0) -> bool\n
+Returns True if the rotation equals the 4D identity matrix.
+tol : float\n    Tolerance used to check for identity.
+    If tol is negative or zero, no tolerance is used.</UserDocu>
             </Documentation>
         </Methode>
         <Attribute Name="Q" ReadOnly="false">
