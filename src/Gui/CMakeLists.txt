@@ -1260,7 +1260,7 @@ if (EIGEN3_NO_DEPRECATED_COPY)
 endif ()
 
 add_library(FreeCADGui SHARED ${FreeCADGui_SRCS})
-target_link_libraries(FreeCADGui ${FreeCADGui_LIBS})
+target_link_libraries(FreeCADGui fmt::fmt ${FreeCADGui_LIBS})
 
 SET_BIN_DIR(FreeCADGui FreeCADGui)
 

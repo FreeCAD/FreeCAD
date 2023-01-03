@@ -47,6 +47,7 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
     SetupXercesC()
     find_package(ZLIB REQUIRED)
     find_package(PyCXX REQUIRED)
+    find_package(fmt REQUIRED)
     SetupOpenCasCade()
     if(BUILD_GUI)
         # Do this before the check for SMESH because it depends on vtk

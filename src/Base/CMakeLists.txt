@@ -387,7 +387,7 @@ endif(FREECAD_USE_PCH)
 
 add_library(FreeCADBase SHARED ${FreeCADBase_SRCS})
 
-target_link_libraries(FreeCADBase ${FreeCADBase_LIBS})
+target_link_libraries(FreeCADBase fmt::fmt ${FreeCADBase_LIBS})
 
 SET_BIN_DIR(FreeCADBase FreeCADBase)
 
