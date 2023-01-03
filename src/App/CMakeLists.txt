@@ -290,7 +290,6 @@ if(FREECAD_USE_PCH)
 endif(FREECAD_USE_PCH)
 
 add_library(FreeCADApp SHARED ${FreeCADApp_SRCS})
-
 target_link_libraries(FreeCADApp ${FreeCADApp_LIBS})
 
 add_dependencies(FreeCADApp fc_version)
