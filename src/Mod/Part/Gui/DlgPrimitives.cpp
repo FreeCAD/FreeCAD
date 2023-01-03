@@ -208,7 +208,16 @@ bool AbstractPrimitive::hasValidPrimitive() const
     return (!featurePtr.expired());
 }
 
-void AbstractPrimitive::connectSignalMapper(QWidget *sender, const char *signal, QSignalMapper* mapper)
+void AbstractPrimitive::connectSignalMapper(QSignalMapper* mapper)
+{
+#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
+        connect(mapper, qOverload<QObject*>(&QSignalMapper::mapped), this, &AbstractPrimitive::changeValue);
+#else
+        connect(mapper, &QSignalMapper::mappedObject, this, &AbstractPrimitive::changeValue);
+#endif
+}
+
+void AbstractPrimitive::connectSignalMapper(QObject *sender, const char *signal, QSignalMapper* mapper)
 {
     connect(sender, signal, mapper, SLOT(map()));
     mapper->setMapping(sender, sender);
@@ -230,7 +239,7 @@ PlanePrimitive::PlanePrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part::Plane
         ui->planeWidth->bind(feature->Width);
 
         QSignalMapper* mapper = new QSignalMapper(this);
-        connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(changeValue(QWidget*)));
+        connectSignalMapper(mapper);
         connectSignalMapper(ui->planeLength, SIGNAL(valueChanged(double)), mapper);
         connectSignalMapper(ui->planeWidth, SIGNAL(valueChanged(double)), mapper);
     }
@@ -269,7 +278,7 @@ QString PlanePrimitive::change(const QString& objectName, const QString& placeme
              placement);
 }
 
-void PlanePrimitive::changeValue(QWidget* widget)
+void PlanePrimitive::changeValue(QObject* widget)
 {
     if (featurePtr.expired())
         return;
@@ -303,7 +312,7 @@ BoxPrimitive::BoxPrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part::Box* feat
         ui->boxHeight->bind(feature->Height);
 
         QSignalMapper* mapper = new QSignalMapper(this);
-        connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(changeValue(QWidget*)));
+        connectSignalMapper(mapper);
         connectSignalMapper(ui->boxLength, SIGNAL(valueChanged(double)), mapper);
         connectSignalMapper(ui->boxWidth, SIGNAL(valueChanged(double)), mapper);
         connectSignalMapper(ui->boxHeight, SIGNAL(valueChanged(double)), mapper);
@@ -347,7 +356,7 @@ QString BoxPrimitive::change(const QString& objectName, const QString& placement
              placement);
 }
 
-void BoxPrimitive::changeValue(QWidget* widget)
+void BoxPrimitive::changeValue(QObject* widget)
 {
     if (featurePtr.expired())
         return;
@@ -388,7 +397,7 @@ CylinderPrimitive::CylinderPrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part:
         ui->cylinderAngle->bind(feature->Angle);
 
         QSignalMapper* mapper = new QSignalMapper(this);
-        connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(changeValue(QWidget*)));
+        connectSignalMapper(mapper);
         connectSignalMapper(ui->cylinderRadius, SIGNAL(valueChanged(double)), mapper);
         connectSignalMapper(ui->cylinderHeight, SIGNAL(valueChanged(double)), mapper);
         connectSignalMapper(ui->cylinderXSkew, SIGNAL(valueChanged(double)), mapper);
@@ -438,7 +447,7 @@ QString CylinderPrimitive::change(const QString& objectName, const QString& plac
              placement);
 }
 
-void CylinderPrimitive::changeValue(QWidget* widget)
+void CylinderPrimitive::changeValue(QObject* widget)
 {
     if (featurePtr.expired())
         return;
@@ -484,7 +493,7 @@ ConePrimitive::ConePrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part::Cone* f
         ui->coneAngle->bind(feature->Angle);
 
         QSignalMapper* mapper = new QSignalMapper(this);
-        connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(changeValue(QWidget*)));
+        connectSignalMapper(mapper);
         connectSignalMapper(ui->coneRadius1, SIGNAL(valueChanged(double)), mapper);
         connectSignalMapper(ui->coneRadius2, SIGNAL(valueChanged(double)), mapper);
         connectSignalMapper(ui->coneHeight, SIGNAL(valueChanged(double)), mapper);
@@ -533,7 +542,7 @@ QString ConePrimitive::change(const QString& objectName, const QString& placemen
              placement);
 }
 
-void ConePrimitive::changeValue(QWidget* widget)
+void ConePrimitive::changeValue(QObject* widget)
 {
     if (featurePtr.expired())
         return;
@@ -576,7 +585,7 @@ SpherePrimitive::SpherePrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part::Sph
         ui->sphereAngle3->bind(feature->Angle3);
 
         QSignalMapper* mapper = new QSignalMapper(this);
-        connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(changeValue(QWidget*)));
+        connectSignalMapper(mapper);
         connectSignalMapper(ui->sphereRadius, SIGNAL(valueChanged(double)), mapper);
         connectSignalMapper(ui->sphereAngle1, SIGNAL(valueChanged(double)), mapper);
         connectSignalMapper(ui->sphereAngle2, SIGNAL(valueChanged(double)), mapper);
@@ -625,7 +634,7 @@ QString SpherePrimitive::change(const QString& objectName, const QString& placem
              placement);
 }
 
-void SpherePrimitive::changeValue(QWidget* widget)
+void SpherePrimitive::changeValue(QObject* widget)
 {
     if (featurePtr.expired())
         return;
@@ -674,7 +683,7 @@ EllipsoidPrimitive::EllipsoidPrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Par
         ui->ellipsoidAngle3->bind(feature->Angle3);
 
         QSignalMapper* mapper = new QSignalMapper(this);
-        connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(changeValue(QWidget*)));
+        connectSignalMapper(mapper);
         connectSignalMapper(ui->ellipsoidRadius1, SIGNAL(valueChanged(double)), mapper);
         connectSignalMapper(ui->ellipsoidRadius2, SIGNAL(valueChanged(double)), mapper);
         connectSignalMapper(ui->ellipsoidRadius3, SIGNAL(valueChanged(double)), mapper);
@@ -734,7 +743,7 @@ QString EllipsoidPrimitive::change(const QString& objectName, const QString& pla
              placement);
 }
 
-void EllipsoidPrimitive::changeValue(QWidget* widget)
+void EllipsoidPrimitive::changeValue(QObject* widget)
 {
     if (featurePtr.expired())
         return;
@@ -786,7 +795,7 @@ TorusPrimitive::TorusPrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part::Torus
         ui->torusAngle3->bind(feature->Angle3);
 
         QSignalMapper* mapper = new QSignalMapper(this);
-        connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(changeValue(QWidget*)));
+        connectSignalMapper(mapper);
         connectSignalMapper(ui->torusRadius1, SIGNAL(valueChanged(double)), mapper);
         connectSignalMapper(ui->torusRadius2, SIGNAL(valueChanged(double)), mapper);
         connectSignalMapper(ui->torusAngle1, SIGNAL(valueChanged(double)), mapper);
@@ -840,7 +849,7 @@ QString TorusPrimitive::change(const QString& objectName, const QString& placeme
              placement);
 }
 
-void TorusPrimitive::changeValue(QWidget* widget)
+void TorusPrimitive::changeValue(QObject* widget)
 {
     if (featurePtr.expired())
         return;
@@ -885,7 +894,7 @@ PrismPrimitive::PrismPrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part::Prism
         ui->prismYSkew->bind(feature->SecondAngle);
 
         QSignalMapper* mapper = new QSignalMapper(this);
-        connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(changeValue(QWidget*)));
+        connectSignalMapper(mapper);
         connectSignalMapper(ui->prismPolygon, SIGNAL(valueChanged(int)), mapper);
         connectSignalMapper(ui->prismCircumradius, SIGNAL(valueChanged(double)), mapper);
         connectSignalMapper(ui->prismHeight, SIGNAL(valueChanged(double)), mapper);
@@ -939,7 +948,7 @@ QString PrismPrimitive::change(const QString& objectName, const QString& placeme
              placement);
 }
 
-void PrismPrimitive::changeValue(QWidget* widget)
+void PrismPrimitive::changeValue(QObject* widget)
 {
     if (featurePtr.expired())
         return;
@@ -1013,7 +1022,7 @@ WedgePrimitive::WedgePrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part::Wedge
         ui->wedgeZ2max->bind(feature->Z2max);
 
         QSignalMapper* mapper = new QSignalMapper(this);
-        connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(changeValue(QWidget*)));
+        connectSignalMapper(mapper);
         connectSignalMapper(ui->wedgeXmin, SIGNAL(valueChanged(double)), mapper);
         connectSignalMapper(ui->wedgeYmin, SIGNAL(valueChanged(double)), mapper);
         connectSignalMapper(ui->wedgeZmin, SIGNAL(valueChanged(double)), mapper);
@@ -1092,7 +1101,7 @@ QString WedgePrimitive::change(const QString& objectName, const QString& placeme
              placement);
 }
 
-void WedgePrimitive::changeValue(QWidget* widget)
+void WedgePrimitive::changeValue(QObject* widget)
 {
     if (featurePtr.expired())
         return;
@@ -1154,7 +1163,7 @@ HelixPrimitive::HelixPrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part::Helix
         ui->helixLocalCS->setCurrentIndex(feature->LocalCoord.getValue());
 
         QSignalMapper* mapper = new QSignalMapper(this);
-        connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(changeValue(QWidget*)));
+        connectSignalMapper(mapper);
         connectSignalMapper(ui->helixPitch, SIGNAL(valueChanged(double)), mapper);
         connectSignalMapper(ui->helixHeight, SIGNAL(valueChanged(double)), mapper);
         connectSignalMapper(ui->helixRadius, SIGNAL(valueChanged(double)), mapper);
@@ -1209,7 +1218,7 @@ QString HelixPrimitive::change(const QString& objectName, const QString& placeme
              placement);
 }
 
-void HelixPrimitive::changeValue(QWidget* widget)
+void HelixPrimitive::changeValue(QObject* widget)
 {
     if (featurePtr.expired())
         return;
@@ -1251,7 +1260,7 @@ SpiralPrimitive::SpiralPrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part::Spi
         ui->spiralRadius->bind(feature->Radius);
 
         QSignalMapper* mapper = new QSignalMapper(this);
-        connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(changeValue(QWidget*)));
+        connectSignalMapper(mapper);
         connectSignalMapper(ui->spiralGrowth, SIGNAL(valueChanged(double)), mapper);
         connectSignalMapper(ui->spiralRotation, SIGNAL(valueChanged(double)), mapper);
         connectSignalMapper(ui->spiralRadius, SIGNAL(valueChanged(double)), mapper);
@@ -1295,7 +1304,7 @@ QString SpiralPrimitive::change(const QString& objectName, const QString& placem
              placement);
 }
 
-void SpiralPrimitive::changeValue(QWidget* widget)
+void SpiralPrimitive::changeValue(QObject* widget)
 {
     if (featurePtr.expired())
         return;
@@ -1332,7 +1341,7 @@ CirclePrimitive::CirclePrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part::Cir
         ui->circleAngle2->bind(feature->Angle2);
 
         QSignalMapper* mapper = new QSignalMapper(this);
-        connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(changeValue(QWidget*)));
+        connectSignalMapper(mapper);
         connectSignalMapper(ui->circleRadius, SIGNAL(valueChanged(double)), mapper);
         connectSignalMapper(ui->circleAngle1, SIGNAL(valueChanged(double)), mapper);
         connectSignalMapper(ui->circleAngle2, SIGNAL(valueChanged(double)), mapper);
@@ -1376,7 +1385,7 @@ QString CirclePrimitive::change(const QString& objectName, const QString& placem
              placement);
 }
 
-void CirclePrimitive::changeValue(QWidget* widget)
+void CirclePrimitive::changeValue(QObject* widget)
 {
     if (featurePtr.expired())
         return;
@@ -1416,7 +1425,7 @@ EllipsePrimitive::EllipsePrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part::E
         ui->ellipseAngle2->bind(feature->Angle2);
 
         QSignalMapper* mapper = new QSignalMapper(this);
-        connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(changeValue(QWidget*)));
+        connectSignalMapper(mapper);
         connectSignalMapper(ui->ellipseMajorRadius, SIGNAL(valueChanged(double)), mapper);
         connectSignalMapper(ui->ellipseMinorRadius, SIGNAL(valueChanged(double)), mapper);
         connectSignalMapper(ui->ellipseAngle1, SIGNAL(valueChanged(double)), mapper);
@@ -1465,7 +1474,7 @@ QString EllipsePrimitive::change(const QString& objectName, const QString& place
              placement);
 }
 
-void EllipsePrimitive::changeValue(QWidget* widget)
+void EllipsePrimitive::changeValue(QObject* widget)
 {
     if (featurePtr.expired())
         return;
@@ -1500,7 +1509,7 @@ PolygonPrimitive::PolygonPrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part::R
         ui->regularPolygonCircumradius->bind(feature->Circumradius);
 
         QSignalMapper* mapper = new QSignalMapper(this);
-        connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(changeValue(QWidget*)));
+        connectSignalMapper(mapper);
         connectSignalMapper(ui->regularPolygonPolygon, SIGNAL(valueChanged(int)), mapper);
         connectSignalMapper(ui->regularPolygonCircumradius, SIGNAL(valueChanged(double)), mapper);
     }
@@ -1539,7 +1548,7 @@ QString PolygonPrimitive::change(const QString& objectName, const QString& place
              placement);
 }
 
-void PolygonPrimitive::changeValue(QWidget* widget)
+void PolygonPrimitive::changeValue(QObject* widget)
 {
     if (featurePtr.expired())
         return;
@@ -1588,7 +1597,7 @@ LinePrimitive::LinePrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part::Line* f
         ui->edgeZ2->bind(feature->Z2);
 
         QSignalMapper* mapper = new QSignalMapper(this);
-        connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(changeValue(QWidget*)));
+        connectSignalMapper(mapper);
         connectSignalMapper(ui->edgeX1, SIGNAL(valueChanged(double)), mapper);
         connectSignalMapper(ui->edgeY1, SIGNAL(valueChanged(double)), mapper);
         connectSignalMapper(ui->edgeZ1, SIGNAL(valueChanged(double)), mapper);
@@ -1647,7 +1656,7 @@ QString LinePrimitive::change(const QString& objectName, const QString& placemen
              placement);
 }
 
-void LinePrimitive::changeValue(QWidget* widget)
+void LinePrimitive::changeValue(QObject* widget)
 {
     if (featurePtr.expired())
         return;
@@ -1696,7 +1705,7 @@ VertexPrimitive::VertexPrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part::Ver
         ui->vertexZ->bind(feature->Z);
 
         QSignalMapper* mapper = new QSignalMapper(this);
-        connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(changeValue(QWidget*)));
+        connectSignalMapper(mapper);
         connectSignalMapper(ui->vertexX, SIGNAL(valueChanged(double)), mapper);
         connectSignalMapper(ui->vertexY, SIGNAL(valueChanged(double)), mapper);
         connectSignalMapper(ui->vertexZ, SIGNAL(valueChanged(double)), mapper);
@@ -1740,7 +1749,7 @@ QString VertexPrimitive::change(const QString& objectName, const QString& placem
              placement);
 }
 
-void VertexPrimitive::changeValue(QWidget* widget)
+void VertexPrimitive::changeValue(QObject* widget)
 {
     if (featurePtr.expired())
         return;
@@ -1801,12 +1810,6 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
  */
 DlgPrimitives::~DlgPrimitives()
 {
-}
-
-void DlgPrimitives::connectSignalMapper(QWidget *sender, const char *signal, QSignalMapper* mapper)
-{
-    connect(sender, signal, mapper, SLOT(map()));
-    mapper->setMapping(sender, sender);
 }
 
 void DlgPrimitives::activatePage()
@@ -1988,6 +1991,8 @@ Location::Location(QWidget* parent, Part::Feature* feature)
 {
     mode = 0;
     ui->setupUi(this);
+    connect(ui->viewPositionButton, &QPushButton::clicked,
+            this, &Location::onViewPositionButton);
 
     ui->XPositionQSB->setUnit(Base::Unit::Length);
     ui->YPositionQSB->setUnit(Base::Unit::Length);
@@ -1996,40 +2001,9 @@ Location::Location(QWidget* parent, Part::Feature* feature)
 
     // fill location widget if object already exists
     if (feature) {
-        // get the placement values
-        auto placement = feature->Placement.getValue();
-
-        auto position = placement.getPosition();
-        ui->XPositionQSB->setValue(position.x);
-        ui->YPositionQSB->setValue(position.y);
-        ui->ZPositionQSB->setValue(position.z);
-
-        double rotationAngle;
-        Base::Vector3d rotationAxes;
-        auto rotation = placement.getRotation();
-        rotation.getRawValue(rotationAxes, rotationAngle);
-        ui->XDirectionEdit->setValue(rotationAxes.x);
-        ui->YDirectionEdit->setValue(rotationAxes.y);
-        ui->ZDirectionEdit->setValue(rotationAxes.z);
-        // the angle is rad, transform it for display to degrees
-        ui->AngleQSB->setValue(Base::toDegrees<double>(rotationAngle));
-
-        ui->XPositionQSB->bind(App::ObjectIdentifier::parse(feature, std::string("Placement.Base.x")));
-        ui->YPositionQSB->bind(App::ObjectIdentifier::parse(feature, std::string("Placement.Base.y")));
-        ui->ZPositionQSB->bind(App::ObjectIdentifier::parse(feature, std::string("Placement.Base.z")));
-        ui->XDirectionEdit->bind(App::ObjectIdentifier::parse(feature, std::string("Placement.Rotation.Axis.x")));
-        ui->YDirectionEdit->bind(App::ObjectIdentifier::parse(feature, std::string("Placement.Rotation.Axis.y")));
-        ui->ZDirectionEdit->bind(App::ObjectIdentifier::parse(feature, std::string("Placement.Rotation.Axis.z")));
-        ui->AngleQSB->bind(App::ObjectIdentifier::parse(feature, std::string("Placement.Rotation.Angle")));
-
-        //connect signals
-        connect(ui->XPositionQSB, SIGNAL(valueChanged(double)), this,  SLOT(onChangePosRot()));
-        connect(ui->YPositionQSB, SIGNAL(valueChanged(double)), this,  SLOT(onChangePosRot()));
-        connect(ui->ZPositionQSB, SIGNAL(valueChanged(double)), this,  SLOT(onChangePosRot()));
-        connect(ui->AngleQSB, SIGNAL(valueChanged(double)), this,  SLOT(onChangePosRot()));
-        connect(ui->XDirectionEdit, SIGNAL(valueChanged(double)), this,  SLOT(onChangePosRot()));
-        connect(ui->YDirectionEdit, SIGNAL(valueChanged(double)), this,  SLOT(onChangePosRot()));
-        connect(ui->ZDirectionEdit, SIGNAL(valueChanged(double)), this,  SLOT(onChangePosRot()));
+        setPlacement(feature);
+        bindExpressions(feature);
+        connectSignals();
     }
 }
 
@@ -2048,7 +2022,50 @@ Location::~Location()
     }
 }
 
-void Location::onChangePosRot()
+void Location::setPlacement(Part::Feature* feature)
+{
+    // get the placement values
+    auto placement = feature->Placement.getValue();
+
+    auto position = placement.getPosition();
+    ui->XPositionQSB->setValue(position.x);
+    ui->YPositionQSB->setValue(position.y);
+    ui->ZPositionQSB->setValue(position.z);
+
+    double rotationAngle;
+    Base::Vector3d rotationAxes;
+    auto rotation = placement.getRotation();
+    rotation.getRawValue(rotationAxes, rotationAngle);
+    ui->XDirectionEdit->setValue(rotationAxes.x);
+    ui->YDirectionEdit->setValue(rotationAxes.y);
+    ui->ZDirectionEdit->setValue(rotationAxes.z);
+    // the angle is rad, transform it for display to degrees
+    ui->AngleQSB->setValue(Base::toDegrees<double>(rotationAngle));
+}
+
+void Location::bindExpressions(Part::Feature* feature)
+{
+    ui->XPositionQSB->bind(App::ObjectIdentifier::parse(feature, std::string("Placement.Base.x")));
+    ui->YPositionQSB->bind(App::ObjectIdentifier::parse(feature, std::string("Placement.Base.y")));
+    ui->ZPositionQSB->bind(App::ObjectIdentifier::parse(feature, std::string("Placement.Base.z")));
+    ui->XDirectionEdit->bind(App::ObjectIdentifier::parse(feature, std::string("Placement.Rotation.Axis.x")));
+    ui->YDirectionEdit->bind(App::ObjectIdentifier::parse(feature, std::string("Placement.Rotation.Axis.y")));
+    ui->ZDirectionEdit->bind(App::ObjectIdentifier::parse(feature, std::string("Placement.Rotation.Axis.z")));
+    ui->AngleQSB->bind(App::ObjectIdentifier::parse(feature, std::string("Placement.Rotation.Angle")));
+}
+
+void Location::connectSignals()
+{
+    connect(ui->XPositionQSB, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &Location::onPlacementChanged);
+    connect(ui->YPositionQSB, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &Location::onPlacementChanged);
+    connect(ui->ZPositionQSB, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &Location::onPlacementChanged);
+    connect(ui->AngleQSB,     qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &Location::onPlacementChanged);
+    connect(ui->XDirectionEdit, qOverload<double>(&Gui::DoubleSpinBox::valueChanged), this, &Location::onPlacementChanged);
+    connect(ui->YDirectionEdit, qOverload<double>(&Gui::DoubleSpinBox::valueChanged), this, &Location::onPlacementChanged);
+    connect(ui->ZDirectionEdit, qOverload<double>(&Gui::DoubleSpinBox::valueChanged), this, &Location::onPlacementChanged);
+}
+
+void Location::onPlacementChanged()
 {
     App::GeoFeature* geom = featurePtr.get<App::GeoFeature>();
     if (!geom)
@@ -2078,7 +2095,7 @@ void Location::onChangePosRot()
     geom->recomputeFeature();
 }
 
-void Location::on_viewPositionButton_clicked()
+void Location::onViewPositionButton()
 {
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     if (!doc) {

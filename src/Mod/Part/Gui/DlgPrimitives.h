@@ -91,12 +91,11 @@ public:
     virtual const char* getDefaultName() const = 0;
     virtual QString create(const QString& objectName, const QString& placement) const = 0;
     virtual QString change(const QString& objectName, const QString& placement) const = 0;
-
-public Q_SLOTS:
-    virtual void changeValue(QWidget*) = 0;
+    virtual void changeValue(QObject*) = 0;
 
 protected:
-    void connectSignalMapper(QWidget *sender, const char *signal, QSignalMapper* mapper);
+    void connectSignalMapper(QSignalMapper* mapper);
+    void connectSignalMapper(QObject *sender, const char *signal, QSignalMapper* mapper);
 
 protected:
     App::DocumentObjectWeakPtrT featurePtr;
@@ -114,7 +113,7 @@ public:
     const char* getDefaultName() const override;
     QString create(const QString& objectName, const QString& placement) const override;
     QString change(const QString& objectName, const QString& placement) const override;
-    void changeValue(QWidget*) override;
+    void changeValue(QObject*) override;
 
 private:
     std::shared_ptr<Ui_DlgPrimitives> ui;
@@ -132,7 +131,7 @@ public:
     const char* getDefaultName() const override;
     QString create(const QString& objectName, const QString& placement) const override;
     QString change(const QString& objectName, const QString& placement) const override;
-    void changeValue(QWidget*) override;
+    void changeValue(QObject*) override;
 
 private:
     std::shared_ptr<Ui_DlgPrimitives> ui;
@@ -150,7 +149,7 @@ public:
     const char* getDefaultName() const override;
     QString create(const QString& objectName, const QString& placement) const override;
     QString change(const QString& objectName, const QString& placement) const override;
-    void changeValue(QWidget*) override;
+    void changeValue(QObject*) override;
 
 private:
     std::shared_ptr<Ui_DlgPrimitives> ui;
@@ -168,7 +167,7 @@ public:
     const char* getDefaultName() const override;
     QString create(const QString& objectName, const QString& placement) const override;
     QString change(const QString& objectName, const QString& placement) const override;
-    void changeValue(QWidget*) override;
+    void changeValue(QObject*) override;
 
 private:
     std::shared_ptr<Ui_DlgPrimitives> ui;
@@ -186,7 +185,7 @@ public:
     const char* getDefaultName() const override;
     QString create(const QString& objectName, const QString& placement) const override;
     QString change(const QString& objectName, const QString& placement) const override;
-    void changeValue(QWidget*) override;
+    void changeValue(QObject*) override;
 
 private:
     std::shared_ptr<Ui_DlgPrimitives> ui;
@@ -204,7 +203,7 @@ public:
     const char* getDefaultName() const override;
     QString create(const QString& objectName, const QString& placement) const override;
     QString change(const QString& objectName, const QString& placement) const override;
-    void changeValue(QWidget*) override;
+    void changeValue(QObject*) override;
 
 private:
     std::shared_ptr<Ui_DlgPrimitives> ui;
@@ -222,7 +221,7 @@ public:
     const char* getDefaultName() const override;
     QString create(const QString& objectName, const QString& placement) const override;
     QString change(const QString& objectName, const QString& placement) const override;
-    void changeValue(QWidget*) override;
+    void changeValue(QObject*) override;
 
 private:
     std::shared_ptr<Ui_DlgPrimitives> ui;
@@ -240,7 +239,7 @@ public:
     const char* getDefaultName() const override;
     QString create(const QString& objectName, const QString& placement) const override;
     QString change(const QString& objectName, const QString& placement) const override;
-    void changeValue(QWidget*) override;
+    void changeValue(QObject*) override;
 
 private:
     std::shared_ptr<Ui_DlgPrimitives> ui;
@@ -258,7 +257,7 @@ public:
     const char* getDefaultName() const override;
     QString create(const QString& objectName, const QString& placement) const override;
     QString change(const QString& objectName, const QString& placement) const override;
-    void changeValue(QWidget*) override;
+    void changeValue(QObject*) override;
 
 private:
     std::shared_ptr<Ui_DlgPrimitives> ui;
@@ -276,7 +275,7 @@ public:
     const char* getDefaultName() const override;
     QString create(const QString& objectName, const QString& placement) const override;
     QString change(const QString& objectName, const QString& placement) const override;
-    void changeValue(QWidget*) override;
+    void changeValue(QObject*) override;
 
 private:
     std::shared_ptr<Ui_DlgPrimitives> ui;
@@ -294,7 +293,7 @@ public:
     const char* getDefaultName() const override;
     QString create(const QString& objectName, const QString& placement) const override;
     QString change(const QString& objectName, const QString& placement) const override;
-    void changeValue(QWidget*) override;
+    void changeValue(QObject*) override;
 
 private:
     std::shared_ptr<Ui_DlgPrimitives> ui;
@@ -312,7 +311,7 @@ public:
     const char* getDefaultName() const override;
     QString create(const QString& objectName, const QString& placement) const override;
     QString change(const QString& objectName, const QString& placement) const override;
-    void changeValue(QWidget*) override;
+    void changeValue(QObject*) override;
 
 private:
     std::shared_ptr<Ui_DlgPrimitives> ui;
@@ -330,7 +329,7 @@ public:
     const char* getDefaultName() const override;
     QString create(const QString& objectName, const QString& placement) const override;
     QString change(const QString& objectName, const QString& placement) const override;
-    void changeValue(QWidget*) override;
+    void changeValue(QObject*) override;
 
 private:
     std::shared_ptr<Ui_DlgPrimitives> ui;
@@ -348,7 +347,7 @@ public:
     const char* getDefaultName() const override;
     QString create(const QString& objectName, const QString& placement) const override;
     QString change(const QString& objectName, const QString& placement) const override;
-    void changeValue(QWidget*) override;
+    void changeValue(QObject*) override;
 
 private:
     std::shared_ptr<Ui_DlgPrimitives> ui;
@@ -366,7 +365,7 @@ public:
     const char* getDefaultName() const override;
     QString create(const QString& objectName, const QString& placement) const override;
     QString change(const QString& objectName, const QString& placement) const override;
-    void changeValue(QWidget*) override;
+    void changeValue(QObject*) override;
 
 private:
     std::shared_ptr<Ui_DlgPrimitives> ui;
@@ -384,7 +383,7 @@ public:
     const char* getDefaultName() const override;
     QString create(const QString& objectName, const QString& placement) const override;
     QString change(const QString& objectName, const QString& placement) const override;
-    void changeValue(QWidget*) override;
+    void changeValue(QObject*) override;
 
 private:
     std::shared_ptr<Ui_DlgPrimitives> ui;
@@ -409,7 +408,6 @@ private:
 private:
     static void pickCallback(void * ud, SoEventCallback * n);
     void executeCallback(Picker*);
-    void connectSignalMapper(QWidget *sender, const char *signal, QSignalMapper* mapper);
     void acceptChanges(const QString&);
     void tryCreatePrimitive(const QString&);
 
@@ -435,12 +433,16 @@ public:
     ~Location() override;
     QString toPlacement() const;
 
-private Q_SLOTS:
-    void onChangePosRot();
-    void on_viewPositionButton_clicked();
+private:
+    void onPlacementChanged();
+    void onViewPositionButton();
 
 private:
+    void setPlacement(Part::Feature* feature);
+    void bindExpressions(Part::Feature* feature);
+    void connectSignals();
     static void pickCallback(void * ud, SoEventCallback * n);
+
     int mode;
     QPointer<QWidget> activeView;
     std::unique_ptr<Ui_Location> ui;
