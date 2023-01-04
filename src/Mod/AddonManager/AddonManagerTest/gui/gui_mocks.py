@@ -62,6 +62,21 @@ class DialogWatcher(QtCore.QObject):
                 self.click_button(widget)
                 self.dialog_found = True
                 self.timer.stop()
+
+        if not self.dialog_found:
+            # OK, it wasn't the active modal widget... was it some other window, and never became
+            # active? That's an error, but we should get it closed anyway.
+            windows = QtWidgets.QApplication.topLevelWidgets()
+            for widget in windows:
+                if (
+                    hasattr(widget, "windowTitle")
+                    and callable(widget.windowTitle)
+                    and widget.windowTitle() == self.dialog_to_watch_for
+                ):
+                    self.click_button(widget)
+                    self.timer.stop()
+                    print("Found a window with the expected title, but it was not the active modal dialog.")
+
         self.has_run = True
         self.execution_counter += 1
         if self.execution_counter > 100:
