@@ -217,10 +217,19 @@ void AbstractPrimitive::connectSignalMapper(QSignalMapper* mapper)
 #endif
 }
 
-void AbstractPrimitive::connectSignalMapper(QObject *sender, const char *signal, QSignalMapper* mapper)
+namespace PartGui {
+
+void mapSignalMapper(QObject *sender, QSignalMapper* mapper)
 {
-    connect(sender, signal, mapper, SLOT(map()));
     mapper->setMapping(sender, sender);
+}
+
+template <typename Function>
+void connectMapSignalMapper(typename QtPrivate::FunctionPointer<Function>::Object *sender, Function func, QSignalMapper* mapper)
+{
+    QObject::connect(sender, func, mapper, qOverload<>(&QSignalMapper::map));
+    mapSignalMapper(sender, mapper);
+}
 }
 
 // ----------------------------------------------------------------------------
@@ -240,8 +249,8 @@ PlanePrimitive::PlanePrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part::Plane
 
         QSignalMapper* mapper = new QSignalMapper(this);
         connectSignalMapper(mapper);
-        connectSignalMapper(ui->planeLength, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->planeWidth, SIGNAL(valueChanged(double)), mapper);
+        connectMapSignalMapper(ui->planeLength, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->planeWidth, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
     }
 }
 
@@ -313,9 +322,9 @@ BoxPrimitive::BoxPrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part::Box* feat
 
         QSignalMapper* mapper = new QSignalMapper(this);
         connectSignalMapper(mapper);
-        connectSignalMapper(ui->boxLength, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->boxWidth, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->boxHeight, SIGNAL(valueChanged(double)), mapper);
+        connectMapSignalMapper(ui->boxLength, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->boxWidth, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->boxHeight, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
     }
 }
 
@@ -398,11 +407,11 @@ CylinderPrimitive::CylinderPrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part:
 
         QSignalMapper* mapper = new QSignalMapper(this);
         connectSignalMapper(mapper);
-        connectSignalMapper(ui->cylinderRadius, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->cylinderHeight, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->cylinderXSkew, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->cylinderYSkew, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->cylinderAngle, SIGNAL(valueChanged(double)), mapper);
+        connectMapSignalMapper(ui->cylinderRadius, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->cylinderHeight, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->cylinderXSkew, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->cylinderYSkew, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->cylinderAngle, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
     }
 }
 
@@ -494,10 +503,10 @@ ConePrimitive::ConePrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part::Cone* f
 
         QSignalMapper* mapper = new QSignalMapper(this);
         connectSignalMapper(mapper);
-        connectSignalMapper(ui->coneRadius1, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->coneRadius2, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->coneHeight, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->coneAngle, SIGNAL(valueChanged(double)), mapper);
+        connectMapSignalMapper(ui->coneRadius1, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->coneRadius2, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->coneHeight, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->coneAngle, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
     }
 }
 
@@ -586,10 +595,10 @@ SpherePrimitive::SpherePrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part::Sph
 
         QSignalMapper* mapper = new QSignalMapper(this);
         connectSignalMapper(mapper);
-        connectSignalMapper(ui->sphereRadius, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->sphereAngle1, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->sphereAngle2, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->sphereAngle3, SIGNAL(valueChanged(double)), mapper);
+        connectMapSignalMapper(ui->sphereRadius, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->sphereAngle1, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->sphereAngle2, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->sphereAngle3, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
     }
 }
 
@@ -684,12 +693,12 @@ EllipsoidPrimitive::EllipsoidPrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Par
 
         QSignalMapper* mapper = new QSignalMapper(this);
         connectSignalMapper(mapper);
-        connectSignalMapper(ui->ellipsoidRadius1, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->ellipsoidRadius2, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->ellipsoidRadius3, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->ellipsoidAngle1, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->ellipsoidAngle2, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->ellipsoidAngle3, SIGNAL(valueChanged(double)), mapper);
+        connectMapSignalMapper(ui->ellipsoidRadius1, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->ellipsoidRadius2, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->ellipsoidRadius3, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->ellipsoidAngle1, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->ellipsoidAngle2, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->ellipsoidAngle3, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
 
     }
 }
@@ -796,11 +805,11 @@ TorusPrimitive::TorusPrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part::Torus
 
         QSignalMapper* mapper = new QSignalMapper(this);
         connectSignalMapper(mapper);
-        connectSignalMapper(ui->torusRadius1, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->torusRadius2, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->torusAngle1, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->torusAngle2, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->torusAngle3, SIGNAL(valueChanged(double)), mapper);
+        connectMapSignalMapper(ui->torusRadius1, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->torusRadius2, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->torusAngle1, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->torusAngle2, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->torusAngle3, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
     }
 }
 
@@ -895,11 +904,11 @@ PrismPrimitive::PrismPrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part::Prism
 
         QSignalMapper* mapper = new QSignalMapper(this);
         connectSignalMapper(mapper);
-        connectSignalMapper(ui->prismPolygon, SIGNAL(valueChanged(int)), mapper);
-        connectSignalMapper(ui->prismCircumradius, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->prismHeight, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->prismXSkew, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->prismYSkew, SIGNAL(valueChanged(double)), mapper);
+        connectMapSignalMapper(ui->prismPolygon, qOverload<int>(&QSpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->prismCircumradius, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->prismHeight, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->prismXSkew, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->prismYSkew, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
     }
 }
 
@@ -1023,16 +1032,16 @@ WedgePrimitive::WedgePrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part::Wedge
 
         QSignalMapper* mapper = new QSignalMapper(this);
         connectSignalMapper(mapper);
-        connectSignalMapper(ui->wedgeXmin, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->wedgeYmin, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->wedgeZmin, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->wedgeX2min, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->wedgeZ2min, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->wedgeXmax, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->wedgeYmax, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->wedgeZmax, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->wedgeX2max, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->wedgeZ2max, SIGNAL(valueChanged(double)), mapper);
+        connectMapSignalMapper(ui->wedgeXmin, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->wedgeYmin, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->wedgeZmin, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->wedgeX2min, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->wedgeZ2min, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->wedgeXmax, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->wedgeYmax, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->wedgeZmax, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->wedgeX2max, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->wedgeZ2max, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
     }
 }
 
@@ -1164,11 +1173,11 @@ HelixPrimitive::HelixPrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part::Helix
 
         QSignalMapper* mapper = new QSignalMapper(this);
         connectSignalMapper(mapper);
-        connectSignalMapper(ui->helixPitch, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->helixHeight, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->helixRadius, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->helixAngle, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->helixLocalCS, SIGNAL(currentIndexChanged(int)), mapper);
+        connectMapSignalMapper(ui->helixPitch, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->helixHeight, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->helixRadius, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->helixAngle, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->helixLocalCS, qOverload<int>(&QComboBox::currentIndexChanged), mapper);
     }
 }
 
@@ -1261,9 +1270,9 @@ SpiralPrimitive::SpiralPrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part::Spi
 
         QSignalMapper* mapper = new QSignalMapper(this);
         connectSignalMapper(mapper);
-        connectSignalMapper(ui->spiralGrowth, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->spiralRotation, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->spiralRadius, SIGNAL(valueChanged(double)), mapper);
+        connectMapSignalMapper(ui->spiralGrowth, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->spiralRotation, qOverload<double>(&QDoubleSpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->spiralRadius, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
     }
 }
 
@@ -1342,9 +1351,9 @@ CirclePrimitive::CirclePrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part::Cir
 
         QSignalMapper* mapper = new QSignalMapper(this);
         connectSignalMapper(mapper);
-        connectSignalMapper(ui->circleRadius, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->circleAngle1, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->circleAngle2, SIGNAL(valueChanged(double)), mapper);
+        connectMapSignalMapper(ui->circleRadius, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->circleAngle1, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->circleAngle2, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
     }
 }
 
@@ -1426,10 +1435,10 @@ EllipsePrimitive::EllipsePrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part::E
 
         QSignalMapper* mapper = new QSignalMapper(this);
         connectSignalMapper(mapper);
-        connectSignalMapper(ui->ellipseMajorRadius, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->ellipseMinorRadius, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->ellipseAngle1, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->ellipseAngle2, SIGNAL(valueChanged(double)), mapper);
+        connectMapSignalMapper(ui->ellipseMajorRadius, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->ellipseMinorRadius, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->ellipseAngle1, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->ellipseAngle2, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
     }
 }
 
@@ -1510,8 +1519,8 @@ PolygonPrimitive::PolygonPrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part::R
 
         QSignalMapper* mapper = new QSignalMapper(this);
         connectSignalMapper(mapper);
-        connectSignalMapper(ui->regularPolygonPolygon, SIGNAL(valueChanged(int)), mapper);
-        connectSignalMapper(ui->regularPolygonCircumradius, SIGNAL(valueChanged(double)), mapper);
+        connectMapSignalMapper(ui->regularPolygonPolygon, qOverload<int>(&QSpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->regularPolygonCircumradius, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
     }
 }
 
@@ -1598,12 +1607,12 @@ LinePrimitive::LinePrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part::Line* f
 
         QSignalMapper* mapper = new QSignalMapper(this);
         connectSignalMapper(mapper);
-        connectSignalMapper(ui->edgeX1, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->edgeY1, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->edgeZ1, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->edgeX2, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->edgeY2, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->edgeZ2, SIGNAL(valueChanged(double)), mapper);
+        connectMapSignalMapper(ui->edgeX1, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->edgeY1, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->edgeZ1, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->edgeX2, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->edgeY2, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->edgeZ2, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
     }
 }
 
@@ -1706,9 +1715,9 @@ VertexPrimitive::VertexPrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part::Ver
 
         QSignalMapper* mapper = new QSignalMapper(this);
         connectSignalMapper(mapper);
-        connectSignalMapper(ui->vertexX, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->vertexY, SIGNAL(valueChanged(double)), mapper);
-        connectSignalMapper(ui->vertexZ, SIGNAL(valueChanged(double)), mapper);
+        connectMapSignalMapper(ui->vertexX, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->vertexY, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
+        connectMapSignalMapper(ui->vertexZ, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), mapper);
     }
 }
 
