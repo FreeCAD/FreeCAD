@@ -109,14 +109,13 @@ class PathWorkbench(Workbench):
         twodopcmdlist = [
             "Path_Profile",
             "Path_Pocket_Shape",
-            "Path_Drilling",
-            "Path_Tapping",
             "Path_MillFace",
             "Path_Helix",
             "Path_Adaptive",
         ]
         threedopcmdlist = ["Path_Pocket3D"]
         engravecmdlist = ["Path_Engrave", "Path_Deburr", "Path_Vcarve"]
+        drillingcmdlist = ["Path_Drilling", "Path_Tapping"]
         modcmdlist = ["Path_OperationCopy", "Path_Array", "Path_SimpleCopy"]
         dressupcmdlist = [
             "Path_DressupAxisMap",
@@ -144,7 +143,14 @@ class PathWorkbench(Workbench):
                 QT_TRANSLATE_NOOP("Path_EngraveTools", "Engraving Operations"),
             ),
         )
-
+        drillingcmdgroup = ["Path_DrillingTools"]
+        FreeCADGui.addCommand(
+            "Path_DrillingTools",
+            PathCommandGroup(
+                drillingcmdlist,
+                QT_TRANSLATE_NOOP("Path_DrillingTools", "Drilling Operations"),
+            ),
+        )
         threedcmdgroup = threedopcmdlist
         if Path.Preferences.experimentalFeaturesEnabled():
             projcmdlist.append("Path_Sanity")
@@ -187,7 +193,7 @@ class PathWorkbench(Workbench):
         self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Tool Commands"), toolcmdlist)
         self.appendToolbar(
             QT_TRANSLATE_NOOP("Workbench", "New Operations"),
-            twodopcmdlist + engravecmdgroup + threedcmdgroup,
+            twodopcmdlist + drillingcmdgroup + engravecmdgroup + threedcmdgroup,
         )
         self.appendToolbar(
             QT_TRANSLATE_NOOP("Workbench", "Path Modification"), modcmdlist
@@ -205,6 +211,7 @@ class PathWorkbench(Workbench):
             + toolbitcmdlist
             + ["Separator"]
             + twodopcmdlist
+            + drillingcmdlist
             + engravecmdlist
             + ["Separator"]
             + threedopcmdlist
