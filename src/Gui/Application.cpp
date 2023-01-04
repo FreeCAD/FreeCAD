@@ -198,6 +198,7 @@ struct ApplicationP
     /// Handles all commands
     CommandManager commandManager;
     ViewProviderMap viewproviderMap;
+    std::bitset<32> StatusBits;
 };
 
 static PyObject *
@@ -1865,18 +1866,24 @@ void Application::runApplication()
 #ifdef FC_OS_WIN32
         SetProcessDPIAware(); // call before the main event loop
 #endif
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
         QApplication::setAttribute(Qt::AA_DisableHighDpiScaling);
+#endif
     }
     else {
         // Enable automatic scaling based on pixel density of display (added in Qt 5.6)
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
         QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+#endif
 #if QT_VERSION >= QT_VERSION_CHECK(5,14,0)
         QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
 #endif
     }
 
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
     //Enable support for highres images (added in Qt 5.1, but off by default)
     QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+#endif
 
     // Use software rendering for OpenGL
     ParameterGrp::handle hOpenGL = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/OpenGL");
@@ -2287,6 +2294,16 @@ void Application::runApplication()
     }
 
     Base::Console().Log("Finish: Event loop left\n");
+}
+
+bool Application::testStatus(Status pos) const
+{
+    return d->StatusBits.test((size_t)pos);
+}
+
+void Application::setStatus(Status pos, bool on)
+{
+    d->StatusBits.set((size_t)pos, on);
 }
 
 void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)

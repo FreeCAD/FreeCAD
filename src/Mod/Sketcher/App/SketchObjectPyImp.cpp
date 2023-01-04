@@ -1154,11 +1154,16 @@ PyObject* SketchObjectPy::split(PyObject *args)
         return nullptr;
 
     Base::Vector3d v1 = static_cast<Base::VectorPy*>(pcObj)->value();
-    if (this->getSketchObjectPtr()->split(GeoId,v1)) {
-        std::stringstream str;
-        str << "Not able to split curve with the given index: " << GeoId;
-        PyErr_SetString(PyExc_ValueError, str.str().c_str());
-        return nullptr;
+    try {
+        if (this->getSketchObjectPtr()->split(GeoId,v1)) {
+            std::stringstream str;
+            str << "Not able to split curve with the given index: " << GeoId;
+            PyErr_SetString(PyExc_ValueError, str.str().c_str());
+            return nullptr;
+        }
+    }
+    catch (const Base::ValueError & e) {
+        throw Py::ValueError(e.getMessage());
     }
 
     Py_Return;

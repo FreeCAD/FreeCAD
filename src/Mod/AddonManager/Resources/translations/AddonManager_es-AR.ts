@@ -74,12 +74,6 @@
       <source>Optional?</source>
       <translation>Opcional?</translation>
     </message>
-    <message>
-      <location filename="../../developer_mode_dependencies.ui" line="72"/>
-      <location filename="../../developer_mode_dependencies.ui" line="79"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
   </context>
   <context>
     <name>DependencyResolutionDialog</name>
@@ -250,12 +244,6 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../developer_mode.ui" line="277"/>
       <source>Addon Contents</source>
       <translation>Contenidos del complemento</translation>
-    </message>
-    <message>
-      <location filename="../../developer_mode.ui" line="301"/>
-      <location filename="../../developer_mode.ui" line="308"/>
-      <source>...</source>
-      <translation>...</translation>
     </message>
   </context>
   <context>
@@ -486,14 +474,6 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <translation>Archivo de licencia</translation>
     </message>
     <message>
-      <location filename="../../developer_mode_licenses_table.ui" line="97"/>
-      <location filename="../../developer_mode_licenses_table.ui" line="107"/>
-      <location filename="../../developer_mode_people_table.ui" line="90"/>
-      <location filename="../../developer_mode_people_table.ui" line="100"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
-    <message>
       <location filename="../../developer_mode_people_table.ui" line="26"/>
       <source>People</source>
       <translation>Personas</translation>
@@ -535,12 +515,6 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="48"/>
       <source>Best-available branch, tag, or commit</source>
       <translation>Mejor rama, etiqueta o confirmación</translation>
-    </message>
-    <message>
-      <location filename="../../developer_mode_advanced_freecad_versions.ui" line="71"/>
-      <location filename="../../developer_mode_advanced_freecad_versions.ui" line="78"/>
-      <source>...</source>
-      <translation>...</translation>
     </message>
   </context>
   <context>
@@ -599,12 +573,6 @@ los complementos instalados serán revisados por actualizaciones disponibles
       <translation>Descargar metadatos de macros (aproximadamente 10MB)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="44"/>
-      <source>DownloadMacros</source>
-      <translation>DownloadMacros</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManagerOptions.ui" line="47"/>
       <location filename="../../AddonManagerOptions.ui" line="373"/>
       <location filename="../../AddonManagerOptions.ui" line="386"/>
       <source>Addons</source>
@@ -649,12 +617,6 @@ los complementos instalados serán revisados por actualizaciones disponibles
       <location filename="../../AddonManagerOptions.ui" line="150"/>
       <source>Custom repositories</source>
       <translation>Repositorios personalizados</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManagerOptions.ui" line="188"/>
-      <location filename="../../AddonManagerOptions.ui" line="195"/>
-      <source>...</source>
-      <translation>...</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="354"/>
@@ -738,11 +700,6 @@ los complementos instalados serán revisados por actualizaciones disponibles
       <location filename="../../package_details.ui" line="14"/>
       <source>Form</source>
       <translation>Forma</translation>
-    </message>
-    <message>
-      <location filename="../../package_details.ui" line="29"/>
-      <source>...</source>
-      <translation>...</translation>
     </message>
     <message>
       <location filename="../../package_details.ui" line="49"/>
@@ -829,6 +786,19 @@ los complementos instalados serán revisados por actualizaciones disponibles
       <location filename="../../developer_mode_select_from_list.ui" line="20"/>
       <source>TextLabel</source>
       <translation>EtiquetaTexto</translation>
+    </message>
+  </context>
+  <context>
+    <name>UpdateAllDialog</name>
+    <message>
+      <location filename="../../update_all.ui" line="14"/>
+      <source>Updating Addons</source>
+      <translation type="unfinished">Updating Addons</translation>
+    </message>
+    <message>
+      <location filename="../../update_all.ui" line="23"/>
+      <source>Updating out-of-date addons...</source>
+      <translation type="unfinished">Updating out-of-date addons...</translation>
     </message>
   </context>
   <context>

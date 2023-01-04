@@ -121,11 +121,6 @@
       <translation>角度（fa）</translation>
     </message>
     <message>
-      <location filename="../ui/openscadprefs-base.ui" line="299"/>
-      <source>°</source>
-      <translation>度</translation>
-    </message>
-    <message>
       <location filename="../ui/openscadprefs-base.ui" line="328"/>
       <location filename="../ui/openscadprefs-base.ui" line="353"/>
       <source>Minimum size of a fragment</source>

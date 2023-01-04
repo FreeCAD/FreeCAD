@@ -593,11 +593,6 @@ Leave blank to use all objects from the document</source>
       <translation>シェイプの回転を試す角度のカンマ区切りのリスト</translation>
     </message>
     <message>
-      <location filename="../ui/ArchNest.ui" line="135"/>
-      <source>0,90,180,270</source>
-      <translation>0,90,180,270</translation>
-    </message>
-    <message>
       <location filename="../ui/ArchNest.ui" line="145"/>
       <source>Nesting operation</source>
       <translation>入れ子操作</translation>
@@ -820,11 +815,6 @@ Leave blank to use all objects from the document</source>
       <source>This is the SVG stroke-dasharray property to apply
 to projections of hidden objects.</source>
       <translation>これは、非表示オブジェクトの投影に適用する SVG stroke-dasharray プロパティです。</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-arch.ui" line="589"/>
-      <source>30, 10</source>
-      <translation>30, 10</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="625"/>

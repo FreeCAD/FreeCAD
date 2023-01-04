@@ -32,6 +32,7 @@ from FreeCAD import Vector
 Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 # Path.Log.trackModule(Path.Log.thisModule())
 
+DOC = FreeCAD.getHomePath() + "Mod/Path/PathTests/test_geomop.fcstd"
 
 def getWire(obj, nr=0):
     return obj.Tip.Profile[0].Shape.Wires[nr]
@@ -61,11 +62,6 @@ def getNegativeShape(obj):
     return obj.Shape
 
 
-doc = None
-triangle = None
-shape = None
-
-
 def makeWire(pts):
     edges = []
     first = pts[0]
@@ -85,16 +81,6 @@ def wireMarkers(wire):
 
 
 class TestPathOpUtil(PathTestUtils.PathTestBase):
-    @classmethod
-    def setUpClass(cls):
-        global doc
-        doc = FreeCAD.openDocument(
-            FreeCAD.getHomePath() + "Mod/Path/PathTests/test_geomop.fcstd"
-        )
-
-    @classmethod
-    def tearDownClass(cls):
-        FreeCAD.closeDocument("test_geomop")
 
     def test00(self):
         """Verify isWireClockwise for polygon wires."""
@@ -151,6 +137,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
 
     def test11(self):
         """Check offsetting a circular hole."""
+        doc = FreeCAD.openDocument(DOC)
         obj = doc.getObjectsByLabel("offset-circle")[0]
 
         small = getWireInside(obj)
@@ -167,9 +154,11 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         self.assertEqual(1, len(wire.Edges))
         self.assertRoughly(0.1, wire.Edges[0].Curve.Radius)
         self.assertCoincide(Vector(0, 0, 1), wire.Edges[0].Curve.Axis)
+        FreeCAD.closeDocument("test_geomop")
 
     def test12(self):
         """Check offsetting a circular hole by the radius or more makes the hole vanish."""
+        doc = FreeCAD.openDocument(DOC)
         obj = doc.getObjectsByLabel("offset-circle")[0]
 
         small = getWireInside(obj)
@@ -179,9 +168,11 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
 
         wire = PathOpUtil.offsetWire(small, obj.Shape, 15, True)
         self.assertIsNone(wire)
+        FreeCAD.closeDocument("test_geomop")
 
     def test13(self):
         """Check offsetting a cylinder succeeds."""
+        doc = FreeCAD.openDocument(DOC)
         obj = doc.getObjectsByLabel("offset-circle")[0]
 
         big = getWireOutside(obj)
@@ -198,9 +189,11 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         self.assertEqual(1, len(wire.Edges))
         self.assertRoughly(40, wire.Edges[0].Curve.Radius)
         self.assertCoincide(Vector(0, 0, -1), wire.Edges[0].Curve.Axis)
+        FreeCAD.closeDocument("test_geomop")
 
     def test14(self):
         """Check offsetting a hole with Placement."""
+        doc = FreeCAD.openDocument(DOC)
         obj = doc.getObjectsByLabel("offset-placement")[0]
 
         wires = [
@@ -222,9 +215,11 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         self.assertRoughly(8, wire.Edges[0].Curve.Radius)
         self.assertCoincide(Vector(0, 0, 0), wire.Edges[0].Curve.Center)
         self.assertCoincide(Vector(0, 0, 1), wire.Edges[0].Curve.Axis)
+        FreeCAD.closeDocument("test_geomop")
 
     def test15(self):
         """Check offsetting a cylinder with Placement."""
+        doc = FreeCAD.openDocument(DOC)
         obj = doc.getObjectsByLabel("offset-placement")[0]
 
         wires = [
@@ -246,9 +241,11 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         self.assertRoughly(22, wire.Edges[0].Curve.Radius)
         self.assertCoincide(Vector(0, 0, 0), wire.Edges[0].Curve.Center)
         self.assertCoincide(Vector(0, 0, -1), wire.Edges[0].Curve.Axis)
+        FreeCAD.closeDocument("test_geomop")
 
     def test20(self):
         """Check offsetting hole wire succeeds."""
+        doc = FreeCAD.openDocument(DOC)
         obj = doc.getObjectsByLabel("offset-edge")[0]
 
         small = getWireInside(obj)
@@ -279,9 +276,11 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
             False,
             [Vector(0, 4, 0), Vector(-x, -2, 0), Vector(x, -2, 0), Vector(0, 4, 0)],
         )
+        FreeCAD.closeDocument("test_geomop")
 
     def test21(self):
         """Check offsetting hole wire for more than it's size makes hole vanish."""
+        doc = FreeCAD.openDocument(DOC)
         obj = doc.getObjectsByLabel("offset-edge")[0]
 
         small = getWireInside(obj)
@@ -300,9 +299,11 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         )
         wire = PathOpUtil.offsetWire(small, obj.Shape, 5, True)
         self.assertIsNone(wire)
+        FreeCAD.closeDocument("test_geomop")
 
     def test22(self):
         """Check offsetting a body wire succeeds."""
+        doc = FreeCAD.openDocument(DOC)
         obj = doc.getObjectsByLabel("offset-edge")[0]
 
         big = getWireOutside(obj)
@@ -350,9 +351,11 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
                     self.assertIsNone("%s: angle=%s" % (type(e.Curve), angle))
                 lastAngle = angle
         self.assertTrue(PathOpUtil.isWireClockwise(wire))
+        FreeCAD.closeDocument("test_geomop")
 
     def test31(self):
         """Check offsetting a cylinder."""
+        doc = FreeCAD.openDocument(DOC)
         obj = doc.getObjectsByLabel("circle-cut")[0]
 
         wire = PathOpUtil.offsetWire(getWire(obj.Tool), getPositiveShape(obj), 3, True)
@@ -369,9 +372,11 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         self.assertCoincide(Vector(), edge.Curve.Center)
         self.assertCoincide(Vector(0, 0, +1), edge.Curve.Axis)
         self.assertRoughly(33, edge.Curve.Radius)
+        FreeCAD.closeDocument("test_geomop")
 
     def test32(self):
         """Check offsetting a box."""
+        doc = FreeCAD.openDocument(DOC)
         obj = doc.getObjectsByLabel("square-cut")[0]
 
         wire = PathOpUtil.offsetWire(getWire(obj.Tool), getPositiveShape(obj), 3, True)
@@ -408,9 +413,11 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
                 self.assertRoughly(3, e.Curve.Radius)
                 self.assertCoincide(Vector(0, 0, +1), e.Curve.Axis)
         self.assertFalse(PathOpUtil.isWireClockwise(wire))
+        FreeCAD.closeDocument("test_geomop")
 
     def test33(self):
         """Check offsetting a triangle."""
+        doc = FreeCAD.openDocument(DOC)
         obj = doc.getObjectsByLabel("triangle-cut")[0]
 
         wire = PathOpUtil.offsetWire(getWire(obj.Tool), getPositiveShape(obj), 3, True)
@@ -440,9 +447,11 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
             if Part.Circle == type(e.Curve):
                 self.assertRoughly(3, e.Curve.Radius)
                 self.assertCoincide(Vector(0, 0, +1), e.Curve.Axis)
+        FreeCAD.closeDocument("test_geomop")
 
     def test34(self):
         """Check offsetting a shape."""
+        doc = FreeCAD.openDocument(DOC)
         obj = doc.getObjectsByLabel("shape-cut")[0]
 
         wire = PathOpUtil.offsetWire(getWire(obj.Tool), getPositiveShape(obj), 3, True)
@@ -473,9 +482,11 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
             if Part.Circle == type(e.Curve):
                 self.assertRoughly(radius, e.Curve.Radius)
                 self.assertCoincide(Vector(0, 0, +1), e.Curve.Axis)
+        FreeCAD.closeDocument("test_geomop")
 
     def test35(self):
         """Check offsetting a cylindrical hole."""
+        doc = FreeCAD.openDocument(DOC)
         obj = doc.getObjectsByLabel("circle-cut")[0]
 
         wire = PathOpUtil.offsetWire(getWire(obj.Tool), getNegativeShape(obj), 3, True)
@@ -492,9 +503,11 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         self.assertCoincide(Vector(), edge.Curve.Center)
         self.assertCoincide(Vector(0, 0, -1), edge.Curve.Axis)
         self.assertRoughly(27, edge.Curve.Radius)
+        FreeCAD.closeDocument("test_geomop")
 
     def test36(self):
         """Check offsetting a square hole."""
+        doc = FreeCAD.openDocument(DOC)
         obj = doc.getObjectsByLabel("square-cut")[0]
 
         wire = PathOpUtil.offsetWire(getWire(obj.Tool), getNegativeShape(obj), 3, True)
@@ -517,9 +530,11 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
             if Path.Geom.isRoughly(e.Vertexes[0].Point.y, e.Vertexes[1].Point.y):
                 self.assertRoughly(54, e.Length)
         self.assertTrue(PathOpUtil.isWireClockwise(wire))
+        FreeCAD.closeDocument("test_geomop")
 
     def test37(self):
         """Check offsetting a triangular holee."""
+        doc = FreeCAD.openDocument(DOC)
         obj = doc.getObjectsByLabel("triangle-cut")[0]
 
         wire = PathOpUtil.offsetWire(getWire(obj.Tool), getNegativeShape(obj), 3, True)
@@ -537,9 +552,11 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         for e in wire.Edges:
             self.assertRoughly(length, e.Length)
         self.assertTrue(PathOpUtil.isWireClockwise(wire))
+        FreeCAD.closeDocument("test_geomop")
 
     def test38(self):
         """Check offsetting a shape hole."""
+        doc = FreeCAD.openDocument(DOC)
         obj = doc.getObjectsByLabel("shape-cut")[0]
 
         wire = PathOpUtil.offsetWire(getWire(obj.Tool), getNegativeShape(obj), 3, True)
@@ -570,9 +587,11 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
             if Part.Circle == type(e.Curve):
                 self.assertRoughly(radius, e.Curve.Radius)
                 self.assertCoincide(Vector(0, 0, -1), e.Curve.Axis)
+        FreeCAD.closeDocument("test_geomop")
 
     def test40(self):
         """Check offsetting a single outside edge forward."""
+        doc = FreeCAD.openDocument(DOC)
         obj = doc.getObjectsByLabel("offset-edge")[0]
 
         w = getWireOutside(obj)
@@ -609,9 +628,11 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
 
         self.assertCoincide(Vector(+x, y, 0), wire.Edges[0].Vertexes[0].Point)
         self.assertCoincide(Vector(-x, y, 0), wire.Edges[0].Vertexes[1].Point)
+        FreeCAD.closeDocument("test_geomop")
 
     def test41(self):
         """Check offsetting a single outside edge not forward."""
+        doc = FreeCAD.openDocument(DOC)
         obj = doc.getObjectsByLabel("offset-edge")[0]
 
         w = getWireOutside(obj)
@@ -647,9 +668,11 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
 
         self.assertCoincide(Vector(-x, y, 0), wire.Edges[0].Vertexes[0].Point)
         self.assertCoincide(Vector(+x, y, 0), wire.Edges[0].Vertexes[1].Point)
+        FreeCAD.closeDocument("test_geomop")
 
     def test42(self):
         """Check offsetting multiple outside edges."""
+        doc = FreeCAD.openDocument(DOC)
         obj = doc.getObjectsByLabel("offset-edge")[0]
         obj.Shape.tessellate(0.01)
         doc.recompute()
@@ -690,11 +713,13 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         self.assertEqual(1, len(rEdges))
         self.assertCoincide(Vector(0, 20, 0), rEdges[0].Curve.Center)
         self.assertCoincide(Vector(0, 0, +1), rEdges[0].Curve.Axis)
+        FreeCAD.closeDocument("test_geomop")
 
     def test43(self):
         """Check offsetting multiple backwards outside edges."""
         # This is exactly the same as test32, except that the wire is flipped to make
         # sure the input orientation doesn't matter
+        doc = FreeCAD.openDocument(DOC)
         obj = doc.getObjectsByLabel("offset-edge")[0]
 
         w = getWireOutside(obj)
@@ -734,9 +759,11 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         self.assertEqual(1, len(rEdges))
         self.assertCoincide(Vector(0, 20, 0), rEdges[0].Curve.Center)
         self.assertCoincide(Vector(0, 0, +1), rEdges[0].Curve.Axis)
+        FreeCAD.closeDocument("test_geomop")
 
     def test44(self):
         """Check offsetting a single inside edge forward."""
+        doc = FreeCAD.openDocument(DOC)
         obj = doc.getObjectsByLabel("offset-edge")[0]
 
         w = getWireInside(obj)
@@ -773,9 +800,11 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
 
         self.assertCoincide(Vector(-x, y, 0), wire.Edges[0].Vertexes[0].Point)
         self.assertCoincide(Vector(+x, y, 0), wire.Edges[0].Vertexes[1].Point)
+        FreeCAD.closeDocument("test_geomop")
 
     def test45(self):
         """Check offsetting a single inside edge not forward."""
+        doc = FreeCAD.openDocument(DOC)
         obj = doc.getObjectsByLabel("offset-edge")[0]
 
         w = getWireInside(obj)
@@ -812,9 +841,11 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
 
         self.assertCoincide(Vector(+x, y, 0), wire.Edges[0].Vertexes[0].Point)
         self.assertCoincide(Vector(-x, y, 0), wire.Edges[0].Vertexes[1].Point)
+        FreeCAD.closeDocument("test_geomop")
 
     def test46(self):
         """Check offsetting multiple inside edges."""
+        doc = FreeCAD.openDocument(DOC)
         obj = doc.getObjectsByLabel("offset-edge")[0]
 
         w = getWireInside(obj)
@@ -847,11 +878,13 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
 
         rEdges = [e for e in wire.Edges if Part.Circle == type(e.Curve)]
         self.assertEqual(0, len(rEdges))
+        FreeCAD.closeDocument("test_geomop")
 
     def test47(self):
         """Check offsetting multiple backwards inside edges."""
         # This is exactly the same as test36 except that the wire is flipped to make
         # sure it's orientation doesn't matter
+        doc = FreeCAD.openDocument(DOC)
         obj = doc.getObjectsByLabel("offset-edge")[0]
 
         w = getWireInside(obj)
@@ -885,6 +918,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
 
         rEdges = [e for e in wire.Edges if Part.Circle == type(e.Curve)]
         self.assertEqual(0, len(rEdges))
+        FreeCAD.closeDocument("test_geomop")
 
     def test50(self):
         """Orient an already oriented wire"""

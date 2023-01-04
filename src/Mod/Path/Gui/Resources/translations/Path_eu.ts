@@ -4,17 +4,17 @@
   <context>
     <name>CmdPathArea</name>
     <message>
-      <location filename="../../Command.cpp" line="56"/>
+      <location filename="../../Command.cpp" line="46"/>
       <source>Path</source>
       <translation>Bidea</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="57"/>
+      <location filename="../../Command.cpp" line="47"/>
       <source>Area</source>
       <translation>Area</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="58"/>
+      <location filename="../../Command.cpp" line="48"/>
       <source>Creates a feature area from selected objects</source>
       <translation>Elementu-area bat sortzen du hautatutako objektuak erabilita</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdPathAreaWorkplane</name>
     <message>
-      <location filename="../../Command.cpp" line="138"/>
+      <location filename="../../Command.cpp" line="128"/>
       <source>Path</source>
       <translation>Bidea</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="139"/>
+      <location filename="../../Command.cpp" line="129"/>
       <source>Area workplane</source>
       <translation>Arearen laneko planoa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="140"/>
+      <location filename="../../Command.cpp" line="130"/>
       <source>Select a workplane for a FeatureArea</source>
       <translation>Hautatu laneko planoa elementu-arearako</translation>
     </message>
@@ -40,17 +40,17 @@
   <context>
     <name>CmdPathCompound</name>
     <message>
-      <location filename="../../Command.cpp" line="228"/>
+      <location filename="../../Command.cpp" line="218"/>
       <source>Path</source>
       <translation>Bidea</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="229"/>
+      <location filename="../../Command.cpp" line="219"/>
       <source>Compound</source>
       <translation>Konposatua</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="230"/>
+      <location filename="../../Command.cpp" line="220"/>
       <source>Creates a compound from selected paths</source>
       <translation>Konposatu bat sortzen du hautatutako bideak erabiliz</translation>
     </message>
@@ -58,17 +58,17 @@
   <context>
     <name>CmdPathShape</name>
     <message>
-      <location filename="../../Command.cpp" line="280"/>
+      <location filename="../../Command.cpp" line="270"/>
       <source>Path</source>
       <translation>Bidea</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="281"/>
+      <location filename="../../Command.cpp" line="271"/>
       <source>From Shape</source>
       <translation>Formatik</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="282"/>
+      <location filename="../../Command.cpp" line="272"/>
       <source>Creates a path from a selected shape</source>
       <translation>Bide bat sortzen du hautatutako formatik</translation>
     </message>
@@ -76,27 +76,27 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="107"/>
+      <location filename="../../Command.cpp" line="97"/>
       <source>Create Path Area View</source>
       <translation>Sortu bide-arearen bista</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="116"/>
+      <location filename="../../Command.cpp" line="106"/>
       <source>Create Path Area</source>
       <translation>Sortu bide-area</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="204"/>
+      <location filename="../../Command.cpp" line="194"/>
       <source>Select Workplane for Path Area</source>
       <translation>Hautatu laneko planoa bide-arearako</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="255"/>
+      <location filename="../../Command.cpp" line="245"/>
       <source>Create Path Compound</source>
       <translation>Sortu bide-konposatua</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="325"/>
+      <location filename="../../Command.cpp" line="315"/>
       <source>Create Path Shape</source>
       <translation>Sortu bide-forma</translation>
     </message>
@@ -841,15 +841,6 @@
       <location filename="../panels/PageDiametersEdit.ui" line="43"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Transfer the Z value of the selected feature as the Start Depth for the operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Transferitu hautatutako elementuaren Z balioa eragiketaren hasierako sakonerara.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageDepthsEdit.ui" line="62"/>
-      <location filename="../panels/PageDepthsEdit.ui" line="108"/>
-      <location filename="../panels/PageDiametersEdit.ui" line="46"/>
-      <location filename="../panels/PageDiametersEdit.ui" line="83"/>
-      <location filename="../panels/PageOpProbeEdit.ui" line="155"/>
-      <source>...</source>
-      <translation>...</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="85"/>
@@ -2097,17 +2088,17 @@
       <translation>Puntu-edizioa</translation>
     </message>
     <message>
-      <location filename="../panels/PointEdit.ui" line="23"/>
+      <location filename="../panels/PointEdit.ui" line="22"/>
       <source>Global X</source>
       <translation>X globala</translation>
     </message>
     <message>
-      <location filename="../panels/PointEdit.ui" line="30"/>
+      <location filename="../panels/PointEdit.ui" line="29"/>
       <source>Global Y</source>
       <translation>Y globala</translation>
     </message>
     <message>
-      <location filename="../panels/PointEdit.ui" line="40"/>
+      <location filename="../panels/PointEdit.ui" line="39"/>
       <source>Global Z</source>
       <translation>Z globala</translation>
     </message>
@@ -2152,19 +2143,6 @@
       <translation>Luzera-desplazamendua</translation>
     </message>
     <message>
-      <location filename="../panels/ToolEditor.ui" line="74"/>
-      <location filename="../panels/ToolEditor.ui" line="131"/>
-      <location filename="../panels/ToolEditor.ui" line="141"/>
-      <location filename="../panels/ToolEditor.ui" line="151"/>
-      <location filename="../panels/ToolEditor.ui" line="171"/>
-      <location filename="../panels/ToolEditor.ui" line="203"/>
-      <location filename="../panels/ToolEditor.ui" line="220"/>
-      <location filename="../panels/ToolEditor.ui" line="237"/>
-      <location filename="../panels/ToolEditor.ui" line="277"/>
-      <source>0.00</source>
-      <translation>0.00</translation>
-    </message>
-    <message>
       <location filename="../panels/ToolEditor.ui" line="87"/>
       <location filename="../panels/ToolEditor.ui" line="184"/>
       <source>Tool Parameter</source>
@@ -2191,18 +2169,6 @@
       <translation>Mozte-ertzaren altuera</translation>
     </message>
     <message>
-      <location filename="../panels/ToolEditor.ui" line="161"/>
-      <location filename="../panels/ToolEditor.ui" line="254"/>
-      <source>180°</source>
-      <translation>180°</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolEditor.ui" line="164"/>
-      <location filename="../panels/ToolEditor.ui" line="257"/>
-      <source>°</source>
-      <translation>°</translation>
-    </message>
-    <message>
       <location filename="../panels/ToolEditor.ui" line="196"/>
       <source>D = </source>
       <translation>D = </translation>
@@ -2216,11 +2182,6 @@
       <location filename="../panels/ToolEditor.ui" line="230"/>
       <source>H =</source>
       <translation>H =</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolEditor.ui" line="247"/>
-      <source>α = </source>
-      <translation>α = </translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="267"/>
@@ -2321,13 +2282,6 @@
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Txantiloiak, post-prozesatzaileak, tresna-mahaiak eta kanpoko beste fitxategi batzuk bilatzeko bidea.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Hutsik badago, makroen direktorioa erabiliko da.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="58"/>
-      <location filename="../preferences/PathJob.ui" line="79"/>
-      <location filename="../preferences/PathJob.ui" line="200"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
-    <message>
       <location filename="../preferences/PathJob.ui" line="65"/>
       <source>Template</source>
       <translation>Txantiloia</translation>
@@ -2343,204 +2297,204 @@
       <translation>Geometria</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="98"/>
+      <location filename="../preferences/PathJob.ui" line="97"/>
       <source>Default Geometry Tolerance</source>
       <translation>Geometria-tolerantzia lehenetsia</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="105"/>
+      <location filename="../preferences/PathJob.ui" line="104"/>
       <source>Default value for new Jobs, used for computing Paths.  Smaller increases accuracy, but slows down computation</source>
       <translation>Lan berrietarako balio lehenetsia, bideak kalkulatzeko erabilia. Balio txikiagoak zehaztasuna handitzen du, baina kalkulua moteltzen du</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="112"/>
+      <location filename="../preferences/PathJob.ui" line="111"/>
       <source>Default Curve Accuracy</source>
       <translation>Kurba-doitasun lehenetsia</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="150"/>
-      <location filename="../preferences/PathJob.ui" line="265"/>
+      <location filename="../preferences/PathJob.ui" line="148"/>
+      <location filename="../preferences/PathJob.ui" line="249"/>
       <source>Post Processor</source>
       <translation>Post-prozesadorea</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="162"/>
+      <location filename="../preferences/PathJob.ui" line="160"/>
       <source>Output File</source>
       <translation>Irteerako fitxategia</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="174"/>
+      <location filename="../preferences/PathJob.ui" line="171"/>
       <source>Default Path</source>
       <translation>Bide lehenetsia</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="193"/>
+      <location filename="../preferences/PathJob.ui" line="182"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter a path and optionally file name (see below) to be used as the default for the post processor export.&lt;/p&gt;&lt;p&gt;The following substitutions are performed before the name is resolved at the time of the post processing:&lt;/p&gt;&lt;p&gt;Substitution allows the following:&lt;/p&gt;&lt;p&gt;%D ... directory of the active document&lt;/p&gt;&lt;p&gt;%d ... name of the active document (with extension)&lt;/p&gt;&lt;p&gt;%M ... user macro directory&lt;/p&gt;&lt;p&gt;%j ... name of the active Job object&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The Following can be used if output is being split. If Output is not split&lt;/p&gt;&lt;p&gt;these will be ignored.  &lt;/p&gt;&lt;p&gt;%T ... Tool Number&lt;/p&gt;&lt;p&gt;%t ... Tool Controller label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%W ... Work Coordinate System&lt;/p&gt;&lt;p&gt;%O ... Operation Label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;When splitting output, a sequence number will always be added.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%S ... Sequence Number&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):&lt;/p&gt;&lt;p&gt;&amp;quot;/home/cnc/%d.g-code&amp;quot;&lt;/p&gt;&lt;p&gt;See the file save policy below on how to deal with name conflicts.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter a path and optionally file name (see below) to be used as the default for the post processor export.&lt;/p&gt;&lt;p&gt;The following substitutions are performed before the name is resolved at the time of the post processing:&lt;/p&gt;&lt;p&gt;Substitution allows the following:&lt;/p&gt;&lt;p&gt;%D ... directory of the active document&lt;/p&gt;&lt;p&gt;%d ... name of the active document (with extension)&lt;/p&gt;&lt;p&gt;%M ... user macro directory&lt;/p&gt;&lt;p&gt;%j ... name of the active Job object&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The Following can be used if output is being split. If Output is not split&lt;/p&gt;&lt;p&gt;these will be ignored.  &lt;/p&gt;&lt;p&gt;%T ... Tool Number&lt;/p&gt;&lt;p&gt;%t ... Tool Controller label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%W ... Work Coordinate System&lt;/p&gt;&lt;p&gt;%O ... Operation Label&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;When splitting output, a sequence number will always be added.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;if %S is included, you can specify where the number occurs.  Without it, the number will be    added to the end of the string.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;%S ... Sequence Number&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The following example store all files with the same name as the document the directory /home/freecad (please remove quotes):&lt;/p&gt;&lt;p&gt;&amp;quot;/home/cnc/%d.g-code&amp;quot;&lt;/p&gt;&lt;p&gt;See the file save policy below on how to deal with name conflicts.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="213"/>
+      <location filename="../preferences/PathJob.ui" line="200"/>
       <source>File Save Policy</source>
       <translation>Fitxategiak gordetzeko politika</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="232"/>
+      <location filename="../preferences/PathJob.ui" line="217"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose how to deal with potential file name conflicts. Always open a dialog, only open a dialog if the output file already exists, overwrite any existing file or add a unique (3 digit) sequential ID to the file name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Aukeratu nola ebatziko diren fitxategi-izenen balizko gatazkak. Ireki beti elkarrizketa-koadro bat, irteerako fitxategia lehendik badago soilik ireki elkarrizketa-koadroa, gainidatzi lehendik dagoen edozein fitxategi, edo gehitu ID sekuentzial bakarra (3 digitu) fitxategi-izenari.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="236"/>
+      <location filename="../preferences/PathJob.ui" line="221"/>
       <source>Open File Dialog</source>
       <translation>Fitxategia irekitzeko elkarrizketa-koadroa</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="241"/>
+      <location filename="../preferences/PathJob.ui" line="226"/>
       <source>Open File Dialog on conflict</source>
       <translation>Ireki fitxategien elkarrizketa-koadroa gatazka dagoenean</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="246"/>
+      <location filename="../preferences/PathJob.ui" line="231"/>
       <source>Overwrite existing file</source>
       <translation>Gainidatzi lehendik dauden fitxategiak</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="251"/>
+      <location filename="../preferences/PathJob.ui" line="236"/>
       <source>Append Unique ID on conflict</source>
       <translation>Erantsi ID bakarra gatazka dagoenean</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="274"/>
+      <location filename="../preferences/PathJob.ui" line="258"/>
       <source>Post Processors Selection </source>
       <translation>Post-prozesadoreen hautapena </translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="284"/>
+      <location filename="../preferences/PathJob.ui" line="268"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;It doesn't seem there are any post processor scripts installed. Please add some into your macro directory and make sure the file name ends with &amp;quot;_post.py&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Badirudi ez dagoela post-prozesurako scriptik instalatuta. Gehitu horietako bat zure makroen direktorioan eta ziurtatu fitxategi-izenak &amp;quot;_post.py&amp;quot; duela amaieran.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="291"/>
+      <location filename="../preferences/PathJob.ui" line="275"/>
       <source>Default Post Processor</source>
       <translation>Post-prozesadore lehenetsia</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="298"/>
+      <location filename="../preferences/PathJob.ui" line="282"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select one of the post processors as the default.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hautatu post-prozesadoreetako bat lehenetsia izan dadin.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="301"/>
+      <location filename="../preferences/PathJob.ui" line="285"/>
       <source>DefaultPostProcessor</source>
       <translation>Post-prozesadore lehenetsia</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="304"/>
+      <location filename="../preferences/PathJob.ui" line="288"/>
       <source>Mod/Path</source>
       <translation>Mod/Bidea</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="311"/>
+      <location filename="../preferences/PathJob.ui" line="295"/>
       <source>Default Arguments</source>
       <translation>Argumentu lehenetsiak</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="318"/>
+      <location filename="../preferences/PathJob.ui" line="302"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optional arguments passed to the default Post Processor specified above. See the Post Processor's documentation for supported arguments.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Goian zehaztutako post-prozesatzaile lehenetsiari pasatutako aukerako argumentuak. Ikusi post-prozesatzailearen dokumentazioa zein argumentu onartzen den jakiteko.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="356"/>
+      <location filename="../preferences/PathJob.ui" line="340"/>
       <source>Setup</source>
       <translation>Konfigurazioa</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="362"/>
+      <location filename="../preferences/PathJob.ui" line="346"/>
       <source>Stock</source>
       <translation>Pieza gordina</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="381"/>
+      <location filename="../preferences/PathJob.ui" line="365"/>
       <source>Create Box</source>
       <translation>Sortu kutxa</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="386"/>
+      <location filename="../preferences/PathJob.ui" line="370"/>
       <source>Create Cylinder</source>
       <translation>Sortu zilindroa</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="391"/>
+      <location filename="../preferences/PathJob.ui" line="375"/>
       <source>Extend Model's Bound Box</source>
       <translation>Hedatu ereduaren muga-kutxa</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="415"/>
+      <location filename="../preferences/PathJob.ui" line="399"/>
       <source>Ext. X</source>
       <translation>X luzera</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="435"/>
+      <location filename="../preferences/PathJob.ui" line="419"/>
       <source>Ext. Y</source>
       <translation>Y luzera</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="448"/>
+      <location filename="../preferences/PathJob.ui" line="432"/>
       <source>Ext. Z</source>
       <translation>Z luzera</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="467"/>
+      <location filename="../preferences/PathJob.ui" line="451"/>
       <source>Radius</source>
       <translation>Erradioa</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="477"/>
-      <location filename="../preferences/PathJob.ui" line="513"/>
+      <location filename="../preferences/PathJob.ui" line="461"/>
+      <location filename="../preferences/PathJob.ui" line="497"/>
       <source>Height</source>
       <translation>Altuera</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="493"/>
+      <location filename="../preferences/PathJob.ui" line="477"/>
       <source>Length</source>
       <translation>Luzera</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="503"/>
+      <location filename="../preferences/PathJob.ui" line="487"/>
       <source>Width</source>
       <translation>Zabalera</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="539"/>
+      <location filename="../preferences/PathJob.ui" line="523"/>
       <source>Placement</source>
       <translation>Kokapena</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="551"/>
+      <location filename="../preferences/PathJob.ui" line="535"/>
       <source>Angle</source>
       <translation>Angelua</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="561"/>
+      <location filename="../preferences/PathJob.ui" line="545"/>
       <source>Axis</source>
       <translation>Ardatza</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="589"/>
+      <location filename="../preferences/PathJob.ui" line="573"/>
       <source>Position</source>
       <translation>Posizioa</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="633"/>
+      <location filename="../preferences/PathJob.ui" line="617"/>
       <source>Tools</source>
       <translation>Tresnak</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="639"/>
+      <location filename="../preferences/PathJob.ui" line="623"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;References to Tool Bits and their shapes can either be stored with an absolute path or with a relative path to the search path.&lt;/p&gt;&lt;p&gt;Generally it is recommended to use relative paths due to their flexibility and robustness to layout changes.&lt;/p&gt;&lt;p&gt;Should multiple tools or tool shapes with the same name exist in different directories it can be required to use absolute paths. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tresna atalen eta haien formen erreferentziak bide-izen absolutuekin edo (bilaketa-bidearekiko) erlatiboak direnekin gorde daitezke.&lt;/p&gt;&lt;p&gt;Oro har, bide-izen erlatiboak erabiltzea gomendatzen da, zaluagoak eta sendoagoak baitira diseinuan aldaketak daudenerako.&lt;/p&gt;&lt;p&gt;Izen bera duten tresna edo tresna-forma anitz badaude direktorio desberdinetan, bide-izen absolutuak erabili behar dira. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../preferences/PathJob.ui" line="642"/>
+      <location filename="../preferences/PathJob.ui" line="626"/>
       <source>Store Absolute Paths</source>
       <translation>Gorde bide absolutuak</translation>
     </message>
@@ -2548,8 +2502,8 @@
   <context>
     <name>PathGui::DlgProcessorChooser</name>
     <message>
-      <location filename="../../DlgProcessorChooser.cpp" line="49"/>
-      <location filename="../../DlgProcessorChooser.cpp" line="76"/>
+      <location filename="../../DlgProcessorChooser.cpp" line="42"/>
+      <location filename="../../DlgProcessorChooser.cpp" line="69"/>
       <source>None</source>
       <translation>Bat ere ez</translation>
     </message>
@@ -2776,7 +2730,7 @@ p, li { white-space: pre-wrap; }
   <context>
     <name>PathGui::TaskWidgetPathCompound</name>
     <message>
-      <location filename="../../TaskDlgPathCompound.cpp" line="54"/>
+      <location filename="../../TaskDlgPathCompound.cpp" line="49"/>
       <source>Compound paths</source>
       <translation>Bide konposatuak</translation>
     </message>
@@ -3297,11 +3251,6 @@ p, li { white-space: pre-wrap; }
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the filename containing the probe data&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sartu haztatze-datuak dituen fitxategiaren izena.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
-    <message>
-      <location filename="../panels/ZCorrectEdit.ui" line="64"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
   </context>
   <context>
     <name>TaskPathSimulator</name>
@@ -3375,11 +3324,6 @@ p, li { white-space: pre-wrap; }
       <location filename="../panels/TaskPathSimulator.ui" line="229"/>
       <source>Accuracy:</source>
       <translation>Zehaztasuna:</translation>
-    </message>
-    <message>
-      <location filename="../panels/TaskPathSimulator.ui" line="261"/>
-      <source>%</source>
-      <translation>%</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="278"/>
@@ -3460,11 +3404,6 @@ p, li { white-space: pre-wrap; }
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Aldatu tresna atalaren mota eta forma definitzen duen fitxategia.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../panels/ToolBitEditor.ui" line="109"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
-    <message>
       <location filename="../panels/ToolBitEditor.ui" line="122"/>
       <source>Parameter</source>
       <translation>Parametroa</translation>
@@ -3473,16 +3412,6 @@ p, li { white-space: pre-wrap; }
       <location filename="../panels/ToolBitEditor.ui" line="131"/>
       <source>Point/Tip Angle</source>
       <translation>Puntuaren/puntaren angelua</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolBitEditor.ui" line="138"/>
-      <source>0 °</source>
-      <translation>0 °</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolBitEditor.ui" line="141"/>
-      <source>°</source>
-      <translation>°</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="148"/>
@@ -3591,13 +3520,6 @@ p, li { white-space: pre-wrap; }
       <location filename="../panels/PathEdit.ui" line="134"/>
       <source>Output File</source>
       <translation>Irteerako fitxategia</translation>
-    </message>
-    <message>
-      <location filename="../panels/PathEdit.ui" line="148"/>
-      <location filename="../panels/PathEdit.ui" line="1406"/>
-      <location filename="../panels/PathEdit.ui" line="1417"/>
-      <source>...</source>
-      <translation>...</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="155"/>

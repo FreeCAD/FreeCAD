@@ -198,7 +198,7 @@
     <message>
       <location filename="../ui/ArchSchedule.ui" line="22"/>
       <source>Schedule name:</source>
-      <translation type="unfinished">Schedule name:</translation>
+      <translation>Όνομα χρονοδιαγράμματος:</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="29"/>
@@ -239,7 +239,7 @@ a certain property.</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="82"/>
       <source>An optional unit to express the resulting value. Ex: m^3 (you can also write m³ or m3)</source>
-      <translation type="unfinished">An optional unit to express the resulting value. Ex: m^3 (you can also write m³ or m3)</translation>
+      <translation>Μια προαιρετική μονάδα μέτρησης του αποτελέσματος. Π.χ. m^3 (επίσης m³ ή m3)</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="87"/>
@@ -285,7 +285,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="124"/>
       <source>Detailed results</source>
-      <translation type="unfinished">Detailed results</translation>
+      <translation>Αναλυτικά αποτελέσματα</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="135"/>
@@ -325,7 +325,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="183"/>
       <source>Add selection</source>
-      <translation type="unfinished">Add selection</translation>
+      <translation>Προσθήκη επιλεγμένων</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="190"/>
@@ -400,7 +400,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="63"/>
       <source>Delete selected property/set</source>
-      <translation type="unfinished">Delete selected property/set</translation>
+      <translation>Διαγραφή επιλεγμένης ιδιότητας/συνόλου</translation>
     </message>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="76"/>
@@ -595,11 +595,6 @@ Leave blank to use all objects from the document</translation>
       <location filename="../ui/ArchNest.ui" line="132"/>
       <source>A comma-separated list of angles to try and rotate the shapes</source>
       <translation>Μια λίστα γωνιών που διαχωρίζονται με κόμμα για να προσπαθήσετε να περιστρέψετε τα σχήματα</translation>
-    </message>
-    <message>
-      <location filename="../ui/ArchNest.ui" line="135"/>
-      <source>0,90,180,270</source>
-      <translation>0,90,180,270</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="145"/>
@@ -825,11 +820,6 @@ Leave blank to use all objects from the document</translation>
 to projections of hidden objects.</source>
       <translation type="unfinished">This is the SVG stroke-dasharray property to apply
 to projections of hidden objects.</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-arch.ui" line="589"/>
-      <source>30, 10</source>
-      <translation>30, 10</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="625"/>

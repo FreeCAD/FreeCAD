@@ -31,14 +31,15 @@
 
 #include "QGIHighlight.h"
 #include "PreferencesGui.h"
-#include "QGIView.h"
+#include "QGIViewPart.h"
 #include "Rez.h"
 
 
 using namespace TechDrawGui;
 using namespace TechDraw;
 
-QGIHighlight::QGIHighlight()
+QGIHighlight::QGIHighlight() :
+    m_referenceAngle(0.0)
 {
     m_refSize = 0.0;
     setInteractive(false);
@@ -61,6 +62,17 @@ QGIHighlight::QGIHighlight()
 QGIHighlight::~QGIHighlight()
 {
 
+}
+
+void QGIHighlight::onDragFinished()
+{
+//    Base::Console().Message("QGIH::onDragFinished - pos: %s\n",
+//                            DrawUtil::formatVector(pos()).c_str());
+    QGraphicsItem* parent = parentItem();
+    auto qgivp = dynamic_cast<QGIViewPart*>(parent);
+    if (qgivp) {
+        qgivp->highlightMoved(this, pos());
+    }
 }
 
 void QGIHighlight::draw()
@@ -93,9 +105,31 @@ void QGIHighlight::makeReference()
     m_refFont .setPixelSize(fontSize);
     m_reference->setFont(m_refFont);
     m_reference->setPlainText(m_refText);
-    double fudge = Rez::guiX(1.0);
-    QPointF newPos(m_end.x() + fudge, m_start.y() - m_refSize - fudge);
-    m_reference->setPos(newPos);
+
+    double vertOffset = 0.0;
+    if (m_referenceAngle >= 0.0 &&
+        m_referenceAngle <= 180.0) {
+        //above the X axis
+        //referenceText is positioned by top-left, need to adjust upwards by text height
+        vertOffset = m_reference->boundingRect().height();
+    } else {
+        //below X axis. need to adjust upwards a bit because there is blank space above text
+        vertOffset = m_reference->tightBoundingAdjust().y();
+    }
+
+    double horizOffset = 0.0;
+    if (m_referenceAngle > 90.0 &&
+        m_referenceAngle < 270.0) {
+        //to left of Y axis
+        horizOffset = -m_reference->boundingRect().width();
+    }
+    QRectF r(m_start, m_end);
+    double radius = r.width() / 2.0;
+    QPointF center = r.center();
+    double angleRad = m_referenceAngle * M_PI / 180.0;
+    double posX = center.x() + cos(angleRad) * radius + horizOffset;
+    double posY = center.y() - sin(angleRad) * radius - vertOffset;
+    m_reference->setPos(posX, posY);
 
     double highRot = rotation();
     if (!TechDraw::DrawUtil::fpCompare(highRot, 0.0)) {

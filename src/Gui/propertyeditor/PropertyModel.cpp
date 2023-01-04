@@ -82,7 +82,7 @@ bool PropertyModel::setData(const QModelIndex& index, const QVariant & value, in
     if (role == Qt::EditRole) {
         auto item = static_cast<PropertyItem*>(index.internalPointer());
         QVariant data = item->data(index.column(), role);
-        if (data.type() == QVariant::Double && value.type() == QVariant::Double) {
+        if (data.userType() == QMetaType::Double && value.userType() == QMetaType::Double) {
             // since we store some properties as floats we get some round-off
             // errors here. Thus, we use an epsilon here.
             // NOTE: Since 0.14 PropertyFloat uses double precision, so this is maybe unnecessary now?

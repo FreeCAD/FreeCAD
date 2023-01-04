@@ -51,5 +51,6 @@
         <file>translations/Raytracing_es-AR.qm</file>
         <file>translations/Raytracing_bg.qm</file>
         <file>translations/Raytracing_ka.qm</file>
+        <file>translations/Raytracing_sr-CS.qm</file>
     </qresource>
 </RCC>

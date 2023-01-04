@@ -999,11 +999,6 @@ waarde ook wijzigen door de [ and ] sleutels te gebruiken tijdens het tekenen</t
       <translation>Transparantie van de vlakken</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="186"/>
-      <source> %</source>
-      <translation> %</translation>
-    </message>
-    <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="199"/>
       <source>Annotations</source>
       <translation>Aantekeningen</translation>
@@ -1167,11 +1162,6 @@ waarde ook wijzigen door de [ and ] sleutels te gebruiken tijdens het tekenen</t
       <location filename="../ui/dialogHatch.ui" line="64"/>
       <source>Rotation:</source>
       <translation>Rotatie:</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialogHatch.ui" line="71"/>
-      <source>°</source>
-      <translation>°</translation>
     </message>
   </context>
   <context>
@@ -1486,29 +1476,14 @@ Let op dat dit niet volledig ondersteund wordt en veel objecten niet bewerkt kun
       <translation>Een SVG-lijnstijldefinitie</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="398"/>
-      <source>0.09,0.05</source>
-      <translation>0.09,0.05</translation>
-    </message>
-    <message>
       <location filename="../ui/preferences-draftvisual.ui" line="418"/>
       <source>Dashdot line definition</source>
       <translation>Streepstiplijndefinitie</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="441"/>
-      <source>0.09,0.05,0.02,0.05</source>
-      <translation>0.09,0.05,0.02,0.05</translation>
-    </message>
-    <message>
       <location filename="../ui/preferences-draftvisual.ui" line="461"/>
       <source>Dotted line definition</source>
       <translation>Stippelijndefinitie</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="484"/>
-      <source>0.02,0.02</source>
-      <translation>0.02,0.02</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="14"/>
@@ -1847,8 +1822,8 @@ Opmerking: C++ importer is sneller, maar is nog niet even functioneel</translati
       <location filename="../ui/preferences-dxf.ui" line="71"/>
       <source>Python exporter is used, otherwise the newer C++ is used.
 Note: C++ exporter is faster, but is not as featureful yet</source>
-      <translation type="unfinished">Python exporter is used, otherwise the newer C++ is used.
-Note: C++ exporter is faster, but is not as featureful yet</translation>
+      <translation>Python exporteur wordt gebruikt, anders wordt de nieuwere C++ gebruikt.
+Opmerking: C++ exporteur is sneller, maar is nog niet zo functioneel</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="75"/>
@@ -1865,7 +1840,7 @@ Note: C++ exporter is faster, but is not as featureful yet</translation>
       <source>Allow FreeCAD to download the Python converter for DXF import and export.
 You can also do this manually by installing the "dxf_library" workbench
 from the Addon Manager.</source>
-      <translation>Sta FreeCAD toe om de Pythonconverter te downloaden voor DXF-import en -export.
+      <translation>Sta FreeCAD toe om de Python converter te downloaden voor DXF-import en -export.
 U kunt dit ook handmatig doen door de "dxf_library" werkbank
 te installeren vanuit de Uitbreidingsmanager.</translation>
     </message>
@@ -2251,7 +2226,7 @@ Dit kan mislukken voor post DXF R12-sjablonen.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="341"/>
       <source>Show human figure</source>
-      <translation type="unfinished">Show human figure</translation>
+      <translation>Toon menselijke figuur</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="357"/>
@@ -2356,7 +2331,7 @@ Dit kan mislukken voor post DXF R12-sjablonen.</translation>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="34"/>
       <source>Conversion method:</source>
-      <translation type="unfinished">Conversion method:</translation>
+      <translation>Conversie methode:</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="41"/>
@@ -2371,12 +2346,12 @@ Dit kan mislukken voor post DXF R12-sjablonen.</translation>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="56"/>
       <source>LibreDWG</source>
-      <translation type="unfinished">LibreDWG</translation>
+      <translation>LibreDWG</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="61"/>
       <source>ODA Converter</source>
-      <translation type="unfinished">ODA Converter</translation>
+      <translation>ODA-converter</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="66"/>
@@ -2386,12 +2361,12 @@ Dit kan mislukken voor post DXF R12-sjablonen.</translation>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="78"/>
       <source>Path to file converter</source>
-      <translation type="unfinished">Path to file converter</translation>
+      <translation>Pad naar bestand converter</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="85"/>
       <source>The path to your DWG file converter executable</source>
-      <translation type="unfinished">The path to your DWG file converter executable</translation>
+      <translation>Het pad naar uw uitvoerbare DWG-bestand converter</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="100"/>
@@ -2534,11 +2509,6 @@ Dit kan mislukken voor post DXF R12-sjablonen.</translation>
       <translation>Cyclisch vastklikken</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftinterface.ui" line="608"/>
-      <source>`</source>
-      <translation>`</translation>
-    </message>
-    <message>
       <location filename="../ui/preferences-draftinterface.ui" line="630"/>
       <source>Global</source>
       <translation>Overal</translation>
@@ -2552,11 +2522,6 @@ Dit kan mislukken voor post DXF R12-sjablonen.</translation>
       <location filename="../ui/preferences-draftinterface.ui" line="674"/>
       <source>Undo</source>
       <translation>Ongedaan maken</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftinterface.ui" line="696"/>
-      <source>/</source>
-      <translation>/</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="718"/>
@@ -2574,19 +2539,9 @@ Dit kan mislukken voor post DXF R12-sjablonen.</translation>
       <translation>Straal vergroten</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftinterface.ui" line="784"/>
-      <source>[</source>
-      <translation>[</translation>
-    </message>
-    <message>
       <location filename="../ui/preferences-draftinterface.ui" line="806"/>
       <source>Decrease Radius</source>
       <translation>Straal verkleinen</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftinterface.ui" line="828"/>
-      <source>]</source>
-      <translation>]</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="850"/>

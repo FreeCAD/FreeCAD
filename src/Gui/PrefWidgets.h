@@ -239,7 +239,7 @@ protected:
   // restore from/save to parameters
   void restorePreferences() override;
   void savePreferences() override;
-  virtual QVariant::Type getParamType() const;
+  virtual QMetaType::Type getParamType() const;
 
 private:
   QVariant m_Default;

@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="74"/>
       <source>Go back to the previous page</source>
-      <translation>Вратите се на претходну cтраницу</translation>
+      <translation>Иди назад на претходну cтраницу</translation>
     </message>
   </context>
   <context>
@@ -34,7 +34,7 @@
     <message>
       <location filename="../../Command.cpp" line="103"/>
       <source>Go to the next page</source>
-      <translation>Идите на cледећу cтраницу</translation>
+      <translation>Иди на cледећу cтраницу</translation>
     </message>
   </context>
   <context>
@@ -62,7 +62,7 @@
       <location filename="../../Command.cpp" line="247"/>
       <location filename="../../Command.cpp" line="248"/>
       <source>Set URL</source>
-      <translation>Постави адресу</translation>
+      <translation>Подеси URL адресу</translation>
     </message>
   </context>
   <context>
@@ -122,19 +122,19 @@
     <message>
       <location filename="../../Command.cpp" line="48"/>
       <source>Opens a website in FreeCAD</source>
-      <translation>Отворите веб сајт у FreeCAD-у</translation>
+      <translation>Отвара веб сајт у FreeCAD-у</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppWebGui.cpp" line="85"/>
-      <location filename="../../BrowserView.cpp" line="786"/>
+      <location filename="../../AppWebGui.cpp" line="86"/>
+      <location filename="../../BrowserView.cpp" line="805"/>
       <source>Browser</source>
       <translation>Прегледач</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="598"/>
+      <location filename="../../BrowserView.cpp" line="613"/>
       <source>File does not exist!</source>
       <translation>Датотека не поcтоји!</translation>
     </message>
@@ -142,24 +142,24 @@
   <context>
     <name>WebGui::BrowserView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="586"/>
-      <location filename="../../BrowserView.cpp" line="591"/>
-      <location filename="../../BrowserView.cpp" line="594"/>
+      <location filename="../../BrowserView.cpp" line="601"/>
+      <location filename="../../BrowserView.cpp" line="606"/>
+      <location filename="../../BrowserView.cpp" line="609"/>
       <source>Error</source>
       <translation>Грешка</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="591"/>
+      <location filename="../../BrowserView.cpp" line="606"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
       <translation>Дошло је до грешака приликом учитавања датотеке. Неки подаци су можда измењени или уопште нису опорављени. У приказу извештаја потражите одређеније информације о предметима у питању.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="594"/>
+      <location filename="../../BrowserView.cpp" line="609"/>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
       <translation>Дошло је до озбиљних грешака при учитавању датотеке. Неки подаци су можда измењени или уопште нису враћени. Снимање пројекта ће највероватније довести до губитка података.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="754"/>
+      <location filename="../../BrowserView.cpp" line="773"/>
       <source>Loading %1...</source>
       <translation>Учитавам „%1“...</translation>
     </message>
@@ -167,17 +167,17 @@
   <context>
     <name>WebGui::WebView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="353"/>
+      <location filename="../../BrowserView.cpp" line="364"/>
       <source>Open in External Browser</source>
       <translation>Отвори у спољном прегледачу</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="357"/>
+      <location filename="../../BrowserView.cpp" line="368"/>
       <source>Open in new window</source>
       <translation>Отвори у новом прозору</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="389"/>
+      <location filename="../../BrowserView.cpp" line="404"/>
       <source>View source</source>
       <translation>Прикажи извор</translation>
     </message>
@@ -185,7 +185,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="37"/>
+      <location filename="../../Workbench.cpp" line="36"/>
       <source>Navigation</source>
       <translation>Навигација</translation>
     </message>

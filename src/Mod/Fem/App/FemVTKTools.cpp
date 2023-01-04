@@ -786,12 +786,11 @@ void FemVTKTools::importFreeCADResult(vtkSmartPointer<vtkDataSet> dataset, App::
                 continue;
             }
 
-            double vmin=1.0e100, vmean=0.0, vmax=-1.0e100;
+            double vmin=1.0e100, vmax=-1.0e100;
             std::vector<double> values(nPoints, 0.0);
             for(vtkIdType i = 0; i < vec->GetNumberOfTuples(); i++) {
                 double v = *(vec->GetTuple(i));
                 values[i] = v;
-                vmean += v;
                 if(v > vmax) vmax = v;
                 if(v < vmin) vmin = v;
             }

@@ -351,12 +351,18 @@ SET(TechDrawGuiNav_SRCS
 SET(TechDrawGuiViewProvider_SRCS
     ViewProviderPage.cpp
     ViewProviderPage.h
+    ViewProviderPageExtension.cpp
+    ViewProviderPageExtension.h
     ViewProviderDrawingView.cpp
     ViewProviderDrawingView.h
+    ViewProviderDrawingViewExtension.cpp
+    ViewProviderDrawingViewExtension.h
     ViewProviderProjGroupItem.cpp
     ViewProviderProjGroupItem.h
     ViewProviderTemplate.cpp
     ViewProviderTemplate.h
+    ViewProviderTemplateExtension.cpp
+    ViewProviderTemplateExtension.h
     ViewProviderDimension.cpp
     ViewProviderDimension.h
     ViewProviderBalloon.cpp

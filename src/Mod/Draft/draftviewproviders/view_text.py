@@ -30,10 +30,13 @@
 ## \addtogroup draftviewproviders
 # @{
 import pivy.coin as coin
-import sys
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
+import FreeCAD as App
+import FreeCADGui as Gui
+
 import draftutils.utils as utils
+from draftutils.translate import translate
 
 from draftviewproviders.view_draft_annotation \
     import ViewProviderDraftAnnotation
@@ -218,32 +221,18 @@ class ViewProviderText(ViewProviderDraftAnnotation):
             self.text2d.spacing = vobj.LineSpacing
             self.text3d.spacing = vobj.LineSpacing
 
-    def setEdit(self,vobj,mode):
-
-        import FreeCADGui
-        if not hasattr(FreeCADGui, "draftToolBar"):
+    def edit(self):
+        if not hasattr(Gui, "draftToolBar"):
             import DraftGui
         self.text = ""
-        FreeCADGui.draftToolBar.sourceCmd = self
-        FreeCADGui.draftToolBar.taskUi()
-        FreeCADGui.draftToolBar.textUi()
-        FreeCADGui.draftToolBar.textValue.setPlainText("\n".join(vobj.Object.Text))
-        FreeCADGui.draftToolBar.textValue.setFocus()
-
-    def unsetEdit(self,vobj=None,mode=0):
-
-        import FreeCADGui
-        FreeCADGui.Control.closeDialog()
-        return True
-
-    def doubleClicked(self,vobj):
-
-        self.setEdit(vobj,None)
+        Gui.draftToolBar.sourceCmd = self
+        Gui.draftToolBar.taskUi(title=translate("draft", "Text"), icon="Draft_Text")
+        Gui.draftToolBar.textUi()
+        Gui.draftToolBar.continueCmd.hide()
+        Gui.draftToolBar.textValue.setPlainText("\n".join(self.Object.Text))
+        Gui.draftToolBar.textValue.setFocus()
 
     def createObject(self):
-
-        import FreeCAD
-        import FreeCADGui
         if hasattr(self,"Object"):
             txt = self.text
             if not txt:
@@ -255,15 +244,13 @@ class ViewProviderText(ViewProviderDraftAnnotation):
             t_list = ['"' + l + '"' for l in txt]
             list_as_text = ", ".join(t_list)
             string = '[' + list_as_text + ']'
-            FreeCADGui.doCommand("FreeCAD.ActiveDocument."+self.Object.Name+".Text = "+string)
-            FreeCAD.ActiveDocument.recompute()
+            Gui.doCommand("FreeCAD.ActiveDocument." + self.Object.Name + ".Text = " + string)
+            App.ActiveDocument.recompute()
             self.finish()
 
-    def finish(self,args=None):
-
-        import FreeCADGui
-        FreeCADGui.draftToolBar.sourceCmd = None
-        FreeCADGui.draftToolBar.offUi()
+    def finish(self, cont=False):
+        Gui.draftToolBar.sourceCmd = None
+        Gui.draftToolBar.offUi()
 
 
 # Alias for compatibility with v0.18 and earlier

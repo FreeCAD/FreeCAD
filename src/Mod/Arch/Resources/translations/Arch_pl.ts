@@ -597,11 +597,6 @@ Pozostaw puste pole, aby użyć wszystkich obiektów z dokumentu</translation>
       <translation>Lista wartości kątów oddzielonych przecinkami, przy pomocy których można próbować obracać kształty</translation>
     </message>
     <message>
-      <location filename="../ui/ArchNest.ui" line="135"/>
-      <source>0,90,180,270</source>
-      <translation>0,90,180,270</translation>
-    </message>
-    <message>
       <location filename="../ui/ArchNest.ui" line="145"/>
       <source>Nesting operation</source>
       <translation>Operacja zagnieżdżania</translation>
@@ -830,11 +825,6 @@ obiekt przyjmie kolor tego materiału. Opcja ta może być nadpisana dla każdeg
 to projections of hidden objects.</source>
       <translation>To jest właściwość SVG stroke-dasharray, którą należy zastosować
 do rzutowania ukrytych obiektów.</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-arch.ui" line="589"/>
-      <source>30, 10</source>
-      <translation>30, 10</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="625"/>
@@ -1199,7 +1189,7 @@ Ustaw na 1, aby użyć trybu jednordzeniowego w trybie wielordzeniowym. To jest 
       <location filename="../ui/preferences-ifc.ui" line="192"/>
       <location filename="../ui/preferences-ifc.ui" line="236"/>
       <source>Simple Part shapes</source>
-      <translation>Podstawowe kształty Części</translation>
+      <translation>Podstawowe kształty środowiska Część</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="197"/>

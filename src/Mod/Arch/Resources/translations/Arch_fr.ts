@@ -6,27 +6,27 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="14"/>
       <source>Arch material</source>
-      <translation>Matériau pour Arch</translation>
+      <translation>Matériau Arch</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="26"/>
       <source>Choose a preset card</source>
-      <translation>Choisir une carte prédéfinie</translation>
+      <translation>Choisir un matériau préconfiguré</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="30"/>
       <source>Choose preset...</source>
-      <translation>Faire le choix prédéfini...</translation>
+      <translation>Choisir un préréglage...</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="44"/>
       <source>Copy values from an existing material in the document</source>
-      <translation>Copier des valeurs d’un matériau existant dans le document</translation>
+      <translation>Copier les valeurs d'un matériau existant dans le document</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="48"/>
       <source>Copy existing...</source>
-      <translation>Copier l’existant...</translation>
+      <translation>Copier le matériau...</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="58"/>
@@ -36,7 +36,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="65"/>
       <source>The name/label of this material</source>
-      <translation>Le nom / l’étiquette de ce matériau</translation>
+      <translation>Le nom/étiquette de ce matériau</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="94"/>
@@ -86,7 +86,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="204"/>
       <source>Opens a browser dialog to choose a class from a BIM standard</source>
-      <translation>Ouvre une fenêtre de navigateur pour choisir une classe dans un BIM standard</translation>
+      <translation>Ouvre une fenêtre de navigateur pour choisir une classe dans un standard BIM</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="223"/>
@@ -124,7 +124,7 @@
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="28"/>
       <source>The name of the BimServer you are currently connecting to. Change settings in Arch Preferences</source>
-      <translation>Le nom du BimServer auquel vous vous connectez. Changez la configuration des les Préférences Arch</translation>
+      <translation>Le nom du serveur BIM auquel vous vous connectez actuellement. Changez la configuration dans les Préférences Arch.</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="31"/>
@@ -134,7 +134,7 @@
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="38"/>
       <source>Connect</source>
-      <translation>Connecte</translation>
+      <translation>Connecter</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="55"/>
@@ -154,7 +154,7 @@
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="97"/>
       <source>The list of projects present on the Bim Server</source>
-      <translation>La liste des projets présents sur le serveur Bim</translation>
+      <translation>La liste des projets présents sur le serveur BIM</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="109"/>
@@ -198,12 +198,12 @@
     <message>
       <location filename="../ui/ArchSchedule.ui" line="22"/>
       <source>Schedule name:</source>
-      <translation>Nom de programme:</translation>
+      <translation>Nom du programme :</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="29"/>
       <source>Unnamed schedule</source>
-      <translation>Planification non nommée</translation>
+      <translation>Programme non nommé</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="60"/>
@@ -213,7 +213,7 @@
     <message>
       <location filename="../ui/ArchSchedule.ui" line="63"/>
       <source>A description for this operation</source>
-      <translation>Une description cette action</translation>
+      <translation>Description de l'opération</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="68"/>
@@ -226,9 +226,7 @@
 Can be "Count" to count the objects, or property names
 like "Length" or "Shape.Volume" to retrieve
 a certain property.</source>
-      <translation>La propriété à récupérer depuis chaque objet.
-Peut avoir la valeur « Compter » pour compter les objets, ou les noms de propriétés
-comme « Longueur » ou « Forme.Volume » pour récupérer une certaine propriété.</translation>
+      <translation>Récupérer les propriétés d'un objet. Par exemple "Compter" pour compter les objets, ou des propriétés telles que "Longueur" ou "Forme.Volume" pour récupérer des propriétés de dimensions.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="79"/>
@@ -238,7 +236,7 @@ comme « Longueur » ou « Forme.Volume » pour récupérer une certaine pro
     <message>
       <location filename="../ui/ArchSchedule.ui" line="82"/>
       <source>An optional unit to express the resulting value. Ex: m^3 (you can also write m³ or m3)</source>
-      <translation>Un élément facultatif pour expliquer la valeur résultante. Ex. m^3 (vous pouvez aussi écrire m³ or m3)</translation>
+      <translation>Une unité facultative pour exprimer la valeur résultante. Ex. m^3 (vous pouvez aussi écrire m³ or m3)</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="87"/>
@@ -251,7 +249,7 @@ comme « Longueur » ou « Forme.Volume » pour récupérer une certaine pro
 (internal names, not labels), to be considered by this operation.
 If the list contains groups, children will be added.
 Leave blank to use all objects from the document</source>
-      <translation>Liste optionnelle de noms d’objets séparés par des points-virgules (;) (noms internes et pas étiquettes) à considérer pour cette opération. Si la liste contient des groupes, les enfants seront ajoutés. Laissez vide pour utiliser tous les objets du document</translation>
+      <translation>Pour cette opération, la liste facultative doit comporter des noms d'objets (les noms internes mais pas les étiquettes) séparés par des points-virgules (;). Si la liste contient des groupes, des enfants devront être ajoutés. Laisser le champ vide pour utiliser tous les objets du document</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="98"/>
@@ -261,17 +259,17 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="101"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filer (exclude objects that match the filter). Objects whose property contains the value will be matched. Examples of valid filters (everything is case-insensitive):&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Name:Wall&lt;/span&gt; - Will only consider objects with &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Name:Wall&lt;/span&gt; - Will only consider objects which DON'T have &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Description:Win&lt;/span&gt; - Will only consider objects with &amp;quot;win&amp;quot; in their description&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Label:Win&lt;/span&gt; - Will only consider objects which DO NOT have &amp;quot;win&amp;quot; in their label&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;IfcType:Wall&lt;/span&gt; - Will only consider objects which Ifc Type is &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Tag:Wall&lt;/span&gt; - Will only consider objects which tag is NOT &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;If you leave this field empty, no filtering is applied&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Une liste à séparateur point-virgule (;) optionnel  de filtres property:value. Préfixer ! à un nom de propriété pour inverser l'effet du filtre (exclure les objets qui correspondent au filtre). Les objets dont la propriété contient la valeur seront retenus. Exemples de filtres valides (tout est insensible à la casse) :&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600 ;"&gt;Nom:Mur&lt;/span&gt; - Ne prendra en compte que les objets avec &amp;quot;Mur&amp;quot ; dans leur nom (nom interne)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600 ;"&gt; ! Nom:Mur&lt;/span&gt; - Ne prend en compte que les objets qui n'ont pas &amp;quot;Mur&amp;quot ; dans leur nom (nom interne)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600 ;"&gt;Description:Fen&lt;/span&gt; - Ne prend en compte que les objets ayant &amp;quot;Fen&amp;quot ; dans leur description&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600 ;"&gt; ! Label:Fen&lt;/span&gt; - Ne prend en compte que les objets qui n'ont pas &amp;quot;Fen&amp;quot ; dans leur label&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600 ;"&gt;IfcType:Mur&lt;/span&gt; - Ne prend en compte que les objets dont le Type Ifc est &amp;quot;Mur&amp;quot;&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600 ;"&gt; ! Tag:Mur&lt;/span&gt; - Ne prend en compte que les objets dont le tag n'est PAS &amp;quot;Mur&amp;quot;&lt;/p&gt;&lt;p&gt;Si vous laissez ce champ vide, aucun filtrage n'est appliqué&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Une liste optionnelle, à séparateur point-virgule (;), de filtres propriété:valeur. Préfixer le nom de propriété par ! pour inverser l'effet du filtre (exclure les objets qui correspondent au filtre). Les objets dont la propriété contient la valeur seront retenus. Exemples de filtres valides (tout est insensible à la casse) :&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600 ;"&gt;Nom:Mur&lt;/span&gt; - Ne prendra en compte que les objets avec &amp;quot;Mur&amp;quot ; dans leur nom (nom interne)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600 ;"&gt; ! Nom:Mur&lt;/span&gt; - Ne prend en compte que les objets qui n'ont pas &amp;quot;Mur&amp;quot ; dans leur nom (nom interne)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600 ;"&gt;Description:Fen&lt;/span&gt; - Ne prend en compte que les objets ayant &amp;quot;Fen&amp;quot ; dans leur description&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600 ;"&gt; ! Label:Fen&lt;/span&gt; - Ne prend en compte que les objets qui n'ont pas &amp;quot;Fen&amp;quot ; dans leur label&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600 ;"&gt;IfcType:Mur&lt;/span&gt; - Ne prend en compte que les objets dont le Type Ifc est &amp;quot;Mur&amp;quot;&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600 ;"&gt; ! Tag:Mur&lt;/span&gt; - Ne prend en compte que les objets dont le tag n'est pas &amp;quot;Mur&amp;quot;&lt;/p&gt;&lt;p&gt;Si vous laissez ce champ vide, aucun filtrage n'est appliqué&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="111"/>
       <source>If this is enabled, an associated spreadsheet containing the results will be maintained together with this schedule object</source>
-      <translation>Si c'est permis, un tableur associé y compris les résultats sera maintenu ensemble avec cet objet de programme</translation>
+      <translation>Si activé, une feuille de calcul associée, y compris les résultats, sera maintenu en même temps que ce programme.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="114"/>
       <source>Associate spreadsheet</source>
-      <translation>Tableur associé</translation>
+      <translation>Associer une feuille de calcul</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="121"/>
@@ -291,12 +289,12 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="138"/>
       <source>Add row</source>
-      <translation>Ajout de ligne</translation>
+      <translation>Ajout ligne</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="150"/>
       <source>Deletes the selected line</source>
-      <translation>Supprimer la ligne sélectionnée</translation>
+      <translation>Supprime la ligne sélectionnée</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="153"/>
@@ -336,7 +334,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="205"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This exports the results to a CSV or Markdown file. &lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note for CSV export:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;In Libreoffice, you can keep this CSV file linked by right-clicking the Sheets tab bar -&amp;gt; New sheet -&amp;gt; From file -&amp;gt; Link (Note: as of LibreOffice v6.x the correct path now is: Sheet -&amp;gt; Insert Sheet... -&amp;gt; From file -&amp;gt; Browse...)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ceci exporte les résultats vers un fichier CSV ou Markdown. &lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note pour l'exportation CSV :&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Dans Libreoffice, vous pouvez garder ce fichier CSV lié en cliquant avec le bouton droit sur la barre d'onglets des Feuilles -&amp;gt; Nouvelle feuille -&amp;gt; À partir du fichier -&amp;gt; Lien (Note : depuis LibreOffice v5.. le chemin correct est maintenant : Feuille -&amp;gt; Insérer une Feuille... -&amp;gt; À partir d'un fichier -&amp;gt; Parcourir...)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ceci exporte les résultats vers un fichier CSV ou Markdown. &lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note pour l'exportation CSV :&lt;/span&gt;&lt;/p&gt;&lt;p&gt;dans LibreOffice, vous pouvez garder ce fichier CSV lié en cliquant avec le bouton droit sur la barre d'onglets des Feuilles -&amp;gt; Nouvelle feuille -&amp;gt; À partir du fichier -&amp;gt; Lien (Note : depuis LibreOffice v6.x le chemin correct est maintenant : Feuille -&amp;gt; Insérer une Feuille... -&amp;gt; À partir d'un fichier -&amp;gt; Parcourir...)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="208"/>
@@ -346,7 +344,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="14"/>
       <source>BimServer Login</source>
-      <translation>Identifiant BimServer</translation>
+      <translation>Identifiant sur le serveur BIM</translation>
     </message>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="22"/>
@@ -381,7 +379,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="22"/>
       <source>IFC UUID:</source>
-      <translation>IFC UUID :</translation>
+      <translation>UUID IFC :</translation>
     </message>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="29"/>
@@ -480,7 +478,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="21"/>
       <source>Copy existing...</source>
-      <translation>Copier l’existant...</translation>
+      <translation>Copier le matériau...</translation>
     </message>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="29"/>
@@ -593,14 +591,9 @@ Leave blank to use all objects from the document</source>
       <translation>Une liste d'angles séparés par des virgules pour essayer de faire pivoter les formes</translation>
     </message>
     <message>
-      <location filename="../ui/ArchNest.ui" line="135"/>
-      <source>0,90,180,270</source>
-      <translation>0,90,180,270</translation>
-    </message>
-    <message>
       <location filename="../ui/ArchNest.ui" line="145"/>
       <source>Nesting operation</source>
-      <translation>Opération de calepinage</translation>
+      <translation>Opération d'imbrication</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="154"/>
@@ -638,7 +631,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/preferences-arch.ui" line="32"/>
       <source>Auto-join walls</source>
-      <translation>Jonction automatique de murs</translation>
+      <translation>Jonction automatique des murs</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="48"/>
@@ -653,7 +646,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/preferences-arch.ui" line="64"/>
       <source>Two possible strategies to avoid circular dependencies: Create one more object (unchecked) or remove external geometry of base sketch (checked)</source>
-      <translation>Deux stratégies possibles afin d'éviter des dépendances circulaires : créer un objet intermédiaire en plus (non cochée) ou supprimer les géométries externe des esquisses de base (cochée)</translation>
+      <translation>Deux stratégies possibles afin d'éviter les dépendances circulaires : créer un objet intermédiaire en plus (non cochée) ou supprimer les géométries externes des esquisses de base (cochée)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="67"/>
@@ -663,17 +656,17 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/preferences-arch.ui" line="80"/>
       <source>If this is checked, when an object becomes Subtraction or Addition of an Arch object, it will receive the Draft Construction color.</source>
-      <translation>Si cette option est activée, lorsqu’un objet devient soustraction ou Addition d’un objet Arch, il recevra la couleur de la Construction du projet.</translation>
+      <translation>Si cette option est activée, lorsqu’un objet devient une Soustraction ou Addition d’un objet Arch, il recevra la couleur de construction Esquisse.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="83"/>
       <source>Apply Draft construction style to subcomponents</source>
-      <translation>Appliquer le style de construction de projet vers des sous-composants</translation>
+      <translation>Appliquer le style de construction Draft aux sous-composants</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="114"/>
       <source>Do not compute areas for object with more than:</source>
-      <translation>Calculer pas de zones d’objet avec plus de :</translation>
+      <translation>Ne pas calculer les zones pour les objets avec plus de :</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="121"/>
@@ -683,7 +676,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/preferences-arch.ui" line="157"/>
       <source>Interval between file checks for references</source>
-      <translation>Intervalle entre les vérifications du fichier de références</translation>
+      <translation>Périodicité de la vérification des fichiers contenant des références</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="164"/>
@@ -693,12 +686,12 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/preferences-arch.ui" line="188"/>
       <source>By default, new objects will have their "Move with host" property set to False, which means they won't move when their host object is moved.</source>
-      <translation>Par défaut, la propriété "Bouge avec son objet de base" d'un nouvel objet a pour valeur "Désactivé"; ce qui signifie qu'il ne se déplacera pas quand l'objet, à partir duquel il a été créé, sera déplacé.</translation>
+      <translation>Par défaut, la propriété "Bouge avec son objet de base" d'un nouvel objet a pour valeur "Désactivé" ; ce qui signifie qu'il ne se déplacera pas quand l'objet à partir duquel il a été créé sera déplacé.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="191"/>
       <source>Set "Move with host" property to True by default</source>
-      <translation>Définir la propriété « Bouge avec son objet de base » à Vrai par défaut</translation>
+      <translation>Définir la propriété « Déplacer avec l'hôte » à Vrai par défaut</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="207"/>
@@ -713,17 +706,17 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/preferences-arch.ui" line="226"/>
       <source>Use material color as shape color</source>
-      <translation>Utiliser la couleur du matériau comme couleur de forme</translation>
+      <translation>Utiliser la couleur du matériau comme couleur des formes</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="260"/>
       <source>IFC version</source>
-      <translation>Version d’IFC</translation>
+      <translation>Version IFC</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="280"/>
       <source>The IFC version will change which attributes and products are supported</source>
-      <translation>La version d’IFC changera les attributs et produits pris en charge</translation>
+      <translation>La version IFC changera les attributs et produits pris en charge</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="290"/>
@@ -738,7 +731,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/preferences-arch.ui" line="308"/>
       <source>Mesh to Shape Conversion</source>
-      <translation>Conversion Maillage vers Solide</translation>
+      <translation>Conversion Maillage vers Forme</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="316"/>
@@ -763,22 +756,22 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/preferences-arch.ui" line="368"/>
       <source>If this is checked, flat groups of faces will be force-flattened, resulting in possible gaps and non-solid results</source>
-      <translation>Si cette case est cochée, le programme force les groupements de faces planes à être dans un même plan ; il peut en résulter des solutions de continuité et des parties non pleines</translation>
+      <translation>Si cette option est cochée, l'aplatissement des groupes de faces plats est forcé ; il peut en résulter des erreurs de continuité et des résultats non solides</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="371"/>
       <source>Force flat faces</source>
-      <translation>Forcer les faces à être coplanaires</translation>
+      <translation>Forcer les faces planes</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="388"/>
       <source>If this is checked, holes in faces will be performed by subtraction rather than using wires orientation</source>
-      <translation>Si cette case est cochée, les trous dans les faces seront réalisés par une soustraction plutôt qu'à l'aide de l'orientation des arêtes</translation>
+      <translation>Si cette option est cochée, les trous dans les faces seront effectués par une soustraction plutôt qu'à l'aide de l'orientation des arêtes</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="391"/>
       <source>Cut method</source>
-      <translation>Méthode de soustraction</translation>
+      <translation>Méthode de découpe</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="412"/>
@@ -808,23 +801,18 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/preferences-arch.ui" line="512"/>
       <source>Symbol line thickness ratio</source>
-      <translation>Epaisseur de ligne des symboles</translation>
+      <translation>Rapport d'épaisseur des lignes de symboles</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="565"/>
       <source>Hidden geometry pattern</source>
-      <translation>Modèle géométrique caché</translation>
+      <translation>Motif pour les géométries cachées</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="585"/>
       <source>This is the SVG stroke-dasharray property to apply
 to projections of hidden objects.</source>
       <translation>Il s'agit de la propriété SVG « stroke-dasharray » à appliquer pour les projections d'objets cachés.</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-arch.ui" line="589"/>
-      <source>30, 10</source>
-      <translation>30, 10</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="625"/>
@@ -835,7 +823,7 @@ to projections of hidden objects.</source>
       <location filename="../ui/preferences-arch.ui" line="645"/>
       <source>Scaling factor for patterns used by object that have
 a Footprint display mode</source>
-      <translation>Le facteur d'échelle des motifs utilisés par l'objet n'ont pas de mode d'affichage.</translation>
+      <translation>Facteur d'échelle des motifs utilisés par les objets ayant le mode d'affichage Empreinte</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="673"/>
@@ -850,7 +838,7 @@ a Footprint display mode</source>
     <message>
       <location filename="../ui/preferences-arch.ui" line="688"/>
       <source>The URL of a bim server instance (www.bimserver.org) to connect to.</source>
-      <translation>L'URL d'une instance d'un serveur BIM (www.bimserver.org) auquel se connecter.</translation>
+      <translation>L'URL d'une instance serveur BIM (www.bimserver.org) à laquelle se connecter.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="691"/>
@@ -862,7 +850,7 @@ a Footprint display mode</source>
       <source>If this is selected, the "Open BimServer in browser"
 button will open the Bim Server interface in an external browser
 instead of the FreeCAD web workbench</source>
-      <translation>Si sélectionné, le bouton "Ouvrir le serveur Bim" s'ouvrira dans un navigateur externe au lieu de FreeCAD Web workbench</translation>
+      <translation>Si sélectionné, le bouton "Ouvrir le serveur BIM dans un navigateur" ouvrira l'interface du serveur BIM dans un navigateur externe au lieu de l'atelier Web de FreeCAD</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="713"/>
@@ -877,7 +865,7 @@ instead of the FreeCAD web workbench</source>
     <message>
       <location filename="../ui/preferences-arch.ui" line="739"/>
       <source>If this is checked, the text that gets placed in the clipboard will include the unit. Otherwise, it will be a simple number expressed in internal units (millimeters)</source>
-      <translation>Si cette case est cochée, le texte qui est placé dans le presse-papiers inclura l’unité. Sinon, ce sera une simple unité interne exprimé sous forme de numéro (millimètres)</translation>
+      <translation>Si cette option est cochée, le texte qui est placé dans le presse-papiers inclura l’unité. Sinon, ce sera un simple nombre exprimé en unité interne (millimètres)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="742"/>
@@ -1002,7 +990,7 @@ instead of the FreeCAD web workbench</source>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="543"/>
       <source>The default thickness for new windows</source>
-      <translation>L'épaisseur par défaut pour de nouvelles fenêtres</translation>
+      <translation>L'épaisseur par défaut des nouvelles fenêtres</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="582"/>
@@ -1013,7 +1001,7 @@ instead of the FreeCAD web workbench</source>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="602"/>
       <source>Frame color:</source>
-      <translation>Couleur d'encadrement :</translation>
+      <translation>Couleur de l'encadrement :</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="626"/>
@@ -1023,7 +1011,7 @@ instead of the FreeCAD web workbench</source>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="655"/>
       <source>Stairs</source>
-      <translation>Escalier</translation>
+      <translation>Escaliers</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="784"/>
@@ -1061,7 +1049,7 @@ instead of the FreeCAD web workbench</source>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="1025"/>
       <source>Helpers (grids, axes, etc...)</source>
-      <translation>Guides (grilles, axes, etc....)</translation>
+      <translation>Guides (grilles, axes, etc...)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="1071"/>
@@ -1106,7 +1094,7 @@ instead of the FreeCAD web workbench</source>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="41"/>
       <source>Show this dialog when importing</source>
-      <translation>Afficher cette boîte de dialogue lors de l’importation</translation>
+      <translation>Afficher la boîte de dialogue lors de l’importation</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="54"/>
@@ -1129,7 +1117,7 @@ One object is the base object, the others are clones.</source>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="75"/>
       <source>Create clones when objects have shared geometry</source>
-      <translation>Créez des clones quand les objets partagent une géométrie</translation>
+      <translation>Créer des clones quand les objets partagent une géométrie</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="99"/>
@@ -1165,7 +1153,7 @@ plusieurs cœurs, c'est plus prudent.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="165"/>
       <source>Import arch IFC objects as</source>
-      <translation>Importer des objets d'architecture IFC comme</translation>
+      <translation>Importer des objets IFC d'architecture en tant que</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="172"/>
@@ -1176,7 +1164,7 @@ plusieurs cœurs, c'est plus prudent.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="182"/>
       <source>Parametric Arch objects</source>
-      <translation>Objets Arch à paramétrer</translation>
+      <translation>Objets Arch paramétrables</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="187"/>
@@ -1188,7 +1176,7 @@ plusieurs cœurs, c'est plus prudent.</translation>
       <location filename="../ui/preferences-ifc.ui" line="192"/>
       <location filename="../ui/preferences-ifc.ui" line="236"/>
       <source>Simple Part shapes</source>
-      <translation>Formes de pièce simples</translation>
+      <translation>Formes de Part simples</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="197"/>
@@ -1203,7 +1191,7 @@ plusieurs cœurs, c'est plus prudent.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="214"/>
       <source>Import struct IFC objects as</source>
-      <translation>Importer en tant qu'objets de structure IFC</translation>
+      <translation>Importer des objets IFC de structure en tant que</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="241"/>
@@ -1213,7 +1201,7 @@ plusieurs cœurs, c'est plus prudent.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="246"/>
       <source>Do not import structural objects</source>
-      <translation>Ne pas importer les objets structurels</translation>
+      <translation>Ne pas importer les objets de structure</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="258"/>
@@ -1235,14 +1223,14 @@ will already have their openings subtracted</source>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="288"/>
       <source>Separate openings</source>
-      <translation>Séparer des ouvertures</translation>
+      <translation>Séparer les ouvertures</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="301"/>
       <source>The importer will try to detect extrusions.
 Note that this might slow things down.</source>
-      <translation>L'importateur essayera de détecter les extrusions.
-Notez que cela ralentit peut-être les affaires.</translation>
+      <translation>L'outil d'importation essayera de détecter les extrusions.
+Remarquez que cela ralentit peut-être le processus.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="305"/>
@@ -1252,12 +1240,12 @@ Notez que cela ralentit peut-être les affaires.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="318"/>
       <source>Split walls made of multiple layers</source>
-      <translation>Parois fendues en plusieurs couches</translation>
+      <translation>Murs de séparation constitués de plusieurs couches</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="321"/>
       <source>Split multilayer walls</source>
-      <translation>Parois multicouches fendues</translation>
+      <translation>Murs de séparation à plusieurs couches</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="334"/>
@@ -1267,7 +1255,7 @@ Notez que cela ralentit peut-être les affaires.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="337"/>
       <source>Prefix names with ID number</source>
-      <translation>Préfixe des noms avec numéro ID</translation>
+      <translation>Préfixe des noms avec un numéro identification</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="350"/>
@@ -1320,7 +1308,7 @@ Cela ralentira l'importation mais on pourra observé l'importation.</translation
     <message>
       <location filename="../ui/preferences-ifc.ui" line="433"/>
       <source>Fit view while importing</source>
-      <translation>Ajustement de vue lors de l’importation</translation>
+      <translation>Ajuster la vue lors de l’importation</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="446"/>
@@ -1346,7 +1334,7 @@ Les objets "Bâtiments" et "Étages" sont toujours importés s'il y en a plus d'
     <message>
       <location filename="../ui/preferences-ifc.ui" line="469"/>
       <source>Replace 'Project', 'Site', 'Building', and 'Storey' with 'Group'</source>
-      <translation>Remplacer "Projet", "Site", "Bâtiment" et "Étages" par un "Groupe"</translation>
+      <translation>Remplacer "Projet", "Site", "Bâtiment" et "Étage" par "Groupe"</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="14"/>
@@ -1492,7 +1480,7 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</sour
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="41"/>
       <source>Show this dialog when exporting</source>
-      <translation>Afficher cette boîte de dialogue lors de l’exportation</translation>
+      <translation>Afficher la boîte de dialogue lors de l’exportation</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="65"/>
@@ -1509,7 +1497,7 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</sour
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="71"/>
       <source>Export type</source>
-      <translation>Type d'export</translation>
+      <translation>Type d'exportation</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="91"/>
@@ -1593,7 +1581,7 @@ Note: The serializer is still an experimental feature!</source>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="205"/>
       <source>Export 2D objects as IfcAnnotations</source>
-      <translation>Exporter des objets 2D comme IfcAnnotations</translation>
+      <translation>Exporter des objets 2D comme des IfcAnnotations</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="221"/>
@@ -1605,7 +1593,7 @@ permettant de recréer un modèle paramétrique complet lors de la réimportatio
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="225"/>
       <source>Export full FreeCAD parametric model</source>
-      <translation>Exporter le modèle paramétrique complet FreeCAD</translation>
+      <translation>Exporter le modèle paramétrique complet de FreeCAD</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="238"/>
@@ -1643,7 +1631,7 @@ as standard cases when the necessary conditions are met.</source>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="283"/>
       <source>Auto-detect and export as standard cases when applicable</source>
-      <translation>Détecter automatiquement et exporter comme cas standards lorsque cela est applicable</translation>
+      <translation>Détecter automatiquement et exporter en tant que cas standard, le cas échéant</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="296"/>
@@ -1696,7 +1684,7 @@ Cependant, certaines applications BIM utiliseront ce facteur pour choisir l'unit
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="361"/>
       <source>IFC file units</source>
-      <translation>Les éléments de fichier IFC</translation>
+      <translation>Unités des fichiers IFC</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="383"/>

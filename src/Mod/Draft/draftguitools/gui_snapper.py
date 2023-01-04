@@ -1438,7 +1438,7 @@ class Snapper:
             Gui.Snapper.off()
             self.ui.offUi()
             if callback:
-                if len(inspect.getargspec(callback).args) > 1:
+                if len(inspect.getfullargspec(callback).args) > 1:
                     obj = None
                     if self.snapInfo and ("Object" in self.snapInfo) and self.snapInfo["Object"]:
                         obj = App.ActiveDocument.getObject(self.snapInfo["Object"])
@@ -1457,7 +1457,7 @@ class Snapper:
             Gui.Snapper.off()
             self.ui.offUi()
             if callback:
-                if len(inspect.getargspec(callback).args) > 1:
+                if len(inspect.getfullargspec(callback).args) > 1:
                     callback(None, None)
                 else:
                     callback(None)

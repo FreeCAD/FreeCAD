@@ -64,4 +64,22 @@
         <translation type="unfinished"></translation>
     </message>
 </context>
+<context>
+    <name>Material</name>
+    <message>
+        <location filename="../../MaterialEditor.py" line="272"/>
+        <source>Product URL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../MaterialEditor.py" line="334"/>
+        <source>UserDefined</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../MaterialEditor.py" line="539"/>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
 </TS>

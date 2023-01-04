@@ -347,9 +347,9 @@ PrefComboBox::~PrefComboBox()
 {
 }
 
-QVariant::Type PrefComboBox::getParamType() const
+QMetaType::Type PrefComboBox::getParamType() const
 {
-  return property("prefType").type();
+  return static_cast<QMetaType::Type>(property("prefType").userType());
 }
 
 void PrefComboBox::restorePreferences()

@@ -4,18 +4,18 @@
   <context>
     <name>CmdPointsConvert</name>
     <message>
-      <location filename="../../Command.cpp" line="190"/>
+      <location filename="../../Command.cpp" line="187"/>
       <source>Points</source>
       <translation>Punten</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="191"/>
+      <location filename="../../Command.cpp" line="188"/>
       <source>Convert to points...</source>
       <translation>Converteer naar punten...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="192"/>
-      <location filename="../../Command.cpp" line="194"/>
+      <location filename="../../Command.cpp" line="189"/>
+      <location filename="../../Command.cpp" line="191"/>
       <source>Convert to points</source>
       <translation>Converteer naar punten</translation>
     </message>
@@ -23,18 +23,18 @@
   <context>
     <name>CmdPointsExport</name>
     <message>
-      <location filename="../../Command.cpp" line="113"/>
+      <location filename="../../Command.cpp" line="110"/>
       <source>Points</source>
       <translation>Punten</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="114"/>
+      <location filename="../../Command.cpp" line="111"/>
       <source>Export points...</source>
       <translation>Exporteer punten...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="115"/>
-      <location filename="../../Command.cpp" line="117"/>
+      <location filename="../../Command.cpp" line="112"/>
+      <location filename="../../Command.cpp" line="114"/>
       <source>Exports a point cloud</source>
       <translation>Exporteert een puntenwolk</translation>
     </message>
@@ -42,18 +42,18 @@
   <context>
     <name>CmdPointsImport</name>
     <message>
-      <location filename="../../Command.cpp" line="68"/>
+      <location filename="../../Command.cpp" line="65"/>
       <source>Points</source>
       <translation>Punten</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="69"/>
+      <location filename="../../Command.cpp" line="66"/>
       <source>Import points...</source>
       <translation>Importeer punten...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="70"/>
-      <location filename="../../Command.cpp" line="72"/>
+      <location filename="../../Command.cpp" line="67"/>
+      <location filename="../../Command.cpp" line="69"/>
       <source>Imports a point cloud</source>
       <translation>Importeert puntwolk</translation>
     </message>
@@ -61,18 +61,18 @@
   <context>
     <name>CmdPointsMerge</name>
     <message>
-      <location filename="../../Command.cpp" line="311"/>
+      <location filename="../../Command.cpp" line="308"/>
       <source>Points</source>
       <translation>Punten</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="312"/>
+      <location filename="../../Command.cpp" line="309"/>
       <source>Merge point clouds</source>
       <translation>Samenvoegen puntwolken</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="313"/>
-      <location filename="../../Command.cpp" line="315"/>
+      <location filename="../../Command.cpp" line="310"/>
+      <location filename="../../Command.cpp" line="312"/>
       <source>Merge several point clouds into one</source>
       <translation>Verschillende puntwolken samenvoegen</translation>
     </message>
@@ -80,18 +80,18 @@
   <context>
     <name>CmdPointsPolyCut</name>
     <message>
-      <location filename="../../Command.cpp" line="266"/>
+      <location filename="../../Command.cpp" line="263"/>
       <source>Points</source>
       <translation>Punten</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="267"/>
+      <location filename="../../Command.cpp" line="264"/>
       <source>Cut point cloud</source>
       <translation>Snij puntwolk</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="268"/>
-      <location filename="../../Command.cpp" line="270"/>
+      <location filename="../../Command.cpp" line="265"/>
+      <location filename="../../Command.cpp" line="267"/>
       <source>Cuts a point cloud with a picked polygon</source>
       <translation>Knipt een puntwolk met een geselecteerde veelhoek</translation>
     </message>
@@ -99,18 +99,18 @@
   <context>
     <name>CmdPointsStructure</name>
     <message>
-      <location filename="../../Command.cpp" line="354"/>
+      <location filename="../../Command.cpp" line="351"/>
       <source>Points</source>
       <translation>Punten</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="355"/>
+      <location filename="../../Command.cpp" line="352"/>
       <source>Structured point cloud</source>
       <translation>Gestructureerde puntenwolk</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="356"/>
-      <location filename="../../Command.cpp" line="358"/>
+      <location filename="../../Command.cpp" line="353"/>
+      <location filename="../../Command.cpp" line="355"/>
       <source>Convert points to structured point cloud</source>
       <translation>Punten omzetten naar gestructureerde puntenwolk</translation>
     </message>
@@ -118,18 +118,18 @@
   <context>
     <name>CmdPointsTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="153"/>
+      <location filename="../../Command.cpp" line="150"/>
       <source>Points</source>
       <translation>Punten</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="154"/>
+      <location filename="../../Command.cpp" line="151"/>
       <source>Transform Points</source>
       <translation>Transformeer Punten</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="155"/>
-      <location filename="../../Command.cpp" line="157"/>
+      <location filename="../../Command.cpp" line="152"/>
+      <location filename="../../Command.cpp" line="154"/>
       <source>Test to transform a point cloud</source>
       <translation>Test om een puntwolk te transformeren</translation>
     </message>
@@ -137,23 +137,23 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="89"/>
+      <location filename="../../Command.cpp" line="86"/>
       <source>Import points</source>
       <translation>Importeer punten</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="169"/>
+      <location filename="../../Command.cpp" line="166"/>
       <source>Transform points</source>
       <translation>Transformeer punten</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="215"/>
+      <location filename="../../Command.cpp" line="212"/>
       <source>Convert to points</source>
       <translation>Converteer naar punten</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="467"/>
-      <location filename="../../ViewProvider.cpp" line="626"/>
+      <location filename="../../ViewProvider.cpp" line="456"/>
+      <location filename="../../ViewProvider.cpp" line="615"/>
       <source>Cut points</source>
       <translation>Knip punten</translation>
     </message>
@@ -209,16 +209,6 @@
       <location filename="../../DlgPointsRead.ui" line="146"/>
       <source>Number separator:</source>
       <translation>Getal-scheidingsteken:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPointsRead.ui" line="157"/>
-      <source>,</source>
-      <translation>,</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPointsRead.ui" line="162"/>
-      <source>;</source>
-      <translation>;</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="167"/>
@@ -297,33 +287,28 @@
       <source>Number of previewed lines:</source>
       <translation>Aantal regels bekeken:</translation>
     </message>
-    <message>
-      <location filename="../../DlgPointsRead.ui" line="348"/>
-      <source>100</source>
-      <translation>100</translation>
-    </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="82"/>
-      <location filename="../../Command.cpp" line="130"/>
+      <location filename="../../Command.cpp" line="79"/>
+      <location filename="../../Command.cpp" line="127"/>
       <source>Point formats</source>
       <translation>Puntformaten</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="82"/>
-      <location filename="../../Command.cpp" line="130"/>
+      <location filename="../../Command.cpp" line="79"/>
+      <location filename="../../Command.cpp" line="127"/>
       <source>All Files</source>
       <translation>Alle bestanden</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="209"/>
+      <location filename="../../Command.cpp" line="206"/>
       <source>Distance</source>
       <translation>Afstand</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="210"/>
+      <location filename="../../Command.cpp" line="207"/>
       <source>Enter maximum distance:</source>
       <translation>Geef maximale afstand op:</translation>
     </message>
@@ -331,12 +316,12 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="37"/>
+      <location filename="../../Workbench.cpp" line="34"/>
       <source>Points tools</source>
       <translation>Punten-gereedschap</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="38"/>
+      <location filename="../../Workbench.cpp" line="35"/>
       <source>&amp;Points</source>
       <translation>&amp;Punten</translation>
     </message>

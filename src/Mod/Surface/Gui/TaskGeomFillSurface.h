@@ -34,6 +34,11 @@
 
 class QListWidgetItem;
 
+namespace Gui
+{
+class ButtonGroup;
+}
+
 namespace SurfaceGui
 {
 
@@ -66,6 +71,7 @@ protected:
 private:
     Ui_GeomFillSurface* ui;
     ViewProviderGeomFillSurface* vp;
+    Gui::ButtonGroup *buttonGroup;
 
 public:
     GeomFillSurface(ViewProviderGeomFillSurface* vp, Surface::GeomFillSurface* obj);
@@ -93,12 +99,15 @@ private Q_SLOTS:
     void on_fillType_stretch_clicked();
     void on_fillType_coons_clicked();
     void on_fillType_curved_clicked();
-    void on_buttonEdgeAdd_clicked();
-    void on_buttonEdgeRemove_clicked();
+    void on_buttonEdgeAdd_toggled(bool checked);
+    void on_buttonEdgeRemove_toggled(bool checked);
     void on_listWidget_itemDoubleClicked(QListWidgetItem*);
     void onDeleteEdge();
     void onFlipOrientation();
     void clearSelection();
+
+private:
+    void exitSelectionMode();
 };
 
 class TaskGeomFillSurface : public Gui::TaskView::TaskDialog

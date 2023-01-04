@@ -11,12 +11,12 @@
     <message>
       <location filename="../../AddonManagerOptions_AddCustomRepository.ui" line="20"/>
       <source>Repository URL</source>
-      <translation>URL спремишта</translation>
+      <translation>URL адреса спремишта</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions_AddCustomRepository.ui" line="30"/>
       <source>Branch</source>
-      <translation type="unfinished">Branch</translation>
+      <translation>Грана</translation>
     </message>
   </context>
   <context>
@@ -74,12 +74,6 @@
       <source>Optional?</source>
       <translation>Опционо?</translation>
     </message>
-    <message>
-      <location filename="../../developer_mode_dependencies.ui" line="72"/>
-      <location filename="../../developer_mode_dependencies.ui" line="79"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
   </context>
   <context>
     <name>DependencyResolutionDialog</name>
@@ -95,7 +89,7 @@
 Do you want the Addon Manager to install them automatically? Choose &quot;Ignore&quot; to install the Addon without installing the dependencies.</source>
       <translation>Овај додатак има следеће обавезне и опционе зависности. Морате их инсталирати да бисте могли да користите овај додатак.
 
-Да ли желите да их менаџер додатака аутоматски инсталира? Изаберите &quot;занемари&quot; да инсталирате додатак без инсталирања зависности.</translation>
+Да ли желите да их менаџер додатака аутоматски инсталира? Изабери &quot;занемари&quot; да инсталирате додатак без инсталирања зависности.</translation>
     </message>
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="43"/>
@@ -155,7 +149,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="90"/>
       <source>Discussion URL</source>
-      <translation>URL дискусије</translation>
+      <translation>URL адреса дискусије</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="97"/>
@@ -183,7 +177,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../developer_mode.ui" line="180"/>
       <location filename="../../developer_mode.ui" line="218"/>
       <source>(Optional)</source>
-      <translation>(Опционо)</translation>
+      <translation>(необавезно)</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="139"/>
@@ -194,7 +188,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="153"/>
       <source>README URL</source>
-      <translation>URL датотеке README</translation>
+      <translation>URL адреса датотеке README</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="166"/>
@@ -204,17 +198,17 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="173"/>
       <source>Repository URL</source>
-      <translation>URL спремишта</translation>
+      <translation>URL адреса спремишта</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="204"/>
       <source>Website URL</source>
-      <translation>URL веб сајта</translation>
+      <translation>URL адреса веб сајта</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="211"/>
       <source>Documentation URL</source>
-      <translation>URL документације</translation>
+      <translation>URL адреса документације</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="228"/>
@@ -244,18 +238,12 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="265"/>
       <source>Detect...</source>
-      <translation>Открити...</translation>
+      <translation>Откриј...</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="277"/>
       <source>Addon Contents</source>
       <translation type="unfinished">Addon Contents</translation>
-    </message>
-    <message>
-      <location filename="../../developer_mode.ui" line="301"/>
-      <location filename="../../developer_mode.ui" line="308"/>
-      <source>...</source>
-      <translation>...</translation>
     </message>
   </context>
   <context>
@@ -273,22 +261,22 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../AddonManager.ui" line="71"/>
       <source>Pause cache update</source>
-      <translation>Паузирајте ажурирање кеша</translation>
+      <translation>Паузирај ажурирање кеша</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="103"/>
       <source>Refresh local cache</source>
-      <translation>Освежите локални кеш</translation>
+      <translation>Освежи локални кеш</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="110"/>
       <source>Download and apply all available updates</source>
-      <translation>Преузмите и примените сва доступна ажурирања</translation>
+      <translation>Преузми и примените сва доступна ажурирања</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="113"/>
       <source>Update all Addons</source>
-      <translation>Ажурирајте све додатке</translation>
+      <translation>Ажурирај све додатке</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="120"/>
@@ -298,7 +286,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../AddonManager.ui" line="130"/>
       <source>View and update Python package dependencies</source>
-      <translation>Прегледајте и ажурирајте зависности Python пакета</translation>
+      <translation>Прегледај и ажурирај зависности Python пакета</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="133"/>
@@ -313,7 +301,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../AddonManager.ui" line="160"/>
       <source>Close the Addon Manager</source>
-      <translation>Затворите Менаџер додатака</translation>
+      <translation>Затвори Менаџер додатака</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="163"/>
@@ -348,7 +336,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../first_run.ui" line="70"/>
       <source>No proxy</source>
-      <translation>Без посредника</translation>
+      <translation>Без прокси</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="75"/>
@@ -454,7 +442,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../expanded_view.ui" line="171"/>
       <source>Maintainer</source>
-      <translation>Одржава</translation>
+      <translation>Програмер задужен за одржавање</translation>
     </message>
     <message>
       <location filename="../../expanded_view.ui" line="186"/>
@@ -484,14 +472,6 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../developer_mode_licenses_table.ui" line="74"/>
       <source>License file</source>
       <translation>Датотека лиценце</translation>
-    </message>
-    <message>
-      <location filename="../../developer_mode_licenses_table.ui" line="97"/>
-      <location filename="../../developer_mode_licenses_table.ui" line="107"/>
-      <location filename="../../developer_mode_people_table.ui" line="90"/>
-      <location filename="../../developer_mode_people_table.ui" line="100"/>
-      <source>...</source>
-      <translation>...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people_table.ui" line="26"/>
@@ -535,12 +515,6 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="48"/>
       <source>Best-available branch, tag, or commit</source>
       <translation type="unfinished">Best-available branch, tag, or commit</translation>
-    </message>
-    <message>
-      <location filename="../../developer_mode_advanced_freecad_versions.ui" line="71"/>
-      <location filename="../../developer_mode_advanced_freecad_versions.ui" line="78"/>
-      <source>...</source>
-      <translation>...</translation>
     </message>
   </context>
   <context>
@@ -599,12 +573,6 @@ installed addons will be checked for available updates
       <translation>Преузмите макро метаподатке (приближно 10MB)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="44"/>
-      <source>DownloadMacros</source>
-      <translation>Преузмите макро-е</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManagerOptions.ui" line="47"/>
       <location filename="../../AddonManagerOptions.ui" line="373"/>
       <location filename="../../AddonManagerOptions.ui" line="386"/>
       <source>Addons</source>
@@ -651,12 +619,6 @@ installed addons will be checked for available updates
       <translation>Сопствено спремиште</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="188"/>
-      <location filename="../../AddonManagerOptions.ui" line="195"/>
-      <source>...</source>
-      <translation>...</translation>
-    </message>
-    <message>
       <location filename="../../AddonManagerOptions.ui" line="354"/>
       <source>Show option to change branches (requires git)</source>
       <translation type="unfinished">Show option to change branches (requires git)</translation>
@@ -664,17 +626,17 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManagerOptions.ui" line="367"/>
       <source>Disable git (fall back to ZIP downloads only)</source>
-      <translation>Онемогућите git (вратите се само на ZIP преузимања)</translation>
+      <translation>Онемогући git (вратите се само на ZIP преузимања)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="370"/>
       <source>disableGit</source>
-      <translation>онемогућите Git</translation>
+      <translation>онемогући Git</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="380"/>
       <source>Activate Addon Manager options intended for developers of new Addons.</source>
-      <translation>Активирајте опције менаџера додатака намењене програмерима нових додатака.</translation>
+      <translation>Активирај опције менаџера додатака намењене програмерима нових додатака.</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="383"/>
@@ -689,12 +651,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManagerOptions.ui" line="204"/>
       <source>Proxy</source>
-      <translation type="unfinished">Proxy</translation>
+      <translation>Прокси, Посреднички сервер</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="210"/>
       <source>No proxy</source>
-      <translation>Без посредника</translation>
+      <translation>Без прокси</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="226"/>
@@ -709,7 +671,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManagerOptions.ui" line="276"/>
       <source>Python executable (optional):</source>
-      <translation>Извршна Python датотека (опционо):</translation>
+      <translation>Извршна Python датотека (необавезно):</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="295"/>
@@ -719,7 +681,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManagerOptions.ui" line="308"/>
       <source>git executable (optional):</source>
-      <translation>извршна git датотека (опционо):</translation>
+      <translation>Извршна git датотека (необавезно):</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="327"/>
@@ -738,11 +700,6 @@ installed addons will be checked for available updates
       <location filename="../../package_details.ui" line="14"/>
       <source>Form</source>
       <translation>Образац</translation>
-    </message>
-    <message>
-      <location filename="../../package_details.ui" line="29"/>
-      <source>...</source>
-      <translation>...</translation>
     </message>
     <message>
       <location filename="../../package_details.ui" line="49"/>
@@ -767,12 +724,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_details.ui" line="73"/>
       <source>Run Macro</source>
-      <translation>Покрените макро</translation>
+      <translation>Покрени макро</translation>
     </message>
     <message>
       <location filename="../../package_details.ui" line="80"/>
       <source>Change branch</source>
-      <translation>Промените грану</translation>
+      <translation>Промени грану</translation>
     </message>
   </context>
   <context>
@@ -815,7 +772,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="99"/>
       <source>Update all available</source>
-      <translation>Ажурирајте све доступно</translation>
+      <translation>Ажурирај све доступно</translation>
     </message>
   </context>
   <context>
@@ -829,6 +786,19 @@ installed addons will be checked for available updates
       <location filename="../../developer_mode_select_from_list.ui" line="20"/>
       <source>TextLabel</source>
       <translation>ТекcтОзнака</translation>
+    </message>
+  </context>
+  <context>
+    <name>UpdateAllDialog</name>
+    <message>
+      <location filename="../../update_all.ui" line="14"/>
+      <source>Updating Addons</source>
+      <translation type="unfinished">Updating Addons</translation>
+    </message>
+    <message>
+      <location filename="../../update_all.ui" line="23"/>
+      <source>Updating out-of-date addons...</source>
+      <translation type="unfinished">Updating out-of-date addons...</translation>
     </message>
   </context>
   <context>
@@ -986,7 +956,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../add_toolbar_button_dialog.ui" line="14"/>
       <source>Add button?</source>
-      <translation>Додајте дугме?</translation>
+      <translation>Додај дугме?</translation>
     </message>
     <message>
       <location filename="../../add_toolbar_button_dialog.ui" line="20"/>
@@ -1014,12 +984,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../change_branch.ui" line="14"/>
       <source>Change Branch</source>
-      <translation>Промените грану</translation>
+      <translation>Промени грану</translation>
     </message>
     <message>
       <location filename="../../change_branch.ui" line="23"/>
       <source>Change to branch or tag:</source>
-      <translation>Промените у грану или ознаку:</translation>
+      <translation>Промени у грану или ознаку:</translation>
     </message>
   </context>
   <context>
@@ -1055,7 +1025,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_people.ui" line="29"/>
       <source>Name:</source>
-      <translation type="unfinished">Name:</translation>
+      <translation>Име:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people.ui" line="39"/>
@@ -1065,7 +1035,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_people.ui" line="46"/>
       <source>Email is required for maintainers, and optional for authors.</source>
-      <translation>Е-пошта је неопходна за особу одговорну за одржавање, а опциона за ауторе.</translation>
+      <translation>Е-пошта је неопходна за особу одговорну за одржавање, а необавезно за ауторе.</translation>
     </message>
   </context>
   <context>
@@ -1116,7 +1086,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_license.ui" line="14"/>
       <source>Select a license</source>
-      <translation>Изаберите лиценцу</translation>
+      <translation>Изабери лиценцу</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="35"/>
@@ -1146,7 +1116,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_license.ui" line="81"/>
       <source>Create...</source>
-      <translation>Направи...</translation>
+      <translation>Напра...</translation>
     </message>
   </context>
   <context>
@@ -1154,17 +1124,17 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../select_toolbar_dialog.ui" line="14"/>
       <source>Select Toolbar</source>
-      <translation>Изаберите палету алатки</translation>
+      <translation>Изабери палету алатки</translation>
     </message>
     <message>
       <location filename="../../select_toolbar_dialog.ui" line="26"/>
       <source>Select a toolbar to add this macro to:</source>
-      <translation>Изаберите палету алатки у коју ћете додати овај макро:</translation>
+      <translation>Изабери палету алатки у коју ћете додати овај макро:</translation>
     </message>
     <message>
       <location filename="../../select_toolbar_dialog.ui" line="36"/>
       <source>Ask every time</source>
-      <translation>Питајте сваки пут</translation>
+      <translation>Питај сваки пут</translation>
     </message>
   </context>
   <context>
@@ -1172,7 +1142,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../toolbar_button.ui" line="14"/>
       <source>Add button?</source>
-      <translation>Додајте дугме?</translation>
+      <translation>Додај дугме?</translation>
     </message>
     <message>
       <location filename="../../toolbar_button.ui" line="20"/>

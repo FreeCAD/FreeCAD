@@ -974,18 +974,26 @@ void QGIViewPart::drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b)
     }
 
     auto vp = static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject()));
-    if (!vp)
+    if (!vp) {
         return;
-
+    }
+    auto vpDetail = static_cast<ViewProviderViewPart*>(getViewProvider(viewDetail));
+    if (!vpDetail) {
+        return;
+    }
     if (b) {
         //        double fontSize = getPrefFontSize();
         double fontSize = Preferences::labelFontSizeMM();
         QGIHighlight* highlight = new QGIHighlight();
-        addToGroup(highlight);
-        highlight->setPos(0.0, 0.0);//sb setPos(center.x, center.y)?
+        scene()->addItem(highlight);
         highlight->setReference(viewDetail->Reference.getValue());
         highlight->setStyle((Qt::PenStyle)vp->HighlightLineStyle.getValue());
         highlight->setColor(vp->HighlightLineColor.getValue().asValue<QColor>());
+        highlight->setFeatureName(viewDetail->getNameInDocument());
+        highlight->setInteractive(true);
+
+        addToGroup(highlight);
+        highlight->setPos(0.0, 0.0);//sb setPos(center.x, center.y)?
 
         Base::Vector3d center = viewDetail->AnchorPoint.getValue() * viewPart->getScale();
         double rotationRad = viewPart->Rotation.getValue() * M_PI / 180.0;
@@ -997,14 +1005,29 @@ void QGIViewPart::drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b)
         highlight->setWidth(Rez::guiX(vp->IsoWidth.getValue()));
         highlight->setFont(getFont(), fontSize);
         highlight->setZValue(ZVALUE::HIGHLIGHT);
+        highlight->setReferenceAngle(vpDetail->HighlightAdjust.getValue());
 
         //handle conversion of apparent X,Y to rotated
         QPointF rotCenter = highlight->mapFromParent(transformOriginPoint());
         highlight->setTransformOriginPoint(rotCenter);
 
-        double rotation = viewPart->Rotation.getValue() + vp->HighlightAdjust.getValue();
+        double rotation = viewPart->Rotation.getValue();
         highlight->setRotation(rotation);
         highlight->draw();
+    }
+}
+
+void QGIViewPart::highlightMoved(QGIHighlight* highlight, QPointF newPos)
+{
+    std::string highlightName = highlight->getFeatureName();
+    App::Document* doc = getViewObject()->getDocument();
+    App::DocumentObject* docObj = doc->getObject(highlightName.c_str());
+    auto detail = dynamic_cast<DrawViewDetail*>(docObj);
+    auto oldAnchor = detail->AnchorPoint.getValue();
+    if (detail) {
+        Base::Vector3d delta = Rez::appX(DrawUtil::toVector3d(newPos)) / getViewObject()->getScale();
+        delta = DrawUtil::invertY(delta);
+        detail->AnchorPoint.setValue(oldAnchor + delta);
     }
 }
 

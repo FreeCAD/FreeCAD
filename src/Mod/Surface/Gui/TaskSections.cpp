@@ -37,6 +37,7 @@
 #include <Gui/Command.h>
 #include <Gui/Control.h>
 #include <Gui/SelectionObject.h>
+#include <Gui/Widgets.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 
 #include "TaskSections.h"
@@ -255,6 +256,12 @@ SectionsPanel::SectionsPanel(ViewProviderSections* vp, Surface::Sections* obj) :
     checkCommand = true;
     setEditedObject(obj);
 
+    // Set up button group
+    buttonGroup = new Gui::ButtonGroup(this);
+    buttonGroup->setExclusive(true);
+    buttonGroup->addButton(ui->buttonEdgeAdd, (int)SelectionMode::AppendEdge);
+    buttonGroup->addButton(ui->buttonEdgeRemove, (int)SelectionMode::RemoveEdge);
+
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
     action->setShortcut(QKeySequence::Delete);
@@ -398,18 +405,28 @@ bool SectionsPanel::reject()
     return true;
 }
 
-void SectionsPanel::on_buttonEdgeAdd_clicked()
+void SectionsPanel::on_buttonEdgeAdd_toggled(bool checked)
 {
-    // 'selectionMode' is passed by reference and changed when the filter is deleted
-    Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject));
-    selectionMode = AppendEdge;
+    if (checked) {
+        selectionMode = AppendEdge;
+        // 'selectionMode' is passed by reference and changed when the filter is deleted
+        Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject));
+    }
+    else if (selectionMode == AppendEdge) {
+        exitSelectionMode();
+    }
 }
 
-void SectionsPanel::on_buttonEdgeRemove_clicked()
+void SectionsPanel::on_buttonEdgeRemove_toggled(bool checked)
 {
-    // 'selectionMode' is passed by reference and changed when the filter is deleted
-    Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject));
-    selectionMode = RemoveEdge;
+    if (checked) {
+        selectionMode = RemoveEdge;
+        // 'selectionMode' is passed by reference and changed when the filter is deleted
+        Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject));
+    }
+    else if (selectionMode == RemoveEdge) {
+        exitSelectionMode();
+    }
 }
 
 void SectionsPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -542,6 +559,13 @@ void SectionsPanel::removeCurve(App::DocumentObject* obj, const std::string& sub
     this->vp->highlightReferences(ViewProviderSections::Edge,
         editedObject->NSections.getSubListValues(), true);
 
+}
+
+void SectionsPanel::exitSelectionMode()
+{
+    // 'selectionMode' is passed by reference to the filter and changed when the filter is deleted
+    Gui::Selection().clearSelection();
+    Gui::Selection().rmvSelectionGate();
 }
 
 // ----------------------------------------------------------------------------

@@ -150,6 +150,7 @@
         <file>translations/Fem_vi.qm</file>
         <file>translations/Fem_zh-CN.qm</file>
         <file>translations/Fem_zh-TW.qm</file>
+        <file>translations/Fem_sr-CS.qm</file>
 
         <!-- task panels -->
         <file>ui/BodyHeatSource.ui</file>

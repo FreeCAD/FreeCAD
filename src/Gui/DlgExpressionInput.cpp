@@ -65,7 +65,7 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
     }
     else {
         QVariant text = parent->property("text");
-        if (text.canConvert(QMetaType::QString)) {
+        if (text.canConvert<QString>()) {
             ui->expression->setText(text.toString());
         }
     }

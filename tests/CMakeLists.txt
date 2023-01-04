@@ -83,3 +83,5 @@ set (InventorBuilder_LIBS
 SETUP_TESTS(
     InventorBuilder
 )
+
+add_subdirectory(src)

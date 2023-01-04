@@ -131,7 +131,7 @@
     <message>
       <location filename="TranslationTexts.py" line="67"/>
       <source>If not bundled with your FreeCAD version, install the FreeCAD documentation package to get documentation hubs, workbench help and individual command documentation without an internet connection.</source>
-      <translation>Če ni priložena vaši FreeCAD različici, namestite paket FreeCAD dokumentacije, s katerim dobite vmesnik dokumentacije, pomoč o delovnih okoljih in dokumentacijo posameznih ukazov brez internetne povezave.</translation>
+      <translation>Če ni priložena vaši FreeCAD različici, namestite paket FreeCAD dokumentacije, s katerim dobite zvezdišča dokumentacije, pomoč o delovnih okoljih in dokumentacijo o posameznih ukazih, vse brez spletne povezave.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="68"/>

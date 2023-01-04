@@ -29,6 +29,7 @@
 
 #include <map>
 #include <vector>
+#include <QString>
 
 namespace Base {
     class Writer;
@@ -68,6 +69,13 @@ public:
         RestoreError = 10,
         LinkStampChanged = 11, // Indicates during restore time if any linked document's time stamp has changed
         IgnoreErrorOnRecompute = 12, // Don't report errors if the recompute failed
+    };
+
+    enum class NotificationType {
+        Information,
+        Warning,
+        Error,
+        Critical,
     };
 
     /** @name Properties */
@@ -172,6 +180,8 @@ public:
     boost::signals2::signal<void (const App::Document&, const std::vector<App::DocumentObject*>&)> signalSkipRecompute;
     boost::signals2::signal<void (const App::DocumentObject&)> signalFinishRestoreObject;
     boost::signals2::signal<void (const App::Document&,const App::Property&)> signalChangePropertyEditor;
+    // signal user message
+    boost::signals2::signal<void (const App::DocumentObject&, const QString &, NotificationType)> signalUserMessage;
     //@}
     boost::signals2::signal<void (std::string)> signalLinkXsetValue;
 
