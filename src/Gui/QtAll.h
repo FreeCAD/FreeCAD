@@ -116,6 +116,7 @@
 #include <QOpenGLDebugMessage>
 #include <QOpenGLFunctions>
 #include <QOpenGLTexture>
+#include <QPaintEngine>
 #include <QPainter>
 #include <QPainterPath>
 #include <qpalette.h>
@@ -142,7 +143,7 @@
 #include <qspinbox.h>
 #include <qsplashscreen.h>
 #include <qsplitter.h>
-#include <qstatusbar.h>
+#include <QStatusBar>
 #include <qstyle.h>
 #include <QStyledItemDelegate>
 #include <qstylefactory.h>
@@ -157,6 +158,7 @@
 #include <QTextDocument>
 #include <QTextDocumentFragment>
 #include <QTextEdit>
+#include <QTextList>
 #include <QTextTableCell>
 #include <QToolBar>
 #include <qtoolbox.h>
@@ -174,18 +176,23 @@
 #include <QTcpServer>
 #include <QTcpSocket>
 
+// QtOpenGL
+#include <QGLWidget>
+
 // QtSvg
+#include <QSvgGenerator>
 #include <QSvgRenderer>
 #include <QSvgWidget>
 
 // QtWidgets
+#include <QGraphicsColorizeEffect>
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QStackedWidget>
 #include <QWidget>
 
 // QtXML
-# include <QDomDocument>
-# include <QDomElement>
+#include <QDomDocument>
+#include <QDomElement>
 
 #endif

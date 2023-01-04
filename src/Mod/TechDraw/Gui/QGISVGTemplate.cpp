@@ -23,15 +23,15 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <QDomDocument>
-#include <QFile>
-#include <QGraphicsColorizeEffect>
-#include <QGraphicsEffect>
-#include <QGraphicsSvgItem>
-#include <QPen>
-#include <QSvgRenderer>
-#include <QXmlQuery>
-#include <QXmlResultItems>
+# include <QDomDocument>
+# include <QFile>
+# include <QGraphicsColorizeEffect>
+# include <QGraphicsEffect>
+# include <QGraphicsSvgItem>
+# include <QPen>
+# include <QSvgRenderer>
+# include <QXmlQuery>
+# include <QXmlResultItems>
 #endif// #ifndef _PreComp_
 
 #include <App/Application.h>
