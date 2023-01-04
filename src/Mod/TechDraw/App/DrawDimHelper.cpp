@@ -26,14 +26,14 @@
 #include <cstdlib>
 #include <sstream>
 
-#include <Bnd_Box.hxx>
 #include <BRepBndLib.hxx>
-#include <BRep_Builder.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
+#include <BRep_Builder.hxx>
+#include <Bnd_Box.hxx>
 #include <Geom_Line.hxx>
-#include <gp_Pln.hxx>
 #include <TopoDS_Edge.hxx>
+#include <gp_Pln.hxx>
 #endif
 
 #include <App/Document.h>
@@ -42,15 +42,15 @@
 #include <Base/Interpreter.h>
 #include <Base/Vector3D.h>
 
-#include "DrawDimHelper.h"
-#include "Geometry.h"
-#include "GeometryObject.h"
 #include "Cosmetic.h"
+#include "DrawDimHelper.h"
 #include "DrawPage.h"
 #include "DrawUtil.h"
-#include "DrawViewDimension.h"
 #include "DrawViewDimExtent.h"
+#include "DrawViewDimension.h"
 #include "DrawViewPart.h"
+#include "Geometry.h"
+#include "GeometryObject.h"
 
 
 #define HORIZONTAL 0
@@ -59,12 +59,11 @@
 
 using namespace TechDraw;
 
-void DrawDimHelper::makeExtentDim(DrawViewPart* dvp,
-                                  std::vector<std::string> edgeNames,
+void DrawDimHelper::makeExtentDim(DrawViewPart* dvp, std::vector<std::string> edgeNames,
                                   int direction)
 {
-//    Base::Console().Message("DDH::makeExtentDim() - dvp: %s edgeNames: %d\n",
-//                            dvp->Label.getValue(), edgeNames.size());
+    //    Base::Console().Message("DDH::makeExtentDim() - dvp: %s edgeNames: %d\n",
+    //                            dvp->Label.getValue(), edgeNames.size());
     if (!dvp) {
         return;
     }
@@ -81,14 +80,15 @@ void DrawDimHelper::makeExtentDim(DrawViewPart* dvp,
 
     App::Document* doc = dvp->getDocument();
     std::string dimName = doc->getUniqueObjectName("DimExtent");
-    Base::Interpreter().runStringArg("App.activeDocument().addObject('TechDraw::DrawViewDimExtent', '%s')",
-                                         dimName.c_str());
-    Base::Interpreter().runStringArg("App.activeDocument().%s.Type = '%s'",
-                                     dimName.c_str(), dimType.c_str());
-    Base::Interpreter().runStringArg("App.activeDocument().%s.DirExtent = %d",
-                                     dimName.c_str(), dimNum);
+    Base::Interpreter().runStringArg(
+        "App.activeDocument().addObject('TechDraw::DrawViewDimExtent', '%s')", dimName.c_str());
+    Base::Interpreter().runStringArg(
+        "App.activeDocument().%s.Type = '%s'", dimName.c_str(), dimType.c_str());
+    Base::Interpreter().runStringArg(
+        "App.activeDocument().%s.DirExtent = %d", dimName.c_str(), dimNum);
 
-    TechDraw::DrawViewDimExtent* dimExt = dynamic_cast<TechDraw::DrawViewDimExtent*>(doc->getObject(dimName.c_str()));
+    TechDraw::DrawViewDimExtent* dimExt =
+        dynamic_cast<TechDraw::DrawViewDimExtent*>(doc->getObject(dimName.c_str()));
     if (!dimExt) {
         throw Base::TypeError("Dim extent not found");
     }
@@ -97,7 +97,8 @@ void DrawDimHelper::makeExtentDim(DrawViewPart* dvp,
     if (edgeNames.empty()) {
         ReferenceEntry emptyRef(dvp, std::string());
         newRefs.push_back(emptyRef);
-    } else {
+    }
+    else {
         for (auto& edge : edgeNames) {
             ReferenceEntry ref(dvp, edge);
             newRefs.push_back(ref);
@@ -106,17 +107,16 @@ void DrawDimHelper::makeExtentDim(DrawViewPart* dvp,
     dimExt->setReferences2d(newRefs);
 
     Base::Interpreter().runStringArg("App.activeDocument().%s.addView(App.activeDocument().%s)",
-                                     pageName.c_str(), dimName.c_str());
+                                     pageName.c_str(),
+                                     dimName.c_str());
 
     dimExt->recomputeFeature();
 }
 
-void DrawDimHelper::makeExtentDim3d(DrawViewPart* dvp,
-                                  ReferenceVector references,
-                                  int direction)
+void DrawDimHelper::makeExtentDim3d(DrawViewPart* dvp, ReferenceVector references, int direction)
 {
-//    Base::Console().Message("DDH::makeExtentDim3d() - dvp: %s references: %d\n",
-//                            dvp->Label.getValue(), references.size());
+    //    Base::Console().Message("DDH::makeExtentDim3d() - dvp: %s references: %d\n",
+    //                            dvp->Label.getValue(), references.size());
     if (!dvp) {
         return;
     }
@@ -133,14 +133,15 @@ void DrawDimHelper::makeExtentDim3d(DrawViewPart* dvp,
 
     App::Document* doc = dvp->getDocument();
     std::string dimName = doc->getUniqueObjectName("DimExtent");
-    Base::Interpreter().runStringArg("App.activeDocument().addObject('TechDraw::DrawViewDimExtent', '%s')",
-                                         dimName.c_str());
-    Base::Interpreter().runStringArg("App.activeDocument().%s.Type = '%s'",
-                                     dimName.c_str(), dimType.c_str());
-    Base::Interpreter().runStringArg("App.activeDocument().%s.DirExtent = %d",
-                                     dimName.c_str(), dimNum);
+    Base::Interpreter().runStringArg(
+        "App.activeDocument().addObject('TechDraw::DrawViewDimExtent', '%s')", dimName.c_str());
+    Base::Interpreter().runStringArg(
+        "App.activeDocument().%s.Type = '%s'", dimName.c_str(), dimType.c_str());
+    Base::Interpreter().runStringArg(
+        "App.activeDocument().%s.DirExtent = %d", dimName.c_str(), dimNum);
 
-    TechDraw::DrawViewDimExtent* dimExt = dynamic_cast<TechDraw::DrawViewDimExtent*>(doc->getObject(dimName.c_str()));
+    TechDraw::DrawViewDimExtent* dimExt =
+        dynamic_cast<TechDraw::DrawViewDimExtent*>(doc->getObject(dimName.c_str()));
     if (!dimExt) {
         throw Base::TypeError("Dim extent not found");
     }
@@ -163,26 +164,26 @@ void DrawDimHelper::makeExtentDim3d(DrawViewPart* dvp,
     dimExt->setReferences3d(references);
 
     Base::Interpreter().runStringArg("App.activeDocument().%s.addView(App.activeDocument().%s)",
-                                     pageName.c_str(), dimName.c_str());
+                                     pageName.c_str(),
+                                     dimName.c_str());
 
     dimExt->recomputeFeature();
 }
-std::pair<Base::Vector3d, Base::Vector3d> DrawDimHelper::minMax(DrawViewPart* dvp,
-                                  std::vector<std::string> edgeNames,
-                                  int direction)
+std::pair<Base::Vector3d, Base::Vector3d>
+DrawDimHelper::minMax(DrawViewPart* dvp, std::vector<std::string> edgeNames, int direction)
 {
-//    Base::Console().Message("DDH::minMax() - edgeName: %d\n", edgeNames.size());
+    //    Base::Console().Message("DDH::minMax() - edgeName: %d\n", edgeNames.size());
     std::pair<Base::Vector3d, Base::Vector3d> result;
     Base::Vector3d refMin;
     Base::Vector3d refMax;
 
-    gp_Ax3 projAx3;         // OXYZ
+    gp_Ax3 projAx3;// OXYZ
     gp_Pln projPlane(projAx3);
 
     BaseGeomPtrVector edgeGeomList;
     if (!edgeNames.empty() && !edgeNames.front().empty()) {
         //we have edge names and the first one isn't null
-        for (auto& n: edgeNames) {
+        for (auto& n : edgeNames) {
             std::string geomType = DrawUtil::getGeomTypeFromName(n);
             if (geomType == "Edge") {
                 int i = DrawUtil::getIndexFromName(n);
@@ -192,16 +193,20 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawDimHelper::minMax(DrawViewPart* dv
                 }
             }
         }
-    } else {
-        edgeGeomList = dvp->getEdgeGeometry();                  //do the whole View
+    }
+    else {
+        edgeGeomList = dvp->getEdgeGeometry();//do the whole View
     }
 
+    if (edgeGeomList.empty()) {
+        return result;
+    }
 
     Bnd_Box edgeBbx;
-    edgeBbx.SetGap(1.0);     //make the box a bit bigger
+    edgeBbx.SetGap(1.0);//make the box a bit bigger
 
     std::vector<TopoDS_Edge> inEdges;
-    for (auto& bg: edgeGeomList) {
+    for (auto& bg : edgeGeomList) {
         inEdges.push_back(bg->occEdge);
         BRepBndLib::Add(bg->occEdge, edgeBbx);
     }
@@ -223,28 +228,24 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawDimHelper::minMax(DrawViewPart* dv
         Handle(Geom_Line) lineLeft = new Geom_Line(leftMid, yDir);
         BRepBuilderAPI_MakeEdge mkEdgeLeft(lineLeft);
         TopoDS_Edge edgeLeft = mkEdgeLeft.Edge();
-        gp_Pnt leftPoint = findClosestPoint(inEdges,
-                                            edgeLeft);
+        gp_Pnt leftPoint = findClosestPoint(inEdges, edgeLeft);
         Handle(Geom_Line) lineRight = new Geom_Line(rightMid, yDir);
         BRepBuilderAPI_MakeEdge mkEdgeRight(lineRight);
         TopoDS_Edge edgeRight = mkEdgeRight.Edge();
-        gp_Pnt rightPoint = findClosestPoint(inEdges,
-                                             edgeRight);
+        gp_Pnt rightPoint = findClosestPoint(inEdges, edgeRight);
 
         refMin = Base::Vector3d(leftPoint.X(), leftPoint.Y(), 0.0);
         refMax = Base::Vector3d(rightPoint.X(), rightPoint.Y(), 0.0);
-
-    } else if (direction == VERTICAL) {
+    }
+    else if (direction == VERTICAL) {
         Handle(Geom_Line) lineBottom = new Geom_Line(bottomMid, xDir);
         BRepBuilderAPI_MakeEdge mkEdgeBottom(lineBottom);
         TopoDS_Edge edgeBottom = mkEdgeBottom.Edge();
-        gp_Pnt bottomPoint = findClosestPoint(inEdges,
-                                              edgeBottom);
+        gp_Pnt bottomPoint = findClosestPoint(inEdges, edgeBottom);
         Handle(Geom_Line) lineTop = new Geom_Line(topMid, xDir);
         BRepBuilderAPI_MakeEdge mkEdgeTop(lineTop);
         TopoDS_Edge edgeTop = mkEdgeTop.Edge();
-        gp_Pnt topPoint = findClosestPoint(inEdges,
-                                           edgeTop);
+        gp_Pnt topPoint = findClosestPoint(inEdges, edgeTop);
         refMin = Base::Vector3d(bottomPoint.X(), bottomPoint.Y(), 0.0);
         refMax = Base::Vector3d(topPoint.X(), topPoint.Y(), 0.0);
     }
@@ -256,22 +257,23 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawDimHelper::minMax(DrawViewPart* dv
 
 //given list of curves, find the closest point from any curve to a boundary
 //computation intensive for a cosmetic result.
-gp_Pnt DrawDimHelper::findClosestPoint(std::vector<TopoDS_Edge> inEdges,
-                                       TopoDS_Edge& boundary)
+gp_Pnt DrawDimHelper::findClosestPoint(std::vector<TopoDS_Edge> inEdges, TopoDS_Edge& boundary)
 {
-//    Base::Console().Message("DDH::findClosestPoint() - edges: %d\n", inEdges.size());
-//
-//find an extent point that is actually on one of the curves
+    //    Base::Console().Message("DDH::findClosestPoint() - edges: %d\n", inEdges.size());
+    //
+    //find an extent point that is actually on one of the curves
     double minDistance(std::numeric_limits<float>::max());
     gp_Pnt nearPoint;
     for (auto& edge : inEdges) {
         BRepExtrema_DistShapeShape extss(edge, boundary);
         if (!extss.IsDone()) {
-            Base::Console().Warning("DDH::findClosestPoint - BRepExtrema_DistShapeShape failed - 1\n");
+            Base::Console().Warning(
+                "DDH::findClosestPoint - BRepExtrema_DistShapeShape failed - 1\n");
             continue;
         }
         if (extss.NbSolution() == 0) {
-            Base::Console().Warning("DDH::findClosestPoint - BRepExtrema_DistShapeShape failed - 2\n");
+            Base::Console().Warning(
+                "DDH::findClosestPoint - BRepExtrema_DistShapeShape failed - 2\n");
             continue;
         }
         if (extss.Value() < minDistance) {
@@ -282,16 +284,15 @@ gp_Pnt DrawDimHelper::findClosestPoint(std::vector<TopoDS_Edge> inEdges,
     return nearPoint;
 }
 
-std::pair<Base::Vector3d, Base::Vector3d> DrawDimHelper::minMax3d(DrawViewPart* dvp,
-                                                                  ReferenceVector references,
-                                                                  int direction)
+std::pair<Base::Vector3d, Base::Vector3d>
+DrawDimHelper::minMax3d(DrawViewPart* dvp, ReferenceVector references, int direction)
 {
-//    Base::Console().Message("DDH::minMax3d() - references: %d\n", references.size());
+    //    Base::Console().Message("DDH::minMax3d() - references: %d\n", references.size());
     std::pair<Base::Vector3d, Base::Vector3d> result;
     Base::Vector3d refMin;
     Base::Vector3d refMax;
 
-    gp_Ax3 projAx3;    //OXYZ
+    gp_Ax3 projAx3;//OXYZ
     gp_Pln projPlane(projAx3);
 
     BRep_Builder builder;
@@ -301,22 +302,27 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawDimHelper::minMax3d(DrawViewPart* 
         builder.Add(comp, ref.getGeometry());
     }
     Base::Vector3d centroid = dvp->getOriginalCentroid();
-    TopoDS_Shape centeredShape =            //this result is a throw away. We will work with comp.
-    DrawViewPart::centerScaleRotate(dvp, comp, centroid);
+    TopoDS_Shape centeredShape =//this result is a throw away. We will work with comp.
+        DrawViewPart::centerScaleRotate(dvp, comp, centroid);
 
     //project the selected 3d shapes in the dvp's coord system
-    TechDraw::GeometryObjectPtr go(std::make_shared<TechDraw::GeometryObject>(std::string(), nullptr));
+    TechDraw::GeometryObjectPtr go(
+        std::make_shared<TechDraw::GeometryObject>(std::string(), nullptr));
     go->setIsoCount(0);
     go->isPerspective(false);
     go->usePolygonHLR(false);
     go->projectShape(comp, dvp->getProjectionCS());
     auto edges = go->getEdgeGeometry();
 
+    if (edges.empty()) {
+        return result;
+    }
+
     Bnd_Box shapeBbx;
-    shapeBbx.SetGap(1.0);     //make the box a bit bigger
+    shapeBbx.SetGap(1.0);//make the box a bit bigger
 
     std::vector<TopoDS_Edge> inEdges;
-    for (auto& bg: edges) {
+    for (auto& bg : edges) {
         inEdges.push_back(bg->occEdge);
         BRepBndLib::Add(bg->occEdge, shapeBbx);
     }
@@ -339,28 +345,24 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawDimHelper::minMax3d(DrawViewPart* 
         Handle(Geom_Line) lineLeft = new Geom_Line(leftMid, yDir);
         BRepBuilderAPI_MakeEdge mkEdgeLeft(lineLeft);
         TopoDS_Edge edgeLeft = mkEdgeLeft.Edge();
-        gp_Pnt leftPoint = findClosestPoint(inEdges,
-                                            edgeLeft);
+        gp_Pnt leftPoint = findClosestPoint(inEdges, edgeLeft);
         Handle(Geom_Line) lineRight = new Geom_Line(rightMid, yDir);
         BRepBuilderAPI_MakeEdge mkEdgeRight(lineRight);
         TopoDS_Edge edgeRight = mkEdgeRight.Edge();
-        gp_Pnt rightPoint = findClosestPoint(inEdges,
-                                             edgeRight);
+        gp_Pnt rightPoint = findClosestPoint(inEdges, edgeRight);
 
         refMin = Base::Vector3d(leftPoint.X(), leftPoint.Y(), 0.0);
         refMax = Base::Vector3d(rightPoint.X(), rightPoint.Y(), 0.0);
-
-    } else if (direction == VERTICAL) {
+    }
+    else if (direction == VERTICAL) {
         Handle(Geom_Line) lineBottom = new Geom_Line(bottomMid, xDir);
         BRepBuilderAPI_MakeEdge mkEdgeBottom(lineBottom);
         TopoDS_Edge edgeBottom = mkEdgeBottom.Edge();
-        gp_Pnt bottomPoint = findClosestPoint(inEdges,
-                                              edgeBottom);
+        gp_Pnt bottomPoint = findClosestPoint(inEdges, edgeBottom);
         Handle(Geom_Line) lineTop = new Geom_Line(topMid, xDir);
         BRepBuilderAPI_MakeEdge mkEdgeTop(lineTop);
         TopoDS_Edge edgeTop = mkEdgeTop.Edge();
-        gp_Pnt topPoint = findClosestPoint(inEdges,
-                                           edgeTop);
+        gp_Pnt topPoint = findClosestPoint(inEdges, edgeTop);
         refMin = Base::Vector3d(bottomPoint.X(), bottomPoint.Y(), 0.0);
         refMax = Base::Vector3d(topPoint.X(), topPoint.Y(), 0.0);
     }
@@ -370,19 +372,19 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawDimHelper::minMax3d(DrawViewPart* 
     return result;
 }
 
-DrawViewDimension* DrawDimHelper::makeDistDim(DrawViewPart* dvp,
-                                              std::string dimType,
-                                              Base::Vector3d inMin,      //is this scaled or unscaled??
-                                              Base::Vector3d inMax,      //expects scaled from makeExtentDim
-                                              bool extent)
+DrawViewDimension*
+DrawDimHelper::makeDistDim(DrawViewPart* dvp, std::string dimType,
+                           Base::Vector3d inMin,//is this scaled or unscaled??
+                           Base::Vector3d inMax,//expects scaled from makeExtentDim
+                           bool extent)
 {
-//    Base::Console().Message("DDH::makeDistDim() - inMin: %s inMax: %s\n",
-//                            DrawUtil::formatVector(inMin).c_str(),
-//                            DrawUtil::formatVector(inMax).c_str());
+    //    Base::Console().Message("DDH::makeDistDim() - inMin: %s inMax: %s\n",
+    //                            DrawUtil::formatVector(inMin).c_str(),
+    //                            DrawUtil::formatVector(inMax).c_str());
     TechDraw::DrawPage* page = dvp->findParentPage();
     std::string pageName = page->getNameInDocument();
 
-    TechDraw::DrawViewDimension *dim = nullptr;
+    TechDraw::DrawViewDimension* dim = nullptr;
     App::Document* doc = dvp->getDocument();
     std::string dimName = doc->getUniqueObjectName("Dimension");
     if (extent) {
@@ -400,7 +402,7 @@ DrawViewDimension* DrawDimHelper::makeDistDim(DrawViewPart* dvp,
     int iGV2 = dvp->add1CVToGV(tag2);
 
     gVerts = dvp->getVertexGeometry();
-    std::vector<App::DocumentObject *> objs;
+    std::vector<App::DocumentObject*> objs;
     std::vector<std::string> subs;
 
     std::stringstream ss;
@@ -417,25 +419,27 @@ DrawViewDimension* DrawDimHelper::makeDistDim(DrawViewPart* dvp,
     objs.push_back(dvp);
 
     if (extent) {
-        Base::Interpreter().runStringArg("App.activeDocument().addObject('TechDraw::DrawViewDimExtent', '%s')",
-                                         dimName.c_str());
-    } else {
+        Base::Interpreter().runStringArg(
+            "App.activeDocument().addObject('TechDraw::DrawViewDimExtent', '%s')", dimName.c_str());
+    }
+    else {
 
-        Base::Interpreter().runStringArg("App.activeDocument().addObject('TechDraw::DrawViewDimension', '%s')",
-                                         dimName.c_str());
+        Base::Interpreter().runStringArg(
+            "App.activeDocument().addObject('TechDraw::DrawViewDimension', '%s')", dimName.c_str());
     }
 
-    Base::Interpreter().runStringArg("App.activeDocument().%s.Type = '%s'",
-                                     dimName.c_str(), dimType.c_str());
+    Base::Interpreter().runStringArg(
+        "App.activeDocument().%s.Type = '%s'", dimName.c_str(), dimType.c_str());
 
-    dim = dynamic_cast<TechDraw::DrawViewDimension *>(doc->getObject(dimName.c_str()));
+    dim = dynamic_cast<TechDraw::DrawViewDimension*>(doc->getObject(dimName.c_str()));
     if (!dim) {
         throw Base::TypeError("DDH::makeDistDim - dim not found\n");
     }
     dim->References2D.setValues(objs, subs);
 
     Base::Interpreter().runStringArg("App.activeDocument().%s.addView(App.activeDocument().%s)",
-                                     pageName.c_str(), dimName.c_str());
+                                     pageName.c_str(),
+                                     dimName.c_str());
 
     dvp->requestPaint();
     return dim;
