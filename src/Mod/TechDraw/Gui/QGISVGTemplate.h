@@ -55,9 +55,9 @@ public:
     {
         Type = QGraphicsItem::UserType + 153
     };
-    int type() const { return Type; }
+    int type() const override { return Type; }
 
-    void draw();
+    void draw() override;
     void updateView(bool update = false) override;
 
     TechDraw::DrawSVGTemplate* getSVGTemplate();
