@@ -36,7 +36,7 @@ else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
-def generate(edge, dwelltime=0.0, repeat=1, retractheight=None):
+def generate(edge, dwelltime=0.0, repeat=1, retractheight=None, righthand=True):
     """
     Generates Gcode for tapping a single hole.
 
@@ -101,6 +101,10 @@ def generate(edge, dwelltime=0.0, repeat=1, retractheight=None):
     if dwelltime > 0.0:
         cmdParams["P"] = dwelltime
 
-    cmd = "G84"
+    # Get handedness of tool, set approprate G-code
+    if not (righthand):
+        cmd = "G74"
+    else:
+        cmd = "G84"
 
     return [Path.Command(cmd, cmdParams)]
