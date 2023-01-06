@@ -29,8 +29,8 @@ import Path
 import Path.Base.Drillable as Drillable
 import math
 
-Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
-# Path.Log.trackModule(Path.Log.thisModule())
+Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+Path.Log.trackModule(Path.Log.thisModule())
 
 
 class PathBaseGate(object):
@@ -129,7 +129,7 @@ class DRILLGate(PathBaseGate):
         subobj = shape.getElement(sub)
         if subobj.ShapeType not in ["Edge", "Face"]:
             return False
-        return Drillable.isDrillable(shape, subobj, vector=None)
+        return Drillable.isDrillable(shape, subobj, vector=None, allowPartial=True)
 
 
 class FACEGate(PathBaseGate):

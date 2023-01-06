@@ -167,7 +167,9 @@ def isDrillableFace(obj, candidate, tooldiameter=None, vector=App.Vector(0, 0, 1
         return True
 
 
-def isDrillableEdge(obj, candidate, tooldiameter=None, vector=App.Vector(0, 0, 1)):
+def isDrillableEdge(
+    obj, candidate, tooldiameter=None, vector=App.Vector(0, 0, 1), allowPartial=False
+):
     """
     checks if an edge is drillable
     """
@@ -181,9 +183,14 @@ def isDrillableEdge(obj, candidate, tooldiameter=None, vector=App.Vector(0, 0, 1
     )
 
     edge = candidate
-    if not (isinstance(edge.Curve, Part.Circle) and edge.isClosed()):
-        Path.Log.debug("expected a closed circular edge")
+    if not (isinstance(edge.Curve, Part.Circle)):
+        Path.Log.debug("expected a circular edge")
         return False
+
+    if isinstance(edge.Curve, Part.Circle):
+        if not (allowPartial or edge.isClosed()):
+            Path.Log.debug("expected a closed circular edge or allow partial")
+            return False
 
     if not hasattr(edge.Curve, "Radius"):
         Path.Log.debug("The Feature edge has no radius - Ellipse.")
@@ -203,7 +210,9 @@ def isDrillableEdge(obj, candidate, tooldiameter=None, vector=App.Vector(0, 0, 1
         return True
 
 
-def isDrillable(obj, candidate, tooldiameter=None, vector=App.Vector(0, 0, 1)):
+def isDrillable(
+    obj, candidate, tooldiameter=None, vector=App.Vector(0, 0, 1), allowPartial=False
+):
     """
     Checks candidates to see if they can be drilled at the given vector.
     Candidates can be either faces - circular or cylindrical or circular edges.
@@ -214,10 +223,13 @@ def isDrillable(obj, candidate, tooldiameter=None, vector=App.Vector(0, 0, 1)):
     for any candidate not drillable in this orientation.  Pass 'None' to vector to test whether
     the hole is drillable at any orientation.
 
+    allowPartial will permit selecting partial circular arcs manually.
+
     obj=Shape
     candidate = Face or Edge
     tooldiameter=float
     vector=App.Vector or None
+    allowPartial boolean
 
     """
     Path.Log.debug(
@@ -242,7 +254,7 @@ def isDrillable(obj, candidate, tooldiameter=None, vector=App.Vector(0, 0, 1)):
             else:
                 return isDrillableFace(obj, candidate, tooldiameter, vector)
         if candidate.ShapeType == "Edge":
-            return isDrillableEdge(obj, candidate, tooldiameter, vector)
+            return isDrillableEdge(obj, candidate, tooldiameter, vector, allowPartial)
         else:
             return False
 
