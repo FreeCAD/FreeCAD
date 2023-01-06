@@ -101,7 +101,7 @@ def generate(edge, dwelltime=0.0, repeat=1, retractheight=None, righthand=True):
     if dwelltime > 0.0:
         cmdParams["P"] = dwelltime
 
-    # Get handedness of tool, set approprate G-code
+    # Get handedness of tool, set appropriate G-code
     if not (righthand):
         cmd = "G74"
     else:
