@@ -166,7 +166,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
                     # Save value, then reset choices
                     n1 = sublist[0]
                     # s1 = getattr(base.Shape, n1)
-                    # Show Reference1 and cusomize options within
+                    # Show Reference1 and customize options within
                     self.form.geo1Reference.show()
                     self.form.geo1Reference_label.show()
                     self.form.geo1Reference_label.setText("Reference:  {}".format(n1))
@@ -183,14 +183,14 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
                     n2 = sublist[1]
                     # s1 = getattr(base.Shape, n1)
                     # s2 = getattr(base.Shape, n2)
-                    # Show Reference1 and cusomize options within
+                    # Show Reference1 and customize options within
                     self.form.geo1Reference.show()
                     self.form.geo1Reference_label.show()
                     self.form.geo1Reference_label.setText(
                         "Start Reference:  {}".format(n1)
                     )
                     self.customizeReference_1(n1)
-                    # Show Reference2 and cusomize options within
+                    # Show Reference2 and customize options within
                     self.form.geo2Reference.show()
                     self.form.geo2Reference_label.show()
                     self.form.geo2Reference_label.setText(

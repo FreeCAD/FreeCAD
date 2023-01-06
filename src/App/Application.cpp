@@ -347,7 +347,7 @@ void Application::setupPythonTypes()
 
 void Application::setupPythonException(PyObject* module)
 {
-    // Define cusom Python exception types
+    // Define custom Python exception types
     //
     Base::PyExc_FC_GeneralError = PyErr_NewException("Base.FreeCADError", PyExc_RuntimeError, nullptr);
     Py_INCREF(Base::PyExc_FC_GeneralError);
