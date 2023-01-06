@@ -356,8 +356,8 @@ protected:
 class BaseExport ParameterManager : public ParameterGrp
 {
 public:
-    ParameterManager();
-    ~ParameterManager() override;
+    /// Create a reference counted ParameterManager
+    static Base::Reference<ParameterManager> Create();
     static void Init();
     static void Terminate();
 
@@ -431,6 +431,9 @@ private:
     bool          gUseFilter            ;
     bool          gFormatPrettyPrint    ;
 
+private:
+    ParameterManager();
+    ~ParameterManager() override;
 };
 
 /** python wrapper function
