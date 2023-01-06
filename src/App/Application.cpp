@@ -1233,7 +1233,7 @@ void Application::AddParameterSet(const char* sName)
     auto it = mpcPramManager.find(sName);
     if ( it != mpcPramManager.end() )
         return;
-    mpcPramManager[sName] = new ParameterManager();
+    mpcPramManager[sName] = ParameterManager::Create();
 }
 
 void Application::RemoveParameterSet(const char* sName)
@@ -2870,10 +2870,10 @@ void Application::LoadParameters()
         mConfig["SystemParameter"] = mConfig["UserConfigPath"] + "system.cfg";
 
     // create standard parameter sets
-    _pcSysParamMngr = new ParameterManager();
+    _pcSysParamMngr = ParameterManager::Create();
     _pcSysParamMngr->SetSerializer(new ParameterSerializer(mConfig["SystemParameter"]));
 
-    _pcUserParamMngr = new ParameterManager();
+    _pcUserParamMngr = ParameterManager::Create();
     _pcUserParamMngr->SetSerializer(new ParameterSerializer(mConfig["UserParameter"]));
 
     try {
