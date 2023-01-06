@@ -330,6 +330,9 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
 #if QT_VERSION < QT_VERSION_CHECK(5,15,0)
     connect(d->windowMapper, qOverload<QWidget*>(&QSignalMapper::mapped),
             this, &MainWindow::onSetActiveSubWindow);
+#elif QT_VERSION < QT_VERSION_CHECK(6,0,0)
+    connect(d->windowMapper, &QSignalMapper::mappedWidget,
+            this, &MainWindow::onSetActiveSubWindow);
 #else
     connect(d->windowMapper, &QSignalMapper::mappedObject,
             this, [=](QObject* object) {
@@ -709,12 +712,20 @@ bool MainWindow::closeAllDocuments (bool close)
 
 void MainWindow::activateNextWindow ()
 {
-    d->mdiArea->activateNextSubWindow();
+    auto tab = d->mdiArea->findChild<QTabBar*>();
+    if (tab && tab->count() > 0) {
+        int index = (tab->currentIndex() + 1) % tab->count();
+        tab->setCurrentIndex(index);
+    }
 }
 
 void MainWindow::activatePreviousWindow ()
 {
-    d->mdiArea->activatePreviousSubWindow();
+    auto tab = d->mdiArea->findChild<QTabBar*>();
+    if (tab && tab->count() > 0) {
+        int index = (tab->currentIndex() + tab->count() - 1) % tab->count();
+        tab->setCurrentIndex(index);
+    }
 }
 
 void MainWindow::activateWorkbench(const QString& name)
