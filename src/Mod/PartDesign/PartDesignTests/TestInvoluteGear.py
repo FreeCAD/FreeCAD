@@ -20,10 +20,13 @@
 #***************************************************************************
 
 import unittest
+import pathlib
 
 import FreeCAD
 from Part import makeCircle, Precision
 import InvoluteGearFeature
+
+FIXTURE_PATH = pathlib.Path(__file__).parent / "Fixtures"
 
 class TestInvoluteGear(unittest.TestCase):
     def setUp(self):
@@ -107,6 +110,36 @@ class TestInvoluteGear(unittest.TestCase):
         pocket.Type = 'ThroughAll'
         self.assertSuccessfulRecompute()
         self.assertSolid(pocket.Shape)
+
+    def testRecomputeExternalGearFromV020(self):
+        FreeCAD.closeDocument(self.Doc.Name) # this was created in setUp(self)
+        self.Doc = FreeCAD.openDocument(str(FIXTURE_PATH / "InvoluteGear_v0-20.FCStd"))
+        created_with = f"created with {self.Doc.getProgramVersion()}"
+        gear = self.Doc.InvoluteGear # from fixture
+        fixture_length = 187.752 # from fixture, rounded to micrometer
+        length_delta = 0.001
+        self.assertClosedWire(gear.Shape) # no recompute yet, i.e. check original
+        self.assertAlmostEqual(fixture_length, gear.Shape.Length, delta=length_delta,
+            msg=f"Total wire length does not match fixture for gear {created_with}")
+        gear.enforceRecompute()
+        self.assertSuccessfulRecompute(gear, msg=f"Cannot recompute gear {created_with}")
+        self.assertAlmostEqual(fixture_length, gear.Shape.Length, delta=length_delta,
+            msg=f"Total wire length changed after recomputing gear {created_with}")
+
+    def testRecomputeInternalGearFromV020(self):
+        FreeCAD.closeDocument(self.Doc.Name) # this was created in setUp(self)
+        self.Doc = FreeCAD.openDocument(str(FIXTURE_PATH / "InternalInvoluteGear_v0-20.FCStd"))
+        created_with = f"created with {self.Doc.getProgramVersion()}"
+        gear = self.Doc.InvoluteGear # from fixture
+        fixture_length = 165.408 # from fixture, rounded to micrometer
+        length_delta = 0.001
+        self.assertClosedWire(gear.Shape) # no recompute yet, i.e. check original
+        self.assertAlmostEqual(fixture_length, gear.Shape.Length, delta=length_delta,
+            msg=f"Total wire length does not match fixture for gear {created_with}")
+        gear.enforceRecompute()
+        self.assertSuccessfulRecompute(gear, msg=f"Cannot recompute gear {created_with}")
+        self.assertAlmostEqual(fixture_length, gear.Shape.Length, delta=length_delta,
+            msg=f"Total wire length changed after recomputing gear {created_with}")
 
     def assertSuccessfulRecompute(self, *objs, msg=None):
         if (len(objs) == 0):
