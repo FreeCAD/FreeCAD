@@ -318,34 +318,30 @@ void DrawViewPart::partExec(TopoDS_Shape& shape)
 //prepare the shape for HLR processing by centering, scaling and rotating it
 GeometryObjectPtr DrawViewPart::makeGeometryForShape(TopoDS_Shape& shape)
 {
-//    Base::Console().Message("DVP::makeGeometryForShape() - %s\n", getNameInDocument());
-    gp_Pnt inputCenter = TechDraw::findCentroid(shape,
-                                                getProjectionCS());
+    //    Base::Console().Message("DVP::makeGeometryForShape() - %s\n", getNameInDocument());
+    gp_Pnt inputCenter = TechDraw::findCentroid(shape, getProjectionCS());
     m_saveCentroid = DU::toVector3d(inputCenter);
     m_saveShape = centerScaleRotate(this, shape, m_saveCentroid);
-    GeometryObjectPtr go =  buildGeometryObject(shape, getProjectionCS());
+    GeometryObjectPtr go = buildGeometryObject(shape, getProjectionCS());
     return go;
 }
 
 //Modify a shape by centering, scaling and rotating and return the centered (but not rotated) shape
-TopoDS_Shape DrawViewPart::centerScaleRotate(DrawViewPart* dvp,
-                                             TopoDS_Shape& inOutShape,
+TopoDS_Shape DrawViewPart::centerScaleRotate(DrawViewPart* dvp, TopoDS_Shape& inOutShape,
                                              Base::Vector3d centroid)
 {
-//    Base::Console().Message("DVP::centerScaleRotate() - %s\n", dvp->getNameInDocument());
+    //    Base::Console().Message("DVP::centerScaleRotate() - %s\n", dvp->getNameInDocument());
     gp_Ax2 viewAxis = dvp->getProjectionCS();
 
     //center shape on origin
-    TopoDS_Shape centeredShape = TechDraw::moveShape(inOutShape,
-                                                     centroid * -1.0);
+    TopoDS_Shape centeredShape = TechDraw::moveShape(inOutShape, centroid * -1.0);
 
     inOutShape = TechDraw::scaleShape(centeredShape, dvp->getScale());
     if (!DrawUtil::fpCompare(dvp->Rotation.getValue(), 0.0)) {
-        inOutShape = TechDraw::rotateShape(inOutShape,
-                                            viewAxis,
-                                            dvp->Rotation.getValue());  //conventional rotation
-     }
-//    BRepTools::Write(inOutShape, "DVPScaled.brep");            //debug
+        inOutShape = TechDraw::rotateShape(inOutShape, viewAxis,
+                                           dvp->Rotation.getValue());//conventional rotation
+    }
+    //    BRepTools::Write(inOutShape, "DVPScaled.brep");            //debug
     return centeredShape;
 }
 
@@ -798,7 +794,7 @@ TechDraw::VertexPtr DrawViewPart::getVertex(std::string vertexName) const
 //! returns existing BaseGeom of 2D Edge
 TechDraw::BaseGeomPtr DrawViewPart::getEdge(std::string edgeName) const
 {
-    const std::vector<TechDraw::BaseGeomPtr> &geoms = getEdgeGeometry();
+    const std::vector<TechDraw::BaseGeomPtr>& geoms = getEdgeGeometry();
     if (geoms.empty()) {
         //should not happen
         throw Base::IndexError("DVP::getEdge - No edges found.");
@@ -813,7 +809,7 @@ TechDraw::BaseGeomPtr DrawViewPart::getEdge(std::string edgeName) const
 //! returns existing 2d Face
 TechDraw::FacePtr DrawViewPart::getFace(std::string faceName) const
 {
-    const std::vector<TechDraw::FacePtr> &faces = getFaceGeometry();
+    const std::vector<TechDraw::FacePtr>& faces = getFaceGeometry();
     if (faces.empty()) {
         //should not happen
         throw Base::IndexError("DVP::getFace - No faces found.");
@@ -980,7 +976,7 @@ TopoDS_Shape DrawViewPart::getShape() const
             builder.Add(result, geometryObject->getVisSmooth());
         }
     }
-        //check for empty compound
+    //check for empty compound
     if (!result.IsNull() && TopoDS_Iterator(result).More()) {
         return result;
     }
@@ -1139,6 +1135,16 @@ gp_Ax2 DrawViewPart::getProjectionCS(const Base::Vector3d pt) const
         Base::Console().Warning("DVP - %s - failed to create projection CS\n", getNameInDocument());
     }
     return viewAxis;
+}
+
+gp_Ax2 DrawViewPart::getRotatedCS(const Base::Vector3d basePoint) const
+{
+    //    Base::Console().Message("DVP::getRotatedCS() - %s - %s\n", getNameInDocument(), Label.getValue());
+    gp_Ax2 unrotated = getProjectionCS(basePoint);
+    gp_Ax1 rotationAxis(DU::togp_Pnt(basePoint), unrotated.Direction());
+    double angleRad = Rotation.getValue() * M_PI / 180.0;
+    gp_Ax2 rotated = unrotated.Rotated(rotationAxis, -angleRad);
+    return rotated;
 }
 
 gp_Ax2 DrawViewPart::getViewAxis(const Base::Vector3d& pt, const Base::Vector3d& direction,

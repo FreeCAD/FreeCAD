@@ -114,9 +114,8 @@ public:
     const char* getViewProviderName() const override { return "TechDrawGui::ViewProviderViewPart"; }
     PyObject* getPyObject() override;
 
-    static TopoDS_Shape centerScaleRotate(DrawViewPart* dvp,
-                                            TopoDS_Shape& inOutShape,
-                                            Base::Vector3d centroid);
+    static TopoDS_Shape centerScaleRotate(DrawViewPart* dvp, TopoDS_Shape& inOutShape,
+                                          Base::Vector3d centroid);
     std::vector<TechDraw::DrawHatch*> getHatches() const;
     std::vector<TechDraw::DrawGeomHatch*> getGeomHatches() const;
     std::vector<TechDraw::DrawViewDimension*> getDimensions() const;
@@ -134,8 +133,10 @@ public:
     TechDraw::BaseGeomPtr getEdge(std::string edgeName) const;
     TechDraw::FacePtr getFace(std::string faceName) const;
 
-    TechDraw::BaseGeomPtr getGeomByIndex(int idx) const;               //get existing geom for edge idx in projection
-    TechDraw::VertexPtr getProjVertexByIndex(int idx) const;           //get existing geom for vertex idx in projection
+    TechDraw::BaseGeomPtr
+    getGeomByIndex(int idx) const;//get existing geom for edge idx in projection
+    TechDraw::VertexPtr
+    getProjVertexByIndex(int idx) const;//get existing geom for vertex idx in projection
 
     TechDraw::VertexPtr getProjVertexByCosTag(std::string cosTag);
     std::vector<TechDraw::BaseGeomPtr>
@@ -157,6 +158,7 @@ public:
     virtual gp_Ax2 getViewAxis(const Base::Vector3d& pt, const Base::Vector3d& direction,
                                const bool flip = true) const;
     virtual gp_Ax2 getProjectionCS(Base::Vector3d pt = Base::Vector3d(0.0, 0.0, 0.0)) const;
+    virtual gp_Ax2 getRotatedCS(Base::Vector3d basePoint = Base::Vector3d(0.0, 0.0, 0.0)) const;
     virtual Base::Vector3d getXDirection() const;//don't use XDirection.getValue()
     virtual Base::Vector3d getOriginalCentroid() const;
     virtual Base::Vector3d getCurrentCentroid() const;
