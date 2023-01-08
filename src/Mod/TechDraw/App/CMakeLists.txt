@@ -108,6 +108,12 @@ SET(Draw_SRCS
     DrawViewDimExtent.h
     LandmarkDimension.cpp
     LandmarkDimension.h
+    DimensionGeometry.cpp
+    DimensionGeometry.h
+    DimensionReferences.cpp
+    DimensionReferences.h
+    DimensionFormatter.cpp
+    DimensionFormatter.h
     DrawViewBalloon.cpp
     DrawViewBalloon.h
     DrawViewSection.cpp

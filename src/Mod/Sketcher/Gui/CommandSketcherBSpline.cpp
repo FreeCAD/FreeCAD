@@ -1210,16 +1210,6 @@ void CmdSketcherJoinCurves::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    // TODO: confirm whether or not we need to check for OCC version
-#if OCC_VERSION_HEX < 0x060900
-    QMessageBox::warning(Gui::getMainWindow(),
-                         QObject::tr("Wrong OCE/OCC version"),
-                         QObject::tr("This version of OCE/OCC "
-                                     "does not support knot operation. "
-                                     "You need 6.9.0 or higher"));
-    return;
-#endif
-
     // get the selection
     std::vector<Gui::SelectionObject> selection;
     selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());

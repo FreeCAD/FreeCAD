@@ -38,6 +38,7 @@
 #include <Base/Parameter.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 
+#include "PreferencesGui.h"
 #include "QGIFace.h"
 #include <QByteArrayMatcher>
 #include "QGCustomImage.h"
@@ -47,7 +48,6 @@
 #include "QGIPrimPath.h"
 #include "Rez.h"
 #include "ZVALUE.h"
-
 
 using namespace TechDrawGui;
 using namespace TechDraw;
@@ -64,7 +64,7 @@ QGIFace::QGIFace(int index) :
 
     //setStyle(Qt::NoPen);    //don't draw face lines, just fill for debugging
     setStyle(Qt::DashLine);
-    m_geomColor = QColor(Qt::black);
+    m_geomColor = PreferencesGui::getAccessibleQColor(QColor(Qt::black));
     setLineWeight(0.5);                   //0 = cosmetic
 
     setPrettyNormal();

@@ -234,7 +234,7 @@ void QGEPath::showMarkers(std::vector<QPointF> points)
 //TODO: double r = getMarkerSize();
 //      v->setRadius(r);
         v->setRadius(50.0);
-        v->setNormalColor(QColor(Qt::black));
+        v->setNormalColor(PreferencesGui::getAccessibleQColor(QColor(Qt::black)));
         v->setZValue(ZVALUE::VERTEX);
         v->setPos(p);
         v->show();

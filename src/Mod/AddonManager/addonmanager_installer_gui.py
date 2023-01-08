@@ -521,6 +521,7 @@ class MacroInstallerGUI(QtCore.QObject):
         """The provided addon object must have an attribute called "macro", and that attribute must
         itself provide a callable "install" method that takes a single string, the path to the
         installation location."""
+        super().__init__()
         self.addon_to_install = addon
         self.worker_thread = None
         self.installer = MacroInstaller(self.addon_to_install)

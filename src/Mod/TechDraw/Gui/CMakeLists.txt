@@ -49,6 +49,7 @@ set(TechDrawGui_LIBS
 qt_add_resources(TechDrawGui_SRCS Resources/TechDraw.qrc)
 
 set(TechDrawGui_UIC_SRCS
+    DlgStringListEditor.ui
     DlgPageChooser.ui
     DlgPrefsTechDrawAdvanced.ui
     DlgPrefsTechDrawAnnotation.ui
@@ -83,6 +84,8 @@ set(TechDrawGui_UIC_SRCS
     TaskMoveView.ui
     TaskProjection.ui
     TaskComplexSection.ui
+    TaskDimRepair.ui
+
 )
 
 SET(MRTE_SRCS
@@ -107,6 +110,8 @@ SET(TechDrawGui_SRCS
     CommandExtensionDims.cpp
     CommandExtensionPack.cpp
     CommandStack.cpp
+    DimensionValidators.cpp
+    DimensionValidators.h
     Resources/TechDraw.qrc
     PreCompiled.cpp
     PreCompiled.h
@@ -115,6 +120,9 @@ SET(TechDrawGui_SRCS
     TaskProjGroup.ui
     TaskProjGroup.cpp
     TaskProjGroup.h
+    DlgStringListEditor.ui
+    DlgStringListEditor.cpp
+    DlgStringListEditor.h
     DlgPageChooser.ui
     DlgPageChooser.cpp
     DlgPageChooser.h
@@ -205,9 +213,9 @@ SET(TechDrawGui_SRCS
     TaskDetail.h
     PreferencesGui.cpp
     PreferencesGui.h
-    TaskCosmeticLine.ui
     TaskCosmeticLine.cpp
     TaskCosmeticLine.h
+    TaskCosmeticLine.ui
     TaskMoveView.ui
     TaskProjection.cpp
     TaskProjection.h
@@ -215,6 +223,9 @@ SET(TechDrawGui_SRCS
     TaskComplexSection.cpp
     TaskComplexSection.h
     TaskComplexSection.ui
+    TaskDimRepair.cpp
+    TaskDimRepair.h
+    TaskDimRepair.ui
     Widgets/CompassDialWidget.cpp
     Widgets/CompassDialWidget.h
     Widgets/CompassWidget.cpp
@@ -425,6 +436,7 @@ SET(TechDrawGuiTaskDlgs_SRCS
     TaskMoveView.ui
     TaskProjection.ui
     TaskComplexSection.ui
+    TaskDimRepair.ui
 )
 
 SOURCE_GROUP("MRTE" FILES ${MRTE_SRCS})

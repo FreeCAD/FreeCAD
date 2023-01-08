@@ -434,6 +434,10 @@ class TestMacroInstallerGui(unittest.TestCase):
     def tearDown(self):
         pass
 
+    def test_class_is_initialized(self):
+        """Connecting to a signal does not throw"""
+        self.installer.finished.connect(lambda: None)
+
     def test_ask_for_toolbar_no_dialog_default_exists(self):
         self.installer.addon_params.set("alwaysAskForToolbar", False)
         self.installer.addon_params.set("CustomToolbarName", "UnitTestCustomToolbar")

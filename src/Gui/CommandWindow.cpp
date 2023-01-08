@@ -229,7 +229,12 @@ StdCmdActivatePrevWindow::StdCmdActivatePrevWindow()
     sWhatsThis    = "Std_ActivatePrevWindow";
     sStatusTip    = QT_TR_NOOP("Activate previous window");
     sPixmap       = "Std_WindowPrev";
-    sAccel        = keySequenceToAccel(QKeySequence::PreviousChild);
+    // Depending on the OS 'QKeySequence::PreviousChild' gives
+    // Ctrl+Shift+Backtab instead of Ctrl+Shift+Tab which leads
+    // to a strange behaviour when using it.
+    // A workaround is to create a shortcut as Shift + QKeySequence::NextChild
+    static std::string previousChild = std::string("Shift+") + keySequenceToAccel(QKeySequence::NextChild);
+    sAccel        = previousChild.c_str();
     eType         = 0;
 }
 

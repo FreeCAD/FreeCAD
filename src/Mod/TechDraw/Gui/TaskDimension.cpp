@@ -327,8 +327,8 @@ void TaskDimension::onDimUseDefaultClicked()
 {
     pointPair points = m_parent->getDimFeat()->getLinearPoints();
     //duplicate coordinate conversion logic from QGIViewDimension
-    Base::Vector2d first2(points.first.x, -points.first.y);
-    Base::Vector2d second2(points.second.x, -points.second.y);
+    Base::Vector2d first2(points.first().x, -points.first().y);
+    Base::Vector2d second2(points.second().x, -points.second().y);
     double lineAngle = (second2 - first2).Angle();
     ui->dsbDimAngle->setValue(lineAngle * 180.0 / M_PI);
 }
@@ -345,8 +345,8 @@ void TaskDimension::onExtUseDefaultClicked()
 {
     pointPair points = m_parent->getDimFeat()->getLinearPoints();
     //duplicate coordinate conversion logic from QGIViewDimension
-    Base::Vector2d first2(points.first.x, -points.first.y);
-    Base::Vector2d second2(points.second.x, -points.second.y);
+    Base::Vector2d first2(points.first().x, -points.first().y);
+    Base::Vector2d second2(points.second().x, -points.second().y);
     Base::Vector2d lineDirection = second2 - first2;
     Base::Vector2d extensionDirection(-lineDirection.y, lineDirection.x);
     double extensionAngle = extensionDirection.Angle();

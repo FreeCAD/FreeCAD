@@ -107,7 +107,7 @@ class TestUninstallerGUI(unittest.TestCase):
             translate("AddonsInstaller", "Removing Addon"),
             QtWidgets.QDialogButtonBox.Cancel,
         )
-        QtCore.QTimer.singleShot(20, worker.stop)
+        QtCore.QTimer.singleShot(1000, worker.stop) # If the test fails, this kills the "worker"
         self.uninstaller_gui._confirm_uninstallation = lambda: True
         self.uninstaller_gui._run_uninstaller = worker.work
         self.uninstaller_gui._finalize = lambda: None
@@ -121,6 +121,7 @@ class TestUninstallerGUI(unittest.TestCase):
         self.assertTrue(
             dialog_watcher.button_found, "Failed to find the expected button"
         )
+        worker.stop()
 
     def test_success_dialog(self):
         dialog_watcher = DialogWatcher(

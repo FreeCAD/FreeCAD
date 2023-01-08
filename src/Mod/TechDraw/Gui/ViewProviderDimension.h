@@ -84,6 +84,7 @@ public:
     double prefWeight() const;
     int prefStandardAndStyle() const;
     bool canDelete(App::DocumentObject* obj) const override;
+    void setPixmapForType();
 
 protected:
     void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop) override;

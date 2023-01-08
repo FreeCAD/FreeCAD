@@ -95,7 +95,6 @@ public:
 
 protected:
     void connectSignalMapper(QSignalMapper* mapper);
-    void connectSignalMapper(QObject *sender, const char *signal, QSignalMapper* mapper);
 
 protected:
     App::DocumentObjectWeakPtrT featurePtr;

@@ -609,7 +609,7 @@ class _Site(ArchIFC.IfcProduct):
         if not "Elevation" in pl:
             obj.addProperty("App::PropertyLength","Elevation","Site",QT_TRANSLATE_NOOP("App::Property","The elevation of level 0 of this site"))
         if not "Url" in pl:
-            obj.addProperty("App::PropertyString","Url","Site",QT_TRANSLATE_NOOP("App::Property","A url that shows this site in a mapping website"))
+            obj.addProperty("App::PropertyString","Url","Site",QT_TRANSLATE_NOOP("App::Property","A URL that shows this site in a mapping website"))
         if not "Additions" in pl:
             obj.addProperty("App::PropertyLinkList","Additions","Site",QT_TRANSLATE_NOOP("App::Property","Other shapes that are appended to this object"))
         if not "Subtractions" in pl:

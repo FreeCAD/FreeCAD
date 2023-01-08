@@ -87,7 +87,7 @@ short LandmarkDimension::mustExecute() const
 
 App::DocumentObjectExecReturn *LandmarkDimension::execute()
 {
-//    Base::Console().Message("LD::execute() - %s\n", getNameInDocument());
+    Base::Console().Message("LD::execute() - %s\n", getNameInDocument());
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
@@ -99,6 +99,7 @@ App::DocumentObjectExecReturn *LandmarkDimension::execute()
     References2D.setValue(dvp);
 
     std::vector<DocumentObject*> features = References3D.getValues();
+    Base::Console().Message("LD::execute - features: %d\n", features.size());
     //if distance, required size = 2
     //if angle, required size = 3;    //not implemented yet
     unsigned int requiredSize = 2;
@@ -129,14 +130,13 @@ App::DocumentObjectExecReturn *LandmarkDimension::execute()
             index++;
         }
     }
-    m_linearPoints.first = points.front();
-    m_linearPoints.second = points.back();
-
-    //m_anglePoints.first =                  //not implemented yet
+    Base::Console().Message("LD::execute - front: %s back: %s\n",
+                            DrawUtil::formatVector(points.front()).c_str(),
+                            DrawUtil::formatVector(points.back()).c_str());
+    setLinearPoints(points.front(), points.back());
 
     App::DocumentObjectExecReturn* dvdResult = DrawViewDimension::execute();
 
-//    dvp->resetReferenceVerts();
     dvp->addReferencesToGeom();
     dvp->requestPaint();
 
@@ -156,51 +156,6 @@ Base::Vector3d LandmarkDimension::projectPoint(const Base::Vector3d& pt, DrawVie
     projector.Project(gPt, prjPnt);
     Base::Vector3d result(prjPnt.X(), prjPnt.Y(), 0.0);
     result = DrawUtil::invertY(result);
-    return result;
-}
-
-std::vector<Base::Vector3d> LandmarkDimension::get2DPoints() const
-{
-//    Base::Console().Message("LD::get2DPoints()\n");
-    std::vector<Base::Vector3d> result;
-    std::vector<App::DocumentObject*> refs3 = References3D.getValues();
-    TechDraw::DrawViewPart* dvp = getViewPart();
-    for (auto& r: refs3) {
-        Base::Vector3d loc3d = ShapeExtractor::getLocation3dFromFeat(r);
-        Base::Vector3d loc2d = projectPoint(loc3d, dvp);
-        result.push_back(loc2d);
-    }
-    return result;
-}
-
-//! References2D are only used to store ParentView
-bool LandmarkDimension::has2DReferences() const
-{
-    bool result = false;
-    const std::vector<App::DocumentObject*> &objects = References2D.getValues();
-    if (!objects.empty()) {
-        result = true;
-    }
-    return result;
-}
-
-//! References2D are only used to store ParentView
-bool LandmarkDimension::checkReferences2D() const
-{
-    return true;
-}
-
-pointPair LandmarkDimension::getPointsTwoVerts()
-{
-//    Base::Console().Message("LD::getPointsTwoVerts() - %s\n", getNameInDocument());
-    pointPair result;
-
-    TechDraw::DrawViewPart* dvp = getViewPart();
-    if (dvp) {
-        std::vector<Base::Vector3d> points = get2DPoints();
-        result.first  = points.at(0) * dvp->getScale();
-        result.second = points.at(1) * dvp->getScale();
-    }
     return result;
 }
 
@@ -239,18 +194,13 @@ void LandmarkDimension::onDocumentRestored()
     }
     ReferenceTags.setValues(tags);
 
-    m_linearPoints.first = points.front();
-    m_linearPoints.second = points.back();
+    setLinearPoints(points.front(), points.back());
 
     DrawViewDimension::onDocumentRestored();
 }
 
 void LandmarkDimension::unsetupObject()
 {
-
-//    bool isRemoving = testStatus(App::ObjectStatus::Remove);
-//    Base::Console().Message("LD::unsetupObject - isRemove: %d status: %X\n",
-//                            isRemoving, getStatus());
     TechDraw::DrawViewPart* dvp = getViewPart();
 
     std::vector<std::string> tags = ReferenceTags.getValues();
@@ -260,15 +210,4 @@ void LandmarkDimension::unsetupObject()
     dvp->resetReferenceVerts();
     dvp->requestPaint();
 }
-
-
-//??? why does getPyObject work sometimes and no others???
-//PyObject *LandmarkDimension::getPyObject(void)
-//{
-//    if (PythonObject.is(Py::_None())) {
-//        // ref counter is set to 1
-//        PythonObject = Py::Object(new LandmarkDimensionPy(this), true);
-//    }
-//    return Py::new_reference_to(PythonObject);
-//}
 

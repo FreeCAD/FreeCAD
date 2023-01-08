@@ -57,11 +57,6 @@
 #ifndef _QtAll__
 # include <Gui/QtAll.h>
 #endif
-#include <QGLWidget>
-#include <QPaintEngine>
-#include <QStatusBar>
-#include <QSvgGenerator>
-#include <QTextList>
 #include <QXmlQuery>
 #include <QXmlResultItems>
 

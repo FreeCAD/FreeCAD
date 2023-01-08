@@ -47,23 +47,17 @@ public:
                                                                  //Cosmetic End points are stored in DVD::References2d
     App::PropertyLinkSubList       Source3d;                     //Part::Feature & SubElements  TBI
     App::PropertyInteger           DirExtent;                    //Horizontal, Vertical, TBD
-    App::PropertyStringList        CosmeticTags;                 //id of cosmetic end points.
+    App::PropertyStringList        CosmeticTags;                 //id of cosmetic end points.  obsolete!
 
     App::DocumentObjectExecReturn *execute() override;
-    short mustExecute() const override;
-    void unsetupObject() override;
 
-    bool checkReferences2D() const override;
-    int getRefType() const override { return twoVertex; }
-    pointPair getLinearPoints() override { return getPointsTwoVerts(); }
+    int getRefType() const override { return extent; }
 
-    //return PyObject as DrawViewDimExtentPy
     PyObject *getPyObject() override;
 
 protected:
-    void onChanged(const App::Property* prop) override;
-    std::vector<std::string> getSubNames();
-    pointPair getPointsTwoVerts() override;
+    virtual pointPair getPointsExtent(ReferenceVector references);
+    bool checkReferences2D() const override;
 
 private:
 };

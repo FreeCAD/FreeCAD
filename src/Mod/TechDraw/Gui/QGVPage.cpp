@@ -338,7 +338,7 @@ void QGVPage::drawBackground(QPainter *painter, const QRectF &)
     QRectF paperRect(0, -pageHeight, pageWidth, pageHeight);
     QPolygon poly = mapFromScene(paperRect);
 
-    QBrush pageBrush(Qt::white);
+    QBrush pageBrush(PreferencesGui::pageQColor());
     painter->setBrush(pageBrush);
 
     painter->drawRect(poly.boundingRect());

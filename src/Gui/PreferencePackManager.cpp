@@ -123,10 +123,10 @@ void PreferencePack::applyConfigChanges() const
 {
     auto configFile = _path / (_metadata.name() + ".cfg");
     if (fs::exists(configFile)) {
-        ParameterManager newParameters;
-        newParameters.LoadDocument(configFile.string().c_str());
+        auto newParameters = ParameterManager::Create();
+        newParameters->LoadDocument(configFile.string().c_str());
         auto baseAppGroup = App::GetApplication().GetUserParameter().GetGroup("BaseApp");
-        newParameters.GetGroup("BaseApp")->insertTo(baseAppGroup);
+        newParameters->GetGroup("BaseApp")->insertTo(baseAppGroup);
     }
 }
 
@@ -434,17 +434,17 @@ void PreferencePackManager::save(const std::string& name, const std::vector<Temp
     AddPackToMetadata(name);
 
     // Create the config file
-    ParameterManager outputParameterManager;
-    outputParameterManager.CreateDocument();
+    auto outputParameterManager = ParameterManager::Create();
+    outputParameterManager->CreateDocument();
     for (const auto& t : templates) {
-        ParameterManager templateParameterManager;
-        templateParameterManager.LoadDocument(t.path.string().c_str());
-        copyTemplateParameters(templateParameterManager, outputParameterManager);
+        auto templateParameterManager = ParameterManager::Create();
+        templateParameterManager->LoadDocument(t.path.string().c_str());
+        copyTemplateParameters(*templateParameterManager, *outputParameterManager);
     }
     auto savedPreferencePacksDirectory =
         fs::path(App::Application::getUserAppDataDir()) / "SavedPreferencePacks";
     auto cfgFilename = savedPreferencePacksDirectory / name / (name + ".cfg");
-    outputParameterManager.SaveDocument(cfgFilename.string().c_str());
+    outputParameterManager->SaveDocument(cfgFilename.string().c_str());
 }
 
 // Needed until we support only C++20 and above and can use std::string's built-in ends_with()

@@ -261,53 +261,44 @@ void ParameterGrp::insertTo(Base::Reference<ParameterGrp> Grp)
 
 void ParameterGrp::exportTo(const char* FileName)
 {
-    ParameterManager Mngr;
+    auto Mngr = ParameterManager::Create();
 
-    Mngr.CreateDocument();
-
-    Mngr.ref();
+    Mngr->CreateDocument();
 
     // copy all into the new document
-    insertTo(&Mngr);
+    insertTo(Base::Reference<ParameterGrp>(Mngr));
 
-    Mngr.SaveDocument(FileName);
-    Mngr.unrefNoDelete();
+    Mngr->SaveDocument(FileName);
 }
 
 void ParameterGrp::importFrom(const char* FileName)
 {
-    ParameterManager Mngr;
+    auto Mngr = ParameterManager::Create();
 
-    if (Mngr.LoadDocument(FileName) != 1)
+    if (Mngr->LoadDocument(FileName) != 1)
         throw FileException("ParameterGrp::import() cannot load document", FileName);
 
-    ref();
-    Mngr.copyTo(Base::Reference<ParameterGrp>(this));
-    unrefNoDelete();
+    Mngr->copyTo(Base::Reference<ParameterGrp>(this));
 }
 
 void ParameterGrp::insert(const char* FileName)
 {
-    ParameterManager Mngr;
+    auto Mngr = ParameterManager::Create();
 
-    if (Mngr.LoadDocument(FileName) != 1)
+    if (Mngr->LoadDocument(FileName) != 1)
         throw FileException("ParameterGrp::import() cannot load document", FileName);
 
-    ref();
-    Mngr.insertTo(Base::Reference<ParameterGrp>(this));
-    unrefNoDelete();
+    Mngr->insertTo(Base::Reference<ParameterGrp>(this));
 }
 
 void ParameterGrp::revert(const char* FileName)
 {
-    ParameterManager Mngr;
+    auto Mngr = ParameterManager::Create();
 
-    if (Mngr.LoadDocument(FileName) != 1)
+    if (Mngr->LoadDocument(FileName) != 1)
         throw FileException("ParameterGrp::revert() cannot load document", FileName);
 
-    Mngr.ref();
-    revert(Base::Reference<ParameterGrp>(&Mngr));
-    Mngr.unrefNoDelete();
+    revert(Base::Reference<ParameterGrp>(Mngr));
 }
 
 void ParameterGrp::revert(Base::Reference<ParameterGrp> Grp)
@@ -1524,6 +1515,11 @@ ParameterManager::~ParameterManager()
     _Reset();
     delete _pDocument;
     delete paramSerializer;
+}
+
+Base::Reference<ParameterManager> ParameterManager::Create()
+{
+    return Base::Reference<ParameterManager>(new ParameterManager());
 }
 
 void ParameterManager::Init()

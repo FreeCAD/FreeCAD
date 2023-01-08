@@ -85,7 +85,7 @@ QColor QGIEdge::getHiddenColor()
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
     App::Color fcColor = App::Color((uint32_t) hGrp->GetUnsigned("HiddenColor", 0x000000FF));
-    return fcColor.asValue<QColor>();
+    return PreferencesGui::getAccessibleQColor(fcColor.asValue<QColor>());
 }
 
 Qt::PenStyle QGIEdge::getHiddenStyle()

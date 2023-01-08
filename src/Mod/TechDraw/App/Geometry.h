@@ -133,6 +133,8 @@ class TechDrawExport BaseGeom : public std::enable_shared_from_this<BaseGeom>
         boost::uuids::uuid getTag() const;
         virtual std::string getTagAsString() const;
 
+        std::string geomTypeName();
+
 private:
         void intersectionLL(TechDraw::BaseGeomPtr geom1,
                             TechDraw::BaseGeomPtr geom2,
@@ -274,7 +276,7 @@ class TechDrawExport BSpline: public BaseGeom
         bool isLine();
         bool isCircle();
         TopoDS_Edge asCircle(bool& isArc);
-        void getCircleParms(bool& isCircle, double& radius, Base::Vector3d& center, bool& isArc);
+//        void getCircleParms(bool& isCircle, double& radius, Base::Vector3d& center, bool& isArc);
         bool intersectsArc(Base::Vector3d p1, Base::Vector3d p2);
         std::vector<BezierSegment> segments;
 };
@@ -390,6 +392,10 @@ class TechDrawExport GeometryUtils
         static TopoDS_Edge edgeFromGeneric(TechDraw::GenericPtr g);
         static TopoDS_Edge edgeFromCircle(TechDraw::CirclePtr c);
         static TopoDS_Edge edgeFromCircleArc(TechDraw::AOCPtr c);
+
+        static bool isCircle(TopoDS_Edge occEdge);
+        static bool getCircleParms(TopoDS_Edge occEdge, double& radius, Base::Vector3d& center, bool& isArc);
+        static TopoDS_Edge asCircle(TopoDS_Edge occEdge, bool& arc);
 };
 
 } //end namespace TechDraw

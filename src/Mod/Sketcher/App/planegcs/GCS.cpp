@@ -4547,16 +4547,24 @@ void System::identifyConflictingRedundantConstraints(   Algorithm alg,
     std::set<Constraint *> skipped;
     SET_I satisfiedGroups;
     while (1) {
+        // conflictingMap contains all the eligible constraints of conflict groups not yet satisfied.
+        // as groups get satisfied, the map created on every iteration is smaller, until such time it is
+        // empty and the infinite loop is exited.
+        // The guarantee that the loop will be exited originates from the fact that in each iteration the algorithm will
+        // select one constraint from the conflict groups, which will satisfy at least one group.
         std::map< Constraint *, SET_I > conflictingMap;
         for (std::size_t i=0; i < conflictGroups.size(); i++) {
             if (satisfiedGroups.count(i) == 0) {
                 for (std::size_t j=0; j < conflictGroups[i].size(); j++) {
                     Constraint *constr = conflictGroups[i][j];
-                    if (constr->getTag() != 0) // exclude constraints tagged with zero
+                    bool isinternalalignment = (constr->isInternalAlignment() == Constraint::Alignment::InternalAlignment);
+                    bool priorityconstraint = (constr->getTag() == 0);
+                    if (!priorityconstraint && !isinternalalignment) // exclude constraints tagged with zero and internal alignment
                         conflictingMap[constr].insert(i);
                 }
             }
         }
+        
         if (conflictingMap.empty())
             break;
 
@@ -4565,32 +4573,28 @@ void System::identifyConflictingRedundantConstraints(   Algorithm alg,
         for (std::map< Constraint *, SET_I >::const_iterator it=conflictingMap.begin();
                 it != conflictingMap.end(); ++it) {
 
-            bool isinternalalignment = ((it->first)->isInternalAlignment() == Constraint::Alignment::InternalAlignment);
             int numberofsets =  static_cast<int>(it->second.size()); // number of sets in which the constraint appears
 
-
             /* This is a heuristic algorithm to propose the user which constraints from a redundant/conflicting set should be removed. It is based on the following principles:
-             * 1. if it is internal alignment, we discard it from the contest, as it is inherent to the geometry and cannot be the conflicting/redundant to be removed, so it is not proposed.
-             * 2. if the current constraint is more popular than previous ones (appears in more sets), take it. This prioritises removal of constraints that cause several independent groups of constraints to be conflicting/redundant. It is based on the observation that the redundancy/conflict is caused by the lesser amount of constraints.
-             * 3. if there is already a constraint ranking in the contest, and the current one is as popular, prefer the constraint that removes a lesser amount of DoFs. This prioritises removal of sketcher constraints (not solver constraints) that generates a higher amount of solver constraints. It is based on
+             * 1. if the current constraint is more popular than previous ones (appears in more sets), take it. This prioritises removal of constraints that cause several independent groups of constraints to be conflicting/redundant. It is based on the observation that the redundancy/conflict is caused by the lesser amount of constraints.
+             * 2. if there is already a constraint ranking in the contest, and the current one is as popular, prefer the constraint that removes a lesser amount of DoFs. This prioritises removal of sketcher constraints (not solver constraints) that generates a higher amount of solver constraints. It is based on
              * the observation that constraints taking a higher amount of DoFs (such as symmetry) are preferred by the user, who may not see the redundancy of simpler
              * ones.
-             * 4. if there is already a constraint ranking in the context, the current one is as popular, and they remove the same amount of DoFs, prefer removal of
+             * 3. if there is already a constraint ranking in the context, the current one is as popular, and they remove the same amount of DoFs, prefer removal of
              * the latest introduced.
              */
 
-            if ( !isinternalalignment && //  (1) internal alignment => Discard
-                 (   numberofsets > maxPopularity || // (2)
+            if ( (   numberofsets > maxPopularity || // (1)
                     (numberofsets == maxPopularity && mostPopular &&
-                    tagmultiplicity.at(it->first->getTag()) < tagmultiplicity.at(mostPopular->getTag())) || // (3)
+                    tagmultiplicity.at(it->first->getTag()) < tagmultiplicity.at(mostPopular->getTag())) || // (2)
 
                     (numberofsets == maxPopularity && mostPopular &&
                     tagmultiplicity.at(it->first->getTag()) == tagmultiplicity.at(mostPopular->getTag()) &&
-                        it->first->getTag() > mostPopular->getTag())) // (4)
+                        it->first->getTag() > mostPopular->getTag())) // (3)
 
             ) {
                 mostPopular = it->first;
-                maxPopularity = it->second.size();
+                maxPopularity = numberofsets;
             }
         }
         if (maxPopularity > 0) {
@@ -4675,10 +4679,12 @@ void System::identifyConflictingRedundantConstraints(   Algorithm alg,
     SET_I conflictingTagsSet;
     for (std::size_t i=0; i < conflictGroups.size(); i++) {
         for (std::size_t j=0; j < conflictGroups[i].size(); j++) {
-            conflictingTagsSet.insert(conflictGroups[i][j]->getTag());
+            bool isinternalalignment = (conflictGroups[i][j]->isInternalAlignment() == Constraint::Alignment::InternalAlignment);
+            if (conflictGroups[i][j]->getTag() != 0 && !isinternalalignment) // exclude constraints tagged with zero and internal alignment
+                conflictingTagsSet.insert(conflictGroups[i][j]->getTag());
         }
     }
-    conflictingTagsSet.erase(0); // exclude constraints tagged with zero
+
     conflictingTags.resize(conflictingTagsSet.size());
     std::copy(conflictingTagsSet.begin(), conflictingTagsSet.end(),
                 conflictingTags.begin());
