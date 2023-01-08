@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2021 sliptonic <shopinthewoods@gmail.com>               *
+# *   Copyright (c) 2023 luvtofish                                          *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
 # *   as published by the Free Software Foundation; either version 2 of     *
 # *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
+# *   for detail see the LICENSE text file.                                 *
 # *                                                                         *
 # *   This program is distributed in the hope that it will be useful,       *
 # *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
@@ -27,6 +28,7 @@ __title__ = "Tapping Path Generator"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"
 __doc__ = "Generates the Tapping toolpath for a single spotshape"
+__contributors__ = "luvtofish (Dan Henderson)"
 
 
 if False:
@@ -101,7 +103,7 @@ def generate(edge, dwelltime=0.0, repeat=1, retractheight=None, righthand=True):
     if dwelltime > 0.0:
         cmdParams["P"] = dwelltime
 
-    # Get handedness of tool, set appropriate G-code
+    # Check if tool is lefthand or righthand, set appropriate G-code
     if not (righthand):
         cmd = "G74"
     else:

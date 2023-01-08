@@ -2,12 +2,13 @@
 # ***************************************************************************
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *   Copyright (c) 2020 Schildkroet                                        *
+# *   Copyright (c) 2023 luvtofish                                          *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
 # *   as published by the Free Software Foundation; either version 2 of     *
 # *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
+# *   for detail see the LICENSE text file.                                 *
 # *                                                                         *
 # *   This program is distributed in the hope that it will be useful,       *
 # *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
@@ -39,7 +40,7 @@ __title__ = "Path Tapping Operation"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"
 __doc__ = "Path Tapping operation."
-__contributors__ = "luvtofish"
+__contributors__ = "luvtofish (Dan Henderson)"
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
@@ -97,38 +98,8 @@ class ObjectTapping(PathCircularHoleBase.ObjectOp):
             PathOp.FeatureBaseGeometry | PathOp.FeatureLocations | PathOp.FeatureCoolant
         )
 
-    #    def onDocumentRestored(self, obj):
-    #        if not hasattr(obj, "chipBreakEnabled"):
-    #            obj.addProperty(
-    #                "App::PropertyBool",
-    #                "chipBreakEnabled",
-    #                "Drill",
-    #                QT_TRANSLATE_NOOP("App::Property", "Use chipbreaking"),
-    #            )
-
     def initCircularHoleOperation(self, obj):
         """initCircularHoleOperation(obj) ... add tapping specific properties to obj."""
-        #        obj.addProperty(
-        #            "App::PropertyLength",
-        #            "PeckDepth",
-        #            "Drill",
-        #            QT_TRANSLATE_NOOP(
-        #                "App::Property",
-        #                "Incremental Drill depth before retracting to clear chips",
-        #            ),
-        #        )
-        #        obj.addProperty(
-        #            "App::PropertyBool",
-        #            "PeckEnabled",
-        #            "Drill",
-        #            QT_TRANSLATE_NOOP("App::Property", "Enable pecking"),
-        #        )
-        #        obj.addProperty(
-        #            "App::PropertyBool",
-        #            "chipBreakEnabled",
-        #            "Drill",
-        #            QT_TRANSLATE_NOOP("App::Property", "Use chipbreaking"),
-        #        )
         obj.addProperty(
             "App::PropertyFloat",
             "DwellTime",
@@ -208,7 +179,7 @@ class ObjectTapping(PathCircularHoleBase.ObjectOp):
         # This section is technical debt. The computation of the
         # target shapes should be factored out for re-use.
         # This will likely mean refactoring upstream CircularHoleBase to pass
-        # spotshapes instead of holes.
+        # spot shapes instead of holes.
 
         startHeight = obj.StartDepth.Value + self.job.SetupSheet.SafeHeightOffset.Value
 
@@ -245,21 +216,19 @@ class ObjectTapping(PathCircularHoleBase.ObjectOp):
             # This assumption should be corrected and the necessary rotations
             # performed to align the edge with the Z axis for drilling
 
-            # Perform drilling
+            # Perform tapping
             dwelltime = obj.DwellTime if obj.DwellEnabled else 0.0
-            #         peckdepth = obj.PeckDepth.Value if obj.PeckEnabled else 0.0
             repeat = 1  # technical debt:  Add a repeat property for user control
-            #         chipBreak = obj.chipBreakEnabled and obj.PeckEnabled
 
-            # Get handedness attribute from obj.tool for passing to generate
-            rh = (
+            # Get attribute from obj.tool, assign default and set to bool for passing to generate
+            isRightHand = (
                 getattr(obj.ToolController.Tool, "Rotation", "Right Hand")
                 == "Right Hand"
             )
 
             try:
                 tappingcommands = tapping.generate(
-                    edge, dwelltime, repeat, obj.RetractHeight.Value, rh
+                    edge, dwelltime, repeat, obj.RetractHeight.Value, isRightHand
                 )
 
             except ValueError as e:  # any targets that fail the generator are ignored
@@ -276,7 +245,7 @@ class ObjectTapping(PathCircularHoleBase.ObjectOp):
         # self.commandlist.append(command)
         # machine.addCommand(command)       DLH - Not needed.
 
-        # Apply feedrates to commands
+        # Apply feed rates to commands
         PathFeedRate.setFeedRate(self.commandlist, obj.ToolController)
 
     def opSetDefaultValues(self, obj, job):
@@ -293,11 +262,6 @@ class ObjectTapping(PathCircularHoleBase.ObjectOp):
             else:
                 obj.RetractHeight.Value = obj.StartDepth.Value + 1.0
 
-        #        if hasattr(job.SetupSheet, "PeckDepth"):
-        #            obj.PeckDepth = job.SetupSheet.PeckDepth
-        #        elif self.applyExpression(obj, "PeckDepth", "OpToolDiameter*0.75"):
-        #            obj.PeckDepth = 1
-
         if hasattr(job.SetupSheet, "DwellTime"):
             obj.DwellTime = job.SetupSheet.DwellTime
         else:
@@ -306,8 +270,6 @@ class ObjectTapping(PathCircularHoleBase.ObjectOp):
 
 def SetupProperties():
     setup = []
-    #    setup.append("PeckDepth")
-    #    setup.append("PeckEnabled")
     setup.append("DwellTime")
     setup.append("DwellEnabled")
     setup.append("AddTipLength")
