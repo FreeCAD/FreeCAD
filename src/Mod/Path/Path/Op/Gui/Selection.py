@@ -7,7 +7,7 @@
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
 # *   as published by the Free Software Foundation; either version 2 of     *
 # *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
+# *   for detail see the LICENTE text file.                                 *
 # *                                                                         *
 # *   This program is distributed in the hope that it will be useful,       *
 # *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
@@ -131,6 +131,7 @@ class DRILLGate(PathBaseGate):
             return False
         return Drillable.isDrillable(shape, subobj, vector=None)
 
+
 class TAPGate(PathBaseGate):
     def allow(self, doc, obj, sub):
         Path.Log.debug("obj: {} sub: {}".format(obj, sub))
@@ -141,6 +142,7 @@ class TAPGate(PathBaseGate):
         if subobj.ShapeType not in ["Edge", "Face"]:
             return False
         return Drillable.isDrillable(shape, subobj, vector=None)
+
 
 class FACEGate(PathBaseGate):
     def allow(self, doc, obj, sub):
@@ -279,10 +281,12 @@ def drillselect():
     if not Path.Preferences.suppressSelectionModeWarning():
         FreeCAD.Console.PrintWarning("Drilling Select Mode\n")
 
+
 def tapselect():
     FreeCADGui.Selection.addSelectionGate(TAPGate())
     if not Path.Preferences.suppressSelectionModeWarning():
         FreeCAD.Console.PrintWarning("Tapping Select Mode\n")
+
 
 def engraveselect():
     FreeCADGui.Selection.addSelectionGate(ENGRAVEGate())
