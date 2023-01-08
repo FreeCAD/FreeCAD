@@ -782,6 +782,11 @@ void QGIViewDimension::draw()
         drawArrows(0, nullptr, nullptr, false);
     }
 
+    if (!isSelected() && !hasHover) {
+        setNormalColorAll();
+        setPrettyNormal();
+    }
+
     update();
     if (parentItem()) {
         //TODO: parent redraw still required with new frame/label??
