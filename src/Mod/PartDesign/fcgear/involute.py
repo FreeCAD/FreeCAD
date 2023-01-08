@@ -70,13 +70,13 @@ def CreateExternalGear(w, m, Z, phi, split=True):
     if split:
         # approximate in 2 sections, split 25% along the involute
         fm = fs + (fe - fs) / 4   # fraction of length at junction (25% along profile)
-        dedInv = BezCoeffs(m, Z, phi, 3, fs, fm)
-        addInv = BezCoeffs(m, Z, phi, 3, fm, fe)
+        dedInv = BezCoeffs(Rb, Ra, 3, fs, fm)
+        addInv = BezCoeffs(Rb, Ra, 3, fm, fe)
 
         # join the 2 sets of coeffs (skip duplicate mid point)
         inv = dedInv + addInv[1:]
     else:
-        inv = BezCoeffs(m, Z, phi, 4, fs, fe)
+        inv = BezCoeffs(Rb, Ra, 4, fs, fe)
 
     # create the back profile of tooth (mirror image)
     invR = []
@@ -168,13 +168,13 @@ def CreateInternalGear(w, m, Z, phi, split=True):
     if split:
         # approximate in 2 sections, split 25% along the involute
         fm = fs + (fe - fs) / 4   # fraction of length at junction (25% along profile)
-        addInv = BezCoeffs(m, Z, phi, 3, fs, fm)
-        dedInv = BezCoeffs(m, Z, phi, 3, fm, fe)
+        addInv = BezCoeffs(Rb, Rf, 3, fs, fm)
+        dedInv = BezCoeffs(Rb, Rf, 3, fm, fe)
 
         # join the 2 sets of coeffs (skip duplicate mid point)
         invR = addInv + dedInv[1:]
     else:
-        invR = BezCoeffs(m, Z, phi, 4, fs, fe)
+        invR = BezCoeffs(Rb, Rf, 4, fs, fe)
 
     # create the back profile of tooth (mirror image)
     inv = []
@@ -318,19 +318,20 @@ def bezCoeff(i, p, polyCoeffs):
     return sum(binom(i, j) * polyCoeffs[j] / binom(p, j) for j in range(i+1))
 
 
-    # Parameters:
-    # module - sets the size of teeth (see gear design texts)
-    # numTeeth - number of teeth on the gear
-    # pressure angle - angle in degrees, usually 14.5 or 20
-    # order - the order of the Bezier curve to be fitted [3, 4, 5, ..]
-    # fstart - fraction of distance along tooth profile to start
-    # fstop - fraction of distance along profile to stop
-def BezCoeffs(module, numTeeth, pressureAngle, order, fstart, fstop):
-    Rpitch = module * numTeeth / 2       # pitch circle radius
-    phi = pressureAngle        # pressure angle
-    Rb = Rpitch * cos(phi * pi / 180) # base circle radius
-    Ra = Rpitch + module               # addendum radius (outer radius)
-    ta = sqrt(Ra * Ra - Rb * Rb) / Rb   # involute angle at addendum
+def BezCoeffs(baseRadius, limitRadius, order, fstart, fstop):
+    """Approximates an involute using a Bezier-curve
+
+    Parameters:
+    baseRadius - the radius of base circle of the involute.
+        This is where the involute starts, too.
+    limitRadius - the radius of an outer circle, where the involute ends.
+    order - the order of the Bezier curve to be fitted e.g. 3, 4, 5, ...
+    fstart - fraction of distance along the involute to start the approximation.
+    fstop - fraction of distance along the involute to stop the approximation.
+    """
+    Rb = baseRadius
+    Ra = limitRadius
+    ta = sqrt(Ra * Ra - Rb * Rb) / Rb   # involute angle at the limit radius
     te = sqrt(fstop) * ta          # involute angle, theta, at end of approx
     ts = sqrt(fstart) * ta         # involute angle, theta, at start of approx
     p = order                     # order of Bezier approximation
