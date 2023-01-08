@@ -3442,25 +3442,28 @@ void ViewProviderSketch::clearSelectPoints(void)
     selection.SelPointSet.clear();
 }
 
-bool ViewProviderSketch::isSelected(std::string &subNameSuffix) const
+bool ViewProviderSketch::isSelected(const std::string &subNameSuffix) const
 {
-    subNameSuffix = editSubName + getSketchObject()->convertSubName(subNameSuffix);
-    return Gui::Selection().isSelected(editDocName.c_str(), editObjName.c_str(), subNameSuffix.c_str());
+    std::string subNameSuffix_ = editSubName + getSketchObject()->convertSubName(subNameSuffix);
+    return Gui::Selection().isSelected(editDocName.c_str(), editObjName.c_str(), subNameSuffix_.c_str());
 }
 
 void ViewProviderSketch::rmvSelection(const std::string &subNameSuffix) const
 {
-    Gui::Selection().rmvSelection(editDocName.c_str(), editObjName.c_str(), subNameSuffix.c_str());
+    std::string subNameSuffix_ = editSubName + getSketchObject()->convertSubName(subNameSuffix);
+    Gui::Selection().rmvSelection(editDocName.c_str(), editObjName.c_str(), subNameSuffix_.c_str());
 }
 
 bool ViewProviderSketch::addSelection(const std::string &subNameSuffix, float x, float y, float z) const
 {
-     return Gui::Selection().addSelection(editDocName.c_str(), editObjName.c_str(), (editSubName+subNameSuffix).c_str(), x , y, z);
+     std::string subNameSuffix_ = editSubName + getSketchObject()->convertSubName(subNameSuffix);
+     return Gui::Selection().addSelection(editDocName.c_str(), editObjName.c_str(), subNameSuffix_.c_str(), x , y, z);
 }
 
 bool ViewProviderSketch::addSelection2(const std::string &subNameSuffix, float x, float y, float z) const
 {
-     return Gui::Selection().addSelection2(editDocName.c_str(), editObjName.c_str(), (editSubName+subNameSuffix).c_str(), x , y, z);
+     std::string subNameSuffix_ = editSubName + getSketchObject()->convertSubName(subNameSuffix);
+     return Gui::Selection().addSelection2(editDocName.c_str(), editObjName.c_str(), subNameSuffix_.c_str(), x , y, z);
 }
 
 bool ViewProviderSketch::addSelectionElement(const char *element, int index) const

@@ -636,7 +636,7 @@ private:
     void removeSelectPoint(int SelectPoint);
     void clearSelectPoints(void);
 
-    bool isSelected(std::string & ss) const;
+    bool isSelected(const std::string &ss) const;
     void rmvSelection(const std::string &subNameSuffix) const;
     bool addSelection(const std::string &subNameSuffix, float x = 0, float y = 0, float z = 0) const;
     bool addSelection2(const std::string &subNameSuffix, float x = 0, float y = 0, float z = 0) const;
