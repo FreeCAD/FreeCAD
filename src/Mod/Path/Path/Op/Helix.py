@@ -138,7 +138,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
             "Helix Drill",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Extra value to stay away from final profile- good for roughing toolpath",
+                "Extra value to stay away from final profile- good for roughing toolpath"
             ),
         )
 
@@ -187,6 +187,8 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
             "step_down": obj.StepDown.Value,
             "step_over": obj.StepOver / 100,
             "tool_diameter": tooldiamter,
+            "clearanceHeight": obj.ClearanceHeight.Value,
+            "safeHeight": obj.SafeHeight.Value,
             "inner_radius": obj.StartRadius.Value + obj.OffsetExtra.Value,
             "direction": obj.Direction,
             "startAt": obj.StartSide,
@@ -197,26 +199,6 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
             startPoint = FreeCAD.Vector(hole["x"], hole["y"], obj.StartDepth.Value)
             endPoint = FreeCAD.Vector(hole["x"], hole["y"], obj.FinalDepth.Value)
             args["edge"] = Part.makeLine(startPoint, endPoint)
-
-            # move to starting position
-            self.commandlist.append(
-                Path.Command("G0", {"Z": obj.ClearanceHeight.Value})
-            )
-            self.commandlist.append(
-                Path.Command(
-                    "G0",
-                    {
-                        "X": startPoint.x,
-                        "Y": startPoint.y,
-                        "Z": obj.ClearanceHeight.Value,
-                    },
-                )
-            )
-            self.commandlist.append(
-                Path.Command(
-                    "G0", {"X": startPoint.x, "Y": startPoint.y, "Z": startPoint.z}
-                )
-            )
 
             results = helix.generate(**args)
 

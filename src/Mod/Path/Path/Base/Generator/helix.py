@@ -44,9 +44,11 @@ def generate(
     step_down,
     step_over,
     tool_diameter,
+    clearanceHeight,
+    safeHeight,
     inner_radius=0.0,
     direction="CW",
-    startAt="Outside",
+    startAt="Outside"
 ):
     """generate(edge, hole_radius, inner_radius, step_over) ... generate helix commands.
     hole_radius, inner_radius: outer and inner radius of the hole
@@ -56,7 +58,7 @@ def generate(
     endPoint = edge.Vertexes[1].Point
 
     Path.Log.track(
-        "(helix: <{}, {}>\n hole radius {}\n inner radius {}\n step over {}\n start point {}\n end point {}\n step_down {}\n tool diameter {}\n direction {}\n startAt {})".format(
+        "(helix: <{}, {}>\n hole radius {}\n inner radius {}\n step over {}\n start point {}\n end point {}\n step_down {}\n tool diameter {}\n direction {}\n startAt {}\n clearance height {}\n safe height {})".format(
             startPoint.x,
             startPoint.y,
             hole_radius,
@@ -68,6 +70,8 @@ def generate(
             tool_diameter,
             direction,
             startAt,
+            clearanceHeight,
+            safeHeight
         )
     )
 
@@ -119,6 +123,9 @@ def generate(
     if startPoint.z < endPoint.z:
         raise ValueError("start point is below end point")
 
+    if startPoint.z > safeHeight:
+        raise ValueError("start point is above safe height")
+
     if hole_radius <= tool_diameter:
         Path.Log.debug("(single helix mode)\n")
         radii = [hole_radius - tool_diameter / 2]
@@ -147,12 +154,14 @@ def generate(
     turncount = max(int(ceil((startPoint.z - endPoint.z) / step_down)), 2)
     zsteps = linspace(startPoint.z, endPoint.z, 2 * turncount + 1)
 
-    def helix_cut_r(r):
+    def helix_cut_r(r, isFirst):
         commandlist = []
         arc_cmd = "G2" if direction == "CW" else "G3"
         commandlist.append(
             Path.Command("G0", {"X": startPoint.x + r, "Y": startPoint.y})
         )
+        if isFirst and clearanceHeight > safeHeight:
+            commandlist.append(Path.Command("G0", {"Z": safeHeight}))
         commandlist.append(Path.Command("G1", {"Z": startPoint.z}))
         for i in range(1, turncount + 1):
             commandlist.append(
@@ -205,7 +214,7 @@ def generate(
         )
         return commandlist
 
-    def retract():
+    def retract(isLast):
         # try to move to a safe place to retract without leaving a dwell
         # mark
         retractcommands = []
@@ -220,7 +229,7 @@ def generate(
 
         if center_clear:
             retractcommands.append(
-                Path.Command("G0", {"X": endPoint.x, "Y": endPoint.y, "Z": endPoint.z})
+                Path.Command("G1", {"X": endPoint.x, "Y": endPoint.y, "Z": endPoint.z})
             )
 
         # Technical Debt.
@@ -229,7 +238,7 @@ def generate(
         # safe place which does not touch the inner or outer wall on all radii except
         # the first.  This is left as a future improvement.
 
-        retractcommands.append(Path.Command("G0", {"Z": startPoint.z}))
+        retractcommands.append(Path.Command("G0", {"Z": clearanceHeight if isLast else safeHeight}))
 
         return retractcommands
 
@@ -237,8 +246,10 @@ def generate(
         radii = radii[::-1]
 
     commands = []
-    for r in radii:
-        commands.extend(helix_cut_r(r))
-        commands.extend(retract())
+    for i, r in enumerate(radii):
+        isFirst = (i == 0)
+        isLast = (i == len(radii)-1)
+        commands.extend(helix_cut_r(r, isFirst))
+        commands.extend(retract(isLast))
 
     return commands
