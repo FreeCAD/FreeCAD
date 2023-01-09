@@ -30,6 +30,7 @@
 # include <QMessageBox>
 # include <QTextStream>
 # include <QTimer>
+# include <QStatusBar>
 # include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/nodes/SoSeparator.h>
 #endif
@@ -55,6 +56,7 @@
 #include "FileDialog.h"
 #include "MainWindow.h"
 #include "MDIView.h"
+#include "NotificationArea.h"
 #include "Selection.h"
 #include "Thumbnail.h"
 #include "Tree.h"
@@ -77,7 +79,7 @@ namespace Gui {
  * It provides a mechanism requiring confirmation for critical notifications only during User initiated restore/document loading ( it
  * does not require confirmation for macro/Python initiated restore, not to interfere with automations).
  *
- * Additionally, it provides a mechanism to show autoclosing non-modal user notifications in a non-intrusive way.
+ * Other notifications are provided to the Notification Area for non-intrusive notification.
  **/
 class MessageManager {
 public:
@@ -87,44 +89,31 @@ public:
     void setDocument(Gui::Document * pDocument);
     void slotUserMessage(const App::DocumentObject&, const QString &, App::Document::NotificationType);
 
-
 private:
-    void reorderAutoClosingMessages();
-    QMessageBox* createNonModalMessage(const QString & msg, App::Document::NotificationType notificationtype);
-    void pushAutoClosingMessage(const QString & msg, App::Document::NotificationType notificationtype);
-    void pushAutoClosingMessageTooManyMessages();
+    void redirectToConsole(const App::DocumentObject& obj, const QString & msg, App::Document::NotificationType notificationtype);
 
 private:
     using Connection = boost::signals2::connection;
     Gui::Document * pDoc;
     Connection connectUserMessage;
     bool requireConfirmationCriticalMessageDuringRestoring = true;
-    std::vector<QMessageBox*> openAutoClosingMessages;
-    std::mutex mutexAutoClosingMessages;
-    const int autoClosingTimeout = 5000; // ms
-    const int autoClosingMessageStackingOffset = 10;
-    const unsigned int maxNumberOfOpenAutoClosingMessages = 3;
-    bool maxNumberOfOpenAutoClosingMessagesLimitReached = false;
 };
 
-MessageManager::~MessageManager(){
+MessageManager::~MessageManager()
+{
     connectUserMessage.disconnect();
 }
 
 void MessageManager::setDocument(Gui::Document * pDocument)
 {
-
     pDoc = pDocument;
 
     connectUserMessage = pDoc->getDocument()->signalUserMessage.connect
         (boost::bind(&Gui::MessageManager::slotUserMessage, this, bp::_1, bp::_2, bp::_3));
-
 }
 
 void MessageManager::slotUserMessage(const App::DocumentObject& obj, const QString & msg, App::Document::NotificationType notificationtype)
 {
-    (void) obj;
-
     auto userInitiatedRestore = Application::Instance->testStatus(Gui::Application::UserInitiatedOpenDocument);
 
     if(notificationtype == App::Document::NotificationType::Critical && userInitiatedRestore && requireConfirmationCriticalMessageDuringRestoring) {
@@ -133,113 +122,36 @@ void MessageManager::slotUserMessage(const App::DocumentObject& obj, const QStri
 
         if(button == QMessageBox::Yes)
             requireConfirmationCriticalMessageDuringRestoring = false;
+
+        // The user has already acknowledged it, so record it as a Warning
+        redirectToConsole(obj, msg, App::Document::NotificationType::Warning);
     }
-    else { // Non-critical errors and warnings - auto-closing non-blocking message box
-
-        auto messageNumber =  openAutoClosingMessages.size();
-
-        // Not opening more than the number of maximum autoclosing messages
-        // If maximum reached, the mechanism only resets after all present messages are auto-closed
-        if( messageNumber < maxNumberOfOpenAutoClosingMessages) {
-            if(messageNumber == 0 && maxNumberOfOpenAutoClosingMessagesLimitReached) {
-                maxNumberOfOpenAutoClosingMessagesLimitReached = false;
-            }
-
-            if(!maxNumberOfOpenAutoClosingMessagesLimitReached) {
-                pushAutoClosingMessage(msg, notificationtype);
-            }
+    else { // Non-critical errors and warnings redirected to the notification area
+        if(notificationtype == App::Document::NotificationType::Critical) {
+            // The user has already acknowledged it, so record it as a Warning
+            notificationtype = App::Document::NotificationType::Warning;
         }
-        else {
-            if(!maxNumberOfOpenAutoClosingMessagesLimitReached)
-                pushAutoClosingMessageTooManyMessages();
 
-            maxNumberOfOpenAutoClosingMessagesLimitReached = true;
-        }
+        redirectToConsole(obj, msg, notificationtype);
     }
 }
 
-void MessageManager::pushAutoClosingMessage(const QString & msg, App::Document::NotificationType notificationtype)
+void MessageManager::redirectToConsole(const App::DocumentObject& obj, const QString & msg, App::Document::NotificationType notificationtype)
 {
-    std::lock_guard<std::mutex> g(mutexAutoClosingMessages); // guard to avoid creating new messages while closing old messages (via timer)
-
-    auto msgBox = createNonModalMessage(msg, notificationtype);
-
-    msgBox->show();
-
-    int numberOpenAutoClosingMessages = openAutoClosingMessages.size();
-
-    openAutoClosingMessages.push_back(msgBox);
-
-    reorderAutoClosingMessages();
-
-    QTimer::singleShot(autoClosingTimeout*numberOpenAutoClosingMessages, [msgBox, this](){
-        std::lock_guard<std::mutex> g(mutexAutoClosingMessages); // guard to avoid closing old messages while creating new ones
-        if(msgBox) {
-            msgBox->done(0);
-            openAutoClosingMessages.erase(
-                std::remove(openAutoClosingMessages.begin(), openAutoClosingMessages.end(), msgBox),
-                openAutoClosingMessages.end());
-
-            reorderAutoClosingMessages();
-        }
-    });
-}
-
-void MessageManager::pushAutoClosingMessageTooManyMessages()
-{
-    pushAutoClosingMessage(QObject::tr("Too many message notifications. Notification temporarily stopped. Look at the report view for more information."), App::Document::NotificationType::Warning);
-}
-
-
-QMessageBox* MessageManager::createNonModalMessage(const QString & msg, App::Document::NotificationType notificationtype)
-{
-        auto parent = pDoc->getActiveView();
-
-        QMessageBox* msgBox = new QMessageBox(parent);
-        msgBox->setAttribute(Qt::WA_DeleteOnClose); // msgbox deleted automatically upon closed
-        msgBox->setStandardButtons(QMessageBox::NoButton);
-        msgBox->setWindowFlag(Qt::FramelessWindowHint,true);
-        msgBox->setText(msg);
-
-        if(notificationtype == App::Document::NotificationType::Error) {
-            msgBox->setWindowTitle(QObject::tr("Error"));
-            msgBox->setIcon(QMessageBox::Critical);
-        }
-        else if(notificationtype == App::Document::NotificationType::Warning) {
-            msgBox->setWindowTitle(QObject::tr("Warning"));
-            msgBox->setIcon(QMessageBox::Warning);
-        }
-        else if(notificationtype == App::Document::NotificationType::Information) {
-            msgBox->setWindowTitle(QObject::tr("Information"));
-            msgBox->setIcon(QMessageBox::Information);
-        }
-        else if(notificationtype == App::Document::NotificationType::Critical) {
-            msgBox->setWindowTitle(QObject::tr("Critical"));
-            msgBox->setIcon(QMessageBox::Critical);
-        }
-
-        msgBox->setModal( false ); // if you want it non-modal
-
-        return msgBox;
-}
-
-void MessageManager::reorderAutoClosingMessages()
-{
-    auto parent = pDoc->getActiveView();
-
-    int numberOpenAutoClosingMessages = openAutoClosingMessages.size();
-
-    auto x = parent->width() / 2;
-    auto y = parent->height() / 7;
-
-    int posindex = numberOpenAutoClosingMessages - 1;
-    for (auto rit = openAutoClosingMessages.rbegin(); rit != openAutoClosingMessages.rend(); ++rit, posindex--) {
-        int xw = x - (*rit)->width() / 2 + autoClosingMessageStackingOffset*posindex;;
-        int yw = y + autoClosingMessageStackingOffset*posindex;
-        (*rit)->move(xw, yw);
-        (*rit)->raise();
+    switch(notificationtype) {
+        case App::Document::NotificationType::Critical:
+        case App::Document::NotificationType::Warning:
+            Base::Console().WarningS(obj.getFullName(), msg.toStdString().c_str());
+            break;
+        case App::Document::NotificationType::Error:
+            Base::Console().ErrorS(obj.getFullName(), msg.toStdString().c_str());
+            break;
+        case App::Document::NotificationType::Information:
+            Base::Console().MessageS(obj.getFullName(), msg.toStdString().c_str());
+            break;
     }
 }
+
 
 // Pimpl class
 struct DocumentP

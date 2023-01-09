@@ -489,7 +489,7 @@ public:
 
     /** Used to send a Log message at the given level.
      */
-    virtual void SendLog(const std::string& msg, LogStyle level) = 0;
+    virtual void SendLog(const std::string& notifiername, const std::string& msg, LogStyle level) = 0;
 
     virtual const char *Name(){return nullptr;}
     bool bErr,bMsg,bLog,bWrn;
@@ -515,24 +515,32 @@ public:
  */
 class BaseExport ConsoleSingleton
 {
-
 public:
     static const unsigned int BufferSize = 4024;
     // exported functions goes here +++++++++++++++++++++++++++++++++++++++
     /// Prints a Message
-    virtual void Message ( const char * pMsg, ... );
+    void Message ( const char * pMsg, ... );
     /// Prints a warning Message
-    virtual void Warning ( const char * pMsg, ... );
+    void Warning ( const char * pMsg, ... );
     /// Prints a error Message
-    virtual void Error   ( const char * pMsg, ... );
+    void Error   ( const char * pMsg, ... );
     /// Prints a log Message
-    virtual void Log     ( const char * pMsg, ... );
+    void Log     ( const char * pMsg, ... );
+    
+    /// Prints a Message with source indication
+    void MessageS ( const std::string &, const char * pMsg, ... );
+    /// Prints a warning Message with source indication
+    void WarningS ( const std::string &, const char * pMsg, ... );
+    /// Prints a error Message with source indication
+    void ErrorS   ( const std::string &, const char * pMsg, ... );
+    /// Prints a log Message with source indication
+    void LogS     ( const std::string &, const char * pMsg, ... );
 
     // observer processing
-    void NotifyMessage(const char *sMsg);
-    void NotifyWarning(const char *sMsg);
-    void NotifyError  (const char *sMsg);
-    void NotifyLog    (const char *sMsg);
+    void NotifyMessage(const char *sMsg, const std::string & notifiername = "");
+    void NotifyWarning(const char *sMsg, const std::string & notifiername = "");
+    void NotifyError  (const char *sMsg, const std::string & notifiername = "");
+    void NotifyLog    (const char *sMsg, const std::string & notifiername = "");
 
     /// Attaches an Observer to FCConsole
     void AttachObserver(ILogger *pcObserver);
@@ -603,6 +611,15 @@ protected:
     // Singleton!
     ConsoleSingleton();
     virtual ~ConsoleSingleton();
+    
+    /// Prints a Message with source indication
+    virtual void MessageV ( const std::string &, const char * pMsg, va_list args );
+    /// Prints a warning Message with source indication
+    virtual void WarningV ( const std::string &, const char * pMsg, va_list args );
+    /// Prints a error Message with source indication
+    virtual void ErrorV   ( const std::string &, const char * pMsg, va_list args );
+    /// Prints a log Message with source indication
+    virtual void LogV     ( const std::string &, const char * pMsg, va_list args );
 
 private:
     // singleton

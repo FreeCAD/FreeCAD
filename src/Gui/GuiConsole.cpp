@@ -109,8 +109,10 @@ void GUIConsole::SendLog(const std::string& msg, Base::LogStyle level)
 // safely ignore GUIConsole::s_nMaxLines and  GUIConsole::s_nRefCount
 GUIConsole::GUIConsole () {}
 GUIConsole::~GUIConsole () {}
-void GUIConsole::SendLog(const std::string& msg, Base::LogStyle level)
+void GUIConsole::SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level)
 {
+    (void) notifiername;
+    
     switch(level){
         case Base::LogStyle::Warning:
             std::cerr << "Warning: " << msg;

@@ -58,8 +58,10 @@ ConsoleObserverFile::~ConsoleObserverFile()
     cFileStream.close();
 }
 
-void ConsoleObserverFile::SendLog(const std::string& msg, LogStyle level)
+void ConsoleObserverFile::SendLog(const std::string& notifiername, const std::string& msg, LogStyle level)
 {
+    (void) notifiername;
+    
     std::string prefix;
     switch(level){
         case LogStyle::Warning:
@@ -94,8 +96,10 @@ ConsoleObserverStd::ConsoleObserverStd() :
 
 ConsoleObserverStd::~ConsoleObserverStd() = default;
 
-void ConsoleObserverStd::SendLog(const std::string& msg, LogStyle level)
+void ConsoleObserverStd::SendLog(const std::string& notifiername, const std::string& msg, LogStyle level)
 {
+    (void) notifiername;
+    
     switch(level){
         case LogStyle::Warning:
             this->Warning(msg.c_str());
