@@ -23,6 +23,9 @@
 #ifndef TECHDRAW_TASKDIMREPAIR_H
 #define TECHDRAW_TASKDIMREPAIR_H
 
+#include <QListWidget>
+#include <QTableWidget>
+
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
