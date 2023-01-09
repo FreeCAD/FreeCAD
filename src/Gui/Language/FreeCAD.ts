@@ -6880,63 +6880,63 @@ Do you want to save your changes?</source>
 <context>
     <name>Gui::MainWindow</name>
     <message>
-        <location filename="../MainWindow.cpp" line="299"/>
-        <location filename="../MainWindow.cpp" line="1958"/>
+        <location filename="../MainWindow.cpp" line="298"/>
+        <location filename="../MainWindow.cpp" line="1952"/>
         <source>Dimension</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="349"/>
+        <location filename="../MainWindow.cpp" line="348"/>
         <source>Ready</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="766"/>
+        <location filename="../MainWindow.cpp" line="760"/>
         <source>Help addon needed!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="767"/>
+        <location filename="../MainWindow.cpp" line="761"/>
         <source>The Help system of %1 is now handled by the &quot;Help&quot; addon. It can easily be installed via the Addons Manager</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="769"/>
+        <location filename="../MainWindow.cpp" line="763"/>
         <source>Open Addon Manager</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="964"/>
+        <location filename="../MainWindow.cpp" line="958"/>
         <source>Close All</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="1168"/>
-        <location filename="../MainWindow.cpp" line="1169"/>
-        <location filename="../MainWindow.cpp" line="1170"/>
+        <location filename="../MainWindow.cpp" line="1162"/>
+        <location filename="../MainWindow.cpp" line="1163"/>
+        <location filename="../MainWindow.cpp" line="1164"/>
         <source>Toggles this toolbar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="1183"/>
-        <location filename="../MainWindow.cpp" line="1184"/>
-        <location filename="../MainWindow.cpp" line="1185"/>
+        <location filename="../MainWindow.cpp" line="1177"/>
+        <location filename="../MainWindow.cpp" line="1178"/>
+        <location filename="../MainWindow.cpp" line="1179"/>
         <source>Toggles this dockable window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="1749"/>
-        <location filename="../MainWindow.cpp" line="1841"/>
+        <location filename="../MainWindow.cpp" line="1743"/>
+        <location filename="../MainWindow.cpp" line="1835"/>
         <source>Unsaved document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="1750"/>
+        <location filename="../MainWindow.cpp" line="1744"/>
         <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="1842"/>
+        <location filename="../MainWindow.cpp" line="1836"/>
         <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
         <translation type="unfinished"></translation>
@@ -8427,38 +8427,38 @@ Do you want to specify another directory?</source>
 <context>
     <name>QDockWidget</name>
     <message>
-        <location filename="../MainWindow.cpp" line="399"/>
+        <location filename="../MainWindow.cpp" line="398"/>
         <source>Tree view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="427"/>
+        <location filename="../MainWindow.cpp" line="426"/>
         <source>Property view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="445"/>
+        <location filename="../MainWindow.cpp" line="444"/>
         <source>Selection view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="467"/>
+        <location filename="../MainWindow.cpp" line="466"/>
         <source>Combo View</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="519"/>
+        <location filename="../MainWindow.cpp" line="500"/>
+        <source>DAG View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MainWindow.cpp" line="518"/>
         <source>Report view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="539"/>
+        <location filename="../MainWindow.cpp" line="538"/>
         <source>Python console</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../MainWindow.cpp" line="501"/>
-        <source>DAG View</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -9135,32 +9135,32 @@ Please open a browser window and type in: http://localhost:%1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="599"/>
+        <location filename="../MainWindow.cpp" line="593"/>
         <source>Do you want to save your changes to document &apos;%1&apos; before closing?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="602"/>
+        <location filename="../MainWindow.cpp" line="596"/>
         <source>Do you want to save your changes to document before closing?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="604"/>
+        <location filename="../MainWindow.cpp" line="598"/>
         <source>If you don&apos;t save, your changes will be lost.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="609"/>
+        <location filename="../MainWindow.cpp" line="603"/>
         <source>Apply answer to all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="699"/>
+        <location filename="../MainWindow.cpp" line="693"/>
         <source>%1 Document(s) not saved</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="700"/>
+        <location filename="../MainWindow.cpp" line="694"/>
         <source>Some documents could not be saved. Do you want to cancel closing?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9457,13 +9457,13 @@ the current copy will be lost.
 <context>
     <name>StdCmdActivateNextWindow</name>
     <message>
-        <location filename="../CommandWindow.cpp" line="198"/>
+        <location filename="../CommandWindow.cpp" line="171"/>
         <source>Ne&amp;xt</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandWindow.cpp" line="199"/>
-        <location filename="../CommandWindow.cpp" line="201"/>
+        <location filename="../CommandWindow.cpp" line="172"/>
+        <location filename="../CommandWindow.cpp" line="174"/>
         <source>Activate next window</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9471,13 +9471,13 @@ the current copy will be lost.
 <context>
     <name>StdCmdActivatePrevWindow</name>
     <message>
-        <location filename="../CommandWindow.cpp" line="227"/>
+        <location filename="../CommandWindow.cpp" line="200"/>
         <source>Pre&amp;vious</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandWindow.cpp" line="228"/>
-        <location filename="../CommandWindow.cpp" line="230"/>
+        <location filename="../CommandWindow.cpp" line="201"/>
+        <location filename="../CommandWindow.cpp" line="203"/>
         <source>Activate previous window</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9497,20 +9497,6 @@ the current copy will be lost.
     </message>
 </context>
 <context>
-    <name>StdCmdArrangeIcons</name>
-    <message>
-        <location filename="../CommandWindow.cpp" line="55"/>
-        <source>Arrange &amp;Icons</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../CommandWindow.cpp" line="56"/>
-        <location filename="../CommandWindow.cpp" line="58"/>
-        <source>Arrange Icons</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>StdCmdAxisCross</name>
     <message>
         <location filename="../CommandView.cpp" line="2060"/>
@@ -9523,13 +9509,13 @@ the current copy will be lost.
 <context>
     <name>StdCmdCascadeWindows</name>
     <message>
-        <location filename="../CommandWindow.cpp" line="110"/>
+        <location filename="../CommandWindow.cpp" line="83"/>
         <source>&amp;Cascade</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandWindow.cpp" line="111"/>
-        <location filename="../CommandWindow.cpp" line="113"/>
+        <location filename="../CommandWindow.cpp" line="84"/>
+        <location filename="../CommandWindow.cpp" line="86"/>
         <source>Tile pragmatic</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9537,13 +9523,13 @@ the current copy will be lost.
 <context>
     <name>StdCmdCloseActiveWindow</name>
     <message>
-        <location filename="../CommandWindow.cpp" line="138"/>
+        <location filename="../CommandWindow.cpp" line="111"/>
         <source>Cl&amp;ose</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandWindow.cpp" line="139"/>
-        <location filename="../CommandWindow.cpp" line="141"/>
+        <location filename="../CommandWindow.cpp" line="112"/>
+        <location filename="../CommandWindow.cpp" line="114"/>
         <source>Close active window</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9551,13 +9537,13 @@ the current copy will be lost.
 <context>
     <name>StdCmdCloseAllWindows</name>
     <message>
-        <location filename="../CommandWindow.cpp" line="170"/>
+        <location filename="../CommandWindow.cpp" line="143"/>
         <source>Close Al&amp;l</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandWindow.cpp" line="171"/>
-        <location filename="../CommandWindow.cpp" line="173"/>
+        <location filename="../CommandWindow.cpp" line="144"/>
+        <location filename="../CommandWindow.cpp" line="146"/>
         <source>Close all windows</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9733,13 +9719,13 @@ the current copy will be lost.
 <context>
     <name>StdCmdDockViewMenu</name>
     <message>
-        <location filename="../CommandWindow.cpp" line="307"/>
+        <location filename="../CommandWindow.cpp" line="280"/>
         <source>Panels</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandWindow.cpp" line="308"/>
-        <location filename="../CommandWindow.cpp" line="310"/>
+        <location filename="../CommandWindow.cpp" line="281"/>
+        <location filename="../CommandWindow.cpp" line="283"/>
         <source>List of available dock panels</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10306,7 +10292,7 @@ the current copy will be lost.
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="1946"/>
+        <location filename="../MainWindow.cpp" line="1940"/>
         <location filename="../DocumentRecovery.cpp" line="391"/>
         <source>Unnamed</source>
         <translation type="unfinished"></translation>
@@ -10810,13 +10796,13 @@ the current copy will be lost.
 <context>
     <name>StdCmdStatusBar</name>
     <message>
-        <location filename="../CommandWindow.cpp" line="398"/>
+        <location filename="../CommandWindow.cpp" line="371"/>
         <source>Status bar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandWindow.cpp" line="399"/>
-        <location filename="../CommandWindow.cpp" line="401"/>
+        <location filename="../CommandWindow.cpp" line="372"/>
+        <location filename="../CommandWindow.cpp" line="374"/>
         <source>Toggles the status bar</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10852,13 +10838,13 @@ the current copy will be lost.
 <context>
     <name>StdCmdTileWindows</name>
     <message>
-        <location filename="../CommandWindow.cpp" line="82"/>
+        <location filename="../CommandWindow.cpp" line="55"/>
         <source>&amp;Tile</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandWindow.cpp" line="83"/>
-        <location filename="../CommandWindow.cpp" line="85"/>
+        <location filename="../CommandWindow.cpp" line="56"/>
+        <location filename="../CommandWindow.cpp" line="58"/>
         <source>Tile the windows</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10946,13 +10932,13 @@ the current copy will be lost.
 <context>
     <name>StdCmdToolBarMenu</name>
     <message>
-        <location filename="../CommandWindow.cpp" line="343"/>
+        <location filename="../CommandWindow.cpp" line="316"/>
         <source>Tool&amp;bars</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandWindow.cpp" line="344"/>
-        <location filename="../CommandWindow.cpp" line="346"/>
+        <location filename="../CommandWindow.cpp" line="317"/>
+        <location filename="../CommandWindow.cpp" line="319"/>
         <source>Toggles this window</source>
         <translation type="unfinished"></translation>
     </message>
@@ -11086,13 +11072,13 @@ the current copy will be lost.
 <context>
     <name>StdCmdUserInterface</name>
     <message>
-        <location filename="../CommandWindow.cpp" line="285"/>
+        <location filename="../CommandWindow.cpp" line="258"/>
         <source>Dock views</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandWindow.cpp" line="286"/>
-        <location filename="../CommandWindow.cpp" line="288"/>
+        <location filename="../CommandWindow.cpp" line="259"/>
+        <location filename="../CommandWindow.cpp" line="261"/>
         <source>Dock all top-level views</source>
         <translation type="unfinished"></translation>
     </message>
@@ -11492,13 +11478,13 @@ the current copy will be lost.
 <context>
     <name>StdCmdWindows</name>
     <message>
-        <location filename="../CommandWindow.cpp" line="261"/>
+        <location filename="../CommandWindow.cpp" line="234"/>
         <source>&amp;Windows...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandWindow.cpp" line="262"/>
-        <location filename="../CommandWindow.cpp" line="264"/>
+        <location filename="../CommandWindow.cpp" line="235"/>
+        <location filename="../CommandWindow.cpp" line="237"/>
         <source>Windows list</source>
         <translation type="unfinished"></translation>
     </message>
@@ -11506,9 +11492,9 @@ the current copy will be lost.
 <context>
     <name>StdCmdWindowsMenu</name>
     <message>
-        <location filename="../CommandWindow.cpp" line="444"/>
-        <location filename="../CommandWindow.cpp" line="445"/>
-        <location filename="../CommandWindow.cpp" line="447"/>
+        <location filename="../CommandWindow.cpp" line="417"/>
+        <location filename="../CommandWindow.cpp" line="418"/>
+        <location filename="../CommandWindow.cpp" line="420"/>
         <source>Activates this window</source>
         <translation type="unfinished"></translation>
     </message>
