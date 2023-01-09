@@ -23,17 +23,17 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <sstream>
+# include <sstream>
 
-#include <QComboBox>
-#include <QMessageBox>
-#include <QPointF>
-#include <QRectF>
-#include <QString>
+# include <QComboBox>
+# include <QMessageBox>
+# include <QPointF>
+# include <QRectF>
+# include <QString>
 
-#include <BRepAdaptor_Surface.hxx>
-#include <BRepLProp_SLProps.hxx>
-#include <gp_Dir.hxx>
+# include <BRepAdaptor_Surface.hxx>
+# include <BRepLProp_SLProps.hxx>
+# include <gp_Dir.hxx>
 #endif
 
 #include <App/Application.h>
@@ -47,8 +47,8 @@
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
-#include <Gui/MDIView.h>
 #include <Gui/MainWindow.h>
+#include <Gui/MDIView.h>
 #include <Gui/Selection.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>

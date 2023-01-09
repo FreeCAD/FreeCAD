@@ -28,7 +28,6 @@
 #include <gp_Ax3.hxx>
 
 #include <App/DocumentObject.h>
-#include <Base/Console.h>
 #include <Base/UnitsApi.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 

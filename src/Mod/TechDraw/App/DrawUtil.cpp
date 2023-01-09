@@ -21,41 +21,40 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-#include <cmath>
-#include <cstdlib>
-#include <cstring>
-#include <sstream>
+# include <cmath>
+# include <cstdlib>
+# include <cstring>
+# include <sstream>
 
-#include <boost_regex.hpp>
+# include <boost_regex.hpp>
 
-#include <QChar>
-#include <QPointF>
-#include <QString>
+# include <QChar>
+# include <QPointF>
+# include <QString>
 
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepAdaptor_Surface.hxx>
-#include <BRepBndLib.hxx>
-#include <BRepBuilderAPI_MakeEdge.hxx>
-#include <BRepExtrema_DistShapeShape.hxx>
-#include <BRepLProp_CLProps.hxx>
-#include <BRepLProp_CurveTool.hxx>
-#include <BRepLProp_SLProps.hxx>
-#include <BRepTools.hxx>
-#include <BRep_Builder.hxx>
-#include <BRep_Tool.hxx>
-#include <GCPnts_AbscissaPoint.hxx>
-#include <GeomAPI_ExtremaCurveCurve.hxx>
-#include <Precision.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
-#include <gp_Ax3.hxx>
-#include <gp_Dir.hxx>
-#include <gp_Elips.hxx>
-#include <gp_Pnt.hxx>
-#include <gp_Vec.hxx>
+# include <BRepAdaptor_Curve.hxx>
+# include <BRepAdaptor_Surface.hxx>
+# include <BRepBndLib.hxx>
+# include <BRepBuilderAPI_MakeEdge.hxx>
+# include <BRepExtrema_DistShapeShape.hxx>
+# include <BRepLProp_CLProps.hxx>
+# include <BRepLProp_CurveTool.hxx>
+# include <BRepLProp_SLProps.hxx>
+# include <BRepTools.hxx>
+# include <BRep_Builder.hxx>
+# include <BRep_Tool.hxx>
+# include <GCPnts_AbscissaPoint.hxx>
+# include <GeomAPI_ExtremaCurveCurve.hxx>
+# include <gp_Ax3.hxx>
+# include <gp_Dir.hxx>
+# include <gp_Elips.hxx>
+# include <gp_Pnt.hxx>
+# include <gp_Vec.hxx>
+# include <Precision.hxx>
+# include <TopExp.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopTools_IndexedMapOfShape.hxx>
 #endif
 
 #include <App/Application.h>

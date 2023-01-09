@@ -23,15 +23,15 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <BRep_Builder.hxx>
-#include <BRepBuilderAPI_Transform.hxx>
-#include <gp_Trsf.hxx>
-#include <gp_Vec.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Compound.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Wire.hxx>
+# include <BRep_Builder.hxx>
+# include <BRepBuilderAPI_Transform.hxx>
+# include <gp_Trsf.hxx>
+# include <gp_Vec.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Compound.hxx>
+# include <TopoDS_Edge.hxx>
+# include <TopoDS_Face.hxx>
+# include <TopoDS_Wire.hxx>
 #endif
 
 #include <boost_regex.hpp>
@@ -52,6 +52,7 @@
 #include <Mod/Part/App/TopoShapeWirePy.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
+#include "DimensionGeometry.h"
 #include "DrawDimHelper.h"
 #include "DrawGeomHatch.h"
 #include "DrawPage.h"
@@ -62,7 +63,6 @@
 #include "DrawUtil.h"
 #include "DrawViewAnnotation.h"
 #include "DrawViewDimension.h"
-#include "DimensionGeometry.h"
 #include "DrawViewPart.h"
 #include "DrawViewPartPy.h"
 #include "EdgeWalker.h"

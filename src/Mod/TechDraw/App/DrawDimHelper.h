@@ -31,7 +31,9 @@
 
 #include <Base/Vector3D.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
-#include <Mod/TechDraw/App/DimensionReferences.h>
+
+#include "DimensionReferences.h"
+
 
 namespace TechDraw
 {
