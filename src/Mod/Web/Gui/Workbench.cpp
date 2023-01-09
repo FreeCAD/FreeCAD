@@ -277,8 +277,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 //    Gui::MenuItem* wnd = new Gui::MenuItem( menuBar );
 //    wnd->setCommand("&Windows");
 //    *wnd << "Std_ActivateNextWindow" << "Std_ActivatePrevWindow" << "Separator"
-//         << "Std_TileWindows" << "Std_CascadeWindows"
-//         << "Std_ArrangeIcons" << "Separator" << "Std_WindowsMenu" << "Std_Windows";
+//         << "Std_TileWindows" << "Std_CascadeWindows" << "Separator"
+//         << "Std_WindowsMenu" << "Std_Windows";
 //
 //    // help ****************************************************************************************************
 //    // Separator

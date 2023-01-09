@@ -734,8 +734,8 @@ MenuItem* StdWorkbench::setupMenuBar() const
     auto wnd = new MenuItem( menuBar );
     wnd->setCommand("&Windows");
     *wnd << "Std_ActivateNextWindow" << "Std_ActivatePrevWindow" << "Separator"
-         << "Std_TileWindows" << "Std_CascadeWindows"
-         << "Std_ArrangeIcons" << "Separator" << "Std_WindowsMenu" << "Std_Windows";
+         << "Std_TileWindows" << "Std_CascadeWindows" << "Separator"
+         << "Std_WindowsMenu" << "Std_Windows";
 
     // Separator
     auto sep = new MenuItem( menuBar );
