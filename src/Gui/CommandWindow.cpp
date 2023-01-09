@@ -44,33 +44,6 @@ using namespace Gui;
 
 
 //===========================================================================
-// Std_ArrangeIcons
-//===========================================================================
-DEF_STD_CMD_A(StdCmdArrangeIcons)
-
-StdCmdArrangeIcons::StdCmdArrangeIcons()
-  : Command("Std_ArrangeIcons")
-{
-    sGroup        = "Window";
-    sMenuText     = QT_TR_NOOP("Arrange &Icons");
-    sToolTipText  = QT_TR_NOOP("Arrange Icons");
-    sWhatsThis    = "Std_ArrangeIcons";
-    sStatusTip    = QT_TR_NOOP("Arrange Icons");
-    eType         = 0;
-}
-
-void StdCmdArrangeIcons::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    getMainWindow()->arrangeIcons ();
-}
-
-bool StdCmdArrangeIcons::isActive()
-{
-    return !(getMainWindow()->windows().isEmpty());
-}
-
-//===========================================================================
 // Std_TileWindows
 //===========================================================================
 DEF_STD_CMD_A(StdCmdTileWindows)
@@ -493,7 +466,6 @@ void CreateWindowStdCommands()
 {
     CommandManager &rcCmdMgr = Application::Instance->commandManager();
 
-    rcCmdMgr.addCommand(new StdCmdArrangeIcons());
     rcCmdMgr.addCommand(new StdCmdTileWindows());
     rcCmdMgr.addCommand(new StdCmdCascadeWindows());
     rcCmdMgr.addCommand(new StdCmdCloseActiveWindow());

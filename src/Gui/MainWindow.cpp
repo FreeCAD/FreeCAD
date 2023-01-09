@@ -193,7 +193,6 @@ protected:
         cMgr.getCommandByName("Std_CloseAllWindows")->addTo(menu);
         menu->addSeparator();
         cMgr.getCommandByName("Std_CascadeWindows")->addTo(menu);
-        cMgr.getCommandByName("Std_ArrangeIcons")->addTo(menu);
         cMgr.getCommandByName("Std_TileWindows")->addTo(menu);
         menu->addSeparator();
         cMgr.getCommandByName("Std_Windows")->addTo(menu);
