@@ -26,13 +26,11 @@
 #endif
 
 #include <App/GeoFeature.h>
-#include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/TopoShape.h>
 
 #include "DimensionReferences.h"
 #include "DrawUtil.h"
 #include "DrawViewPart.h"
-#include "Geometry.h"
 
 
 using namespace TechDraw;

@@ -21,14 +21,8 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QMessageBox>
-#endif
 
-#include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <Base/Console.h>
-#include <Base/Tools.h>
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
 #include <Mod/TechDraw/App/DrawTemplate.h>

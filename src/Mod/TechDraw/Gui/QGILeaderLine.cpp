@@ -22,13 +22,13 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <cmath>
+# include <cmath>
 
-#include <QGraphicsScene>
-#include <QGraphicsSceneMouseEvent>
-#include <QPainter>
-#include <QPainterPath>
-#include <QVector2D>
+# include <QGraphicsScene>
+# include <QGraphicsSceneMouseEvent>
+# include <QPainter>
+# include <QPainterPath>
+# include <QVector2D>
 #endif
 
 #include <Base/Console.h>
@@ -37,10 +37,10 @@
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/LineGroup.h>
 
+#include "QGILeaderLine.h"
 #include "PreferencesGui.h"
 #include "QGEPath.h"
 #include "QGIArrow.h"
-#include "QGILeaderLine.h"
 #include "QGIPrimPath.h"
 #include "Rez.h"
 #include "ViewProviderLeader.h"

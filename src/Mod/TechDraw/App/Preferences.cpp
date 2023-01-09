@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-#include <QString>
-#include <string>
+# include <string>
+
+# include <QString>
 #endif
 
 #include <App/Application.h>

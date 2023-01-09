@@ -22,32 +22,25 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <cmath>
+# include <string>
+# include <vector>
 
 # include <QMessageBox>
 # include <QTableWidgetItem>
 #endif // #ifndef _PreComp_
 
-#include <App/Application.h>
 #include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <Base/Console.h>
 #include <Base/Tools.h>
-#include <Base/Vector3D.h>
-#include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
-#include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
-#include <Gui/ViewProvider.h>
 #include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
-#include <Mod/TechDraw/App/DrawUtil.h>
 
-#include "DimensionValidators.h"
-#include "ui_TaskDimRepair.h"
 #include "TaskDimRepair.h"
+#include "ui_TaskDimRepair.h"
+#include "DimensionValidators.h"
 
 
 using namespace Gui;
@@ -126,7 +119,6 @@ void TaskDimRepair::saveDimState()
 //restore the start conditions
 void TaskDimRepair::restoreDimState()
 {
-//    Base::Console().Message("TDR::restoreDimState()\n");
     if (m_dim) {
         m_dim->setReferences2d(m_saveRefs2d);
         m_dim->setReferences3d(m_saveRefs3d);
@@ -137,7 +129,6 @@ void TaskDimRepair::restoreDimState()
 //use the current selection to replace the references in dim
 void TaskDimRepair::slotUseSelection()
 {
-//    Base::Console().Message("TDR::slotUseSelection()\n");
     const std::vector<App::DocumentObject*> dimObjects = Gui::Selection().getObjectsOfType(TechDraw::DrawViewDimension::getClassTypeId());
     if (dimObjects.empty()) {
         //selection does not include a dimension, so we need to add our dimension to keep the
@@ -200,7 +191,6 @@ void TaskDimRepair::slotUseSelection()
 
 void TaskDimRepair::updateUi()
 {
-//    Base::Console().Message("TDR::updateUi()\n");
     std::string objName = m_dim->getViewPart()->getNameInDocument();
     std::string objLabel = m_dim->getViewPart()->Label.getValue();
     ui->leObject2d->setText(Base::Tools::fromStdString(objName + " / " + objLabel));
@@ -216,7 +206,6 @@ void TaskDimRepair::updateUi()
 
 void TaskDimRepair::loadTableWidget(QTableWidget* tw, ReferenceVector refs)
 {
-//    Base::Console().Message("TDR::loadTableWidget() - refs: %d\n", refs.size());
     tw->clearContents();
     tw->setRowCount(refs.size() + 1);
     size_t iRow = 0;
@@ -257,7 +246,6 @@ void TaskDimRepair::fillList(QListWidget* lwItems, std::vector<std::string> labe
 }
 void TaskDimRepair::replaceReferences()
 {
-//    Base::Console().Message("TDR::replaceReferences() - refs2d: %d refs3d %d\n", m_references2d.size(), m_references3d.size());
     if (!m_dim) {
         return;
     }
@@ -271,7 +259,6 @@ void TaskDimRepair::replaceReferences()
 
 bool TaskDimRepair::accept()
 {
-//    Base::Console().Message("TDR::accept()\n");
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
     replaceReferences();
     m_dim->Type.setValue(m_dimType);
@@ -281,7 +268,6 @@ bool TaskDimRepair::accept()
 
 bool TaskDimRepair::reject()
 {
-//    Base::Console().Message("TDR::reject()\n");
     restoreDimState();
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
     return false;

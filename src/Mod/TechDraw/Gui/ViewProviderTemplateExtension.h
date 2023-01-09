@@ -24,7 +24,6 @@
 #define TECHDRAWGUI_VIEWPROVIDERTEMPLATEEXTENSION_H
 
 #include <Gui/ViewProviderExtension.h>
-#include <Gui/ViewProviderExtensionPy.h>
 #include <Gui/ViewProviderExtensionPython.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 

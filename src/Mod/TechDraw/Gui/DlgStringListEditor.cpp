@@ -22,15 +22,14 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QList>
-#include <QListWidgetItem>
+# include <QListWidgetItem>
 #endif
 
-#include <Base/Console.h>// for FC_LOG_LEVEL_INIT
 #include <Base/Tools.h>
 
 #include "DlgStringListEditor.h"
 #include "ui_DlgStringListEditor.h"
+
 
 using namespace TechDrawGui;
 

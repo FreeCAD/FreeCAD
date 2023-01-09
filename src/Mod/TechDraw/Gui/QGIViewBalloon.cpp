@@ -23,15 +23,15 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <cmath>
-#include <string>
+# include <cmath>
+# include <string>
 
-#include <QGraphicsScene>
-#include <QGraphicsSceneMouseEvent>
-#include <QPaintDevice>
-#include <QPainter>
-#include <QPainterPath>
-#include <QSvgGenerator>
+# include <QGraphicsScene>
+# include <QGraphicsSceneMouseEvent>
+# include <QPaintDevice>
+# include <QPainter>
+# include <QPainterPath>
+# include <QSvgGenerator>
 #endif
 
 #include <App/Application.h>
@@ -46,10 +46,10 @@
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/Geometry.h>
 
+#include "QGIViewBalloon.h"
 #include "PreferencesGui.h"
 #include "QGIArrow.h"
 #include "QGIDimLines.h"
-#include "QGIViewBalloon.h"
 #include "Rez.h"
 #include "ViewProviderBalloon.h"
 #include "ViewProviderViewPart.h"

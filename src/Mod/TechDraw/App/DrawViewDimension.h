@@ -25,21 +25,17 @@
 
 #include <tuple>
 
-#include <gp_Ax3.hxx>
-
 #include <App/DocumentObject.h>
 #include <Base/UnitsApi.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include "DrawViewPart.h"
 #include "DimensionGeometry.h"
 #include "DimensionReferences.h"
-
-#include "Geometry.h"
-#include "DrawView.h"
 #include "DrawUtil.h"
+#include "DrawView.h"
+#include "DrawViewPart.h"
 
-using DU = TechDraw::DrawUtil;
+
 class TopoDS_Shape;
 
 namespace Measure {

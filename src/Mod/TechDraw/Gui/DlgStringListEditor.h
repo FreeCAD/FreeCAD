@@ -19,12 +19,14 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                 *
  *                                                                          *
  ****************************************************************************/
+
 #ifndef GUI_DLGEDITABLETEXT_H
 #define GUI_DLGEDITABLETEXT_H
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <QDialog>
+
 
 class QListWidgetItem;
 

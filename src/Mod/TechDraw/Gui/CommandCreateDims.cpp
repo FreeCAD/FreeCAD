@@ -23,16 +23,15 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QApplication>
-#include <QMessageBox>
-#include <sstream>
-#include <cstdlib>
-#include <exception>
+# include <string>
+# include <vector>
+
+# include <QApplication>
+# include <QMessageBox>
 #endif  //#ifndef _PreComp_
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <Base/Exception.h>
 #include <Base/Console.h>
 #include <Gui/Action.h>
 #include <Gui/Application.h>
@@ -43,7 +42,6 @@
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionObject.h>
-
 #include <Mod/TechDraw/App/DrawDimHelper.h>
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
@@ -53,10 +51,11 @@
 #include <Mod/TechDraw/App/LandmarkDimension.h>
 #include <Mod/TechDraw/App/Preferences.h>
 
-#include "DrawGuiUtil.h"
-#include "TaskLinkDim.h"
-#include "TaskDimRepair.h"
 #include "DimensionValidators.h"
+#include "DrawGuiUtil.h"
+#include "TaskDimRepair.h"
+#include "TaskLinkDim.h"
+
 
 using namespace TechDrawGui;
 using namespace TechDraw;

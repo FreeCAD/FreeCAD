@@ -27,7 +27,6 @@
 # include <sstream>
 
 # include <QGraphicsColorizeEffect>
-# include <QGraphicsEffect>
 # include <QGraphicsItem>
 # include <QRectF>
 #endif
@@ -37,10 +36,10 @@
 #include <Mod/TechDraw/App/DrawViewDraft.h>
 #include <Mod/TechDraw/App/DrawViewSymbol.h>
 
+#include "QGIViewSymbol.h"
 #include "PreferencesGui.h"
 #include "QGCustomSvg.h"
 #include "QGDisplayArea.h"
-#include "QGIViewSymbol.h"
 #include "Rez.h"
 
 

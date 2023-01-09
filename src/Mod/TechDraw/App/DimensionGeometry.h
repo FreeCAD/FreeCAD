@@ -23,11 +23,11 @@
 #ifndef TECHDRAW_DIMENSIONGEOMETRY_h_
 #define TECHDRAW_DIMENSIONGEOMETRY_h_
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <string>
 
 #include <Base/Vector3D.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 
 namespace TechDraw
 {

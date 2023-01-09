@@ -33,6 +33,8 @@
 # include <QPointF>
 # include <QString>
 
+# include <BRep_Builder.hxx>
+# include <BRep_Tool.hxx>
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepAdaptor_Surface.hxx>
 # include <BRepBndLib.hxx>
@@ -42,8 +44,6 @@
 # include <BRepLProp_CurveTool.hxx>
 # include <BRepLProp_SLProps.hxx>
 # include <BRepTools.hxx>
-# include <BRep_Builder.hxx>
-# include <BRep_Tool.hxx>
 # include <GCPnts_AbscissaPoint.hxx>
 # include <GeomAPI_ExtremaCurveCurve.hxx>
 # include <gp_Ax3.hxx>

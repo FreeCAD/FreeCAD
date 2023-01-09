@@ -21,11 +21,10 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-#include <Precision.hxx>
-#include <iostream>
-#include <sstream>
+# include <sstream>
+
+# include <Precision.hxx>
 #endif
 
 #include <App/Application.h>
@@ -34,7 +33,7 @@
 #include <Base/Parameter.h>
 
 #include "DrawPage.h"
-#include "DrawPagePy.h"// generated from DrawPagePy.xml
+#include "DrawPagePy.h" // generated from DrawPagePy.xml
 #include "DrawProjGroup.h"
 #include "DrawTemplate.h"
 #include "DrawView.h"

@@ -24,13 +24,12 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERDIMENSION_H
 #define DRAWINGGUI_VIEWPROVIDERDIMENSION_H
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <App/PropertyUnits.h>
-
+#include <Mod/TechDraw/TechDrawGlobal.h>
 #include <Mod/TechDraw/App/DrawViewDimension.h>
 
 #include "ViewProviderDrawingView.h"
+
 
 namespace TechDrawGui {
 

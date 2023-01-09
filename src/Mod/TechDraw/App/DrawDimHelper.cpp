@@ -42,12 +42,12 @@
 #include <Base/Interpreter.h>
 #include <Base/Vector3D.h>
 
-#include "Cosmetic.h"
 #include "DrawDimHelper.h"
+#include "Cosmetic.h"
 #include "DrawPage.h"
 #include "DrawUtil.h"
-#include "DrawViewDimExtent.h"
 #include "DrawViewDimension.h"
+#include "DrawViewDimExtent.h"
 #include "DrawViewPart.h"
 #include "Geometry.h"
 #include "GeometryObject.h"
