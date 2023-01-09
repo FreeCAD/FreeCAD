@@ -215,10 +215,6 @@ public Q_SLOTS:
      */
     void setPaneText(int i, QString text);
     /**
-     * Arranges all child windows in a horizontal tile pattern.
-     */
-    void arrangeIcons();
-    /**
      * Arranges all child windows in a tile pattern.
      */
     void tile();
