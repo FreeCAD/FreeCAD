@@ -351,7 +351,7 @@ std::vector<TopoDS_Wire> EdgeWalker::sortStrip(std::vector<TopoDS_Wire> fw, bool
 {
     std::vector<TopoDS_Wire> closedWires;                  //all the wires should be closed, but anomalies happen
     for (auto& w: fw) {
-        if (BRep_Tool::IsClosed(w)) {
+        if (!w.IsNull() && BRep_Tool::IsClosed(w)) {
             closedWires.push_back(w);
         }
     }
