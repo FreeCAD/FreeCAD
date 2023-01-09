@@ -404,7 +404,7 @@ bool DrawUtil::apparentIntersection(TopoDS_Edge& edge0, TopoDS_Edge& edge1, gp_P
         return true;
     }
 
-    gp_Vec g(D - C);//betwen a point on each line
+    gp_Vec g(D - C);//between a point on each line
     Base::Console().Message("DU::apparentInter - C: %s  D: %s  g: %s\n", formatVector(C).c_str(),
                             formatVector(D).c_str(), formatVector(g).c_str());
 

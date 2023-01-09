@@ -21,21 +21,21 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-#include "QDomNodeModel.h"
-#include <QDomDocument>
-#include <QXmlQuery>
-#include <QXmlResultItems>
-#include <sstream>
+# include <sstream>
+
+# include "QDomNodeModel.h"
+# include <QDomDocument>
+# include <QXmlResultItems>
+# include <QXmlQuery>
 #endif
 
 #include <Base/Console.h>
 
-#include "DrawPage.h"
-#include "DrawUtil.h"
 #include "DrawViewSymbol.h"
 #include "DrawViewSymbolPy.h"// generated from DrawViewSymbolPy.xml
+#include "DrawPage.h"
+#include "DrawUtil.h"
 
 
 using namespace TechDraw;

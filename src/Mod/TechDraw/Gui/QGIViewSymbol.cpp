@@ -23,16 +23,16 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QGraphicsColorizeEffect>
-#include <QGraphicsEffect>
-#include <QGraphicsItem>
-#include <QRectF>
-#include <cmath>
-#include <sstream>
+# include <cmath>
+# include <sstream>
+
+# include <QGraphicsColorizeEffect>
+# include <QGraphicsEffect>
+# include <QGraphicsItem>
+# include <QRectF>
 #endif
 
 #include <Base/Console.h>
-
 #include <Mod/TechDraw/App/DrawViewArch.h>
 #include <Mod/TechDraw/App/DrawViewDraft.h>
 #include <Mod/TechDraw/App/DrawViewSymbol.h>
@@ -42,6 +42,7 @@
 #include "QGDisplayArea.h"
 #include "QGIViewSymbol.h"
 #include "Rez.h"
+
 
 using namespace TechDrawGui;
 using namespace TechDraw;
