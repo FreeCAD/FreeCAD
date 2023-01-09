@@ -447,9 +447,9 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
             float(self.tool.Diameter),
             float(self.tool.Crest),
         ):
-            if not start is None and not _isThreadInternal(
-                obj
-            ):  # and not obj.LeadInOut:
+            if not start is None:
+                # and not _isThreadInternal(obj):
+                # and not obj.LeadInOut:
                 # external thread without lead in/out have to go up and over
                 # in other words we need a move to clearance and not take any
                 # shortcuts when moving to the elevator position
