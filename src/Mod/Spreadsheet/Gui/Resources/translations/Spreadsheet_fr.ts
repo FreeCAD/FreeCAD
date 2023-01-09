@@ -970,14 +970,6 @@ Voulez-vous continuer ?</translation>
     </message>
   </context>
   <context>
-    <name>SpreadsheetGui::Module</name>
-    <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="79"/>
-      <source>Unnamed</source>
-      <translation>Sans nom</translation>
-    </message>
-  </context>
-  <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="128"/>
@@ -1138,6 +1130,113 @@ Voulez-vous continuer ?</translation>
       <location filename="../../Workbench.cpp" line="53"/>
       <source>&amp;Styles</source>
       <translation>&amp;Styles</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet</name>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="739"/>
+      <source>Spreadsheet</source>
+      <translation>Tableur</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="748"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="874"/>
+      <source>Cell</source>
+      <translation>Cellule</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="751"/>
+      <source>Apply</source>
+      <translation>Appliquer</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="753"/>
+      <source>Apply the changes to the current cell</source>
+      <translation>Appliquer les modifications à la cellule active</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="755"/>
+      <source>Delete</source>
+      <translation>Supprimer</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="757"/>
+      <source>Deletes the contents of the current cell</source>
+      <translation>Supprime le contenu de la cellule active</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="759"/>
+      <source>Compute</source>
+      <translation>Calculer</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="761"/>
+      <source>Updates the values handled by controllers</source>
+      <translation>Mise à jour des valeurs gérées par les contrôleurs</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="907"/>
+      <source>Create Spreadsheet</source>
+      <translation>Créer une feuille de calcul</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="933"/>
+      <source>Add controller</source>
+      <translation>Ajouter un contrôleur</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="959"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="973"/>
+      <source>Add property controller</source>
+      <translation>Ajouter un contrôleur de propriété</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_Create</name>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="902"/>
+      <source>Spreadsheet</source>
+      <translation>Tableur</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="905"/>
+      <source>Adds a spreadsheet object to the active document</source>
+      <translation>Ajoute un objet feuille de calcul au document actif</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_Controller</name>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="919"/>
+      <source>Add controller</source>
+      <translation>Ajouter un contrôleur</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="922"/>
+      <source>Adds a cell controller to a selected spreadsheet</source>
+      <translation>Ajoute un contrôleur de cellule à une feuille de calcul sélectionnée</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_PropertyController</name>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="944"/>
+      <source>Add property controller</source>
+      <translation>Ajouter un contrôleur de propriété</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="947"/>
+      <source>Adds a property controller to a selected spreadsheet</source>
+      <translation>Ajoute un contrôleur de propriété à une feuille de calcul sélectionnée</translation>
+    </message>
+  </context>
+  <context>
+    <name>Py</name>
+    <message>
+      <location filename="../../AppSpreadsheetGui.cpp" line="79"/>
+      <source>Unnamed</source>
+      <translation>Sans nom</translation>
     </message>
   </context>
 </TS>

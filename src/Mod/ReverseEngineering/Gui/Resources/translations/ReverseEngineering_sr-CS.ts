@@ -101,12 +101,12 @@
     <message>
       <location filename="../../Command.cpp" line="485"/>
       <source>Wire from mesh boundary...</source>
-      <translation type="unfinished">Wire from mesh boundary...</translation>
+      <translation>Polilinija od ivica mreže...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="486"/>
       <source>Create wire from mesh boundaries</source>
-      <translation type="unfinished">Create wire from mesh boundaries</translation>
+      <translation>Napravi poliliniju od ivica mreže</translation>
     </message>
   </context>
   <context>
@@ -119,12 +119,12 @@
     <message>
       <location filename="../../Command.cpp" line="551"/>
       <source>Poisson...</source>
-      <translation type="unfinished">Poisson...</translation>
+      <translation>Poason...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="552"/>
       <source>Poisson surface reconstruction</source>
-      <translation type="unfinished">Poisson surface reconstruction</translation>
+      <translation>Poasonova rekonstrukcija površine</translation>
     </message>
   </context>
   <context>
@@ -155,12 +155,12 @@
     <message>
       <location filename="../../Command.cpp" line="435"/>
       <source>From components</source>
-      <translation type="unfinished">From components</translation>
+      <translation>Od komponenti</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="436"/>
       <source>Create mesh segments from components</source>
-      <translation type="unfinished">Create mesh segments from components</translation>
+      <translation>Napravi segmente mreže od komponenti</translation>
     </message>
   </context>
   <context>
@@ -173,12 +173,12 @@
     <message>
       <location filename="../../Command.cpp" line="406"/>
       <source>Manual segmentation...</source>
-      <translation type="unfinished">Manual segmentation...</translation>
+      <translation>Ručna segmentacija...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="407"/>
       <source>Create mesh segments manually</source>
-      <translation type="unfinished">Create mesh segments manually</translation>
+      <translation>Napravite segmente mreže ručno</translation>
     </message>
   </context>
   <context>
@@ -205,27 +205,27 @@
     <message>
       <location filename="../../Command.cpp" line="184"/>
       <source>Fit plane</source>
-      <translation type="unfinished">Fit plane</translation>
+      <translation>Uklopi ravan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="215"/>
       <source>Fit cylinder</source>
-      <translation type="unfinished">Fit cylinder</translation>
+      <translation>Uklopi cilindar</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="281"/>
       <source>Fit sphere</source>
-      <translation type="unfinished">Fit sphere</translation>
+      <translation>Uklopi sferu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="329"/>
       <source>Fit polynomial surface</source>
-      <translation type="unfinished">Fit polynomial surface</translation>
+      <translation>Uklopi polinomsku površinu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="595"/>
       <source>View triangulation</source>
-      <translation type="unfinished">View triangulation</translation>
+      <translation>Prikaz triangulacije</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="148"/>
@@ -235,12 +235,12 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="220"/>
       <source>Fit B-Spline</source>
-      <translation type="unfinished">Fit B-Spline</translation>
+      <translation>Uklopi B-Splajn</translation>
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="91"/>
       <source>Poisson reconstruction</source>
-      <translation type="unfinished">Poisson reconstruction</translation>
+      <translation>Poasonova rekonstrukcija</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.cpp" line="230"/>
@@ -253,7 +253,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="14"/>
       <source>Fit B-spline surface</source>
-      <translation type="unfinished">Fit B-spline surface</translation>
+      <translation>Uklopi B-Splajn površinu</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="20"/>
@@ -290,7 +290,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="189"/>
       <source>Size factor</source>
-      <translation>Faktor veličine</translation>
+      <translation>Koeficijent veličine</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="218"/>
@@ -300,7 +300,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="231"/>
       <source>Create placement</source>
-      <translation type="unfinished">Create placement</translation>
+      <translation>Napravi položaj</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="238"/>
@@ -315,17 +315,17 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="276"/>
       <source>Length of gradient</source>
-      <translation type="unfinished">Length of gradient</translation>
+      <translation>Dužina gradijenta</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="305"/>
       <source>Bending energy</source>
-      <translation type="unfinished">Bending energy</translation>
+      <translation>Energija savijanja</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="334"/>
       <source>Curvature variation</source>
-      <translation type="unfinished">Curvature variation</translation>
+      <translation>Promena zakrivljenosti</translation>
     </message>
   </context>
   <context>
@@ -344,7 +344,7 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="200"/>
       <source>Please select a single placement object to get local orientation.</source>
-      <translation type="unfinished">Please select a single placement object to get local orientation.</translation>
+      <translation>Izaberite jedan objekat položaj da bi ste dobili lokalnu orijentaciju.</translation>
     </message>
   </context>
   <context>
@@ -352,7 +352,7 @@
     <message>
       <location filename="../../Poisson.ui" line="14"/>
       <source>Poisson</source>
-      <translation type="unfinished">Poisson</translation>
+      <translation>Poason</translation>
     </message>
     <message>
       <location filename="../../Poisson.ui" line="20"/>
@@ -362,7 +362,7 @@
     <message>
       <location filename="../../Poisson.ui" line="26"/>
       <source>Octree depth</source>
-      <translation type="unfinished">Octree depth</translation>
+      <translation>Dubina oktalnog stabla</translation>
     </message>
     <message>
       <location filename="../../Poisson.ui" line="46"/>
@@ -372,7 +372,7 @@
     <message>
       <location filename="../../Poisson.ui" line="66"/>
       <source>Samples per node</source>
-      <translation type="unfinished">Samples per node</translation>
+      <translation>Broj diskretnih elemenata po čvoru</translation>
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="98"/>
@@ -404,7 +404,7 @@
     <message>
       <location filename="../../Command.cpp" line="617"/>
       <source>View triangulation failed</source>
-      <translation type="unfinished">View triangulation failed</translation>
+      <translation>Prikaz triangulacije nije uspeo</translation>
     </message>
   </context>
   <context>
@@ -447,7 +447,7 @@
     <message>
       <location filename="../../Segmentation.ui" line="107"/>
       <source>Create compound</source>
-      <translation type="unfinished">Create compound</translation>
+      <translation>Napravi sastavljeni objekat</translation>
     </message>
   </context>
   <context>

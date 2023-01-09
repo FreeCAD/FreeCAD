@@ -147,30 +147,30 @@
       <translation>Llest...</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="544"/>
+      <location filename="../../ImageView.cpp" line="568"/>
       <source>grey</source>
       <translation>gris</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="545"/>
-      <location filename="../../ImageView.cpp" line="548"/>
-      <location filename="../../ImageView.cpp" line="558"/>
-      <location filename="../../ImageView.cpp" line="563"/>
-      <location filename="../../ImageView.cpp" line="573"/>
-      <location filename="../../ImageView.cpp" line="578"/>
-      <location filename="../../ImageView.cpp" line="589"/>
-      <location filename="../../ImageView.cpp" line="594"/>
-      <location filename="../../ImageView.cpp" line="605"/>
-      <location filename="../../ImageView.cpp" line="610"/>
+      <location filename="../../ImageView.cpp" line="569"/>
+      <location filename="../../ImageView.cpp" line="572"/>
+      <location filename="../../ImageView.cpp" line="582"/>
+      <location filename="../../ImageView.cpp" line="587"/>
+      <location filename="../../ImageView.cpp" line="597"/>
+      <location filename="../../ImageView.cpp" line="602"/>
+      <location filename="../../ImageView.cpp" line="613"/>
+      <location filename="../../ImageView.cpp" line="618"/>
+      <location filename="../../ImageView.cpp" line="629"/>
+      <location filename="../../ImageView.cpp" line="634"/>
       <source>zoom</source>
       <translation>zoom</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="548"/>
-      <location filename="../../ImageView.cpp" line="558"/>
-      <location filename="../../ImageView.cpp" line="573"/>
-      <location filename="../../ImageView.cpp" line="589"/>
-      <location filename="../../ImageView.cpp" line="605"/>
+      <location filename="../../ImageView.cpp" line="572"/>
+      <location filename="../../ImageView.cpp" line="582"/>
+      <location filename="../../ImageView.cpp" line="597"/>
+      <location filename="../../ImageView.cpp" line="613"/>
+      <location filename="../../ImageView.cpp" line="629"/>
       <source>outside image</source>
       <translation>imatge exterior</translation>
     </message>
@@ -212,6 +212,57 @@
       <location filename="../../Workbench.cpp" line="33"/>
       <source>Image</source>
       <translation>Imatge</translation>
+    </message>
+  </context>
+  <context>
+    <name>Image_Scaling</name>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="55"/>
+      <source>Scale image plane</source>
+      <translation type="unfinished">Scale image plane</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="59"/>
+      <source>Scales an image plane by defining a distance between two points</source>
+      <translation type="unfinished">Scales an image plane by defining a distance between two points</translation>
+    </message>
+  </context>
+  <context>
+    <name>Dialog</name>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="139"/>
+      <source>Scale image plane</source>
+      <translation type="unfinished">Scale image plane</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="140"/>
+      <source>Distance</source>
+      <translation type="unfinished">Distance</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="141"/>
+      <source>Select first point</source>
+      <translation type="unfinished">Select first point</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="156"/>
+      <source>Enter distance</source>
+      <translation type="unfinished">Enter distance</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="159"/>
+      <source>Select image plane</source>
+      <translation type="unfinished">Select image plane</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="184"/>
+      <source>Select second point</source>
+      <translation type="unfinished">Select second point</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="193"/>
+      <source>Select Image Plane and type distance</source>
+      <translation type="unfinished">Select Image Plane and type distance</translation>
     </message>
   </context>
 </TS>

@@ -838,8 +838,8 @@ so that self intersection is avoided.</translation>
       <translation>Crea clone</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="874"/>
       <location filename="../../SketchWorkflow.cpp" line="297"/>
+      <location filename="../../Command.cpp" line="874"/>
       <source>Make copy</source>
       <translation>Fà una copia</translation>
     </message>
@@ -864,8 +864,8 @@ so that self intersection is avoided.</translation>
       <translation>Crea pallinatura</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="189"/>
       <location filename="../../DlgActiveBody.cpp" line="104"/>
+      <location filename="../../CommandBody.cpp" line="189"/>
       <source>Add a Body</source>
       <translation>Aggiungi corpo</translation>
     </message>
@@ -2912,19 +2912,19 @@ misurata lungo la direzione specificata</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="30"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="138"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="137"/>
       <source>Base X axis</source>
       <translation>Asse X di base</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="35"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="139"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="138"/>
       <source>Base Y axis</source>
       <translation>Asse Y di base</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="40"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="140"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="139"/>
       <source>Base Z axis</source>
       <translation>Asse Z di base</translation>
     </message>
@@ -2940,7 +2940,7 @@ misurata lungo la direzione specificata</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="55"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="147"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="146"/>
       <source>Select reference...</source>
       <translation>Seleziona riferimento...</translation>
     </message>
@@ -3520,28 +3520,28 @@ fare nuovamente clic per terminare la selezione</translation>
       <translation>Si prega di creare prima un piano oppure di selezionare una faccia su cui posizionare lo schizzo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="895"/>
-      <location filename="../../Command.cpp" line="1894"/>
+      <location filename="../../ViewProviderHole.cpp" line="79"/>
+      <location filename="../../ViewProviderDatum.cpp" line="246"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="73"/>
       <location filename="../../SketchWorkflow.cpp" line="591"/>
       <location filename="../../ViewProvider.cpp" line="98"/>
       <location filename="../../ViewProviderBoolean.cpp" line="80"/>
-      <location filename="../../ViewProviderDatum.cpp" line="246"/>
-      <location filename="../../ViewProviderHole.cpp" line="79"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="73"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
+      <location filename="../../Command.cpp" line="895"/>
+      <location filename="../../Command.cpp" line="1894"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Nel pannello azioni c'è già una finestra di dialogo aperta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="896"/>
-      <location filename="../../Command.cpp" line="1895"/>
+      <location filename="../../ViewProviderHole.cpp" line="80"/>
+      <location filename="../../ViewProviderDatum.cpp" line="247"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="74"/>
       <location filename="../../SketchWorkflow.cpp" line="592"/>
       <location filename="../../ViewProvider.cpp" line="99"/>
       <location filename="../../ViewProviderBoolean.cpp" line="81"/>
-      <location filename="../../ViewProviderDatum.cpp" line="247"/>
-      <location filename="../../ViewProviderHole.cpp" line="80"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="74"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
+      <location filename="../../Command.cpp" line="896"/>
+      <location filename="../../Command.cpp" line="1895"/>
       <source>Do you want to close this dialog?</source>
       <translation>Si desidera chiudere questa finestra?</translation>
     </message>
@@ -3810,14 +3810,14 @@ This may lead to unexpected results.</source>
       <translation>Non è possibile creare una funzione sottrattiva senza una funzione di base disponibile</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="123"/>
       <location filename="../../TaskTransformedParameters.cpp" line="287"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="123"/>
       <source>Vertical sketch axis</source>
       <translation>Asse verticale dello schizzo</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="124"/>
       <location filename="../../TaskTransformedParameters.cpp" line="288"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="124"/>
       <source>Horizontal sketch axis</source>
       <translation>Asse orizzontale dello schizzo</translation>
     </message>
@@ -3869,11 +3869,11 @@ If you have a legacy document with PartDesign objects without Body, use the migr
       <translation>Per poter utilizzare questa funzione essa deve appartenere a un oggetto parte del documento.</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="65"/>
       <location filename="../../ViewProviderDressUp.cpp" line="50"/>
+      <location filename="../../ViewProviderTransformed.cpp" line="65"/>
+      <location filename="../../ViewProvider.cpp" line="65"/>
       <location filename="../../ViewProviderMultiTransform.cpp" line="42"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="204"/>
-      <location filename="../../ViewProviderTransformed.cpp" line="65"/>
       <source>Edit %1</source>
       <translation>Edita %1</translation>
     </message>
@@ -4711,6 +4711,90 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../Workbench.cpp" line="62"/>
       <source>Part Design Modeling</source>
       <translation>Part Design - Modellazione</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesign_InvoluteGear</name>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="57"/>
+      <source>Involute gear...</source>
+      <translation>Ruota dentata ad evolvente...</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="61"/>
+      <source>Creates or edit the involute gear definition.</source>
+      <translation type="unfinished">Creates or edit the involute gear definition.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesign_Sprocket</name>
+    <message>
+      <location filename="../../../SprocketFeature.py" line="62"/>
+      <source>Sprocket...</source>
+      <translation>Pignone...</translation>
+    </message>
+    <message>
+      <location filename="../../../SprocketFeature.py" line="66"/>
+      <source>Creates or edit the sprocket definition.</source>
+      <translation type="unfinished">Creates or edit the sprocket definition.</translation>
+    </message>
+  </context>
+  <context>
+    <name>WizardShaftTable</name>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="43"/>
+      <source>Length [mm]</source>
+      <translation>Lunghezza [mm]</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="44"/>
+      <source>Diameter [mm]</source>
+      <translation>Diametro [mm]</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="45"/>
+      <source>Inner diameter [mm]</source>
+      <translation>Diametro interno [mm]</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="46"/>
+      <source>Constraint type</source>
+      <translation type="unfinished">Constraint type</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="47"/>
+      <source>Start edge type</source>
+      <translation type="unfinished">Start edge type</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="48"/>
+      <source>Start edge size</source>
+      <translation type="unfinished">Start edge size</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="49"/>
+      <source>End edge type</source>
+      <translation type="unfinished">End edge type</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="53"/>
+      <source>End edge size</source>
+      <translation type="unfinished">End edge size</translation>
+    </message>
+  </context>
+  <context>
+    <name>WizardShaft</name>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="186"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="211"/>
+      <source>Shaft design wizard...</source>
+      <translation type="unfinished">Shaft design wizard...</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="187"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="212"/>
+      <source>Start the shaft design wizard</source>
+      <translation type="unfinished">Start the shaft design wizard</translation>
     </message>
   </context>
 </TS>

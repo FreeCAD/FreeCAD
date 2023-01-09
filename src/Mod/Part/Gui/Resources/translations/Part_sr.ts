@@ -184,7 +184,7 @@
       <location filename="../../AttacherTexts.cpp" line="284"/>
       <source>Point is put on edge, MapPathParameter controls where. Additionally, vertex can be linked in for making a projection.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Point is put on edge, MapPathParameter controls where. Additionally, vertex can be linked in for making a projection.</translation>
+      <translation>Тачка је постављена на ивицу, MapPathParameter контролише где. Додатно се може повезати теме да би се направила пројекција.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="286"/>
@@ -214,7 +214,7 @@
       <location filename="../../AttacherTexts.cpp" line="292"/>
       <source>Intersection</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>Преклоп</translation>
+      <translation>Преcек</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="293"/>
@@ -435,7 +435,7 @@
       <location filename="../../AttacherTexts.cpp" line="247"/>
       <source>Intersection</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Преклоп</translation>
+      <translation>Преcек</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="248"/>
@@ -1054,7 +1054,7 @@
       <location filename="../../DlgBlock.ui" line="48"/>
       <location filename="../../DlgBlock.ui" line="209"/>
       <source>Dimension</source>
-      <translation>Димензија</translation>
+      <translation>Кота</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="53"/>
@@ -1114,7 +1114,7 @@
     <message>
       <location filename="../../DlgBlock.ui" line="135"/>
       <source>Selection:</source>
-      <translation>Одабир:</translation>
+      <translation>Избор:</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="162"/>
@@ -1456,7 +1456,7 @@ into its X, Y, and Z components.</source>
     <message>
       <location filename="../../Command.cpp" line="378"/>
       <source>Intersection</source>
-      <translation>Преклоп</translation>
+      <translation>Преcек</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="379"/>
@@ -1838,12 +1838,12 @@ into its X, Y, and Z components.</source>
     <message>
       <location filename="../../Command.cpp" line="1510"/>
       <source>Mirroring...</source>
-      <translation>Пресликавање...</translation>
+      <translation>Симетрично пресликавање...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1511"/>
       <source>Mirroring a selected shape</source>
-      <translation>Пресликавање изабраног облика</translation>
+      <translation>Симетрично пресликавање изабраног облика</translation>
     </message>
   </context>
   <context>
@@ -1954,7 +1954,7 @@ into its X, Y, and Z components.</source>
 onto a face of another object.
 The camera view determines the direction
 of projection.</source>
-      <translation>Пројектуј ивице, жице или странице једног објекта
+      <translation>Пројицирај ивице, жице или странице једног објекта
 на страницу другог објекта.
 Поглед камере одређује правац
 пројекције.</translation>
@@ -1988,12 +1988,12 @@ of projection.</source>
     <message>
       <location filename="../../Command.cpp" line="1253"/>
       <source>Reverse shapes</source>
-      <translation type="unfinished">Reverse shapes</translation>
+      <translation>Окрени облик</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1254"/>
       <source>Reverse orientation of shapes</source>
-      <translation type="unfinished">Reverse orientation of shapes</translation>
+      <translation>Окреће оријентацију облика</translation>
     </message>
   </context>
   <context>
@@ -2368,7 +2368,7 @@ of projection.</source>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="198"/>
       <source>Edit Mirror</source>
-      <translation>Уреди пресликавање</translation>
+      <translation>Уреди симетрију</translation>
     </message>
   </context>
   <context>
@@ -2507,7 +2507,7 @@ Note: The placement is expressed in local space of object being attached.</trans
     <message>
       <location filename="../../CrossSections.ui" line="52"/>
       <source>Position:</source>
-      <translation>Позиција:</translation>
+      <translation>Положај:</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="71"/>
@@ -2555,7 +2555,7 @@ Note: The placement is expressed in local space of object being attached.</trans
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="49"/>
       <source>Intersection</source>
-      <translation>Преклоп</translation>
+      <translation>Преcек</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="56"/>
@@ -2670,7 +2670,7 @@ Note: The placement is expressed in local space of object being attached.</trans
     <message>
       <location filename="../../DlgExportHeaderStep.ui" line="29"/>
       <source>Company</source>
-      <translation>Компанија</translation>
+      <translation>Предузеће</translation>
     </message>
     <message>
       <location filename="../../DlgExportHeaderStep.ui" line="39"/>
@@ -3246,7 +3246,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="128"/>
       <source>Company</source>
-      <translation>Компанија</translation>
+      <translation>Предузеће</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="138"/>
@@ -3388,7 +3388,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgPartBox.ui" line="20"/>
       <source>Position:</source>
-      <translation>Позиција:</translation>
+      <translation>Положај:</translation>
     </message>
     <message>
       <location filename="../../DlgPartBox.ui" line="32"/>
@@ -3441,7 +3441,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="20"/>
       <source>Position:</source>
-      <translation>Позиција:</translation>
+      <translation>Положај:</translation>
     </message>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="32"/>
@@ -3540,79 +3540,79 @@ during file reading (slower but higher details).</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="33"/>
-      <location filename="../../DlgPrimitives.cpp" line="737"/>
+      <location filename="../../DlgPrimitives.cpp" line="275"/>
       <source>Plane</source>
       <translation>Раван</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="42"/>
-      <location filename="../../DlgPrimitives.cpp" line="755"/>
+      <location filename="../../DlgPrimitives.cpp" line="351"/>
       <source>Box</source>
       <translation type="unfinished">Box</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="51"/>
-      <location filename="../../DlgPrimitives.cpp" line="777"/>
+      <location filename="../../DlgPrimitives.cpp" line="442"/>
       <source>Cylinder</source>
       <translation>Цилиндар</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="60"/>
-      <location filename="../../DlgPrimitives.cpp" line="797"/>
+      <location filename="../../DlgPrimitives.cpp" line="535"/>
       <source>Cone</source>
       <translation>Купа</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="69"/>
-      <location filename="../../DlgPrimitives.cpp" line="817"/>
+      <location filename="../../DlgPrimitives.cpp" line="627"/>
       <source>Sphere</source>
       <translation>Cфера</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="78"/>
-      <location filename="../../DlgPrimitives.cpp" line="841"/>
+      <location filename="../../DlgPrimitives.cpp" line="732"/>
       <source>Ellipsoid</source>
       <translation>Елипсоид</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="87"/>
-      <location filename="../../DlgPrimitives.cpp" line="863"/>
+      <location filename="../../DlgPrimitives.cpp" line="840"/>
       <source>Torus</source>
       <translation>Торуc</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="96"/>
-      <location filename="../../DlgPrimitives.cpp" line="885"/>
+      <location filename="../../DlgPrimitives.cpp" line="939"/>
       <source>Prism</source>
       <translation>Призма</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="105"/>
-      <location filename="../../DlgPrimitives.cpp" line="917"/>
+      <location filename="../../DlgPrimitives.cpp" line="1082"/>
       <source>Wedge</source>
       <translation>Клин</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="114"/>
-      <location filename="../../DlgPrimitives.cpp" line="940"/>
+      <location filename="../../DlgPrimitives.cpp" line="1209"/>
       <source>Helix</source>
       <translation>Хеликс</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="123"/>
-      <location filename="../../DlgPrimitives.cpp" line="958"/>
+      <location filename="../../DlgPrimitives.cpp" line="1299"/>
       <source>Spiral</source>
       <translation>Cпирала</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="132"/>
-      <location filename="../../DlgPrimitives.cpp" line="976"/>
+      <location filename="../../DlgPrimitives.cpp" line="1380"/>
       <source>Circle</source>
       <translation>Круг</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="141"/>
-      <location filename="../../DlgPrimitives.cpp" line="996"/>
+      <location filename="../../DlgPrimitives.cpp" line="1467"/>
       <source>Ellipse</source>
       <translation>Елипса</translation>
     </message>
@@ -3623,13 +3623,13 @@ during file reading (slower but higher details).</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="159"/>
-      <location filename="../../DlgPrimitives.cpp" line="1038"/>
+      <location filename="../../DlgPrimitives.cpp" line="1645"/>
       <source>Line</source>
       <translation>Линија</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="168"/>
-      <location filename="../../DlgPrimitives.cpp" line="1054"/>
+      <location filename="../../DlgPrimitives.cpp" line="1545"/>
       <source>Regular polygon</source>
       <translation>Правилан многоугао</translation>
     </message>
@@ -3867,24 +3867,25 @@ during file reading (slower but higher details).</translation>
       <translation>Крајња тачка</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="1014"/>
+      <location filename="../../DlgPrimitives.cpp" line="1744"/>
       <source>Vertex</source>
       <translation type="unfinished">Vertex</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="1063"/>
-      <location filename="../../DlgPrimitives.cpp" line="1133"/>
-      <location filename="../../DlgPrimitives.cpp" line="1142"/>
+      <location filename="../../DlgPrimitives.cpp" line="1924"/>
+      <location filename="../../DlgPrimitives.cpp" line="1934"/>
+      <location filename="../../DlgPrimitives.cpp" line="1949"/>
+      <location filename="../../DlgPrimitives.cpp" line="1953"/>
       <source>Create %1</source>
       <translation>Направи %1</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="1064"/>
+      <location filename="../../DlgPrimitives.cpp" line="1925"/>
       <source>No active document</source>
       <translation>Нема активног документа</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="2063"/>
+      <location filename="../../DlgPrimitives.cpp" line="2228"/>
       <source>&amp;Create</source>
       <translation>&amp;Направи</translation>
     </message>
@@ -3894,12 +3895,12 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="14"/>
       <source>Projection on surface</source>
-      <translation type="unfinished">Projection on surface</translation>
+      <translation>Пројекција на површину</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="20"/>
       <source>Select projection surface</source>
-      <translation type="unfinished">Select projection surface</translation>
+      <translation>Изабери површину на коју се пројицира</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="31"/>
@@ -3949,7 +3950,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="147"/>
       <source>Get current camera direction</source>
-      <translation type="unfinished">Get current camera direction</translation>
+      <translation>Исчитајте тренутни правац камере</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="156"/>
@@ -3969,17 +3970,17 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.cpp" line="135"/>
       <source>Projection Object</source>
-      <translation type="unfinished">Projection Object</translation>
+      <translation>Објекат који се пројицира</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.cpp" line="163"/>
       <source>Have no active document!!!</source>
-      <translation type="unfinished">Have no active document!!!</translation>
+      <translation>Нема активног документа!!!</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.cpp" line="170"/>
       <source>Can not create a projection object!!!</source>
-      <translation type="unfinished">Can not create a projection object!!!</translation>
+      <translation>Не могу направити пројицирани објекат!!!</translation>
     </message>
   </context>
   <context>
@@ -4262,7 +4263,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="20"/>
       <source>Default Shape view properties</source>
-      <translation>Подразумевана својства изгледа облика</translation>
+      <translation>Подразумеване особине изгледа облика</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="34"/>
@@ -4515,7 +4516,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../Mirroring.ui" line="14"/>
       <source>Mirroring</source>
-      <translation>Преcликавање</translation>
+      <translation>Симетрично пресликавање</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="33"/>
@@ -4525,7 +4526,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../Mirroring.ui" line="41"/>
       <source>Mirror plane:</source>
-      <translation>Раван пресликавања:</translation>
+      <translation>Раван симетрије:</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="49"/>
@@ -4565,7 +4566,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../Mirroring.cpp" line="129"/>
       <source>Select a shape for mirroring, first.</source>
-      <translation>Прво одабери облик за преcликавање.</translation>
+      <translation>Прво изаберите облик за симетрично пресликавање.</translation>
     </message>
     <message>
       <location filename="../../Mirroring.cpp" line="136"/>
@@ -5414,12 +5415,12 @@ by dragging a selection rectangle in the 3D view</source>
       <location filename="../../TaskOffset.ui" line="78"/>
       <location filename="../../TaskOffset.ui" line="86"/>
       <source>Intersection</source>
-      <translation>Преклоп</translation>
+      <translation>Преcек</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="93"/>
       <source>Self-intersection</source>
-      <translation>Cамо-преклапање</translation>
+      <translation>Само-укрштање</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="100"/>
@@ -5629,8 +5630,10 @@ in the 3D view for the sweep path.</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../ViewProvider.cpp" line="50"/>
+      <location filename="../../../BasicShapes/ViewProviderShapes.py" line="47"/>
+      <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
       <location filename="../../ViewProviderPrimitive.cpp" line="56"/>
+      <location filename="../../ViewProvider.cpp" line="53"/>
       <source>Edit %1</source>
       <translation>Уреди %1</translation>
     </message>
@@ -5722,20 +5725,20 @@ Do you want to continue?</source>
       <translation>Није изабрана референтна</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="75"/>
       <location filename="../../TaskCheckGeometry.cpp" line="81"/>
+      <location filename="../../TaskAttacher.cpp" line="75"/>
       <source>Face</source>
       <translation>Страница</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="78"/>
       <location filename="../../TaskCheckGeometry.cpp" line="83"/>
+      <location filename="../../TaskAttacher.cpp" line="78"/>
       <source>Edge</source>
       <translation>Ивица</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="81"/>
       <location filename="../../TaskCheckGeometry.cpp" line="84"/>
+      <location filename="../../TaskAttacher.cpp" line="81"/>
       <source>Vertex</source>
       <translation type="unfinished">Vertex</translation>
     </message>
@@ -5862,7 +5865,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="118"/>
       <source>Self Intersecting Wire</source>
-      <translation>Жица која се самопресеца</translation>
+      <translation>Жица која се само-укршта</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="119"/>
@@ -5962,7 +5965,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="161"/>
       <source>BOPAlgo SelfIntersect</source>
-      <translation>BOPAlgo Cамо преcек</translation>
+      <translation>BOPAlgo Cамо-укрштање</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="162"/>
@@ -6060,7 +6063,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="78"/>
       <source>Edit mirror plane</source>
-      <translation>Уреди раван пресликавања</translation>
+      <translation>Уреди раван симетрије</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="284"/>
@@ -6092,13 +6095,18 @@ Do you want to continue?</source>
       <source>Attachment editor</source>
       <translation>Уређивач придруживања</translation>
     </message>
+    <message>
+      <location filename="../../../BasicShapes/CommandShapes.py" line="52"/>
+      <source>Create tube</source>
+      <translation>Направи цев</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
       <location filename="../../Workbench.cpp" line="33"/>
       <source>&amp;Part</source>
-      <translation>&amp;Део</translation>
+      <translation>&amp;Part</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="34"/>
@@ -6138,7 +6146,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Workbench.cpp" line="41"/>
       <source>Split</source>
-      <translation>Разделите</translation>
+      <translation>Подели</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="42"/>
@@ -6154,6 +6162,390 @@ Do you want to continue?</source>
       <location filename="../../Workbench.cpp" line="44"/>
       <source>Measure</source>
       <translation>Измери</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_Tube</name>
+    <message>
+      <location filename="../../../BasicShapes/CommandShapes.py" line="44"/>
+      <source>Create tube</source>
+      <translation>Направи цев</translation>
+    </message>
+    <message>
+      <location filename="../../../BasicShapes/CommandShapes.py" line="50"/>
+      <source>Creates a tube</source>
+      <translation>Направи цев</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_JoinFeatures</name>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="78"/>
+      <source>Computing the result failed with an error:</source>
+      <translation>Прорачун није успео, резултат има грешку:</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="79"/>
+      <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Кликните на „Настави“ да бисте ипак направили или „Прекини“ да бисте отказали.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="80"/>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="199"/>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="295"/>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="389"/>
+      <source>Bad selection</source>
+      <translation>Лош избор</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="82"/>
+      <source>Continue</source>
+      <translation>Наставите</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="198"/>
+      <source>Select at least two objects, or one or more compounds</source>
+      <translation>Изаберите најмање два објекта, или један или више састављена објекта</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="294"/>
+      <source>Select base object, then the object to embed, and then invoke this tool.</source>
+      <translation>Изаберите основни објекат, затим објекат који желите да уградите, а затим позовите ову алатку.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="388"/>
+      <source>Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</source>
+      <translation>Изаберите објекат у коме желите да направите исецање, затим објекат који треба да се угради у исечени део, а затим позовите ову алатку.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_JoinConnect</name>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="186"/>
+      <source>Connect objects</source>
+      <translation>Повежи објекте</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="191"/>
+      <source>Fuses objects, taking care to preserve voids.</source>
+      <translation>Спаја објекте, водећи рачуна о очувању празнина.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_JoinEmbed</name>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="282"/>
+      <source>Embed object</source>
+      <translation>Угради објекте</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="287"/>
+      <source>Fuses one object into another, taking care to preserve voids.</source>
+      <translation>Убацује један објекат у други, водећи рачуна о очувању празнина.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_JoinCutout</name>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="376"/>
+      <source>Cutout for object</source>
+      <translation>Исеци објекат</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="381"/>
+      <source>Makes a cutout in one object to fit another object.</source>
+      <translation>Прави исецање у једном објекту да би се у њега могао уградити други објекат.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_SplitFeatures</name>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="155"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="298"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="492"/>
+      <source>Computing the result failed with an error:</source>
+      <translation>Прорачун није успео, резултат има грешку:</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="156"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="299"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="493"/>
+      <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Кликните на „Настави“ да бисте ипак направили или „Прекини“ да бисте отказали.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="157"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="199"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="300"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="354"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="385"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="494"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="535"/>
+      <source>Bad selection</source>
+      <translation>Лош избор</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="159"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="302"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="496"/>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="114"/>
+      <source>Continue</source>
+      <translation>Наставите</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="180"/>
+      <source>Boolean fragments</source>
+      <translation>Булови фрагменти</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="189"/>
+      <source>Create a 'Boolean Fragments' object from two or more selected objects,
+or from the shapes inside a compound.
+This is a boolean union which is then sliced at the intersections
+of the original shapes.
+A 'Compound Filter' can be used to extract the individual slices.</source>
+      <translation type="unfinished">Create a 'Boolean Fragments' object from two or more selected objects,
+or from the shapes inside a compound.
+This is a boolean union which is then sliced at the intersections
+of the original shapes.
+A 'Compound Filter' can be used to extract the individual slices.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="534"/>
+      <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
+      <translation type="unfinished">Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="337"/>
+      <source>Slice to compound</source>
+      <translation type="unfinished">Slice to compound</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="344"/>
+      <source>Slice a selected object by using other objects as cutting tools.
+The resulting pieces will be stored in a compound.
+A 'Compound Filter' can be used to extract the individual slices.</source>
+      <translation type="unfinished">Slice a selected object by using other objects as cutting tools.
+The resulting pieces will be stored in a compound.
+A 'Compound Filter' can be used to extract the individual slices.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="353"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="384"/>
+      <source>Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</source>
+      <translation type="unfinished">Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="369"/>
+      <source>Slice apart</source>
+      <translation type="unfinished">Slice apart</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="375"/>
+      <source>Slice a selected object by other objects, and split it apart.
+It will create a 'Compound Filter' for each slice.</source>
+      <translation type="unfinished">Slice a selected object by other objects, and split it apart.
+It will create a 'Compound Filter' for each slice.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="517"/>
+      <source>Boolean XOR</source>
+      <translation type="unfinished">Boolean XOR</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="525"/>
+      <source>Perform an 'exclusive OR' boolean operation with two or more selected objects,
+or with the shapes inside a compound.
+This means the overlapping volumes of the shapes will be removed.
+A 'Compound Filter' can be used to extract the remaining pieces.</source>
+      <translation type="unfinished">Perform an 'exclusive OR' boolean operation with two or more selected objects,
+or with the shapes inside a compound.
+This means the overlapping volumes of the shapes will be removed.
+A 'Compound Filter' can be used to extract the remaining pieces.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_CompoundFilter</name>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="51"/>
+      <source>Compound Filter</source>
+      <translation type="unfinished">Compound Filter</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="61"/>
+      <source>Filter out objects from a selected compound by characteristics like volume,
+area, or length, or by choosing specific items.
+If a second object is selected, it will be used as reference, for example,
+for collision or distance filtering.</source>
+      <translation type="unfinished">Filter out objects from a selected compound by characteristics like volume,
+area, or length, or by choosing specific items.
+If a second object is selected, it will be used as reference, for example,
+for collision or distance filtering.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="70"/>
+      <source>First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</source>
+      <translation type="unfinished">First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="71"/>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="112"/>
+      <source>Bad selection</source>
+      <translation>Лош избор</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="110"/>
+      <source>Computing the result failed with an error:</source>
+      <translation>Прорачун није успео, резултат има грешку:</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="111"/>
+      <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Кликните на „Настави“ да бисте ипак направили или „Прекини“ да бисте отказали.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_ExplodeCompound</name>
+    <message>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="50"/>
+      <source>Explode compound</source>
+      <translation type="unfinished">Explode compound</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="56"/>
+      <source>Split up a compound of shapes into separate objects.
+It will create a 'Compound Filter' for each shape.</source>
+      <translation type="unfinished">Split up a compound of shapes into separate objects.
+It will create a 'Compound Filter' for each shape.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="62"/>
+      <source>First select a shape that is a compound.</source>
+      <translation>Прво изаберите облик који је састављени објекат.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="63"/>
+      <source>Bad selection</source>
+      <translation>Лош избор</translation>
+    </message>
+  </context>
+  <context>
+    <name>AttachmentEditor</name>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="87"/>
+      <source>No object named {}</source>
+      <translation type="unfinished">No object named {}</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="91"/>
+      <source>Failed to parse link (more than one colon encountered)</source>
+      <translation type="unfinished">Failed to parse link (more than one colon encountered)</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="204"/>
+      <source>Object {} is neither movable nor attachable, can't edit attachment</source>
+      <translation type="unfinished">Object {} is neither movable nor attachable, can't edit attachment</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="214"/>
+      <source>{} is not attachable. You can still use attachment editor dialog to align the object, but the attachment won't be parametric.</source>
+      <translation type="unfinished">{} is not attachable. You can still use attachment editor dialog to align the object, but the attachment won't be parametric.</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="215"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="228"/>
+      <source>Attachment</source>
+      <translation>Прилог</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="217"/>
+      <source>Continue</source>
+      <translation>Наставите</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="272"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="317"/>
+      <source>Edit attachment of {}</source>
+      <translation>Уреди придруживање {}</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="362"/>
+      <source>Ignored. Can't attach object to itself!</source>
+      <translation type="unfinished">Ignored. Can't attach object to itself!</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="365"/>
+      <source>{} depends on object being attached, can't use it for attachment</source>
+      <translation type="unfinished">{} depends on object being attached, can't use it for attachment</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="505"/>
+      <source>{} (add {})</source>
+      <translation type="unfinished">{} (add {})</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="507"/>
+      <source>{} (add more references)</source>
+      <translation type="unfinished">{} (add more references)</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="537"/>
+      <source>Reference combinations:</source>
+      <translation type="unfinished">Reference combinations:</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="553"/>
+      <source>Reference{}</source>
+      <translation type="unfinished">Reference{}</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="558"/>
+      <source>Selecting...</source>
+      <translation>Избор...</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="582"/>
+      <source>Failed to resolve links. {}</source>
+      <translation type="unfinished">Failed to resolve links. {}</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="590"/>
+      <source>Not attached</source>
+      <translation type="unfinished">Not attached</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="593"/>
+      <source>Attached with mode {}</source>
+      <translation type="unfinished">Attached with mode {}</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="599"/>
+      <source>Error: {}</source>
+      <translation>Грешка: {}</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="602"/>
+      <source>Attachment Offset (in local coordinates):</source>
+      <translation>Одмак придруживања (у локалним координатама):</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="605"/>
+      <source>Attachment Offset (inactive - not attached):</source>
+      <translation>Одмак придруживања (неактиван - није придружен):</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_EditAttachment</name>
+    <message>
+      <location filename="../../../AttachmentEditor/Commands.py" line="79"/>
+      <source>Attachment...</source>
+      <translation>Придруживање...</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/Commands.py" line="83"/>
+      <source>Edit attachment of selected object.</source>
+      <translation>Уреди придруживање изабраног објекта.</translation>
     </message>
   </context>
 </TS>

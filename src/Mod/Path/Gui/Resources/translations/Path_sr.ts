@@ -1187,7 +1187,7 @@
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="381"/>
       <source>TextLabel</source>
-      <translation>ТекcтОзнака</translation>
+      <translation>Текстуална ознака</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="68"/>
@@ -3338,7 +3338,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/TaskPathCamoticsSim.ui" line="29"/>
       <source>TextLabel</source>
-      <translation>ТекcтОзнака</translation>
+      <translation>Текстуална ознака</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathCamoticsSim.ui" line="68"/>
@@ -3449,7 +3449,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitSelector.ui" line="30"/>
       <source>TextLabel</source>
-      <translation>ТекcтОзнака</translation>
+      <translation>Текстуална ознака</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitSelector.ui" line="78"/>

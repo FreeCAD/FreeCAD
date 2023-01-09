@@ -145,7 +145,7 @@ aby uniknąć samoprzecięcia.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="86"/>
       <source>Create body</source>
-      <translation>Stwórz zawartość</translation>
+      <translation>Utwórz zawartość</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="87"/>
@@ -838,8 +838,8 @@ aby uniknąć samoprzecięcia.</translation>
       <translation>Utwórz klona</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="874"/>
       <location filename="../../SketchWorkflow.cpp" line="297"/>
+      <location filename="../../Command.cpp" line="874"/>
       <source>Make copy</source>
       <translation>Utwórz kopię</translation>
     </message>
@@ -864,8 +864,8 @@ aby uniknąć samoprzecięcia.</translation>
       <translation>Utwórz cechę funkcją logiczną</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="189"/>
       <location filename="../../DlgActiveBody.cpp" line="104"/>
+      <location filename="../../CommandBody.cpp" line="189"/>
       <source>Add a Body</source>
       <translation>Dodaj zawartość</translation>
     </message>
@@ -2910,19 +2910,19 @@ mierzona wzdłuż podanego kierunku</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="30"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="138"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="137"/>
       <source>Base X axis</source>
       <translation>Bazowa oś X</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="35"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="139"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="138"/>
       <source>Base Y axis</source>
       <translation>Bazowa oś Y</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="40"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="140"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="139"/>
       <source>Base Z axis</source>
       <translation>Bazowa oś Z</translation>
     </message>
@@ -2938,7 +2938,7 @@ mierzona wzdłuż podanego kierunku</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="55"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="147"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="146"/>
       <source>Select reference...</source>
       <translation>Wybierz odniesienie...</translation>
     </message>
@@ -3518,28 +3518,28 @@ kliknij ponownie, aby zakończyć wybór</translation>
       <translation>Proszę stworzyć najpierw płaszczyznę lub wybrać ścianę dla umieszczenia szkicu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="895"/>
-      <location filename="../../Command.cpp" line="1894"/>
+      <location filename="../../ViewProviderHole.cpp" line="79"/>
+      <location filename="../../ViewProviderDatum.cpp" line="246"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="73"/>
       <location filename="../../SketchWorkflow.cpp" line="591"/>
       <location filename="../../ViewProvider.cpp" line="98"/>
       <location filename="../../ViewProviderBoolean.cpp" line="80"/>
-      <location filename="../../ViewProviderDatum.cpp" line="246"/>
-      <location filename="../../ViewProviderHole.cpp" line="79"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="73"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
+      <location filename="../../Command.cpp" line="895"/>
+      <location filename="../../Command.cpp" line="1894"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Okno dialogowe jest już otwarte w panelu zadań</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="896"/>
-      <location filename="../../Command.cpp" line="1895"/>
+      <location filename="../../ViewProviderHole.cpp" line="80"/>
+      <location filename="../../ViewProviderDatum.cpp" line="247"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="74"/>
       <location filename="../../SketchWorkflow.cpp" line="592"/>
       <location filename="../../ViewProvider.cpp" line="99"/>
       <location filename="../../ViewProviderBoolean.cpp" line="81"/>
-      <location filename="../../ViewProviderDatum.cpp" line="247"/>
-      <location filename="../../ViewProviderHole.cpp" line="80"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="74"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
+      <location filename="../../Command.cpp" line="896"/>
+      <location filename="../../Command.cpp" line="1895"/>
       <source>Do you want to close this dialog?</source>
       <translation>Czy chcesz zamknąć to okno?</translation>
     </message>
@@ -3814,14 +3814,14 @@ Może to prowadzić do nieoczekiwanych rezultatów.</translation>
       <translation>Nie jest możliwe utworzenie elementu do odjęcia bez dostępnego elementu bazowego</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="123"/>
       <location filename="../../TaskTransformedParameters.cpp" line="287"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="123"/>
       <source>Vertical sketch axis</source>
       <translation>Pionowa oś szkicu</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="124"/>
       <location filename="../../TaskTransformedParameters.cpp" line="288"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="124"/>
       <source>Horizontal sketch axis</source>
       <translation>Pozioma oś szkicu</translation>
     </message>
@@ -3875,11 +3875,11 @@ Jeśli masz starszy dokument z obiektami środowiska pracy Projekt Części bez 
       <translation>Ta cecha musi przynależeć do obiektu części w danym dokumencie, by można ją było wykorzystać.</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="65"/>
       <location filename="../../ViewProviderDressUp.cpp" line="50"/>
+      <location filename="../../ViewProviderTransformed.cpp" line="65"/>
+      <location filename="../../ViewProvider.cpp" line="65"/>
       <location filename="../../ViewProviderMultiTransform.cpp" line="42"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="204"/>
-      <location filename="../../ViewProviderTransformed.cpp" line="65"/>
       <source>Edit %1</source>
       <translation>Edytuj %1</translation>
     </message>
@@ -4718,6 +4718,90 @@ powyżej 90°: większy promień otworu u dołu</translation>
       <location filename="../../Workbench.cpp" line="62"/>
       <source>Part Design Modeling</source>
       <translation>Projekt Części - modelowanie</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesign_InvoluteGear</name>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="57"/>
+      <source>Involute gear...</source>
+      <translation>Przekładnia ewolwentowa ...</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="61"/>
+      <source>Creates or edit the involute gear definition.</source>
+      <translation>Tworzy lub edytuje przekładnię ewolwentową.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesign_Sprocket</name>
+    <message>
+      <location filename="../../../SprocketFeature.py" line="62"/>
+      <source>Sprocket...</source>
+      <translation>Koło łańcuchowe ...</translation>
+    </message>
+    <message>
+      <location filename="../../../SprocketFeature.py" line="66"/>
+      <source>Creates or edit the sprocket definition.</source>
+      <translation>Tworzy lub edytuje koło łańcuchowe.</translation>
+    </message>
+  </context>
+  <context>
+    <name>WizardShaftTable</name>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="43"/>
+      <source>Length [mm]</source>
+      <translation>Długość [mm]</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="44"/>
+      <source>Diameter [mm]</source>
+      <translation>Średnica [mm]</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="45"/>
+      <source>Inner diameter [mm]</source>
+      <translation>Średnica wewnętrzna [mm]</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="46"/>
+      <source>Constraint type</source>
+      <translation>Typ wiązania</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="47"/>
+      <source>Start edge type</source>
+      <translation>Typ krawędzi początkowej</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="48"/>
+      <source>Start edge size</source>
+      <translation>Rozmiar krawędzi początkowej</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="49"/>
+      <source>End edge type</source>
+      <translation>Typ krawędzi końcowej</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="53"/>
+      <source>End edge size</source>
+      <translation>Rozmiar krawędzi końcowej</translation>
+    </message>
+  </context>
+  <context>
+    <name>WizardShaft</name>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="186"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="211"/>
+      <source>Shaft design wizard...</source>
+      <translation>Kreator projektowania wału ...</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="187"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="212"/>
+      <source>Start the shaft design wizard</source>
+      <translation>Uruchom kreatora projektowania wału</translation>
     </message>
   </context>
 </TS>

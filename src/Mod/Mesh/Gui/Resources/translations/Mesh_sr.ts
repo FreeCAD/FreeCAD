@@ -341,7 +341,7 @@
     <message>
       <location filename="../../Command.cpp" line="365"/>
       <source>Intersection</source>
-      <translation>Преклоп</translation>
+      <translation>Преcек</translation>
     </message>
   </context>
   <context>
@@ -618,12 +618,12 @@
     <message>
       <location filename="../../Command.cpp" line="1829"/>
       <source>Split by components</source>
-      <translation>Раздвоји по компонентама</translation>
+      <translation>Подели по компонентама</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1830"/>
       <source>Split selected mesh into its components</source>
-      <translation>Раздвоји изабрану мрежу на њене компоненте</translation>
+      <translation>Поделите изабрану мрежу на њене компоненте</translation>
     </message>
   </context>
   <context>
@@ -760,7 +760,7 @@
     <message>
       <location filename="../../Command.cpp" line="378"/>
       <source>Mesh intersection</source>
-      <translation>Преклоп мрежа</translation>
+      <translation>Пресек мрежа</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="464"/>
@@ -801,7 +801,7 @@
     <message>
       <location filename="../../Command.cpp" line="1842"/>
       <source>Mesh split</source>
-      <translation>Раздвоји мрежу</translation>
+      <translation>Подели мрежу</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1894"/>
@@ -878,7 +878,7 @@
     <message>
       <location filename="../../ViewProvider.cpp" line="1112"/>
       <source>Split</source>
-      <translation>Разделите</translation>
+      <translation>Подели</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1176"/>
@@ -1381,7 +1381,7 @@ Please run the command to repair folds first</source>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="825"/>
       <source>Cl&amp;ose</source>
-      <translation>За&amp;твори</translation>
+      <translation>Затвори</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="828"/>

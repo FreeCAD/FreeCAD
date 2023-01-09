@@ -114,7 +114,7 @@ Click 'start', and the test thus produced will be run.
 Double click on an error in the tree view to see more information about it, including the stack trace.</source>
       <translation>Vnesite ime klicnega objekta kateri bo po klicu vrnil TestCase. Kliknite "Zaženi", s tem začnete testiranje kar bo proizvedeno.
 
-Da bi izvedeli več o napaki, v drevesnem pogledu dvakrat kliknite na napako in boste dobili podatke vključno s sledjo sklada.</translation>
+Da bi izvedeli več o napaki, v drevesnem prikazu dvakrat kliknite na napako in boste dobili podatke vključno s sledjo sklada.</translation>
     </message>
     <message>
       <location filename="../../UnitTestImp.cpp" line="163"/>

@@ -66,7 +66,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="332"/>
       <source>Orbit style</source>
-      <translation>Стил орбит</translation>
+      <translation>Начин окретања орбит</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="333"/>
@@ -81,15 +81,20 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="335"/>
       <source>Turntable</source>
-      <translation>Сто за обратање</translation>
+      <translation>Грамофон</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="336"/>
-      <source>Trackball</source>
-      <translation>Трекбол</translation>
+      <source>Free Turntable</source>
+      <translation>Обични грамофон</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="337"/>
+      <source>Trackball</source>
+      <translation>Trackball</translation>
+    </message>
+    <message>
+      <location filename="../../NavigationIndicatorGui.py" line="338"/>
       <source>Undefined</source>
       <translation>Недефинисано</translation>
     </message>

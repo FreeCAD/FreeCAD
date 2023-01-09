@@ -47,24 +47,24 @@
       <translation>&lt;pusty&gt;</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2270"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2536"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2273"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2539"/>
       <source>Angle</source>
       <translation>Kąt</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2274"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2540"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2277"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2543"/>
       <source>Axis</source>
       <translation>Oś</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2545"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2548"/>
       <source>Position</source>
       <translation>Pozycja</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2784"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2787"/>
       <source>Enum</source>
       <translation>Wyliczenia</translation>
     </message>
@@ -110,17 +110,17 @@
       <translation>Edycja</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="617"/>
+      <location filename="../Application.cpp" line="618"/>
       <source>Import</source>
       <translation>Import</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1283"/>
+      <location filename="../CommandDoc.cpp" line="1289"/>
       <source>Delete</source>
       <translation>Usuń</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1842"/>
+      <location filename="../CommandDoc.cpp" line="1848"/>
       <source>Paste expressions</source>
       <translation>Wklej wyrażenia</translation>
     </message>
@@ -182,8 +182,8 @@
     </message>
     <message>
       <location filename="../Transform.cpp" line="105"/>
-      <location filename="../ViewProviderAnnotation.cpp" line="416"/>
       <location filename="../ViewProviderDragger.cpp" line="222"/>
+      <location filename="../ViewProviderAnnotation.cpp" line="416"/>
       <source>Transform</source>
       <translation>Przemieszczenie</translation>
     </message>
@@ -403,22 +403,22 @@
   <context>
     <name>EditMode</name>
     <message>
-      <location filename="../Application.h" line="243"/>
+      <location filename="../Application.h" line="252"/>
       <source>Default</source>
       <translation>Domyślny</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="244"/>
+      <location filename="../Application.h" line="253"/>
       <source>Transform</source>
       <translation>Przemieszczenie</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="245"/>
+      <location filename="../Application.h" line="254"/>
       <source>Cutting</source>
       <translation>Cięcie</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="246"/>
+      <location filename="../Application.h" line="255"/>
       <source>Color</source>
       <translation>Kolor</translation>
     </message>
@@ -498,22 +498,22 @@
   <context>
     <name>Gui::Assistant</name>
     <message>
-      <location filename="../Assistant.cpp" line="98"/>
-      <location filename="../Assistant.cpp" line="130"/>
-      <location filename="../Assistant.cpp" line="144"/>
-      <location filename="../Assistant.cpp" line="162"/>
+      <location filename="../Assistant.cpp" line="102"/>
+      <location filename="../Assistant.cpp" line="134"/>
+      <location filename="../Assistant.cpp" line="148"/>
+      <location filename="../Assistant.cpp" line="166"/>
       <source>%1 Help</source>
       <translation>%1 Pomoc</translation>
     </message>
     <message>
-      <location filename="../Assistant.cpp" line="99"/>
+      <location filename="../Assistant.cpp" line="103"/>
       <source>%1 help files not found (%2). You might need to install the %1 documentation package.</source>
       <translation>%1 nie znaleziono plików pomocy (%2). Może trzeba zainstalować pakiet dokumentacji %1.</translation>
     </message>
     <message>
-      <location filename="../Assistant.cpp" line="131"/>
-      <location filename="../Assistant.cpp" line="145"/>
-      <location filename="../Assistant.cpp" line="163"/>
+      <location filename="../Assistant.cpp" line="135"/>
+      <location filename="../Assistant.cpp" line="149"/>
+      <location filename="../Assistant.cpp" line="167"/>
       <source>Unable to launch Qt Assistant (%1)</source>
       <translation>Nie można uruchomić Asystenta Qt (%1)</translation>
     </message>
@@ -1270,9 +1270,8 @@ Jeśli ta opcja nie jest zaznaczona, właściwość musi być jednoznacznie nazw
       <source>Time in milliseconds to wait for the next key stroke of the current key sequence.
 For example, pressing 'F' twice in less than the time delay setting here will be
 be treated as shorctcut key sequence 'F, F'.</source>
-      <translation>Czas w milisekundach oczekiwania na kolejne naciśnięcie klawisza z bieżącej sekwencji klawiszy.
-Na przykład, dwukrotne naciśnięcie klawisza "F" w czasie krótszym niż ustawiony tutaj czas opóźnienia będzie
-traktowane jako krótka sekwencja klawiszy "F, F".</translation>
+      <translation>Czas w milisekundach oczekiwania na kolejne naciśnięcie klawisza w bieżącej sekwencji klawiszy.
+Na przykład dwukrotne naciśnięcie klawisza "F" w czasie krótszym niż ustawiony tutaj czas opóźnienia będzie traktowane jako skrót klawiszowy "F, F".</translation>
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="183"/>
@@ -2082,7 +2081,7 @@ w zależności od wielkości ekranu lub swoich upodobań</translation>
     <message>
       <location filename="../DlgGeneral.ui" line="531"/>
       <source>Workbench selector position :</source>
-      <translation>Pozycja wyboru środowiska pracy:</translation>
+      <translation>Pozycja okienka wyboru środowiska pracy:</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="538"/>
@@ -2342,7 +2341,7 @@ wyświetli ekran powitalny</translation>
       <location filename="../DlgMacroExecuteImp.cpp" line="94"/>
       <location filename="../DlgMacroExecuteImp.cpp" line="626"/>
       <source>Macros</source>
-      <translation>Makropolecenie</translation>
+      <translation>Makrodefinicje</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecuteImp.cpp" line="344"/>
@@ -2962,7 +2961,7 @@ Proszę podać inny katalog.</translation>
     <message>
       <location filename="../DlgProjectInformation.ui" line="300"/>
       <source>&amp;Comment:</source>
-      <translation type="unfinished">&amp;Comment:</translation>
+      <translation>&amp;Komentarz:</translation>
     </message>
     <message>
       <source/>
@@ -2974,7 +2973,7 @@ Proszę podać inny katalog.</translation>
     <message>
       <location filename="../DlgProjectUtility.ui" line="14"/>
       <source>Project utility</source>
-      <translation>Narzędzia projektu</translation>
+      <translation>Narzędzie projektu</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.ui" line="22"/>
@@ -3454,16 +3453,16 @@ can be rendered directly by GPU.
 Note: Sometimes this feature may lead to a host of different
 issues ranging from graphical anomalies to GPU crash bugs. Remember to
 report this setting as enabled when seeking support on the FreeCAD forums</source>
-      <translation type="unfinished">If selected, Vertex Buffer Objects (VBO) will be used.
-A VBO is an OpenGL feature that provides methods for uploading
-vertex data (position, normal vector, color, etc.) to the graphics card.
-VBOs offer substantial performance gains because the data resides
-in the graphics memory rather than the system memory and so it
-can be rendered directly by GPU.
+      <translation>Jeśli opcja jest zaznaczona, zostanie użyty Vertex Buffer Objects (VBO).
+VBO jest funkcją OpenGL, która dostarcza metod do wysyłania
+danych o punktach (pozycja, normalny wektor, kolor, itp.) do karty graficznej.
+Używanie VBO zapewnia znaczny wzrost wydajności, ponieważ dane te znajdują się
+w pamięci graficznej, a nie w pamięci systemowej, dlatego też
+można bezpośrednio renderować używając GPU. 
 
-Note: Sometimes this feature may lead to a host of different
-issues ranging from graphical anomalies to GPU crash bugs. Remember to
-report this setting as enabled when seeking support on the FreeCAD forums</translation>
+Uwaga: Czasami funkcja ta może prowadzić do wielu różnych problemów
+od anomalii graficznych do błędów spowodowanych awarią GPU. Pamiętaj, o
+zgłoszeniu aktywacji tej nastawy podczas szukania wsparcia na forum FreeCAD.</translation>
     </message>
     <message>
       <location filename="../DlgSettings3DView.ui" line="224"/>
@@ -3474,13 +3473,13 @@ There are 3 options available to achieve this:
 3) 'Centralized', manually turn off cache in all nodes of all view provider, and
 only cache at the scene graph root node. This offers the fastest rendering speed
 but slower response to any scene changes.</source>
-      <translation type="unfinished">'Render Caching' is another way to say 'Rendering Acceleration'.
-There are 3 options available to achieve this:
-1) 'Auto' (default), let Coin3D decide where to cache.
-2) 'Distributed', manually turn on cache for all view provider root node.
-3) 'Centralized', manually turn off cache in all nodes of all view provider, and
-only cache at the scene graph root node. This offers the fastest rendering speed
-but slower response to any scene changes.</translation>
+      <translation>„Buforowanie renderowania" to inny sposób na „przyspieszania renderowania”.
+Dostępne są 3 opcje: 
+1) „Automatycznie" (domyślnie), niech Coin3D zdecyduje gdzie buforować.
+2) „Rozproszone", ręcznie włącz buforowanie dla wszystkich węzłów głównego dostawcy widoku.
+3) „Scentralizowane", ręcznie wyłącz cache we wszystkich węzłach wszystkich dostawców widoków, oraz
+tylko cache w głównym węźle graficznym obrazu. Oferuje to najszybszą prędkość renderowania
+ale wolniej reaguje na każdą zmianę ujęcia.</translation>
     </message>
     <message>
       <location filename="../DlgSettings3DView.ui" line="237"/>
@@ -4095,8 +4094,8 @@ get date suffix according to the specified format</source>
     </message>
     <message>
       <location filename="../DlgSettingsDocument.ui" line="559"/>
-      <source>Allow objects to have same label/name</source>
-      <translation>Pozwól obiektom na posiadanie tej samej etykiety / nazwy</translation>
+      <source>Allow objects to have same label</source>
+      <translation type="unfinished">Allow objects to have same label</translation>
     </message>
     <message>
       <location filename="../DlgSettingsDocument.ui" line="562"/>
@@ -4580,7 +4579,7 @@ Możesz również skorzystać z formatki: John Doe &lt;john@doe.com&gt;</transla
     <message>
       <location filename="../DlgSettingsMacro.ui" line="14"/>
       <source>Macro</source>
-      <translation>Makropolecenia</translation>
+      <translation>Makrodefinicje</translation>
     </message>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="20"/>
@@ -4615,7 +4614,7 @@ Możesz również skorzystać z formatki: John Doe &lt;john@doe.com&gt;</transla
     <message>
       <location filename="../DlgSettingsMacro.ui" line="109"/>
       <source>Gui commands</source>
-      <translation>Polecenia Gui</translation>
+      <translation>Polecenia GUI</translation>
     </message>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="130"/>
@@ -4804,10 +4803,10 @@ Wybierz zestaw, a następnie naciśnij przycisk, w celu wyświetlenia konfigurac
 Trackball: moving the mouse horizontally will rotate the part around the y-axis
 Turntable: the part will be rotated around the z-axis (with constrained axes).
 Free Turntable: the part will be rotated around the z-axis.</source>
-      <translation type="unfinished">Rotation orbit style.
-Trackball: moving the mouse horizontally will rotate the part around the y-axis
-Turntable: the part will be rotated around the z-axis (with constrained axes).
-Free Turntable: the part will be rotated around the z-axis.</translation>
+      <translation>Styl obracania orbity.
+Trackball: przesunięcie myszy w poziomie spowoduje obrót części wokół osi y.
+Turntable: część zostanie obrócona wokół osi z (z powiązanymi osiami).
+Free Turntable: część będzie obracana wokół osi z.</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="290"/>
@@ -4822,7 +4821,7 @@ Free Turntable: the part will be rotated around the z-axis.</translation>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="300"/>
       <source>Free Turntable</source>
-      <translation type="unfinished">Free Turntable</translation>
+      <translation>Free Turntable</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="308"/>
@@ -5301,7 +5300,7 @@ długość wiersza w konsoli Python</translation>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="35"/>
       <source>as:</source>
-      <translation>jako:</translation>
+      <translation>na:</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="48"/>
@@ -5778,8 +5777,8 @@ Kolumna "Aktualny status" pokazuje, czy dokument może być odzyskany.</translat
     </message>
     <message>
       <location filename="../MouseButtons.ui" line="48"/>
-      <source>Panning</source>
-      <translation>Przesuwanie</translation>
+      <source>Panning:</source>
+      <translation type="unfinished">Panning:</translation>
     </message>
     <message>
       <location filename="../MouseButtons.ui" line="68"/>
@@ -6265,7 +6264,7 @@ Kolumna "Aktualny status" pokazuje, czy dokument może być odzyskany.</translat
     <message>
       <location filename="../DlgObjectSelection.ui" line="164"/>
       <source>Show dependencies</source>
-      <translation type="unfinished">Show dependencies</translation>
+      <translation>Pokaż zależności</translation>
     </message>
     <message>
       <location filename="../DlgObjectSelection.cpp" line="115"/>
@@ -6693,27 +6692,27 @@ Do you want to save your changes?</source>
   <context>
     <name>Gui::Flag</name>
     <message>
-      <location filename="../Flag.cpp" line="155"/>
+      <location filename="../Flag.cpp" line="163"/>
       <source>Top left</source>
       <translation>Lewy górny</translation>
     </message>
     <message>
-      <location filename="../Flag.cpp" line="157"/>
+      <location filename="../Flag.cpp" line="165"/>
       <source>Bottom left</source>
       <translation>Lewy dolny</translation>
     </message>
     <message>
-      <location filename="../Flag.cpp" line="159"/>
+      <location filename="../Flag.cpp" line="167"/>
       <source>Top right</source>
       <translation>Prawy górny</translation>
     </message>
     <message>
-      <location filename="../Flag.cpp" line="161"/>
+      <location filename="../Flag.cpp" line="169"/>
       <source>Bottom right</source>
       <translation>Prawy dolny</translation>
     </message>
     <message>
-      <location filename="../Flag.cpp" line="164"/>
+      <location filename="../Flag.cpp" line="172"/>
       <source>Remove</source>
       <translation>Skasuj</translation>
     </message>
@@ -6956,7 +6955,7 @@ Do you want to save your changes?</source>
       <location filename="../DlgCommandsImp.cpp" line="92"/>
       <location filename="../DlgKeyboardImp.cpp" line="364"/>
       <source>Macros</source>
-      <translation>Makrodefinicje</translation>
+      <translation>Makropolecenie</translation>
     </message>
     <message>
       <location filename="../Command.cpp" line="1146"/>
@@ -6973,62 +6972,62 @@ Do you want to save your changes?</source>
     <name>Gui::MainWindow</name>
     <message>
       <location filename="../MainWindow.cpp" line="299"/>
-      <location filename="../MainWindow.cpp" line="1929"/>
+      <location filename="../MainWindow.cpp" line="1958"/>
       <source>Dimension</source>
       <translation>Wymiar</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="339"/>
+      <location filename="../MainWindow.cpp" line="349"/>
       <source>Ready</source>
       <translation>Gotowe</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="748"/>
+      <location filename="../MainWindow.cpp" line="766"/>
       <source>Help addon needed!</source>
       <translation>Potrzebny dodatek pomocy!</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="749"/>
+      <location filename="../MainWindow.cpp" line="767"/>
       <source>The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</source>
       <translation>System pomocy dla %1 jest teraz obsługiwany przez dodatek "Pomoc". Można go łatwo zainstalować przy pomocy Menadżera dodatków</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="751"/>
+      <location filename="../MainWindow.cpp" line="769"/>
       <source>Open Addon Manager</source>
       <translation>Otwórz Menedżer dodatków</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="946"/>
+      <location filename="../MainWindow.cpp" line="964"/>
       <source>Close All</source>
       <translation>Zamknij wszystkie</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1150"/>
-      <location filename="../MainWindow.cpp" line="1151"/>
-      <location filename="../MainWindow.cpp" line="1152"/>
+      <location filename="../MainWindow.cpp" line="1168"/>
+      <location filename="../MainWindow.cpp" line="1169"/>
+      <location filename="../MainWindow.cpp" line="1170"/>
       <source>Toggles this toolbar</source>
       <translation>Włącza/wyłącza ten pasek narzędzi</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1165"/>
-      <location filename="../MainWindow.cpp" line="1166"/>
-      <location filename="../MainWindow.cpp" line="1167"/>
+      <location filename="../MainWindow.cpp" line="1183"/>
+      <location filename="../MainWindow.cpp" line="1184"/>
+      <location filename="../MainWindow.cpp" line="1185"/>
       <source>Toggles this dockable window</source>
       <translation>Włącza/wyłącza to okno dokujące</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1720"/>
-      <location filename="../MainWindow.cpp" line="1812"/>
+      <location filename="../MainWindow.cpp" line="1749"/>
+      <location filename="../MainWindow.cpp" line="1841"/>
       <source>Unsaved document</source>
       <translation>Niezapisany dokument</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1721"/>
+      <location filename="../MainWindow.cpp" line="1750"/>
       <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
       <translation>Wyeksportowany obiekt zawiera zewnętrzny odnośnik. Proszę zapisać dokument przynajmniej raz przed wyeksportowaniem.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1813"/>
+      <location filename="../MainWindow.cpp" line="1842"/>
       <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
       <translation>Aby powiązać z obiektami zewnętrznymi, dokument musi być zapisany co najmniej raz.
@@ -7277,7 +7276,7 @@ Jak chcesz kontynuować?</translation>
   <context>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4311"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4314"/>
       <source>Change the linked object</source>
       <translation>Zmień połączony obiekt</translation>
     </message>
@@ -7285,12 +7284,12 @@ Jak chcesz kontynuować?</translation>
   <context>
     <name>Gui::PropertyEditor::LinkSelection</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4280"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4283"/>
       <source>Error</source>
       <translation>Błąd</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4280"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4283"/>
       <source>Object not found</source>
       <translation>Obiekt nie znaleziony</translation>
     </message>
@@ -7414,77 +7413,77 @@ Do you want to exit without saving your data?</source>
       <translation>Nieobsługiwany nieznany wyjątek C++.</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1307"/>
+      <location filename="../PythonConsole.cpp" line="1315"/>
       <source>&amp;Copy</source>
       <translation>&amp;Kopiuj</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1310"/>
+      <location filename="../PythonConsole.cpp" line="1318"/>
       <source>&amp;Copy command</source>
       <translation>&amp;Kopiuj polecenie</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1313"/>
+      <location filename="../PythonConsole.cpp" line="1321"/>
       <source>&amp;Copy history</source>
       <translation>&amp;Kopiuj historię</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1316"/>
+      <location filename="../PythonConsole.cpp" line="1324"/>
       <source>Save history as...</source>
       <translation>Zapisz historię jako ...</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1319"/>
+      <location filename="../PythonConsole.cpp" line="1327"/>
       <source>Save history</source>
       <translation>Zapisz dziennik działań</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1320"/>
+      <location filename="../PythonConsole.cpp" line="1328"/>
       <source>Saves Python history across %1 sessions</source>
       <translation>Zapisuje historię z konsoli Pyton w %1 sesji</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1326"/>
+      <location filename="../PythonConsole.cpp" line="1334"/>
       <source>&amp;Paste</source>
       <translation>&amp;Wklej</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1330"/>
+      <location filename="../PythonConsole.cpp" line="1338"/>
       <source>Select All</source>
       <translation>Zaznacz wszystko</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1333"/>
+      <location filename="../PythonConsole.cpp" line="1341"/>
       <source>Clear console</source>
       <translation>Wyczyść okienko konsoli</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1337"/>
+      <location filename="../PythonConsole.cpp" line="1345"/>
       <source>Insert file name...</source>
       <translation>Wstaw nazwę pliku...</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1340"/>
+      <location filename="../PythonConsole.cpp" line="1348"/>
       <source>Word wrap</source>
       <translation>Zawijanie wyrazów</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1364"/>
+      <location filename="../PythonConsole.cpp" line="1372"/>
       <source>Save History</source>
       <translation>Zapisz historię</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1365"/>
+      <location filename="../PythonConsole.cpp" line="1373"/>
       <source>Macro Files</source>
       <translation>Plik makrodefinicji</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1384"/>
+      <location filename="../PythonConsole.cpp" line="1392"/>
       <source>Insert file name</source>
       <translation>Wstaw nazwę pliku</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1385"/>
+      <location filename="../PythonConsole.cpp" line="1393"/>
       <source>All Files</source>
       <translation>Wszystkie pliki</translation>
     </message>
@@ -7707,7 +7706,7 @@ Do you want to specify another directory?</source>
       <translation>Przyrost przesunięcia:</translation>
     </message>
     <message>
-      <location filename="../TaskCSysDragger.cpp" line="90"/>
+      <location filename="../TaskCSysDragger.cpp" line="91"/>
       <source>Rotation Increment:</source>
       <translation>Przyrost obrotu:</translation>
     </message>
@@ -8067,46 +8066,51 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <location filename="Translator.cpp" line="168"/>
+      <source>Serbian, Latin</source>
+      <translation>Serbski łaciński</translation>
+    </message>
+    <message>
+      <location filename="Translator.cpp" line="169"/>
       <source>Slovak</source>
       <translation>słowacki</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="169"/>
+      <location filename="Translator.cpp" line="170"/>
       <source>Slovenian</source>
       <translation>słoweński</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="170"/>
+      <location filename="Translator.cpp" line="171"/>
       <source>Spanish</source>
       <translation>hiszpański</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="171"/>
+      <location filename="Translator.cpp" line="172"/>
       <source>Spanish, Argentina</source>
       <translation>Hiszpański, Argentyna</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="172"/>
+      <location filename="Translator.cpp" line="173"/>
       <source>Swedish</source>
       <translation>szwedzki</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="173"/>
+      <location filename="Translator.cpp" line="174"/>
       <source>Turkish</source>
       <translation>turecki</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="174"/>
+      <location filename="Translator.cpp" line="175"/>
       <source>Ukrainian</source>
       <translation>ukraiński</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="175"/>
+      <location filename="Translator.cpp" line="176"/>
       <source>Valencian</source>
       <translation>walencki</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="176"/>
+      <location filename="Translator.cpp" line="177"/>
       <source>Vietnamese</source>
       <translation>wietnamski</translation>
     </message>
@@ -8119,7 +8123,7 @@ Do you want to specify another directory?</source>
   <context>
     <name>Gui::TreeDockWidget</name>
     <message>
-      <location filename="../Tree.cpp" line="3086"/>
+      <location filename="../Tree.cpp" line="3094"/>
       <source>Tree view</source>
       <translation>Widok drzewa</translation>
     </message>
@@ -8127,7 +8131,7 @@ Do you want to specify another directory?</source>
   <context>
     <name>Gui::TreePanel</name>
     <message>
-      <location filename="../Tree.cpp" line="3012"/>
+      <location filename="../Tree.cpp" line="3020"/>
       <source>Search</source>
       <translation>Szukaj</translation>
     </message>
@@ -8160,148 +8164,148 @@ Do you want to specify another directory?</source>
       <translation>Grupa</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2739"/>
+      <location filename="../Tree.cpp" line="2747"/>
       <source>Labels &amp; Attributes</source>
       <translation>Etykiety i atrybuty</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2740"/>
+      <location filename="../Tree.cpp" line="2748"/>
       <source>Description</source>
       <translation>Opis</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2741"/>
+      <location filename="../Tree.cpp" line="2749"/>
       <source>Application</source>
       <translation>Aplikacja</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2743"/>
+      <location filename="../Tree.cpp" line="2751"/>
       <source>Show hidden items</source>
       <translation>Pokaż ukryte elementy</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2744"/>
+      <location filename="../Tree.cpp" line="2752"/>
       <source>Show hidden tree view items</source>
       <translation>Pokaż ukryte elementy widoku drzewa</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2746"/>
+      <location filename="../Tree.cpp" line="2754"/>
       <source>Hide item</source>
       <translation>Ukryj element</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2747"/>
+      <location filename="../Tree.cpp" line="2755"/>
       <source>Hide the item in tree</source>
       <translation>Ukryj element w drzewie</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2749"/>
+      <location filename="../Tree.cpp" line="2757"/>
       <source>Create group...</source>
       <translation>Utwórz grupę...</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2750"/>
+      <location filename="../Tree.cpp" line="2758"/>
       <source>Create a group</source>
       <translation>Utwórz grupę</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2752"/>
-      <location filename="../Tree.cpp" line="4866"/>
+      <location filename="../Tree.cpp" line="2760"/>
+      <location filename="../Tree.cpp" line="4874"/>
       <source>Rename</source>
       <translation>Zmień nazwę</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2753"/>
+      <location filename="../Tree.cpp" line="2761"/>
       <source>Rename object</source>
       <translation>Zmiana nazwy obiektu</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2755"/>
+      <location filename="../Tree.cpp" line="2763"/>
       <source>Finish editing</source>
       <translation>Zakończ edycję</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2756"/>
+      <location filename="../Tree.cpp" line="2764"/>
       <source>Finish editing object</source>
       <translation>Zakończ edycję obiektu</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2758"/>
+      <location filename="../Tree.cpp" line="2766"/>
       <source>Add dependent objects to selection</source>
       <translation>Dodaj obiekty zależne do zaznaczenia</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2759"/>
+      <location filename="../Tree.cpp" line="2767"/>
       <source>Adds all dependent objects to the selection</source>
       <translation>Dodaje wszystkie obiekty zależne do zaznaczenia</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2761"/>
+      <location filename="../Tree.cpp" line="2769"/>
       <source>Close document</source>
       <translation>Zamknij dokument</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2762"/>
+      <location filename="../Tree.cpp" line="2770"/>
       <source>Close the document</source>
       <translation>Zamknij dokument</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2764"/>
+      <location filename="../Tree.cpp" line="2772"/>
       <source>Reload document</source>
       <translation>Przeładuj dokument</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2765"/>
+      <location filename="../Tree.cpp" line="2773"/>
       <source>Reload a partially loaded document</source>
       <translation>Załaduj ponownie częściowo wczytany dokument</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2767"/>
+      <location filename="../Tree.cpp" line="2775"/>
       <source>Skip recomputes</source>
       <translation>Pomiń przeliczanie</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2768"/>
+      <location filename="../Tree.cpp" line="2776"/>
       <source>Enable or disable recomputations of document</source>
       <translation>Włącz lub wyłącz ponowne przeliczanie dokumentu</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2770"/>
+      <location filename="../Tree.cpp" line="2778"/>
       <source>Allow partial recomputes</source>
       <translation>Zezwalaj na częściowe przeliczanie</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2772"/>
+      <location filename="../Tree.cpp" line="2780"/>
       <source>Enable or disable recomputating editing object when 'skip recomputation' is enabled</source>
       <translation>Włącz lub wyłącz przeliczanie edytowanego obiektu gdy 'pomijanie przeliczania' jest aktywne</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2774"/>
+      <location filename="../Tree.cpp" line="2782"/>
       <source>Mark to recompute</source>
       <translation>Zaznacz do przeliczania</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2775"/>
+      <location filename="../Tree.cpp" line="2783"/>
       <source>Mark this object to be recomputed</source>
       <translation>Zaznacz ten obiekt do przeliczania</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2778"/>
+      <location filename="../Tree.cpp" line="2786"/>
       <source>Recompute object</source>
       <translation>Przelicz obiekt</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2779"/>
+      <location filename="../Tree.cpp" line="2787"/>
       <source>Recompute the selected object</source>
       <translation>Przelicz wybrany obiekt</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="4837"/>
+      <location filename="../Tree.cpp" line="4845"/>
       <source> (but must be executed)</source>
       <translation> (ale musi zostać wykonany)</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="4839"/>
+      <location filename="../Tree.cpp" line="4847"/>
       <source>%1, Internal name: %2</source>
       <translation>%1, wewnętrzna nazwa: %2</translation>
     </message>
@@ -8518,37 +8522,37 @@ Do you want to specify another directory?</source>
   <context>
     <name>QDockWidget</name>
     <message>
-      <location filename="../MainWindow.cpp" line="389"/>
+      <location filename="../MainWindow.cpp" line="399"/>
       <source>Tree view</source>
       <translation>Widok drzewa</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="417"/>
+      <location filename="../MainWindow.cpp" line="427"/>
       <source>Property view</source>
       <translation>Właściwości widoku</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="435"/>
+      <location filename="../MainWindow.cpp" line="445"/>
       <source>Selection view</source>
       <translation>Wybór widoku</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="457"/>
+      <location filename="../MainWindow.cpp" line="467"/>
       <source>Combo View</source>
       <translation>Widok połączony</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="509"/>
+      <location filename="../MainWindow.cpp" line="519"/>
       <source>Report view</source>
       <translation>Widok raportu</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="529"/>
+      <location filename="../MainWindow.cpp" line="539"/>
       <source>Python console</source>
       <translation>Konsola Python</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="491"/>
+      <location filename="../MainWindow.cpp" line="501"/>
       <source>DAG View</source>
       <translation>Widok DAG</translation>
     </message>
@@ -8587,35 +8591,35 @@ Do you want to specify another directory?</source>
     pracy</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="582"/>
-      <location filename="../Application.cpp" line="674"/>
-      <location filename="../Application.cpp" line="744"/>
+      <location filename="../Application.cpp" line="583"/>
+      <location filename="../Application.cpp" line="675"/>
+      <location filename="../Application.cpp" line="745"/>
       <source>Unknown filetype</source>
       <translation>Nieznany typ pliku</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="583"/>
-      <location filename="../Application.cpp" line="675"/>
+      <location filename="../Application.cpp" line="584"/>
+      <location filename="../Application.cpp" line="676"/>
       <source>Cannot open unknown filetype: %1</source>
       <translation>Nie można otworzyć pliku nieznanego typu: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="737"/>
+      <location filename="../Application.cpp" line="738"/>
       <source>Export failed</source>
       <translation>Eksport nie powiódł się</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="745"/>
+      <location filename="../Application.cpp" line="746"/>
       <source>Cannot save to unknown filetype: %1</source>
       <translation>Nie można zapisać do pliku nieznanego typu: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1426"/>
+      <location filename="../Application.cpp" line="1427"/>
       <source>Workbench failure</source>
       <translation>Awaria Środowiska pracy</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1427"/>
+      <location filename="../Application.cpp" line="1428"/>
       <source>%1</source>
       <translation>%1</translation>
     </message>
@@ -8630,97 +8634,98 @@ Do you want to specify another directory?</source>
       <translation>Otwórz dokument</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="158"/>
-      <location filename="../CommandDoc.cpp" line="163"/>
+      <location filename="../Document.cpp" line="205"/>
+      <location filename="../CommandDoc.cpp" line="164"/>
+      <location filename="../CommandDoc.cpp" line="169"/>
       <source>Error</source>
       <translation>Błąd</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="159"/>
+      <location filename="../CommandDoc.cpp" line="165"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
       <translation>Podczas wczytywania pliku wystąpiły błędy. Niektóre dane mogły zostać zmodyfikowane lub w ogóle nie zostały odtworzone. Zajrzyj do widoku raportu w celu uzyskania bardziej szczegółowych informacji na temat obiektów, których to dotyczy.</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="164"/>
+      <location filename="../CommandDoc.cpp" line="170"/>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
       <translation>Podczas ładowania pliku wystąpiły poważne błędy. Niektóre dane mogły zostać zmodyfikowane lub w ogóle nie zostały odzyskane. Zapisanie projektu najprawdopodobniej spowoduje utratę danych.</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="227"/>
+      <location filename="../CommandDoc.cpp" line="233"/>
       <source>Import file</source>
       <translation>Importuj plik</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="472"/>
+      <location filename="../CommandDoc.cpp" line="478"/>
       <source>Export file</source>
       <translation>Eksportuj plik</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="852"/>
+      <location filename="../CommandDoc.cpp" line="858"/>
       <source>Printing...</source>
       <translation>Drukowanie...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="913"/>
+      <location filename="../CommandDoc.cpp" line="919"/>
       <source>Exporting PDF...</source>
       <translation>Eksportuj do PDF...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1183"/>
-      <location filename="../MainWindow.cpp" line="587"/>
+      <location filename="../MainWindow.cpp" line="597"/>
+      <location filename="../CommandDoc.cpp" line="1189"/>
       <source>Unsaved document</source>
       <translation>Niezapisany dokument</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1184"/>
+      <location filename="../CommandDoc.cpp" line="1190"/>
       <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
       <translation>Wyeksportowany obiekt zawiera zewnętrzny odnośnik. Proszę zapisać dokument przynajmniej raz przed wyeksportowaniem.</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1385"/>
-      <location filename="../CommandDoc.cpp" line="1389"/>
+      <location filename="../CommandDoc.cpp" line="1391"/>
+      <location filename="../CommandDoc.cpp" line="1395"/>
       <source>Delete failed</source>
       <translation>Usunięcie nie powiodło się</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1439"/>
+      <location filename="../CommandDoc.cpp" line="1445"/>
       <source>Dependency error</source>
       <translation>Błąd zależności</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1728"/>
+      <location filename="../CommandDoc.cpp" line="1734"/>
       <source>Copy selected</source>
       <translation>Kopiuj zaznaczone</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1729"/>
+      <location filename="../CommandDoc.cpp" line="1735"/>
       <source>Copy active document</source>
       <translation>Kopiuj aktywny dokument</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1730"/>
+      <location filename="../CommandDoc.cpp" line="1736"/>
       <source>Copy all documents</source>
       <translation>Kopiuj wszystkie dokumenty</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1731"/>
+      <location filename="../CommandDoc.cpp" line="1737"/>
       <source>Paste</source>
       <translation>Wklej</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1836"/>
+      <location filename="../CommandDoc.cpp" line="1842"/>
       <source>Expression error</source>
       <translation>Błąd wyrażenia</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1837"/>
+      <location filename="../CommandDoc.cpp" line="1843"/>
       <source>Failed to parse some of the expressions.
 Please check the Report View for more details.</source>
       <translation>Nie udało się przetworzyć niektórych wyrażeń.
 Sprawdź widok raportu, aby uzyskać więcej informacji.</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1861"/>
+      <location filename="../CommandDoc.cpp" line="1867"/>
       <source>Failed to paste expressions</source>
       <translation>Nie udało się wkleić wyrażeń</translation>
     </message>
@@ -8929,7 +8934,37 @@ Do you want to continue?</source>
       <translation>Zmień wartość elementu</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1047"/>
+      <location filename="../Document.cpp" line="131"/>
+      <source>Do you want to skip confirmation of further critical message notifications while loading the file?</source>
+      <translation>Czy chcesz pominąć potwierdzanie kolejnych krytycznych powiadomień podczas ładowania pliku?</translation>
+    </message>
+    <message>
+      <location filename="../Document.cpp" line="132"/>
+      <source>Critical Message</source>
+      <translation>Wiadomość krytyczna</translation>
+    </message>
+    <message>
+      <location filename="../Document.cpp" line="190"/>
+      <source>Too many message notifications. Notification temporarily stopped. Look at the report view for more information.</source>
+      <translation>Zbyt wiele powiadomień o wiadomościach. Powiadomienia tymczasowo wstrzymane. Spójrz na widok raportu, aby uzyskać więcej informacji.</translation>
+    </message>
+    <message>
+      <location filename="../Document.cpp" line="209"/>
+      <source>Warning</source>
+      <translation>Ostrzeżenie</translation>
+    </message>
+    <message>
+      <location filename="../Document.cpp" line="213"/>
+      <source>Information</source>
+      <translation>Informacje</translation>
+    </message>
+    <message>
+      <location filename="../Document.cpp" line="217"/>
+      <source>Critical</source>
+      <translation>Krytyczne</translation>
+    </message>
+    <message>
+      <location filename="../Document.cpp" line="1221"/>
       <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
 
 </source>
@@ -8938,44 +8973,44 @@ Do you want to continue?</source>
 </translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1048"/>
+      <location filename="../Document.cpp" line="1222"/>
       <source>Are you sure you want to continue?</source>
       <translation>Czy na pewno chcesz kontynuować?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1067"/>
+      <location filename="../Document.cpp" line="1241"/>
       <source>Please check report view for more...</source>
       <translation>Proszę, sprawdź widok raportu, aby uzyskać więcej informacji ...</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1070"/>
+      <location filename="../Document.cpp" line="1244"/>
       <source>Physical path:</source>
       <translation>Ścieżka fizyczna:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1072"/>
-      <location filename="../Document.cpp" line="1078"/>
+      <location filename="../Document.cpp" line="1246"/>
+      <location filename="../Document.cpp" line="1252"/>
       <source>Document:</source>
       <translation>Dokument:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1074"/>
-      <location filename="../Document.cpp" line="1080"/>
+      <location filename="../Document.cpp" line="1248"/>
+      <location filename="../Document.cpp" line="1254"/>
       <source>Path:</source>
       <translation>Ścieżka:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1089"/>
+      <location filename="../Document.cpp" line="1263"/>
       <source>Identical physical path</source>
       <translation>Identyczna fizyczna ścieżka</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1097"/>
+      <location filename="../Document.cpp" line="1271"/>
       <source>Could not save document</source>
       <translation>Nie udało się zapisać dokumentu</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1098"/>
+      <location filename="../Document.cpp" line="1272"/>
       <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
 
 "%1"
@@ -8988,102 +9023,102 @@ Would you like to save the file with a different name?</source>
 Czy chcesz zapisać plik pod inną nazwą?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1108"/>
-      <location filename="../Document.cpp" line="1240"/>
-      <location filename="../Document.cpp" line="1323"/>
+      <location filename="../Document.cpp" line="1282"/>
+      <location filename="../Document.cpp" line="1414"/>
+      <location filename="../Document.cpp" line="1497"/>
       <source>Saving aborted</source>
       <translation>Zapisywanie przerwane</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1155"/>
+      <location filename="../Document.cpp" line="1329"/>
       <source>Save dependent files</source>
       <translation>Zapisz zależne pliki</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1156"/>
+      <location filename="../Document.cpp" line="1330"/>
       <source>The file contains external dependencies. Do you want to save the dependent files, too?</source>
       <translation>Plik zawiera zewnętrzne zależności. Czy chcesz zapisać również zależne pliki?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1190"/>
-      <location filename="../Document.cpp" line="1234"/>
+      <location filename="../Document.cpp" line="1364"/>
+      <location filename="../Document.cpp" line="1408"/>
       <source>Saving document failed</source>
       <translation>Zapisywanie dokumentu nie powiodło się</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1204"/>
+      <location filename="../Document.cpp" line="1378"/>
       <source>Save document under new filename...</source>
       <translation>Zapisz dokument pod nową nazwą pliku ...</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1207"/>
-      <location filename="../Document.cpp" line="1308"/>
+      <location filename="../Document.cpp" line="1381"/>
+      <location filename="../Document.cpp" line="1482"/>
       <source>Save %1 Document</source>
       <translation>Zapis dokumentu %1</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1209"/>
+      <location filename="../Document.cpp" line="1383"/>
       <source>Document</source>
       <translation>Dokument</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1253"/>
-      <location filename="../Document.cpp" line="1294"/>
+      <location filename="../Document.cpp" line="1427"/>
+      <location filename="../Document.cpp" line="1468"/>
       <source>Failed to save document</source>
       <translation>Nie udało się zapisać dokumentu</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1254"/>
+      <location filename="../Document.cpp" line="1428"/>
       <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
       <translation>Dokumenty zawierają zależności kołowe. Czy nadal chcesz je zapisać?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1305"/>
+      <location filename="../Document.cpp" line="1479"/>
       <source>Save a copy of the document under new filename...</source>
       <translation>Zapisz kopię dokumentu pod nową nazwą pliku...</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1310"/>
+      <location filename="../Document.cpp" line="1484"/>
       <source>%1 document (*.FCStd)</source>
       <translation>Dokument %1 (*.FCStd)</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1960"/>
+      <location filename="../Document.cpp" line="2133"/>
       <source>Document not closable</source>
       <translation>Dokument nie może zostać zamknięty</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1961"/>
+      <location filename="../Document.cpp" line="2134"/>
       <source>The document is not closable for the moment.</source>
       <translation>Nie można zamknąć dokumentu w tym momencie.</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1998"/>
+      <location filename="../Document.cpp" line="2171"/>
       <source>Document not saved</source>
       <translation>Dokument nie zapisany</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1999"/>
+      <location filename="../Document.cpp" line="2172"/>
       <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
       <translation>Nie można zapisać dokumentu %1. Czy chcesz przerwać zamykanie dokumentu?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2327"/>
+      <location filename="../Document.cpp" line="2500"/>
       <source>Undo</source>
       <translation>Cofnij</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2327"/>
+      <location filename="../Document.cpp" line="2500"/>
       <source>Redo</source>
       <translation>Przywróć</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2329"/>
+      <location filename="../Document.cpp" line="2502"/>
       <source>There are grouped transactions in the following documents with other preceding transactions</source>
       <translation>W następujących dokumentach zgrupowane są operacje z innymi poprzedzającymi je operacjami</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2332"/>
+      <location filename="../Document.cpp" line="2505"/>
       <source>Choose 'Yes' to roll back all preceding transactions.
 Choose 'No' to roll back in the active document only.
 Choose 'Abort' to abort</source>
@@ -9208,32 +9243,32 @@ Proszę otworzyć okno przeglądarki i wpisać: http://localhost:%1.</translatio
       <translation>Czy chcesz zamknąć to okno dialogowe?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="589"/>
+      <location filename="../MainWindow.cpp" line="599"/>
       <source>Do you want to save your changes to document '%1' before closing?</source>
       <translation>Czy chcesz zapisać zmiany do dokumentu "%1" przed zamknięciem?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="592"/>
+      <location filename="../MainWindow.cpp" line="602"/>
       <source>Do you want to save your changes to document before closing?</source>
       <translation>Czy chcesz zapisać zmiany przed zamknięciem?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="594"/>
+      <location filename="../MainWindow.cpp" line="604"/>
       <source>If you don't save, your changes will be lost.</source>
       <translation>Jeśli nie zapiszesz dokumentu, zmiany zostaną utracone.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="599"/>
+      <location filename="../MainWindow.cpp" line="609"/>
       <source>Apply answer to all</source>
       <translation>Zastosuj odpowiedź dla wszystkich</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="689"/>
+      <location filename="../MainWindow.cpp" line="699"/>
       <source>%1 Document(s) not saved</source>
       <translation>Dokument %1 nie został zapisany</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="690"/>
+      <location filename="../MainWindow.cpp" line="700"/>
       <source>Some documents could not be saved. Do you want to cancel closing?</source>
       <translation>Niektóre dokumenty nie mogły zostać zapisane. Czy chcesz przerwać zamykanie dokumentów?</translation>
     </message>
@@ -9364,8 +9399,8 @@ podkreślenie i nie może zaczynać się od cyfry.</translation>
       <translation>Nie udało się dodać właściwości do '%1': %2</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2028"/>
-      <location filename="../Tree.cpp" line="2224"/>
+      <location filename="../Tree.cpp" line="2036"/>
+      <location filename="../Tree.cpp" line="2232"/>
       <source>Drag &amp; drop failed</source>
       <translation>Przeciągnięcie i upuszczenie nie powiodło się</translation>
     </message>
@@ -9565,13 +9600,13 @@ bieżącej kopii zostaną utracone.
   <context>
     <name>StdCmdAlignment</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1570"/>
+      <location filename="../CommandDoc.cpp" line="1576"/>
       <source>Alignment...</source>
       <translation>Wyrównanie ...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1571"/>
-      <location filename="../CommandDoc.cpp" line="1572"/>
+      <location filename="../CommandDoc.cpp" line="1577"/>
+      <location filename="../CommandDoc.cpp" line="1578"/>
       <source>Align the selected objects</source>
       <translation>Wyrównaj zaznaczone obiekty</translation>
     </message>
@@ -9659,13 +9694,13 @@ bieżącej kopii zostaną utracone.
   <context>
     <name>StdCmdCopy</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1074"/>
+      <location filename="../CommandDoc.cpp" line="1080"/>
       <source>C&amp;opy</source>
       <translation>K&amp;opiuj</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1075"/>
-      <location filename="../CommandDoc.cpp" line="1077"/>
+      <location filename="../CommandDoc.cpp" line="1081"/>
+      <location filename="../CommandDoc.cpp" line="1083"/>
       <source>Copy operation</source>
       <translation>Skopiuj operację</translation>
     </message>
@@ -9673,13 +9708,13 @@ bieżącej kopii zostaną utracone.
   <context>
     <name>StdCmdCut</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1046"/>
+      <location filename="../CommandDoc.cpp" line="1052"/>
       <source>&amp;Cut</source>
       <translation>&amp;Wytnij</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1047"/>
-      <location filename="../CommandDoc.cpp" line="1049"/>
+      <location filename="../CommandDoc.cpp" line="1053"/>
+      <location filename="../CommandDoc.cpp" line="1055"/>
       <source>Cut out</source>
       <translation>Wytnij</translation>
     </message>
@@ -9687,13 +9722,13 @@ bieżącej kopii zostaną utracone.
   <context>
     <name>StdCmdDelete</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1268"/>
+      <location filename="../CommandDoc.cpp" line="1274"/>
       <source>&amp;Delete</source>
       <translation>&amp;Usuń</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1269"/>
-      <location filename="../CommandDoc.cpp" line="1271"/>
+      <location filename="../CommandDoc.cpp" line="1275"/>
+      <location filename="../CommandDoc.cpp" line="1277"/>
       <source>Deletes the selected objects</source>
       <translation>Usuwa zaznaczone obiekty</translation>
     </message>
@@ -9715,13 +9750,13 @@ bieżącej kopii zostaną utracone.
   <context>
     <name>StdCmdDependencyGraph</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="567"/>
+      <location filename="../CommandDoc.cpp" line="573"/>
       <source>Dependency graph...</source>
       <translation>Graf zależności ...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="568"/>
-      <location filename="../CommandDoc.cpp" line="569"/>
+      <location filename="../CommandDoc.cpp" line="574"/>
+      <location filename="../CommandDoc.cpp" line="575"/>
       <source>Show the dependency graph of the objects in the active document</source>
       <translation>Pokaż wykres zależności obiektów w aktywnym dokumencie</translation>
     </message>
@@ -9813,13 +9848,13 @@ bieżącej kopii zostaną utracone.
   <context>
     <name>StdCmdDockViewMenu</name>
     <message>
-      <location filename="../CommandWindow.cpp" line="302"/>
+      <location filename="../CommandWindow.cpp" line="307"/>
       <source>Panels</source>
       <translation>Panele</translation>
     </message>
     <message>
-      <location filename="../CommandWindow.cpp" line="303"/>
-      <location filename="../CommandWindow.cpp" line="305"/>
+      <location filename="../CommandWindow.cpp" line="308"/>
+      <location filename="../CommandWindow.cpp" line="310"/>
       <source>List of available dock panels</source>
       <translation>Lista dostępnych zadokowanych paneli</translation>
     </message>
@@ -9841,13 +9876,13 @@ bieżącej kopii zostaną utracone.
   <context>
     <name>StdCmdDuplicateSelection</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1149"/>
+      <location filename="../CommandDoc.cpp" line="1155"/>
       <source>Duplicate selection</source>
       <translation>Powiel zaznaczone</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1150"/>
-      <location filename="../CommandDoc.cpp" line="1152"/>
+      <location filename="../CommandDoc.cpp" line="1156"/>
+      <location filename="../CommandDoc.cpp" line="1158"/>
       <source>Put duplicates of the selected objects to the active document</source>
       <translation>Umieść kopie wybranych obiektów w aktywnym dokumencie</translation>
     </message>
@@ -9855,17 +9890,17 @@ bieżącej kopii zostaną utracone.
   <context>
     <name>StdCmdEdit</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1640"/>
+      <location filename="../CommandDoc.cpp" line="1646"/>
       <source>Toggle &amp;Edit mode</source>
       <translation>Przełącz tryb &amp;Edycji</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1641"/>
+      <location filename="../CommandDoc.cpp" line="1647"/>
       <source>Toggles the selected object's edit mode</source>
       <translation>Przełącza tryb edycji wybranego obiektu</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1643"/>
+      <location filename="../CommandDoc.cpp" line="1649"/>
       <source>Activates or Deactivates the selected object's edit mode</source>
       <translation>Aktywuje lub wyłącza tryb edycji dla zaznaczonych obiektów</translation>
     </message>
@@ -9873,23 +9908,23 @@ bieżącej kopii zostaną utracone.
   <context>
     <name>StdCmdExport</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="267"/>
+      <location filename="../CommandDoc.cpp" line="273"/>
       <source>&amp;Export...</source>
       <translation>&amp;Eksportuj ...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="268"/>
-      <location filename="../CommandDoc.cpp" line="270"/>
+      <location filename="../CommandDoc.cpp" line="274"/>
+      <location filename="../CommandDoc.cpp" line="276"/>
       <source>Export an object in the active document</source>
       <translation>Eksportuj obiekt z aktywnego dokumentu</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="408"/>
+      <location filename="../CommandDoc.cpp" line="414"/>
       <source>No selection</source>
       <translation>Nie wybrano</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="409"/>
+      <location filename="../CommandDoc.cpp" line="415"/>
       <source>Select the objects to export before choosing Export.</source>
       <translation>Wybierz obiekty do eksportowania przed uruchomieniem funkcji eksportu.</translation>
     </message>
@@ -9897,9 +9932,9 @@ bieżącej kopii zostaną utracone.
   <context>
     <name>StdCmdExpression</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1684"/>
-      <location filename="../CommandDoc.cpp" line="1685"/>
-      <location filename="../CommandDoc.cpp" line="1687"/>
+      <location filename="../CommandDoc.cpp" line="1690"/>
+      <location filename="../CommandDoc.cpp" line="1691"/>
+      <location filename="../CommandDoc.cpp" line="1693"/>
       <source>Expression actions</source>
       <translation>Akcje z wyrażeniami</translation>
     </message>
@@ -10071,23 +10106,23 @@ bieżącej kopii zostaną utracone.
   <context>
     <name>StdCmdImport</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="181"/>
+      <location filename="../CommandDoc.cpp" line="187"/>
       <source>&amp;Import...</source>
       <translation>&amp;Importuj ...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="182"/>
-      <location filename="../CommandDoc.cpp" line="184"/>
+      <location filename="../CommandDoc.cpp" line="188"/>
+      <location filename="../CommandDoc.cpp" line="190"/>
       <source>Import a file in the active document</source>
       <translation>Import pliku do aktywnego dokumentu</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="195"/>
+      <location filename="../CommandDoc.cpp" line="201"/>
       <source>Supported formats</source>
       <translation>Obsługiwane formaty</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="196"/>
+      <location filename="../CommandDoc.cpp" line="202"/>
       <source>All files (*.*)</source>
       <translation>Wszystkie pliki (*.*)</translation>
     </message>
@@ -10329,7 +10364,7 @@ bieżącej kopii zostaną utracone.
       <location filename="../CommandView.cpp" line="3087"/>
       <location filename="../CommandView.cpp" line="3089"/>
       <source>Measure distance</source>
-      <translation>Wymiarowanie odległości</translation>
+      <translation>Pomiar odległości</translation>
     </message>
   </context>
   <context>
@@ -10337,7 +10372,7 @@ bieżącej kopii zostaną utracone.
     <message>
       <location filename="../CommandStd.cpp" line="732"/>
       <source>Measure distance</source>
-      <translation>Pomiar odległości</translation>
+      <translation>Wymiarowanie odległości</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="733"/>
@@ -10349,25 +10384,25 @@ bieżącej kopii zostaną utracone.
   <context>
     <name>StdCmdMergeProjects</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="514"/>
+      <location filename="../CommandDoc.cpp" line="520"/>
       <source>Merge project...</source>
       <translation>Scal projekt ...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="515"/>
-      <location filename="../CommandDoc.cpp" line="517"/>
-      <location filename="../CommandDoc.cpp" line="527"/>
-      <location filename="../CommandDoc.cpp" line="536"/>
+      <location filename="../CommandDoc.cpp" line="521"/>
+      <location filename="../CommandDoc.cpp" line="523"/>
+      <location filename="../CommandDoc.cpp" line="533"/>
+      <location filename="../CommandDoc.cpp" line="542"/>
       <source>Merge project</source>
       <translation>Scal projekt</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="528"/>
+      <location filename="../CommandDoc.cpp" line="534"/>
       <source>%1 document (*.FCStd)</source>
       <translation>Dokument %1 (*.FCStd)</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="537"/>
+      <location filename="../CommandDoc.cpp" line="543"/>
       <source>Cannot merge project with itself.</source>
       <translation>Nie można połączyć projektu z samym sobą.</translation>
     </message>
@@ -10375,19 +10410,19 @@ bieżącej kopii zostaną utracone.
   <context>
     <name>StdCmdNew</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="599"/>
+      <location filename="../CommandDoc.cpp" line="605"/>
       <source>&amp;New</source>
       <translation>&amp;Nowy</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="600"/>
-      <location filename="../CommandDoc.cpp" line="602"/>
+      <location filename="../CommandDoc.cpp" line="606"/>
+      <location filename="../CommandDoc.cpp" line="608"/>
       <source>Create a new empty document</source>
       <translation>Utwórz nowy pusty dokument</translation>
     </message>
     <message>
+      <location filename="../MainWindow.cpp" line="1946"/>
       <location filename="../DocumentRecovery.cpp" line="391"/>
-      <location filename="../MainWindow.cpp" line="1917"/>
       <source>Unnamed</source>
       <translation>Nienazwany</translation>
     </message>
@@ -10470,13 +10505,13 @@ bieżącej kopii zostaną utracone.
   <context>
     <name>StdCmdPaste</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1109"/>
+      <location filename="../CommandDoc.cpp" line="1115"/>
       <source>&amp;Paste</source>
       <translation>&amp;Wklej</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1110"/>
-      <location filename="../CommandDoc.cpp" line="1112"/>
+      <location filename="../CommandDoc.cpp" line="1116"/>
+      <location filename="../CommandDoc.cpp" line="1118"/>
       <source>Paste operation</source>
       <translation>Wklej operację</translation>
     </message>
@@ -10484,13 +10519,13 @@ bieżącej kopii zostaną utracone.
   <context>
     <name>StdCmdPlacement</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1491"/>
+      <location filename="../CommandDoc.cpp" line="1497"/>
       <source>Placement...</source>
       <translation>Umiejscowienie ...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1492"/>
-      <location filename="../CommandDoc.cpp" line="1493"/>
+      <location filename="../CommandDoc.cpp" line="1498"/>
+      <location filename="../CommandDoc.cpp" line="1499"/>
       <source>Place the selected objects</source>
       <translation>Umieść wybrany obiekt</translation>
     </message>
@@ -10498,13 +10533,13 @@ bieżącej kopii zostaną utracone.
   <context>
     <name>StdCmdPrint</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="839"/>
+      <location filename="../CommandDoc.cpp" line="845"/>
       <source>&amp;Print...</source>
       <translation>&amp;Drukuj ...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="840"/>
-      <location filename="../CommandDoc.cpp" line="842"/>
+      <location filename="../CommandDoc.cpp" line="846"/>
+      <location filename="../CommandDoc.cpp" line="848"/>
       <source>Print the document</source>
       <translation>Wydrukuj dokument</translation>
     </message>
@@ -10512,13 +10547,13 @@ bieżącej kopii zostaną utracone.
   <context>
     <name>StdCmdPrintPdf</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="901"/>
+      <location filename="../CommandDoc.cpp" line="907"/>
       <source>&amp;Export PDF...</source>
       <translation>Eksportuj do PD&amp;F ...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="902"/>
-      <location filename="../CommandDoc.cpp" line="904"/>
+      <location filename="../CommandDoc.cpp" line="908"/>
+      <location filename="../CommandDoc.cpp" line="910"/>
       <source>Export the document as PDF</source>
       <translation>Wyeksportuj dokument do PDF</translation>
     </message>
@@ -10526,17 +10561,17 @@ bieżącej kopii zostaną utracone.
   <context>
     <name>StdCmdPrintPreview</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="871"/>
+      <location filename="../CommandDoc.cpp" line="877"/>
       <source>&amp;Print preview...</source>
       <translation>&amp;Podgląd wydruku ...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="872"/>
+      <location filename="../CommandDoc.cpp" line="878"/>
       <source>Print the document</source>
       <translation>Wydrukuj dokument</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="874"/>
+      <location filename="../CommandDoc.cpp" line="880"/>
       <source>Print preview</source>
       <translation>Podgląd wydruku</translation>
     </message>
@@ -10544,13 +10579,13 @@ bieżącej kopii zostaną utracone.
   <context>
     <name>StdCmdProjectInfo</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="781"/>
+      <location filename="../CommandDoc.cpp" line="787"/>
       <source>Project i&amp;nformation...</source>
       <translation>I&amp;nformacja o projekcie ...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="782"/>
-      <location filename="../CommandDoc.cpp" line="784"/>
+      <location filename="../CommandDoc.cpp" line="788"/>
+      <location filename="../CommandDoc.cpp" line="790"/>
       <source>Show details of the currently active project</source>
       <translation>Pokaż szczegóły obecnie aktywnego projektu</translation>
     </message>
@@ -10558,13 +10593,13 @@ bieżącej kopii zostaną utracone.
   <context>
     <name>StdCmdProjectUtil</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="812"/>
+      <location filename="../CommandDoc.cpp" line="818"/>
       <source>Project utility...</source>
       <translation>Narzędzia projektu ...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="813"/>
-      <location filename="../CommandDoc.cpp" line="814"/>
+      <location filename="../CommandDoc.cpp" line="819"/>
+      <location filename="../CommandDoc.cpp" line="820"/>
       <source>Utility to extract or create project files</source>
       <translation>Narzędzie do rozpakowywania lub tworzenia plików projektu</translation>
     </message>
@@ -10586,13 +10621,13 @@ bieżącej kopii zostaną utracone.
   <context>
     <name>StdCmdQuit</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="933"/>
+      <location filename="../CommandDoc.cpp" line="939"/>
       <source>E&amp;xit</source>
       <translation>&amp;Zakończ</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="934"/>
-      <location filename="../CommandDoc.cpp" line="936"/>
+      <location filename="../CommandDoc.cpp" line="940"/>
+      <location filename="../CommandDoc.cpp" line="942"/>
       <source>Quits the application</source>
       <translation>Zamyka program</translation>
     </message>
@@ -10638,13 +10673,13 @@ bieżącej kopii zostaną utracone.
   <context>
     <name>StdCmdRedo</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1003"/>
+      <location filename="../CommandDoc.cpp" line="1009"/>
       <source>&amp;Redo</source>
       <translation>&amp;Ponów</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1004"/>
-      <location filename="../CommandDoc.cpp" line="1006"/>
+      <location filename="../CommandDoc.cpp" line="1010"/>
+      <location filename="../CommandDoc.cpp" line="1012"/>
       <source>Redoes a previously undone action</source>
       <translation>Wykonuje ponownie poprzednio cofniętą czynność</translation>
     </message>
@@ -10652,13 +10687,13 @@ bieżącej kopii zostaną utracone.
   <context>
     <name>StdCmdRefresh</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1411"/>
+      <location filename="../CommandDoc.cpp" line="1417"/>
       <source>&amp;Refresh</source>
       <translation>&amp;Odśwież</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1412"/>
-      <location filename="../CommandDoc.cpp" line="1414"/>
+      <location filename="../CommandDoc.cpp" line="1418"/>
+      <location filename="../CommandDoc.cpp" line="1420"/>
       <source>Recomputes the current active document</source>
       <translation>Przelicza aktywny dokument</translation>
     </message>
@@ -10680,13 +10715,13 @@ bieżącej kopii zostaną utracone.
   <context>
     <name>StdCmdRevert</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="742"/>
+      <location filename="../CommandDoc.cpp" line="748"/>
       <source>Revert</source>
       <translation>Przywróć</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="743"/>
-      <location filename="../CommandDoc.cpp" line="745"/>
+      <location filename="../CommandDoc.cpp" line="749"/>
+      <location filename="../CommandDoc.cpp" line="751"/>
       <source>Reverts to the saved version of this file</source>
       <translation>Przywraca zapisaną wersję tego pliku</translation>
     </message>
@@ -10694,13 +10729,13 @@ bieżącej kopii zostaną utracone.
   <context>
     <name>StdCmdSave</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="629"/>
+      <location filename="../CommandDoc.cpp" line="635"/>
       <source>&amp;Save</source>
       <translation>Zapi&amp;sz</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="630"/>
-      <location filename="../CommandDoc.cpp" line="632"/>
+      <location filename="../CommandDoc.cpp" line="636"/>
+      <location filename="../CommandDoc.cpp" line="638"/>
       <source>Save the active document</source>
       <translation>Zapisz aktywny dokument</translation>
     </message>
@@ -10708,13 +10743,13 @@ bieżącej kopii zostaną utracone.
   <context>
     <name>StdCmdSaveAll</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="714"/>
+      <location filename="../CommandDoc.cpp" line="720"/>
       <source>Save All</source>
       <translation>Zapisz wszystkie</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="715"/>
-      <location filename="../CommandDoc.cpp" line="717"/>
+      <location filename="../CommandDoc.cpp" line="721"/>
+      <location filename="../CommandDoc.cpp" line="723"/>
       <source>Save all opened document</source>
       <translation>Zapisz wszystkie otwarte dokumenty</translation>
     </message>
@@ -10722,13 +10757,13 @@ bieżącej kopii zostaną utracone.
   <context>
     <name>StdCmdSaveAs</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="658"/>
+      <location filename="../CommandDoc.cpp" line="664"/>
       <source>Save &amp;As...</source>
       <translation>Zapisz &amp;jako ...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="659"/>
-      <location filename="../CommandDoc.cpp" line="661"/>
+      <location filename="../CommandDoc.cpp" line="665"/>
+      <location filename="../CommandDoc.cpp" line="667"/>
       <source>Save the active document under a new file name</source>
       <translation>Zapisuje aktywny dokument pod nową nazwą</translation>
     </message>
@@ -10736,13 +10771,13 @@ bieżącej kopii zostaną utracone.
   <context>
     <name>StdCmdSaveCopy</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="687"/>
+      <location filename="../CommandDoc.cpp" line="693"/>
       <source>Save a &amp;Copy...</source>
       <translation>Zapisz jako &amp;kopię ...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="688"/>
-      <location filename="../CommandDoc.cpp" line="690"/>
+      <location filename="../CommandDoc.cpp" line="694"/>
+      <location filename="../CommandDoc.cpp" line="696"/>
       <source>Save a copy of the active document under a new file name</source>
       <translation>Zapisz kopię aktywnego dokumentu pod nową nazwą pliku</translation>
     </message>
@@ -10806,13 +10841,13 @@ bieżącej kopii zostaną utracone.
   <context>
     <name>StdCmdSelectAll</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1237"/>
+      <location filename="../CommandDoc.cpp" line="1243"/>
       <source>Select &amp;All</source>
       <translation>Zaznacz &amp;wszystko</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1238"/>
-      <location filename="../CommandDoc.cpp" line="1240"/>
+      <location filename="../CommandDoc.cpp" line="1244"/>
+      <location filename="../CommandDoc.cpp" line="1246"/>
       <source>Select all</source>
       <translation>Zaznacz wszystko</translation>
     </message>
@@ -10890,13 +10925,13 @@ bieżącej kopii zostaną utracone.
   <context>
     <name>StdCmdStatusBar</name>
     <message>
-      <location filename="../CommandWindow.cpp" line="393"/>
+      <location filename="../CommandWindow.cpp" line="398"/>
       <source>Status bar</source>
       <translation>Pasek stanu</translation>
     </message>
     <message>
-      <location filename="../CommandWindow.cpp" line="394"/>
-      <location filename="../CommandWindow.cpp" line="396"/>
+      <location filename="../CommandWindow.cpp" line="399"/>
+      <location filename="../CommandWindow.cpp" line="401"/>
       <source>Toggles the status bar</source>
       <translation>Włącz/Wyłącz pasek stanu</translation>
     </message>
@@ -11026,13 +11061,13 @@ bieżącej kopii zostaną utracone.
   <context>
     <name>StdCmdToolBarMenu</name>
     <message>
-      <location filename="../CommandWindow.cpp" line="338"/>
+      <location filename="../CommandWindow.cpp" line="343"/>
       <source>Tool&amp;bars</source>
       <translation>Paski &amp;narzędzi</translation>
     </message>
     <message>
-      <location filename="../CommandWindow.cpp" line="339"/>
-      <location filename="../CommandWindow.cpp" line="341"/>
+      <location filename="../CommandWindow.cpp" line="344"/>
+      <location filename="../CommandWindow.cpp" line="346"/>
       <source>Toggles this window</source>
       <translation>Włącz/wyłącz to okno</translation>
     </message>
@@ -11040,13 +11075,13 @@ bieżącej kopii zostaną utracone.
   <context>
     <name>StdCmdTransform</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1465"/>
+      <location filename="../CommandDoc.cpp" line="1471"/>
       <source>Transform...</source>
       <translation>Przemieszczenie ...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1466"/>
-      <location filename="../CommandDoc.cpp" line="1467"/>
+      <location filename="../CommandDoc.cpp" line="1472"/>
+      <location filename="../CommandDoc.cpp" line="1473"/>
       <source>Transform the geometry of selected objects</source>
       <translation>Przekształć geometrię wybranych obiektów</translation>
     </message>
@@ -11054,13 +11089,13 @@ bieżącej kopii zostaną utracone.
   <context>
     <name>StdCmdTransformManip</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1536"/>
+      <location filename="../CommandDoc.cpp" line="1542"/>
       <source>Transform</source>
       <translation>Przemieszczenie</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1537"/>
-      <location filename="../CommandDoc.cpp" line="1538"/>
+      <location filename="../CommandDoc.cpp" line="1543"/>
+      <location filename="../CommandDoc.cpp" line="1544"/>
       <source>Transform the selected object in the 3d view</source>
       <translation>Przekształć wybrany obiekt w widoku 3D</translation>
     </message>
@@ -11124,13 +11159,13 @@ bieżącej kopii zostaną utracone.
   <context>
     <name>StdCmdUndo</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="959"/>
+      <location filename="../CommandDoc.cpp" line="965"/>
       <source>&amp;Undo</source>
       <translation>&amp;Cofnij</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="960"/>
-      <location filename="../CommandDoc.cpp" line="962"/>
+      <location filename="../CommandDoc.cpp" line="966"/>
+      <location filename="../CommandDoc.cpp" line="968"/>
       <source>Undo exactly one action</source>
       <translation>Cofnij dokładnie jedną czynność</translation>
     </message>
@@ -11166,13 +11201,13 @@ bieżącej kopii zostaną utracone.
   <context>
     <name>StdCmdUserInterface</name>
     <message>
-      <location filename="../CommandWindow.cpp" line="280"/>
+      <location filename="../CommandWindow.cpp" line="285"/>
       <source>Dock views</source>
       <translation>Widoki doku</translation>
     </message>
     <message>
-      <location filename="../CommandWindow.cpp" line="281"/>
-      <location filename="../CommandWindow.cpp" line="283"/>
+      <location filename="../CommandWindow.cpp" line="286"/>
+      <location filename="../CommandWindow.cpp" line="288"/>
       <source>Dock all top-level views</source>
       <translation>Zadokuj wszystkie widoki najwyższego poziomu</translation>
     </message>
@@ -11572,13 +11607,13 @@ bieżącej kopii zostaną utracone.
   <context>
     <name>StdCmdWindows</name>
     <message>
-      <location filename="../CommandWindow.cpp" line="256"/>
+      <location filename="../CommandWindow.cpp" line="261"/>
       <source>&amp;Windows...</source>
       <translation>&amp;Okna ...</translation>
     </message>
     <message>
-      <location filename="../CommandWindow.cpp" line="257"/>
-      <location filename="../CommandWindow.cpp" line="259"/>
+      <location filename="../CommandWindow.cpp" line="262"/>
+      <location filename="../CommandWindow.cpp" line="264"/>
       <source>Windows list</source>
       <translation>Lista okien</translation>
     </message>
@@ -11586,9 +11621,9 @@ bieżącej kopii zostaną utracone.
   <context>
     <name>StdCmdWindowsMenu</name>
     <message>
-      <location filename="../CommandWindow.cpp" line="439"/>
-      <location filename="../CommandWindow.cpp" line="440"/>
-      <location filename="../CommandWindow.cpp" line="442"/>
+      <location filename="../CommandWindow.cpp" line="444"/>
+      <location filename="../CommandWindow.cpp" line="445"/>
+      <location filename="../CommandWindow.cpp" line="447"/>
       <source>Activates this window</source>
       <translation>Aktywuje to okno</translation>
     </message>
@@ -11612,7 +11647,7 @@ bieżącej kopii zostaną utracone.
     <message>
       <location filename="../CommandView.cpp" line="1606"/>
       <source>Fullscreen</source>
-      <translation>Pełny ekran</translation>
+      <translation>Cały ekran</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1607"/>
@@ -11749,7 +11784,7 @@ bieżącej kopii zostaną utracone.
     <message>
       <location filename="../CommandView.cpp" line="2960"/>
       <source>Go to selection</source>
-      <translation>Przejdź do zaznaczenia</translation>
+      <translation>Przejdź do wyboru</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2961"/>
@@ -11854,7 +11889,7 @@ bieżącej kopii zostaną utracone.
     <message>
       <location filename="../CommandView.cpp" line="1638"/>
       <source>Fullscreen</source>
-      <translation>Cały ekran</translation>
+      <translation>Pełny ekran</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1639"/>
@@ -11888,7 +11923,7 @@ bieżącej kopii zostaną utracone.
       <location filename="../CommandView.cpp" line="1578"/>
       <location filename="../CommandView.cpp" line="1580"/>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>Wyświetl aktywny widok w trybie pełnoekranowym, w trybie niezadokowanym lub zadokowanym</translation>
+      <translation>Wyświetl aktywny widok na pełnym ekranie, w trybie niezadokowanym lub zadokowanym</translation>
     </message>
   </context>
   <context>
@@ -11914,7 +11949,7 @@ bieżącej kopii zostaną utracone.
   <context>
     <name>Std_Delete</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1341"/>
+      <location filename="../CommandDoc.cpp" line="1347"/>
       <source>The following referencing objects might break.
 
 Are you sure you want to continue?
@@ -11925,7 +11960,7 @@ Czy na pewno kontynuować?
 </translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1350"/>
+      <location filename="../CommandDoc.cpp" line="1356"/>
       <source>Object dependencies</source>
       <translation>Zależności obiektów</translation>
     </message>
@@ -11933,7 +11968,7 @@ Czy na pewno kontynuować?
   <context>
     <name>Std_DependencyGraph</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="580"/>
+      <location filename="../CommandDoc.cpp" line="586"/>
       <source>Dependency graph</source>
       <translation>Graf zależności</translation>
     </message>
@@ -12014,12 +12049,12 @@ Czy na pewno kontynuować?
   <context>
     <name>Std_DuplicateSelection</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1201"/>
+      <location filename="../CommandDoc.cpp" line="1207"/>
       <source>Object dependencies</source>
       <translation>Zależności obiektów</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1202"/>
+      <location filename="../CommandDoc.cpp" line="1208"/>
       <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
       <translation>Aby powiązać z obiektami zewnętrznymi, dokument musi być zapisany co najmniej raz.
@@ -12037,7 +12072,7 @@ Czy chcesz zapisać dokument teraz?</translation>
   <context>
     <name>Std_Refresh</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1440"/>
+      <location filename="../CommandDoc.cpp" line="1446"/>
       <source>The document contains dependency cycles.
 Please check the Report View for more details.
 
@@ -12051,17 +12086,17 @@ Czy nadal chcesz kontynuować?</translation>
   <context>
     <name>Std_Revert</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="755"/>
+      <location filename="../CommandDoc.cpp" line="761"/>
       <source>Revert document</source>
       <translation>Przywrócić dokument</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="756"/>
+      <location filename="../CommandDoc.cpp" line="762"/>
       <source>This will discard all the changes since last file save.</source>
       <translation>Spowoduje to odrzucenie wszystkich zmian od ostatniego zapisu pliku.</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="757"/>
+      <location filename="../CommandDoc.cpp" line="763"/>
       <source>Do you want to continue?</source>
       <translation>Czy chcesz kontynuować?</translation>
     </message>
@@ -12070,33 +12105,33 @@ Czy nadal chcesz kontynuować?</translation>
     <name>TreeParams</name>
     <message>
       <location filename="../TreeParams.cpp" line="1139"/>
-      <source>Tree view item background. Only effecitve in overlay.</source>
-      <translation type="unfinished">Tree view item background. Only effecitve in overlay.</translation>
+      <source>Tree view item background. Only effective in overlay.</source>
+      <translation type="unfinished">Tree view item background. Only effective in overlay.</translation>
     </message>
     <message>
       <location filename="../TreeParams.cpp" line="1167"/>
       <source>Tree view item background padding.</source>
-      <translation type="unfinished">Tree view item background padding.</translation>
+      <translation>Wypełnienie tła pozycji Widoku drzewa.</translation>
     </message>
     <message>
       <location filename="../TreeParams.cpp" line="1195"/>
       <source>Hide extra tree view column for item description.</source>
-      <translation type="unfinished">Hide extra tree view column for item description.</translation>
+      <translation>Ukryj dodatkową kolumnę widoku drzewa dla opisu pozycji.</translation>
     </message>
     <message>
       <location filename="../TreeParams.cpp" line="1223"/>
-      <source>Hide tree view scroll bar in dock overlay</source>
-      <translation type="unfinished">Hide tree view scroll bar in dock overlay</translation>
+      <source>Hide tree view scroll bar in dock overlay.</source>
+      <translation type="unfinished">Hide tree view scroll bar in dock overlay.</translation>
     </message>
     <message>
       <location filename="../TreeParams.cpp" line="1251"/>
-      <source>Hide tree view header view in dock overlay</source>
-      <translation type="unfinished">Hide tree view header view in dock overlay</translation>
+      <source>Hide tree view header view in dock overlay.</source>
+      <translation type="unfinished">Hide tree view header view in dock overlay.</translation>
     </message>
     <message>
       <location filename="../TreeParams.cpp" line="1279"/>
-      <source>Allow tree view columns to be manually resized</source>
-      <translation type="unfinished">Allow tree view columns to be manually resized</translation>
+      <source>Allow tree view columns to be manually resized.</source>
+      <translation type="unfinished">Allow tree view columns to be manually resized.</translation>
     </message>
   </context>
   <context>
@@ -12226,7 +12261,7 @@ Czy nadal chcesz kontynuować?</translation>
     <message>
       <location filename="../Workbench.cpp" line="542"/>
       <source>Macro</source>
-      <translation>Makrodefinicje</translation>
+      <translation>Makropolecenia</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="543"/>
@@ -12242,6 +12277,19 @@ Czy nadal chcesz kontynuować?</translation>
       <location filename="../Workbench.cpp" line="546"/>
       <source>Link actions</source>
       <translation>Akcje z łączami</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::MDIView</name>
+    <message>
+      <location filename="../MDIView.cpp" line="253"/>
+      <source>Export PDF</source>
+      <translation>Eksportuj do PDF</translation>
+    </message>
+    <message>
+      <location filename="../MDIView.cpp" line="254"/>
+      <source>PDF file</source>
+      <translation>Plik PDF</translation>
     </message>
   </context>
 </TS>

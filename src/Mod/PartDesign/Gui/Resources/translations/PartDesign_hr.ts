@@ -838,8 +838,8 @@ tako da je izbjegnuto samopresjecanje.</translation>
       <translation>Stvori klon</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="874"/>
       <location filename="../../SketchWorkflow.cpp" line="297"/>
+      <location filename="../../Command.cpp" line="874"/>
       <source>Make copy</source>
       <translation>Napravi kopiju</translation>
     </message>
@@ -864,8 +864,8 @@ tako da je izbjegnuto samopresjecanje.</translation>
       <translation>Stvori logičku vrijednost</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="189"/>
       <location filename="../../DlgActiveBody.cpp" line="104"/>
+      <location filename="../../CommandBody.cpp" line="189"/>
       <source>Add a Body</source>
       <translation>Dodaj tjelo</translation>
     </message>
@@ -2914,19 +2914,19 @@ mjereno duž navedenog smjera</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="30"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="138"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="137"/>
       <source>Base X axis</source>
       <translation>Baza X osi</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="35"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="139"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="138"/>
       <source>Base Y axis</source>
       <translation>Baza Y osi</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="40"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="140"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="139"/>
       <source>Base Z axis</source>
       <translation>Baza Z osi</translation>
     </message>
@@ -2942,7 +2942,7 @@ mjereno duž navedenog smjera</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="55"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="147"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="146"/>
       <source>Select reference...</source>
       <translation type="unfinished">Select reference...</translation>
     </message>
@@ -3522,28 +3522,28 @@ kliknite ponovno za završetak odabira</translation>
       <translation>Molimo vas prvo stvorite ravninu ili odaberite lice za crtanje na</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="895"/>
-      <location filename="../../Command.cpp" line="1894"/>
+      <location filename="../../ViewProviderHole.cpp" line="79"/>
+      <location filename="../../ViewProviderDatum.cpp" line="246"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="73"/>
       <location filename="../../SketchWorkflow.cpp" line="591"/>
       <location filename="../../ViewProvider.cpp" line="98"/>
       <location filename="../../ViewProviderBoolean.cpp" line="80"/>
-      <location filename="../../ViewProviderDatum.cpp" line="246"/>
-      <location filename="../../ViewProviderHole.cpp" line="79"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="73"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
+      <location filename="../../Command.cpp" line="895"/>
+      <location filename="../../Command.cpp" line="1894"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Dijalog je već otvoren u ploči zadataka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="896"/>
-      <location filename="../../Command.cpp" line="1895"/>
+      <location filename="../../ViewProviderHole.cpp" line="80"/>
+      <location filename="../../ViewProviderDatum.cpp" line="247"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="74"/>
       <location filename="../../SketchWorkflow.cpp" line="592"/>
       <location filename="../../ViewProvider.cpp" line="99"/>
       <location filename="../../ViewProviderBoolean.cpp" line="81"/>
-      <location filename="../../ViewProviderDatum.cpp" line="247"/>
-      <location filename="../../ViewProviderHole.cpp" line="80"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="74"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
+      <location filename="../../Command.cpp" line="896"/>
+      <location filename="../../Command.cpp" line="1895"/>
       <source>Do you want to close this dialog?</source>
       <translation>Želite li zatvoriti ovaj dijalog?</translation>
     </message>
@@ -3820,14 +3820,14 @@ To može dovesti do neočekivanih rezultata.</translation>
       <translation>Nije moguće stvoriti dodavajući element bez pripadajućeg osnovnog elementa</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="123"/>
       <location filename="../../TaskTransformedParameters.cpp" line="287"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="123"/>
       <source>Vertical sketch axis</source>
       <translation>Vertikalna os skice</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="124"/>
       <location filename="../../TaskTransformedParameters.cpp" line="288"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="124"/>
       <source>Horizontal sketch axis</source>
       <translation>Horizontalna os skice</translation>
     </message>
@@ -3881,11 +3881,11 @@ Ako imate naslijeđeni dokument sa PartDesign objektom bez tijela koristite funk
       <translation>Da biste mogli koristiti ovu značajku ona mora pripadati objektu dio u dokumentu.</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="65"/>
       <location filename="../../ViewProviderDressUp.cpp" line="50"/>
+      <location filename="../../ViewProviderTransformed.cpp" line="65"/>
+      <location filename="../../ViewProvider.cpp" line="65"/>
       <location filename="../../ViewProviderMultiTransform.cpp" line="42"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="204"/>
-      <location filename="../../ViewProviderTransformed.cpp" line="65"/>
       <source>Edit %1</source>
       <translation>Uređivanje %1</translation>
     </message>
@@ -4728,6 +4728,90 @@ preko 90: veći polumjer rupe na dnu</translation>
       <location filename="../../Workbench.cpp" line="62"/>
       <source>Part Design Modeling</source>
       <translation>Modeliranje Dizajn dijelova </translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesign_InvoluteGear</name>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="57"/>
+      <source>Involute gear...</source>
+      <translation>Spiralni zupčanik</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="61"/>
+      <source>Creates or edit the involute gear definition.</source>
+      <translation>Stvara ili uređuje definiciju evolventnog zupčanika.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesign_Sprocket</name>
+    <message>
+      <location filename="../../../SprocketFeature.py" line="62"/>
+      <source>Sprocket...</source>
+      <translation>Lančanik... </translation>
+    </message>
+    <message>
+      <location filename="../../../SprocketFeature.py" line="66"/>
+      <source>Creates or edit the sprocket definition.</source>
+      <translation>Stvara ili uređuje definiciju lančanika.</translation>
+    </message>
+  </context>
+  <context>
+    <name>WizardShaftTable</name>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="43"/>
+      <source>Length [mm]</source>
+      <translation>Dužina [mm]</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="44"/>
+      <source>Diameter [mm]</source>
+      <translation>Promjer [mm]</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="45"/>
+      <source>Inner diameter [mm]</source>
+      <translation>Unutrašnji promjer [mm]</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="46"/>
+      <source>Constraint type</source>
+      <translation>Vrsta ograničenja</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="47"/>
+      <source>Start edge type</source>
+      <translation>Vrsta početnog ruba</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="48"/>
+      <source>Start edge size</source>
+      <translation>Veličina početnog ruba</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="49"/>
+      <source>End edge type</source>
+      <translation>Vrsta završnog ruba</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="53"/>
+      <source>End edge size</source>
+      <translation>Veličina završnog ruba</translation>
+    </message>
+  </context>
+  <context>
+    <name>WizardShaft</name>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="186"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="211"/>
+      <source>Shaft design wizard...</source>
+      <translation>Čarobnjak za dizajn vratila... </translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="187"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="212"/>
+      <source>Start the shaft design wizard</source>
+      <translation>Pokreni čarobnjak za dizajn vratila</translation>
     </message>
   </context>
 </TS>

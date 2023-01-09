@@ -112,9 +112,10 @@
 Click 'start', and the test thus produced will be run.
 
 Double click on an error in the tree view to see more information about it, including the stack trace.</source>
-      <translation>Saisir le nom d'un objet qui, une fois appelé, retournera un événement TestCase. Cliquer sur 'Démarrer' et le test démarrera.
+      <translation>Saisir le nom d'un objet qui, une fois appelé, retournera un événement TestCase.
+Cliquer sur "Démarrer" et le test démarrera.
 
-Double cliquer sur une erreur dans la vue arborescente pour voir plus d'informations, y compris l'historique de la pile.</translation>
+Double-cliquer sur une erreur dans la vue en arborescence pour voir plus d'informations, y compris l'historique de la pile.</translation>
     </message>
     <message>
       <location filename="../../UnitTestImp.cpp" line="163"/>
@@ -128,7 +129,7 @@ Double cliquer sur une erreur dans la vue arborescente pour voir plus d'informat
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>
       <translation>Tous droits réservés (c) Werner Mayer
 
-FreeCAD UnitTest fait partie de FreeCAD et supporte l'écriture de tests unitaires pour vos propres modules.</translation>
+FreeCAD UnitTest fait partie de FreeCAD et permet d'écrire des tests unitaires pour ses propres modules.</translation>
     </message>
   </context>
 </TS>

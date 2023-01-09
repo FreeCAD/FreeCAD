@@ -358,7 +358,7 @@ Wenn Sie ";;" verwenden, um Pfade zu trennen, können Sie hier mehrere Ordner hi
     <message>
       <location filename="../../DlgStartPreferences.ui" line="306"/>
       <source>An optional image to display as background</source>
-      <translation>Ein alternatives Hintergrundbild</translation>
+      <translation>Ein optionales Hintergrundbild</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="319"/>

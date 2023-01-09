@@ -575,4 +575,30 @@ Proszę wybrać inny kształt.</translation>
       <translation>Siatka Części</translation>
     </message>
   </context>
+  <context>
+    <name>MeshPart_CreateFlatMesh</name>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="47"/>
+      <source>Unwrap Mesh</source>
+      <translation>Rozwiń siatkę</translation>
+    </message>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="50"/>
+      <source>Find a flat representation of a mesh.</source>
+      <translation>Znajdź płaską reprezentację siatki.</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshPart_CreateFlatFace</name>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="79"/>
+      <source>Unwrap Face</source>
+      <translation>Rozwiń ścianę</translation>
+    </message>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="82"/>
+      <source>Find a flat representation of a face.</source>
+      <translation type="unfinished">Find a flat representation of a face.</translation>
+    </message>
+  </context>
 </TS>

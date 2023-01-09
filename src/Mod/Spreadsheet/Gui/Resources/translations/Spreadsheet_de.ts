@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="882"/>
       <source>Create spreadsheet</source>
-      <translation>Erstelle Kalkulationstabelle</translation>
+      <translation>Kalkulationstabelle erstellen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="883"/>
       <source>Create a new spreadsheet</source>
-      <translation>Erstelle neue Kalkulationstabelle</translation>
+      <translation>Eine neue Kalkulationstabelle erstellen</translation>
     </message>
   </context>
   <context>
@@ -214,7 +214,7 @@
     <message>
       <location filename="../../Command.cpp" line="116"/>
       <source>Split previously merged cells</source>
-      <translation>Zuletzt zusammengeführte Zellen trennen</translation>
+      <translation>Verbundene Zellen auftrennen</translation>
     </message>
   </context>
   <context>
@@ -232,7 +232,7 @@
     <message>
       <location filename="../../Command.cpp" line="598"/>
       <source>Set text in selected cells bold</source>
-      <translation>Stellt den Text in den ausgewählten Zellen fett dar</translation>
+      <translation>Text in den ausgewählten Zellen fett setzen</translation>
     </message>
   </context>
   <context>
@@ -250,7 +250,7 @@
     <message>
       <location filename="../../Command.cpp" line="672"/>
       <source>Set text in selected cells italic</source>
-      <translation>Stellt den Text in den ausgewählten Zellen kursiv dar</translation>
+      <translation>Text in den ausgewählten Zellen kursiv setzen</translation>
     </message>
   </context>
   <context>
@@ -268,7 +268,7 @@
     <message>
       <location filename="../../Command.cpp" line="746"/>
       <source>Underline text in selected cells</source>
-      <translation>Unterstreicht den Text in den markierten Zellen</translation>
+      <translation>Text in den markierten Zellen unterstreichen</translation>
     </message>
   </context>
   <context>
@@ -324,12 +324,12 @@
     <message>
       <location filename="../../Command.cpp" line="635"/>
       <source>Set bold text</source>
-      <translation>Text in Fettdruck</translation>
+      <translation>Text in Fettschrift setzen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="709"/>
       <source>Set italic text</source>
-      <translation>Text in Kursivdruck</translation>
+      <translation>Text in Kursivschrift setzen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="783"/>
@@ -378,12 +378,12 @@
     <message>
       <location filename="../../Workbench.cpp" line="132"/>
       <source>Set foreground color</source>
-      <translation>Vordergrundfarbe wählen</translation>
+      <translation>Vordergrundfarbe festlegen</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="159"/>
       <source>Set background color</source>
-      <translation>Hintergrundfarbe wählen</translation>
+      <translation>Hintergrundfarbe festlegen</translation>
     </message>
   </context>
   <context>
@@ -611,7 +611,7 @@ switch the design configuration. The property will be created if not exist.</sou
       <location filename="../../PropertiesDialog.ui" line="102"/>
       <location filename="../../PropertiesDialog.ui" line="155"/>
       <source>Center</source>
-      <translation>Mittelpunkt</translation>
+      <translation>Mitte</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="109"/>
@@ -969,14 +969,6 @@ Möchten Sie fortfahren?</translation>
     </message>
   </context>
   <context>
-    <name>SpreadsheetGui::Module</name>
-    <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="79"/>
-      <source>Unnamed</source>
-      <translation>Unbenannt</translation>
-    </message>
-  </context>
-  <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="128"/>
@@ -1137,6 +1129,113 @@ Möchten Sie fortfahren?</translation>
       <location filename="../../Workbench.cpp" line="53"/>
       <source>&amp;Styles</source>
       <translation>&amp;Stile</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet</name>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="739"/>
+      <source>Spreadsheet</source>
+      <translation>Kalkulationstabelle</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="748"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="874"/>
+      <source>Cell</source>
+      <translation>Zelle</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="751"/>
+      <source>Apply</source>
+      <translation>Übernehmen</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="753"/>
+      <source>Apply the changes to the current cell</source>
+      <translation>Änderungen an der aktuellen Zelle anwenden</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="755"/>
+      <source>Delete</source>
+      <translation>Löschen</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="757"/>
+      <source>Deletes the contents of the current cell</source>
+      <translation>Löscht den Inhalt der aktuellen Zelle</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="759"/>
+      <source>Compute</source>
+      <translation>Berechnen</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="761"/>
+      <source>Updates the values handled by controllers</source>
+      <translation>Aktualisiert die Werte, die von Steuerelementen beeinflusst werden</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="907"/>
+      <source>Create Spreadsheet</source>
+      <translation>Kalkulationstabelle erstellen</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="933"/>
+      <source>Add controller</source>
+      <translation>Steuerelement hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="959"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="973"/>
+      <source>Add property controller</source>
+      <translation>Steuerelement für Eigenschaften hinzufügen</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_Create</name>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="902"/>
+      <source>Spreadsheet</source>
+      <translation>Kalkulationstabelle</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="905"/>
+      <source>Adds a spreadsheet object to the active document</source>
+      <translation>Fügt dem aktiven Dokument ein Tabellen-Objekt hinzu</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_Controller</name>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="919"/>
+      <source>Add controller</source>
+      <translation>Steuerelement hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="922"/>
+      <source>Adds a cell controller to a selected spreadsheet</source>
+      <translation>Fügt einer ausgewählten Tabelle ein Zell-Steuerelement hinzu</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_PropertyController</name>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="944"/>
+      <source>Add property controller</source>
+      <translation>Steuerelement für Eigenschaften hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="947"/>
+      <source>Adds a property controller to a selected spreadsheet</source>
+      <translation>Fügt einer ausgewählten Tabelle ein Steuerelement für Eigenschaften hinzu</translation>
+    </message>
+  </context>
+  <context>
+    <name>Py</name>
+    <message>
+      <location filename="../../AppSpreadsheetGui.cpp" line="79"/>
+      <source>Unnamed</source>
+      <translation>Unbenannt</translation>
     </message>
   </context>
 </TS>

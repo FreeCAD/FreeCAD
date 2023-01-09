@@ -381,7 +381,7 @@
     <message>
       <location filename="../panels/PropertyCreate.ui" line="58"/>
       <source>Type</source>
-      <translation>Tip</translation>
+      <translation>Vrsta</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="65"/>
@@ -1187,7 +1187,7 @@
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="381"/>
       <source>TextLabel</source>
-      <translation>TekstOznaka</translation>
+      <translation>Tekstualna oznaka</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="68"/>
@@ -1732,7 +1732,7 @@
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="390"/>
       <source>Perpendicular</source>
-      <translation type="unfinished">Perpendicular</translation>
+      <translation>Upravnost</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="398"/>
@@ -1998,7 +1998,7 @@
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="52"/>
       <location filename="../panels/ToolEditor.ui" line="43"/>
       <source>Type</source>
-      <translation>Tip</translation>
+      <translation>Vrsta</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="65"/>
@@ -3338,7 +3338,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/TaskPathCamoticsSim.ui" line="29"/>
       <source>TextLabel</source>
-      <translation>TekstOznaka</translation>
+      <translation>Tekstualna oznaka</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathCamoticsSim.ui" line="68"/>
@@ -3449,7 +3449,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitSelector.ui" line="30"/>
       <source>TextLabel</source>
-      <translation>TekstOznaka</translation>
+      <translation>Tekstualna oznaka</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitSelector.ui" line="78"/>

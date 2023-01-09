@@ -144,7 +144,7 @@
     <message>
       <location filename="../../Command.cpp" line="73"/>
       <source>Export the camera position of the active 3D view in POV-Ray format to a file</source>
-      <translation type="unfinished">Export the camera position of the active 3D view in POV-Ray format to a file</translation>
+      <translation>Извезите у датотеку позицију камере активног 3Д погледа у POV-Ray формату</translation>
     </message>
   </context>
   <context>
@@ -181,8 +181,8 @@
       <location filename="../../Command.cpp" line="325"/>
       <source>The current view camera is not perspective and thus resulting in a POV-Ray image that may look different than what was expected.
 Do you want to continue?</source>
-      <translation type="unfinished">The current view camera is not perspective and thus resulting in a POV-Ray image that may look different than what was expected.
-Do you want to continue?</translation>
+      <translation>Тренутни приказ камера није перспектива што резултира POV-Ray сликом која може изгледати другачије него што сте очекивали.
+Да ли желите да наставите?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="211"/>
@@ -209,14 +209,14 @@ Do you want to continue?</translation>
       <location filename="../../Command.cpp" line="340"/>
       <location filename="../../Command.cpp" line="786"/>
       <source>Cannot create a project because there is no template installed.</source>
-      <translation type="unfinished">Cannot create a project because there is no template installed.</translation>
+      <translation>Није могуће направити пројекат јер није инсталиран шаблон.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="771"/>
       <source>The current view camera is not perspective and thus resulting in a luxrender image that may look different than what was expected.
 Do you want to continue?</source>
-      <translation type="unfinished">The current view camera is not perspective and thus resulting in a luxrender image that may look different than what was expected.
-Do you want to continue?</translation>
+      <translation>Тренутни приказ камера није перспектива што резултира Luxrender сликом која може изгледати другачије него што сте очекивали.
+Да ли желите да наставите?</translation>
     </message>
   </context>
   <context>
@@ -472,7 +472,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../DlgSettingsRayImp.cpp" line="45"/>
       <source>The path to the POV-Ray executable, if you want to render from %1</source>
-      <translation type="unfinished">The path to the POV-Ray executable, if you want to render from %1</translation>
+      <translation>Путања до извршне датотеке POV-Ray, ако желите да рендерујете из %1</translation>
     </message>
   </context>
   <context>

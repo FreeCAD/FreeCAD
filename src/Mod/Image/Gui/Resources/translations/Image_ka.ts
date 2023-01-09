@@ -147,30 +147,30 @@
       <translation>მზადაა...</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="544"/>
+      <location filename="../../ImageView.cpp" line="568"/>
       <source>grey</source>
       <translation>რუხი</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="545"/>
-      <location filename="../../ImageView.cpp" line="548"/>
-      <location filename="../../ImageView.cpp" line="558"/>
-      <location filename="../../ImageView.cpp" line="563"/>
-      <location filename="../../ImageView.cpp" line="573"/>
-      <location filename="../../ImageView.cpp" line="578"/>
-      <location filename="../../ImageView.cpp" line="589"/>
-      <location filename="../../ImageView.cpp" line="594"/>
-      <location filename="../../ImageView.cpp" line="605"/>
-      <location filename="../../ImageView.cpp" line="610"/>
+      <location filename="../../ImageView.cpp" line="569"/>
+      <location filename="../../ImageView.cpp" line="572"/>
+      <location filename="../../ImageView.cpp" line="582"/>
+      <location filename="../../ImageView.cpp" line="587"/>
+      <location filename="../../ImageView.cpp" line="597"/>
+      <location filename="../../ImageView.cpp" line="602"/>
+      <location filename="../../ImageView.cpp" line="613"/>
+      <location filename="../../ImageView.cpp" line="618"/>
+      <location filename="../../ImageView.cpp" line="629"/>
+      <location filename="../../ImageView.cpp" line="634"/>
       <source>zoom</source>
       <translation>გადიდება</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="548"/>
-      <location filename="../../ImageView.cpp" line="558"/>
-      <location filename="../../ImageView.cpp" line="573"/>
-      <location filename="../../ImageView.cpp" line="589"/>
-      <location filename="../../ImageView.cpp" line="605"/>
+      <location filename="../../ImageView.cpp" line="572"/>
+      <location filename="../../ImageView.cpp" line="582"/>
+      <location filename="../../ImageView.cpp" line="597"/>
+      <location filename="../../ImageView.cpp" line="613"/>
+      <location filename="../../ImageView.cpp" line="629"/>
       <source>outside image</source>
       <translation>გამოსახულების გარეთ</translation>
     </message>
@@ -212,6 +212,57 @@
       <location filename="../../Workbench.cpp" line="33"/>
       <source>Image</source>
       <translation>გამოსახულება</translation>
+    </message>
+  </context>
+  <context>
+    <name>Image_Scaling</name>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="55"/>
+      <source>Scale image plane</source>
+      <translation>გამოსახულების სიბრტყის მასშტაბირება</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="59"/>
+      <source>Scales an image plane by defining a distance between two points</source>
+      <translation>ორ წერტილს შუა მანძილზე დამოკიდებული გამოსახულების სიბრტყის მასშტაბირება</translation>
+    </message>
+  </context>
+  <context>
+    <name>Dialog</name>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="139"/>
+      <source>Scale image plane</source>
+      <translation>გამოსახულების სიბრტყის მასშტაბირება</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="140"/>
+      <source>Distance</source>
+      <translation type="unfinished">Distance</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="141"/>
+      <source>Select first point</source>
+      <translation>აირჩიეთ პირველი წერტილი</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="156"/>
+      <source>Enter distance</source>
+      <translation>შეიყვანეთ მანძილი</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="159"/>
+      <source>Select image plane</source>
+      <translation type="unfinished">Select image plane</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="184"/>
+      <source>Select second point</source>
+      <translation>აირჩიეთ მეორე წერტილი</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="193"/>
+      <source>Select Image Plane and type distance</source>
+      <translation>აირჩიეთ გამოსახულების სიბრტყე და შეიყვანეთ მანძილი</translation>
     </message>
   </context>
 </TS>

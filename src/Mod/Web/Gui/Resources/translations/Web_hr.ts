@@ -128,13 +128,13 @@
   <context>
     <name>QObject</name>
     <message>
+      <location filename="../../BrowserView.cpp" line="815"/>
       <location filename="../../AppWebGui.cpp" line="86"/>
-      <location filename="../../BrowserView.cpp" line="805"/>
       <source>Browser</source>
       <translation>Preglednik</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="613"/>
+      <location filename="../../BrowserView.cpp" line="623"/>
       <source>File does not exist!</source>
       <translation>Datoteka ne postoji!</translation>
     </message>
@@ -142,24 +142,24 @@
   <context>
     <name>WebGui::BrowserView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="601"/>
-      <location filename="../../BrowserView.cpp" line="606"/>
-      <location filename="../../BrowserView.cpp" line="609"/>
+      <location filename="../../BrowserView.cpp" line="611"/>
+      <location filename="../../BrowserView.cpp" line="616"/>
+      <location filename="../../BrowserView.cpp" line="619"/>
       <source>Error</source>
       <translation>Pogreška</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="606"/>
+      <location filename="../../BrowserView.cpp" line="616"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
       <translation>Pojavile su se pogreške tijekom učitavanja datoteke. Neki podaci su možda promijenjeni ili nisu oporavljeni potuno. Pogledajte prikaz izvješća za više podataka o objektima koji su uključeni.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="609"/>
+      <location filename="../../BrowserView.cpp" line="619"/>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
       <translation>Došlo je do ozbiljnih pogrešaka prilikom učitavanja datoteke. Neki su podaci možda izmijenjeni ili uopće nisu vraćeni. Spremanje projekta najvjerojatnije će rezultirati gubitkom podataka.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="773"/>
+      <location filename="../../BrowserView.cpp" line="783"/>
       <source>Loading %1...</source>
       <translation>Učitavanje %1...</translation>
     </message>
@@ -167,17 +167,17 @@
   <context>
     <name>WebGui::WebView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="364"/>
+      <location filename="../../BrowserView.cpp" line="362"/>
       <source>Open in External Browser</source>
       <translation>Otvori u vanjskom pregledniku</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="368"/>
+      <location filename="../../BrowserView.cpp" line="365"/>
       <source>Open in new window</source>
       <translation>Otvori u novom prozoru</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="404"/>
+      <location filename="../../BrowserView.cpp" line="411"/>
       <source>View source</source>
       <translation>Pogledaj izvor</translation>
     </message>

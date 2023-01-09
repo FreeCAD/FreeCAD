@@ -3544,79 +3544,79 @@ podczas odczytu pliku (wolniejsze, ale dokładniejsze).</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="33"/>
-      <location filename="../../DlgPrimitives.cpp" line="737"/>
+      <location filename="../../DlgPrimitives.cpp" line="275"/>
       <source>Plane</source>
       <translation>Płaszczyzna</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="42"/>
-      <location filename="../../DlgPrimitives.cpp" line="755"/>
+      <location filename="../../DlgPrimitives.cpp" line="351"/>
       <source>Box</source>
       <translation>Sześcian</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="51"/>
-      <location filename="../../DlgPrimitives.cpp" line="777"/>
+      <location filename="../../DlgPrimitives.cpp" line="442"/>
       <source>Cylinder</source>
       <translation>Walec</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="60"/>
-      <location filename="../../DlgPrimitives.cpp" line="797"/>
+      <location filename="../../DlgPrimitives.cpp" line="535"/>
       <source>Cone</source>
       <translation>Stożek</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="69"/>
-      <location filename="../../DlgPrimitives.cpp" line="817"/>
+      <location filename="../../DlgPrimitives.cpp" line="627"/>
       <source>Sphere</source>
       <translation>Sfera</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="78"/>
-      <location filename="../../DlgPrimitives.cpp" line="841"/>
+      <location filename="../../DlgPrimitives.cpp" line="732"/>
       <source>Ellipsoid</source>
       <translation>Elipsoida</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="87"/>
-      <location filename="../../DlgPrimitives.cpp" line="863"/>
+      <location filename="../../DlgPrimitives.cpp" line="840"/>
       <source>Torus</source>
       <translation>Torus</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="96"/>
-      <location filename="../../DlgPrimitives.cpp" line="885"/>
+      <location filename="../../DlgPrimitives.cpp" line="939"/>
       <source>Prism</source>
       <translation>Graniastosłup</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="105"/>
-      <location filename="../../DlgPrimitives.cpp" line="917"/>
+      <location filename="../../DlgPrimitives.cpp" line="1082"/>
       <source>Wedge</source>
       <translation>Klin</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="114"/>
-      <location filename="../../DlgPrimitives.cpp" line="940"/>
+      <location filename="../../DlgPrimitives.cpp" line="1209"/>
       <source>Helix</source>
       <translation>Helisa</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="123"/>
-      <location filename="../../DlgPrimitives.cpp" line="958"/>
+      <location filename="../../DlgPrimitives.cpp" line="1299"/>
       <source>Spiral</source>
       <translation>Spirala</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="132"/>
-      <location filename="../../DlgPrimitives.cpp" line="976"/>
+      <location filename="../../DlgPrimitives.cpp" line="1380"/>
       <source>Circle</source>
       <translation>Okrąg</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="141"/>
-      <location filename="../../DlgPrimitives.cpp" line="996"/>
+      <location filename="../../DlgPrimitives.cpp" line="1467"/>
       <source>Ellipse</source>
       <translation>Elipsa</translation>
     </message>
@@ -3627,13 +3627,13 @@ podczas odczytu pliku (wolniejsze, ale dokładniejsze).</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="159"/>
-      <location filename="../../DlgPrimitives.cpp" line="1038"/>
+      <location filename="../../DlgPrimitives.cpp" line="1645"/>
       <source>Line</source>
       <translation>Linia</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="168"/>
-      <location filename="../../DlgPrimitives.cpp" line="1054"/>
+      <location filename="../../DlgPrimitives.cpp" line="1545"/>
       <source>Regular polygon</source>
       <translation>Wielokąt foremny</translation>
     </message>
@@ -3871,24 +3871,25 @@ podczas odczytu pliku (wolniejsze, ale dokładniejsze).</translation>
       <translation>Punkt końcowy</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="1014"/>
+      <location filename="../../DlgPrimitives.cpp" line="1744"/>
       <source>Vertex</source>
       <translation>Wierzchołek</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="1063"/>
-      <location filename="../../DlgPrimitives.cpp" line="1133"/>
-      <location filename="../../DlgPrimitives.cpp" line="1142"/>
+      <location filename="../../DlgPrimitives.cpp" line="1924"/>
+      <location filename="../../DlgPrimitives.cpp" line="1934"/>
+      <location filename="../../DlgPrimitives.cpp" line="1949"/>
+      <location filename="../../DlgPrimitives.cpp" line="1953"/>
       <source>Create %1</source>
       <translation>Utwórz %1</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="1064"/>
+      <location filename="../../DlgPrimitives.cpp" line="1925"/>
       <source>No active document</source>
       <translation>Brak aktywnego dokumentu</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="2063"/>
+      <location filename="../../DlgPrimitives.cpp" line="2228"/>
       <source>&amp;Create</source>
       <translation>&amp;Utwórz</translation>
     </message>
@@ -5494,7 +5495,7 @@ przez przeciągnięcie prostokąta zaznaczenia w oknie widoku 3D</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="101"/>
       <source>Box selection...</source>
-      <translation>Zaznaczanie obszarem ...</translation>
+      <translation>Zaznacz obszarem ...</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="121"/>
@@ -5630,8 +5631,10 @@ in the 3D view for the sweep path.</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../ViewProvider.cpp" line="50"/>
+      <location filename="../../../BasicShapes/ViewProviderShapes.py" line="47"/>
+      <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
       <location filename="../../ViewProviderPrimitive.cpp" line="56"/>
+      <location filename="../../ViewProvider.cpp" line="53"/>
       <source>Edit %1</source>
       <translation>Edytuj %1</translation>
     </message>
@@ -5722,20 +5725,20 @@ Do you want to continue?</source>
       <translation>Nie wybrano odniesienia</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="75"/>
       <location filename="../../TaskCheckGeometry.cpp" line="81"/>
+      <location filename="../../TaskAttacher.cpp" line="75"/>
       <source>Face</source>
       <translation>Ściana</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="78"/>
       <location filename="../../TaskCheckGeometry.cpp" line="83"/>
+      <location filename="../../TaskAttacher.cpp" line="78"/>
       <source>Edge</source>
       <translation>Krawędź</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="81"/>
       <location filename="../../TaskCheckGeometry.cpp" line="84"/>
+      <location filename="../../TaskAttacher.cpp" line="81"/>
       <source>Vertex</source>
       <translation>Wierzchołek</translation>
     </message>
@@ -6092,6 +6095,11 @@ Do you want to continue?</source>
       <source>Attachment editor</source>
       <translation>Edytor dołączania</translation>
     </message>
+    <message>
+      <location filename="../../../BasicShapes/CommandShapes.py" line="52"/>
+      <source>Create tube</source>
+      <translation>Utwórz rurę</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -6154,6 +6162,390 @@ Do you want to continue?</source>
       <location filename="../../Workbench.cpp" line="44"/>
       <source>Measure</source>
       <translation>Wymiarowanie</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_Tube</name>
+    <message>
+      <location filename="../../../BasicShapes/CommandShapes.py" line="44"/>
+      <source>Create tube</source>
+      <translation>Utwórz rurę</translation>
+    </message>
+    <message>
+      <location filename="../../../BasicShapes/CommandShapes.py" line="50"/>
+      <source>Creates a tube</source>
+      <translation>Tworzy rurę</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_JoinFeatures</name>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="78"/>
+      <source>Computing the result failed with an error:</source>
+      <translation>Obliczanie wyniku zakończyło się niepowodzeniem z błędem:</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="79"/>
+      <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Kliknij "Kontynuuj", aby mimo to utworzyć cechę, lub "Przerwij", aby anulować.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="80"/>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="199"/>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="295"/>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="389"/>
+      <source>Bad selection</source>
+      <translation>Błędny wybór</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="82"/>
+      <source>Continue</source>
+      <translation>Kontynuuj</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="198"/>
+      <source>Select at least two objects, or one or more compounds</source>
+      <translation>Wybierz co najmniej dwa obiekty, bądź jeden lub więcej kształtów złożonych</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="294"/>
+      <source>Select base object, then the object to embed, and then invoke this tool.</source>
+      <translation>Wybierz obiekt podstawowy, a następnie obiekt do osadzenia, kolejnie uruchom to narzędzie.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="388"/>
+      <source>Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</source>
+      <translation>Wybierz obiekt, w którym chcesz wykonać wycięcie, a następnie obiekt, za pomocą którego chcesz wykonać wycięcie, a następnie uruchom to narzędzie.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_JoinConnect</name>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="186"/>
+      <source>Connect objects</source>
+      <translation>Połącz obiekty</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="191"/>
+      <source>Fuses objects, taking care to preserve voids.</source>
+      <translation>Łączy obiekty, dbając o zachowanie pustych przestrzeni.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_JoinEmbed</name>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="282"/>
+      <source>Embed object</source>
+      <translation>Osadź obiekt</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="287"/>
+      <source>Fuses one object into another, taking care to preserve voids.</source>
+      <translation>Łączy jeden obiekt z drugim, dbając o zachowanie pustych przestrzeni.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_JoinCutout</name>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="376"/>
+      <source>Cutout for object</source>
+      <translation>Wycięcie dla obiektu</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="381"/>
+      <source>Makes a cutout in one object to fit another object.</source>
+      <translation>Tworzy wycięcie w jednym obiekcie, aby pasowało do innego obiektu.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_SplitFeatures</name>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="155"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="298"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="492"/>
+      <source>Computing the result failed with an error:</source>
+      <translation>Obliczanie wyniku zakończyło się niepowodzeniem z błędem:</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="156"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="299"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="493"/>
+      <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Kliknij "Kontynuuj", aby mimo to utworzyć cechę, lub "Przerwij", aby anulować.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="157"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="199"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="300"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="354"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="385"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="494"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="535"/>
+      <source>Bad selection</source>
+      <translation>Błędny wybór</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="159"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="302"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="496"/>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="114"/>
+      <source>Continue</source>
+      <translation>Kontynuuj</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="180"/>
+      <source>Boolean fragments</source>
+      <translation>Fragmentacja funkcją logiczną</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="189"/>
+      <source>Create a 'Boolean Fragments' object from two or more selected objects,
+or from the shapes inside a compound.
+This is a boolean union which is then sliced at the intersections
+of the original shapes.
+A 'Compound Filter' can be used to extract the individual slices.</source>
+      <translation>Utwórz obiekt "Fragmenty logiczne" z dwóch lub więcej wybranych obiektów,
+lub z kształtów wewnątrz złożonego kształtu.
+Jest to połączenie logiczne, które jest następnie dzielone w miejscach przecięcia
+oryginalnych kształtów.
+"Filtr złożonych kształtów” może być użyty do wydobycia pojedynczych wycinków.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="534"/>
+      <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
+      <translation>Wybierz co najmniej dwa obiekty bądź jeden lub więcej złożonych kształtów. Jeśli wybrany zostanie tylko jeden kształt złożony, jego części składowe zostaną przecięte między sobą (w przeciwnym razie, kształt złożony z własnymi przecięciami jest nieprawidłowy).</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="337"/>
+      <source>Slice to compound</source>
+      <translation>Rozbij na kształty złożone</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="344"/>
+      <source>Slice a selected object by using other objects as cutting tools.
+The resulting pieces will be stored in a compound.
+A 'Compound Filter' can be used to extract the individual slices.</source>
+      <translation>Rozbij wybrany obiekt za pomocą innych obiektów jako narzędzia cięcia.
+Wynikające z niego części będą przechowywane w złożeniu.
+Filtr złożeń może być użyty do wydobycia pojedynczych plastrów.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="353"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="384"/>
+      <source>Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</source>
+      <translation>Najpierw zaznacz co najmniej dwa obiekty! Pierwszym z nich jest obiekt do podzielenia, pozostałe to obiekty przecinające.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="369"/>
+      <source>Slice apart</source>
+      <translation>Rozbij</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="375"/>
+      <source>Slice a selected object by other objects, and split it apart.
+It will create a 'Compound Filter' for each slice.</source>
+      <translation>Rozbij wybrany obiekt za pomocą innych obiektów i rozdziel go.
+Dla każdego wycinka zostanie utworzony "Filtr złożonych kształtów".</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="517"/>
+      <source>Boolean XOR</source>
+      <translation>Logiczny XOR</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="525"/>
+      <source>Perform an 'exclusive OR' boolean operation with two or more selected objects,
+or with the shapes inside a compound.
+This means the overlapping volumes of the shapes will be removed.
+A 'Compound Filter' can be used to extract the remaining pieces.</source>
+      <translation>Wykonaj operację logiczną 'ekskluzywny OR' z dwoma lub większą liczbą wybranych obiektów,
+lub z kształtami wewnątrz związku.
+Oznacza to, że nakładające się na siebie objętości kształtów zostaną usunięte.
+"Filtr złożeń" może być użyty do wydobycia pozostałych części.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_CompoundFilter</name>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="51"/>
+      <source>Compound Filter</source>
+      <translation>Filtr złożeń</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="61"/>
+      <source>Filter out objects from a selected compound by characteristics like volume,
+area, or length, or by choosing specific items.
+If a second object is selected, it will be used as reference, for example,
+for collision or distance filtering.</source>
+      <translation>Filtruj obiekty z wybranego kształtu złożonego, według kryteriów takich jak objętość, pole powierzchni
+lub długość, lub wybierając określone elementy.
+Jeśli zostanie wybrany drugi obiekt, będzie on używany jako punkt odniesienia, na przykład
+do filtrowania według kolizji lub odległości.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="70"/>
+      <source>First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</source>
+      <translation>Najpierw wybierz kształt, który jest kształtem złożonym. Jeśli wybrany zostanie drugi obiekt (opcjonalnie) zostanie on potraktowany jako kształt szablonu.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="71"/>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="112"/>
+      <source>Bad selection</source>
+      <translation>Błędny wybór</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="110"/>
+      <source>Computing the result failed with an error:</source>
+      <translation>Obliczanie wyniku zakończyło się niepowodzeniem z błędem:</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="111"/>
+      <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Kliknij "Kontynuuj", aby mimo to utworzyć cechę, lub "Przerwij", aby anulować.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_ExplodeCompound</name>
+    <message>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="50"/>
+      <source>Explode compound</source>
+      <translation>Rozbij kształt złożony</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="56"/>
+      <source>Split up a compound of shapes into separate objects.
+It will create a 'Compound Filter' for each shape.</source>
+      <translation>Rozdziel kształt złożony na osobne obiekty.
+Stworzy to "Filtr złożeń” dla każdego kształtu.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="62"/>
+      <source>First select a shape that is a compound.</source>
+      <translation>Najpierw wybierz kształt, który jest złożeniem.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="63"/>
+      <source>Bad selection</source>
+      <translation>Błędny wybór</translation>
+    </message>
+  </context>
+  <context>
+    <name>AttachmentEditor</name>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="87"/>
+      <source>No object named {}</source>
+      <translation>Brak obiektu o nazwie {}</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="91"/>
+      <source>Failed to parse link (more than one colon encountered)</source>
+      <translation>Nie udało się przetworzyć linku (napotkano więcej niż jeden dwukropek)</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="204"/>
+      <source>Object {} is neither movable nor attachable, can't edit attachment</source>
+      <translation>Obiekt {} nie jest ani ruchomy, ani dołączalny, nie można edytować dołączenia</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="214"/>
+      <source>{} is not attachable. You can still use attachment editor dialog to align the object, but the attachment won't be parametric.</source>
+      <translation>{} nie jest dołączalny. Nadal można użyć okna edytora dołączania, aby wyrównać obiekt, ale dołączenie nie będzie parametryczne.</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="215"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="228"/>
+      <source>Attachment</source>
+      <translation>Dołączenie</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="217"/>
+      <source>Continue</source>
+      <translation>Kontynuuj</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="272"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="317"/>
+      <source>Edit attachment of {}</source>
+      <translation>Edytuj dołączenie {}</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="362"/>
+      <source>Ignored. Can't attach object to itself!</source>
+      <translation>Zignorowano. Nie można dołączyć obiektu do samego siebie!</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="365"/>
+      <source>{} depends on object being attached, can't use it for attachment</source>
+      <translation>{} zależy od dołączanego obiektu, nie można go używać do dołączania</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="505"/>
+      <source>{} (add {})</source>
+      <translation>{} (dodaj {})</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="507"/>
+      <source>{} (add more references)</source>
+      <translation>{} (dodaj więcej odniesień)</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="537"/>
+      <source>Reference combinations:</source>
+      <translation>Kombinacje odniesienia:</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="553"/>
+      <source>Reference{}</source>
+      <translation>Odniesienie {}</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="558"/>
+      <source>Selecting...</source>
+      <translation>Wybieranie...</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="582"/>
+      <source>Failed to resolve links. {}</source>
+      <translation>Nie udało się rozwiązać powiązań. {}</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="590"/>
+      <source>Not attached</source>
+      <translation>Nie dołączony</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="593"/>
+      <source>Attached with mode {}</source>
+      <translation>Dołączono w trybie {}</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="599"/>
+      <source>Error: {}</source>
+      <translation>Błąd: {}</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="602"/>
+      <source>Attachment Offset (in local coordinates):</source>
+      <translation>Odsunięcie dołączenia (według lokalnych współrzędnych):</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="605"/>
+      <source>Attachment Offset (inactive - not attached):</source>
+      <translation>Odsunięcie dołączenia: (nieaktywny - nie dołączono):</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_EditAttachment</name>
+    <message>
+      <location filename="../../../AttachmentEditor/Commands.py" line="79"/>
+      <source>Attachment...</source>
+      <translation>Dołączenie ...</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/Commands.py" line="83"/>
+      <source>Edit attachment of selected object.</source>
+      <translation>Edytuj Dołączenie wybranego obiektu.</translation>
     </message>
   </context>
 </TS>

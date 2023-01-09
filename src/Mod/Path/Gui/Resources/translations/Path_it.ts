@@ -479,7 +479,7 @@
     <message>
       <location filename="../../DlgJobChooser.ui" line="17"/>
       <source>Choose a Path Job</source>
-      <translation type="unfinished">Choose a Path Job</translation>
+      <translation>Scegli un Percorso di lavorazione</translation>
     </message>
     <message>
       <location filename="../panels/DlgTCChooser.ui" line="23"/>
@@ -879,7 +879,7 @@
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="170"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Depth of the final cut of the operation. Can be used to produce a cleaner finish.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Depth of the final cut of the operation. Can be used to produce a cleaner finish.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Profondità del taglio finale dell'operazione. Può essere utilizzato per ottenere una finitura più pulita.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageDiametersEdit.ui" line="20"/>
@@ -999,12 +999,12 @@
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="69"/>
       <source>Operation Type</source>
-      <translation type="unfinished">Operation Type</translation>
+      <translation>Tipo Operazione</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="76"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Type of adaptive operation&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Type of adaptive operation&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tipo di operazione adattiva&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="83"/>
@@ -1598,7 +1598,7 @@
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="90"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose what point to use on the first selected feature.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose what point to use on the first selected feature.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Scegli quale punto usare per la prima funzione selezionata.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="97"/>
@@ -2146,7 +2146,7 @@
       <location filename="../panels/ToolEditor.ui" line="87"/>
       <location filename="../panels/ToolEditor.ui" line="184"/>
       <source>Tool Parameter</source>
-      <translation type="unfinished">Tool Parameter</translation>
+      <translation>Parametro Strumento</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="103"/>
@@ -2279,7 +2279,7 @@
     <message>
       <location filename="../preferences/PathJob.ui" line="51"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Path to look for templates, post processors, tool tables and other external files.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;If left empty the macro directory is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Path to look for templates, post processors, tool tables and other external files.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;If left empty the macro directory is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Percorso per cercare modelli, post processori, tabelle degli strumenti e altri file esterni.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Se lasciato vuoto viene utilizzata la directory macro.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="65"/>
@@ -2289,7 +2289,7 @@
     <message>
       <location filename="../preferences/PathJob.ui" line="72"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default template to be selected when creating a new Job. &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;This can be helpful when almost all jobs will be processed by the same machine with a similar setup.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;If left empty no template will be preselected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default template to be selected when creating a new Job. &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;This can be helpful when almost all jobs will be processed by the same machine with a similar setup.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;If left empty no template will be preselected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Il modello predefinito da selezionare quando si crea un nuovo lavoro. &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Questo può essere utile quando quasi tutti i lavori saranno elaborati dalla stessa macchina con una configurazione simile.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Se lasciato vuoto nessun modello sarà preselezionato.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="89"/>
@@ -2304,7 +2304,7 @@
     <message>
       <location filename="../preferences/PathJob.ui" line="104"/>
       <source>Default value for new Jobs, used for computing Paths.  Smaller increases accuracy, but slows down computation</source>
-      <translation type="unfinished">Default value for new Jobs, used for computing Paths.  Smaller increases accuracy, but slows down computation</translation>
+      <translation>Valore predefinito per i nuovi lavori, utilizzato per il calcolo dei Persorsi. Più piccolo aumenta la precisione, ma rallenta il calcolo</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="111"/>
@@ -2400,7 +2400,7 @@
     <message>
       <location filename="../preferences/PathJob.ui" line="302"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optional arguments passed to the default Post Processor specified above. See the Post Processor's documentation for supported arguments.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optional arguments passed to the default Post Processor specified above. See the Post Processor's documentation for supported arguments.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Argomenti opzionali passati al Post Processor predefinito specificato sopra. Vedere la documentazione del Post Processor per gli argomenti supportati.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="340"/>
@@ -3013,7 +3013,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DragKnifeEdit.ui" line="37"/>
       <source>Offset Distance</source>
-      <translation type="unfinished">Offset Distance</translation>
+      <translation>Distanza Scostamento</translation>
     </message>
     <message>
       <location filename="../panels/DragKnifeEdit.ui" line="44"/>
@@ -3028,7 +3028,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DragKnifeEdit.ui" line="70"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Height to raise during corner action&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Height to raise during corner action&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Altezza da sollevare durante l'azione d'angolo&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="14"/>

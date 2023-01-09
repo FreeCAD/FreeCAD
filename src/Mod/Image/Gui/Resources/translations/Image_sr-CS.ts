@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="102"/>
       <source>Create a planar image in the 3D space</source>
-      <translation>Stavi sliku na neku od ravni u 3D prostoru</translation>
+      <translation>Stavite sliku na neku od ravni u 3D prostoru</translation>
     </message>
   </context>
   <context>
@@ -86,7 +86,7 @@
     <message>
       <location filename="../../ImageOrientationDialog.ui" line="20"/>
       <source>Image plane</source>
-      <translation>Ravan slike</translation>
+      <translation>Slika na ravni</translation>
     </message>
     <message>
       <location filename="../../ImageOrientationDialog.ui" line="26"/>
@@ -147,30 +147,30 @@
       <translation>Spreman...</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="544"/>
+      <location filename="../../ImageView.cpp" line="568"/>
       <source>grey</source>
       <translation>siva</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="545"/>
-      <location filename="../../ImageView.cpp" line="548"/>
-      <location filename="../../ImageView.cpp" line="558"/>
-      <location filename="../../ImageView.cpp" line="563"/>
-      <location filename="../../ImageView.cpp" line="573"/>
-      <location filename="../../ImageView.cpp" line="578"/>
-      <location filename="../../ImageView.cpp" line="589"/>
-      <location filename="../../ImageView.cpp" line="594"/>
-      <location filename="../../ImageView.cpp" line="605"/>
-      <location filename="../../ImageView.cpp" line="610"/>
+      <location filename="../../ImageView.cpp" line="569"/>
+      <location filename="../../ImageView.cpp" line="572"/>
+      <location filename="../../ImageView.cpp" line="582"/>
+      <location filename="../../ImageView.cpp" line="587"/>
+      <location filename="../../ImageView.cpp" line="597"/>
+      <location filename="../../ImageView.cpp" line="602"/>
+      <location filename="../../ImageView.cpp" line="613"/>
+      <location filename="../../ImageView.cpp" line="618"/>
+      <location filename="../../ImageView.cpp" line="629"/>
+      <location filename="../../ImageView.cpp" line="634"/>
       <source>zoom</source>
       <translation>zumiranje</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="548"/>
-      <location filename="../../ImageView.cpp" line="558"/>
-      <location filename="../../ImageView.cpp" line="573"/>
-      <location filename="../../ImageView.cpp" line="589"/>
-      <location filename="../../ImageView.cpp" line="605"/>
+      <location filename="../../ImageView.cpp" line="572"/>
+      <location filename="../../ImageView.cpp" line="582"/>
+      <location filename="../../ImageView.cpp" line="597"/>
+      <location filename="../../ImageView.cpp" line="613"/>
+      <location filename="../../ImageView.cpp" line="629"/>
       <source>outside image</source>
       <translation>izvan slike</translation>
     </message>
@@ -212,6 +212,57 @@
       <location filename="../../Workbench.cpp" line="33"/>
       <source>Image</source>
       <translation>Slika</translation>
+    </message>
+  </context>
+  <context>
+    <name>Image_Scaling</name>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="55"/>
+      <source>Scale image plane</source>
+      <translation>Skaliraj sliku</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="59"/>
+      <source>Scales an image plane by defining a distance between two points</source>
+      <translation>Skalira sliku u ravni definisanjem rastojanja između dve tačke</translation>
+    </message>
+  </context>
+  <context>
+    <name>Dialog</name>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="139"/>
+      <source>Scale image plane</source>
+      <translation>Skaliraj sliku</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="140"/>
+      <source>Distance</source>
+      <translation type="unfinished">Distance</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="141"/>
+      <source>Select first point</source>
+      <translation>Izaberi prvu tačku</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="156"/>
+      <source>Enter distance</source>
+      <translation>Unesi rastojanje</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="159"/>
+      <source>Select image plane</source>
+      <translation type="unfinished">Select image plane</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="184"/>
+      <source>Select second point</source>
+      <translation>Izaberi drugu tačku</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="193"/>
+      <source>Select Image Plane and type distance</source>
+      <translation>Izaberi sliku i upiši rastojanje</translation>
     </message>
   </context>
 </TS>

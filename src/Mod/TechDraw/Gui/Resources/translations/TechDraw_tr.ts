@@ -75,12 +75,12 @@
   <context>
     <name>CmdTechDraw3PtAngleDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="861"/>
+      <location filename="../../CommandCreateDims.cpp" line="1037"/>
       <source>TechDraw</source>
       <translation>TeknikÇizim</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="862"/>
+      <location filename="../../CommandCreateDims.cpp" line="1038"/>
       <source>Insert 3-Point Angle Dimension</source>
       <translation>Yeni bir 3 noktalı Açı ölçüsü ekle</translation>
     </message>
@@ -88,12 +88,12 @@
   <context>
     <name>CmdTechDrawActiveView</name>
     <message>
-      <location filename="../../Command.cpp" line="452"/>
+      <location filename="../../Command.cpp" line="445"/>
       <source>TechDraw</source>
       <translation>TeknikÇizim</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="453"/>
+      <location filename="../../Command.cpp" line="446"/>
       <source>Insert Active View (3D View)</source>
       <translation>Etkin görünüm ekle (3B görünüm)</translation>
     </message>
@@ -101,12 +101,12 @@
   <context>
     <name>CmdTechDrawAngleDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="773"/>
+      <location filename="../../CommandCreateDims.cpp" line="944"/>
       <source>TechDraw</source>
       <translation>TeknikÇizim</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="774"/>
+      <location filename="../../CommandCreateDims.cpp" line="945"/>
       <source>Insert Angle Dimension</source>
       <translation>Yeni bir Açı ölçüsü ekle</translation>
     </message>
@@ -127,17 +127,17 @@
   <context>
     <name>CmdTechDrawArchView</name>
     <message>
-      <location filename="../../Command.cpp" line="1423"/>
+      <location filename="../../Command.cpp" line="1405"/>
       <source>TechDraw</source>
       <translation>TeknikÇizim</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1424"/>
+      <location filename="../../Command.cpp" line="1406"/>
       <source>Insert Arch Workbench Object</source>
       <translation>Mimari tezgah(Arch Workbench) objesi ekle</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1425"/>
+      <location filename="../../Command.cpp" line="1407"/>
       <source>Insert a View of a Section Plane from Arch Workbench</source>
       <translation>Mimari Çalışma Tezgahından (Arch Workbench) Kesit Düzleminin bir görünümünü ekler</translation>
     </message>
@@ -145,12 +145,12 @@
   <context>
     <name>CmdTechDrawBalloon</name>
     <message>
-      <location filename="../../Command.cpp" line="1046"/>
+      <location filename="../../Command.cpp" line="1037"/>
       <source>TechDraw</source>
       <translation>TeknikÇizim</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1047"/>
+      <location filename="../../Command.cpp" line="1038"/>
       <source>Insert Balloon Annotation</source>
       <translation>Balon Açıklama Ekle</translation>
     </message>
@@ -176,12 +176,12 @@
   <context>
     <name>CmdTechDrawClipGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="1112"/>
+      <location filename="../../Command.cpp" line="1104"/>
       <source>TechDraw</source>
       <translation>TeknikÇizim</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1113"/>
+      <location filename="../../Command.cpp" line="1105"/>
       <source>Insert Clip Group</source>
       <translation>Kesim grubu ekleyin</translation>
     </message>
@@ -189,12 +189,12 @@
   <context>
     <name>CmdTechDrawClipGroupAdd</name>
     <message>
-      <location filename="../../Command.cpp" line="1151"/>
+      <location filename="../../Command.cpp" line="1141"/>
       <source>TechDraw</source>
       <translation>TeknikÇizim</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1152"/>
+      <location filename="../../Command.cpp" line="1142"/>
       <source>Add View to Clip Group</source>
       <translation>Görüntüyü Kesim Grubu'na ekle</translation>
     </message>
@@ -202,12 +202,12 @@
   <context>
     <name>CmdTechDrawClipGroupRemove</name>
     <message>
-      <location filename="../../Command.cpp" line="1235"/>
+      <location filename="../../Command.cpp" line="1225"/>
       <source>TechDraw</source>
       <translation>TeknikÇizim</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1236"/>
+      <location filename="../../Command.cpp" line="1226"/>
       <source>Remove View from Clip Group</source>
       <translation>KesimGrubu'ndan görüntü çıkarın</translation>
     </message>
@@ -215,17 +215,17 @@
   <context>
     <name>CmdTechDrawComplexSection</name>
     <message>
-      <location filename="../../Command.cpp" line="640"/>
+      <location filename="../../Command.cpp" line="629"/>
       <source>TechDraw</source>
       <translation>TeknikÇizim</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="641"/>
+      <location filename="../../Command.cpp" line="630"/>
       <source>Insert Complex Section</source>
       <translation type="unfinished">Insert Complex Section</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="642"/>
+      <location filename="../../Command.cpp" line="631"/>
       <source>Insert a Complex Section</source>
       <translation type="unfinished">Insert a Complex Section</translation>
     </message>
@@ -295,12 +295,12 @@
   <context>
     <name>CmdTechDrawDetailView</name>
     <message>
-      <location filename="../../Command.cpp" line="774"/>
+      <location filename="../../Command.cpp" line="756"/>
       <source>TechDraw</source>
       <translation>TeknikÇizim</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="775"/>
+      <location filename="../../Command.cpp" line="757"/>
       <source>Insert Detail View</source>
       <translation>Detay Görünümü Ekle</translation>
     </message>
@@ -308,12 +308,12 @@
   <context>
     <name>CmdTechDrawDiameterDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="349"/>
+      <location filename="../../CommandCreateDims.cpp" line="348"/>
       <source>TechDraw</source>
       <translation>TeknikÇizim</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="350"/>
+      <location filename="../../CommandCreateDims.cpp" line="349"/>
       <source>Insert Diameter Dimension</source>
       <translation>Çap ölçüsü ekle</translation>
     </message>
@@ -321,12 +321,12 @@
   <context>
     <name>CmdTechDrawDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="106"/>
+      <location filename="../../CommandCreateDims.cpp" line="105"/>
       <source>TechDraw</source>
       <translation>TeknikÇizim</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="107"/>
+      <location filename="../../CommandCreateDims.cpp" line="106"/>
       <source>Insert Dimension</source>
       <translation>Boyut ekle</translation>
     </message>
@@ -334,17 +334,17 @@
   <context>
     <name>CmdTechDrawDraftView</name>
     <message>
-      <location filename="../../Command.cpp" line="1365"/>
+      <location filename="../../Command.cpp" line="1349"/>
       <source>TechDraw</source>
       <translation>TeknikÇizim</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1366"/>
+      <location filename="../../Command.cpp" line="1350"/>
       <source>Insert Draft Workbench Object</source>
       <translation>Mimari tezgah(Arch Workbench) objesi ekle</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1367"/>
+      <location filename="../../Command.cpp" line="1351"/>
       <source>Insert a View of a Draft Workbench object</source>
       <translation>Taslak Çalışma Tezgahının (Draft Workbench) bir görünümünü ekle</translation>
     </message>
@@ -352,22 +352,22 @@
   <context>
     <name>CmdTechDrawExportPageDXF</name>
     <message>
-      <location filename="../../Command.cpp" line="1592"/>
+      <location filename="../../Command.cpp" line="1572"/>
       <source>File</source>
       <translation>Dosya</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1593"/>
+      <location filename="../../Command.cpp" line="1573"/>
       <source>Export Page as DXF</source>
       <translation>Sayfayı DXF olarak dışa aktar</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1627"/>
+      <location filename="../../Command.cpp" line="1607"/>
       <source>Save DXF file</source>
       <translation>DXF dosyası olarak kaydet</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1629"/>
+      <location filename="../../Command.cpp" line="1608"/>
       <source>DXF (*.dxf)</source>
       <translation>DXF (*.dxf)</translation>
     </message>
@@ -375,12 +375,12 @@
   <context>
     <name>CmdTechDrawExportPageSVG</name>
     <message>
-      <location filename="../../Command.cpp" line="1547"/>
+      <location filename="../../Command.cpp" line="1531"/>
       <source>File</source>
       <translation>Dosya</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1548"/>
+      <location filename="../../Command.cpp" line="1532"/>
       <source>Export Page as SVG</source>
       <translation>Sayfayı SVG olarak dışa aktar</translation>
     </message>
@@ -1390,22 +1390,22 @@
   <context>
     <name>CmdTechDrawExtentGroup</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1030"/>
+      <location filename="../../CommandCreateDims.cpp" line="1209"/>
       <source>TechDraw</source>
       <translation>TeknikÇizim</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1031"/>
+      <location filename="../../CommandCreateDims.cpp" line="1210"/>
       <source>Insert Extent Dimension</source>
       <translation>Kapsam Ölçüsü Ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1097"/>
+      <location filename="../../CommandCreateDims.cpp" line="1276"/>
       <source>Horizontal Extent</source>
       <translation>Yatay kapsam</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1101"/>
+      <location filename="../../CommandCreateDims.cpp" line="1280"/>
       <source>Vertical Extent</source>
       <translation>Dikey genişlik</translation>
     </message>
@@ -1452,12 +1452,12 @@
   <context>
     <name>CmdTechDrawHorizontalDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="564"/>
+      <location filename="../../CommandCreateDims.cpp" line="665"/>
       <source>TechDraw</source>
       <translation>TeknikÇizim</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="565"/>
+      <location filename="../../CommandCreateDims.cpp" line="666"/>
       <source>Insert Horizontal Dimension</source>
       <translation>Yatay ölçü ekle</translation>
     </message>
@@ -1465,12 +1465,12 @@
   <context>
     <name>CmdTechDrawHorizontalExtentDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1123"/>
+      <location filename="../../CommandCreateDims.cpp" line="1302"/>
       <source>TechDraw</source>
       <translation>TeknikÇizim</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1124"/>
+      <location filename="../../CommandCreateDims.cpp" line="1303"/>
       <source>Insert Horizontal Extent Dimension</source>
       <translation>Yatay kapsam ölçüsü Ekle</translation>
     </message>
@@ -1507,12 +1507,12 @@
   <context>
     <name>CmdTechDrawLandmarkDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1290"/>
+      <location filename="../../CommandCreateDims.cpp" line="1508"/>
       <source>TechDraw</source>
       <translation>TeknikÇizim</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1291"/>
+      <location filename="../../CommandCreateDims.cpp" line="1509"/>
       <source>Insert Landmark Dimension - EXPERIMENTAL</source>
       <translation>İşaret ölçüsü ekle - DENEYSEL</translation>
     </message>
@@ -1533,12 +1533,12 @@
   <context>
     <name>CmdTechDrawLengthDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="460"/>
+      <location filename="../../CommandCreateDims.cpp" line="570"/>
       <source>TechDraw</source>
       <translation>TeknikÇizim</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="461"/>
+      <location filename="../../CommandCreateDims.cpp" line="571"/>
       <source>Insert Length Dimension</source>
       <translation>Yeni bir uzunluk ölçüsü ekle</translation>
     </message>
@@ -1546,12 +1546,12 @@
   <context>
     <name>CmdTechDrawLinkDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="953"/>
+      <location filename="../../CommandCreateDims.cpp" line="1132"/>
       <source>TechDraw</source>
       <translation>TeknikÇizim</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="954"/>
+      <location filename="../../CommandCreateDims.cpp" line="1133"/>
       <source>Link Dimension to 3D Geometry</source>
       <translation>3D geometriye bir ebat ekle</translation>
     </message>
@@ -1572,12 +1572,12 @@
   <context>
     <name>CmdTechDrawPageDefault</name>
     <message>
-      <location filename="../../Command.cpp" line="98"/>
+      <location filename="../../Command.cpp" line="96"/>
       <source>TechDraw</source>
       <translation>TeknikÇizim</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="99"/>
+      <location filename="../../Command.cpp" line="97"/>
       <source>Insert Default Page</source>
       <translation>Yeni varsayılan sayfa ekle</translation>
     </message>
@@ -1585,17 +1585,17 @@
   <context>
     <name>CmdTechDrawPageTemplate</name>
     <message>
-      <location filename="../../Command.cpp" line="162"/>
+      <location filename="../../Command.cpp" line="163"/>
       <source>TechDraw</source>
       <translation>TeknikÇizim</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="163"/>
+      <location filename="../../Command.cpp" line="164"/>
       <source>Insert Page using Template</source>
       <translation>Şablondan yeni bir sayfa ekle</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="176"/>
+      <location filename="../../Command.cpp" line="177"/>
       <source>Select a Template File</source>
       <translation>Şablon dosyası seçin</translation>
     </message>
@@ -1608,12 +1608,12 @@
   <context>
     <name>CmdTechDrawPrintAll</name>
     <message>
-      <location filename="../../Command.cpp" line="279"/>
+      <location filename="../../Command.cpp" line="280"/>
       <source>TechDraw</source>
       <translation>TeknikÇizim</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="280"/>
+      <location filename="../../Command.cpp" line="281"/>
       <source>Print All Pages</source>
       <translation>Tüm Sayfaları Yazdır</translation>
     </message>
@@ -1621,12 +1621,12 @@
   <context>
     <name>CmdTechDrawProjectShape</name>
     <message>
-      <location filename="../../Command.cpp" line="1659"/>
+      <location filename="../../Command.cpp" line="1635"/>
       <source>TechDraw</source>
       <translation>TeknikÇizim</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1660"/>
+      <location filename="../../Command.cpp" line="1636"/>
       <source>Project shape...</source>
       <translation>Proje şekilleri...</translation>
     </message>
@@ -1634,17 +1634,17 @@
   <context>
     <name>CmdTechDrawProjectionGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="823"/>
+      <location filename="../../Command.cpp" line="804"/>
       <source>TechDraw</source>
       <translation>TeknikÇizim</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="824"/>
+      <location filename="../../Command.cpp" line="805"/>
       <source>Insert Projection Group</source>
       <translation>Projeksiyon grubu ekle</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="825"/>
+      <location filename="../../Command.cpp" line="806"/>
       <source>Insert multiple linked views of drawable object(s)</source>
       <translation>Çizilebilir nesne(ler) in çok bağlantılı görünümlerini ekle</translation>
     </message>
@@ -1665,12 +1665,12 @@
   <context>
     <name>CmdTechDrawRadiusDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="233"/>
+      <location filename="../../CommandCreateDims.cpp" line="227"/>
       <source>TechDraw</source>
       <translation>TeknikÇizim</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="234"/>
+      <location filename="../../CommandCreateDims.cpp" line="228"/>
       <source>Insert Radius Dimension</source>
       <translation>Yarıçap ölçüsü ekle</translation>
     </message>
@@ -1678,12 +1678,12 @@
   <context>
     <name>CmdTechDrawRedrawPage</name>
     <message>
-      <location filename="../../Command.cpp" line="242"/>
+      <location filename="../../Command.cpp" line="244"/>
       <source>TechDraw</source>
       <translation>TeknikÇizim</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="243"/>
+      <location filename="../../Command.cpp" line="245"/>
       <source>Redraw Page</source>
       <translation>Sayfayı yeniden çiz</translation>
     </message>
@@ -1704,22 +1704,22 @@
   <context>
     <name>CmdTechDrawSectionGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="486"/>
+      <location filename="../../Command.cpp" line="475"/>
       <source>TechDraw</source>
       <translation>TeknikÇizim</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="487"/>
+      <location filename="../../Command.cpp" line="476"/>
       <source>Insert a simple or complex Section View</source>
       <translation type="unfinished">Insert a simple or complex Section View</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="552"/>
+      <location filename="../../Command.cpp" line="541"/>
       <source>Section View</source>
       <translation>Kesit Görünümü</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="556"/>
+      <location filename="../../Command.cpp" line="545"/>
       <source>Complex Section</source>
       <translation type="unfinished">Complex Section</translation>
     </message>
@@ -1727,12 +1727,12 @@
   <context>
     <name>CmdTechDrawSectionView</name>
     <message>
-      <location filename="../../Command.cpp" line="578"/>
+      <location filename="../../Command.cpp" line="567"/>
       <source>TechDraw</source>
       <translation>TeknikÇizim</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="579"/>
+      <location filename="../../Command.cpp" line="568"/>
       <source>Insert Section View</source>
       <translation>Kesit Görünümü Ekle</translation>
     </message>
@@ -1753,17 +1753,17 @@
   <context>
     <name>CmdTechDrawSpreadsheetView</name>
     <message>
-      <location filename="../../Command.cpp" line="1488"/>
+      <location filename="../../Command.cpp" line="1469"/>
       <source>TechDraw</source>
       <translation>TeknikÇizim</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1489"/>
+      <location filename="../../Command.cpp" line="1470"/>
       <source>Insert Spreadsheet View</source>
       <translation>Hesap tablosu görünümü ekle</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1490"/>
+      <location filename="../../Command.cpp" line="1471"/>
       <source>Insert View to a spreadsheet</source>
       <translation>Hesap tablosuna görünüm ekle</translation>
     </message>
@@ -1874,17 +1874,17 @@
   <context>
     <name>CmdTechDrawSymbol</name>
     <message>
-      <location filename="../../Command.cpp" line="1310"/>
+      <location filename="../../Command.cpp" line="1298"/>
       <source>TechDraw</source>
       <translation>TeknikÇizim</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1311"/>
+      <location filename="../../Command.cpp" line="1299"/>
       <source>Insert SVG Symbol</source>
       <translation>SVG Simgesi ekle</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1312"/>
+      <location filename="../../Command.cpp" line="1300"/>
       <source>Insert symbol from an SVG file</source>
       <translation>Bir svg dosyasından simge ekle</translation>
     </message>
@@ -1906,12 +1906,12 @@
   <context>
     <name>CmdTechDrawVerticalDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="669"/>
+      <location filename="../../CommandCreateDims.cpp" line="760"/>
       <source>TechDraw</source>
       <translation>TeknikÇizim</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="670"/>
+      <location filename="../../CommandCreateDims.cpp" line="761"/>
       <source>Insert Vertical Dimension</source>
       <translation>Dikey ölçü ekle</translation>
     </message>
@@ -1919,12 +1919,12 @@
   <context>
     <name>CmdTechDrawVerticalExtentDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1206"/>
+      <location filename="../../CommandCreateDims.cpp" line="1417"/>
       <source>TechDraw</source>
       <translation>TeknikÇizim</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1207"/>
+      <location filename="../../CommandCreateDims.cpp" line="1418"/>
       <source>Insert Vertical Extent Dimension</source>
       <translation>Dikey kapsam Ölçüsü Ekle</translation>
     </message>
@@ -1932,17 +1932,17 @@
   <context>
     <name>CmdTechDrawView</name>
     <message>
-      <location filename="../../Command.cpp" line="308"/>
+      <location filename="../../Command.cpp" line="305"/>
       <source>TechDraw</source>
       <translation>TeknikÇizim</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="309"/>
+      <location filename="../../Command.cpp" line="306"/>
       <source>Insert View</source>
       <translation>Görünüm ekle</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="310"/>
+      <location filename="../../Command.cpp" line="307"/>
       <source>Insert a View</source>
       <translation>Bir görünüm ekle</translation>
     </message>
@@ -1963,59 +1963,59 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="118"/>
+      <location filename="../../Command.cpp" line="116"/>
       <location filename="../../Command.cpp" line="191"/>
       <source>Drawing create page</source>
       <translation>Çizim oluşturma sayfası</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="397"/>
+      <location filename="../../Command.cpp" line="391"/>
       <source>Create view</source>
       <translation>Görünüm oluştur</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="911"/>
+      <location filename="../../Command.cpp" line="889"/>
       <source>Create Projection Group</source>
       <translation>Projeksiyon Grubu Oluştur</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1130"/>
+      <location filename="../../Command.cpp" line="1122"/>
       <source>Create Clip</source>
       <translation>Pens oluştur</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1204"/>
+      <location filename="../../Command.cpp" line="1194"/>
       <source>ClipGroupAdd</source>
       <translation>PensGrubuEkle</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1277"/>
+      <location filename="../../Command.cpp" line="1265"/>
       <source>ClipGroupRemove</source>
       <translation>PensGrubuKaldır</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1338"/>
+      <location filename="../../Command.cpp" line="1324"/>
       <source>Create Symbol</source>
       <translation>Sembol Oluştur</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1395"/>
+      <location filename="../../Command.cpp" line="1380"/>
       <source>Create DraftView</source>
       <translation>TaslakGörünüm Oluştur</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1465"/>
+      <location filename="../../Command.cpp" line="1447"/>
       <source>Create ArchView</source>
       <translation>MimariGörünümü Oluştur</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1513"/>
+      <location filename="../../Command.cpp" line="1495"/>
       <source>Create spreadsheet view</source>
       <translation>Elektronik tablo görünümü oluştur</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1636"/>
-      <location filename="../../MDIViewPage.cpp" line="687"/>
+      <location filename="../../MDIViewPage.cpp" line="716"/>
+      <location filename="../../Command.cpp" line="1615"/>
       <source>Save page to dxf</source>
       <translation>Sayfayı dxf olarak kaydedin</translation>
     </message>
@@ -2035,14 +2035,8 @@
       <translation>Açıklama Oluşturun</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="310"/>
-      <location filename="../../CommandCreateDims.cpp" line="422"/>
-      <location filename="../../CommandCreateDims.cpp" line="521"/>
-      <location filename="../../CommandCreateDims.cpp" line="626"/>
-      <location filename="../../CommandCreateDims.cpp" line="731"/>
-      <location filename="../../CommandCreateDims.cpp" line="823"/>
-      <location filename="../../CommandCreateDims.cpp" line="912"/>
-      <location filename="../../CommandCreateDims.cpp" line="1335"/>
+      <location filename="../../CommandCreateDims.cpp" line="1553"/>
+      <location filename="../../CommandCreateDims.cpp" line="1633"/>
       <source>Create Dimension</source>
       <translation>Ölçü Oluştur</translation>
     </message>
@@ -2072,12 +2066,12 @@
       <translation>Resim oluştur</translation>
     </message>
     <message>
-      <location filename="../../QGIViewBalloon.cpp" line="497"/>
+      <location filename="../../QGIViewBalloon.cpp" line="498"/>
       <source>Drag Balloon</source>
       <translation>Balonu Sürükle</translation>
     </message>
     <message>
-      <location filename="../../QGIViewDimension.cpp" line="674"/>
+      <location filename="../../QGIViewDimension.cpp" line="693"/>
       <source>Drag Dimension</source>
       <translation>Ölçüyü Sürükle</translation>
     </message>
@@ -2604,23 +2598,6 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="389"/>
-      <location filename="../../Command.cpp" line="619"/>
-      <location filename="../../Command.cpp" line="741"/>
-      <location filename="../../Command.cpp" line="749"/>
-      <location filename="../../Command.cpp" line="754"/>
-      <location filename="../../Command.cpp" line="793"/>
-      <location filename="../../Command.cpp" line="903"/>
-      <location filename="../../Command.cpp" line="1164"/>
-      <location filename="../../Command.cpp" line="1181"/>
-      <location filename="../../Command.cpp" line="1186"/>
-      <location filename="../../Command.cpp" line="1195"/>
-      <location filename="../../Command.cpp" line="1249"/>
-      <location filename="../../Command.cpp" line="1269"/>
-      <location filename="../../Command.cpp" line="1386"/>
-      <location filename="../../Command.cpp" line="1452"/>
-      <location filename="../../Command.cpp" line="1458"/>
-      <location filename="../../Command.cpp" line="1501"/>
       <location filename="../../CommandAnnotate.cpp" line="316"/>
       <location filename="../../CommandAnnotate.cpp" line="415"/>
       <location filename="../../CommandAnnotate.cpp" line="1152"/>
@@ -2629,300 +2606,368 @@
       <location filename="../../CommandAnnotate.cpp" line="1349"/>
       <location filename="../../CommandAnnotate.cpp" line="1356"/>
       <location filename="../../CommandAnnotate.cpp" line="1420"/>
-      <location filename="../../CommandCreateDims.cpp" line="1308"/>
-      <location filename="../../CommandCreateDims.cpp" line="1316"/>
+      <location filename="../../CommandCreateDims.cpp" line="1526"/>
+      <location filename="../../CommandCreateDims.cpp" line="1534"/>
+      <location filename="../../Command.cpp" line="383"/>
+      <location filename="../../Command.cpp" line="609"/>
+      <location filename="../../Command.cpp" line="726"/>
+      <location filename="../../Command.cpp" line="733"/>
+      <location filename="../../Command.cpp" line="738"/>
+      <location filename="../../Command.cpp" line="775"/>
+      <location filename="../../Command.cpp" line="881"/>
+      <location filename="../../Command.cpp" line="1154"/>
+      <location filename="../../Command.cpp" line="1171"/>
+      <location filename="../../Command.cpp" line="1176"/>
+      <location filename="../../Command.cpp" line="1185"/>
+      <location filename="../../Command.cpp" line="1238"/>
+      <location filename="../../Command.cpp" line="1257"/>
+      <location filename="../../Command.cpp" line="1370"/>
+      <location filename="../../Command.cpp" line="1434"/>
+      <location filename="../../Command.cpp" line="1440"/>
+      <location filename="../../Command.cpp" line="1483"/>
       <source>Wrong selection</source>
       <translation>Yanlış seçim</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="390"/>
-      <location filename="../../Command.cpp" line="904"/>
+      <location filename="../../Command.cpp" line="384"/>
+      <location filename="../../Command.cpp" line="882"/>
       <source>No Shapes, Groups or Links in this selection</source>
       <translation>Bu seçimde Şekil, Grup veya Bağlantı Yok</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="620"/>
-      <location filename="../../Command.cpp" line="794"/>
+      <location filename="../../Command.cpp" line="610"/>
+      <location filename="../../Command.cpp" line="776"/>
       <source>Select at least 1 DrawViewPart object as Base.</source>
       <translation>En az 1 DrawViewPart nesnesini Temel olarak seçin.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="742"/>
+      <location filename="../../Command.cpp" line="727"/>
       <source>I do not know what base view to use.</source>
       <translation type="unfinished">I do not know what base view to use.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="750"/>
+      <location filename="../../Command.cpp" line="734"/>
       <source>No Base View, Shapes, Groups or Links in this selection</source>
       <translation type="unfinished">No Base View, Shapes, Groups or Links in this selection</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="755"/>
+      <location filename="../../Command.cpp" line="739"/>
       <source>No profile object found in selection</source>
       <translation type="unfinished">No profile object found in selection</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="971"/>
-      <location filename="../../Command.cpp" line="978"/>
-      <location filename="../../Command.cpp" line="985"/>
-      <location filename="../../Command.cpp" line="997"/>
-      <location filename="../../CommandCreateDims.cpp" line="1406"/>
-      <location filename="../../CommandCreateDims.cpp" line="1413"/>
-      <location filename="../../CommandCreateDims.cpp" line="1420"/>
-      <location filename="../../CommandCreateDims.cpp" line="1432"/>
-      <location filename="../../CommandCreateDims.cpp" line="1449"/>
       <location filename="../../CommandDecorate.cpp" line="346"/>
       <location filename="../../CommandDecorate.cpp" line="353"/>
       <location filename="../../CommandDecorate.cpp" line="360"/>
+      <location filename="../../CommandCreateDims.cpp" line="253"/>
+      <location filename="../../CommandCreateDims.cpp" line="374"/>
+      <location filename="../../CommandCreateDims.cpp" line="596"/>
+      <location filename="../../CommandCreateDims.cpp" line="692"/>
+      <location filename="../../CommandCreateDims.cpp" line="787"/>
+      <location filename="../../CommandCreateDims.cpp" line="970"/>
+      <location filename="../../CommandCreateDims.cpp" line="1063"/>
+      <location filename="../../CommandCreateDims.cpp" line="1336"/>
+      <location filename="../../CommandCreateDims.cpp" line="1675"/>
+      <location filename="../../CommandCreateDims.cpp" line="1682"/>
+      <location filename="../../CommandCreateDims.cpp" line="1689"/>
+      <location filename="../../Command.cpp" line="959"/>
+      <location filename="../../Command.cpp" line="966"/>
+      <location filename="../../Command.cpp" line="974"/>
+      <location filename="../../Command.cpp" line="986"/>
       <source>Incorrect selection</source>
       <translation>Yanlış seçim</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="972"/>
-      <location filename="../../CommandCreateDims.cpp" line="1407"/>
+      <location filename="../../CommandCreateDims.cpp" line="1676"/>
+      <location filename="../../Command.cpp" line="960"/>
       <source>Select an object first</source>
       <translation>Önce bir nesne seçin</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="979"/>
-      <location filename="../../CommandCreateDims.cpp" line="1414"/>
+      <location filename="../../CommandCreateDims.cpp" line="1683"/>
+      <location filename="../../Command.cpp" line="967"/>
       <source>Too many objects selected</source>
       <translation>Çok fazla nesne seçili</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="986"/>
-      <location filename="../../CommandCreateDims.cpp" line="1421"/>
+      <location filename="../../CommandCreateDims.cpp" line="1690"/>
+      <location filename="../../Command.cpp" line="975"/>
       <source>Create a page first.</source>
       <translation>Önce bir sayfa oluşturun.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="998"/>
-      <location filename="../../CommandCreateDims.cpp" line="1433"/>
+      <location filename="../../CommandCreateDims.cpp" line="254"/>
+      <location filename="../../CommandCreateDims.cpp" line="375"/>
+      <location filename="../../CommandCreateDims.cpp" line="597"/>
+      <location filename="../../CommandCreateDims.cpp" line="693"/>
+      <location filename="../../CommandCreateDims.cpp" line="788"/>
+      <location filename="../../CommandCreateDims.cpp" line="971"/>
+      <location filename="../../CommandCreateDims.cpp" line="1064"/>
+      <location filename="../../CommandCreateDims.cpp" line="1337"/>
+      <location filename="../../Command.cpp" line="987"/>
       <source>No View of a Part in selection.</source>
       <translation>Seçimde Parça Görünümü Yok.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1165"/>
+      <location filename="../../Command.cpp" line="1155"/>
       <source>Select one Clip group and one View.</source>
       <translation>Bir kesim Grubu ve bir görünüm seçin.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1182"/>
+      <location filename="../../Command.cpp" line="1172"/>
       <source>Select exactly one View to add to group.</source>
       <translation>Gruba eklemek için tam olarak bir Görünüm seçin.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1187"/>
+      <location filename="../../Command.cpp" line="1177"/>
       <source>Select exactly one Clip group.</source>
       <translation>Tam olarak bir Kesim grubu seçin.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1196"/>
+      <location filename="../../Command.cpp" line="1186"/>
       <source>Clip and View must be from same Page.</source>
       <translation>Klip ve görünümü bakarak aynı sayfada olması gerekir.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1250"/>
+      <location filename="../../Command.cpp" line="1239"/>
       <source>Select exactly one View to remove from Group.</source>
       <translation>Gruptan kaldırmak için tam olarak bir Görünüm seçin.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1270"/>
+      <location filename="../../Command.cpp" line="1258"/>
       <source>View does not belong to a Clip</source>
       <translation>Görünüm bir klibe ait değil</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1329"/>
+      <location filename="../../Command.cpp" line="1317"/>
       <source>Choose an SVG file to open</source>
       <translation>Açmak için bir SVG dosyası seçin</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1331"/>
+      <location filename="../../Command.cpp" line="1319"/>
       <source>Scalable Vector Graphic</source>
       <translation>Ölçeklenebilir Vektör Grafiği</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1332"/>
+      <location filename="../../Command.cpp" line="1319"/>
       <source>All Files</source>
       <translation>Tüm Dosyalar</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1387"/>
+      <location filename="../../Command.cpp" line="1371"/>
       <source>Select at least one object.</source>
       <translation>En az bir nesne seçin.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1453"/>
+      <location filename="../../Command.cpp" line="1435"/>
       <source>Please select only 1 Arch Section.</source>
       <translation>Lütfen sadece bir Mimari(Arch) bölümü seçin.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1459"/>
+      <location filename="../../Command.cpp" line="1441"/>
       <source>No Arch Sections in selection.</source>
       <translation>Seçimde Mimari(Arch) Bölümü yok.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1502"/>
+      <location filename="../../Command.cpp" line="1484"/>
       <source>Select exactly one Spreadsheet object.</source>
       <translation>Tam olarak bir Hesap Tablosu nesnesi seçin.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1572"/>
+      <location filename="../../Command.cpp" line="1556"/>
       <source>No Drawing View</source>
       <translation>Çizim görünümü yok</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1573"/>
+      <location filename="../../Command.cpp" line="1557"/>
       <source>Open Drawing View before attempting export to SVG.</source>
       <translation>Çizim Önizlemeyi açmadan SVG dosyasını dışarı aktarmayın.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1612"/>
+      <location filename="../../Command.cpp" line="1592"/>
       <source>Can not export selection</source>
       <translation>Seçim dışa aktarılamıyor</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1613"/>
+      <location filename="../../Command.cpp" line="1593"/>
       <source>Page contains DrawViewArch which will not be exported. Continue?</source>
       <translation>Sayfa dışa aktarılamayan DrawViewArch içeririyor. Devam edilsin mi?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="277"/>
-      <location filename="../../CommandCreateDims.cpp" line="392"/>
+      <location filename="../../CommandCreateDims.cpp" line="301"/>
+      <location filename="../../CommandCreateDims.cpp" line="422"/>
       <source>Ellipse Curve Warning</source>
       <translation>Elips Eğri Uyarısı</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="278"/>
+      <location filename="../../CommandCreateDims.cpp" line="302"/>
       <source>Selected edge is an Ellipse.  Radius will be approximate. Continue?</source>
       <translation>Seçili kenar bir elipstir. Yarıçap yaklaşık olacaktır. Devam?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="288"/>
-      <location filename="../../CommandCreateDims.cpp" line="400"/>
+      <location filename="../../CommandCreateDims.cpp" line="311"/>
+      <location filename="../../CommandCreateDims.cpp" line="432"/>
       <source>BSpline Curve Warning</source>
       <translation>Bspline Eğri Uyarısı</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="289"/>
+      <location filename="../../CommandCreateDims.cpp" line="312"/>
       <source>Selected edge is a BSpline.  Radius will be approximate. Continue?</source>
       <translation>Seçili kenar bir BSpline'dır. Yarıçap yaklaşık olacaktır. Devam?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="303"/>
-      <location filename="../../CommandCreateDims.cpp" line="412"/>
-      <location filename="../../CommandCreateDims.cpp" line="515"/>
-      <location filename="../../CommandCreateDims.cpp" line="620"/>
-      <location filename="../../CommandCreateDims.cpp" line="725"/>
-      <location filename="../../CommandCreateDims.cpp" line="813"/>
-      <location filename="../../CommandCreateDims.cpp" line="900"/>
-      <location filename="../../CommandCreateDims.cpp" line="991"/>
-      <location filename="../../CommandCreateDims.cpp" line="997"/>
       <location filename="../../CommandDecorate.cpp" line="367"/>
       <location filename="../../CommandDecorate.cpp" line="373"/>
+      <location filename="../../CommandCreateDims.cpp" line="274"/>
+      <location filename="../../CommandCreateDims.cpp" line="290"/>
+      <location filename="../../CommandCreateDims.cpp" line="395"/>
+      <location filename="../../CommandCreateDims.cpp" line="411"/>
+      <location filename="../../CommandCreateDims.cpp" line="618"/>
+      <location filename="../../CommandCreateDims.cpp" line="635"/>
+      <location filename="../../CommandCreateDims.cpp" line="713"/>
+      <location filename="../../CommandCreateDims.cpp" line="729"/>
+      <location filename="../../CommandCreateDims.cpp" line="808"/>
+      <location filename="../../CommandCreateDims.cpp" line="824"/>
+      <location filename="../../CommandCreateDims.cpp" line="991"/>
+      <location filename="../../CommandCreateDims.cpp" line="1007"/>
+      <location filename="../../CommandCreateDims.cpp" line="1084"/>
+      <location filename="../../CommandCreateDims.cpp" line="1100"/>
+      <location filename="../../CommandCreateDims.cpp" line="1170"/>
+      <location filename="../../CommandCreateDims.cpp" line="1176"/>
+      <location filename="../../CommandCreateDims.cpp" line="1365"/>
+      <location filename="../../CommandCreateDims.cpp" line="1380"/>
+      <location filename="../../CommandCreateDims.cpp" line="1470"/>
+      <location filename="../../TaskDimRepair.cpp" line="154"/>
+      <location filename="../../TaskDimRepair.cpp" line="168"/>
+      <location filename="../../TaskDimRepair.cpp" line="183"/>
       <location filename="../../TaskDimension.cpp" line="400"/>
       <source>Incorrect Selection</source>
       <translation>Hatalı seçim</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="298"/>
-      <location filename="../../CommandCreateDims.cpp" line="407"/>
+      <location filename="../../CommandCreateDims.cpp" line="275"/>
+      <source>Can not make 2d radius dimension from selection</source>
+      <translation type="unfinished">Can not make 2d radius dimension from selection</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="291"/>
+      <source>Can not make 3d radius dimension from selection</source>
+      <translation type="unfinished">Can not make 3d radius dimension from selection</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="320"/>
+      <location filename="../../CommandCreateDims.cpp" line="441"/>
       <source>BSpline Curve Error</source>
       <translation>BSpline Eğrisi Hatası</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="299"/>
+      <location filename="../../CommandCreateDims.cpp" line="321"/>
       <source>Selected edge is a BSpline and a radius can not be calculated.</source>
       <translation>Seçilen kenar bir BSpline'dır ve yarıçap hesaplanamaz.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="393"/>
+      <location filename="../../CommandCreateDims.cpp" line="396"/>
+      <source>Can not make 2d diameter dimension from selection</source>
+      <translation type="unfinished">Can not make 2d diameter dimension from selection</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="412"/>
+      <source>Can not make 3d diameter dimension from selection</source>
+      <translation type="unfinished">Can not make 3d diameter dimension from selection</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="423"/>
       <source>Selected edge is an Ellipse.  Diameter will be approximate. Continue?</source>
       <translation>Seçili kenar bir elipstir. Çap yaklaşık olacaktır. Devam?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="401"/>
+      <location filename="../../CommandCreateDims.cpp" line="433"/>
       <source>Selected edge is a BSpline.  Diameter will be approximate. Continue?</source>
       <translation>Seçili kenar bir BSpline'dır. Çap yaklaşık olacaktır. Devam?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="408"/>
+      <location filename="../../CommandCreateDims.cpp" line="442"/>
       <source>Selected edge is a BSpline and a diameter can not be calculated.</source>
       <translation>Seçilen kenar bir BSpline'dır ve çap hesaplanamaz.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="413"/>
-      <source>Selection for Diameter does not contain a circular edge (edge type: %1)</source>
-      <translation>Çap seçimi dairesel bir kenar içermiyor (kenar tipi: %1)</translation>
+      <location filename="../../CommandCreateDims.cpp" line="619"/>
+      <source>Can not make 2d linear dimension from selection</source>
+      <translation type="unfinished">Can not make 2d linear dimension from selection</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="516"/>
-      <source>Need 1 straight Edge, 2 Vertexes, 2 Edges or 1 Vertex and 1 Edge for Distance Dimension</source>
-      <translation type="unfinished">Need 1 straight Edge, 2 Vertexes, 2 Edges or 1 Vertex and 1 Edge for Distance Dimension</translation>
+      <location filename="../../CommandCreateDims.cpp" line="636"/>
+      <source>Can not make 3d linear dimension from selection</source>
+      <translation type="unfinished">Can not make 3d linear dimension from selection</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="621"/>
-      <source>Need 1 straight Edge, 2 Vertexes, 2 Edges or 1 Vertex and 1 Edge for Horizontal Dimension</source>
-      <translation type="unfinished">Need 1 straight Edge, 2 Vertexes, 2 Edges or 1 Vertex and 1 Edge for Horizontal Dimension</translation>
+      <location filename="../../CommandCreateDims.cpp" line="714"/>
+      <source>Can not make 2d horizontal dimension from selection</source>
+      <translation type="unfinished">Can not make 2d horizontal dimension from selection</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="726"/>
-      <source>Need 1 straight Edge, 2 Vertexes, 2 Edges or 1 Vertex and 1 Edge for Vertical Dimension</source>
-      <translation type="unfinished">Need 1 straight Edge, 2 Vertexes, 2 Edges or 1 Vertex and 1 Edge for Vertical Dimension</translation>
+      <location filename="../../CommandCreateDims.cpp" line="730"/>
+      <source>Can not make 3d horizontal dimension from selection</source>
+      <translation type="unfinished">Can not make 3d horizontal dimension from selection</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="814"/>
-      <source>Need two straight edges to make an Angle Dimension</source>
-      <translation>Açı Ölçümü yapmak için iki düz kenar gerekir</translation>
+      <location filename="../../CommandCreateDims.cpp" line="809"/>
+      <source>Can not make 2d vertical dimension from selection</source>
+      <translation type="unfinished">Can not make 2d vertical dimension from selection</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="901"/>
-      <source>Need three points to make a 3 point Angle Dimension</source>
-      <translation>3 noktalı bir Açı Ölçüsü oluşturmak için üç noktaya ihtiyacınız var</translation>
+      <location filename="../../CommandCreateDims.cpp" line="825"/>
+      <source>Can not make 3d vertical dimension from selection</source>
+      <translation type="unfinished">Can not make 3d vertical dimension from selection</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="992"/>
+      <location filename="../../CommandCreateDims.cpp" line="1085"/>
+      <source>Can not make 2d angle dimension from selection</source>
+      <translation type="unfinished">Can not make 2d angle dimension from selection</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="1008"/>
+      <location filename="../../CommandCreateDims.cpp" line="1101"/>
+      <source>Can not make 3d angle dimension from selection</source>
+      <translation type="unfinished">Can not make 3d angle dimension from selection</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="1366"/>
+      <source>Can not make 2d extent dimension from selection</source>
+      <translation type="unfinished">Can not make 2d extent dimension from selection</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="1381"/>
+      <source>Can not make 3d extent dimension from selection</source>
+      <translation type="unfinished">Can not make 3d extent dimension from selection</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="1471"/>
+      <source>There is no Dimension in your selection</source>
+      <translation type="unfinished">There is no Dimension in your selection</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="1171"/>
       <source>There is no 3D object in your selection</source>
       <translation>Seçiminizde 3D nesne yok</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="998"/>
+      <location filename="../../CommandCreateDims.cpp" line="1177"/>
       <source>There are no 3D Edges or Vertices in your selection</source>
       <translation>Seçiminizde hiçbir 3D Kenarlar veya köşe noktası yoktur</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1162"/>
-      <location filename="../../CommandCreateDims.cpp" line="1169"/>
-      <location filename="../../CommandCreateDims.cpp" line="1245"/>
-      <location filename="../../CommandCreateDims.cpp" line="1253"/>
-      <source>Selection Error</source>
-      <translation>Seçim hatası</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="1163"/>
-      <location filename="../../CommandCreateDims.cpp" line="1246"/>
-      <source>Please select a View [and Edges].</source>
-      <translation>Lütfen bir görünüm[ve kenar] seçin.</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="1309"/>
+      <location filename="../../CommandCreateDims.cpp" line="1527"/>
       <source>Select 2 point objects and 1 View. (1)</source>
       <translation>2 nokta nesnesi ve 1 görünüm seçin(1)</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1317"/>
+      <location filename="../../CommandCreateDims.cpp" line="1535"/>
       <source>Select 2 point objects and 1 View. (2)</source>
       <translation>2 nokta nesnesi ve 1 görünüm seçin(2)</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1450"/>
-      <source>No Feature with Shape in selection.</source>
-      <translation>Seçimdeki şeklin özelliği yok.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="498"/>
-      <location filename="../../Command.cpp" line="591"/>
-      <location filename="../../Command.cpp" line="653"/>
       <location filename="../../CommandAnnotate.cpp" line="104"/>
       <location filename="../../CommandAnnotate.cpp" line="165"/>
       <location filename="../../CommandAnnotate.cpp" line="217"/>
@@ -2938,9 +2983,17 @@
       <location filename="../../CommandAnnotate.cpp" line="1258"/>
       <location filename="../../CommandAnnotate.cpp" line="1336"/>
       <location filename="../../CommandAnnotate.cpp" line="1402"/>
-      <location filename="../../CommandCreateDims.cpp" line="1043"/>
-      <location filename="../../CommandCreateDims.cpp" line="1137"/>
-      <location filename="../../CommandCreateDims.cpp" line="1220"/>
+      <location filename="../../CommandCreateDims.cpp" line="147"/>
+      <location filename="../../CommandCreateDims.cpp" line="480"/>
+      <location filename="../../CommandCreateDims.cpp" line="866"/>
+      <location filename="../../CommandCreateDims.cpp" line="1222"/>
+      <location filename="../../CommandCreateDims.cpp" line="1316"/>
+      <location filename="../../CommandCreateDims.cpp" line="1431"/>
+      <location filename="../../CommandStack.cpp" line="75"/>
+      <location filename="../../CommandStack.cpp" line="191"/>
+      <location filename="../../CommandStack.cpp" line="251"/>
+      <location filename="../../CommandStack.cpp" line="311"/>
+      <location filename="../../CommandStack.cpp" line="371"/>
       <location filename="../../CommandExtensionDims.cpp" line="263"/>
       <location filename="../../CommandExtensionDims.cpp" line="472"/>
       <location filename="../../CommandExtensionDims.cpp" line="764"/>
@@ -2948,28 +3001,18 @@
       <location filename="../../CommandExtensionDims.cpp" line="1431"/>
       <location filename="../../CommandExtensionDims.cpp" line="1789"/>
       <location filename="../../CommandExtensionDims.cpp" line="2044"/>
+      <location filename="../../Command.cpp" line="487"/>
+      <location filename="../../Command.cpp" line="580"/>
+      <location filename="../../Command.cpp" line="642"/>
       <location filename="../../CommandExtensionPack.cpp" line="272"/>
       <location filename="../../CommandExtensionPack.cpp" line="579"/>
       <location filename="../../CommandExtensionPack.cpp" line="1057"/>
       <location filename="../../CommandExtensionPack.cpp" line="1288"/>
       <location filename="../../CommandExtensionPack.cpp" line="1642"/>
-      <location filename="../../CommandStack.cpp" line="75"/>
-      <location filename="../../CommandStack.cpp" line="191"/>
-      <location filename="../../CommandStack.cpp" line="251"/>
-      <location filename="../../CommandStack.cpp" line="311"/>
-      <location filename="../../CommandStack.cpp" line="371"/>
       <source>Task In Progress</source>
       <translation>Devam eden görevler</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="304"/>
-      <source>Selection for Radius does not contain a circular edge (edge type: %1)</source>
-      <translation>Yarıçap için seçim dairesel bir kenar içermiyor (kenar tipi: %1)</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="499"/>
-      <location filename="../../Command.cpp" line="592"/>
-      <location filename="../../Command.cpp" line="654"/>
       <location filename="../../CommandAnnotate.cpp" line="105"/>
       <location filename="../../CommandAnnotate.cpp" line="166"/>
       <location filename="../../CommandAnnotate.cpp" line="218"/>
@@ -2985,9 +3028,17 @@
       <location filename="../../CommandAnnotate.cpp" line="1259"/>
       <location filename="../../CommandAnnotate.cpp" line="1337"/>
       <location filename="../../CommandAnnotate.cpp" line="1403"/>
-      <location filename="../../CommandCreateDims.cpp" line="1044"/>
-      <location filename="../../CommandCreateDims.cpp" line="1138"/>
-      <location filename="../../CommandCreateDims.cpp" line="1221"/>
+      <location filename="../../CommandCreateDims.cpp" line="148"/>
+      <location filename="../../CommandCreateDims.cpp" line="481"/>
+      <location filename="../../CommandCreateDims.cpp" line="867"/>
+      <location filename="../../CommandCreateDims.cpp" line="1223"/>
+      <location filename="../../CommandCreateDims.cpp" line="1317"/>
+      <location filename="../../CommandCreateDims.cpp" line="1432"/>
+      <location filename="../../CommandStack.cpp" line="76"/>
+      <location filename="../../CommandStack.cpp" line="192"/>
+      <location filename="../../CommandStack.cpp" line="252"/>
+      <location filename="../../CommandStack.cpp" line="312"/>
+      <location filename="../../CommandStack.cpp" line="372"/>
       <location filename="../../CommandExtensionDims.cpp" line="264"/>
       <location filename="../../CommandExtensionDims.cpp" line="473"/>
       <location filename="../../CommandExtensionDims.cpp" line="765"/>
@@ -2995,16 +3046,14 @@
       <location filename="../../CommandExtensionDims.cpp" line="1432"/>
       <location filename="../../CommandExtensionDims.cpp" line="1790"/>
       <location filename="../../CommandExtensionDims.cpp" line="2045"/>
+      <location filename="../../Command.cpp" line="488"/>
+      <location filename="../../Command.cpp" line="581"/>
+      <location filename="../../Command.cpp" line="643"/>
       <location filename="../../CommandExtensionPack.cpp" line="273"/>
       <location filename="../../CommandExtensionPack.cpp" line="580"/>
       <location filename="../../CommandExtensionPack.cpp" line="1058"/>
       <location filename="../../CommandExtensionPack.cpp" line="1289"/>
       <location filename="../../CommandExtensionPack.cpp" line="1643"/>
-      <location filename="../../CommandStack.cpp" line="76"/>
-      <location filename="../../CommandStack.cpp" line="192"/>
-      <location filename="../../CommandStack.cpp" line="252"/>
-      <location filename="../../CommandStack.cpp" line="312"/>
-      <location filename="../../CommandStack.cpp" line="372"/>
       <source>Close active task dialog and try again.</source>
       <translation>Etkin görev iletişim kutusunu kapatın ve yeniden deneyin.</translation>
     </message>
@@ -3057,8 +3106,6 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="713"/>
       <location filename="../../CommandAnnotate.cpp" line="906"/>
-      <location filename="../../CommandCreateDims.cpp" line="1170"/>
-      <location filename="../../CommandCreateDims.cpp" line="1254"/>
       <source>No base View in Selection.</source>
       <translation>Seçimde temel görünüm yok.</translation>
     </message>
@@ -3208,66 +3255,66 @@
       <translation>Seçim içinde taranacak yüzey bulunmuyor</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="110"/>
-      <location filename="../../DrawGuiUtil.cpp" line="141"/>
+      <location filename="../../DrawGuiUtil.cpp" line="109"/>
+      <location filename="../../DrawGuiUtil.cpp" line="142"/>
       <source>No page found</source>
       <translation>Sayfa bulunamadı</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="111"/>
+      <location filename="../../DrawGuiUtil.cpp" line="110"/>
       <source>No Drawing Pages available.</source>
       <translation type="unfinished">No Drawing Pages available.</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="142"/>
+      <location filename="../../DrawGuiUtil.cpp" line="143"/>
       <source>No Drawing Pages in document.</source>
       <translation>Dökümanda Teknik Resim Sayfası Yok.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="265"/>
+      <location filename="../../MDIViewPage.cpp" line="272"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="266"/>
-      <location filename="../../MDIViewPage.cpp" line="646"/>
+      <location filename="../../MDIViewPage.cpp" line="273"/>
+      <location filename="../../MDIViewPage.cpp" line="675"/>
       <source>All Files (*.*)</source>
       <translation>Tüm dosyalar (*. *)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="267"/>
+      <location filename="../../MDIViewPage.cpp" line="275"/>
       <source>Export Page As PDF</source>
       <translation>Sayfayı PDF olarak dışa aktar</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="542"/>
+      <location filename="../../MDIViewPage.cpp" line="566"/>
       <source>Document Name: </source>
       <translation>Belge Adı: </translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="645"/>
+      <location filename="../../MDIViewPage.cpp" line="674"/>
       <source>SVG (*.svg)</source>
       <translation>SVG (*.svg)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="647"/>
+      <location filename="../../MDIViewPage.cpp" line="677"/>
       <source>Export page as SVG</source>
       <translation>Sayfayı SVG olarak dışa aktar</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="213"/>
+      <location filename="../../ViewProviderPage.cpp" line="221"/>
+      <location filename="../../ViewProviderTemplate.cpp" line="197"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="169"/>
-      <location filename="../../ViewProviderTemplate.cpp" line="187"/>
       <source>Are you sure you want to continue?</source>
       <translation>Devam etmek istediğinizden emin misiniz?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="233"/>
+      <location filename="../../ViewProviderPage.cpp" line="242"/>
       <source>Show drawing</source>
       <translation>Çizimi göster</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="235"/>
+      <location filename="../../ViewProviderPage.cpp" line="244"/>
       <source>Toggle KeepUpdated</source>
       <translation>GüncelTutma Ayarı</translation>
     </message>
@@ -3292,9 +3339,9 @@
       <translation>Zengin metin oluşturucusu</translation>
     </message>
     <message>
-      <location filename="../../QGIRichAnno.cpp" line="312"/>
       <location filename="../../TaskRichAnno.cpp" line="102"/>
       <location filename="../../TaskRichAnno.cpp" line="240"/>
+      <location filename="../../QGIRichAnno.cpp" line="312"/>
       <source>Rich text editor</source>
       <translation>Zengin metin düzenleyicisi</translation>
     </message>
@@ -3412,8 +3459,8 @@
       <translation>Detaylı Görünümü düzenle</translation>
     </message>
     <message>
+      <location filename="../../ViewProviderDimension.cpp" line="118"/>
       <location filename="../../ViewProviderBalloon.cpp" line="85"/>
-      <location filename="../../ViewProviderDimension.cpp" line="117"/>
       <source>Edit %1</source>
       <translation>%1'i düzenle</translation>
     </message>
@@ -3571,6 +3618,26 @@ kalın: %4</translation>
       <source>Maximum roughness grade number</source>
       <translation type="unfinished">Maximum roughness grade number</translation>
     </message>
+    <message>
+      <location filename="../../TaskDimRepair.cpp" line="86"/>
+      <source>Dimension Repair</source>
+      <translation type="unfinished">Dimension Repair</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimRepair.cpp" line="155"/>
+      <source>Can not use references from a different View</source>
+      <translation type="unfinished">Can not use references from a different View</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimRepair.cpp" line="169"/>
+      <source>Can not make a dimension from selection</source>
+      <translation type="unfinished">Can not make a dimension from selection</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimRepair.cpp" line="184"/>
+      <source>Can not make dimension from selection</source>
+      <translation type="unfinished">Can not make dimension from selection</translation>
+    </message>
   </context>
   <context>
     <name>Std_Delete</name>
@@ -3581,19 +3648,19 @@ it has a weld symbol that would become broken.</source>
       <translation>Bu ölçü çizgisini silemezsiniz çünkü bozulabilecek bir kaynak sembolü içeriyor.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderLeader.cpp" line="227"/>
-      <location filename="../../ViewProviderPage.cpp" line="216"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="156"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="172"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="320"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="328"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="336"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="156"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="165"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="173"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="181"/>
-      <location filename="../../ViewProviderTemplate.cpp" line="191"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="310"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="318"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="326"/>
+      <location filename="../../ViewProviderLeader.cpp" line="227"/>
       <location filename="../../ViewProviderWeld.cpp" line="149"/>
+      <location filename="../../ViewProviderPage.cpp" line="224"/>
+      <location filename="../../ViewProviderTemplate.cpp" line="201"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="156"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="172"/>
       <source>Object dependencies</source>
       <translation>Nesne bağımlılıkları</translation>
     </message>
@@ -3603,25 +3670,25 @@ it has a weld symbol that would become broken.</source>
       <translation>Yansıtma grubunun bağlı görünüşünü silemezsiniz.</translation>
     </message>
     <message>
+      <location filename="../../ViewProviderViewPart.cpp" line="317"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="162"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="307"/>
       <source>You cannot delete this view because it has a section view that would become broken.</source>
       <translation>Bu görünüşü silemezsiniz çünkü bozulabilecek bir kesit görünümü içeriyor.</translation>
     </message>
     <message>
+      <location filename="../../ViewProviderViewPart.cpp" line="325"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="170"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="315"/>
       <source>You cannot delete this view because it has a detail view that would become broken.</source>
       <translation>Bu görünüşü silemezsiniz çünkü bozulabilecek bir ayrıntı görünümü içeriyor.</translation>
     </message>
     <message>
+      <location filename="../../ViewProviderViewPart.cpp" line="333"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="178"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="323"/>
       <source>You cannot delete this view because it has a leader line that would become broken.</source>
       <translation>Bu görünüşü silemezsiniz çünkü bozulabilecek bir ölçü çizgisi içeriyor.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="208"/>
+      <location filename="../../ViewProviderPage.cpp" line="215"/>
       <source>The page is not empty, therefore the
 following referencing objects might be lost:</source>
       <translation>Sayfa boş değil, bu yüzden aşağıdaki referans nesneleri kaybolabilecek:</translation>
@@ -3640,7 +3707,7 @@ the following referencing objects might be lost:</source>
 aşağıdaki kaynak nesneleri kaybolabilecek:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderTemplate.cpp" line="184"/>
+      <location filename="../../ViewProviderTemplate.cpp" line="194"/>
       <source>The following referencing object might break:</source>
       <translation>Aşağıdaki referans nesnesi bozulabilecek:</translation>
     </message>
@@ -4395,162 +4462,197 @@ when hatching a face with a PAT pattern</source>
       <translation>Renkler</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="60"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="606"/>
       <source>Normal</source>
       <translation>Olağan</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="67"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="494"/>
       <source>Normal line color</source>
       <translation>Normal çizgi rengi</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="105"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="420"/>
       <source>Hidden Line</source>
       <translation>Gizli Çizgi</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="112"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="68"/>
       <source>Hidden line color</source>
       <translation>Gizli çizgi rengi</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="137"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="142"/>
       <source>Preselected</source>
       <translation>Ön Seçilmiş</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="144"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="395"/>
       <source>Preselection color</source>
       <translation>Ön Seçim rengi</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="169"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="268"/>
       <source>Section Face</source>
       <translation>Kesit Yüzeyi</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="176"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="514"/>
       <source>Section face color</source>
       <translation>Kesit düzlemi rengi</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="201"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="173"/>
       <source>Selected</source>
       <translation>Seçili</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="208"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="447"/>
       <source>Selected item color</source>
       <translation>Seçilen öge rengi</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="228"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="275"/>
       <source>Section Line</source>
       <translation>Kesit Çizgisi</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="235"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="355"/>
       <source>Section line color</source>
       <translation>Kesit çizgisi rengi</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="260"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="130"/>
       <source>Background</source>
       <translation>Arkaplan</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="267"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="243"/>
       <source>Background color around pages</source>
       <translation>Sayfaların etrafındaki arkaplan rengi</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="292"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="348"/>
       <source>Hatch</source>
       <translation>Tarama</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="299"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="196"/>
       <source>Hatch image color</source>
       <translation>Tarama görüntüsü rengi</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="319"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="613"/>
       <source>Dimension</source>
       <translation>Boyut</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="326"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="105"/>
       <source>Color of dimension lines and text.</source>
       <translation>Ölçü çizgileri ve metninin rengi.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="351"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="324"/>
       <source>Geometric Hatch</source>
       <translation>Geometrik Tarama</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="358"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="581"/>
       <source>Geometric hatch pattern color</source>
       <translation>Geometrik tarama desen rengi</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="378"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="282"/>
       <source>Centerline</source>
       <translation>Eksen Çizgisi</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="385"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="55"/>
+      <source>Monochrome text color</source>
+      <translation type="unfinished">Monochrome text color</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="180"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check this to use light text and lines on dark backgrounds.  Set Page Color to a dark color. Transparent or light color faces are recommended with this option.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check this to use light text and lines on dark backgrounds.  Set Page Color to a dark color. Transparent or light color faces are recommended with this option.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="183"/>
+      <source>Light on dark</source>
+      <translation type="unfinished">Light on dark</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="236"/>
+      <source>Page Color</source>
+      <translation type="unfinished">Page Color</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="427"/>
+      <source>Use a light color for dark text and dark color for light text.</source>
+      <translation type="unfinished">Use a light color for dark text and dark color for light text.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="467"/>
       <source>Centerline color</source>
       <translation>Eksen Çizgi Rengi</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="405"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="487"/>
       <source>Vertex</source>
       <translation type="unfinished">Vertex</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="412"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="534"/>
       <source>Color of vertices in views</source>
       <translation>Görünümlerdeki köşe rengi</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="437"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="161"/>
       <source>Detail Highlight</source>
       <translation>Ayrıntı Vurgusu</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="466"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="336"/>
       <source>Leaderline</source>
       <translation>Başlık Çizgisi</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="473"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="216"/>
       <source>Default color for leader lines</source>
       <translation>Başlık çizgilerinin varsayılan rengi</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="493"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="149"/>
       <source>Grid Color</source>
       <translation>Izgara rengi</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="528"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="565"/>
       <source>Object faces will be transparent</source>
       <translation>Nesne yüzleri şeffaf olacak</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="531"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="568"/>
       <source>Transparent Faces</source>
       <translation>Saydam Yüzeyler</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="544"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="375"/>
       <source>Face color (if not transparent)</source>
       <translation>Yüzey rengi (saydam değil ise)</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="575"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="620"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked FreeCAD will use a single colour for all text and lines.  If unchecked FreeCAD will attempt to use lighter versions of preferred colours.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked FreeCAD will use a single colour for all text and lines.  If unchecked FreeCAD will attempt to use lighter versions of preferred colours.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="623"/>
+      <source>Monochrome</source>
+      <translation type="unfinished">Monochrome</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="654"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Not:&lt;/span&gt; İtalik &lt;span style=&quot; font-style:italic;&quot;&gt;olan öğeler&lt;/span&gt; yeni nesneler için varsayılan değerlerdir.Mevcut nesneler üzerinde hiçbir etkisi yoktur.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -5193,90 +5295,82 @@ Hızlıdır ama sonucu, kısa düz çizgilerin derlemesidir.</translation>
   <context>
     <name>TechDrawGui::MDIViewPage</name>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="97"/>
+      <location filename="../../MDIViewPage.cpp" line="94"/>
       <source>Toggle &amp;Keep Updated</source>
       <translation>Ayarla &amp; Güncel Tut</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="100"/>
+      <location filename="../../MDIViewPage.cpp" line="97"/>
       <source>Toggle &amp;Frames</source>
       <translation>Ayarla &amp; Çerçeveler</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="103"/>
+      <location filename="../../MDIViewPage.cpp" line="100"/>
       <source>&amp;Export SVG</source>
       <translation>&amp;SVG olarak dışarıya aktar</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="106"/>
+      <location filename="../../MDIViewPage.cpp" line="103"/>
       <source>Export DXF</source>
       <translation>DXF olarak dışa aktar</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="109"/>
+      <location filename="../../MDIViewPage.cpp" line="106"/>
       <source>Export PDF</source>
       <translation>PDF olarak dışa aktar</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="112"/>
+      <location filename="../../MDIViewPage.cpp" line="109"/>
       <source>Print All Pages</source>
       <translation>Tüm Sayfaları Yazdır</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="369"/>
+      <location filename="../../MDIViewPage.cpp" line="381"/>
       <source>Different orientation</source>
       <translation>Ekran yönü</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="370"/>
+      <location filename="../../MDIViewPage.cpp" line="382"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>Yazıcı çizim daha farklı bir yönelim kullanır. Devam etmek istiyor musunuz?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="377"/>
+      <location filename="../../MDIViewPage.cpp" line="391"/>
       <source>Different paper size</source>
       <translation>Farklı kağıt boyutu</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="378"/>
+      <location filename="../../MDIViewPage.cpp" line="392"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>Yazıcı, çizimden farklı bir kağıt boyutu kullanıyor.
 Devam etmek istiyor musun?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="389"/>
+      <location filename="../../MDIViewPage.cpp" line="405"/>
       <source>Opening file failed</source>
       <translation>Dosya açılamadı</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="390"/>
+      <location filename="../../MDIViewPage.cpp" line="406"/>
       <source>Can not open file %1 for writing.</source>
       <translation>%1 dosyasını yazmak için açamazsın.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="671"/>
+      <location filename="../../MDIViewPage.cpp" line="701"/>
       <source>Save DXF file</source>
       <translation>DXF dosyası olarak kaydet</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="673"/>
+      <location filename="../../MDIViewPage.cpp" line="702"/>
       <source>DXF (*.dxf)</source>
       <translation>DXF (*.dxf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1183"/>
+      <location filename="../../MDIViewPage.cpp" line="1213"/>
       <source>Selected:</source>
       <translation>Seçili:</translation>
-    </message>
-  </context>
-  <context>
-    <name>TechDrawGui::QGIViewAnnotation</name>
-    <message>
-      <location filename="../../QGIViewAnnotation.cpp" line="187"/>
-      <source>Text</source>
-      <translation>Metin</translation>
     </message>
   </context>
   <context>
@@ -7776,7 +7870,7 @@ gösterimleri otomatik dağıtır</translation>
   <context>
     <name>TechDraw_ComplexSection</name>
     <message>
-      <location filename="../../Command.cpp" line="557"/>
+      <location filename="../../Command.cpp" line="547"/>
       <source>Insert complex Section View</source>
       <translation type="unfinished">Insert complex Section View</translation>
     </message>
@@ -7813,7 +7907,7 @@ gösterimleri otomatik dağıtır</translation>
   <context>
     <name>TechDraw_HorizontalExtent</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1098"/>
+      <location filename="../../CommandCreateDims.cpp" line="1277"/>
       <source>Insert Horizontal Extent Dimension</source>
       <translation>Yatay kapsam ölçüsü Ekle</translation>
     </message>
@@ -7837,7 +7931,7 @@ gösterimleri otomatik dağıtır</translation>
   <context>
     <name>TechDraw_SectionView</name>
     <message>
-      <location filename="../../Command.cpp" line="553"/>
+      <location filename="../../Command.cpp" line="542"/>
       <source>Insert simple Section View</source>
       <translation type="unfinished">Insert simple Section View</translation>
     </message>
@@ -7877,7 +7971,7 @@ gösterimleri otomatik dağıtır</translation>
   <context>
     <name>TechDraw_VerticalExtentDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1102"/>
+      <location filename="../../CommandCreateDims.cpp" line="1281"/>
       <source>Insert Vertical Extent Dimension</source>
       <translation>Dikey kapsam Ölçüsü Ekle</translation>
     </message>
@@ -7969,6 +8063,331 @@ gösterimleri otomatik dağıtır</translation>
       <location filename="../../Workbench.cpp" line="55"/>
       <source>Views</source>
       <translation>Görünümler</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDraw_MoveView</name>
+    <message>
+      <location filename="../../../TechDrawTools/CommandMoveView.py" line="47"/>
+      <source>Move View</source>
+      <translation>Görünümü Taşı</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandMoveView.py" line="50"/>
+      <source>Move a View to a new Page</source>
+      <translation type="unfinished">Move a View to a new Page</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/TaskMoveView.py" line="47"/>
+      <source>Move View to a different Page</source>
+      <translation type="unfinished">Move View to a different Page</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/TaskMoveView.py" line="79"/>
+      <source>Select View to move from list.</source>
+      <translation type="unfinished">Select View to move from list.</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/TaskMoveView.py" line="80"/>
+      <source>Select View</source>
+      <translation type="unfinished">Select View</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/TaskMoveView.py" line="102"/>
+      <source>Select From Page.</source>
+      <translation type="unfinished">Select From Page.</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/TaskMoveView.py" line="103"/>
+      <location filename="../../../TechDrawTools/TaskMoveView.py" line="126"/>
+      <source>Select Page</source>
+      <translation type="unfinished">Select Page</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/TaskMoveView.py" line="125"/>
+      <source>Select To Page.</source>
+      <translation type="unfinished">Select To Page.</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDraw_ShareView</name>
+    <message>
+      <location filename="../../../TechDrawTools/CommandShareView.py" line="47"/>
+      <source>Share View</source>
+      <translation type="unfinished">Share View</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandShareView.py" line="50"/>
+      <source>Share a View on a second Page</source>
+      <translation type="unfinished">Share a View on a second Page</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/TaskShareView.py" line="46"/>
+      <source>Share View with another Page</source>
+      <translation type="unfinished">Share View with another Page</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/TaskShareView.py" line="47"/>
+      <source>View to share</source>
+      <translation type="unfinished">View to share</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/TaskShareView.py" line="79"/>
+      <source>Select View to share from list.</source>
+      <translation type="unfinished">Select View to share from list.</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/TaskShareView.py" line="80"/>
+      <source>Select View</source>
+      <translation type="unfinished">Select View</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/TaskShareView.py" line="102"/>
+      <source>Select From Page.</source>
+      <translation type="unfinished">Select From Page.</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/TaskShareView.py" line="103"/>
+      <location filename="../../../TechDrawTools/TaskShareView.py" line="127"/>
+      <source>Select Page</source>
+      <translation type="unfinished">Select Page</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/TaskShareView.py" line="126"/>
+      <source>Select To Page.</source>
+      <translation type="unfinished">Select To Page.</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskDimRepair</name>
+    <message>
+      <location filename="../../TaskDimRepair.ui" line="14"/>
+      <source>Dimension Repair</source>
+      <translation type="unfinished">Dimension Repair</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimRepair.ui" line="20"/>
+      <source>Dimension</source>
+      <translation>Boyut</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimRepair.ui" line="28"/>
+      <source>Name</source>
+      <translation>Isim</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimRepair.ui" line="35"/>
+      <source>Label</source>
+      <translation>Etiket</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimRepair.ui" line="68"/>
+      <source>Replace References with Current Selection</source>
+      <translation type="unfinished">Replace References with Current Selection</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimRepair.ui" line="80"/>
+      <source>References 2D</source>
+      <translation type="unfinished">References 2D</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimRepair.ui" line="88"/>
+      <source>Object</source>
+      <translation>Nesne</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimRepair.ui" line="95"/>
+      <source>The View that owns this Dimension</source>
+      <translation type="unfinished">The View that owns this Dimension</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimRepair.ui" line="114"/>
+      <source>Geometry</source>
+      <translation>Geometri</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimRepair.ui" line="139"/>
+      <source>The subelements of the View that define the geometry for this Dimension</source>
+      <translation type="unfinished">The subelements of the View that define the geometry for this Dimension</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimRepair.ui" line="163"/>
+      <source>References 3D</source>
+      <translation type="unfinished">References 3D</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::DlgStringListEditor</name>
+    <message>
+      <location filename="../../DlgStringListEditor.ui" line="17"/>
+      <source>String List Editor</source>
+      <translation type="unfinished">String List Editor</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStringListEditor.ui" line="31"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Double click to edit a line.  New lines are added at the current location in the list.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Double click to edit a line.  New lines are added at the current location in the list.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawRadialGroup</name>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="135"/>
+      <source>TechDraw</source>
+      <translation>TeknikÇizim</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="136"/>
+      <source>Insert Radius Dimension</source>
+      <translation>Yarıçap ölçüsü ekle</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="201"/>
+      <source>Radius Dimension</source>
+      <translation type="unfinished">Radius Dimension</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="205"/>
+      <source>Diameter Linear</source>
+      <translation type="unfinished">Diameter Linear</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDraw_RadiusDimension</name>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="202"/>
+      <source>Insert Radius Dimension</source>
+      <translation>Yarıçap ölçüsü ekle</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDraw_DiameterDimension</name>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="206"/>
+      <source>Insert Diameter Dimension</source>
+      <translation>Çap ölçüsü ekle</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawLinearGroup</name>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="468"/>
+      <source>TechDraw</source>
+      <translation>TeknikÇizim</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="469"/>
+      <source>Insert Linear Dimension</source>
+      <translation type="unfinished">Insert Linear Dimension</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="541"/>
+      <source>Linear Dimension</source>
+      <translation type="unfinished">Linear Dimension</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="544"/>
+      <source>Horizontal Linear</source>
+      <translation type="unfinished">Horizontal Linear</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="548"/>
+      <source>Vertical Linear</source>
+      <translation type="unfinished">Vertical Linear</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDraw_LengthDimension</name>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="542"/>
+      <source>Insert Linear Dimension</source>
+      <translation type="unfinished">Insert Linear Dimension</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDraw_HorizontalLinear</name>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="545"/>
+      <source>Insert Horizontal Linear Dimension</source>
+      <translation type="unfinished">Insert Horizontal Linear Dimension</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDraw_VerticalDimension</name>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="549"/>
+      <source>Insert Vertical Linear Dimension</source>
+      <translation type="unfinished">Insert Vertical Linear Dimension</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawAngularGroup</name>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="854"/>
+      <source>TechDraw</source>
+      <translation>TeknikÇizim</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="855"/>
+      <source>Insert Angular Dimension</source>
+      <translation type="unfinished">Insert Angular Dimension</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="920"/>
+      <source>Angular Dimension</source>
+      <translation type="unfinished">Angular Dimension</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="923"/>
+      <source>3Pt Angular Dimension</source>
+      <translation type="unfinished">3Pt Angular Dimension</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDraw_AngleDimension</name>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="921"/>
+      <source>Insert Angle Dimension</source>
+      <translation>Yeni bir Açı ölçüsü ekle</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDraw_3PtAngleDimension</name>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="924"/>
+      <source>Insert 3-Point Angle Dimension</source>
+      <translation>Yeni bir 3 noktalı Açı ölçüsü ekle</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawDimensionRepair</name>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="1456"/>
+      <source>TechDraw</source>
+      <translation>TeknikÇizim</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="1457"/>
+      <source>Repair Dimension References</source>
+      <translation type="unfinished">Repair Dimension References</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::TaskDimRepair</name>
+    <message>
+      <location filename="../../TaskDimRepair.cpp" line="102"/>
+      <source>Object Name</source>
+      <translation type="unfinished">Object Name</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimRepair.cpp" line="103"/>
+      <source>Object Label</source>
+      <translation type="unfinished">Object Label</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimRepair.cpp" line="104"/>
+      <source>SubElement</source>
+      <translation type="unfinished">SubElement</translation>
     </message>
   </context>
 </TS>

@@ -341,7 +341,7 @@
     <message>
       <location filename="../../Command.cpp" line="365"/>
       <source>Intersection</source>
-      <translation>Preklop</translation>
+      <translation>Presek</translation>
     </message>
   </context>
   <context>
@@ -618,12 +618,12 @@
     <message>
       <location filename="../../Command.cpp" line="1829"/>
       <source>Split by components</source>
-      <translation>Razdvoji po komponentama</translation>
+      <translation>Podeli po komponentama</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1830"/>
       <source>Split selected mesh into its components</source>
-      <translation>Razdvoji izabranu mrežu na njene komponente</translation>
+      <translation>Podelite izabranu mrežu na njene komponente</translation>
     </message>
   </context>
   <context>
@@ -760,7 +760,7 @@
     <message>
       <location filename="../../Command.cpp" line="378"/>
       <source>Mesh intersection</source>
-      <translation>Preklop mreža</translation>
+      <translation>Presek mreža</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="464"/>
@@ -801,7 +801,7 @@
     <message>
       <location filename="../../Command.cpp" line="1842"/>
       <source>Mesh split</source>
-      <translation>Razdvoji mrežu</translation>
+      <translation>Podeli mrežu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1894"/>
@@ -878,7 +878,7 @@
     <message>
       <location filename="../../ViewProvider.cpp" line="1112"/>
       <source>Split</source>
-      <translation>Razdelite</translation>
+      <translation>Podeli</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1176"/>
@@ -1381,7 +1381,7 @@ Pokreni prvo komandu za popravku nabora</translation>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="825"/>
       <source>Cl&amp;ose</source>
-      <translation>Za&amp;tvori</translation>
+      <translation>Zatvori</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="828"/>
@@ -2364,7 +2364,7 @@ Molim posetite http://www.openscad.org/index.html da instalirate.</translation>
     <message>
       <location filename="../../Command.cpp" line="1890"/>
       <source>Enter scaling factor:</source>
-      <translation>Unesi faktor razmere:</translation>
+      <translation>Unesi koeficijent skaliranja:</translation>
     </message>
     <message>
       <location filename="../../PropertyEditorMesh.cpp" line="75"/>

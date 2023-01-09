@@ -391,42 +391,42 @@
     <message>
       <location filename="../../DlgBindSheet.ui" line="14"/>
       <source>Bind Spreadsheet Cells</source>
-      <translation type="unfinished">Bind Spreadsheet Cells</translation>
+      <translation>绑定工作表单元格</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="69"/>
       <source>To cells:</source>
-      <translation type="unfinished">To cells:</translation>
+      <translation>到单元格：</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="117"/>
       <source>Sheet:</source>
-      <translation type="unfinished">Sheet:</translation>
+      <translation>工作表：</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="22"/>
       <source>First cell in range</source>
-      <translation type="unfinished">First cell in range</translation>
+      <translation>范围内的第一个单元格</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="29"/>
       <source>Last cell in range</source>
-      <translation type="unfinished">Last cell in range</translation>
+      <translation>范围内最后一个单元格</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="36"/>
       <source>Bind cells:</source>
-      <translation type="unfinished">Bind cells:</translation>
+      <translation>绑定单元格：</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="49"/>
       <source>Start cell address</source>
-      <translation type="unfinished">Start cell address</translation>
+      <translation>起始单元格地址</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="62"/>
       <source>End cell address</source>
-      <translation type="unfinished">End cell address</translation>
+      <translation>末尾单元格地址</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="82"/>
@@ -449,7 +449,7 @@ The expression must evaluate to a string of some cell address.</translation>
     <message>
       <location filename="../../DlgBindSheet.ui" line="110"/>
       <source>Which spread sheet to bind to</source>
-      <translation type="unfinished">Which spread sheet to bind to</translation>
+      <translation>想要绑定到哪个表格</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="126"/>
@@ -895,7 +895,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="225"/>
       <source>Bind Spreadsheet Cells</source>
-      <translation type="unfinished">Bind Spreadsheet Cells</translation>
+      <translation>绑定工作表单元格</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="225"/>
@@ -969,14 +969,6 @@ Do you want to continue?</translation>
       <location filename="../../DlgSheetConf.cpp" line="294"/>
       <source>Unsetup configuration table</source>
       <translation type="unfinished">Unsetup configuration table</translation>
-    </message>
-  </context>
-  <context>
-    <name>SpreadsheetGui::Module</name>
-    <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="79"/>
-      <source>Unnamed</source>
-      <translation>未命名</translation>
     </message>
   </context>
   <context>
@@ -1132,6 +1124,113 @@ Do you want to continue?</translation>
       <location filename="../../Workbench.cpp" line="53"/>
       <source>&amp;Styles</source>
       <translation type="unfinished">&amp;Styles</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet</name>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="739"/>
+      <source>Spreadsheet</source>
+      <translation>电子表格</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="748"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="874"/>
+      <source>Cell</source>
+      <translation>单元</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="751"/>
+      <source>Apply</source>
+      <translation>应用</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="753"/>
+      <source>Apply the changes to the current cell</source>
+      <translation type="unfinished">Apply the changes to the current cell</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="755"/>
+      <source>Delete</source>
+      <translation>删除</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="757"/>
+      <source>Deletes the contents of the current cell</source>
+      <translation type="unfinished">Deletes the contents of the current cell</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="759"/>
+      <source>Compute</source>
+      <translation>计算</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="761"/>
+      <source>Updates the values handled by controllers</source>
+      <translation type="unfinished">Updates the values handled by controllers</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="907"/>
+      <source>Create Spreadsheet</source>
+      <translation>创建工作表</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="933"/>
+      <source>Add controller</source>
+      <translation type="unfinished">Add controller</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="959"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="973"/>
+      <source>Add property controller</source>
+      <translation type="unfinished">Add property controller</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_Create</name>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="902"/>
+      <source>Spreadsheet</source>
+      <translation>电子表格</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="905"/>
+      <source>Adds a spreadsheet object to the active document</source>
+      <translation type="unfinished">Adds a spreadsheet object to the active document</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_Controller</name>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="919"/>
+      <source>Add controller</source>
+      <translation type="unfinished">Add controller</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="922"/>
+      <source>Adds a cell controller to a selected spreadsheet</source>
+      <translation type="unfinished">Adds a cell controller to a selected spreadsheet</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_PropertyController</name>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="944"/>
+      <source>Add property controller</source>
+      <translation type="unfinished">Add property controller</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="947"/>
+      <source>Adds a property controller to a selected spreadsheet</source>
+      <translation type="unfinished">Adds a property controller to a selected spreadsheet</translation>
+    </message>
+  </context>
+  <context>
+    <name>Py</name>
+    <message>
+      <location filename="../../AppSpreadsheetGui.cpp" line="79"/>
+      <source>Unnamed</source>
+      <translation>未命名</translation>
     </message>
   </context>
 </TS>

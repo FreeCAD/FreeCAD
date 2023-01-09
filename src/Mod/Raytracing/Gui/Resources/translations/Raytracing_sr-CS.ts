@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="754"/>
       <source>Raytracing</source>
-      <translation type="unfinished">Raytracing</translation>
+      <translation>Raytracing</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="755"/>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../Command.cpp" line="425"/>
       <source>Raytracing</source>
-      <translation type="unfinished">Raytracing</translation>
+      <translation>Raytracing</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="426"/>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../Command.cpp" line="308"/>
       <source>Raytracing</source>
-      <translation type="unfinished">Raytracing</translation>
+      <translation>Raytracing</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="309"/>
@@ -98,7 +98,7 @@
     <message>
       <location filename="../../Command.cpp" line="572"/>
       <source>Raytracing</source>
-      <translation type="unfinished">Raytracing</translation>
+      <translation>Raytracing</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="573"/>
@@ -116,7 +116,7 @@
     <message>
       <location filename="../../Command.cpp" line="867"/>
       <source>Raytracing</source>
-      <translation type="unfinished">Raytracing</translation>
+      <translation>Raytracing</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="868"/>
@@ -134,7 +134,7 @@
     <message>
       <location filename="../../Command.cpp" line="71"/>
       <source>Raytracing</source>
-      <translation type="unfinished">Raytracing</translation>
+      <translation>Raytracing</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="72"/>
@@ -144,7 +144,7 @@
     <message>
       <location filename="../../Command.cpp" line="73"/>
       <source>Export the camera position of the active 3D view in POV-Ray format to a file</source>
-      <translation type="unfinished">Export the camera position of the active 3D view in POV-Ray format to a file</translation>
+      <translation>Izvezite u datoteku poziciju kamere aktivnog 3D pogleda u POV-Ray formatu</translation>
     </message>
   </context>
   <context>
@@ -152,7 +152,7 @@
     <message>
       <location filename="../../Command.cpp" line="164"/>
       <source>Raytracing</source>
-      <translation type="unfinished">Raytracing</translation>
+      <translation>Raytracing</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="165"/>
@@ -181,13 +181,13 @@
       <location filename="../../Command.cpp" line="325"/>
       <source>The current view camera is not perspective and thus resulting in a POV-Ray image that may look different than what was expected.
 Do you want to continue?</source>
-      <translation type="unfinished">The current view camera is not perspective and thus resulting in a POV-Ray image that may look different than what was expected.
-Do you want to continue?</translation>
+      <translation>Trenutni prikaz kamera nije perspektiva što rezultira POV-Ray slikom koja može izgledati drugačije nego što ste očekivali.
+Da li želite da nastavite?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="211"/>
       <source>Raytracing</source>
-      <translation type="unfinished">Raytracing</translation>
+      <translation>Raytracing</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="212"/>
@@ -209,14 +209,14 @@ Do you want to continue?</translation>
       <location filename="../../Command.cpp" line="340"/>
       <location filename="../../Command.cpp" line="786"/>
       <source>Cannot create a project because there is no template installed.</source>
-      <translation type="unfinished">Cannot create a project because there is no template installed.</translation>
+      <translation>Nije moguće napraviti projekat jer nije instaliran šablon.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="771"/>
       <source>The current view camera is not perspective and thus resulting in a luxrender image that may look different than what was expected.
 Do you want to continue?</source>
-      <translation type="unfinished">The current view camera is not perspective and thus resulting in a luxrender image that may look different than what was expected.
-Do you want to continue?</translation>
+      <translation>Trenutni prikaz kamera nije perspektiva što rezultira Luxrender slikom koja može izgledati drugačije nego što ste očekivali.
+Da li želite da nastavite?</translation>
     </message>
   </context>
   <context>
@@ -227,7 +227,7 @@ Do you want to continue?</translation>
       <location filename="../../Command.cpp" line="238"/>
       <location filename="../../Command.cpp" line="533"/>
       <source>POV-Ray</source>
-      <translation type="unfinished">POV-Ray</translation>
+      <translation>POV-Ray</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="125"/>
@@ -285,7 +285,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../Command.cpp" line="529"/>
       <source>Luxrender</source>
-      <translation type="unfinished">Luxrender</translation>
+      <translation>Luxrender</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="604"/>
@@ -352,7 +352,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="14"/>
       <source>Raytracing</source>
-      <translation type="unfinished">Raytracing</translation>
+      <translation>Raytracing</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="26"/>
@@ -434,7 +434,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="211"/>
       <source>TempCamera.inc</source>
-      <translation type="unfinished">TempCamera.inc</translation>
+      <translation>TempCamera.inc</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="224"/>
@@ -444,7 +444,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="234"/>
       <source>TempPart.inc</source>
-      <translation type="unfinished">TempPart.inc</translation>
+      <translation>TempPart.inc</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="252"/>
@@ -472,7 +472,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../DlgSettingsRayImp.cpp" line="45"/>
       <source>The path to the POV-Ray executable, if you want to render from %1</source>
-      <translation type="unfinished">The path to the POV-Ray executable, if you want to render from %1</translation>
+      <translation>Putanja do izvršne datoteke POV-Ray, ako želite da renderujete iz %1</translation>
     </message>
   </context>
   <context>

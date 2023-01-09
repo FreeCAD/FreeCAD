@@ -52,7 +52,7 @@
     <message>
       <location filename="../../Command.cpp" line="320"/>
       <source>Approximate a polynomial surface</source>
-      <translation>Przybliżenie powierzchni B-splajnu</translation>
+      <translation>Przybliżenie powierzchni wielomianu</translation>
     </message>
   </context>
   <context>
@@ -101,7 +101,7 @@
     <message>
       <location filename="../../Command.cpp" line="485"/>
       <source>Wire from mesh boundary...</source>
-      <translation>Linia łamana z obwiedni siatki...</translation>
+      <translation>Linia łamana z obwiedni siatki ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="486"/>

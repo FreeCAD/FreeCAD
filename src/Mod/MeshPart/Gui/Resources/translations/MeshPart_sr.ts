@@ -137,7 +137,7 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../CrossSections.ui" line="52"/>
       <source>Position:</source>
-      <translation>Позиција:</translation>
+      <translation>Положај:</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="71"/>
@@ -564,7 +564,7 @@ Select a different shape, please.</source>
     <message>
       <location filename="../../Command.cpp" line="106"/>
       <source>Split</source>
-      <translation>Разделите</translation>
+      <translation>Подели</translation>
     </message>
   </context>
   <context>
@@ -573,6 +573,32 @@ Select a different shape, please.</source>
       <location filename="../../Workbench.cpp" line="36"/>
       <source>MeshPart</source>
       <translation>Мрежа дела</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshPart_CreateFlatMesh</name>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="47"/>
+      <source>Unwrap Mesh</source>
+      <translation type="unfinished">Unwrap Mesh</translation>
+    </message>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="50"/>
+      <source>Find a flat representation of a mesh.</source>
+      <translation type="unfinished">Find a flat representation of a mesh.</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshPart_CreateFlatFace</name>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="79"/>
+      <source>Unwrap Face</source>
+      <translation type="unfinished">Unwrap Face</translation>
+    </message>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="82"/>
+      <source>Find a flat representation of a face.</source>
+      <translation type="unfinished">Find a flat representation of a face.</translation>
     </message>
   </context>
 </TS>

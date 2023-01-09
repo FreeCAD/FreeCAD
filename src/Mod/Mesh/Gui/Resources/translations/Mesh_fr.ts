@@ -2464,7 +2464,7 @@ Modification du maillage</translation>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>Mesh cutting</source>
-      <translation>Outil de découpe de maillage</translation>
+      <translation>Couper le maillage</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>

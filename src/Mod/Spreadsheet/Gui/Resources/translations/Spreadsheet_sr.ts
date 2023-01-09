@@ -344,7 +344,7 @@
     <message>
       <location filename="../../PropertiesDialog.cpp" line="230"/>
       <source>Set cell properties</source>
-      <translation>Подеси својства ћелије</translation>
+      <translation>Подеси особине ћелије</translation>
     </message>
     <message>
       <location filename="../../SheetModel.cpp" line="468"/>
@@ -507,11 +507,11 @@ by that property.
       <translation>Почетна адреса ћелије.
 
 Претпоставља се да прва колона низа садржи листу конфигурационих
-имена, који ће се користити за генерисање листе знаковних низова и повезивање са датим
-својствима за корисника да динамички мења конфигурацију.
+имена, која ће се користити за генерисање листе знаковних низова и повезивање са датим
+особинама за корисника да динамички мења конфигурацију.
 
 Први ред низа ће бити везан за било који ред (индиректно) изабран
-тим својством.
+том особином.
 </translation>
     </message>
     <message>
@@ -528,11 +528,11 @@ by that property.
       <translation>Крајња адреса ћелије.
 
 Претпоставља се да прва колона низа садржи листу конфигурационих
-имена, који ће се користити за генерисање листе знаковних низова и повезивање са датим
-својствима за корисника да динамички мења конфигурацију.
+имена, која ће се користити за генерисање листе знаковних низова и повезивање са датим
+особинама за корисника да динамички мења конфигурацију.
 
 Први ред низа ће бити везан за било који ред (индиректно) изабран
-тим својством.
+том особином.
 </translation>
     </message>
     <message>
@@ -578,7 +578,7 @@ switch the design configuration. The property will be created if not exist.</tra
     <message>
       <location filename="../../PropertiesDialog.ui" line="14"/>
       <source>Cell properties</source>
-      <translation>Cвојcтва ћелије</translation>
+      <translation>Оcобине ћелије</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="27"/>
@@ -940,7 +940,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../DlgSettings.ui" line="98"/>
       <source>Quote Character: </source>
-      <translation type="unfinished">Quote Character: </translation>
+      <translation>Quote знак: </translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="105"/>
@@ -950,12 +950,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../DlgSettings.ui" line="130"/>
       <source>Escape Character: </source>
-      <translation type="unfinished">Escape Character: </translation>
+      <translation>Escape знак: </translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="137"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape знак, обично обрнута коса црта (\), који се користи за означавање посебних знакова који се не могу штампати, нпр. \t = tab. Мора бити један знак.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -969,14 +969,6 @@ Do you want to continue?</source>
       <location filename="../../DlgSheetConf.cpp" line="294"/>
       <source>Unsetup configuration table</source>
       <translation>Поништи поставку конфигурационе табеле</translation>
-    </message>
-  </context>
-  <context>
-    <name>SpreadsheetGui::Module</name>
-    <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="79"/>
-      <source>Unnamed</source>
-      <translation>Без имена</translation>
     </message>
   </context>
   <context>
@@ -1057,7 +1049,7 @@ Do you want to continue?</source>
       <location filename="../../SheetTableView.cpp" line="169"/>
       <location filename="../../SheetTableView.cpp" line="613"/>
       <source>Properties...</source>
-      <translation>Cвојcтва...</translation>
+      <translation>Оcобине...</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="181"/>
@@ -1148,6 +1140,113 @@ Do you want to continue?</source>
       <location filename="../../Workbench.cpp" line="53"/>
       <source>&amp;Styles</source>
       <translation>&amp;Cтилови</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet</name>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="739"/>
+      <source>Spreadsheet</source>
+      <translation>Табела</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="748"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="874"/>
+      <source>Cell</source>
+      <translation>ћелија</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="751"/>
+      <source>Apply</source>
+      <translation>Примени</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="753"/>
+      <source>Apply the changes to the current cell</source>
+      <translation>Примени промене на тренутну ћелију</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="755"/>
+      <source>Delete</source>
+      <translation>Обриши</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="757"/>
+      <source>Deletes the contents of the current cell</source>
+      <translation>Брише садржај тренутне ћелије</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="759"/>
+      <source>Compute</source>
+      <translation>Израчунај</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="761"/>
+      <source>Updates the values handled by controllers</source>
+      <translation>Ажурира вредности којима управљају контролери</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="907"/>
+      <source>Create Spreadsheet</source>
+      <translation>Направи табелу</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="933"/>
+      <source>Add controller</source>
+      <translation>Додај контролер</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="959"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="973"/>
+      <source>Add property controller</source>
+      <translation>Додај контролер својства</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_Create</name>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="902"/>
+      <source>Spreadsheet</source>
+      <translation>Табела</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="905"/>
+      <source>Adds a spreadsheet object to the active document</source>
+      <translation>Додаје објекат Табела активном документу</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_Controller</name>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="919"/>
+      <source>Add controller</source>
+      <translation>Додај контролер</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="922"/>
+      <source>Adds a cell controller to a selected spreadsheet</source>
+      <translation>Додаје контролер ћелије изабраној табели</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_PropertyController</name>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="944"/>
+      <source>Add property controller</source>
+      <translation>Додај контролер својства</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="947"/>
+      <source>Adds a property controller to a selected spreadsheet</source>
+      <translation>Додаје контролер својства изабраној табели</translation>
+    </message>
+  </context>
+  <context>
+    <name>Py</name>
+    <message>
+      <location filename="../../AppSpreadsheetGui.cpp" line="79"/>
+      <source>Unnamed</source>
+      <translation>Без имена</translation>
     </message>
   </context>
 </TS>

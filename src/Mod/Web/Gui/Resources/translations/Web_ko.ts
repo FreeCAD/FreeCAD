@@ -128,13 +128,13 @@
   <context>
     <name>QObject</name>
     <message>
+      <location filename="../../BrowserView.cpp" line="815"/>
       <location filename="../../AppWebGui.cpp" line="86"/>
-      <location filename="../../BrowserView.cpp" line="805"/>
       <source>Browser</source>
       <translation>브라우저</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="613"/>
+      <location filename="../../BrowserView.cpp" line="623"/>
       <source>File does not exist!</source>
       <translation>파일이 존재하지 않습니다!</translation>
     </message>
@@ -142,24 +142,24 @@
   <context>
     <name>WebGui::BrowserView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="601"/>
-      <location filename="../../BrowserView.cpp" line="606"/>
-      <location filename="../../BrowserView.cpp" line="609"/>
+      <location filename="../../BrowserView.cpp" line="611"/>
+      <location filename="../../BrowserView.cpp" line="616"/>
+      <location filename="../../BrowserView.cpp" line="619"/>
       <source>Error</source>
       <translation>에러</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="606"/>
+      <location filename="../../BrowserView.cpp" line="616"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
       <translation>파일을 불러오는 동안 오류가 발생했습니다. 일부 데이터가 수정되었거나 전혀 복구되지 않았을 수 있습니다. 관련된 객체에 대한 보다 구체적인 정보는 보고서 보기에서 확인하십시오.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="609"/>
+      <location filename="../../BrowserView.cpp" line="619"/>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
       <translation>파일을 불러오는 동안 심각한 오류가 발생했습니다. 일부 데이터가 수정되었거나 전혀 복구되지 않았을 수 있습니다. 프로젝트를 저장하면 데이터가 손실될 가능성이 높습니다.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="773"/>
+      <location filename="../../BrowserView.cpp" line="783"/>
       <source>Loading %1...</source>
       <translation>%1 불러오는 중...</translation>
     </message>
@@ -167,17 +167,17 @@
   <context>
     <name>WebGui::WebView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="364"/>
+      <location filename="../../BrowserView.cpp" line="362"/>
       <source>Open in External Browser</source>
       <translation>외부 브라우저에서 열기</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="368"/>
+      <location filename="../../BrowserView.cpp" line="365"/>
       <source>Open in new window</source>
       <translation>새 창에서 열기</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="404"/>
+      <location filename="../../BrowserView.cpp" line="411"/>
       <source>View source</source>
       <translation>소스 보기</translation>
     </message>

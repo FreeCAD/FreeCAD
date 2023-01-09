@@ -240,7 +240,7 @@
     <message>
       <location filename="../../DrawingView.cpp" line="209"/>
       <source>&amp;Background</source>
-      <translation>Pozadina &amp;amp;</translation>
+      <translation>&amp;Pozadina</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="215"/>

@@ -1025,7 +1025,7 @@
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="119"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Influences calculation performance vs stability and accuracy&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Influences calculation performance vs stability and accuracy&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;გავლენას ახდენს გამოთვლის წარმადობაზე, სტაბილურობისა და სიზუსტის წინააღმდეგ&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="147"/>
@@ -1594,7 +1594,7 @@
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="71"/>
       <source>Start Feature Reference</source>
-      <translation type="unfinished">Start Feature Reference</translation>
+      <translation>თვისების მიბმის დასაწყისი</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="90"/>

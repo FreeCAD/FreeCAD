@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="48"/>
       <source>Creates a feature area from selected objects</source>
-      <translation type="unfinished">Creates a feature area from selected objects</translation>
+      <translation>Создает область свойств из выбранных объектов</translation>
     </message>
   </context>
   <context>
@@ -29,7 +29,7 @@
     <message>
       <location filename="../../Command.cpp" line="129"/>
       <source>Area workplane</source>
-      <translation type="unfinished">Area workplane</translation>
+      <translation>Рабочая область</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="130"/>
@@ -98,7 +98,7 @@
     <message>
       <location filename="../../Command.cpp" line="315"/>
       <source>Create Path Shape</source>
-      <translation type="unfinished">Create Path Shape</translation>
+      <translation>Создать фигуру пути</translation>
     </message>
   </context>
   <context>
@@ -116,7 +116,7 @@
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="32"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a template to be used for the job.&lt;/p&gt;&lt;p&gt;In case there are no templates you can create one through the popup menu of an existing job. Name the file job_*.json and place it in the macro or the path directory (see preferences) in order to be selectable from this list.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a template to be used for the job.&lt;/p&gt;&lt;p&gt;In case there are no templates you can create one through the popup menu of an existing job. Name the file job_*.json and place it in the macro or the path directory (see preferences) in order to be selectable from this list.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Выберите шаблон для работы.&lt;/p&gt;&lt;p&gt; Если нет шаблонов, вы можете создать их через всплывающее меню существующего задания. Назовите файл job_*.json и поместите его в макрос или директорию пути (см. настройки) для выбора из этого списка.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="42"/>
@@ -126,7 +126,7 @@
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="14"/>
       <source>Select Base Models</source>
-      <translation type="unfinished">Select Base Models</translation>
+      <translation>Выберите Базовые Модели</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="24"/>
@@ -141,17 +141,17 @@
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="44"/>
       <source>Base Models</source>
-      <translation type="unfinished">Base Models</translation>
+      <translation>Базовые Модели</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="14"/>
       <source>Job Template Export</source>
-      <translation type="unfinished">Job Template Export</translation>
+      <translation>Экспорт Шаблона Работы</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="20"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled include all post processing settings in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled include all post processing settings in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Если включено, включить все настройки пост-обработки в шаблон.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="23"/>
@@ -161,7 +161,7 @@
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="38"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hint about the current post processing configuration.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hint about the current post processing configuration.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Подсказка о текущей конфигурации пост-обработки.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="48"/>
@@ -181,17 +181,17 @@
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="70"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to include values of the SetupSheet in the template.&lt;/p&gt;&lt;p&gt;Any values of the SetupSheet that are changed from their default are preselected. If this field not selected the current SetupSheet was not modified.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to include values of the SetupSheet in the template.&lt;/p&gt;&lt;p&gt;Any values of the SetupSheet that are changed from their default are preselected. If this field not selected the current SetupSheet was not modified.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Включите, чтобы включить значения Листа Настроек в шаблон.&lt;/p&gt;&lt;p&gt; Все значения Листа Настроек, которые были изменены с их значения по умолчанию были выбраны. Если это поле не выбрано, текущий Лист Настроек не был изменен.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="73"/>
       <source>Setup Sheet</source>
-      <translation type="unfinished">Setup Sheet</translation>
+      <translation>Лист настроек</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="82"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to include the default heights for operations in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to include the default heights for operations in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Включите, чтобы включить исходные высоты для операций в шаблоне.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="85"/>
@@ -291,7 +291,7 @@
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="29"/>
       <source>Controller</source>
-      <translation type="unfinished">Controller</translation>
+      <translation>Контроллер</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="35"/>
@@ -341,17 +341,17 @@
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="293"/>
       <source>Any modifications only affect this ToolController!</source>
-      <translation type="unfinished">Any modifications only affect this ToolController!</translation>
+      <translation>Любые изменения затрагивают только этот контроллер инструмента!</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolEdit.ui" line="14"/>
       <source>Tool Editor</source>
-      <translation type="unfinished">Tool Editor</translation>
+      <translation>Редактор инструментов</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="14"/>
       <source>Create Property</source>
-      <translation type="unfinished">Create Property</translation>
+      <translation>Создать параметр</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="20"/>
@@ -361,12 +361,12 @@
     <message>
       <location filename="../panels/PropertyCreate.ui" line="27"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of property. Can only contain letters, numbers, and underscores. MixedCase names will display with spaces &amp;quot;Mixed Case&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of property. Can only contain letters, numbers, and underscores. MixedCase names will display with spaces &amp;quot;Mixed Case&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Название параметра. Может содержать только буквы, цифры и подчеркивания. MixedCase названия будут отображаться с пробелами &amp;quot;Mixed Case&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="34"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The category group the property belongs to.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The category group the property belongs to.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Категория, к которой принадлежит свойство.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="44"/>
@@ -376,7 +376,7 @@
     <message>
       <location filename="../panels/PropertyCreate.ui" line="51"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The type of the property value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The type of the property value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Тип значения свойства.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="58"/>

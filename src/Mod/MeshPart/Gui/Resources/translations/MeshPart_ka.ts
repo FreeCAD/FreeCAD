@@ -575,4 +575,30 @@ Select a different shape, please.</source>
       <translation>ნაწილის ბადე</translation>
     </message>
   </context>
+  <context>
+    <name>MeshPart_CreateFlatMesh</name>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="47"/>
+      <source>Unwrap Mesh</source>
+      <translation>ბადის განშლა</translation>
+    </message>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="50"/>
+      <source>Find a flat representation of a mesh.</source>
+      <translation>ბადის ბრტყელი ვარიანტის ნახვა.</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshPart_CreateFlatFace</name>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="79"/>
+      <source>Unwrap Face</source>
+      <translation>სიბრტყის განშლა</translation>
+    </message>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="82"/>
+      <source>Find a flat representation of a face.</source>
+      <translation type="unfinished">Find a flat representation of a face.</translation>
+    </message>
+  </context>
 </TS>

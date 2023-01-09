@@ -837,8 +837,8 @@ so that self intersection is avoided.</source>
       <translation>Créer un clone</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="874"/>
       <location filename="../../SketchWorkflow.cpp" line="297"/>
+      <location filename="../../Command.cpp" line="874"/>
       <source>Make copy</source>
       <translation>Faire une copie</translation>
     </message>
@@ -863,8 +863,8 @@ so that self intersection is avoided.</source>
       <translation>Créer un booléen</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="189"/>
       <location filename="../../DlgActiveBody.cpp" line="104"/>
+      <location filename="../../CommandBody.cpp" line="189"/>
       <source>Add a Body</source>
       <translation>Ajouter un corps</translation>
     </message>
@@ -881,7 +881,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="616"/>
       <source>Duplicate a PartDesign object</source>
-      <translation>Dupliquer un objet PartDesign</translation>
+      <translation>Dupliquer un objet Part Design</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="739"/>
@@ -1069,9 +1069,9 @@ so that self intersection is avoided.</source>
       <source>To create a new PartDesign object, there must be an active Body object in the document.
 
 Please select a body from below, or create a new body.</source>
-      <translation>Pour créer un nouvel objet PartDesign, il doit y avoir un corps actif dans le document.
+      <translation>Pour créer un nouvel objet Part Design, il doit y avoir un corps actif dans le document.
 
-Veuillez sélectionner un corps à partir du bas, ou créer un nouveau corps.</translation>
+Sélectionner un corps à partir du bas ou créer un nouveau corps.</translation>
     </message>
     <message>
       <location filename="../../DlgActiveBody.ui" line="36"/>
@@ -2375,7 +2375,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="43"/>
       <source>Reverses pad direction</source>
-      <translation>Inverse la direction du tampon</translation>
+      <translation>Inverse la direction de la protrusion</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="72"/>
@@ -2438,7 +2438,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="85"/>
       <source>Direction/edge:</source>
-      <translation>Itinéraire / arête :</translation>
+      <translation>Direction/arête :</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="92"/>
@@ -2519,7 +2519,7 @@ mesurée dans la direction spécifiée</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="253"/>
       <source>Applies length symmetrically to sketch plane</source>
-      <translation>Applique une longueur symétriquement au plan d'esquisse</translation>
+      <translation>Applique une longueur symétriquement au plan de l'esquisse</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="256"/>
@@ -2555,7 +2555,7 @@ mesurée dans la direction spécifiée</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="347"/>
       <source>Select face</source>
-      <translation>Sélectionner la face</translation>
+      <translation>Sélectionner une face</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="373"/>
@@ -2907,19 +2907,19 @@ mesurée dans la direction spécifiée</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="30"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="138"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="137"/>
       <source>Base X axis</source>
       <translation>Axe X</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="35"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="139"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="138"/>
       <source>Base Y axis</source>
       <translation>Axe Y</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="40"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="140"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="139"/>
       <source>Base Z axis</source>
       <translation>Axe Z</translation>
     </message>
@@ -2935,7 +2935,7 @@ mesurée dans la direction spécifiée</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="55"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="147"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="146"/>
       <source>Select reference...</source>
       <translation>Sélectionnez une référence...</translation>
     </message>
@@ -3514,28 +3514,28 @@ click again to end selection</source>
       <translation>Veuillez d'abord créer un plan, ou choisissez une face sur laquelle appliquer l'esquisse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="895"/>
-      <location filename="../../Command.cpp" line="1894"/>
+      <location filename="../../ViewProviderHole.cpp" line="79"/>
+      <location filename="../../ViewProviderDatum.cpp" line="246"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="73"/>
       <location filename="../../SketchWorkflow.cpp" line="591"/>
       <location filename="../../ViewProvider.cpp" line="98"/>
       <location filename="../../ViewProviderBoolean.cpp" line="80"/>
-      <location filename="../../ViewProviderDatum.cpp" line="246"/>
-      <location filename="../../ViewProviderHole.cpp" line="79"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="73"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
+      <location filename="../../Command.cpp" line="895"/>
+      <location filename="../../Command.cpp" line="1894"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Une boîte de dialogue est déjà ouverte dans le panneau des tâches</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="896"/>
-      <location filename="../../Command.cpp" line="1895"/>
+      <location filename="../../ViewProviderHole.cpp" line="80"/>
+      <location filename="../../ViewProviderDatum.cpp" line="247"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="74"/>
       <location filename="../../SketchWorkflow.cpp" line="592"/>
       <location filename="../../ViewProvider.cpp" line="99"/>
       <location filename="../../ViewProviderBoolean.cpp" line="81"/>
-      <location filename="../../ViewProviderDatum.cpp" line="247"/>
-      <location filename="../../ViewProviderHole.cpp" line="80"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="74"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
+      <location filename="../../Command.cpp" line="896"/>
+      <location filename="../../Command.cpp" line="1895"/>
       <source>Do you want to close this dialog?</source>
       <translation>Voulez-vous fermer cette boîte de dialogue?</translation>
     </message>
@@ -3708,7 +3708,7 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="340"/>
       <source>No PartDesign features found that don't belong to a body. Nothing to migrate.</source>
-      <translation>Aucune fonction PartDesign trouvée qui n'appartienne pas à un corps. Rien à migrer.</translation>
+      <translation>Aucune fonction de Part Design trouvée qui n'appartienne pas à un corps. Rien à migrer.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="488"/>
@@ -3804,14 +3804,14 @@ This may lead to unexpected results.</source>
       <translation>Il n’est pas possible de créer une fonction soustractive sans une fonction de base présente</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="123"/>
       <location filename="../../TaskTransformedParameters.cpp" line="287"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="123"/>
       <source>Vertical sketch axis</source>
       <translation>Axe d'esquisse vertical</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="124"/>
       <location filename="../../TaskTransformedParameters.cpp" line="288"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="124"/>
       <source>Horizontal sketch axis</source>
       <translation>Axe d'esquisse horizontal</translation>
     </message>
@@ -3865,11 +3865,11 @@ Si vous avez un vieux document avec des objets PartDesign sans corps, utilisez l
       <translation>Afin d'utiliser cette fonction, elle doit appartenir à un objet pièce dans le document.</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="65"/>
       <location filename="../../ViewProviderDressUp.cpp" line="50"/>
+      <location filename="../../ViewProviderTransformed.cpp" line="65"/>
+      <location filename="../../ViewProvider.cpp" line="65"/>
       <location filename="../../ViewProviderMultiTransform.cpp" line="42"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="204"/>
-      <location filename="../../ViewProviderTransformed.cpp" line="65"/>
       <source>Edit %1</source>
       <translation>Modifier %1</translation>
     </message>
@@ -4018,7 +4018,7 @@ Cette fonction est cassée et ne peut pas être modifiée.</translation>
       <source>Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design -&gt; Migrate'.</source>
-      <translation>Remarque : si vous choisissez de migrer, vous ne serez pas en mesure d'éditer le fichier avec d’anciennes versions de FreeCAD. Si vous refusez de migrer, vous ne serez pas en mesure d’utiliser les nouvelles fonctionnalités de PartDesign comme les corps et les pièces. Pour résultat, vous ne serez pas en mesure d’utiliser vos pièces dans l'atelier assemblage. Il vous sera néanmoins possible de migrer à tout moment, plus tard, via « Part Design -&gt; Migrer ».</translation>
+      <translation>Remarque : si vous choisissez de migrer, vous ne serez pas en mesure d'éditer le fichier avec d’anciennes versions de FreeCAD. Si vous refusez de migrer, vous ne serez pas en mesure d’utiliser les nouvelles fonctionnalités de Part Design comme les corps et les pièces. Pour résultat, vous ne serez pas en mesure d’utiliser vos pièces dans l'atelier assemblage. Il vous sera néanmoins possible de migrer à tout moment, plus tard, via "Part Design -&gt; Migrer".</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="159"/>
@@ -4679,7 +4679,7 @@ plus de 90 : rayon du trou plus grand à la base</translation>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
       <source>Shaft design wizard</source>
-      <translation>Assistant de conception d'arbre</translation>
+      <translation>Conception d'arbre</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="58"/>
@@ -4705,6 +4705,90 @@ plus de 90 : rayon du trou plus grand à la base</translation>
       <location filename="../../Workbench.cpp" line="62"/>
       <source>Part Design Modeling</source>
       <translation>Modélisation de Part Design</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesign_InvoluteGear</name>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="57"/>
+      <source>Involute gear...</source>
+      <translation>Engrenage à développante...</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="61"/>
+      <source>Creates or edit the involute gear definition.</source>
+      <translation>Crée ou modifie la définition de l'engrenage à développante.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesign_Sprocket</name>
+    <message>
+      <location filename="../../../SprocketFeature.py" line="62"/>
+      <source>Sprocket...</source>
+      <translation>Pignon...</translation>
+    </message>
+    <message>
+      <location filename="../../../SprocketFeature.py" line="66"/>
+      <source>Creates or edit the sprocket definition.</source>
+      <translation>Crée ou modifie la définition du pignon.</translation>
+    </message>
+  </context>
+  <context>
+    <name>WizardShaftTable</name>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="43"/>
+      <source>Length [mm]</source>
+      <translation>Longueur [mm]</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="44"/>
+      <source>Diameter [mm]</source>
+      <translation>Diamètre [mm]</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="45"/>
+      <source>Inner diameter [mm]</source>
+      <translation>Diamètre intérieur [mm]</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="46"/>
+      <source>Constraint type</source>
+      <translation>Type de contrainte</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="47"/>
+      <source>Start edge type</source>
+      <translation>Type d'arête au départ</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="48"/>
+      <source>Start edge size</source>
+      <translation>Taille de l'arête au départ</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="49"/>
+      <source>End edge type</source>
+      <translation>Type d'arête de fin</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="53"/>
+      <source>End edge size</source>
+      <translation>Taille de l'arête de fin</translation>
+    </message>
+  </context>
+  <context>
+    <name>WizardShaft</name>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="186"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="211"/>
+      <source>Shaft design wizard...</source>
+      <translation>Conception d'arbre...</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="187"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="212"/>
+      <source>Start the shaft design wizard</source>
+      <translation>Démarrer la conception d'arbre</translation>
     </message>
   </context>
 </TS>

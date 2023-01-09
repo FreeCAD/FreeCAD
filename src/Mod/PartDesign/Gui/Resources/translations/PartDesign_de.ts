@@ -53,7 +53,7 @@ Positive Werte lassen den Radius wachsen, negative lassen ihn schrumpfen.</trans
       <location filename="../../../App/FeatureHelix.cpp" line="94"/>
       <source>The growth of the helix' radius per turn.
 Non-zero values turn the helix into a conical spiral.</source>
-      <translation>Das Wachstum des Wendelradius pro Windung.
+      <translation>Die Aufweitung des Wendelradius pro Windung.
 Werte außer Null wandeln die Wendel in eine konische Spirale.</translation>
     </message>
     <message>
@@ -838,8 +838,8 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
       <translation>Klon erstellen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="874"/>
       <location filename="../../SketchWorkflow.cpp" line="297"/>
+      <location filename="../../Command.cpp" line="874"/>
       <source>Make copy</source>
       <translation>Kopie erstellen</translation>
     </message>
@@ -864,8 +864,8 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
       <translation>Boolean erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="189"/>
       <location filename="../../DlgActiveBody.cpp" line="104"/>
+      <location filename="../../CommandBody.cpp" line="189"/>
       <source>Add a Body</source>
       <translation>Einen Körper hinzufügen</translation>
     </message>
@@ -2018,7 +2018,7 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="233"/>
       <source>Radial growth:</source>
-      <translation>Radiales Wachstum:</translation>
+      <translation>Radiale Aufweitung:</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="255"/>
@@ -2081,7 +2081,7 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="63"/>
       <source>None</source>
-      <translation>Nichts</translation>
+      <translation>Ohne</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="64"/>
@@ -2908,19 +2908,19 @@ entlang der angegebenen Richtung gemessen</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="30"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="138"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="137"/>
       <source>Base X axis</source>
       <translation>Basis X-Achse</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="35"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="139"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="138"/>
       <source>Base Y axis</source>
       <translation>Basis Y-Achse</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="40"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="140"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="139"/>
       <source>Base Z axis</source>
       <translation>Basis Z-Achse</translation>
     </message>
@@ -2936,7 +2936,7 @@ entlang der angegebenen Richtung gemessen</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="55"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="147"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="146"/>
       <source>Select reference...</source>
       <translation>Referenz auswählen...</translation>
     </message>
@@ -3516,28 +3516,28 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
       <translation>Zum Erzeugen einer Skizze zuerst eine Ebene im Koordinatensystem oder auf einem Körper wählen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="895"/>
-      <location filename="../../Command.cpp" line="1894"/>
+      <location filename="../../ViewProviderHole.cpp" line="79"/>
+      <location filename="../../ViewProviderDatum.cpp" line="246"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="73"/>
       <location filename="../../SketchWorkflow.cpp" line="591"/>
       <location filename="../../ViewProvider.cpp" line="98"/>
       <location filename="../../ViewProviderBoolean.cpp" line="80"/>
-      <location filename="../../ViewProviderDatum.cpp" line="246"/>
-      <location filename="../../ViewProviderHole.cpp" line="79"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="73"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
+      <location filename="../../Command.cpp" line="895"/>
+      <location filename="../../Command.cpp" line="1894"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Es ist bereits ein Dialog in der Aufgabenleiste geöffnet</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="896"/>
-      <location filename="../../Command.cpp" line="1895"/>
+      <location filename="../../ViewProviderHole.cpp" line="80"/>
+      <location filename="../../ViewProviderDatum.cpp" line="247"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="74"/>
       <location filename="../../SketchWorkflow.cpp" line="592"/>
       <location filename="../../ViewProvider.cpp" line="99"/>
       <location filename="../../ViewProviderBoolean.cpp" line="81"/>
-      <location filename="../../ViewProviderDatum.cpp" line="247"/>
-      <location filename="../../ViewProviderHole.cpp" line="80"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="74"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
+      <location filename="../../Command.cpp" line="896"/>
+      <location filename="../../Command.cpp" line="1895"/>
       <source>Do you want to close this dialog?</source>
       <translation>Möchten Sie diesen Dialog zu schließen?</translation>
     </message>
@@ -3810,14 +3810,14 @@ This may lead to unexpected results.</source>
       <translation>Es ist nicht möglich, ein abzuziehendes Objekt ohne ein Basisobjekt zu erstellen</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="123"/>
       <location filename="../../TaskTransformedParameters.cpp" line="287"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="123"/>
       <source>Vertical sketch axis</source>
       <translation>Vertikale Skizzenachse</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="124"/>
       <location filename="../../TaskTransformedParameters.cpp" line="288"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="124"/>
       <source>Horizontal sketch axis</source>
       <translation>Horizontale Skizzenachse</translation>
     </message>
@@ -3872,11 +3872,11 @@ Bitte aktivieren (Doppelklick) Sie einen oder erstellen einen neuen Körper.</tr
       <translation>Um diese Funktion verwenden zu können, muss es Teil einer Baugruppe im Dokument sein.</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="65"/>
       <location filename="../../ViewProviderDressUp.cpp" line="50"/>
+      <location filename="../../ViewProviderTransformed.cpp" line="65"/>
+      <location filename="../../ViewProvider.cpp" line="65"/>
       <location filename="../../ViewProviderMultiTransform.cpp" line="42"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="204"/>
-      <location filename="../../ViewProviderTransformed.cpp" line="65"/>
       <source>Edit %1</source>
       <translation>%1 bearbeiten</translation>
     </message>
@@ -4349,7 +4349,7 @@ Du kannst die Teile später jederzeit mit 'Part Design -&gt; Migrieren...' migri
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="546"/>
       <source>Countersink angle</source>
-      <translation>Winkel einer kegelförmigen Senkung</translation>
+      <translation>Winkel der Kegelsenkung</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="564"/>
@@ -4367,7 +4367,7 @@ Du kannst die Teile später jederzeit mit 'Part Design -&gt; Migrieren...' migri
     <message>
       <location filename="../../TaskHoleParameters.ui" line="26"/>
       <source>&lt;b&gt;Threading and size&lt;/b&gt;</source>
-      <translation>&lt;b&gt;Gewinde und Größe&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;Gewindart und -Größe&lt;/b&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="39"/>
@@ -4465,7 +4465,7 @@ Nur für Bohrungen ohne Gewinde verfügbar</translation>
       <location filename="../../TaskHoleParameters.cpp" line="592"/>
       <location filename="../../TaskHoleParameters.cpp" line="603"/>
       <source>Close</source>
-      <translation>Schließen</translation>
+      <translation>Eng</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="261"/>
@@ -4529,7 +4529,7 @@ Nur für Bohrungen ohne Gewinde verfügbar</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="433"/>
       <source>&lt;b&gt;Hole cut&lt;/b&gt;</source>
-      <translation>&lt;b&gt;Bohrloch&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;Senkung&lt;/b&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="446"/>
@@ -4555,12 +4555,12 @@ Nur für Bohrungen ohne Gewinde verfügbar</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="561"/>
       <source>Countersink angle</source>
-      <translation>Winkel einer kegelförmigen Senkung</translation>
+      <translation>Winkel der Kegelsenkung</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="593"/>
       <source>&lt;b&gt;Drill point&lt;/b&gt;</source>
-      <translation>&lt;b&gt;Bohrspitze&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;Bohrungsgrund&lt;/b&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="625"/>
@@ -4570,13 +4570,13 @@ Nur für Bohrungen ohne Gewinde verfügbar</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="641"/>
       <source>Angled</source>
-      <translation>Winkelig</translation>
+      <translation>Konisch</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="676"/>
       <source>The size of the drill point will be taken into
 account for the depth of blind holes</source>
-      <translation>Die Größe der Bohrspitze wird für die Tiefe der Sackbohrung mit berücksichtigt</translation>
+      <translation>Die Größe der Bohrerspitze wird für die Tiefe eines Sacklochs berücksichtigt</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="680"/>
@@ -4714,6 +4714,90 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
       <location filename="../../Workbench.cpp" line="62"/>
       <source>Part Design Modeling</source>
       <translation>Part Design - Modellierung</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesign_InvoluteGear</name>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="57"/>
+      <source>Involute gear...</source>
+      <translation>Evolventenrad...</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.py" line="61"/>
+      <source>Creates or edit the involute gear definition.</source>
+      <translation>Erstellt oder bearbeitet die Definition eines Evolventenzahnrades.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesign_Sprocket</name>
+    <message>
+      <location filename="../../../SprocketFeature.py" line="62"/>
+      <source>Sprocket...</source>
+      <translation>Kettenrad...</translation>
+    </message>
+    <message>
+      <location filename="../../../SprocketFeature.py" line="66"/>
+      <source>Creates or edit the sprocket definition.</source>
+      <translation>Erstellt oder bearbeitet die Definition eines Kettenrades.</translation>
+    </message>
+  </context>
+  <context>
+    <name>WizardShaftTable</name>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="43"/>
+      <source>Length [mm]</source>
+      <translation>Länge [mm]</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="44"/>
+      <source>Diameter [mm]</source>
+      <translation>Durchmesser [mm]</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="45"/>
+      <source>Inner diameter [mm]</source>
+      <translation>Innendurchmesser [mm]</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="46"/>
+      <source>Constraint type</source>
+      <translation>Art der Randbedingung</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="47"/>
+      <source>Start edge type</source>
+      <translation>Art der Anfangskante</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="48"/>
+      <source>Start edge size</source>
+      <translation>Größe der Anfangskante</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="49"/>
+      <source>End edge type</source>
+      <translation>Art der Endkante</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="53"/>
+      <source>End edge size</source>
+      <translation>Größe der Endkante</translation>
+    </message>
+  </context>
+  <context>
+    <name>WizardShaft</name>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="186"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="211"/>
+      <source>Shaft design wizard...</source>
+      <translation>Entwurfsassistent für Wellen...</translation>
+    </message>
+    <message>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="187"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="212"/>
+      <source>Start the shaft design wizard</source>
+      <translation>Entwurfsassistent für Wellen starten</translation>
     </message>
   </context>
 </TS>

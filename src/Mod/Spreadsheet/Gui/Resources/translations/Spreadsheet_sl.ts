@@ -401,55 +401,55 @@
     <message>
       <location filename="../../DlgBindSheet.ui" line="117"/>
       <source>Sheet:</source>
-      <translation type="unfinished">Sheet:</translation>
+      <translation>Delovni list:</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="22"/>
       <source>First cell in range</source>
-      <translation type="unfinished">First cell in range</translation>
+      <translation>Prvo polje v obsegu</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="29"/>
       <source>Last cell in range</source>
-      <translation type="unfinished">Last cell in range</translation>
+      <translation>Zadnje polje v obsegu</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="36"/>
       <source>Bind cells:</source>
-      <translation type="unfinished">Bind cells:</translation>
+      <translation>Poveži polja:</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="49"/>
       <source>Start cell address</source>
-      <translation type="unfinished">Start cell address</translation>
+      <translation>Naslov začetnega polja</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="62"/>
       <source>End cell address</source>
-      <translation type="unfinished">End cell address</translation>
+      <translation>Naslov končnega polja</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="82"/>
       <source>Start cell address to bind to.
 Type '=' if you want to use an expression.
 The expression must evaluate to a string of some cell address.</source>
-      <translation type="unfinished">Start cell address to bind to.
-Type '=' if you want to use an expression.
-The expression must evaluate to a string of some cell address.</translation>
+      <translation>Naslov začetnega polja, na katerega se veže.
+Vtipkajte '=' če želite uporabiti izraz.
+Izraz mora vrednotiti niz določenih naslovov polj.</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="97"/>
       <source>End cell address to bind to.
 Type '=' if you want to use an expression.
 The expression must evaluate to a string of some cell address.</source>
-      <translation type="unfinished">End cell address to bind to.
-Type '=' if you want to use an expression.
-The expression must evaluate to a string of some cell address.</translation>
+      <translation>Naslov končnega polja, na katerega se veže.
+Vtipkajte '=' če želite uporabiti izraz.
+Izraz mora vrednotiti niz določenih naslovov polj.</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="110"/>
       <source>Which spread sheet to bind to</source>
-      <translation type="unfinished">Which spread sheet to bind to</translation>
+      <translation>Na katero razpredelnico se veže</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="126"/>
@@ -468,7 +468,7 @@ Uporabno pri izogibanju krožne odvisnosti, vendar je potrebna previdnost!</tran
     <message>
       <location filename="../../DlgBindSheet.ui" line="140"/>
       <source>Unbind</source>
-      <translation type="unfinished">Unbind</translation>
+      <translation>Razveži</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="147"/>
@@ -491,7 +491,7 @@ Uporabno pri izogibanju krožne odvisnosti, vendar je potrebna previdnost!</tran
     <message>
       <location filename="../../DlgSheetConf.ui" line="20"/>
       <source>Cell range:</source>
-      <translation type="unfinished">Cell range:</translation>
+      <translation>Razpon polj:</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="27"/>
@@ -504,14 +504,13 @@ property for user to dynamically switch configuration.
 The first row of the range will be bound to whatever row (indirectly) selected
 by that property.
 </source>
-      <translation type="unfinished">Starting cell address.
+      <translation>Naslov začetnega polja.
 
-The first column of the range is assumed to contain a list of configuration
-names, which will be used to generate a string list and bind to the given
-property for user to dynamically switch configuration.
+Predpostavlja se, da prvi stolpec v obsegu vsebuje seznam nazivov nastavitev,
+na podlagi katerih se bosta ustvarila seznam nizov in vezava na določeno lastnost,
+da lahko uporabnik dejavno menja nastavitev.
 
-The first row of the range will be bound to whatever row (indirectly) selected
-by that property.
+Prva vrstica obsega bo vezana na katerokoli vrstico, ki jo (posredno) izbere določena lastnost.
 </translation>
     </message>
     <message>
@@ -525,20 +524,19 @@ property for user to dynamically switch configuration.
 The first row of the range will be bound to whatever row (indirectly) selected
 by that property.
 </source>
-      <translation type="unfinished">Ending cell address.
+      <translation>Naslov končnega polja.
 
-The first column of the range is assumed to contain a list of configuration
-names, which will be used to generate a string list and bind to the given
-property for user to dynamically switch configuration.
+Predpostavlja se, da prvi stolpec v obsegu vsebuje seznam nazivov nastavitev,
+na podlagi katerih se bosta ustvarila seznam nizov in vezava na določeno lastnost,
+da lahko uporabnik dejavno menja nastavitev.
 
-The first row of the range will be bound to whatever row (indirectly) selected
-by that property.
+Prva vrstica obsega bo vezana na katerokoli vrstico, ki jo (posredno) izbere določena lastnost.
 </translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="57"/>
       <source>Property:</source>
-      <translation type="unfinished">Property:</translation>
+      <translation>Lastnost:</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="64"/>
@@ -550,7 +548,7 @@ switch the design configuration. The property will be created if not exist.</tra
     <message>
       <location filename="../../DlgSheetConf.ui" line="72"/>
       <source>Group:</source>
-      <translation type="unfinished">Group:</translation>
+      <translation>Skupina:</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="79"/>
@@ -560,7 +558,7 @@ switch the design configuration. The property will be created if not exist.</tra
     <message>
       <location filename="../../DlgSheetConf.ui" line="88"/>
       <source>Unsetup</source>
-      <translation type="unfinished">Unsetup</translation>
+      <translation>Odnastavi</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="95"/>
@@ -881,7 +879,7 @@ Preglednica.ime_ki_sem_ga_določil namesto Preglednica.B1</translation>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="197"/>
       <source>Bind cells</source>
-      <translation type="unfinished">Bind cells</translation>
+      <translation>Poveži polja</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="198"/>
@@ -907,7 +905,7 @@ Ali želite nadaljevati?</translation>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="243"/>
       <source>Unbind cells</source>
-      <translation type="unfinished">Unbind cells</translation>
+      <translation>Razveži polja</translation>
     </message>
   </context>
   <context>
@@ -969,14 +967,6 @@ Ali želite nadaljevati?</translation>
       <location filename="../../DlgSheetConf.cpp" line="294"/>
       <source>Unsetup configuration table</source>
       <translation type="unfinished">Unsetup configuration table</translation>
-    </message>
-  </context>
-  <context>
-    <name>SpreadsheetGui::Module</name>
-    <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="79"/>
-      <source>Unnamed</source>
-      <translation>Neimenovan</translation>
     </message>
   </context>
   <context>
@@ -1077,13 +1067,13 @@ Ali želite nadaljevati?</translation>
       <location filename="../../SheetTableView.cpp" line="185"/>
       <location filename="../../SheetTableView.cpp" line="622"/>
       <source>Bind...</source>
-      <translation type="unfinished">Bind...</translation>
+      <translation>Poveži ...</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="189"/>
       <location filename="../../SheetTableView.cpp" line="615"/>
       <source>Configuration table...</source>
-      <translation type="unfinished">Configuration table...</translation>
+      <translation>Nastavitvena preglednica ...</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="197"/>
@@ -1095,7 +1085,7 @@ Ali želite nadaljevati?</translation>
       <location filename="../../SheetTableView.cpp" line="199"/>
       <location filename="../../SheetTableView.cpp" line="617"/>
       <source>Split cells</source>
-      <translation type="unfinished">Split cells</translation>
+      <translation>Razdeli polja</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="203"/>
@@ -1145,7 +1135,7 @@ Ali želite nadaljevati?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>&amp;Spreadsheet</source>
-      <translation type="unfinished">&amp;Spreadsheet</translation>
+      <translation>&amp;Razpredelnica</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
@@ -1155,7 +1145,114 @@ Ali želite nadaljevati?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
       <source>&amp;Styles</source>
-      <translation type="unfinished">&amp;Styles</translation>
+      <translation>&amp;Slogi</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet</name>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="739"/>
+      <source>Spreadsheet</source>
+      <translation>Preglednica</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="748"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="874"/>
+      <source>Cell</source>
+      <translation>Celica</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="751"/>
+      <source>Apply</source>
+      <translation>Uveljavi</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="753"/>
+      <source>Apply the changes to the current cell</source>
+      <translation type="unfinished">Apply the changes to the current cell</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="755"/>
+      <source>Delete</source>
+      <translation>Izbriši</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="757"/>
+      <source>Deletes the contents of the current cell</source>
+      <translation type="unfinished">Deletes the contents of the current cell</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="759"/>
+      <source>Compute</source>
+      <translation>Izračunaj</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="761"/>
+      <source>Updates the values handled by controllers</source>
+      <translation type="unfinished">Updates the values handled by controllers</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="907"/>
+      <source>Create Spreadsheet</source>
+      <translation>Ustvari preglednico</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="933"/>
+      <source>Add controller</source>
+      <translation type="unfinished">Add controller</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="959"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="973"/>
+      <source>Add property controller</source>
+      <translation type="unfinished">Add property controller</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_Create</name>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="902"/>
+      <source>Spreadsheet</source>
+      <translation>Preglednica</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="905"/>
+      <source>Adds a spreadsheet object to the active document</source>
+      <translation type="unfinished">Adds a spreadsheet object to the active document</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_Controller</name>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="919"/>
+      <source>Add controller</source>
+      <translation type="unfinished">Add controller</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="922"/>
+      <source>Adds a cell controller to a selected spreadsheet</source>
+      <translation type="unfinished">Adds a cell controller to a selected spreadsheet</translation>
+    </message>
+  </context>
+  <context>
+    <name>Spreadsheet_PropertyController</name>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="944"/>
+      <source>Add property controller</source>
+      <translation type="unfinished">Add property controller</translation>
+    </message>
+    <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="947"/>
+      <source>Adds a property controller to a selected spreadsheet</source>
+      <translation type="unfinished">Adds a property controller to a selected spreadsheet</translation>
+    </message>
+  </context>
+  <context>
+    <name>Py</name>
+    <message>
+      <location filename="../../AppSpreadsheetGui.cpp" line="79"/>
+      <source>Unnamed</source>
+      <translation>Neimenovan</translation>
     </message>
   </context>
 </TS>
