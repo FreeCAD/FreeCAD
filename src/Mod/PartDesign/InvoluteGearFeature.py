@@ -76,20 +76,34 @@ class _InvoluteGear:
     "The InvoluteGear object"
     def __init__(self,obj):
         self.Type = "InvoluteGear"
-        obj.addProperty("App::PropertyInteger","NumberOfTeeth","Gear","Number of gear teeth")
-        obj.addProperty("App::PropertyLength","Modules","Gear","Modules of the gear")
-        obj.addProperty("App::PropertyAngle","PressureAngle","Gear","Pressure angle of gear teeth")
-        obj.addProperty("App::PropertyBool","HighPrecision","Gear","True=2 curves with each 3 control points False=1 curve with 4 control points ")
-        obj.addProperty("App::PropertyBool","ExternalGear","Gear","True=external Gear False=internal Gear ")
-
-        obj.NumberOfTeeth = 26
-        obj.Modules = "2.5 mm"
-        obj.PressureAngle = "20 deg"
-        obj.HighPrecision = True
-        obj.ExternalGear = True
-
+        self._ensure_properties(obj)
         obj.Proxy = self
 
+    def onDocumentRestored(self, obj):
+        """hook used to migrate older versions of this object"""
+        self._ensure_properties(obj)
+
+    def _ensure_properties(self, obj):
+        def ensure_property(type_, name, doc, default):
+            if not hasattr(obj, name):
+                obj.addProperty(type_, name, "Gear", doc)
+                setattr(obj, name, default)
+
+        ensure_property("App::PropertyInteger", "NumberOfTeeth",
+            doc="Number of gear teeth",
+            default=26)
+        ensure_property("App::PropertyLength", "Modules",
+            doc="Modules of the gear",
+            default="2.5 mm")
+        ensure_property("App::PropertyAngle", "PressureAngle",
+            doc="Pressure angle of gear teeth",
+            default="20 deg")
+        ensure_property("App::PropertyBool", "HighPrecision",
+            doc="True=2 curves with each 3 control points False=1 curve with 4 control points.",
+            default=True)
+        ensure_property("App::PropertyBool", "ExternalGear",
+            doc="True=external Gear False=internal Gear",
+            default=True)
 
     def execute(self,obj):
         #print "_InvoluteGear.execute()"
