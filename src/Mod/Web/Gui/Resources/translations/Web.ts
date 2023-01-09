@@ -128,13 +128,13 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../BrowserView.cpp" line="808"/>
+        <location filename="../../BrowserView.cpp" line="815"/>
         <location filename="../../AppWebGui.cpp" line="86"/>
         <source>Browser</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../BrowserView.cpp" line="616"/>
+        <location filename="../../BrowserView.cpp" line="623"/>
         <source>File does not exist!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -142,24 +142,24 @@
 <context>
     <name>WebGui::BrowserView</name>
     <message>
-        <location filename="../../BrowserView.cpp" line="604"/>
-        <location filename="../../BrowserView.cpp" line="609"/>
-        <location filename="../../BrowserView.cpp" line="612"/>
+        <location filename="../../BrowserView.cpp" line="611"/>
+        <location filename="../../BrowserView.cpp" line="616"/>
+        <location filename="../../BrowserView.cpp" line="619"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../BrowserView.cpp" line="609"/>
+        <location filename="../../BrowserView.cpp" line="616"/>
         <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../BrowserView.cpp" line="612"/>
+        <location filename="../../BrowserView.cpp" line="619"/>
         <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../BrowserView.cpp" line="776"/>
+        <location filename="../../BrowserView.cpp" line="783"/>
         <source>Loading %1...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -167,17 +167,17 @@
 <context>
     <name>WebGui::WebView</name>
     <message>
-        <location filename="../../BrowserView.cpp" line="364"/>
+        <location filename="../../BrowserView.cpp" line="362"/>
         <source>Open in External Browser</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../BrowserView.cpp" line="368"/>
+        <location filename="../../BrowserView.cpp" line="365"/>
         <source>Open in new window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../BrowserView.cpp" line="404"/>
+        <location filename="../../BrowserView.cpp" line="411"/>
         <source>View source</source>
         <translation type="unfinished"></translation>
     </message>

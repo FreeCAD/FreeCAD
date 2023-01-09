@@ -147,30 +147,30 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ImageView.cpp" line="544"/>
+        <location filename="../../ImageView.cpp" line="568"/>
         <source>grey</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ImageView.cpp" line="545"/>
-        <location filename="../../ImageView.cpp" line="548"/>
-        <location filename="../../ImageView.cpp" line="558"/>
-        <location filename="../../ImageView.cpp" line="563"/>
-        <location filename="../../ImageView.cpp" line="573"/>
-        <location filename="../../ImageView.cpp" line="578"/>
-        <location filename="../../ImageView.cpp" line="589"/>
-        <location filename="../../ImageView.cpp" line="594"/>
-        <location filename="../../ImageView.cpp" line="605"/>
-        <location filename="../../ImageView.cpp" line="610"/>
+        <location filename="../../ImageView.cpp" line="569"/>
+        <location filename="../../ImageView.cpp" line="572"/>
+        <location filename="../../ImageView.cpp" line="582"/>
+        <location filename="../../ImageView.cpp" line="587"/>
+        <location filename="../../ImageView.cpp" line="597"/>
+        <location filename="../../ImageView.cpp" line="602"/>
+        <location filename="../../ImageView.cpp" line="613"/>
+        <location filename="../../ImageView.cpp" line="618"/>
+        <location filename="../../ImageView.cpp" line="629"/>
+        <location filename="../../ImageView.cpp" line="634"/>
         <source>zoom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ImageView.cpp" line="548"/>
-        <location filename="../../ImageView.cpp" line="558"/>
-        <location filename="../../ImageView.cpp" line="573"/>
-        <location filename="../../ImageView.cpp" line="589"/>
-        <location filename="../../ImageView.cpp" line="605"/>
+        <location filename="../../ImageView.cpp" line="572"/>
+        <location filename="../../ImageView.cpp" line="582"/>
+        <location filename="../../ImageView.cpp" line="597"/>
+        <location filename="../../ImageView.cpp" line="613"/>
+        <location filename="../../ImageView.cpp" line="629"/>
         <source>outside image</source>
         <translation type="unfinished"></translation>
     </message>
@@ -251,7 +251,7 @@
     </message>
     <message>
         <location filename="../../../ImageTools/_CommandImageScaling.py" line="159"/>
-        <source>Select ImagePlane</source>
+        <source>Select image plane</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

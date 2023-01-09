@@ -5028,11 +5028,6 @@ The final angle will be the base angle plus this amount.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftviewproviders/view_base.py" line="402"/>
-        <source>Please load the Draft Workbench to enable editing this object</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../draftviewproviders/view_layer.py" line="462"/>
         <source>Activate this layer</source>
         <translation type="unfinished"></translation>
@@ -5044,29 +5039,36 @@ The final angle will be the base angle plus this amount.</source>
     </message>
     <message>
         <location filename="../../draftviewproviders/view_layer.py" line="506"/>
-        <location filename="../../draftviewproviders/view_layer.py" line="522"/>
+        <location filename="../../draftviewproviders/view_layer.py" line="520"/>
         <source>Merge layer duplicates</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftviewproviders/view_layer.py" line="511"/>
-        <location filename="../../draftviewproviders/view_layer.py" line="570"/>
+        <location filename="../../draftviewproviders/view_layer.py" line="512"/>
+        <location filename="../../draftviewproviders/view_layer.py" line="568"/>
         <source>Add new layer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftviewproviders/view_layer.py" line="555"/>
+        <location filename="../../draftviewproviders/view_layer.py" line="553"/>
         <source>Relabeling layer:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftviewproviders/view_layer.py" line="559"/>
+        <location filename="../../draftviewproviders/view_layer.py" line="557"/>
         <source>Merging layer:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftviewproviders/view_wire.py" line="153"/>
-        <location filename="../../draftviewproviders/view_wire.py" line="180"/>
+        <location filename="../../draftviewproviders/view_base.py" line="437"/>
+        <location filename="../../draftviewproviders/view_draft_annotation.py" line="240"/>
+        <location filename="../../draftviewproviders/view_hatch.py" line="82"/>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../draftviewproviders/view_base.py" line="445"/>
+        <location filename="../../draftviewproviders/view_wire.py" line="171"/>
         <source>Flatten</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5177,54 +5179,59 @@ The final angle will be the base angle plus this amount.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftfunctions/upgrade.py" line="489"/>
+        <location filename="../../draftfunctions/upgrade.py" line="490"/>
         <source>Found 1 non-parametric objects: draftifying it</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftfunctions/upgrade.py" line="500"/>
+        <location filename="../../draftfunctions/upgrade.py" line="501"/>
         <source>Found 1 closed sketch object: creating a face from it</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftfunctions/upgrade.py" line="505"/>
+        <location filename="../../draftfunctions/upgrade.py" line="506"/>
         <source>Found closed wires: creating faces</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftfunctions/upgrade.py" line="510"/>
+        <location filename="../../draftfunctions/upgrade.py" line="511"/>
         <source>Found several wires or edges: wiring them</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftfunctions/upgrade.py" line="512"/>
-        <location filename="../../draftfunctions/upgrade.py" line="546"/>
+        <location filename="../../draftfunctions/upgrade.py" line="513"/>
+        <location filename="../../draftfunctions/upgrade.py" line="548"/>
         <source>Found several non-treatable objects: creating compound</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftfunctions/upgrade.py" line="517"/>
+        <location filename="../../draftfunctions/upgrade.py" line="518"/>
         <source>trying: closing it</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftfunctions/upgrade.py" line="519"/>
+        <location filename="../../draftfunctions/upgrade.py" line="520"/>
         <source>Found 1 open wire: closing it</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftfunctions/upgrade.py" line="536"/>
+        <location filename="../../draftfunctions/upgrade.py" line="538"/>
         <source>Found 1 object: draftifying it</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftfunctions/upgrade.py" line="541"/>
+        <location filename="../../draftfunctions/upgrade.py" line="543"/>
         <source>Found points: creating compound</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftfunctions/upgrade.py" line="549"/>
+        <location filename="../../draftfunctions/upgrade.py" line="551"/>
         <source>Unable to upgrade these objects.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../draftviewproviders/view_text.py" line="229"/>
+        <source>Text</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -6982,7 +6989,7 @@ or from the subelement &apos;VertexN&apos;, &apos;EdgeN&apos;, or &apos;FaceN&ap
     </message>
     <message>
         <location filename="../../draftobjects/draft_annotation.py" line="83"/>
-        <location filename="../../draftviewproviders/view_draft_annotation.py" line="82"/>
+        <location filename="../../draftviewproviders/view_draft_annotation.py" line="86"/>
         <source>General scaling factor that affects the annotation consistently
 because it scales the text, and the line decorations, if any,
 in the same proportion.</source>
@@ -6990,7 +6997,7 @@ in the same proportion.</source>
     </message>
     <message>
         <location filename="../../draftobjects/draft_annotation.py" line="93"/>
-        <location filename="../../draftviewproviders/view_draft_annotation.py" line="100"/>
+        <location filename="../../draftviewproviders/view_draft_annotation.py" line="104"/>
         <source>Annotation style to apply to this object.
 When using a saved style some of the view properties will become read-only;
 they will only be editable by changing the style through the &apos;Annotation style editor&apos; tool.</source>
@@ -7626,26 +7633,26 @@ the &apos;First Angle&apos; and &apos;Last Angle&apos; properties.</source>
     </message>
     <message>
         <location filename="../../draftviewproviders/view_label.py" line="74"/>
-        <location filename="../../draftviewproviders/view_text.py" line="60"/>
+        <location filename="../../draftviewproviders/view_text.py" line="63"/>
         <source>The size of the text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../draftviewproviders/view_label.py" line="83"/>
-        <location filename="../../draftviewproviders/view_text.py" line="69"/>
+        <location filename="../../draftviewproviders/view_text.py" line="72"/>
         <source>The font of the text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../draftviewproviders/view_label.py" line="92"/>
         <location filename="../../draftviewproviders/view_label.py" line="119"/>
-        <location filename="../../draftviewproviders/view_text.py" line="78"/>
+        <location filename="../../draftviewproviders/view_text.py" line="81"/>
         <source>The vertical alignment of the text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../draftviewproviders/view_label.py" line="102"/>
-        <location filename="../../draftviewproviders/view_text.py" line="87"/>
+        <location filename="../../draftviewproviders/view_text.py" line="90"/>
         <source>Text color</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7656,7 +7663,7 @@ the &apos;First Angle&apos; and &apos;Last Angle&apos; properties.</source>
     </message>
     <message>
         <location filename="../../draftviewproviders/view_label.py" line="128"/>
-        <location filename="../../draftviewproviders/view_text.py" line="95"/>
+        <location filename="../../draftviewproviders/view_text.py" line="98"/>
         <source>Line spacing (relative to font size)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7682,23 +7689,23 @@ the &apos;First Angle&apos; and &apos;Last Angle&apos; properties.</source>
     </message>
     <message>
         <location filename="../../draftviewproviders/view_label.py" line="177"/>
-        <location filename="../../draftviewproviders/view_draft_annotation.py" line="115"/>
+        <location filename="../../draftviewproviders/view_draft_annotation.py" line="119"/>
         <source>Line width</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../draftviewproviders/view_label.py" line="186"/>
-        <location filename="../../draftviewproviders/view_draft_annotation.py" line="122"/>
+        <location filename="../../draftviewproviders/view_draft_annotation.py" line="126"/>
         <source>Line color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftviewproviders/view_base.py" line="106"/>
+        <location filename="../../draftviewproviders/view_base.py" line="108"/>
         <source>Defines an SVG pattern.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftviewproviders/view_base.py" line="116"/>
+        <location filename="../../draftviewproviders/view_base.py" line="118"/>
         <source>Defines the size of the SVG pattern.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7837,7 +7844,8 @@ beyond the dimension line</source>
 <context>
     <name>Command</name>
     <message>
-        <location filename="../../draftviewproviders/view_hatch.py" line="78"/>
+        <location filename="../../draftviewproviders/view_base.py" line="460"/>
+        <location filename="../../draftviewproviders/view_hatch.py" line="90"/>
         <source>Transform</source>
         <translation type="unfinished"></translation>
     </message>

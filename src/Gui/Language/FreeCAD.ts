@@ -47,24 +47,24 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../propertyeditor/PropertyItem.cpp" line="2270"/>
-        <location filename="../propertyeditor/PropertyItem.cpp" line="2536"/>
+        <location filename="../propertyeditor/PropertyItem.cpp" line="2273"/>
+        <location filename="../propertyeditor/PropertyItem.cpp" line="2539"/>
         <source>Angle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../propertyeditor/PropertyItem.cpp" line="2274"/>
-        <location filename="../propertyeditor/PropertyItem.cpp" line="2540"/>
+        <location filename="../propertyeditor/PropertyItem.cpp" line="2277"/>
+        <location filename="../propertyeditor/PropertyItem.cpp" line="2543"/>
         <source>Axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../propertyeditor/PropertyItem.cpp" line="2545"/>
+        <location filename="../propertyeditor/PropertyItem.cpp" line="2548"/>
         <source>Position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../propertyeditor/PropertyItem.cpp" line="2784"/>
+        <location filename="../propertyeditor/PropertyItem.cpp" line="2787"/>
         <source>Enum</source>
         <translation type="unfinished"></translation>
     </message>
@@ -498,22 +498,22 @@
 <context>
     <name>Gui::Assistant</name>
     <message>
-        <location filename="../Assistant.cpp" line="98"/>
-        <location filename="../Assistant.cpp" line="130"/>
-        <location filename="../Assistant.cpp" line="144"/>
-        <location filename="../Assistant.cpp" line="162"/>
+        <location filename="../Assistant.cpp" line="102"/>
+        <location filename="../Assistant.cpp" line="134"/>
+        <location filename="../Assistant.cpp" line="148"/>
+        <location filename="../Assistant.cpp" line="166"/>
         <source>%1 Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Assistant.cpp" line="99"/>
+        <location filename="../Assistant.cpp" line="103"/>
         <source>%1 help files not found (%2). You might need to install the %1 documentation package.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Assistant.cpp" line="131"/>
-        <location filename="../Assistant.cpp" line="145"/>
-        <location filename="../Assistant.cpp" line="163"/>
+        <location filename="../Assistant.cpp" line="135"/>
+        <location filename="../Assistant.cpp" line="149"/>
+        <location filename="../Assistant.cpp" line="167"/>
         <source>Unable to launch Qt Assistant (%1)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4026,7 +4026,7 @@ get date suffix according to the specified format</source>
     </message>
     <message>
         <location filename="../DlgSettingsDocument.ui" line="559"/>
-        <source>Allow objects to have same label/name</source>
+        <source>Allow objects to have same label</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5689,7 +5689,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <location filename="../MouseButtons.ui" line="48"/>
-        <source>Panning</source>
+        <source>Panning:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6601,27 +6601,27 @@ Do you want to save your changes?</source>
 <context>
     <name>Gui::Flag</name>
     <message>
-        <location filename="../Flag.cpp" line="155"/>
+        <location filename="../Flag.cpp" line="163"/>
         <source>Top left</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Flag.cpp" line="157"/>
+        <location filename="../Flag.cpp" line="165"/>
         <source>Bottom left</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Flag.cpp" line="159"/>
+        <location filename="../Flag.cpp" line="167"/>
         <source>Top right</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Flag.cpp" line="161"/>
+        <location filename="../Flag.cpp" line="169"/>
         <source>Bottom right</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Flag.cpp" line="164"/>
+        <location filename="../Flag.cpp" line="172"/>
         <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6881,62 +6881,62 @@ Do you want to save your changes?</source>
     <name>Gui::MainWindow</name>
     <message>
         <location filename="../MainWindow.cpp" line="299"/>
-        <location filename="../MainWindow.cpp" line="1929"/>
+        <location filename="../MainWindow.cpp" line="1958"/>
         <source>Dimension</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="339"/>
+        <location filename="../MainWindow.cpp" line="349"/>
         <source>Ready</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="748"/>
+        <location filename="../MainWindow.cpp" line="766"/>
         <source>Help addon needed!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="749"/>
+        <location filename="../MainWindow.cpp" line="767"/>
         <source>The Help system of %1 is now handled by the &quot;Help&quot; addon. It can easily be installed via the Addons Manager</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="751"/>
+        <location filename="../MainWindow.cpp" line="769"/>
         <source>Open Addon Manager</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="946"/>
+        <location filename="../MainWindow.cpp" line="964"/>
         <source>Close All</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="1150"/>
-        <location filename="../MainWindow.cpp" line="1151"/>
-        <location filename="../MainWindow.cpp" line="1152"/>
+        <location filename="../MainWindow.cpp" line="1168"/>
+        <location filename="../MainWindow.cpp" line="1169"/>
+        <location filename="../MainWindow.cpp" line="1170"/>
         <source>Toggles this toolbar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="1165"/>
-        <location filename="../MainWindow.cpp" line="1166"/>
-        <location filename="../MainWindow.cpp" line="1167"/>
+        <location filename="../MainWindow.cpp" line="1183"/>
+        <location filename="../MainWindow.cpp" line="1184"/>
+        <location filename="../MainWindow.cpp" line="1185"/>
         <source>Toggles this dockable window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="1720"/>
-        <location filename="../MainWindow.cpp" line="1812"/>
+        <location filename="../MainWindow.cpp" line="1749"/>
+        <location filename="../MainWindow.cpp" line="1841"/>
         <source>Unsaved document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="1721"/>
+        <location filename="../MainWindow.cpp" line="1750"/>
         <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="1813"/>
+        <location filename="../MainWindow.cpp" line="1842"/>
         <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
         <translation type="unfinished"></translation>
@@ -7181,7 +7181,7 @@ How do you want to proceed?</source>
 <context>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
-        <location filename="../propertyeditor/PropertyItem.cpp" line="4311"/>
+        <location filename="../propertyeditor/PropertyItem.cpp" line="4314"/>
         <source>Change the linked object</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7189,12 +7189,12 @@ How do you want to proceed?</source>
 <context>
     <name>Gui::PropertyEditor::LinkSelection</name>
     <message>
-        <location filename="../propertyeditor/PropertyItem.cpp" line="4280"/>
+        <location filename="../propertyeditor/PropertyItem.cpp" line="4283"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../propertyeditor/PropertyItem.cpp" line="4280"/>
+        <location filename="../propertyeditor/PropertyItem.cpp" line="4283"/>
         <source>Object not found</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7318,77 +7318,77 @@ Do you want to exit without saving your data?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PythonConsole.cpp" line="1307"/>
+        <location filename="../PythonConsole.cpp" line="1315"/>
         <source>&amp;Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PythonConsole.cpp" line="1310"/>
+        <location filename="../PythonConsole.cpp" line="1318"/>
         <source>&amp;Copy command</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PythonConsole.cpp" line="1313"/>
+        <location filename="../PythonConsole.cpp" line="1321"/>
         <source>&amp;Copy history</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PythonConsole.cpp" line="1316"/>
+        <location filename="../PythonConsole.cpp" line="1324"/>
         <source>Save history as...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PythonConsole.cpp" line="1319"/>
+        <location filename="../PythonConsole.cpp" line="1327"/>
         <source>Save history</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PythonConsole.cpp" line="1320"/>
+        <location filename="../PythonConsole.cpp" line="1328"/>
         <source>Saves Python history across %1 sessions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PythonConsole.cpp" line="1326"/>
+        <location filename="../PythonConsole.cpp" line="1334"/>
         <source>&amp;Paste</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PythonConsole.cpp" line="1330"/>
+        <location filename="../PythonConsole.cpp" line="1338"/>
         <source>Select All</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PythonConsole.cpp" line="1333"/>
+        <location filename="../PythonConsole.cpp" line="1341"/>
         <source>Clear console</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PythonConsole.cpp" line="1337"/>
+        <location filename="../PythonConsole.cpp" line="1345"/>
         <source>Insert file name...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PythonConsole.cpp" line="1340"/>
+        <location filename="../PythonConsole.cpp" line="1348"/>
         <source>Word wrap</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PythonConsole.cpp" line="1364"/>
+        <location filename="../PythonConsole.cpp" line="1372"/>
         <source>Save History</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PythonConsole.cpp" line="1365"/>
+        <location filename="../PythonConsole.cpp" line="1373"/>
         <source>Macro Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PythonConsole.cpp" line="1384"/>
+        <location filename="../PythonConsole.cpp" line="1392"/>
         <source>Insert file name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PythonConsole.cpp" line="1385"/>
+        <location filename="../PythonConsole.cpp" line="1393"/>
         <source>All Files</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7611,7 +7611,7 @@ Do you want to specify another directory?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskCSysDragger.cpp" line="90"/>
+        <location filename="../TaskCSysDragger.cpp" line="91"/>
         <source>Rotation Increment:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8028,7 +8028,7 @@ Do you want to specify another directory?</source>
 <context>
     <name>Gui::TreeDockWidget</name>
     <message>
-        <location filename="../Tree.cpp" line="3086"/>
+        <location filename="../Tree.cpp" line="3094"/>
         <source>Tree view</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8036,7 +8036,7 @@ Do you want to specify another directory?</source>
 <context>
     <name>Gui::TreePanel</name>
     <message>
-        <location filename="../Tree.cpp" line="3012"/>
+        <location filename="../Tree.cpp" line="3020"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8069,148 +8069,148 @@ Do you want to specify another directory?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2739"/>
+        <location filename="../Tree.cpp" line="2747"/>
         <source>Labels &amp; Attributes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2740"/>
+        <location filename="../Tree.cpp" line="2748"/>
         <source>Description</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2741"/>
+        <location filename="../Tree.cpp" line="2749"/>
         <source>Application</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2743"/>
+        <location filename="../Tree.cpp" line="2751"/>
         <source>Show hidden items</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2744"/>
+        <location filename="../Tree.cpp" line="2752"/>
         <source>Show hidden tree view items</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2746"/>
+        <location filename="../Tree.cpp" line="2754"/>
         <source>Hide item</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2747"/>
+        <location filename="../Tree.cpp" line="2755"/>
         <source>Hide the item in tree</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2749"/>
+        <location filename="../Tree.cpp" line="2757"/>
         <source>Create group...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2750"/>
+        <location filename="../Tree.cpp" line="2758"/>
         <source>Create a group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2752"/>
-        <location filename="../Tree.cpp" line="4866"/>
+        <location filename="../Tree.cpp" line="2760"/>
+        <location filename="../Tree.cpp" line="4874"/>
         <source>Rename</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2753"/>
+        <location filename="../Tree.cpp" line="2761"/>
         <source>Rename object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2755"/>
+        <location filename="../Tree.cpp" line="2763"/>
         <source>Finish editing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2756"/>
+        <location filename="../Tree.cpp" line="2764"/>
         <source>Finish editing object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2758"/>
+        <location filename="../Tree.cpp" line="2766"/>
         <source>Add dependent objects to selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2759"/>
+        <location filename="../Tree.cpp" line="2767"/>
         <source>Adds all dependent objects to the selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2761"/>
+        <location filename="../Tree.cpp" line="2769"/>
         <source>Close document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2762"/>
+        <location filename="../Tree.cpp" line="2770"/>
         <source>Close the document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2764"/>
+        <location filename="../Tree.cpp" line="2772"/>
         <source>Reload document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2765"/>
+        <location filename="../Tree.cpp" line="2773"/>
         <source>Reload a partially loaded document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2767"/>
+        <location filename="../Tree.cpp" line="2775"/>
         <source>Skip recomputes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2768"/>
+        <location filename="../Tree.cpp" line="2776"/>
         <source>Enable or disable recomputations of document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2770"/>
+        <location filename="../Tree.cpp" line="2778"/>
         <source>Allow partial recomputes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2772"/>
+        <location filename="../Tree.cpp" line="2780"/>
         <source>Enable or disable recomputating editing object when &apos;skip recomputation&apos; is enabled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2774"/>
+        <location filename="../Tree.cpp" line="2782"/>
         <source>Mark to recompute</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2775"/>
+        <location filename="../Tree.cpp" line="2783"/>
         <source>Mark this object to be recomputed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2778"/>
+        <location filename="../Tree.cpp" line="2786"/>
         <source>Recompute object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2779"/>
+        <location filename="../Tree.cpp" line="2787"/>
         <source>Recompute the selected object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="4837"/>
+        <location filename="../Tree.cpp" line="4845"/>
         <source> (but must be executed)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="4839"/>
+        <location filename="../Tree.cpp" line="4847"/>
         <source>%1, Internal name: %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8427,37 +8427,37 @@ Do you want to specify another directory?</source>
 <context>
     <name>QDockWidget</name>
     <message>
-        <location filename="../MainWindow.cpp" line="389"/>
+        <location filename="../MainWindow.cpp" line="399"/>
         <source>Tree view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="417"/>
+        <location filename="../MainWindow.cpp" line="427"/>
         <source>Property view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="435"/>
+        <location filename="../MainWindow.cpp" line="445"/>
         <source>Selection view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="457"/>
+        <location filename="../MainWindow.cpp" line="467"/>
         <source>Combo View</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="509"/>
+        <location filename="../MainWindow.cpp" line="519"/>
         <source>Report view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="529"/>
+        <location filename="../MainWindow.cpp" line="539"/>
         <source>Python console</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="491"/>
+        <location filename="../MainWindow.cpp" line="501"/>
         <source>DAG View</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8575,7 +8575,7 @@ Do you want to specify another directory?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="587"/>
+        <location filename="../MainWindow.cpp" line="597"/>
         <location filename="../CommandDoc.cpp" line="1189"/>
         <source>Unsaved document</source>
         <translation type="unfinished"></translation>
@@ -9135,32 +9135,32 @@ Please open a browser window and type in: http://localhost:%1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="589"/>
+        <location filename="../MainWindow.cpp" line="599"/>
         <source>Do you want to save your changes to document &apos;%1&apos; before closing?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="592"/>
+        <location filename="../MainWindow.cpp" line="602"/>
         <source>Do you want to save your changes to document before closing?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="594"/>
+        <location filename="../MainWindow.cpp" line="604"/>
         <source>If you don&apos;t save, your changes will be lost.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="599"/>
+        <location filename="../MainWindow.cpp" line="609"/>
         <source>Apply answer to all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="689"/>
+        <location filename="../MainWindow.cpp" line="699"/>
         <source>%1 Document(s) not saved</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="690"/>
+        <location filename="../MainWindow.cpp" line="700"/>
         <source>Some documents could not be saved. Do you want to cancel closing?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9290,8 +9290,8 @@ underscore, and must not start with a digit.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2028"/>
-        <location filename="../Tree.cpp" line="2224"/>
+        <location filename="../Tree.cpp" line="2036"/>
+        <location filename="../Tree.cpp" line="2232"/>
         <source>Drag &amp; drop failed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9733,13 +9733,13 @@ the current copy will be lost.
 <context>
     <name>StdCmdDockViewMenu</name>
     <message>
-        <location filename="../CommandWindow.cpp" line="302"/>
+        <location filename="../CommandWindow.cpp" line="307"/>
         <source>Panels</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandWindow.cpp" line="303"/>
-        <location filename="../CommandWindow.cpp" line="305"/>
+        <location filename="../CommandWindow.cpp" line="308"/>
+        <location filename="../CommandWindow.cpp" line="310"/>
         <source>List of available dock panels</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10306,7 +10306,7 @@ the current copy will be lost.
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="1917"/>
+        <location filename="../MainWindow.cpp" line="1946"/>
         <location filename="../DocumentRecovery.cpp" line="391"/>
         <source>Unnamed</source>
         <translation type="unfinished"></translation>
@@ -10810,13 +10810,13 @@ the current copy will be lost.
 <context>
     <name>StdCmdStatusBar</name>
     <message>
-        <location filename="../CommandWindow.cpp" line="393"/>
+        <location filename="../CommandWindow.cpp" line="398"/>
         <source>Status bar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandWindow.cpp" line="394"/>
-        <location filename="../CommandWindow.cpp" line="396"/>
+        <location filename="../CommandWindow.cpp" line="399"/>
+        <location filename="../CommandWindow.cpp" line="401"/>
         <source>Toggles the status bar</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10946,13 +10946,13 @@ the current copy will be lost.
 <context>
     <name>StdCmdToolBarMenu</name>
     <message>
-        <location filename="../CommandWindow.cpp" line="338"/>
+        <location filename="../CommandWindow.cpp" line="343"/>
         <source>Tool&amp;bars</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandWindow.cpp" line="339"/>
-        <location filename="../CommandWindow.cpp" line="341"/>
+        <location filename="../CommandWindow.cpp" line="344"/>
+        <location filename="../CommandWindow.cpp" line="346"/>
         <source>Toggles this window</source>
         <translation type="unfinished"></translation>
     </message>
@@ -11086,13 +11086,13 @@ the current copy will be lost.
 <context>
     <name>StdCmdUserInterface</name>
     <message>
-        <location filename="../CommandWindow.cpp" line="280"/>
+        <location filename="../CommandWindow.cpp" line="285"/>
         <source>Dock views</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandWindow.cpp" line="281"/>
-        <location filename="../CommandWindow.cpp" line="283"/>
+        <location filename="../CommandWindow.cpp" line="286"/>
+        <location filename="../CommandWindow.cpp" line="288"/>
         <source>Dock all top-level views</source>
         <translation type="unfinished"></translation>
     </message>
@@ -11492,13 +11492,13 @@ the current copy will be lost.
 <context>
     <name>StdCmdWindows</name>
     <message>
-        <location filename="../CommandWindow.cpp" line="256"/>
+        <location filename="../CommandWindow.cpp" line="261"/>
         <source>&amp;Windows...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandWindow.cpp" line="257"/>
-        <location filename="../CommandWindow.cpp" line="259"/>
+        <location filename="../CommandWindow.cpp" line="262"/>
+        <location filename="../CommandWindow.cpp" line="264"/>
         <source>Windows list</source>
         <translation type="unfinished"></translation>
     </message>
@@ -11506,9 +11506,9 @@ the current copy will be lost.
 <context>
     <name>StdCmdWindowsMenu</name>
     <message>
-        <location filename="../CommandWindow.cpp" line="439"/>
-        <location filename="../CommandWindow.cpp" line="440"/>
-        <location filename="../CommandWindow.cpp" line="442"/>
+        <location filename="../CommandWindow.cpp" line="444"/>
+        <location filename="../CommandWindow.cpp" line="445"/>
+        <location filename="../CommandWindow.cpp" line="447"/>
         <source>Activates this window</source>
         <translation type="unfinished"></translation>
     </message>
@@ -11983,7 +11983,7 @@ Do you still want to proceed?</source>
     <name>TreeParams</name>
     <message>
         <location filename="../TreeParams.cpp" line="1139"/>
-        <source>Tree view item background. Only effecitve in overlay.</source>
+        <source>Tree view item background. Only effective in overlay.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -11998,17 +11998,17 @@ Do you still want to proceed?</source>
     </message>
     <message>
         <location filename="../TreeParams.cpp" line="1223"/>
-        <source>Hide tree view scroll bar in dock overlay</source>
+        <source>Hide tree view scroll bar in dock overlay.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../TreeParams.cpp" line="1251"/>
-        <source>Hide tree view header view in dock overlay</source>
+        <source>Hide tree view header view in dock overlay.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../TreeParams.cpp" line="1279"/>
-        <source>Allow tree view columns to be manually resized</source>
+        <source>Allow tree view columns to be manually resized.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -12154,6 +12154,19 @@ Do you still want to proceed?</source>
     <message>
         <location filename="../Workbench.cpp" line="546"/>
         <source>Link actions</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Gui::MDIView</name>
+    <message>
+        <location filename="../MDIView.cpp" line="253"/>
+        <source>Export PDF</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MDIView.cpp" line="254"/>
+        <source>PDF file</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

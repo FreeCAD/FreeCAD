@@ -565,7 +565,7 @@ Select a different shape, please.</source>
     </message>
 </context>
 <context>
-    <name>MeshPart_FlatteningCommand</name>
+    <name>MeshPart_CreateFlatMesh</name>
     <message>
         <location filename="../../MeshFlatteningCommand.py" line="47"/>
         <source>Unwrap Mesh</source>
@@ -573,13 +573,20 @@ Select a different shape, please.</source>
     </message>
     <message>
         <location filename="../../MeshFlatteningCommand.py" line="50"/>
-        <location filename="../../MeshFlatteningCommand.py" line="82"/>
         <source>Find a flat representation of a mesh.</source>
         <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>MeshPart_CreateFlatFace</name>
     <message>
         <location filename="../../MeshFlatteningCommand.py" line="79"/>
         <source>Unwrap Face</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../MeshFlatteningCommand.py" line="82"/>
+        <source>Find a flat representation of a face.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

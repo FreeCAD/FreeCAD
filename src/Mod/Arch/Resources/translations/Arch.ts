@@ -4017,7 +4017,7 @@ Building creation aborted.</source>
     </message>
     <message>
         <location filename="../../ArchSite.py" line="612"/>
-        <source>A url that shows this site in a mapping website</source>
+        <source>A URL that shows this site in a mapping website</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4578,7 +4578,7 @@ Building creation aborted.</source>
     </message>
     <message>
         <location filename="../../ArchStairs.py" line="416"/>
-        <source>The type of connection between the lower slab and the start of the stairs</source>
+        <source>The type of connection between the lower floor slab and the start of the stairs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

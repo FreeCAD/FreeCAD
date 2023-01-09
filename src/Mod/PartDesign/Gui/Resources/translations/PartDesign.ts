@@ -2885,19 +2885,19 @@ measured along the specified direction</source>
     </message>
     <message>
         <location filename="../../TaskRevolutionParameters.ui" line="30"/>
-        <location filename="../../TaskRevolutionParameters.cpp" line="138"/>
+        <location filename="../../TaskRevolutionParameters.cpp" line="137"/>
         <source>Base X axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../TaskRevolutionParameters.ui" line="35"/>
-        <location filename="../../TaskRevolutionParameters.cpp" line="139"/>
+        <location filename="../../TaskRevolutionParameters.cpp" line="138"/>
         <source>Base Y axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../TaskRevolutionParameters.ui" line="40"/>
-        <location filename="../../TaskRevolutionParameters.cpp" line="140"/>
+        <location filename="../../TaskRevolutionParameters.cpp" line="139"/>
         <source>Base Z axis</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2913,7 +2913,7 @@ measured along the specified direction</source>
     </message>
     <message>
         <location filename="../../TaskRevolutionParameters.ui" line="55"/>
-        <location filename="../../TaskRevolutionParameters.cpp" line="147"/>
+        <location filename="../../TaskRevolutionParameters.cpp" line="146"/>
         <source>Select reference...</source>
         <translation type="unfinished"></translation>
     </message>

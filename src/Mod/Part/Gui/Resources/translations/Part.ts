@@ -3517,79 +3517,79 @@ during file reading (slower but higher details).</source>
     </message>
     <message>
         <location filename="../../DlgPrimitives.ui" line="33"/>
-        <location filename="../../DlgPrimitives.cpp" line="737"/>
+        <location filename="../../DlgPrimitives.cpp" line="275"/>
         <source>Plane</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../DlgPrimitives.ui" line="42"/>
-        <location filename="../../DlgPrimitives.cpp" line="755"/>
+        <location filename="../../DlgPrimitives.cpp" line="351"/>
         <source>Box</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../DlgPrimitives.ui" line="51"/>
-        <location filename="../../DlgPrimitives.cpp" line="777"/>
+        <location filename="../../DlgPrimitives.cpp" line="442"/>
         <source>Cylinder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../DlgPrimitives.ui" line="60"/>
-        <location filename="../../DlgPrimitives.cpp" line="797"/>
+        <location filename="../../DlgPrimitives.cpp" line="535"/>
         <source>Cone</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../DlgPrimitives.ui" line="69"/>
-        <location filename="../../DlgPrimitives.cpp" line="817"/>
+        <location filename="../../DlgPrimitives.cpp" line="627"/>
         <source>Sphere</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../DlgPrimitives.ui" line="78"/>
-        <location filename="../../DlgPrimitives.cpp" line="841"/>
+        <location filename="../../DlgPrimitives.cpp" line="732"/>
         <source>Ellipsoid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../DlgPrimitives.ui" line="87"/>
-        <location filename="../../DlgPrimitives.cpp" line="863"/>
+        <location filename="../../DlgPrimitives.cpp" line="840"/>
         <source>Torus</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../DlgPrimitives.ui" line="96"/>
-        <location filename="../../DlgPrimitives.cpp" line="885"/>
+        <location filename="../../DlgPrimitives.cpp" line="939"/>
         <source>Prism</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../DlgPrimitives.ui" line="105"/>
-        <location filename="../../DlgPrimitives.cpp" line="917"/>
+        <location filename="../../DlgPrimitives.cpp" line="1082"/>
         <source>Wedge</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../DlgPrimitives.ui" line="114"/>
-        <location filename="../../DlgPrimitives.cpp" line="940"/>
+        <location filename="../../DlgPrimitives.cpp" line="1209"/>
         <source>Helix</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../DlgPrimitives.ui" line="123"/>
-        <location filename="../../DlgPrimitives.cpp" line="958"/>
+        <location filename="../../DlgPrimitives.cpp" line="1299"/>
         <source>Spiral</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../DlgPrimitives.ui" line="132"/>
-        <location filename="../../DlgPrimitives.cpp" line="976"/>
+        <location filename="../../DlgPrimitives.cpp" line="1380"/>
         <source>Circle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../DlgPrimitives.ui" line="141"/>
-        <location filename="../../DlgPrimitives.cpp" line="996"/>
+        <location filename="../../DlgPrimitives.cpp" line="1467"/>
         <source>Ellipse</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3600,13 +3600,13 @@ during file reading (slower but higher details).</source>
     </message>
     <message>
         <location filename="../../DlgPrimitives.ui" line="159"/>
-        <location filename="../../DlgPrimitives.cpp" line="1038"/>
+        <location filename="../../DlgPrimitives.cpp" line="1645"/>
         <source>Line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../DlgPrimitives.ui" line="168"/>
-        <location filename="../../DlgPrimitives.cpp" line="1054"/>
+        <location filename="../../DlgPrimitives.cpp" line="1545"/>
         <source>Regular polygon</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3844,24 +3844,25 @@ during file reading (slower but higher details).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgPrimitives.cpp" line="1014"/>
+        <location filename="../../DlgPrimitives.cpp" line="1744"/>
         <source>Vertex</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgPrimitives.cpp" line="1063"/>
-        <location filename="../../DlgPrimitives.cpp" line="1133"/>
-        <location filename="../../DlgPrimitives.cpp" line="1142"/>
+        <location filename="../../DlgPrimitives.cpp" line="1924"/>
+        <location filename="../../DlgPrimitives.cpp" line="1934"/>
+        <location filename="../../DlgPrimitives.cpp" line="1949"/>
+        <location filename="../../DlgPrimitives.cpp" line="1953"/>
         <source>Create %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgPrimitives.cpp" line="1064"/>
+        <location filename="../../DlgPrimitives.cpp" line="1925"/>
         <source>No active document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgPrimitives.cpp" line="2063"/>
+        <location filename="../../DlgPrimitives.cpp" line="2228"/>
         <source>&amp;Create</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5583,7 +5584,7 @@ in the 3D view for the sweep path.</source>
         <location filename="../../../BasicShapes/ViewProviderShapes.py" line="47"/>
         <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
         <location filename="../../ViewProviderPrimitive.cpp" line="56"/>
-        <location filename="../../ViewProvider.cpp" line="50"/>
+        <location filename="../../ViewProvider.cpp" line="53"/>
         <source>Edit %1</source>
         <translation type="unfinished"></translation>
     </message>
