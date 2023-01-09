@@ -61,11 +61,14 @@
 #include <QXmlResultItems>
 
 // OpenCasCade
+#include <BRep_Tool.hxx>
+#include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepLProp_SLProps.hxx>
 #include <gp_Dir.hxx>
 #include <gp_Pnt.hxx>
+#include <TopExp.hxx>
 #include <TopoDS_Shape.hxx>
 
 // Open Inventor

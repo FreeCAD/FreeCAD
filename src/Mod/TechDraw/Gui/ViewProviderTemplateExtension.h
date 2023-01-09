@@ -28,6 +28,7 @@
 #include <Gui/ViewProviderExtensionPython.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
+
 namespace TechDrawGui
 {
 class ViewProviderTemplate;

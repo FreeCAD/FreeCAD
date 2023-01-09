@@ -21,22 +21,21 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-#include <QMessageBox>
+# include <QMessageBox>
 #endif
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
 #include <Base/Tools.h>
-
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawTemplate.h>
 
-#include "ViewProviderDrawingView.h"
 #include "ViewProviderDrawingViewExtension.h"
+#include "ViewProviderDrawingView.h"
 #include "ViewProviderPage.h"
+
 
 using namespace TechDrawGui;
 
