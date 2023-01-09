@@ -30,7 +30,6 @@
 #include <Base/UnitsApi.h>
 
 #include "DimensionFormatter.h"
-#include "DrawViewDimension.h"
 #include "Preferences.h"
 
 
@@ -392,7 +391,7 @@ std::string DimensionFormatter::getDefaultFormatSpec(bool isToleranceFormat) con
 //true if value is too small to display using formatSpec
 bool DimensionFormatter::isTooSmall(double value, QString formatSpec)
 {
-    if (DU::fpCompare(value, 0.0)) {
+    if (TechDraw::DrawUtil::fpCompare(value, 0.0)) {
         //zero values always fit, so it isn't too small
         return false;
     }

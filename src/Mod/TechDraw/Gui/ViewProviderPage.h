@@ -24,15 +24,17 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERPAGE_H
 #define DRAWINGGUI_VIEWPROVIDERPAGE_H
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <QObject>
 #include <QPointer>
+
 #include <boost_signals2.hpp>
 
 #include <App/PropertyUnits.h>
 #include <Gui/ViewProviderDocumentObject.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <ViewProviderPageExtension.h>
+
 
 namespace TechDraw
 {

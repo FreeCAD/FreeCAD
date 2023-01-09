@@ -23,37 +23,35 @@
 #include "PreCompiled.h"
 
 #ifdef FC_OS_WIN32
-#define _USE_MATH_DEFINES//re Windows & M_PI issues
+# define _USE_MATH_DEFINES //resolves Windows & M_PI issues
 #endif
 
 #ifndef _PreComp_
-#include <cmath>
+# include <cmath>
 
-#include <QGraphicsScene>
-#include <QGraphicsSceneMouseEvent>
-#include <QPaintDevice>
-#include <QPainter>
-#include <QPainterPath>
-#include <QSvgGenerator>
+# include <QGraphicsScene>
+# include <QGraphicsSceneMouseEvent>
+# include <QPaintDevice>
+# include <QPainter>
+# include <QPainterPath>
+# include <QSvgGenerator>
 #endif
 
 #include <App/Application.h>
-
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 #include <Base/UnitsApi.h>
 #include <Gui/Command.h>
-
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawViewDimension.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/Geometry.h>
 
+#include "QGIViewDimension.h"
 #include "PreferencesGui.h"
 #include "QGIArrow.h"
 #include "QGIDimLines.h"
 #include "QGIVertex.h"
-#include "QGIViewDimension.h"
 #include "ViewProviderDimension.h"
 #include "ZVALUE.h"
 

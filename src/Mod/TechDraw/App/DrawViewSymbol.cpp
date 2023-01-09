@@ -33,7 +33,7 @@
 #include <Base/Console.h>
 
 #include "DrawViewSymbol.h"
-#include "DrawViewSymbolPy.h"// generated from DrawViewSymbolPy.xml
+#include "DrawViewSymbolPy.h" // generated from DrawViewSymbolPy.xml
 #include "DrawPage.h"
 #include "DrawUtil.h"
 

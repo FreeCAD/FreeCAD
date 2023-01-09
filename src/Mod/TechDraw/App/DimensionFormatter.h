@@ -27,6 +27,7 @@
 
 #include <DrawViewDimension.h>
 
+
 namespace TechDraw {
 
 class TechDrawExport DimensionFormatter {

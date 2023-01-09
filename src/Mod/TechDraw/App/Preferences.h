@@ -28,8 +28,8 @@
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 
-class QString;
 class QColor;
+class QString;
 
 namespace App
 {

@@ -28,14 +28,9 @@
 #endif  //#ifndef _PreComp_
 
 #include <App/DocumentObject.h>
-#include <Base/Exception.h>
 #include <Base/Console.h>
 #include <Gui/Selection.h>
-
-#include <Mod/TechDraw/App/Geometry.h>
-#include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
-#include <Mod/TechDraw/App/ShapeExtractor.h>
 #include <Mod/TechDraw/App/ShapeExtractor.h>
 
 #include "DimensionValidators.h"
@@ -185,7 +180,6 @@ DimensionGeometryType TechDraw::validateDimSelection3d(
     std::vector<int> minimumCounts, //how many of each geometry are needed for a good dimension
     std::vector<DimensionGeometryType> acceptableDimensionGeometrys)//isVertical, isHorizontal, ...
 {
-    //    Base::Console().Message("DV::validateDimSelection3d() - references: %d\n", references.size());
     StringVector subNames;
     for (auto& ref : references) {
         if (!ref.getSubName().empty()) {
@@ -226,7 +220,6 @@ DimensionGeometryType TechDraw::validateDimSelection3d(
 bool TechDraw::validateSubnameList(StringVector subNames,
                          GeometrySet acceptableGeometrySet)
 {
-//    Base::Console().Message("DV::validateSubNameList()\n");
     for (auto& sub : subNames) {
         std::string geometryType = DrawUtil::getGeomTypeFromName(sub);
         if (acceptableGeometrySet.count(geometryType) == 0) {
@@ -241,7 +234,6 @@ bool TechDraw::validateSubnameList(StringVector subNames,
 bool TechDraw::checkGeometryOccurences(StringVector subNames,
                              GeomCountMap keyedMinimumCounts)
 {
-//    Base::Console().Message("DV::checkGeometryOccurences() - subNames: %d\n", subNames.size());
     //how many of each geometry descriptor are input
     GeomCountMap foundCounts;
     for (auto& sub : subNames) {
@@ -618,7 +610,6 @@ DimensionGeometryType TechDraw::isValidVertexes(ReferenceVector refs)
 //! verify that the vertex references can make a dimension
 DimensionGeometryType TechDraw::isValidVertexes3d(DrawViewPart *dvp, ReferenceVector refs)
 {
-//    Base::Console().Message("DV::isValidVertexes3d() - refs: %d\n", refs.size());
     (void) dvp;
     if (refs.size() == 2) {
         //2 vertices can only make a distance dimension

@@ -23,14 +23,10 @@
 #ifndef TECHDRAW_TASKDIMREPAIR_H
 #define TECHDRAW_TASKDIMREPAIR_H
 
-#include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
-
+#include <Mod/TechDraw/TechDrawGlobal.h>
 #include <Mod/TechDraw/App/DrawViewDimension.h>
-#include <Mod/TechDraw/App/DimensionReferences.h>
-#include <Mod/TechDraw/Gui/ui_TaskDimRepair.h>
 
 
 class Ui_TaskDimRepair;

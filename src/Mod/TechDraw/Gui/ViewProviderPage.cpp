@@ -53,12 +53,12 @@
 #include <Mod/TechDraw/App/DrawViewDimension.h>
 #include <Mod/TechDraw/App/DrawWeldSymbol.h>
 
+#include "ViewProviderPage.h"
 #include "MDIViewPage.h"
 #include "PreferencesGui.h"
 #include "QGITemplate.h"
 #include "QGSPage.h"
 #include "QGVPage.h"
-#include "ViewProviderPage.h"
 #include "ViewProviderPageExtension.h"
 #include "ViewProviderTemplate.h"
 
@@ -451,7 +451,6 @@ void ViewProviderPage::setFrameState(bool state) { ShowFrames.setValue(state); }
 
 void ViewProviderPage::toggleFrameState()
 {
-    //    Base::Console().Message("VPP::toggleFrameState()\n");
     if (m_graphicsScene) {
         setFrameState(!getFrameState());
         m_graphicsScene->refreshViews();
@@ -461,7 +460,6 @@ void ViewProviderPage::toggleFrameState()
 
 void ViewProviderPage::setTemplateMarkers(bool state)
 {
-    //    Base::Console().Message("VPP::setTemplateMarkers(%d)\n", state);
     App::DocumentObject* templateFeat = nullptr;
     templateFeat = getDrawPage()->Template.getValue();
     Gui::Document* guiDoc = Gui::Application::Instance->getDocument(templateFeat->getDocument());

@@ -21,7 +21,6 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
 # include <QDomDocument>
 # include <QFile>
@@ -42,12 +41,13 @@
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/QDomNodeModel.h>
 
-#include "PreferencesGui.h"
 #include "QGISVGTemplate.h"
+#include "PreferencesGui.h"
 #include "QGSPage.h"
 #include "Rez.h"
 #include "TemplateTextField.h"
 #include "ZVALUE.h"
+
 
 using namespace TechDrawGui;
 using namespace TechDraw;
