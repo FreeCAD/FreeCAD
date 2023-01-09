@@ -490,7 +490,7 @@ bool DrawPage::canUpdate() const
 bool DrawPage::hasObject(App::DocumentObject* obj)
 {
     for (auto& outObj : getOutList()) {
-        //TODO: check if pointer comparision is reliable enough
+        //TODO: check if pointer comparison is reliable enough
         if (outObj == obj) {
             return true;
         }
