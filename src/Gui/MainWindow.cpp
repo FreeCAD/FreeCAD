@@ -570,11 +570,6 @@ QMenu* MainWindow::createPopupMenu ()
     return menu;
 }
 
-void MainWindow::arrangeIcons()
-{
-    d->mdiArea->tileSubWindows();
-}
-
 void MainWindow::tile()
 {
     d->mdiArea->tileSubWindows();
