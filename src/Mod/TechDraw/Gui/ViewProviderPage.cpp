@@ -21,18 +21,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-#include <QAction>
-#include <QList>
-#include <QMenu>
-#include <QMessageBox>
-#include <QPointer>
-#include <QTextStream>
-#include <boost/signals2/connection.hpp>
-#include <boost_signals2.hpp>
+# include <QAction>
+# include <QList>
+# include <QMenu>
+# include <QMessageBox>
+# include <QPointer>
+# include <QTextStream>
+
+# include <boost_signals2.hpp>
+# include <boost/signals2/connection.hpp>
 #endif
 
 #include <App/Document.h>
@@ -43,7 +42,6 @@
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/ViewProviderDocumentObject.h>
-
 #include <Mod/TechDraw/App/DrawHatch.h>
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
 #include <Mod/TechDraw/App/DrawPage.h>
@@ -63,6 +61,7 @@
 #include "ViewProviderPage.h"
 #include "ViewProviderPageExtension.h"
 #include "ViewProviderTemplate.h"
+
 
 using namespace TechDrawGui;
 using namespace TechDraw;

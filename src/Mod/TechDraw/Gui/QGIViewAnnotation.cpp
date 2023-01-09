@@ -44,10 +44,11 @@
 #include <Mod/TechDraw/App/DrawViewAnnotation.h>
 #include <Mod/TechDraw/App/Preferences.h>
 
+#include "DlgStringListEditor.h"
 #include "QGIViewAnnotation.h"
 #include "QGCustomText.h"
 #include "Rez.h"
-#include "DlgStringListEditor.h"
+
 
 using namespace TechDrawGui;
 

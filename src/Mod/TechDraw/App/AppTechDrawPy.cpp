@@ -266,11 +266,12 @@ private:
             throw Py::Exception();
         }
 
-        if(sortedWires.empty()) {
+        if (sortedWires.empty()) {
             Base::Console().Warning("ATDP::edgeWalker: Wire detection failed\n");
             return Py::None();
-        } else {
-            for (auto& w:sortedWires) {
+        }
+        else {
+            for (auto& w : sortedWires) {
                 PyObject* wire = new TopoShapeWirePy(new TopoShape(w));
                 result.append(Py::asObject(wire));
             }
@@ -598,7 +599,7 @@ private:
         //add the cosmetic edges also
         std::vector<TechDraw::BaseGeomPtr> geoms = dvp->getEdgeGeometry();
         std::vector<TopoDS_Edge> cosmeticEdges;
-        for (auto& g: geoms) {
+        for (auto& g : geoms) {
             if (g->hlrVisible && g->cosmetic) {
                 cosmeticEdges.push_back(g->occEdge);
             }
@@ -1015,9 +1016,9 @@ private:
             TopoDS_Compound comp;
             builder.MakeCompound(comp);
             try {
-                for (auto& lsr:lsresult) {
+                for (auto& lsr : lsresult) {
                     std::vector<TopoDS_Edge> edgeList = lsr.getEdges();
-                    for (auto& edge:edgeList) {
+                    for (auto& edge : edgeList) {
                         if (!edge.IsNull()) {
                             builder.Add(comp, edge);
                         }
