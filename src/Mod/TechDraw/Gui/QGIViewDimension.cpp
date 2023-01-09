@@ -790,9 +790,6 @@ void QGIViewDimension::draw()
         //TODO: parent redraw still required with new frame/label??
         parentItem()->update();
     }
-    else {
-        Base::Console().Log("INFO - QGIVD::draw - no parent to update\n");
-    }
 }
 
 double QGIViewDimension::getAnglePlacementFactor(double testAngle, double endAngle,

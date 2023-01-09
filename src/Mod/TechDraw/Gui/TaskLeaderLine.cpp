@@ -443,9 +443,7 @@ void TaskLeaderLine::removeFeature()
         if (Gui::Command::hasPendingCommand()) {
             std::vector<std::string> undos = Gui::Application::Instance->activeDocument()->getUndoVector();
             Gui::Application::Instance->activeDocument()->undo(1);
-        } else {
-            Base::Console().Log("TaskLeaderLine: Edit mode - NO command is active\n");
-        }
+        } 
     }
 }
 

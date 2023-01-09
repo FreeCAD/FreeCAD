@@ -138,10 +138,6 @@ void CmdTechDrawPageDefault::activated(int iMsg)
         if (dvp) {
             dvp->show();
         }
-        else {
-            Base::Console().Log("INFO - Template: %s for Page: %s NOT Found\n", PageName.c_str(),
-                                TemplateName.c_str());
-        }
     }
     else {
         QMessageBox::critical(Gui::getMainWindow(), QLatin1String("No template"),
@@ -218,10 +214,6 @@ void CmdTechDrawPageTemplate::activated(int iMsg)
         TechDrawGui::ViewProviderPage* dvp = dynamic_cast<TechDrawGui::ViewProviderPage*>(vp);
         if (dvp) {
             dvp->show();
-        }
-        else {
-            Base::Console().Log("INFO - Template: %s for Page: %s NOT Found\n", PageName.c_str(),
-                                TemplateName.c_str());
         }
     }
     else {

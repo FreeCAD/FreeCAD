@@ -179,9 +179,6 @@ double DrawLeaderLine::getBaseScale() const
     DrawView* parent = getBaseView();
     if (parent) {
         result = parent->getScale();
-    } else {
-        //TARFU
-        Base::Console().Log("DrawLeaderLine - %s - scale not found.  Using 1.0. \n", getNameInDocument());
     }
     return result;
 }
@@ -194,9 +191,6 @@ double DrawLeaderLine::getScale() const
         DrawView* parent = getBaseView();
         if (parent) {
             result = parent->getScale();
-        } else {
-            //TARFU
-            Base::Console().Log("DrawLeaderLine - %s - scale not found.  Using 1.0. \n", getNameInDocument());
         }
     }
     return result;

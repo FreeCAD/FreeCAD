@@ -892,9 +892,6 @@ void MDIViewPage::onSelectionChanged(const Gui::SelectionChanges& msg)
         }
         blockSceneSelection(false);
     }
-    else {
-        Base::Console().Log("MDIVP::onSelectionChanged - unhandled: %d\n", msg.Type);
-    }
 }
 
 //! maintain QGScene selected items in selection order

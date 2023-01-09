@@ -263,9 +263,6 @@ void TaskProjGroup::scaleTypeChanged(int index)
         double scale = (double) a / (double) b;
         multiView->Scale.setValue(scale);
         //unblock recompute
-    } else {
-        Base::Console().Log("Error - TaskProjGroup::scaleTypeChanged - unknown scale type: %d\n", index);
-        return;
     }
 }
 
@@ -549,8 +546,6 @@ bool TaskProjGroup::reject()
 //            Gui::Application::Instance->activeDocument()->undo(1);
 //            multiView->rebuildViewList();
 //            apply();
-        } else {
-            Base::Console().Log("TaskProjGroup: Edit mode - NO command is active\n");
         }
     }
     Gui::Command::runCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");

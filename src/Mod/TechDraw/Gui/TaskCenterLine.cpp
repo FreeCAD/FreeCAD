@@ -309,7 +309,6 @@ void TaskCenterLine::createCenterLine()
     }
 
     if (!cl) {
-        Base::Console().Log("TCL::createCenterLine - CenterLine creation failed!\n");
         Gui::Command::abortCommand();
         return;
     }

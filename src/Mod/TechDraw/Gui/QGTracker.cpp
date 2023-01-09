@@ -382,7 +382,6 @@ void QGTracker::setPathFromPoints(std::vector<QPointF> pts)
 {
 //    Base::Console().Message("QGTracker::setPathFromPoints()\n");
     if (pts.empty()) {
-        Base::Console().Log("QGTracker::setPathFromPoints - no pts!\n");
         return;
     }
     prepareGeometryChange();
@@ -399,7 +398,6 @@ void QGTracker::setSquareFromPoints(std::vector<QPointF> pts)
 {
 //    Base::Console().Message("QGTracker::setSquareFromPoints()\n");
     if (pts.empty()) {
-        Base::Console().Log("QGTracker::setSquareFromPoints - no pts!\n");
         return;
     }
     prepareGeometryChange();
@@ -416,7 +414,6 @@ void QGTracker::setCircleFromPoints(std::vector<QPointF> pts)
 {
 //    Base::Console().Message("QGTracker::setCircleFromPoints()\n");
     if (pts.empty()) {
-        Base::Console().Log("QGTracker::setCircleFromPoints - no pts!\n");
         return;
     }
     prepareGeometryChange();

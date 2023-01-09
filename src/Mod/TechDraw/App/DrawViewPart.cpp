@@ -577,10 +577,6 @@ void DrawViewPart::extractFaces()
             if (!DrawUtil::isZeroEdge(e)) {
                 nonZero.push_back(e);
             }
-            else {
-                Base::Console().Log("INFO - DVP::extractFaces for %s found ZeroEdge!\n",
-                                    getNameInDocument());
-            }
         }
 
         //HLR algo does not provide all edge intersections for edge endpoints.
@@ -595,13 +591,9 @@ void DrawViewPart::extractFaces()
             BRepBndLib::AddOptimal(*itOuter, sOuter);
             sOuter.SetGap(0.1);
             if (sOuter.IsVoid()) {
-                Base::Console().Log("DVP::Extract Faces - outer Bnd_Box is void for %s\n",
-                                    getNameInDocument());
                 continue;
             }
             if (DrawUtil::isZeroEdge(*itOuter)) {
-                Base::Console().Log("DVP::extractFaces - outerEdge: %d is ZeroEdge\n",
-                                    iOuter);//this is not finding ZeroEdges
                 continue;                   //skip zero length edges. shouldn't happen ;)
             }
             int iInner = 0;
@@ -618,9 +610,6 @@ void DrawViewPart::extractFaces()
                 BRepBndLib::AddOptimal(*itInner, sInner);
                 sInner.SetGap(0.1);
                 if (sInner.IsVoid()) {
-                    Base::Console().Log(
-                        "INFO - DVP::Extract Faces - inner Bnd_Box is void for %s\n",
-                        getNameInDocument());
                     continue;
                 }
                 if (sOuter.IsOut(sInner)) {//bboxes of edges don't intersect, don't bother
@@ -654,7 +643,6 @@ void DrawViewPart::extractFaces()
         std::vector<TopoDS_Edge> newEdges = DrawProjectSplit::splitEdges(nonZero, sorted);
 
         if (newEdges.empty()) {
-            Base::Console().Log("DVP::extractFaces - no newEdges\n");
             return;
         }
 
@@ -844,8 +832,6 @@ TechDraw::BaseGeomPtr DrawViewPart::getGeomByIndex(int idx) const
 {
     const std::vector<TechDraw::BaseGeomPtr>& geoms = getEdgeGeometry();
     if (geoms.empty()) {
-        Base::Console().Log("DVP::getGeomByIndex(%d) - no Edge Geometry. Probably restoring?\n",
-                            idx);
         return nullptr;
     }
     if ((unsigned)idx >= geoms.size()) {
@@ -861,8 +847,6 @@ TechDraw::VertexPtr DrawViewPart::getProjVertexByIndex(int idx) const
 {
     const std::vector<TechDraw::VertexPtr>& geoms = getVertexGeometry();
     if (geoms.empty()) {
-        Base::Console().Log(
-            "DVP::getProjVertexByIndex(%d) - no Vertex Geometry. Probably restoring?\n", idx);
         return nullptr;
     }
     if ((unsigned)idx >= geoms.size()) {
@@ -877,7 +861,6 @@ TechDraw::VertexPtr DrawViewPart::getProjVertexByCosTag(std::string cosTag)
     TechDraw::VertexPtr result = nullptr;
     std::vector<TechDraw::VertexPtr> gVerts = getVertexGeometry();
     if (gVerts.empty()) {
-        Base::Console().Log("INFO - getProjVertexByCosTag(%s) - no Vertex Geometry.\n");
         return result;
     }
 
@@ -902,7 +885,7 @@ std::vector<TechDraw::BaseGeomPtr> DrawViewPart::getFaceEdgesByIndex(int idx) co
             for (auto& g : w->geoms) {
                 if (g->cosmetic) {
                     //if g is cosmetic, we should skip it
-                    Base::Console().Log("DVP::getFaceEdgesByIndex - found cosmetic edge\n");
+                    continue;
                 }
                 else {
                     result.push_back(g);
@@ -1299,8 +1282,6 @@ bool DrawViewPart::checkXDirection() const
         Base::Vector3d dir = Direction.getValue();
         Base::Vector3d origin(0.0, 0.0, 0.0);
         Base::Vector3d xDir = getLegacyX(origin, dir);
-        Base::Console().Log("DVP - %s - XDirection property not set. Trying %s\n",
-                            getNameInDocument(), DrawUtil::formatVector(xDir).c_str());
         return false;
     }
     return true;

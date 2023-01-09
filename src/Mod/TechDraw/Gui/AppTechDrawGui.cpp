@@ -88,7 +88,7 @@ void loadTechDrawResource()
     QFontDatabase fontDB;
     int rc = fontDB.addApplicationFont(fontFile);
     if (rc) {
-        Base::Console().Log("TechDraw failed to load osifont file: %d from: %s\n", rc, qPrintable(fontFile));
+        Base::Console().Warning("TechDraw failed to load osifont file: %d from: %s\n", rc, qPrintable(fontFile));
     }
 }
 

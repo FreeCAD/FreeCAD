@@ -269,16 +269,12 @@ std::vector<TopoDS_Shape> ShapeExtractor::getShapesFromObject(const App::Documen
                     result.insert(result.end(), shapes.begin(), shapes.end());
                 }
             }
-        } else {
-                Base::Console().Log("SE::getShapesFromObject - Group is not a PropertyLinkList!\n");
         }
     } else if (sProp) {       //has a Shape property
         Part::PropertyPartShape* shape = dynamic_cast<Part::PropertyPartShape*>(sProp);
         if (shape) {
             TopoDS_Shape occShape = shape->getValue();
             result.push_back(occShape);
-        } else {
-            Base::Console().Log("SE::getShapesFromObject - Shape is not a PropertyPartShape!\n");
         }
     }
     return result;

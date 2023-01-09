@@ -156,7 +156,6 @@ void QGSPage::updateTemplate(bool forceUpdate)
     App::DocumentObject *templObj = m_vpPage->getDrawPage()->Template.getValue();
     // TODO: what if template has been deleted? templObj will be NULL. segfault?
     if (!templObj) {
-        Base::Console().Log("INFO - QGSPage::updateTemplate - Page: %s has NO template!!\n", m_vpPage->getDrawPage()->getNameInDocument());
         return;
     }
 
@@ -383,9 +382,6 @@ bool QGSPage::attachView(App::DocumentObject *obj)
     } else if (typeId.isDerivedFrom(TechDraw::DrawHatch::getClassTypeId()) ) {
         //Hatch is not attached like other Views (since it isn't really a View)
         return true;
-
-    } else {
-        Base::Console().Log("Logic Error - Unknown view type in QGSPage::attachView\n");
     }
 
     return (qview != nullptr);

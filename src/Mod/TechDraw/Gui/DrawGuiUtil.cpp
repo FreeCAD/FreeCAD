@@ -380,7 +380,6 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawGuiUtil::get3DDirAndRot()
         }
     }
     if (!viewer) {
-        Base::Console().Log("LOG - DrawGuiUtil could not find a 3D viewer\n");
         return std::make_pair(viewDir, viewRight);
     }
 
@@ -433,9 +432,6 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawGuiUtil::getProjDirFromFace(App::D
         if (orient != TopAbs_FORWARD) {
             projDir = projDir * (-1.0);
         }
-    }
-    else {
-        Base::Console().Log("Selected Face has no normal at midpoint\n");
     }
 
     dirs = std::make_pair(projDir, rotVec);

@@ -127,7 +127,6 @@ App::DocumentObjectExecReturn *DrawViewMulti::execute()
 #endif //#if MOD_TECHDRAW_HANDLE_FACES
     }
     catch (Standard_Failure& e1) {
-        Base::Console().Log("LOG - DVM::execute - projection failed for %s - %s **\n", getNameInDocument(), e1.GetMessageString());
         return new App::DocumentObjectExecReturn(e1.GetMessageString());
     }
 

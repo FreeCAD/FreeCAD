@@ -325,7 +325,6 @@ double DrawProjGroupItem::getScale(void) const
     if (pgroup) {
         result = pgroup->getScale();
         if (!(result > 0.0)) {
-            Base::Console().Log("DPGI - %s - bad scale found (%.3f) using 1.0\n", getNameInDocument(), Scale.getValue());
             result = 1.0;                                   //kludgy protective fix. autoscale sometimes serves up 0.0!
         }
     }

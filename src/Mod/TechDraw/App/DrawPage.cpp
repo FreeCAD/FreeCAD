@@ -420,10 +420,6 @@ void DrawPage::unsetupObject()
                                                  docName.c_str(),
                                                  viewName.c_str());
             }
-            else {
-                Base::Console().Log("DP::unsetupObject - v(%s) is not in document. skipping\n",
-                                    pageName.c_str());
-            }
         }
         std::vector<App::DocumentObject*> emptyViews;//probably superfluous
         Views.setValues(emptyViews);
@@ -465,11 +461,6 @@ void DrawPage::handleChangedPropertyType(Base::XMLReader& reader, const char* Ty
             else {
                 Scale.setValue(1.0);
             }
-        }
-        else {
-            // has Scale prop that isn't Float!
-            Base::Console().Log("DrawPage::Restore - old Document Scale is Not Float!\n");
-            // no idea
         }
     }
 }

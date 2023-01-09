@@ -874,9 +874,6 @@ void QGIViewBalloon::drawBalloon(bool dragged)
     if (parentItem()) {
         parentItem()->update();
     }
-    else {
-        Base::Console().Log("INFO - QGIVB::draw - no parent to update\n");
-    }
 }
 
 void QGIViewBalloon::setPrettyPre(void)
