@@ -66,6 +66,7 @@
 #include <BRepLProp_SLProps.hxx>
 #include <gp_Dir.hxx>
 #include <gp_Pnt.hxx>
+#include <TopoDS_Shape.hxx>
 
 // Open Inventor
 #include <Inventor/SbVec3f.h>

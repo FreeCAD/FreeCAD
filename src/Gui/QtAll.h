@@ -189,6 +189,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QStackedWidget>
+#include <QTableWidgetItem>
 #include <QWidget>
 
 // QtXML

@@ -19,12 +19,14 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
+
+#include "PreCompiled.h"
 #ifndef _PreComp_
-#include <BRepAdaptor_Curve.hxx>
-#include <BRep_Tool.hxx>
-#include <GeomAbs_CurveType.hxx>
-#include <TopAbs_ShapeEnum.hxx>
-#include <TopExp.hxx>
+# include <BRep_Tool.hxx>
+# include <BRepAdaptor_Curve.hxx>
+# include <GeomAbs_CurveType.hxx>
+# include <TopAbs_ShapeEnum.hxx>
+# include <TopExp.hxx>
 #endif  //#ifndef _PreComp_
 
 #include <App/DocumentObject.h>
@@ -39,6 +41,7 @@
 #include <Mod/TechDraw/App/ShapeExtractor.h>
 
 #include "DimensionValidators.h"
+
 
 using namespace TechDraw;
 using DU = DrawUtil;

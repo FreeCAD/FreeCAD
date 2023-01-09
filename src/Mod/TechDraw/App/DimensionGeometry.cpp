@@ -21,19 +21,18 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-#include <gp_Ax3.hxx>
-#include <gp_Trsf.hxx>
-#include <gp_Vec.hxx>
+# include <gp_Ax3.hxx>
+# include <gp_Trsf.hxx>
+# include <gp_Vec.hxx>
 #endif
 
 #include <Base/Console.h>
 
+#include "DimensionGeometry.h"
 #include "DrawUtil.h"
 #include "DrawViewPart.h"
 
-#include "DimensionGeometry.h"
 
 using namespace TechDraw;
 using DU = DrawUtil;

@@ -21,16 +21,18 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#include <QRegularExpression>
 #ifndef _PreComp_
+# include <QRegularExpression>
 #endif
 
+#include <Base/Console.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
 
-#include "Preferences.h"
-#include "DrawViewDimension.h"
 #include "DimensionFormatter.h"
+#include "DrawViewDimension.h"
+#include "Preferences.h"
+
 
 using namespace TechDraw;
 

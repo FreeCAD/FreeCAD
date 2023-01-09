@@ -19,19 +19,21 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
+
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <TopoDS_Shape.hxx>
 #endif
-#include <TopoDS_Shape.hxx>
 
 #include <App/GeoFeature.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/TopoShape.h>
 
-#include "DrawViewPart.h"
-#include "DrawUtil.h"
-#include "Geometry.h"
 #include "DimensionReferences.h"
+#include "DrawUtil.h"
+#include "DrawViewPart.h"
+#include "Geometry.h"
+
 
 using namespace TechDraw;
 
