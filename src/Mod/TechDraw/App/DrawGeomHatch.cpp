@@ -243,7 +243,6 @@ std::vector<LineSet>  DrawGeomHatch::getTrimmedLines(int i)   //get the trimmed 
     DrawViewPart* source = getSourceView();
     if (!source ||
         !source->hasGeometry()) {
-        Base::Console().Log("DGH::getTrimmedLines - no source geometry\n");
         return result;
     }
     return getTrimmedLines(source, m_lineSets, i, ScalePattern.getValue(),
@@ -310,7 +309,6 @@ std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source,
     std::vector<LineSet> result;
 
     if (lineSets.empty()) {
-        Base::Console().Log("DGH::getTrimmedLines - no LineSets!\n");
         return result;
     }
 
@@ -350,7 +348,6 @@ std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source,
         BRepAlgoAPI_Common mkCommon(face, grid);
         if ((!mkCommon.IsDone())  ||
             (mkCommon.Shape().IsNull()) ) {
-            Base::Console().Log("INFO - DGH::getTrimmedLines - Common creation failed\n");
             return result;
         }
         TopoDS_Shape common = mkCommon.Shape();
@@ -368,7 +365,6 @@ std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source,
         for ( int i = 1 ; i <= mapOfEdges.Extent() ; i++ ) {           //remember, TopExp makes no promises about the order it finds edges
             const TopoDS_Edge& edge = TopoDS::Edge(mapOfEdges(i));
             if (edge.IsNull()) {
-                Base::Console().Log("INFO - DGH::getTrimmedLines - edge: %d is NULL\n", i);
                 continue;
             }
             resultEdges.push_back(edge);
@@ -379,7 +375,6 @@ std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source,
         for (auto& e: resultEdges) {
             TechDraw::BaseGeomPtr base = BaseGeom::baseFactory(e);
             if (!base) {
-                Base::Console().Log("FAIL - DGH::getTrimmedLines - baseFactory failed for edge: %d\n", i);
                 throw Base::ValueError("DGH::getTrimmedLines - baseFactory failed");
             }
             resultGeoms.push_back(base);
@@ -519,7 +514,6 @@ std::vector<LineSet> DrawGeomHatch::getFaceOverlay(int fdx)
     DrawViewPart* source = getSourceView();
     if (!source ||
         !source->hasGeometry()) {
-        Base::Console().Log("DGH::getFaceOverlay - no source geometry\n");
         return result;
     }
 
@@ -541,7 +535,6 @@ std::vector<LineSet> DrawGeomHatch::getFaceOverlay(int fdx)
         for (auto& e: candidates) {
             TechDraw::BaseGeomPtr base = BaseGeom::baseFactory(e);
             if (!base) {
-                Base::Console().Log("FAIL - DGH::getFaceOverlay - baseFactory failed for edge: %d\n", i);
                 throw Base::ValueError("DGH::getFaceOverlay - baseFactory failed");
             }
             resultGeoms.push_back(base);
@@ -575,7 +568,6 @@ TopoDS_Face DrawGeomHatch::extractFace(DrawViewPart* source, int iface )
         mkFace.Add(*itWire);
     }
     if (!mkFace.IsDone()) {
-         Base::Console().Log("INFO - DGH::extractFace - face creation failed\n");
          return result;
     }
     TopoDS_Face face = mkFace.Face();
@@ -589,7 +581,6 @@ TopoDS_Face DrawGeomHatch::extractFace(DrawViewPart* source, int iface )
         temp = mkTrf.Shape();
     }
     catch (...) {
-        Base::Console().Log("DGH::extractFace - mirror failed.\n");
         return result;
     }
     result = TopoDS::Face(temp);

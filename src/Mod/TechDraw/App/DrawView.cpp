@@ -457,7 +457,6 @@ double DrawView::getScale() const
     }
     if (!(result > 0.0)) {
         result = 1.0;
-        Base::Console().Log("DrawView - %s - bad scale found (%.3f) using 1.0\n", getNameInDocument(), Scale.getValue());
     }
     return result;
 }
@@ -489,11 +488,7 @@ void DrawView::handleChangedPropertyType(Base::XMLReader &reader, const char * T
             } else {
                 Scale.setValue(1.0);
             }
-        } else {
-            // has Scale prop that isn't Float!
-            Base::Console().Log("DrawPage::Restore - old Document Scale is Not Float!\n");
-            // no idea
-        }
+        } 
     }
     else if (prop->isDerivedFrom(App::PropertyLinkList::getClassTypeId())
         && strcmp(prop->getName(), "Source") == 0) {

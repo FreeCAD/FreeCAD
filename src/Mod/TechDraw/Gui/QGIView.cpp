@@ -303,8 +303,6 @@ double QGIView::getYInClip(double y)
 QGIViewClip* QGIView::getClipGroup()
 {
     if (!getViewObject()->isInClip()) {
-        Base::Console().Log( "Logic Error - getClipGroup called for child "
-                         "(%s) not in Clip\n", getViewName() );
         return nullptr;
     }
 

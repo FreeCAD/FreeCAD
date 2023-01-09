@@ -203,7 +203,6 @@ void CmdTechDrawGeometricHatch::activated(int iMsg)
     Gui::ViewProvider* vp = Gui::Application::Instance->getDocument(getDocument())->getViewProvider(geomhatch);
     TechDrawGui::ViewProviderGeomHatch* hvp = dynamic_cast<TechDrawGui::ViewProviderGeomHatch*>(vp);
     if (!hvp) {
-        Base::Console().Log("ERROR - CommandDecorate - GeomHatch has no ViewProvider\n");
         return;
     }
 

@@ -382,8 +382,6 @@ void TaskSectionView::scaleTypeChanged(int index)
         }
     }
     else {
-        Base::Console().Log("Error - TaskSectionView::scaleTypeChanged - unknown scale type: %d\n",
-                            index);
         return;
     }
 }

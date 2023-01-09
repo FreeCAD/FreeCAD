@@ -222,14 +222,14 @@ std::map<std::string, std::string> DrawSVGTemplate::getEditableTextsFromTemplate
         tfi.setFile(App::Application::getResourceDir() + "Mod/Drawing/Templates/" + tfi.fileName());
         // try the redirect
         if (!tfi.isReadable()) {
-            Base::Console().Log("DrawSVGTemplate::getEditableTextsFromTemplate() not able to open %s!\n", Template.getValue());
+            Base::Console().Error("DrawSVGTemplate::getEditableTextsFromTemplate() not able to open %s!\n", Template.getValue());
             return editables;
         }
     }
 
     QFile templateFile(QString::fromUtf8(tfi.filePath().c_str()));
     if (!templateFile.open(QIODevice::ReadOnly)) {
-        Base::Console().Log("DrawSVGTemplate::getEditableTextsFromTemplate() can't read template %s!\n", Template.getValue());
+        Base::Console().Error("DrawSVGTemplate::getEditableTextsFromTemplate() can't read template %s!\n", Template.getValue());
         return editables;
     }
 

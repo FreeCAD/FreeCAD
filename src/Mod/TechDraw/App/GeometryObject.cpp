@@ -536,7 +536,6 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
 {
     //    Base::Console().Message("GO::addGeomFromCompound(%d, %d)\n", category, hlrVisible);
     if (edgeCompound.IsNull()) {
-        Base::Console().Log("TechDraw::GeometryObject::addGeomFromCompound edgeCompound is NULL\n");
         return;// There is no OpenCascade Geometry to be calculated
     }
 
@@ -546,22 +545,17 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
     for (; edges.More(); edges.Next(), i++) {
         const TopoDS_Edge& edge = TopoDS::Edge(edges.Current());
         if (edge.IsNull()) {
-            Base::Console().Log("GO::addGeomFromCompound - edge: %d is NULL\n", i);
             continue;
         }
         if (DU::isZeroEdge(edge)) {
-            Base::Console().Log("GO::addGeomFromCompound - edge: %d is zeroEdge\n", i);
             continue;
         }
         if (DU::isCrazy(edge)) {
-            Base::Console().Log("GO::addGeomFromCompound - edge: %d is crazy\n", i);
             continue;
         }
 
         base = BaseGeom::baseFactory(edge);
         if (!base) {
-            Base::Console().Log(
-                "Error - GO::addGeomFromCompound - baseFactory failed for edge: %d\n", i);
             continue;
             //            throw Base::ValueError("GeometryObject::addGeomFromCompound - baseFactory failed");
         }
@@ -830,10 +824,7 @@ Base::BoundBox3d GeometryObject::calcBoundingBox() const
     }
 
     double xMin = 0, xMax = 0, yMin = 0, yMax = 0, zMin = 0, zMax = 0;
-    if (testBox.IsVoid()) {
-        Base::Console().Log("INFO - GO::calcBoundingBox - testBox is void\n");
-    }
-    else {
+    if (!testBox.IsVoid()) {
         testBox.Get(xMin, yMin, zMin, xMax, yMax, zMax);
     }
     Base::BoundBox3d bbox(xMin, yMin, zMin, xMax, yMax, zMax);
@@ -1084,7 +1075,6 @@ TopoDS_Shape TechDraw::mirrorShape(const TopoDS_Shape& input, const gp_Pnt& inpu
         transShape = mkTrf.Shape();
     }
     catch (...) {
-        Base::Console().Log("GeometryObject::mirrorShape - mirror/scale failed.\n");
         return transShape;
     }
     return transShape;
@@ -1109,7 +1099,6 @@ TopoDS_Shape TechDraw::rotateShape(const TopoDS_Shape& input, const gp_Ax2& view
         transShape = mkTrf.Shape();
     }
     catch (...) {
-        Base::Console().Log("GeometryObject::rotateShape - rotate failed.\n");
         return transShape;
     }
     return transShape;
@@ -1127,7 +1116,6 @@ TopoDS_Shape TechDraw::scaleShape(const TopoDS_Shape& input, double scale)
         transShape = mkTrf.Shape();
     }
     catch (...) {
-        Base::Console().Log("GeometryObject::scaleShape - scale failed.\n");
         return transShape;
     }
     return transShape;
@@ -1145,7 +1133,6 @@ TopoDS_Shape TechDraw::moveShape(const TopoDS_Shape& input, const Base::Vector3d
         transShape = mkTrf.Shape();
     }
     catch (...) {
-        Base::Console().Log("GeometryObject::moveShape - move failed.\n");
         return transShape;
     }
     return transShape;
@@ -1166,7 +1153,6 @@ TopoDS_Shape TechDraw::moveShapeRestricted(const TopoDS_Shape& input, const Base
         transShape = mkTrf.Shape();
     }
     catch (...) {
-        Base::Console().Log("GeometryObject::moveShapeRestricted - move failed.\n");
         return transShape;
     }
     return transShape;
@@ -1187,7 +1173,6 @@ TopoDS_Shape TechDraw::moveShapeRestricted(const TopoDS_Shape& input, const Base
         transShape = mkTrf.Shape();
     }
     catch (...) {
-        Base::Console().Log("GeometryObject::moveShapeRestricted - move failed.\n");
         return transShape;
     }
     return transShape;

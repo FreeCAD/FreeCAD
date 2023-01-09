@@ -87,7 +87,6 @@ using namespace TechDraw;
     std::stringstream ErrorMsg;
 
     if (geomName.empty()) {
-        Base::Console().Log("DU::getIndexFromName(%s) - empty geometry name\n", geomName.c_str());
         throw Base::ValueError("getIndexFromName - empty geometry name");
     }
 
@@ -998,11 +997,9 @@ bool DrawUtil::isCrazy(TopoDS_Edge e)
 
     double edgeLength = GCPnts_AbscissaPoint::Length(adapt, Precision::Confusion());
     if (edgeLength < 0.00001) {//edge is scaled.  this is 0.00001 mm on paper
-        Base::Console().Log("DU::isCrazy - edge crazy short: %.7f\n", edgeLength);
         return true;
     }
     if (edgeLength > 9999.9) {//edge is scaled. this is 10 m on paper.  can't be right?
-        Base::Console().Log("DU::isCrazy - edge crazy long: %.3f\n", edgeLength);
         return true;
     }
 
@@ -1023,11 +1020,9 @@ bool DrawUtil::isCrazy(TopoDS_Edge e)
         double major = ellp.MajorRadius();
         double minor = ellp.MinorRadius();
         if (minor < 0.001) {//too narrow
-            Base::Console().Log("DU::isCrazy - ellipse is crazy narrow: %.7f\n", minor);
             return true;
         }
         else if (major > 9999.9) {//too big
-            Base::Console().Log("DU::isCrazy - ellipse is crazy wide: %.3f\n", major);
             return true;
         }
     }

@@ -119,9 +119,6 @@ void ViewProviderPage::attach(App::DocumentObject* pcFeat)
         m_pageName = feature->getNameInDocument();
         m_graphicsScene->setObjectName(QString::fromLocal8Bit(m_pageName.c_str()));
     }
-    else {
-        Base::Console().Log("VPP::attach has no Feature!\n");
-    }
 }
 
 void ViewProviderPage::setDisplayMode(const char* ModeName)
@@ -526,7 +523,6 @@ TechDraw::DrawPage* ViewProviderPage::getDrawPage() const
 {
     //during redo, pcObject can become invalid, but non-zero??
     if (!pcObject) {
-        Base::Console().Log("VPP::getDrawPage - no Page Object!\n");
         return nullptr;
     }
     return dynamic_cast<TechDraw::DrawPage*>(pcObject);

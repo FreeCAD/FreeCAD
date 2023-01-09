@@ -242,7 +242,6 @@ private:
         }
 
         if (edgeList.empty()) {
-            Base::Console().Log("LOG - edgeWalker: input is empty\n");
             return Py::None();
         }
 
@@ -369,7 +368,6 @@ private:
         }
 
         if (edgeList.empty()) {
-            Base::Console().Log("LOG - ATDP::findShapeOutline: input is empty\n");
             return Py::None();
         }
 

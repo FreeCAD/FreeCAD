@@ -414,8 +414,6 @@ void TaskComplexSection::scaleTypeChanged(int index)
         }
     }
     else {
-        Base::Console().Log(
-            "Error - TaskComplexSection::scaleTypeChanged - unknown scale type: %d\n", index);
         return;
     }
 }

@@ -286,7 +286,6 @@ void QGIPrimPath::mousePressEvent(QGraphicsSceneMouseEvent * event)
         } else {
 //            qparent->mousePressEvent(event);  //protected!
             QGraphicsPathItem::mousePressEvent(event);
-            Base::Console().Log("QGIPP::mousePressEvent - no QGIView parent\n");
         }
     } else {
 //        Base::Console().Message("QGIPP::mousePressEvent - passing event to ancestor\n");

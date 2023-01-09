@@ -910,8 +910,6 @@ gp_Ax2 DrawViewSection::getCSFromBase(const std::string sectionName) const
         dvsXDir = gp_Dir(sectionXDir.x, sectionXDir.y, sectionXDir.z);
     }
     else {
-        Base::Console().Log("Error - DVS::getCSFromBase - bad sectionName: %s\n",
-                            sectionName.c_str());
         dvsDir = dvpRight;
         dvsXDir = dvpDir;
     }
@@ -940,7 +938,7 @@ gp_Ax2 DrawViewSection::getSectionCS() const
         sectionCS = gp_Ax2(gOrigin, gNormal, gXDir);
     }
     catch (...) {
-        Base::Console().Log("DVS::getSectionCS - %s - failed to create section CS\n",
+        Base::Console().Error("DVS::getSectionCS - %s - failed to create section CS\n",
                             getNameInDocument());
     }
     return sectionCS;

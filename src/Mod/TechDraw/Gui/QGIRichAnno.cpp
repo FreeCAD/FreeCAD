@@ -97,7 +97,6 @@ void QGIRichAnno::updateView(bool update)
     Q_UNUSED(update);
     auto annoFeat( dynamic_cast<TechDraw::DrawRichAnno*>(getViewObject()) );
     if (!annoFeat) {
-        Base::Console().Log("QGIRA::updateView - no feature!\n");
         return;
     }
 

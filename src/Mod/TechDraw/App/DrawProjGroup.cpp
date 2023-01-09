@@ -24,12 +24,12 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <sstream>
-# include <QRectF>
-# include <gp_Ax2.hxx>
-# include <gp_Dir.hxx>
-# include <gp_Pnt.hxx>
-# include <gp_Vec.hxx>
+#include <QRectF>
+#include <gp_Ax2.hxx>
+#include <gp_Dir.hxx>
+#include <gp_Pnt.hxx>
+#include <gp_Vec.hxx>
+#include <sstream>
 #endif
 
 #include <App/Application.h>
@@ -40,30 +40,32 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 
-#include "DrawProjGroup.h"
-#include "DrawProjGroupPy.h" // generated from DrawProjGroupPy.xml
 #include "DrawPage.h"
+#include "DrawProjGroup.h"
 #include "DrawProjGroupItem.h"
+#include "DrawProjGroupPy.h"// generated from DrawProjGroupPy.xml
 #include "DrawUtil.h"
 #include "Preferences.h"
 
 
 using namespace TechDraw;
 
-const char* DrawProjGroup::ProjectionTypeEnums[] = {"First Angle",
-                                                    "Third Angle",
-                                                    "Default",     //Use Page setting
+const char* DrawProjGroup::ProjectionTypeEnums[] = {"First Angle", "Third Angle",
+                                                    "Default",//Use Page setting
                                                     nullptr};
 
 PROPERTY_SOURCE(TechDraw::DrawProjGroup, TechDraw::DrawViewCollection)
 
 DrawProjGroup::DrawProjGroup()
 {
-    static const char *group = "Base";
-    static const char *agroup = "Distribute";
+    static const char* group = "Base";
+    static const char* agroup = "Distribute";
 
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                                               GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
+                                             .GetUserParameter()
+                                             .GetGroup("BaseApp")
+                                             ->GetGroup("Preferences")
+                                             ->GetGroup("Mod/TechDraw/General");
     bool autoDist = hGrp->GetBool("AutoDist", true);
 
     ADD_PROPERTY_TYPE(Source, (nullptr), group, App::Prop_None, "Shape to view");
@@ -71,25 +73,30 @@ DrawProjGroup::DrawProjGroup()
     Source.setAllowExternal(true);
     ADD_PROPERTY_TYPE(XSource, (nullptr), group, App::Prop_None, "External 3D Shape to view");
 
-    ADD_PROPERTY_TYPE(Anchor, (nullptr), group, App::Prop_None, "The root view to align projections with");
+    ADD_PROPERTY_TYPE(Anchor, (nullptr), group, App::Prop_None,
+                      "The root view to align projections with");
     Anchor.setScope(App::LinkScope::Global);
 
     ProjectionType.setEnums(ProjectionTypeEnums);
-    ADD_PROPERTY_TYPE(ProjectionType, ((long)getDefProjConv()), group,
-                                App::Prop_None, "First or Third angle projection");
+    ADD_PROPERTY_TYPE(ProjectionType, ((long)getDefProjConv()), group, App::Prop_None,
+                      "First or Third angle projection");
 
-    ADD_PROPERTY_TYPE(AutoDistribute, (autoDist), agroup,
-                                App::Prop_None, "Distribute views automatically or manually");
-    ADD_PROPERTY_TYPE(spacingX, (15), agroup, App::Prop_None, "If AutoDistribute is on, this is the horizontal \nspacing between the borders of views \n(if label width is not wider than the object)");
-    ADD_PROPERTY_TYPE(spacingY, (15), agroup, App::Prop_None, "If AutoDistribute is on, this is the vertical \nspacing between the borders of views");
-    Rotation.setStatus(App::Property::Hidden, true);   //DPG does not rotate
+    ADD_PROPERTY_TYPE(AutoDistribute, (autoDist), agroup, App::Prop_None,
+                      "Distribute views automatically or manually");
+    ADD_PROPERTY_TYPE(spacingX, (15), agroup, App::Prop_None,
+                      "If AutoDistribute is on, this is the horizontal \nspacing between the "
+                      "borders of views \n(if label width is not wider than the object)");
+    ADD_PROPERTY_TYPE(
+        spacingY, (15), agroup, App::Prop_None,
+        "If AutoDistribute is on, this is the vertical \nspacing between the borders of views");
+    Rotation.setStatus(App::Property::Hidden, true);//DPG does not rotate
     Caption.setStatus(App::Property::Hidden, true);
 }
 
 //TODO: this duplicates code in DVP
 std::vector<App::DocumentObject*> DrawProjGroup::getAllSources() const
 {
-//    Base::Console().Message("DPG::getAllSources()\n");
+    //    Base::Console().Message("DPG::getAllSources()\n");
     const std::vector<App::DocumentObject*> links = Source.getValues();
     std::vector<DocumentObject*> xLinks;
     XSource.getLinks(xLinks);
@@ -109,7 +116,7 @@ void DrawProjGroup::onChanged(const App::Property* prop)
         return TechDraw::DrawViewCollection::onChanged(prop);
     }
 
-    TechDraw::DrawPage *page = getPage();
+    TechDraw::DrawPage* page = getPage();
 
     if (prop == &Scale) {
         updateChildrenScale();
@@ -122,14 +129,12 @@ void DrawProjGroup::onChanged(const App::Property* prop)
         return;
     }
 
-    if ( prop == &Source ||
-         prop == &XSource ) {
+    if (prop == &Source || prop == &XSource) {
         updateChildrenSource();
         return;
     }
 
-    if ( prop == &spacingX ||
-         prop == &spacingY ) {
+    if (prop == &spacingX || prop == &spacingY) {
         updateChildrenEnforce();
         return;
     }
@@ -142,24 +147,23 @@ void DrawProjGroup::onChanged(const App::Property* prop)
     if (prop == &ScaleType) {
         if (ScaleType.isValue("Page")) {
             double newScale = page->Scale.getValue();
-            if(std::abs(getScale() - newScale) > FLT_EPSILON) {
+            if (std::abs(getScale() - newScale) > FLT_EPSILON) {
                 Scale.setValue(newScale);
                 updateChildrenScale();
             }
         }
     }
 
-//        if ( ScaleType.isValue("Automatic") ||
-//             ScaleType.isValue("Custom") ){
-//            //just documenting that nothing is required here
-//            //DrawView::onChanged will sort out Scale hidden/readonly/etc
-//        }
+    //        if ( ScaleType.isValue("Automatic") ||
+    //             ScaleType.isValue("Custom") ){
+    //            //just documenting that nothing is required here
+    //            //DrawView::onChanged will sort out Scale hidden/readonly/etc
+    //        }
 
     if (prop == &Rotation) {
         if (!DrawUtil::fpCompare(Rotation.getValue(), 0.0)) {
             Rotation.setValue(0.0);
             purgeTouched();
-            Base::Console().Log("DPG: Projection Groups do not rotate. Change ignored.\n");
         }
         return;
     }
@@ -167,10 +171,10 @@ void DrawProjGroup::onChanged(const App::Property* prop)
     TechDraw::DrawViewCollection::onChanged(prop);
 }
 
-App::DocumentObjectExecReturn *DrawProjGroup::execute()
+App::DocumentObjectExecReturn* DrawProjGroup::execute()
 {
-//    Base::Console().Message("DPG::execute() - %s - waitingForChildren: %d\n",
-//                            getNameInDocument(), waitingForChildren());
+    //    Base::Console().Message("DPG::execute() - %s - waitingForChildren: %d\n",
+    //                            getNameInDocument(), waitingForChildren());
     if (!keepUpdated())
         return App::DocumentObject::StdReturn;
 
@@ -207,17 +211,10 @@ short DrawProjGroup::mustExecute() const
 {
     short result = 0;
     if (!isRestoring()) {
-        result = Views.isTouched() ||
-                 Source.isTouched() ||
-                 XSource.isTouched() ||
-                 Scale.isTouched()  ||
-                 ScaleType.isTouched() ||
-                 ProjectionType.isTouched() ||
-                 Anchor.isTouched() ||
-                 AutoDistribute.isTouched() ||
-                 LockPosition.isTouched()||
-                 spacingX.isTouched() ||
-                 spacingY.isTouched();
+        result = Views.isTouched() || Source.isTouched() || XSource.isTouched() || Scale.isTouched()
+            || ScaleType.isTouched() || ProjectionType.isTouched() || Anchor.isTouched()
+            || AutoDistribute.isTouched() || LockPosition.isTouched() || spacingX.isTouched()
+            || spacingY.isTouched();
     }
     if (result)
         return result;
@@ -226,7 +223,7 @@ short DrawProjGroup::mustExecute() const
 
 void DrawProjGroup::reportReady()
 {
-//    Base::Console().Message("DPG::reportReady - waitingForChildren: %d\n", waitingForChildren());
+    //    Base::Console().Message("DPG::reportReady - waitingForChildren: %d\n", waitingForChildren());
     if (waitingForChildren()) {
         //not ready yet
         return;
@@ -239,45 +236,41 @@ void DrawProjGroup::reportReady()
 
 bool DrawProjGroup::waitingForChildren() const
 {
-    for(const auto v : Views.getValues()) {
+    for (const auto v : Views.getValues()) {
         DrawProjGroupItem* dpgi = static_cast<DrawProjGroupItem*>(v);
-        if (dpgi->waitingForHlr() ||     //dpgi is still thinking
-            dpgi->isTouched()) {            //dpgi needs to execute
+        if (dpgi->waitingForHlr() ||//dpgi is still thinking
+            dpgi->isTouched()) {    //dpgi needs to execute
             return true;
         }
     }
     return false;
 }
 
-TechDraw::DrawPage * DrawProjGroup::getPage() const
-{
-    return findParentPage();
-}
+TechDraw::DrawPage* DrawProjGroup::getPage() const { return findParentPage(); }
 
 //does the unscaled DPG fit on the page?
 bool DrawProjGroup::checkFit() const
 {
-//    Base::Console().Message("DPG::checkFit() - %s\n", getNameInDocument());
+    //    Base::Console().Message("DPG::checkFit() - %s\n", getNameInDocument());
     if (waitingForChildren()) {
         //assume everything fits since we don't know what size the children are
         return true;
     }
     auto page = findParentPage();
     if (!page)
-      throw Base::RuntimeError("No page is assigned to this feature");
+        throw Base::RuntimeError("No page is assigned to this feature");
     return checkFit(page);
 }
 
 bool DrawProjGroup::checkFit(DrawPage* page) const
 {
-//    Base::Console().Message("DPG::checkFit(page) - %s\n", getNameInDocument());
+    //    Base::Console().Message("DPG::checkFit(page) - %s\n", getNameInDocument());
     if (waitingForChildren()) {
         return true;
     }
 
     QRectF bigBox = getRect(false);
-    if ( bigBox.width() <= page->getPageWidth() &&
-         bigBox.height() <= page->getPageHeight() ) {
+    if (bigBox.width() <= page->getPageWidth() && bigBox.height() <= page->getPageHeight()) {
         return true;
     }
     return false;
@@ -286,36 +279,33 @@ bool DrawProjGroup::checkFit(DrawPage* page) const
 //calculate a scale that fits all views on page
 double DrawProjGroup::autoScale() const
 {
-//    Base::Console().Message("DPG::autoScale() - %s\n", getNameInDocument());
+    //    Base::Console().Message("DPG::autoScale() - %s\n", getNameInDocument());
     auto page = findParentPage();
     if (!page) {
-      throw Base::RuntimeError("No page is assigned to this feature");
+        throw Base::RuntimeError("No page is assigned to this feature");
     }
     return autoScale(page->getPageWidth(), page->getPageHeight());
 }
 
 double DrawProjGroup::autoScale(double w, double h) const
 {
-//    Base::Console().Message("DPG::autoScale(%.3f, %.3f) - %s\n", w, h, getNameInDocument());
+    //    Base::Console().Message("DPG::autoScale(%.3f, %.3f) - %s\n", w, h, getNameInDocument());
     //get the space used by views + white space at 1:1 scale
-    QRectF bigBox = getRect(false);     //unscaled box
+    QRectF bigBox = getRect(false);//unscaled box
 
-    double xScale = w / bigBox.width();            // > 1 page bigger than figure
-    double yScale = h / bigBox.height();           // < 1 page is smaller than figure
+    double xScale = w / bigBox.width(); // > 1 page bigger than figure
+    double yScale = h / bigBox.height();// < 1 page is smaller than figure
 
     double newScale = std::min(xScale, yScale);
     return DrawUtil::sensibleScale(newScale);
 }
 
 //returns the bounding rectangle of all the views in the current scale
-QRectF DrawProjGroup::getRect() const
-{
-    return getRect(true);
-}
+QRectF DrawProjGroup::getRect() const { return getRect(true); }
 
 QRectF DrawProjGroup::getRect(bool scaled) const
 {
-//    Base::Console().Message("DPG::getRect - views: %d\n", Views.getValues().size());
+    //    Base::Console().Message("DPG::getRect - views: %d\n", Views.getValues().size());
     std::array<DrawProjGroupItem*, MAXPROJECTIONCOUNT> viewPtrs;
     arrangeViewPointers(viewPtrs);
     double totalWidth, totalHeight;
@@ -324,17 +314,16 @@ QRectF DrawProjGroup::getRect(bool scaled) const
     double ySpace = spacingY.getValue() * 2.0;
     double rectW = totalWidth + xSpace;
     double rectH = totalHeight + ySpace;
-    double fudge = 1.2;  //make rect a little big to make sure it fits
+    double fudge = 1.2;//make rect a little big to make sure it fits
     rectW *= fudge;
     rectH *= fudge;
 
-    return { 0, 0, rectW, rectH };
+    return {0, 0, rectW, rectH};
 }
 
 //find area consumed by Views only - scaled or unscaled
 void DrawProjGroup::getViewArea(std::array<DrawProjGroupItem*, MAXPROJECTIONCOUNT>& viewPtrs,
-                                   double &width, double &height,
-                                   bool scaled) const
+                                double& width, double& height, bool scaled) const
 {
     // Get the child view bounding boxes
     std::array<Base::BoundBox3d, MAXPROJECTIONCOUNT> bboxes;
@@ -342,29 +331,35 @@ void DrawProjGroup::getViewArea(std::array<DrawProjGroupItem*, MAXPROJECTIONCOUN
 
     //TODO: note that TLF/TRF/BLF, BRF extend a bit farther than a strict row/col arrangement would suggest.
     //get widest view in each row/column
-    double col0w = std::max(std::max(bboxes[0].LengthX(), bboxes[3].LengthX()), bboxes[7].LengthX()),
-           col1w = std::max(std::max(bboxes[1].LengthX(), bboxes[4].LengthX()), bboxes[8].LengthX()),
-           col2w = std::max(std::max(bboxes[2].LengthX(), bboxes[5].LengthX()), bboxes[9].LengthX()),
+    double col0w =
+               std::max(std::max(bboxes[0].LengthX(), bboxes[3].LengthX()), bboxes[7].LengthX()),
+           col1w =
+               std::max(std::max(bboxes[1].LengthX(), bboxes[4].LengthX()), bboxes[8].LengthX()),
+           col2w =
+               std::max(std::max(bboxes[2].LengthX(), bboxes[5].LengthX()), bboxes[9].LengthX()),
            col3w = bboxes[6].LengthX(),
-           row0h = std::max(std::max(bboxes[0].LengthY(), bboxes[1].LengthY()), bboxes[2].LengthY()),
+           row0h =
+               std::max(std::max(bboxes[0].LengthY(), bboxes[1].LengthY()), bboxes[2].LengthY()),
            row1h = std::max(std::max(bboxes[3].LengthY(), bboxes[4].LengthY()),
                             std::max(bboxes[5].LengthY(), bboxes[6].LengthY())),
-           row2h = std::max(std::max(bboxes[7].LengthY(), bboxes[8].LengthY()), bboxes[9].LengthY());
+           row2h =
+               std::max(std::max(bboxes[7].LengthY(), bboxes[8].LengthY()), bboxes[9].LengthY());
 
     width = col0w + col1w + col2w + col3w;
     height = row0h + row1h + row2h;
 }
 
-App::DocumentObject * DrawProjGroup::getProjObj(const char *viewProjType) const
+App::DocumentObject* DrawProjGroup::getProjObj(const char* viewProjType) const
 {
-    for( auto it : Views.getValues() ) {
-        auto projPtr( dynamic_cast<DrawProjGroupItem *>(it) );
+    for (auto it : Views.getValues()) {
+        auto projPtr(dynamic_cast<DrawProjGroupItem*>(it));
         if (!projPtr) {
             //if an element in Views is not a DPGI, something really bad has happened somewhere
-            Base::Console().Log("PROBLEM - DPG::getProjObj - non DPGI entry in Views! %s / %s\n",
-                                    getNameInDocument(), viewProjType);
+            Base::Console().Error("PROBLEM - DPG::getProjObj - non DPGI entry in Views! %s / %s\n",
+                                  getNameInDocument(), viewProjType);
             throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
-        } else if(strcmp(viewProjType, projPtr->Type.getValueAsString()) == 0 ) {
+        }
+        else if (strcmp(viewProjType, projPtr->Type.getValueAsString()) == 0) {
             return it;
         }
     }
@@ -372,31 +367,25 @@ App::DocumentObject * DrawProjGroup::getProjObj(const char *viewProjType) const
     return nullptr;
 }
 
-DrawProjGroupItem* DrawProjGroup::getProjItem(const char *viewProjType) const
+DrawProjGroupItem* DrawProjGroup::getProjItem(const char* viewProjType) const
 {
     App::DocumentObject* docObj = getProjObj(viewProjType);
-    auto result( dynamic_cast<TechDraw::DrawProjGroupItem *>(docObj) );
+    auto result(dynamic_cast<TechDraw::DrawProjGroupItem*>(docObj));
     if (!result && docObj) {
         //should never have a item in DPG that is not a DPGI.
-        Base::Console().Log("PROBLEM - DPG::getProjItem finds non-DPGI in Group %s / %s\n",
-                                getNameInDocument(), viewProjType);
+        Base::Console().Error("PROBLEM - DPG::getProjItem finds non-DPGI in Group %s / %s\n",
+                              getNameInDocument(), viewProjType);
         throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
     }
     return result;
 }
 
-bool DrawProjGroup::checkViewProjType(const char *in)
+bool DrawProjGroup::checkViewProjType(const char* in)
 {
-    if ( strcmp(in, "Front") == 0 ||
-         strcmp(in, "Left") == 0 ||
-         strcmp(in, "Right") == 0 ||
-         strcmp(in, "Top") == 0 ||
-         strcmp(in, "Bottom") == 0 ||
-         strcmp(in, "Rear") == 0 ||
-         strcmp(in, "FrontTopLeft") == 0 ||
-         strcmp(in, "FrontTopRight") == 0 ||
-         strcmp(in, "FrontBottomLeft") == 0 ||
-         strcmp(in, "FrontBottomRight") == 0) {
+    if (strcmp(in, "Front") == 0 || strcmp(in, "Left") == 0 || strcmp(in, "Right") == 0
+        || strcmp(in, "Top") == 0 || strcmp(in, "Bottom") == 0 || strcmp(in, "Rear") == 0
+        || strcmp(in, "FrontTopLeft") == 0 || strcmp(in, "FrontTopRight") == 0
+        || strcmp(in, "FrontBottomLeft") == 0 || strcmp(in, "FrontBottomRight") == 0) {
         return true;
     }
     return false;
@@ -405,38 +394,38 @@ bool DrawProjGroup::checkViewProjType(const char *in)
 //********************************
 // ProjectionItem A/D/I
 //********************************
-bool DrawProjGroup::hasProjection(const char *viewProjType) const
+bool DrawProjGroup::hasProjection(const char* viewProjType) const
 {
-    for( const auto it : Views.getValues() ) {
-        auto view( dynamic_cast<TechDraw::DrawProjGroupItem *>(it) );
+    for (const auto it : Views.getValues()) {
+        auto view(dynamic_cast<TechDraw::DrawProjGroupItem*>(it));
         if (!view) {
             //should never have a item in DPG that is not a DPGI.
-            Base::Console().Log("PROBLEM - DPG::hasProjection finds non-DPGI in Group %s / %s\n",
-                                    getNameInDocument(), viewProjType);
+            Base::Console().Error("PROBLEM - DPG::hasProjection finds non-DPGI in Group %s / %s\n",
+                                  getNameInDocument(), viewProjType);
             throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
         }
 
-        if (strcmp(viewProjType, view->Type.getValueAsString()) == 0 ) {
+        if (strcmp(viewProjType, view->Type.getValueAsString()) == 0) {
             return true;
         }
     }
     return false;
 }
 
-bool DrawProjGroup::canDelete(const char *viewProjType) const
+bool DrawProjGroup::canDelete(const char* viewProjType) const
 {
-//    Base::Console().Message("DPG::canDelete(%s)\n", viewProjType);
+    //    Base::Console().Message("DPG::canDelete(%s)\n", viewProjType);
     TechDraw::DrawProjGroupItem* foundItem(nullptr);
-    for( const auto it : Views.getValues() ) {
-        auto view( dynamic_cast<TechDraw::DrawProjGroupItem *>(it) );
+    for (const auto it : Views.getValues()) {
+        auto view(dynamic_cast<TechDraw::DrawProjGroupItem*>(it));
         if (!view) {
             //should never have a item in DPG that is not a DPGI.
-            Base::Console().Log("PROBLEM - DPG::hasProjection finds non-DPGI in Group %s / %s\n",
-                                    getNameInDocument(), viewProjType);
+            Base::Console().Error("PROBLEM - DPG::hasProjection finds non-DPGI in Group %s / %s\n",
+                                  getNameInDocument(), viewProjType);
             throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
         }
 
-        if (strcmp(viewProjType, view->Type.getValueAsString()) == 0 ) {
+        if (strcmp(viewProjType, view->Type.getValueAsString()) == 0) {
             foundItem = view;
             break;
         }
@@ -456,62 +445,66 @@ bool DrawProjGroup::canDelete(const char *viewProjType) const
     return true;
 }
 
-App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
+App::DocumentObject* DrawProjGroup::addProjection(const char* viewProjType)
 {
-    DrawProjGroupItem *view( nullptr );
+    DrawProjGroupItem* view(nullptr);
     std::pair<Base::Vector3d, Base::Vector3d> vecs;
 
     DrawPage* dp = findParentPage();
     if (!dp)
-        Base::Console().Error("DPG:addProjection - %s - DPG is not on a page!\n", getNameInDocument());
+        Base::Console().Error("DPG:addProjection - %s - DPG is not on a page!\n",
+                              getNameInDocument());
 
-    if ( checkViewProjType(viewProjType) && !hasProjection(viewProjType) ) {
+    if (checkViewProjType(viewProjType) && !hasProjection(viewProjType)) {
         std::string FeatName = getDocument()->getUniqueObjectName("ProjItem");
-        auto docObj( getDocument()->addObject( "TechDraw::DrawProjGroupItem",     //add to Document
-                                               FeatName.c_str() ) );
-        view = dynamic_cast<TechDraw::DrawProjGroupItem *>(docObj);
+        auto docObj(getDocument()->addObject("TechDraw::DrawProjGroupItem",//add to Document
+                                             FeatName.c_str()));
+        view = dynamic_cast<TechDraw::DrawProjGroupItem*>(docObj);
         if (!view && docObj) {
             //should never happen that we create a DPGI that isn't a DPGI!!
-            Base::Console().Log("PROBLEM - DPG::addProjection - created a non DPGI! %s / %s\n",
-                                    getNameInDocument(), viewProjType);
+            Base::Console().Error("PROBLEM - DPG::addProjection - created a non DPGI! %s / %s\n",
+                                  getNameInDocument(), viewProjType);
             throw Base::TypeError("Error: new projection is not a DPGI!");
         }
-        if (view) {                        //coverity CID 151722
+        if (view) {//coverity CID 151722
             // the label must be set before the view is added
             view->Label.setValue(viewProjType);
-            addView(view);                            //from DrawViewCollection
+            addView(view);//from DrawViewCollection
             view->Source.setValues(Source.getValues());
-//            std::vector<DocumentObject*> xLinks;
-//            XSource.getLinks(xLinks);
-//            view->XSource.setValues(xLinks);
+            //            std::vector<DocumentObject*> xLinks;
+            //            XSource.getLinks(xLinks);
+            //            view->XSource.setValues(xLinks);
             view->XSource.setValues(XSource.getValues());
 
             // the Scale is already set by DrawView
             view->Type.setValue(viewProjType);
-            if (strcmp(viewProjType, "Front") != 0 ) {  //not Front!
+            if (strcmp(viewProjType, "Front") != 0) {//not Front!
                 vecs = getDirsFromFront(view);
                 view->Direction.setValue(vecs.first);
                 view->XDirection.setValue(vecs.second);
                 view->recomputeFeature();
-            } else {  //Front
+            }
+            else {//Front
                 Anchor.setValue(view);
                 Anchor.purgeTouched();
-                requestPaint();   //make sure the group object is on the Gui page
-                view->LockPosition.setValue(true);  //lock "Front" position within DPG (note not Page!).
-                view->LockPosition.setStatus(App::Property::ReadOnly, true); //Front should stay locked.
+                requestPaint();//make sure the group object is on the Gui page
+                view->LockPosition.setValue(
+                    true);//lock "Front" position within DPG (note not Page!).
+                view->LockPosition.setStatus(App::Property::ReadOnly,
+                                             true);//Front should stay locked.
                 view->LockPosition.purgeTouched();
             }
-        //        addView(view);                            //from DrawViewCollection
-        //        if (view != getAnchor()) {                //anchor is done elsewhere
-        //            view->recomputeFeature();
-        //        }
+            //        addView(view);                            //from DrawViewCollection
+            //        if (view != getAnchor()) {                //anchor is done elsewhere
+            //            view->recomputeFeature();
+            //        }
         }
     }
     return view;
 }
 
 //NOTE: projections can be deleted without using removeProjection - ie regular DocObject deletion process.
-int DrawProjGroup::removeProjection(const char *viewProjType)
+int DrawProjGroup::removeProjection(const char* viewProjType)
 {
     // TODO: shouldn't be able to delete "Front" unless deleting whole group
     if (checkViewProjType(viewProjType)) {
@@ -521,17 +514,19 @@ int DrawProjGroup::removeProjection(const char *viewProjType)
 
         // Iterate through the child views and find the projection type
         for (auto it : Views.getValues()) {
-            auto projPtr( dynamic_cast<TechDraw::DrawProjGroupItem *>(it) );
+            auto projPtr(dynamic_cast<TechDraw::DrawProjGroupItem*>(it));
             if (projPtr) {
                 if (strcmp(viewProjType, projPtr->Type.getValueAsString()) == 0) {
-                    removeView(projPtr);                                           // Remove from collection
-                    getDocument()->removeObject( it->getNameInDocument() );        // Remove from the document
+                    removeView(projPtr);                                 // Remove from collection
+                    getDocument()->removeObject(it->getNameInDocument());// Remove from the document
                     return Views.getValues().size();
                 }
-            } else {
+            }
+            else {
                 //if an element in Views is not a DPGI, something really bad has happened somewhere
-                Base::Console().Log("PROBLEM - DPG::removeProjection - tries to remove non DPGI! %s / %s\n",
-                                    getNameInDocument(), viewProjType);
+                Base::Console().Error(
+                    "PROBLEM - DPG::removeProjection - tries to remove non DPGI! %s / %s\n",
+                    getNameInDocument(), viewProjType);
                 throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
             }
         }
@@ -543,18 +538,19 @@ int DrawProjGroup::removeProjection(const char *viewProjType)
 //removes all DPGI - used when deleting DPG
 int DrawProjGroup::purgeProjections()
 {
-    while (!Views.getValues().empty())   {
+    while (!Views.getValues().empty()) {
         std::vector<DocumentObject*> views = Views.getValues();
         DrawProjGroupItem* dpgi;
-        DocumentObject* dObj =  views.back();
+        DocumentObject* dObj = views.back();
         dpgi = dynamic_cast<DrawProjGroupItem*>(dObj);
         if (dpgi) {
             std::string itemName = dpgi->Type.getValueAsString();
             removeProjection(itemName.c_str());
-        } else {
+        }
+        else {
             //if an element in Views is not a DPGI, something really bad has happened somewhere
-            Base::Console().Log("PROBLEM - DPG::purgeProjection - tries to remove non DPGI! %s\n",
-                                    getNameInDocument());
+            Base::Console().Error("PROBLEM - DPG::purgeProjection - tries to remove non DPGI! %s\n",
+                                  getNameInDocument());
             throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
         }
     }
@@ -576,7 +572,7 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawProjGroup::getDirsFromFront(DrawPr
 
 std::pair<Base::Vector3d, Base::Vector3d> DrawProjGroup::getDirsFromFront(std::string viewType)
 {
-//    Base::Console().Message("DPG::getDirsFromFront(%s)\n", viewType.c_str());
+    //    Base::Console().Message("DPG::getDirsFromFront(%s)\n", viewType.c_str());
     std::pair<Base::Vector3d, Base::Vector3d> result;
 
     Base::Vector3d projDir, rotVec;
@@ -601,59 +597,57 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawProjGroup::getDirsFromFront(std::s
     gp_Dir gNewDir;
     gp_Dir gNewXDir;
 
-    double angle = M_PI / 2.0;                        //90*
+    double angle = M_PI / 2.0;//90*
 
     if (viewType == "Right") {
         newCS = anchorCS.Rotated(gUpAxis, angle);
         projDir = dir2vec(newCS.Direction());
-        rotVec  = dir2vec(newCS.XDirection());
-    } else if (viewType == "Left") {
+        rotVec = dir2vec(newCS.XDirection());
+    }
+    else if (viewType == "Left") {
         newCS = anchorCS.Rotated(gUpAxis, -angle);
         projDir = dir2vec(newCS.Direction());
-        rotVec  = dir2vec(newCS.XDirection());
-    } else if (viewType == "Top") {
+        rotVec = dir2vec(newCS.XDirection());
+    }
+    else if (viewType == "Top") {
         projDir = dir2vec(gYDir);
-        rotVec  = dir2vec(gXDir);
-    } else if (viewType == "Bottom") {
+        rotVec = dir2vec(gXDir);
+    }
+    else if (viewType == "Bottom") {
         projDir = dir2vec(gYDir.Reversed());
-        rotVec  = dir2vec(gXDir);
-    } else if (viewType == "Rear") {
+        rotVec = dir2vec(gXDir);
+    }
+    else if (viewType == "Rear") {
         projDir = dir2vec(gDir.Reversed());
-        rotVec  = dir2vec(gXDir.Reversed());
-    } else if (viewType == "FrontTopLeft") {
-        gp_Dir newDir = gp_Dir(gp_Vec(gDir) -
-                               gp_Vec(gXDir) +
-                               gp_Vec(gYDir));
+        rotVec = dir2vec(gXDir.Reversed());
+    }
+    else if (viewType == "FrontTopLeft") {
+        gp_Dir newDir = gp_Dir(gp_Vec(gDir) - gp_Vec(gXDir) + gp_Vec(gYDir));
         projDir = dir2vec(newDir);
-        gp_Dir newXDir = gp_Dir(gp_Vec(gXDir) +
-                                gp_Vec(gDir));
+        gp_Dir newXDir = gp_Dir(gp_Vec(gXDir) + gp_Vec(gDir));
         rotVec = dir2vec(newXDir);
-    } else if (viewType == "FrontTopRight") {
-        gp_Dir newDir = gp_Dir(gp_Vec(gDir) +
-                               gp_Vec(gXDir) +
-                               gp_Vec(gYDir));
+    }
+    else if (viewType == "FrontTopRight") {
+        gp_Dir newDir = gp_Dir(gp_Vec(gDir) + gp_Vec(gXDir) + gp_Vec(gYDir));
         projDir = dir2vec(newDir);
-        gp_Dir newXDir = gp_Dir(gp_Vec(gXDir) -
-                                gp_Vec(gDir));
+        gp_Dir newXDir = gp_Dir(gp_Vec(gXDir) - gp_Vec(gDir));
         rotVec = dir2vec(newXDir);
-    } else if (viewType == "FrontBottomLeft") {
-        gp_Dir newDir = gp_Dir(gp_Vec(gDir) -
-                               gp_Vec(gXDir) -
-                               gp_Vec(gYDir));
+    }
+    else if (viewType == "FrontBottomLeft") {
+        gp_Dir newDir = gp_Dir(gp_Vec(gDir) - gp_Vec(gXDir) - gp_Vec(gYDir));
         projDir = dir2vec(newDir);
-        gp_Dir newXDir = gp_Dir(gp_Vec(gXDir) +
-                                gp_Vec(gDir));
+        gp_Dir newXDir = gp_Dir(gp_Vec(gXDir) + gp_Vec(gDir));
         rotVec = dir2vec(newXDir);
-    } else if (viewType == "FrontBottomRight") {
-        gp_Dir newDir = gp_Dir(gp_Vec(gDir) +
-                               gp_Vec(gXDir) -
-                               gp_Vec(gYDir));
+    }
+    else if (viewType == "FrontBottomRight") {
+        gp_Dir newDir = gp_Dir(gp_Vec(gDir) + gp_Vec(gXDir) - gp_Vec(gYDir));
         projDir = dir2vec(newDir);
-        gp_Dir newXDir = gp_Dir(gp_Vec(gXDir) -
-                                gp_Vec(gDir));
+        gp_Dir newXDir = gp_Dir(gp_Vec(gXDir) - gp_Vec(gDir));
         rotVec = dir2vec(newXDir);
-    } else {
-        Base::Console().Error("DrawProjGroup - %s unknown projection: %s\n", getNameInDocument(), viewType.c_str());
+    }
+    else {
+        Base::Console().Error("DrawProjGroup - %s unknown projection: %s\n", getNameInDocument(),
+                              viewType.c_str());
         return result;
     }
 
@@ -663,24 +657,20 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawProjGroup::getDirsFromFront(std::s
 
 Base::Vector3d DrawProjGroup::dir2vec(gp_Dir d)
 {
-    Base::Vector3d result(d.X(),
-                        d.Y(),
-                        d.Z());
+    Base::Vector3d result(d.X(), d.Y(), d.Z());
     return result;
 }
 
 gp_Dir DrawProjGroup::vec2dir(Base::Vector3d v)
 {
-    gp_Dir result(v.x,
-                  v.y,
-                  v.z);
+    gp_Dir result(v.x, v.y, v.z);
     return result;
 }
 
 //this can be improved.  this implementation positions views too far apart.
-Base::Vector3d DrawProjGroup::getXYPosition(const char *viewTypeCStr)
+Base::Vector3d DrawProjGroup::getXYPosition(const char* viewTypeCStr)
 {
-//    Base::Console().Message("DPG::getXYPosition(%s)\n", Label.getValue());
+    //    Base::Console().Message("DPG::getXYPosition(%s)\n", Label.getValue());
     //   Third Angle:  FTL  T  FTRight          0  1  2
     //                  L   F   Right   Rear    3  4  5  6
     //                 FBL  B  FBRight          7  8  9
@@ -691,7 +681,7 @@ Base::Vector3d DrawProjGroup::getXYPosition(const char *viewTypeCStr)
 
     Base::Vector3d result(0.0, 0.0, 0.0);
     //Front view position is always (0, 0)
-    if (strcmp(viewTypeCStr, "Front") == 0 ) {  // Front!
+    if (strcmp(viewTypeCStr, "Front") == 0) {// Front!
         return result;
     }
     const int idxCount = MAXPROJECTIONCOUNT;
@@ -699,8 +689,8 @@ Base::Vector3d DrawProjGroup::getXYPosition(const char *viewTypeCStr)
     arrangeViewPointers(viewPtrs);
     int viewIndex = getViewIndex(viewTypeCStr);
 
-        //TODO: bounding boxes do not take view orientation into account
-        //      i.e. X&Y widths might be swapped on page
+    //TODO: bounding boxes do not take view orientation into account
+    //      i.e. X&Y widths might be swapped on page
 
     if (viewPtrs[viewIndex]->LockPosition.getValue()) {
         result.x = viewPtrs[viewIndex]->X.getValue();
@@ -713,10 +703,10 @@ Base::Vector3d DrawProjGroup::getXYPosition(const char *viewTypeCStr)
 
         // Calculate bounding boxes for each displayed view
         std::array<Base::BoundBox3d, MAXPROJECTIONCOUNT> bboxes;
-        makeViewBbs(viewPtrs, bboxes);         //scaled
+        makeViewBbs(viewPtrs, bboxes);//scaled
 
-        double xSpacing = spacingX.getValue();    //in mm, no scale
-        double ySpacing = spacingY.getValue();    //in mm, no scale
+        double xSpacing = spacingX.getValue();//in mm, no scale
+        double ySpacing = spacingY.getValue();//in mm, no scale
 
         std::array<int, 3> topRowBoxes {0, 1, 2};
         std::array<int, 3> middleRowBoxes {3, 4, 5};
@@ -724,108 +714,90 @@ Base::Vector3d DrawProjGroup::getXYPosition(const char *viewTypeCStr)
         std::array<int, 3> leftColBoxes {0, 3, 7};
         std::array<int, 3> middleColBoxes {1, 4, 8};
         std::array<int, 3> rightColBoxes {2, 5, 9};
-        double bigHeightTop      = getMaxRowHeight(topRowBoxes, bboxes);
-        double bigHeightMiddle   = getMaxRowHeight(middleRowBoxes, bboxes);
-        double bigHeightBottom   = getMaxRowHeight(bottomRowBoxes, bboxes);
-        double bigWidthLeft     = getMaxColWidth(leftColBoxes, bboxes);
-        double bigWidthMiddle   = getMaxColWidth(middleColBoxes, bboxes);
-        double bigWidthRight    = getMaxColWidth(rightColBoxes, bboxes);
+        double bigHeightTop = getMaxRowHeight(topRowBoxes, bboxes);
+        double bigHeightMiddle = getMaxRowHeight(middleRowBoxes, bboxes);
+        double bigHeightBottom = getMaxRowHeight(bottomRowBoxes, bboxes);
+        double bigWidthLeft = getMaxColWidth(leftColBoxes, bboxes);
+        double bigWidthMiddle = getMaxColWidth(middleColBoxes, bboxes);
+        double bigWidthRight = getMaxColWidth(rightColBoxes, bboxes);
         double bigWidthFarRight = 0.0;
         if (bboxes[6].IsValid()) {
             bigWidthFarRight = bboxes[6].LengthX();
         }
 
 
-        if (viewPtrs[4] &&                       //Front
+        if (viewPtrs[4] &&//Front
             bboxes[4].IsValid()) {
             position[4].x = 0.0;
             position[4].y = 0.0;
         }
 
-        if (viewPtrs[3] &&                        // L/R  (third/first) middle/left
-            bboxes[3].IsValid() &&
-            bboxes[4].IsValid()) {
-            position[3].x = -(0.5 * bigWidthMiddle + xSpacing +
-                              0.5 * bigWidthLeft);
+        if (viewPtrs[3] &&// L/R  (third/first) middle/left
+            bboxes[3].IsValid() && bboxes[4].IsValid()) {
+            position[3].x = -(0.5 * bigWidthMiddle + xSpacing + 0.5 * bigWidthLeft);
             position[3].y = 0.0;
         }
 
-        if (viewPtrs[5] &&                        // R/L (third/first) middle/right
-            bboxes[5].IsValid() &&
-            bboxes[4].IsValid()) {
-            position[5].x = 0.5 * bigWidthMiddle + xSpacing +
-                            0.5 * bigWidthRight;
+        if (viewPtrs[5] &&// R/L (third/first) middle/right
+            bboxes[5].IsValid() && bboxes[4].IsValid()) {
+            position[5].x = 0.5 * bigWidthMiddle + xSpacing + 0.5 * bigWidthRight;
             position[5].y = 0.0;
         }
 
-        if (viewPtrs[6] &&
-            bboxes[6].IsValid()) {    //"Rear"  middle/far right
-            if (viewPtrs[5] &&
-                bboxes[5].IsValid()) {
+        if (viewPtrs[6] && bboxes[6].IsValid()) {//"Rear"  middle/far right
+            if (viewPtrs[5] && bboxes[5].IsValid()) {
                 //there is a view between Front and Rear
-                position[6].x = 0.5 * bigWidthMiddle + xSpacing +
-                                bigWidthRight + xSpacing +
-                                0.5 * bigWidthFarRight;
+                position[6].x = 0.5 * bigWidthMiddle + xSpacing + bigWidthRight + xSpacing
+                    + 0.5 * bigWidthFarRight;
                 position[6].y = 0.0;
-            } else if (viewPtrs[4] &&
-                bboxes[4].IsValid()) {
+            }
+            else if (viewPtrs[4] && bboxes[4].IsValid()) {
                 // there is no view between Front and Rear
                 position[6].x = 0.5 * bigWidthMiddle + xSpacing + 0.5 * bigWidthRight;
                 position[6].y = 0.0;
             }
         }
 
-        if (viewPtrs[1] &&                        // T/B (third/first) top/middle
-            bboxes[1].IsValid() &&
-            bboxes[4].IsValid()) {
+        if (viewPtrs[1] &&// T/B (third/first) top/middle
+            bboxes[1].IsValid() && bboxes[4].IsValid()) {
             position[1].x = 0.0;
-            position[1].y = 0.5 * bigHeightMiddle + ySpacing +
-                            0.5 * bigHeightTop;
+            position[1].y = 0.5 * bigHeightMiddle + ySpacing + 0.5 * bigHeightTop;
         }
 
-        if (viewPtrs[8] &&                        // B/T (third/first) bottom/middle
-            bboxes[8].IsValid() &&
-            bboxes[4].IsValid()) {
+        if (viewPtrs[8] &&// B/T (third/first) bottom/middle
+            bboxes[8].IsValid() && bboxes[4].IsValid()) {
             position[8].x = 0.0;
-            position[8].y = -(0.5 * bigHeightMiddle + ySpacing +
-                              0.5 * bigHeightBottom);
+            position[8].y = -(0.5 * bigHeightMiddle + ySpacing + 0.5 * bigHeightBottom);
         }
 
-        if (viewPtrs[0] &&                      // iso top left
+        if (viewPtrs[0] &&// iso top left
             bboxes[0].IsValid()) {
-            position[0].x = -(0.5 * bigWidthMiddle + xSpacing +
-                              0.5 * bigWidthLeft);
-            position[0].y = 0.5 * bigHeightMiddle + ySpacing +
-                            0.5 * bigHeightTop;
+            position[0].x = -(0.5 * bigWidthMiddle + xSpacing + 0.5 * bigWidthLeft);
+            position[0].y = 0.5 * bigHeightMiddle + ySpacing + 0.5 * bigHeightTop;
         }
 
-        if (viewPtrs[2] &&                      // iso top right
+        if (viewPtrs[2] &&// iso top right
             bboxes[2].IsValid()) {
-            position[2].x = 0.5 * bigWidthMiddle + xSpacing +
-                            0.5 * bigWidthRight;
-            position[2].y = 0.5 * bigHeightMiddle + ySpacing +
-                            0.5 * bigHeightTop;
+            position[2].x = 0.5 * bigWidthMiddle + xSpacing + 0.5 * bigWidthRight;
+            position[2].y = 0.5 * bigHeightMiddle + ySpacing + 0.5 * bigHeightTop;
         }
 
-        if (viewPtrs[7] &&                      // iso bottom left
+        if (viewPtrs[7] &&// iso bottom left
             bboxes[7].IsValid()) {
-            position[7].x = -(0.5 * bigWidthMiddle + xSpacing +
-                              0.5 * bigWidthLeft);
-            position[7].y = -(0.5 * bigHeightMiddle + ySpacing +
-                              0.5 * bigHeightBottom);
+            position[7].x = -(0.5 * bigWidthMiddle + xSpacing + 0.5 * bigWidthLeft);
+            position[7].y = -(0.5 * bigHeightMiddle + ySpacing + 0.5 * bigHeightBottom);
         }
 
-        if (viewPtrs[9] &&                      // iso bottom right
+        if (viewPtrs[9] &&// iso bottom right
             bboxes[9].IsValid()) {
-            position[9].x = 0.5 * bigWidthMiddle + xSpacing +
-                            0.5 * bigWidthRight;
-            position[9].y = -(0.5 * bigHeightMiddle + ySpacing +
-                              0.5 * bigHeightBottom);
+            position[9].x = 0.5 * bigWidthMiddle + xSpacing + 0.5 * bigWidthRight;
+            position[9].y = -(0.5 * bigHeightMiddle + ySpacing + 0.5 * bigHeightBottom);
         }
 
         result.x = position[viewIndex].x;
         result.y = position[viewIndex].y;
-    } else {
+    }
+    else {
         result.x = viewPtrs[viewIndex]->X.getValue();
         result.y = viewPtrs[viewIndex]->Y.getValue();
     }
@@ -846,7 +818,7 @@ double DrawProjGroup::getMaxRowHeight(std::array<int, 3> list,
 }
 
 double DrawProjGroup::getMaxColWidth(std::array<int, 3> list,
-                                      std::array<Base::BoundBox3d, MAXPROJECTIONCOUNT> bboxes)
+                                     std::array<Base::BoundBox3d, MAXPROJECTIONCOUNT> bboxes)
 {
     double bigWidth = 0.0;
     for (auto index : list) {
@@ -858,27 +830,29 @@ double DrawProjGroup::getMaxColWidth(std::array<int, 3> list,
     return bigWidth;
 }
 
-int DrawProjGroup::getViewIndex(const char *viewTypeCStr) const
+int DrawProjGroup::getViewIndex(const char* viewTypeCStr) const
 {
-    int result = 4;                                        //default to front view's position
+    int result = 4;//default to front view's position
     // Determine layout - should be either "First Angle" or "Third Angle"
     const char* projType;
     DrawPage* dp = findParentPage();
     if (ProjectionType.isValue("Default")) {
         if (dp) {
             projType = dp->ProjectionType.getValueAsString();
-        } else {
-            Base::Console().Warning("DPG: %s - can not find parent page. Using default Projection Type. (1)\n",
-                                    getNameInDocument());
+        }
+        else {
+            Base::Console().Warning(
+                "DPG: %s - can not find parent page. Using default Projection Type. (1)\n",
+                getNameInDocument());
             int projConv = getDefProjConv();
             projType = ProjectionTypeEnums[projConv];
         }
-    } else {
+    }
+    else {
         projType = ProjectionType.getValueAsString();
     }
 
-    if ( strcmp(projType, "Third Angle") == 0 ||
-         strcmp(projType, "First Angle") == 0    ) {
+    if (strcmp(projType, "Third Angle") == 0 || strcmp(projType, "First Angle") == 0) {
         //   Third Angle:  FTL  T  FTRight          0  1  2
         //                  L   F   Right   Rear    3  4  5  6
         //                 FBL  B  FBRight          7  8  9
@@ -890,36 +864,48 @@ int DrawProjGroup::getViewIndex(const char *viewTypeCStr) const
         bool thirdAngle = (strcmp(projType, "Third Angle") == 0);
         if (strcmp(viewTypeCStr, "Front") == 0) {
             result = 4;
-        } else if (strcmp(viewTypeCStr, "Left") == 0) {
+        }
+        else if (strcmp(viewTypeCStr, "Left") == 0) {
             result = thirdAngle ? 3 : 5;
-        } else if (strcmp(viewTypeCStr, "Right") == 0) {
+        }
+        else if (strcmp(viewTypeCStr, "Right") == 0) {
             result = thirdAngle ? 5 : 3;
-        } else if (strcmp(viewTypeCStr, "Top") == 0) {
+        }
+        else if (strcmp(viewTypeCStr, "Top") == 0) {
             result = thirdAngle ? 1 : 8;
-        } else if (strcmp(viewTypeCStr, "Bottom") == 0) {
+        }
+        else if (strcmp(viewTypeCStr, "Bottom") == 0) {
             result = thirdAngle ? 8 : 1;
-        } else if (strcmp(viewTypeCStr, "Rear") == 0) {
+        }
+        else if (strcmp(viewTypeCStr, "Rear") == 0) {
             result = 6;
-        } else if (strcmp(viewTypeCStr, "FrontTopLeft") == 0) {
+        }
+        else if (strcmp(viewTypeCStr, "FrontTopLeft") == 0) {
             result = thirdAngle ? 0 : 9;
-        } else if (strcmp(viewTypeCStr, "FrontTopRight") == 0) {
+        }
+        else if (strcmp(viewTypeCStr, "FrontTopRight") == 0) {
             result = thirdAngle ? 2 : 7;
-        } else if (strcmp(viewTypeCStr, "FrontBottomLeft") == 0) {
+        }
+        else if (strcmp(viewTypeCStr, "FrontBottomLeft") == 0) {
             result = thirdAngle ? 7 : 2;
-        } else if (strcmp(viewTypeCStr, "FrontBottomRight") == 0) {
+        }
+        else if (strcmp(viewTypeCStr, "FrontBottomRight") == 0) {
             result = thirdAngle ? 9 : 0;
-        } else {
+        }
+        else {
             throw Base::TypeError("Unknown view type in DrawProjGroup::getViewIndex()");
         }
-    } else {
+    }
+    else {
         throw Base::ValueError("Unknown Projection convention in DrawProjGroup::getViewIndex()");
     }
     return result;
 }
 
-void DrawProjGroup::arrangeViewPointers(std::array<DrawProjGroupItem *, MAXPROJECTIONCOUNT> &viewPtrs) const
+void DrawProjGroup::arrangeViewPointers(
+    std::array<DrawProjGroupItem*, MAXPROJECTIONCOUNT>& viewPtrs) const
 {
-    for (int i=0; i < MAXPROJECTIONCOUNT; ++i) {
+    for (int i = 0; i < MAXPROJECTIONCOUNT; ++i) {
         viewPtrs[i] = nullptr;
     }
 
@@ -929,21 +915,23 @@ void DrawProjGroup::arrangeViewPointers(std::array<DrawProjGroupItem *, MAXPROJE
         DrawPage* dp = findParentPage();
         if (dp) {
             projType = dp->ProjectionType.getValueAsString();
-        } else {
+        }
+        else {
             Base::Console().Error("DPG:arrangeViewPointers - %s - DPG is not on a page!\n",
-                                    getNameInDocument());
-            Base::Console().Warning("DPG:arrangeViewPointers - using system default Projection Type\n",
-                                    getNameInDocument());
+                                  getNameInDocument());
+            Base::Console().Warning(
+                "DPG:arrangeViewPointers - using system default Projection Type\n",
+                getNameInDocument());
             int projConv = getDefProjConv();
             projType = ProjectionTypeEnums[projConv + 1];
         }
-    } else {
+    }
+    else {
         projType = ProjectionType.getValueAsString();
     }
 
     // Iterate through views and populate viewPtrs
-    if ( strcmp(projType, "Third Angle") == 0 ||
-         strcmp(projType, "First Angle") == 0    ) {
+    if (strcmp(projType, "Third Angle") == 0 || strcmp(projType, "First Angle") == 0) {
         //   Third Angle:  FTL  T  FTRight          0  1  2
         //                  L   F   Right   Rear    3  4  5  6
         //                 FBL  B  FBRight          7  8  9
@@ -954,51 +942,67 @@ void DrawProjGroup::arrangeViewPointers(std::array<DrawProjGroupItem *, MAXPROJE
 
         bool thirdAngle = (strcmp(projType, "Third Angle") == 0);
         for (auto it : Views.getValues()) {
-            auto oView( dynamic_cast<DrawProjGroupItem *>(it) );
+            auto oView(dynamic_cast<DrawProjGroupItem*>(it));
             if (!oView) {
                 //if an element in Views is not a DPGI, something really bad has happened somewhere
-                Base::Console().Log("PROBLEM - DPG::arrangeViewPointers - non DPGI in Views! %s\n",
-                                    getNameInDocument());
+                Base::Console().Error(
+                    "PROBLEM - DPG::arrangeViewPointers - non DPGI in Views! %s\n",
+                    getNameInDocument());
                 throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
-            } else {
-                const char *viewTypeCStr = oView->Type.getValueAsString();
+            }
+            else {
+                const char* viewTypeCStr = oView->Type.getValueAsString();
                 if (strcmp(viewTypeCStr, "Front") == 0) {
-                  //viewPtrs[thirdAngle ? 4 : 4] = oView;
+                    //viewPtrs[thirdAngle ? 4 : 4] = oView;
                     viewPtrs[4] = oView;
-                } else if (strcmp(viewTypeCStr, "Left") == 0) {
+                }
+                else if (strcmp(viewTypeCStr, "Left") == 0) {
                     viewPtrs[thirdAngle ? 3 : 5] = oView;
-                } else if (strcmp(viewTypeCStr, "Right") == 0) {
+                }
+                else if (strcmp(viewTypeCStr, "Right") == 0) {
                     viewPtrs[thirdAngle ? 5 : 3] = oView;
-                } else if (strcmp(viewTypeCStr, "Top") == 0) {
+                }
+                else if (strcmp(viewTypeCStr, "Top") == 0) {
                     viewPtrs[thirdAngle ? 1 : 8] = oView;
-                } else if (strcmp(viewTypeCStr, "Bottom") == 0) {
+                }
+                else if (strcmp(viewTypeCStr, "Bottom") == 0) {
                     viewPtrs[thirdAngle ? 8 : 1] = oView;
-                } else if (strcmp(viewTypeCStr, "Rear") == 0) {
+                }
+                else if (strcmp(viewTypeCStr, "Rear") == 0) {
                     viewPtrs[6] = oView;
-                } else if (strcmp(viewTypeCStr, "FrontTopLeft") == 0) {
+                }
+                else if (strcmp(viewTypeCStr, "FrontTopLeft") == 0) {
                     viewPtrs[thirdAngle ? 0 : 9] = oView;
-                } else if (strcmp(viewTypeCStr, "FrontTopRight") == 0) {
+                }
+                else if (strcmp(viewTypeCStr, "FrontTopRight") == 0) {
                     viewPtrs[thirdAngle ? 2 : 7] = oView;
-                } else if (strcmp(viewTypeCStr, "FrontBottomLeft") == 0) {
+                }
+                else if (strcmp(viewTypeCStr, "FrontBottomLeft") == 0) {
                     viewPtrs[thirdAngle ? 7 : 2] = oView;
-                } else if (strcmp(viewTypeCStr, "FrontBottomRight") == 0) {
+                }
+                else if (strcmp(viewTypeCStr, "FrontBottomRight") == 0) {
                     viewPtrs[thirdAngle ? 9 : 0] = oView;
-                } else {
+                }
+                else {
                     Base::Console().Warning("DPG: %s - unknown view type: %s. \n",
                                             getNameInDocument(), viewTypeCStr);
-                    throw Base::TypeError("Unknown view type in DrawProjGroup::arrangeViewPointers.");
+                    throw Base::TypeError(
+                        "Unknown view type in DrawProjGroup::arrangeViewPointers.");
                 }
             }
         }
-    } else {
-        Base::Console().Warning("DPG: %s - unknown Projection convention: %s\n", getNameInDocument(), projType);
-        throw Base::ValueError("Unknown Projection convention in DrawProjGroup::arrangeViewPointers");
+    }
+    else {
+        Base::Console().Warning("DPG: %s - unknown Projection convention: %s\n",
+                                getNameInDocument(), projType);
+        throw Base::ValueError(
+            "Unknown Projection convention in DrawProjGroup::arrangeViewPointers");
     }
 }
 
-void DrawProjGroup::makeViewBbs(std::array<DrawProjGroupItem *, MAXPROJECTIONCOUNT> &viewPtrs,
-                                          std::array<Base::BoundBox3d, MAXPROJECTIONCOUNT> &bboxes,
-                                          bool scaled) const
+void DrawProjGroup::makeViewBbs(std::array<DrawProjGroupItem*, MAXPROJECTIONCOUNT>& viewPtrs,
+                                std::array<Base::BoundBox3d, MAXPROJECTIONCOUNT>& bboxes,
+                                bool scaled) const
 {
     Base::BoundBox3d empty(Base::Vector3d(0.0, 0.0, 0.0), 0.0);
     for (int i = 0; i < MAXPROJECTIONCOUNT; ++i) {
@@ -1006,8 +1010,8 @@ void DrawProjGroup::makeViewBbs(std::array<DrawProjGroupItem *, MAXPROJECTIONCOU
         if (viewPtrs[i]) {
             bboxes[i] = viewPtrs[i]->getBoundingBox();
             if (!scaled) {
-                double scale = 1.0 / viewPtrs[i]->getScale();    //convert bbx to 1:1 scale
-//                double scale = 1.0 / viewPtrs[i]->getLastScale();    //convert bbx to 1:1 scale
+                double scale = 1.0 / viewPtrs[i]->getScale();//convert bbx to 1:1 scale
+                //                double scale = 1.0 / viewPtrs[i]->getLastScale();    //convert bbx to 1:1 scale
                 bboxes[i].ScaleX(scale);
                 bboxes[i].ScaleY(scale);
                 bboxes[i].ScaleZ(scale);
@@ -1018,12 +1022,13 @@ void DrawProjGroup::makeViewBbs(std::array<DrawProjGroupItem *, MAXPROJECTIONCOU
 
 void DrawProjGroup::recomputeChildren()
 {
-//    Base::Console().Message("DPG::recomputeChildren() - waiting: %d\n", waitingForChildren());
-    for( const auto it : Views.getValues() ) {
-        auto view( dynamic_cast<DrawProjGroupItem *>(it) );
+    //    Base::Console().Message("DPG::recomputeChildren() - waiting: %d\n", waitingForChildren());
+    for (const auto it : Views.getValues()) {
+        auto view(dynamic_cast<DrawProjGroupItem*>(it));
         if (!view) {
             throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
-        } else {
+        }
+        else {
             view->recomputeFeature();
         }
     }
@@ -1031,14 +1036,15 @@ void DrawProjGroup::recomputeChildren()
 
 void DrawProjGroup::autoPositionChildren()
 {
-//    Base::Console().Message("DPG::autoPositionChildren() - %s - waiting: %d\n",
-//                            getNameInDocument(), waitingForChildren());
-    for( const auto it : Views.getValues() ) {
-        auto view( dynamic_cast<DrawProjGroupItem *>(it) );
+    //    Base::Console().Message("DPG::autoPositionChildren() - %s - waiting: %d\n",
+    //                            getNameInDocument(), waitingForChildren());
+    for (const auto it : Views.getValues()) {
+        auto view(dynamic_cast<DrawProjGroupItem*>(it));
         if (!view) {
             //if an element in Views is not a DPGI, something really bad has happened somewhere
             throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
-        } else {
+        }
+        else {
             view->autoPosition();
         }
     }
@@ -1049,13 +1055,14 @@ void DrawProjGroup::autoPositionChildren()
  */
 void DrawProjGroup::updateChildrenScale()
 {
-//    Base::Console().Message("DPG::updateChildrenScale() - waiting: %d\n", waitingForChildren());
-    for( const auto it : Views.getValues() ) {
-        auto view( dynamic_cast<DrawProjGroupItem *>(it) );
+    //    Base::Console().Message("DPG::updateChildrenScale() - waiting: %d\n", waitingForChildren());
+    for (const auto it : Views.getValues()) {
+        auto view(dynamic_cast<DrawProjGroupItem*>(it));
         if (!view) {
             //if an element in Views is not a DPGI, something really bad has happened somewhere
             throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
-        } else {
+        }
+        else {
             view->Scale.setValue(getScale());
             view->Scale.purgeTouched();
             view->purgeTouched();
@@ -1068,14 +1075,16 @@ void DrawProjGroup::updateChildrenScale()
  */
 void DrawProjGroup::updateChildrenSource()
 {
-    for( const auto it : Views.getValues() ) {
-        auto view( dynamic_cast<DrawProjGroupItem *>(it) );
+    for (const auto it : Views.getValues()) {
+        auto view(dynamic_cast<DrawProjGroupItem*>(it));
         if (!view) {
             //if an element in Views is not a DPGI, something really bad has happened somewhere
-            Base::Console().Log("PROBLEM - DPG::updateChildrenSource - non DPGI entry in Views! %s\n",
-                                    getNameInDocument());
+            Base::Console().Error(
+                "PROBLEM - DPG::updateChildrenSource - non DPGI entry in Views! %s\n",
+                getNameInDocument());
             throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
-        } else {
+        }
+        else {
             if (view->Source.getValues() != Source.getValues()) {
                 view->Source.setValues(Source.getValues());
             }
@@ -1092,14 +1101,16 @@ void DrawProjGroup::updateChildrenSource()
  */
 void DrawProjGroup::updateChildrenLock()
 {
-    for( const auto it : Views.getValues() ) {
-        auto view( dynamic_cast<DrawProjGroupItem *>(it) );
+    for (const auto it : Views.getValues()) {
+        auto view(dynamic_cast<DrawProjGroupItem*>(it));
         if (!view) {
             //if an element in Views is not a DPGI, something really bad has happened somewhere
-            Base::Console().Log("PROBLEM - DPG::updateChildrenLock - non DPGI entry in Views! %s\n",
-                                    getNameInDocument());
+            Base::Console().Error(
+                "PROBLEM - DPG::updateChildrenLock - non DPGI entry in Views! %s\n",
+                getNameInDocument());
             throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
-        } else {
+        }
+        else {
             view->requestPaint();
         }
     }
@@ -1107,14 +1118,16 @@ void DrawProjGroup::updateChildrenLock()
 
 void DrawProjGroup::updateChildrenEnforce(void)
 {
-    for( const auto it : Views.getValues() ) {
-        auto view( dynamic_cast<DrawProjGroupItem *>(it) );
+    for (const auto it : Views.getValues()) {
+        auto view(dynamic_cast<DrawProjGroupItem*>(it));
         if (!view) {
             //if an element in Views is not a DPGI, something really bad has happened somewhere
-            Base::Console().Log("PROBLEM - DPG::updateChildrenEnforce - non DPGI entry in Views! %s\n",
-                                    getNameInDocument());
+            Base::Console().Error(
+                "PROBLEM - DPG::updateChildrenEnforce - non DPGI entry in Views! %s\n",
+                getNameInDocument());
             throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
-        } else {
+        }
+        else {
             view->enforceRecompute();
         }
     }
@@ -1125,7 +1138,7 @@ App::Enumeration DrawProjGroup::usedProjectionType()
     //TODO: Would've been nice to have an Enumeration(const PropertyEnumeration &) constructor
     App::Enumeration ret(ProjectionTypeEnums, ProjectionType.getValueAsString());
     if (ret.isValue("Default")) {
-        TechDraw::DrawPage * page = getPage();
+        TechDraw::DrawPage* page = getPage();
         if (page) {
             ret.setValue(page->ProjectionType.getValueAsString());
         }
@@ -1167,8 +1180,6 @@ Base::Vector3d DrawProjGroup::getAnchorDirection()
     if (docObj) {
         DrawProjGroupItem* item = static_cast<DrawProjGroupItem*>(docObj);
         result = item->Direction.getValue();
-    } else {
-        Base::Console().Log("ERROR - DPG::getAnchorDir - no Anchor!!\n");
     }
     return result;
 }
@@ -1185,74 +1196,75 @@ void DrawProjGroup::updateSecondaryDirs()
     Base::Vector3d anchDir = anchor->Direction.getValue();
     Base::Vector3d anchRot = anchor->getXDirection();
 
-    std::map<std::string, std::pair<Base::Vector3d, Base::Vector3d> > saveVals;
+    std::map<std::string, std::pair<Base::Vector3d, Base::Vector3d>> saveVals;
     std::string key;
     std::pair<Base::Vector3d, Base::Vector3d> data;
-    for (auto& docObj: Views.getValues()) {
+    for (auto& docObj : Views.getValues()) {
         std::pair<Base::Vector3d, Base::Vector3d> newDirs;
         std::string pic;
         DrawProjGroupItem* v = static_cast<DrawProjGroupItem*>(docObj);
         ProjItemType t = static_cast<ProjItemType>(v->Type.getValue());
         switch (t) {
-            case Front :
+            case Front:
                 data.first = anchDir;
                 data.second = anchRot;
                 key = "Front";
                 saveVals[key] = data;
                 break;
-            case Rear :
+            case Rear:
                 key = "Rear";
                 newDirs = getDirsFromFront(key);
                 saveVals[key] = newDirs;
                 break;
-            case Left :
+            case Left:
                 key = "Left";
                 newDirs = getDirsFromFront(key);
                 saveVals[key] = newDirs;
                 break;
-            case Right :
-            key = "Right";
+            case Right:
+                key = "Right";
                 newDirs = getDirsFromFront(key);
                 saveVals[key] = newDirs;
                 break;
-            case Top :
+            case Top:
                 key = "Top";
                 newDirs = getDirsFromFront(key);
                 saveVals[key] = newDirs;
                 break;
-            case Bottom :
+            case Bottom:
                 key = "Bottom";
                 newDirs = getDirsFromFront(key);
                 saveVals[key] = newDirs;
                 break;
-            case FrontTopLeft :
+            case FrontTopLeft:
                 key = "FrontTopLeft";
                 newDirs = getDirsFromFront(key);
                 saveVals[key] = newDirs;
                 break;
-            case FrontTopRight :
+            case FrontTopRight:
                 key = "FrontTopRight";
                 newDirs = getDirsFromFront(key);
                 saveVals[key] = newDirs;
                 break;
-            case FrontBottomLeft :
+            case FrontBottomLeft:
                 key = "FrontBottomLeft";
                 newDirs = getDirsFromFront(key);
                 saveVals[key] = newDirs;
                 break;
-            case FrontBottomRight :
+            case FrontBottomRight:
                 key = "FrontBottomRight";
                 newDirs = getDirsFromFront(key);
                 saveVals[key] = newDirs;
                 break;
             default: {
                 //TARFU invalid secondary type
-                Base::Console().Message("ERROR - DPG::updateSecondaryDirs - invalid projection type\n");
+                Base::Console().Message(
+                    "ERROR - DPG::updateSecondaryDirs - invalid projection type\n");
             }
         }
     }
 
-    for (auto& docObj: Views.getValues()) {
+    for (auto& docObj : Views.getValues()) {
         DrawProjGroupItem* v = static_cast<DrawProjGroupItem*>(docObj);
         std::string type = v->Type.getValueAsString();
         data = saveVals[type];
@@ -1264,12 +1276,17 @@ void DrawProjGroup::updateSecondaryDirs()
     recomputeChildren();
 }
 
-void DrawProjGroup::rotate(const std::string &rotationdirection) {
+void DrawProjGroup::rotate(const std::string& rotationdirection)
+{
     std::pair<Base::Vector3d, Base::Vector3d> newDirs;
-    if(rotationdirection == "Right") newDirs = getDirsFromFront("Left"); // Front -> Right -> Rear -> Left -> Front
-    else if(rotationdirection == "Left") newDirs = getDirsFromFront("Right"); // Front -> Left -> Rear -> Right -> Front
-    else if(rotationdirection == "Up") newDirs = getDirsFromFront("Bottom"); // Front -> Top -> Rear -> Bottom -> Front
-    else if(rotationdirection == "Down") newDirs = getDirsFromFront("Top"); // Front -> Bottom -> Rear -> Top -> Front
+    if (rotationdirection == "Right")
+        newDirs = getDirsFromFront("Left");// Front -> Right -> Rear -> Left -> Front
+    else if (rotationdirection == "Left")
+        newDirs = getDirsFromFront("Right");// Front -> Left -> Rear -> Right -> Front
+    else if (rotationdirection == "Up")
+        newDirs = getDirsFromFront("Bottom");// Front -> Top -> Rear -> Bottom -> Front
+    else if (rotationdirection == "Down")
+        newDirs = getDirsFromFront("Top");// Front -> Bottom -> Rear -> Top -> Front
 
     DrawProjGroupItem* anchor = getAnchor();
     anchor->Direction.setValue(newDirs.first);
@@ -1278,11 +1295,13 @@ void DrawProjGroup::rotate(const std::string &rotationdirection) {
     updateSecondaryDirs();
 }
 
-void DrawProjGroup::spin(const std::string &spindirection)
+void DrawProjGroup::spin(const std::string& spindirection)
 {
     double angle;
-    if(spindirection == "CW") angle = M_PI / 2.0; // Top -> Right -> Bottom -> Left -> Top
-    if(spindirection == "CCW") angle = - M_PI / 2.0; // Top -> Left -> Bottom -> Right -> Top
+    if (spindirection == "CW")
+        angle = M_PI / 2.0;// Top -> Right -> Bottom -> Left -> Top
+    if (spindirection == "CCW")
+        angle = -M_PI / 2.0;// Top -> Left -> Bottom -> Right -> Top
 
     DrawProjGroupItem* anchor = getAnchor();
     Base::Vector3d org(0.0, 0.0, 0.0);
@@ -1298,25 +1317,22 @@ std::vector<DrawProjGroupItem*> DrawProjGroup::getViewsAsDPGI()
 {
     std::vector<DrawProjGroupItem*> result;
     auto views = Views.getValues();
-    for (auto& v:views) {
+    for (auto& v : views) {
         DrawProjGroupItem* item = static_cast<DrawProjGroupItem*>(v);
         result.push_back(item);
     }
     return result;
 }
 
-int DrawProjGroup::getDefProjConv() const
-{
-    return Preferences::projectionAngle();
-}
+int DrawProjGroup::getDefProjConv() const { return Preferences::projectionAngle(); }
 
 /*!
  *dumps the current iso DPGI's
  */
-void DrawProjGroup::dumpISO(const char * title)
+void DrawProjGroup::dumpISO(const char* title)
 {
     Base::Console().Message("DPG ISO: %s\n", title);
-    for (auto& docObj: Views.getValues()) {
+    for (auto& docObj : Views.getValues()) {
         Base::Vector3d dir;
         Base::Vector3d axis;
         DrawProjGroupItem* v = static_cast<DrawProjGroupItem*>(docObj);
@@ -1324,12 +1340,12 @@ void DrawProjGroup::dumpISO(const char * title)
         dir = v->Direction.getValue();
         axis = v->getXDirection();
 
-        Base::Console().Message("%s:  %s/%s\n",
-                                t.c_str(), DrawUtil::formatVector(dir).c_str(), DrawUtil::formatVector(axis).c_str());
+        Base::Console().Message("%s:  %s/%s\n", t.c_str(), DrawUtil::formatVector(dir).c_str(),
+                                DrawUtil::formatVector(axis).c_str());
     }
 }
 
-PyObject *DrawProjGroup::getPyObject()
+PyObject* DrawProjGroup::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
@@ -1338,7 +1354,8 @@ PyObject *DrawProjGroup::getPyObject()
     return Py::new_reference_to(PythonObject);
 }
 
-void DrawProjGroup::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)
+void DrawProjGroup::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName,
+                                              App::Property* prop)
 // transforms properties that had been changed
 {
     // also check for changed properties of the base class
