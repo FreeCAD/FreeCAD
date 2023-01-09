@@ -19,12 +19,13 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
+
 #ifndef TECHDRAW_DIMENSIONVALIDATORS_H
 #define TECHDRAW_DIMENSIONVALIDATORS_H
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
-
 #include <Mod/TechDraw/App/DrawViewDimension.h>
+
 
 namespace App
 {
@@ -61,42 +62,41 @@ enum DimensionGeometryEnum {
         isViewReference         //never needs to be specified in the acceptable list
     };
 
-    TechDraw::DrawViewPart*      TechDrawExport getReferencesFromSelection( ReferenceVector& references2d, ReferenceVector& references3d );
-    DimensionGeometryType        TechDrawExport validateDimSelection(ReferenceVector references,
-                                                              StringVector acceptableGeometry,                     //"Edge", "Vertex", etc
-                                                              std::vector<int> minimumCounts,                      //how many of each geometry are needed for a good dimension
-                                                              std::vector<DimensionGeometryType> acceptableDimensionGeometrys);          //isVertical, isHorizontal, ...
-    DimensionGeometryType        TechDrawExport validateDimSelection3d(TechDraw::DrawViewPart* dvp,
-                                                              ReferenceVector references,
-                                                              StringVector acceptableGeometry,                     //"Edge", "Vertex", etc
-                                                              std::vector<int> minimumCounts,                      //how many of each geometry are needed for a good dimension
-                                                              std::vector<DimensionGeometryType> acceptableDimensionGeometrys);          //isVertical, isHorizontal, ...
+DrawViewPart* getReferencesFromSelection(ReferenceVector& references2d,
+                                         ReferenceVector& references3d);
+DimensionGeometryType validateDimSelection(
+    ReferenceVector references,
+    StringVector acceptableGeometry,//"Edge", "Vertex", etc
+    std::vector<int> minimumCounts, //how many of each geometry are needed for a good dimension
+    std::vector<DimensionGeometryType> acceptableDimensionGeometrys);//isVertical, isHorizontal, ...
+DimensionGeometryType validateDimSelection3d(
+    DrawViewPart* dvp, ReferenceVector references,
+    StringVector acceptableGeometry,//"Edge", "Vertex", etc
+    std::vector<int> minimumCounts, //how many of each geometry are needed for a good dimension
+    std::vector<DimensionGeometryType> acceptableDimensionGeometrys);//isVertical, isHorizontal, ...
 
-    bool            TechDrawExport validateSubnameList(StringVector subNames,
-                                                       GeometrySet acceptableGeometrySet);
+bool validateSubnameList(StringVector subNames, GeometrySet acceptableGeometrySet);
 
-    DimensionGeometryType        TechDrawExport getGeometryConfiguration(TechDraw::ReferenceVector valid2dReferences);
-    DimensionGeometryType        TechDrawExport getGeometryConfiguration3d(TechDraw::DrawViewPart* dvp,
-                                                                            TechDraw::ReferenceVector valid3dReferences);
+DimensionGeometryType getGeometryConfiguration(ReferenceVector valid2dReferences);
+DimensionGeometryType getGeometryConfiguration3d(DrawViewPart* dvp,
+                                                                ReferenceVector valid3dReferences);
 
-    GeomCountMap    TechDrawExport loadRequiredCounts(StringVector& acceptableGeometry,
-                                                      std::vector<int>& minimumCouts);
-    bool            TechDrawExport checkGeometryOccurences(StringVector subNames,
-                                                           GeomCountMap keyedMinimumCounts);
+GeomCountMap loadRequiredCounts(StringVector& acceptableGeometry,
+                                               std::vector<int>& minimumCouts);
+bool checkGeometryOccurences(StringVector subNames, GeomCountMap keyedMinimumCounts);
 
-    DimensionGeometryType        TechDrawExport isValidVertexes(TechDraw::ReferenceVector refs);
-    DimensionGeometryType        TechDrawExport isValidMultiEdge(TechDraw::ReferenceVector refs);
-    DimensionGeometryType        TechDrawExport isValidSingleEdge(TechDraw::ReferenceEntry ref);
-    DimensionGeometryType        TechDrawExport isValidHybrid(TechDraw::ReferenceVector refs);
+DimensionGeometryType isValidVertexes(ReferenceVector refs);
+DimensionGeometryType isValidMultiEdge(ReferenceVector refs);
+DimensionGeometryType isValidSingleEdge(ReferenceEntry ref);
+DimensionGeometryType isValidHybrid(ReferenceVector refs);
 
-    DimensionGeometryType        TechDrawExport isValidVertexes3d(TechDraw::DrawViewPart* dvp, TechDraw::ReferenceVector refs);
-    DimensionGeometryType        TechDrawExport isValidMultiEdge3d(TechDraw::DrawViewPart* dvp, TechDraw::ReferenceVector refs);
-    DimensionGeometryType        TechDrawExport isValidSingleEdge3d(TechDraw::DrawViewPart* dvp, TechDraw::ReferenceEntry ref);
-    DimensionGeometryType        TechDrawExport isValidHybrid3d(TechDraw::DrawViewPart* dvp, TechDraw::ReferenceVector refs);
+DimensionGeometryType isValidVertexes3d(DrawViewPart* dvp, ReferenceVector refs);
+DimensionGeometryType isValidMultiEdge3d(DrawViewPart* dvp, ReferenceVector refs);
+DimensionGeometryType isValidSingleEdge3d(DrawViewPart* dvp, ReferenceEntry ref);
+DimensionGeometryType isValidHybrid3d(DrawViewPart* dvp, ReferenceVector refs);
 
-    long int                     TechDrawExport mapGeometryTypeToDimType(long int dimType,
-                                                           DimensionGeometryType geometry2d,
-                                                           DimensionGeometryType geometry3d);
+long int mapGeometryTypeToDimType(long int dimType, DimensionGeometryType geometry2d,
+                                                 DimensionGeometryType geometry3d);
 }
 #endif //TECHDRAW_DIMENSIONVALIDATORS_H
 

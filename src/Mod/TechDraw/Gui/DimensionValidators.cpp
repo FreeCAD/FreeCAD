@@ -24,8 +24,6 @@
 #ifndef _PreComp_
 # include <BRep_Tool.hxx>
 # include <BRepAdaptor_Curve.hxx>
-# include <GeomAbs_CurveType.hxx>
-# include <TopAbs_ShapeEnum.hxx>
 # include <TopExp.hxx>
 #endif  //#ifndef _PreComp_
 
@@ -46,7 +44,8 @@
 using namespace TechDraw;
 using DU = DrawUtil;
 
-TechDraw::DrawViewPart* TechDraw::getReferencesFromSelection( ReferenceVector& references2d, ReferenceVector& references3d )
+TechDraw::DrawViewPart* TechDraw::getReferencesFromSelection(ReferenceVector& references2d,
+                                                             ReferenceVector& references3d)
 {
     TechDraw::DrawViewPart* dvp(nullptr);
     TechDraw::DrawViewDimension* dim(nullptr);
@@ -96,8 +95,10 @@ TechDraw::DrawViewPart* TechDraw::getReferencesFromSelection( ReferenceVector& r
                     ReferenceEntry ref(obj3d, sub3d);
                     references3d.push_back(ref);
                 }
-            } else {
-                Base::Console().Message("DV::getRefsFromSel - %s has no shape!\n", selItem.getObject()->getNameInDocument());
+            }
+            else {
+                Base::Console().Message("DV::getRefsFromSel - %s has no shape!\n",
+                                        selItem.getObject()->getNameInDocument());
             }
         }
     }
@@ -112,10 +113,11 @@ TechDraw::DrawViewPart* TechDraw::getReferencesFromSelection( ReferenceVector& r
 }
 
 //! verify that the proposed references contains valid geometries from a 2d DrawViewPart.
-DimensionGeometryType TechDraw::validateDimSelection(ReferenceVector references,                      //[(dvp*, std::string),...,(dvp*, std::string)]
-                                StringVector acceptableGeometry,                     //"Edge", "Vertex", etc
-                                std::vector<int> minimumCounts,                      //how many of each geometry are needed for a good dimension
-                                std::vector<DimensionGeometryType> acceptableDimensionGeometrys)           //isVertical, isHorizontal, ...
+DimensionGeometryType TechDraw::validateDimSelection(
+    ReferenceVector references,     //[(dvp*, std::string),...,(dvp*, std::string)]
+    StringVector acceptableGeometry,//"Edge", "Vertex", etc
+    std::vector<int> minimumCounts, //how many of each geometry are needed for a good dimension
+    std::vector<DimensionGeometryType> acceptableDimensionGeometrys)//isVertical, isHorizontal, ...
 {
     StringVector subNames;
     TechDraw::DrawViewPart* dvpSave(nullptr);
@@ -176,13 +178,14 @@ DimensionGeometryType TechDraw::validateDimSelection(ReferenceVector references,
 }
 
 //! verify that the proposed references contains valid geometries from non-TechDraw objects.
-DimensionGeometryType TechDraw::validateDimSelection3d(TechDraw::DrawViewPart* dvp,
-                                ReferenceVector references,                      //[(dvp*, std::string),...,(dvp*, std::string)]
-                                StringVector acceptableGeometry,                     //"Edge", "Vertex", etc
-                                std::vector<int> minimumCounts,                      //how many of each geometry are needed for a good dimension
-                                std::vector<DimensionGeometryType> acceptableDimensionGeometrys)           //isVertical, isHorizontal, ...
+DimensionGeometryType TechDraw::validateDimSelection3d(
+    TechDraw::DrawViewPart* dvp,
+    ReferenceVector references,     //[(dvp*, std::string),...,(dvp*, std::string)]
+    StringVector acceptableGeometry,//"Edge", "Vertex", etc
+    std::vector<int> minimumCounts, //how many of each geometry are needed for a good dimension
+    std::vector<DimensionGeometryType> acceptableDimensionGeometrys)//isVertical, isHorizontal, ...
 {
-//    Base::Console().Message("DV::validateDimSelection3d() - references: %d\n", references.size());
+    //    Base::Console().Message("DV::validateDimSelection3d() - references: %d\n", references.size());
     StringVector subNames;
     for (auto& ref : references) {
         if (!ref.getSubName().empty()) {
@@ -296,9 +299,9 @@ DimensionGeometryType TechDraw::getGeometryConfiguration(ReferenceVector valid2d
 }
 
 //return the first valid configuration contained in the already validated references
-DimensionGeometryType TechDraw::getGeometryConfiguration3d(DrawViewPart* dvp, ReferenceVector valid3dReferences)
+DimensionGeometryType TechDraw::getGeometryConfiguration3d(DrawViewPart* dvp,
+                                                           ReferenceVector valid3dReferences)
 {
-//    Base::Console().Message("DV::getGeometryConfig3d() - refs: %d\n", valid3dReferences.size());
     //first we check for whole object references
     ReferenceVector wholeObjectRefs;
     ReferenceVector subElementRefs;
@@ -362,8 +365,9 @@ GeomCountMap TechDraw::loadRequiredCounts(StringVector& acceptableGeometry,
 DimensionGeometryType TechDraw::isValidSingleEdge(ReferenceEntry ref)
 {
     auto objFeat( dynamic_cast<TechDraw::DrawViewPart *>(ref.getObject()) );
-    if (!objFeat)
+    if (!objFeat) {
         return isInvalid;
+    }
 
     //the Name starts with "Edge"
     std::string geomName = DrawUtil::getGeomTypeFromName(ref.getSubName());
@@ -378,30 +382,34 @@ DimensionGeometryType TechDraw::isValidSingleEdge(ReferenceEntry ref)
         return isInvalid;
     }
 
-    if(geom->geomType == TechDraw::GENERIC) {
+    if (geom->geomType == TechDraw::GENERIC) {
         TechDraw::GenericPtr gen1 = std::static_pointer_cast<TechDraw::Generic>(geom);
-        if(gen1->points.size() < 2) {
+        if (gen1->points.size() < 2) {
             return isInvalid;
         }
         Base::Vector3d line = gen1->points.at(1) - gen1->points.at(0);
-        if(fabs(line.y) < FLT_EPSILON ) {
+        if (fabs(line.y) < FLT_EPSILON) {
             return TechDraw::isHorizontal;
-        } else if(fabs(line.x) < FLT_EPSILON) {
+        }
+        else if (fabs(line.x) < FLT_EPSILON) {
             return TechDraw::isVertical;
-        } else {
+        }
+        else {
             return TechDraw::isDiagonal;
         }
-    } else if (geom->geomType == TechDraw::CIRCLE ||
-                geom->geomType == TechDraw::ARCOFCIRCLE ) {
+    }
+    else if (geom->geomType == TechDraw::CIRCLE || geom->geomType == TechDraw::ARCOFCIRCLE) {
         return isCircle;
-    } else if (geom->geomType == TechDraw::ELLIPSE ||
-                geom->geomType == TechDraw::ARCOFELLIPSE) {
+    }
+    else if (geom->geomType == TechDraw::ELLIPSE || geom->geomType == TechDraw::ARCOFELLIPSE) {
         return isEllipse;
-    } else if (geom->geomType == TechDraw::BSPLINE) {
-        TechDraw::BSplinePtr  spline = std::static_pointer_cast<TechDraw::BSpline> (geom);
+    }
+    else if (geom->geomType == TechDraw::BSPLINE) {
+        TechDraw::BSplinePtr spline = std::static_pointer_cast<TechDraw::BSpline>(geom);
         if (spline->isCircle()) {
             return isBSplineCircle;
-        } else {
+        }
+        else {
             return isBSpline;
         }
     }
@@ -429,23 +437,30 @@ DimensionGeometryType TechDraw::isValidSingleEdge3d(DrawViewPart *dvp, Reference
         Base::Vector3d point0 = DU::toVector3d(BRep_Tool::Pnt(TopExp::FirstVertex(occEdge)));
         Base::Vector3d point1 = DU::toVector3d(BRep_Tool::Pnt(TopExp::LastVertex(occEdge)));
         Base::Vector3d line = point1 - point0;
-        if(fabs(line.y) < FLT_EPSILON ) {
+        if (fabs(line.y) < FLT_EPSILON) {
             return TechDraw::isHorizontal;
-        } else if(fabs(line.x) < FLT_EPSILON) {
+        }
+        else if (fabs(line.x) < FLT_EPSILON) {
             return TechDraw::isVertical;
-        } else if(fabs(line.z) < FLT_EPSILON) {
+        }
+        else if (fabs(line.z) < FLT_EPSILON) {
             return TechDraw::isZLimited;
-        } else {
+        }
+        else {
             return TechDraw::isDiagonal;
         }
-    } else if (adapt.GetType() == GeomAbs_Circle) {
+    }
+    else if (adapt.GetType() == GeomAbs_Circle) {
         return isCircle;
-    } else if (adapt.GetType() == GeomAbs_Ellipse) {
+    }
+    else if (adapt.GetType() == GeomAbs_Ellipse) {
         return isEllipse;
-    } else if (adapt.GetType() == GeomAbs_BSplineCurve) {
+    }
+    else if (adapt.GetType() == GeomAbs_BSplineCurve) {
         if (GeometryUtils::isCircle(occEdge)) {
             return isBSplineCircle;
-        } else {
+        }
+        else {
             return isBSpline;
         }
     }
