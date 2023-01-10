@@ -48,31 +48,29 @@ public:
     App::PropertyBool KeepUpdated;
 
     App::PropertyFloatConstraint Scale;
-    App::PropertyEnumeration ProjectionType; // First or Third Angle
+    App::PropertyEnumeration ProjectionType;// First or Third Angle
 
-    App::PropertyInteger  NextBalloonIndex;
+    App::PropertyInteger NextBalloonIndex;
 
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
     //@}
-    void handleChangedPropertyType(
-            Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
+    void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName,
+                                   App::Property* prop) override;
 
-    int addView(App::DocumentObject *docObj);
+    int addView(App::DocumentObject* docObj);
     int removeView(App::DocumentObject* docObj);
     short mustExecute() const override;
-    boost::signals2::signal<void (const DrawPage*)> signalGuiPaint;
+    boost::signals2::signal<void(const DrawPage*)> signalGuiPaint;
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName() const override {
-        return "TechDrawGui::ViewProviderPage";
-    }
+    const char* getViewProviderName() const override { return "TechDrawGui::ViewProviderPage"; }
 
-    PyObject *getPyObject() override;
+    PyObject* getPyObject() override;
 
-//App::DocumentObjectExecReturn * recompute(void);
+    //App::DocumentObjectExecReturn * recompute(void);
 
     /// Check whether we've got a valid template
     /*!
@@ -93,8 +91,7 @@ public:
     int getOrientation() const;
     bool isUnsetting() { return nowUnsetting; }
     void requestPaint();
-    std::vector<App::DocumentObject*> getAllViews() ;
-    DrawViewPart *balloonParent;    //could be many balloons on page?
+    std::vector<App::DocumentObject*> getAllViews();
 
     int getNextBalloonIndex();
 
@@ -102,7 +99,7 @@ public:
     static bool GlobalUpdateDrawings();
     static bool AllowPageOverride();
     void forceRedraw(bool b) { m_forceRedraw = b; }
-    bool forceRedraw()   { return m_forceRedraw; }
+    bool forceRedraw() { return m_forceRedraw; }
     void redrawCommand();
 
     bool canUpdate() const;
@@ -121,13 +118,11 @@ private:
     static const char* ProjectionTypeEnums[];
     bool nowUnsetting;
     static App::PropertyFloatConstraint::Constraints scaleRange;
-
 };
 
 using DrawPagePython = App::FeaturePythonT<DrawPage>;
 
-} //namespace TechDraw
+}//namespace TechDraw
 
 
 #endif
-

@@ -25,8 +25,12 @@
 #include "PreCompiled.h"
 
 #include <App/DocumentObject.h>
-#include "ViewProviderAnnotation.h"
+
+#include <Mod/TechDraw/App/DrawLeaderLine.h>
+#include <Mod/TechDraw/App/DrawViewBalloon.h>
+
 #include "QGIView.h"
+#include "ViewProviderAnnotation.h"
 
 using namespace TechDrawGui;
 
@@ -35,24 +39,16 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderAnnotation, TechDrawGui::ViewProviderDr
 //**************************************************************************
 // Construction/Destruction
 
-ViewProviderAnnotation::ViewProviderAnnotation()
-{
-    sPixmap = "actions/TechDraw_Annotation";
-}
+ViewProviderAnnotation::ViewProviderAnnotation() { sPixmap = "actions/TechDraw_Annotation"; }
 
-ViewProviderAnnotation::~ViewProviderAnnotation()
-{
-}
+ViewProviderAnnotation::~ViewProviderAnnotation() {}
 
 void ViewProviderAnnotation::updateData(const App::Property* prop)
 {
-    if (prop == &(getViewObject()->Text)   ||
-        prop == &(getViewObject()->Font)   ||
-        prop == &(getViewObject()->TextColor)   ||
-        prop == &(getViewObject()->TextSize)   ||
-        prop == &(getViewObject()->LineSpace)   ||
-        prop == &(getViewObject()->TextStyle)   ||
-        prop == &(getViewObject()->MaxWidth) ) {
+    if (prop == &(getViewObject()->Text) || prop == &(getViewObject()->Font)
+        || prop == &(getViewObject()->TextColor) || prop == &(getViewObject()->TextSize)
+        || prop == &(getViewObject()->LineSpace) || prop == &(getViewObject()->TextStyle)
+        || prop == &(getViewObject()->MaxWidth)) {
         // redraw QGIVP
         QGIView* qgiv = getQView();
         if (qgiv) {
@@ -61,6 +57,31 @@ void ViewProviderAnnotation::updateData(const App::Property* prop)
     }
 
     ViewProviderDrawingView::updateData(prop);
+}
+
+std::vector<App::DocumentObject*> ViewProviderAnnotation::claimChildren() const
+{
+    // Collect any child Document Objects and put them in the right place in the Feature tree
+    // valid children of an Annotation are:
+    //    - Balloons
+    //    - Leaders
+    std::vector<App::DocumentObject*> temp;
+    const std::vector<App::DocumentObject*>& views = getViewObject()->getInList();
+    try {
+        for (std::vector<App::DocumentObject*>::const_iterator it = views.begin();
+             it != views.end(); ++it) {
+            if ((*it)->getTypeId().isDerivedFrom(TechDraw::DrawViewBalloon::getClassTypeId())) {
+                temp.push_back((*it));
+            }
+            else if ((*it)->getTypeId().isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId())) {
+                temp.push_back((*it));
+            }
+        }
+        return temp;
+    }
+    catch (...) {
+        return std::vector<App::DocumentObject*>();
+    }
 }
 
 TechDraw::DrawViewAnnotation* ViewProviderAnnotation::getViewObject() const
