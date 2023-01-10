@@ -97,8 +97,9 @@ To report an issue please:
 - Upload an example file to demonstrate problem. 
 
 For more detail see:
-- [Wiki Page about the Bug Tracker](https://wiki.freecadweb.org/Tracker)
-- [Bug Tracker](https://tracker.freecadweb.org)
+- [Bug Tracker](https://github.com/FreeCAD/FreeCAD/issues)
+- [Reporting Issues and Requesting Features](https://github.com/FreeCAD/FreeCAD/issues/new/choose)
+- [Contributing](https://github.com/FreeCAD/FreeCAD/blob/master/CONTRIBUTING.md)
 - [Help Forum](https://forum.freecadweb.org/viewforum.php?f=3)
 
 
