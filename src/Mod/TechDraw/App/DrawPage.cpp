@@ -62,16 +62,13 @@ DrawPage::DrawPage(void)
     nowUnsetting = false;
     forceRedraw(false);
 
-    ADD_PROPERTY_TYPE(KeepUpdated,
-                      (Preferences::keepPagesUpToDate()),
-                      group,
-                      (App::PropertyType)(App::Prop_Output),
-                      "Keep page in sync with model");
-    ADD_PROPERTY_TYPE(
-        Template, (nullptr), group, (App::PropertyType)(App::Prop_None), "Attached Template");
+    ADD_PROPERTY_TYPE(KeepUpdated, (Preferences::keepPagesUpToDate()), group,
+                      (App::PropertyType)(App::Prop_Output), "Keep page in sync with model");
+    ADD_PROPERTY_TYPE(Template, (nullptr), group, (App::PropertyType)(App::Prop_None),
+                      "Attached Template");
     Template.setScope(App::LinkScope::Global);
-    ADD_PROPERTY_TYPE(
-        Views, (nullptr), group, (App::PropertyType)(App::Prop_None), "Attached Views");
+    ADD_PROPERTY_TYPE(Views, (nullptr), group, (App::PropertyType)(App::Prop_None),
+                      "Attached Views");
     Views.setScope(App::LinkScope::Global);
 
     // Projection Properties
@@ -84,24 +81,16 @@ DrawPage::DrawPage(void)
                                              ->GetGroup("Preferences")
                                              ->GetGroup("Mod/TechDraw/General");
     double defScale = hGrp->GetFloat("DefaultScale", 1.0);
-    ADD_PROPERTY_TYPE(Scale,
-                      (defScale),
-                      group,
-                      (App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(Scale, (defScale), group, (App::PropertyType)(App::Prop_None),
                       "Scale factor for this Page");
 
-    ADD_PROPERTY_TYPE(NextBalloonIndex,
-                      (1),
-                      group,
-                      (App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(NextBalloonIndex, (1), group, (App::PropertyType)(App::Prop_None),
                       "Auto-numbering for Balloons");
 
     Scale.setConstraints(&scaleRange);
-    balloonParent = nullptr;
 }
 
-DrawPage::~DrawPage()
-{}
+DrawPage::~DrawPage() {}
 
 void DrawPage::onBeforeChange(const App::Property* prop)
 {
@@ -113,8 +102,8 @@ void DrawPage::onChanged(const App::Property* prop)
     if ((prop == &KeepUpdated) && KeepUpdated.getValue()) {
         if (!isRestoring() && !isUnsetting()) {
             //would be nice if this message was displayed immediately instead of after the recomputeFeature
-            Base::Console().Message(
-                "Rebuilding Views for: %s/%s\n", getNameInDocument(), Label.getValue());
+            Base::Console().Message("Rebuilding Views for: %s/%s\n", getNameInDocument(),
+                                    Label.getValue());
             updateAllViews();
             purgeTouched();
         }
@@ -131,8 +120,7 @@ void DrawPage::onChanged(const App::Property* prop)
         if (!isRestoring()) {
             const std::vector<App::DocumentObject*>& vals = Views.getValues();
             for (std::vector<App::DocumentObject*>::const_iterator it = vals.begin();
-                 it < vals.end();
-                 ++it) {
+                 it < vals.end(); ++it) {
                 TechDraw::DrawView* view = dynamic_cast<TechDraw::DrawView*>(*it);
                 if (view && view->ScaleType.isValue("Page")) {
                     if (std::abs(view->Scale.getValue() - Scale.getValue()) > FLT_EPSILON) {
@@ -159,10 +147,7 @@ void DrawPage::onChanged(const App::Property* prop)
 }
 
 //Page is just a container. It doesn't "do" anything.
-App::DocumentObjectExecReturn* DrawPage::execute(void)
-{
-    return App::DocumentObject::execute();
-}
+App::DocumentObjectExecReturn* DrawPage::execute(void) { return App::DocumentObject::execute(); }
 
 // this is now irrelevant, b/c DP::execute doesn't do anything.
 short DrawPage::mustExecute() const
@@ -329,10 +314,7 @@ int DrawPage::removeView(App::DocumentObject* docObj)
     return Views.getSize();
 }
 
-void DrawPage::requestPaint(void)
-{
-    signalGuiPaint(this);
-}
+void DrawPage::requestPaint(void) { signalGuiPaint(this); }
 
 //this doesn't work right because there is no guaranteed of the restoration order
 void DrawPage::onDocumentRestored()
@@ -417,8 +399,7 @@ void DrawPage::unsetupObject()
             if (v->isAttachedToDocument()) {
                 std::string viewName = v->getNameInDocument();
                 Base::Interpreter().runStringArg("App.getDocument(\"%s\").removeObject(\"%s\")",
-                                                 docName.c_str(),
-                                                 viewName.c_str());
+                                                 docName.c_str(), viewName.c_str());
             }
         }
         std::vector<App::DocumentObject*> emptyViews;//probably superfluous
@@ -432,8 +413,8 @@ void DrawPage::unsetupObject()
     App::DocumentObject* tmp = Template.getValue();
     if (tmp) {
         std::string templateName = Template.getValue()->getNameInDocument();
-        Base::Interpreter().runStringArg(
-            "App.getDocument(\"%s\").removeObject(\"%s\")", docName.c_str(), templateName.c_str());
+        Base::Interpreter().runStringArg("App.getDocument(\"%s\").removeObject(\"%s\")",
+                                         docName.c_str(), templateName.c_str());
     }
     Template.setValue(nullptr);
 }

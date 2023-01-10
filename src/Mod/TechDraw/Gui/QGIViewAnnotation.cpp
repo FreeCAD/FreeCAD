@@ -23,18 +23,18 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <cmath>
-# include <regex>
-# include <sstream>
-# include <string>
+#include <cmath>
+#include <regex>
+#include <sstream>
+#include <string>
 
-# include <QDialog>
-# include <QDialogButtonBox>
-# include <QGraphicsScene>
-# include <QGraphicsItem>
-# include <QGraphicsTextItem>
-# include <QString>
-# include <QVBoxLayout>
+#include <QDialog>
+#include <QDialogButtonBox>
+#include <QGraphicsItem>
+#include <QGraphicsScene>
+#include <QGraphicsTextItem>
+#include <QString>
+#include <QVBoxLayout>
 #endif
 
 #include <App/Application.h>
@@ -45,10 +45,9 @@
 #include <Mod/TechDraw/App/Preferences.h>
 
 #include "DlgStringListEditor.h"
-#include "QGIViewAnnotation.h"
 #include "QGCustomText.h"
+#include "QGIViewAnnotation.h"
 #include "Rez.h"
-
 
 using namespace TechDrawGui;
 
@@ -66,27 +65,23 @@ QGIViewAnnotation::QGIViewAnnotation()
     //QObject::connect(QGraphicsTextItem::document(), SIGNAL(contentsChanged()), m_textItem, SLOT(updateText()));  //not tested
     addToGroup(m_textItem);
     m_textItem->setPos(0., 0.);
-
 }
 
-void QGIViewAnnotation::setViewAnnoFeature(TechDraw::DrawViewAnnotation *obj)
+void QGIViewAnnotation::setViewAnnoFeature(TechDraw::DrawViewAnnotation* obj)
 {
     // called from QGVPage. (once)
-    setViewFeature(static_cast<TechDraw::DrawView *>(obj));
+    setViewFeature(static_cast<TechDraw::DrawView*>(obj));
 }
 
 void QGIViewAnnotation::updateView(bool update)
 {
-    auto viewAnno( dynamic_cast<TechDraw::DrawViewAnnotation *>(getViewObject()) );
-    if (!viewAnno)
+    auto viewAnno(dynamic_cast<TechDraw::DrawViewAnnotation*>(getViewObject()));
+    if (!viewAnno) {
         return;
+    }
 
-    if (update ||
-        viewAnno->isTouched() ||
-        viewAnno->Text.isTouched() ||
-        viewAnno->Font.isTouched() ||
-        viewAnno->TextColor.isTouched() ||
-        viewAnno->TextSize.isTouched() ) {
+    if (update || viewAnno->isTouched() || viewAnno->Text.isTouched() || viewAnno->Font.isTouched()
+        || viewAnno->TextColor.isTouched() || viewAnno->TextSize.isTouched()) {
 
         draw();
     }
@@ -96,6 +91,7 @@ void QGIViewAnnotation::updateView(bool update)
 
 void QGIViewAnnotation::draw()
 {
+    //    Base::Console().Message("QGIVA::draw()\n");
     if (!isVisible()) {
         return;
     }
@@ -103,14 +99,14 @@ void QGIViewAnnotation::draw()
     drawAnnotation();
     QGIView::draw();
     rotateView();
-
 }
 
 //TODO: text is positioned slightly high (and left??) on page save to SVG file
 
 void QGIViewAnnotation::drawAnnotation()
 {
-    auto viewAnno( dynamic_cast<TechDraw::DrawViewAnnotation *>(getViewObject()) );
+    //    Base::Console().Message("QGIVA::drawAnnotation()\n");
+    auto viewAnno(dynamic_cast<TechDraw::DrawViewAnnotation*>(getViewObject()));
     if (!viewAnno) {
         return;
     }
@@ -141,13 +137,14 @@ void QGIViewAnnotation::drawAnnotation()
     c = TechDraw::Preferences::getAccessibleColor(c);
     ss << "color:" << c.asHexString() << "; ";
     ss << "}\n</style>\n</head>\n<body>\n<p>";
-    for(std::vector<std::string>::const_iterator it = annoText.begin(); it != annoText.end(); it++) {
+    for (std::vector<std::string>::const_iterator it = annoText.begin(); it != annoText.end();
+         it++) {
         if (it != annoText.begin()) {
             ss << "<br>";
         }
 
         //"less than" symbol chops off line.  need to use html sub.
-        std::string lt   = std::regex_replace((*it), std::regex("<"), "&lt;");
+        std::string lt = std::regex_replace((*it), std::regex("<"), "&lt;");
         ss << lt;
     }
     ss << "</p>\n</body>\n</html> ";
@@ -171,12 +168,13 @@ void QGIViewAnnotation::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
 {
     Q_UNUSED(event);
 
-    TechDraw::DrawViewAnnotation *annotation = dynamic_cast<TechDraw::DrawViewAnnotation *>(getViewObject());
+    TechDraw::DrawViewAnnotation* annotation =
+        dynamic_cast<TechDraw::DrawViewAnnotation*>(getViewObject());
     if (!annotation) {
         return;
     }
 
-    const std::vector<std::string> &values = annotation->Text.getValues();
+    const std::vector<std::string>& values = annotation->Text.getValues();
     DlgStringListEditor dlg(values, Gui::getMainWindow());
     dlg.setWindowTitle(QString::fromUtf8("Annotation Text Editor"));
     if (dlg.exec() == QDialog::Accepted) {

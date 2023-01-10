@@ -32,14 +32,16 @@
 
 class TopoDS_Shape;
 
-namespace Measure {
+namespace Measure
+{
 class Measurement;
 }
-namespace TechDraw {
+namespace TechDraw
+{
 
 class DrawViewPart;
 
-class TechDrawExport DrawViewBalloon : public TechDraw::DrawView
+class TechDrawExport DrawViewBalloon: public TechDraw::DrawView
 {
     PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawViewBalloon);
 
@@ -48,31 +50,29 @@ public:
     DrawViewBalloon();
     ~DrawViewBalloon() override;
 
-    App::PropertyLink            SourceView;
-    App::PropertyString          Text;
-    App::PropertyEnumeration     EndType;
-    App::PropertyEnumeration     BubbleShape;
+    App::PropertyLink SourceView;
+    App::PropertyString Text;
+    App::PropertyEnumeration EndType;
+    App::PropertyEnumeration BubbleShape;
     App::PropertyFloatConstraint ShapeScale;
     App::PropertyFloatConstraint EndTypeScale;
-    App::PropertyDistance        OriginX;
-    App::PropertyDistance        OriginY;
-    App::PropertyFloat           TextWrapLen;
-    App::PropertyDistance        KinkLength;
+    App::PropertyDistance OriginX;
+    App::PropertyDistance OriginY;
+    App::PropertyFloat TextWrapLen;
+    App::PropertyDistance KinkLength;
 
     short mustExecute() const override;
 
-    DrawViewPart* getViewPart() const;
-    QPointF origin;                  //WF never used??
+    DrawView* getParentView() const;
+    QPointF origin;//WF never used??
     QPointF getOrigin();
     void setOrigin(QPointF p);
 
     //virtual PyObject *getPyObject(void);
 
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
 
-    const char* getViewProviderName() const override {
-        return "TechDrawGui::ViewProviderBalloon";
-    }
+    const char* getViewProviderName() const override { return "TechDrawGui::ViewProviderBalloon"; }
 
     static const char* balloonTypeEnums[];
 
@@ -87,17 +87,14 @@ public:
 
 protected:
     void onChanged(const App::Property* prop) override;
-    void handleChangedPropertyType(Base::XMLReader &reader,
-                                           const char *TypeName,
-                                           App::Property * prop) override;
-    void handleChangedPropertyName(Base::XMLReader &reader,
-                                           const char * TypeName,
-                                           const char *PropName) override;
+    void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName,
+                                   App::Property* prop) override;
+    void handleChangedPropertyName(Base::XMLReader& reader, const char* TypeName,
+                                   const char* PropName) override;
 
 private:
     static App::PropertyFloatConstraint::Constraints SymbolScaleRange;
-
 };
 
-} //namespace TechDraw
+}//namespace TechDraw
 #endif

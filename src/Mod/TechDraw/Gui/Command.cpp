@@ -982,7 +982,7 @@ bool _checkDrawViewPartBalloon(Gui::Command* cmd)
     return true;
 }
 
-bool _checkDirectPlacement(const QGIViewPart* viewPart, const std::vector<std::string>& subNames,
+bool _checkDirectPlacement(const QGIView* view, const std::vector<std::string>& subNames,
                            QPointF& placement)
 {
     // Let's see, if we can help speed up the placement of the balloon:
@@ -994,6 +994,12 @@ bool _checkDirectPlacement(const QGIViewPart* viewPart, const std::vector<std::s
 
     if (subNames.size() != 1) {
         // If nothing or more than one subjects are selected, let the user decide, where to place the balloon
+        return false;
+    }
+
+    const QGIViewPart* viewPart = dynamic_cast<const QGIViewPart*>(view);
+    if (!viewPart) {
+        //not a view of a part, so no geometry to attach to
         return false;
     }
 
@@ -1040,13 +1046,13 @@ void CmdTechDrawBalloon::activated(int iMsg)
     bool result = _checkSelectionBalloon(this, 1);
     if (!result)
         return;
-    result = _checkDrawViewPartBalloon(this);
-    if (!result)
-        return;
+    //    result = _checkDrawViewPartBalloon(this);
+    //    if (!result)
+    //        return;
 
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
 
-    auto objFeat(dynamic_cast<TechDraw::DrawViewPart*>(selection[0].getObject()));
+    auto objFeat(dynamic_cast<TechDraw::DrawView*>(selection[0].getObject()));
     if (!objFeat) {
         return;
     }
@@ -1054,23 +1060,21 @@ void CmdTechDrawBalloon::activated(int iMsg)
     TechDraw::DrawPage* page = objFeat->findParentPage();
     std::string PageName = page->getNameInDocument();
 
-    page->balloonParent = objFeat;
-
     Gui::Document* guiDoc = Gui::Application::Instance->getDocument(page->getDocument());
     ViewProviderPage* pageVP = dynamic_cast<ViewProviderPage*>(guiDoc->getViewProvider(page));
-    ViewProviderViewPart* partVP =
-        dynamic_cast<ViewProviderViewPart*>(guiDoc->getViewProvider(objFeat));
+    ViewProviderDrawingView* viewVP =
+        dynamic_cast<ViewProviderDrawingView*>(guiDoc->getViewProvider(objFeat));
 
-    if (pageVP && partVP) {
+    if (pageVP && viewVP) {
         QGVPage* viewPage = pageVP->getQGVPage();
         QGSPage* scenePage = pageVP->getQGSPage();
         if (viewPage) {
-            viewPage->startBalloonPlacing();
+            viewPage->startBalloonPlacing(objFeat);
 
-            QGIViewPart* viewPart = dynamic_cast<QGIViewPart*>(partVP->getQView());
+            QGIView* view = dynamic_cast<QGIView*>(viewVP->getQView());
             QPointF placement;
-            if (viewPart
-                && _checkDirectPlacement(viewPart, selection[0].getSubNames(), placement)) {
+            if (view && _checkDirectPlacement(view, selection[0].getSubNames(), placement)) {
+                //this creates the balloon if something is already selected
                 scenePage->createBalloon(placement, objFeat);
             }
         }
@@ -1080,7 +1084,7 @@ void CmdTechDrawBalloon::activated(int iMsg)
 bool CmdTechDrawBalloon::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this);
+    bool haveView = DrawGuiUtil::needView(this, false);
     return (havePage && haveView);
 }
 
