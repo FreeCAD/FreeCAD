@@ -297,20 +297,13 @@ class AddonInstaller(QtCore.QObject):
         else:
             zip_url = utils.get_zip_url(self.addon_to_install)
 
+        FreeCAD.Console.PrintLog(f"Downloading ZIP file from {zip_url}...\n")
         parse_result = urlparse(zip_url)
         is_remote = parse_result.scheme in ["http", "https"]
 
         if is_remote:
             if FreeCAD.GuiUp:
-                NetworkManager.AM_NETWORK_MANAGER.progress_made.connect(
-                    self._update_zip_status
-                )
-                NetworkManager.AM_NETWORK_MANAGER.progress_complete.connect(
-                    self._finish_zip
-                )
-                self.zip_download_index = (
-                    NetworkManager.AM_NETWORK_MANAGER.submit_monitored_get(zip_url)
-                )
+                self._run_zip_downloader_in_event_loop(zip_url)
             else:
                 zip_data = utils.blocking_get(zip_url)
                 with tempfile.NamedTemporaryFile(delete=False) as f:
@@ -321,16 +314,33 @@ class AddonInstaller(QtCore.QObject):
             self._finalize_zip_installation(zip_url)
         return True
 
+    def _run_zip_downloader_in_event_loop(self, zip_url: str):
+        """Runs the zip downloader in a private event loop. This function does not exit until the
+        ZIP download is complete. It requires the GUI to be up, and should not be run on the main
+        GUI thread."""
+        NetworkManager.AM_NETWORK_MANAGER.progress_made.connect(self._update_zip_status)
+        NetworkManager.AM_NETWORK_MANAGER.progress_complete.connect(self._finish_zip)
+        self.zip_download_index = (
+            NetworkManager.AM_NETWORK_MANAGER.submit_monitored_get(zip_url)
+        )
+        while self.zip_download_index is not None:
+            if QtCore.QThread.currentThread().isInterruptionRequested():
+                break
+            QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents, 50)
+
     def _update_zip_status(self, index: int, bytes_read: int, data_size: int):
         """Called periodically when downloading a zip file, emits a signal to display the
         download progress."""
         if index == self.zip_download_index:
             self.progress_update.emit(bytes_read, data_size)
 
-    def _finish_zip(self, _: int, response_code: int, filename: os.PathLike):
+    def _finish_zip(self, index: int, response_code: int, filename: os.PathLike):
         """Once the zip download is finished, unzip it into the correct location. Only called if
         the GUI is up, and the NetworkManager was responsible for the download. Do not call
         directly."""
+        if index != self.zip_download_index:
+            return
+        self.zip_download_index = None
         if response_code != 200:
             self.failure.emit(
                 self.addon_to_install,
@@ -341,6 +351,7 @@ class AddonInstaller(QtCore.QObject):
             return
         QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents)
 
+        FreeCAD.Console.PrintLog("ZIP download complete. Installing...\n")
         self._finalize_zip_installation(filename)
 
     def _finalize_zip_installation(self, filename: os.PathLike):
@@ -348,7 +359,6 @@ class AddonInstaller(QtCore.QObject):
         location. Has special handling for GitHub's zip structure, which places the data in a
         subdirectory of the main directory."""
 
-        subdirectory = ""
         destination = os.path.join(self.installation_path, self.addon_to_install.name)
         with zipfile.ZipFile(filename, "r") as zfile:
             zfile.extractall(destination)
@@ -356,23 +366,30 @@ class AddonInstaller(QtCore.QObject):
         # GitHub (and possibly other hosts) put all files in the zip into a subdirectory named
         # after the branch. If that is the setup that we just extracted, move all files out of
         # that subdirectory.
-        subdirectories = os.listdir(destination)
-        if (
-            len(subdirectories) == 1
-            and subdirectories[0] == self.addon_to_install.branch
-        ):
-            subdirectory = subdirectories[0]
+        if self._code_in_branch_subdirectory(destination):
+            self._move_code_out_of_subdirectory(destination)
 
-        if subdirectory:
-            for extracted_filename in os.listdir(
-                os.path.join(destination, subdirectory)
-            ):
-                shutil.move(
-                    os.path.join(destination, subdirectory, extracted_filename),
-                    os.path.join(destination, extracted_filename),
-                )
-            os.rmdir(os.path.join(destination, subdirectory))
+        FreeCAD.Console.PrintLog("ZIP installation complete.\n")
         self._finalize_successful_installation()
+
+    def _code_in_branch_subdirectory(self, destination: str) -> bool:
+        subdirectories = os.listdir(destination)
+        if len(subdirectories) == 1:
+            subdir_name = subdirectories[0]
+            if subdir_name.endswith(os.path.sep):
+                subdir_name = subdir_name[:-1]  # Strip trailing slash if present
+            if subdir_name.endswith(self.addon_to_install.branch):
+                return True
+        return False
+
+    def _move_code_out_of_subdirectory(self, destination):
+        subdirectory = os.listdir(destination)[0]
+        for extracted_filename in os.listdir(os.path.join(destination, subdirectory)):
+            shutil.move(
+                os.path.join(destination, subdirectory, extracted_filename),
+                os.path.join(destination, extracted_filename),
+            )
+        os.rmdir(os.path.join(destination, subdirectory))
 
     def _finalize_successful_installation(self):
         """Perform any necessary additional steps after installing the addon."""

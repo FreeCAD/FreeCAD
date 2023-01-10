@@ -66,7 +66,7 @@ translate = FreeCAD.Qt.translate
 
 
 class ProcessInterrupted(RuntimeError):
-    """An interruption request was received and the process killed because if it."""
+    """An interruption request was received and the process killed because of it."""
 
 
 def symlink(source, link_name):

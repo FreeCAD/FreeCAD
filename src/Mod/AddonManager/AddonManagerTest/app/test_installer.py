@@ -145,15 +145,55 @@ class TestAddonInstaller(unittest.TestCase):
             test_github_style_repo = os.path.join(
                 self.test_data_dir, "test_github_style_repo.zip"
             )
-            installer = AddonInstaller(self.mock_addon, [])
-            installer.installation_path = temp_dir
             self.mock_addon.url = test_github_style_repo
             self.mock_addon.branch = "master"
+            installer = AddonInstaller(self.mock_addon, [])
+            installer.installation_path = temp_dir
             installer._finalize_zip_installation(test_github_style_repo)
             expected_location = os.path.join(temp_dir, self.mock_addon.name, "README")
             self.assertTrue(
                 os.path.isfile(expected_location), "GitHub zip extraction failed"
             )
+
+    def test_code_in_branch_subdirectory_true(self):
+        """When there is a subdirectory with the branch name in it, find it"""
+        installer = AddonInstaller(self.mock_addon, [])
+        with tempfile.TemporaryDirectory() as temp_dir:
+            os.mkdir(os.path.join(temp_dir,f"{self.mock_addon.name}-{self.mock_addon.branch}"))
+            result = installer._code_in_branch_subdirectory(temp_dir)
+            self.assertTrue(result,"Failed to find ZIP subdirectory")
+
+    def test_code_in_branch_subdirectory_false(self):
+        """When there is not a subdirectory with the branch name in it, don't find one"""
+        installer = AddonInstaller(self.mock_addon, [])
+        with tempfile.TemporaryDirectory() as temp_dir:
+            result = installer._code_in_branch_subdirectory(temp_dir)
+            self.assertFalse(result,"Found ZIP subdirectory when there was none")
+
+    def test_code_in_branch_subdirectory_more_than_one(self):
+        """When there are multiple subdirectories, never find a branch subdirectory"""
+        installer = AddonInstaller(self.mock_addon, [])
+        with tempfile.TemporaryDirectory() as temp_dir:
+            os.mkdir(os.path.join(temp_dir,f"{self.mock_addon.name}-{self.mock_addon.branch}"))
+            os.mkdir(os.path.join(temp_dir,"AnotherSubdir"))
+            result = installer._code_in_branch_subdirectory(temp_dir)
+            self.assertFalse(result,"Found ZIP subdirectory when there were multiple subdirs")
+
+    def test_move_code_out_of_subdirectory(self):
+        """All files are moved out and the subdirectory is deleted"""
+        installer = AddonInstaller(self.mock_addon, [])
+        with tempfile.TemporaryDirectory() as temp_dir:
+            subdir = os.path.join(temp_dir,f"{self.mock_addon.name}-{self.mock_addon.branch}")
+            os.mkdir(subdir)
+            with open(os.path.join(subdir,"README.txt"),"w",encoding="utf-8") as f:
+                f.write("# Test file for unit testing")
+            with open(os.path.join(subdir,"AnotherFile.txt"),"w",encoding="utf-8") as f:
+                f.write("# Test file for unit testing")
+            installer._move_code_out_of_subdirectory(temp_dir)
+            self.assertTrue(os.path.isfile(os.path.join(temp_dir,"README.txt")))
+            self.assertTrue(os.path.isfile(os.path.join(temp_dir,"AnotherFile.txt")))
+            self.assertFalse(os.path.isdir(subdir))
+
 
     def test_install_by_git(self):
         """Test using git to install. Depends on there being a local git installation: the test
@@ -292,44 +332,86 @@ class TestAddonInstaller(unittest.TestCase):
         method = installer._determine_install_method(temp_file, InstallationMethod.ANY)
         self.assertEqual(method, InstallationMethod.ZIP)
 
-    def test_determine_install_method_https_known_sites(self):
+    def test_determine_install_method_https_known_sites_copy(self):
         """Test which install methods are accepted for an https github URL"""
 
         installer = AddonInstaller(self.mock_addon, [])
+        installer.git_manager = True
 
         for site in ["github.org", "gitlab.org", "framagit.org", "salsa.debian.org"]:
-            temp_file = f"https://{site}/dummy/dummy"  # Doesn't have to actually exist!
-            method = installer._determine_install_method(
-                temp_file, InstallationMethod.COPY
-            )
-            self.assertIsNone(method, f"Allowed copying from {site} URL")
-            method = installer._determine_install_method(
-                temp_file, InstallationMethod.GIT
-            )
-            self.assertEqual(
-                method,
-                InstallationMethod.GIT,
-                f"Failed to allow git access to {site} URL",
-            )
-            method = installer._determine_install_method(
-                temp_file, InstallationMethod.ZIP
-            )
-            self.assertEqual(
-                method,
-                InstallationMethod.ZIP,
-                f"Failed to allow zip access to {site} URL",
-            )
-            method = installer._determine_install_method(
-                temp_file, InstallationMethod.ANY
-            )
-            git_manager = initialize_git()
-            if git_manager:
+            with self.subTest(site=site):
+                temp_file = f"https://{site}/dummy/dummy"  # Doesn't have to actually exist!
+                method = installer._determine_install_method(
+                    temp_file, InstallationMethod.COPY
+                )
+                self.assertIsNone(method, f"Allowed copying from {site} URL")
+
+    def test_determine_install_method_https_known_sites_git(self):
+        """Test which install methods are accepted for an https github URL"""
+
+        installer = AddonInstaller(self.mock_addon, [])
+        installer.git_manager = True
+
+        for site in ["github.org", "gitlab.org", "framagit.org", "salsa.debian.org"]:
+            with self.subTest(site=site):
+                temp_file = f"https://{site}/dummy/dummy"  # Doesn't have to actually exist!
+                method = installer._determine_install_method(
+                    temp_file, InstallationMethod.GIT
+                )
                 self.assertEqual(
                     method,
                     InstallationMethod.GIT,
                     f"Failed to allow git access to {site} URL",
                 )
-            else:
+
+    def test_determine_install_method_https_known_sites_zip(self):
+        """Test which install methods are accepted for an https github URL"""
+
+        installer = AddonInstaller(self.mock_addon, [])
+        installer.git_manager = True
+
+        for site in ["github.org", "gitlab.org", "framagit.org", "salsa.debian.org"]:
+            with self.subTest(site=site):
+                temp_file = f"https://{site}/dummy/dummy"  # Doesn't have to actually exist!
+                method = installer._determine_install_method(
+                    temp_file, InstallationMethod.ZIP
+                )
+                self.assertEqual(
+                    method,
+                    InstallationMethod.ZIP,
+                    f"Failed to allow zip access to {site} URL",
+                )
+
+    def test_determine_install_method_https_known_sites_any_gm(self):
+        """Test which install methods are accepted for an https github URL"""
+
+        installer = AddonInstaller(self.mock_addon, [])
+        installer.git_manager = True
+
+        for site in ["github.org", "gitlab.org", "framagit.org", "salsa.debian.org"]:
+            with self.subTest(site=site):
+                temp_file = f"https://{site}/dummy/dummy"  # Doesn't have to actually exist!
+                method = installer._determine_install_method(
+                    temp_file, InstallationMethod.ANY
+                )
+                self.assertEqual(
+                    method,
+                    InstallationMethod.GIT,
+                    f"Failed to allow git access to {site} URL",
+                )
+
+    def test_determine_install_method_https_known_sites_any_no_gm(self):
+        """Test which install methods are accepted for an https github URL"""
+
+        installer = AddonInstaller(self.mock_addon, [])
+        installer.git_manager = None
+
+        for site in ["github.org", "gitlab.org", "framagit.org", "salsa.debian.org"]:
+            with self.subTest(site=site):
+                temp_file = f"https://{site}/dummy/dummy"  # Doesn't have to actually exist!
+                method = installer._determine_install_method(
+                    temp_file, InstallationMethod.ANY
+                )
                 self.assertEqual(
                     method,
                     InstallationMethod.ZIP,
