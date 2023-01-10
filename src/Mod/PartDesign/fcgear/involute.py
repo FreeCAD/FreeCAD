@@ -27,7 +27,10 @@ from math import cos, sin, pi, acos, atan, sqrt
 xrange = range
 
 
-def CreateExternalGear(w, m, Z, phi, split=True, addCoeff=1.0, dedCoeff=1.25):
+def CreateExternalGear(w, m, Z, phi,
+        split=True,
+        addCoeff=1.0, dedCoeff=1.25,
+        filletCoeff=0.375):
     """
     Create an external gear
 
@@ -37,6 +40,9 @@ def CreateExternalGear(w, m, Z, phi, split=True, addCoeff=1.0, dedCoeff=1.25):
     phi is the gear's pressure angle
     addCoeff is the addendum coefficient (addendum normalized by module)
     dedCoeff is the dedendum coefficient (dedendum normalized by module)
+    filletCoeff is the root fillet radius, normalized by the module.
+        The default of 0.375 matches the hard-coded value (1.5 * 0.25) of the implementation
+        up to v0.20. The ISO Rack specified 0.38, though.
 
     if split is True, each profile of a teeth will consist in 2 Bezier
     curves of degree 3, otherwise it will be made of one Bezier curve
@@ -45,18 +51,16 @@ def CreateExternalGear(w, m, Z, phi, split=True, addCoeff=1.0, dedCoeff=1.25):
     # ****** external gear specifications
     addendum = addCoeff * m         # distance from pitch circle to tip circle
     dedendum = dedCoeff * m         # pitch circle to root, sets clearance
-    clearance = dedendum - addendum # strictily speaking, for the clearence the addendum of the
-                                    # *mating* gear is required. Let's assume them identical.
 
     # Calculate radii
     Rpitch = Z * m / 2            # pitch circle radius
     Rb = Rpitch*cos(phi * pi / 180)  # base circle radius
     Ra = Rpitch + addendum    # tip (addendum) circle radius
     Rroot = Rpitch - dedendum # root circle radius
-    fRad = 1.5 * clearance # fillet radius, max 1.5*clearance
+    fRad = filletCoeff * m  # fillet radius, max 1.5*clearance
     Rf = sqrt((Rroot + fRad)**2 - fRad**2) # radius at top of fillet
     if (Rb < Rf):
-        Rf = Rroot + clearance
+        Rf = Rroot + fRad/1.5 # fRad/1.5=clerance, with crearance=0.25*m
 
     # ****** calculate angles (all in radians)
     pitchAngle = 2 * pi / Z  # angle subtended by whole tooth (rads)
@@ -133,7 +137,10 @@ def CreateExternalGear(w, m, Z, phi, split=True, addCoeff=1.0, dedCoeff=1.25):
     w.close()
     return w
 
-def CreateInternalGear(w, m, Z, phi, split=True, addCoeff=0.6, dedCoeff=1.25):
+def CreateInternalGear(w, m, Z, phi,
+        split=True,
+        addCoeff=0.6, dedCoeff=1.25,
+        filletCoeff=0.375):
     """
     Create an internal gear
 
@@ -149,6 +156,9 @@ def CreateInternalGear(w, m, Z, phi, split=True, addCoeff=0.6, dedCoeff=1.25):
         And it's only required for a small number of teeth and/or a relatively large mating gear.
         Anyways, it's kept here as this was the hard-coded value of the implementation up to v0.20.
     dedCoeff is the dedendum coefficient (dedendum normalized by module)
+    filletCoeff is the root fillet radius, normalized by the module.
+        The default of 0.375 matches the hard-coded value (1.5 * 0.25) of the implementation
+        up to v0.20. The ISO Rack specified 0.38, though.
 
     if split is True, each profile of a teeth will consist in 2 Bezier
     curves of degree 3, otherwise it will be made of one Bezier curve
@@ -157,15 +167,16 @@ def CreateInternalGear(w, m, Z, phi, split=True, addCoeff=0.6, dedCoeff=1.25):
     # ****** external gear specifications
     addendum = addCoeff * m         # distance from pitch circle to tip circle
     dedendum = dedCoeff * m         # pitch circle to root, sets clearance
-    clearance = 0.25 * m            # this assumes an addendum coefficient of 1 for the mating gear
 
     # Calculate radii
     Rpitch = Z * m / 2              # pitch circle radius
     Rb = Rpitch*cos(phi * pi / 180) # base circle radius
     Ra = Rpitch - addendum          # tip (addendum) circle radius
     Rroot = Rpitch + dedendum       # root circle radius
-    fRad = 1.5 * clearance          # fillet radius, max 1.5*clearance
-    Rf = Rroot - clearance # radius at top of fillet (end of profile)
+    fRad = filletCoeff * m          # fillet radius, max 1.5*clearance
+    Rf = Rroot - fRad/1.5  # radius at top of fillet (end of profile)
+                           # No idea where this formula for Rf comes from.
+                           # Just kept it to generate identical curves as the v0.20
 
     # ****** calculate angles (all in radians)
     pitchAngle = 2 * pi / Z  # angle subtended by whole tooth (rads)
@@ -174,7 +185,11 @@ def CreateInternalGear(w, m, Z, phi, split=True, addCoeff=0.6, dedCoeff=1.25):
     if (Ra > Rb):         # start profile at top of fillet (if its greater)
         tipToPitchAngle -= genInvolutePolar(Rb, Ra)
     pitchToFilletAngle = genInvolutePolar(Rb, Rf) - baseToPitchAngle;
-    filletAngle = 1.414*clearance/Rf  # // to make fillet tangential to root
+    filletAngle = 1.414*(fRad/1.5)/Rf  # to make fillet tangential to root
+                                       # TODO: This and/or the Rf calculation doesn't seem quite
+                                       # correct. Keep it for compat, though. In the future, may
+                                       # use the special filletCoeff of 0.375 as marker to switch
+                                       # between "compat" or "correct/truly tangential"
 
     # ****** generate Higuchi involute approximation
     fe = 1       # fraction of profile length at end of approx

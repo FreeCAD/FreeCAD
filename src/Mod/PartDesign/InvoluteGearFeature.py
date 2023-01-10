@@ -76,14 +76,14 @@ class _InvoluteGear:
     "The InvoluteGear object"
     def __init__(self,obj):
         self.Type = "InvoluteGear"
-        self._ensure_properties(obj)
+        self._ensure_properties(obj, is_restore=False)
         obj.Proxy = self
 
     def onDocumentRestored(self, obj):
         """hook used to migrate older versions of this object"""
-        self._ensure_properties(obj)
+        self._ensure_properties(obj, is_restore=True)
 
-    def _ensure_properties(self, obj):
+    def _ensure_properties(self, obj, is_restore):
         def ensure_property(type_, name, doc, default):
             if not hasattr(obj, name):
                 obj.addProperty(type_, name, "Gear", doc)
@@ -113,12 +113,16 @@ class _InvoluteGear:
         ensure_property("App::PropertyFloat","DedendumCoefficient",
             doc="The height of the tooth from the pitch circle down to its root, normalized by the module.",
             default=1.25)
+        ensure_property("App::PropertyFloat","RootFilletCoefficient",
+            doc="The radius of the fillet at the root of the tooth, normalized by the module.",
+            default=lambda: 0.375 if is_restore else 0.38)
 
     def execute(self,obj):
         w = fcgear.FCWireBuilder()
         generator_func = involute.CreateExternalGear if obj.ExternalGear else involute.CreateInternalGear
         generator_func(w, obj.Modules.Value, obj.NumberOfTeeth, obj.PressureAngle.Value,
-            split=obj.HighPrecision, addCoeff=obj.AddendumCoefficient, dedCoeff=obj.DedendumCoefficient)
+            split=obj.HighPrecision, addCoeff=obj.AddendumCoefficient, dedCoeff=obj.DedendumCoefficient,
+            filletCoeff=obj.RootFilletCoefficient)
         gearw = Part.Wire([o.toShape() for o in w.wire])
         obj.Shape = gearw
         obj.positionBySupport();
