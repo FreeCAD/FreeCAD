@@ -27,20 +27,26 @@ from math import cos, sin, pi, acos, atan, sqrt
 xrange = range
 
 
-def CreateExternalGear(w, m, Z, phi, split=True):
+def CreateExternalGear(w, m, Z, phi, split=True, addCoeff=1.0, dedCoeff=1.25):
     """
     Create an external gear
 
     w is wirebuilder object (in which the gear will be constructed)
+    m is the gear's module (pitch diameter divided by the number of teeth)
+    Z is the number of teeth
+    phi is the gear's pressure angle
+    addCoeff is the addendum coefficient (addendum normalized by module)
+    dedCoeff is the dedendum coefficient (dedendum normalized by module)
 
     if split is True, each profile of a teeth will consist in 2 Bezier
     curves of degree 3, otherwise it will be made of one Bezier curve
     of degree 4
     """
     # ****** external gear specifications
-    addendum = m              # distance from pitch circle to tip circle
-    dedendum = 1.25 * m         # pitch circle to root, sets clearance
-    clearance = dedendum - addendum
+    addendum = addCoeff * m         # distance from pitch circle to tip circle
+    dedendum = dedCoeff * m         # pitch circle to root, sets clearance
+    clearance = dedendum - addendum # strictily speaking, for the clearence the addendum of the
+                                    # *mating* gear is required. Let's assume them identical.
 
     # Calculate radii
     Rpitch = Z * m / 2            # pitch circle radius
@@ -127,20 +133,31 @@ def CreateExternalGear(w, m, Z, phi, split=True):
     w.close()
     return w
 
-def CreateInternalGear(w, m, Z, phi, split=True):
+def CreateInternalGear(w, m, Z, phi, split=True, addCoeff=0.6, dedCoeff=1.25):
     """
     Create an internal gear
 
     w is wirebuilder object (in which the gear will be constructed)
+    m is the gear's module (pitch diameter divided by the number of teeth)
+    Z is the number of teeth
+    phi is the gear's pressure angle
+    addCoeff is the addendum coefficient (addendum normalized by module)
+        The default of 0.6 comes from the "Handbook of Gear Design" by Gitin M. Maitra,
+        with the goal to push the addendum circle beyond the base circle to avoid non-involute
+        flanks on the tips.
+        It in turn assumes, however, that the mating pinion usaes a larger value of 1.25.
+        And it's only required for a small number of teeth and/or a relatively large mating gear.
+        Anyways, it's kept here as this was the hard-coded value of the implementation up to v0.20.
+    dedCoeff is the dedendum coefficient (dedendum normalized by module)
 
     if split is True, each profile of a teeth will consist in 2 Bezier
     curves of degree 3, otherwise it will be made of one Bezier curve
     of degree 4
     """
     # ****** external gear specifications
-    addendum = 0.6 * m              # distance from pitch circle to tip circle (ref G.M.Maitra)
-    dedendum = 1.25 * m             # pitch circle to root, sets clearance
-    clearance = 0.25 * m
+    addendum = addCoeff * m         # distance from pitch circle to tip circle
+    dedendum = dedCoeff * m         # pitch circle to root, sets clearance
+    clearance = 0.25 * m            # this assumes an addendum coefficient of 1 for the mating gear
 
     # Calculate radii
     Rpitch = Z * m / 2              # pitch circle radius
