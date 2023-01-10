@@ -29,7 +29,7 @@ import Path
 import Path.Base.Drillable as Drillable
 import math
 
-Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 Path.Log.trackModule(Path.Log.thisModule())
 
 

@@ -207,7 +207,7 @@ def threadPasses(count, radii, internal, majorDia, minorDia, toolDia, toolCrest)
 
 def elevatorRadius(obj, center, internal, tool):
     """elevatorLocation(obj, center, internal, tool) ... return suitable location for the tool elevator"""
-
+    Path.Log.track(center, internal, tool.Diameter)
     if internal:
         dy = float(obj.MinorDiameter - tool.Diameter) / 2 - 1
         if dy < 0:
@@ -377,7 +377,8 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
             "ThreadFit",
             "Thread",
             QT_TRANSLATE_NOOP(
-                "App::Property", "Set how many passes are used to cut the thread"
+                "App::Property",
+                "Override to control how loose or tight the threads are milled",
             ),
         )
         obj.addProperty(
@@ -446,7 +447,9 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
             float(self.tool.Diameter),
             float(self.tool.Crest),
         ):
-            if not start is None and not _isThreadInternal(obj) and not obj.LeadInOut:
+            if not start is None:
+                # and not _isThreadInternal(obj):
+                # and not obj.LeadInOut:
                 # external thread without lead in/out have to go up and over
                 # in other words we need a move to clearance and not take any
                 # shortcuts when moving to the elevator position
