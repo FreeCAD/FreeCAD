@@ -73,6 +73,13 @@ void AbstractSplitView::deleteSelf()
     MDIView::deleteSelf();
 }
 
+void AbstractSplitView::setDocumentOfViewers(Gui::Document* document)
+{
+    for (auto view : _viewer) {
+        view->setDocument(document);
+    }
+}
+
 void AbstractSplitView::viewAll()
 {
     for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
@@ -819,6 +826,8 @@ SplitView3DInventor::SplitView3DInventor(int views, Gui::Document* pcDocument, Q
 
     mainSplitter->show();
     setCentralWidget(mainSplitter);
+
+    setDocumentOfViewers(pcDocument);
 
     // apply the user settings
     setupSettings();

@@ -381,16 +381,13 @@ public:
         mainSplitter = new QSplitter(Qt::Horizontal, this);
         if (glformat) {
             _viewer.push_back(new View3DInventorViewer(f, mainSplitter));
-            _viewer.back()->setDocument(pcDocument);
             _viewer.push_back(new View3DInventorViewer(f, mainSplitter));
-            _viewer.back()->setDocument(pcDocument);
         }
         else {
             _viewer.push_back(new View3DInventorViewer(mainSplitter));
-            _viewer.back()->setDocument(pcDocument);
             _viewer.push_back(new View3DInventorViewer(mainSplitter));
-            _viewer.back()->setDocument(pcDocument);
         }
+        setDocumentOfViewers(pcDocument);
 
         auto vbox = new QFrame(this);
         auto layout = new QVBoxLayout();

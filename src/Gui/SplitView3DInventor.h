@@ -66,6 +66,7 @@ public:
     int getSize();
 
 protected:
+    void setDocumentOfViewers(Gui::Document* document);
     void setupSettings();
 
 protected:
