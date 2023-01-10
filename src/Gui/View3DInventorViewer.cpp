@@ -3365,22 +3365,28 @@ void View3DInventorViewer::removeEventCallback(SoType eventtype, SoEventCallback
 
 ViewProvider* View3DInventorViewer::getViewProviderByPath(SoPath* path) const
 {
-    if (!guiDocument)
+    if (!guiDocument) {
+        Base::Console().Warning("View3DInventorViewer::getViewProviderByPath: No document set\n");
         return nullptr;
+    }
     return guiDocument->getViewProviderByPathFromHead(path);
 }
 
 ViewProvider* View3DInventorViewer::getViewProviderByPathFromTail(SoPath* path) const
 {
-    if (!guiDocument)
+    if (!guiDocument) {
+        Base::Console().Warning("View3DInventorViewer::getViewProviderByPathFromTail: No document set\n");
         return nullptr;
+    }
     return guiDocument->getViewProviderByPathFromTail(path);
 }
 
 std::vector<ViewProvider*> View3DInventorViewer::getViewProvidersOfType(const Base::Type& typeId) const
 {
-    if (!guiDocument)
+    if (!guiDocument) {
+        Base::Console().Warning("View3DInventorViewer::getViewProvidersOfType: No document set\n");
         return {};
+    }
     return guiDocument->getViewProvidersOfType(typeId);
 }
 
