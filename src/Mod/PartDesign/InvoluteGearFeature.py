@@ -87,7 +87,10 @@ class _InvoluteGear:
         def ensure_property(type_, name, doc, default):
             if not hasattr(obj, name):
                 obj.addProperty(type_, name, "Gear", doc)
-                setattr(obj, name, default)
+                if callable(default):
+                    setattr(obj, name, default())
+                else:
+                    setattr(obj, name, default)
 
         ensure_property("App::PropertyInteger", "NumberOfTeeth",
             doc="Number of gear teeth",
@@ -104,14 +107,18 @@ class _InvoluteGear:
         ensure_property("App::PropertyBool", "ExternalGear",
             doc="True=external Gear False=internal Gear",
             default=True)
+        ensure_property("App::PropertyFloat", "AddendumCoefficient",
+            doc="The height of the tooth from the pitch circle up to its tip, normalized by the module.",
+            default=lambda: 1.0 if obj.ExternalGear else 0.6)
+        ensure_property("App::PropertyFloat","DedendumCoefficient",
+            doc="The height of the tooth from the pitch circle down to its root, normalized by the module.",
+            default=1.25)
 
     def execute(self,obj):
-        #print "_InvoluteGear.execute()"
         w = fcgear.FCWireBuilder()
-        if obj.ExternalGear:
-            involute.CreateExternalGear(w, obj.Modules.Value,obj.NumberOfTeeth, obj.PressureAngle.Value, obj.HighPrecision)
-        else:
-            involute.CreateInternalGear(w, obj.Modules.Value,obj.NumberOfTeeth, obj.PressureAngle.Value, obj.HighPrecision)
+        generator_func = involute.CreateExternalGear if obj.ExternalGear else involute.CreateInternalGear
+        generator_func(w, obj.Modules.Value, obj.NumberOfTeeth, obj.PressureAngle.Value,
+            split=obj.HighPrecision, addCoeff=obj.AddendumCoefficient, dedCoeff=obj.DedendumCoefficient)
         gearw = Part.Wire([o.toShape() for o in w.wire])
         obj.Shape = gearw
         obj.positionBySupport();

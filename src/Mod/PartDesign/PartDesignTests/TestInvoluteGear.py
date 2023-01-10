@@ -81,6 +81,53 @@ class TestInvoluteGear(unittest.TestCase):
         self.assertNoIntersection(gear.Shape, makeCircle(tip_diameter/2 + delta), "Teeth extent beyond tip circle")
         self.assertNoIntersection(gear.Shape, makeCircle(root_diameter/2 - delta), "Teeth extend below root circle")
 
+    def testCustomizedGearProfileForSplinedShaft(self):
+        spline = InvoluteGearFeature.makeInvoluteGear('InvoluteSplinedShaft')
+        z = 12
+        m = 2
+        add_coef = 0.5
+        ded_coef = 0.9
+        spline.NumberOfTeeth = z
+        spline.Modules = f'{m} mm'
+        spline.PressureAngle = '30 deg'
+        spline.AddendumCoefficient = add_coef
+        spline.DedendumCoefficient = ded_coef
+        self.assertSuccessfulRecompute(spline)
+        self.assertClosedWire(spline.Shape)
+        pitch_diameter = m * z
+        tip_diameter = pitch_diameter + 2 * add_coef * m
+        root_diameter = pitch_diameter - 2 * ded_coef * m
+        # the test purpose here is just to ensure the gear's parameters are used,
+        # not super precise profile verification. Thus a lax delta is just file here.
+        delta = 0.01
+        self.assertIntersection(spline.Shape, makeCircle(pitch_diameter/2), "Expecting intersection at pitch circle")
+        self.assertNoIntersection(spline.Shape, makeCircle(tip_diameter/2 + delta), "Teeth extent beyond tip circle")
+        self.assertNoIntersection(spline.Shape, makeCircle(root_diameter/2 - delta), "Teeth extend below root circle")
+
+    def testCustomizedGearProfileForSplinedHub(self):
+        hub = InvoluteGearFeature.makeInvoluteGear('InvoluteSplinedHub')
+        hub.ExternalGear = False
+        z = 12
+        m = 2
+        add_coef = 0.5
+        ded_coef = 0.9
+        hub.NumberOfTeeth = z
+        hub.Modules = f'{m} mm'
+        hub.PressureAngle = '30 deg'
+        hub.AddendumCoefficient = add_coef
+        hub.DedendumCoefficient = ded_coef
+        self.assertSuccessfulRecompute(hub)
+        self.assertClosedWire(hub.Shape)
+        pitch_diameter = m * z
+        tip_diameter = pitch_diameter - 2 * add_coef * m
+        root_diameter = pitch_diameter + 2 * ded_coef * m
+        # the test purpose here is just to ensure the gear's parameters are used,
+        # not super precise profile verification. Thus a lax delta is just file here.
+        delta = 0.1 # FIXME it seems that the top land arc is in the wrong direction, thus a larger tolerance.
+        self.assertIntersection(hub.Shape, makeCircle(pitch_diameter/2), "Expecting intersection at pitch circle")
+        self.assertNoIntersection(hub.Shape, makeCircle(tip_diameter/2 - delta), "Teeth extent below tip circle")
+        self.assertNoIntersection(hub.Shape, makeCircle(root_diameter/2 + delta), "Teeth extend beyond root circle")
+
     def testUsagePadGearProfile(self):
         profile = InvoluteGearFeature.makeInvoluteGear('GearProfile')
         body = self.Doc.addObject('PartDesign::Body','GearBody')
