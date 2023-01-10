@@ -92,6 +92,7 @@ class TestInvoluteGear(unittest.TestCase):
         spline.PressureAngle = '30 deg'
         spline.AddendumCoefficient = add_coef
         spline.DedendumCoefficient = ded_coef
+        spline.RootFilletCoefficient = 0.4
         self.assertSuccessfulRecompute(spline)
         self.assertClosedWire(spline.Shape)
         pitch_diameter = m * z
@@ -116,6 +117,7 @@ class TestInvoluteGear(unittest.TestCase):
         hub.PressureAngle = '30 deg'
         hub.AddendumCoefficient = add_coef
         hub.DedendumCoefficient = ded_coef
+        hub.RootFilletCoefficient = 0.4
         self.assertSuccessfulRecompute(hub)
         self.assertClosedWire(hub.Shape)
         pitch_diameter = m * z
