@@ -1226,7 +1226,7 @@ PyObject* BSplineCurvePy::buildFromPolesMultsKnots(PyObject *args, PyObject *key
                 if (knots != Py_None) { number_of_knots = PyObject_Length(knots); }
                 else { //guess number of knots
                     if (Base::asBoolean(periodic)) {
-                        if (number_of_poles < degree) {degree = number_of_poles+1;}
+                        if (number_of_poles < degree) {degree = number_of_poles;}
                         number_of_knots = number_of_poles+1;
                     }
                     else {
