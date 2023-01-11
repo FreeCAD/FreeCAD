@@ -394,6 +394,8 @@ private:
 
             int currentgeoid = getHighestCurveIndex();
 
+            unsigned int maxDegree = ConstrMethod == 0 ? (BSplinePoles.size()-1) : (BSplinePoles.size());
+
             try {
                 //Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add B-spline curve"));
 
@@ -406,11 +408,11 @@ private:
 
                 // {"poles", "mults", "knots", "periodic", "degree", "weights", "CheckRational", NULL};
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.BSplineCurve"
-                                        "(%s,None,None,%s,%d,None,False),%s)",
-                                        controlpoints.c_str(),
-                                        ConstrMethod == 0 ?"False":"True",
-                                        SplineDegree,
-                                        geometryCreationMode==Construction?"True":"False");
+                                      "(%s,None,None,%s,%d,None,False),%s)",
+                                      controlpoints.c_str(),
+                                      ConstrMethod == 0 ?"False":"True",
+                                      std::min(maxDegree, SplineDegree),
+                                      geometryCreationMode==Construction?"True":"False");
 
                 currentgeoid++;
 
@@ -500,7 +502,7 @@ protected:
     std::vector<std::vector<AutoConstraint>> sugConstr;
 
     int ConstrMethod;
-    int SplineDegree;
+    unsigned int SplineDegree;
     bool IsClosed;
     std::vector<int> poleGeoIds;
     Base::Vector2d prevCursorPosition;
