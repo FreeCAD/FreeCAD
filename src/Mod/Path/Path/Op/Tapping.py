@@ -228,11 +228,7 @@ class ObjectTapping(PathCircularHoleBase.ObjectOp):
 
             try:
                 tappingcommands = tapping.generate(
-                    edge,
-                    dwelltime,
-                    repeat,
-                    obj.RetractHeight.Value,
-                    isRightHand
+                    edge, dwelltime, repeat, obj.RetractHeight.Value, isRightHand
                 )
 
             except ValueError as e:  # any targets that fail the generator are ignored
