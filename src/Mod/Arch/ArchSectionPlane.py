@@ -1159,7 +1159,9 @@ class _ViewProviderSectionPlane:
         elif prop == "LineWidth":
             self.drawstyle.lineWidth = vobj.LineWidth
         elif prop in ["CutView","CutMargin"]:
-            if hasattr(vobj,"CutView") and FreeCADGui.ActiveDocument.ActiveView:
+            if hasattr(vobj, "CutView") \
+                    and FreeCADGui.ActiveDocument.ActiveView \
+                    and hasattr(FreeCADGui.ActiveDocument.ActiveView, "getSceneGraph"):
                 sg = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
                 if vobj.CutView:
                     if self.clip:
