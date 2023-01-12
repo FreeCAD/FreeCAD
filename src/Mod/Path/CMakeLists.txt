@@ -288,7 +288,6 @@ SET(PathTests_SRCS
     PathTests/TestMach3Mach4Post.py
     PathTests/TestPathAdaptive.py
     PathTests/TestPathCore.py
-    PathTests/TestPathDeburr.py
     PathTests/TestPathDepthParams.py
     PathTests/TestPathDressupDogbone.py
     PathTests/TestPathDressupDogboneII.py
@@ -302,6 +301,7 @@ SET(PathTests_SRCS
     PathTests/TestPathHelixGenerator.py
     PathTests/TestPathLanguage.py
     PathTests/TestPathLog.py
+    PathTests/TestPathOpDeburr.py
     PathTests/TestPathOpUtil.py
     PathTests/TestPathPost.py
     PathTests/TestPathPreferences.py

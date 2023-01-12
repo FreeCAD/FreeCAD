@@ -36,7 +36,7 @@ class MockToolBit(object):
         self.CuttingEdgeAngle = 60
 
 
-class TestPathDeburr(PathTestUtils.PathTestBase):
+class TestPathOpDeburr(PathTestUtils.PathTestBase):
     def test00(self):
         """Verify chamfer depth and offset for an end mill."""
         tool = MockToolBit()
