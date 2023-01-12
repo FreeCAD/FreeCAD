@@ -176,6 +176,9 @@ class _InvoluteGearTaskPanel:
         #QtCore.QObject.connect(self.form.comboBox_ExternalGear, QtCore.SIGNAL("activated(QString)"), self.externalGearChanged)
         #QtCore.QObject.connect(self.form.comboBox_ExternalGear, QtCore.SIGNAL("currentIndexChanged(int)"), self.externalGearChanged)
         QtCore.QObject.connect(self.form.comboBox_ExternalGear, QtCore.SIGNAL("currentIndexChanged(int)"), self.externalGearChanged)
+        QtCore.QObject.connect(self.form.doubleSpinBox_Addendum, QtCore.SIGNAL("valueChanged(double)"), self.addendumChanged)
+        QtCore.QObject.connect(self.form.doubleSpinBox_Dedendum, QtCore.SIGNAL("valueChanged(double)"), self.dedendumChanged)
+        QtCore.QObject.connect(self.form.doubleSpinBox_RootFillet, QtCore.SIGNAL("valueChanged(double)"), self.rootFilletChanged)
 
         self.update()
 
@@ -198,6 +201,9 @@ class _InvoluteGearTaskPanel:
         else:
             self.obj.ExternalGear = False
         #self.obj.ExternalGear       = self.form.comboBox_ExternalGear.currentIndex()
+        self.obj.AddendumCoefficient = self.form.doubleSpinBox_Addendum.value()
+        self.obj.DedendumCoefficient = self.form.doubleSpinBox_Dedendum.value()
+        self.obj.RootFilletCoefficient = self.form.doubleSpinBox_RootFillet.value()
 
 
     def transferFrom(self):
@@ -215,6 +221,9 @@ class _InvoluteGearTaskPanel:
         else:
             self.form.comboBox_ExternalGear.setCurrentIndex(1)
         #self.form.comboBox_ExternalGear.setCurrentIndex(self.obj.ExternalGear)
+        self.form.doubleSpinBox_Addendum.setValue(self.obj.AddendumCoefficient)
+        self.form.doubleSpinBox_Dedendum.setValue(self.obj.DedendumCoefficient)
+        self.form.doubleSpinBox_RootFillet.setValue(self.obj.RootFilletCoefficient)
 
     def modulesChanged(self, value):
         #print value
@@ -249,6 +258,18 @@ class _InvoluteGearTaskPanel:
         else:
            v=False
         self.obj.ExternalGear = v
+        self.obj.Proxy.execute(self.obj)
+
+    def addendumChanged(self, value):
+        self.obj.AddendumCoefficient = value
+        self.obj.Proxy.execute(self.obj)
+
+    def dedendumChanged(self, value):
+        self.obj.DedendumCoefficient = value
+        self.obj.Proxy.execute(self.obj)
+
+    def rootFilletChanged(self, value):
+        self.obj.RootFilletCoefficient = value
         self.obj.Proxy.execute(self.obj)
 
     def getStandardButtons(self):
