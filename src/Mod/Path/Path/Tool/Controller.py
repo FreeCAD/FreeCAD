@@ -131,7 +131,7 @@ class ToolController:
                 (translate("Path_ToolController", "Forward"), "Forward"),
                 (translate("Path_ToolController", "Reverse"), "Reverse"),
                 (translate("Path_ToolController", "None"), "None"),
-            ],  # this is the direction that the profile runs
+            ]  # this is the direction that the profile runs
         }
 
         if dataType == "raw":
@@ -282,6 +282,16 @@ class ToolController:
                 args["spindledirection"] = toolchange.SpindleDirection.CW
             else:
                 args["spindledirection"] = toolchange.SpindleDirection.CCW
+
+        # Raise ValueError if tool rotation attribute doesn't match spindle direction.
+        if hasattr(obj.Tool, "Rotation"):
+            if obj.SpindleDir != None:
+                if (
+                    obj.SpindleDir == "Forward" and obj.Tool.Rotation != "Right Hand"
+                ) or (obj.SpindleDir == "Reverse" and obj.Tool.Rotation != "Left Hand"):
+                    raise ValueError(
+                        "Spindle Direction does not match tool bit 'Rotation' attribute"
+                    )
 
         commands = toolchange.generate(**args)
 

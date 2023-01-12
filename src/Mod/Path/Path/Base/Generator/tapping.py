@@ -38,9 +38,7 @@ else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
-def generate(
-    edge, dwelltime=0.0, repeat=1, retractheight=None, righthand=True, spindledir=None
-):
+def generate(edge, dwelltime=0.0, repeat=1, retractheight=None, righthand=True):
     """
     Generates Gcode for tapping a single hole.
 
@@ -104,15 +102,6 @@ def generate(
 
     if dwelltime > 0.0:
         cmdParams["P"] = dwelltime
-
-    # Raise Error if tool rotation doesn't match spindle direction.
-    if spindledir != None:
-        if (spindledir == "Forward" and not righthand) or (
-            spindledir == "Reverse" and righthand
-        ):
-            raise ValueError(
-                "Spindle Direction does not match tool bit 'Rotation' attribute"
-            )
 
     # Check if tool is lefthand or righthand, set appropriate G-code
     if not (righthand):

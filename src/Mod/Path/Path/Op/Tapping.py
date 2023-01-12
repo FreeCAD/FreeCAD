@@ -232,8 +232,7 @@ class ObjectTapping(PathCircularHoleBase.ObjectOp):
                     dwelltime,
                     repeat,
                     obj.RetractHeight.Value,
-                    isRightHand,
-                    obj.ToolController.SpindleDir,
+                    isRightHand
                 )
 
             except ValueError as e:  # any targets that fail the generator are ignored
