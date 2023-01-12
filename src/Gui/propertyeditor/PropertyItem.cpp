@@ -1522,7 +1522,7 @@ PropertyEditorWidget::PropertyEditorWidget (QWidget * parent)
 #endif
     layout->addWidget(button);
 
-    connect(button, SIGNAL(clicked()), this, SIGNAL(buttonClick()));
+    connect(button, &QPushButton::clicked, this, &PropertyEditorWidget::buttonClick);
 
     // QAbstractItemView will call selectAll() if a QLineEdit is the focus
     // proxy. Since the QLineEdit here is read-only and not meant for editing,

@@ -87,8 +87,7 @@ CallTipsList::CallTipsList(QPlainTextEdit* parent)
     pal.setColor(QPalette::Inactive, QPalette::HighlightedText, pal.color(QPalette::Active, QPalette::HighlightedText));
     parent->setPalette( pal );
 
-    connect(this, SIGNAL(itemActivated(QListWidgetItem *)),
-            this, SLOT(callTipItemActivated(QListWidgetItem *)));
+    connect(this, &Gui::CallTipsList::itemActivated, this, &CallTipsList::callTipItemActivated);
 
     hideKeys.append(Qt::Key_Space);
     hideKeys.append(Qt::Key_Exclam);

@@ -50,22 +50,22 @@ TextEdit::TextEdit(QWidget* parent)
     auto shortcut = new QShortcut(this);
     shortcut->setKey(QKeySequence(QString::fromLatin1("CTRL+Space")));
     shortcut->setContext(Qt::WidgetShortcut);
-    connect(shortcut, SIGNAL(activated()), this, SLOT(complete()));
+    connect(shortcut, &QShortcut::activated, this, &TextEdit::complete);
 
     auto shortcutFind = new QShortcut(this);
     shortcutFind->setKey(QKeySequence::Find);
     shortcutFind->setContext(Qt::WidgetShortcut);
-    connect(shortcutFind, SIGNAL(activated()), this, SIGNAL(showSearchBar()));
+    connect(shortcutFind, &QShortcut::activated, this, &TextEdit::showSearchBar);
 
     auto shortcutNext = new QShortcut(this);
     shortcutNext->setKey(QKeySequence::FindNext);
     shortcutNext->setContext(Qt::WidgetShortcut);
-    connect(shortcutNext, SIGNAL(activated()), this, SIGNAL(findNext()));
+    connect(shortcutNext, &QShortcut::activated, this, &TextEdit::findNext);
 
     auto shortcutPrev = new QShortcut(this);
     shortcutPrev->setKey(QKeySequence::FindPrevious);
     shortcutPrev->setContext(Qt::WidgetShortcut);
-    connect(shortcutPrev, SIGNAL(activated()), this, SIGNAL(findPrevious()));
+    connect(shortcutPrev, &QShortcut::activated, this, &TextEdit::findPrevious);
 }
 
 /** Destroys the object and frees any allocated resources */
@@ -236,12 +236,12 @@ TextEditor::TextEditor(QWidget* parent)
     // set colors and font
     hPrefGrp->NotifyAll();
 
-    connect(this, SIGNAL(cursorPositionChanged()),
-            this, SLOT(highlightCurrentLine()));
-    connect(this, SIGNAL(blockCountChanged(int)),
-            this, SLOT(updateLineNumberAreaWidth(int)));
-    connect(this, SIGNAL(updateRequest(const QRect &, int)),
-            this, SLOT(updateLineNumberArea(const QRect &, int)));
+    connect(this, &Gui::TextEditor::cursorPositionChanged,
+        this, &TextEditor::highlightCurrentLine);
+    connect(this, &Gui::TextEditor::blockCountChanged,
+        this, &TextEditor::updateLineNumberAreaWidth);
+    connect(this, &Gui::TextEditor::updateRequest,
+        this, &TextEditor::updateLineNumberArea);
 
     updateLineNumberAreaWidth(0);
     highlightCurrentLine();

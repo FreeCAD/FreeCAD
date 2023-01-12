@@ -85,14 +85,18 @@ PropertyEditor::PropertyEditor(QWidget *parent)
 
     this->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
-    connect(this, SIGNAL(activated(const QModelIndex &)), this, SLOT(onItemActivated(const QModelIndex &)));
-    connect(this, SIGNAL(clicked(const QModelIndex &)), this, SLOT(onItemActivated(const QModelIndex &)));
-    connect(this, SIGNAL(expanded(const QModelIndex &)), this, SLOT(onItemExpanded(const QModelIndex &)));
-    connect(this, SIGNAL(collapsed(const QModelIndex &)), this, SLOT(onItemCollapsed(const QModelIndex &)));
-    connect(propertyModel, SIGNAL(rowsMoved(const QModelIndex &, int, int, const QModelIndex &, int)),
-            this, SLOT(onRowsMoved(const QModelIndex &, int, int, const QModelIndex &, int)));
-    connect(propertyModel, SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
-            this, SLOT(onRowsRemoved(const QModelIndex &, int, int)));
+    connect(this, &Gui::PropertyEditor::PropertyEditor::activated,
+            this, &PropertyEditor::onItemActivated);
+    connect(this, &Gui::PropertyEditor::PropertyEditor::clicked,
+            this, &PropertyEditor::onItemActivated);
+    connect(this, &Gui::PropertyEditor::PropertyEditor::expanded,
+            this, &PropertyEditor::onItemExpanded);
+    connect(this, &Gui::PropertyEditor::PropertyEditor::collapsed,
+            this, &PropertyEditor::onItemCollapsed);
+    connect(propertyModel, &Gui::PropertyEditor::PropertyModel::rowsMoved,
+            this, &PropertyEditor::onRowsMoved);
+    connect(propertyModel, &Gui::PropertyEditor::PropertyModel::rowsRemoved,
+            this, &PropertyEditor::onRowsRemoved);
 }
 
 PropertyEditor::~PropertyEditor()
