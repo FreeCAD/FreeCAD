@@ -1589,9 +1589,9 @@ class Snapper:
 
     def hide(self):
         """Hide the toolbar."""
-        toolbar = self.get_snap_toolbar()
-        if toolbar:
-            toolbar.hide()
+        if hasattr(self, "toolbar") and self.toolbar:
+            self.toolbar.hide()
+            self.toolbar.toggleViewAction().setVisible(False)
 
 
     def setGrid(self):
