@@ -324,8 +324,7 @@ UIntSpinBox::UIntSpinBox (QWidget* parent)
 {
     d = new UIntSpinBoxPrivate;
     d->mValidator =  new UnsignedValidator(this->minimum(), this->maximum(), this);
-    connect(this, SIGNAL(valueChanged(int)),
-            this, SLOT(valueChange(int)));
+    connect(this, &Gui::UIntSpinBox::valueChanged, this, &UIntSpinBox::valueChange);
     setRange(0, 99);
     setValue(0);
     updateValidator();

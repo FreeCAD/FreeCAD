@@ -531,9 +531,8 @@ ClearLineEdit::ClearLineEdit (QWidget * parent)
 {
     clearAction = this->addAction(QIcon(QString::fromLatin1(":/icons/edit-cleartext.svg")),
                                         QLineEdit::TrailingPosition);
-    connect(clearAction, SIGNAL(triggered()), this, SLOT(clear()));
-    connect(this, SIGNAL(textChanged(const QString&)),
-            this, SLOT(updateClearButton(const QString&)));
+    connect(clearAction, &QAction::triggered, this, &ClearLineEdit::clear);
+    connect(this, &Gui::ClearLineEdit::textChanged, this, &ClearLineEdit::updateClearButton);
 }
 
 void ClearLineEdit::resizeEvent(QResizeEvent *e)
@@ -1094,8 +1093,8 @@ LabelButton::LabelButton (QWidget * parent)
 #endif
     layout->addWidget(button);
 
-    connect(button, SIGNAL(clicked()), this, SLOT(browse()));
-    connect(button, SIGNAL(clicked()), this, SIGNAL(buttonClicked()));
+    connect(button, &QPushButton::clicked, this, &LabelButton::browse);
+    connect(button, &QPushButton::clicked, this, &LabelButton::buttonClicked);
 }
 
 LabelButton::~LabelButton()
@@ -1301,12 +1300,12 @@ PropertyListEditor::PropertyListEditor(QWidget *parent) : QPlainTextEdit(parent)
 {
     lineNumberArea = new LineNumberArea(this);
 
-    connect(this, SIGNAL(blockCountChanged(int)),
-            this, SLOT(updateLineNumberAreaWidth(int)));
-    connect(this, SIGNAL(updateRequest(QRect,int)),
-            this, SLOT(updateLineNumberArea(QRect,int)));
-    connect(this, SIGNAL(cursorPositionChanged()),
-            this, SLOT(highlightCurrentLine()));
+    connect(this, &Gui::PropertyListEditor::blockCountChanged,
+            this, &PropertyListEditor::updateLineNumberAreaWidth);
+    connect(this, &Gui::PropertyListEditor::updateRequest,
+            this, &PropertyListEditor::updateLineNumberArea);
+    connect(this, &Gui::PropertyListEditor::cursorPositionChanged,
+            this, &PropertyListEditor::highlightCurrentLine);
 
     updateLineNumberAreaWidth(0);
     highlightCurrentLine();

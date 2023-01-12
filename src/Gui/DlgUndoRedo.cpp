@@ -44,7 +44,7 @@ using namespace Gui::Dialog;
 UndoDialog::UndoDialog( QWidget* parent )
   : QMenu( parent )
 {
-    connect(this, SIGNAL(aboutToShow()), this, SLOT(onFetchInfo()));
+    connect(this, &Gui::Dialog::UndoDialog::aboutToShow, this, &UndoDialog::onFetchInfo);
 }
 
 /**
@@ -92,7 +92,7 @@ void UndoDialog::onSelected()
 RedoDialog::RedoDialog( QWidget* parent )
   : QMenu( parent )
 {
-    connect(this, SIGNAL(aboutToShow()), this, SLOT(onFetchInfo()));
+    connect(this, &Gui::Dialog::RedoDialog::aboutToShow, this, &RedoDialog::onFetchInfo);
 }
 
 /**

@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QEvent>
@@ -30,8 +29,8 @@
 
 #include "ToolBox.h"
 
-using namespace Gui::DockWnd;
 
+using namespace Gui::DockWnd;
 
 /**
  * Constructs a toolbox called \a name with parent \a parent and flags \a f.
@@ -40,7 +39,7 @@ ToolBox::ToolBox( QWidget *parent )
   : QWidget(parent)
 {
   _pToolBox = new QToolBox( this );
-  connect( _pToolBox, SIGNAL( currentChanged(int) ), this, SIGNAL( currentChanged(int) ) );
+  connect(_pToolBox, &QToolBox::currentChanged, this, &ToolBox::currentChanged);
 
   auto pGrid = new QGridLayout(this);
   pGrid->addWidget(_pToolBox, 0, 0);

@@ -93,7 +93,7 @@ void DlgObjectSelection::init(const std::vector<App::DocumentObject*> &objs,
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General");
     ui->checkBoxAutoDeps->setChecked(hGrp->GetBool("ObjectSelectionAutoDeps", true));
-    connect(ui->checkBoxAutoDeps, SIGNAL(toggled(bool)), this, SLOT(onAutoDeps(bool)));
+    connect(ui->checkBoxAutoDeps, &QCheckBox::toggled, this, &DlgObjectSelection::onAutoDeps);
 
     ui->checkBoxShowDeps->setChecked(hGrp->GetBool("ObjectSelectionShowDeps", false));
     QObject::connect(ui->checkBoxShowDeps, &QCheckBox::toggled,

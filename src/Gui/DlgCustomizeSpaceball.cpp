@@ -302,8 +302,7 @@ void ButtonModel::loadConfig(const char *RequiredDeviceName)
 CommandView::CommandView(QWidget *parent) : QTreeView(parent)
 {
     this->setEnabled(false);
-    connect(this, SIGNAL(clicked(const QModelIndex&)),
-            this, SLOT(goClicked(const QModelIndex&)));
+    connect(this, &Gui::Dialog::CommandView::clicked, this, &CommandView::goClicked);
 }
 
 void CommandView::goChangeCommandSelection(const QString& commandName)

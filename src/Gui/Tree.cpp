@@ -503,22 +503,15 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
     this->selectTimer = new QTimer(this);
     this->selectTimer->setSingleShot(true);
 
-    connect(this->statusTimer, SIGNAL(timeout()),
-        this, SLOT(onUpdateStatus()));
-    connect(this, SIGNAL(itemEntered(QTreeWidgetItem*, int)),
-        this, SLOT(onItemEntered(QTreeWidgetItem*)));
-    connect(this, SIGNAL(itemCollapsed(QTreeWidgetItem*)),
-        this, SLOT(onItemCollapsed(QTreeWidgetItem*)));
-    connect(this, SIGNAL(itemExpanded(QTreeWidgetItem*)),
-        this, SLOT(onItemExpanded(QTreeWidgetItem*)));
-    connect(this, SIGNAL(itemSelectionChanged()),
-        this, SLOT(onItemSelectionChanged()));
-    connect(this, SIGNAL(itemChanged(QTreeWidgetItem*, int)),
-        this, SLOT(onItemChanged(QTreeWidgetItem*, int)));
-    connect(this->preselectTimer, SIGNAL(timeout()),
-        this, SLOT(onPreSelectTimer()));
-    connect(this->selectTimer, SIGNAL(timeout()),
-        this, SLOT(onSelectTimer()));
+    connect(this->statusTimer, &QTimer::timeout, this, &TreeWidget::onUpdateStatus);
+    connect(this, &Gui::TreeWidget::itemEntered, this, &TreeWidget::onItemEntered);
+    connect(this, &Gui::TreeWidget::itemCollapsed, this, &TreeWidget::onItemCollapsed);
+    connect(this, &Gui::TreeWidget::itemExpanded, this, &TreeWidget::onItemExpanded);
+    connect(this, &Gui::TreeWidget::itemSelectionChanged,
+        this, &TreeWidget::onItemSelectionChanged);
+    connect(this, &Gui::TreeWidget::itemChanged, this, &TreeWidget::onItemChanged);
+    connect(this->preselectTimer, &QTimer::timeout, this, &TreeWidget::onPreSelectTimer);
+    connect(this->selectTimer, &QTimer::timeout, this, &TreeWidget::onSelectTimer);
     preselectTime.start();
 
     setupText();

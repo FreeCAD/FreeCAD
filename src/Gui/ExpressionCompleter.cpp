@@ -574,7 +574,7 @@ ExpressionLineEdit::ExpressionLineEdit(QWidget *parent, bool noProperty, char ch
     , checkInList(checkInList)
     , checkPrefix(checkPrefix)
 {
-    connect(this, SIGNAL(textEdited(const QString&)), this, SLOT(slotTextChanged(const QString&)));
+    connect(this, &Gui::ExpressionLineEdit::textEdited, this, &ExpressionLineEdit::slotTextChanged);
 }
 
 void ExpressionLineEdit::setPrefix(char prefix) {
@@ -596,7 +596,7 @@ void ExpressionLineEdit::setDocumentObject(const App::DocumentObject * currentDo
             completer->setFilterMode(Qt::MatchContains);
         connect(completer, SIGNAL(activated(QString)), this, SLOT(slotCompleteText(QString)));
         connect(completer, SIGNAL(highlighted(QString)), this, SLOT(slotCompleteText(QString)));
-        connect(this, SIGNAL(textChanged2(QString,int)), completer, SLOT(slotUpdate(QString,int)));
+        connect(this, SIGNAL(textChanged2(QString, int)), completer, SLOT(slotUpdate(QString, int)));
     }
 }
 
@@ -685,7 +685,8 @@ ExpressionTextEdit::ExpressionTextEdit(QWidget *parent)
     , block(true)
     , exactMatch(false)
 {
-    connect(this, SIGNAL(textChanged()), this, SLOT(slotTextChanged()));
+    connect(this, &Gui::ExpressionTextEdit::textChanged,
+        this, &ExpressionTextEdit::slotTextChanged);
 }
 
 void ExpressionTextEdit::setExactMatch(bool enabled) {

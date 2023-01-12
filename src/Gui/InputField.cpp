@@ -91,7 +91,7 @@ InputField::InputField(QWidget * parent)
     iconLabel->setPixmap(pixmap);
     iconLabel->setStyleSheet(QString::fromLatin1("QLabel { border: none; padding: 0px; }"));
     iconLabel->hide();
-    connect(this, SIGNAL(textChanged(const QString&)), this, SLOT(updateIconLabel(const QString&)));
+    connect(this, &Gui::InputField::textChanged, this, &InputField::updateIconLabel);
     int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
     setStyleSheet(QString::fromLatin1("QLineEdit { padding-right: %1px } ").arg(iconLabel->sizeHint().width() + frameWidth + 1));
     QSize msz = minimumSizeHint();
@@ -100,8 +100,7 @@ InputField::InputField(QWidget * parent)
 
     this->setContextMenuPolicy(Qt::DefaultContextMenu);
 
-    QObject::connect(this, SIGNAL(textChanged(QString)),
-                     this, SLOT(newInput(QString)));
+    connect(this, &Gui::InputField::textChanged, this, &InputField::newInput);
 }
 
 InputField::~InputField()

@@ -36,7 +36,6 @@
 
 using namespace Gui;
 
-
 namespace Gui {
 struct SequencerDialogPrivate
 {
@@ -48,7 +47,6 @@ struct SequencerDialogPrivate
     bool canabort;
 };
 }
-
 
 SequencerDialog* SequencerDialog::_pclSingleton = nullptr;
 
@@ -305,7 +303,7 @@ ProgressDialog::ProgressDialog (SequencerDialog* s, QWidget * parent)
     m_taskbarButton = nullptr;
     m_taskbarButton = nullptr;
 #endif
-    connect(this, SIGNAL(canceled()), this, SLOT(onCancel()));
+    connect(this, &Gui::ProgressDialog::canceled, this, &ProgressDialog::onCancel);
 }
 
 ProgressDialog::~ProgressDialog ()
