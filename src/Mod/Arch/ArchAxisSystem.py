@@ -202,7 +202,7 @@ class _ViewProviderAxisSystem:
         return []
 
     def attach(self, vobj):
-
+        self.Object = vobj.Object
         self.axes = vobj.Object.Axes
         vobj.addDisplayMode(coin.SoSeparator(),"Default")
 
@@ -228,20 +228,34 @@ class _ViewProviderAxisSystem:
             for o in vobj.Object.Axes:
                 o.ViewObject.Visibility = vobj.Visibility
 
-    def setEdit(self,vobj,mode=0):
+    def setEdit(self, vobj, mode):
+        if mode != 0:
+            return None
 
         taskd = AxisSystemTaskPanel(vobj.Object)
         FreeCADGui.Control.showDialog(taskd)
         return True
 
-    def unsetEdit(self,vobj,mode):
+    def unsetEdit(self, vobj, mode):
+        if mode != 0:
+            return None
 
         FreeCADGui.Control.closeDialog()
-        return
+        return True
 
-    def doubleClicked(self,vobj):
+    def doubleClicked(self, vobj):
+        self.edit()
 
-        self.setEdit(vobj)
+    def setupContextMenu(self, vobj, menu):
+        actionEdit = QtGui.QAction(translate("Arch", "Edit"),
+                                   menu)
+        QtCore.QObject.connect(actionEdit,
+                               QtCore.SIGNAL("triggered()"),
+                               self.edit)
+        menu.addAction(actionEdit)
+
+    def edit(self):
+        FreeCADGui.ActiveDocument.setEdit(self.Object, 0)
 
     def __getstate__(self):
 

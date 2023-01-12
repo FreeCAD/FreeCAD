@@ -512,24 +512,32 @@ class _ViewProviderRebar(ArchComponent.ViewProviderComponent):
         return ":/icons/Arch_Rebar_Tree.svg"
 
     def setEdit(self, vobj, mode):
+        # The Reinforcement Workbench does not implement resetEdit.
+        # Therefore unsetEdit is never called and objects would stay in
+        # edit mode if this function were to return `True`.
 
-        if mode == 0:
-            if hasattr(vobj.Object, "RebarShape"):
-                try:
-                    # Import module of RebarShape
-                    module = __import__(vobj.Object.RebarShape)
-                except ImportError:
-                    FreeCAD.Console.PrintError("Unable to import RebarShape module\n")
-                    return
-                module.editDialog(vobj)
-            elif vobj.RebarShape:
-                try:
-                    # Import module of RebarShape
-                    module = __import__(vobj.RebarShape)
-                except ImportError:
-                    FreeCAD.Console.PrintError("Unable to import RebarShape module\n")
-                    return
-                module.editDialog(vobj)
+        if mode != 0:
+            return None
+
+        if hasattr(vobj.Object, "RebarShape"):
+            try:
+                # Import module of RebarShape
+                module = __import__(vobj.Object.RebarShape)
+            except ImportError:
+                FreeCAD.Console.PrintError("Unable to import RebarShape module\n")
+                return False
+        elif vobj.RebarShape:
+            try:
+                # Import module of RebarShape
+                module = __import__(vobj.RebarShape)
+            except ImportError:
+                FreeCAD.Console.PrintError("Unable to import RebarShape module\n")
+                return False
+        else:
+            return False
+
+        module.editDialog(vobj)
+        return False
 
     def updateData(self,obj,prop):
 

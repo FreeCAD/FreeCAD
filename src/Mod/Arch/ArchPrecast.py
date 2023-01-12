@@ -728,30 +728,32 @@ class _ViewProviderPrecast(ArchComponent.ViewProviderComponent):
                 return ":/icons/Arch_Structure_Clone.svg"
         return ":/icons/Arch_Structure_Tree.svg"
 
-    def setEdit(self,vobj,mode):
+    def setEdit(self, vobj, mode):
+        if mode != 0:
+            return None
 
-        if mode == 0:
-            import FreeCADGui
-            taskd = ArchComponent.ComponentTaskPanel()
-            taskd.obj = self.Object
-            taskd.update()
-            if hasattr(self.Object,"Dents"):
-                self.dentd = _DentsTaskPanel()
-                self.dentd.form.show()
-                self.dentd.fillDents(self.Object.Dents)
-                taskd.form = [taskd.form,self.dentd.form]
-            FreeCADGui.Control.showDialog(taskd)
-            return True
-        return False
+        import FreeCADGui
+        taskd = ArchComponent.ComponentTaskPanel()
+        taskd.obj = self.Object
+        taskd.update()
+        if hasattr(self.Object,"Dents"):
+            self.dentd = _DentsTaskPanel()
+            self.dentd.form.show()
+            self.dentd.fillDents(self.Object.Dents)
+            taskd.form = [taskd.form,self.dentd.form]
+        FreeCADGui.Control.showDialog(taskd)
+        return True
 
-    def unsetEdit(self,vobj,mode):
+    def unsetEdit(self, vobj, mode):
+        if mode != 0:
+            return None
 
         import FreeCADGui
         if hasattr(self,"dentd"):
             self.Object.Dents = self.dentd.getValues()
             del self.dentd
         FreeCADGui.Control.closeDialog()
-        return False
+        return True
 
 
 class _PrecastTaskPanel:

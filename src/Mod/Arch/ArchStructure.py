@@ -1128,15 +1128,15 @@ class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
         else:
             ArchComponent.ViewProviderComponent.onChanged(self,vobj,prop)
 
-    def setEdit(self,vobj,mode):
+    def setEdit(self, vobj, mode):
+        if mode != 0:
+            return None
 
-        if mode == 0:
-            taskd = StructureTaskPanel(vobj.Object)
-            taskd.obj = self.Object
-            taskd.update()
-            FreeCADGui.Control.showDialog(taskd)
-            return True
-        return False
+        taskd = StructureTaskPanel(vobj.Object)
+        taskd.obj = self.Object
+        taskd.update()
+        FreeCADGui.Control.showDialog(taskd)
+        return True
 
 
 class StructureTaskPanel(ArchComponent.ComponentTaskPanel):

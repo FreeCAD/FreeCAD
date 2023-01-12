@@ -1403,19 +1403,21 @@ class ViewProviderPanelSheet(Draft._ViewProviderDraft):
 
         return ":/icons/Draft_Drawing.svg"
 
-    def setEdit(self,vobj,mode):
+    def setEdit(self, vobj, mode):
+        if mode == 1 or mode == 2:
+            return None
 
-        if mode == 0:
-            taskd = SheetTaskPanel(vobj.Object)
-            taskd.update()
-            FreeCADGui.Control.showDialog(taskd)
-            return True
-        return False
+        taskd = SheetTaskPanel(vobj.Object)
+        taskd.update()
+        FreeCADGui.Control.showDialog(taskd)
+        return True
 
-    def unsetEdit(self,vobj,mode):
+    def unsetEdit(self, vobj, mode):
+        if mode == 1 or mode == 2:
+            return None
 
         FreeCADGui.Control.closeDialog()
-        return False
+        return True
 
     def attach(self,vobj):
 

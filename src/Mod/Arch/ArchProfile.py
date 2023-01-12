@@ -243,6 +243,7 @@ class _Profile(Draft._DraftObject):
     def __setstate__(self,state):
         if isinstance(state,list):
             self.Profile = state
+        self.Type = "Profile"
 
     def cleanProperties(self, obj):
 
@@ -472,17 +473,20 @@ class ViewProviderProfile(Draft._ViewProviderDraft):
         import Arch_rc
         return ":/icons/Arch_Profile.svg"
 
-    def setEdit(self,vobj,mode):
+    def setEdit(self, vobj, mode):
+        if mode == 1 or mode == 2:
+            return None
 
         taskd = ProfileTaskPanel(vobj.Object)
         FreeCADGui.Control.showDialog(taskd)
         return True
 
-    def unsetEdit(self,vobj,mode):
+    def unsetEdit(self, vobj, mode):
+        if mode == 1 or mode == 2:
+            return None
 
         FreeCADGui.Control.closeDialog()
-        FreeCAD.ActiveDocument.recompute()
-        return
+        return True
 
 
 class ProfileTaskPanel:
@@ -592,6 +596,11 @@ class ProfileTaskPanel:
 
             FreeCAD.ActiveDocument.recompute()
             FreeCADGui.ActiveDocument.resetEdit()
+        return True
+
+    def reject(self):
+
+        FreeCADGui.ActiveDocument.resetEdit()
         return True
 
     def retranslateUi(self, TaskPanel):

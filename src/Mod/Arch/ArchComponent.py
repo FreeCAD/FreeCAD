@@ -1449,53 +1449,28 @@ class ViewProviderComponent:
             return c
         return []
 
-    def setEdit(self,vobj,mode):
-        """Method called when the document requests the object to enter edit mode.
+    def setEdit(self, vobj, mode):
+        if mode != 0:
+            return None
 
-        Edit mode is entered when a user double clicks on an object in the tree
-        view, or when they use the menu option [Edit -> Toggle Edit Mode].
+        taskd = ComponentTaskPanel()
+        taskd.obj = self.Object
+        taskd.update()
+        FreeCADGui.Control.showDialog(taskd)
+        return True
 
-        Parameters
-        ----------
-        vobj: <Gui.ViewProviderDocumentObject>
-            The component's view provider object.
-        mode: int or str
-            The edit mode the document has requested. Set to 0 when requested via
-            a double click or [Edit -> Toggle Edit Mode].
-
-        Returns
-        -------
-        bool
-            If edit mode was entered.
-        """
-
-        if mode == 0:
-            taskd = ComponentTaskPanel()
-            taskd.obj = self.Object
-            taskd.update()
-            FreeCADGui.Control.showDialog(taskd)
-            return True
-        return False
-
-    def unsetEdit(self,vobj,mode):
-        """Method called when the document requests the object exit edit mode.
-
-        Returns
-        -------
-        False
-        """
+    def unsetEdit(self, vobj, mode):
+        if mode != 0:
+            return None
 
         FreeCADGui.Control.closeDialog()
-        return False
+        return True
 
-    def setupContextMenu(self,vobj,menu):
+    def setupContextMenu(self, vobj, menu):
         """Add the component specific options to the context menu.
 
         The context menu is the drop down menu that opens when the user right
         clicks on the component in the tree view.
-
-        Add a menu choice to call the Arch_ToggleSubs Gui command. See
-        ArchCommands._ToggleSubs
 
         Parameters
         ----------
@@ -1505,16 +1480,30 @@ class ViewProviderComponent:
             The context menu already assembled prior to this method being
             called.
         """
+        self.contextMenuAddEdit(menu)
+        self.contextMenuAddToggleSubcomponents(menu)
 
-        from PySide import QtCore,QtGui
-        action1 = QtGui.QAction(QtGui.QIcon(":/icons/Arch_ToggleSubs.svg"),translate("Arch","Toggle subcomponents"),menu)
-        QtCore.QObject.connect(action1,QtCore.SIGNAL("triggered()"),self.toggleSubcomponents)
-        menu.addAction(action1)
+    def contextMenuAddEdit(self, menu):
+        actionEdit = QtGui.QAction(translate("Arch", "Edit"),
+                                   menu)
+        QtCore.QObject.connect(actionEdit,
+                               QtCore.SIGNAL("triggered()"),
+                               self.edit)
+        menu.addAction(actionEdit)
+
+    def contextMenuAddToggleSubcomponents(self, menu):
+        actionToggleSubcomponents = QtGui.QAction(QtGui.QIcon(":/icons/Arch_ToggleSubs.svg"),
+                                                  translate("Arch", "Toggle subcomponents"),
+                                                  menu)
+        QtCore.QObject.connect(actionToggleSubcomponents,
+                               QtCore.SIGNAL("triggered()"),
+                               self.toggleSubcomponents)
+        menu.addAction(actionToggleSubcomponents)
+
+    def edit(self):
+        FreeCADGui.ActiveDocument.setEdit(self.Object, 0)
 
     def toggleSubcomponents(self):
-        """Simple wrapper to call Arch_ToggleSubs when the relevant context
-        menu choice is selected."""
-
         FreeCADGui.runCommand("Arch_ToggleSubs")
 
     def areDifferentColors(self,a,b):
@@ -1724,7 +1713,8 @@ class ComponentTaskPanel:
         else:
             import os
             # the BIM_Classification command needs to be added before it can be used
-            FreeCADGui.activateWorkbench("BIMWorkbench")
+            if not "BIM_Classification" in FreeCADGui.listCommands():
+                FreeCADGui.activateWorkbench("BIMWorkbench")
             self.classButton.setIcon(QtGui.QIcon(os.path.join(os.path.dirname(BimClassification.__file__),"icons","BIM_Classification.svg")))
 
         QtCore.QObject.connect(self.addButton, QtCore.SIGNAL("clicked()"), self.addElement)

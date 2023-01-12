@@ -1114,29 +1114,6 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
             self.colorize(vobj.Object,force=True)
         ArchComponent.ViewProviderComponent.onChanged(self,vobj,prop)
 
-    def setEdit(self,vobj,mode):
-
-        taskd = _ArchWindowTaskPanel()
-        taskd.obj = self.Object
-        self.sets = [vobj.DisplayMode,vobj.Transparency]
-        vobj.DisplayMode = "Shaded"
-        vobj.Transparency = 80
-        if self.Object.Base:
-            self.Object.Base.ViewObject.show()
-        taskd.update()
-        FreeCADGui.Control.showDialog(taskd)
-        return True
-
-    def unsetEdit(self,vobj,mode):
-
-        vobj.DisplayMode = self.sets[0]
-        vobj.Transparency = self.sets[1]
-        vobj.DiffuseColor = vobj.DiffuseColor # reset face colors
-        if self.Object.Base:
-            self.Object.Base.ViewObject.hide()
-        FreeCADGui.Control.closeDialog()
-        return
-
     def colorize(self,obj,force=False):
 
         "setting different part colors"
@@ -1211,17 +1188,67 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
                                 ccol = (ccol[0],ccol[1],ccol[2],t)
         return ccol
 
-    def setupContextMenu(self,vobj,menu):
+    def setEdit(self, vobj, mode):
+        if mode != 0:
+            return None
 
-        if hasattr(self,"Object"):
-            from PySide import QtCore,QtGui
-            import Draft_rc
-            action1 = QtGui.QAction(QtGui.QIcon(":/icons/Arch_Window_Tree.svg"),"Invert opening direction",menu)
-            QtCore.QObject.connect(action1,QtCore.SIGNAL("triggered()"),self.invertOpening)
-            menu.addAction(action1)
-            action2 = QtGui.QAction(QtGui.QIcon(":/icons/Arch_Window_Tree.svg"),"Invert hinge position",menu)
-            QtCore.QObject.connect(action2,QtCore.SIGNAL("triggered()"),self.invertHinge)
-            menu.addAction(action2)
+        taskd = _ArchWindowTaskPanel()
+        taskd.obj = self.Object
+        self.sets = [vobj.DisplayMode,vobj.Transparency]
+        vobj.DisplayMode = "Shaded"
+        vobj.Transparency = 80
+        if self.Object.Base:
+            self.Object.Base.ViewObject.show()
+        taskd.update()
+        FreeCADGui.Control.showDialog(taskd)
+        return True
+
+    def unsetEdit(self, vobj, mode):
+        if mode != 0:
+            return None
+
+        vobj.DisplayMode = self.sets[0]
+        vobj.Transparency = self.sets[1]
+        vobj.DiffuseColor = vobj.DiffuseColor # reset face colors
+        if self.Object.Base:
+            self.Object.Base.ViewObject.hide()
+        FreeCADGui.Control.closeDialog()
+        return True
+
+    def setupContextMenu(self, vobj, menu):
+        # WindowParts example:
+        # ["OuterFrame", "Frame",       "Wire0,Wire1",             "100.0+V", "0.00+V",
+        #  "InnerFrame", "Frame",       "Wire2,Wire3,Edge8,Mode1", "100.0",   "100.0+V",
+        #  "InnerGlass", "Glass panel", "Wire3",                   "10.0",    "150.0+V"]
+
+        hasOpening = False
+        parts = self.Object.WindowParts
+        for i in range(len(parts) // 5):
+            wireData = parts[2 + (i * 5)]
+            if wireData.find("Edge") >= 0:
+                hasOpening = True
+                break
+
+        super().contextMenuAddEdit(menu)
+
+        if hasOpening:
+            actionInvertOpening = QtGui.QAction(QtGui.QIcon(":/icons/Arch_Window_Tree.svg"),
+                                                translate("Arch", "Invert opening direction"),
+                                                menu)
+            QtCore.QObject.connect(actionInvertOpening,
+                                   QtCore.SIGNAL("triggered()"),
+                                   self.invertOpening)
+            menu.addAction(actionInvertOpening)
+
+            actionInvertHinge = QtGui.QAction(QtGui.QIcon(":/icons/Arch_Window_Tree.svg"),
+                                              translate("Arch", "Invert hinge position"),
+                                              menu)
+            QtCore.QObject.connect(actionInvertHinge,
+                                   QtCore.SIGNAL("triggered()"),
+                                   self.invertHinge)
+            menu.addAction(actionInvertHinge)
+
+        super().contextMenuAddToggleSubcomponents(menu)
 
     def invertOpening(self):
 
