@@ -76,7 +76,7 @@ public:
 
     }
 
-    // This ExpressionCompleter model works without any pysical items.
+    // This ExpressionCompleter model works without any physical items.
     // Everything item related is stored inside QModelIndex.InternalPointer/InternalId(),
     // using the following Info structure.
     //
