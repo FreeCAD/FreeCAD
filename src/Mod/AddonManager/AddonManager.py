@@ -169,6 +169,7 @@ class CommandAddonManager:
         self.dialog = FreeCADGui.PySideUic.loadUi(
             os.path.join(os.path.dirname(__file__), "AddonManager.ui")
         )
+        self.dialog.setObjectName("AddonManager_Main_Window")
         # self.dialog.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
 
         # cleanup the leftovers from previous runs

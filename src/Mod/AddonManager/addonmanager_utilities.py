@@ -451,3 +451,20 @@ def run_interruptable_subprocess(args) -> object:
     if return_code is None or return_code != 0:
         raise subprocess.CalledProcessError(return_code, args, stdout, stderr)
     return subprocess.CompletedProcess(args, return_code, stdout, stderr)
+
+def get_main_am_window():
+    windows = QtWidgets.QApplication.topLevelWidgets()
+    for widget in windows:
+        if widget.objectName() == "AddonManager_Main_Window":
+            return widget
+    # If there is no main AM window, we may be running unit tests: see if the Test Runner window
+    # exists:
+    for widget in windows:
+        if widget.objectName() == "TestGui__UnitTest":
+            return widget
+    # If we still didn't find it, try to locate the main FreeCAD window:
+    for widget in windows:
+        if hasattr(widget, "centralWidget"):
+            return widget.centralWidget()
+    # Why is this code even getting called?
+    return None

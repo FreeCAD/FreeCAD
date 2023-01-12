@@ -89,6 +89,7 @@ class UpdateAllGUI(QtCore.QObject):
         self.dialog = FreeCADGui.PySideUic.loadUi(
             os.path.join(os.path.dirname(__file__), "update_all.ui")
         )
+        self.dialog.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
         self.row_map = {}
         self.in_process_row = None
         self.active_installer = None

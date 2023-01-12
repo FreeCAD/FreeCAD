@@ -28,6 +28,7 @@ import FreeCADGui
 from PySide import QtCore, QtWidgets
 
 from addonmanager_uninstaller import AddonUninstaller, MacroUninstaller
+import addonmanager_utilities as utils
 
 translate = FreeCAD.Qt.translate
 
@@ -78,7 +79,7 @@ class AddonUninstallerGUI(QtCore.QObject):
         """Present a modal dialog asking the user if they really want to uninstall. Returns True to
         continue with the uninstallation, or False to stop the process."""
         confirm = QtWidgets.QMessageBox.question(
-            None,
+            utils.get_main_am_window(),
             translate("AddonsInstaller", "Confirm remove"),
             translate(
                 "AddonsInstaller", "Are you sure you want to uninstall {}?"
@@ -96,6 +97,7 @@ class AddonUninstallerGUI(QtCore.QObject):
             )
             + "...",
             QtWidgets.QMessageBox.Cancel,
+            parent = utils.get_main_am_window()
         )
         self.progress_dialog.rejected.connect(self._cancel_removal)
         self.progress_dialog.show()
@@ -114,7 +116,7 @@ class AddonUninstallerGUI(QtCore.QObject):
         if self.progress_dialog:
             self.progress_dialog.hide()
         QtWidgets.QMessageBox.information(
-            None,
+            utils.get_main_am_window(),
             translate("AddonsInstaller", "Uninstall complete"),
             translate("AddonInstaller", "Finished removing {}").format(
                 addon.display_name
@@ -128,7 +130,7 @@ class AddonUninstallerGUI(QtCore.QObject):
         if self.progress_dialog:
             self.progress_dialog.hide()
         QtWidgets.QMessageBox.critical(
-            None,
+            utils.get_main_am_window(),
             translate("AddonsInstaller", "Uninstall failed"),
             translate("AddonInstaller", "Failed to remove some files")
             + ":\n"
