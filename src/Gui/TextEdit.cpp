@@ -236,12 +236,12 @@ TextEditor::TextEditor(QWidget* parent)
     // set colors and font
     hPrefGrp->NotifyAll();
 
-    connect(this, &Gui::TextEditor::cursorPositionChanged,
-        this, &TextEditor::highlightCurrentLine);
-    connect(this, &Gui::TextEditor::blockCountChanged,
-        this, &TextEditor::updateLineNumberAreaWidth);
-    connect(this, &Gui::TextEditor::updateRequest,
-        this, &TextEditor::updateLineNumberArea);
+    connect(this, &QPlainTextEdit::cursorPositionChanged,
+            this, &TextEditor::highlightCurrentLine);
+    connect(this, &QPlainTextEdit::blockCountChanged,
+            this, &TextEditor::updateLineNumberAreaWidth);
+    connect(this, &QPlainTextEdit::updateRequest,
+            this, &TextEditor::updateLineNumberArea);
 
     updateLineNumberAreaWidth(0);
     highlightCurrentLine();

@@ -574,7 +574,7 @@ ExpressionLineEdit::ExpressionLineEdit(QWidget *parent, bool noProperty, char ch
     , checkInList(checkInList)
     , checkPrefix(checkPrefix)
 {
-    connect(this, &Gui::ExpressionLineEdit::textEdited, this, &ExpressionLineEdit::slotTextChanged);
+    connect(this, &QLineEdit::textEdited, this, &ExpressionLineEdit::slotTextChanged);
 }
 
 void ExpressionLineEdit::setPrefix(char prefix) {
@@ -685,8 +685,7 @@ ExpressionTextEdit::ExpressionTextEdit(QWidget *parent)
     , block(true)
     , exactMatch(false)
 {
-    connect(this, &Gui::ExpressionTextEdit::textChanged,
-        this, &ExpressionTextEdit::slotTextChanged);
+    connect(this, &QPlainTextEdit::textChanged, this, &ExpressionTextEdit::slotTextChanged);
 }
 
 void ExpressionTextEdit::setExactMatch(bool enabled) {

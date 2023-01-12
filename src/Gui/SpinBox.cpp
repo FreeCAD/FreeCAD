@@ -324,7 +324,7 @@ UIntSpinBox::UIntSpinBox (QWidget* parent)
 {
     d = new UIntSpinBoxPrivate;
     d->mValidator =  new UnsignedValidator(this->minimum(), this->maximum(), this);
-    connect(this, &Gui::UIntSpinBox::valueChanged, this, &UIntSpinBox::valueChange);
+    connect(this, qOverload<int>(&QSpinBox::valueChanged), this, &UIntSpinBox::valueChange);
     setRange(0, 99);
     setValue(0);
     updateValidator();
@@ -361,7 +361,7 @@ void UIntSpinBox::setValue(uint value)
 
 void UIntSpinBox::valueChange(int value)
 {
-    Q_EMIT valueChanged(d->mapToUInt(value));
+    Q_EMIT unsignedChanged(d->mapToUInt(value));
 }
 
 uint UIntSpinBox::minimum() const
@@ -422,8 +422,8 @@ bool UIntSpinBox::apply(const std::string & propName)
         Gui::Command::doCommand(Gui::Command::Doc, "%s = %u", propName.c_str(), value());
         return true;
     }
-    else
-        return false;
+
+    return false;
 }
 
 void UIntSpinBox::setNumberExpression(App::NumberExpression* expr)

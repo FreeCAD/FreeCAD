@@ -77,7 +77,7 @@ bool DialogOptions::dontUseNativeColorDialog()
 FileDialog::FileDialog(QWidget * parent)
   : QFileDialog(parent)
 {
-    connect(this, &Gui::FileDialog::filterSelected, this, &FileDialog::onSelectedFilter);
+    connect(this, &QFileDialog::filterSelected, this, &FileDialog::onSelectedFilter);
 }
 
 FileDialog::~FileDialog()

@@ -45,16 +45,16 @@ SketcherGeneralWidget::SketcherGeneralWidget(QWidget *parent)
     ui->renderingOrder->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
 
     // connecting the needed signals
-    connect(ui->checkBoxShowGrid, &Gui::PrefCheckBox::toggled,
+    connect(ui->checkBoxShowGrid, &QCheckBox::toggled,
             this, &SketcherGeneralWidget::emitToggleGridView);
-    connect(ui->checkBoxGridSnap, &Gui::PrefCheckBox::toggled,
+    connect(ui->checkBoxGridSnap, &QCheckBox::toggled,
             this, &SketcherGeneralWidget::emitToggleGridSnap);
     connect(ui->gridSize, qOverload<double>(&Gui::PrefQuantitySpinBox::valueChanged),
             this, &SketcherGeneralWidget::emitSetGridSize);
-    connect(ui->checkBoxAutoconstraints, &Gui::PrefCheckBox::toggled,
+    connect(ui->checkBoxAutoconstraints, &QCheckBox::toggled,
             this, &SketcherGeneralWidget::emitToggleAutoconstraints);
-    connect(ui->checkBoxRedundantAutoconstraints,
-            &Gui::PrefCheckBox::toggled, this, &SketcherGeneralWidget::emitToggleAvoidRedundant);
+    connect(ui->checkBoxRedundantAutoconstraints, &QCheckBox::toggled,
+            this, &SketcherGeneralWidget::emitToggleAvoidRedundant);
     ui->renderingOrder->installEventFilter(this);
 }
 

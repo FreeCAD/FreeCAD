@@ -303,7 +303,7 @@ ProgressDialog::ProgressDialog (SequencerDialog* s, QWidget * parent)
     m_taskbarButton = nullptr;
     m_taskbarButton = nullptr;
 #endif
-    connect(this, &Gui::ProgressDialog::canceled, this, &ProgressDialog::onCancel);
+    connect(this, &QProgressDialog::canceled, this, &ProgressDialog::onCancel);
 }
 
 ProgressDialog::~ProgressDialog ()
