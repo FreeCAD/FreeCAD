@@ -412,6 +412,9 @@ public:
     // cannot handle selection with sub name. So only a linked group can have
     // subname in selection
     int getSubName(std::ostringstream &str, App::DocumentObject *&topParent) const;
+    const std::vector<std::string>& getSubNames() const {
+        return mySubs;
+    }
 
     void setHighlight(bool set, HighlightMode mode = HighlightMode::LightBlue);
 
