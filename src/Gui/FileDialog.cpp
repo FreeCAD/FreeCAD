@@ -77,7 +77,7 @@ bool DialogOptions::dontUseNativeColorDialog()
 FileDialog::FileDialog(QWidget * parent)
   : QFileDialog(parent)
 {
-    connect(this, &Gui::FileDialog::filterSelected, this, &FileDialog::onSelectedFilter);
+    connect(this, &QFileDialog::filterSelected, this, &FileDialog::onSelectedFilter);
 }
 
 FileDialog::~FileDialog()
@@ -722,11 +722,11 @@ void FileChooser::editingFinished()
 }
 
 /**
- * Sets the file name \a s.
+ * Sets the file name \a fn.
  */
-void FileChooser::setFileName( const QString& s )
+void FileChooser::setFileName( const QString& fn )
 {
-    lineEdit->setText( s );
+    lineEdit->setText( fn );
 }
 
 /**

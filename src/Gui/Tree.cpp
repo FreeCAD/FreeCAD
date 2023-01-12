@@ -504,12 +504,12 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
     this->selectTimer->setSingleShot(true);
 
     connect(this->statusTimer, &QTimer::timeout, this, &TreeWidget::onUpdateStatus);
-    connect(this, &Gui::TreeWidget::itemEntered, this, &TreeWidget::onItemEntered);
-    connect(this, &Gui::TreeWidget::itemCollapsed, this, &TreeWidget::onItemCollapsed);
-    connect(this, &Gui::TreeWidget::itemExpanded, this, &TreeWidget::onItemExpanded);
-    connect(this, &Gui::TreeWidget::itemSelectionChanged,
-        this, &TreeWidget::onItemSelectionChanged);
-    connect(this, &Gui::TreeWidget::itemChanged, this, &TreeWidget::onItemChanged);
+    connect(this, &QTreeWidget::itemEntered, this, &TreeWidget::onItemEntered);
+    connect(this, &QTreeWidget::itemCollapsed, this, &TreeWidget::onItemCollapsed);
+    connect(this, &QTreeWidget::itemExpanded, this, &TreeWidget::onItemExpanded);
+    connect(this, &QTreeWidget::itemSelectionChanged,
+            this, &TreeWidget::onItemSelectionChanged);
+    connect(this, &QTreeWidget::itemChanged, this, &TreeWidget::onItemChanged);
     connect(this->preselectTimer, &QTimer::timeout, this, &TreeWidget::onPreSelectTimer);
     connect(this->selectTimer, &QTimer::timeout, this, &TreeWidget::onSelectTimer);
     preselectTime.start();
@@ -1616,6 +1616,7 @@ struct ItemInfo {
     std::vector<std::string> subs;
     bool dragging = false;
 };
+
 struct ItemInfo2 {
     std::string doc;
     std::string obj;
@@ -1625,6 +1626,60 @@ struct ItemInfo2 {
     std::string topObj;
     std::string topSubname;
 };
+
+namespace {
+class DropHandler
+{
+public:
+    static std::vector<std::pair<DocumentObjectItem*, std::vector<std::string> > > filterItems(const QList<QTreeWidgetItem*>& sels, QTreeWidgetItem* targetItem)
+    {
+        std::vector<std::pair<DocumentObjectItem*, std::vector<std::string> > > items;
+        items.reserve(sels.size());
+        for (auto ti : sels) {
+            if (ti->type() != TreeWidget::ObjectType)
+                continue;
+            // ignore child elements if the parent is selected
+            if (sels.contains(ti->parent()))
+                continue;
+            if (ti == targetItem)
+                continue;
+            auto item = static_cast<DocumentObjectItem*>(ti);
+            items.emplace_back();
+            auto& info = items.back();
+            info.first = item;
+            const auto& subnames = item->getSubNames();
+            info.second.insert(info.second.end(), subnames.begin(), subnames.end());
+        }
+
+        return items;
+    }
+    static App::PropertyPlacement* getPlacement(const ItemInfo& info, const App::DocumentObject* obj, Base::Matrix4D& mat)
+    {
+        App::PropertyPlacement* propPlacement = nullptr;
+        if (!info.topObj.empty()) {
+            auto doc = App::GetApplication().getDocument(info.topDoc.c_str());
+            if (doc) {
+                auto topObj = doc->getObject(info.topObj.c_str());
+                if (topObj) {
+                    auto sobj = topObj->getSubObject(info.topSubname.c_str(), nullptr, &mat);
+                    if (sobj == obj) {
+                        propPlacement = Base::freecad_dynamic_cast<App::PropertyPlacement>(
+                            obj->getPropertyByName("Placement"));
+                    }
+                }
+            }
+        }
+        else {
+            propPlacement = Base::freecad_dynamic_cast<App::PropertyPlacement>(
+                obj->getPropertyByName("Placement"));
+            if (propPlacement)
+                mat = propPlacement->getValue().toMatrix();
+        }
+
+        return propPlacement;
+    }
+};
+}
 
 void TreeWidget::dropEvent(QDropEvent* event)
 {
@@ -1649,35 +1704,23 @@ void TreeWidget::dropEvent(QDropEvent* event)
 
     // filter out the selected items we cannot handle
     std::vector<std::pair<DocumentObjectItem*, std::vector<std::string> > > items;
-    auto sels = selectedItems();
-    items.reserve(sels.size());
-    for (auto ti : sels) {
-        if (ti->type() != TreeWidget::ObjectType)
-            continue;
-        // ignore child elements if the parent is selected
-        if (sels.contains(ti->parent()))
-            continue;
-        if (ti == targetItem)
-            continue;
-        auto item = static_cast<DocumentObjectItem*>(ti);
-        items.emplace_back();
-        auto& info = items.back();
-        info.first = item;
-        info.second.insert(info.second.end(), item->mySubs.begin(), item->mySubs.end());
-    }
-
+    items = DropHandler::filterItems(selectedItems(), targetItem);
     if (items.empty())
         return; // nothing needs to be done
 
     std::string errMsg;
 
-    if (QApplication::keyboardModifiers() == Qt::ControlModifier)
+    if (QApplication::keyboardModifiers() == Qt::ControlModifier) {
         event->setDropAction(Qt::CopyAction);
+    }
     else if (QApplication::keyboardModifiers() == Qt::AltModifier
-        && (items.size() == 1 || targetItem->type() == TreeWidget::DocumentType))
+        && (items.size() == 1 || targetItem->type() == TreeWidget::DocumentType)) {
         event->setDropAction(Qt::LinkAction);
-    else
+    }
+    else {
         event->setDropAction(Qt::MoveAction);
+    }
+
     auto da = event->dropAction();
     bool dropOnly = da == Qt::CopyAction || da == Qt::LinkAction;
 
@@ -1850,25 +1893,7 @@ void TreeWidget::dropEvent(QDropEvent* event)
                 Base::Matrix4D mat;
                 App::PropertyPlacement* propPlacement = nullptr;
                 if (syncPlacement) {
-                    if (!info.topObj.empty()) {
-                        auto doc = App::GetApplication().getDocument(info.topDoc.c_str());
-                        if (doc) {
-                            auto topObj = doc->getObject(info.topObj.c_str());
-                            if (topObj) {
-                                auto sobj = topObj->getSubObject(info.topSubname.c_str(), nullptr, &mat);
-                                if (sobj == obj) {
-                                    propPlacement = Base::freecad_dynamic_cast<App::PropertyPlacement>(
-                                        obj->getPropertyByName("Placement"));
-                                }
-                            }
-                        }
-                    }
-                    else {
-                        propPlacement = Base::freecad_dynamic_cast<App::PropertyPlacement>(
-                            obj->getPropertyByName("Placement"));
-                        if (propPlacement)
-                            mat = propPlacement->getValue().toMatrix();
-                    }
+                    propPlacement = DropHandler::getPlacement(info, obj, mat);
                 }
 
                 auto dropParent = targetParent;

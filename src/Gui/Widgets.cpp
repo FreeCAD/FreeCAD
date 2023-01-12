@@ -532,7 +532,7 @@ ClearLineEdit::ClearLineEdit (QWidget * parent)
     clearAction = this->addAction(QIcon(QString::fromLatin1(":/icons/edit-cleartext.svg")),
                                         QLineEdit::TrailingPosition);
     connect(clearAction, &QAction::triggered, this, &ClearLineEdit::clear);
-    connect(this, &Gui::ClearLineEdit::textChanged, this, &ClearLineEdit::updateClearButton);
+    connect(this, &QLineEdit::textChanged, this, &ClearLineEdit::updateClearButton);
 }
 
 void ClearLineEdit::resizeEvent(QResizeEvent *e)
@@ -1300,11 +1300,11 @@ PropertyListEditor::PropertyListEditor(QWidget *parent) : QPlainTextEdit(parent)
 {
     lineNumberArea = new LineNumberArea(this);
 
-    connect(this, &Gui::PropertyListEditor::blockCountChanged,
+    connect(this, &QPlainTextEdit::blockCountChanged,
             this, &PropertyListEditor::updateLineNumberAreaWidth);
-    connect(this, &Gui::PropertyListEditor::updateRequest,
+    connect(this, &QPlainTextEdit::updateRequest,
             this, &PropertyListEditor::updateLineNumberArea);
-    connect(this, &Gui::PropertyListEditor::cursorPositionChanged,
+    connect(this, &QPlainTextEdit::cursorPositionChanged,
             this, &PropertyListEditor::highlightCurrentLine);
 
     updateLineNumberAreaWidth(0);

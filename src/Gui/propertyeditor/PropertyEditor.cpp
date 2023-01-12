@@ -75,7 +75,7 @@ PropertyEditor::PropertyEditor(QWidget *parent)
     setExpandsOnDoubleClick(true);
 
 #if QT_VERSION < QT_VERSION_CHECK(6,0,0)
-    QStyleOptionViewItem opt = viewOptions();
+    QStyleOptionViewItem opt = PropertyEditor::viewOptions();
 #else
     QStyleOptionViewItem opt;
     initViewItemOption(&opt);
@@ -85,18 +85,12 @@ PropertyEditor::PropertyEditor(QWidget *parent)
 
     this->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
-    connect(this, &Gui::PropertyEditor::PropertyEditor::activated,
-            this, &PropertyEditor::onItemActivated);
-    connect(this, &Gui::PropertyEditor::PropertyEditor::clicked,
-            this, &PropertyEditor::onItemActivated);
-    connect(this, &Gui::PropertyEditor::PropertyEditor::expanded,
-            this, &PropertyEditor::onItemExpanded);
-    connect(this, &Gui::PropertyEditor::PropertyEditor::collapsed,
-            this, &PropertyEditor::onItemCollapsed);
-    connect(propertyModel, &Gui::PropertyEditor::PropertyModel::rowsMoved,
-            this, &PropertyEditor::onRowsMoved);
-    connect(propertyModel, &Gui::PropertyEditor::PropertyModel::rowsRemoved,
-            this, &PropertyEditor::onRowsRemoved);
+    connect(this, &QTreeView::activated, this, &PropertyEditor::onItemActivated);
+    connect(this, &QTreeView::clicked, this, &PropertyEditor::onItemActivated);
+    connect(this, &QTreeView::expanded, this, &PropertyEditor::onItemExpanded);
+    connect(this, &QTreeView::collapsed, this, &PropertyEditor::onItemCollapsed);
+    connect(propertyModel, &QAbstractItemModel::rowsMoved, this, &PropertyEditor::onRowsMoved);
+    connect(propertyModel, &QAbstractItemModel::rowsRemoved, this, &PropertyEditor::onRowsRemoved);
 }
 
 PropertyEditor::~PropertyEditor()

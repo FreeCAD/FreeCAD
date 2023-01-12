@@ -48,10 +48,8 @@ namespace Gui
             void selectButton(int number);
         Q_SIGNALS:
             void changeCommandSelection(const QString& commandName);
-        private Q_SLOTS:
-            void goSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
-
         public Q_SLOTS:
+            void goSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
             void goChangedCommand(const QString& commandName);
         };
 
