@@ -155,6 +155,17 @@ class ObjectTapping(PathCircularHoleBase.ObjectOp):
         Path.Log.track()
         machine = PathMachineState.MachineState()
 
+        if not hasattr(obj.ToolController.Tool, "Pitch") or not hasattr(
+            obj.ToolController.Tool, "TPI"
+        ):
+            Path.Log.error(
+                translate(
+                    "Path_Tapping",
+                    "Tapping Operation requires a Tap tool with Pitch or TPI",
+                )
+            )
+            return
+
         self.commandlist.append(Path.Command("(Begin Tapping)"))
 
         # rapid to clearance height
