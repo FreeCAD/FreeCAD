@@ -640,9 +640,9 @@ class Snapper:
                                             self.lastExtensions[0] = ne
                                     else:
                                         if (not DraftGeomUtils.areColinear(ne,self.lastExtensions[0])) and \
-                                            (not DraftGeomUtils.areColinear(ne,self.lastExtensions[1])):
-                                                self.lastExtensions[1] = self.lastExtensions[0]
-                                                self.lastExtensions[0] = ne
+                                                (not DraftGeomUtils.areColinear(ne,self.lastExtensions[1])):
+                                            self.lastExtensions[1] = self.lastExtensions[0]
+                                            self.lastExtensions[0] = ne
                                     return np,ne
                         elif self.isEnabled('Parallel'):
                             if last:
