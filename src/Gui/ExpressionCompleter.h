@@ -70,7 +70,7 @@ public Q_SLOTS:
 private:
     void init();
     QString pathFromIndex ( const QModelIndex & index ) const override;
-    QStringList splitPath ( const QString & path ) const override;
+    QStringList splitPath ( const QString & input ) const override;
 
     int prefixStart = 0;
     int prefixEnd = 0;
