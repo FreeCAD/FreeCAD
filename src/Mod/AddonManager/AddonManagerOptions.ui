@@ -367,10 +367,10 @@ installed addons will be checked for available updates
          <string>Disable git (fall back to ZIP downloads only)</string>
         </property>
         <property name="prefEntry" stdset="0">
-         <string>disableGit</string>
+         <cstring>disableGit</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <string>Addons</string>
+         <cstring>Addons</cstring>
         </property>
        </widget>
       </item>
@@ -383,10 +383,10 @@ installed addons will be checked for available updates
          <string>Addon developer mode</string>
         </property>
         <property name="prefPath" stdset="0">
-         <string>Addons</string>
+         <cstring>Addons</cstring>
         </property>
         <property name="prefEntry" stdset="0">
-         <string>developerMode</string>
+         <cstring>developerMode</cstring>
         </property>
        </widget>
       </item>
