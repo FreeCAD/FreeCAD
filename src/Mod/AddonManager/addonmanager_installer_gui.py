@@ -159,7 +159,7 @@ class AddonInstallerGUI(QtCore.QObject):
             message += "</ul>"
             message += "To ignore this error and install anyway, press OK."
             r = QtWidgets.QMessageBox.critical(
-                None,
+                utils.get_main_am_window(),
                 translate("AddonsInstaller", "Missing Requirement"),
                 message,
                 QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel,
@@ -205,7 +205,7 @@ class AddonInstallerGUI(QtCore.QObject):
             message += "</ul>"
             message += translate("AddonsInstaller", "Press OK to install anyway.")
         r = QtWidgets.QMessageBox.critical(
-            None,
+            utils.get_main_am_window(),
             translate("AddonsInstaller", "Missing Requirement"),
             message,
             QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel,
@@ -249,7 +249,7 @@ class AddonInstallerGUI(QtCore.QObject):
         if sys.version_info.minor < minor_required:
             # pylint: disable=line-too-long
             QtWidgets.QMessageBox.critical(
-                None,
+                utils.get_main_am_window(),
                 translate("AddonsInstaller", "Incompatible Python version"),
                 translate(
                     "AddonsInstaller",
@@ -326,6 +326,7 @@ class AddonInstallerGUI(QtCore.QObject):
             translate("AddonsInstaller", "Installing dependencies"),
             translate("AddonsInstaller", "Installing dependencies") + "...",
             QtWidgets.QMessageBox.Cancel,
+            parent=utils.get_main_am_window()
         )
         self.dependency_installation_dialog.rejected.connect(
             self._cancel_dependency_installation
@@ -345,7 +346,7 @@ class AddonInstallerGUI(QtCore.QObject):
             self.dependency_installation_dialog.hide()
         # pylint: disable=line-too-long
         result = QtWidgets.QMessageBox.critical(
-            None,
+            utils.get_main_am_window(),
             translate("AddonsInstaller", "Cannot execute Python"),
             translate(
                 "AddonsInstaller",
@@ -369,7 +370,7 @@ class AddonInstallerGUI(QtCore.QObject):
             self.dependency_installation_dialog.hide()
         # pylint: disable=line-too-long
         result = QtWidgets.QMessageBox.critical(
-            None,
+            utils.get_main_am_window(),
             translate("AddonsInstaller", "Cannot execute pip"),
             translate(
                 "AddonsInstaller",
@@ -397,7 +398,7 @@ class AddonInstallerGUI(QtCore.QObject):
             )
         FreeCAD.Console.PrintError(details + "\n")
         result = QtWidgets.QMessageBox.critical(
-            None,
+            utils.get_main_am_window(),
             translate("AddonsInstaller", "Package installation failed"),
             short_message
             + "\n\n"
@@ -449,6 +450,7 @@ class AddonInstallerGUI(QtCore.QObject):
                 self.addon_to_install.display_name
             ),
             QtWidgets.QMessageBox.Cancel,
+            parent=utils.get_main_am_window()
         )
         self.installing_dialog.rejected.connect(self._cancel_addon_installation)
         self.installer.finished.connect(self.installing_dialog.hide)
@@ -462,6 +464,7 @@ class AddonInstallerGUI(QtCore.QObject):
                 self.addon_to_install.display_name
             ),
             QtWidgets.QMessageBox.NoButton,
+            parent=utils.get_main_am_window()
         )
         dlg.show()
         if self.worker_thread.isRunning():
@@ -483,7 +486,7 @@ class AddonInstallerGUI(QtCore.QObject):
     def _installation_succeeded(self):
         """Called if the installation was successful."""
         QtWidgets.QMessageBox.information(
-            None,
+            utils.get_main_am_window(),
             translate("AddonsInstaller", "Success"),
             translate("AddonsInstaller", "{} was installed successfully").format(
                 self.addon_to_install.name
@@ -496,7 +499,7 @@ class AddonInstallerGUI(QtCore.QObject):
     def _installation_failed(self, addon, message):
         """Called if the installation failed."""
         QtWidgets.QMessageBox.critical(
-            None,
+            utils.get_main_am_window(),
             translate("AddonsInstaller", "Installation Failed"),
             translate("AddonsInstaller", "Failed to install {}").format(addon.name)
             + "\n"
