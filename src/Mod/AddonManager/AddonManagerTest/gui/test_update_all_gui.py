@@ -116,7 +116,20 @@ class TestUpdateAllGui(unittest.TestCase):
         self.assertEqual(self.test_object.dialog.tableWidget.rowCount(), 3)
 
     def test_cancelling_installation(self):
-        self.factory.work_function = lambda: sleep(0.1)
+        class Worker:
+            def __init__(self):
+                self.counter = 0
+                self.LIMIT = 100
+                self.limit_reached = False
+            def run(self):
+                while self.counter < self.LIMIT:
+                    if QtCore.QThread.currentThread().isInterruptionRequested():
+                        return
+                    self.counter += 1
+                    sleep(0.01)
+                self.limit_reached = True
+        worker = Worker()
+        self.factory.work_function = worker.run 
         self.test_object.run()
         cancel_timer = QtCore.QTimer()
         cancel_timer.timeout.connect(
@@ -217,7 +230,7 @@ class TestUpdateAllGui(unittest.TestCase):
         self.test_object.active_installer = self.factory.get_updater(self.addons[0])
         self.test_object._update_finished()
         self.assertFalse(self.test_object.worker_thread.isRunning())
-        self.test_object.worker_thread.terminate()
+        self.test_object.worker_thread.quit()
         self.assertTrue(call_interceptor.called)
         self.test_object.worker_thread.wait()
 
@@ -227,7 +240,7 @@ class TestUpdateAllGui(unittest.TestCase):
         self.test_object.worker_thread.start()
         self.test_object._finalize()
         self.assertFalse(self.test_object.worker_thread.isRunning())
-        self.test_object.worker_thread.terminate()
+        self.test_object.worker_thread.quit()
         self.test_object.worker_thread.wait()
         self.assertFalse(self.test_object.running)
         self.assertIsNotNone(

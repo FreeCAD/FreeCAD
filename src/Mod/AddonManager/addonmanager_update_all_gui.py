@@ -119,12 +119,8 @@ class UpdateAllGUI(QtCore.QObject):
 
     def _cancel_installation(self):
         self.cancelled = True
-        self.worker_thread.requestInterruption()
-        self.worker_thread.wait(100)
-        if self.worker_thread.isRunning():
-            self.worker_thread.terminate()
-            self.worker_thread.wait()
-        self.running = False
+        if self.worker_thread and self.worker_thread.isRunning():
+            self.worker_thread.requestInterruption()
 
     def _add_addon_to_table(self, addon: Addon):
         """Add the given addon to the list, with no icon in the first column"""
@@ -180,23 +176,34 @@ class UpdateAllGUI(QtCore.QObject):
 
     def _update_finished(self):
         """Callback for updater that has finished all its work"""
-        self.worker_thread.terminate()
-        self.worker_thread.wait()
+        if self.worker_thread is not None and self.worker_thread.isRunning():
+            self.worker_thread.quit()
+            self.worker_thread.wait()
         self.addon_updated.emit(self.active_installer.addon_to_install)
         if not self.cancelled:
             self._process_next_update()
+        else:
+            self._setup_cancelled_state()
 
     def _finalize(self):
         """No more updates, clean up and shut down"""
         if self.worker_thread is not None and self.worker_thread.isRunning():
-            self.worker_thread.terminate()
+            self.worker_thread.quit()
             self.worker_thread.wait()
+        text = translate("Addons installer", "Finished updating the following addons")
+        self._set_dialog_to_final_state(text)
+        self.running = False
+
+    def _setup_cancelled_state(self):
+        text1 = translate("AddonsInstaller", "Update was cancelled")
+        text2 = translate("AddonsInstaller", "some addons may have been updated")
+        self._set_dialog_to_final_state(text1 + ": " + text2)
+        self.running = False
+
+    def _set_dialog_to_final_state(self,new_content):
         self.dialog.buttonBox.clear()
         self.dialog.buttonBox.addButton(QtWidgets.QDialogButtonBox.Close)
-        self.dialog.label.setText(
-            translate("Addons installer", "Finished updating the following addons")
-        )
-        self.running = False
+        self.dialog.label.setText(new_content)
 
     def is_running(self):
         """True if the thread is running, and False if not"""

@@ -552,6 +552,9 @@ class TestMacroInstallerGui(unittest.TestCase):
             translate("toolbar_button", "Add button?"),
             QtWidgets.QDialogButtonBox.No,
         )
+        # Note: that dialog does not use a QButtonBox, so we can really only test its
+        # reject() signal, which is triggered by the DialogWatcher when it cannot find
+        # the button. In this case, failure to find that button is NOT an error.
         self.installer._ask_to_install_toolbar_button()  # Blocks until killed by watcher
         self.assertTrue(dialog_watcher.dialog_found)
 

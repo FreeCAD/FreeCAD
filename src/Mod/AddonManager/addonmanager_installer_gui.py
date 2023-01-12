@@ -79,6 +79,7 @@ class AddonInstallerGUI(QtCore.QObject):
             self.worker_thread.quit()
             self.worker_thread.wait(500)
             if self.worker_thread.isRunning():
+                FreeCAD.Console.PrintError("INTERNAL ERROR: Thread did not quit() cleanly, using terminate()\n")
                 self.worker_thread.terminate()
 
     def run(self):
@@ -164,15 +165,6 @@ class AddonInstallerGUI(QtCore.QObject):
                 message,
                 QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel,
             )
-            FreeCAD.Console.PrintMessage(
-                translate(
-                    "AddonsInstaller",
-                    "The following Python packages are allowed to be automatically installed",
-                )
-                + ":\n"
-            )
-            for package in self.installer.allowed_packages:
-                FreeCAD.Console.PrintMessage(f"  * {package}\n")
 
             if r == QtWidgets.QMessageBox.Ok:
                 # Force the installation to proceed
@@ -335,9 +327,11 @@ class AddonInstallerGUI(QtCore.QObject):
         self.dependency_worker_thread.start()
 
     def _cleanup_dependency_worker(self) -> None:
+        return
         self.dependency_worker_thread.quit()
         self.dependency_worker_thread.wait(500)
         if self.dependency_worker_thread.isRunning():
+            FreeCAD.Console.PrintError("INTERNAL ERROR: Thread did not quit() cleanly, using terminate()\n")
             self.dependency_worker_thread.terminate()
 
     def _report_no_python_exe(self) -> None:
@@ -441,7 +435,6 @@ class AddonInstallerGUI(QtCore.QObject):
         self.installer.moveToThread(self.worker_thread)
         self.installer.finished.connect(self.worker_thread.quit)
         self.worker_thread.started.connect(self.installer.run)
-        self.worker_thread.start()  # Returns immediately
 
         self.installing_dialog = QtWidgets.QMessageBox(
             QtWidgets.QMessageBox.NoIcon,
@@ -455,6 +448,7 @@ class AddonInstallerGUI(QtCore.QObject):
         self.installing_dialog.rejected.connect(self._cancel_addon_installation)
         self.installer.finished.connect(self.installing_dialog.hide)
         self.installing_dialog.show()
+        self.worker_thread.start()  # Returns immediately
 
     def _cancel_addon_installation(self):
         dlg = QtWidgets.QMessageBox(
@@ -535,6 +529,14 @@ class MacroInstallerGUI(QtCore.QObject):
             "User parameter:BaseApp/Workbench/Global/Toolbar"
         )
         self.macro_dir = FreeCAD.getUserMacroDir(True)
+    
+    def __del__(self):
+        if self.worker_thread and hasattr(self.worker_thread, "quit"):
+            self.worker_thread.quit()
+            self.worker_thread.wait(500)
+            if self.worker_thread.isRunning():
+                FreeCAD.Console.PrintError("INTERNAL ERROR: Thread did not quit() cleanly, using terminate()\n")
+                self.worker_thread.terminate()
 
     def run(self):
         """Perform the installation, including any necessary user interaction via modal dialog
