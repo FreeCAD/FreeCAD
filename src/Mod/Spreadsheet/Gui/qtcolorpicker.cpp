@@ -360,8 +360,8 @@ void QtColorPicker::paintEvent(QPaintEvent *e)
 
         QPainter p(&pix);
 
-        int w = pix.width();			// width of cell in pixels
-        int h = pix.height();			// height of cell in pixels
+        int w = pix.width();            // width of cell in pixels
+        int h = pix.height();           // height of cell in pixels
         p.setPen(QPen(Qt::gray));
         p.setBrush(col);
         p.drawRect(2, 2, w - 5, h - 5);
@@ -1025,8 +1025,8 @@ void ColorPickerItem::mousePressEvent(QMouseEvent *)
 void ColorPickerItem::paintEvent(QPaintEvent *)
 {
     QPainter p(this);
-    int w = width();			// width of cell in pixels
-    int h = height();			// height of cell in pixels
+    int w = width();            // width of cell in pixels
+    int h = height();           // height of cell in pixels
 
     p.setPen( QPen( Qt::gray, 0, Qt::SolidLine ) );
 
