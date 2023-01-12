@@ -123,8 +123,8 @@ void DlgObjectSelection::init(const std::vector<App::DocumentObject*> &objs,
     ui->treeWidget->headerItem()->setText(0, tr("Selections"));
     ui->treeWidget->header()->setStretchLastSection(false);
 
-    connect(ui->treeWidget, SIGNAL(itemExpanded(QTreeWidgetItem*)),
-            this, SLOT(onItemExpanded(QTreeWidgetItem*)));
+    connect(ui->treeWidget, &QTreeWidget::itemExpanded,
+            this, &DlgObjectSelection::onItemExpanded);
 
     allItem = new QTreeWidgetItem(ui->treeWidget);
     allItem->setText(0, QStringLiteral("<%1>").arg(tr("All")));

@@ -707,9 +707,9 @@ void ExpressionTextEdit::setDocumentObject(const App::DocumentObject * currentDo
             completer->setFilterMode(Qt::MatchContains);
         completer->setWidget(this);
         completer->setCaseSensitivity(Qt::CaseInsensitive);
-        connect(completer, SIGNAL(activated(QString)), this, SLOT(slotCompleteText(QString)));
-        connect(completer, SIGNAL(highlighted(QString)), this, SLOT(slotCompleteText(QString)));
-        connect(this, SIGNAL(textChanged2(QString,int)), completer, SLOT(slotUpdate(QString,int)));
+        connect(completer, qOverload<const QString&>(&QCompleter::activated), this, &ExpressionTextEdit::slotCompleteText);
+        connect(completer, qOverload<const QString&>(&QCompleter::highlighted), this, &ExpressionTextEdit::slotCompleteText);
+        connect(this, &ExpressionTextEdit::textChanged2, completer, &ExpressionCompleter::slotUpdate);
     }
 }
 

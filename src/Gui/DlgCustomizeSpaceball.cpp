@@ -673,13 +673,13 @@ DlgCustomizeSpaceball::DlgCustomizeSpaceball(QWidget *parent)
 
     setupButtonModelView();
     setupCommandModelView();
-    connect(buttonView, SIGNAL(changeCommandSelection(const QString&)),
-            commandView, SLOT(goChangeCommandSelection(const QString&)));
-    connect(commandView, SIGNAL(changedCommand(const QString&)),
-            buttonView, SLOT(goChangedCommand(const QString&)));
+    connect(buttonView, &ButtonView::changeCommandSelection,
+            commandView, &CommandView::goChangeCommandSelection);
+    connect(commandView, &CommandView::changedCommand,
+            buttonView, &ButtonView::goChangedCommand);
     setupLayout();
-    connect(clearButton, SIGNAL(clicked()), this, SLOT(goClear()));
-    connect(printReference, SIGNAL(clicked()), this, SLOT(goPrint()));
+    connect(clearButton, &QPushButton::clicked, this, &DlgCustomizeSpaceball::goClear);
+    connect(printReference, &QPushButton::clicked, this, &DlgCustomizeSpaceball::goPrint);
 }
 
 DlgCustomizeSpaceball::~DlgCustomizeSpaceball()
@@ -706,8 +706,8 @@ void DlgCustomizeSpaceball::setupButtonModelView()
     buttonView->setModel(buttonModel);
 
     //had to do this here as the views default selection model is not created until after construction.
-    connect(buttonView->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)),
-            buttonView, SLOT(goSelectionChanged(const QItemSelection&, const QItemSelection&)));
+    connect(buttonView->selectionModel(), &QItemSelectionModel::selectionChanged,
+            buttonView, &ButtonView::goSelectionChanged);
 }
 
 void DlgCustomizeSpaceball::setupCommandModelView()
