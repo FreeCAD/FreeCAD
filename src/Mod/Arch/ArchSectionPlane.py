@@ -948,13 +948,8 @@ class _SectionPlane:
             p.reverse()
         p.Placement = obj.Placement
         obj.Shape = p
-
-    def onChanged(self,obj,prop):
-
-        # clean svg cache if needed
-        if prop in ["Placement","Objects","OnlySolids","UseMaterialColorForFill","Clip"]:
-            self.svgcache = None
-            self.shapecache = None
+        self.svgcache = None
+        self.shapecache = None
 
     def getNormal(self,obj):
 
