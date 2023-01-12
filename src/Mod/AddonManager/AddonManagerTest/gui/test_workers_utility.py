@@ -35,6 +35,7 @@ class TestWorkersUtility(unittest.TestCase):
 
     MODULE = "test_workers_utility"  # file name without extension
 
+    @unittest.skip("Test is slow and uses the network: refactor!")
     def setUp(self):
         self.test_dir = os.path.join(
             FreeCAD.getHomePath(), "Mod", "AddonManager", "AddonManagerTest", "data"

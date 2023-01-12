@@ -63,7 +63,7 @@ class DialogWatcher(QtCore.QObject):
                 self.dialog_found = True
                 self.timer.stop()
 
-        if not self.dialog_found:
+        if self.execution_counter > 25 and not self.dialog_found:
             # OK, it wasn't the active modal widget... was it some other window, and never became
             # active? That's an error, but we should get it closed anyway.
             windows = QtWidgets.QApplication.topLevelWidgets()
@@ -80,7 +80,7 @@ class DialogWatcher(QtCore.QObject):
         self.has_run = True
         self.execution_counter += 1
         if self.execution_counter > 100:
-            print("Stopper timer after 100 iterations")
+            print("Stopped timer after 100 iterations")
             self.timer.stop()
 
     def click_button(self, widget):
