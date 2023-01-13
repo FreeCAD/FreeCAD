@@ -44,7 +44,7 @@ public:
     FutureWatcherProgress& operator= (const FutureWatcherProgress&) = delete;
     FutureWatcherProgress& operator= (FutureWatcherProgress&&) = delete;
 
-private Q_SLOTS:
+public Q_SLOTS:
     void progressValueChanged(int value);
 
 private:

@@ -822,12 +822,12 @@ App::DocumentObjectExecReturn* Feature::execute(void)
     //future.waitForFinished(); // blocks the GUI
     Base::FutureWatcherProgress progress("Inspecting...", actual->countPoints());
     QFutureWatcher<float> watcher;
-    QObject::connect(&watcher, SIGNAL(progressValueChanged(int)),
-                     &progress, SLOT(progressValueChanged(int)));
+    QObject::connect(&watcher, &QFutureWatcher<float>::progressValueChanged,
+                     &progress, &Base::FutureWatcherProgress::progressValueChanged);
 
     // keep it responsive during computation
     QEventLoop loop;
-    QObject::connect(&watcher, SIGNAL(finished()), &loop, SLOT(quit()));
+    QObject::connect(&watcher, &QFutureWatcher::finished, &loop, &QEventLoop::quit);
     watcher.setFuture(future);
     loop.exec();
 
@@ -908,11 +908,12 @@ App::DocumentObjectExecReturn* Feature::execute(void)
         // Setup progress bar
         Base::FutureWatcherProgress progress("Inspecting...", actual->countPoints());
         QFutureWatcher<DistanceInspectionRMS> watcher;
-        QObject::connect(&watcher, SIGNAL(progressValueChanged(int)),
-            &progress, SLOT(progressValueChanged(int)));
+        QObject::connect(&watcher, &QFutureWatcher<DistanceInspectionRMS>::progressValueChanged,
+                         &progress, &Base::FutureWatcherProgress::progressValueChanged);
         // Keep UI responsive during computation
         QEventLoop loop;
-        QObject::connect(&watcher, SIGNAL(finished()), &loop, SLOT(quit()));
+        QObject::connect(&watcher, &QFutureWatcher<DistanceInspectionRMS>::finished,
+                         &loop, &QEventLoop::quit);
         watcher.setFuture(future);
         loop.exec();
         res = future.result();

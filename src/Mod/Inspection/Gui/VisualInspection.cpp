@@ -83,12 +83,12 @@ VisualInspection::VisualInspection(QWidget* parent, Qt::WindowFlags fl)
     : QDialog(parent, fl), ui(new Ui_VisualInspection)
 {
     ui->setupUi(this);
-    connect(ui->treeWidgetActual, SIGNAL(itemClicked(QTreeWidgetItem*, int)), 
-            this, SLOT(onActivateItem(QTreeWidgetItem*)));
-    connect(ui->treeWidgetNominal, SIGNAL(itemClicked(QTreeWidgetItem*, int)), 
-            this, SLOT(onActivateItem(QTreeWidgetItem*)));
-    connect(ui->buttonBox, SIGNAL(helpRequested()),
-            Gui::getMainWindow(), SLOT(whatsThis()));
+    connect(ui->treeWidgetActual, &QTreeWidget::itemClicked,
+            this, &VisualInspection::onActivateItem);
+    connect(ui->treeWidgetNominal, &QTreeWidget::itemClicked,
+            this, &VisualInspection::onActivateItem);
+    connect(ui->buttonBox, &QDialogButtonBox::helpRequested,
+            Gui::getMainWindow(), &Gui::MainWindow::whatsThis);
 
     //FIXME: Not used yet
     ui->textLabel2->hide();
