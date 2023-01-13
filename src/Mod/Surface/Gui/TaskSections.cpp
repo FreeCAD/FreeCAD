@@ -266,11 +266,10 @@ SectionsPanel::SectionsPanel(ViewProviderSections* vp, Surface::Sections* obj) :
     QAction* action = new QAction(tr("Remove"), this);
     action->setShortcut(QKeySequence::Delete);
     ui->listSections->addAction(action);
-    connect(action, SIGNAL(triggered()), this, SLOT(onDeleteEdge()));
+    connect(action, &QAction::triggered, this, &SectionsPanel::onDeleteEdge);
     ui->listSections->setContextMenuPolicy(Qt::ActionsContextMenu);
 
-    connect(ui->listSections->model(),
-        SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)), this, SLOT(onIndexesMoved()));
+    connect(ui->listSections->model(), &QAbstractItemModel::rowsMoved, this, &SectionsPanel::onIndexesMoved);
 }
 
 /*

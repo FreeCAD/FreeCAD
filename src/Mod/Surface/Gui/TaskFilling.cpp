@@ -272,11 +272,10 @@ FillingPanel::FillingPanel(ViewProviderFilling* vp, Surface::Filling* obj)
     action->setShortcut(QString::fromLatin1("Del"));
     action->setShortcutContext(Qt::WidgetShortcut);
     ui->listBoundary->addAction(action);
-    connect(action, SIGNAL(triggered()), this, SLOT(onDeleteEdge()));
+    connect(action, &QAction::triggered, this, &FillingPanel::onDeleteEdge);
     ui->listBoundary->setContextMenuPolicy(Qt::ActionsContextMenu);
 
-    connect(ui->listBoundary->model(),
-        SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)), this, SLOT(onIndexesMoved()));
+    connect(ui->listBoundary->model(), &QAbstractItemModel::rowsMoved, this, &FillingPanel::onIndexesMoved);
 }
 
 /*

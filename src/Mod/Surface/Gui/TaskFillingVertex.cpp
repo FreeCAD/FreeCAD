@@ -122,7 +122,7 @@ FillingVertexPanel::FillingVertexPanel(ViewProviderFilling* vp, Surface::Filling
     action->setShortcut(QString::fromLatin1("Del"));
     action->setShortcutContext(Qt::WidgetShortcut);
     ui->listFreeVertex->addAction(action);
-    connect(action, SIGNAL(triggered()), this, SLOT(onDeleteVertex()));
+    connect(action, &QAction::triggered, this, &FillingVertexPanel::onDeleteVertex);
     ui->listFreeVertex->setContextMenuPolicy(Qt::ActionsContextMenu);
 }
 

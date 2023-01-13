@@ -207,11 +207,11 @@ GeomFillSurface::GeomFillSurface(ViewProviderGeomFillSurface* vp, Surface::GeomF
     QAction* remove = new QAction(tr("Remove"), this);
     remove->setShortcut(QString::fromLatin1("Del"));
     ui->listWidget->addAction(remove);
-    connect(remove, SIGNAL(triggered()), this, SLOT(onDeleteEdge()));
+    connect(remove, &QAction::triggered, this, &GeomFillSurface::onDeleteEdge);
 
     QAction* orientation = new QAction(tr("Flip orientation"), this);
     ui->listWidget->addAction(orientation);
-    connect(orientation, SIGNAL(triggered()), this, SLOT(onFlipOrientation()));
+    connect(orientation, &QAction::triggered, this, &GeomFillSurface::onFlipOrientation);
 
     ui->listWidget->setContextMenuPolicy(Qt::ActionsContextMenu);
 }
