@@ -227,7 +227,7 @@ const-naming-style=UPPER_CASE
 
 # Minimum line length for functions/classes that require docstrings, shorter
 # ones are exempt.
-docstring-min-length=-1
+docstring-min-length=4
 
 # Naming style matching correct function names.
 function-naming-style=snake_case
