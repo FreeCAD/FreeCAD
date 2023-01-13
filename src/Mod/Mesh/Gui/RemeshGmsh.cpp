@@ -73,15 +73,15 @@ GmshWidget::GmshWidget(QWidget* parent, Qt::WindowFlags fl)
   : QWidget(parent, fl)
   , d(new Private(parent))
 {
-    connect(&d->gmsh, SIGNAL(started()), this, SLOT(started()));
-    connect(&d->gmsh, SIGNAL(finished(int, QProcess::ExitStatus)),
-            this, SLOT(finished(int, QProcess::ExitStatus)));
-    connect(&d->gmsh, SIGNAL(errorOccurred(QProcess::ProcessError)),
-            this, SLOT(errorOccurred(QProcess::ProcessError)));
-    connect(&d->gmsh, SIGNAL(readyReadStandardError()),
-            this, SLOT(readyReadStandardError()));
-    connect(&d->gmsh, SIGNAL(readyReadStandardOutput()),
-            this, SLOT(readyReadStandardOutput()));
+    connect(&d->gmsh, &QProcess::started, this, &GmshWidget::started);
+    connect(&d->gmsh, qOverload<int, QProcess::ExitStatus>(&QProcess::finished),
+            this, &GmshWidget::finished);
+    connect(&d->gmsh, &QProcess::errorOccurred,
+            this, &GmshWidget::errorOccurred);
+    connect(&d->gmsh, &QProcess::readyReadStandardError,
+            this, &GmshWidget::readyReadStandardError);
+    connect(&d->gmsh, &QProcess::readyReadStandardOutput,
+            this, &GmshWidget::readyReadStandardOutput);
 
     d->ui.setupUi(this);
     d->ui.fileChooser->onRestore();

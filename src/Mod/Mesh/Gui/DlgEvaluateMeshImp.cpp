@@ -54,7 +54,7 @@ CleanupHandler::CleanupHandler()
   : QObject(qApp)
 {
     // connect to lstWindowClosed signal
-    connect(qApp, SIGNAL(lastWindowClosed()), this, SLOT(cleanup()));
+    connect(qApp, &QApplication::lastWindowClosed, this, &CleanupHandler::cleanup);
 }
 
 // The lastWindowClosed signal will be emitted recursively and before the cleanup slot is finished
@@ -129,8 +129,8 @@ DlgEvaluateMeshImp::DlgEvaluateMeshImp(QWidget* parent, Qt::WindowFlags fl)
     d->ui.line_8->setFrameShape(QFrame::HLine);
     d->ui.line_8->setFrameShadow(QFrame::Sunken);
 
-    connect(d->ui.buttonBox,  SIGNAL (helpRequested()),
-            Gui::getMainWindow(), SLOT (whatsThis()));
+    connect(d->ui.buttonBox, &QDialogButtonBox::helpRequested,
+            Gui::getMainWindow(), &Gui::MainWindow::whatsThis);
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
             ("User parameter:BaseApp/Preferences/Mod/Mesh/Evaluation");

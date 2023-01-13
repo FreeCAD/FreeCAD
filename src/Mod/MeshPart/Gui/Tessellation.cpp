@@ -56,7 +56,7 @@ Tessellation::Tessellation(QWidget* parent)
 {
     ui->setupUi(this);
     gmsh = new Mesh2ShapeGmsh(this);
-    connect(gmsh, SIGNAL(processed()), this, SLOT(gmshProcessed()));
+    connect(gmsh, &Mesh2ShapeGmsh::processed, this, &Tessellation::gmshProcessed);
 
     ui->stackedWidget->addTab(gmsh, tr("Gmsh"));
 

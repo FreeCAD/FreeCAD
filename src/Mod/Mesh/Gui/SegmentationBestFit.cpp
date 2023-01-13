@@ -221,8 +221,8 @@ ParametersDialog::ParametersDialog(std::vector<float>& val, FitParameter* fitPar
         ++index;
     }
 
-    QObject::connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-    QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+    QObject::connect(buttonBox, &QDialogButtonBox::accepted, this, &ParametersDialog::accept);
+    QObject::connect(buttonBox, &QDialogButtonBox::rejected, this, &ParametersDialog::reject);
     QMetaObject::connectSlotsByName(this);
 
     Gui::SelectionObject obj(mesh);

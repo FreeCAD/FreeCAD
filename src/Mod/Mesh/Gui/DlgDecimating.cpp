@@ -79,8 +79,8 @@ void DlgDecimating::on_checkAbsolueNumber_toggled(bool on)
     ui->groupBoxTolerance->setDisabled(on);
 
     if (on) {
-        disconnect(ui->sliderReduction, SIGNAL(valueChanged(int)), ui->spinBoxReduction, SLOT(setValue(int)));
-        disconnect(ui->spinBoxReduction, SIGNAL(valueChanged(int)), ui->sliderReduction, SLOT(setValue(int)));
+        disconnect(ui->sliderReduction, qOverload<int>(&QSlider::valueChanged), ui->spinBoxReduction, &QSpinBox::setValue);
+        disconnect(ui->spinBoxReduction, qOverload<int>(&QSpinBox::valueChanged), ui->sliderReduction, &QSlider::setValue);
         ui->spinBoxReduction->setRange(1, numberOfTriangles);
         ui->spinBoxReduction->setValue(numberOfTriangles * (1.0 - reduction()));
         ui->spinBoxReduction->setSuffix(QString());
@@ -91,8 +91,8 @@ void DlgDecimating::on_checkAbsolueNumber_toggled(bool on)
         ui->spinBoxReduction->setValue(ui->sliderReduction->value());
         ui->spinBoxReduction->setSuffix(QString::fromLatin1("%"));
         ui->checkAbsolueNumber->setText(tr("Absolute number"));
-        connect(ui->sliderReduction, SIGNAL(valueChanged(int)), ui->spinBoxReduction, SLOT(setValue(int)));
-        connect(ui->spinBoxReduction, SIGNAL(valueChanged(int)), ui->sliderReduction, SLOT(setValue(int)));
+        connect(ui->sliderReduction, qOverload<int>(&QSlider::valueChanged), ui->spinBoxReduction, &QSpinBox::setValue);
+        connect(ui->spinBoxReduction, qOverload<int>(&QSpinBox::valueChanged), ui->sliderReduction, &QSlider::setValue);
     }
 }
 

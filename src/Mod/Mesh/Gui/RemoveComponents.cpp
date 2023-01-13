@@ -175,8 +175,8 @@ RemoveComponentsDialog::RemoveComponentsDialog(QWidget* parent, Qt::WindowFlags 
     buttonBox->addButton(MeshGui::TaskRemoveComponents::tr("Invert"),
         QDialogButtonBox::ActionRole);
 
-    connect(buttonBox, SIGNAL(clicked(QAbstractButton*)),
-            this, SLOT(clicked(QAbstractButton*)));
+    connect(buttonBox, &QDialogButtonBox::clicked,
+            this, &RemoveComponentsDialog::clicked);
 
     hboxLayout->addWidget(widget);
     hboxLayout->addWidget(buttonBox);

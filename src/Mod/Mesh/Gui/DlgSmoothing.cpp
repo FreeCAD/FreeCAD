@@ -48,8 +48,13 @@ DlgSmoothing::DlgSmoothing(QWidget* parent)
     bg = new QButtonGroup(this);
     bg->addButton(ui->radioButtonTaubin, 0);
     bg->addButton(ui->radioButtonLaplace, 1);
-    connect(bg, SIGNAL(buttonClicked(int)),
-            this, SLOT(method_clicked(int)));
+#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
+    connect(bg, qOverload<int>(&QButtonGroup::buttonClicked),
+            this, &DlgSmoothing::method_clicked);
+#else
+    connect(bg, &QButtonGroup::idClicked,
+            this, &DlgSmoothing::method_clicked);
+#endif
 
     ui->labelLambda->setText(QString::fromUtf8("\xce\xbb"));
     ui->labelMu->setText(QString::fromUtf8("\xce\xbc"));
@@ -123,10 +128,10 @@ SmoothingDialog::SmoothingDialog(QWidget* parent, Qt::WindowFlags fl)
     QDialogButtonBox* buttonBox = new QDialogButtonBox(this);
     buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
 
-    connect(buttonBox, SIGNAL(accepted()),
-            this, SLOT(accept()));
-    connect(buttonBox, SIGNAL(rejected()),
-            this, SLOT(reject()));
+    connect(buttonBox, &QDialogButtonBox::accepted,
+            this, &SmoothingDialog::accept);
+    connect(buttonBox, &QDialogButtonBox::rejected,
+            this, &SmoothingDialog::reject);
 
     hboxLayout->addWidget(widget);
     hboxLayout->addWidget(buttonBox);
@@ -156,8 +161,8 @@ TaskSmoothing::TaskSmoothing()
     tasksel->hide();
     Content.push_back(tasksel);
 
-    connect(widget, SIGNAL(toggledSelection(bool)),
-            tasksel, SLOT(setVisible(bool)));
+    connect(widget, &DlgSmoothing::toggledSelection,
+            tasksel, &Gui::TaskView::TaskBox::setVisible);
 }
 
 TaskSmoothing::~TaskSmoothing()
