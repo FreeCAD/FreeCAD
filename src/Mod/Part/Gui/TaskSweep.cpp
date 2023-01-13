@@ -136,10 +136,10 @@ SweepWidget::SweepWidget(QWidget* parent)
     d->ui.selector->setSelectedLabel(tr("Selected profiles"));
     d->ui.labelPath->clear();
 
-    connect(d->ui.selector->availableTreeWidget(), SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),
-            this, SLOT(onCurrentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)));
-    connect(d->ui.selector->selectedTreeWidget(), SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),
-            this, SLOT(onCurrentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)));
+    connect(d->ui.selector->availableTreeWidget(), &QTreeWidget::currentItemChanged,
+            this, &SweepWidget::onCurrentItemChanged);
+    connect(d->ui.selector->selectedTreeWidget(), &QTreeWidget::currentItemChanged,
+            this, &SweepWidget::onCurrentItemChanged);
 
     findShapes();
 }

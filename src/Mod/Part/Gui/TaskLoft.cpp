@@ -77,10 +77,10 @@ LoftWidget::LoftWidget(QWidget* parent)
     d->ui.selector->setAvailableLabel(tr("Available profiles"));
     d->ui.selector->setSelectedLabel(tr("Selected profiles"));
 
-    connect(d->ui.selector->availableTreeWidget(), SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),
-            this, SLOT(onCurrentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)));
-    connect(d->ui.selector->selectedTreeWidget(), SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),
-            this, SLOT(onCurrentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)));
+    connect(d->ui.selector->availableTreeWidget(), &QTreeWidget::currentItemChanged,
+            this, &LoftWidget::onCurrentItemChanged);
+    connect(d->ui.selector->selectedTreeWidget(), &QTreeWidget::currentItemChanged,
+            this, &LoftWidget::onCurrentItemChanged);
 
     findShapes();
 }

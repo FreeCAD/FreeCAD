@@ -123,32 +123,38 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider, QWidge
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
-    connect(ui->attachmentOffsetX, SIGNAL(valueChanged(double)), this, SLOT(onAttachmentOffsetXChanged(double)));
-    connect(ui->attachmentOffsetY, SIGNAL(valueChanged(double)), this, SLOT(onAttachmentOffsetYChanged(double)));
-    connect(ui->attachmentOffsetZ, SIGNAL(valueChanged(double)), this, SLOT(onAttachmentOffsetZChanged(double)));
-    connect(ui->attachmentOffsetYaw, SIGNAL(valueChanged(double)), this, SLOT(onAttachmentOffsetYawChanged(double)));
-    connect(ui->attachmentOffsetPitch, SIGNAL(valueChanged(double)), this, SLOT(onAttachmentOffsetPitchChanged(double)));
-    connect(ui->attachmentOffsetRoll, SIGNAL(valueChanged(double)), this, SLOT(onAttachmentOffsetRollChanged(double)));
-    connect(ui->checkBoxFlip, SIGNAL(toggled(bool)),
-            this, SLOT(onCheckFlip(bool)));
-    connect(ui->buttonRef1, SIGNAL(clicked(bool)),
-            this, SLOT(onButtonRef1(bool)));
-    connect(ui->lineRef1, SIGNAL(textEdited(QString)),
-            this, SLOT(onRefName1(QString)));
-    connect(ui->buttonRef2, SIGNAL(clicked(bool)),
-            this, SLOT(onButtonRef2(bool)));
-    connect(ui->lineRef2, SIGNAL(textEdited(QString)),
-            this, SLOT(onRefName2(QString)));
-    connect(ui->buttonRef3, SIGNAL(clicked(bool)),
-            this, SLOT(onButtonRef3(bool)));
-    connect(ui->lineRef3, SIGNAL(textEdited(QString)),
-            this, SLOT(onRefName3(QString)));
-    connect(ui->buttonRef4, SIGNAL(clicked(bool)),
-            this, SLOT(onButtonRef4(bool)));
-    connect(ui->lineRef4, SIGNAL(textEdited(QString)),
-            this, SLOT(onRefName4(QString)));
-    connect(ui->listOfModes,SIGNAL(itemSelectionChanged()),
-            this, SLOT(onModeSelect()));
+    connect(ui->attachmentOffsetX, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskAttacher::onAttachmentOffsetXChanged);
+    connect(ui->attachmentOffsetY, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskAttacher::onAttachmentOffsetYChanged);
+    connect(ui->attachmentOffsetZ, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskAttacher::onAttachmentOffsetZChanged);
+    connect(ui->attachmentOffsetYaw, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskAttacher::onAttachmentOffsetYawChanged);
+    connect(ui->attachmentOffsetPitch, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskAttacher::onAttachmentOffsetPitchChanged);
+    connect(ui->attachmentOffsetRoll, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskAttacher::onAttachmentOffsetRollChanged);
+    connect(ui->checkBoxFlip, &QCheckBox::toggled,
+            this, &TaskAttacher::onCheckFlip);
+    connect(ui->buttonRef1, &QPushButton::clicked,
+            this, &TaskAttacher::onButtonRef1);
+    connect(ui->lineRef1, &QLineEdit::textEdited,
+            this, &TaskAttacher::onRefName1);
+    connect(ui->buttonRef2, &QPushButton::clicked,
+            this, &TaskAttacher::onButtonRef2);
+    connect(ui->lineRef2, &QLineEdit::textEdited,
+            this, &TaskAttacher::onRefName2);
+    connect(ui->buttonRef3, &QPushButton::clicked,
+            this, &TaskAttacher::onButtonRef3);
+    connect(ui->lineRef3, &QLineEdit::textEdited,
+            this, &TaskAttacher::onRefName3);
+    connect(ui->buttonRef4, &QPushButton::clicked,
+            this, &TaskAttacher::onButtonRef4);
+    connect(ui->lineRef4, &QLineEdit::textEdited,
+            this, &TaskAttacher::onRefName4);
+    connect(ui->listOfModes, &QListWidget::itemSelectionChanged,
+            this, &TaskAttacher::onModeSelect);
 
     this->groupLayout()->addWidget(proxy);
 

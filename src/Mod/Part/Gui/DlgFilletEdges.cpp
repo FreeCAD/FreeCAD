@@ -247,16 +247,16 @@ DlgFilletEdges::DlgFilletEdges(FilletType type, Part::FilletBase* fillet, QWidge
     d->connectApplicationDeletedDocument = App::GetApplication().signalDeleteDocument
         .connect(boost::bind(&DlgFilletEdges::onDeleteDocument, this, bp::_1));
     // set tree view with three columns
-    QStandardItemModel* model = new FilletRadiusModel(this);
-    connect(model, SIGNAL(toggleCheckState(const QModelIndex&)),
-            this, SLOT(toggleCheckState(const QModelIndex&)));
+    FilletRadiusModel* model = new FilletRadiusModel(this);
+    connect(model, &FilletRadiusModel::toggleCheckState,
+            this, &DlgFilletEdges::toggleCheckState);
     model->insertColumns(0,3);
 
     // timer for highlighting
     d->highlighttimer = new QTimer(this);
     d->highlighttimer->setSingleShot(true);
-    connect(d->highlighttimer,SIGNAL(timeout()),
-            this, SLOT(onHighlightEdges()));
+    connect(d->highlighttimer, &QTimer::timeout,
+            this, &DlgFilletEdges::onHighlightEdges);
 
     d->filletType = type;
     if (d->filletType == DlgFilletEdges::CHAMFER) {
@@ -977,8 +977,8 @@ FilletEdgesDialog::FilletEdgesDialog(DlgFilletEdges::FilletType type, Part::Fill
     QDialogButtonBox* buttonBox = new QDialogButtonBox(this);
     buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
 
-    QObject::connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-    QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+    QObject::connect(buttonBox, &QDialogButtonBox::accepted, this, &FilletEdgesDialog::accept);
+    QObject::connect(buttonBox, &QDialogButtonBox::rejected, this, &FilletEdgesDialog::reject);
 
     hboxLayout->addWidget(widget);
     hboxLayout->addWidget(buttonBox);

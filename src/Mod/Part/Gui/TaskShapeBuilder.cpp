@@ -119,8 +119,13 @@ ShapeBuilderWidget::ShapeBuilderWidget(QWidget* parent)
     d->bg.addButton(d->ui.radioButtonSolidFromShell, 5);
     d->bg.setExclusive(true);
 
-    connect(&d->bg, SIGNAL(buttonClicked(int)),
-            this, SLOT(switchMode(int)));
+#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
+    connect(&d->bg, qOverload<int>(&QButtonGroup::buttonClicked),
+            this, &ShapeBuilderWidget::switchMode);
+#else
+    connect(&d->bg, &QButtonGroup::idClicked,
+            this, &ShapeBuilderWidget::switchMode);
+#endif
 
     d->gate = new ShapeSelection();
     Gui::Selection().addSelectionGate(d->gate);

@@ -125,7 +125,7 @@ DlgRevolution::DlgRevolution(QWidget* parent, Qt::WindowFlags fl)
     sel.applyFrom(Gui::Selection().getObjectsOfType(App::Link::getClassTypeId()));
     sel.applyFrom(Gui::Selection().getObjectsOfType(App::Part::getClassTypeId()));
 
-    connect(ui->txtAxisLink, SIGNAL(textChanged(QString)), this, SLOT(on_txtAxisLink_textChanged(QString)));
+    connect(ui->txtAxisLink, &QLineEdit::textChanged, this, &DlgRevolution::on_txtAxisLink_textChanged);
 
     autoSolid();
 }

@@ -666,7 +666,7 @@ void PartGui::TaskMeasureLinear::setUpGui()
   DimensionControl *control = new DimensionControl(controlTaskBox);
   controlLayout->addWidget(control);
   controlTaskBox->groupLayout()->addLayout(controlLayout);
-  QObject::connect(control->resetButton, SIGNAL(clicked(bool)), this, SLOT(resetDialogSlot(bool)));
+  QObject::connect(control->resetButton, &QPushButton::clicked, this, &TaskMeasureLinear::resetDialogSlot);
 
   this->setButtonPosition(TaskDialog::North);
   Content.push_back(selectionTaskBox);
@@ -674,8 +674,8 @@ void PartGui::TaskMeasureLinear::setUpGui()
 
   stepped->getButton(0)->setChecked(true);//before wired up.
   stepped->getButton(0)->setEnabled(true);
-  QObject::connect(stepped->getButton(0), SIGNAL(toggled(bool)), this, SLOT(selection1Slot(bool)));
-  QObject::connect(stepped->getButton(1), SIGNAL(toggled(bool)), this, SLOT(selection2Slot(bool)));
+  QObject::connect(stepped->getButton(0), &QPushButton::toggled, this, &TaskMeasureLinear::selection1Slot);
+  QObject::connect(stepped->getButton(1), &QPushButton::toggled, this, &TaskMeasureLinear::selection2Slot);
 }
 
 void PartGui::TaskMeasureLinear::selection1Slot(bool checked)
@@ -1425,7 +1425,7 @@ PartGui::SteppedSelection::SteppedSelection(const uint& buttonCountIn, QWidget* 
     button->setCheckable(true);
     button->setEnabled(false);
     buttonGroup->addButton(button);
-    connect(button, SIGNAL(toggled(bool)), this, SLOT(selectionSlot(bool)));
+    connect(button, &QPushButton::toggled, this, &SteppedSelection::selectionSlot);
 
     QLabel *label = new QLabel;
 
@@ -1506,17 +1506,17 @@ PartGui::DimensionControl::DimensionControl(QWidget* parent): QWidget(parent)
 
   QPushButton *toggle3dButton = new QPushButton(Gui::BitmapFactory().pixmap("Part_Measure_Toggle_3D"),
                                                 QObject::tr("Toggle direct dimensions"), this);
-  QObject::connect(toggle3dButton, SIGNAL(clicked(bool)), this, SLOT(toggle3dSlot(bool)));
+  QObject::connect(toggle3dButton, &QPushButton::clicked, this, &DimensionControl::toggle3dSlot);
   commandLayout->addWidget(toggle3dButton);
 
   QPushButton *toggleDeltaButton = new QPushButton(Gui::BitmapFactory().pixmap("Part_Measure_Toggle_Delta"),
                                                    QObject::tr("Toggle orthogonal dimensions"), this);
-  QObject::connect(toggleDeltaButton, SIGNAL(clicked(bool)), this, SLOT(toggleDeltaSlot(bool)));
+  QObject::connect(toggleDeltaButton, &QPushButton::clicked, this, &DimensionControl::toggleDeltaSlot);
   commandLayout->addWidget(toggleDeltaButton);
 
   QPushButton *clearAllButton = new QPushButton(Gui::BitmapFactory().pixmap("Part_Measure_Clear_All"),
                                                 QObject::tr("Clear all dimensions"), this);
-  QObject::connect(clearAllButton, SIGNAL(clicked(bool)), this, SLOT(clearAllSlot(bool)));
+  QObject::connect(clearAllButton, &QPushButton::clicked, this, &DimensionControl::clearAllSlot);
   commandLayout->addWidget(clearAllButton);
 }
 
@@ -1802,7 +1802,7 @@ void PartGui::TaskMeasureAngular::setUpGui()
   DimensionControl *control = new DimensionControl(controlTaskBox);
   controlLayout->addWidget(control);
   controlTaskBox->groupLayout()->addLayout(controlLayout);
-  QObject::connect(control->resetButton, SIGNAL(clicked(bool)), this, SLOT(resetDialogSlot(bool)));
+  QObject::connect(control->resetButton, &QPushButton::clicked, this, &TaskMeasureAngular::resetDialogSlot);
 
   this->setButtonPosition(TaskDialog::South);
   Content.push_back(selectionTaskBox);
@@ -1810,8 +1810,8 @@ void PartGui::TaskMeasureAngular::setUpGui()
 
   stepped->getButton(0)->setChecked(true);//before wired up.
   stepped->getButton(0)->setEnabled(true);
-  QObject::connect(stepped->getButton(0), SIGNAL(toggled(bool)), this, SLOT(selection1Slot(bool)));
-  QObject::connect(stepped->getButton(1), SIGNAL(toggled(bool)), this, SLOT(selection2Slot(bool)));
+  QObject::connect(stepped->getButton(0), &QPushButton::toggled, this, &TaskMeasureAngular::selection1Slot);
+  QObject::connect(stepped->getButton(1), &QPushButton::toggled, this, &TaskMeasureAngular::selection2Slot);
 }
 
 void PartGui::TaskMeasureAngular::selection1Slot(bool checked)
