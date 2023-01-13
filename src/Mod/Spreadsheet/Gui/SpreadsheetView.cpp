@@ -80,18 +80,18 @@ SheetView::SheetView(Gui::Document *pcDocument, App::DocumentObject *docObj, QWi
     ui->cells->setSheet(sheet);
 
     // Connect signals
-    connect(ui->cells->selectionModel(), SIGNAL( currentChanged( QModelIndex, QModelIndex ) ),
-            this,        SLOT( currentChanged( QModelIndex, QModelIndex ) ) );
+    connect(ui->cells->selectionModel(), &QItemSelectionModel::currentChanged,
+            this, &SheetView::currentChanged);
 
-    connect(ui->cells->horizontalHeader(), SIGNAL(resizeFinished()),
-            this, SLOT(columnResizeFinished()));
-    connect(ui->cells->horizontalHeader(), SIGNAL(sectionResized ( int, int, int ) ),
-            this, SLOT(columnResized(int, int, int)));
+    connect(dynamic_cast<SheetViewHeader*>(ui->cells->horizontalHeader()), &SheetViewHeader::resizeFinished,
+            this, &SheetView::columnResizeFinished);
+    connect(ui->cells->horizontalHeader(), &QHeaderView::sectionResized,
+            this, &SheetView::columnResized);
 
-    connect(ui->cells->verticalHeader(), SIGNAL(resizeFinished()),
-            this, SLOT(rowResizeFinished()));
-    connect(ui->cells->verticalHeader(), SIGNAL(sectionResized ( int, int, int ) ),
-            this, SLOT(rowResized(int, int, int)));
+    connect(dynamic_cast<SheetViewHeader*>(ui->cells->verticalHeader()), &SheetViewHeader::resizeFinished,
+            this, &SheetView::rowResizeFinished);
+    connect(ui->cells->verticalHeader(), &QHeaderView::sectionResized,
+            this, &SheetView::rowResized);
 
     connect(delegate, &SpreadsheetDelegate::finishedWithKey, this, &SheetView::editingFinishedWithKey);
     connect(ui->cellContent, &ExpressionLineEdit::returnPressed, this, [this]() {confirmContentChanged(ui->cellContent->text()); });
@@ -101,7 +101,7 @@ SheetView::SheetView(Gui::Document *pcDocument, App::DocumentObject *docObj, QWi
     columnWidthChangedConnection = sheet->columnWidthChanged.connect(bind(&SheetView::resizeColumn, this, bp::_1, bp::_2));
     rowHeightChangedConnection = sheet->rowHeightChanged.connect(bind(&SheetView::resizeRow, this, bp::_1, bp::_2));
 
-    connect( model, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)), this, SLOT(modelUpdated(const QModelIndex &, const QModelIndex &)));
+    connect( model, &QAbstractItemModel::dataChanged, this, &SheetView::modelUpdated);
 
     QPalette palette = ui->cells->palette();
     palette.setColor(QPalette::Base, QColor(255, 255, 255));
@@ -231,8 +231,8 @@ void SheetView::printPreview()
     QPrinter printer(QPrinter::ScreenResolution);
     printer.setPageOrientation(QPageLayout::Landscape);
     QPrintPreviewDialog dlg(&printer, this);
-    connect(&dlg, SIGNAL(paintRequested (QPrinter *)),
-            this, SLOT(print(QPrinter *)));
+    connect(&dlg, &QPrintPreviewDialog::paintRequested,
+            this, qOverload<QPrinter*>(&SheetView::print));
     dlg.exec();
 }
 

@@ -55,7 +55,7 @@ DlgSheetConf::DlgSheetConf(Sheet *sheet, Range range, QWidget *parent)
 
     ui->lineEditProp->setDocumentObject(sheet,false);
 
-    connect(ui->btnDiscard, SIGNAL(clicked()), this, SLOT(onDiscard()));
+    connect(ui->btnDiscard, &QPushButton::clicked, this, &DlgSheetConf::onDiscard);
 
     CellAddress from,to;
     std::string rangeConf;

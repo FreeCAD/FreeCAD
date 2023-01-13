@@ -130,7 +130,7 @@ DlgBindSheet::DlgBindSheet(Sheet *sheet, const std::vector<Range> &ranges, QWidg
         }
     }
 
-    connect(ui->btnDiscard, SIGNAL(clicked()), this, SLOT(onDiscard()));
+    connect(ui->btnDiscard, &QPushButton::clicked, this, &DlgBindSheet::onDiscard);
 }
 
 DlgBindSheet::~DlgBindSheet()
