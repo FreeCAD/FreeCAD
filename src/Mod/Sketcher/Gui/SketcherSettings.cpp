@@ -131,7 +131,7 @@ SketcherSettingsDisplay::SketcherSettingsDisplay(QWidget* parent)
         ui->comboBox->addItem(QIcon(px), QString(), QVariant(it->second));
     }
 
-    connect(ui->btnTVApply, SIGNAL(clicked(bool)), this, SLOT(onBtnTVApplyClicked(bool)));
+    connect(ui->btnTVApply, &QPushButton::clicked, this, &SketcherSettingsDisplay::onBtnTVApplyClicked);
 }
 
 /**

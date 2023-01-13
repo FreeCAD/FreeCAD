@@ -41,10 +41,10 @@ SketchOrientationDialog::SketchOrientationDialog()
     ui->setupUi(this);
     onPreview();
 
-    connect(ui->Reverse_checkBox, SIGNAL(clicked(bool)), this, SLOT(onPreview()));
-    connect(ui->XY_radioButton  , SIGNAL(clicked(bool)), this, SLOT(onPreview()));
-    connect(ui->XZ_radioButton  , SIGNAL(clicked(bool)), this, SLOT(onPreview()));
-    connect(ui->YZ_radioButton  , SIGNAL(clicked(bool)), this, SLOT(onPreview()));
+    connect(ui->Reverse_checkBox, &QCheckBox::clicked, this, &SketchOrientationDialog::onPreview);
+    connect(ui->XY_radioButton  , &QRadioButton::clicked, this, &SketchOrientationDialog::onPreview);
+    connect(ui->XZ_radioButton  , &QRadioButton::clicked, this, &SketchOrientationDialog::onPreview);
+    connect(ui->YZ_radioButton  , &QRadioButton::clicked, this, &SketchOrientationDialog::onPreview);
 }
 
 SketchOrientationDialog::~SketchOrientationDialog()

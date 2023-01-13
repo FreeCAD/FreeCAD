@@ -207,33 +207,33 @@ TaskSketcherGeneral::TaskSketcherGeneral(ViewProviderSketch *sketchView)
 
     // connecting the needed signals
     QObject::connect(
-        widget, SIGNAL(emitToggleGridView(bool)),
-        this  , SLOT  (onToggleGridView(bool))
+        widget, &SketcherGeneralWidget::emitToggleGridView,
+        this  , &TaskSketcherGeneral::onToggleGridView
     );
 
     QObject::connect(
-        widget, SIGNAL(emitToggleGridSnap(bool)),
-        this  , SLOT  (onToggleGridSnap(bool))
+        widget, &SketcherGeneralWidget::emitToggleGridSnap,
+        this  , &TaskSketcherGeneral::onToggleGridSnap
     );
 
     QObject::connect(
-        widget, SIGNAL(emitSetGridSize(double)),
-        this  , SLOT  (onSetGridSize(double))
+        widget, &SketcherGeneralWidget::emitSetGridSize,
+        this  , &TaskSketcherGeneral::onSetGridSize
     );
 
     QObject::connect(
-        widget, SIGNAL(emitToggleAutoconstraints(bool)),
-        this  , SLOT  (onToggleAutoconstraints(bool))
+        widget, &SketcherGeneralWidget::emitToggleAutoconstraints,
+        this  , &TaskSketcherGeneral::onToggleAutoconstraints
     );
     
     QObject::connect(
-        widget, SIGNAL(emitToggleAvoidRedundant(bool)),
-        this  , SLOT  (onToggleAvoidRedundant(bool))
+        widget, &SketcherGeneralWidget::emitToggleAvoidRedundant,
+        this  , &TaskSketcherGeneral::onToggleAvoidRedundant
     );
 
     QObject::connect(
-        widget, SIGNAL(emitRenderOrderChanged()),
-        this  , SLOT  (onRenderOrderChanged())
+        widget, &SketcherGeneralWidget::emitRenderOrderChanged,
+        this  , &TaskSketcherGeneral::onRenderOrderChanged
     );
 
     Gui::Selection().Attach(this);

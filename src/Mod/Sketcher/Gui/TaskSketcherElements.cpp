@@ -257,8 +257,8 @@ ElementView::ElementView(QWidget *parent) : QListWidget(parent)
     setItemDelegate(elementItemDelegate);
 
     QObject::connect(
-        elementItemDelegate, SIGNAL(itemHovered(QModelIndex)),
-        this, SLOT(onIndexHovered(QModelIndex))
+        elementItemDelegate, &ElementItemDelegate::itemHovered,
+        this, &ElementView::onIndexHovered
     );
 }
 
