@@ -828,7 +828,7 @@ private:
 
                 QDialogButtonBox* btn = new QDialogButtonBox(dlg);
                 btn->setStandardButtons(QDialogButtonBox::Close);
-                QObject::connect(btn, SIGNAL(rejected()), dlg, SLOT(reject()));
+                QObject::connect(btn, &QDialogButtonBox::rejected, dlg, &QDialog::reject);
                 QHBoxLayout *boxlayout = new QHBoxLayout;
                 boxlayout->addWidget(btn);
                 layout->addLayout(boxlayout);
