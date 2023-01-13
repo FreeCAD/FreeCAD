@@ -124,10 +124,10 @@ def make_text(string, placement=None, screen=False):
 
         h = utils.get_param("textheight", 2)
 
-        new_obj.ViewObject.DisplayMode = "3D text"
+        new_obj.ViewObject.DisplayMode = "World"
         if screen:
             _msg("screen: {}".format(screen))
-            new_obj.ViewObject.DisplayMode = "2D text"
+            new_obj.ViewObject.DisplayMode = "Screen"
             h = h * 10
 
         new_obj.ViewObject.FontSize = h
