@@ -92,7 +92,7 @@ ImageView::ImageView(QWidget* parent)
   _invertZoom = hGrp->GetBool("InvertZoom", true);
 
   // connect other slots
-  connect(_pGLImageBox, SIGNAL(drawGraphics()), this, SLOT(drawGraphics()));
+  connect(_pGLImageBox, &GLImageBox::drawGraphics, this, &ImageView::drawGraphics);
 }
 
 ImageView::~ImageView()
@@ -108,13 +108,13 @@ void ImageView::createActions()
   _pFitAct->setText(tr("&Fit image"));
   _pFitAct->setIcon(QPixmap(image_stretch));
   _pFitAct->setStatusTip(tr("Stretch the image to fit the view"));
-  connect(_pFitAct, SIGNAL(triggered()), this, SLOT(fitImage()));
+  connect(_pFitAct, &QAction::triggered, this, &ImageView::fitImage);
 
   _pOneToOneAct = new QAction(this);
   _pOneToOneAct->setText(tr("&1:1 scale"));
   _pOneToOneAct->setIcon(QPixmap(image_oneToOne));
   _pOneToOneAct->setStatusTip(tr("Display the image at a 1:1 scale"));
-  connect(_pOneToOneAct, SIGNAL(triggered()), this, SLOT(oneToOneImage()));
+  connect(_pOneToOneAct, &QAction::triggered, this, &ImageView::oneToOneImage);
 
   // Create the menus and add the actions
   _pContextMenu = new QMenu(this);
