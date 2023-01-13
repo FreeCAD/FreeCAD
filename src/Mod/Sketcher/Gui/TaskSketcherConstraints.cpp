@@ -450,7 +450,7 @@ void ConstraintView::contextMenuEvent (QContextMenuEvent* event)
     bool didRelease = SketcherGui::ReleaseHandler(doc);
 
     // Sync the FreeCAD selection with the selection in the ConstraintView widget
-    if (didRelease) {
+    if (didRelease && item) {
         Gui::Selection().clearSelection();
         std::string doc_name = static_cast<ConstraintItem*>(item)->sketchView->getSketchObject()->getDocument()->getName();
         std::string obj_name = static_cast<ConstraintItem*>(item)->sketchView->getSketchObject()->getNameInDocument();
