@@ -48,7 +48,7 @@ FcCookieJar::FcCookieJar(QObject* parent)
     // syscalls in sequence (when loading pages which set multiple cookies).
     m_timer.setInterval(10000);
     m_timer.setSingleShot(true);
-    connect(&m_timer, SIGNAL(timeout()), this, SLOT(saveToDisk()));
+    connect(&m_timer, &QTimer::timeout, this, &FcCookieJar::saveToDisk);
     Base::FileInfo cookiefile(App::Application::getUserAppDataDir() + "cookies");
     m_file.setFileName(QString::fromUtf8(cookiefile.filePath().c_str()));
     if (allCookies().isEmpty())

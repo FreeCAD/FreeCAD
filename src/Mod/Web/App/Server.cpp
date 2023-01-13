@@ -127,11 +127,11 @@ AppServer::AppServer( bool direct, QObject* parent)
 
 void AppServer::incomingConnection(qintptr socket)
 {
-    QTcpSocket* s = new QTcpSocket(this);
-    connect(s, SIGNAL(readyRead()), this, SLOT(readClient()));
-    connect(s, SIGNAL(disconnected()), this, SLOT(discardClient()));
-    s->setSocketDescriptor(socket);
-    addPendingConnection(s);
+    QTcpSocket* tcpSocket = new QTcpSocket(this);
+    connect(tcpSocket, &QTcpSocket::readyRead, this, &AppServer::readClient);
+    connect(tcpSocket, &QTcpSocket::disconnected, this, &AppServer::discardClient);
+    tcpSocket->setSocketDescriptor(socket);
+    addPendingConnection(tcpSocket);
 }
 
 void AppServer::readClient()
