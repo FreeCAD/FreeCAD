@@ -882,7 +882,7 @@ class ViewProviderBuildingPart:
 
     def setEdit(self, vobj, mode):
         # For some reason mode is always 0.
-        # Using FreeCADGui.getUserEditMode() as a workaound.
+        # Using FreeCADGui.getUserEditMode() as a workaround.
         if FreeCADGui.getUserEditMode() in ("Transform", "Cutting"):
             return None
 
@@ -891,7 +891,7 @@ class ViewProviderBuildingPart:
 
     def unsetEdit(self, vobj, mode):
         # For some reason mode is always 0.
-        # Using FreeCADGui.getUserEditMode() as a workaound.
+        # Using FreeCADGui.getUserEditMode() as a workaround.
         if FreeCADGui.getUserEditMode() in ("Transform", "Cutting"):
             return None
 
