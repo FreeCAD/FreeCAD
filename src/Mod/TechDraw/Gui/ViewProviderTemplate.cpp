@@ -24,11 +24,11 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QMessageBox>
-# include <QTextStream>
-# ifdef FC_OS_WIN32
-#  include <windows.h>
-# endif
+#include <QMessageBox>
+#include <QTextStream>
+#ifdef FC_OS_WIN32
+#include <windows.h>
+#endif
 #endif
 
 #include <App/DocumentObject.h>
@@ -37,14 +37,14 @@
 #include <Gui/MainWindow.h>
 
 #include <Mod/TechDraw/App/DrawPage.h>
-#include <Mod/TechDraw/App/DrawTemplate.h>
 #include <Mod/TechDraw/App/DrawSVGTemplate.h>
+#include <Mod/TechDraw/App/DrawTemplate.h>
 
-#include "QGITemplate.h"
-#include "QGISVGTemplate.h"
-#include "QGVPage.h"
-#include "QGSPage.h"
 #include "MDIViewPage.h"
+#include "QGISVGTemplate.h"
+#include "QGITemplate.h"
+#include "QGSPage.h"
+#include "QGVPage.h"
 #include "TemplateTextField.h"
 #include "ViewProviderPage.h"
 #include "ViewProviderTemplate.h"
@@ -56,8 +56,7 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderTemplate, Gui::ViewProviderDocumentObje
 //**************************************************************************
 // Construction/Destruction
 
-ViewProviderTemplate::ViewProviderTemplate() :
-    m_myName(std::string())
+ViewProviderTemplate::ViewProviderTemplate() : m_myName(std::string())
 {
     initExtension(this);
 
@@ -66,9 +65,9 @@ ViewProviderTemplate::ViewProviderTemplate() :
     DisplayMode.setStatus(App::Property::Hidden, true);
 }
 
-void ViewProviderTemplate::attach(App::DocumentObject *pcFeat)
+void ViewProviderTemplate::attach(App::DocumentObject* pcFeat)
 {
-//    Base::Console().Message("VPT::attach(%s)\n", pcFeat->getNameInDocument());
+    //    Base::Console().Message("VPT::attach(%s)\n", pcFeat->getNameInDocument());
     ViewProviderDocumentObject::attach(pcFeat);
 
     auto feature = getTemplate();
@@ -84,12 +83,14 @@ void ViewProviderTemplate::updateData(const App::Property* prop)
         auto t = static_cast<TechDraw::DrawSVGTemplate*>(getTemplate());
         if (prop == &(t->Template)) {
             auto page = t->getParentPage();
-            Gui::ViewProvider* vp = Gui::Application::Instance->getDocument(t->getDocument())->getViewProvider(page);
+            Gui::ViewProvider* vp =
+                Gui::Application::Instance->getDocument(t->getDocument())->getViewProvider(page);
             TechDrawGui::ViewProviderPage* vpp = dynamic_cast<TechDrawGui::ViewProviderPage*>(vp);
             if (vpp) {
                 vpp->getQGSPage()->attachTemplate(t);
+                vpp->getQGSPage()->matchSceneRectToTemplate();
             }
-       }
+        }
     }
 
     if (prop == &(getTemplate()->EditableTexts)) {
@@ -99,10 +100,11 @@ void ViewProviderTemplate::updateData(const App::Property* prop)
         }
     }
 
+
     Gui::ViewProviderDocumentObject::updateData(prop);
 }
 
-void ViewProviderTemplate::onChanged(const App::Property *prop)
+void ViewProviderTemplate::onChanged(const App::Property* prop)
 {
     App::DocumentObject* obj = getObject();
     if (!obj || obj->isRestoring()) {
@@ -113,7 +115,8 @@ void ViewProviderTemplate::onChanged(const App::Property *prop)
     if (prop == &Visibility) {
         if (Visibility.getValue()) {
             show();
-        } else {
+        }
+        else {
             hide();
         }
     }
@@ -141,17 +144,15 @@ void ViewProviderTemplate::hide()
     ViewProviderDocumentObject::hide();
 }
 
-bool ViewProviderTemplate::isShow() const
-{
-    return Visibility.getValue();
-}
+bool ViewProviderTemplate::isShow() const { return Visibility.getValue(); }
 
 QGITemplate* ViewProviderTemplate::getQTemplate()
 {
     TechDraw::DrawTemplate* dt = getTemplate();
     if (dt) {
         auto page = dt->getParentPage();
-        Gui::ViewProvider* vp = Gui::Application::Instance->getDocument(dt->getDocument())->getViewProvider(page);
+        Gui::ViewProvider* vp =
+            Gui::Application::Instance->getDocument(dt->getDocument())->getViewProvider(page);
         TechDrawGui::ViewProviderPage* vpp = dynamic_cast<TechDrawGui::ViewProviderPage*>(vp);
         if (vpp)
             return vpp->getQGSPage()->getTemplate();
@@ -161,15 +162,16 @@ QGITemplate* ViewProviderTemplate::getQTemplate()
 
 void ViewProviderTemplate::setMarkers(bool state)
 {
-//    Base::Console().Message("VPT::setMarkers(%d)\n", state);
+    //    Base::Console().Message("VPT::setMarkers(%d)\n", state);
     QGITemplate* qTemplate = getQTemplate();
-    QGISVGTemplate* qSvgTemplate = dynamic_cast<QGISVGTemplate*> (qTemplate);
+    QGISVGTemplate* qSvgTemplate = dynamic_cast<QGISVGTemplate*>(qTemplate);
     if (qSvgTemplate) {
-        std::vector<TemplateTextField *> textFields = qSvgTemplate->getTextFields();
-        for (auto& t:textFields) {
+        std::vector<TemplateTextField*> textFields = qSvgTemplate->getTextFields();
+        for (auto& t : textFields) {
             if (state) {
                 t->show();
-            } else {
+            }
+            else {
                 t->hide();
             }
         }
@@ -177,7 +179,7 @@ void ViewProviderTemplate::setMarkers(bool state)
     }
 }
 
-bool ViewProviderTemplate::onDelete(const std::vector<std::string> &)
+bool ViewProviderTemplate::onDelete(const std::vector<std::string>&)
 {
     // deleting the template will break the page view, thus warn the user
 
@@ -192,14 +194,14 @@ bool ViewProviderTemplate::onDelete(const std::vector<std::string> &)
     QString bodyMessage;
     QTextStream bodyMessageStream(&bodyMessage);
     bodyMessageStream << qApp->translate("Std_Delete",
-        "The following referencing object might break:");
+                                         "The following referencing object might break:");
     bodyMessageStream << "\n\n" << QString::fromUtf8(page->Label.getValue());
     bodyMessageStream << "\n\n" << QObject::tr("Are you sure you want to continue?");
 
     // show and evaluate dialog
     int DialogResult = QMessageBox::warning(Gui::getMainWindow(),
-        qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
-        QMessageBox::Yes, QMessageBox::No);
+                                            qApp->translate("Std_Delete", "Object dependencies"),
+                                            bodyMessage, QMessageBox::Yes, QMessageBox::No);
     if (DialogResult == QMessageBox::Yes)
         return true;
     else
@@ -210,7 +212,8 @@ MDIViewPage* ViewProviderTemplate::getMDIViewPage() const
 {
     auto t = getTemplate();
     auto page = t->getParentPage();
-    Gui::ViewProvider* vp = Gui::Application::Instance->getDocument(t->getDocument())->getViewProvider(page);
+    Gui::ViewProvider* vp =
+        Gui::Application::Instance->getDocument(t->getDocument())->getViewProvider(page);
     TechDrawGui::ViewProviderPage* dvp = dynamic_cast<TechDrawGui::ViewProviderPage*>(vp);
     if (dvp) {
         return dvp->getMDIViewPage();
@@ -218,17 +221,11 @@ MDIViewPage* ViewProviderTemplate::getMDIViewPage() const
     return nullptr;
 }
 
-Gui::MDIView *ViewProviderTemplate::getMDIView() const
-{
-    return getMDIViewPage();
-}
+Gui::MDIView* ViewProviderTemplate::getMDIView() const { return getMDIViewPage(); }
 
 TechDraw::DrawTemplate* ViewProviderTemplate::getTemplate() const
 {
     return dynamic_cast<TechDraw::DrawTemplate*>(pcObject);
 }
 
-const char*  ViewProviderTemplate::whoAmI() const
-{
-    return m_myName.c_str();
-}
+const char* ViewProviderTemplate::whoAmI() const { return m_myName.c_str(); }
