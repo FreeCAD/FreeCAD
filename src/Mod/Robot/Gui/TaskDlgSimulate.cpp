@@ -37,14 +37,11 @@ TaskDlgSimulate::TaskDlgSimulate(Robot::RobotObject *pcRobotObject,Robot::Trajec
 {
     rob  = new TaskRobot6Axis(pcRobotObject);
     ctr  = new TaskRobotControl(pcRobotObject);
-    
+
     trac = new TaskTrajectory(pcRobotObject,pcTrajectoryObject);
     msg  = new TaskRobotMessages(pcRobotObject);
-    
-    
-    QObject::connect(
-        trac, SIGNAL(axisChanged(float, float, float, float, float, float, const Base::Placement&)),
-        rob, SLOT(setAxis(float, float, float, float, float, float, const Base::Placement&)));
+
+    QObject::connect(trac, &TaskTrajectory::axisChanged, rob, &TaskRobot6Axis::setAxis);
 
     Content.push_back(rob);
     Content.push_back(ctr);

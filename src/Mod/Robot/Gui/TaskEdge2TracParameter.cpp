@@ -53,9 +53,11 @@ TaskEdge2TracParameter::TaskEdge2TracParameter(Robot::Edge2TracObject *pcObject,
 
     this->groupLayout()->addWidget(proxy);
 
-    QObject::connect(ui->pushButton_HideShow,SIGNAL(clicked()),this,SLOT(hideShow()));
-    QObject::connect(ui->doubleSpinBoxSizing,SIGNAL(valueChanged (double)),this,SLOT(sizingValueChanged(double)));
-    QObject::connect(ui->checkBoxOrientation,SIGNAL(toggled  (bool)),this,SLOT(orientationToggled(bool)));
+    QObject::connect(ui->pushButton_HideShow, &QPushButton::clicked, this, &TaskEdge2TracParameter::hideShow);
+    QObject::connect(ui->doubleSpinBoxSizing, qOverload<double>(&QDoubleSpinBox::valueChanged),
+                     this, &TaskEdge2TracParameter::sizingValueChanged);
+    QObject::connect(ui->checkBoxOrientation, &QCheckBox::toggled,
+                     this, &TaskEdge2TracParameter::orientationToggled);
 
     setHideShowObject();
 

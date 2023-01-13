@@ -62,7 +62,8 @@ TaskTrajectoryDressUpParameter::TaskTrajectoryDressUpParameter(Robot::Trajectory
     PosAdd = pcObject->PosAdd.getValue();
     viewPlacement();
 
-    QObject::connect(ui->toolButtonChoosePlacement,SIGNAL(clicked()),this,SLOT(createPlacementDlg()));
+    QObject::connect(ui->toolButtonChoosePlacement, &QToolButton::clicked,
+                     this, &TaskTrajectoryDressUpParameter::createPlacementDlg);
 
 }
 

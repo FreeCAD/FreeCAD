@@ -49,17 +49,17 @@ TaskRobot6Axis::TaskRobot6Axis(Robot::RobotObject *pcRobotObject,QWidget *parent
 
     this->groupLayout()->addWidget(proxy);
 
-    QObject::connect(ui->horizontalSlider_Axis1,SIGNAL(sliderMoved(int)),this,SLOT(changeSliderA1(int)));
-    QObject::connect(ui->horizontalSlider_Axis2,SIGNAL(sliderMoved(int)),this,SLOT(changeSliderA2(int)));
-    QObject::connect(ui->horizontalSlider_Axis3,SIGNAL(sliderMoved(int)),this,SLOT(changeSliderA3(int)));
-    QObject::connect(ui->horizontalSlider_Axis4,SIGNAL(sliderMoved(int)),this,SLOT(changeSliderA4(int)));
-    QObject::connect(ui->horizontalSlider_Axis5,SIGNAL(sliderMoved(int)),this,SLOT(changeSliderA5(int)));
-    QObject::connect(ui->horizontalSlider_Axis6,SIGNAL(sliderMoved(int)),this,SLOT(changeSliderA6(int)));
+    QObject::connect(ui->horizontalSlider_Axis1, &QSlider::sliderMoved, this, &TaskRobot6Axis::changeSliderA1);
+    QObject::connect(ui->horizontalSlider_Axis2, &QSlider::sliderMoved, this, &TaskRobot6Axis::changeSliderA2);
+    QObject::connect(ui->horizontalSlider_Axis3, &QSlider::sliderMoved, this, &TaskRobot6Axis::changeSliderA3);
+    QObject::connect(ui->horizontalSlider_Axis4, &QSlider::sliderMoved, this, &TaskRobot6Axis::changeSliderA4);
+    QObject::connect(ui->horizontalSlider_Axis5, &QSlider::sliderMoved, this, &TaskRobot6Axis::changeSliderA5);
+    QObject::connect(ui->horizontalSlider_Axis6, &QSlider::sliderMoved, this, &TaskRobot6Axis::changeSliderA6);
+    QObject::connect(ui->pushButtonChooseTool, &QPushButton::clicked, this, &TaskRobot6Axis::createPlacementDlg);
 
-    QObject::connect(ui->pushButtonChooseTool,SIGNAL(clicked()),this,SLOT(createPlacementDlg()));
-
-    if(pcRobotObject)
+    if (pcRobotObject) {
         setRobot(pcRobotObject);
+    }
 }
 
 TaskRobot6Axis::~TaskRobot6Axis()
