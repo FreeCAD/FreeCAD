@@ -386,19 +386,6 @@ class ViewProviderArchReference:
         import Arch_rc
         return ":/icons/Arch_Reference.svg"
 
-    def setEdit(self,vobj,mode=0):
-
-        taskd = ArchReferenceTaskPanel(vobj.Object)
-        FreeCADGui.Control.showDialog(taskd)
-        return True
-
-    def unsetEdit(self,vobj,mode):
-
-        FreeCADGui.Control.closeDialog()
-        from DraftGui import todo
-        todo.delay(vobj.Proxy.recolorize,vobj)
-        return
-
     def attach(self,vobj):
 
         self.Object = vobj.Object
@@ -407,10 +394,6 @@ class ViewProviderArchReference:
         self.timer.timeout.connect(self.checkChanges)
         s = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetInt("ReferenceCheckInterval",60)
         self.timer.start(1000*s)
-
-    def doubleClicked(self,vobj):
-
-        self.setEdit(vobj)
 
     def __getstate__(self):
 
@@ -485,14 +468,50 @@ class ViewProviderArchReference:
             del self.timer
             return True
 
-    def setupContextMenu(self,vobj,menu):
+    def setEdit(self, vobj, mode):
+        if mode != 0:
+            return None
 
-        action1 = QtGui.QAction(QtGui.QIcon(":/icons/view-refresh.svg"),"Reload reference",menu)
-        QtCore.QObject.connect(action1,QtCore.SIGNAL("triggered()"),self.onReload)
-        menu.addAction(action1)
-        action2 = QtGui.QAction(QtGui.QIcon(":/icons/document-open.svg"),"Open reference",menu)
-        QtCore.QObject.connect(action2,QtCore.SIGNAL("triggered()"),self.onOpen)
-        menu.addAction(action2)
+        taskd = ArchReferenceTaskPanel(vobj.Object)
+        FreeCADGui.Control.showDialog(taskd)
+        return True
+
+    def unsetEdit(self, vobj, mode):
+        if mode != 0:
+            return None
+
+        FreeCADGui.Control.closeDialog()
+        from DraftGui import todo
+        todo.delay(vobj.Proxy.recolorize,vobj)
+        return True
+
+    def setupContextMenu(self, vobj, menu):
+
+        actionEdit = QtGui.QAction(translate("Arch", "Edit"),
+                                   menu)
+        QtCore.QObject.connect(actionEdit,
+                               QtCore.SIGNAL("triggered()"),
+                               self.edit)
+        menu.addAction(actionEdit)
+
+        actionOnReload = QtGui.QAction(QtGui.QIcon(":/icons/view-refresh.svg"),
+                                       translate("Arch", "Reload reference"),
+                                       menu)
+        QtCore.QObject.connect(actionOnReload,
+                               QtCore.SIGNAL("triggered()"),
+                               self.onReload)
+        menu.addAction(actionOnReload)
+
+        actionOnOpen = QtGui.QAction(QtGui.QIcon(":/icons/document-open.svg"),
+                                     translate("Arch", "Open reference"),
+                                     menu)
+        QtCore.QObject.connect(actionOnOpen,
+                               QtCore.SIGNAL("triggered()"),
+                               self.onOpen)
+        menu.addAction(actionOnOpen)
+
+    def edit(self):
+        FreeCADGui.ActiveDocument.setEdit(self.Object, 0)
 
     def onReload(self):
 

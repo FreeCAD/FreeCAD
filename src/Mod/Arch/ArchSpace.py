@@ -723,7 +723,10 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
             if hasattr(vobj,"Transparency"):
                 self.fmat.transparency.setValue(vobj.Transparency/100.0)
 
-    def setEdit(self,vobj,mode):
+    def setEdit(self, vobj, mode):
+        if mode != 0:
+            return None
+
         taskd = SpaceTaskPanel()
         taskd.obj = self.Object
         taskd.update()

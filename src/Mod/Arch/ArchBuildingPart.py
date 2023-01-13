@@ -880,44 +880,89 @@ class ViewProviderBuildingPart:
                 o.ViewObject.Lighting = "Two side"
         return True
 
-    def doubleClicked(self,vobj):
+    def setEdit(self, vobj, mode):
+        # For some reason mode is always 0.
+        # Using FreeCADGui.getUserEditMode() as a workaound.
+        if FreeCADGui.getUserEditMode() in ("Transform", "Cutting"):
+            return None
 
-        self.activate(vobj)
-        if (not hasattr(vobj,"DoubleClickActivates")) or vobj.DoubleClickActivates:
-            FreeCADGui.Selection.clearSelection()
+        self.activate()
+        return False # Return `False` as we don't want to enter edit mode.
+
+    def unsetEdit(self, vobj, mode):
+        # For some reason mode is always 0.
+        # Using FreeCADGui.getUserEditMode() as a workaound.
+        if FreeCADGui.getUserEditMode() in ("Transform", "Cutting"):
+            return None
+
         return True
 
-    def activate(self,vobj):
+    def setupContextMenu(self, vobj, menu):
+        from PySide import QtCore, QtGui
+        import Draft_rc
 
-        if FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch") == vobj.Object:
-            FreeCADGui.ActiveDocument.ActiveView.setActiveObject("Arch",None)
+        if (not hasattr(vobj,"DoubleClickActivates")) or vobj.DoubleClickActivates:
+            if FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch") == self.Object:
+                menuTxt = translate("Arch", "Deactivate")
+            else:
+                menuTxt = translate("Arch", "Activate")
+            actionActivate = QtGui.QAction(menuTxt,
+                                           menu)
+            QtCore.QObject.connect(actionActivate,
+                                   QtCore.SIGNAL("triggered()"),
+                                   self.activate)
+            menu.addAction(actionActivate)
+
+        actionSetWorkingPlane = QtGui.QAction(QtGui.QIcon(":/icons/Draft_SelectPlane.svg"),
+                                              translate("Arch", "Set working plane"),
+                                              menu)
+        QtCore.QObject.connect(actionSetWorkingPlane,
+                               QtCore.SIGNAL("triggered()"),
+                               self.setWorkingPlane)
+        menu.addAction(actionSetWorkingPlane)
+
+        actionWriteCamera = QtGui.QAction(QtGui.QIcon(":/icons/Draft_SelectPlane.svg"),
+                                          translate("Arch", "Write camera position"),
+                                          menu)
+        QtCore.QObject.connect(actionWriteCamera,
+                               QtCore.SIGNAL("triggered()"),
+                               self.writeCamera)
+        menu.addAction(actionWriteCamera)
+
+        actionCreateGroup = QtGui.QAction(translate("Arch", "Create group..."),
+                                          menu)
+        QtCore.QObject.connect(actionCreateGroup,
+                               QtCore.SIGNAL("triggered()"),
+                               self.createGroup)
+        menu.addAction(actionCreateGroup)
+
+        actionReorder = QtGui.QAction(translate("Arch", "Reorder children alphabetically"),
+                                      menu)
+        QtCore.QObject.connect(actionReorder,
+                               QtCore.SIGNAL("triggered()"),
+                               self.reorder)
+        menu.addAction(actionReorder)
+
+        actionCloneUp = QtGui.QAction(translate("Arch", "Clone level up"),
+                                      menu)
+        QtCore.QObject.connect(actionCloneUp,
+                               QtCore.SIGNAL("triggered()"),
+                               self.cloneUp)
+        menu.addAction(actionCloneUp)
+
+    def activate(self):
+        vobj = self.Object.ViewObject
+
+        if FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch") == self.Object:
+            FreeCADGui.ActiveDocument.ActiveView.setActiveObject("Arch", None)
             if vobj.SetWorkingPlane:
                 self.setWorkingPlane(restore=True)
-        else:
-            if (not hasattr(vobj,"DoubleClickActivates")) or vobj.DoubleClickActivates:
-                FreeCADGui.ActiveDocument.ActiveView.setActiveObject("Arch",vobj.Object)
+        elif (not hasattr(vobj,"DoubleClickActivates")) or vobj.DoubleClickActivates:
+            FreeCADGui.ActiveDocument.ActiveView.setActiveObject("Arch", self.Object)
             if vobj.SetWorkingPlane:
                 self.setWorkingPlane()
 
-    def setupContextMenu(self,vobj,menu):
-
-        from PySide import QtCore,QtGui
-        import Draft_rc
-        action1 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_SelectPlane.svg"),"Set working plane",menu)
-        QtCore.QObject.connect(action1,QtCore.SIGNAL("triggered()"),self.setWorkingPlane)
-        menu.addAction(action1)
-        action2 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_SelectPlane.svg"),"Write camera position",menu)
-        QtCore.QObject.connect(action2,QtCore.SIGNAL("triggered()"),self.writeCamera)
-        menu.addAction(action2)
-        action3 = QtGui.QAction(QtGui.QIcon(),"Create group...",menu)
-        QtCore.QObject.connect(action3,QtCore.SIGNAL("triggered()"),self.createGroup)
-        menu.addAction(action3)
-        action4 = QtGui.QAction(QtGui.QIcon(),"Reorder children alphabetically",menu)
-        QtCore.QObject.connect(action4,QtCore.SIGNAL("triggered()"),self.reorder)
-        menu.addAction(action4)
-        action5 = QtGui.QAction(QtGui.QIcon(),"Clone level up",menu)
-        QtCore.QObject.connect(action5,QtCore.SIGNAL("triggered()"),self.cloneUp)
-        menu.addAction(action5)
+        FreeCADGui.Selection.clearSelection()
 
     def setWorkingPlane(self,restore=False):
 

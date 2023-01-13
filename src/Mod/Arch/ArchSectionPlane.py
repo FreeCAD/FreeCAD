@@ -1213,7 +1213,9 @@ class _ViewProviderSectionPlane:
 
         return None
 
-    def setEdit(self,vobj,mode):
+    def setEdit(self, vobj, mode):
+        if mode != 0:
+            return None
 
         taskd = SectionPlaneTaskPanel()
         taskd.obj = vobj.Object
@@ -1221,27 +1223,35 @@ class _ViewProviderSectionPlane:
         FreeCADGui.Control.showDialog(taskd)
         return True
 
-    def unsetEdit(self,vobj,mode):
+    def unsetEdit(self, vobj, mode):
+        if mode != 0:
+            return None
 
         FreeCADGui.Control.closeDialog()
-        return False
+        return True
 
-    def doubleClicked(self,vobj):
+    def doubleClicked(self, vobj):
+        self.edit()
 
-        self.setEdit(vobj,None)
+    def setupContextMenu(self, vobj, menu):
+        actionEdit = QtGui.QAction(translate("Arch", "Edit"),
+                                   menu)
+        QtCore.QObject.connect(actionEdit,
+                               QtCore.SIGNAL("triggered()"),
+                               self.edit)
+        menu.addAction(actionEdit)
 
-    def setupContextMenu(self,vobj,menu):
-        """CONTEXT MENU setup"""
-        from PySide import QtCore,QtGui
-        action1 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_Edit.svg"),"Toggle Cutview",menu)
-        action1.triggered.connect(lambda f=self.contextCutview, arg=vobj:f(arg))
-        menu.addAction(action1)
+        actionToggleCutview = QtGui.QAction(QtGui.QIcon(":/icons/Draft_Edit.svg"),
+                                            translate("Arch", "Toggle Cutview"),
+                                            menu)
+        actionToggleCutview.triggered.connect(lambda f=self.toggleCutview, arg=vobj: f(arg))
+        menu.addAction(actionToggleCutview)
 
-    def contextCutview(self,vobj):
-        """CONTEXT MENU command to toggle CutView property on and off"""
-        if vobj.CutView:
-            vobj.CutView = False
-        else: vobj.CutView = True
+    def edit(self):
+        FreeCADGui.ActiveDocument.setEdit(self.Object, 0)
+
+    def toggleCutview(self, vobj):
+        vobj.CutView = not vobj.CutView
 
 
 class _ArchDrawingView:

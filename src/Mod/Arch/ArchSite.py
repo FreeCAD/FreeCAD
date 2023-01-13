@@ -27,6 +27,7 @@ containers for Arch objects, and also define a terrain surface.
 import FreeCAD,Draft,ArchCommands,math,re,datetime,ArchIFC
 if FreeCAD.GuiUp:
     import FreeCADGui
+    from PySide import QtGui,QtCore
     from draftutils.translate import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
@@ -897,47 +898,62 @@ class _ViewProviderSite:
                 objs.extend(self.Object.Subtractions)
         return objs
 
-    def setEdit(self,vobj,mode):
-        """Method called when the document requests the object to enter edit mode.
+    def setEdit(self, vobj, mode):
+        if mode == 1 or mode == 2:
+            return None
 
-        Edit mode is entered when a user double clicks on an object in the tree
-        view, or when they use the menu option [Edit -> Toggle Edit Mode].
+        import ArchComponent
+        taskd = ArchComponent.ComponentTaskPanel()
+        taskd.obj = self.Object
+        taskd.update()
+        FreeCADGui.Control.showDialog(taskd)
+        return True
 
-        Just display the standard Arch component task panel.
-
-        Parameters
-        ----------
-        mode: int or str
-            The edit mode the document has requested. Set to 0 when requested via
-            a double click or [Edit -> Toggle Edit Mode].
-
-        Returns
-        -------
-        bool
-            If edit mode was entered.
-        """
-
-        if (mode == 0) and hasattr(self,"Object"):
-            import ArchComponent
-            taskd = ArchComponent.ComponentTaskPanel()
-            taskd.obj = self.Object
-            taskd.update()
-            FreeCADGui.Control.showDialog(taskd)
-            return True
-        return False
-
-    def unsetEdit(self,vobj,mode):
-        """Method called when the document requests the object exit edit mode.
-
-        Close the Arch component edit task panel.
-
-        Returns
-        -------
-        False
-        """
+    def unsetEdit(self, vobj, mode):
+        if mode == 1 or mode == 2:
+            return None
 
         FreeCADGui.Control.closeDialog()
-        return False
+        return True
+
+    def setupContextMenu(self, vobj, menu):
+        actionEdit = QtGui.QAction(translate("Arch", "Edit"),
+                                   menu)
+        QtCore.QObject.connect(actionEdit,
+                               QtCore.SIGNAL("triggered()"),
+                               self.edit)
+        menu.addAction(actionEdit)
+
+        actionToggleSubcomponents = QtGui.QAction(QtGui.QIcon(":/icons/Arch_ToggleSubs.svg"),
+                                                  translate("Arch", "Toggle subcomponents"),
+                                                  menu)
+        QtCore.QObject.connect(actionToggleSubcomponents,
+                               QtCore.SIGNAL("triggered()"),
+                               self.toggleSubcomponents)
+        menu.addAction(actionToggleSubcomponents)
+
+        # The default Part::FeaturePython context menu contains a `Set colors`
+        # option. This option does not work well for Site objects. We therefore
+        # override this menu and have to add our own `Transform` item.
+        # To override the default menu this function must return `True`.
+        actionTransform = QtGui.QAction(FreeCADGui.getIcon("Std_TransformManip.svg"),
+                                        translate("Command", "Transform"), # Context `Command` instead of `Arch`.
+                                        menu)
+        QtCore.QObject.connect(actionTransform,
+                               QtCore.SIGNAL("triggered()"),
+                               self.transform)
+        menu.addAction(actionTransform)
+
+        return True
+
+    def edit(self):
+        FreeCADGui.ActiveDocument.setEdit(self.Object, 0)
+
+    def toggleSubcomponents(self):
+        FreeCADGui.runCommand("Arch_ToggleSubs")
+
+    def transform(self):
+        FreeCADGui.ActiveDocument.setEdit(self.Object, 1)
 
     def attach(self,vobj):
         """Add display modes' data to the coin scenegraph.

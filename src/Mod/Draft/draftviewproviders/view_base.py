@@ -391,14 +391,14 @@ class ViewProviderDraft(object):
         tp = utils.get_type(vobj.Object)
 
         if tp in ("Wire", "Circle", "Ellipse", "Rectangle", "Polygon",
-                  "BSpline", "BezCurve"): # Facebinder and ShapeString objects have their own setEdit.
+                  "BSpline", "BezCurve"): # Facebinder, ShapeString, PanelSheet and Profile objects have their own setEdit.
             if not "Draft_Edit" in Gui.listCommands():
                 self.wb_before_edit = Gui.activeWorkbench()
                 Gui.activateWorkbench("DraftWorkbench")
             Gui.runCommand("Draft_Edit")
             return True
 
-        if tp in ("Fillet", "Point", "Shape2DView"):
+        if tp in ("Fillet", "Point", "Shape2DView", "PanelCut"):
             Gui.runCommand("Std_TransformManip")
             return True
 
@@ -415,7 +415,7 @@ class ViewProviderDraft(object):
         tp = utils.get_type(vobj.Object)
 
         if tp in ("Wire", "Circle", "Ellipse", "Rectangle", "Polygon",
-                  "BSpline", "BezCurve"): # Facebinder and ShapeString objects have their own setEdit.
+                  "BSpline", "BezCurve"): # Facebinder, ShapeString, PanelSheet and Profile objects have their own unsetEdit.
             if hasattr(App, "activeDraftCommand") and App.activeDraftCommand:
                 App.activeDraftCommand.finish()
             Gui.Control.closeDialog()
@@ -424,7 +424,7 @@ class ViewProviderDraft(object):
                 delattr(self, "wb_before_edit")
             return True
 
-        if tp in ("Fillet", "Point", "Shape2DView"):
+        if tp in ("Fillet", "Point", "Shape2DView", "PanelCut"):
             return True
 
         return None
@@ -433,7 +433,8 @@ class ViewProviderDraft(object):
         tp = utils.get_type(self.Object)
 
         if tp in ("Wire", "Circle", "Ellipse", "Rectangle", "Polygon",
-                  "BSpline", "BezCurve", "Facebinder", "ShapeString"):
+                  "BSpline", "BezCurve", "Facebinder", "ShapeString",
+                  "PanelSheet", "Profile"):
             action_edit = QtGui.QAction(translate("draft", "Edit"),
                                         menu)
             QtCore.QObject.connect(action_edit,
@@ -455,7 +456,8 @@ class ViewProviderDraft(object):
         # have to add our own `Transform` item.
         # To override the default menu this function must return `True`.
         if tp in ("Wire", "Circle", "Ellipse", "Rectangle", "Polygon",
-                  "BSpline","BezCurve", "Fillet", "Point", "Shape2DView"):
+                  "BSpline","BezCurve", "Fillet", "Point", "Shape2DView",
+                  "PanelCut", "PanelSheet", "Profile"):
             action_transform = QtGui.QAction(Gui.getIcon("Std_TransformManip.svg"),
                                              translate("Command", "Transform"), # Context `Command` instead of `draft`.
                                              menu)

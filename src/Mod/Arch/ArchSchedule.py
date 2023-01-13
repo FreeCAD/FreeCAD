@@ -358,18 +358,43 @@ class _ViewProviderArchSchedule:
     def attach(self, vobj):
         self.Object = vobj.Object
 
-    def setEdit(self,vobj,mode=0):
-        if hasattr(self,"taskd"):
-            if self.taskd:
-                self.taskd.form.hide()
+    def setEdit(self, vobj, mode=0):
+        if mode != 0:
+            return None
+
         self.taskd = ArchScheduleTaskPanel(vobj.Object)
         return True
 
-    def doubleClicked(self,vobj):
-        self.setEdit(vobj)
+    def unsetEdit(self, vobj, mode):
+        if mode != 0:
+            return None
 
-    def unsetEdit(self,vobj,mode):
         return True
+
+    def doubleClicked(self, vobj):
+        self.edit()
+
+    def setupContextMenu(self, vobj, menu):
+        actionEdit = QtGui.QAction(translate("Arch", "Edit"),
+                                   menu)
+        QtCore.QObject.connect(actionEdit,
+                               QtCore.SIGNAL("triggered()"),
+                               self.edit)
+        menu.addAction(actionEdit)
+
+        actionAttachSpreadsheet = QtGui.QAction(QtGui.QIcon(":/icons/Arch_Schedule.svg"),
+                                                translate("Arch", "Attach spreadsheet"),
+                                                menu)
+        QtCore.QObject.connect(actionAttachSpreadsheet,
+                               QtCore.SIGNAL("triggered()"),
+                               self.attachSpreadsheet)
+        menu.addAction(actionAttachSpreadsheet)
+
+    def edit(self):
+        FreeCADGui.ActiveDocument.setEdit(self.Object, 0)
+
+    def attachSpreadsheet(self):
+        self.Object.Proxy.setSpreadsheetData(self.Object, force=True)
 
     def claimChildren(self):
         if hasattr(self,"Object"):
@@ -389,15 +414,6 @@ class _ViewProviderArchSchedule:
 
     def setDisplayMode(self,mode):
         return mode
-
-    def setupContextMenu(self,vobj,menu):
-        action1 = QtGui.QAction(QtGui.QIcon(":/icons/Arch_Schedule.svg"),"Attach spreadsheet",menu)
-        QtCore.QObject.connect(action1,QtCore.SIGNAL("triggered()"),self.attachSpreadsheet)
-        menu.addAction(action1)
-
-    def attachSpreadsheet(self):
-        if hasattr(self,"Object"):
-            self.Object.Proxy.setSpreadsheetData(self.Object,force=True)
 
 
 class ArchScheduleTaskPanel:
@@ -447,8 +463,6 @@ class ArchScheduleTaskPanel:
         self.form.list.clearContents()
 
         if self.obj:
-            if not obj.Description:
-                return
             for p in [obj.Value,obj.Unit,obj.Objects,obj.Filter]:
                 if len(obj.Description) != len(p):
                     return
@@ -632,6 +646,7 @@ class ArchScheduleTaskPanel:
         # commit values
         self.writeValues()
         self.form.hide()
+        FreeCADGui.ActiveDocument.resetEdit()
         return True
 
     def reject(self):
@@ -639,6 +654,7 @@ class ArchScheduleTaskPanel:
         """Close dialog without saving"""
 
         self.form.hide()
+        FreeCADGui.ActiveDocument.resetEdit()
         return True
 
     def writeValues(self):

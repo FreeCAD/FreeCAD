@@ -1729,12 +1729,18 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
             return "Wireframe"
         return ArchComponent.ViewProviderComponent.setDisplayMode(self,mode)
 
-    def setupContextMenu(self,vobj,menu):
+    def setupContextMenu(self, vobj, menu):
+        super().contextMenuAddEdit(menu)
 
-        from PySide import QtCore,QtGui
-        action1 = QtGui.QAction(QtGui.QIcon(":/icons/Arch_Wall_Tree.svg"),"Flip direction",menu)
-        QtCore.QObject.connect(action1,QtCore.SIGNAL("triggered()"),self.flipDirection)
-        menu.addAction(action1)
+        actionFlipDirection = QtGui.QAction(QtGui.QIcon(":/icons/Arch_Wall_Tree.svg"),
+                                            translate("Arch", "Flip direction"),
+                                            menu)
+        QtCore.QObject.connect(actionFlipDirection,
+                               QtCore.SIGNAL("triggered()"),
+                               self.flipDirection)
+        menu.addAction(actionFlipDirection)
+
+        super().contextMenuAddToggleSubcomponents(menu)
 
     def flipDirection(self):
 
