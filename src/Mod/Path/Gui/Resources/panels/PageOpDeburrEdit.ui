@@ -185,7 +185,7 @@
              </size>
             </property>
             <property name="text">
-             <string>W =</string>
+             <string notr="true">W =</string>
             </property>
            </widget>
           </item>
@@ -212,7 +212,7 @@
              </size>
             </property>
             <property name="text">
-             <string>h = </string>
+             <string notr="true">h = </string>
             </property>
            </widget>
           </item>
