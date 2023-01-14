@@ -195,14 +195,17 @@ class Draft_SetStyle_TaskPanel:
 
     def onApplyAnnot(self):
 
-        from draftutils import utils
-        objs = FreeCAD.ActiveDocument.Objects
-        typs = ["Dimension", "LinearDimension", "AngularDimension", "Text", "DraftText", "Label"]
-        for obj in objs:
-            if utils.get_type(obj) in typs:
-                self.apply_style_to_obj(obj)
+        if FreeCAD.ActiveDocument is not None: # Command can be called without a document.
+            from draftutils import utils
+            objs = FreeCAD.ActiveDocument.Objects
+            typs = ["Dimension", "LinearDimension", "AngularDimension",
+                    "Text", "DraftText", "Label"]
+            for obj in objs:
+                if utils.get_type(obj) in typs:
+                    self.apply_style_to_obj(obj)
 
     def apply_style_to_obj(self, obj):
+
         vobj = obj.ViewObject
         if not vobj:
             return
