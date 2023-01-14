@@ -61,7 +61,7 @@ class TestPathAdaptive(PathTestBase):
         cls.job = PathJob.Create("Job", [cls.doc.Fusion], None)
         cls.job.GeometryTolerance.Value = 0.001
         if FreeCAD.GuiUp:
-            job.ViewObject.Proxy = PathJobGui.ViewProvider(job.ViewObject)
+            cls.job.ViewObject.Proxy = PathJobGui.ViewProvider(cls.job.ViewObject)
 
         # Instantiate an Adaptive operation for querying available properties
         cls.prototype = PathAdaptive.Create("Adaptive")
