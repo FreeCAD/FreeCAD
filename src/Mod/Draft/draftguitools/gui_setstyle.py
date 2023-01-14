@@ -73,7 +73,7 @@ class Draft_SetStyle_TaskPanel:
         self.form = FreeCADGui.PySideUic.loadUi(":/ui/TaskPanel_SetStyle.ui")
         self.form.setWindowIcon(QtGui.QIcon.fromTheme("gtk-apply", QtGui.QIcon(":/icons/Draft_Apply.svg")))
         self.form.applyButton.setIcon(QtGui.QIcon.fromTheme("gtk-apply", QtGui.QIcon(":/icons/Draft_Apply.svg")))
-        self.form.dimButton.setIcon(QtGui.QIcon(":/icons/Draft_Text.svg"))
+        self.form.annotButton.setIcon(QtGui.QIcon(":/icons/Draft_Text.svg"))
         self.form.LineColor.setProperty("color",self.getPrefColor("View","DefaultShapeLineColor",255))
         self.form.LineWidth.setValue(FreeCAD.ParamGet(self.p+"View").GetInt("DefaultShapeLineWidth",2))
         self.form.DrawStyle.setCurrentIndex(FreeCAD.ParamGet(self.p+"Mod/Draft").GetInt("DefaultDrawStyle",0))
@@ -92,7 +92,7 @@ class Draft_SetStyle_TaskPanel:
         self.form.LineSpacing.setValue(FreeCAD.ParamGet(self.p+"Mod/Draft").GetFloat("LineSpacing",1))
         self.form.saveButton.clicked.connect(self.onSaveStyle)
         self.form.applyButton.clicked.connect(self.onApplyStyle)
-        self.form.dimButton.clicked.connect(self.onApplyDim)
+        self.form.annotButton.clicked.connect(self.onApplyAnnot)
         self.form.comboPresets.currentIndexChanged.connect(self.onLoadStyle)
         self.loadDefaults()
 
@@ -214,8 +214,6 @@ class Draft_SetStyle_TaskPanel:
                     vobj.Transparency = self.form.Transparency.value()
                 if "FontName" in vobj.PropertiesList:
                     vobj.FontName = self.form.TextFont.currentFont().family()
-                if "TextSize" in vobj.PropertiesList:
-                    vobj.TextSize = FreeCAD.Units.Quantity(self.form.TextSize.text()).Value
                 if "FontSize" in vobj.PropertiesList:
                     vobj.FontSize = FreeCAD.Units.Quantity(self.form.TextSize.text()).Value
                 if "TextColor" in vobj.PropertiesList:
@@ -233,30 +231,40 @@ class Draft_SetStyle_TaskPanel:
                 if "LineSpacing" in vobj.PropertiesList:
                     vobj.LineSpacing = self.form.LineSpacing.value()
 
-    def onApplyDim(self,index):
+    def onApplyAnnot(self, index):
 
         import Draft
         objs = FreeCAD.ActiveDocument.Objects
-        dims = Draft.getObjectsOfType(objs,"LinearDimension")
-        dims += Draft.getObjectsOfType(objs,"Dimension")
-        dims += Draft.getObjectsOfType(objs,"AngularDimension")
-        for obj in dims:
+        dims = Draft.getObjectsOfType(objs, "LinearDimension")
+        dims += Draft.getObjectsOfType(objs, "Dimension")
+        dims += Draft.getObjectsOfType(objs, "AngularDimension")
+        texts = Draft.getObjectsOfType(objs, "Text")
+        texts += Draft.getObjectsOfType(objs, "DraftText")
+        labels = Draft.getObjectsOfType(objs, "Label")
+
+        for obj in dims + texts + labels:
             vobj = obj.ViewObject
             vobj.FontName = self.form.TextFont.currentFont().family()
             vobj.FontSize = FreeCAD.Units.Quantity(self.form.TextSize.text()).Value
             vobj.LineColor = self.form.TextColor.property("color").getRgbF()
+            vobj.TextColor = self.form.TextColor.property("color").getRgbF()
+
+        for obj in dims:
+            vobj = obj.ViewObject
             vobj.ArrowType = ["Dot", "Circle", "Arrow", "Tick", "Tick-2"][self.form.ArrowStyle.currentIndex()]
             vobj.ArrowSize = FreeCAD.Units.Quantity(self.form.ArrowSize.text()).Value
             vobj.ShowUnit = self.form.ShowUnit.isChecked()
             vobj.UnitOverride = self.form.UnitOverride.text()
             vobj.TextSpacing = FreeCAD.Units.Quantity(self.form.TextSpacing.text()).Value
-        texts = Draft.getObjectsOfType(objs,"Text")
-        texts += Draft.getObjectsOfType(objs,"DraftText")
+
         for obj in texts:
             vobj = obj.ViewObject
-            vobj.FontName = self.form.TextFont.currentFont().family()
-            vobj.FontSize = FreeCAD.Units.Quantity(self.form.TextSize.text()).Value
-            vobj.TextColor = self.form.TextColor.property("color").getRgbF()
+            vobj.LineSpacing = self.form.LineSpacing.value()
+
+        for obj in labels:
+            vobj = obj.ViewObject
+            vobj.ArrowType = ["Dot", "Circle", "Arrow", "Tick", "Tick-2"][self.form.ArrowStyle.currentIndex()]
+            vobj.ArrowSize = FreeCAD.Units.Quantity(self.form.ArrowSize.text()).Value
             vobj.LineSpacing = self.form.LineSpacing.value()
 
     def onLoadStyle(self,index):
