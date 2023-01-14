@@ -398,8 +398,6 @@ def format_object(target, origin=None):
         if not origin or not hasattr(origin, 'ViewObject'):
             if "FontSize" in obrep.PropertiesList:
                 obrep.FontSize = fs
-            if "TextSize" in obrep.PropertiesList:
-                obrep.TextSize = fs
             if "TextColor" in obrep.PropertiesList:
                 obrep.TextColor = tcol
             if "LineWidth" in obrep.PropertiesList:
@@ -407,9 +405,9 @@ def format_object(target, origin=None):
             if "PointColor" in obrep.PropertiesList:
                 obrep.PointColor = lcol
             if "LineColor" in obrep.PropertiesList:
-                if hasattr(obrep,"FontName") and (not hasattr(obrep,"TextColor")):
-                    # dimensions and other objects with text but no specific
-                    # TextColor property. TODO: Add TextColor property to dimensions
+                if hasattr(obrep,"FontName"):
+                    # Do not use lcol for annotations.
+                    # ToDo: add line color preference for annotations.
                     obrep.LineColor = tcol
                 else:
                     obrep.LineColor = lcol
