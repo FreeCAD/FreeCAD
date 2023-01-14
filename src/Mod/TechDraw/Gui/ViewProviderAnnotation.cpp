@@ -21,16 +21,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #include <App/DocumentObject.h>
-
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
 #include <Mod/TechDraw/App/DrawViewBalloon.h>
 
 #include "QGIView.h"
 #include "ViewProviderAnnotation.h"
+
 
 using namespace TechDrawGui;
 

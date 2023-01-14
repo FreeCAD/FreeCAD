@@ -38,7 +38,6 @@
 
 #include <App/Application.h>
 #include <App/Document.h>
-#include <Base/Console.h>
 #include <Base/Parameter.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>

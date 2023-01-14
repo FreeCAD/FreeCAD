@@ -35,7 +35,6 @@
 #endif
 
 #include <App/Application.h>
-#include <Base/Console.h>
 #include <Base/Parameter.h>
 #include <Gui/Command.h>
 #include <Gui/Tools.h>

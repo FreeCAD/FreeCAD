@@ -31,7 +31,6 @@
 
 #include <App/Application.h>
 #include <App/Document.h>
-#include <Base/Console.h>
 #include <Base/Reader.h>
 #include <Mod/TechDraw/App/DrawViewPy.h>  // generated from DrawViewPy.xml
 

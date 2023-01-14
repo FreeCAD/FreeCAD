@@ -31,7 +31,6 @@
 #endif
 
 #include <App/Application.h>
-#include <Base/Console.h>
 
 #include "QGIPrimPath.h"
 #include "PreferencesGui.h"

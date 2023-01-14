@@ -36,7 +36,6 @@
 #endif
 
 #include <App/Application.h>
-#include <Base/Console.h>
 #include <Mod/TechDraw/App/DrawRichAnno.h>
 
 #include "QGIRichAnno.h"
