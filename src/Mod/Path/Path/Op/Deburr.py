@@ -96,7 +96,7 @@ def toolDepthAndOffset(width, extraDepth, tool, printInfo):
 
     toolDepth = 0 if Path.Geom.isRoughly(tan, 0) else width / tan
     depth = toolDepth + extraDepth
-    extraOffset = -width if angle == 180 else (extraDepth / tan)
+    extraOffset = -width if angle == 180 else (extraDepth * tan)
     offset = toolOffset + extraOffset
 
     return (depth, offset, extraOffset, suppressInfo)
