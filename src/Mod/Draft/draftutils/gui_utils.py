@@ -405,12 +405,7 @@ def format_object(target, origin=None):
             if "PointColor" in obrep.PropertiesList:
                 obrep.PointColor = lcol
             if "LineColor" in obrep.PropertiesList:
-                if hasattr(obrep,"FontName"):
-                    # Do not use lcol for annotations.
-                    # ToDo: add line color preference for annotations.
-                    obrep.LineColor = tcol
-                else:
-                    obrep.LineColor = lcol
+                obrep.LineColor = lcol
             if "ShapeColor" in obrep.PropertiesList:
                 obrep.ShapeColor = fcol
         else:
