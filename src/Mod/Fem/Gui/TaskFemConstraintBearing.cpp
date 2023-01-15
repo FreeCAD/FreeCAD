@@ -60,7 +60,7 @@ TaskFemConstraintBearing::TaskFemConstraintBearing(ViewProviderFemConstraint *Co
 
     // create a context menu for the listview of the references
     createDeleteAction(ui->listReferences);
-    deleteAction->connect(deleteAction, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
+    connect(deleteAction, &QAction::triggered, this, &TaskFemConstraintBearing::onReferenceDeleted);
 
     this->groupLayout()->addWidget(proxy);
 
@@ -99,14 +99,14 @@ TaskFemConstraintBearing::TaskFemConstraintBearing(ViewProviderFemConstraint *Co
     ui->lineLocation->setText(loc);
     ui->checkAxial->setChecked(axialfree);
 
-    connect(ui->spinDistance, SIGNAL(valueChanged(double)),
-        this, SLOT(onDistanceChanged(double)));
+    connect(ui->spinDistance, qOverload<double>(&QDoubleSpinBox::valueChanged),
+        this, &TaskFemConstraintBearing::onDistanceChanged);
     connect(ui->buttonReference, SIGNAL(pressed()),
         this, SLOT(onButtonReference()));
     connect(ui->buttonLocation, SIGNAL(pressed()),
         this, SLOT(onButtonLocation()));
-    connect(ui->checkAxial, SIGNAL(toggled(bool)),
-        this, SLOT(onCheckAxial(bool)));
+    connect(ui->checkAxial, &QCheckBox::toggled,
+        this, &TaskFemConstraintBearing::onCheckAxial);
 
     // Hide unwanted ui elements
     ui->labelDiameter->setVisible(false);

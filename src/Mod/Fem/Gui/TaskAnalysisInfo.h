@@ -58,9 +58,6 @@ public:
     explicit TaskAnalysisInfo(Fem::FemAnalysis *pcObject,QWidget *parent = nullptr);
     ~TaskAnalysisInfo() override;
 
-private Q_SLOTS:
-    void SwitchMethod(int Value);
-
 protected:
     Fem::FemAnalysis *pcObject;
 

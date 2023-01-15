@@ -510,12 +510,12 @@ PlaneWidget::PlaneWidget() {
     ui->normalY->setDecimals(UserDecimals);
     ui->normalZ->setDecimals(UserDecimals);
 
-    connect(ui->originX, SIGNAL(valueChanged(double)), this, SLOT(originChanged(double)));
-    connect(ui->originY, SIGNAL(valueChanged(double)), this, SLOT(originChanged(double)));
-    connect(ui->originZ, SIGNAL(valueChanged(double)), this, SLOT(originChanged(double)));
-    connect(ui->normalX, SIGNAL(valueChanged(double)), this, SLOT(normalChanged(double)));
-    connect(ui->normalY, SIGNAL(valueChanged(double)), this, SLOT(normalChanged(double)));
-    connect(ui->normalZ, SIGNAL(valueChanged(double)), this, SLOT(normalChanged(double)));
+    connect(ui->originX, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &PlaneWidget::originChanged);
+    connect(ui->originY, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &PlaneWidget::originChanged);
+    connect(ui->originZ, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &PlaneWidget::originChanged);
+    connect(ui->normalX, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &PlaneWidget::normalChanged);
+    connect(ui->normalY, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &PlaneWidget::normalChanged);
+    connect(ui->normalZ, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &PlaneWidget::normalChanged);
 }
 
 PlaneWidget::~PlaneWidget() {
@@ -686,10 +686,10 @@ SphereWidget::SphereWidget() {
     ui->centerY->setDecimals(UserDecimals);
     ui->centerZ->setDecimals(UserDecimals);
 
-    connect(ui->centerX, SIGNAL(valueChanged(double)), this, SLOT(centerChanged(double)));
-    connect(ui->centerY, SIGNAL(valueChanged(double)), this, SLOT(centerChanged(double)));
-    connect(ui->centerZ, SIGNAL(valueChanged(double)), this, SLOT(centerChanged(double)));
-    connect(ui->radius, SIGNAL(valueChanged(double)), this, SLOT(radiusChanged(double)));
+    connect(ui->centerX, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &SphereWidget::centerChanged);
+    connect(ui->centerY, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &SphereWidget::centerChanged);
+    connect(ui->centerZ, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &SphereWidget::centerChanged);
+    connect(ui->radius, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &SphereWidget::radiusChanged);
 }
 
 SphereWidget::~SphereWidget() {

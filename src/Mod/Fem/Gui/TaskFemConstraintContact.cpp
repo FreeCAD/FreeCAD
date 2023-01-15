@@ -54,22 +54,24 @@ TaskFemConstraintContact::TaskFemConstraintContact(ViewProviderFemConstraintCont
     QMetaObject::connectSlotsByName(this);
 
     QAction* actionSlave = new QAction(tr("Delete"), ui->lw_referencesSlave);
-    actionSlave->connect(actionSlave, SIGNAL(triggered()), this, SLOT(onReferenceDeletedSlave()));
+    connect(actionSlave, &QAction::triggered,
+            this, &TaskFemConstraintContact::onReferenceDeletedSlave);
 
     QAction* actionMaster = new QAction(tr("Delete"), ui->lw_referencesMaster);
-    actionMaster->connect(actionMaster, SIGNAL(triggered()), this, SLOT(onReferenceDeletedMaster()));
+    connect(actionMaster, &QAction::triggered,
+            this, &TaskFemConstraintContact::onReferenceDeletedMaster);
 
     ui->lw_referencesSlave->addAction(actionSlave);
     ui->lw_referencesSlave->setContextMenuPolicy(Qt::ActionsContextMenu);
 
-    connect(ui->lw_referencesSlave, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
-        this, SLOT(setSelection(QListWidgetItem*)));
+    connect(ui->lw_referencesSlave, &QListWidget::currentItemChanged,
+        this, &TaskFemConstraintContact::setSelection);
 
     ui->lw_referencesMaster->addAction(actionMaster);
     ui->lw_referencesMaster->setContextMenuPolicy(Qt::ActionsContextMenu);
 
-    connect(ui->lw_referencesMaster, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
-        this, SLOT(setSelection(QListWidgetItem*)));
+    connect(ui->lw_referencesMaster, &QListWidget::currentItemChanged,
+        this, &TaskFemConstraintContact::setSelection);
 
     this->groupLayout()->addWidget(proxy);
 
@@ -104,11 +106,11 @@ TaskFemConstraintContact::TaskFemConstraintContact(ViewProviderFemConstraintCont
     }
 
     //Selection buttons
-    connect(ui->btnAddSlave, SIGNAL(clicked()),  this, SLOT(addToSelectionSlave()));
-    connect(ui->btnRemoveSlave, SIGNAL(clicked()),  this, SLOT(removeFromSelectionSlave()));
+    connect(ui->btnAddSlave, &QToolButton::clicked, this, &TaskFemConstraintContact::addToSelectionSlave);
+    connect(ui->btnRemoveSlave, &QToolButton::clicked, this, &TaskFemConstraintContact::removeFromSelectionSlave);
 
-    connect(ui->btnAddMaster, SIGNAL(clicked()),  this, SLOT(addToSelectionMaster()));
-    connect(ui->btnRemoveMaster, SIGNAL(clicked()),  this, SLOT(removeFromSelectionMaster()));
+    connect(ui->btnAddMaster, &QToolButton::clicked, this, &TaskFemConstraintContact::addToSelectionMaster);
+    connect(ui->btnRemoveMaster, &QToolButton::clicked, this, &TaskFemConstraintContact::removeFromSelectionMaster);
 
     updateUI();
 }

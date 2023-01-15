@@ -48,16 +48,16 @@ using namespace Gui;
 TaskFemConstraintGear::TaskFemConstraintGear(ViewProviderFemConstraint *ConstraintView,QWidget *parent, const char *pixmapname)
     : TaskFemConstraintBearing(ConstraintView, parent, pixmapname)
 {
-    connect(ui->spinDiameter, SIGNAL(valueChanged(double)),
-            this, SLOT(onDiameterChanged(double)));
-    connect(ui->spinForce, SIGNAL(valueChanged(double)),
-            this, SLOT(onForceChanged(double)));
-    connect(ui->spinForceAngle, SIGNAL(valueChanged(double)),
-            this, SLOT(onForceAngleChanged(double)));
+    connect(ui->spinDiameter, qOverload<double>(&QDoubleSpinBox::valueChanged),
+            this, &TaskFemConstraintGear::onDiameterChanged);
+    connect(ui->spinForce, qOverload<double>(&QDoubleSpinBox::valueChanged),
+            this, &TaskFemConstraintGear::onForceChanged);
+    connect(ui->spinForceAngle, qOverload<double>(&QDoubleSpinBox::valueChanged),
+            this, &TaskFemConstraintGear::onForceAngleChanged);
     connect(ui->buttonDirection, SIGNAL(pressed()),
             this, SLOT(onButtonDirection()));
-    connect(ui->checkReversed, SIGNAL(toggled(bool)),
-            this, SLOT(onCheckReversed(bool)));
+    connect(ui->checkReversed, &QCheckBox::toggled,
+            this, &TaskFemConstraintGear::onCheckReversed);
 
     // Temporarily prevent unnecessary feature recomputes
     ui->spinDiameter->blockSignals(true);

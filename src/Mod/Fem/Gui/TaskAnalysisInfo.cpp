@@ -45,27 +45,7 @@ TaskAnalysisInfo::TaskAnalysisInfo(Fem::FemAnalysis* pcObject, QWidget* parent)
     QMetaObject::connectSlotsByName(this);
 
     this->groupLayout()->addWidget(proxy);
-
-    /*   QObject::connect(ui->toolButton_Poly,SIGNAL(clicked()),this,SLOT(Poly()));
-       QObject::connect(ui->toolButton_Pick,SIGNAL(clicked()),this,SLOT(Pick()));
-       QObject::connect(ui->comboBox,SIGNAL(activated  (int)),this,SLOT(SwitchMethod(int)));*/
-
 }
-
-
-void TaskAnalysisInfo::SwitchMethod(int /*Value*/)
-{
-    /*   if(Value == 1){
-           ui->groupBox_AngleSearch->setEnabled(true);
-           ui->toolButton_Pick->setEnabled(true);
-           ui->toolButton_Poly->setEnabled(false);
-       }else{
-           ui->groupBox_AngleSearch->setEnabled(false);
-           ui->toolButton_Pick->setEnabled(false);
-           ui->toolButton_Poly->setEnabled(true);
-       }*/
-}
-
 
 TaskAnalysisInfo::~TaskAnalysisInfo()
 {

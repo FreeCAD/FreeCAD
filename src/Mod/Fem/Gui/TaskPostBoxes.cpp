@@ -655,13 +655,20 @@ TaskPostDataAlongLine::TaskPostDataAlongLine(ViewProviderDocumentObject* view, Q
     int res = static_cast<Fem::FemPostDataAlongLineFilter*>(getObject())->Resolution.getValue();
     ui->resolution->setValue(res);
 
-    connect(ui->point1X, SIGNAL(valueChanged(double)), this, SLOT(point1Changed(double)));
-    connect(ui->point1Y, SIGNAL(valueChanged(double)), this, SLOT(point1Changed(double)));
-    connect(ui->point1Z, SIGNAL(valueChanged(double)), this, SLOT(point1Changed(double)));
-    connect(ui->point2X, SIGNAL(valueChanged(double)), this, SLOT(point2Changed(double)));
-    connect(ui->point2Y, SIGNAL(valueChanged(double)), this, SLOT(point2Changed(double)));
-    connect(ui->point2Z, SIGNAL(valueChanged(double)), this, SLOT(point2Changed(double)));
-    connect(ui->resolution, SIGNAL(valueChanged(int)), this, SLOT(resolutionChanged(int)));
+    connect(ui->point1X, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskPostDataAlongLine::point1Changed);
+    connect(ui->point1Y, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskPostDataAlongLine::point1Changed);
+    connect(ui->point1Z, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskPostDataAlongLine::point1Changed);
+    connect(ui->point2X, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskPostDataAlongLine::point2Changed);
+    connect(ui->point2Y, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskPostDataAlongLine::point2Changed);
+    connect(ui->point2Z, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskPostDataAlongLine::point2Changed);
+    connect(ui->resolution, qOverload<int>(&QSpinBox::valueChanged),
+            this, &TaskPostDataAlongLine::resolutionChanged);
 
     //update all fields
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->DisplayMode, ui->Representation);
@@ -717,8 +724,8 @@ void TaskPostDataAlongLine::on_SelectPoints_clicked() {
         FemGui::PointMarker* marker = new FemGui::PointMarker(viewer, ObjName);
         viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(),
             FemGui::TaskPostDataAlongLine::pointCallback, marker);
-        connect(marker, SIGNAL(PointsChanged(double, double, double, double, double, double)), this,
-            SLOT(onChange(double, double, double, double, double, double)));
+        connect(marker, &PointMarker::PointsChanged,
+                this, &TaskPostDataAlongLine::onChange);
     }
 }
 
@@ -944,9 +951,12 @@ TaskPostDataAtPoint::TaskPostDataAtPoint(ViewProviderDocumentObject* view, QWidg
     auto pointValue = static_cast<Fem::FemPostDataAtPointFilter *>(getObject())->PointData[0];
     showValue(pointValue, static_cast<Fem::FemPostDataAtPointFilter *>(getObject())->Unit.getValue());
 
-    connect(ui->centerX, SIGNAL(valueChanged(double)), this, SLOT(centerChanged(double)));
-    connect(ui->centerY, SIGNAL(valueChanged(double)), this, SLOT(centerChanged(double)));
-    connect(ui->centerZ, SIGNAL(valueChanged(double)), this, SLOT(centerChanged(double)));
+    connect(ui->centerX, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskPostDataAtPoint::centerChanged);
+    connect(ui->centerY, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskPostDataAtPoint::centerChanged);
+    connect(ui->centerZ, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskPostDataAtPoint::centerChanged);
 
     // the point filter object needs to be recomputed
     // to fill all fields with data at the current point
@@ -1003,7 +1013,7 @@ void TaskPostDataAtPoint::on_SelectPoint_clicked() {
         FemGui::DataMarker* marker = new FemGui::DataMarker(viewer, ObjName);
         viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(),
             FemGui::TaskPostDataAtPoint::pointCallback, marker);
-        connect(marker, SIGNAL(PointsChanged(double, double, double)), this, SLOT(onChange(double, double, double)));
+        connect(marker, &DataMarker::PointsChanged, this, &TaskPostDataAtPoint::onChange);
     }
     getTypedView<ViewProviderFemPostObject>()->DisplayMode.setValue(1);
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Field, ui->Field);

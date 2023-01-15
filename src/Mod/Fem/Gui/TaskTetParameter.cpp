@@ -59,12 +59,17 @@ TaskTetParameter::TaskTetParameter(Fem::FemMeshShapeNetgenObject *pcObject,QWidg
     ui->spinBox_SegsPerRadius->setValue(pcObject->NbSegsPerRadius.getValue());
     ui->checkBox_Optimize->setChecked(pcObject->Optimize.getValue());
 
-    QObject::connect(ui->doubleSpinBox_MaxSize,SIGNAL(valueChanged(double)),this,SLOT(maxSizeValueChanged(double)));
-    QObject::connect(ui->comboBox_Fineness,SIGNAL(activated  (int)),this,SLOT(SwitchMethod(int)));
+    QObject::connect(ui->doubleSpinBox_MaxSize, qOverload<double>(&QDoubleSpinBox::valueChanged),
+                     this, &TaskTetParameter::maxSizeValueChanged);
+    QObject::connect(ui->comboBox_Fineness, qOverload<int>(&QComboBox::activated),
+                     this, &TaskTetParameter::SwitchMethod);
     QObject::connect(ui->checkBox_SecondOrder,SIGNAL(stateChanged  (int)),this,SLOT(setQuadric(int)));
-    QObject::connect(ui->doubleSpinBox_GrowthRate,SIGNAL(valueChanged(double)),this,SLOT(setGrowthRate(double)));
-    QObject::connect(ui->spinBox_SegsPerEdge,SIGNAL(valueChanged (int)),this,SLOT(setSegsPerEdge(int)));
-    QObject::connect(ui->spinBox_SegsPerRadius,SIGNAL(valueChanged (int)),this,SLOT(setSegsPerRadius(int)));
+    QObject::connect(ui->doubleSpinBox_GrowthRate, qOverload<double>(&QDoubleSpinBox::valueChanged),
+                     this, &TaskTetParameter::setGrowthRate);
+    QObject::connect(ui->spinBox_SegsPerEdge, qOverload<int>(&QSpinBox::valueChanged),
+                     this, &TaskTetParameter::setSegsPerEdge);
+    QObject::connect(ui->spinBox_SegsPerRadius, qOverload<int>(&QSpinBox::valueChanged),
+                     this, &TaskTetParameter::setSegsPerRadius);
     QObject::connect(ui->checkBox_Optimize,SIGNAL(stateChanged  (int)),this,SLOT(setOptimize(int)));
 
     if(pcObject->FemMesh.getValue().getInfo().numNode == 0)

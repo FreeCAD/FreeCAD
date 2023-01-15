@@ -57,10 +57,6 @@ public:
     explicit TaskDriver(Fem::FemAnalysis *pcObject,QWidget *parent = nullptr);
     ~TaskDriver() override;
 
-
-private Q_SLOTS:
-    void SwitchMethod(int Value);
-
 protected:
     Fem::FemAnalysis *pcObject;
 
