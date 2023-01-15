@@ -77,28 +77,28 @@ TaskFilletParameters::TaskFilletParameters(ViewProviderDressUp *DressUpView, QWi
 
     QMetaObject::connectSlotsByName(this);
 
-    connect(ui->filletRadius, SIGNAL(valueChanged(double)),
-        this, SLOT(onLengthChanged(double)));
-    connect(ui->buttonRefAdd, SIGNAL(toggled(bool)),
-        this, SLOT(onButtonRefAdd(bool)));
-    connect(ui->buttonRefRemove, SIGNAL(toggled(bool)),
-        this, SLOT(onButtonRefRemove(bool)));
-    connect(ui->checkBoxUseAllEdges, SIGNAL(toggled(bool)),
-            this, SLOT(onCheckBoxUseAllEdgesToggled(bool)));
+    connect(ui->filletRadius, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this, &TaskFilletParameters::onLengthChanged);
+    connect(ui->buttonRefAdd, &QToolButton::toggled,
+        this, &TaskFilletParameters::onButtonRefAdd);
+    connect(ui->buttonRefRemove, &QToolButton::toggled,
+        this, &TaskFilletParameters::onButtonRefRemove);
+    connect(ui->checkBoxUseAllEdges, &QToolButton::toggled,
+        this, &TaskFilletParameters::onCheckBoxUseAllEdgesToggled);
 
     // Create context menu
     createDeleteAction(ui->listWidgetReferences, ui->buttonRefRemove);
-    connect(deleteAction, SIGNAL(triggered()), this, SLOT(onRefDeleted()));
+    connect(deleteAction, &QAction::triggered, this, &TaskFilletParameters::onRefDeleted);
 
     createAddAllEdgesAction(ui->listWidgetReferences);
     connect(addAllEdgesAction, &QAction::triggered, this, &TaskFilletParameters::onAddAllEdges);
 
-    connect(ui->listWidgetReferences, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
-        this, SLOT(setSelection(QListWidgetItem*)));
-    connect(ui->listWidgetReferences, SIGNAL(itemClicked(QListWidgetItem*)),
-        this, SLOT(setSelection(QListWidgetItem*)));
-    connect(ui->listWidgetReferences, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
-        this, SLOT(doubleClicked(QListWidgetItem*)));
+    connect(ui->listWidgetReferences, &QListWidget::currentItemChanged,
+        this, &TaskFilletParameters::setSelection);
+    connect(ui->listWidgetReferences, &QListWidget::itemClicked,
+        this, &TaskFilletParameters::setSelection);
+    connect(ui->listWidgetReferences, &QListWidget::itemDoubleClicked,
+        this, &TaskFilletParameters::doubleClicked);
 
     // the dialog can be called on a broken fillet, then hide the fillet
     hideOnError();

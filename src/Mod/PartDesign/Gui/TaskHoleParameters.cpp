@@ -182,34 +182,61 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
     ui->ThreadDepth->setEnabled(ui->Threaded->isChecked() && ui->ModelThread->isChecked()
         && std::string(pcHole->ThreadDepthType.getValueAsString()) == "Dimension");
 
-    connect(ui->Threaded, SIGNAL(clicked(bool)), this, SLOT(threadedChanged()));
-    connect(ui->ThreadType, SIGNAL(currentIndexChanged(int)), this, SLOT(threadTypeChanged(int)));
-    connect(ui->ThreadSize, SIGNAL(currentIndexChanged(int)), this, SLOT(threadSizeChanged(int)));
-    connect(ui->ThreadClass, SIGNAL(currentIndexChanged(int)), this, SLOT(threadClassChanged(int)));
-    connect(ui->ThreadFit, SIGNAL(currentIndexChanged(int)), this, SLOT(threadFitChanged(int)));
-    connect(ui->Diameter, SIGNAL(valueChanged(double)), this, SLOT(threadDiameterChanged(double)));
-    connect(ui->directionRightHand, SIGNAL(clicked(bool)), this, SLOT(threadDirectionChanged()));
-    connect(ui->directionLeftHand, SIGNAL(clicked(bool)), this, SLOT(threadDirectionChanged()));
-    connect(ui->HoleCutType, SIGNAL(currentIndexChanged(int)), this, SLOT(holeCutTypeChanged(int)));
-    connect(ui->HoleCutCustomValues, SIGNAL(clicked(bool)), this, SLOT(holeCutCustomValuesChanged()));
-    connect(ui->HoleCutDiameter, SIGNAL(valueChanged(double)), this, SLOT(holeCutDiameterChanged(double)));
-    connect(ui->HoleCutDepth, SIGNAL(valueChanged(double)), this, SLOT(holeCutDepthChanged(double)));
-    connect(ui->HoleCutCountersinkAngle, SIGNAL(valueChanged(double)), this, SLOT(holeCutCountersinkAngleChanged(double)));
-    connect(ui->DepthType, SIGNAL(currentIndexChanged(int)), this, SLOT(depthChanged(int)));
-    connect(ui->Depth, SIGNAL(valueChanged(double)), this, SLOT(depthValueChanged(double)));
-    connect(ui->drillPointFlat, SIGNAL(clicked(bool)), this, SLOT(drillPointChanged()));
-    connect(ui->drillPointAngled, SIGNAL(clicked(bool)), this, SLOT(drillPointChanged()));
-    connect(ui->DrillPointAngle, SIGNAL(valueChanged(double)), this, SLOT(drillPointAngledValueChanged(double)));
-    connect(ui->DrillForDepth, SIGNAL(clicked(bool)), this, SLOT(drillForDepthChanged()));
-    connect(ui->Tapered, SIGNAL(clicked(bool)), this, SLOT(taperedChanged()));
-    connect(ui->Reversed, SIGNAL(clicked(bool)), this, SLOT(reversedChanged()));
-    connect(ui->TaperedAngle, SIGNAL(valueChanged(double)), this, SLOT(taperedAngleChanged(double)));
-    connect(ui->ModelThread, SIGNAL(clicked(bool)), this, SLOT(modelThreadChanged()));
-    connect(ui->UpdateView, SIGNAL(toggled(bool)), this, SLOT(updateViewChanged(bool)));
-    connect(ui->UseCustomThreadClearance, SIGNAL(toggled(bool)), this, SLOT(useCustomThreadClearanceChanged()));
-    connect(ui->CustomThreadClearance, SIGNAL(valueChanged(double)), this, SLOT(customThreadClearanceChanged(double)));
-    connect(ui->ThreadDepthType, SIGNAL(currentIndexChanged(int)), this, SLOT(threadDepthTypeChanged(int)));
-    connect(ui->ThreadDepth, SIGNAL(valueChanged(double)), this, SLOT(threadDepthChanged(double)));
+    connect(ui->Threaded, &QCheckBox::clicked, this, &TaskHoleParameters::threadedChanged);
+    connect(ui->ThreadType, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &TaskHoleParameters::threadTypeChanged);
+    connect(ui->ThreadSize, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &TaskHoleParameters::threadSizeChanged);
+    connect(ui->ThreadClass, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &TaskHoleParameters::threadClassChanged);
+    connect(ui->ThreadFit, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &TaskHoleParameters::threadFitChanged);
+    connect(ui->Diameter, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskHoleParameters::threadDiameterChanged);
+    connect(ui->directionRightHand, &QRadioButton::clicked,
+            this, &TaskHoleParameters::threadDirectionChanged);
+    connect(ui->directionLeftHand, &QRadioButton::clicked,
+            this, &TaskHoleParameters::threadDirectionChanged);
+    connect(ui->HoleCutType, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &TaskHoleParameters::holeCutTypeChanged);
+    connect(ui->HoleCutCustomValues, &QCheckBox::clicked,
+            this, &TaskHoleParameters::holeCutCustomValuesChanged);
+    connect(ui->HoleCutDiameter, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskHoleParameters::holeCutDiameterChanged);
+    connect(ui->HoleCutDepth, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskHoleParameters::holeCutDepthChanged);
+    connect(ui->HoleCutCountersinkAngle, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskHoleParameters::holeCutCountersinkAngleChanged);
+    connect(ui->DepthType, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &TaskHoleParameters::depthChanged);
+    connect(ui->Depth, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskHoleParameters::depthValueChanged);
+    connect(ui->drillPointFlat, &QRadioButton::clicked,
+            this, &TaskHoleParameters::drillPointChanged);
+    connect(ui->drillPointAngled, &QRadioButton::clicked,
+            this, &TaskHoleParameters::drillPointChanged);
+    connect(ui->DrillPointAngle, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskHoleParameters::drillPointAngledValueChanged);
+    connect(ui->DrillForDepth, &QCheckBox::clicked,
+            this, &TaskHoleParameters::drillForDepthChanged);
+    connect(ui->Tapered, &QCheckBox::clicked,
+            this, &TaskHoleParameters::taperedChanged);
+    connect(ui->Reversed, &QCheckBox::clicked,
+            this, &TaskHoleParameters::reversedChanged);
+    connect(ui->TaperedAngle, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskHoleParameters::taperedAngleChanged);
+    connect(ui->ModelThread, &QCheckBox::clicked,
+            this, &TaskHoleParameters::modelThreadChanged);
+    connect(ui->UpdateView, &QCheckBox::toggled,
+            this, &TaskHoleParameters::updateViewChanged);
+    connect(ui->UseCustomThreadClearance, &QCheckBox::toggled,
+            this, &TaskHoleParameters::useCustomThreadClearanceChanged);
+    connect(ui->CustomThreadClearance, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskHoleParameters::customThreadClearanceChanged);
+    connect(ui->ThreadDepthType, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &TaskHoleParameters::threadDepthTypeChanged);
+    connect(ui->ThreadDepth, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskHoleParameters::threadDepthChanged);
 
     vp->show();
 

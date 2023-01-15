@@ -55,18 +55,18 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView, bool /*newObj
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
-    connect(ui->buttonProfileBase, SIGNAL(toggled(bool)),
-            this, SLOT(onProfileButton(bool)));
-    connect(ui->buttonRefAdd, SIGNAL(toggled(bool)),
-            this, SLOT(onRefButtonAdd(bool)));
-    connect(ui->buttonRefRemove, SIGNAL(toggled(bool)),
-            this, SLOT(onRefButtonRemove(bool)));
-    connect(ui->checkBoxRuled, SIGNAL(toggled(bool)),
-            this, SLOT(onRuled(bool)));
-    connect(ui->checkBoxClosed, SIGNAL(toggled(bool)),
-            this, SLOT(onClosed(bool)));
-    connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
-            this, SLOT(onUpdateView(bool)));
+    connect(ui->buttonProfileBase, &QToolButton::toggled,
+            this, &TaskLoftParameters::onProfileButton);
+    connect(ui->buttonRefAdd, &QToolButton::toggled,
+            this, &TaskLoftParameters::onRefButtonAdd);
+    connect(ui->buttonRefRemove, &QToolButton::toggled,
+            this, &TaskLoftParameters::onRefButtonRemove);
+    connect(ui->checkBoxRuled, &QCheckBox::toggled,
+            this, &TaskLoftParameters::onRuled);
+    connect(ui->checkBoxClosed, &QCheckBox::toggled,
+            this, &TaskLoftParameters::onClosed);
+    connect(ui->checkBoxUpdateView, &QCheckBox::toggled,
+            this, &TaskLoftParameters::onUpdateView);
 
     // Create context menu
     QAction* remove = new QAction(tr("Remove"), this);
@@ -77,10 +77,10 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView, bool /*newObj
 #endif
     ui->listWidgetReferences->addAction(remove);
     ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
-    connect(remove, SIGNAL(triggered()), this, SLOT(onDeleteSection()));
+    connect(remove, &QAction::triggered, this, &TaskLoftParameters::onDeleteSection);
 
-    connect(ui->listWidgetReferences->model(),
-        SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)), this, SLOT(indexesMoved()));
+    connect(ui->listWidgetReferences->model(), &QAbstractListModel::rowsMoved,
+            this, &TaskLoftParameters::indexesMoved);
 
     this->groupLayout()->addWidget(proxy);
 

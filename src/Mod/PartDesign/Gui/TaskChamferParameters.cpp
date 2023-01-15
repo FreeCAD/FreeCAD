@@ -75,36 +75,36 @@ TaskChamferParameters::TaskChamferParameters(ViewProviderDressUp *DressUpView, Q
 
     QMetaObject::connectSlotsByName(this);
 
-    connect(ui->chamferType, SIGNAL(currentIndexChanged(int)),
-        this, SLOT(onTypeChanged(int)));
-    connect(ui->chamferSize, SIGNAL(valueChanged(double)),
-        this, SLOT(onSizeChanged(double)));
-    connect(ui->chamferSize2, SIGNAL(valueChanged(double)),
-        this, SLOT(onSize2Changed(double)));
-    connect(ui->chamferAngle, SIGNAL(valueChanged(double)),
-        this, SLOT(onAngleChanged(double)));
-    connect(ui->flipDirection, SIGNAL(toggled(bool)),
-        this, SLOT(onFlipDirection(bool)));
-    connect(ui->buttonRefAdd, SIGNAL(toggled(bool)),
-        this, SLOT(onButtonRefAdd(bool)));
-    connect(ui->buttonRefRemove, SIGNAL(toggled(bool)),
-        this, SLOT(onButtonRefRemove(bool)));
-    connect(ui->checkBoxUseAllEdges, SIGNAL(toggled(bool)),
-            this, SLOT(onCheckBoxUseAllEdgesToggled(bool)));
+    connect(ui->chamferType, qOverload<int>(&QComboBox::currentIndexChanged),
+        this, &TaskChamferParameters::onTypeChanged);
+    connect(ui->chamferSize, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this, &TaskChamferParameters::onSizeChanged);
+    connect(ui->chamferSize2, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this, &TaskChamferParameters::onSize2Changed);
+    connect(ui->chamferAngle, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this, &TaskChamferParameters::onAngleChanged);
+    connect(ui->flipDirection, &QCheckBox::toggled,
+        this, &TaskChamferParameters::onFlipDirection);
+    connect(ui->buttonRefAdd, &QToolButton::toggled,
+        this, &TaskChamferParameters::onButtonRefAdd);
+    connect(ui->buttonRefRemove, &QToolButton::toggled,
+        this, &TaskChamferParameters::onButtonRefRemove);
+    connect(ui->checkBoxUseAllEdges, &QCheckBox::toggled,
+            this, &TaskChamferParameters::onCheckBoxUseAllEdgesToggled);
 
     // Create context menu
     createDeleteAction(ui->listWidgetReferences, ui->buttonRefRemove);
-    connect(deleteAction, SIGNAL(triggered()), this, SLOT(onRefDeleted()));
+    connect(deleteAction, &QAction::triggered, this, &TaskChamferParameters::onRefDeleted);
 
     createAddAllEdgesAction(ui->listWidgetReferences);
     connect(addAllEdgesAction, &QAction::triggered, this, &TaskChamferParameters::onAddAllEdges);
 
-    connect(ui->listWidgetReferences, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
-        this, SLOT(setSelection(QListWidgetItem*)));
-    connect(ui->listWidgetReferences, SIGNAL(itemClicked(QListWidgetItem*)),
-        this, SLOT(setSelection(QListWidgetItem*)));
-    connect(ui->listWidgetReferences, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
-        this, SLOT(doubleClicked(QListWidgetItem*)));
+    connect(ui->listWidgetReferences, &QListWidget::currentItemChanged,
+        this, &TaskChamferParameters::setSelection);
+    connect(ui->listWidgetReferences, &QListWidget::itemClicked,
+        this, &TaskChamferParameters::setSelection);
+    connect(ui->listWidgetReferences, &QListWidget::itemDoubleClicked,
+        this, &TaskChamferParameters::doubleClicked);
 
     // the dialog can be called on a broken chamfer, then hide the chamfer
     hideOnError();

@@ -60,12 +60,12 @@ TaskBooleanParameters::TaskBooleanParameters(ViewProviderBoolean *BooleanView,QW
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
-    connect(ui->buttonBodyAdd, SIGNAL(toggled(bool)),
-            this, SLOT(onButtonBodyAdd(bool)));
-    connect(ui->buttonBodyRemove, SIGNAL(toggled(bool)),
-            this, SLOT(onButtonBodyRemove(bool)));
-    connect(ui->comboType, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(onTypeChanged(int)));
+    connect(ui->buttonBodyAdd, &QToolButton::toggled,
+            this, &TaskBooleanParameters::onButtonBodyAdd);
+    connect(ui->buttonBodyRemove, &QToolButton::toggled,
+            this, &TaskBooleanParameters::onButtonBodyRemove);
+    connect(ui->comboType, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &TaskBooleanParameters::onTypeChanged);
 
     this->groupLayout()->addWidget(proxy);
 
@@ -85,7 +85,7 @@ TaskBooleanParameters::TaskBooleanParameters(ViewProviderBoolean *BooleanView,QW
     action->setShortcutVisibleInContextMenu(true);
 #endif
     ui->listWidgetBodies->addAction(action);
-    connect(action, SIGNAL(triggered()), this, SLOT(onBodyDeleted()));
+    connect(action, &QAction::triggered, this, &TaskBooleanParameters::onBodyDeleted);
     ui->listWidgetBodies->setContextMenuPolicy(Qt::ActionsContextMenu);
 
     int index = pcBoolean->Type.getValue();

@@ -80,31 +80,31 @@ TaskThicknessParameters::TaskThicknessParameters(ViewProviderDressUp *DressUpVie
 
     QMetaObject::connectSlotsByName(this);
 
-    connect(ui->Value, SIGNAL(valueChanged(double)),
-        this, SLOT(onValueChanged(double)));
-    connect(ui->checkReverse, SIGNAL(toggled(bool)),
-        this, SLOT(onReversedChanged(bool)));
-    connect(ui->checkIntersection, SIGNAL(toggled(bool)),
-        this, SLOT(onIntersectionChanged(bool)));
-    connect(ui->buttonRefAdd, SIGNAL(toggled(bool)),
-        this, SLOT(onButtonRefAdd(bool)));
-    connect(ui->buttonRefRemove, SIGNAL(toggled(bool)),
-        this, SLOT(onButtonRefRemove(bool)));
-    connect(ui->modeComboBox, SIGNAL(currentIndexChanged(int)),
-        this, SLOT(onModeChanged(int)));
-    connect(ui->joinComboBox, SIGNAL(currentIndexChanged(int)),
-        this, SLOT(onJoinTypeChanged(int)));
+    connect(ui->Value, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this, &TaskThicknessParameters::onValueChanged);
+    connect(ui->checkReverse, &QCheckBox::toggled,
+        this, &TaskThicknessParameters::onReversedChanged);
+    connect(ui->checkIntersection, &QCheckBox::toggled,
+        this, &TaskThicknessParameters::onIntersectionChanged);
+    connect(ui->buttonRefAdd, &QToolButton::toggled,
+        this, &TaskThicknessParameters::onButtonRefAdd);
+    connect(ui->buttonRefRemove, &QToolButton::toggled,
+        this, &TaskThicknessParameters::onButtonRefRemove);
+    connect(ui->modeComboBox, qOverload<int>(&QComboBox::currentIndexChanged),
+        this, &TaskThicknessParameters::onModeChanged);
+    connect(ui->joinComboBox, qOverload<int>(&QComboBox::currentIndexChanged),
+        this, &TaskThicknessParameters::onJoinTypeChanged);
 
     // Create context menu
     createDeleteAction(ui->listWidgetReferences, ui->buttonRefRemove);
-    connect(deleteAction, SIGNAL(triggered()), this, SLOT(onRefDeleted()));
+    connect(deleteAction, &QAction::triggered, this, &TaskThicknessParameters::onRefDeleted);
 
-    connect(ui->listWidgetReferences, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
-        this, SLOT(setSelection(QListWidgetItem*)));
-    connect(ui->listWidgetReferences, SIGNAL(itemClicked(QListWidgetItem*)),
-        this, SLOT(setSelection(QListWidgetItem*)));
-    connect(ui->listWidgetReferences, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
-        this, SLOT(doubleClicked(QListWidgetItem*)));
+    connect(ui->listWidgetReferences, &QListWidget::currentItemChanged,
+        this, &TaskThicknessParameters::setSelection);
+    connect(ui->listWidgetReferences, &QListWidget::itemClicked,
+        this, &TaskThicknessParameters::setSelection);
+    connect(ui->listWidgetReferences, &QListWidget::itemDoubleClicked,
+        this, &TaskThicknessParameters::doubleClicked);
 
     int mode = pcThickness->Mode.getValue();
     ui->modeComboBox->setCurrentIndex(mode);

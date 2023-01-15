@@ -269,62 +269,104 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
     }
 
     // box
-    connect(ui->boxLength, SIGNAL(valueChanged(double)), this, SLOT(onBoxLengthChanged(double)));
-    connect(ui->boxWidth, SIGNAL(valueChanged(double)), this, SLOT(onBoxWidthChanged(double)));
-    connect(ui->boxHeight, SIGNAL(valueChanged(double)), this, SLOT(onBoxHeightChanged(double)));
+    connect(ui->boxLength, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onBoxLengthChanged);
+    connect(ui->boxWidth, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onBoxWidthChanged);
+    connect(ui->boxHeight, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onBoxHeightChanged);
 
     // cylinder
-    connect(ui->cylinderRadius, SIGNAL(valueChanged(double)), this, SLOT(onCylinderRadiusChanged(double)));
-    connect(ui->cylinderHeight, SIGNAL(valueChanged(double)), this, SLOT(onCylinderHeightChanged(double)));
-    connect(ui->cylinderXSkew, SIGNAL(valueChanged(double)), this, SLOT(onCylinderXSkewChanged(double)));
-    connect(ui->cylinderYSkew, SIGNAL(valueChanged(double)), this, SLOT(onCylinderYSkewChanged(double)));
-    connect(ui->cylinderAngle, SIGNAL(valueChanged(double)), this, SLOT(onCylinderAngleChanged(double)));
+    connect(ui->cylinderRadius, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onCylinderRadiusChanged);
+    connect(ui->cylinderHeight, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onCylinderHeightChanged);
+    connect(ui->cylinderXSkew, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onCylinderXSkewChanged);
+    connect(ui->cylinderYSkew, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onCylinderYSkewChanged);
+    connect(ui->cylinderAngle, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onCylinderAngleChanged);
 
     // cone
-    connect(ui->coneRadius1, SIGNAL(valueChanged(double)), this, SLOT(onConeRadius1Changed(double)));
-    connect(ui->coneRadius2, SIGNAL(valueChanged(double)), this, SLOT(onConeRadius2Changed(double)));
-    connect(ui->coneAngle, SIGNAL(valueChanged(double)), this, SLOT(onConeAngleChanged(double)));
-    connect(ui->coneHeight, SIGNAL(valueChanged(double)), this, SLOT(onConeHeightChanged(double)));
+    connect(ui->coneRadius1, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onConeRadius1Changed);
+    connect(ui->coneRadius2, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onConeRadius2Changed);
+    connect(ui->coneAngle, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onConeAngleChanged);
+    connect(ui->coneHeight, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onConeHeightChanged);
 
     // sphere
-    connect(ui->sphereRadius, SIGNAL(valueChanged(double)), this, SLOT(onSphereRadiusChanged(double)));
-    connect(ui->sphereAngle1, SIGNAL(valueChanged(double)), this, SLOT(onSphereAngle1Changed(double)));
-    connect(ui->sphereAngle2, SIGNAL(valueChanged(double)), this, SLOT(onSphereAngle2Changed(double)));
-    connect(ui->sphereAngle3, SIGNAL(valueChanged(double)), this, SLOT(onSphereAngle3Changed(double)));
+    connect(ui->sphereRadius, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onSphereRadiusChanged);
+    connect(ui->sphereAngle1, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onSphereAngle1Changed);
+    connect(ui->sphereAngle2, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onSphereAngle2Changed);
+    connect(ui->sphereAngle3, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onSphereAngle3Changed);
 
     // ellipsoid
-    connect(ui->ellipsoidRadius1, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidRadius1Changed(double)));
-    connect(ui->ellipsoidRadius2, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidRadius2Changed(double)));
-    connect(ui->ellipsoidRadius3, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidRadius3Changed(double)));
-    connect(ui->ellipsoidAngle1, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidAngle1Changed(double)));
-    connect(ui->ellipsoidAngle2, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidAngle2Changed(double)));
-    connect(ui->ellipsoidAngle3, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidAngle3Changed(double)));
+    connect(ui->ellipsoidRadius1, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onEllipsoidRadius1Changed);
+    connect(ui->ellipsoidRadius2, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onEllipsoidRadius2Changed);
+    connect(ui->ellipsoidRadius3, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onEllipsoidRadius3Changed);
+    connect(ui->ellipsoidAngle1, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onEllipsoidAngle1Changed);
+    connect(ui->ellipsoidAngle2, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onEllipsoidAngle2Changed);
+    connect(ui->ellipsoidAngle3, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onEllipsoidAngle3Changed);
 
     // torus
-    connect(ui->torusRadius1, SIGNAL(valueChanged(double)), this, SLOT(onTorusRadius1Changed(double)));
-    connect(ui->torusRadius2, SIGNAL(valueChanged(double)), this, SLOT(onTorusRadius2Changed(double)));
-    connect(ui->torusAngle1, SIGNAL(valueChanged(double)), this, SLOT(onTorusAngle1Changed(double)));
-    connect(ui->torusAngle2, SIGNAL(valueChanged(double)), this, SLOT(onTorusAngle2Changed(double)));
-    connect(ui->torusAngle3, SIGNAL(valueChanged(double)), this, SLOT(onTorusAngle3Changed(double)));
+    connect(ui->torusRadius1, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onTorusRadius1Changed);
+    connect(ui->torusRadius2, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onTorusRadius2Changed);
+    connect(ui->torusAngle1, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onTorusAngle1Changed);
+    connect(ui->torusAngle2, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onTorusAngle2Changed);
+    connect(ui->torusAngle3, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onTorusAngle3Changed);
 
     //prism
-    connect(ui->prismCircumradius, SIGNAL(valueChanged(double)), this, SLOT(onPrismCircumradiusChanged(double)));
-    connect(ui->prismHeight, SIGNAL(valueChanged(double)), this, SLOT(onPrismHeightChanged(double)));
-    connect(ui->prismXSkew, SIGNAL(valueChanged(double)), this, SLOT(onPrismXSkewChanged(double)));
-    connect(ui->prismYSkew, SIGNAL(valueChanged(double)), this, SLOT(onPrismYSkewChanged(double)));
-    connect(ui->prismPolygon, SIGNAL(valueChanged(int)), this, SLOT(onPrismPolygonChanged(int)));
+    connect(ui->prismCircumradius, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onPrismCircumradiusChanged);
+    connect(ui->prismHeight, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onPrismHeightChanged);
+    connect(ui->prismXSkew, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onPrismXSkewChanged);
+    connect(ui->prismYSkew, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onPrismYSkewChanged);
+    connect(ui->prismPolygon, qOverload<int>(&QSpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onPrismPolygonChanged);
 
     // wedge
-    connect(ui->wedgeXmax, SIGNAL(valueChanged(double)), this, SLOT(onWedgeXmaxChanged(double)));
-    connect(ui->wedgeXmin, SIGNAL(valueChanged(double)), this, SLOT(onWedgeXminChanged(double)));
-    connect(ui->wedgeYmax, SIGNAL(valueChanged(double)), this, SLOT(onWedgeYmaxChanged(double)));
-    connect(ui->wedgeYmin, SIGNAL(valueChanged(double)), this, SLOT(onWedgeYminChanged(double)));
-    connect(ui->wedgeZmax, SIGNAL(valueChanged(double)), this, SLOT(onWedgeZmaxChanged(double)));
-    connect(ui->wedgeZmin, SIGNAL(valueChanged(double)), this, SLOT(onWedgeZminChanged(double)));
-    connect(ui->wedgeX2max, SIGNAL(valueChanged(double)), this, SLOT(onWedgeX2maxChanged(double)));
-    connect(ui->wedgeX2min, SIGNAL(valueChanged(double)), this, SLOT(onWedgeX2minChanged(double)));
-    connect(ui->wedgeZ2max, SIGNAL(valueChanged(double)), this, SLOT(onWedgeZ2maxChanged(double)));
-    connect(ui->wedgeZ2min, SIGNAL(valueChanged(double)), this, SLOT(onWedgeZ2minChanged(double)));
+    connect(ui->wedgeXmax, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onWedgeXmaxChanged);
+    connect(ui->wedgeXmin, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onWedgeXminChanged);
+    connect(ui->wedgeYmax, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onWedgeYmaxChanged);
+    connect(ui->wedgeYmin, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onWedgeYminChanged);
+    connect(ui->wedgeZmax, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onWedgeZmaxChanged);
+    connect(ui->wedgeZmin, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onWedgeZminChanged);
+    connect(ui->wedgeX2max, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onWedgeX2maxChanged);
+    connect(ui->wedgeX2min, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onWedgeX2minChanged);
+    connect(ui->wedgeZ2max, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onWedgeZ2maxChanged);
+    connect(ui->wedgeZ2min, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskBoxPrimitives::onWedgeZ2minChanged);
 }
 
 /*

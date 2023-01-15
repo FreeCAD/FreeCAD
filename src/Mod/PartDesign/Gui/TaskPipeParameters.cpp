@@ -76,10 +76,10 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe *PipeView, bool /*newObj
     QMetaObject::connectSlotsByName(this);
 
     // some buttons are handled in a buttongroup
-    connect(ui->buttonProfileBase, SIGNAL(toggled(bool)),
-            this, SLOT(onProfileButton(bool)));
-    connect(ui->comboBoxTransition, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(onTransitionChanged(int)));
+    connect(ui->buttonProfileBase, &QToolButton::toggled,
+            this, &TaskPipeParameters::onProfileButton);
+    connect(ui->comboBoxTransition, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &TaskPipeParameters::onTransitionChanged);
 
     // Create context menu
     QAction* remove = new QAction(tr("Remove"), this);
@@ -90,7 +90,7 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe *PipeView, bool /*newObj
     remove->setShortcutVisibleInContextMenu(true);
 #endif
     ui->listWidgetReferences->addAction(remove);
-    connect(remove, SIGNAL(triggered()), this, SLOT(onDeleteEdge()));
+    connect(remove, &QAction::triggered, this, &TaskPipeParameters::onDeleteEdge);
     ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
 
     this->groupLayout()->addWidget(proxy);
@@ -547,20 +547,20 @@ TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView, bool /*newO
     QMetaObject::connectSlotsByName(this);
 
     // some buttons are handled in a buttongroup
-    connect(ui->comboBoxMode, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(onOrientationChanged(int)));
-    connect(ui->buttonProfileClear, SIGNAL(clicked()),
-            this, SLOT(onClearButton()));
-    connect(ui->stackedWidget, SIGNAL(currentChanged(int)),
-            this, SLOT(updateUI(int)));
-    connect(ui->curvelinear, SIGNAL(toggled(bool)),
-            this, SLOT(onCurvelinearChanged(bool)));
-    connect(ui->doubleSpinBoxX, SIGNAL(valueChanged(double)),
-            this, SLOT(onBinormalChanged(double)));
-    connect(ui->doubleSpinBoxY, SIGNAL(valueChanged(double)),
-            this, SLOT(onBinormalChanged(double)));
-    connect(ui->doubleSpinBoxZ, SIGNAL(valueChanged(double)),
-            this, SLOT(onBinormalChanged(double)));
+    connect(ui->comboBoxMode, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &TaskPipeOrientation::onOrientationChanged);
+    connect(ui->buttonProfileClear, &QToolButton::clicked,
+            this, &TaskPipeOrientation::onClearButton);
+    connect(ui->stackedWidget, &QStackedWidget::currentChanged,
+            this, &TaskPipeOrientation::updateUI);
+    connect(ui->curvelinear, &QCheckBox::toggled,
+            this, &TaskPipeOrientation::onCurvelinearChanged);
+    connect(ui->doubleSpinBoxX, qOverload<double>(&QDoubleSpinBox::valueChanged),
+            this, &TaskPipeOrientation::onBinormalChanged);
+    connect(ui->doubleSpinBoxY, qOverload<double>(&QDoubleSpinBox::valueChanged),
+            this, &TaskPipeOrientation::onBinormalChanged);
+    connect(ui->doubleSpinBoxZ, qOverload<double>(&QDoubleSpinBox::valueChanged),
+            this, &TaskPipeOrientation::onBinormalChanged);
 
     // Create context menu
     QAction* remove = new QAction(tr("Remove"), this);
@@ -571,7 +571,7 @@ TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView, bool /*newO
     remove->setShortcutVisibleInContextMenu(true);
 #endif
     ui->listWidgetReferences->addAction(remove);
-    connect(remove, SIGNAL(triggered()), this, SLOT(onDeleteItem()));
+    connect(remove, &QAction::triggered, this, &TaskPipeOrientation::onDeleteItem);
     ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
 
     this->groupLayout()->addWidget(proxy);
@@ -815,10 +815,10 @@ TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool /*newObj*/, QW
     QMetaObject::connectSlotsByName(this);
 
     // some buttons are handled in a buttongroup
-    connect(ui->comboBoxScaling, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(onScalingChanged(int)));
-    connect(ui->stackedWidget, SIGNAL(currentChanged(int)),
-            this, SLOT(updateUI(int)));
+    connect(ui->comboBoxScaling, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &TaskPipeScaling::onScalingChanged);
+    connect(ui->stackedWidget, &QStackedWidget::currentChanged,
+            this, &TaskPipeScaling::updateUI);
 
     // Create context menu
     QAction* remove = new QAction(tr("Remove"), this);
@@ -830,10 +830,10 @@ TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool /*newObj*/, QW
 #endif
     ui->listWidgetReferences->addAction(remove);
     ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
-    connect(remove, SIGNAL(triggered()), this, SLOT(onDeleteSection()));
+    connect(remove, &QAction::triggered, this, &TaskPipeScaling::onDeleteSection);
 
-    connect(ui->listWidgetReferences->model(),
-        SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)), this, SLOT(indexesMoved()));
+    connect(ui->listWidgetReferences->model(), &QAbstractListModel::rowsMoved,
+            this, &TaskPipeScaling::indexesMoved);
 
     this->groupLayout()->addWidget(proxy);
 
