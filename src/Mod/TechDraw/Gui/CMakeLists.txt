@@ -453,7 +453,11 @@ SET(TechDrawGuiIcon_SVG
 ##install OSIFONT
 SET(TechDrawGuiFonts
     Resources/fonts/osifont-lgpl3fe.ttf
+    Resources/fonts/osifont-italic.ttf
     Resources/fonts/osifont.license
+    Resources/fonts/Y14.5-2018.ttf
+    Resources/fonts/Y14.5Font.license
+    Resources/fonts/Y14.5-FreeCAD.ttf
 )
 
 if(FREECAD_USE_PCH)
