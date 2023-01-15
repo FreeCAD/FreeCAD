@@ -1,0 +1,552 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:freecad="http://www.freecadweb.org/wiki/index.php?title=Svg_Namespace"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   version="1.1"
+   id="svg2"
+   viewBox="0 0 215.9 279.4"
+   height="279.4mm"
+   width="215.9mm">
+  <!-- ANSIA_Portrait.svg -->
+  <!-- Working space 10 10 269 205 -->
+  <defs
+     id="defs4" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <rect
+     style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;fill-opacity:0.99607843;fill-rule:nonzero;stroke:#000000;stroke-width:0.79825026;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
+     id="rect2985"
+     width="146.65559"
+     height="48.074078"
+     x="53.290688"
+     y="214.65984" />
+  <rect
+     style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;fill-opacity:0.99607843;fill-rule:nonzero;stroke:#000000;stroke-width:0.6584819;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
+     id="rect3757"
+     width="99.500763"
+     height="48.216183"
+     x="100.51425"
+     y="214.58879" />
+  <rect
+     style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;fill-opacity:0.99607843;fill-rule:nonzero;stroke:#000000;stroke-width:0.64497554;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
+     id="rect3767"
+     width="99.514038"
+     height="11.517738"
+     x="100.50764"
+     y="214.58191" />
+  <rect
+     y="248.05588"
+     x="100.43254"
+     height="9.4394817"
+     width="90.056595"
+     id="rect3868"
+     style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;fill-opacity:0.99607843;fill-rule:nonzero;stroke:#000000;stroke-width:0.49492717;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate" />
+  <rect
+     style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;fill-opacity:0.99607843;fill-rule:nonzero;stroke:#000000;stroke-width:0.46525189;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
+     id="rect3765"
+     width="80.553055"
+     height="9.3277225"
+     x="109.69098"
+     y="248.04082" />
+  <rect
+     style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;fill-opacity:0.99607843;fill-rule:nonzero;stroke:#000000;stroke-width:0.38651305;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
+     id="rect3870"
+     width="55.964153"
+     height="9.2661562"
+     x="134.83784"
+     y="248.26035" />
+  <rect
+     y="248.14598"
+     x="190.9438"
+     height="14.650785"
+     width="9.3223791"
+     id="rect3872"
+     style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;fill-opacity:0.99607843;fill-rule:nonzero;stroke:#000000;stroke-width:0.67522365;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate" />
+  <rect
+     y="257.21011"
+     x="100.33708"
+     height="5.772459"
+     width="21.536629"
+     id="rect3864"
+     style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;fill-opacity:0.99607843;fill-rule:nonzero;stroke:#000000;stroke-width:0.30369493;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate" />
+  <rect
+     style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;fill-opacity:0.99607843;fill-rule:nonzero;stroke:#000000;stroke-width:0.48447812;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
+     id="rect3866"
+     width="39.520321"
+     height="5.6731734"
+     x="151.14931"
+     y="257.4053" />
+  <path
+     style="fill:none;stroke:#000000;stroke-width:0.66519201;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="M 100.34099,232.14032 H 53.33783"
+     id="path5183" />
+  <path
+     style="fill:none;stroke:#000000;stroke-width:0.26607683;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="m 86.017534,232.28406 v 9.05611"
+     id="path5185" />
+  <rect
+     y="241.49258"
+     x="53.620979"
+     height="5.4509139"
+     width="46.6772"
+     id="rect5966"
+     style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;fill-opacity:0.99607843;fill-rule:nonzero;stroke:#000000;stroke-width:0.62538338;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate" />
+  <rect
+     style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;fill-opacity:0.99607843;fill-rule:nonzero;stroke:#000000;stroke-width:0.62538338;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
+     id="rect6005"
+     width="46.6772"
+     height="5.4509139"
+     x="53.620979"
+     y="246.71036" />
+  <rect
+     y="251.9281"
+     x="53.620979"
+     height="5.4509139"
+     width="46.6772"
+     id="rect6007"
+     style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;fill-opacity:0.99607843;fill-rule:nonzero;stroke:#000000;stroke-width:0.62538338;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate" />
+  <rect
+     style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;fill-opacity:0.99607843;fill-rule:nonzero;stroke:#000000;stroke-width:0.62538338;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
+     id="rect6009"
+     width="46.6772"
+     height="5.4509139"
+     x="53.620979"
+     y="257.1459" />
+  <line
+     style="stroke:#404040;stroke-width:0.05776427;stroke-dasharray:2.02174926, 0.28882132, 0.28882132, 0.28882132;stroke-dashoffset:17.5"
+     id="line5117"
+     y2="236.784"
+     x2="98.46199"
+     y1="236.784"
+     x1="87.627151" />
+  <line
+     style="stroke:#404040;stroke-width:0.05776427;stroke-dasharray:2.02174926, 0.28882132, 0.28882132, 0.28882132;stroke-dashoffset:17.5"
+     id="line5119"
+     y2="239.86359"
+     x2="95.753296"
+     y1="233.70438"
+     x1="95.753296" />
+  <polygon
+     style="fill:none;stroke:#000000;stroke-width:2"
+     id="polygon5123"
+     points="10,10 90,30 90,70 10,90 "
+     transform="matrix(0.05417425,0,0,0.06159218,87.650454,233.9428)" />
+  <ellipse
+     ry="1.2318436"
+     rx="1.083485"
+     style="fill:none;stroke:#000000;stroke-width:0.11552852"
+     id="circle5125"
+     cy="237.0224"
+     cx="95.776596" />
+  <ellipse
+     ry="2.4636872"
+     rx="2.16697"
+     style="fill:none;stroke:#000000;stroke-width:0.11552852"
+     id="circle5127"
+     cy="237.0224"
+     cx="95.776596" />
+  <text
+     id="text3332"
+     y="242.41647"
+     x="55.518158"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.11443925px;line-height:0%;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1"
+     transform="scale(0.98782896,1.012321)">
+    <tspan
+       style="stroke-width:1"
+       y="242.41647"
+       x="55.518158"
+       id="tspan3334">Drawn:</tspan>
+  </text>
+  <text
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.11443925px;line-height:0%;font-family:sans-serif;-inkscape-font-specification:Sans;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1"
+     x="55.518158"
+     y="247.31808"
+     id="text3348"
+     transform="scale(0.98782896,1.012321)">
+    <tspan
+       id="tspan3350"
+       x="55.518158"
+       y="247.31808"
+       style="font-family:sans-serif;stroke-width:1">Checked:</tspan>
+  </text>
+  <text
+     id="text3364"
+     y="252.26761"
+     x="55.518158"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.11443925px;line-height:0%;font-family:sans-serif;-inkscape-font-specification:Sans;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1"
+     transform="scale(0.98782896,1.012321)">
+    <tspan
+       y="252.26761"
+       x="55.518158"
+       id="tspan3366"
+       style="font-family:sans-serif;stroke-width:1">Approved:</tspan>
+  </text>
+  <text
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.11443925px;line-height:0%;font-family:sans-serif;-inkscape-font-specification:Sans;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1"
+     x="55.518158"
+     y="257.56573"
+     id="text3380"
+     transform="scale(0.98782896,1.012321)">
+    <tspan
+       id="tspan3382"
+       x="55.518158"
+       y="257.56573"
+       style="font-family:sans-serif;stroke-width:1">Approved:</tspan>
+  </text>
+  <text
+     style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.24420738px;line-height:0%;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:start;writing-mode:lr-tb;text-anchor:start;display:inline;overflow:visible;visibility:visible;opacity:1;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke-width:1;marker:none;enable-background:accumulate"
+     x="104.02786"
+     y="218.99561"
+     id="BlockACompany"
+     freecad:editable="CompanyName">
+    <tspan
+       id="tspan6595"
+       x="104.02786"
+       y="218.99561"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.24420738px;font-family:sans-serif;-inkscape-font-specification:sans-serif;stroke-width:1">Company Name</tspan>
+  </text>
+  <text
+     style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.24420738px;line-height:0%;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:start;writing-mode:lr-tb;text-anchor:start;display:inline;overflow:visible;visibility:visible;opacity:1;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke-width:1;marker:none;enable-background:accumulate"
+     x="103.85362"
+     y="224.01624"
+     id="BlockAAddress"
+     freecad:editable="CompanyAddress">
+    <tspan
+       style="stroke-width:1"
+       id="tspan6603"
+       x="103.85362"
+       y="224.01624">1234 Main St</tspan>
+  </text>
+  <text
+     x="104.54329"
+     y="232.29462"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.24250412px;line-height:0%;font-family:sans-serif;-inkscape-font-specification:Sans;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1"
+     id="BlockB Title1"
+     freecad:editable="DrawingTitle1">
+    <tspan
+       id="tspan4467"
+       style="font-family:sans-serif;stroke-width:1">Drawing Title 1</tspan>
+  </text>
+  <text
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;line-height:0%;font-family:sans;-inkscape-font-specification:sans;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1"
+     x="104.74911"
+     y="237.96518"
+     id="BlockBTitle2"
+     freecad:editable="DrawingTitle2">
+    <tspan
+       id="tspan3762-4"
+       x="104.74911"
+       y="237.96518"
+       style="font-size:3.14550209px;line-height:1.25;stroke-width:1">Drawing Title 2</tspan>
+  </text>
+  <text
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;line-height:0%;font-family:sans;-inkscape-font-specification:sans;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1"
+     x="104.74911"
+     y="243.86841"
+     id="BlockB Title3"
+     freecad:editable="DrawingTitle3">
+    <tspan
+       id="tspan3766-5"
+       x="104.74911"
+       y="243.86841"
+       style="font-size:3.14550209px;line-height:1.25;stroke-width:1">Drawing Title 3</tspan>
+  </text>
+  <text
+     style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;line-height:0%;font-family:sans-serif;-inkscape-font-specification:Sans;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;letter-spacing:0px;word-spacing:0px;text-transform:none;writing-mode:lr-tb;direction:ltr;baseline-shift:baseline;text-anchor:start;display:inline;overflow:visible;visibility:visible;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;enable-background:accumulate"
+     x="139.0934"
+     y="254.59772"
+     id="BlockC DrawingNumber"
+     freecad:editable="DrawingNumber">
+    <tspan
+       id="tspan3792-9"
+       x="139.0934"
+       y="254.59772"
+       style="font-size:4.19400311px;line-height:1.25;font-family:sans-serif;stroke-width:1px">Drawing Number</tspan>
+  </text>
+  <text
+     style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;line-height:0%;font-family:sans-serif;-inkscape-font-specification:Sans;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;letter-spacing:0px;word-spacing:0px;text-transform:none;writing-mode:lr-tb;direction:ltr;baseline-shift:baseline;text-anchor:start;display:inline;overflow:visible;visibility:visible;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;enable-background:accumulate"
+     x="192.84343"
+     y="254.22882"
+     id="BlockD Revision"
+     freecad:editable="Revision">
+    <tspan
+       id="tspan3796-0"
+       x="192.84343"
+       y="254.22882"
+       style="font-size:3.14550209px;line-height:1.25;font-family:sans-serif;stroke-width:1px">Rev</tspan>
+  </text>
+  <text
+     style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;line-height:0%;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:start;writing-mode:lr-tb;text-anchor:start;display:inline;overflow:visible;visibility:visible;opacity:1;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:2;stroke-opacity:1;marker:none;enable-background:accumulate"
+     x="75.297729"
+     y="245.27246"
+     id="BlockE DrawnBy"
+     freecad:editable="DrawnBy">
+    <tspan
+       id="tspan6969"
+       x="75.297729"
+       y="245.27246"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.94890809px;line-height:1.25;font-family:sans;-inkscape-font-specification:sans;stroke:none;stroke-width:1">Drawn By</tspan>
+  </text>
+  <text
+     style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;line-height:0%;font-family:sans;-inkscape-font-specification:sans;text-align:start;writing-mode:lr-tb;text-anchor:start;display:inline;overflow:visible;visibility:visible;opacity:1;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke-width:1;marker:none;enable-background:accumulate"
+     x="75.42157"
+     y="250.48691"
+     id="BlockE CheckedBy"
+     freecad:editable="CheckedBy">
+    <tspan
+       id="tspan6973"
+       x="75.42157"
+       y="250.48691"
+       style="font-size:2.94890809px;line-height:1.25;stroke-width:1">Checked By</tspan>
+  </text>
+  <text
+     style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;line-height:0%;font-family:sans;-inkscape-font-specification:sans;text-align:start;writing-mode:lr-tb;text-anchor:start;display:inline;overflow:visible;visibility:visible;opacity:1;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke-width:1;marker:none;enable-background:accumulate"
+     x="75.56411"
+     y="255.65598"
+     id="BlockE Approved1"
+     freecad:editable="Approved1">
+    <tspan
+       id="tspan6977"
+       x="75.56411"
+       y="255.65598"
+       style="font-size:2.94890809px;line-height:1.25;stroke-width:1">Approved 1</tspan>
+  </text>
+  <text
+     style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;line-height:0%;font-family:sans;-inkscape-font-specification:sans;text-align:start;writing-mode:lr-tb;text-anchor:start;display:inline;overflow:visible;visibility:visible;opacity:1;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke-width:1;marker:none;enable-background:accumulate"
+     x="75.56411"
+     y="260.82504"
+     id="BlockE Approved2"
+     freecad:editable="Approved2">
+    <tspan
+       id="tspan6981"
+       x="75.56411"
+       y="260.82504"
+       style="font-size:2.94890809px;line-height:1.25;stroke-width:1">Approved 2</tspan>
+  </text>
+  <text
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;line-height:0%;font-family:sans-serif;-inkscape-font-specification:Sans;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1"
+     x="104.72304"
+     y="261.33893"
+     id="BlockH Scale"
+     freecad:editable="Scale">
+    <tspan
+       id="tspan3770-2"
+       x="104.72304"
+       y="261.33893"
+       style="font-size:3.14550209px;line-height:1.25;font-family:sans-serif;stroke-width:1">Scale</tspan>
+  </text>
+  <text
+     style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;line-height:0%;font-family:sans-serif;-inkscape-font-specification:Sans;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;letter-spacing:0px;word-spacing:0px;text-transform:none;writing-mode:lr-tb;direction:ltr;baseline-shift:baseline;text-anchor:start;display:inline;overflow:visible;visibility:visible;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;enable-background:accumulate"
+     x="112.8165"
+     y="254.47992"
+     id="BlockI Code"
+     freecad:editable="Code">
+    <tspan
+       id="tspan3788-7"
+       x="112.8165"
+       y="254.47992"
+       style="font-size:4.19400311px;line-height:1.25;font-family:sans-serif;stroke-width:1px">Code</tspan>
+  </text>
+  <text
+     style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:12px;line-height:0%;font-family:sans-serif;-inkscape-font-specification:'Sans Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1"
+     x="103.14891"
+     y="254.31027"
+     id="BlockJ Size">
+    <tspan
+       id="tspan3784"
+       x="103.14891"
+       y="254.31027"
+       style="font-size:5.32153606px;line-height:1.25;font-family:sans-serif;stroke-width:1">A</tspan>
+  </text>
+  <text
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;line-height:0%;font-family:sans-serif;-inkscape-font-specification:Sans;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1"
+     x="130.45726"
+     y="261.29361"
+     id="BlockK Weight"
+     freecad:editable="Weight">
+    <tspan
+       id="tspan3774-9"
+       x="130.45726"
+       y="261.29361"
+       style="font-size:3.14550209px;line-height:1.25;font-family:sans-serif;stroke-width:1">Weight</tspan>
+    <tspan
+       x="130.45726"
+       y="265.55966"
+       id="tspan3776-8"
+       style="font-size:3.14550209px;line-height:1.25;font-family:sans-serif;stroke-width:1" />
+  </text>
+  <text
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;line-height:0%;font-family:sans-serif;-inkscape-font-specification:Sans;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1"
+     x="160.448"
+     y="261.48077"
+     id="BlockL Sheet"
+     freecad:editable="Sheet">
+    <tspan
+       id="tspan3780-0"
+       x="160.448"
+       y="261.48077"
+       style="font-size:3.14550209px;line-height:1.25;font-family:sans-serif;stroke-width:1">Sheet n of m</tspan>
+  </text>
+  <g
+     id="g1110">
+    <rect
+       y="9.852066"
+       x="9.8520584"
+       height="259.69586"
+       width="196.19588"
+       id="rectOutline"
+       style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;fill-opacity:0.99607843;fill-rule:nonzero;stroke:#000000;stroke-width:0.65412676;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate">
+      <title
+         id="title5119">OutLine</title>
+    </rect>
+    <rect
+       y="17.056482"
+       x="16.069893"
+       height="245.5049"
+       width="183.87308"
+       id="rect3675"
+       style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;fill-opacity:0.99607843;fill-rule:nonzero;stroke:#000000;stroke-width:0.66533816;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate" />
+    <g
+       transform="translate(19.805398,-64.598635)"
+       id="g1051">
+      <text
+         style="color:#000000;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:12px;line-height:0%;font-family:sans-serif;-inkscape-font-specification:'Sans Bold';text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;letter-spacing:0px;word-spacing:0px;text-transform:none;writing-mode:lr-tb;direction:ltr;baseline-shift:baseline;text-anchor:start;display:inline;overflow:visible;visibility:visible;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;enable-background:accumulate"
+         x="-9.4210882"
+         y="251.86903"
+         id="text4599"
+         transform="scale(0.98356832,1.0167062)">
+        <tspan
+           id="tspan4601"
+           x="-9.4210882"
+           y="251.86903"
+           style="font-size:5.32153606px;line-height:1.25;font-family:sans-serif;stroke-width:1px">A</tspan>
+      </text>
+      <text
+         style="color:#000000;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:12px;line-height:0%;font-family:sans-serif;-inkscape-font-specification:'Sans Bold';text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;letter-spacing:0px;word-spacing:0px;text-transform:none;writing-mode:lr-tb;direction:ltr;baseline-shift:baseline;text-anchor:start;display:inline;overflow:visible;visibility:visible;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;enable-background:accumulate"
+         x="-9.447072"
+         y="153.89371"
+         id="text4603"
+         transform="scale(0.98356832,1.0167062)">
+        <tspan
+           id="tspan4605"
+           x="-9.447072"
+           y="153.89371"
+           style="font-size:5.32153606px;line-height:1.25;font-family:sans-serif;stroke-width:1px">B</tspan>
+      </text>
+    </g>
+    <g
+       transform="translate(-7.3213002,-96.48771)"
+       id="g1057">
+      <text
+         id="text4623"
+         y="110.24606"
+         x="177.7027"
+         style="color:#000000;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:12px;line-height:0%;font-family:sans-serif;-inkscape-font-specification:'Sans Bold';text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;letter-spacing:0px;word-spacing:0px;text-transform:none;writing-mode:lr-tb;direction:ltr;baseline-shift:baseline;text-anchor:start;display:inline;overflow:visible;visibility:visible;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;enable-background:accumulate"
+         transform="scale(0.98356832,1.0167062)">
+        <tspan
+           y="110.24606"
+           x="177.7027"
+           id="tspan4625"
+           style="font-size:5.32153606px;line-height:1.25;font-family:sans-serif;stroke-width:1px">1</tspan>
+      </text>
+      <text
+         id="text4627"
+         y="110.28114"
+         x="52.93409"
+         style="color:#000000;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:12px;line-height:0%;font-family:sans-serif;-inkscape-font-specification:'Sans Bold';text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;letter-spacing:0px;word-spacing:0px;text-transform:none;writing-mode:lr-tb;direction:ltr;baseline-shift:baseline;text-anchor:start;display:inline;overflow:visible;visibility:visible;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;enable-background:accumulate"
+         transform="scale(0.98356832,1.0167062)">
+        <tspan
+           y="110.28114"
+           x="52.93409"
+           id="tspan4629"
+           style="font-size:5.32153606px;line-height:1.25;font-family:sans-serif;stroke-width:1px">2</tspan>
+      </text>
+    </g>
+    <path
+       id="path1716"
+       d="m 107.95,262.02951 v 7.6616"
+       style="fill:none;stroke:#000000;stroke-width:0.49399999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       id="path1720"
+       d="m 199.56005,139.7 h 6.81029"
+       style="fill:none;stroke:#000000;stroke-width:0.49399999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.49399999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 9.544376,139.7 h 6.81029"
+       id="path1059" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.49399999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 107.95,9.563206 v 7.6616"
+       id="path1061" />
+    <g
+       id="g1071"
+       transform="translate(-7.3213002,155.68262)">
+      <text
+         transform="scale(0.98356832,1.0167062)"
+         style="color:#000000;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:12px;line-height:0%;font-family:sans-serif;-inkscape-font-specification:'Sans Bold';text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;letter-spacing:0px;word-spacing:0px;text-transform:none;writing-mode:lr-tb;direction:ltr;baseline-shift:baseline;text-anchor:start;display:inline;overflow:visible;visibility:visible;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;enable-background:accumulate"
+         x="177.7027"
+         y="110.24606"
+         id="text1065">
+        <tspan
+           style="font-size:5.32153606px;line-height:1.25;font-family:sans-serif;stroke-width:1px"
+           id="tspan1063"
+           x="177.7027"
+           y="110.24606">1</tspan>
+      </text>
+      <text
+         transform="scale(0.98356832,1.0167062)"
+         style="color:#000000;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:12px;line-height:0%;font-family:sans-serif;-inkscape-font-specification:'Sans Bold';text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;letter-spacing:0px;word-spacing:0px;text-transform:none;writing-mode:lr-tb;direction:ltr;baseline-shift:baseline;text-anchor:start;display:inline;overflow:visible;visibility:visible;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;enable-background:accumulate"
+         x="52.93409"
+         y="110.28114"
+         id="text1069">
+        <tspan
+           style="font-size:5.32153606px;line-height:1.25;font-family:sans-serif;stroke-width:1px"
+           id="tspan1067"
+           x="52.93409"
+           y="110.28114">2</tspan>
+      </text>
+    </g>
+    <g
+       id="g1081"
+       transform="translate(209.83675,-64.598635)">
+      <text
+         transform="scale(0.98356832,1.0167062)"
+         id="text1075"
+         y="251.86903"
+         x="-9.4210882"
+         style="color:#000000;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:12px;line-height:0%;font-family:sans-serif;-inkscape-font-specification:'Sans Bold';text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;letter-spacing:0px;word-spacing:0px;text-transform:none;writing-mode:lr-tb;direction:ltr;baseline-shift:baseline;text-anchor:start;display:inline;overflow:visible;visibility:visible;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;enable-background:accumulate">
+        <tspan
+           style="font-size:5.32153606px;line-height:1.25;font-family:sans-serif;stroke-width:1px"
+           y="251.86903"
+           x="-9.4210882"
+           id="tspan1073">A</tspan>
+      </text>
+      <text
+         transform="scale(0.98356832,1.0167062)"
+         id="text1079"
+         y="153.89371"
+         x="-9.447072"
+         style="color:#000000;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:12px;line-height:0%;font-family:sans-serif;-inkscape-font-specification:'Sans Bold';text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;letter-spacing:0px;word-spacing:0px;text-transform:none;writing-mode:lr-tb;direction:ltr;baseline-shift:baseline;text-anchor:start;display:inline;overflow:visible;visibility:visible;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;enable-background:accumulate">
+        <tspan
+           style="font-size:5.32153606px;line-height:1.25;font-family:sans-serif;stroke-width:1px"
+           y="153.89371"
+           x="-9.447072"
+           id="tspan1077">B</tspan>
+      </text>
+    </g>
+  </g>
+</svg>
