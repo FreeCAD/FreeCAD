@@ -148,8 +148,8 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(ViewProviderFemCo
     connect(ui->comboThermalBoundaryType, qOverload<int>(&QComboBox::currentIndexChanged),
             this, &TaskFemConstraintFluidBoundary::onThermalBoundaryTypeChanged);
 
-    connect(ui->buttonDirection, SIGNAL(pressed()),
-            this, SLOT(onButtonDirection()));
+    connect(ui->buttonDirection, &QPushButton::pressed,
+            this, [=]{onButtonDirection(true);});
     connect(ui->checkReverse, &QCheckBox::toggled,
             this, &TaskFemConstraintFluidBoundary::onCheckReverse);
 

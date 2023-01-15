@@ -58,8 +58,8 @@ TaskFemConstraintForce::TaskFemConstraintForce(ViewProviderFemConstraintForce* C
 
     // create a context menu for the listview of the references
     createDeleteAction(ui->listReferences);
-    deleteAction->connect(deleteAction, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
-
+    connect(deleteAction, &QAction::triggered,
+            this, &TaskFemConstraintForce::onReferenceDeleted);
     connect(ui->spinForce, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
             this, &TaskFemConstraintForce::onForceChanged);
     connect(ui->buttonDirection, &QToolButton::clicked,
