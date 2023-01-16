@@ -283,6 +283,7 @@ public:
     /// add a tangency constraint between two geometries
     int addTangentConstraint(int geoId1, int geoId2);
     int addTangentLineAtBSplineKnotConstraint(int checkedlinegeoId, int checkedbsplinegeoId, int checkedknotgeoid);
+    int addTangentLineEndpointAtBSplineKnotConstraint(int checkedlinegeoId, PointPos endpointPos, int checkedbsplinegeoId, int checkedknotgeoid);
     int addAngleAtPointConstraint(
             int geoId1, PointPos pos1,
             int geoId2, PointPos pos2,

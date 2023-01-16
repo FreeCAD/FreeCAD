@@ -1715,15 +1715,18 @@ int Sketch::addConstraint(const Constraint *constraint)
                         c.value, constraint->Type, c.driving);
         }
         break;
-    case Tangent:
+    case Tangent: {
+        bool isSpecialCase = false;
+
         if (constraint->FirstPos == PointPos::none &&
             constraint->SecondPos == PointPos::none &&
             constraint->Third == GeoEnum::GeoUndef){
             //simple tangency
             rtn = addTangentConstraint(constraint->First,constraint->Second);
+
+            isSpecialCase = true;
         }
         else if (constraint->FirstPos == PointPos::start &&
-                 constraint->SecondPos == PointPos::none &&
                  constraint->Third == GeoEnum::GeoUndef) {
             // check for B-Spline Knot to curve tangency
             auto knotgeoId = checkGeoId(constraint->First);
@@ -1737,13 +1740,25 @@ int Sketch::addConstraint(const Constraint *constraint)
 
                     auto linegeoid = checkGeoId(constraint->Second);
 
-                    if (Geoms[linegeoid].type == Line)
-                        rtn = addTangentLineAtBSplineKnotConstraint(
-                            linegeoid, bsplinegeoid, knotgeoId);
+                    if (Geoms[linegeoid].type == Line) {
+                        if (constraint->SecondPos == PointPos::none) {
+                            rtn = addTangentLineAtBSplineKnotConstraint(
+                                linegeoid, bsplinegeoid, knotgeoId);
+
+                            isSpecialCase = true;
+                        }
+                        else if (constraint->SecondPos == PointPos::start ||
+                                 constraint->SecondPos == PointPos::end) {
+                            rtn = addTangentLineEndpointAtBSplineKnotConstraint(
+                                linegeoid, constraint->SecondPos, bsplinegeoid, knotgeoId);
+
+                            isSpecialCase = true;
+                        }
+                    }
                 }
             }
         }
-        else {
+        if (!isSpecialCase) {
             //any other point-wise tangency (endpoint-to-curve, endpoint-to-endpoint, tangent-via-point)
             c.value = new double(constraint->getValue());
             if(c.driving)
@@ -1760,6 +1775,7 @@ int Sketch::addConstraint(const Constraint *constraint)
                 c.value, constraint->Type, c.driving);
         }
         break;
+    }
     case Distance:
         if (constraint->SecondPos != PointPos::none){ // point to point distance
             c.value = new double(constraint->getValue());
@@ -2497,6 +2513,53 @@ int Sketch::addTangentLineAtBSplineKnotConstraint(int checkedlinegeoId, int chec
     }
 }
 
+int Sketch::addTangentLineEndpointAtBSplineKnotConstraint(int checkedlinegeoId, PointPos endpointPos, int checkedbsplinegeoId, int checkedknotgeoid)
+{
+    GCS::BSpline &b = BSplines[Geoms[checkedbsplinegeoId].index];
+    GCS::Line &l = Lines[Geoms[checkedlinegeoId].index];
+    auto pointId = getPointId(checkedlinegeoId, endpointPos);
+    auto pointIdKnot = getPointId(checkedknotgeoid, PointPos::start);
+    GCS::Point &p = Points[pointId];
+    GCS::Point &pk = Points[pointIdKnot];
+
+    size_t knotindex = b.knots.size();
+
+    auto knotIt = std::find(b.knotpointGeoids.begin(),
+                    b.knotpointGeoids.end(), checkedknotgeoid);
+
+    knotindex = std::distance(b.knotpointGeoids.begin(), knotIt);
+
+    if (knotindex >= b.knots.size()){
+        Base::Console().Error("addConstraint: Knot index out-of-range!\n");
+        return -1;
+    }
+
+    if (b.mult[knotindex] >= b.degree) {
+        if (b.periodic || (knotindex > 0 && knotindex < (b.knots.size()-1))) {
+            Base::Console().Error("addTangentLineEndpointAtBSplineKnotConstraint: cannot set constraint when B-spline slope is discontinuous at knot!\n");
+            return -1;
+        }
+        else {
+            // TODO: Let angle-at-point do the work. Requires a `double * value`
+            // return addAngleAtPointConstraint(
+            //     linegeoid, endpointPos,
+            //     bsplinegeoid, PointPos::none,
+            //     knotgeoId, PointPos::start,
+            //     nullptr, Tangent, true);
+
+            // For now we just throw an error.
+            Base::Console().Error("addTangentLineEndpointAtBSplineKnotConstraint: This method cannot set tangent constraint at end knots of a B-spline. Please constrain the start/end points instead.\n");
+            return -1;
+        }
+    }
+    else {
+        int tag = ++ConstraintsCounter;
+        GCSsys.addConstraintP2PCoincident(p, pk, tag);
+        GCSsys.addConstraintTangentAtBSplineKnot(b, l, knotindex, tag);
+        return ConstraintsCounter;
+    }
+}
+
 //This function handles any type of tangent, perpendicular and angle
 // constraint that involves a point.
 // i.e. endpoint-to-curve, endpoint-to-endpoint and tangent-via-point
@@ -3032,7 +3095,7 @@ int Sketch::addSnellsLawConstraint(int geoIdRay1, PointPos posRay1,
     GCS::Point &p1 = Points[pointId1];
 
     // add the parameters (refractive indexes)
-    // n1 uses the place hold by n2divn1, so that is retrivable in updateNonDrivingConstraints
+    // n1 uses the place hold by n2divn1, so that is retrievable in updateNonDrivingConstraints
     double *n1 = value;
     double *n2 = secondvalue;
 
