@@ -165,7 +165,10 @@ class PathWorkbench(Workbench):
                 pass
 
             try:
-                import ocl  # pylint: disable=unused-variable
+                try:
+                    import ocl  # pylint: disable=unused-variable
+                except ImportError:
+                    import opencamlib as ocl
                 from Path.Op.Gui import Surface
                 from Path.Op.Gui import Waterline
 

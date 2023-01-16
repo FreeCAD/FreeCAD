@@ -35,7 +35,10 @@ translate = FreeCAD.Qt.translate
 
 # OCL must be installed
 try:
-    import ocl
+    try:
+        import ocl
+    except ImportError:
+        import opencamlib as ocl
 except ImportError:
     msg = translate(
         "PathSurface", "This operation requires OpenCamLib to be installed."
