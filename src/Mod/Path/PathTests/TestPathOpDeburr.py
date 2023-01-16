@@ -36,7 +36,7 @@ class MockToolBit(object):
         self.CuttingEdgeAngle = 60
 
 
-class TestPathDeburr(PathTestUtils.PathTestBase):
+class TestPathOpDeburr(PathTestUtils.PathTestBase):
     def test00(self):
         """Verify chamfer depth and offset for an end mill."""
         tool = MockToolBit()
@@ -92,19 +92,33 @@ class TestPathDeburr(PathTestUtils.PathTestBase):
     def test03(self):
         """Verify chamfer depth and offset for a 60 deg v-bit with non 0 flat radius."""
         tool = MockToolBit()
-        tool.FlatRadius = 10
+        tool.FlatRadius = 0.1
         tool.CuttingEdgeAngle = 60
 
-        td = 1.73205
-
-        (depth, offset, __, info) = PathDeburr.toolDepthAndOffset(1, 0, tool, True)
-        self.assertRoughly(td, depth)
-        self.assertRoughly(10, offset)
+        (depth, offset, __, info) = PathDeburr.toolDepthAndOffset(1, 0.5, tool, True)
+        self.assertRoughly(2.232051, depth)
+        self.assertRoughly(0.388675, offset)
         self.assertFalse(info)
 
         (depth, offset, __, info) = PathDeburr.toolDepthAndOffset(3, 1, tool, True)
-        self.assertRoughly(td * 3 + 1, depth)
-        self.assertRoughly(10 + td, offset)
+        self.assertRoughly(6.196153, depth)
+        self.assertRoughly(0.677350, offset)
+        self.assertFalse(info)
+
+    def test04(self):
+        """Verify chamfer depth and offset for a 30 deg v-bit with non 0 flat radius."""
+        tool = MockToolBit()
+        tool.FlatRadius = 0.1
+        tool.CuttingEdgeAngle = 30
+
+        (depth, offset, __, info) = PathDeburr.toolDepthAndOffset(1, 0.5, tool, True)
+        self.assertRoughly(4.232051, depth)
+        self.assertRoughly(0.233975, offset)
+        self.assertFalse(info)
+
+        (depth, offset, __, info) = PathDeburr.toolDepthAndOffset(3, 1, tool, True)
+        self.assertRoughly(12.196155, depth)
+        self.assertRoughly(0.367949, offset)
         self.assertFalse(info)
 
     def test10(self):
