@@ -46,9 +46,6 @@ def create_comment(comment_string, comment_symbol):
 
 def drill_translate(values, outstring, cmd, params):
     """Translate drill cycles."""
-    axis_precision_string = f'.{str(values["AXIS_PRECISION"])}f'
-    feed_precision_string = f'.{str(values["FEED_PRECISION"])}f'
-
     trBuff = ""
     nl = "\n"
 
@@ -100,44 +97,26 @@ def drill_translate(values, outstring, cmd, params):
         if values["MOTION_MODE"] == "G91":
             # force absolute coordinates during cycles
             trBuff += f"{linenumber(values)}G90{nl}"
-        num = format(
-            float(RETRACT_Z.getValueAs(values["UNIT_FORMAT"])),
-            axis_precision_string,
-        )
-        strG0_RETRACT_Z = f"G0 Z{num}{nl}"
-        num = format(
-            float(drill_feedrate.getValueAs(values["UNIT_SPEED_FORMAT"])),
-            feed_precision_string,
-        )
-        strF_Feedrate = f" F{num}{nl}"
+        strG0_RETRACT_Z = f"G0 Z{format_for_axis(values, RETRACT_Z)}{nl}"
+        strF_Feedrate = f" F{format_for_feed(values, drill_feedrate)}{nl}"
         # print(strF_Feedrate)
 
         # preliminary movement(s)
         if values["CURRENT_Z"] < RETRACT_Z:
             trBuff += f"{linenumber(values)}{strG0_RETRACT_Z}"
-        num_x = format(
-            float(drill_X.getValueAs(values["UNIT_FORMAT"])), axis_precision_string
-        )
-        num_y = format(
-            float(drill_Y.getValueAs(values["UNIT_FORMAT"])), axis_precision_string
-        )
+        num_x = format_for_axis(values, drill_X)
+        num_y = format_for_axis(values, drill_Y)
         trBuff += f"{linenumber(values)}G0 X{num_x} Y{num_y}{nl}"
         if values["CURRENT_Z"] > RETRACT_Z:
             # NIST GCODE 3.5.16.1 Preliminary and In-Between Motion says G0 to RETRACT_Z
             # Here use G1 since retract height may be below surface !
-            num_z = format(
-                float(RETRACT_Z.getValueAs(values["UNIT_FORMAT"])),
-                axis_precision_string,
-            )
+            num_z = format_for_axis(values, RETRACT_Z)
             trBuff += f"{linenumber(values)}G1 Z{num_z}{strF_Feedrate}"
         last_Stop_Z = RETRACT_Z
 
         # drill moves
         if cmd in ("G81", "G82"):
-            num_z = format(
-                float(drill_Z.getValueAs(values["UNIT_FORMAT"])),
-                axis_precision_string,
-            )
+            num_z = format_for_axis(values, drill_Z)
             trBuff += f"{linenumber(values)}G1 Z{num_z}{strF_Feedrate}"
             # pause where applicable
             if cmd == "G82":
@@ -149,41 +128,25 @@ def drill_translate(values, outstring, cmd, params):
                     if last_Stop_Z != RETRACT_Z:
                         # rapid move to just short of last drilling depth
                         clearance_depth = last_Stop_Z + a_bit
-                        num_z = format(
-                            float(clearance_depth.getValueAs(values["UNIT_FORMAT"])),
-                            axis_precision_string,
-                        )
+                        num_z = format_for_axis(values, clearance_depth)
                         trBuff += f"{linenumber(values)}G0 Z{num_z}{nl}"
                     next_Stop_Z = last_Stop_Z - drill_Step
                     if next_Stop_Z > drill_Z:
-                        num_z = format(
-                            float(next_Stop_Z.getValueAs(values["UNIT_FORMAT"])),
-                            axis_precision_string,
-                        )
+                        num_z = format_for_axis(values, next_Stop_Z)
                         trBuff += f"{linenumber(values)}G1 Z{num_z}{strF_Feedrate}"
                         if cmd == "G73":
                             # Rapid up "a small amount".
                             chip_breaker_height = (
                                 next_Stop_Z + values["CHIPBREAKING_AMOUNT"]
                             )
-                            num_z = format(
-                                float(
-                                    chip_breaker_height.getValueAs(
-                                        values["UNIT_FORMAT"]
-                                    )
-                                ),
-                                axis_precision_string,
-                            )
+                            num_z = format_for_axis(values, chip_breaker_height)
                             trBuff += f"{linenumber(values)}G0 Z{num_z}{nl}"
                         elif cmd == "G83":
                             # Rapid up to the retract height
                             trBuff += f"{linenumber(values)}{strG0_RETRACT_Z}"
                         last_Stop_Z = next_Stop_Z
                     else:
-                        num_z = format(
-                            float(drill_Z.getValueAs(values["UNIT_FORMAT"])),
-                            axis_precision_string,
-                        )
+                        num_z = format_for_axis(values, drill_Z)
                         trBuff += f"{linenumber(values)}G1 Z{num_z}{strF_Feedrate}"
                         trBuff += f"{linenumber(values)}{strG0_RETRACT_Z}"
                         break
@@ -194,6 +157,22 @@ def drill_translate(values, outstring, cmd, params):
         trBuff += f"{linenumber(values)}G91{nl}"  # Restore if changed
 
     return trBuff
+
+
+def format_for_axis(values, number):
+    """Format a number using the precision for an axis value."""
+    return format(
+        float(number.getValueAs(values["UNIT_FORMAT"])),
+        f'.{str(values["AXIS_PRECISION"])}f',
+    )
+
+
+def format_for_feed(values, number):
+    """Format a number using the precision for a feed rate."""
+    return format(
+        float(number.getValueAs(values["UNIT_SPEED_FORMAT"])),
+        f'.{str(values["FEED_PRECISION"])}f',
+    )
 
 
 def format_outstring(values, strTable):
@@ -221,8 +200,6 @@ def parse(values, pathobj):
     nl = "\n"
     out = ""
     lastcommand = None
-    axis_precision_string = f'.{str(values["AXIS_PRECISION"])}f'
-    feed_precision_string = f'.{str(values["FEED_PRECISION"])}f'
 
     currLocation = {}  # keep track for no doubles
     firstmove = Path.Command("G0", {"X": -1, "Y": -1, "Z": -1, "F": 0.0})
@@ -316,12 +293,7 @@ def parse(values, pathobj):
                         if command not in values["RAPID_MOVES"]:
                             speed = Units.Quantity(c.Parameters["F"], Units.Velocity)
                             if speed.getValueAs(values["UNIT_SPEED_FORMAT"]) > 0.0:
-                                param_num = format(
-                                    float(
-                                        speed.getValueAs(values["UNIT_SPEED_FORMAT"])
-                                    ),
-                                    feed_precision_string,
-                                )
+                                param_num = format_for_feed(values, speed)
                                 outstring.append(f"{param}{param_num}")
                         else:
                             continue
@@ -332,10 +304,7 @@ def parse(values, pathobj):
                             outstring.append(f"{param}{str(int(c.Parameters[param]))}")
                         elif command in ("G41.1", "G42.1"):
                             pos = Units.Quantity(c.Parameters[param], Units.Length)
-                            param_num = format(
-                                float(pos.getValueAs(values["UNIT_FORMAT"])),
-                                axis_precision_string,
-                            )
+                            param_num = format_for_axis(values, pos)
                             outstring.append(f"{param}{param_num}")
                         elif command in ("G96", "G97"):
                             param_num = PostUtils.fmt(
@@ -367,10 +336,7 @@ def parse(values, pathobj):
                             )
                         elif command in ("G5", "G05", "G64"):
                             pos = Units.Quantity(c.Parameters[param], Units.Length)
-                            param_num = format(
-                                float(pos.getValueAs(values["UNIT_FORMAT"])),
-                                axis_precision_string,
-                            )
+                            param_num = format_for_axis(values, pos)
                             outstring.append(f"{param}{param_num}")
                         else:  # anything else that is supported
                             outstring.append(f"{param}{str(c.Parameters[param])}")
@@ -379,10 +345,7 @@ def parse(values, pathobj):
                             outstring.append(f"{param}{str(int(c.Parameters[param]))}")
                         elif command in ("G64", "G73", "G83"):
                             pos = Units.Quantity(c.Parameters[param], Units.Length)
-                            param_num = format(
-                                float(pos.getValueAs(values["UNIT_FORMAT"])),
-                                axis_precision_string,
-                            )
+                            param_num = format_for_axis(values, pos)
                             outstring.append(f"{param}{param_num}")
                     elif param == "S":
                         param_num = PostUtils.fmt(
@@ -398,10 +361,7 @@ def parse(values, pathobj):
                             continue
                         else:
                             pos = Units.Quantity(c.Parameters[param], Units.Length)
-                            param_num = format(
-                                float(pos.getValueAs(values["UNIT_FORMAT"])),
-                                axis_precision_string,
-                            )
+                            param_num = format_for_axis(values, pos)
                             outstring.append(f"{param}{param_num}")
 
             if (
@@ -412,16 +372,10 @@ def parse(values, pathobj):
                 and opVertRapid
             ):
                 if "Z" not in c.Parameters:
-                    param_num = format(
-                        float(opHorizRapid.getValueAs(values["UNIT_SPEED_FORMAT"])),
-                        axis_precision_string,
-                    )
+                    param_num = format_for_axis(values, opHorizRapid)
                     outstring.append(f"F{param_num}")
                 else:
-                    param_num = format(
-                        float(opVertRapid.getValueAs(values["UNIT_SPEED_FORMAT"])),
-                        axis_precision_string,
-                    )
+                    param_num = format_for_axis(values, opVertRapid)
                     outstring.append(f"F{param_num}")
 
             # store the latest command
