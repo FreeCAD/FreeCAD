@@ -170,7 +170,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ManualAlignment.cpp" line="988"/>
+        <location filename="../ManualAlignment.cpp" line="985"/>
         <source>Align</source>
         <translation type="unfinished"></translation>
     </message>
@@ -485,12 +485,12 @@
 <context>
     <name>Gui::AlignmentView</name>
     <message>
-        <location filename="../ManualAlignment.cpp" line="428"/>
+        <location filename="../ManualAlignment.cpp" line="425"/>
         <source>Movable object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ManualAlignment.cpp" line="430"/>
+        <location filename="../ManualAlignment.cpp" line="427"/>
         <source>Fixed object</source>
         <translation type="unfinished"></translation>
     </message>
@@ -853,7 +853,7 @@ while doing a left or right click and move the mouse up or down</source>
 <context>
     <name>Gui::Dialog::CommandModel</name>
     <message>
-        <location filename="../DlgCustomizeSpaceball.cpp" line="465"/>
+        <location filename="../DlgCustomizeSpaceball.cpp" line="464"/>
         <source>Commands</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1552,27 +1552,27 @@ same time. The one with the highest priority will be triggered.</source>
 <context>
     <name>Gui::Dialog::DlgCustomizeSpaceball</name>
     <message>
-        <location filename="../DlgCustomizeSpaceball.cpp" line="665"/>
+        <location filename="../DlgCustomizeSpaceball.cpp" line="664"/>
         <source>Spaceball Buttons</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgCustomizeSpaceball.cpp" line="671"/>
+        <location filename="../DlgCustomizeSpaceball.cpp" line="670"/>
         <source>No Spaceball Present</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgCustomizeSpaceball.cpp" line="723"/>
+        <location filename="../DlgCustomizeSpaceball.cpp" line="722"/>
         <source>Buttons</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgCustomizeSpaceball.cpp" line="724"/>
+        <location filename="../DlgCustomizeSpaceball.cpp" line="723"/>
         <source>Reset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgCustomizeSpaceball.cpp" line="754"/>
+        <location filename="../DlgCustomizeSpaceball.cpp" line="753"/>
         <source>Print Reference</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3043,12 +3043,12 @@ Specify another directory, please.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgPropertyLink.cpp" line="98"/>
+        <location filename="../DlgPropertyLink.cpp" line="99"/>
         <source>Reset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgPropertyLink.cpp" line="99"/>
+        <location filename="../DlgPropertyLink.cpp" line="100"/>
         <source>Clear</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6009,12 +6009,12 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
 <context>
     <name>Gui::Dialog::PrintModel</name>
     <message>
-        <location filename="../DlgCustomizeSpaceball.cpp" line="646"/>
+        <location filename="../DlgCustomizeSpaceball.cpp" line="645"/>
         <source>Button</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgCustomizeSpaceball.cpp" line="648"/>
+        <location filename="../DlgCustomizeSpaceball.cpp" line="647"/>
         <source>Command</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6560,13 +6560,13 @@ Do you want to save your changes?</source>
 <context>
     <name>Gui::FileChooser</name>
     <message>
-        <location filename="../FileDialog.cpp" line="754"/>
-        <location filename="../FileDialog.cpp" line="756"/>
+        <location filename="../FileDialog.cpp" line="751"/>
+        <location filename="../FileDialog.cpp" line="753"/>
         <source>Select a file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../FileDialog.cpp" line="759"/>
+        <location filename="../FileDialog.cpp" line="756"/>
         <source>Select a directory</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6574,13 +6574,13 @@ Do you want to save your changes?</source>
 <context>
     <name>Gui::FileDialog</name>
     <message>
-        <location filename="../FileDialog.cpp" line="205"/>
+        <location filename="../FileDialog.cpp" line="204"/>
         <source>Save as</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../FileDialog.cpp" line="281"/>
-        <location filename="../FileDialog.cpp" line="334"/>
+        <location filename="../FileDialog.cpp" line="280"/>
+        <location filename="../FileDialog.cpp" line="333"/>
         <source>Open</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6588,12 +6588,12 @@ Do you want to save your changes?</source>
 <context>
     <name>Gui::FileOptionsDialog</name>
     <message>
-        <location filename="../FileDialog.cpp" line="443"/>
+        <location filename="../FileDialog.cpp" line="442"/>
         <source>Extended</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../FileDialog.cpp" line="485"/>
+        <location filename="../FileDialog.cpp" line="484"/>
         <source>All files (*.*)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6727,12 +6727,12 @@ Do you want to save your changes?</source>
 <context>
     <name>Gui::InputField</name>
     <message>
-        <location filename="../InputField.cpp" line="198"/>
+        <location filename="../InputField.cpp" line="197"/>
         <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../InputField.cpp" line="218"/>
+        <location filename="../InputField.cpp" line="217"/>
         <source>Save value</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6763,7 +6763,7 @@ Do you want to save your changes?</source>
 <context>
     <name>Gui::LabelEditor</name>
     <message>
-        <location filename="../Widgets.cpp" line="1496"/>
+        <location filename="../Widgets.cpp" line="1495"/>
         <source>List</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6945,96 +6945,96 @@ Do you want to save the document now?</source>
 <context>
     <name>Gui::ManualAlignment</name>
     <message>
-        <location filename="../ManualAlignment.cpp" line="802"/>
-        <location filename="../ManualAlignment.cpp" line="960"/>
-        <location filename="../ManualAlignment.cpp" line="965"/>
-        <location filename="../ManualAlignment.cpp" line="970"/>
-        <location filename="../ManualAlignment.cpp" line="1002"/>
+        <location filename="../ManualAlignment.cpp" line="799"/>
+        <location filename="../ManualAlignment.cpp" line="957"/>
+        <location filename="../ManualAlignment.cpp" line="962"/>
+        <location filename="../ManualAlignment.cpp" line="967"/>
+        <location filename="../ManualAlignment.cpp" line="999"/>
         <source>Manual alignment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ManualAlignment.cpp" line="802"/>
+        <location filename="../ManualAlignment.cpp" line="799"/>
         <source>The alignment is already in progress.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ManualAlignment.cpp" line="815"/>
+        <location filename="../ManualAlignment.cpp" line="812"/>
         <source>Alignment[*]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ManualAlignment.cpp" line="822"/>
+        <location filename="../ManualAlignment.cpp" line="819"/>
         <source>Please, select at least one point in the left and the right view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ManualAlignment.cpp" line="823"/>
+        <location filename="../ManualAlignment.cpp" line="820"/>
         <source>Please, select at least %1 points in the left and the right view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ManualAlignment.cpp" line="876"/>
+        <location filename="../ManualAlignment.cpp" line="873"/>
         <source>Please pick points in the left and right view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ManualAlignment.cpp" line="932"/>
+        <location filename="../ManualAlignment.cpp" line="929"/>
         <source>The alignment has finished</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ManualAlignment.cpp" line="950"/>
+        <location filename="../ManualAlignment.cpp" line="947"/>
         <source>The alignment has been canceled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ManualAlignment.cpp" line="961"/>
-        <location filename="../ManualAlignment.cpp" line="1023"/>
+        <location filename="../ManualAlignment.cpp" line="958"/>
+        <location filename="../ManualAlignment.cpp" line="1020"/>
         <source>Too few points picked in the left view. At least %1 points are needed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ManualAlignment.cpp" line="966"/>
-        <location filename="../ManualAlignment.cpp" line="1028"/>
+        <location filename="../ManualAlignment.cpp" line="963"/>
+        <location filename="../ManualAlignment.cpp" line="1025"/>
         <source>Too few points picked in the right view. At least %1 points are needed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ManualAlignment.cpp" line="971"/>
+        <location filename="../ManualAlignment.cpp" line="968"/>
         <source>Different number of points picked in left and right view.
 On the left view %1 points are picked,
 on the right view %2 points are picked.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ManualAlignment.cpp" line="982"/>
+        <location filename="../ManualAlignment.cpp" line="979"/>
         <source>Try to align group of views</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ManualAlignment.cpp" line="1003"/>
+        <location filename="../ManualAlignment.cpp" line="1000"/>
         <source>The alignment failed.
 How do you want to proceed?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ManualAlignment.cpp" line="1033"/>
+        <location filename="../ManualAlignment.cpp" line="1030"/>
         <source>Different number of points picked in left and right view. On the left view %1 points are picked, on the right view %2 points are picked.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ManualAlignment.cpp" line="1240"/>
+        <location filename="../ManualAlignment.cpp" line="1237"/>
         <source>Point picked at (%1,%2,%3)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ManualAlignment.cpp" line="1245"/>
+        <location filename="../ManualAlignment.cpp" line="1242"/>
         <source>No point was found on model</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ManualAlignment.cpp" line="1251"/>
+        <location filename="../ManualAlignment.cpp" line="1248"/>
         <source>No point was picked</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7163,17 +7163,17 @@ How do you want to proceed?</source>
 <context>
     <name>Gui::ProgressDialog</name>
     <message>
-        <location filename="../ProgressDialog.cpp" line="221"/>
+        <location filename="../ProgressDialog.cpp" line="219"/>
         <source>Remaining: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProgressDialog.cpp" line="322"/>
+        <location filename="../ProgressDialog.cpp" line="320"/>
         <source>Aborting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProgressDialog.cpp" line="323"/>
+        <location filename="../ProgressDialog.cpp" line="321"/>
         <source>Do you really want to abort the operation?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7202,48 +7202,48 @@ How do you want to proceed?</source>
 <context>
     <name>Gui::PropertyEditor::PropertyEditor</name>
     <message>
-        <location filename="../propertyeditor/PropertyEditor.cpp" line="292"/>
+        <location filename="../propertyeditor/PropertyEditor.cpp" line="290"/>
         <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../propertyeditor/PropertyEditor.cpp" line="302"/>
+        <location filename="../propertyeditor/PropertyEditor.cpp" line="300"/>
         <source>property</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../propertyeditor/PropertyEditor.cpp" line="632"/>
+        <location filename="../propertyeditor/PropertyEditor.cpp" line="630"/>
         <source>Auto expand</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../propertyeditor/PropertyEditor.cpp" line="637"/>
+        <location filename="../propertyeditor/PropertyEditor.cpp" line="635"/>
         <source>Show all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../propertyeditor/PropertyEditor.cpp" line="671"/>
+        <location filename="../propertyeditor/PropertyEditor.cpp" line="669"/>
         <source>Expression...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../propertyeditor/PropertyEditor.cpp" line="677"/>
+        <location filename="../propertyeditor/PropertyEditor.cpp" line="675"/>
         <source>Add property</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../propertyeditor/PropertyEditor.cpp" line="683"/>
-        <location filename="../propertyeditor/PropertyEditor.cpp" line="794"/>
+        <location filename="../propertyeditor/PropertyEditor.cpp" line="681"/>
+        <location filename="../propertyeditor/PropertyEditor.cpp" line="792"/>
         <source>Rename property group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../propertyeditor/PropertyEditor.cpp" line="700"/>
+        <location filename="../propertyeditor/PropertyEditor.cpp" line="698"/>
         <source>Remove property</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../propertyeditor/PropertyEditor.cpp" line="794"/>
+        <location filename="../propertyeditor/PropertyEditor.cpp" line="792"/>
         <source>Group name:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7496,17 +7496,17 @@ Do you want to exit without saving your data?</source>
 <context>
     <name>Gui::SelectModule</name>
     <message>
-        <location filename="../FileDialog.cpp" line="852"/>
+        <location filename="../FileDialog.cpp" line="849"/>
         <source>Select module</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../FileDialog.cpp" line="854"/>
+        <location filename="../FileDialog.cpp" line="851"/>
         <source>Open %1 as</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../FileDialog.cpp" line="906"/>
+        <location filename="../FileDialog.cpp" line="903"/>
         <source>Select</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8028,7 +8028,7 @@ Do you want to specify another directory?</source>
 <context>
     <name>Gui::TreeDockWidget</name>
     <message>
-        <location filename="../Tree.cpp" line="3094"/>
+        <location filename="../Tree.cpp" line="3112"/>
         <source>Tree view</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8036,7 +8036,7 @@ Do you want to specify another directory?</source>
 <context>
     <name>Gui::TreePanel</name>
     <message>
-        <location filename="../Tree.cpp" line="3020"/>
+        <location filename="../Tree.cpp" line="3038"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8054,163 +8054,163 @@ Do you want to specify another directory?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="890"/>
+        <location filename="../Tree.cpp" line="883"/>
         <source>Activate document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="897"/>
+        <location filename="../Tree.cpp" line="890"/>
         <source>Activate document %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="934"/>
+        <location filename="../Tree.cpp" line="927"/>
         <source>Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2747"/>
+        <location filename="../Tree.cpp" line="2765"/>
         <source>Labels &amp; Attributes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2748"/>
+        <location filename="../Tree.cpp" line="2766"/>
         <source>Description</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2749"/>
+        <location filename="../Tree.cpp" line="2767"/>
         <source>Application</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2751"/>
+        <location filename="../Tree.cpp" line="2769"/>
         <source>Show hidden items</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2752"/>
+        <location filename="../Tree.cpp" line="2770"/>
         <source>Show hidden tree view items</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2754"/>
+        <location filename="../Tree.cpp" line="2772"/>
         <source>Hide item</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2755"/>
+        <location filename="../Tree.cpp" line="2773"/>
         <source>Hide the item in tree</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2757"/>
+        <location filename="../Tree.cpp" line="2775"/>
         <source>Create group...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2758"/>
+        <location filename="../Tree.cpp" line="2776"/>
         <source>Create a group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2760"/>
-        <location filename="../Tree.cpp" line="4874"/>
+        <location filename="../Tree.cpp" line="2778"/>
+        <location filename="../Tree.cpp" line="4892"/>
         <source>Rename</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2761"/>
+        <location filename="../Tree.cpp" line="2779"/>
         <source>Rename object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2763"/>
+        <location filename="../Tree.cpp" line="2781"/>
         <source>Finish editing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2764"/>
+        <location filename="../Tree.cpp" line="2782"/>
         <source>Finish editing object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2766"/>
+        <location filename="../Tree.cpp" line="2784"/>
         <source>Add dependent objects to selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2767"/>
+        <location filename="../Tree.cpp" line="2785"/>
         <source>Adds all dependent objects to the selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2769"/>
+        <location filename="../Tree.cpp" line="2787"/>
         <source>Close document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2770"/>
+        <location filename="../Tree.cpp" line="2788"/>
         <source>Close the document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2772"/>
+        <location filename="../Tree.cpp" line="2790"/>
         <source>Reload document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2773"/>
+        <location filename="../Tree.cpp" line="2791"/>
         <source>Reload a partially loaded document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2775"/>
+        <location filename="../Tree.cpp" line="2793"/>
         <source>Skip recomputes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2776"/>
+        <location filename="../Tree.cpp" line="2794"/>
         <source>Enable or disable recomputations of document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2778"/>
+        <location filename="../Tree.cpp" line="2796"/>
         <source>Allow partial recomputes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2780"/>
+        <location filename="../Tree.cpp" line="2798"/>
         <source>Enable or disable recomputating editing object when &apos;skip recomputation&apos; is enabled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2782"/>
+        <location filename="../Tree.cpp" line="2800"/>
         <source>Mark to recompute</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2783"/>
+        <location filename="../Tree.cpp" line="2801"/>
         <source>Mark this object to be recomputed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2786"/>
+        <location filename="../Tree.cpp" line="2804"/>
         <source>Recompute object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2787"/>
+        <location filename="../Tree.cpp" line="2805"/>
         <source>Recompute the selected object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="4845"/>
+        <location filename="../Tree.cpp" line="4863"/>
         <source> (but must be executed)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="4847"/>
+        <location filename="../Tree.cpp" line="4865"/>
         <source>%1, Internal name: %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8412,14 +8412,14 @@ Do you want to specify another directory?</source>
 <context>
     <name>PropertyListDialog</name>
     <message>
-        <location filename="../Widgets.cpp" line="1421"/>
-        <location filename="../Widgets.cpp" line="1432"/>
+        <location filename="../Widgets.cpp" line="1420"/>
+        <location filename="../Widgets.cpp" line="1431"/>
         <source>Invalid input</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Widgets.cpp" line="1421"/>
-        <location filename="../Widgets.cpp" line="1432"/>
+        <location filename="../Widgets.cpp" line="1420"/>
+        <location filename="../Widgets.cpp" line="1431"/>
         <source>Input in line %1 is not a number</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8575,7 +8575,7 @@ Do you want to specify another directory?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="597"/>
+        <location filename="../MainWindow.cpp" line="591"/>
         <location filename="../CommandDoc.cpp" line="1189"/>
         <source>Unsaved document</source>
         <translation type="unfinished"></translation>
@@ -9290,8 +9290,8 @@ underscore, and must not start with a digit.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Tree.cpp" line="2036"/>
-        <location filename="../Tree.cpp" line="2232"/>
+        <location filename="../Tree.cpp" line="2054"/>
+        <location filename="../Tree.cpp" line="2250"/>
         <source>Drag &amp; drop failed</source>
         <translation type="unfinished"></translation>
     </message>
