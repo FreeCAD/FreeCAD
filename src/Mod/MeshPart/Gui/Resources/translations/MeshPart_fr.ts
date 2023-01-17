@@ -36,7 +36,7 @@
       <source>Creates an approximated curve on top of a mesh.
 This command only works with a 'mesh' object.</source>
       <translation>Crée une courbe approximative au dessus d'un maillage.
-Cette commande ne fonctionne qu'avec un objet 'mesh'.</translation>
+Cette commande ne fonctionne qu'avec un objet "mesh".</translation>
     </message>
   </context>
   <context>
@@ -222,7 +222,7 @@ Cette commande ne fonctionne qu'avec un objet 'mesh'.</translation>
 This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh Workbench.</source>
       <translation>Appuyez sur "Démarrer", puis sélectionnez les points sur le maillage ; lorsque suffisamment de points ont été définis, faites un clic droit et choisissez "Créer". Répétez ce processus pour créer plus de splines. Fermez ce panneau de tâches pour terminer l'opération.
 
-Cette commande ne fonctionne qu'avec un objet 'Mesh', pas avec une face ou une surface régulière. Pour convertir un objet en maillage, utilisez les outils de l'atelier Mesh.</translation>
+Cette commande ne fonctionne qu'avec un objet "Mesh", pas avec une face ou une surface régulière. Pour convertir un objet en maillage, utilisez les outils de l'atelier Mesh.</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>
@@ -598,7 +598,7 @@ Merci de sélectionner une forme différente.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="82"/>
       <source>Find a flat representation of a face.</source>
-      <translation type="unfinished">Find a flat representation of a face.</translation>
+      <translation>Rechercher une représentation plane d’une face.</translation>
     </message>
   </context>
 </TS>

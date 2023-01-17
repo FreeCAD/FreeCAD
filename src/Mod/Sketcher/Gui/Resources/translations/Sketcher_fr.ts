@@ -268,7 +268,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1266"/>
       <source>Fillets</source>
-      <translation>Congés</translation>
+      <translation>Créer un congé</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1267"/>
@@ -291,7 +291,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="232"/>
       <source>Create rectangles</source>
-      <translation>Créer des rectangles</translation>
+      <translation>Créer un rectangle</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="233"/>
@@ -1242,7 +1242,7 @@ as mirroring reference.</source>
     <message>
       <location filename="../../Command.cpp" line="771"/>
       <source>Wrong selection</source>
-      <translation>Mauvaise sélection</translation>
+      <translation>Sélection invalide</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="772"/>
@@ -2131,12 +2131,12 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
   <context>
     <name>CriticalMessages</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="8322"/>
+      <location filename="../../../App/SketchObject.cpp" line="8327"/>
       <source>Sketch:</source>
       <translation>Esquisse :</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="8323"/>
+      <location filename="../../../App/SketchObject.cpp" line="8328"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!</source>
       <translation>Les paraboles ont été migrées. Les fichiers migrés ne pourront pas être ouverts par les versions précédentes de FreeCAD !</translation>
     </message>
@@ -2179,59 +2179,59 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
       <translation>Erreur de contrainte automatique : esquisse insoluble après l'application des contraintes d'égalité.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="1979"/>
+      <location filename="../../../App/SketchObject.cpp" line="1984"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>L'intersection des courbes n'a pas pu être trouvée. Essayez d’ajouter une contrainte de coïncidence entre les sommets des courbes sur lesquels vous souhaitez appliquer un congé.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5860"/>
-      <location filename="../../../App/SketchObject.cpp" line="6034"/>
+      <location filename="../../../App/SketchObject.cpp" line="5865"/>
+      <location filename="../../../App/SketchObject.cpp" line="6039"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>L'Index de la géométrie de la B-spline (GeoID) est hors limites.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5863"/>
+      <location filename="../../../App/SketchObject.cpp" line="5868"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Vous ne demandez aucun changement dans la multiplicité du nœud.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5868"/>
-      <location filename="../../../App/SketchObject.cpp" line="6042"/>
+      <location filename="../../../App/SketchObject.cpp" line="5873"/>
+      <location filename="../../../App/SketchObject.cpp" line="6047"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>L’Index de la géométrie (GeoID) fourni n’est pas une courbe B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5875"/>
+      <location filename="../../../App/SketchObject.cpp" line="5880"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>L’index du nœud est hors limites. Notez que, conformément à la notation OCC, le premier nœud a un indice de 1 et non pas de zéro.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5882"/>
+      <location filename="../../../App/SketchObject.cpp" line="5887"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>La multiplicité ne peut pas être augmentée au-delà du degré de la B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5885"/>
+      <location filename="../../../App/SketchObject.cpp" line="5890"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>La multiplicité ne peut pas être diminuée au-delà de zéro.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5897"/>
+      <location filename="../../../App/SketchObject.cpp" line="5902"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC ne parvient pas à diminuer la multiplicité selon la tolérance maximale.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6037"/>
+      <location filename="../../../App/SketchObject.cpp" line="6042"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Le nœud ne peut pas avoir zéro de multiplicité.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6051"/>
+      <location filename="../../../App/SketchObject.cpp" line="6056"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
       <translation>La multiplicité du nœud ne peut pas être supérieure au degré de la courbe BSpline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6054"/>
+      <location filename="../../../App/SketchObject.cpp" line="6059"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
       <translation>Le nœud ne peut pas être inséré en dehors de la plage de paramètres de la B-spline.</translation>
     </message>
@@ -2478,7 +2478,7 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
       <translation>L'édition de cette valeur n'est pas autorisée car l'esquisse contient des contraintes conflictuelles</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="220"/>
+      <location filename="../../EditDatumDialog.cpp" line="222"/>
       <source>Dimensional constraint</source>
       <translation>Contrainte dimensionnelle</translation>
     </message>
@@ -2663,7 +2663,7 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1978"/>
       <source>Select two or more vertices from the sketch.</source>
-      <translation>Sélectionnez deux sommets de l'esquisse ou plus.</translation>
+      <translation>Sélectionner deux sommets de l'esquisse ou plus.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1998"/>
@@ -2673,7 +2673,7 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2073"/>
       <source>Select two vertices from the sketch for a coincident constraint, or two circles, ellipses, arcs or arcs of ellipse for a concentric constraint.</source>
-      <translation>Sélectionnez deux sommets de l'esquisse pour une contrainte de coïncidence, ou deux cercles, ellipses, arcs ou arcs d'ellipse pour une contrainte concentrique.</translation>
+      <translation>Sélectionner deux sommets de l'esquisse pour une contrainte de coïncidence, ou deux cercles, ellipses, arcs ou arcs d'ellipse pour une contrainte concentrique.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2170"/>
@@ -2732,7 +2732,7 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
       <location filename="../../CommandConstraints.cpp" line="6199"/>
       <location filename="../../CommandConstraints.cpp" line="6887"/>
       <source>Select an edge that is not a B-spline weight.</source>
-      <translation>Sélectionnez une arête qui n'est pas une B-spline.</translation>
+      <translation>Sélectionner une arête qui n'est pas une B-spline.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2605"/>
@@ -2797,7 +2797,7 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3274"/>
       <source>Select a valid line.</source>
-      <translation>Sélectionnez une ligne valide.</translation>
+      <translation>Sélectionner une ligne valide.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3290"/>
@@ -2895,7 +2895,7 @@ Combinaisons acceptés : deux courbes ; un point d'extrémité et une courbe ; d
     <message>
       <location filename="../../CommandConstraints.cpp" line="4233"/>
       <source>Tangent constraint at B-spline knot is only supported with lines!</source>
-      <translation type="unfinished">Tangent constraint at B-spline knot is only supported with lines!</translation>
+      <translation>La contrainte de tangente au nœud de la spline de type B n’est prise en charge qu’avec des lignes !</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4249"/>
@@ -2964,7 +2964,7 @@ Combinaisons acceptés : deux courbes ; un point d'extrémité et une courbe ; d
       <location filename="../../CommandConstraints.cpp" line="6345"/>
       <location filename="../../CommandConstraints.cpp" line="7046"/>
       <source>Select two or more compatible edges.</source>
-      <translation>Sélectionnez deux arêtes compatibles ou plus.</translation>
+      <translation>Sélectionner deux arêtes compatibles ou plus.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6350"/>
@@ -2981,7 +2981,7 @@ Combinaisons acceptés : deux courbes ; un point d'extrémité et une courbe ; d
       <location filename="../../CommandConstraints.cpp" line="6414"/>
       <location filename="../../CommandConstraints.cpp" line="6465"/>
       <source>Select two or more edges of similar type.</source>
-      <translation>Sélectionnez deux arêtes de type similaire ou plus.</translation>
+      <translation>Sélectionner deux arêtes de type similaire ou plus.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6547"/>
@@ -3049,7 +3049,7 @@ Combinaisons acceptés : deux courbes ; un point d'extrémité et une courbe ; d
     <message>
       <location filename="../../CommandConstraints.cpp" line="7068"/>
       <source>You cannot internally constrain an ellipse on another ellipse. Select only one ellipse.</source>
-      <translation>Vous ne pouvez pas contraindre en interne une ellipse sur une autre ellipse. Sélectionnez une seule ellipse.</translation>
+      <translation>Vous ne pouvez pas contraindre en interne une ellipse sur une autre ellipse. Sélectionner une seule ellipse.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7076"/>
@@ -3181,17 +3181,17 @@ Combinaisons acceptés : deux courbes ; un point d'extrémité et une courbe ; d
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1167"/>
       <source>Nothing is selected. Please select a b-spline.</source>
-      <translation>Rien n'est sélectionné. Veuillez sélectionner une courbe B-spline.</translation>
+      <translation>Rien n'est sélectionné. Sélectionner une B-spline.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1181"/>
       <source>Please select a b-spline curve to insert a knot (not a knot on it). If the curve is not a b-spline, please convert it into one first.</source>
-      <translation>Veuillez sélectionner une courbe B-spline pour insérer un nœud (et non un nœud sur celle-ci). Si la courbe n'est pas une B-spline, veuillez d'abord la convertir en une B-spline.</translation>
+      <translation>Sélectionner une B-spline pour insérer un nœud (et non un nœud sur celle-ci). Si la courbe n'est pas une B-spline, la convertir d'abord en une B-spline.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1234"/>
       <source>Nothing is selected. Please select end points of curves.</source>
-      <translation>Rien n'est sélectionné. Veuillez sélectionner les extrémités des courbes.</translation>
+      <translation>Rien n'est sélectionné. Sélectionner les extrémités des courbes.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1260"/>
@@ -3664,7 +3664,7 @@ Combinaisons acceptés : deux courbes ; un point d'extrémité et une courbe ; d
     <message>
       <location filename="../../TaskSketcherElements.h" line="209"/>
       <source>B-Spline</source>
-      <translation>B-Spline</translation>
+      <translation>B-spline</translation>
     </message>
   </context>
   <context>
@@ -4616,7 +4616,8 @@ Toutefois, aucune contrainte liée aux extrémités n'a été trouvée.</transla
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="87"/>
       <source>Show/hide all listed constraints from 3D view. (same as ticking/unticking all listed constraints in list below)</source>
-      <translation>Afficher/masquer toutes les contraintes listées dans la vue 3D. (comme cocher/décocher toutes les contraintes listées dans la liste ci-dessous)</translation>
+      <translation>Afficher/masquer toutes les contraintes listées dans la vue 3D.
+(comme cocher/décocher toutes les contraintes listées dans la liste ci-dessous)</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="107"/>
@@ -5161,7 +5162,7 @@ Cela est fait en analysant les géométries et les contraintes de l'esquisse.</t
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="3026"/>
       <source>Under constrained:</source>
-      <translation>L'esquisse manque de contraintes:</translation>
+      <translation>L'esquisse manque de contraintes :</translation>
     </message>
     <message numerus="yes">
       <location filename="../../ViewProviderSketch.cpp" line="3028"/>

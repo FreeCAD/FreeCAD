@@ -101,12 +101,12 @@
     <message>
       <location filename="../../Command.cpp" line="485"/>
       <source>Wire from mesh boundary...</source>
-      <translation>Polilinija od ivica mreže...</translation>
+      <translation>Žica od ivica mreže...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="486"/>
       <source>Create wire from mesh boundaries</source>
-      <translation>Napravi poliliniju od ivica mreže</translation>
+      <translation>Napravi žicu od ivica mreže</translation>
     </message>
   </context>
   <context>
@@ -178,7 +178,7 @@
     <message>
       <location filename="../../Command.cpp" line="407"/>
       <source>Create mesh segments manually</source>
-      <translation>Napravite segmente mreže ručno</translation>
+      <translation>Napravi segmente mreže ručno</translation>
     </message>
   </context>
   <context>
@@ -305,7 +305,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="238"/>
       <source>Smoothing</source>
-      <translation>Zaglađivanje</translation>
+      <translation>Glačanje</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="247"/>
@@ -344,7 +344,7 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="200"/>
       <source>Please select a single placement object to get local orientation.</source>
-      <translation>Izaberite jedan objekat položaj da bi ste dobili lokalnu orijentaciju.</translation>
+      <translation>Izaberi jedan objekat Položaj da bi dobio lokalnu orijentaciju.</translation>
     </message>
   </context>
   <context>

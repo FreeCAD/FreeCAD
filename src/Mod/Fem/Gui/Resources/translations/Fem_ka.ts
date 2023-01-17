@@ -1669,7 +1669,7 @@ Specify another file please.</source>
   <context>
     <name>FemGui::TaskDlgFemConstraintContact</name>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="427"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="429"/>
       <source>Input error</source>
       <translation type="unfinished">Input error</translation>
     </message>
@@ -1677,7 +1677,7 @@ Specify another file please.</source>
   <context>
     <name>FemGui::TaskDlgFemConstraintDisplacement</name>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="604"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="611"/>
       <source>Input error</source>
       <translation type="unfinished">Input error</translation>
     </message>
@@ -1685,7 +1685,7 @@ Specify another file please.</source>
   <context>
     <name>FemGui::TaskDlgFemConstraintFluidBoundary</name>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="951"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="952"/>
       <source>Input error</source>
       <translation type="unfinished">Input error</translation>
     </message>
@@ -1756,7 +1756,7 @@ Specify another file please.</source>
   <context>
     <name>FemGui::TaskDlgFemConstraintTemperature</name>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="351"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="354"/>
       <source>Input error</source>
       <translation type="unfinished">Input error</translation>
     </message>
@@ -1764,7 +1764,7 @@ Specify another file please.</source>
   <context>
     <name>FemGui::TaskDlgFemConstraintTransform</name>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="514"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="517"/>
       <source>Input error</source>
       <translation type="unfinished">Input error</translation>
     </message>
@@ -1858,77 +1858,77 @@ Specify another file please.</source>
     <name>FemGui::TaskFemConstraintContact</name>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="56"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="59"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="60"/>
       <source>Delete</source>
       <translation>წაშლა</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="97"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="140"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="145"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="149"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="159"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="166"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="173"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="201"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="210"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="247"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="252"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="256"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="266"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="272"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="279"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="307"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="316"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="99"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="142"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="147"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="151"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="161"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="168"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="175"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="203"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="212"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="249"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="254"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="258"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="268"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="274"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="281"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="309"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="318"/>
       <source>Selection error</source>
       <translation>მონიშვნის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="97"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="99"/>
       <source>Only one face in object! - moved to master face</source>
       <translation>ობიექტში მხოლოდ ერთი ზედაპირია! - გადავიტანე ძირითად ზედაპირზე</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="140"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="247"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="142"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="249"/>
       <source>Only one master face and one slave face for a contact constraint!</source>
       <translation>კონტაქტის შეზღუდვას მხოლოდ ერთი მთავარი და ერთი მეორადი ზედაპირი შეიძლება ჰქონდეს!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="145"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="201"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="252"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="307"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="147"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="203"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="254"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="309"/>
       <source>Nothing selected!</source>
       <translation>არაფერია მონიშნული!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="149"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="166"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="151"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="168"/>
       <source>Only one slave face for a contact constraint!</source>
       <translation>კონტაქტის შეზღუდვას მხოლოდ ერთი მეორადი ზედაპირი შეიძლება ჰქონდეს!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="159"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="210"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="266"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="316"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="161"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="212"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="268"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="318"/>
       <source>Selected object is not a part!</source>
       <translation>მონიშნული ობიექტი ნაწილი არაა!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="173"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="279"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="175"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="281"/>
       <source>Only faces can be picked</source>
       <translation>შეგიძლიათ აირჩიოთ მხოლოდ ზედაპირები</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="256"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="258"/>
       <source>Only one master for a contact constraint!</source>
       <translation>კონტაქტის შეზღუდვას მხოლოდ ერთი მთავარი ობიექტი შეიძლება ჰქონდეს!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="272"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="274"/>
       <source>Only one master face for a contact constraint!</source>
       <translation>კონტაქტის შეზღუდვას მხოლოდ ერთი მთავარი ზედაპირი შეიძლება ჰქონდეს!</translation>
     </message>
@@ -1936,28 +1936,28 @@ Specify another file please.</source>
   <context>
     <name>FemGui::TaskFemConstraintDisplacement</name>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="373"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="382"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="408"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="430"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="439"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="380"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="389"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="415"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="437"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="446"/>
       <source>Selection error</source>
       <translation>მონიშვნის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="373"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="430"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="380"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="437"/>
       <source>Nothing selected!</source>
       <translation>არაფერია მონიშნული!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="382"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="439"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="389"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="446"/>
       <source>Selected object is not a part!</source>
       <translation>მონიშნული ობიექტი ნაწილი არაა!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="407"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="414"/>
       <source>Only one type of selection (vertex,face or edge) per constraint allowed!</source>
       <translation>ნებადართულია მხოლოდ ერთი ტიპი (წვერო, ზედაპირი ან წიბო) თითო შეზღუდვაზე!</translation>
     </message>
@@ -1994,128 +1994,128 @@ Specify another file please.</source>
   <context>
     <name>FemGui::TaskFemConstraintFluidBoundary</name>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="273"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="274"/>
       <source>Basic</source>
       <translation>ძირითადი</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="274"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="275"/>
       <source>Turbulence</source>
       <translation>ტურბულენტურობა</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="275"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="276"/>
       <source>Thermal</source>
       <translation>თერმული</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="277"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="278"/>
       <source>select boundary type, faces and set value</source>
       <translation>აირჩიეთ საზღვრის ტიპი და ზედაპირები და დააყენეთ მნიშვნელობა</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="442"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="443"/>
       <source>Intensity [0~1]</source>
       <translation>ინტენსივობა [0~1]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="444"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="445"/>
       <source>Dissipation Rate [m2/s3]</source>
       <translation>დისიპაციის სიჩქარე [მ2/ს3]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="447"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="448"/>
       <source>Length Scale[m]</source>
       <translation>სიგრძის მასშტაბი[m]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="450"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="451"/>
       <source>Viscosity Ratio [1]</source>
       <translation>სიბლანტის ფარდობა [1]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="453"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="454"/>
       <source>Hydraulic Diameter [m]</source>
       <translation>ჰიდრავლიკური დიამეტრი [მ]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="479"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="484"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="480"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="485"/>
       <source>Gradient [K/m]</source>
       <translation>გრადიენტი [კ/მ]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="488"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="489"/>
       <source>Flux [W/m2]</source>
       <translation>ნაკადი [W/m2]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="555"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="556"/>
       <source>Empty selection</source>
       <translation>არაფერია მონიშნული</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="555"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="556"/>
       <source>Select an edge or a face, please.</source>
       <translation>გთხოვთ მონიშნოთ წიბო ან ზედაპირი.</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="565"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="572"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="586"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="592"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="597"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="566"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="573"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="587"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="593"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="598"/>
       <source>Wrong selection</source>
       <translation>არასწორი არჩევანი</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="565"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="566"/>
       <source>Selected object is not a part object!</source>
       <translation>მონიშნული ობიექტი ნაწილი არაა!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="572"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="573"/>
       <source>Only one planar face or edge can be selected!</source>
       <translation>შეიძლება იყოს მონიშნული მხოლოდ ერთი ბრტყელი ზედაპირი ან წიბო!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="586"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="587"/>
       <source>Only planar faces can be picked for 3D</source>
       <translation>3D-სთვის შეგიძლიათ აირჩიოთ მხოლოდ ბრტყელი ზედაპირები</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="592"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="593"/>
       <source>Only planar edges can be picked for 2D</source>
       <translation>2D-სთვის შეგიძლიათ აირჩიოთ მხოლოდ ბრტყელი წიბოები</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="597"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="598"/>
       <source>Only faces for 3D part or edges for 2D can be picked</source>
       <translation>3D ნაწილისთვის ზედაპირების და 2D ნაწილისთვს წიბოების გარდა</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="730"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="739"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="766"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="788"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="797"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="731"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="740"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="767"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="789"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="798"/>
       <source>Selection error</source>
       <translation>მონიშვნის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="730"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="788"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="731"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="789"/>
       <source>Nothing selected!</source>
       <translation>არაფერია მონიშნული!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="739"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="797"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="740"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="798"/>
       <source>Selected object is not a part!</source>
       <translation>მონიშნული ობიექტი ნაწილი არაა!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="765"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="766"/>
       <source>Only one type of selection (vertex,face or edge) per constraint allowed!</source>
       <translation>ნებადართულია მხოლოდ ერთი ტიპი (წვერო, ზედაპირი ან წიბო) თითო შეზღუდვაზე!</translation>
     </message>
@@ -2333,22 +2333,22 @@ Specify another file please.</source>
   <context>
     <name>FemGui::TaskFemConstraintTemperature</name>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="170"/>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="179"/>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="211"/>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="220"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="173"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="182"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="214"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="223"/>
       <source>Selection error</source>
       <translation>მონიშვნის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="170"/>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="211"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="173"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="214"/>
       <source>Nothing selected!</source>
       <translation>არაფერია მონიშნული!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="179"/>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="220"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="182"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="223"/>
       <source>Selected object is not a part!</source>
       <translation>მონიშნული ობიექტი ნაწილი არაა!</translation>
     </message>
@@ -2356,64 +2356,64 @@ Specify another file please.</source>
   <context>
     <name>FemGui::TaskFemConstraintTransform</name>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="141"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="144"/>
       <source>Constraint update error</source>
       <translation>შეზღუდვის განახლების შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="141"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="144"/>
       <source>The transformable faces have changed. Please add only the transformable faces and remove non-transformable faces!</source>
       <translation>გარდასახვადი ზედაპირები შეიცვალა. გთხოვთ, დაამატოთ მხოლოდ გარდასახვადი ზედაპირები და ამოიღეთ არაგარდასახვადი ზედაპირები!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="231"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="236"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="242"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="255"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="261"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="268"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="277"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="303"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="351"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="360"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="234"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="239"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="245"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="258"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="264"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="271"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="280"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="306"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="354"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="363"/>
       <source>Selection error</source>
       <translation>მონიშვნის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="231"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="351"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="234"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="354"/>
       <source>Nothing selected!</source>
       <translation>არაფერია მონიშნული!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="236"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="242"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="239"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="245"/>
       <source>Only one face for rectangular transform constraint!</source>
       <translation>მართკუთხედის გარდასაქმნის შესაზღუდად აირჩიეთ მხოლოდ ერთი ზედაპირი!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="255"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="360"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="258"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="363"/>
       <source>Selected object is not a part!</source>
       <translation>მონიშნული ობიექტი ნაწილი არაა!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="261"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="264"/>
       <source>Only one face for transform constraint!</source>
       <translation>შეზღუდვის გარდასაქმნელად აირჩიეთ მხოლოდ ერთი ზედაპირი!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="268"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="271"/>
       <source>Only faces can be picked</source>
       <translation>შეგიძლიათ აირჩიოთ მხოლოდ ზედაპირები</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="277"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="280"/>
       <source>Only cylindrical faces can be picked</source>
       <translation>შეგიძლიათ აირჩიოთ მხოლოდ ცილინდრული ზედაპირები</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="303"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="306"/>
       <source>Only transformable faces can be selected! Apply displacement constraint to surface first then apply constraint to surface</source>
       <translation>შესაძლებელია მხოლოდ გარდაქნადი ზედაპირების არჩევა! ჯერ გამოიყენეთ გადაადგილების შეზღუდვა, შემდეგ კი გამოიყენეთ ზედაპირზე შეზღუდვა</translation>
     </message>
@@ -2437,7 +2437,7 @@ Specify another file please.</source>
   <context>
     <name>FemGui::TaskPostCut</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1456"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1466"/>
       <source>Function cut, choose implicit function</source>
       <translation>ფუნქციის კვეთა, აირჩიეთ არაცხადი ფუნქცია</translation>
     </message>
@@ -2450,7 +2450,7 @@ Specify another file please.</source>
       <translation>ხაზის გასწვრივი მონაცემების პარამეტრები</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="882"/>
+      <location filename="../../TaskPostBoxes.cpp" line="889"/>
       <source>Length</source>
       <comment>X-Axis plot label</comment>
       <translation>სიგრძე</translation>
@@ -2459,12 +2459,12 @@ Specify another file please.</source>
   <context>
     <name>FemGui::TaskPostDataAtPoint</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="906"/>
+      <location filename="../../TaskPostBoxes.cpp" line="913"/>
       <source>Data at point options</source>
       <translation>წერტილის მონაცემების პარამეტრები</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1181"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1191"/>
       <source>%1 at (%2; %3; %4) is: %5 %6</source>
       <translation>%1 მისამართზე (%2; %3; %4) არის: %5 %6</translation>
     </message>
@@ -2488,7 +2488,7 @@ Specify another file please.</source>
   <context>
     <name>FemGui::TaskPostScalarClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1203"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1213"/>
       <source>Scalar clip options</source>
       <translation>სკალარის ფილტრის მორგება</translation>
     </message>
@@ -2496,7 +2496,7 @@ Specify another file please.</source>
   <context>
     <name>FemGui::TaskPostWarpVector</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1313"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1323"/>
       <source>Warp options</source>
       <translation>გადატანის პარამეტრები</translation>
     </message>
@@ -3361,12 +3361,12 @@ Specify another file please.</source>
       <translation>შეტანა-გატანა</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="405"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="407"/>
       <source>Constraint Contact</source>
       <translation>კონტაქტის შეზღუდვა</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="550"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="557"/>
       <source>Constraint displacement</source>
       <translation>გადაადგილების შეზღუდვა</translation>
     </message>
@@ -3376,7 +3376,7 @@ Specify another file please.</source>
       <translation>დამაგრებულის ზღვარი</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="886"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="887"/>
       <source>Constraint fluid boundary</source>
       <translation>სითხის საზღვრის შეზღუდვა</translation>
     </message>
@@ -3411,12 +3411,12 @@ Specify another file please.</source>
       <translation>ზამბარის შეზღუდვა</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="334"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="337"/>
       <source>Constraint temperature</source>
       <translation>ტემპერატურის შეზღუდვა</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="487"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="490"/>
       <source>Constraint transform</source>
       <translation>გარდაქნის შეზღუდვა</translation>
     </message>

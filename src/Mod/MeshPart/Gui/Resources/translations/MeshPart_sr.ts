@@ -220,9 +220,9 @@ This command only works with a 'mesh' object.</source>
       <source>Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
 
 This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh Workbench.</source>
-      <translation>Притисните 'Почетак', а затим изаберите тачке на мрежи; када је изабрано довољно тачака, кликните десним тастером миша и изаберите „Напра“. Поновите овај процес да бисте направили више сплајнова. Затворите панел задатака да бисте довршили операцију.
+      <translation>Притисни 'Почетак', а затим изабери тачке на мрежи; када је изабрано довољно тачака, кликни десним тастером миша и изабери „Направи“. Понови овај процес да би направо више сплајнова. Затвори панел задатака да би довршио операцију.
 
-Ова команда ради само са објектом који је мрежа, а не са обичном страницом или површином. Да бисте претворили објекат у мрежу, користите алатке Mesh радног окружења.</translation>
+Ова команда ради само са објектом који је мрежа, а не са обичном страницом или површином. Да би претворио објекат у мрежу, користи алатке Mesh радног окружења.</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>
@@ -500,14 +500,14 @@ A value in the range of 0.2-10.</source>
       <location filename="../../Tessellation.cpp" line="246"/>
       <source>You have selected a body without tip.
 Either set the tip of the body or select a different shape, please.</source>
-      <translation>Изабрали сте тело које нема крајњи типски облик.
-Или задајте крајњи типски облик или изаберите друго тело.</translation>
+      <translation>Изабрао си тело које нема крајњи типски облик.
+Или задај крајњи типски облик или изабери друго тело.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="250"/>
       <source>You have selected a shape without faces.
 Select a different shape, please.</source>
-      <translation>Изабрали сте облик без страница.
+      <translation>Изабрао си облик без страница.
 Изабери други облик.</translation>
     </message>
     <message>

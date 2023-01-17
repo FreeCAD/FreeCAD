@@ -2323,7 +2323,7 @@ de proyección.</translation>
       <translation>Convertir malla</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1071"/>
+      <location filename="../../TaskAttacher.cpp" line="1077"/>
       <source>Edit attachment</source>
       <translation>Editar adjunto</translation>
     </message>
@@ -2338,28 +2338,28 @@ de proyección.</translation>
       <translation>Proyección</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="256"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="261"/>
       <source>Edge</source>
       <translation>Arista</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="297"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="302"/>
       <source>Wire</source>
       <translation>Alambre</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="349"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="401"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="354"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="406"/>
       <source>Face</source>
       <translation>Cara</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="464"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="469"/>
       <source>Shell</source>
       <translation>Funda</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="516"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="521"/>
       <source>Solid</source>
       <translation>Sólido</translation>
     </message>
@@ -4705,80 +4705,80 @@ solo los cortes creados serán visibles</translation>
   <context>
     <name>PartGui::ShapeBuilderWidget</name>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="215"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="220"/>
       <source>Unsupported</source>
       <translation>No soportado</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="215"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="220"/>
       <source>Box selection for shells is not supported</source>
       <translation>No se admite la selección de cajas para shells</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="224"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="243"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="271"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="312"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="364"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="416"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="479"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="229"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="248"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="276"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="317"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="369"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="421"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="484"/>
       <source>Wrong selection</source>
       <translation>Selección incorrecta</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="224"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="243"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="229"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="248"/>
       <source>Select two vertices</source>
       <translation>Seleccione dos vértices</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="271"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="364"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="276"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="369"/>
       <source>Select one or more edges</source>
       <translation>Seleccione uno o más aristas</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="312"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="317"/>
       <source>Select three or more vertices</source>
       <translation>Seleccione tres o más vértices</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="416"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="421"/>
       <source>Select two or more faces</source>
       <translation>Seleccione dos o más caras</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="479"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="484"/>
       <source>Select only one part object</source>
       <translation>Seleccione un único objeto de la pieza</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="531"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="536"/>
       <source>Select two vertices to create an edge</source>
       <translation>Seleccionar dos vértices para crear un borde</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="538"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="543"/>
       <source>Select adjacent edges</source>
       <translation>Seleccionar aristas adyacentes</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="545"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="550"/>
       <source>Select a list of vertices</source>
       <translation>Selecciona una lista de vértices</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="552"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="557"/>
       <source>Select a closed set of edges</source>
       <translation>Seleccione un conjunto cerrado de bordes</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="559"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="564"/>
       <source>Select adjacent faces</source>
       <translation>Seleccione las caras adyacentes</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="566"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="571"/>
       <source>All shape types can be selected</source>
       <translation>Se pueden seleccionar todos los tipos de forma</translation>
     </message>
@@ -4920,7 +4920,7 @@ solo los cortes creados serán visibles</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="124"/>
-      <location filename="../../TaskAttacher.cpp" line="329"/>
+      <location filename="../../TaskAttacher.cpp" line="335"/>
       <source>Attachment Offset (in local coordinates):</source>
       <translation>Desplazamiento adjunto (en coordenadas locales):</translation>
     </message>
@@ -5001,77 +5001,77 @@ del objeto que se adjunta.</translation>
       <translation>Voltear caras</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="312"/>
+      <location filename="../../TaskAttacher.cpp" line="318"/>
       <source>OCC error: %1</source>
       <translation>Error OCC: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="314"/>
+      <location filename="../../TaskAttacher.cpp" line="320"/>
       <source>unknown error</source>
       <translation>error desconocido</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="317"/>
+      <location filename="../../TaskAttacher.cpp" line="323"/>
       <source>Attachment mode failed: %1</source>
       <translation>Modo de conexión falló: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="321"/>
+      <location filename="../../TaskAttacher.cpp" line="327"/>
       <source>Not attached</source>
       <translation>No adjuntado</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="325"/>
+      <location filename="../../TaskAttacher.cpp" line="331"/>
       <source>Attached with mode %1</source>
       <translation>Atado con el modo %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="329"/>
+      <location filename="../../TaskAttacher.cpp" line="335"/>
       <source>Attachment Offset (inactive - not attached):</source>
       <translation>Separación archivo adjunto (inactivo - no adjunto):</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="626"/>
+      <location filename="../../TaskAttacher.cpp" line="632"/>
       <source>Face</source>
       <translation>Cara</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="633"/>
+      <location filename="../../TaskAttacher.cpp" line="639"/>
       <source>Edge</source>
       <translation>Arista</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="640"/>
+      <location filename="../../TaskAttacher.cpp" line="646"/>
       <source>Vertex</source>
       <translation>Vértice</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="705"/>
+      <location filename="../../TaskAttacher.cpp" line="711"/>
       <source>Selecting...</source>
       <translation>Seleccionar...</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="709"/>
+      <location filename="../../TaskAttacher.cpp" line="715"/>
       <source>Reference%1</source>
       <translation>Referencia%1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="756"/>
+      <location filename="../../TaskAttacher.cpp" line="762"/>
       <source>Not editable because rotation of AttachmentOffset is bound by expressions.</source>
       <translation>No es editable porque la rotación está restringida por la superposición de las expresiones.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="822"/>
+      <location filename="../../TaskAttacher.cpp" line="828"/>
       <source>Reference combinations:</source>
       <translation>Combinaciones de referencia:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="839"/>
+      <location filename="../../TaskAttacher.cpp" line="845"/>
       <source>%1 (add %2)</source>
       <translation>%1 (Añadir %2)</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="844"/>
+      <location filename="../../TaskAttacher.cpp" line="850"/>
       <source>%1 (add more references)</source>
       <translation>%1 (añadir más referencias)</translation>
     </message>
@@ -5288,7 +5288,7 @@ Chequeos individuales de Operaciones Booleanas:</translation>
   <context>
     <name>PartGui::TaskDlgAttacher</name>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1112"/>
+      <location filename="../../TaskAttacher.cpp" line="1118"/>
       <source>Datum dialog: Input error</source>
       <translation>Diálogo Datum: Error de entrada</translation>
     </message>

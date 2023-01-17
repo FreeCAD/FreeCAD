@@ -220,9 +220,9 @@ Ova komanda radi samo sa objektom koji je mreža.</translation>
       <source>Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
 
 This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh Workbench.</source>
-      <translation>Pritisnite 'Početak', a zatim izaberite tačke na mreži; kada je izabrano dovoljno tačaka, kliknite desnim tasterom miša i izaberite „Napravi“. Ponovite ovaj proces da biste napravili više splajnova. Zatvorite panel zadataka da biste dovršili operaciju.
+      <translation>Pritisni 'Početak', a zatim izaberi tačke na mreži; kada je izabrano dovoljno tačaka, klikni desnim tasterom miša i izaberi „Napravi“. Ponovi ovaj proces da biste napravio više splajnova. Zatvori panel zadataka da bi dovršio operaciju.
 
-Ova komanda radi samo sa objektom koji je mreža, a ne sa običnom stranicom ili površinom. Da biste pretvorili objekat u mrežu, koristite alatke Mesh radnog okruženja.</translation>
+Ova komanda radi samo sa objektom koji je mreža, a ne sa običnom stranicom ili površinom. Da bi pretvorio objekat u mrežu, koristi alatke Mesh radnog okruženja.</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>
@@ -500,15 +500,15 @@ Vrednost u opsegu od 0,2-10.</translation>
       <location filename="../../Tessellation.cpp" line="246"/>
       <source>You have selected a body without tip.
 Either set the tip of the body or select a different shape, please.</source>
-      <translation>Izabrali ste telo koje nema krajnji tipski oblik.
-Ili zadajte krajnji tipski oblik ili izaberite drugo telo.</translation>
+      <translation>Izabrao si telo koje nema krajnji tipski oblik.
+Ili zadaj krajnji tipski oblik ili izaberi drugo telo.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="250"/>
       <source>You have selected a shape without faces.
 Select a different shape, please.</source>
-      <translation>Izabrali ste oblik bez stranica.
-Izaberite drugi oblik.</translation>
+      <translation>Izabrao si oblik bez stranica.
+Izaberi drugi oblik.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="254"/>

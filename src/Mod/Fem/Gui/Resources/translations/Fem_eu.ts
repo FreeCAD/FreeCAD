@@ -877,7 +877,7 @@ hasierako tenperatura:</translation>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="294"/>
       <source>Number of CPU's to use</source>
-      <translation type="unfinished">Number of CPU's to use</translation>
+      <translation>Erabiliko den PUZ kopurua</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="323"/>
@@ -999,7 +999,7 @@ hasierako tenperatura:</translation>
     <message>
       <location filename="../../DlgSettingsFemCcxImp.cpp" line="145"/>
       <source>File does not exist</source>
-      <translation type="unfinished">File does not exist</translation>
+      <translation>Fitxategia ez da existitzen</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcxImp.cpp" line="146"/>
@@ -1007,10 +1007,10 @@ hasierako tenperatura:</translation>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation type="unfinished">The specified executable 
+      <translation>Zehaztutako exekutagarria: 
 '%1'
- does not exist!
-Specify another file please.</translation>
+ez da existitzen.
+Zehaztu beste fitxategi bat.</translation>
     </message>
   </context>
   <context>
@@ -1064,12 +1064,12 @@ Specify another file please.</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="196"/>
       <source>Multithreading:</source>
-      <translation type="unfinished">Multithreading:</translation>
+      <translation>Hari anitzekoa:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="208"/>
       <source>CPU cores to be used:</source>
-      <translation type="unfinished">CPU cores to be used:</translation>
+      <translation>Erabiliko den PUZ nukleoen kopurua:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="218"/>
@@ -1079,7 +1079,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="102"/>
       <source>File does not exist</source>
-      <translation type="unfinished">File does not exist</translation>
+      <translation>Fitxategia ez da existitzen</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="103"/>
@@ -1087,30 +1087,30 @@ Specify another file please.</translation>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation type="unfinished">The specified executable 
+      <translation>Zehaztutako exekutagarria: 
 '%1'
- does not exist!
-Specify another file please.</translation>
+ez da existitzen.
+Zehaztu beste fitxategi bat.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="121"/>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="131"/>
       <source>FEM Elmer: Not suitable for multithreading</source>
-      <translation type="unfinished">FEM Elmer: Not suitable for multithreading</translation>
+      <translation>FEM Elmer: Ez da egokia hari anitz erabiltzeko</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="122"/>
       <source>Wrong Elmer setting: You use more than one CPU core.
 Therefore an executable with the suffix '_mpi.exe' is required.</source>
-      <translation type="unfinished">Wrong Elmer setting: You use more than one CPU core.
-Therefore an executable with the suffix '_mpi.exe' is required.</translation>
+      <translation>Elmer ezarpen okerra: PUZ nukleo bat baino gehiago erabili behar da.
+Hortaz, '_mpi.exe' atzizkia duen exekutagarria behar da.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="132"/>
       <source>Wrong Elmer setting: You use more than one CPU core.
 Therefore an executable with the suffix '_mpi' is required.</source>
-      <translation type="unfinished">Wrong Elmer setting: You use more than one CPU core.
-Therefore an executable with the suffix '_mpi' is required.</translation>
+      <translation>Elmer ezarpen okerra: PUZ nukleo bat baino gehiago erabili behar da.
+Hortaz, '_mpi' atzizkia duen exekutagarria behar da.</translation>
     </message>
   </context>
   <context>
@@ -1303,7 +1303,7 @@ non murrizketa edo materiala aplikatzen den.</translation>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="79"/>
       <source>File does not exist</source>
-      <translation type="unfinished">File does not exist</translation>
+      <translation>Fitxategia ez da existitzen</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="80"/>
@@ -1311,10 +1311,10 @@ non murrizketa edo materiala aplikatzen den.</translation>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation type="unfinished">The specified executable 
+      <translation>Zehaztutako exekutagarria: 
 '%1'
- does not exist!
-Specify another file please.</translation>
+ez da existitzen.
+Zehaztu beste fitxategi bat.</translation>
     </message>
   </context>
   <context>
@@ -1495,7 +1495,7 @@ Hau ez badago markatuta, izenaren arabera ordenatuko dira.</translation>
     <message>
       <location filename="../../DlgSettingsFemMystranImp.cpp" line="81"/>
       <source>File does not exist</source>
-      <translation type="unfinished">File does not exist</translation>
+      <translation>Fitxategia ez da existitzen</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystranImp.cpp" line="82"/>
@@ -1503,10 +1503,10 @@ Hau ez badago markatuta, izenaren arabera ordenatuko dira.</translation>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation type="unfinished">The specified executable 
+      <translation>Zehaztutako exekutagarria: 
 '%1'
- does not exist!
-Specify another file please.</translation>
+ez da existitzen.
+Zehaztu beste fitxategi bat.</translation>
     </message>
   </context>
   <context>
@@ -1607,7 +1607,7 @@ mezu bat jaso daiteke.</translation>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="104"/>
       <source>File does not exist</source>
-      <translation type="unfinished">File does not exist</translation>
+      <translation>Fitxategia ez da existitzen</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="105"/>
@@ -1615,10 +1615,10 @@ mezu bat jaso daiteke.</translation>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation type="unfinished">The specified z88r executable 
+      <translation>Zehaztutako z88r exekutagarria: 
 '%1'
- does not exist!
-Specify another file please.</translation>
+ez da existitzen.
+Zehaztu beste fitxategi bat.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="116"/>
@@ -1629,12 +1629,12 @@ Specify another file please.</translation>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="117"/>
       <source>You must specify the path to the z88r.exe!</source>
-      <translation type="unfinished">You must specify the path to the z88r.exe!</translation>
+      <translation>z88r.exe fitxategiaren bide-izena zehaztu behar da.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="123"/>
       <source>You must specify the path to the z88r!</source>
-      <translation type="unfinished">You must specify the path to the z88r!</translation>
+      <translation>z88r aplikazioaren bide-izena zehaztu behar da.</translation>
     </message>
   </context>
   <context>
@@ -1678,7 +1678,7 @@ Specify another file please.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintContact</name>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="427"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="429"/>
       <source>Input error</source>
       <translation>Sarrera-errorea</translation>
     </message>
@@ -1686,7 +1686,7 @@ Specify another file please.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintDisplacement</name>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="604"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="611"/>
       <source>Input error</source>
       <translation>Sarrera-errorea</translation>
     </message>
@@ -1694,7 +1694,7 @@ Specify another file please.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintFluidBoundary</name>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="951"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="952"/>
       <source>Input error</source>
       <translation>Sarrera-errorea</translation>
     </message>
@@ -1765,7 +1765,7 @@ Specify another file please.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintTemperature</name>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="351"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="354"/>
       <source>Input error</source>
       <translation>Sarrera-errorea</translation>
     </message>
@@ -1773,7 +1773,7 @@ Specify another file please.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintTransform</name>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="514"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="517"/>
       <source>Input error</source>
       <translation>Sarrera-errorea</translation>
     </message>
@@ -1867,77 +1867,77 @@ Specify another file please.</translation>
     <name>FemGui::TaskFemConstraintContact</name>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="56"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="59"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="60"/>
       <source>Delete</source>
       <translation>Ezabatu</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="97"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="140"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="145"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="149"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="159"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="166"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="173"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="201"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="210"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="247"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="252"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="256"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="266"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="272"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="279"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="307"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="316"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="99"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="142"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="147"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="151"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="161"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="168"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="175"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="203"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="212"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="249"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="254"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="258"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="268"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="274"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="281"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="309"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="318"/>
       <source>Selection error</source>
       <translation>Hautapen-errorea</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="97"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="99"/>
       <source>Only one face in object! - moved to master face</source>
       <translation>Aurpegi bakarra dago objektuan! - Aurpegi maisura eraman da</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="140"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="247"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="142"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="249"/>
       <source>Only one master face and one slave face for a contact constraint!</source>
       <translation>Aurpegi nagusi bakarra eta mendeko aurpegi bakarra kontaktu-murrizketako!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="145"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="201"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="252"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="307"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="147"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="203"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="254"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="309"/>
       <source>Nothing selected!</source>
       <translation>Ez da ezer hautatu!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="149"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="166"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="151"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="168"/>
       <source>Only one slave face for a contact constraint!</source>
       <translation>Mendeko aurpegi bakarra kontaktu-murrizketako!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="159"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="210"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="266"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="316"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="161"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="212"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="268"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="318"/>
       <source>Selected object is not a part!</source>
       <translation>Hautatutako objektua ez da pieza bat!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="173"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="279"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="175"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="281"/>
       <source>Only faces can be picked</source>
       <translation>Aurpegiak soilik aukera daitezke</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="256"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="258"/>
       <source>Only one master for a contact constraint!</source>
       <translation>Nagusi bakarra kontaktu-murrizketako!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="272"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="274"/>
       <source>Only one master face for a contact constraint!</source>
       <translation>Aurpegi nagusi bakarra kontaktu-murrizketako!</translation>
     </message>
@@ -1945,28 +1945,28 @@ Specify another file please.</translation>
   <context>
     <name>FemGui::TaskFemConstraintDisplacement</name>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="373"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="382"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="408"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="430"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="439"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="380"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="389"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="415"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="437"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="446"/>
       <source>Selection error</source>
       <translation>Hautapen-errorea</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="373"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="430"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="380"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="437"/>
       <source>Nothing selected!</source>
       <translation>Ez da ezer hautatu!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="382"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="439"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="389"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="446"/>
       <source>Selected object is not a part!</source>
       <translation>Hautatutako objektua ez da pieza bat!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="407"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="414"/>
       <source>Only one type of selection (vertex,face or edge) per constraint allowed!</source>
       <translation>Hautapen mota bakarra (erpina, aurpegia edo ertza) onartzen da murrizketako!</translation>
     </message>
@@ -2003,128 +2003,128 @@ Specify another file please.</translation>
   <context>
     <name>FemGui::TaskFemConstraintFluidBoundary</name>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="273"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="274"/>
       <source>Basic</source>
       <translation>Oinarrizkoa</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="274"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="275"/>
       <source>Turbulence</source>
       <translation>Turbulentzia</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="275"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="276"/>
       <source>Thermal</source>
       <translation>Termikoa</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="277"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="278"/>
       <source>select boundary type, faces and set value</source>
       <translation>Hautatu muga mota, aurpegiak eta ezarri balioa</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="442"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="443"/>
       <source>Intensity [0~1]</source>
       <translation>Intentsitatea [0~1]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="444"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="445"/>
       <source>Dissipation Rate [m2/s3]</source>
       <translation>Barreiadura-tasa [m2/s3]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="447"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="448"/>
       <source>Length Scale[m]</source>
       <translation>Luzera-eskala [m]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="450"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="451"/>
       <source>Viscosity Ratio [1]</source>
       <translation>Biskositate-erlazioa [1]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="453"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="454"/>
       <source>Hydraulic Diameter [m]</source>
       <translation>Diametro hidraulikoa [m]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="479"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="484"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="480"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="485"/>
       <source>Gradient [K/m]</source>
       <translation>Gradientea [K/m]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="488"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="489"/>
       <source>Flux [W/m2]</source>
       <translation>Fluxua [W/m2]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="555"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="556"/>
       <source>Empty selection</source>
       <translation>Hautapen hutsa</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="555"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="556"/>
       <source>Select an edge or a face, please.</source>
       <translation>Hautatu ertz bat edo aurpegi bat.</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="565"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="572"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="586"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="592"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="597"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="566"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="573"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="587"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="593"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="598"/>
       <source>Wrong selection</source>
       <translation>Hautapen okerra</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="565"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="566"/>
       <source>Selected object is not a part object!</source>
       <translation>Hautatutako objektua ez da pieza-objektu bat!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="572"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="573"/>
       <source>Only one planar face or edge can be selected!</source>
       <translation>Aurpegi edo ertz planar bakar bat hautatu daiteke!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="586"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="587"/>
       <source>Only planar faces can be picked for 3D</source>
       <translation>Aurpegi planarrak soilik aukeratu daitezke 3Drako</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="592"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="593"/>
       <source>Only planar edges can be picked for 2D</source>
       <translation>Ertz planarrak soilik aukeratu daitezke 2Drako</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="597"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="598"/>
       <source>Only faces for 3D part or edges for 2D can be picked</source>
       <translation>Aurpegiak soilik (3D piezetarako) edo ertzak soilik (2D piezetarako) aukeratu daitezke</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="730"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="739"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="766"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="788"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="797"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="731"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="740"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="767"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="789"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="798"/>
       <source>Selection error</source>
       <translation>Hautapen-errorea</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="730"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="788"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="731"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="789"/>
       <source>Nothing selected!</source>
       <translation>Ez da ezer hautatu!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="739"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="797"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="740"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="798"/>
       <source>Selected object is not a part!</source>
       <translation>Hautatutako objektua ez da pieza bat!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="765"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="766"/>
       <source>Only one type of selection (vertex,face or edge) per constraint allowed!</source>
       <translation>Hautapen mota bakarra (erpina, aurpegia edo ertza) onartzen da murrizketako!</translation>
     </message>
@@ -2342,22 +2342,22 @@ Specify another file please.</translation>
   <context>
     <name>FemGui::TaskFemConstraintTemperature</name>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="170"/>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="179"/>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="211"/>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="220"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="173"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="182"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="214"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="223"/>
       <source>Selection error</source>
       <translation>Hautapen-errorea</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="170"/>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="211"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="173"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="214"/>
       <source>Nothing selected!</source>
       <translation>Ez da ezer hautatu!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="179"/>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="220"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="182"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="223"/>
       <source>Selected object is not a part!</source>
       <translation>Hautatutako objektua ez da pieza bat!</translation>
     </message>
@@ -2365,64 +2365,64 @@ Specify another file please.</translation>
   <context>
     <name>FemGui::TaskFemConstraintTransform</name>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="141"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="144"/>
       <source>Constraint update error</source>
       <translation>Errorea murrizketa eguneratzean</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="141"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="144"/>
       <source>The transformable faces have changed. Please add only the transformable faces and remove non-transformable faces!</source>
       <translation>Aurpegi transformagarriak aldatu dira. Gehitu aurpegi transformagarriak soilik eta kendu transformatu ezin direnak.</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="231"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="236"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="242"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="255"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="261"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="268"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="277"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="303"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="351"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="360"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="234"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="239"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="245"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="258"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="264"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="271"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="280"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="306"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="354"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="363"/>
       <source>Selection error</source>
       <translation>Hautapen-errorea</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="231"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="351"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="234"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="354"/>
       <source>Nothing selected!</source>
       <translation>Ez da ezer hautatu!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="236"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="242"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="239"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="245"/>
       <source>Only one face for rectangular transform constraint!</source>
       <translation>Aurpegi bakarra laukizuzenen transformazio-murrizketarako!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="255"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="360"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="258"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="363"/>
       <source>Selected object is not a part!</source>
       <translation>Hautatutako objektua ez da pieza bat!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="261"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="264"/>
       <source>Only one face for transform constraint!</source>
       <translation>Aurpegi bakarra transformazio-murrizketarako!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="268"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="271"/>
       <source>Only faces can be picked</source>
       <translation>Aurpegiak soilik aukera daitezke</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="277"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="280"/>
       <source>Only cylindrical faces can be picked</source>
       <translation>Aurpegi zilindrikoak soilik aukera daitezke</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="303"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="306"/>
       <source>Only transformable faces can be selected! Apply displacement constraint to surface first then apply constraint to surface</source>
       <translation>Aurpegi transformagarriak soilik hautatu daitezke! Aplikatu desplazamendu-murrizketa gainazalari lehenengo, gero aplikatu murrizketa gainazalari</translation>
     </message>
@@ -2446,7 +2446,7 @@ Specify another file please.</translation>
   <context>
     <name>FemGui::TaskPostCut</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1456"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1466"/>
       <source>Function cut, choose implicit function</source>
       <translation>Funtzio moztua, aukeratu funtzio inplizitua</translation>
     </message>
@@ -2459,7 +2459,7 @@ Specify another file please.</translation>
       <translation>Lerro baten luzeran dauden datuen aukerak</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="882"/>
+      <location filename="../../TaskPostBoxes.cpp" line="889"/>
       <source>Length</source>
       <comment>X-Axis plot label</comment>
       <translation>Luzera</translation>
@@ -2468,14 +2468,14 @@ Specify another file please.</translation>
   <context>
     <name>FemGui::TaskPostDataAtPoint</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="906"/>
+      <location filename="../../TaskPostBoxes.cpp" line="913"/>
       <source>Data at point options</source>
       <translation>Puntu bateko datuek aukerak</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1181"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1191"/>
       <source>%1 at (%2; %3; %4) is: %5 %6</source>
-      <translation type="unfinished">%1 at (%2; %3; %4) is: %5 %6</translation>
+      <translation>%1 hemen: (%2; %3; %4) honakoa da: %5 %6</translation>
     </message>
   </context>
   <context>
@@ -2497,7 +2497,7 @@ Specify another file please.</translation>
   <context>
     <name>FemGui::TaskPostScalarClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1203"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1213"/>
       <source>Scalar clip options</source>
       <translation>Ebaketa eskalarraren aukerak</translation>
     </message>
@@ -2505,7 +2505,7 @@ Specify another file please.</translation>
   <context>
     <name>FemGui::TaskPostWarpVector</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1313"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1323"/>
       <source>Warp options</source>
       <translation>Bihurritze-aukerak</translation>
     </message>
@@ -3370,12 +3370,12 @@ Specify another file please.</translation>
       <translation>Inportatu-Esportatu</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="405"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="407"/>
       <source>Constraint Contact</source>
       <translation>Murriztu kontaktua</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="550"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="557"/>
       <source>Constraint displacement</source>
       <translation>Murriztu desplazamendua</translation>
     </message>
@@ -3385,7 +3385,7 @@ Specify another file please.</translation>
       <translation>Murriztu finkoa</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="886"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="887"/>
       <source>Constraint fluid boundary</source>
       <translation>Murriztu jariakin-mugak</translation>
     </message>
@@ -3420,12 +3420,12 @@ Specify another file please.</translation>
       <translation>Murriztu malgukia</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="334"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="337"/>
       <source>Constraint temperature</source>
       <translation>Murriztu tenperatura</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="487"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="490"/>
       <source>Constraint transform</source>
       <translation>Murriztu transformazioa</translation>
     </message>
@@ -5222,12 +5222,12 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="57"/>
       <source>Analysis container</source>
-      <translation type="unfinished">Analysis container</translation>
+      <translation>Analisi-edukiontzia</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="62"/>
       <source>Creates an analysis container with standard solver CalculiX</source>
-      <translation type="unfinished">Creates an analysis container with standard solver CalculiX</translation>
+      <translation>Analisi-edukiontzia sortzen du CalculiX ebazle estandarrarekin</translation>
     </message>
   </context>
   <context>
@@ -5235,12 +5235,12 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="88"/>
       <source>Clipping plane on face</source>
-      <translation type="unfinished">Clipping plane on face</translation>
+      <translation>Ebaketa-planoa aurpegian</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="92"/>
       <source>Add a clipping plane on a selected face</source>
-      <translation type="unfinished">Add a clipping plane on a selected face</translation>
+      <translation>Gehitu ebaketa-planoa hautatutako aurpegi batean</translation>
     </message>
   </context>
   <context>
@@ -5249,7 +5249,7 @@ norabidea erabiliko da norabide gisa</translation>
       <location filename="../../../femcommands/commands.py" line="143"/>
       <location filename="../../../femcommands/commands.py" line="147"/>
       <source>Remove all clipping planes</source>
-      <translation type="unfinished">Remove all clipping planes</translation>
+      <translation>Kendu ebaketa-plano guztiak</translation>
     </message>
   </context>
   <context>
@@ -5262,7 +5262,7 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="173"/>
       <source>Creates a FEM constant vacuum permittivity to overwrite standard value</source>
-      <translation type="unfinished">Creates a FEM constant vacuum permittivity to overwrite standard value</translation>
+      <translation>FEM hutsaren permitibitate-konstante bat sortzen du balio estandarra gainidazteko</translation>
     </message>
   </context>
   <context>
@@ -5270,12 +5270,12 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="188"/>
       <source>Constraint body heat source</source>
-      <translation type="unfinished">Constraint body heat source</translation>
+      <translation>Murriztu gorputzaren bero-iturburua</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="192"/>
       <source>Creates a FEM constraint body heat source</source>
-      <translation type="unfinished">Creates a FEM constraint body heat source</translation>
+      <translation>FEM gorputz baten bero-iturburua murrizten du</translation>
     </message>
   </context>
   <context>
@@ -5283,12 +5283,12 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="205"/>
       <source>Constraint centrif</source>
-      <translation type="unfinished">Constraint centrif</translation>
+      <translation>Murriztu zentrifugazioa</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="209"/>
       <source>Creates a FEM constraint centrif</source>
-      <translation type="unfinished">Creates a FEM constraint centrif</translation>
+      <translation>Zentrifugazioaren FEM murrizketa bat sortzen du</translation>
     </message>
   </context>
   <context>
@@ -5296,12 +5296,12 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="222"/>
       <source>Constraint electrostatic potential</source>
-      <translation type="unfinished">Constraint electrostatic potential</translation>
+      <translation>Murriztu potentzial elektrostatikoa</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="226"/>
       <source>Creates a FEM constraint electrostatic potential</source>
-      <translation type="unfinished">Creates a FEM constraint electrostatic potential</translation>
+      <translation>FEM potentzial elektrostatikoa murrizten du</translation>
     </message>
   </context>
   <context>
@@ -5309,12 +5309,12 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="239"/>
       <source>Constraint flow velocity</source>
-      <translation type="unfinished">Constraint flow velocity</translation>
+      <translation>Murriztu fluxu-abiadura</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="243"/>
       <source>Creates a FEM constraint flow velocity</source>
-      <translation type="unfinished">Creates a FEM constraint flow velocity</translation>
+      <translation>Fluxu-abiaduraren FEM murrizketa bat sortzen du</translation>
     </message>
   </context>
   <context>
@@ -5322,12 +5322,12 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="256"/>
       <source>Constraint initial flow velocity</source>
-      <translation type="unfinished">Constraint initial flow velocity</translation>
+      <translation>Murriztu hasierako fluxu-abiadura</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="260"/>
       <source>Creates a FEM constraint initial flow velocity</source>
-      <translation type="unfinished">Creates a FEM constraint initial flow velocity</translation>
+      <translation>Hasierako fluxu-abiaduraren FEM murrizketa bat sortzen du</translation>
     </message>
   </context>
   <context>
@@ -5335,12 +5335,12 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="273"/>
       <source>Constraint initial pressure</source>
-      <translation type="unfinished">Constraint initial pressure</translation>
+      <translation>Murriztu hasierako tenperatura</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="277"/>
       <source>Creates a FEM constraint initial pressure</source>
-      <translation type="unfinished">Creates a FEM constraint initial pressure</translation>
+      <translation>Hasierako fluxu-abiaduraren FEM murrizketa bat sortzen du</translation>
     </message>
   </context>
   <context>
@@ -5348,12 +5348,12 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="290"/>
       <source>Constraint sectionprint</source>
-      <translation type="unfinished">Constraint sectionprint</translation>
+      <translation>Sekzio-inprimatzearen murrizketa</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="294"/>
       <source>Creates a FEM constraint sectionprint</source>
-      <translation type="unfinished">Creates a FEM constraint sectionprint</translation>
+      <translation>Sekzio-inprimatzearen FEM murrizketa bat sortzen du</translation>
     </message>
   </context>
   <context>
@@ -5361,12 +5361,12 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="307"/>
       <source>Constraint self weight</source>
-      <translation type="unfinished">Constraint self weight</translation>
+      <translation>Murriztu berezko pisua</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="311"/>
       <source>Creates a FEM constraint self weight</source>
-      <translation type="unfinished">Creates a FEM constraint self weight</translation>
+      <translation>Berezko pisuaren FEM murrizketa bat sortzen du</translation>
     </message>
   </context>
   <context>
@@ -5374,12 +5374,12 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="324"/>
       <source>Constraint tie</source>
-      <translation type="unfinished">Constraint tie</translation>
+      <translation>Murriztu lokarria</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="328"/>
       <source>Creates a FEM constraint tie</source>
-      <translation type="unfinished">Creates a FEM constraint tie</translation>
+      <translation>Lokarriaren FEM murrizketa bat sortzen du</translation>
     </message>
   </context>
   <context>
@@ -5387,12 +5387,12 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="341"/>
       <source>Fluid section for 1D flow</source>
-      <translation type="unfinished">Fluid section for 1D flow</translation>
+      <translation>Jariakin-sekzioa 1D jariorako</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="345"/>
       <source>Creates a FEM fluid section for 1D flow</source>
-      <translation type="unfinished">Creates a FEM fluid section for 1D flow</translation>
+      <translation>FEM jariakin-sekzio bat sortzen du 1D jariorako</translation>
     </message>
   </context>
   <context>
@@ -5400,12 +5400,12 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="358"/>
       <source>Beam cross section</source>
-      <translation type="unfinished">Beam cross section</translation>
+      <translation>Habearen zeharkako sekzioa</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="362"/>
       <source>Creates a FEM beam cross section</source>
-      <translation type="unfinished">Creates a FEM beam cross section</translation>
+      <translation>FEM habe baten zeharkako sekzioa sortzen du</translation>
     </message>
   </context>
   <context>
@@ -5413,12 +5413,12 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="375"/>
       <source>Shell plate thickness</source>
-      <translation type="unfinished">Shell plate thickness</translation>
+      <translation>Oskol-plakaren lodiera</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="379"/>
       <source>Creates a FEM shell plate thickness</source>
-      <translation type="unfinished">Creates a FEM shell plate thickness</translation>
+      <translation>FEM oskol-plakaren lodiera bat sortzen du</translation>
     </message>
   </context>
   <context>
@@ -5426,12 +5426,12 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="392"/>
       <source>Beam rotation</source>
-      <translation type="unfinished">Beam rotation</translation>
+      <translation>Habe-biraketa</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="396"/>
       <source>Creates a FEM beam rotation</source>
-      <translation type="unfinished">Creates a FEM beam rotation</translation>
+      <translation>FEM habe baten biraketa sortzen du</translation>
     </message>
   </context>
   <context>
@@ -5439,12 +5439,12 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="409"/>
       <source>Electrostatic equation</source>
-      <translation type="unfinished">Electrostatic equation</translation>
+      <translation>Elektrostatika-ekuazioa</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="413"/>
       <source>Creates a FEM equation for electrostatic</source>
-      <translation type="unfinished">Creates a FEM equation for electrostatic</translation>
+      <translation>FEM ekuazio bat sortzen du elektrostatikarako</translation>
     </message>
   </context>
   <context>
@@ -5452,12 +5452,12 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="426"/>
       <source>Elasticity equation</source>
-      <translation type="unfinished">Elasticity equation</translation>
+      <translation>Elastikotasun-ekuazioa</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="430"/>
       <source>Creates a FEM equation for elasticity</source>
-      <translation type="unfinished">Creates a FEM equation for elasticity</translation>
+      <translation>FEM ekuazio bat sortzen du elastikotasunerako</translation>
     </message>
   </context>
   <context>
@@ -5465,12 +5465,12 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="443"/>
       <source>Flow equation</source>
-      <translation type="unfinished">Flow equation</translation>
+      <translation>Jario-ekuazioa</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="447"/>
       <source>Creates a FEM equation for flow</source>
-      <translation type="unfinished">Creates a FEM equation for flow</translation>
+      <translation>FEM ekuazio bat sortzen du jariorako</translation>
     </message>
   </context>
   <context>
@@ -5478,12 +5478,12 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="460"/>
       <source>Flux equation</source>
-      <translation type="unfinished">Flux equation</translation>
+      <translation>Fluxu-ekuazioa</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="464"/>
       <source>Creates a FEM equation for flux</source>
-      <translation type="unfinished">Creates a FEM equation for flux</translation>
+      <translation>FEM ekuazio bat sortzen du fluxurako</translation>
     </message>
   </context>
   <context>
@@ -5496,7 +5496,7 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="481"/>
       <source>Creates a FEM equation for electric forces</source>
-      <translation type="unfinished">Creates a FEM equation for electric forces</translation>
+      <translation>FEM ekuazio bat sortzen du indar elektrikoetarako</translation>
     </message>
   </context>
   <context>
@@ -5504,12 +5504,12 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="494"/>
       <source>Heat equation</source>
-      <translation type="unfinished">Heat equation</translation>
+      <translation>Bero-ekuazioa</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="498"/>
       <source>Creates a FEM equation for heat</source>
-      <translation type="unfinished">Creates a FEM equation for heat</translation>
+      <translation>FEM ekuazio bat sortzen du berorako</translation>
     </message>
   </context>
   <context>
@@ -5518,7 +5518,7 @@ norabidea erabiliko da norabide gisa</translation>
       <location filename="../../../femcommands/commands.py" line="512"/>
       <location filename="../../../femcommands/commands.py" line="516"/>
       <source>Open FEM examples</source>
-      <translation type="unfinished">Open FEM examples</translation>
+      <translation>Ireki FEM adibideak</translation>
     </message>
   </context>
   <context>
@@ -5526,12 +5526,12 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="533"/>
       <source>Material editor</source>
-      <translation type="unfinished">Material editor</translation>
+      <translation>Materialen editorea</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="537"/>
       <source>Opens the FreeCAD material editor</source>
-      <translation type="unfinished">Opens the FreeCAD material editor</translation>
+      <translation>FreeCADen materialen editorea irekitzen du</translation>
     </message>
   </context>
   <context>
@@ -5539,12 +5539,12 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="553"/>
       <source>Material for fluid</source>
-      <translation type="unfinished">Material for fluid</translation>
+      <translation>Materiala jariakinerako</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="557"/>
       <source>Creates a FEM material for fluid</source>
-      <translation type="unfinished">Creates a FEM material for fluid</translation>
+      <translation>FEM materiala sortzen du jariakinerako</translation>
     </message>
   </context>
   <context>
@@ -5552,12 +5552,12 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="570"/>
       <source>Nonlinear mechanical material</source>
-      <translation type="unfinished">Nonlinear mechanical material</translation>
+      <translation>Material mekaniko ez-lineala</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="574"/>
       <source>Creates a nonlinear mechanical material</source>
-      <translation type="unfinished">Creates a nonlinear mechanical material</translation>
+      <translation>Material mekaniko ez-lineal bat sortzen du</translation>
     </message>
   </context>
   <context>
@@ -5565,12 +5565,12 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="640"/>
       <source>Reinforced material (concrete)</source>
-      <translation type="unfinished">Reinforced material (concrete)</translation>
+      <translation>Indartutako materiala (hormigoia)</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="644"/>
       <source>Creates a material for reinforced matrix material such as concrete</source>
-      <translation type="unfinished">Creates a material for reinforced matrix material such as concrete</translation>
+      <translation>Material bat sortzen du matrize indartuko materialetarako, esaterako hormigoirako</translation>
     </message>
   </context>
   <context>
@@ -5578,12 +5578,12 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="657"/>
       <source>Material for solid</source>
-      <translation type="unfinished">Material for solid</translation>
+      <translation>Materiala solidorako</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="662"/>
       <source>Creates a FEM material for solid</source>
-      <translation type="unfinished">Creates a FEM material for solid</translation>
+      <translation>FEM material bat sortzen du solido baterako</translation>
     </message>
   </context>
   <context>
@@ -5591,12 +5591,12 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="675"/>
       <source>FEM mesh to mesh</source>
-      <translation type="unfinished">FEM mesh to mesh</translation>
+      <translation>FEM amaraunetik amaraunera</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="679"/>
       <source>Convert the surface of a FEM mesh to a mesh</source>
-      <translation type="unfinished">Convert the surface of a FEM mesh to a mesh</translation>
+      <translation>Bihurtu amaraun FEM amaraun baten gainazala</translation>
     </message>
   </context>
   <context>
@@ -5604,12 +5604,12 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="722"/>
       <source>FEM mesh boundary layer</source>
-      <translation type="unfinished">FEM mesh boundary layer</translation>
+      <translation>FEM amaraunaren muga-geruza</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="726"/>
       <source>Creates a FEM mesh boundary layer</source>
-      <translation type="unfinished">Creates a FEM mesh boundary layer</translation>
+      <translation>FEM amaraunaren muga-geruza sortzen du</translation>
     </message>
   </context>
   <context>
@@ -5617,12 +5617,12 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="739"/>
       <source>Clear FEM mesh</source>
-      <translation type="unfinished">Clear FEM mesh</translation>
+      <translation>Garbitu FEM amarauna</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="743"/>
       <source>Clear the Mesh of a FEM mesh object</source>
-      <translation type="unfinished">Clear the Mesh of a FEM mesh object</translation>
+      <translation>Garbitu FEM amaraun-objektu baten amarauna</translation>
     </message>
   </context>
   <context>
@@ -5631,7 +5631,7 @@ norabidea erabiliko da norabide gisa</translation>
       <location filename="../../../femcommands/commands.py" line="764"/>
       <location filename="../../../femcommands/commands.py" line="768"/>
       <source>Display FEM mesh info</source>
-      <translation type="unfinished">Display FEM mesh info</translation>
+      <translation>Bistaratu FEM amaraunaren informazioa</translation>
     </message>
   </context>
   <context>
@@ -5639,12 +5639,12 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="793"/>
       <source>FEM mesh from shape by Gmsh</source>
-      <translation type="unfinished">FEM mesh from shape by Gmsh</translation>
+      <translation>FEM amarauna formatik, Gmsh bidez</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="797"/>
       <source>Create a FEM mesh from a shape by Gmsh mesher</source>
-      <translation type="unfinished">Create a FEM mesh from a shape by Gmsh mesher</translation>
+      <translation>Sortu FEM amaraun bat forma batetik abiatuz, Gmsh amaraun-sortzailea erabiliz</translation>
     </message>
   </context>
   <context>
@@ -5652,12 +5652,12 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="838"/>
       <source>FEM mesh group</source>
-      <translation type="unfinished">FEM mesh group</translation>
+      <translation>FEM amaraun taldea</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="842"/>
       <source>Creates a FEM mesh group</source>
-      <translation type="unfinished">Creates a FEM mesh group</translation>
+      <translation>FEM amaraun talde bat sortzen du</translation>
     </message>
   </context>
   <context>
@@ -5665,12 +5665,12 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="855"/>
       <source>FEM mesh from shape by Netgen</source>
-      <translation type="unfinished">FEM mesh from shape by Netgen</translation>
+      <translation>FEM amarauna formatik, Netgen bidez</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="859"/>
       <source>Create a FEM mesh from a solid or face shape by Netgen internal mesher</source>
-      <translation type="unfinished">Create a FEM mesh from a solid or face shape by Netgen internal mesher</translation>
+      <translation>Sortu FEM amaraun bat solido batetik edo aurpegi-forma batetik, Netgen barneko amaraun-sortzailea erabiliz</translation>
     </message>
   </context>
   <context>
@@ -5678,12 +5678,12 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="900"/>
       <source>FEM mesh region</source>
-      <translation type="unfinished">FEM mesh region</translation>
+      <translation>FEM amaraun-eskualdea</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="904"/>
       <source>Creates a FEM mesh region</source>
-      <translation type="unfinished">Creates a FEM mesh region</translation>
+      <translation>FEM amaraun-eskualde bat sortzen du</translation>
     </message>
   </context>
   <context>
@@ -5696,7 +5696,7 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="922"/>
       <source>Shows and visualizes selected result data</source>
-      <translation type="unfinished">Shows and visualizes selected result data</translation>
+      <translation>Hautatutako emaitza-datuak erakusten eta bistaratzen ditu</translation>
     </message>
   </context>
   <context>
@@ -5704,12 +5704,12 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="937"/>
       <source>Purge results</source>
-      <translation type="unfinished">Purge results</translation>
+      <translation>Araztu emaitzak</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="942"/>
       <source>Purges all results from active analysis</source>
-      <translation type="unfinished">Purges all results from active analysis</translation>
+      <translation>Analisi aktiboetako emaitza guztiak arazten ditu</translation>
     </message>
   </context>
   <context>
@@ -5717,12 +5717,12 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="959"/>
       <source>Solver CalculiX Standard</source>
-      <translation type="unfinished">Solver CalculiX Standard</translation>
+      <translation>CalculiX ebazle estandarra</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="964"/>
       <source>Creates a standard FEM solver CalculiX with ccx tools</source>
-      <translation type="unfinished">Creates a standard FEM solver CalculiX with ccx tools</translation>
+      <translation>FEM CalculiX ebazle estandarra sortzen du ccx tresnekin</translation>
     </message>
   </context>
   <context>
@@ -5730,12 +5730,12 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1000"/>
       <source>Solver CalculiX (new framework)</source>
-      <translation type="unfinished">Solver CalculiX (new framework)</translation>
+      <translation>CalculiX ebazlea (lan-marko berria)</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1005"/>
       <source>Creates a FEM solver CalculiX new framework (less result error handling)</source>
-      <translation type="unfinished">Creates a FEM solver CalculiX new framework (less result error handling)</translation>
+      <translation>FEM CalculiX ebazlearen lan-marko berria sortzen du (emaitzen errore-maneiatze gutxiago)</translation>
     </message>
   </context>
   <context>
@@ -5743,12 +5743,12 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1019"/>
       <source>Solver job control</source>
-      <translation type="unfinished">Solver job control</translation>
+      <translation>Ebazle-lanaren kontrola</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1024"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
-      <translation type="unfinished">Changes solver attributes and runs the calculations for the selected solver</translation>
+      <translation>Ebazlearen atributuak aldatzen ditu eta hautatutako ebazlerako kalkuluak exekutatzen ditu</translation>
     </message>
   </context>
   <context>
@@ -5756,12 +5756,12 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1036"/>
       <source>Solver Elmer</source>
-      <translation type="unfinished">Solver Elmer</translation>
+      <translation>Elmer ebazlea</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1041"/>
       <source>Creates a FEM solver Elmer</source>
-      <translation type="unfinished">Creates a FEM solver Elmer</translation>
+      <translation>FEM Elmer ebazlea sortzen du</translation>
     </message>
   </context>
   <context>
@@ -5769,12 +5769,12 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1052"/>
       <source>Solver Mystran</source>
-      <translation type="unfinished">Solver Mystran</translation>
+      <translation>Mystran ebazlea</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1054"/>
       <source>Creates a FEM solver Mystran</source>
-      <translation type="unfinished">Creates a FEM solver Mystran</translation>
+      <translation>FEM Mystran ebazlea sortzen du</translation>
     </message>
   </context>
   <context>
@@ -5782,12 +5782,12 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1064"/>
       <source>Run solver calculations</source>
-      <translation type="unfinished">Run solver calculations</translation>
+      <translation>Exekutatu ebazlearen kalkuluak</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1069"/>
       <source>Runs the calculations for the selected solver</source>
-      <translation type="unfinished">Runs the calculations for the selected solver</translation>
+      <translation>Hautatutako ebazlearen kalkuluak exekutatzen ditu</translation>
     </message>
   </context>
   <context>
@@ -5795,12 +5795,12 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1084"/>
       <source>Solver Z88</source>
-      <translation type="unfinished">Solver Z88</translation>
+      <translation>Z88 ebazlea</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1086"/>
       <source>Creates a FEM solver Z88</source>
-      <translation type="unfinished">Creates a FEM solver Z88</translation>
+      <translation>FEM Z88 ebazlea sortzen du</translation>
     </message>
   </context>
   <context>
@@ -5808,18 +5808,18 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="215"/>
       <source>Solver Control</source>
-      <translation type="unfinished">Solver Control</translation>
+      <translation>Ebazle-kontrola</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="226"/>
       <source>Working Directory</source>
-      <translation type="unfinished">Working Directory</translation>
+      <translation>Laneko direktorioa</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="230"/>
       <location filename="../../../femsolver/solver_taskpanel.py" line="306"/>
       <source>Write</source>
-      <translation type="unfinished">Write</translation>
+      <translation>Idatzi</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="231"/>
@@ -5832,7 +5832,7 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="248"/>
       <source>Elapsed Time:</source>
-      <translation type="unfinished">Elapsed Time:</translation>
+      <translation>Igarotako denbora:</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="308"/>
@@ -5844,17 +5844,17 @@ norabidea erabiliko da norabide gisa</translation>
       <location filename="../../../femsolver/solver_taskpanel.py" line="310"/>
       <location filename="../../../femsolver/solver_taskpanel.py" line="314"/>
       <source>Re-write</source>
-      <translation type="unfinished">Re-write</translation>
+      <translation>Berridatzi</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="316"/>
       <source>Re-run</source>
-      <translation type="unfinished">Re-run</translation>
+      <translation>Berriro exekutatu</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="318"/>
       <source>Abort</source>
-      <translation type="unfinished">Abort</translation>
+      <translation>Abortatu</translation>
     </message>
   </context>
   <context>
@@ -5875,12 +5875,12 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="130"/>
       <source>Select Faces/Edges/Vertexes</source>
-      <translation type="unfinished">Select Faces/Edges/Vertexes</translation>
+      <translation>Hautatu aurpegiak/ertzak/erpinak</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="134"/>
       <source>To add references: select them in the 3D view  and click "Add".</source>
-      <translation type="unfinished">To add references: select them in the 3D view  and click "Add".</translation>
+      <translation>Erreferentziak gehitzeko, hautatu horiek 3D bistan eta sakatu 'Gehitu'.</translation>
     </message>
   </context>
   <context>
@@ -5888,12 +5888,12 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="149"/>
       <source>Select Solids</source>
-      <translation type="unfinished">Select Solids</translation>
+      <translation>Hautatu solidoak</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="153"/>
       <source>Select elements part of the solid that shall be added to the list. To add the solid click "Add".</source>
-      <translation type="unfinished">Select elements part of the solid that shall be added to the list. To add the solid click "Add".</translation>
+      <translation>Hautatu zerrendari gehi dakizkiokeen elementu zatiak solidoan. Solidoa gehitzeko, sakatu 'Gehitu'.</translation>
     </message>
   </context>
   <context>
@@ -5901,7 +5901,7 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="268"/>
       <source>Geometry reference selector for a</source>
-      <translation type="unfinished">Geometry reference selector for a</translation>
+      <translation>Geometria-erreferentziaren hautatzailea honetarako:</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="271"/>
@@ -5911,17 +5911,17 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="278"/>
       <source>Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements are allowed to select: {}{}{}</source>
-      <translation type="unfinished">Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements are allowed to select: {}{}{}</translation>
+      <translation>Sakatu 'Gehitu' eta hautatu elementu geometrikoak, haiek zerrendari gehitzeko.{} Honako geometria-elementuak hautatu daitezke: {}{}{}</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="281"/>
       <source>{}If no geometry is added to the list, all remaining ones are used.</source>
-      <translation type="unfinished">{}If no geometry is added to the list, all remaining ones are used.</translation>
+      <translation>{}Zerrendari geometriarik gehitzen ez bazaio, geratzen direnak erabiliko dira.</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="295"/>
       <source>Selection mode</source>
-      <translation type="unfinished">Selection mode</translation>
+      <translation>Hautapen modua</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="297"/>
@@ -5959,7 +5959,7 @@ norabidea erabiliko da norabide gisa</translation>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="363"/>
       <source>Max Shear Stress</source>
-      <translation type="unfinished">Max Shear Stress</translation>
+      <translation>Zizailadura-esfortzu maximoa</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="375"/>
@@ -6000,13 +6000,13 @@ norabidea erabiliko da norabide gisa</translation>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="456"/>
       <source>No histogram available.
 Please select a result type first.</source>
-      <translation type="unfinished">No histogram available.
-Please select a result type first.</translation>
+      <translation>Ez dago histogramarik erabilgarri.
+Hasteko, hautatu emaitza mota bat.</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="569"/>
       <source>Histogram of {}</source>
-      <translation type="unfinished">Histogram of {}</translation>
+      <translation>{}(e)n histograma</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="570"/>
@@ -6016,13 +6016,13 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="700"/>
       <source>Empty result mesh</source>
-      <translation type="unfinished">Empty result mesh</translation>
+      <translation>Emaitzako amaraun hutsa</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="718"/>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="730"/>
       <source>No result object</source>
-      <translation type="unfinished">No result object</translation>
+      <translation>Ez dago objekturik emaitza gisa</translation>
     </message>
   </context>
 </TS>

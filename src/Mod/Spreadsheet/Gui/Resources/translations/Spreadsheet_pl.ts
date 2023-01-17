@@ -743,109 +743,109 @@ Arkusz.mój_alias zamiast Arkusz.B1</translation>
     <name>QtColorPicker</name>
     <message>
       <location filename="../../qtcolorpicker.cpp" line="286"/>
-      <location filename="../../qtcolorpicker.cpp" line="413"/>
-      <location filename="../../qtcolorpicker.cpp" line="523"/>
+      <location filename="../../qtcolorpicker.cpp" line="412"/>
+      <location filename="../../qtcolorpicker.cpp" line="522"/>
       <source>Black</source>
       <translation>Czarny</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="414"/>
-      <location filename="../../qtcolorpicker.cpp" line="524"/>
+      <location filename="../../qtcolorpicker.cpp" line="413"/>
+      <location filename="../../qtcolorpicker.cpp" line="523"/>
       <source>White</source>
       <translation>Biały</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="415"/>
-      <location filename="../../qtcolorpicker.cpp" line="525"/>
+      <location filename="../../qtcolorpicker.cpp" line="414"/>
+      <location filename="../../qtcolorpicker.cpp" line="524"/>
       <source>Red</source>
       <translation>Czerwony</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="416"/>
-      <location filename="../../qtcolorpicker.cpp" line="526"/>
+      <location filename="../../qtcolorpicker.cpp" line="415"/>
+      <location filename="../../qtcolorpicker.cpp" line="525"/>
       <source>Dark red</source>
       <translation>Ciemny czerwony</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="417"/>
-      <location filename="../../qtcolorpicker.cpp" line="527"/>
+      <location filename="../../qtcolorpicker.cpp" line="416"/>
+      <location filename="../../qtcolorpicker.cpp" line="526"/>
       <source>Green</source>
       <translation>Zielony</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="418"/>
-      <location filename="../../qtcolorpicker.cpp" line="528"/>
+      <location filename="../../qtcolorpicker.cpp" line="417"/>
+      <location filename="../../qtcolorpicker.cpp" line="527"/>
       <source>Dark green</source>
       <translation>Ciemny zielony</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="419"/>
-      <location filename="../../qtcolorpicker.cpp" line="529"/>
+      <location filename="../../qtcolorpicker.cpp" line="418"/>
+      <location filename="../../qtcolorpicker.cpp" line="528"/>
       <source>Blue</source>
       <translation>Niebieski</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="420"/>
-      <location filename="../../qtcolorpicker.cpp" line="530"/>
+      <location filename="../../qtcolorpicker.cpp" line="419"/>
+      <location filename="../../qtcolorpicker.cpp" line="529"/>
       <source>Dark blue</source>
       <translation>Ciemny niebieski</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="421"/>
-      <location filename="../../qtcolorpicker.cpp" line="531"/>
+      <location filename="../../qtcolorpicker.cpp" line="420"/>
+      <location filename="../../qtcolorpicker.cpp" line="530"/>
       <source>Cyan</source>
       <translation>Turkusowy</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="422"/>
-      <location filename="../../qtcolorpicker.cpp" line="532"/>
+      <location filename="../../qtcolorpicker.cpp" line="421"/>
+      <location filename="../../qtcolorpicker.cpp" line="531"/>
       <source>Dark cyan</source>
       <translation>Ciemny turkusowy</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="423"/>
-      <location filename="../../qtcolorpicker.cpp" line="533"/>
+      <location filename="../../qtcolorpicker.cpp" line="422"/>
+      <location filename="../../qtcolorpicker.cpp" line="532"/>
       <source>Magenta</source>
       <translation>Purpurowy</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="424"/>
-      <location filename="../../qtcolorpicker.cpp" line="534"/>
+      <location filename="../../qtcolorpicker.cpp" line="423"/>
+      <location filename="../../qtcolorpicker.cpp" line="533"/>
       <source>Dark magenta</source>
       <translation>Ciemny purpurowy</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="425"/>
-      <location filename="../../qtcolorpicker.cpp" line="535"/>
+      <location filename="../../qtcolorpicker.cpp" line="424"/>
+      <location filename="../../qtcolorpicker.cpp" line="534"/>
       <source>Yellow</source>
       <translation>Żółty</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="426"/>
-      <location filename="../../qtcolorpicker.cpp" line="536"/>
+      <location filename="../../qtcolorpicker.cpp" line="425"/>
+      <location filename="../../qtcolorpicker.cpp" line="535"/>
       <source>Dark yellow</source>
       <translation>Ciemny żółty</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="427"/>
-      <location filename="../../qtcolorpicker.cpp" line="537"/>
+      <location filename="../../qtcolorpicker.cpp" line="426"/>
+      <location filename="../../qtcolorpicker.cpp" line="536"/>
       <source>Gray</source>
       <translation>Szary</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="428"/>
-      <location filename="../../qtcolorpicker.cpp" line="538"/>
+      <location filename="../../qtcolorpicker.cpp" line="427"/>
+      <location filename="../../qtcolorpicker.cpp" line="537"/>
       <source>Dark gray</source>
       <translation>Ciemny szary</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="429"/>
-      <location filename="../../qtcolorpicker.cpp" line="539"/>
+      <location filename="../../qtcolorpicker.cpp" line="428"/>
+      <location filename="../../qtcolorpicker.cpp" line="538"/>
       <source>Light gray</source>
       <translation>Jasnoszary</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="451"/>
+      <location filename="../../qtcolorpicker.cpp" line="450"/>
       <source>Custom Color</source>
       <translation>Kolor użytkownika</translation>
     </message>

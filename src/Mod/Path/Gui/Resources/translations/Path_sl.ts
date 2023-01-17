@@ -1373,17 +1373,17 @@
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="93"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The cutting mode assumes that the cut on one side of the tool bit represents the resulting part and the other side is either already milled away or will be removed later on.&lt;/p&gt;&lt;p&gt;Keeping that in mind climb mode is called when the tool bit is moved into the cut on each rotation, whereas in conventional mode the tool bits rotation and the tools lateral movement are in the same direction.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rezalni način predpostavlja, da rez na eni strani orodnega nastavka predstavlja željeni del, druga stran pa je bodisi že porezkana ali pa bo kasneje odstranjena.&lt;/p&gt;&lt;p&gt; Ob upoštevanju tega je priklican način plezanja, ko se orodni nastavke pomika v rez po vsakem zasuku, medtem ko sta pri običajnem načinu zasuk in vodoravno gibanje nastavka v isti smeri.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rezalni način predpostavlja, da rez na eni strani orodnega nastavka predstavlja željeni del, druga stran pa je bodisi že porezkana ali pa bo kasneje odstranjena.&lt;/p&gt;&lt;p&gt; Ob upoštevanju tega je priklican istosmerni način, ko se orodni nastavke pomika v rez po vsakem zasuku, medtem ko sta pri protismernem načinu zasuk in vodoravno gibanje nastavka v isti smeri.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="97"/>
       <source>Climb</source>
-      <translation type="unfinished">Climb</translation>
+      <translation>Plezanje, Istosmerno (način rezkanja, nasproten od protismernega -convetional)</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="102"/>
       <source>Conventional</source>
-      <translation>Običajen</translation>
+      <translation>Običajen, Protismerno (način rezkanja, nasproten od istosmernega -climb)</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="110"/>
@@ -2018,7 +2018,7 @@
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="113"/>
       <source>Pitch</source>
-      <translation type="unfinished">Pitch</translation>
+      <translation>Naklon, korak (pri navoju in verižnikih)</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="134"/>

@@ -11,7 +11,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="35"/>
       <source>General OpenSCAD Settings</source>
-      <translation>Osnovne OpenSCAD Postavke</translation>
+      <translation>Osnovna OpenSCAD Podešavanja</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="43"/>
@@ -107,12 +107,12 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="266"/>
       <source>Maximum fragment size</source>
-      <translation type="unfinished">Maximum fragment size</translation>
+      <translation>Maksimalna veličina fragmenta</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="385"/>
       <source>Convexity</source>
-      <translation type="unfinished">Convexity</translation>
+      <translation>Konveksnost</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="286"/>
@@ -253,7 +253,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="474"/>
       <source>Minkowski sum</source>
-      <translation type="unfinished">Minkowski sum</translation>
+      <translation>Suma Minkovskog</translation>
     </message>
     <message>
       <location filename="../../OpenSCADUtils.py" line="709"/>
@@ -263,7 +263,7 @@
     <message>
       <location filename="../../OpenSCADUtils.py" line="721"/>
       <source>Error: either all shapes must be 2D or all shapes must be 3D</source>
-      <translation type="unfinished">Error: either all shapes must be 2D or all shapes must be 3D</translation>
+      <translation>Greška: ili svi oblici moraju biti 2D, ili svi moraju biti 3D</translation>
     </message>
     <message>
       <location filename="../../importCSG.py" line="557"/>
@@ -387,7 +387,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="293"/>
       <source>Expand all placements downwards in the Tree view</source>
-      <translation type="unfinished">Expand all placements downwards in the Tree view</translation>
+      <translation>Proširite sve Položaje u Stablu dokumenta</translation>
     </message>
   </context>
   <context>
@@ -400,7 +400,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="314"/>
       <source>Replace an object in the Tree view. Please select old, new, and parent object</source>
-      <translation type="unfinished">Replace an object in the Tree view. Please select old, new, and parent object</translation>
+      <translation>Zamenite objekat u Stablu dokumenta. Izaberi stari, novi i nadređeni objekat</translation>
     </message>
   </context>
   <context>
@@ -460,12 +460,12 @@
     <message>
       <location filename="../../InitGui.py" line="152"/>
       <source>OpenSCAD Tools</source>
-      <translation type="unfinished">OpenSCAD Tools</translation>
+      <translation>OpenSCAD Alatke</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="156"/>
       <source>Frequently-used Part WB tools</source>
-      <translation type="unfinished">Frequently-used Part WB tools</translation>
+      <translation>Često korišćene alatke Part radnog okruženja</translation>
     </message>
   </context>
   <context>
@@ -473,12 +473,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="571"/>
       <source>Minkowski sum</source>
-      <translation type="unfinished">Minkowski sum</translation>
+      <translation>Suma Minkovskog</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="574"/>
       <source>Use OpenSCAD to create a Minkowski sum</source>
-      <translation type="unfinished">Use OpenSCAD to create a Minkowski sum</translation>
+      <translation>Koristi OpenSCAD da napravite sumu Minkovskog</translation>
     </message>
   </context>
 </TS>

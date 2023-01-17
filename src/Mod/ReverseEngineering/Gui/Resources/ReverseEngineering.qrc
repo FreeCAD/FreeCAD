@@ -43,5 +43,6 @@
         <file>translations/ReverseEngineering_bg.qm</file>
         <file>translations/ReverseEngineering_ka.qm</file>
         <file>translations/ReverseEngineering_sr-CS.qm</file>
+        <file>translations/ReverseEngineering_be.qm</file>
     </qresource>
 </RCC>

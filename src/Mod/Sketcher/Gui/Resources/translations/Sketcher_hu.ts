@@ -1245,7 +1245,7 @@ mint tükörreferencia hivatkozás.</translation>
     <message>
       <location filename="../../Command.cpp" line="771"/>
       <source>Wrong selection</source>
-      <translation>Hibás kijelölés</translation>
+      <translation>Rossz kijelölés</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="772"/>
@@ -2134,12 +2134,12 @@ invalid constraints, degenerated geometry, etc.</source>
   <context>
     <name>CriticalMessages</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="8322"/>
+      <location filename="../../../App/SketchObject.cpp" line="8327"/>
       <source>Sketch:</source>
       <translation>Vázlat:</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="8323"/>
+      <location filename="../../../App/SketchObject.cpp" line="8328"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!</source>
       <translation>A parabolákat áttelepítették. Az áttelepített fájlok nem nyílnak meg a FreeCAD korábbi verzióiban!!</translation>
     </message>
@@ -2182,59 +2182,59 @@ invalid constraints, degenerated geometry, etc.</source>
       <translation>Autókényszer hiba: megoldhatatlan vázlat egyenlőségi kényszer alkalmazása után.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="1979"/>
+      <location filename="../../../App/SketchObject.cpp" line="1984"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Nem tudja meghatározni a görbék metszéspontját. Próbáljon meg hozzáadni egybeesés kényszerítést a görbék csúcsaihoz, melyeket le szeretné kerekíteni.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5860"/>
-      <location filename="../../../App/SketchObject.cpp" line="6034"/>
+      <location filename="../../../App/SketchObject.cpp" line="5865"/>
+      <location filename="../../../App/SketchObject.cpp" line="6039"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>Bgörbe geometria Index (GeoID) nem rendelkezik kényszerítésekkel.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5863"/>
+      <location filename="../../../App/SketchObject.cpp" line="5868"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Nem kér változtatást a csomó többszörözésére.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5868"/>
-      <location filename="../../../App/SketchObject.cpp" line="6042"/>
+      <location filename="../../../App/SketchObject.cpp" line="5873"/>
+      <location filename="../../../App/SketchObject.cpp" line="6047"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>A megadott geometria Index (GeoId) nem egy Bgörbe.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5875"/>
+      <location filename="../../../App/SketchObject.cpp" line="5880"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>A csomó jelölés határvonalakon kívülre esik. Ne feledje, hogy a megfelelő OCC jelölés szerint, az első csomót jelölése 1 és nem nulla.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5882"/>
+      <location filename="../../../App/SketchObject.cpp" line="5887"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>A sokszorozás nem nőhet a B-görbe szögének értéke fölé.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5885"/>
+      <location filename="../../../App/SketchObject.cpp" line="5890"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>A sokszorozást nem csökkentheti nulla alá.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5897"/>
+      <location filename="../../../App/SketchObject.cpp" line="5902"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC képtelen csökkenteni a sokszorozást a maximális megengedett tűrésen belül.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6037"/>
+      <location filename="../../../App/SketchObject.cpp" line="6042"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>A csomónak nem lehet nulla sokszorozása.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6051"/>
+      <location filename="../../../App/SketchObject.cpp" line="6056"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
       <translation>Csomó sokszorozás nem lehet magasabb, mint a B-görbe mértéke.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6054"/>
+      <location filename="../../../App/SketchObject.cpp" line="6059"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
       <translation>Csomó nem illeszthető be a B-görbe paramétertartományon kívülre.</translation>
     </message>
@@ -2481,7 +2481,7 @@ invalid constraints, degenerated geometry, etc.</source>
       <translation>Nem megengedett, hogy módosítsa a datumot, mert a vázlat tartalmaz egymásnak ellentmondó illesztéseket</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="220"/>
+      <location filename="../../EditDatumDialog.cpp" line="222"/>
       <source>Dimensional constraint</source>
       <translation>Méretezett illesztés</translation>
     </message>
@@ -2898,7 +2898,7 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
     <message>
       <location filename="../../CommandConstraints.cpp" line="4233"/>
       <source>Tangent constraint at B-spline knot is only supported with lines!</source>
-      <translation type="unfinished">Tangent constraint at B-spline knot is only supported with lines!</translation>
+      <translation>A B-görbe csomó érintő kényszerítését csak vonalak támogatják!</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4249"/>

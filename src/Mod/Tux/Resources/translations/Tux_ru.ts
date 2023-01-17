@@ -91,7 +91,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="337"/>
       <source>Trackball</source>
-      <translation>Trackball</translation>
+      <translation>Трекбол</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="338"/>

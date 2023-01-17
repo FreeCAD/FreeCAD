@@ -135,7 +135,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="5617"/>
       <source>Constrain an arc or a circle</source>
-      <translation>Kotirajte kružni luk ili krug</translation>
+      <translation>Kotiraj kružni luk ili krug</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5722"/>
@@ -395,7 +395,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="5761"/>
       <source>Fix the angle of a line or the angle between two lines</source>
-      <translation>Kotirajte ugao linije ili ugao između dve linije</translation>
+      <translation>Kotiraj ugao linije ili ugao između dve linije</translation>
     </message>
   </context>
   <context>
@@ -421,7 +421,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="1899"/>
       <source>Create a coincident constraint between points, or a concentric constraint between circles, arcs, and ellipses</source>
-      <translation type="unfinished">Create a coincident constraint between points, or a concentric constraint between circles, arcs, and ellipses</translation>
+      <translation>Napravi ograničenje podudarnosti između tačaka, ili koncentrično ograničenje između krugova, lukova i elipsa</translation>
     </message>
   </context>
   <context>
@@ -434,7 +434,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="5041"/>
       <source>Fix the diameter of a circle or an arc</source>
-      <translation>Kotirajte prečnik kruga ili luka</translation>
+      <translation>Kotiraj prečnik kruga ili luka</translation>
     </message>
   </context>
   <context>
@@ -460,7 +460,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="2718"/>
       <source>Fix the horizontal distance between two points or line ends</source>
-      <translation>Kotirajte horizontalno rastojanje između dve tačke ili krajeva linija</translation>
+      <translation>Kotiraj horizontalno rastojanje između dve tačke ili krajeva linija</translation>
     </message>
   </context>
   <context>
@@ -473,7 +473,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="2972"/>
       <source>Fix the vertical distance between two points or line ends</source>
-      <translation>Kotirajte vertikalno rastojanje između dve tačke ili krajeva linija</translation>
+      <translation>Kotiraj vertikalno rastojanje između dve tačke ili krajeva linija</translation>
     </message>
   </context>
   <context>
@@ -507,7 +507,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="6970"/>
       <source>Constrain internal alignment</source>
-      <translation>Ograničite unutrašnje poravnanje</translation>
+      <translation>Ograniči unutrašnje poravnanje</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6971"/>
@@ -579,7 +579,7 @@ na izabranu tačku</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5315"/>
       <source>Fix the diameter if a circle is chosen, or the radius if an arc/spline pole is chosen</source>
-      <translation type="unfinished">Fix the diameter if a circle is chosen, or the radius if an arc/spline pole is chosen</translation>
+      <translation>Kotiraj prečnik ako izabereš krug ili poluprečnik ako izabereš luk ili pol splajna</translation>
     </message>
   </context>
   <context>
@@ -587,12 +587,12 @@ na izabranu tačku</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4740"/>
       <source>Constrain radius or weight</source>
-      <translation>Kotirajte poluprečnik</translation>
+      <translation>Kotiraj poluprečnik</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4741"/>
       <source>Fix the radius of a circle or an arc or fix the weight of a pole of a B-Spline</source>
-      <translation>Kotirajte poluprečnik kruga ili luka ili kotirajte krug težine pola B-splajn krive</translation>
+      <translation>Kotiraj poluprečnik kruga ili luka ili kotirajte krug težine pola B-splajn krive</translation>
     </message>
   </context>
   <context>
@@ -804,7 +804,7 @@ u odnosu na pravu ili treću tačku</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="575"/>
       <source>Create an ellipse by center in the sketch</source>
-      <translation>Napravi elipsu pomoću centra na ckici</translation>
+      <translation>Napravi elipsu pomoću centra na skici</translation>
     </message>
   </context>
   <context>
@@ -1020,12 +1020,12 @@ u odnosu na pravu ili treću tačku</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1548"/>
       <source>Create equilateral triangle</source>
-      <translation>Napravi jednakoctranični trougao</translation>
+      <translation>Napravi jednakostranični trougao</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1549"/>
       <source>Create an equilateral triangle in the sketch</source>
-      <translation>Napravi jednakoctranični trougao na skici</translation>
+      <translation>Napravi jednakostranični trougao na skici</translation>
     </message>
   </context>
   <context>
@@ -1033,7 +1033,7 @@ u odnosu na pravu ili treću tačku</translation>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="559"/>
       <source>Decrease B-spline degree</source>
-      <translation>Umanjiti stepen B-splajn krive</translation>
+      <translation>Smanji stepen B-splajn krive</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="560"/>
@@ -1064,7 +1064,7 @@ u odnosu na pravu ili treću tačku</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1959"/>
       <source>Delete all constraints in the sketch</source>
-      <translation>Obriši sva ograničenja u skici</translation>
+      <translation>Obriši sva ograničenja na skici</translation>
     </message>
   </context>
   <context>
@@ -1077,7 +1077,7 @@ u odnosu na pravu ili treću tačku</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1896"/>
       <source>Delete all geometry and constraints in the current sketch, with the exception of external geometry</source>
-      <translation>Osim spoljašnje geometrije, obrišite svu geometriju i ograničenja u trenutno aktivnoj skici</translation>
+      <translation>Osim spoljašnje geometrije, obriši svu geometriju i ograničenja u trenutno aktivnoj skici</translation>
     </message>
   </context>
   <context>
@@ -1168,7 +1168,7 @@ u odnosu na pravu ili treću tačku</translation>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1201"/>
       <source>Join two curves at selected end points</source>
-      <translation>Spojite dve krive u izabranim krajnjim tačkama</translation>
+      <translation>Spoji dve krive u izabranim krajnjim tačkama</translation>
     </message>
   </context>
   <context>
@@ -1197,13 +1197,13 @@ u odnosu na pravu ili treću tačku</translation>
 First select the supporting geometry, for example, a face or an edge of a solid object,
 then call this command, then choose the desired sketch.</source>
       <translation>Podesi 'Osnova' skice.
-Prvo izaberite na čemu će da leži skica, na primer, stranicu ili ivicu tela,
-zatim pozovite ovu komandu, a zatim izaberite željenu skicu.</translation>
+Prvo izaberi na čemu će da leži skica, na primer, stranicu ili ivicu tela,
+zatim pozovi ovu komandu, a zatim izaberi željenu skicu.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="555"/>
       <source>Some of the selected objects depend on the sketch to be mapped. Circular dependencies are not allowed.</source>
-      <translation>Neki od izabranih objekata zavise od skice koju treba mapirati. Ciklične zavisnosti nisu dozvoljene.</translation>
+      <translation>Neki od izabranih objekata zavise od skice koju treba mapirati. Kružne zavisnosti nisu dozvoljene.</translation>
     </message>
   </context>
   <context>
@@ -1226,7 +1226,7 @@ zatim pozovite ovu komandu, a zatim izaberite željenu skicu.</translation>
     <message>
       <location filename="../../Command.cpp" line="877"/>
       <source>Select at least two sketches.</source>
-      <translation>Izaberite najmanje dve skice.</translation>
+      <translation>Izaberi najmanje dve skice.</translation>
     </message>
   </context>
   <context>
@@ -1260,7 +1260,7 @@ koristeći koordinatni početak ili ose X i Y kao referentne.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1435"/>
       <source>Move</source>
-      <translation>Premesti</translation>
+      <translation>Pomeri</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1436"/>
@@ -1319,7 +1319,7 @@ koristeći koordinatni početak ili ose X i Y kao referentne.</translation>
       <source>Place the selected sketch on one of the global coordinate planes.
 This will clear the 'Support' property, if any.</source>
       <translation>Postavi izabranu skicu na jednu od glavnih koordinatnih ravni.
-Ovo će obrisati osoninu 'Osnova', ako postoji.</translation>
+Ovo će obrisati osobinu 'Osnova', ako postoji.</translation>
     </message>
   </context>
   <context>
@@ -1332,7 +1332,7 @@ Ovo će obrisati osoninu 'Osnova', ako postoji.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="714"/>
       <source>Show all internal geometry or hide unused internal geometry</source>
-      <translation>Prikaži svu unutrašnju geometriju ili sakrijte neiskorišćenu unutrašnju geometriju</translation>
+      <translation>Prikaži svu unutrašnju geometriju ili sakrij neiskorišćenu unutrašnju geometriju</translation>
     </message>
   </context>
   <context>
@@ -1472,7 +1472,7 @@ Ovo će obrisati osoninu 'Osnova', ako postoji.</translation>
     <message>
       <location filename="../../Command.cpp" line="335"/>
       <source>When in edit mode, stop the active operation (drawing, constraining, etc.).</source>
-      <translation>Kada ste u režimu za uređivanje, zaustavite aktivnu operaciju (crtanje, ograničavanje, itd.).</translation>
+      <translation>Kada si u režimu za uređivanje, zaustavlja aktivnu operaciju (crtanje, ograničavanje, itd.).</translation>
     </message>
   </context>
   <context>
@@ -1590,7 +1590,7 @@ nevažeća ograničenja, degenerisanu geometriju, itd.</translation>
     <message>
       <location filename="../../Command.cpp" line="947"/>
       <source>When in edit mode, switch between section view and full view.</source>
-      <translation>Kada ste u režimu za uređivanje, prebacivanje između prikaza preseka i potpunog prikaza.</translation>
+      <translation>Kada si u režimu za uređivanje, prebacuje između prikaza preseka i potpunog prikaza.</translation>
     </message>
   </context>
   <context>
@@ -1603,7 +1603,7 @@ nevažeća ograničenja, degenerisanu geometriju, itd.</translation>
     <message>
       <location filename="../../Command.cpp" line="678"/>
       <source>When in edit mode, set the camera orientation perpendicular to the sketch plane.</source>
-      <translation>Kada ste u režimu za uređivanje, postavite orijentaciju kamere normalno na ravan skice.</translation>
+      <translation>Kada si u režimu za uređivanje, postavlja orijentaciju kamere normalno na ravan skice.</translation>
     </message>
   </context>
   <context>
@@ -2136,12 +2136,12 @@ nevažeća ograničenja, degenerisanu geometriju, itd.</translation>
   <context>
     <name>CriticalMessages</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="8322"/>
+      <location filename="../../../App/SketchObject.cpp" line="8327"/>
       <source>Sketch:</source>
       <translation>Skica:</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="8323"/>
+      <location filename="../../../App/SketchObject.cpp" line="8328"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!</source>
       <translation type="unfinished">Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!</translation>
     </message>
@@ -2171,7 +2171,7 @@ nevažeća ograničenja, degenerisanu geometriju, itd.</translation>
     <message>
       <location filename="../../../App/SketchAnalysis.cpp" line="818"/>
       <source>Autoconstrain error: Unsolvable sketch after applying horizontal and vertical constraints.</source>
-      <translation>Greška automatskog ograničavanja: Nerešiva skica posle primene vertikalih i horizontalnih ograničenja.</translation>
+      <translation>Greška automatskog ograničavanja: Nerešiva skica posle primene vertikalnih i horizontalnih ograničenja.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchAnalysis.cpp" line="840"/>
@@ -2184,59 +2184,59 @@ nevažeća ograničenja, degenerisanu geometriju, itd.</translation>
       <translation>Greška automatskog ograničavanja: Nerešiva skica posle primene ograničenja jednakosti.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="1979"/>
+      <location filename="../../../App/SketchObject.cpp" line="1984"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
-      <translation>Nije moguće odrediti presečnu tačku krivih. Pokušajte da dodate ograničenje podudarnosti između tačaka krivih gde nameravate da napravite zaobljenje.</translation>
+      <translation>Nije moguće odrediti presečnu tačku krivih. Pokušaj da dodaš ograničenje podudarnosti između tačaka krivih gde nameravaš da napraviš zaobljenje.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5860"/>
-      <location filename="../../../App/SketchObject.cpp" line="6034"/>
+      <location filename="../../../App/SketchObject.cpp" line="5865"/>
+      <location filename="../../../App/SketchObject.cpp" line="6039"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation type="unfinished">BSpline Geometry Index (GeoID) is out of bounds.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5863"/>
+      <location filename="../../../App/SketchObject.cpp" line="5868"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Ne zahtevate promenu u višestrukosti čvorova.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5868"/>
-      <location filename="../../../App/SketchObject.cpp" line="6042"/>
+      <location filename="../../../App/SketchObject.cpp" line="5873"/>
+      <location filename="../../../App/SketchObject.cpp" line="6047"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation type="unfinished">The Geometry Index (GeoId) provided is not a B-spline curve.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5875"/>
+      <location filename="../../../App/SketchObject.cpp" line="5880"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation type="unfinished">The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5882"/>
+      <location filename="../../../App/SketchObject.cpp" line="5887"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Višestrukost se ne može povećati iznad stepena B-splajn krive.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5885"/>
+      <location filename="../../../App/SketchObject.cpp" line="5890"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Višestrukost ne može biti manje od nule.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5897"/>
+      <location filename="../../../App/SketchObject.cpp" line="5902"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC nije u stanju da smanji višestrukost unutar maksimalne tolerancije.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6037"/>
+      <location filename="../../../App/SketchObject.cpp" line="6042"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Čvor ne može imati nultu višestrukost.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6051"/>
+      <location filename="../../../App/SketchObject.cpp" line="6056"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
       <translation>Višestrukost čvorova ne može biti veća od stepena B-Splajn krive.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6054"/>
+      <location filename="../../../App/SketchObject.cpp" line="6059"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
       <translation type="unfinished">Knot cannot be inserted outside the BSpline parameter range.</translation>
     </message>
@@ -2298,7 +2298,7 @@ nevažeća ograničenja, degenerisanu geometriju, itd.</translation>
       <location filename="../../Command.cpp" line="165"/>
       <location filename="../../Command.cpp" line="584"/>
       <source>Don't attach</source>
-      <translation>Nemojte prikačiti</translation>
+      <translation>Nemoj prikačiti</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="111"/>
@@ -2483,7 +2483,7 @@ nevažeća ograničenja, degenerisanu geometriju, itd.</translation>
       <translation>Nije dozvoljeno uređivanje pomoćnih elemenata jer skica sadrži konfliktna ograničenja</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="220"/>
+      <location filename="../../EditDatumDialog.cpp" line="222"/>
       <source>Dimensional constraint</source>
       <translation>Dimenzionalno ograničenje</translation>
     </message>
@@ -2625,7 +2625,7 @@ nevažeća ograničenja, degenerisanu geometriju, itd.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1623"/>
       <source>Wrong solver status</source>
-      <translation>Pogrešan status rešavača</translation>
+      <translation>Pogrešan status algoritma za rešavanje</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1624"/>
@@ -2640,7 +2640,7 @@ nevažeća ograničenja, degenerisanu geometriju, itd.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1646"/>
       <source>Select only edges from the sketch.</source>
-      <translation>Izaberi samo ivice iz skice.</translation>
+      <translation>Izaberi samo ivice sa skice.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="836"/>
@@ -2663,28 +2663,28 @@ nevažeća ograničenja, degenerisanu geometriju, itd.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1967"/>
       <source>Select two or more points from the sketch.</source>
-      <translation>Izaberi dve ili više tačke iz skice.</translation>
+      <translation>Izaberi dve ili više tačke sa skice.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1978"/>
       <source>Select two or more vertices from the sketch.</source>
-      <translation>Izaberi dva ili više temena iz skice.</translation>
+      <translation>Izaberi dva ili više temena sa skice.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1998"/>
       <source>Select two or more vertices from the sketch for a coincident constraint, or two or more circles, ellipses, arcs or arcs of ellipse for a concentric constraint.</source>
-      <translation>Izaberite dva ili više temena sa skice za ograničenje podudarnosti, ili dva ili više krugova, elipsa, lukova ili lukova elipse za ograničenje koncentričnosti.</translation>
+      <translation>Izaberi dva ili više temena sa skice za ograničenje podudarnosti, ili dva ili više krugova, elipsa, lukova ili lukova elipse za ograničenje koncentričnosti.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2073"/>
       <source>Select two vertices from the sketch for a coincident constraint, or two circles, ellipses, arcs or arcs of ellipse for a concentric constraint.</source>
-      <translation>Izaberite dva temena sa skice za ograničenje podudarnosti, ili dva kruga, elipse, lukove ili lukove elipse za ograničenje koncentričnosti.</translation>
+      <translation>Izaberi dva temena sa skice za ograničenje podudarnosti, ili dva kruga, elipse, lukove ili lukove elipse za ograničenje koncentričnosti.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2170"/>
       <location filename="../../CommandConstraints.cpp" line="2301"/>
       <source>Select exactly one line or one point and one line or two points from the sketch.</source>
-      <translation>Izaberi tačno jednu liniju ili jednu tačku i jednu liniju, ili dve tačke iz skice.</translation>
+      <translation>Izaberi tačno jednu liniju ili jednu tačku i jednu liniju, ili dve tačke sa skice.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2268"/>
@@ -2747,7 +2747,7 @@ nevažeća ograničenja, degenerisanu geometriju, itd.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2616"/>
       <source>Select either one point and several curves, or one curve and several points. You have selected %1 curves and %2 points.</source>
-      <translation>Izaberi ili jednu tačku i nekoliko krivih, ili jednu krivu i nekoliko tačaka. Izabrali ste %1 krive i %2 tačke.</translation>
+      <translation>Izaberi ili jednu tačku i nekoliko krivih, ili jednu krivu i nekoliko tačaka. Izabrali ste %1 krive i %2 tačku.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2689"/>
@@ -2791,13 +2791,13 @@ nevažeća ograničenja, degenerisanu geometriju, itd.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3247"/>
       <source>Select two or more lines from the sketch.</source>
-      <translation>Izaberi dve ili više linija iz skice.</translation>
+      <translation>Izaberi dve ili više linija sa skice.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3260"/>
       <location filename="../../CommandConstraints.cpp" line="6329"/>
       <source>Select at least two lines from the sketch.</source>
-      <translation>Izaberi najmanje dve linije iz ckice.</translation>
+      <translation>Izaberi najmanje dve linije sa skice.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3274"/>
@@ -2816,7 +2816,7 @@ nevažeća ograničenja, degenerisanu geometriju, itd.</translation>
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
       <comment>perpendicular constraint</comment>
-      <translation>Poctoji nekoliko načina da ce upotrebi ovo ograničenje.
+      <translation>Postoji nekoliko načina da se upotrebi ovo ograničenje.
 
 Prihvatljive kombinacije: dve krive; krajnja tačka i kriva; dve krajnje tačke; dve krive i tačka.</translation>
     </message>
@@ -2824,7 +2824,7 @@ Prihvatljive kombinacije: dve krive; krajnja tačka i kriva; dve krajnje tačke;
       <location filename="../../CommandConstraints.cpp" line="3412"/>
       <source>Select some geometry from the sketch.</source>
       <comment>perpendicular constraint</comment>
-      <translation>Izaberi neku geometriju iz skice.</translation>
+      <translation>Izaberi neku geometriju sa skice.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3425"/>
@@ -2882,7 +2882,7 @@ Prihvaćene kombinacije: dve krive; krajnja tačka i kriva; dve krajnje tačke; 
       <location filename="../../CommandConstraints.cpp" line="4110"/>
       <source>Select some geometry from the sketch.</source>
       <comment>tangent constraint</comment>
-      <translation>Izaberi neku geometriju iz skice.</translation>
+      <translation>Izaberi neku geometriju sa skice.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4123"/>
@@ -2941,7 +2941,7 @@ Prihvaćene kombinacije: dve krive; krajnja tačka i kriva; dve krajnje tačke; 
       <location filename="../../CommandConstraints.cpp" line="5814"/>
       <location filename="../../CommandConstraints.cpp" line="6059"/>
       <source>Select one or two lines from the sketch. Or select two edges and a point.</source>
-      <translation>Izaberi jednu ili dve linije sa skice, ili izaberite dve ivice i tačku.</translation>
+      <translation>Izaberi jednu ili dve linije sa skice, ili izaberi dve ivice i tačku.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5970"/>
@@ -2979,7 +2979,7 @@ Prihvaćene kombinacije: dve krive; krajnja tačka i kriva; dve krajnje tačke; 
     <message>
       <location filename="../../CommandConstraints.cpp" line="6369"/>
       <source>Equality for B-spline edge currently unsupported.</source>
-      <translation>Primena ograničenja jenakosti na B-splajn krivu trenutno nije podržana.</translation>
+      <translation>Primena ograničenja jednakosti na B-splajn krivu trenutno nije podržana.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6399"/>
@@ -3044,7 +3044,7 @@ Prihvaćene kombinacije: dve krive; krajnja tačka i kriva; dve krajnje tačke; 
       <location filename="../../CommandConstraints.cpp" line="6989"/>
       <location filename="../../CommandConstraints.cpp" line="7002"/>
       <source>Select at least one ellipse and one edge from the sketch.</source>
-      <translation>Izaberi barem jednu elipsu i jedan rub iz skice.</translation>
+      <translation>Izaberi barem jednu elipsu i jedno teme na skici.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7023"/>
@@ -3054,7 +3054,7 @@ Prihvaćene kombinacije: dve krive; krajnja tačka i kriva; dve krajnje tačke; 
     <message>
       <location filename="../../CommandConstraints.cpp" line="7068"/>
       <source>You cannot internally constrain an ellipse on another ellipse. Select only one ellipse.</source>
-      <translation>Ne možete primeniti ograničenje unutrašnjeg poravnanja na dve elipse. Izaberi camo jednu elipcu.</translation>
+      <translation>Ne možete primeniti ograničenje unutrašnjeg poravnanja na dve elipse. Izaberi samo jednu elipsu.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7076"/>
@@ -3098,12 +3098,12 @@ Prihvaćene kombinacije: dve krive; krajnja tačka i kriva; dve krajnje tačke; 
     <message>
       <location filename="../../CommandConstraints.cpp" line="7238"/>
       <source>You cannot internally constrain an arc of ellipse on another arc of ellipse. Select only one arc of ellipse.</source>
-      <translation>Ne možete primeniti ograničenje unutrašnjeg poravnanja na dva luka elipse. Izaberi camo jedan luk elipce.</translation>
+      <translation>Ne možete primeniti ograničenje unutrašnjeg poravnanja na dva luka elipse. Izaberi samo jedan luk elipse.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7246"/>
       <source>You cannot internally constrain an ellipse on an arc of ellipse. Select only one ellipse or arc of ellipse.</source>
-      <translation>Ne možete primeniti ograničenje unutrašnjeg poravnanja na elipsi i luka elipse. Izaberi camo jednu elipsu ili jedan luk elipce.</translation>
+      <translation>Ne možete primeniti ograničenje unutrašnjeg poravnanja na elipsi i luka elipse. Izaberi samo jednu elipsu ili jedan luk elipse.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7401"/>
@@ -3129,7 +3129,7 @@ Prihvaćene kombinacije: dve krive; krajnja tačka i kriva; dve krajnje tačke; 
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="120"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="143"/>
       <source>Select constraint(s) from the sketch.</source>
-      <translation>Odaberi ograničenje(a) iz skice.</translation>
+      <translation>Izaberi ograničenje(a) sa skice.</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="216"/>
@@ -3181,7 +3181,7 @@ Prihvaćene kombinacije: dve krive; krajnja tačka i kriva; dve krajnje tačke; 
       <location filename="../../CommandSketcherBSpline.cpp" line="1166"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1233"/>
       <source>Selection is empty</source>
-      <translation>Niste ništa izabrali</translation>
+      <translation>Nisi ništa izabrao</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1167"/>
@@ -3191,12 +3191,12 @@ Prihvaćene kombinacije: dve krive; krajnja tačka i kriva; dve krajnje tačke; 
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1181"/>
       <source>Please select a b-spline curve to insert a knot (not a knot on it). If the curve is not a b-spline, please convert it into one first.</source>
-      <translation>Izaberite B-splajn krivu da biste dodali čvor (ne čvor na njoj). Ako kriva nije B-splajn, prvo je konvertujte.</translation>
+      <translation>Izaberi B-splajn krivu da bi dodao čvor (ne čvor na njoj). Ako kriva nije B-splajn, prvo je konvertuj.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1234"/>
       <source>Nothing is selected. Please select end points of curves.</source>
-      <translation>Ništa nije izabrano. Izaberite krajnje tačke krivih.</translation>
+      <translation>Ništa nije izabrano. Izaberi krajnje tačke krivih.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1260"/>
@@ -3217,7 +3217,7 @@ Prihvaćene kombinacije: dve krive; krajnja tačka i kriva; dve krajnje tačke; 
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1282"/>
       <source>Two end points, or coincident point should be selected.</source>
-      <translation>Treba izabrati dve kranje tačke ili podudarnu tačku.</translation>
+      <translation>Treba izabrati dve krajnje tačke ili podudarnu tačku.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="91"/>
@@ -3267,7 +3267,7 @@ Prihvaćene kombinacije: dve krive; krajnja tačka i kriva; dve krajnje tačke; 
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1910"/>
       <source>Are you really sure you want to delete all geometry and constraints?</source>
-      <translation>Da li ste zaista sigurni da želite da obrišete svu geometriju i ograničenja?</translation>
+      <translation>Da li si zaista siguran da želiš da obrišeš svu geometriju i ograničenja?</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1971"/>
@@ -3277,7 +3277,7 @@ Prihvaćene kombinacije: dve krive; krajnja tačka i kriva; dve krajnje tačke; 
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1972"/>
       <source>Are you really sure you want to delete all the constraints?</source>
-      <translation>Da li ste zaista sigurni da želite da izbrišete svu geometriju i ograničenja?</translation>
+      <translation>Da li si zaista siguran da želiš da obrišeš svu geometriju i ograničenja?</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2096"/>
@@ -3290,7 +3290,7 @@ Prihvaćene kombinacije: dve krive; krajnja tačka i kriva; dve krajnje tačke; 
     <message>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="56"/>
       <source>Carbon copy would cause a circular dependency.</source>
-      <translation>Indigo kopija će prourokovati cirkularnu međuzavisnost.</translation>
+      <translation>Indigo kopija će prouzrokovati kružna zavisnost.</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="59"/>
@@ -3300,7 +3300,7 @@ Prihvaćene kombinacije: dve krive; krajnja tačka i kriva; dve krajnje tačke; 
     <message>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="62"/>
       <source>This object belongs to another body. Hold Ctrl to allow cross-references.</source>
-      <translation>Ovaj objekat pripada drugom telu. Držite pritisnut taster Ctrl da biste dozvolili unakrsne reference.</translation>
+      <translation>Ovaj objekat pripada drugom telu. Drži pritisnut taster Ctrl da bi dozvolio unakrsne reference.</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="65"/>
@@ -3315,17 +3315,17 @@ Prihvaćene kombinacije: dve krive; krajnja tačka i kriva; dve krajnje tačke; 
     <message>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="71"/>
       <source>The selected sketch is not parallel to this sketch. Hold Ctrl+Alt to allow non-parallel sketches.</source>
-      <translation>Izabrana skica nije paralelna sa ovom skicom. Držite pritisnute tastere Ctrl+Alt da biste dozvolili skice koje nisu paralelne.</translation>
+      <translation>Izabrana skica nije paralelna sa ovom skicom. Drži pritisnute tipke Ctrl+Alt da bi dozvolio skice koje nisu paralelne.</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="74"/>
       <source>The XY axes of the selected sketch do not have the same direction as this sketch. Hold Ctrl+Alt to disregard it.</source>
-      <translation>X i Y ose izabrane skice nemaju isti pravac kao ova skica. Držite pritisnute tipke Ctrl+Alt da to zanemarite.</translation>
+      <translation>X i Y ose izabrane skice nemaju isti pravac kao ova skica. Drži pritisnu tipke Ctrl+Alt da to zanemariš.</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="77"/>
       <source>The origin of the selected sketch is not aligned with the origin of this sketch. Hold Ctrl+Alt to disregard it.</source>
-      <translation>Polazna tačka izabrane skice nije usklađena sa polaznom tačkom ove skice. Držite Ctrl+Alt da to zanemarite.</translation>
+      <translation>Polazna tačka izabrane skice nije usklađena sa polaznom tačkom ove skice. Drži pritisnute tipke Ctrl+Alt da to zanemariš.</translation>
     </message>
   </context>
   <context>
@@ -3576,7 +3576,7 @@ Prihvaćene kombinacije: dve krive; krajnja tačka i kriva; dve krajnje tačke; 
       <location filename="../../EditDatumDialog.cpp" line="122"/>
       <source>Ratio n2/n1:</source>
       <comment>Constraint_SnellsLaw</comment>
-      <translation>Odnoc n2/n1:</translation>
+      <translation>Odnos n2/n1:</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="127"/>
@@ -3596,7 +3596,7 @@ Prihvaćene kombinacije: dve krive; krajnja tačka i kriva; dve krajnje tačke; 
     <message>
       <location filename="../../CommandConstraints.cpp" line="6899"/>
       <source>Ratio n2/n1:</source>
-      <translation>Odnoc n2/n1:</translation>
+      <translation>Odnos n2/n1:</translation>
     </message>
   </context>
   <context>
@@ -3685,7 +3685,7 @@ Prihvaćene kombinacije: dve krive; krajnja tačka i kriva; dve krajnje tačke; 
     <message>
       <location filename="../../DrawSketchHandlerExternal.h" line="50"/>
       <source>Linking this will cause circular dependency.</source>
-      <translation>Ovo povezivanje će izazvati kružnu petlju.</translation>
+      <translation>Ovo povezivanje će izazvati kružnu zavisnost.</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerExternal.h" line="53"/>
@@ -3854,7 +3854,7 @@ u odnosu na ostale sa pomoćnim linijama</translation>
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="100"/>
       <source>Constrain inter-element separation</source>
-      <translation>Ograničite razmak među elementima</translation>
+      <translation>Ograniči razmak među elementima</translation>
     </message>
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="116"/>
@@ -3931,7 +3931,7 @@ direktno ogledati i na kopijama</translation>
       <source>Sketcher dialog will have additional section
 'Advanced solver control' to adjust solver settings</source>
       <translation>Panel zadataka u Sketcher-u će imati dodatni odeljak
-„Napredne kontrole rešavača“ za napredno podešavanje rešavača</translation>
+'Napredne kontrole algoritma' za napredno podešavanje algoritma za rešavanje</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="27"/>
@@ -3941,7 +3941,7 @@ direktno ogledati i na kopijama</translation>
     <message>
       <location filename="../../SketcherSettings.ui" line="37"/>
       <source>Show section 'Advanced solver control'</source>
-      <translation>Prikaži panel 'Advanced solver control'</translation>
+      <translation>Prikaži panel 'Napredne kontrole algoritam za rešavanje'</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="50"/>
@@ -3964,7 +3964,7 @@ direktno ogledati i na kopijama</translation>
       <location filename="../../SketcherSettings.ui" line="79"/>
       <source>Special solver algorithm will be used while dragging sketch elements.
 Requires to re-enter edit mode to take effect.</source>
-      <translation>Specijalni algoritam rešavača će se koristiti prilikom prevlačenja elemenata skice.
+      <translation>Specijalni algoritam za rešavanje će se koristiti prilikom prevlačenja elemenata skice.
 Potrebno je ponovo ući u režim uređivanja da bi stupio na snagu.</translation>
     </message>
     <message>
@@ -3990,7 +3990,7 @@ Potrebno je ponovo ući u režim uređivanja da bi stupio na snagu.</translation
     <message>
       <location filename="../../SketcherSettings.ui" line="157"/>
       <source>Esc can leave sketch edit mode</source>
-      <translation>Napustite uređivanje skice pomoću Esc</translation>
+      <translation>Napusti uređivanje skice pomoću Esc</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="173"/>
@@ -4023,7 +4023,7 @@ Potrebno je ponovo ući u režim uređivanja da bi stupio na snagu.</translation
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="41"/>
       <source>Color used while new sketch elements are created</source>
-      <translation>Boja koja se koristi priliko pravljenja novih elemenata skice</translation>
+      <translation>Boja koja se koristi prilikom pravljenja novih elemenata skice</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="80"/>
@@ -4147,7 +4147,7 @@ Potrebno je ponovo ući u režim uređivanja da bi stupio na snagu.</translation
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="518"/>
       <source>Invalid Sketch</source>
-      <translation>Nevažeća ckica</translation>
+      <translation>Nevažeća skica</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="531"/>
@@ -4197,7 +4197,7 @@ Potrebno je ponovo ući u režim uređivanja da bi stupio na snagu.</translation
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="658"/>
       <source>Color of expression dependent constraints in edit mode</source>
-      <translation>Boja kota zadatih pomoću izrazau u režimu uređivanja</translation>
+      <translation>Boja kota zadatih pomoću izraza u režimu uređivanja</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="678"/>
@@ -4267,7 +4267,7 @@ Potrebno je ponovo ući u režim uređivanja da bi stupio na snagu.</translation
       <source>Base length units will not be displayed in constraints or cursor coordinates.
 Supports all unit systems except 'US customary' and 'Building US/Euro'.</source>
       <translation>Jedinice dužine neće biti prikazane na kotama ili pored koordinata kursora.
-Podržava sve sisteme jedinica osim 'US cictem jedinica' i 'Građevinski Euro US/Euro'.</translation>
+Podržava sve sisteme jedinica osim 'US sistem jedinica' i 'Građevinski Euro US/Euro'.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="218"/>
@@ -4390,7 +4390,7 @@ Podrazumevano: %N = %V
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="366"/>
       <source>When opening a sketch, show sources for external geometry links.</source>
-      <translation>Prilikom otvaranja skice prikažite izvore veza spoljne geometrijske.</translation>
+      <translation>Prilikom otvaranja skice prikaži izvore veza spoljne geometrijske.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="369"/>
@@ -4400,7 +4400,7 @@ Podrazumevano: %N = %V
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="385"/>
       <source>When opening a sketch, show objects the sketch is attached to.</source>
-      <translation>Prilikom otvaranja skice, prikažite objekte za koje je skica vezana.</translation>
+      <translation>Prilikom otvaranja skice, prikaži objekte za koje je skica vezana.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="388"/>
@@ -4410,7 +4410,7 @@ Podrazumevano: %N = %V
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="404"/>
       <source>When closing a sketch, move camera back to where it was before the sketch was opened.</source>
-      <translation>Kada zatvarate skicu, vratite 3D pogled koji je bio pre otvaranja skice.</translation>
+      <translation>Kada zatvaraš skicu, vrati 3D pogled koji je bio pre otvaranja skice.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="407"/>
@@ -4421,13 +4421,13 @@ Podrazumevano: %N = %V
       <location filename="../../SketcherSettingsDisplay.ui" line="423"/>
       <source>When entering edit mode, force orthographic view of camera.
 Works only when "Restore camera position after editing" is enabled.</source>
-      <translation>Kada ulazite u režim za uređivanje, prinudno će biti korišćen ortografski pogled.
+      <translation>Kada ulaziš u režim za uređivanje, prinudno će biti korišćen ortografski pogled.
 Radi samo kada je „Vrati položaj kamere nakon uređivanja“ čekirano.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="427"/>
       <source>Force orthographic camera when entering edit</source>
-      <translation>Forsirajte ortografsku kameru kada ulazite u uređivanje</translation>
+      <translation>Forsiraj ortografsku kameru kada ulaziš u uređivanje</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="443"/>
@@ -4528,7 +4528,7 @@ Click "Swap endpoints in constraints" button to reassign endpoints. Do this only
 
 %2 ograničenja su povezana sa tim krajnjim tačkama. Ograničenja su navedena u Pregledaču objava (meni Pogled -&gt; Paneli -&gt; Pregledač objava).
 
-Kliknite na dugme „Zameni krajnje tačke u ograničenjima“ da biste ponovo dodelili krajnje tačke. Uradite ovo samo jednom za skice kreirane u FreeCAD-u starijem od verzije 0.15</translation>
+Klikni na dugme „Zameni krajnje tačke u ograničenjima“ da bi ponovo dodelio krajnje tačke. Uradi ovo samo jednom za skice napravljene u FreeCAD-u starijem od verzije 0.15</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="238"/>
@@ -4563,7 +4563,7 @@ Međutim, nisu pronađena nikakva ograničenja vezana za krajnje tačke.</transl
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="293"/>
       <source>Orientation locking was disabled for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view). Note that for all future constraints, the locking still defaults to ON.</source>
-      <translation>Zaključavanje orijentacije je onemogućeno za %1 ograničenja. Ograničenja su navedena u Pregledaču objava (meni Pogled -&gt; Paneli -&gt; Pregledaču objava). Imajte na umu da je za sva buduća ograničenja zaključavanje i dalje podrazumevano.</translation>
+      <translation>Zaključavanje orijentacije je onemogućeno za %1 ograničenja. Ograničenja su navedena u Pregledaču objava (meni Pogled -&gt; Paneli -&gt; Pregledaču objava). Imaj na umu da je za sva buduća ograničenja zaključavanje i dalje podrazumevano.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="308"/>
@@ -4574,7 +4574,7 @@ Međutim, nisu pronađena nikakva ograničenja vezana za krajnje tačke.</transl
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="309"/>
       <source>You are about to delete ALL constraints that deal with external geometry. This is useful to rescue a sketch with broken/changed links to external geometry. Are you sure you want to delete the constraints?</source>
-      <translation>Spremate se da izbrišete SVA ograničenja koja se tiču spoljne geometrije. Ovo je korisno za spasavanje skice sa pokvarenim/promenjenim vezama ka spoljnoj geometriji. Da li ste sigurni da želite da izbrišete ograničenja?</translation>
+      <translation>Spremaš se da izbrišeš SVA ograničenja koja se tiču spoljne geometrije. Ovo je korisno za spasavanje skice sa pokvarenim/promenjenim vezama ka spoljnoj geometriji. Da li si siguran da želiš da izbrišeš ograničenja?</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="322"/>
@@ -4612,12 +4612,12 @@ Međutim, nisu pronađena nikakva ograničenja vezana za krajnje tačke.</transl
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="40"/>
       <source>Check to toggle filters</source>
-      <translation>Čekirajte da uklj/isklj filtere</translation>
+      <translation>Čekiraj da uklj/isklj filtere</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="59"/>
       <source>Click to show filters</source>
-      <translation>Kliknite da prikažete filtere</translation>
+      <translation>Klikni da prikažeš filtere</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="65"/>
@@ -4627,7 +4627,7 @@ Međutim, nisu pronađena nikakva ograničenja vezana za krajnje tačke.</transl
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="87"/>
       <source>Show/hide all listed constraints from 3D view. (same as ticking/unticking all listed constraints in list below)</source>
-      <translation>Prikažite/sakrijte sva ograničenja u 3D pogledu (isto kao da čekirate/dečekirate sva ograničenja u listi ispod)</translation>
+      <translation>Prikaži/sakrij sva ograničenja u 3D pogledu (isto kao da čekiraš/dečekiraš sva ograničenja u listi ispod)</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="107"/>
@@ -4683,12 +4683,12 @@ Međutim, nisu pronađena nikakva ograničenja vezana za krajnje tačke.</transl
     <message>
       <location filename="../../TaskSketcherElements.ui" line="40"/>
       <source>Check to toggle filters</source>
-      <translation>Čekirajte da uklj/isklj filtere</translation>
+      <translation>Čekiraj da uklj/isklj filtere</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="59"/>
       <source>Click to show filters</source>
-      <translation>Kliknite da prikažete filtere</translation>
+      <translation>Klikni da prikažeš filtere</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="65"/>
@@ -4755,7 +4755,7 @@ Međutim, nisu pronađena nikakva ograničenja vezana za krajnje tačke.</transl
       <location filename="../../TaskSketcherElements.cpp" line="1185"/>
       <location filename="../../TaskSketcherElements.cpp" line="1186"/>
       <source>Arc</source>
-      <translation>Luk</translation>
+      <translation>Zaobljenje</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="1111"/>
@@ -4851,7 +4851,7 @@ Da bi se uhvatile tačke se moraju nalaziti bliže od petine vrednosti veličine
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="84"/>
       <source>Grid snap</source>
-      <translation>Uhvatite za koordinatnu mrežu</translation>
+      <translation>Uhvati za koordinatnu mrežu</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="100"/>
@@ -4871,7 +4871,7 @@ Da bi se uhvatile tačke se moraju nalaziti bliže od petine vrednosti veličine
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="122"/>
       <source>Avoid redundant auto constraints</source>
-      <translation>Izbegavajte suvišna automatska ograničenja</translation>
+      <translation>Izbegavaj suvišna automatska ograničenja</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="138"/>
@@ -4881,7 +4881,7 @@ Da bi se uhvatile tačke se moraju nalaziti bliže od petine vrednosti veličine
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="157"/>
       <source>To change, drag and drop a geometry type to top or bottom</source>
-      <translation>Da biste promenili, prevucite tip geometrije na vrh ili na dno</translation>
+      <translation>Da bi promenio, prevuci vrstu geometrije na vrh ili na dno</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherGeneral.cpp" line="185"/>
@@ -4894,7 +4894,7 @@ Da bi se uhvatile tačke se moraju nalaziti bliže od petine vrednosti veličine
     <message>
       <location filename="../../TaskSketcherMessages.cpp" line="40"/>
       <source>Solver messages</source>
-      <translation>Poruke rešavača</translation>
+      <translation>Poruke algoritam za rešavanje</translation>
     </message>
   </context>
   <context>
@@ -4902,7 +4902,7 @@ Da bi se uhvatile tačke se moraju nalaziti bliže od petine vrednosti veličine
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.cpp" line="57"/>
       <source>Advanced solver control</source>
-      <translation>Napredne kontrole rešavača</translation>
+      <translation>Napredne kontrole algoritma za rešavanje</translation>
     </message>
   </context>
   <context>
@@ -5092,12 +5092,12 @@ Ovo se radi analizom geometrije i ograničenja skice.</translation>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2785"/>
       <source>Do you want to open the sketch validation tool?</source>
-      <translation>Da li želite da otvorite alatku za proveru skice?</translation>
+      <translation>Da li želiš da otvoriš alatku za proveru skice?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2786"/>
       <source>The sketch is invalid and cannot be edited.</source>
-      <translation>Skica sadrži grečke i ne može biti menjana.</translation>
+      <translation>Skica sadrži greške i ne može biti menjana.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2913"/>
@@ -5276,7 +5276,7 @@ Ovo se radi analizom geometrije i ograničenja skice.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1550"/>
       <source>Move</source>
-      <translation>Premesti</translation>
+      <translation>Pomeri</translation>
     </message>
   </context>
   <context>
@@ -5285,7 +5285,7 @@ Ovo se radi analizom geometrije i ograničenja skice.</translation>
       <location filename="../../CommandConstraints.cpp" line="5727"/>
       <location filename="../../CommandConstraints.cpp" line="5728"/>
       <source>Fix the diameter of a circle or an arc</source>
-      <translation>Kotirajte prečnik kruga ili luka</translation>
+      <translation>Kotiraj prečnik kruga ili luka</translation>
     </message>
   </context>
   <context>
@@ -5293,7 +5293,7 @@ Ovo se radi analizom geometrije i ograničenja skice.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5732"/>
       <source>Fix the radius/diameter of a circle or an arc</source>
-      <translation>Kotirajte poluprečnik/prečnik krugova ili lukova</translation>
+      <translation>Kotiraj poluprečnik/prečnik krugova ili lukova</translation>
     </message>
   </context>
   <context>
@@ -5302,7 +5302,7 @@ Ovo se radi analizom geometrije i ograničenja skice.</translation>
       <location filename="../../CommandConstraints.cpp" line="5723"/>
       <location filename="../../CommandConstraints.cpp" line="5724"/>
       <source>Fix the radius of a circle or an arc</source>
-      <translation>Kotirajte poluprečnik kruga ili luka</translation>
+      <translation>Kotiraj poluprečnik kruga ili luka</translation>
     </message>
   </context>
   <context>
@@ -5310,7 +5310,7 @@ Ovo se radi analizom geometrije i ograničenja skice.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5731"/>
       <source>Fix the radius/diameter of a circle or an arc</source>
-      <translation>Kotirajte poluprečnik/prečnik krugova ili lukova</translation>
+      <translation>Kotiraj poluprečnik/prečnik krugova ili lukova</translation>
     </message>
   </context>
   <context>
@@ -5573,14 +5573,14 @@ Ovo se radi analizom geometrije i ograničenja skice.</translation>
     <message>
       <location filename="../../Command.cpp" line="607"/>
       <source>Sketch attachment</source>
-      <translation>Priložite skicu</translation>
+      <translation>Prilog skici</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="609"/>
       <source>Current attachment mode is incompatible with the new selection.
 Select the method to attach this sketch to selected objects.</source>
       <translation>Trenutni režim pridruživanja nije kompatibilan sa novim izborom.
-Izaberite metod za pridruživanje ove skice na izabrane objekte.</translation>
+Izaberi metod za pridruživanje ove skice na izabrane objekte.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="613"/>
@@ -5614,7 +5614,7 @@ Izaberite metod za pridruživanje ove skice na izabrane objekte.</translation>
     <message>
       <location filename="../../Command.cpp" line="173"/>
       <source>Sketch attachment</source>
-      <translation>Priložite skicu</translation>
+      <translation>Prilog skici</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="174"/>
@@ -5634,7 +5634,7 @@ Izaberite metod za pridruživanje ove skice na izabrane objekte.</translation>
       <source>Sketch with a support face cannot be reoriented.
 Do you want to detach it from the support?</source>
       <translation>Skica sa osnovom se ne može promeniti.
-Da li želite da je odvojite od osnove?</translation>
+Da li želiš da je odvojiš od osnove?</translation>
     </message>
   </context>
   <context>
@@ -5695,21 +5695,21 @@ Da li želite da je odvojite od osnove?</translation>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="22"/>
       <source>Default algorithm used for Sketch solving</source>
-      <translation>Podrazumevani algoritam koji se koristi za rešavanje skica</translation>
+      <translation>Podrazumevani algoritam za rešavanje koji se koristi za rešavanje skica</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="25"/>
       <source>Default solver:</source>
-      <translation>Podrazumevani rešavač:</translation>
+      <translation>Podrazumevani algoritam za rešavanje:</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="32"/>
       <source>Solver is used for solving the geometry.
 LevenbergMarquardt and DogLeg are trust region optimization algorithms.
 BFGS solver uses the Broyden–Fletcher–Goldfarb–Shanno algorithm.</source>
-      <translation>Rešavač se koristi za rešavanje geometrije.
+      <translation>Algoritam za rešavanje se koristi za rešavanje geometrije.
 Levenberg-Markuardt i DogLeg su algoritmi za optimizaciju regiona od poverenja.
-BFGS rešavač koristi Broiden–Fletcher–Goldfarb–Shanno algoritam.</translation>
+BFGS algoritam za rešavanje koristi Broiden–Fletcher–Goldfarb–Shanno algoritam.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="47"/>
@@ -5772,7 +5772,7 @@ BFGS rešavač koristi Broiden–Fletcher–Goldfarb–Shanno algoritam.</transl
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="124"/>
       <source>Maximum iterations to find convergence before solver is stopped</source>
-      <translation>Maksimalni broj iteracija za pronalaženje konvergencije pre nego što se rešavač zaustavi</translation>
+      <translation>Maksimalni broj iteracija za pronalaženje konvergencije pre nego što se algoritam za rešavanje zaustavi</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="150"/>
@@ -5858,17 +5858,17 @@ Eigen redak QR algoritam je optimizovan za retke matrice; obično brže</transla
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="373"/>
       <source>Redundant solver:</source>
-      <translation>Rešavač suvišnosti:</translation>
+      <translation>Suvišan algoritam za rešavanje:</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="380"/>
       <source>Solver used to determine whether a group is redundant or conflicting</source>
-      <translation>Rešavač koji se koristi za određivanje da li je grupa suvišna ili konfliktna</translation>
+      <translation>Algoritam za rešavanje koji se koristi za određivanje da li je grupa suvišna ili konfliktna</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="415"/>
       <source>Maximum number of iterations of the solver used for determination of Redundant constraints</source>
-      <translation>Maksimalan broj iteracija rešavača koji se koristi za određivanje redundantnih ograničenja</translation>
+      <translation>Maksimalan broj iteracija algoritma za rešavanje koji se koristi za određivanje redundantnih ograničenja</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="418"/>
@@ -5953,7 +5953,7 @@ Eigen redak QR algoritam je optimizovan za retke matrice; obično brže</transla
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="641"/>
       <source>Resets all solver values to their default values</source>
-      <translation>Resetuje sve vrednosti rešavača na njihove podrazumevane vrednosti</translation>
+      <translation>Resetuje sve vrednosti algoritma za rešavanje na njihove podrazumevane vrednosti</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="644"/>

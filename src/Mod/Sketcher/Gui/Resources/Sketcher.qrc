@@ -284,5 +284,6 @@
         <file>translations/Sketcher_bg.qm</file>
         <file>translations/Sketcher_ka.qm</file>
         <file>translations/Sketcher_sr-CS.qm</file>
+        <file>translations/Sketcher_be.qm</file>
     </qresource>
 </RCC>

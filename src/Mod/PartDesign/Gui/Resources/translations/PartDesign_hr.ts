@@ -91,7 +91,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../Command.cpp" line="1415"/>
       <source>Additive helix</source>
-      <translation>Za dodati spirala</translation>
+      <translation>Dodaj spiralu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1416"/>
@@ -109,12 +109,12 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../Command.cpp" line="1314"/>
       <source>Additive loft</source>
-      <translation>Dodatno Potkrovlje</translation>
+      <translation>Dodaj oblik plohama</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1315"/>
       <source>Loft a selected profile through other profile sections</source>
-      <translation>Produžuje profil u obliku potkrovlja kroz drugi profil</translation>
+      <translation>Produžuje profil u obliku ploha kroz drugi profil</translation>
     </message>
   </context>
   <context>
@@ -127,7 +127,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../Command.cpp" line="1212"/>
       <source>Additive pipe</source>
-      <translation>Cijev dodavanje</translation>
+      <translation>Dodaj cijev izvlačenjem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1213"/>
@@ -632,7 +632,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
       <location filename="../../Command.cpp" line="345"/>
       <location filename="../../Command.cpp" line="346"/>
       <source>Create a sub-object(s) shape binder</source>
-      <translation>Izradite poveznicu pod-objekata oblika </translation>
+      <translation>Izradite poveznicu oblika podobjekata </translation>
     </message>
   </context>
   <context>
@@ -645,12 +645,12 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../Command.cpp" line="1492"/>
       <source>Subtractive helix</source>
-      <translation>Oduzimajuća spirala</translation>
+      <translation>Oduzmi spiralu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1493"/>
       <source>Sweep a selected sketch along a helix and remove it from the body</source>
-      <translation>Povucite odabranu skicu duž spirale i uklonite je s tijela</translation>
+      <translation>Izvuci odabranu skicu duž spirale i uklonite je s tijela</translation>
     </message>
   </context>
   <context>
@@ -663,7 +663,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../Command.cpp" line="1365"/>
       <source>Subtractive loft</source>
-      <translation>Potkrovlje oduzimanje</translation>
+      <translation>Oduzmi Plohe</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1366"/>
@@ -681,12 +681,12 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../Command.cpp" line="1263"/>
       <source>Subtractive pipe</source>
-      <translation>Oduzimamo cijev</translation>
+      <translation>Oduzmi putanju cijevi</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1264"/>
       <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
-      <translation>Proteže odabranu skicu uzduž puta ili drugog profila i uklanja ga iz tijela</translation>
+      <translation>Izvuci odabranu skicu uzduž puta ili drugog profila i uklanja ga iz tijela</translation>
     </message>
   </context>
   <context>
@@ -718,22 +718,22 @@ tako da je izbjegnuto samopresjecanje.</translation>
       <location filename="../../CommandPrimitive.cpp" line="69"/>
       <location filename="../../CommandPrimitive.cpp" line="70"/>
       <source>Create an additive primitive</source>
-      <translation>Stvori jedno dodatno primitivno tijelo</translation>
+      <translation>Dodaj primitivno tijelo</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="199"/>
       <source>Additive Box</source>
-      <translation>Dodatni Boks</translation>
+      <translation>Dodaj Boks</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="203"/>
       <source>Additive Cylinder</source>
-      <translation>Dodatni Cilindar</translation>
+      <translation>Dodaj Cilindar</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="207"/>
       <source>Additive Sphere</source>
-      <translation>Dodatna Kugla</translation>
+      <translation>Dodaj Kuglu</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="211"/>
@@ -743,22 +743,22 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="215"/>
       <source>Additive Ellipsoid</source>
-      <translation>Dodatni Elipsoid</translation>
+      <translation>Dodaj Elipsoid</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="219"/>
       <source>Additive Torus</source>
-      <translation>Dodatni Torus</translation>
+      <translation>Dodaj Torus</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="223"/>
       <source>Additive Prism</source>
-      <translation>Dodatna Prizma</translation>
+      <translation>Dodaj Prizmu</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="227"/>
       <source>Additive Wedge</source>
-      <translation>Dodatni Stožac</translation>
+      <translation>Dodaj Klin</translation>
     </message>
   </context>
   <context>
@@ -772,47 +772,47 @@ tako da je izbjegnuto samopresjecanje.</translation>
       <location filename="../../CommandPrimitive.cpp" line="244"/>
       <location filename="../../CommandPrimitive.cpp" line="245"/>
       <source>Create a subtractive primitive</source>
-      <translation>Stvori jedno oduzimajuće primitivno tijelo</translation>
+      <translation>Oduzmi primitivno tijelo</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="355"/>
       <source>Subtractive Box</source>
-      <translation>Oduzimajući Kvadar</translation>
+      <translation>Oduzmi Kvadar</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="359"/>
       <source>Subtractive Cylinder</source>
-      <translation>Oduzimajući Valjak</translation>
+      <translation>Oduzmi Valjak</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="363"/>
       <source>Subtractive Sphere</source>
-      <translation>Oduzimajuća Kugla</translation>
+      <translation>Oduzmi Kuglu</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="367"/>
       <source>Subtractive Cone</source>
-      <translation>Oduzimajući Stožac</translation>
+      <translation>Oduzmi Stožac</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="371"/>
       <source>Subtractive Ellipsoid</source>
-      <translation>Oduzimajući Elipsoid</translation>
+      <translation>Oduzmi Elipsoid</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="375"/>
       <source>Subtractive Torus</source>
-      <translation>Suptraktivni Torus</translation>
+      <translation>Oduzmi Torus</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="379"/>
       <source>Subtractive Prism</source>
-      <translation>Suptraktivna Prizma</translation>
+      <translation>Oduzmi Prizmu</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="383"/>
       <source>Subtractive Wedge</source>
-      <translation>Suptraktivni Klin</translation>
+      <translation>Oduzmi Klin</translation>
     </message>
   </context>
   <context>
@@ -895,22 +895,22 @@ tako da je izbjegnuto samopresjecanje.</translation>
       <translation>Pomjeri jedan objekt unutar stabla</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="292"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="295"/>
       <source>Mirrored</source>
       <translation>Zrcaljen</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="320"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="323"/>
       <source>Make LinearPattern</source>
       <translation>Napravi pravocrtne uzorke</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="358"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="361"/>
       <source>PolarPattern</source>
       <translation>Polarni uzorak</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="386"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="389"/>
       <source>Scaled</source>
       <translation>Skalirano</translation>
     </message>
@@ -976,7 +976,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="14"/>
       <source>Involute parameter</source>
-      <translation>Nevažeći parametar</translation>
+      <translation>Parametar evolvente</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="20"/>
@@ -986,7 +986,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="40"/>
       <source>Module:</source>
-      <translation>Moduli:</translation>
+      <translation>Modul:</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="84"/>
@@ -1013,7 +1013,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="152"/>
       <source>External gear:</source>
-      <translation>Vanjsko opremanje:</translation>
+      <translation>Vanjski zupčanik:</translation>
     </message>
   </context>
   <context>
@@ -1436,39 +1436,39 @@ Ako je nula, jednak je Polumjeru2</translation>
       <translation>Parametri primitivnog tijela</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="718"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="760"/>
       <source>Cone radii are equal</source>
       <translation>Polumjeri stošca su isti</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="719"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="761"/>
       <source>The radii for cones must not be equal!</source>
       <translation>Polumjeri stošca ne moraju biti isti!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="794"/>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="799"/>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="804"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="836"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="841"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="846"/>
       <source>Invalid wedge parameters</source>
       <translation>Nevaljani parametri klina</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="795"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="837"/>
       <source>X min must not be equal to X max!</source>
       <translation>X min ne smije biti jednak X max!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="800"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="842"/>
       <source>Y min must not be equal to Y max!</source>
       <translation>Y min ne smije biti jednak Y max!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="805"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="847"/>
       <source>Z min must not be equal to Z max!</source>
       <translation>Z min ne smije biti jednak Z max!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="843"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="885"/>
       <source>Create primitive</source>
       <translation>Stvori primitivno tijelo</translation>
     </message>
@@ -2073,7 +2073,7 @@ kliknite ponovno za završetak odabira</translation>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="49"/>
       <source>Counterdrill</source>
-      <translation type="unfinished">Counterdrill</translation>
+      <translation>Cilindrično ili koso upuštenje</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="53"/>
@@ -2164,12 +2164,12 @@ kliknite ponovno za završetak odabira</translation>
       <translation>Ažuriraj pogled</translation>
     </message>
     <message>
-      <location filename="../../TaskLinearPatternParameters.cpp" line="105"/>
+      <location filename="../../TaskLinearPatternParameters.cpp" line="108"/>
       <source>Remove</source>
       <translation>Ukloniti</translation>
     </message>
     <message>
-      <location filename="../../TaskLinearPatternParameters.cpp" line="333"/>
+      <location filename="../../TaskLinearPatternParameters.cpp" line="336"/>
       <source>Error</source>
       <translation>Pogreška</translation>
     </message>
@@ -2313,52 +2313,52 @@ kliknite ponovno za završetak odabira</translation>
       <translation>Ažuriraj pogled</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="73"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="75"/>
       <source>Remove</source>
       <translation>Ukloniti</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="86"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="89"/>
       <source>Edit</source>
       <translation>Uredi</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="90"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="93"/>
       <source>Delete</source>
       <translation>Izbriši</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="94"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="97"/>
       <source>Add mirrored transformation</source>
       <translation>Dodaj zrcalnu transformaciju</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="98"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="101"/>
       <source>Add linear pattern</source>
       <translation>Dodaj linearni uzorak</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="102"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="105"/>
       <source>Add polar pattern</source>
       <translation>Dodaj polarni uzorak</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="106"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="109"/>
       <source>Add scaled transformation</source>
       <translation>Dodaj skalirani uzorak</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="110"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="113"/>
       <source>Move up</source>
       <translation>Pomakni gore</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="114"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="117"/>
       <source>Move down</source>
       <translation>Pomakni dolje</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="141"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="144"/>
       <source>Right-click to add</source>
       <translation>Desni klik za dodati</translation>
     </message>
@@ -2882,12 +2882,12 @@ mjereno duž navedenog smjera</translation>
       <translation>Ažuriraj pogled</translation>
     </message>
     <message>
-      <location filename="../../TaskPolarPatternParameters.cpp" line="112"/>
+      <location filename="../../TaskPolarPatternParameters.cpp" line="114"/>
       <source>Remove</source>
       <translation>Ukloniti</translation>
     </message>
     <message>
-      <location filename="../../TaskPolarPatternParameters.cpp" line="333"/>
+      <location filename="../../TaskPolarPatternParameters.cpp" line="335"/>
       <source>Error</source>
       <translation>Pogreška</translation>
     </message>
@@ -2895,7 +2895,7 @@ mjereno duž navedenog smjera</translation>
   <context>
     <name>PartDesignGui::TaskPrimitiveParameters</name>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="893"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="935"/>
       <source>Attachment</source>
       <translation>Dodatak</translation>
     </message>
@@ -3330,42 +3330,42 @@ kliknite ponovno za završetak odabira</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="200"/>
       <source>Create an additive box by its width, height, and length</source>
-      <translation>Stvori jedan dodatni boks sa širinom, visinom i dužinom</translation>
+      <translation>Dodaj jedan boks sa širinom, visinom i dužinom</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="204"/>
       <source>Create an additive cylinder by its radius, height, and angle</source>
-      <translation>Stvori jedan dodatni cilindar sa: polumjerom, visinom i kutom</translation>
+      <translation>Dodaj jedan cilindar sa: polumjerom, visinom i kutom</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="208"/>
       <source>Create an additive sphere by its radius and various angles</source>
-      <translation>Stvori jednu dodatnu kuglu sa: polumjerom i raznim kutovima</translation>
+      <translation>Dodaj jednu kuglu sa: polumjerom i raznim kutovima</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="212"/>
       <source>Create an additive cone</source>
-      <translation>Stvori jedan dodatni stožac</translation>
+      <translation>Dodaj jedan stožac</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="216"/>
       <source>Create an additive ellipsoid</source>
-      <translation>Stvori jedan dodatni elipsoid</translation>
+      <translation>Dodaj jedan elipsoid</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="220"/>
       <source>Create an additive torus</source>
-      <translation>Stvori jedan dodatni torus</translation>
+      <translation>Dodaj jedan torus</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="224"/>
       <source>Create an additive prism</source>
-      <translation>Stvori jednu dodatnu prizmu</translation>
+      <translation>Dodaj jednu prizmu</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="228"/>
       <source>Create an additive wedge</source>
-      <translation>Stvori jedan dodatni klin</translation>
+      <translation>Dodaj jedan klin</translation>
     </message>
   </context>
   <context>
@@ -3373,42 +3373,42 @@ kliknite ponovno za završetak odabira</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="356"/>
       <source>Create a subtractive box by its width, height and length</source>
-      <translation>Stvori jedan oduzimajući boks sa: širinom, visinom i dužinom</translation>
+      <translation>Oduzmi jedan boks sa: širinom, visinom i dužinom</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="360"/>
       <source>Create a subtractive cylinder by its radius, height and angle</source>
-      <translation>Stvori jedan oduzimajući cilindar sa: polumjerom, visinom i kutom</translation>
+      <translation>Oduzmi jedan cilindar sa: polumjerom, visinom i kutom</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="364"/>
       <source>Create a subtractive sphere by its radius and various angles</source>
-      <translation>Stvori jednu oduzimajuću kuglu sa: polumjerom i raznim kutovima</translation>
+      <translation>Oduzmi jednu kuglu sa: polumjerom i raznim kutovima</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="368"/>
       <source>Create a subtractive cone</source>
-      <translation>Stvori jedan oduzimajući stožac</translation>
+      <translation>Oduzmi jedan stožac</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="372"/>
       <source>Create a subtractive ellipsoid</source>
-      <translation>Stvori jedan oduzimajući elipsoid</translation>
+      <translation>Oduzmi jedan elipsoid</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="376"/>
       <source>Create a subtractive torus</source>
-      <translation>Stvori jedan oduzimajući torus</translation>
+      <translation>Oduzmi jedan torus</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="380"/>
       <source>Create a subtractive prism</source>
-      <translation>Stvori jednu oduzimajuću prizmu</translation>
+      <translation>Oduzmi jednu prizmu</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="384"/>
       <source>Create a subtractive wedge</source>
-      <translation>Stvori jedan oduzimajući klin</translation>
+      <translation>Oduzmi jedan klin</translation>
     </message>
   </context>
   <context>
@@ -4466,20 +4466,20 @@ Dostupno samo za rupe bez navoja</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="251"/>
-      <location filename="../../TaskHoleParameters.cpp" line="591"/>
+      <location filename="../../TaskHoleParameters.cpp" line="618"/>
       <source>Standard</source>
       <translation>Standard</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="256"/>
-      <location filename="../../TaskHoleParameters.cpp" line="592"/>
-      <location filename="../../TaskHoleParameters.cpp" line="603"/>
+      <location filename="../../TaskHoleParameters.cpp" line="619"/>
+      <location filename="../../TaskHoleParameters.cpp" line="630"/>
       <source>Close</source>
       <translation>Zatvori</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="261"/>
-      <location filename="../../TaskHoleParameters.cpp" line="593"/>
+      <location filename="../../TaskHoleParameters.cpp" line="620"/>
       <source>Wide</source>
       <translation>Širok</translation>
     </message>
@@ -4629,12 +4629,12 @@ preko 90: veći polumjer rupe na dnu</translation>
       <translation>Obrnuti</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="602"/>
+      <location filename="../../TaskHoleParameters.cpp" line="629"/>
       <source>Normal</source>
       <translation>Normalno</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="604"/>
+      <location filename="../../TaskHoleParameters.cpp" line="631"/>
       <source>Loose</source>
       <translation>Nepovezano</translation>
     </message>
@@ -4672,12 +4672,12 @@ preko 90: veći polumjer rupe na dnu</translation>
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
       <source>Create an additive feature</source>
-      <translation>Stvori jedno dodatno svojstvo</translation>
+      <translation>Dodaj objekte</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
       <source>Create a subtractive feature</source>
-      <translation>Stvori jedno oduzimajuće svojstvo</translation>
+      <translation>Oduzmi objekte</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
@@ -4692,17 +4692,19 @@ preko 90: veći polumjer rupe na dnu</translation>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>Sprocket...</source>
-      <translation>Lančanik... </translation>
+      <translation>Lančanik...</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>Involute gear...</source>
-      <translation>Spiralni zupčanik</translation>
+      <translation>Evolventni zupčanik...
+
+</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
       <source>Shaft design wizard</source>
-      <translation>Čarobnjak za dizajn osovine</translation>
+      <translation>Čarobnjak za oblikovanje varatila</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="58"/>
@@ -4735,7 +4737,9 @@ preko 90: veći polumjer rupe na dnu</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="57"/>
       <source>Involute gear...</source>
-      <translation>Spiralni zupčanik</translation>
+      <translation>Evolventni zupčanik...
+
+</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="61"/>
@@ -4748,7 +4752,7 @@ preko 90: veći polumjer rupe na dnu</translation>
     <message>
       <location filename="../../../SprocketFeature.py" line="62"/>
       <source>Sprocket...</source>
-      <translation>Lančanik... </translation>
+      <translation>Lančanik...</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.py" line="66"/>
@@ -4805,13 +4809,13 @@ preko 90: veći polumjer rupe na dnu</translation>
       <location filename="../../../WizardShaft/WizardShaft.py" line="186"/>
       <location filename="../../../WizardShaft/WizardShaft.py" line="211"/>
       <source>Shaft design wizard...</source>
-      <translation>Čarobnjak za dizajn vratila... </translation>
+      <translation>Čarobnjak za oblikovanje vratila... </translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="187"/>
       <location filename="../../../WizardShaft/WizardShaft.py" line="212"/>
       <source>Start the shaft design wizard</source>
-      <translation>Pokreni čarobnjak za dizajn vratila</translation>
+      <translation>Pokreni čarobnjak za oblikovanje vratila</translation>
     </message>
   </context>
 </TS>

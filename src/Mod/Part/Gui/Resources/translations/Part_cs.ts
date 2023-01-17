@@ -2322,7 +2322,7 @@ of projection.</translation>
       <translation type="unfinished">Convert mesh</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1071"/>
+      <location filename="../../TaskAttacher.cpp" line="1077"/>
       <source>Edit attachment</source>
       <translation>Upravit připojení</translation>
     </message>
@@ -2337,28 +2337,28 @@ of projection.</translation>
       <translation>Profilování</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="256"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="261"/>
       <source>Edge</source>
       <translation>Hrana</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="297"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="302"/>
       <source>Wire</source>
       <translation>Křivka</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="349"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="401"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="354"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="406"/>
       <source>Face</source>
       <translation>Plocha</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="464"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="469"/>
       <source>Shell</source>
       <translation>Skořepina</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="516"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="521"/>
       <source>Solid</source>
       <translation>Těleso</translation>
     </message>
@@ -4708,80 +4708,80 @@ only created cuts will be visible</translation>
   <context>
     <name>PartGui::ShapeBuilderWidget</name>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="215"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="220"/>
       <source>Unsupported</source>
       <translation type="unfinished">Unsupported</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="215"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="220"/>
       <source>Box selection for shells is not supported</source>
       <translation type="unfinished">Box selection for shells is not supported</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="224"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="243"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="271"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="312"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="364"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="416"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="479"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="229"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="248"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="276"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="317"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="369"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="421"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="484"/>
       <source>Wrong selection</source>
       <translation>Neplatný výběr</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="224"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="243"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="229"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="248"/>
       <source>Select two vertices</source>
       <translation>Vyber dva vrcholy</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="271"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="364"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="276"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="369"/>
       <source>Select one or more edges</source>
       <translation>Vyberete jednu nebo více hran</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="312"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="317"/>
       <source>Select three or more vertices</source>
       <translation>Vyberte tři nebo více vrcholů</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="416"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="421"/>
       <source>Select two or more faces</source>
       <translation>Vyber dvě nebo více ploch</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="479"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="484"/>
       <source>Select only one part object</source>
       <translation>Vyber pouze jeden díl</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="531"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="536"/>
       <source>Select two vertices to create an edge</source>
       <translation>Vyber dva vrcholy pro vytvoření hrany</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="538"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="543"/>
       <source>Select adjacent edges</source>
       <translation>Vyberte přilehlé hrany</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="545"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="550"/>
       <source>Select a list of vertices</source>
       <translation>Vyberte seznam vrcholů</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="552"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="557"/>
       <source>Select a closed set of edges</source>
       <translation>Vyber uzavřenou sadu hran</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="559"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="564"/>
       <source>Select adjacent faces</source>
       <translation>Vyber přiléhající plochy</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="566"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="571"/>
       <source>All shape types can be selected</source>
       <translation>Všechny typy útvarů mohou být vybrány</translation>
     </message>
@@ -4923,7 +4923,7 @@ only created cuts will be visible</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="124"/>
-      <location filename="../../TaskAttacher.cpp" line="329"/>
+      <location filename="../../TaskAttacher.cpp" line="335"/>
       <source>Attachment Offset (in local coordinates):</source>
       <translation>Odsazení připojení (v lokálních souřadnicích):</translation>
     </message>
@@ -5004,77 +5004,77 @@ of object being attached.</translation>
       <translation>Otočit strany</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="312"/>
+      <location filename="../../TaskAttacher.cpp" line="318"/>
       <source>OCC error: %1</source>
       <translation>OCC chyba: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="314"/>
+      <location filename="../../TaskAttacher.cpp" line="320"/>
       <source>unknown error</source>
       <translation>neznámá chyba</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="317"/>
+      <location filename="../../TaskAttacher.cpp" line="323"/>
       <source>Attachment mode failed: %1</source>
       <translation>Mód připojení selhal: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="321"/>
+      <location filename="../../TaskAttacher.cpp" line="327"/>
       <source>Not attached</source>
       <translation>Není připojeno</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="325"/>
+      <location filename="../../TaskAttacher.cpp" line="331"/>
       <source>Attached with mode %1</source>
       <translation>Připojené v módu %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="329"/>
+      <location filename="../../TaskAttacher.cpp" line="335"/>
       <source>Attachment Offset (inactive - not attached):</source>
       <translation>Odsazení připojení (neaktivní - nepřipojeno):</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="626"/>
+      <location filename="../../TaskAttacher.cpp" line="632"/>
       <source>Face</source>
       <translation>Plocha</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="633"/>
+      <location filename="../../TaskAttacher.cpp" line="639"/>
       <source>Edge</source>
       <translation>Hrana</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="640"/>
+      <location filename="../../TaskAttacher.cpp" line="646"/>
       <source>Vertex</source>
       <translation>Vrchol</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="705"/>
+      <location filename="../../TaskAttacher.cpp" line="711"/>
       <source>Selecting...</source>
       <translation>Vybírání...</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="709"/>
+      <location filename="../../TaskAttacher.cpp" line="715"/>
       <source>Reference%1</source>
       <translation>Reference%1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="756"/>
+      <location filename="../../TaskAttacher.cpp" line="762"/>
       <source>Not editable because rotation of AttachmentOffset is bound by expressions.</source>
       <translation type="unfinished">Not editable because rotation of AttachmentOffset is bound by expressions.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="822"/>
+      <location filename="../../TaskAttacher.cpp" line="828"/>
       <source>Reference combinations:</source>
       <translation>Kombinace referencí:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="839"/>
+      <location filename="../../TaskAttacher.cpp" line="845"/>
       <source>%1 (add %2)</source>
       <translation>%1 (přidat %2)</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="844"/>
+      <location filename="../../TaskAttacher.cpp" line="850"/>
       <source>%1 (add more references)</source>
       <translation>%1 (přidat více referencí)</translation>
     </message>
@@ -5294,7 +5294,7 @@ Individual BOP Checks:</translation>
   <context>
     <name>PartGui::TaskDlgAttacher</name>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1112"/>
+      <location filename="../../TaskAttacher.cpp" line="1118"/>
       <source>Datum dialog: Input error</source>
       <translation>Dialog hodnoty: Chyba vstupu</translation>
     </message>

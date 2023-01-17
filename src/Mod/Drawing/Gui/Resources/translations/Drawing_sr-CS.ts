@@ -17,7 +17,7 @@
       <location filename="../../Command.cpp" line="477"/>
       <location filename="../../Command.cpp" line="479"/>
       <source>Inserts an Annotation view in the active drawing</source>
-      <translation>Dodaj napomenu aktivnom crtežu</translation>
+      <translation>Dodaje napomenu aktivnom crtežu</translation>
     </message>
   </context>
   <context>
@@ -250,7 +250,7 @@
     <message>
       <location filename="../../DrawingView.cpp" line="221"/>
       <source>&amp;Native</source>
-      <translation>Maternji &amp;amp;</translation>
+      <translation>Izvorni</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="225"/>
@@ -350,8 +350,8 @@ Do you want to continue?</translation>
       <location filename="../../DrawingView.cpp" line="590"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
-      <translation>Štampač koricti drugačiju veličinu papira od crteža.
-Da li želiš da nactaviš?</translation>
+      <translation>Štampač koristi drugačiju veličinu papira od crteža.
+Da li želiš da nastaviš?</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="601"/>
@@ -470,7 +470,7 @@ Da li želiš da nactaviš?</translation>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="541"/>
       <source>Auto scale / position</source>
-      <translation>Automatska razmera/postavljanje</translation>
+      <translation>Automatska razmera/položaj</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="556"/>
@@ -738,7 +738,7 @@ Da li želiš da nactaviš?</translation>
     <message>
       <location filename="../../Command.cpp" line="759"/>
       <source>Select exactly one Spreadsheet object.</source>
-      <translation>Izaberi samo jednu tabelu.</translation>
+      <translation>Izaberi samo jedan tabelarni objekat.</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.cpp" line="46"/>

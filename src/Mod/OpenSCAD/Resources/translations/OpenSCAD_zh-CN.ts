@@ -253,7 +253,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="474"/>
       <source>Minkowski sum</source>
-      <translation type="unfinished">Minkowski sum</translation>
+      <translation>闵可夫斯基和</translation>
     </message>
     <message>
       <location filename="../../OpenSCADUtils.py" line="709"/>
@@ -452,7 +452,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="555"/>
       <source>Use OpenSCAD to create a hull</source>
-      <translation type="unfinished">Use OpenSCAD to create a hull</translation>
+      <translation>使用 OpenSCAD 创建壳体</translation>
     </message>
   </context>
   <context>
@@ -460,7 +460,7 @@
     <message>
       <location filename="../../InitGui.py" line="152"/>
       <source>OpenSCAD Tools</source>
-      <translation type="unfinished">OpenSCAD Tools</translation>
+      <translation>OpenSCAD 工具</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="156"/>
@@ -473,12 +473,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="571"/>
       <source>Minkowski sum</source>
-      <translation type="unfinished">Minkowski sum</translation>
+      <translation>闵可夫斯基和</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="574"/>
       <source>Use OpenSCAD to create a Minkowski sum</source>
-      <translation type="unfinished">Use OpenSCAD to create a Minkowski sum</translation>
+      <translation>使用 OpenSCAD 创建闵可夫斯基和</translation>
     </message>
   </context>
 </TS>

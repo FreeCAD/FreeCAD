@@ -2137,12 +2137,12 @@ invalid constraints, degenerated geometry, etc.</translation>
   <context>
     <name>CriticalMessages</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="8322"/>
+      <location filename="../../../App/SketchObject.cpp" line="8327"/>
       <source>Sketch:</source>
       <translation>Esboço:</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="8323"/>
+      <location filename="../../../App/SketchObject.cpp" line="8328"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!</source>
       <translation>Parábolas foram atualizadas. Ficheiros atualizados não abrirão em versões anteriores do FreeCAD!!</translation>
     </message>
@@ -2185,59 +2185,59 @@ invalid constraints, degenerated geometry, etc.</translation>
       <translation>Erro de restrição automática: esboço insolúvel após a aplicação de restrições de igualdade.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="1979"/>
+      <location filename="../../../App/SketchObject.cpp" line="1984"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Não é possível calcular a interseção das curvas. Tente adicionar uma restrição coincidente entre os vértices das curvas das quais pretende fazer a concordância.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5860"/>
-      <location filename="../../../App/SketchObject.cpp" line="6034"/>
+      <location filename="../../../App/SketchObject.cpp" line="5865"/>
+      <location filename="../../../App/SketchObject.cpp" line="6039"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>Índice de geometria BSpline (GeoID) está fora dos limites.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5863"/>
+      <location filename="../../../App/SketchObject.cpp" line="5868"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Você não está a solicitar nenhuma mudança na multiplicidade de nó.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5868"/>
-      <location filename="../../../App/SketchObject.cpp" line="6042"/>
+      <location filename="../../../App/SketchObject.cpp" line="5873"/>
+      <location filename="../../../App/SketchObject.cpp" line="6047"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>O índice de geometria (GeoId) fornecida não é uma curva B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5875"/>
+      <location filename="../../../App/SketchObject.cpp" line="5880"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>O índice do nó está fora dos limites. Note que, de acordo com a notação de OCC, o primeiro nó tem índice 1 e não zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5882"/>
+      <location filename="../../../App/SketchObject.cpp" line="5887"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>A multiplicidade não pode ser aumentada além do grau de B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5885"/>
+      <location filename="../../../App/SketchObject.cpp" line="5890"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>A multiplicidade não pode ser diminuída, abaixo de zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5897"/>
+      <location filename="../../../App/SketchObject.cpp" line="5902"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC é incapaz de diminuir a multiplicidade dentro de tolerância máxima.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6037"/>
+      <location filename="../../../App/SketchObject.cpp" line="6042"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation type="unfinished">Knot cannot have zero multiplicity.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6051"/>
+      <location filename="../../../App/SketchObject.cpp" line="6056"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
       <translation type="unfinished">Knot multiplicity cannot be higher than the degree of the BSpline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6054"/>
+      <location filename="../../../App/SketchObject.cpp" line="6059"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
       <translation type="unfinished">Knot cannot be inserted outside the BSpline parameter range.</translation>
     </message>
@@ -2484,7 +2484,7 @@ invalid constraints, degenerated geometry, etc.</translation>
       <translation>Não é permitido editar o ponto de referência (datum) porque o desenho contém restrições em conflito</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="220"/>
+      <location filename="../../EditDatumDialog.cpp" line="222"/>
       <source>Dimensional constraint</source>
       <translation>Restrição dimensional</translation>
     </message>

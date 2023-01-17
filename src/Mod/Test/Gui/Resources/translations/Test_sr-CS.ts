@@ -21,7 +21,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="96"/>
       <source>&amp;Start</source>
-      <translation>&amp;Startuj</translation>
+      <translation>&amp;Pokreni</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="99"/>
@@ -51,7 +51,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="154"/>
       <source>&amp;Close</source>
-      <translation>Zatvori</translation>
+      <translation>&amp;Zatvori</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="157"/>
@@ -112,10 +112,10 @@
 Click 'start', and the test thus produced will be run.
 
 Double click on an error in the tree view to see more information about it, including the stack trace.</source>
-      <translation>Upišite naziv pozovivog objekta koji će, kada je pozvan, dati slučaj testiranja.
-Kliknite na „pokreni“, i test koji proizvodi biće pokrenut.
+      <translation type="unfinished">Enter the name of a callable object which, when called, will return a TestCase.
+Click 'start', and the test thus produced will be run.
 
-Dva puta kliknite na grešku u pregledu stablom da vidite više informacija o njemu, uključujući praćenje spremnika.</translation>
+Double click on an error in the tree view to see more information about it, including the stack trace.</translation>
     </message>
     <message>
       <location filename="../../UnitTestImp.cpp" line="163"/>
@@ -127,9 +127,9 @@ Dva puta kliknite na grešku u pregledu stablom da vidite više informacija o nj
       <source>Copyright (c) Werner Mayer
 
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>
-      <translation>Autorska prava © Werner Mayer
+      <translation type="unfinished">Copyright (c) Werner Mayer
 
-„FreeCAD UnitTest“ je deo FreeCAD-a i podržava pisanje testiranja jedinice za njihove lične module.</translation>
+FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</translation>
     </message>
   </context>
 </TS>

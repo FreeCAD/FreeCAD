@@ -226,5 +226,6 @@
         <file>translations/TechDraw_zh-CN.qm</file>
         <file>translations/TechDraw_zh-TW.qm</file>
         <file>translations/TechDraw_sr-CS.qm</file>
+        <file>translations/TechDraw_be.qm</file>
     </qresource>
 </RCC>

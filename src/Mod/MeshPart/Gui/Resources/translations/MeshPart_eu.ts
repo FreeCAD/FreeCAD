@@ -581,12 +581,12 @@ Hautatu beste forma bat.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="47"/>
       <source>Unwrap Mesh</source>
-      <translation type="unfinished">Unwrap Mesh</translation>
+      <translation>Desestali amarauna</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="50"/>
       <source>Find a flat representation of a mesh.</source>
-      <translation type="unfinished">Find a flat representation of a mesh.</translation>
+      <translation>Aurkitu amaraunaren irudikapen laua.</translation>
     </message>
   </context>
   <context>
@@ -594,12 +594,12 @@ Hautatu beste forma bat.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="79"/>
       <source>Unwrap Face</source>
-      <translation type="unfinished">Unwrap Face</translation>
+      <translation>Desestali aurpegia</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="82"/>
       <source>Find a flat representation of a face.</source>
-      <translation type="unfinished">Find a flat representation of a face.</translation>
+      <translation>Aurkitu aurpegiaren irudikapen laua.</translation>
     </message>
   </context>
 </TS>

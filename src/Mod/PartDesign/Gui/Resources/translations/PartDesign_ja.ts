@@ -894,22 +894,22 @@ so that self intersection is avoided.</source>
       <translation>ツリー内のオブジェクトを移動</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="292"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="295"/>
       <source>Mirrored</source>
       <translation>鏡像</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="320"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="323"/>
       <source>Make LinearPattern</source>
       <translation>直線状パターンを作成</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="358"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="361"/>
       <source>PolarPattern</source>
       <translation>円状パターン</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="386"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="389"/>
       <source>Scaled</source>
       <translation>拡大縮小</translation>
     </message>
@@ -1434,39 +1434,39 @@ If zero, it is equal to Radius2</source>
       <translation>プリミティブパラメーター</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="718"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="760"/>
       <source>Cone radii are equal</source>
       <translation>コーン半径は等しいです</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="719"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="761"/>
       <source>The radii for cones must not be equal!</source>
       <translation>コーンの半径は同じであってはなりません!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="794"/>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="799"/>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="804"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="836"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="841"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="846"/>
       <source>Invalid wedge parameters</source>
       <translation>無効なウェッジパラメーターです。</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="795"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="837"/>
       <source>X min must not be equal to X max!</source>
       <translation>X minはX maxより小さい必要があります。</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="800"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="842"/>
       <source>Y min must not be equal to Y max!</source>
       <translation>Y minはY maxより小さい必要があります。</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="805"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="847"/>
       <source>Z min must not be equal to Z max!</source>
       <translation>Z minはZ maxは小さい必要があります。</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="843"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="885"/>
       <source>Create primitive</source>
       <translation>プリミティブを作成</translation>
     </message>
@@ -2162,12 +2162,12 @@ click again to end selection</source>
       <translation>ビューを更新</translation>
     </message>
     <message>
-      <location filename="../../TaskLinearPatternParameters.cpp" line="105"/>
+      <location filename="../../TaskLinearPatternParameters.cpp" line="108"/>
       <source>Remove</source>
       <translation>削除</translation>
     </message>
     <message>
-      <location filename="../../TaskLinearPatternParameters.cpp" line="333"/>
+      <location filename="../../TaskLinearPatternParameters.cpp" line="336"/>
       <source>Error</source>
       <translation>エラー</translation>
     </message>
@@ -2311,52 +2311,52 @@ click again to end selection</source>
       <translation>ビューを更新</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="73"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="75"/>
       <source>Remove</source>
       <translation>削除</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="86"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="89"/>
       <source>Edit</source>
       <translation>編集</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="90"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="93"/>
       <source>Delete</source>
       <translation>削除</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="94"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="97"/>
       <source>Add mirrored transformation</source>
       <translation>鏡像変換を追加</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="98"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="101"/>
       <source>Add linear pattern</source>
       <translation>直線状パターンを追加</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="102"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="105"/>
       <source>Add polar pattern</source>
       <translation>円状パターンを追加</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="106"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="109"/>
       <source>Add scaled transformation</source>
       <translation>拡大縮小変換を追加</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="110"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="113"/>
       <source>Move up</source>
       <translation>上へ移動</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="114"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="117"/>
       <source>Move down</source>
       <translation>下へ移動</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="141"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="144"/>
       <source>Right-click to add</source>
       <translation>右クリックして追加</translation>
     </message>
@@ -2875,12 +2875,12 @@ measured along the specified direction</source>
       <translation>ビューを更新</translation>
     </message>
     <message>
-      <location filename="../../TaskPolarPatternParameters.cpp" line="112"/>
+      <location filename="../../TaskPolarPatternParameters.cpp" line="114"/>
       <source>Remove</source>
       <translation>削除</translation>
     </message>
     <message>
-      <location filename="../../TaskPolarPatternParameters.cpp" line="333"/>
+      <location filename="../../TaskPolarPatternParameters.cpp" line="335"/>
       <source>Error</source>
       <translation>エラー</translation>
     </message>
@@ -2888,7 +2888,7 @@ measured along the specified direction</source>
   <context>
     <name>PartDesignGui::TaskPrimitiveParameters</name>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="893"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="935"/>
       <source>Attachment</source>
       <translation>アタッチメント</translation>
     </message>
@@ -4450,20 +4450,20 @@ Only available for holes without thread</source>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="251"/>
-      <location filename="../../TaskHoleParameters.cpp" line="591"/>
+      <location filename="../../TaskHoleParameters.cpp" line="618"/>
       <source>Standard</source>
       <translation>標準</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="256"/>
-      <location filename="../../TaskHoleParameters.cpp" line="592"/>
-      <location filename="../../TaskHoleParameters.cpp" line="603"/>
+      <location filename="../../TaskHoleParameters.cpp" line="619"/>
+      <location filename="../../TaskHoleParameters.cpp" line="630"/>
       <source>Close</source>
       <translation>閉じる</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="261"/>
-      <location filename="../../TaskHoleParameters.cpp" line="593"/>
+      <location filename="../../TaskHoleParameters.cpp" line="620"/>
       <source>Wide</source>
       <translation>幅</translation>
     </message>
@@ -4609,12 +4609,12 @@ over 90: larger hole radius at the bottom</source>
       <translation>逆方向</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="602"/>
+      <location filename="../../TaskHoleParameters.cpp" line="629"/>
       <source>Normal</source>
       <translation>標準</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="604"/>
+      <location filename="../../TaskHoleParameters.cpp" line="631"/>
       <source>Loose</source>
       <translation>あそび</translation>
     </message>

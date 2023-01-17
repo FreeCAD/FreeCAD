@@ -2130,12 +2130,12 @@ invalid constraints, degenerated geometry, etc.</source>
   <context>
     <name>CriticalMessages</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="8322"/>
+      <location filename="../../../App/SketchObject.cpp" line="8327"/>
       <source>Sketch:</source>
       <translation type="unfinished">Sketch:</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="8323"/>
+      <location filename="../../../App/SketchObject.cpp" line="8328"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!</source>
       <translation type="unfinished">Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!</translation>
     </message>
@@ -2178,60 +2178,60 @@ invalid constraints, degenerated geometry, etc.</source>
       <translation>Σφάλμα αυτόματου περιορισμού: Άλυτο σχέδιο μετά την εφαρμογή περιορισμών ισότητας.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="1979"/>
+      <location filename="../../../App/SketchObject.cpp" line="1984"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Δεν είναι δυνατή η εύρεση τομής καμπυλών.
 Προσπαθήστε να προσθέσετε τον περιορισμό ταύτισης μεταξύ κορυφών των καμπυλών που σκοπεύετε να συμπληρώσετε.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5860"/>
-      <location filename="../../../App/SketchObject.cpp" line="6034"/>
+      <location filename="../../../App/SketchObject.cpp" line="5865"/>
+      <location filename="../../../App/SketchObject.cpp" line="6039"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation type="unfinished">BSpline Geometry Index (GeoID) is out of bounds.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5863"/>
+      <location filename="../../../App/SketchObject.cpp" line="5868"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Δεν απαιτείτε καμία αλλαγή της πολλαπλότητας κόμβου.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5868"/>
-      <location filename="../../../App/SketchObject.cpp" line="6042"/>
+      <location filename="../../../App/SketchObject.cpp" line="5873"/>
+      <location filename="../../../App/SketchObject.cpp" line="6047"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation type="unfinished">The Geometry Index (GeoId) provided is not a B-spline curve.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5875"/>
+      <location filename="../../../App/SketchObject.cpp" line="5880"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Ο δείκτης κόμβου είναι εκτός ορίων. Σημειώστε πως σύμφωνα με το σύστημα σημειογραφίας του OCC, ο πρώτος κόμβος έχει δείκτη 1 και όχι μηδέν.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5882"/>
+      <location filename="../../../App/SketchObject.cpp" line="5887"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation type="unfinished">The multiplicity cannot be increased beyond the degree of the B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5885"/>
+      <location filename="../../../App/SketchObject.cpp" line="5890"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Η πολλαπλότητα δεν δύναται να είναι χαμηλότερη από το μηδέν.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5897"/>
+      <location filename="../../../App/SketchObject.cpp" line="5902"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>To ΟCC αδυνατεί να μειώσει την πολλαπλότητα εντός των ορίων μέγιστης ανοχής.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6037"/>
+      <location filename="../../../App/SketchObject.cpp" line="6042"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation type="unfinished">Knot cannot have zero multiplicity.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6051"/>
+      <location filename="../../../App/SketchObject.cpp" line="6056"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
       <translation type="unfinished">Knot multiplicity cannot be higher than the degree of the BSpline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6054"/>
+      <location filename="../../../App/SketchObject.cpp" line="6059"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
       <translation type="unfinished">Knot cannot be inserted outside the BSpline parameter range.</translation>
     </message>
@@ -2478,7 +2478,7 @@ invalid constraints, degenerated geometry, etc.</source>
       <translation>Δεν επιτρέπεται η επεξεργασία του περιορισμού μεγέθους επειδή το σχέδιο περιέχει αντιφατικούς περιορισμούς</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="220"/>
+      <location filename="../../EditDatumDialog.cpp" line="222"/>
       <source>Dimensional constraint</source>
       <translation>Περιορισμός διαστάσεων</translation>
     </message>

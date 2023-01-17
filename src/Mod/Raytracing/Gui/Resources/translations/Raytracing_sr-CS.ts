@@ -62,7 +62,7 @@
     <message>
       <location filename="../../Command.cpp" line="427"/>
       <source>Insert a new part object into a Raytracing project</source>
-      <translation>Umetni novi deo-objekat u Raytracing projekat</translation>
+      <translation>Umetni novi Part-objekat u Raytracing projekat</translation>
     </message>
   </context>
   <context>
@@ -144,7 +144,7 @@
     <message>
       <location filename="../../Command.cpp" line="73"/>
       <source>Export the camera position of the active 3D view in POV-Ray format to a file</source>
-      <translation>Izvezite u datoteku poziciju kamere aktivnog 3D pogleda u POV-Ray formatu</translation>
+      <translation>Izvezite u datoteku položaj kamere aktivnog 3D pogleda u POV-Ray formatu</translation>
     </message>
   </context>
   <context>
@@ -162,7 +162,7 @@
     <message>
       <location filename="../../Command.cpp" line="166"/>
       <source>Write the selected Part (object) as a POV-Ray file</source>
-      <translation>Upiši odabrani Deo (objekat) kao POV-Ray datoteku</translation>
+      <translation>Upiši odabrani Part (objekat) kao POV-Ray datoteku</translation>
     </message>
   </context>
   <context>
@@ -182,7 +182,7 @@
       <source>The current view camera is not perspective and thus resulting in a POV-Ray image that may look different than what was expected.
 Do you want to continue?</source>
       <translation>Trenutni prikaz kamera nije perspektiva što rezultira POV-Ray slikom koja može izgledati drugačije nego što ste očekivali.
-Da li želite da nastavite?</translation>
+Da li želitš da nastaviš?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="211"/>
@@ -216,7 +216,7 @@ Da li želite da nastavite?</translation>
       <source>The current view camera is not perspective and thus resulting in a luxrender image that may look different than what was expected.
 Do you want to continue?</source>
       <translation>Trenutni prikaz kamera nije perspektiva što rezultira Luxrender slikom koja može izgledati drugačije nego što ste očekivali.
-Da li želite da nastavite?</translation>
+Da li želiš da nastaviš?</translation>
     </message>
   </context>
   <context>
@@ -296,7 +296,7 @@ Da li želite da nastavite?</translation>
     <message>
       <location filename="../../Command.cpp" line="605"/>
       <source>Please set the path to the POV-Ray executable in the preferences.</source>
-      <translation>Podesite putanju do POV-Ray izvršne datoteke u podešavanjima.</translation>
+      <translation>Podesi putanju do POV-Ray izvršne datoteke u podešavanjima.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="611"/>
@@ -312,7 +312,7 @@ Da li želite da nastavite?</translation>
     <message>
       <location filename="../../Command.cpp" line="619"/>
       <source>Please set the path to the luxrender or luxconsole executable in the preferences.</source>
-      <translation>Podesite putanju do luxrender, ili do luxconsole izvršne datoteke u podešavanjima.</translation>
+      <translation>Podesi putanju do luxrender, ili do luxconsole izvršne datoteke u podešavanjima.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="625"/>
@@ -439,7 +439,7 @@ Da li želite da nastavite?</translation>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="224"/>
       <source>Part file name:</source>
-      <translation>Ime datoteke Dela:</translation>
+      <translation>Ime Part datoteke:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="234"/>
@@ -472,7 +472,7 @@ Da li želite da nastavite?</translation>
     <message>
       <location filename="../../DlgSettingsRayImp.cpp" line="45"/>
       <source>The path to the POV-Ray executable, if you want to render from %1</source>
-      <translation>Putanja do izvršne datoteke POV-Ray, ako želite da renderujete iz %1</translation>
+      <translation>Putanja do izvršne datoteke POV-Ray, ako želiš da renderuješ iz %1</translation>
     </message>
   </context>
   <context>

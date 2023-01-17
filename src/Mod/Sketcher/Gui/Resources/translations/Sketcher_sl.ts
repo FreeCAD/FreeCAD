@@ -578,7 +578,7 @@ on the selected vertex</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5315"/>
       <source>Fix the diameter if a circle is chosen, or the radius if an arc/spline pole is chosen</source>
-      <translation type="unfinished">Fix the diameter if a circle is chosen, or the radius if an arc/spline pole is chosen</translation>
+      <translation>Zakleni premer, če izbran krog, oz. polmer, če je izbran lok/tečaj zlepka</translation>
     </message>
   </context>
   <context>
@@ -850,7 +850,7 @@ glede na črto ali tretjo točko</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="108"/>
       <source>Create line</source>
-      <translation>Ustvari črto</translation>
+      <translation>Ustvari daljico</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="109"/>
@@ -1149,12 +1149,12 @@ glede na črto ali tretjo točko</translation>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1138"/>
       <source>Insert knot</source>
-      <translation type="unfinished">Insert knot</translation>
+      <translation>Vstavi vozel</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1139"/>
       <source>Inserts knot at given parameter. If a knot already exists at that parameter, it's multiplicity is increased by one.</source>
-      <translation type="unfinished">Inserts knot at given parameter. If a knot already exists at that parameter, it's multiplicity is increased by one.</translation>
+      <translation>Vstavi vozel na podani določilki. Če vozel na tej določilki že obstaja, se njegova večkratnost poveča za ena.</translation>
     </message>
   </context>
   <context>
@@ -2033,7 +2033,7 @@ neveljavna omejila, izrojene geometrije, ...</translation>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1034"/>
       <source>Insert knot</source>
-      <translation type="unfinished">Insert knot</translation>
+      <translation>Vstavi vozel</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1287"/>
@@ -2129,18 +2129,18 @@ neveljavna omejila, izrojene geometrije, ...</translation>
     <message>
       <location filename="../../Workbench.cpp" line="31"/>
       <source>Sketcher</source>
-      <translation type="unfinished">Sketcher</translation>
+      <translation>Očrtovalnik</translation>
     </message>
   </context>
   <context>
     <name>CriticalMessages</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="8322"/>
+      <location filename="../../../App/SketchObject.cpp" line="8327"/>
       <source>Sketch:</source>
       <translation>Očrt:</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="8323"/>
+      <location filename="../../../App/SketchObject.cpp" line="8328"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!</source>
       <translation>Parabole so bile preseljene. Preseljenih datotek ne bo mogoče odpreti v prejšnjih FreeCADih!</translation>
     </message>
@@ -2183,61 +2183,61 @@ neveljavna omejila, izrojene geometrije, ...</translation>
       <translation>Napaka samodejnega omejila: Nerešljiv očrt po uveljavitiv enakostnega omejila.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="1979"/>
+      <location filename="../../../App/SketchObject.cpp" line="1984"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Ni mogoče uganiti presečišča krivulj. Poskusite dodati omejilo sovpadanja med vozlišči krivulj, ki jih nameravate zaokrožiti.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5860"/>
-      <location filename="../../../App/SketchObject.cpp" line="6034"/>
+      <location filename="../../../App/SketchObject.cpp" line="5865"/>
+      <location filename="../../../App/SketchObject.cpp" line="6039"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>Kazalo geometrije B-zlepka (GeoID) je izven omejitev.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5863"/>
+      <location filename="../../../App/SketchObject.cpp" line="5868"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Ne zahtevate spremembe večkratnosti vozla.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5868"/>
-      <location filename="../../../App/SketchObject.cpp" line="6042"/>
+      <location filename="../../../App/SketchObject.cpp" line="5873"/>
+      <location filename="../../../App/SketchObject.cpp" line="6047"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>Priskrbljeno kazalo geometrije (GeoId) ni krivulja B-zlepek.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5875"/>
+      <location filename="../../../App/SketchObject.cpp" line="5880"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Oznaka vozla je izven meja. Upoštevajte, da ima v skladu z OCC zapisom prvi vozel oznako 1 in ne nič.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5882"/>
+      <location filename="../../../App/SketchObject.cpp" line="5887"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Večkratnost ne more biti povečana preko stopnje B-zlepka.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5885"/>
+      <location filename="../../../App/SketchObject.cpp" line="5890"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Večkratnost ne more biti zmanjšana pod ničlo.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5897"/>
+      <location filename="../../../App/SketchObject.cpp" line="5902"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC ne more zmanjšati večkratnost znotraj največjega dopustnega odstopanja.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6037"/>
+      <location filename="../../../App/SketchObject.cpp" line="6042"/>
       <source>Knot cannot have zero multiplicity.</source>
-      <translation type="unfinished">Knot cannot have zero multiplicity.</translation>
+      <translation>Večkratnost vozla ne more biti nič.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6051"/>
+      <location filename="../../../App/SketchObject.cpp" line="6056"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
-      <translation type="unfinished">Knot multiplicity cannot be higher than the degree of the BSpline.</translation>
+      <translation>Večkratnost vozla ne more biti večja od stopnje B-zlepka.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6054"/>
+      <location filename="../../../App/SketchObject.cpp" line="6059"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
-      <translation type="unfinished">Knot cannot be inserted outside the BSpline parameter range.</translation>
+      <translation>Vozla ni mogoče vstaviti izven razpona določilke B-zlepka.</translation>
     </message>
   </context>
   <context>
@@ -2255,7 +2255,7 @@ neveljavna omejila, izrojene geometrije, ...</translation>
       <location filename="../../AppSketcherGui.cpp" line="130"/>
       <location filename="../../AppSketcherGui.cpp" line="131"/>
       <source>Sketcher</source>
-      <translation type="unfinished">Sketcher</translation>
+      <translation>Očrtovalnik</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="104"/>
@@ -2482,7 +2482,7 @@ neveljavna omejila, izrojene geometrije, ...</translation>
       <translation>Osnovne mere ni mogoče urejati, ker vsebuje očrt omejila v sporu</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="220"/>
+      <location filename="../../EditDatumDialog.cpp" line="222"/>
       <source>Dimensional constraint</source>
       <translation>Merska omejitev</translation>
     </message>
@@ -2494,7 +2494,7 @@ neveljavna omejila, izrojene geometrije, ...</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="154"/>
       <source>Cannot add a constraint between two fixed geometries. Fixed geometries include external geometry, blocked geometry, and special points such as B-spline knot points.</source>
-      <translation type="unfinished">Cannot add a constraint between two fixed geometries. Fixed geometries include external geometry, blocked geometry, and special points such as B-spline knot points.</translation>
+      <translation>Ni mogoče dodati omejila med dvema nespremenljivima geometrijama. Nespremenljive geometrije obsegajo zunanje geometrije, zamrznjene geometrije in posebne točke, kot so vozlišča B-zlepka.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="487"/>
@@ -2511,12 +2511,12 @@ neveljavna omejila, izrojene geometrije, ...</translation>
       <location filename="../../CommandConstraints.cpp" line="545"/>
       <location filename="../../CommandConstraints.cpp" line="557"/>
       <source>Only sketch and its support are allowed to be selected.</source>
-      <translation type="unfinished">Only sketch and its support are allowed to be selected.</translation>
+      <translation>Izberete lahko le očrt in njegovo podporo.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="566"/>
       <source>One of the selected has to be on the sketch.</source>
-      <translation type="unfinished">One of the selected has to be on the sketch.</translation>
+      <translation>Eden izmed izbranih mora biti v očrtu.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="913"/>
@@ -2550,7 +2550,7 @@ neveljavna omejila, izrojene geometrije, ...</translation>
       <location filename="../../CommandConstraints.cpp" line="1177"/>
       <location filename="../../CommandConstraints.cpp" line="1270"/>
       <source>The selected edge is not a line segment.</source>
-      <translation type="unfinished">The selected edge is not a line segment.</translation>
+      <translation>Izbrani rob ni črtni odsek.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="947"/>
@@ -2667,7 +2667,7 @@ neveljavna omejila, izrojene geometrije, ...</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1978"/>
       <source>Select two or more vertices from the sketch.</source>
-      <translation type="unfinished">Select two or more vertices from the sketch.</translation>
+      <translation>Izberite na očrtu dve ali več oglišč.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1998"/>
@@ -2693,7 +2693,7 @@ neveljavna omejila, izrojene geometrije, ...</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2392"/>
       <source>This constraint does not make sense for non-linear curves.</source>
-      <translation type="unfinished">This constraint does not make sense for non-linear curves.</translation>
+      <translation>To omejilo ni smiselno za nepreme krivulje.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2509"/>
@@ -2736,7 +2736,7 @@ neveljavna omejila, izrojene geometrije, ...</translation>
       <location filename="../../CommandConstraints.cpp" line="6199"/>
       <location filename="../../CommandConstraints.cpp" line="6887"/>
       <source>Select an edge that is not a B-spline weight.</source>
-      <translation type="unfinished">Select an edge that is not a B-spline weight.</translation>
+      <translation>Izberite rob, ki ni utež B-zlepka.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2605"/>
@@ -2775,7 +2775,7 @@ neveljavna omejila, izrojene geometrije, ...</translation>
       <location filename="../../CommandConstraints.cpp" line="2898"/>
       <location filename="../../CommandConstraints.cpp" line="3146"/>
       <source>This constraint only makes sense on a line segment or a pair of points.</source>
-      <translation type="unfinished">This constraint only makes sense on a line segment or a pair of points.</translation>
+      <translation>To omejilo je smiselno le za raven odsek ali par točk.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3038"/>
@@ -2801,13 +2801,13 @@ neveljavna omejila, izrojene geometrije, ...</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3274"/>
       <source>Select a valid line.</source>
-      <translation type="unfinished">Select a valid line.</translation>
+      <translation>Izberite veljavno črto.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3290"/>
       <location filename="../../CommandConstraints.cpp" line="3328"/>
       <source>The selected edge is not a valid line.</source>
-      <translation type="unfinished">The selected edge is not a valid line.</translation>
+      <translation>Izbrani rob ni veljavna črta.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3392"/>
@@ -2899,7 +2899,7 @@ Dovoljene kombinacije: dve krivulji, končna točka in krivulja, dve končni to�
     <message>
       <location filename="../../CommandConstraints.cpp" line="4233"/>
       <source>Tangent constraint at B-spline knot is only supported with lines!</source>
-      <translation type="unfinished">Tangent constraint at B-spline knot is only supported with lines!</translation>
+      <translation>Dotikalno omejilo v vozlu B-zlepka je podprto le za daljice!</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4249"/>
@@ -2968,12 +2968,12 @@ Dovoljene kombinacije: dve krivulji, končna točka in krivulja, dve končni to�
       <location filename="../../CommandConstraints.cpp" line="6345"/>
       <location filename="../../CommandConstraints.cpp" line="7046"/>
       <source>Select two or more compatible edges.</source>
-      <translation type="unfinished">Select two or more compatible edges.</translation>
+      <translation>Izberite dva ali več primernih robov.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6350"/>
       <source>Sketch axes cannot be used in equality constraints.</source>
-      <translation type="unfinished">Sketch axes cannot be used in equality constraints.</translation>
+      <translation>Osi očrta ni mogoče uporabiti z enakostnimi omejili.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6369"/>
@@ -2985,7 +2985,7 @@ Dovoljene kombinacije: dve krivulji, končna točka in krivulja, dve končni to�
       <location filename="../../CommandConstraints.cpp" line="6414"/>
       <location filename="../../CommandConstraints.cpp" line="6465"/>
       <source>Select two or more edges of similar type.</source>
-      <translation type="unfinished">Select two or more edges of similar type.</translation>
+      <translation>Izberite dva ali več robov podobne vrste.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6547"/>
@@ -3048,7 +3048,7 @@ Dovoljene kombinacije: dve krivulji, končna točka in krivulja, dve končni to�
     <message>
       <location filename="../../CommandConstraints.cpp" line="7023"/>
       <source>Sketch axes cannot be used in internal alignment constraint.</source>
-      <translation type="unfinished">Sketch axes cannot be used in internal alignment constraint.</translation>
+      <translation>Osi očrta ni mogoče uporabiti pri omejilu notranje poravnave.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7068"/>
@@ -3133,12 +3133,12 @@ Dovoljene kombinacije: dve krivulji, končna točka in krivulja, dve končni to�
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="216"/>
       <source>B-Spline Degree</source>
-      <translation type="unfinished">B-Spline Degree</translation>
+      <translation>Stopnja B-zlepka</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="217"/>
       <source>Define B-Spline Degree, between 1 and %1:</source>
-      <translation type="unfinished">Define B-Spline Degree, between 1 and %1:</translation>
+      <translation>Določite stopnjo B-zlepka, ki naj bo med 1 in %1:</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerFillet.h" line="239"/>
@@ -3185,12 +3185,12 @@ Dovoljene kombinacije: dve krivulji, končna točka in krivulja, dve končni to�
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1167"/>
       <source>Nothing is selected. Please select a b-spline.</source>
-      <translation type="unfinished">Nothing is selected. Please select a b-spline.</translation>
+      <translation>Nič ni izbrano. Izberite B-zlepek.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1181"/>
       <source>Please select a b-spline curve to insert a knot (not a knot on it). If the curve is not a b-spline, please convert it into one first.</source>
-      <translation type="unfinished">Please select a b-spline curve to insert a knot (not a knot on it). If the curve is not a b-spline, please convert it into one first.</translation>
+      <translation>Izberite B-zlepek za ustavitev vozla (ne vozla nanj). Če krivulja ni B-zlepek, jo vanj najprej pretvorite.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1234"/>
@@ -3923,7 +3923,7 @@ da se spremembe izvirnih predmetov neposredno odrazijo v kopijah</translation>
     <message>
       <location filename="../../SketcherSettings.ui" line="20"/>
       <source>Sketcher</source>
-      <translation type="unfinished">Sketcher</translation>
+      <translation>Očrtovalnik</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="33"/>
@@ -4265,8 +4265,8 @@ Veljati začne pri ponovnem prehodu v urejevalni način.</translation>
       <location filename="../../SketcherSettingsDisplay.ui" line="185"/>
       <source>Base length units will not be displayed in constraints or cursor coordinates.
 Supports all unit systems except 'US customary' and 'Building US/Euro'.</source>
-      <translation type="unfinished">Base length units will not be displayed in constraints or cursor coordinates.
-Supports all unit systems except 'US customary' and 'Building US/Euro'.</translation>
+      <translation>Enote osnovne dolžine v omejilih ali pri sorednicah kazalke ne bodo prikazane.
+Podprti so vsi merski sistemi razen "Ameriškega merskega sistema" in "Gradbeniškega ZDA/Evro".</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="218"/>
@@ -4291,7 +4291,7 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</transla
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="257"/>
       <source>Cursor position coordinates will be displayed beside cursor while editing sketch.</source>
-      <translation type="unfinished">Cursor position coordinates will be displayed beside cursor while editing sketch.</translation>
+      <translation>Sorednice položaja kazalke bodo med urejanjem očrta prikazane poleg kazalke.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="276"/>
@@ -4364,12 +4364,12 @@ Privzeto: %N = %V
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="295"/>
       <source>Cursor coordinates will use the system decimals setting instead of the short form.</source>
-      <translation type="unfinished">Cursor coordinates will use the system decimals setting instead of the short form.</translation>
+      <translation>Sorednice kazalke bodo prikazane skladno s sistemskimi nastavitvami decimalke namesto v skrajšani obliki.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="298"/>
       <source>Use system decimals setting for cursor coordinates</source>
-      <translation type="unfinished">Use system decimals setting for cursor coordinates</translation>
+      <translation>Za sorednice kazalke uporabi sistemske nastavitve decimalke</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="341"/>
@@ -4463,7 +4463,7 @@ V tem primeru je predmete mogoče videti le za očrtno ravnino.</translation>
     <message>
       <location filename="../../SketcherSettings.cpp" line="239"/>
       <source>Sketcher</source>
-      <translation type="unfinished">Sketcher</translation>
+      <translation>Očrtovalnik</translation>
     </message>
   </context>
   <context>
@@ -4912,24 +4912,24 @@ Da bi se pripele, morajo biti točke oddaljene od črte do eno petino polja mre�
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="20"/>
       <source>Open and non-manifold vertexes</source>
-      <translation type="unfinished">Open and non-manifold vertexes</translation>
+      <translation>Odprta in nemnogoterostna oglišča</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="38"/>
       <source>Highlights open and non-manifold vertexes that could lead to error if sketch is used to generate solids
 This is purely based on topological shape of the sketch and not on its geometry/constrain set.</source>
-      <translation type="unfinished">Highlights open and non-manifold vertexes that could lead to error if sketch is used to generate solids
-This is purely based on topological shape of the sketch and not on its geometry/constrain set.</translation>
+      <translation>Izpostavi odprta in nemnogoterostna oglišča, ki bi lahko povzročila napako pri tvorbi teles iz očrta.
+To temelji izkljčno na topološki obliki očrta in ne na njegovih geometrijskih/omejitvenih nastavitvah.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="42"/>
       <source>Highlight troublesome vertexes</source>
-      <translation type="unfinished">Highlight troublesome vertexes</translation>
+      <translation>Izpostavi težavna oglišča</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="52"/>
       <source>Fixes found missing coincidences by adding extra coincident constrains</source>
-      <translation type="unfinished">Fixes found missing coincidences by adding extra coincident constrains</translation>
+      <translation>Popravi najdena manjkajoča sovpadanja z dodajanjem sovpadnostnih omejil</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="55"/>
@@ -4944,12 +4944,12 @@ This is purely based on topological shape of the sketch and not on its geometry/
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="68"/>
       <source>Defines the X/Y tolerance inside which missing coincidences are searched.</source>
-      <translation type="unfinished">Defines the X/Y tolerance inside which missing coincidences are searched.</translation>
+      <translation>Določa dopusten razpon X oz. Y, znotraj katerega poteka iskanje manjkajočih sovpadanj.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="75"/>
       <source>If checked, construction geometries are ignored in the search</source>
-      <translation type="unfinished">If checked, construction geometries are ignored in the search</translation>
+      <translation>Če je označeno, se pomožne geometrije pri iskanju prezre</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="78"/>
@@ -4960,8 +4960,8 @@ This is purely based on topological shape of the sketch and not on its geometry/
       <location filename="../../TaskSketcherValidation.ui" line="88"/>
       <source>Finds and displays missing coincidences in the sketch.
 This is done by analyzing the sketch geometries and constraints.</source>
-      <translation type="unfinished">Finds and displays missing coincidences in the sketch.
-This is done by analyzing the sketch geometries and constraints.</translation>
+      <translation>Poišče in prikaže manjkajoča sovpadanja v očrtu.
+Izvede se s pregledom geometrij in omejil očrta.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="92"/>
@@ -4986,17 +4986,17 @@ This is done by analyzing the sketch geometries and constraints.</translation>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="115"/>
       <source>Finds invalid/malformed constrains in the sketch</source>
-      <translation type="unfinished">Finds invalid/malformed constrains in the sketch</translation>
+      <translation>Poišče v očrtu neveljavna oz. narobe oblikovana omejila</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="125"/>
       <source>Tries to fix found invalid constraints</source>
-      <translation type="unfinished">Tries to fix found invalid constraints</translation>
+      <translation>Poskuša popraviti neveljavna omejila</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="135"/>
       <source>Deletes constraints referring to external geometry</source>
-      <translation type="unfinished">Deletes constraints referring to external geometry</translation>
+      <translation>Izbriše omejila zunanjih geometrij</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="138"/>
@@ -5011,12 +5011,12 @@ This is done by analyzing the sketch geometries and constraints.</translation>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="154"/>
       <source>Finds degenerated geometries in the sketch</source>
-      <translation type="unfinished">Finds degenerated geometries in the sketch</translation>
+      <translation>Poišče v očrtu pokvarjene geometrije</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="164"/>
       <source>Tries to fix found degenerated geometries</source>
-      <translation type="unfinished">Tries to fix found degenerated geometries</translation>
+      <translation>Skuša popraviti najdene pokvarjene geometrije</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="177"/>
@@ -5026,12 +5026,12 @@ This is done by analyzing the sketch geometries and constraints.</translation>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="183"/>
       <source>Finds reversed external geometries</source>
-      <translation type="unfinished">Finds reversed external geometries</translation>
+      <translation>Najde obrnjene zunanje geometrije</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="193"/>
       <source>Fixes found reversed external geometries by swapping their endpoints</source>
-      <translation type="unfinished">Fixes found reversed external geometries by swapping their endpoints</translation>
+      <translation>Popravlja najdene obrnjene zunanje geometrije tako, da zamenja njihova krajišča</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="196"/>
@@ -5046,7 +5046,7 @@ This is done by analyzing the sketch geometries and constraints.</translation>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="212"/>
       <source>Enables/updates constraint orientation locking</source>
-      <translation type="unfinished">Enables/updates constraint orientation locking</translation>
+      <translation>Omogoči o. posodobi zaklepanje usmerjenosti omejil</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="215"/>
@@ -5056,7 +5056,7 @@ This is done by analyzing the sketch geometries and constraints.</translation>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="222"/>
       <source>Disables constraint orientation locking</source>
-      <translation type="unfinished">Disables constraint orientation locking</translation>
+      <translation>Onemogoči zaklepanje usmerjenosti omejil</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="225"/>
@@ -5144,47 +5144,47 @@ This is done by analyzing the sketch geometries and constraints.</translation>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2997"/>
       <source>Over-constrained: </source>
-      <translation type="unfinished">Over-constrained: </translation>
+      <translation>Preomejeno: </translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="3003"/>
       <source>Malformed constraints: </source>
-      <translation type="unfinished">Malformed constraints: </translation>
+      <translation>Narobe oblikovana omejila: </translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="3009"/>
       <source>Redundant constraints:</source>
-      <translation type="unfinished">Redundant constraints:</translation>
+      <translation>Čezmerna omejila:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="3015"/>
       <source>Partially redundant:</source>
-      <translation type="unfinished">Partially redundant:</translation>
+      <translation>Delno čezmerno:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="3021"/>
       <source>Solver failed to converge</source>
-      <translation type="unfinished">Solver failed to converge</translation>
+      <translation>Reševalniku je zbliževanje spodletelo</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="3026"/>
       <source>Under constrained:</source>
-      <translation type="unfinished">Under constrained:</translation>
+      <translation>Podomejeno:</translation>
     </message>
     <message numerus="yes">
       <location filename="../../ViewProviderSketch.cpp" line="3028"/>
       <source>%n DoF(s)</source>
-      <translation type="unfinished">
-        <numerusform>%n DoF(s)</numerusform>
-        <numerusform>%n DoF(s)</numerusform>
-        <numerusform>%n DoF(s)</numerusform>
+      <translation>
+        <numerusform>%n prostostna stopnja</numerusform>
+        <numerusform>%n prostostni stopnji</numerusform>
+        <numerusform>%n prostostne stopnje</numerusform>
         <numerusform>%n prostostnih stopenj</numerusform>
       </translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="3031"/>
       <source>Fully constrained</source>
-      <translation type="unfinished">Fully constrained</translation>
+      <translation>Polnoomejen</translation>
     </message>
   </context>
   <context>
@@ -5645,7 +5645,7 @@ Ali jo želite odpeti s podpore?</translation>
     <message>
       <location filename="../../TaskSketcherMessages.ui" line="22"/>
       <source>DOF</source>
-      <translation type="unfinished">DOF</translation>
+      <translation>Prostostne stopnje</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherMessages.ui" line="29"/>
@@ -5977,12 +5977,12 @@ Eigen Sparse QR algoritem je optimiziran za redke razpredelnice; običajno hitre
     <message>
       <location filename="../../Workbench.cpp" line="33"/>
       <source>S&amp;ketch</source>
-      <translation type="unfinished">S&amp;ketch</translation>
+      <translation>&amp;Očrt</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="34"/>
       <source>Sketcher</source>
-      <translation type="unfinished">Sketcher</translation>
+      <translation>Očrtovalnik</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="35"/>
@@ -6015,12 +6015,12 @@ Eigen Sparse QR algoritem je optimiziran za redke razpredelnice; običajno hitre
     <message>
       <location filename="../../../Profiles.py" line="53"/>
       <source>Creates a hexagonal profile</source>
-      <translation type="unfinished">Creates a hexagonal profile</translation>
+      <translation>Ustvari šestkotni presek</translation>
     </message>
     <message>
       <location filename="../../../Profiles.py" line="58"/>
       <source>Creates a hexagonal profile in the sketch</source>
-      <translation type="unfinished">Creates a hexagonal profile in the sketch</translation>
+      <translation>V očrtu ustvari šestkotnik</translation>
     </message>
   </context>
 </TS>

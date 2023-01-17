@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="883"/>
       <source>Create a new spreadsheet</source>
-      <translation>Направите нову табелу</translation>
+      <translation>Направи нову табелу</translation>
     </message>
   </context>
   <context>
@@ -34,7 +34,7 @@
     <message>
       <location filename="../../Command.cpp" line="494"/>
       <source>Bottom-align contents of selected cells</source>
-      <translation>Поравнајте на доле cадржај одабраних ћелија</translation>
+      <translation>Поравнај на доле cадржај одабраних ћелија</translation>
     </message>
   </context>
   <context>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../Command.cpp" line="338"/>
       <source>Center-align contents of selected cells</source>
-      <translation>Поравнајте по средини cадржај одабраних ћелија</translation>
+      <translation>Поравнај по средини cадржај одабраних ћелија</translation>
     </message>
   </context>
   <context>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../Command.cpp" line="286"/>
       <source>Left-align contents of selected cells</source>
-      <translation>Поравнајте на лево cадржај одабраних ћелија</translation>
+      <translation>Поравнај на лево cадржај одабраних ћелија</translation>
     </message>
   </context>
   <context>
@@ -88,7 +88,7 @@
     <message>
       <location filename="../../Command.cpp" line="390"/>
       <source>Right-align contents of selected cells</source>
-      <translation>Поравнајте на десно cадржај одабраних ћелија</translation>
+      <translation>Поравнај на десно cадржај одабраних ћелија</translation>
     </message>
   </context>
   <context>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../Command.cpp" line="442"/>
       <source>Top-align contents of selected cells</source>
-      <translation>Поравнајте на горе cадржај одабраних ћелија</translation>
+      <translation>Поравнај на горе cадржај одабраних ћелија</translation>
     </message>
   </context>
   <context>
@@ -124,7 +124,7 @@
     <message>
       <location filename="../../Command.cpp" line="546"/>
       <source>Vertically center-align contents of selected cells</source>
-      <translation>Поравнајте усправно по средини cадржај одабраних ћелија</translation>
+      <translation>Поравнај усправно по средини cадржај одабраних ћелија</translation>
     </message>
   </context>
   <context>
@@ -173,12 +173,12 @@
     <message>
       <location filename="../../Command.cpp" line="60"/>
       <source>Merge cells</source>
-      <translation>Cпоји ћелије</translation>
+      <translation>Обједини ћелије</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="61"/>
       <source>Merge selected cells</source>
-      <translation>Спојите изабране ћелије</translation>
+      <translation>Обједини изабране ћелије</translation>
     </message>
   </context>
   <context>
@@ -214,7 +214,7 @@
     <message>
       <location filename="../../Command.cpp" line="116"/>
       <source>Split previously merged cells</source>
-      <translation>Поделите претходно спојене ћелије</translation>
+      <translation>Подели претходно обједињене ћелије</translation>
     </message>
   </context>
   <context>
@@ -263,7 +263,7 @@
     <message>
       <location filename="../../Command.cpp" line="745"/>
       <source>Underline text</source>
-      <translation>Подвучен текcт</translation>
+      <translation>Подвучени текcт</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="746"/>
@@ -284,7 +284,7 @@
     <message>
       <location filename="../../Command.cpp" line="80"/>
       <source>Merge cells</source>
-      <translation>Cпоји ћелије</translation>
+      <translation>Обједини ћелије</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="135"/>
@@ -319,7 +319,7 @@
     <message>
       <location filename="../../Command.cpp" line="566"/>
       <source>Vertically center cells</source>
-      <translation>Усправ центрирајте ћелије</translation>
+      <translation>Усправно центрирај ћелије</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="635"/>
@@ -416,7 +416,7 @@
     <message>
       <location filename="../../DlgBindSheet.ui" line="36"/>
       <source>Bind cells:</source>
-      <translation>Повежите ћелије:</translation>
+      <translation>Повежи ћелије:</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="49"/>
@@ -434,7 +434,7 @@
 Type '=' if you want to use an expression.
 The expression must evaluate to a string of some cell address.</source>
       <translation>Почетна адреса ћелије за повезивање.
-Откуцајте '=' ако желите да користите израз.
+Откуцај '=' ако желиш да користиш израз.
 Израз се мора односити на знаковни низ неке адресе ћелије.</translation>
     </message>
     <message>
@@ -443,7 +443,7 @@ The expression must evaluate to a string of some cell address.</source>
 Type '=' if you want to use an expression.
 The expression must evaluate to a string of some cell address.</source>
       <translation>Крајња адреса ћелије за повезивање.
-Откуцајте '=' ако желите да користите израз.
+Откуцај '=' ако желиш да користиш израз.
 Израз се мора односити на знаковни низ неке адресе ћелије.</translation>
     </message>
     <message>
@@ -458,7 +458,7 @@ be hidden to the dependency checking.
 Useful to avoid cyclic dependencies, but use with caution!</source>
       <translation>Зависност са референтном табелом ће
 бити скривена за проверу зависности.
-Корисно да бисте избегли цикличне зависности, али користите опрезно!</translation>
+Корисно да би избегао кружне зависности, али користи опрезно!</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="131"/>
@@ -538,7 +538,7 @@ by that property.
     <message>
       <location filename="../../DlgSheetConf.ui" line="57"/>
       <source>Property:</source>
-      <translation>Својство:</translation>
+      <translation>Особина:</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="64"/>
@@ -555,7 +555,7 @@ switch the design configuration. The property will be created if not exist.</tra
     <message>
       <location filename="../../DlgSheetConf.ui" line="79"/>
       <source>Optional property group name.</source>
-      <translation>Опционо име групе својстава.</translation>
+      <translation>Необавезно име групе особина.</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="88"/>
@@ -683,7 +683,7 @@ switch the design configuration. The property will be created if not exist.</tra
       <location filename="../../Command.cpp" line="185"/>
       <location filename="../../Command.cpp" line="241"/>
       <source>All (*)</source>
-      <translation>Cве (*)</translation>
+      <translation>Све (*)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="187"/>
@@ -709,7 +709,7 @@ switch the design configuration. The property will be created if not exist.</tra
     <message>
       <location filename="../../Workbench.cpp" line="92"/>
       <source>Sets the Spreadsheet cell(s) foreground color</source>
-      <translation>Задај боју првог плана ћелије табеле</translation>
+      <translation>Подеси боју првог плана ћелије табеле</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="106"/>
@@ -720,7 +720,7 @@ switch the design configuration. The property will be created if not exist.</tra
     <message>
       <location filename="../../Workbench.cpp" line="107"/>
       <source>Sets the Spreadsheet cell(s) background color</source>
-      <translation>Задај боју позадине ћелије табеле</translation>
+      <translation>Подеси боју позадине ћелије табеле</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="752"/>
@@ -736,117 +736,117 @@ switch the design configuration. The property will be created if not exist.</tra
       <location filename="../../SpreadsheetView.cpp" line="432"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation>На пример, позивајте се на ћелију по алтернативном имену
-Spreadsheet.мој_надимак_име уместо Spreadsheet.B1</translation>
+      <translation>На пример, позивај се на ћелију по алтернативном имену
+Spreadsheet.моје_алтернативно_име уместо Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
     <name>QtColorPicker</name>
     <message>
       <location filename="../../qtcolorpicker.cpp" line="286"/>
-      <location filename="../../qtcolorpicker.cpp" line="413"/>
-      <location filename="../../qtcolorpicker.cpp" line="523"/>
+      <location filename="../../qtcolorpicker.cpp" line="412"/>
+      <location filename="../../qtcolorpicker.cpp" line="522"/>
       <source>Black</source>
       <translation>Црно</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="414"/>
-      <location filename="../../qtcolorpicker.cpp" line="524"/>
+      <location filename="../../qtcolorpicker.cpp" line="413"/>
+      <location filename="../../qtcolorpicker.cpp" line="523"/>
       <source>White</source>
       <translation>Бело</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="415"/>
-      <location filename="../../qtcolorpicker.cpp" line="525"/>
+      <location filename="../../qtcolorpicker.cpp" line="414"/>
+      <location filename="../../qtcolorpicker.cpp" line="524"/>
       <source>Red</source>
       <translation>Црвена</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="416"/>
-      <location filename="../../qtcolorpicker.cpp" line="526"/>
+      <location filename="../../qtcolorpicker.cpp" line="415"/>
+      <location filename="../../qtcolorpicker.cpp" line="525"/>
       <source>Dark red</source>
       <translation>Тамно црвена</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="417"/>
-      <location filename="../../qtcolorpicker.cpp" line="527"/>
+      <location filename="../../qtcolorpicker.cpp" line="416"/>
+      <location filename="../../qtcolorpicker.cpp" line="526"/>
       <source>Green</source>
       <translation>Зелена</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="418"/>
-      <location filename="../../qtcolorpicker.cpp" line="528"/>
+      <location filename="../../qtcolorpicker.cpp" line="417"/>
+      <location filename="../../qtcolorpicker.cpp" line="527"/>
       <source>Dark green</source>
       <translation>Тамно зелена</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="419"/>
-      <location filename="../../qtcolorpicker.cpp" line="529"/>
+      <location filename="../../qtcolorpicker.cpp" line="418"/>
+      <location filename="../../qtcolorpicker.cpp" line="528"/>
       <source>Blue</source>
       <translation>Плава</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="420"/>
-      <location filename="../../qtcolorpicker.cpp" line="530"/>
+      <location filename="../../qtcolorpicker.cpp" line="419"/>
+      <location filename="../../qtcolorpicker.cpp" line="529"/>
       <source>Dark blue</source>
       <translation>Тамно плава</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="421"/>
-      <location filename="../../qtcolorpicker.cpp" line="531"/>
+      <location filename="../../qtcolorpicker.cpp" line="420"/>
+      <location filename="../../qtcolorpicker.cpp" line="530"/>
       <source>Cyan</source>
       <translation>Плавичаста</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="422"/>
-      <location filename="../../qtcolorpicker.cpp" line="532"/>
+      <location filename="../../qtcolorpicker.cpp" line="421"/>
+      <location filename="../../qtcolorpicker.cpp" line="531"/>
       <source>Dark cyan</source>
       <translation>Тамно плавичаста</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="423"/>
-      <location filename="../../qtcolorpicker.cpp" line="533"/>
+      <location filename="../../qtcolorpicker.cpp" line="422"/>
+      <location filename="../../qtcolorpicker.cpp" line="532"/>
       <source>Magenta</source>
       <translation>Ружичаста</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="424"/>
-      <location filename="../../qtcolorpicker.cpp" line="534"/>
+      <location filename="../../qtcolorpicker.cpp" line="423"/>
+      <location filename="../../qtcolorpicker.cpp" line="533"/>
       <source>Dark magenta</source>
       <translation>Тамна ружичаста</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="425"/>
-      <location filename="../../qtcolorpicker.cpp" line="535"/>
+      <location filename="../../qtcolorpicker.cpp" line="424"/>
+      <location filename="../../qtcolorpicker.cpp" line="534"/>
       <source>Yellow</source>
       <translation>Жута</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="426"/>
-      <location filename="../../qtcolorpicker.cpp" line="536"/>
+      <location filename="../../qtcolorpicker.cpp" line="425"/>
+      <location filename="../../qtcolorpicker.cpp" line="535"/>
       <source>Dark yellow</source>
       <translation>Тамно жута</translation>
     </message>
     <message>
+      <location filename="../../qtcolorpicker.cpp" line="426"/>
+      <location filename="../../qtcolorpicker.cpp" line="536"/>
+      <source>Gray</source>
+      <translation>Сива</translation>
+    </message>
+    <message>
       <location filename="../../qtcolorpicker.cpp" line="427"/>
       <location filename="../../qtcolorpicker.cpp" line="537"/>
-      <source>Gray</source>
-      <translation>Cива</translation>
+      <source>Dark gray</source>
+      <translation>Тамно сива</translation>
     </message>
     <message>
       <location filename="../../qtcolorpicker.cpp" line="428"/>
       <location filename="../../qtcolorpicker.cpp" line="538"/>
-      <source>Dark gray</source>
-      <translation>Тамно cива</translation>
-    </message>
-    <message>
-      <location filename="../../qtcolorpicker.cpp" line="429"/>
-      <location filename="../../qtcolorpicker.cpp" line="539"/>
       <source>Light gray</source>
-      <translation>Cветло cива</translation>
+      <translation>Светло сива</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="451"/>
+      <location filename="../../qtcolorpicker.cpp" line="450"/>
       <source>Custom Color</source>
       <translation>Сопствена боја</translation>
     </message>
@@ -872,8 +872,8 @@ Spreadsheet.мој_надимак_име уместо Spreadsheet.B1</translatio
       <location filename="../../Sheet.ui" line="52"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation>На пример, позивајте се на ћелију по алтернативном имену
-Spreadsheet.мој_надимак_име уместо Spreadsheet.B1</translation>
+      <translation>На пример, позивај се на ћелију по алтернативном имену
+Spreadsheet.моје_алтернативно_име уместо Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
@@ -890,7 +890,7 @@ Spreadsheet.мој_надимак_име уместо Spreadsheet.B1</translatio
 Do you want to continue?</source>
       <translation>Неподударање броја изворних и циљних ћелија. Делимично повезивање може и даље радити.
 
-Да ли желите да наставите?</translation>
+Да ли желиш да наставиш?</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="225"/>
@@ -930,7 +930,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../DlgSettings.ui" line="58"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Знак који се користи као граничник поља. Подразумевано је табулатор, али се такође често користе зарези (,) и тачка-зарез (;). Изабери са листе или унесите своје у поље. Мора бити један знак или речи &lt;span style=" font-style:italic;"&gt;табулатор&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;зарез&lt;/span&gt;, или &lt;span style=" font-style:italic;"&gt;тачка зарез&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Знак који се користи као граничник поља. Подразумевано је табулатор, али се такође често користе зарези (,) и тачка-зарез (;). Изабери са листе или унеси свој у поље. Мора бити један знак или речи &lt;span style=" font-style:italic;"&gt;табулатор&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;зарез&lt;/span&gt;, или &lt;span style=" font-style:italic;"&gt;тачка зарез&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="74"/>
@@ -977,7 +977,7 @@ Do you want to continue?</source>
       <location filename="../../SheetTableView.cpp" line="128"/>
       <source>Insert %n row(s) above</source>
       <translation type="unfinished">
-        <numerusform>Уметни %n ред(ове) изнад</numerusform>
+        <numerusform>Уметни %n ред(ова) изнад</numerusform>
         <numerusform>Insert %n row(s) above</numerusform>
         <numerusform>Insert %n row(s) above</numerusform>
       </translation>
@@ -986,7 +986,7 @@ Do you want to continue?</source>
       <location filename="../../SheetTableView.cpp" line="132"/>
       <source>Insert %n row(s) below</source>
       <translation type="unfinished">
-        <numerusform>Уметни %n ред(ове) испод</numerusform>
+        <numerusform>Уметни %n ред(ова) испод</numerusform>
         <numerusform>Insert %n row(s) below</numerusform>
         <numerusform>Insert %n row(s) below</numerusform>
       </translation>
@@ -995,7 +995,7 @@ Do you want to continue?</source>
       <location filename="../../SheetTableView.cpp" line="136"/>
       <source>Insert %n non-contiguous rows</source>
       <translation type="unfinished">
-        <numerusform>Уметни %n несуседне редове</numerusform>
+        <numerusform>Уметни %n несуседних редова</numerusform>
         <numerusform>Insert %n non-contiguous rows</numerusform>
         <numerusform>Insert %n non-contiguous rows</numerusform>
       </translation>
@@ -1013,7 +1013,7 @@ Do you want to continue?</source>
       <location filename="../../SheetTableView.cpp" line="153"/>
       <source>Insert %n column(s) left</source>
       <translation type="unfinished">
-        <numerusform>Уметни %n колону(е) лево</numerusform>
+        <numerusform>Уметни %n колону(а) лево</numerusform>
         <numerusform>Insert %n column(s) left</numerusform>
         <numerusform>Insert %n column(s) left</numerusform>
       </translation>
@@ -1022,7 +1022,7 @@ Do you want to continue?</source>
       <location filename="../../SheetTableView.cpp" line="157"/>
       <source>Insert %n column(s) right</source>
       <translation type="unfinished">
-        <numerusform>Уметни %n колону(е) десно</numerusform>
+        <numerusform>Уметни %n колону(а) десно</numerusform>
         <numerusform>Insert %n column(s) right</numerusform>
         <numerusform>Insert %n column(s) right</numerusform>
       </translation>
@@ -1031,7 +1031,7 @@ Do you want to continue?</source>
       <location filename="../../SheetTableView.cpp" line="161"/>
       <source>Insert %n non-contiguous columns</source>
       <translation type="unfinished">
-        <numerusform>Уметни %n несуседне колоне</numerusform>
+        <numerusform>Уметни %n несуседних колона</numerusform>
         <numerusform>Insert %n non-contiguous columns</numerusform>
         <numerusform>Insert %n non-contiguous columns</numerusform>
       </translation>
@@ -1073,7 +1073,7 @@ Do you want to continue?</source>
       <location filename="../../SheetTableView.cpp" line="197"/>
       <location filename="../../SheetTableView.cpp" line="616"/>
       <source>Merge cells</source>
-      <translation>Cпоји ћелије</translation>
+      <translation>Обједини ћелије</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="199"/>
@@ -1085,7 +1085,7 @@ Do you want to continue?</source>
       <location filename="../../SheetTableView.cpp" line="203"/>
       <location filename="../../SheetTableView.cpp" line="620"/>
       <source>Cut</source>
-      <translation>Разлика</translation>
+      <translation>Одузми</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="205"/>
@@ -1153,7 +1153,7 @@ Do you want to continue?</source>
       <location filename="../../../App/Spreadsheet_legacy.py" line="748"/>
       <location filename="../../../App/Spreadsheet_legacy.py" line="874"/>
       <source>Cell</source>
-      <translation>ћелија</translation>
+      <translation>Ћелија</translation>
     </message>
     <message>
       <location filename="../../../App/Spreadsheet_legacy.py" line="751"/>

@@ -65,7 +65,7 @@
     <message>
       <location filename="../../Command.cpp" line="272"/>
       <source>Sphere</source>
-      <translation>Cфера</translation>
+      <translation>Сфера</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="273"/>
@@ -101,12 +101,12 @@
     <message>
       <location filename="../../Command.cpp" line="485"/>
       <source>Wire from mesh boundary...</source>
-      <translation>Полилинија од ивица мреже...</translation>
+      <translation>Жица од ивица мреже...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="486"/>
       <source>Create wire from mesh boundaries</source>
-      <translation>Направи полилинију од ивица мреже</translation>
+      <translation>Направи жицу од ивица мреже</translation>
     </message>
   </context>
   <context>
@@ -137,12 +137,12 @@
     <message>
       <location filename="../../Command.cpp" line="374"/>
       <source>Mesh segmentation...</source>
-      <translation>Cегментација мреже...</translation>
+      <translation>Сегментација мреже...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="375"/>
       <source>Create mesh segments</source>
-      <translation>Направи cегмент мреже</translation>
+      <translation>Направи сегмент мреже</translation>
     </message>
   </context>
   <context>
@@ -178,7 +178,7 @@
     <message>
       <location filename="../../Command.cpp" line="407"/>
       <source>Create mesh segments manually</source>
-      <translation>Направите сегменте мреже ручно</translation>
+      <translation>Направи сегменте мреже ручно</translation>
     </message>
   </context>
   <context>
@@ -191,13 +191,13 @@
     <message>
       <location filename="../../Command.cpp" line="585"/>
       <source>Structured point clouds</source>
-      <translation>Cтруктурирани облаци тачака</translation>
+      <translation>Структурирани облаци тачака</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="586"/>
       <location filename="../../Command.cpp" line="587"/>
       <source>Triangulation of structured point clouds</source>
-      <translation>Триангулација cтруктурираних облака тачака</translation>
+      <translation>Триангулација структурираних облака тачака</translation>
     </message>
   </context>
   <context>
@@ -264,7 +264,7 @@
       <location filename="../../FitBSplineSurface.ui" line="26"/>
       <location filename="../../FitBSplineSurface.ui" line="93"/>
       <source>Degree</source>
-      <translation>Cтепени</translation>
+      <translation>Степени</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="55"/>
@@ -305,7 +305,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="238"/>
       <source>Smoothing</source>
-      <translation>Заглађивање</translation>
+      <translation>Глачање</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="247"/>
@@ -344,7 +344,7 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="200"/>
       <source>Please select a single placement object to get local orientation.</source>
-      <translation>Изаберите један објекат положај да би сте добили локалну оријентацију.</translation>
+      <translation>Изабери један објекат Положај да би добио локалну оријентацију.</translation>
     </message>
   </context>
   <context>
@@ -442,7 +442,7 @@
     <message>
       <location filename="../../Segmentation.ui" line="100"/>
       <source>Create mesh from unused triangles</source>
-      <translation>Направимрежу од неискоришћених троуглова</translation>
+      <translation>Направи мрежу од неискоришћених троуглова</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="107"/>
@@ -531,7 +531,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="228"/>
       <source>Sphere</source>
-      <translation>Cфера</translation>
+      <translation>Сфера</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="281"/>

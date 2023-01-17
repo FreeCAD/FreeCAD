@@ -68,13 +68,13 @@
     <message>
       <location filename="../../Command.cpp" line="309"/>
       <source>Merge point clouds</source>
-      <translation>Споји облак тачака</translation>
+      <translation>Обједини облак тачака</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="310"/>
       <location filename="../../Command.cpp" line="312"/>
       <source>Merge several point clouds into one</source>
-      <translation>Споји више облака тачака у један</translation>
+      <translation>Обједини више облака тачака у један</translation>
     </message>
   </context>
   <context>
@@ -131,7 +131,7 @@
       <location filename="../../Command.cpp" line="152"/>
       <location filename="../../Command.cpp" line="154"/>
       <source>Test to transform a point cloud</source>
-      <translation>Теcт за трансформисање облака тачака</translation>
+      <translation>Тест за трансформисање облака тачака</translation>
     </message>
   </context>
   <context>
@@ -183,7 +183,7 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="70"/>
       <source>Ignore</source>
-      <translation>Занемарите</translation>
+      <translation>Занемари</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="80"/>
@@ -310,7 +310,7 @@
     <message>
       <location filename="../../Command.cpp" line="207"/>
       <source>Enter maximum distance:</source>
-      <translation>Унеcи максимално растојање:</translation>
+      <translation>Унеси максимално растојање:</translation>
     </message>
   </context>
   <context>

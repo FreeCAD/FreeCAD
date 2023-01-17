@@ -111,7 +111,7 @@
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="23"/>
       <source>Template</source>
-      <translation type="unfinished">Template</translation>
+      <translation>Šablon</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="32"/>
@@ -281,7 +281,7 @@
     <message>
       <location filename="../panels/DlgSelectPostProcessor.ui" line="42"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select one of the post processors.&lt;/p&gt;&lt;p&gt;FreeCAD comes with several post processors pre-installed, please make sure at least one of them is enabled in your preferences.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Izaberite jedan od postprocesora.&lt;/p&gt;&lt;p&gt;FreeCAD dolazi sa nekoliko već instaliranih pretprocesora, molim vas budite sigurni da je najmanje jedan omogućen i vašim podešavanjima.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Izaberi jedan od postprocesora.&lt;/p&gt;&lt;p&gt;FreeCAD dolazi sa nekoliko već instaliranih pretprocesora, budi siguran da je najmanje jedan omogućen u podešavanjima.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="14"/>
@@ -2284,7 +2284,7 @@
     <message>
       <location filename="../preferences/PathJob.ui" line="65"/>
       <source>Template</source>
-      <translation type="unfinished">Template</translation>
+      <translation>Šablon</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="72"/>
@@ -3318,7 +3318,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="209"/>
       <source>G/s</source>
-      <translation>G/s</translation>
+      <translation type="unfinished">G/s</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="229"/>
@@ -3396,7 +3396,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="99"/>
       <source>path</source>
-      <translation>Putanja</translation>
+      <translation>putanja</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="106"/>

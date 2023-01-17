@@ -66,5 +66,6 @@
         <file>translations/Drawing_bg.qm</file>
         <file>translations/Drawing_ka.qm</file>
         <file>translations/Drawing_sr-CS.qm</file>
+        <file>translations/Drawing_be.qm</file>
     </qresource>
 </RCC> 

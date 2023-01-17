@@ -1163,12 +1163,12 @@ lerro batekiko edo hirugarren puntu batekiko</translation>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1200"/>
       <source>Join curves</source>
-      <translation type="unfinished">Join curves</translation>
+      <translation>Elkartu kurbak</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1201"/>
       <source>Join two curves at selected end points</source>
-      <translation type="unfinished">Join two curves at selected end points</translation>
+      <translation>Elkartu bi kurba hautatutako amaierako puntuetan</translation>
     </message>
   </context>
   <context>
@@ -2040,7 +2040,7 @@ murrizketak, geometria degeneratuak, etab. aztertuta.</translation>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1287"/>
       <source>Join Curves</source>
-      <translation type="unfinished">Join Curves</translation>
+      <translation>Elkartu kurbak</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="789"/>
@@ -2137,14 +2137,14 @@ murrizketak, geometria degeneratuak, etab. aztertuta.</translation>
   <context>
     <name>CriticalMessages</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="8322"/>
+      <location filename="../../../App/SketchObject.cpp" line="8327"/>
       <source>Sketch:</source>
-      <translation type="unfinished">Sketch:</translation>
+      <translation>Krokisa:</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="8323"/>
+      <location filename="../../../App/SketchObject.cpp" line="8328"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!</source>
-      <translation type="unfinished">Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!</translation>
+      <translation>Parabolak migratu dira. Migratutako fitxategiak ezin dira ireki FreeCADen aurreko bertsioetan.</translation>
     </message>
   </context>
   <context>
@@ -2185,59 +2185,59 @@ murrizketak, geometria degeneratuak, etab. aztertuta.</translation>
       <translation>Automurrizketa-errorea: Ebatzi ezin den krokisa berdintasun-murrizketak aplikatu ondoren.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="1979"/>
+      <location filename="../../../App/SketchObject.cpp" line="1984"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Ezin izan da kurben ebakidura antzeman. Saiatu bat datorren murrizketa bat gehitzen biribildu nahi dituzun kurben erpinen artean.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5860"/>
-      <location filename="../../../App/SketchObject.cpp" line="6034"/>
+      <location filename="../../../App/SketchObject.cpp" line="5865"/>
+      <location filename="../../../App/SketchObject.cpp" line="6039"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>BSpline geometria-indizea (GeoID) mugetatik kanpo dago.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5863"/>
+      <location filename="../../../App/SketchObject.cpp" line="5868"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Adabegi-aniztasunean aldaketarik ez egitea eskatzen ari zara.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5868"/>
-      <location filename="../../../App/SketchObject.cpp" line="6042"/>
+      <location filename="../../../App/SketchObject.cpp" line="5873"/>
+      <location filename="../../../App/SketchObject.cpp" line="6047"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>Hornitutako geometria-indizea (GeoId) ez da Bspline kurba bat.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5875"/>
+      <location filename="../../../App/SketchObject.cpp" line="5880"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Adabegi-indizea mugetatik kanpo dago. Kontuan izan, OCC notazioaren arabera, lehen adabegiaren indize-zenbakiak 1 izan behar duela, ez 0.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5882"/>
+      <location filename="../../../App/SketchObject.cpp" line="5887"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Aniztasuna ezin da handitu Bspline-aren gradutik gora.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5885"/>
+      <location filename="../../../App/SketchObject.cpp" line="5890"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Aniztasuna ezin da txikitu zerotik behera.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5897"/>
+      <location filename="../../../App/SketchObject.cpp" line="5902"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC-k ezin du aniztasuna txikitu tolerantzia maximoaren barruan.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6037"/>
+      <location filename="../../../App/SketchObject.cpp" line="6042"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Adabegiak ezin du zero aniztasuna izan.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6051"/>
+      <location filename="../../../App/SketchObject.cpp" line="6056"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
       <translation>Adabegi-aniztasunak ezin du izan BSpline-aren graduak baino handiagoa.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6054"/>
+      <location filename="../../../App/SketchObject.cpp" line="6059"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
       <translation>Adabegia ezin da txertatu BSpline parametro-barrutiaren kanpoaldean.</translation>
     </message>
@@ -2484,7 +2484,7 @@ murrizketak, geometria degeneratuak, etab. aztertuta.</translation>
       <translation>Ezin da zero puntua editatu krokisak gatazkan dauden murrizketak dituelako</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="220"/>
+      <location filename="../../EditDatumDialog.cpp" line="222"/>
       <source>Dimensional constraint</source>
       <translation>Kota-murrizketa</translation>
     </message>
@@ -5973,12 +5973,12 @@ Eigen Sparse QR algoritmoa matrize sakabanatuetarako optimizatuta dago; normalea
     <message>
       <location filename="../../Workbench.cpp" line="32"/>
       <source>P&amp;rofiles</source>
-      <translation type="unfinished">P&amp;rofiles</translation>
+      <translation>P&amp;rofilak</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="33"/>
       <source>S&amp;ketch</source>
-      <translation type="unfinished">S&amp;ketch</translation>
+      <translation>&amp;Zirriborroa</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="34"/>
@@ -6016,12 +6016,12 @@ Eigen Sparse QR algoritmoa matrize sakabanatuetarako optimizatuta dago; normalea
     <message>
       <location filename="../../../Profiles.py" line="53"/>
       <source>Creates a hexagonal profile</source>
-      <translation type="unfinished">Creates a hexagonal profile</translation>
+      <translation>Profil hexagonala sortzen du</translation>
     </message>
     <message>
       <location filename="../../../Profiles.py" line="58"/>
       <source>Creates a hexagonal profile in the sketch</source>
-      <translation type="unfinished">Creates a hexagonal profile in the sketch</translation>
+      <translation>Profil hexagonal bat sortzen du krokisean</translation>
     </message>
   </context>
 </TS>

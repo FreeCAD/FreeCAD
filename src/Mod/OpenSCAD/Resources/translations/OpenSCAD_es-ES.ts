@@ -107,12 +107,12 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="266"/>
       <source>Maximum fragment size</source>
-      <translation type="unfinished">Maximum fragment size</translation>
+      <translation>Tamaño máximo del fragmento</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="385"/>
       <source>Convexity</source>
-      <translation type="unfinished">Convexity</translation>
+      <translation>Convexidad</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="286"/>
@@ -387,7 +387,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="293"/>
       <source>Expand all placements downwards in the Tree view</source>
-      <translation type="unfinished">Expand all placements downwards in the Tree view</translation>
+      <translation>Expandir todas las ubicaciones hacia abajo en la vista de árbol</translation>
     </message>
   </context>
   <context>
@@ -452,7 +452,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="555"/>
       <source>Use OpenSCAD to create a hull</source>
-      <translation type="unfinished">Use OpenSCAD to create a hull</translation>
+      <translation>Utilice OpenSCAD para crear un casco</translation>
     </message>
   </context>
   <context>
@@ -460,7 +460,7 @@
     <message>
       <location filename="../../InitGui.py" line="152"/>
       <source>OpenSCAD Tools</source>
-      <translation type="unfinished">OpenSCAD Tools</translation>
+      <translation>Herramientas OpenSCAD</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="156"/>

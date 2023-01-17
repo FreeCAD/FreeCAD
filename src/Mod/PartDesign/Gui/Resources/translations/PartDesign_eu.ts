@@ -894,22 +894,22 @@ so that self intersection is avoided.</source>
       <translation>Aldatu objektu bat lekuz zuhaitzaren barruan</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="292"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="295"/>
       <source>Mirrored</source>
       <translation>Ispilatua</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="320"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="323"/>
       <source>Make LinearPattern</source>
       <translation>Sortu eredu lineala</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="358"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="361"/>
       <source>PolarPattern</source>
       <translation>Eredu polarra</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="386"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="389"/>
       <source>Scaled</source>
       <translation>Eskalatua</translation>
     </message>
@@ -1437,39 +1437,39 @@ Zero bada, 2. erradioaren berdina da</translation>
       <translation>Jatorrizkoaren parametroak</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="718"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="760"/>
       <source>Cone radii are equal</source>
       <translation>Konoaren erradioak berdinak dira</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="719"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="761"/>
       <source>The radii for cones must not be equal!</source>
       <translation>Konoen erradioek ez dute berdinak izan behar!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="794"/>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="799"/>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="804"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="836"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="841"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="846"/>
       <source>Invalid wedge parameters</source>
       <translation>Falka-parametro baliogabeak</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="795"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="837"/>
       <source>X min must not be equal to X max!</source>
       <translation>X minimoak eta X maximoak ez dute berdinak izan behar!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="800"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="842"/>
       <source>Y min must not be equal to Y max!</source>
       <translation>Y minimoak eta Y maximoak ez dute berdinak izan behar!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="805"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="847"/>
       <source>Z min must not be equal to Z max!</source>
       <translation>Z minimoak eta Z maximoak ez dute berdinak izan behar!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="843"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="885"/>
       <source>Create primitive</source>
       <translation>Sortu jatorrizkoa</translation>
     </message>
@@ -1751,7 +1751,7 @@ sakatu berriro hautapena amaitzeko</translation>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="894"/>
       <source>Click on a face in the model</source>
-      <translation type="unfinished">Click on a face in the model</translation>
+      <translation>Egin klik ereduaren aurpegietako batean</translation>
     </message>
   </context>
   <context>
@@ -2165,12 +2165,12 @@ sakatu berriro hautapena amaitzeko</translation>
       <translation>Eguneratu bista</translation>
     </message>
     <message>
-      <location filename="../../TaskLinearPatternParameters.cpp" line="105"/>
+      <location filename="../../TaskLinearPatternParameters.cpp" line="108"/>
       <source>Remove</source>
       <translation>Kendu</translation>
     </message>
     <message>
-      <location filename="../../TaskLinearPatternParameters.cpp" line="333"/>
+      <location filename="../../TaskLinearPatternParameters.cpp" line="336"/>
       <source>Error</source>
       <translation>Errorea</translation>
     </message>
@@ -2314,52 +2314,52 @@ sakatu berriro hautapena amaitzeko</translation>
       <translation>Eguneratu bista</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="73"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="75"/>
       <source>Remove</source>
       <translation>Kendu</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="86"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="89"/>
       <source>Edit</source>
       <translation>Editatu</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="90"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="93"/>
       <source>Delete</source>
       <translation>Ezabatu</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="94"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="97"/>
       <source>Add mirrored transformation</source>
       <translation>Gehitu ispilu-transformazioa</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="98"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="101"/>
       <source>Add linear pattern</source>
       <translation>Gehitu eredu lineala</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="102"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="105"/>
       <source>Add polar pattern</source>
       <translation>Gehitu eredu polarra</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="106"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="109"/>
       <source>Add scaled transformation</source>
       <translation>Gehitu eskaladun transformazioa</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="110"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="113"/>
       <source>Move up</source>
       <translation>Mugitu gora</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="114"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="117"/>
       <source>Move down</source>
       <translation>Mugitu behera</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="141"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="144"/>
       <source>Right-click to add</source>
       <translation>Eskuineko klik gehitzeko</translation>
     </message>
@@ -2559,7 +2559,7 @@ zehaztutako norabidean</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="347"/>
       <source>Select face</source>
-      <translation type="unfinished">Select face</translation>
+      <translation>Hautatu aurpegia</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="373"/>
@@ -2879,12 +2879,12 @@ zehaztutako norabidean</translation>
       <translation>Eguneratu bista</translation>
     </message>
     <message>
-      <location filename="../../TaskPolarPatternParameters.cpp" line="112"/>
+      <location filename="../../TaskPolarPatternParameters.cpp" line="114"/>
       <source>Remove</source>
       <translation>Kendu</translation>
     </message>
     <message>
-      <location filename="../../TaskPolarPatternParameters.cpp" line="333"/>
+      <location filename="../../TaskPolarPatternParameters.cpp" line="335"/>
       <source>Error</source>
       <translation>Errorea</translation>
     </message>
@@ -2892,7 +2892,7 @@ zehaztutako norabidean</translation>
   <context>
     <name>PartDesignGui::TaskPrimitiveParameters</name>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="893"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="935"/>
       <source>Attachment</source>
       <translation>Eranskina</translation>
     </message>
@@ -4458,20 +4458,20 @@ Haririk ez duten zuloetan soilik erabilgarri</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="251"/>
-      <location filename="../../TaskHoleParameters.cpp" line="591"/>
+      <location filename="../../TaskHoleParameters.cpp" line="618"/>
       <source>Standard</source>
       <translation>Estandarra</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="256"/>
-      <location filename="../../TaskHoleParameters.cpp" line="592"/>
-      <location filename="../../TaskHoleParameters.cpp" line="603"/>
+      <location filename="../../TaskHoleParameters.cpp" line="619"/>
+      <location filename="../../TaskHoleParameters.cpp" line="630"/>
       <source>Close</source>
       <translation>Itxi</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="261"/>
-      <location filename="../../TaskHoleParameters.cpp" line="593"/>
+      <location filename="../../TaskHoleParameters.cpp" line="620"/>
       <source>Wide</source>
       <translation>Zabala</translation>
     </message>
@@ -4618,12 +4618,12 @@ over 90: larger hole radius at the bottom</source>
       <translation>Alderantzikatua</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="602"/>
+      <location filename="../../TaskHoleParameters.cpp" line="629"/>
       <source>Normal</source>
       <translation>Normala</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="604"/>
+      <location filename="../../TaskHoleParameters.cpp" line="631"/>
       <source>Loose</source>
       <translation>Lasaia</translation>
     </message>
@@ -4729,7 +4729,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="61"/>
       <source>Creates or edit the involute gear definition.</source>
-      <translation type="unfinished">Creates or edit the involute gear definition.</translation>
+      <translation>Engranaje inbolutuaren definizioa sortzen edo editatzen du.</translation>
     </message>
   </context>
   <context>
@@ -4742,7 +4742,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../SprocketFeature.py" line="66"/>
       <source>Creates or edit the sprocket definition.</source>
-      <translation type="unfinished">Creates or edit the sprocket definition.</translation>
+      <translation>Piñoi-definizioa sortzen edo editatzen du.</translation>
     </message>
   </context>
   <context>
@@ -4750,42 +4750,42 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="43"/>
       <source>Length [mm]</source>
-      <translation type="unfinished">Length [mm]</translation>
+      <translation>Luzera [mm]</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="44"/>
       <source>Diameter [mm]</source>
-      <translation type="unfinished">Diameter [mm]</translation>
+      <translation>Diametroa [mm]</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="45"/>
       <source>Inner diameter [mm]</source>
-      <translation type="unfinished">Inner diameter [mm]</translation>
+      <translation>Barne-diametroa [mm]</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="46"/>
       <source>Constraint type</source>
-      <translation type="unfinished">Constraint type</translation>
+      <translation>Murrizketa mota</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="47"/>
       <source>Start edge type</source>
-      <translation type="unfinished">Start edge type</translation>
+      <translation>Hasierako ertzaren mota</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="48"/>
       <source>Start edge size</source>
-      <translation type="unfinished">Start edge size</translation>
+      <translation>Hasierako ertzaren tamaina</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="49"/>
       <source>End edge type</source>
-      <translation type="unfinished">End edge type</translation>
+      <translation>Amaierako ertzaren mota</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="53"/>
       <source>End edge size</source>
-      <translation type="unfinished">End edge size</translation>
+      <translation>Amaierako ertzaren tamaina</translation>
     </message>
   </context>
   <context>
@@ -4794,13 +4794,13 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../../WizardShaft/WizardShaft.py" line="186"/>
       <location filename="../../../WizardShaft/WizardShaft.py" line="211"/>
       <source>Shaft design wizard...</source>
-      <translation type="unfinished">Shaft design wizard...</translation>
+      <translation>Ziria diseinatzeko morroia...</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="187"/>
       <location filename="../../../WizardShaft/WizardShaft.py" line="212"/>
       <source>Start the shaft design wizard</source>
-      <translation type="unfinished">Start the shaft design wizard</translation>
+      <translation>Abiarazi ziria diseinatzeko morroia</translation>
     </message>
   </context>
 </TS>

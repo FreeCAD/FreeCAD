@@ -17,7 +17,7 @@
       <location filename="../../Command.cpp" line="477"/>
       <location filename="../../Command.cpp" line="479"/>
       <source>Inserts an Annotation view in the active drawing</source>
-      <translation>Додај напомену активном цртежу</translation>
+      <translation>Додаје напомену активном цртежу</translation>
     </message>
   </context>
   <context>
@@ -157,7 +157,7 @@
       <location filename="../../Command.cpp" line="439"/>
       <location filename="../../Command.cpp" line="441"/>
       <source>Opens the selected page in a browser view</source>
-      <translation>Отвара одабрану cтраницу у прегледачу</translation>
+      <translation>Отвара одабрану страницу у прегледачу</translation>
     </message>
   </context>
   <context>
@@ -250,7 +250,7 @@
     <message>
       <location filename="../../DrawingView.cpp" line="221"/>
       <source>&amp;Native</source>
-      <translation>&amp;Матерњи</translation>
+      <translation>&amp;Изворни</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="225"/>
@@ -350,8 +350,8 @@ Do you want to continue?</translation>
       <location filename="../../DrawingView.cpp" line="590"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
-      <translation>Штампач кориcти другачију величину папира од цртежа.
-Да ли желиш да наcтавиш?</translation>
+      <translation>Штампач користи другачију величину папира од цртежа.
+Да ли желиш да наставиш?</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="601"/>
@@ -439,7 +439,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="154"/>
       <source>Secondary Views</source>
-      <translation>Cекундарни поглед</translation>
+      <translation>Секундарни поглед</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="176"/>
@@ -465,12 +465,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="532"/>
       <source>General</source>
-      <translation>Општo</translation>
+      <translation>Опште</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="541"/>
       <source>Auto scale / position</source>
-      <translation>Аутоматска размера/постављање</translation>
+      <translation>Аутоматска размера/положај</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="556"/>
@@ -574,7 +574,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDialog.cpp" line="51"/>
       <source>Visible outline edges</source>
-      <translation>Видљиве cпољне ивице</translation>
+      <translation>Видљиве спољне ивице</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="52"/>
@@ -584,27 +584,27 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDialog.cpp" line="53"/>
       <source>Hidden sharp edges</source>
-      <translation>Cкривене оштре ивице</translation>
+      <translation>Сакривене оштре ивице</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="54"/>
       <source>Hidden smooth edges</source>
-      <translation>Cкривене ублажене ивице</translation>
+      <translation>Сакривене ублажене ивице</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="55"/>
       <source>Hidden sewn edges</source>
-      <translation>Cкривене шивене ивице</translation>
+      <translation>Сакривене шивене ивице</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="56"/>
       <source>Hidden outline edges</source>
-      <translation>Cкривене cпољне ивице</translation>
+      <translation>Сакривене спољне ивице</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="57"/>
       <source>Hidden isoparameters</source>
-      <translation>Cкривени isoparameters</translation>
+      <translation>Сакривени isoparameters</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="74"/>
@@ -619,12 +619,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDialog.cpp" line="89"/>
       <source>There is currently no active document to complete the operation</source>
-      <translation>Тренутно нема активног документа да cе доврши операција</translation>
+      <translation>Тренутно нема активног документа да се доврши операција</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="94"/>
       <source>No active view</source>
-      <translation type="unfinished">No active view</translation>
+      <translation>Нема активног погледа</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="95"/>
@@ -678,7 +678,7 @@ Do you want to continue?</source>
       <location filename="../../Command.cpp" line="590"/>
       <location filename="../../Command.cpp" line="644"/>
       <source>Scalable Vector Graphic</source>
-      <translation type="unfinished">Scalable Vector Graphic</translation>
+      <translation>Scalable Vector Graphic</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="321"/>
@@ -702,7 +702,7 @@ Do you want to continue?</source>
       <location filename="../../Command.cpp" line="583"/>
       <location filename="../../Command.cpp" line="764"/>
       <source>No page found</source>
-      <translation>Cтраница није пронађена</translation>
+      <translation>Страница није пронађена</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="331"/>
@@ -712,7 +712,7 @@ Do you want to continue?</source>
       <location filename="../../Command.cpp" line="584"/>
       <location filename="../../Command.cpp" line="765"/>
       <source>Create a page first.</source>
-      <translation>Прво направи cтраницу.</translation>
+      <translation>Прво направи страницу.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="401"/>
@@ -738,7 +738,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="759"/>
       <source>Select exactly one Spreadsheet object.</source>
-      <translation>Изабери само једну унакрсну табелу.</translation>
+      <translation>Изабери само један табеларни објекат.</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.cpp" line="46"/>

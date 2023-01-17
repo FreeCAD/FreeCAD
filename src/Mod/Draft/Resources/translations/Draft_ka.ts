@@ -1001,6 +1001,7 @@ value by using the [ and ] keys while drawing</source>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="199"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="397"/>
       <source>Annotations</source>
       <translation>ანოტაციები</translation>
     </message>
@@ -1128,11 +1129,6 @@ value by using the [ and ] keys while drawing</source>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="385"/>
       <source>Selected</source>
       <translation>მონიშნული</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="397"/>
-      <source>Texts/dims</source>
-      <translation>ტექტები/განზომ-ება</translation>
     </message>
     <message>
       <location filename="../ui/dialogHatch.ui" line="14"/>
@@ -1549,13 +1545,13 @@ such as "Arial:Bold"</source>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="144"/>
-      <source>text above (2D)</source>
-      <translation>ტექსტი ზემოთ (2D)</translation>
+      <source>World</source>
+      <translation>გარემო</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="149"/>
-      <source> text inside (3D)</source>
-      <translation> შიდა ტექსტი (3D)</translation>
+      <source>Screen</source>
+      <translation type="unfinished">Screen</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="161"/>
@@ -3314,7 +3310,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="95"/>
-      <location filename="../../draftutils/gui_utils.py" line="720"/>
+      <location filename="../../draftutils/gui_utils.py" line="713"/>
       <location filename="../../draftutils/utils.py" line="1014"/>
       <location filename="../../draftmake/make_patharray.py" line="161"/>
       <location filename="../../draftmake/make_patharray.py" line="330"/>
@@ -3335,7 +3331,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="132"/>
-      <location filename="../../draftutils/gui_utils.py" line="729"/>
+      <location filename="../../draftutils/gui_utils.py" line="722"/>
       <location filename="../../draftmake/make_patharray.py" line="170"/>
       <location filename="../../draftmake/make_patharray.py" line="181"/>
       <location filename="../../draftmake/make_patharray.py" line="339"/>
@@ -3372,22 +3368,22 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>ხილვადობა გამორთულია; ამოღებულია სიიდან: </translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="603"/>
+      <location filename="../../draftutils/gui_utils.py" line="596"/>
       <source>image is Null</source>
       <translation>ნულოვანი გამოსახულება</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="609"/>
+      <location filename="../../draftutils/gui_utils.py" line="602"/>
       <source>filename does not exist on the system or in the resource file</source>
       <translation>ფაილი არ არსებობს არც სისტემაში არც რესურსის ფაილში</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="668"/>
+      <location filename="../../draftutils/gui_utils.py" line="661"/>
       <source>unable to load texture</source>
       <translation>ტექსტურის ჩატვირთვის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="738"/>
+      <location filename="../../draftutils/gui_utils.py" line="731"/>
       <source>Does not have 'ViewObject.RootNode'.</source>
       <translation>არ აქვს 'ViewObject.RootNode'.</translation>
     </message>
@@ -4668,14 +4664,18 @@ The final angle will be the base angle plus this amount.</source>
       <translation>ShapeString: სტრიქონს პოლიხაზები არ გააჩნია</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/draft_annotation.py" line="89"/>
-      <location filename="../../draftobjects/draft_annotation.py" line="105"/>
+      <location filename="../../draftobjects/draft_annotation.py" line="83"/>
       <source>added view property 'ScaleMultiplier'</source>
       <translation>თვისება 'ScaleMultiplier' დამატებულია</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/draft_annotation.py" line="125"/>
-      <location filename="../../draftobjects/draft_annotation.py" line="130"/>
+      <location filename="../../draftobjects/draft_annotation.py" line="85"/>
+      <source>added view property 'AnnotationStyle'</source>
+      <translation type="unfinished">added view property 'AnnotationStyle'</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/draft_annotation.py" line="108"/>
+      <location filename="../../draftobjects/draft_annotation.py" line="113"/>
       <source>migrated 'DraftText' type to 'Text'</source>
       <translation>'DraftText' გადაყვანილია 'Text'-ში</translation>
     </message>
@@ -5122,14 +5122,14 @@ The final angle will be the base angle plus this amount.</source>
       <translation>ფენების შერწყმა:</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_base.py" line="437"/>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="240"/>
+      <location filename="../../draftviewproviders/view_base.py" line="438"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="277"/>
       <location filename="../../draftviewproviders/view_hatch.py" line="82"/>
       <source>Edit</source>
       <translation>ჩასწორება</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_base.py" line="445"/>
+      <location filename="../../draftviewproviders/view_base.py" line="446"/>
       <location filename="../../draftviewproviders/view_wire.py" line="171"/>
       <source>Flatten</source>
       <translation>გაბრტყელება</translation>
@@ -5292,9 +5292,24 @@ The final angle will be the base angle plus this amount.</source>
       <translation>ამ ობიექტების განახლება შეუძლებელია.</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_text.py" line="229"/>
+      <location filename="../../draftviewproviders/view_text.py" line="186"/>
       <source>Text</source>
       <translation>ტექსტი</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/label.py" line="253"/>
+      <source>updated view property 'TextFont' to 'FontName'</source>
+      <translation type="unfinished">updated view property 'TextFont' to 'FontName'</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/label.py" line="254"/>
+      <source>updated view property 'TextSize' to 'FontSize'</source>
+      <translation type="unfinished">updated view property 'TextSize' to 'FontSize'</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/dimension.py" line="217"/>
+      <source>added view property 'TextColor'</source>
+      <translation type="unfinished">added view property 'TextColor'</translation>
     </message>
   </context>
   <context>
@@ -5405,27 +5420,27 @@ from menu Tools -&gt; Addon Manager</source>
       <translation>კუთხის ნაზოლის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="274"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="264"/>
       <source>Save style</source>
       <translation>სტილის შენახვა</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="275"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="265"/>
       <source>Name of this new style:</source>
       <translation>ამ ახალი სტილის სახელი:</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="282"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="272"/>
       <source>Warning</source>
       <translation>გაფრთხილება</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="283"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="273"/>
       <source>Name exists. Overwrite?</source>
       <translation>სახელი უკვე არსებობს. გადავაწერო?</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="318"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="308"/>
       <source>Error: json module not found. Unable to save style</source>
       <translation>შეცდომა: json მოდული ვერ მოიძებნა. სტილის შენახვა შეუძლებელია</translation>
     </message>
@@ -5528,6 +5543,41 @@ from menu Tools -&gt; Addon Manager</source>
       <location filename="../../draftviewproviders/view_wpproxy.py" line="119"/>
       <source>Writing objects shown/hidden state</source>
       <translation>ობიექტების ჩვენება/დამალვის სტატუსის ჩაწერა</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="226"/>
+      <source>Millimeters</source>
+      <translation type="unfinished">Millimeters</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="227"/>
+      <source>Centimeters</source>
+      <translation type="unfinished">Centimeters</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="228"/>
+      <source>Meters</source>
+      <translation type="unfinished">Meters</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="229"/>
+      <source>Inches</source>
+      <translation>დუიმები</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="230"/>
+      <source>Feet</source>
+      <translation type="unfinished">Feet</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="231"/>
+      <source>Architectural</source>
+      <translation type="unfinished">Architectural</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="307"/>
+      <source>The preferred unit you are currently working with.</source>
+      <translation type="unfinished">The preferred unit you are currently working with.</translation>
     </message>
   </context>
   <context>
@@ -7072,14 +7122,14 @@ set True for fusion or False for compound</source>
       <translation>მასივის ელემენტების ჩვენება (მხოლოდ ბმულების მასივებისთვის)</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="65"/>
+      <location filename="../../draftobjects/label.py" line="68"/>
       <source>The position of the tip of the leader line.
 This point can be decorated with an arrow or another symbol.</source>
       <translation>სქოლიოს ბოლოს მდებარეობა.
 ეს წერტილი შეგიძლიათ ისრის ან სხვა სიმბოლოს მნიშვნელობით გამოხატოთ.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="79"/>
+      <location filename="../../draftobjects/label.py" line="82"/>
       <source>Object, and optionally subelement, whose properties will be displayed
 as 'Text', depending on 'Label Type'.
 
@@ -7090,7 +7140,7 @@ as 'Text', depending on 'Label Type'.
 'სამიზნე' არ იქნება გამოყენებული, თუ 'ჭდის ტიპი' 'ხელით მითითებაზე' აყენია.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="109"/>
+      <location filename="../../draftobjects/label.py" line="112"/>
       <source>The list of points defining the leader line; normally a list of three points.
 
 The first point should be the position of the text, that is, the 'Placement',
@@ -7111,7 +7161,7 @@ can be set as a list of arbitrary points.</source>
 შეიძლება დაინიშნოს როგორც თვითნებური პუნქტების სია.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="124"/>
+      <location filename="../../draftobjects/label.py" line="127"/>
       <source>The direction of the straight segment of the leader line.
 
 If 'Custom' is chosen, the points of the leader can be specified by
@@ -7122,7 +7172,7 @@ assigning a custom list to the 'Points' attribute.</source>
 სათითაოდ შეგიძლიათ 'წერტილების' ატრიბუტის საშუალებით.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="142"/>
+      <location filename="../../draftobjects/label.py" line="145"/>
       <source>The length of the straight segment of the leader line.
 
 This is an oriented distance; if it is negative, the line will be drawn
@@ -7133,17 +7183,17 @@ depending on the value of 'Straight Direction'.</source>
 ეს არის ორიენტირებული მანძილი; თუ ის უარყოფითია, ხაზი გაივლება მარცხნივ ან "ტექსტის" ქვემოთ, წინააღმდეგ შემთხვევაში მარჯვნივ ან მის ზემოთ, "სწორი მიმართულების" მნიშვნელობიდან გამომდინარე.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="156"/>
+      <location filename="../../draftobjects/label.py" line="159"/>
       <source>The placement of the 'Text' element in 3D space</source>
       <translation>'ტექსტური' ელემენტის მდებარეობა 3D სივრცეში</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="166"/>
+      <location filename="../../draftobjects/label.py" line="169"/>
       <source>The text to display when 'Label Type' is set to 'Custom'</source>
       <translation>საჩვენებელი ტექსტი, თუ 'ჭდის ტიპი 'მომხმარებლის' აყენია</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="181"/>
+      <location filename="../../draftobjects/label.py" line="184"/>
       <source>The text displayed by this label.
 
 This property is read-only, as the final text depends on 'Label Type',
@@ -7156,7 +7206,7 @@ The 'Custom Text' is displayed only if 'Label Type' is set to 'Custom'.</source>
 "მომხმარებლის ტექსტი" ნაჩვენებია მხოლოდ იმ შემთხვევაში, თუ "ჭდის ტიპი" დაყენებულია "მომხმარებლის ტექსტი“-ზე.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="216"/>
+      <location filename="../../draftobjects/label.py" line="219"/>
       <source>The type of information displayed by this label.
 
 If 'Custom' is chosen, the contents of 'Custom Text' will be used.
@@ -7175,8 +7225,7 @@ or from the subelement 'VertexN', 'EdgeN', or 'FaceN', respectively, if it is sp
 ობიექტიდან ან ქვეელემენტიდან "VertexN", "EdgeN" ან "FaceN", შესაბამისად, თუ მითითებულია.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/draft_annotation.py" line="83"/>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="86"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="89"/>
       <source>General scaling factor that affects the annotation consistently
 because it scales the text, and the line decorations, if any,
 in the same proportion.</source>
@@ -7185,8 +7234,7 @@ in the same proportion.</source>
 ადიდებს ტექსტს და არსებობის შემთხვევაში ხაზის დეკორაციებსაც.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/draft_annotation.py" line="93"/>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="104"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="107"/>
       <source>Annotation style to apply to this object.
 When using a saved style some of the view properties will become read-only;
 they will only be editable by changing the style through the 'Annotation style editor' tool.</source>
@@ -7569,17 +7617,17 @@ This property is read-only, as the number depends on the points in 'Point Object
       <translation>კუთხის მომრგვალების რადიუსი.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="137"/>
+      <location filename="../../draftobjects/dimension.py" line="140"/>
       <source>The normal direction of the text of the dimension</source>
       <translation>ზომის ტექსტის ნორმალური მიმართულება</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="150"/>
+      <location filename="../../draftobjects/dimension.py" line="153"/>
       <source>The object measured by this dimension object</source>
       <translation>ობიექტი, რომელიც იზომება ამ ზომის ობიექტით</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="167"/>
+      <location filename="../../draftobjects/dimension.py" line="170"/>
       <source>The object, and specific subelements of it,
 that this dimension object is measuring.
 
@@ -7596,7 +7644,7 @@ There are various possibilities:
 - რკალის ობიექტი და მისი წიბო.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="190"/>
+      <location filename="../../draftobjects/dimension.py" line="193"/>
       <source>A point through which the dimension line, or an extrapolation of it, will pass.
 
 - For linear dimensions, this property controls how close the dimension line
@@ -7612,7 +7660,7 @@ that displays the measured angle.</source>
 - კუთხოვანი ზომებისთვის, ეს აკონტროლებს ზომის რკალის რადიუსს, რომელიც აჩვენებს გაზომილ კუთხეს.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="233"/>
+      <location filename="../../draftobjects/dimension.py" line="247"/>
       <source>Starting point of the dimension line.
 
 If it is a radius dimension it will be the center of the arc.
@@ -7623,7 +7671,7 @@ If it is a diameter dimension it will be a point that lies on the arc.</source>
 თუ დიამეტრის ზომაა, ის იქნება წერტილი, რომელიც მდებარეობს რკალზე.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="247"/>
+      <location filename="../../draftobjects/dimension.py" line="261"/>
       <source>Ending point of the dimension line.
 
 If it is a radius or diameter dimension
@@ -7634,14 +7682,14 @@ it will be a point that lies on the arc.</source>
 ეს იქნება წერტილი, რომელიც რკალზეა.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="259"/>
+      <location filename="../../draftobjects/dimension.py" line="273"/>
       <source>The direction of the dimension line.
 If this remains '(0,0,0)', the direction will be calculated automatically.</source>
       <translation>განზომილების ხაზის მიმართულება.
 თუ დარჩება '(0,0,0)', მიმართულება ავტომატურად გამოითვლება.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="276"/>
+      <location filename="../../draftobjects/dimension.py" line="290"/>
       <source>The value of the measurement.
 
 This property is read-only because the value is calculated
@@ -7656,28 +7704,28 @@ is the radius or diameter, depending on the 'Diameter' property.</source>
 თუ „ასოცირებული გეომეტრია“ არის რკალი ან წრე, მაშინ ეს მნიშვნელობა იქნება რადიუსი ან დიამეტრი, რომელიც დამოკიდებულია „დიამეტრი“ თვისებაზე.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="287"/>
+      <location filename="../../draftobjects/dimension.py" line="301"/>
       <source>When measuring circular arcs, it determines whether to display
 the radius or the diameter value</source>
       <translation>წრიული რკალების გაზომვისას, ის განსაზღვრავს ნაჩვენები იყოს თუ არა
 რადიუსი ან დიამეტრის მნიშვნელობა</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="507"/>
+      <location filename="../../draftobjects/dimension.py" line="509"/>
       <source>Starting angle of the dimension line (circular arc).
 The arc is drawn counter-clockwise.</source>
       <translation>ზომის ხაზის საწყისი კუთხე (წრიული რკალი).
 რკალი დახატულია საათის ისრის საწინააღმდეგოდ.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="518"/>
+      <location filename="../../draftobjects/dimension.py" line="520"/>
       <source>Ending angle of the dimension line (circular arc).
 The arc is drawn counter-clockwise.</source>
       <translation>ზომის ხაზის საბოლოო კუთხე (წრიული რკალი).
 რკალი დახატულია საათის ისრის საწინააღმდეგოდ.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="533"/>
+      <location filename="../../draftobjects/dimension.py" line="535"/>
       <source>The center point of the dimension line, which is a circular arc.
 
 This is normally the point where two line segments, or their extensions
@@ -7688,7 +7736,7 @@ intersect, resulting in the measured 'Angle' between them.</source>
 რის შედეგადაც არის იზომება "კუთხე" მათ შორის.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="547"/>
+      <location filename="../../draftobjects/dimension.py" line="549"/>
       <source>The value of the measurement.
 
 This property is read-only because the value is calculated from
@@ -7874,70 +7922,49 @@ the 'First Angle' and 'Last Angle' properties.</source>
       <translation>მასივის ინდივიდუალური ელემენტების ჩვენება</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="74"/>
-      <location filename="../../draftviewproviders/view_text.py" line="63"/>
-      <source>The size of the text</source>
-      <translation>ტექსტის ზომა</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_label.py" line="83"/>
-      <location filename="../../draftviewproviders/view_text.py" line="72"/>
-      <source>The font of the text</source>
-      <translation>ტექსტის ფონტი</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_label.py" line="92"/>
-      <location filename="../../draftviewproviders/view_label.py" line="119"/>
-      <location filename="../../draftviewproviders/view_text.py" line="81"/>
-      <source>The vertical alignment of the text</source>
-      <translation>ტექსტის ვერტიკალური სწორება</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_label.py" line="102"/>
-      <location filename="../../draftviewproviders/view_text.py" line="90"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="141"/>
       <source>Text color</source>
       <translation>ტექსტის ფერი</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="111"/>
-      <source>The maximum number of characters on each line of the text box</source>
-      <translation>სიმბოლოების რაოდენობა ტექსტური ჩარჩოს თითოეულ ხაზზე</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_label.py" line="128"/>
-      <location filename="../../draftviewproviders/view_text.py" line="98"/>
+      <location filename="../../draftviewproviders/view_label.py" line="89"/>
+      <location filename="../../draftviewproviders/view_text.py" line="65"/>
       <source>Line spacing (relative to font size)</source>
       <translation>სტრიქონებს შორის მანძილი (ფონტის ზომასთან შედარებით)</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="139"/>
-      <source>The size of the arrow</source>
-      <translation>ისრის ზომა</translation>
+      <location filename="../../draftviewproviders/view_label.py" line="61"/>
+      <source>Vertical alignment</source>
+      <translation type="unfinished">Vertical alignment</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="148"/>
-      <source>The type of arrow of this label</source>
-      <translation>ამ ჭდის ისრის ტიპი</translation>
+      <location filename="../../draftviewproviders/view_label.py" line="72"/>
+      <source>Maximum number of characters on each line of the text box</source>
+      <translation type="unfinished">Maximum number of characters on each line of the text box</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="159"/>
+      <location filename="../../draftviewproviders/view_label.py" line="80"/>
+      <location filename="../../draftviewproviders/view_text.py" line="56"/>
+      <source>Horizontal alignment</source>
+      <translation type="unfinished">Horizontal alignment</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_label.py" line="122"/>
       <source>The type of frame around the text of this object</source>
       <translation>ამ ობიექტის ტექსტის ჩარჩოს ტიპი</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="168"/>
+      <location filename="../../draftviewproviders/view_label.py" line="131"/>
       <source>Display a leader line or not</source>
       <translation>ლიდერი ხაზის ჩვენების ჩართ/გამორთ</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="177"/>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="119"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="153"/>
       <source>Line width</source>
       <translation>ხაზის სიგანე</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="186"/>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="126"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="160"/>
       <source>Line color</source>
       <translation>ხაზის ფერი</translation>
     </message>
@@ -7997,51 +8024,51 @@ the 'First Angle' and 'Last Angle' properties.</source>
       <translation>როცა გამოიყენება TechDraw-ის გვერდზე, განსაზღვრავს ამ ფენაში შემავალი ობიექტების ხაზის ფერს</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="138"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="123"/>
       <source>Font name</source>
       <translation>ფონტის სახელი</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="147"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="132"/>
       <source>Font size</source>
       <translation>ფონტის ზომა</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="156"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="125"/>
       <source>Spacing between text and dimension line</source>
       <translation>ტექსტსა და ზომის ხაზებს შორის დაშორება</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="165"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="134"/>
       <source>Rotate the dimension text 180 degrees</source>
       <translation>ზომის ტექსტის 180 გრადუსით შეტრიალება</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="175"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="144"/>
       <source>Text Position.
 Leave '(0,0,0)' for automatic position</source>
       <translation>ტექსტის მდებარეობა.
 ავტომატური მდებარეობისთვის დატოვეთ '(0,0,0)'</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="186"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="155"/>
       <source>Text override.
 Write '$dim' so that it is replaced by the dimension length.</source>
       <translation>ტექსტის შეცვლა.
 ჩაწერეთ '$dim'. ის სიგრძის ზომით შეიცვლება.</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="197"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="168"/>
       <source>The number of decimals to show</source>
       <translation>მძიმის შემდეგ ციფრების რაოდენობა(რიცხვის სიზუსტე)</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="206"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="177"/>
       <source>Show the unit suffix</source>
       <translation>საზომი ერთეულის ჩვენება</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="217"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="188"/>
       <source>A unit to express the measurement.
 Leave blank for system default.
 Use 'arch' to force US arch notation</source>
@@ -8050,41 +8077,43 @@ Use 'arch' to force US arch notation</source>
 გამოიყენეთ „არქიტექტურა“ აშშ-ის არქიტექტურული ნოტაციისთვის</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="231"/>
+      <location filename="../../draftviewproviders/view_label.py" line="102"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="201"/>
       <source>Arrow size</source>
       <translation>ისრის ზომა</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="240"/>
+      <location filename="../../draftviewproviders/view_label.py" line="111"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="210"/>
       <source>Arrow type</source>
       <translation>ისრის ტიპი</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="250"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="220"/>
       <source>Rotate the dimension arrows 180 degrees</source>
       <translation>ზომის ისრების 180 გრადუსით შემობრუნება</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="261"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="231"/>
       <source>The distance the dimension line is extended
 past the extension lines</source>
       <translation>ზომის ხაზების გაგრძელების ხაზებს მიღმა
 გაგრძელების ზომა</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="270"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="240"/>
       <source>Length of the extension lines</source>
       <translation>გაფართოების ხაზების სიგრძე</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="280"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="250"/>
       <source>Length of the extension line
 beyond the dimension line</source>
       <translation>გაფართოების ხაზის სიგრძე
 ზომის ხაზის მიღმა</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="289"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="259"/>
       <source>Shows the dimension line and arrows</source>
       <translation>აჩვენებს ზომის ხაზს და ისრებს</translation>
     </message>
@@ -8092,7 +8121,7 @@ beyond the dimension line</source>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../draftviewproviders/view_base.py" line="460"/>
+      <location filename="../../draftviewproviders/view_base.py" line="462"/>
       <location filename="../../draftviewproviders/view_hatch.py" line="90"/>
       <source>Transform</source>
       <translation>გარდაქმნა</translation>

@@ -731,7 +731,7 @@
       <location filename="../../AttacherTexts.cpp" line="58"/>
       <source>Object's X Y Z</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Object's X Y Z</translation>
+      <translation>对象的 X Y Z</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="59"/>
@@ -743,7 +743,7 @@
       <location filename="../../AttacherTexts.cpp" line="61"/>
       <source>Object's X Z Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Object's X Z Y</translation>
+      <translation>对象的 X Z Y</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="62"/>
@@ -755,7 +755,7 @@
       <location filename="../../AttacherTexts.cpp" line="64"/>
       <source>Object's Y Z X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Object's Y Z X</translation>
+      <translation>对象的 Y Z X</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="65"/>
@@ -1195,7 +1195,7 @@
     <message>
       <location filename="../../Command.cpp" line="2215"/>
       <source>Set the color of each individual face of the selected object.</source>
-      <translation type="unfinished">Set the color of each individual face of the selected object.</translation>
+      <translation>设置选中对象的每个面的颜色。</translation>
     </message>
   </context>
   <context>
@@ -1213,7 +1213,7 @@
     <message>
       <location filename="../../Command.cpp" line="2285"/>
       <source>Measure the angle between two edges.</source>
-      <translation type="unfinished">Measure the angle between two edges.</translation>
+      <translation>测量两个边之间的角度。</translation>
     </message>
   </context>
   <context>
@@ -1231,7 +1231,7 @@
     <message>
       <location filename="../../Command.cpp" line="2344"/>
       <source>Clear all dimensions from the screen.</source>
-      <translation type="unfinished">Clear all dimensions from the screen.</translation>
+      <translation>清除屏幕上的所有尺寸。</translation>
     </message>
   </context>
   <context>
@@ -1251,9 +1251,8 @@
       <source>Measure the linear distance between two points;
 if edges or faces are picked, it will measure
 between two vertices of them.</source>
-      <translation type="unfinished">Measure the linear distance between two points;
-if edges or faces are picked, it will measure
-between two vertices of them.</translation>
+      <translation>测量两个点之间的直线距离；
+如果选中边缘或面，将测量它们的两个顶点之间的距离。</translation>
     </message>
   </context>
   <context>
@@ -1272,8 +1271,7 @@ between two vertices of them.</translation>
       <location filename="../../Command.cpp" line="2314"/>
       <source>Recalculate the dimensions
 if the measured points have moved.</source>
-      <translation type="unfinished">Recalculate the dimensions
-if the measured points have moved.</translation>
+      <translation>如果测量点移动，则重新计算尺寸。</translation>
     </message>
   </context>
   <context>
@@ -1476,12 +1474,12 @@ into its X, Y, and Z components.</translation>
     <message>
       <location filename="../../Command.cpp" line="803"/>
       <source>Compound tools</source>
-      <translation type="unfinished">Compound tools</translation>
+      <translation>复合体工具</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="804"/>
       <source>Compound tools: working with lists of shapes.</source>
-      <translation type="unfinished">Compound tools: working with lists of shapes.</translation>
+      <translation>复合工具：使用形状列表。</translation>
     </message>
   </context>
   <context>
@@ -1647,7 +1645,7 @@ into its X, Y, and Z components.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="374"/>
       <source>Remove feature from a shape</source>
-      <translation type="unfinished">Remove feature from a shape</translation>
+      <translation>从形状中删除特征</translation>
     </message>
   </context>
   <context>
@@ -1660,12 +1658,12 @@ into its X, Y, and Z components.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="285"/>
       <source>Create shape element copy</source>
-      <translation type="unfinished">Create shape element copy</translation>
+      <translation>创建形状元素副本</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="286"/>
       <source>Create a non-parametric copy of the selected shape element</source>
-      <translation type="unfinished">Create a non-parametric copy of the selected shape element</translation>
+      <translation>创建选中形状元素的非参数副本</translation>
     </message>
   </context>
   <context>
@@ -1809,7 +1807,7 @@ into its X, Y, and Z components.</translation>
     <message>
       <location filename="../../Command.cpp" line="1375"/>
       <source>Make face from set of wires (e.g. from a sketch)</source>
-      <translation type="unfinished">Make face from set of wires (e.g. from a sketch)</translation>
+      <translation>从一组线做面（如草图）</translation>
     </message>
   </context>
   <context>
@@ -2322,7 +2320,7 @@ of projection.</translation>
       <translation type="unfinished">Convert mesh</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1071"/>
+      <location filename="../../TaskAttacher.cpp" line="1077"/>
       <source>Edit attachment</source>
       <translation>编辑附加</translation>
     </message>
@@ -2337,28 +2335,28 @@ of projection.</translation>
       <translation>放样</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="256"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="261"/>
       <source>Edge</source>
       <translation>边</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="297"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="302"/>
       <source>Wire</source>
       <translation>线框</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="349"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="401"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="354"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="406"/>
       <source>Face</source>
       <translation>面</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="464"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="469"/>
       <source>Shell</source>
       <translation>壳体</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="516"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="521"/>
       <source>Solid</source>
       <translation>实体</translation>
     </message>
@@ -4706,80 +4704,80 @@ only created cuts will be visible</source>
   <context>
     <name>PartGui::ShapeBuilderWidget</name>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="215"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="220"/>
       <source>Unsupported</source>
       <translation type="unfinished">Unsupported</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="215"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="220"/>
       <source>Box selection for shells is not supported</source>
       <translation type="unfinished">Box selection for shells is not supported</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="224"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="243"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="271"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="312"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="364"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="416"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="479"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="229"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="248"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="276"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="317"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="369"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="421"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="484"/>
       <source>Wrong selection</source>
       <translation>选择错误</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="224"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="243"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="229"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="248"/>
       <source>Select two vertices</source>
       <translation>选择两个顶点</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="271"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="364"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="276"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="369"/>
       <source>Select one or more edges</source>
       <translation>选择一个或多个边</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="312"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="317"/>
       <source>Select three or more vertices</source>
       <translation>选取三个或更多顶点</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="416"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="421"/>
       <source>Select two or more faces</source>
       <translation>选择两个或更多面</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="479"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="484"/>
       <source>Select only one part object</source>
       <translation>仅选择一个零件对象</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="531"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="536"/>
       <source>Select two vertices to create an edge</source>
       <translation>选择两个顶点创建边</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="538"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="543"/>
       <source>Select adjacent edges</source>
       <translation type="unfinished">Select adjacent edges</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="545"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="550"/>
       <source>Select a list of vertices</source>
       <translation>选取一个顶点清单</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="552"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="557"/>
       <source>Select a closed set of edges</source>
       <translation>选择一组闭合的边</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="559"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="564"/>
       <source>Select adjacent faces</source>
       <translation>选择相邻面</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="566"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="571"/>
       <source>All shape types can be selected</source>
       <translation>可以选择所有形体类型</translation>
     </message>
@@ -4921,7 +4919,7 @@ only created cuts will be visible</source>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="124"/>
-      <location filename="../../TaskAttacher.cpp" line="329"/>
+      <location filename="../../TaskAttacher.cpp" line="335"/>
       <source>Attachment Offset (in local coordinates):</source>
       <translation>附加偏移量(本地坐标)：</translation>
     </message>
@@ -5002,77 +5000,77 @@ of object being attached.</translation>
       <translation>翻转面</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="312"/>
+      <location filename="../../TaskAttacher.cpp" line="318"/>
       <source>OCC error: %1</source>
       <translation>OCC 错误： %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="314"/>
+      <location filename="../../TaskAttacher.cpp" line="320"/>
       <source>unknown error</source>
       <translation>未知错误。</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="317"/>
+      <location filename="../../TaskAttacher.cpp" line="323"/>
       <source>Attachment mode failed: %1</source>
       <translation>附加模式失败: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="321"/>
+      <location filename="../../TaskAttacher.cpp" line="327"/>
       <source>Not attached</source>
       <translation>没附档</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="325"/>
+      <location filename="../../TaskAttacher.cpp" line="331"/>
       <source>Attached with mode %1</source>
       <translation>附加模式%1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="329"/>
+      <location filename="../../TaskAttacher.cpp" line="335"/>
       <source>Attachment Offset (inactive - not attached):</source>
       <translation>附加偏移量 (不活动-未附加):</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="626"/>
+      <location filename="../../TaskAttacher.cpp" line="632"/>
       <source>Face</source>
       <translation>面</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="633"/>
+      <location filename="../../TaskAttacher.cpp" line="639"/>
       <source>Edge</source>
       <translation>边</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="640"/>
+      <location filename="../../TaskAttacher.cpp" line="646"/>
       <source>Vertex</source>
       <translation>顶点</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="705"/>
+      <location filename="../../TaskAttacher.cpp" line="711"/>
       <source>Selecting...</source>
       <translation>选择...</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="709"/>
+      <location filename="../../TaskAttacher.cpp" line="715"/>
       <source>Reference%1</source>
       <translation>参照 %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="756"/>
+      <location filename="../../TaskAttacher.cpp" line="762"/>
       <source>Not editable because rotation of AttachmentOffset is bound by expressions.</source>
       <translation type="unfinished">Not editable because rotation of AttachmentOffset is bound by expressions.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="822"/>
+      <location filename="../../TaskAttacher.cpp" line="828"/>
       <source>Reference combinations:</source>
       <translation>参照组合：</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="839"/>
+      <location filename="../../TaskAttacher.cpp" line="845"/>
       <source>%1 (add %2)</source>
       <translation>%1 (添加 %2)</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="844"/>
+      <location filename="../../TaskAttacher.cpp" line="850"/>
       <source>%1 (add more references)</source>
       <translation>%1 （添加更多参照）</translation>
     </message>
@@ -5292,7 +5290,7 @@ Individual BOP Checks:</translation>
   <context>
     <name>PartGui::TaskDlgAttacher</name>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1112"/>
+      <location filename="../../TaskAttacher.cpp" line="1118"/>
       <source>Datum dialog: Input error</source>
       <translation>基准对话框: 输入错误</translation>
     </message>

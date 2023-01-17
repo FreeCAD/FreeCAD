@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="101"/>
       <source>Create image plane...</source>
-      <translation>Napravi ravninu slike ...</translation>
+      <translation>Napravi ravninu slike...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="102"/>
       <source>Create a planar image in the 3D space</source>
-      <translation>Napravi planarnu sliku u 3D prostoru</translation>
+      <translation>Napravi ravninsku sliku u 3D prostoru</translation>
     </message>
   </context>
   <context>
@@ -219,12 +219,12 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="55"/>
       <source>Scale image plane</source>
-      <translation type="unfinished">Scale image plane</translation>
+      <translation>Skaliranje ravnine slike</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="59"/>
       <source>Scales an image plane by defining a distance between two points</source>
-      <translation type="unfinished">Scales an image plane by defining a distance between two points</translation>
+      <translation>Skaliranje ravnine slike kroz definiciju udaljenosti između dvije točke</translation>
     </message>
   </context>
   <context>
@@ -232,7 +232,7 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="139"/>
       <source>Scale image plane</source>
-      <translation type="unfinished">Scale image plane</translation>
+      <translation>Skaliranje ravnine slike</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="140"/>
@@ -242,27 +242,27 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="141"/>
       <source>Select first point</source>
-      <translation type="unfinished">Select first point</translation>
+      <translation>Odaberite početnu točku</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="156"/>
       <source>Enter distance</source>
-      <translation type="unfinished">Enter distance</translation>
+      <translation>Unesite udaljenost</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="159"/>
       <source>Select image plane</source>
-      <translation type="unfinished">Select image plane</translation>
+      <translation>Odaberite ravninu slike</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="184"/>
       <source>Select second point</source>
-      <translation type="unfinished">Select second point</translation>
+      <translation>Odaberite drugu točku</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="193"/>
       <source>Select Image Plane and type distance</source>
-      <translation type="unfinished">Select Image Plane and type distance</translation>
+      <translation>Odabir ravninu slike i unesite udaljenost</translation>
     </message>
   </context>
 </TS>

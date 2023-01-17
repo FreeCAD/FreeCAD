@@ -2322,7 +2322,7 @@ zehazten du.</translation>
       <translation>Bihurtu amarauna</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1071"/>
+      <location filename="../../TaskAttacher.cpp" line="1077"/>
       <source>Edit attachment</source>
       <translation>Editatu eranskina</translation>
     </message>
@@ -2337,28 +2337,28 @@ zehazten du.</translation>
       <translation>Goratu</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="256"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="261"/>
       <source>Edge</source>
       <translation>Ertza</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="297"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="302"/>
       <source>Wire</source>
       <translation>Alanbrea</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="349"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="401"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="354"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="406"/>
       <source>Face</source>
       <translation>Aurpegia</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="464"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="469"/>
       <source>Shell</source>
       <translation>Oskola</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="516"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="521"/>
       <source>Solid</source>
       <translation>Solidoa</translation>
     </message>
@@ -2751,7 +2751,7 @@ propietatean egon ordez.</translation>
     <message>
       <location filename="../../DlgExportStep.ui" line="107"/>
       <source>Use legacy export function</source>
-      <translation type="unfinished">Use legacy export function</translation>
+      <translation>Erabili esportaziorako funtzio zaharra</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="120"/>
@@ -3099,7 +3099,7 @@ Bi luzerak zero badira, norabidearen magnitudea erabiliko da.</translation>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="271"/>
       <source>Size2</source>
-      <translation type="unfinished">Size2</translation>
+      <translation>Tamaina2</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="275"/>
@@ -4136,7 +4136,7 @@ irakurtzen den bitartean (motelagoa baino xehetasun gehiagokoa).</translation>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="49"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Teselazioa&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Teselatutako amaraunak gainazalarekiko duen gehienezko desbideratzea definitzen du. Balioa txikiagoa bada, errendatze-abiadura motelagoa izango da eta xehetasunak/bereizmena hobea izango da.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="52"/>
@@ -4207,7 +4207,7 @@ irakurtzen den bitartean (motelagoa baino xehetasun gehiagokoa).</translation>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="26"/>
       <source>Measurement settings</source>
-      <translation type="unfinished">Measurement settings</translation>
+      <translation>Neurketa-ezarpenak</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="51"/>
@@ -4252,7 +4252,7 @@ irakurtzen den bitartean (motelagoa baino xehetasun gehiagokoa).</translation>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="213"/>
       <source>Refresh existing measurements</source>
-      <translation type="unfinished">Refresh existing measurements</translation>
+      <translation>Freskatu lehendik dauden neurketak</translation>
     </message>
   </context>
   <context>
@@ -4290,12 +4290,12 @@ irakurtzen den bitartean (motelagoa baino xehetasun gehiagokoa).</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="83"/>
       <source>Shape transparency</source>
-      <translation type="unfinished">Shape transparency</translation>
+      <translation>Formaren gardentasuna</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="90"/>
       <source>The default transparency for new shapes</source>
-      <translation type="unfinished">The default transparency for new shapes</translation>
+      <translation>Forma berrien gardentasun lehenetsia</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="118"/>
@@ -4708,80 +4708,80 @@ sortutako mozketak soilik daude ikusgai</translation>
   <context>
     <name>PartGui::ShapeBuilderWidget</name>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="215"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="220"/>
       <source>Unsupported</source>
-      <translation type="unfinished">Unsupported</translation>
+      <translation>Ez da onartzen</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="215"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="220"/>
       <source>Box selection for shells is not supported</source>
-      <translation type="unfinished">Box selection for shells is not supported</translation>
+      <translation>Ez da onartzen oskolak kutxa bidez hautatzea</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="224"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="243"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="271"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="312"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="364"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="416"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="479"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="229"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="248"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="276"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="317"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="369"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="421"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="484"/>
       <source>Wrong selection</source>
       <translation>Hautapen okerra</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="224"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="243"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="229"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="248"/>
       <source>Select two vertices</source>
       <translation>Hautatu bi erpin</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="271"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="364"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="276"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="369"/>
       <source>Select one or more edges</source>
       <translation>Hautatu ertz bat edo gehiago</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="312"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="317"/>
       <source>Select three or more vertices</source>
       <translation>Hautatu hiru erpin edo gehiago</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="416"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="421"/>
       <source>Select two or more faces</source>
       <translation>Hautatu aurpegi bat edo gehiago</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="479"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="484"/>
       <source>Select only one part object</source>
       <translation>Hautatu pieza-objektu bakar bat</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="531"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="536"/>
       <source>Select two vertices to create an edge</source>
       <translation>Hautatu bi erpin ertz bat sortzeko</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="538"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="543"/>
       <source>Select adjacent edges</source>
       <translation>Hautatu elkarren alboko ertzak</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="545"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="550"/>
       <source>Select a list of vertices</source>
       <translation>Hautatu erpinen zerrenda bat</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="552"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="557"/>
       <source>Select a closed set of edges</source>
       <translation>Hautatu ertz multzo itxi bat</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="559"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="564"/>
       <source>Select adjacent faces</source>
       <translation>Hautatu elkarren alboko aurpegiak</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="566"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="571"/>
       <source>All shape types can be selected</source>
       <translation>Edozein forma mota hauta daiteke</translation>
     </message>
@@ -4923,7 +4923,7 @@ sortutako mozketak soilik daude ikusgai</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="124"/>
-      <location filename="../../TaskAttacher.cpp" line="329"/>
+      <location filename="../../TaskAttacher.cpp" line="335"/>
       <source>Attachment Offset (in local coordinates):</source>
       <translation>Eranskinaren desplazamendua (koordenatu lokaletan):</translation>
     </message>
@@ -5002,77 +5002,77 @@ koordenatu-sistema lokalean adierazten da.</translation>
       <translation>Irauli aldeak</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="312"/>
+      <location filename="../../TaskAttacher.cpp" line="318"/>
       <source>OCC error: %1</source>
       <translation>OCC errorea: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="314"/>
+      <location filename="../../TaskAttacher.cpp" line="320"/>
       <source>unknown error</source>
       <translation>errore ezezaguna</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="317"/>
+      <location filename="../../TaskAttacher.cpp" line="323"/>
       <source>Attachment mode failed: %1</source>
       <translation>Eranste moduak huts egin du: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="321"/>
+      <location filename="../../TaskAttacher.cpp" line="327"/>
       <source>Not attached</source>
       <translation>Ez erantsia</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="325"/>
+      <location filename="../../TaskAttacher.cpp" line="331"/>
       <source>Attached with mode %1</source>
       <translation>%1 moduan erantsia</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="329"/>
+      <location filename="../../TaskAttacher.cpp" line="335"/>
       <source>Attachment Offset (inactive - not attached):</source>
       <translation>Eranskinaren desplazamendua (inaktiboa - erantsi gabea):</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="626"/>
+      <location filename="../../TaskAttacher.cpp" line="632"/>
       <source>Face</source>
       <translation>Aurpegia</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="633"/>
+      <location filename="../../TaskAttacher.cpp" line="639"/>
       <source>Edge</source>
       <translation>Ertza</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="640"/>
+      <location filename="../../TaskAttacher.cpp" line="646"/>
       <source>Vertex</source>
       <translation>Erpina</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="705"/>
+      <location filename="../../TaskAttacher.cpp" line="711"/>
       <source>Selecting...</source>
       <translation>Hautatzen...</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="709"/>
+      <location filename="../../TaskAttacher.cpp" line="715"/>
       <source>Reference%1</source>
       <translation>%1. erreferentzia</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="756"/>
+      <location filename="../../TaskAttacher.cpp" line="762"/>
       <source>Not editable because rotation of AttachmentOffset is bound by expressions.</source>
       <translation>Ezin da editatu eranskin-desplazamenduaren biraketa adierazpenez mugatuta dagoelako.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="822"/>
+      <location filename="../../TaskAttacher.cpp" line="828"/>
       <source>Reference combinations:</source>
       <translation>Erreferentzia-konbinazioak:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="839"/>
+      <location filename="../../TaskAttacher.cpp" line="845"/>
       <source>%1 (add %2)</source>
       <translation>%1 (gehitu %2)</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="844"/>
+      <location filename="../../TaskAttacher.cpp" line="850"/>
       <source>%1 (add more references)</source>
       <translation>%1 (gehitu erreferentzia gehiago)</translation>
     </message>
@@ -5292,7 +5292,7 @@ Banakako BOP egiaztatzeak:</translation>
   <context>
     <name>PartGui::TaskDlgAttacher</name>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1112"/>
+      <location filename="../../TaskAttacher.cpp" line="1118"/>
       <source>Datum dialog: Input error</source>
       <translation>Zero puntuaren elkarrizketa-koadroa: Sarrera-errorea</translation>
     </message>
@@ -5302,7 +5302,7 @@ Banakako BOP egiaztatzeak:</translation>
     <message>
       <location filename="../../DlgExportStep.cpp" line="213"/>
       <source>Don't show this dialog again</source>
-      <translation type="unfinished">Don't show this dialog again</translation>
+      <translation>Ez erakutsi elkarrizketa-koadro hau berriro</translation>
     </message>
   </context>
   <context>
@@ -5494,7 +5494,7 @@ hatapen-laukizuzen bat arrastatuta 3D bistan</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="101"/>
       <source>Box selection...</source>
-      <translation type="unfinished">Box selection...</translation>
+      <translation>Kutxa bidezko hautapena...</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="121"/>
@@ -5641,7 +5641,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../AppPartGui.cpp" line="224"/>
       <source>Part and Part Design workbench</source>
-      <translation type="unfinished">Part and Part Design workbench</translation>
+      <translation>Piezen eta pieza-diseinuaren lan-mahaia</translation>
     </message>
     <message>
       <location filename="../../AppPartGui.cpp" line="225"/>
@@ -5649,7 +5649,7 @@ in the 3D view for the sweep path.</source>
       <location filename="../../AppPartGui.cpp" line="227"/>
       <location filename="../../AppPartGui.cpp" line="228"/>
       <source>Part/Part Design</source>
-      <translation type="unfinished">Part/Part Design</translation>
+      <translation>Pieza/Piezen diseinua</translation>
     </message>
     <message>
       <location filename="../../AppPartGui.cpp" line="229"/>
@@ -6098,7 +6098,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="52"/>
       <source>Create tube</source>
-      <translation type="unfinished">Create tube</translation>
+      <translation>Sortu tutua</translation>
     </message>
   </context>
   <context>
@@ -6169,12 +6169,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="44"/>
       <source>Create tube</source>
-      <translation type="unfinished">Create tube</translation>
+      <translation>Sortu tutua</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="50"/>
       <source>Creates a tube</source>
-      <translation type="unfinished">Creates a tube</translation>
+      <translation>Tutu bat sortzen du</translation>
     </message>
   </context>
   <context>
@@ -6182,12 +6182,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="78"/>
       <source>Computing the result failed with an error:</source>
-      <translation type="unfinished">Computing the result failed with an error:</translation>
+      <translation>Emaitza kalkulatzean errore bat gertatu da:</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="79"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+      <translation>Egin klik 'Jarraitu' aukeran elementua sortzeko, edo sakatu 'Abortatu' bertan behera uzteko.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="80"/>
@@ -6195,7 +6195,7 @@ Do you want to continue?</source>
       <location filename="../../../BOPTools/JoinFeatures.py" line="295"/>
       <location filename="../../../BOPTools/JoinFeatures.py" line="389"/>
       <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>Hautapen okerra</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="82"/>
@@ -6205,17 +6205,17 @@ Do you want to continue?</source>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="198"/>
       <source>Select at least two objects, or one or more compounds</source>
-      <translation type="unfinished">Select at least two objects, or one or more compounds</translation>
+      <translation>Hautatu bi objektu gutxienez, edo konposatu bat edo gehiago</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="294"/>
       <source>Select base object, then the object to embed, and then invoke this tool.</source>
-      <translation type="unfinished">Select base object, then the object to embed, and then invoke this tool.</translation>
+      <translation>Hautatu oinarri-objektua, ondoren kapsulatuko den objektua, eta ondoren aplikatu tresna hau.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="388"/>
       <source>Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</source>
-      <translation type="unfinished">Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</translation>
+      <translation>Hautatu inausiko den objektua, ondoren inausitakoan doituko den objektua, eta ondoren aplikatu tresna hau.</translation>
     </message>
   </context>
   <context>
@@ -6223,12 +6223,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="186"/>
       <source>Connect objects</source>
-      <translation type="unfinished">Connect objects</translation>
+      <translation>Konektatu objektuak</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="191"/>
       <source>Fuses objects, taking care to preserve voids.</source>
-      <translation type="unfinished">Fuses objects, taking care to preserve voids.</translation>
+      <translation>Objektuak fusionatzen ditu, hutsuneak mantentzen direla kontuan hartuta.</translation>
     </message>
   </context>
   <context>
@@ -6236,12 +6236,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="282"/>
       <source>Embed object</source>
-      <translation type="unfinished">Embed object</translation>
+      <translation>Kapsulatu objektua</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="287"/>
       <source>Fuses one object into another, taking care to preserve voids.</source>
-      <translation type="unfinished">Fuses one object into another, taking care to preserve voids.</translation>
+      <translation>Objektu bat beste batekin fusionatzen ditu, hutsuneei eutsita.</translation>
     </message>
   </context>
   <context>
@@ -6249,12 +6249,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="376"/>
       <source>Cutout for object</source>
-      <translation type="unfinished">Cutout for object</translation>
+      <translation>Inausi objektua</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="381"/>
       <source>Makes a cutout in one object to fit another object.</source>
-      <translation type="unfinished">Makes a cutout in one object to fit another object.</translation>
+      <translation>Objektu bat inausten du beste objektu bati doitzeko.</translation>
     </message>
   </context>
   <context>
@@ -6264,14 +6264,14 @@ Do you want to continue?</source>
       <location filename="../../../BOPTools/SplitFeatures.py" line="298"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="492"/>
       <source>Computing the result failed with an error:</source>
-      <translation type="unfinished">Computing the result failed with an error:</translation>
+      <translation>Emaitza kalkulatzean errore bat gertatu da:</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="156"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="299"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="493"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+      <translation>Egin klik 'Jarraitu' aukeran elementua sortzeko, edo sakatu 'Abortatu' bertan behera uzteko.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="157"/>
@@ -6282,7 +6282,7 @@ Do you want to continue?</source>
       <location filename="../../../BOPTools/SplitFeatures.py" line="494"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="535"/>
       <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>Hautapen okerra</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="159"/>
@@ -6295,7 +6295,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="180"/>
       <source>Boolean fragments</source>
-      <translation type="unfinished">Boolean fragments</translation>
+      <translation>Zati boolearrak</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="189"/>
@@ -6304,54 +6304,53 @@ or from the shapes inside a compound.
 This is a boolean union which is then sliced at the intersections
 of the original shapes.
 A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation type="unfinished">Create a 'Boolean Fragments' object from two or more selected objects,
-or from the shapes inside a compound.
-This is a boolean union which is then sliced at the intersections
-of the original shapes.
-A 'Compound Filter' can be used to extract the individual slices.</translation>
+      <translation>Sortu 'zati boolearrak' objektua hautatutako bi objektu edo gehiagorekin,
+edo konposatu baten barruko formekin.
+Batuketa boolearra da, jatorrizko formen ebakiduretan xerratzen dena.
+'Konposatu-iragazki' bat erabili daiteke banakako xerrak erauzteko.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="534"/>
       <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
-      <translation type="unfinished">Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</translation>
+      <translation>Hautatu gutxienez bi objektu edo konposatu bat edo gehiago. Konposatu bakar bat hautatzen baduzu, konposatutako formak elkarrekin ebakiko dira (bestela, autoebakidurak dituzten konposatuak baliogabeak dira).</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="337"/>
       <source>Slice to compound</source>
-      <translation type="unfinished">Slice to compound</translation>
+      <translation>Xerraketa konposatura</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="344"/>
       <source>Slice a selected object by using other objects as cutting tools.
 The resulting pieces will be stored in a compound.
 A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation type="unfinished">Slice a selected object by using other objects as cutting tools.
-The resulting pieces will be stored in a compound.
-A 'Compound Filter' can be used to extract the individual slices.</translation>
+      <translation>Xerratu objektu hautatu bat beste objektu batzuk mozte-tresna gisa erabilita.
+Sortuko diren piezak konposatu batean biltegiratuko dira.
+'Konposatu-iragazki' bat erabili daiteke banakako xerrak erauzteko.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="353"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="384"/>
       <source>Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</source>
-      <translation type="unfinished">Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</translation>
+      <translation>Hautatu bi objektu gutxienez. Lehena xerratuko den objektua da; gainerakoak xerratzeko erabiliko dira.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="369"/>
       <source>Slice apart</source>
-      <translation type="unfinished">Slice apart</translation>
+      <translation>Xerratu eta banandu</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="375"/>
       <source>Slice a selected object by other objects, and split it apart.
 It will create a 'Compound Filter' for each slice.</source>
-      <translation type="unfinished">Slice a selected object by other objects, and split it apart.
-It will create a 'Compound Filter' for each slice.</translation>
+      <translation>Xerratu objektu hautatu bat beste objektu batzuekin, eta banandu.
+'Konposatu-iragazki' bat sortuko da xerra bakoitzerako.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="517"/>
       <source>Boolean XOR</source>
-      <translation type="unfinished">Boolean XOR</translation>
+      <translation>XOR boolearra</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="525"/>
@@ -6359,10 +6358,10 @@ It will create a 'Compound Filter' for each slice.</translation>
 or with the shapes inside a compound.
 This means the overlapping volumes of the shapes will be removed.
 A 'Compound Filter' can be used to extract the remaining pieces.</source>
-      <translation type="unfinished">Perform an 'exclusive OR' boolean operation with two or more selected objects,
-or with the shapes inside a compound.
-This means the overlapping volumes of the shapes will be removed.
-A 'Compound Filter' can be used to extract the remaining pieces.</translation>
+      <translation>Gauzatu 'exclusive OR' eragiketa boolear bat hautatutako bi objekturekin edo gehiagorekin,
+edo konposatu baten barruko formekin.
+Horrek esan nahi du gainjarrita dauden formen bolumenak kendu egingo direla.
+'Konposatu-iragazki' bat erabili daiteke gainerako piezak erauzteko.</translation>
     </message>
   </context>
   <context>
@@ -6378,31 +6377,31 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
 area, or length, or by choosing specific items.
 If a second object is selected, it will be used as reference, for example,
 for collision or distance filtering.</source>
-      <translation type="unfinished">Filter out objects from a selected compound by characteristics like volume,
-area, or length, or by choosing specific items.
-If a second object is selected, it will be used as reference, for example,
-for collision or distance filtering.</translation>
+      <translation>Iragazi konposatu hautatu bateko objektuak beren ezaugarrien arabera, adibidez
+bolumenaren, arearen edo luzeraren arabera, edo elementu zehatzak aukeratuta.
+Bigarren objektu bat hautatzen bada, erreferentzia modura erabiliko da,
+adibidez talketarako edo distantzien iragazkietarako.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="70"/>
       <source>First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</source>
-      <translation type="unfinished">First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</translation>
+      <translation>Lehenengo, hautatu konposatua den forma bat. Bigarren elementu bat hautatzen bada (aukerakoa), txantiloi gisa erabiliko da.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="71"/>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="112"/>
       <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>Hautapen okerra</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="110"/>
       <source>Computing the result failed with an error:</source>
-      <translation type="unfinished">Computing the result failed with an error:</translation>
+      <translation>Emaitza kalkulatzean errore bat gertatu da:</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="111"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+      <translation>Egin klik 'Jarraitu' aukeran elementua sortzeko, edo sakatu 'Abortatu' bertan behera uzteko.</translation>
     </message>
   </context>
   <context>
@@ -6410,24 +6409,24 @@ for collision or distance filtering.</translation>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="50"/>
       <source>Explode compound</source>
-      <translation type="unfinished">Explode compound</translation>
+      <translation>Lehertu konposatua</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="56"/>
       <source>Split up a compound of shapes into separate objects.
 It will create a 'Compound Filter' for each shape.</source>
-      <translation type="unfinished">Split up a compound of shapes into separate objects.
-It will create a 'Compound Filter' for each shape.</translation>
+      <translation>Zatitu formen koponsatu bat banakako objektuetan.
+'Konposatu-iragazki' bat sortuko du forma bakoitzerako.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="62"/>
       <source>First select a shape that is a compound.</source>
-      <translation type="unfinished">First select a shape that is a compound.</translation>
+      <translation>Lehenengo, aukeratu konposatua den forma bat.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="63"/>
       <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>Hautapen okerra</translation>
     </message>
   </context>
   <context>
@@ -6435,22 +6434,22 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="87"/>
       <source>No object named {}</source>
-      <translation type="unfinished">No object named {}</translation>
+      <translation>Ez dago {} izena duen objekturik</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="91"/>
       <source>Failed to parse link (more than one colon encountered)</source>
-      <translation type="unfinished">Failed to parse link (more than one colon encountered)</translation>
+      <translation>Ezin izan da esteka analizatu (bi puntu marka bat baino gehiago aurkitu da)</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="204"/>
       <source>Object {} is neither movable nor attachable, can't edit attachment</source>
-      <translation type="unfinished">Object {} is neither movable nor attachable, can't edit attachment</translation>
+      <translation>{} izeneko objektua ezin da mugitu edo erantsi, ezin da eranskina editatu</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="214"/>
       <source>{} is not attachable. You can still use attachment editor dialog to align the object, but the attachment won't be parametric.</source>
-      <translation type="unfinished">{} is not attachable. You can still use attachment editor dialog to align the object, but the attachment won't be parametric.</translation>
+      <translation>{} ezin da erantsi. Erabili dezakezu oraindik eranskinen edizio-koadroa objektua lerrokatzeko, baina eranskina ez da parametrikoa izango.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="215"/>
@@ -6467,27 +6466,27 @@ It will create a 'Compound Filter' for each shape.</translation>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="272"/>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="317"/>
       <source>Edit attachment of {}</source>
-      <translation type="unfinished">Edit attachment of {}</translation>
+      <translation>Editatu {}(a)ren eranskina</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="362"/>
       <source>Ignored. Can't attach object to itself!</source>
-      <translation type="unfinished">Ignored. Can't attach object to itself!</translation>
+      <translation>Ez ikusia. Ezin zaio objektu bati objektu bera erantsi!</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="365"/>
       <source>{} depends on object being attached, can't use it for attachment</source>
-      <translation type="unfinished">{} depends on object being attached, can't use it for attachment</translation>
+      <translation>{} erantsitako objektuaren mendekoa da, ezin da eranskin gisa erabili</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="505"/>
       <source>{} (add {})</source>
-      <translation type="unfinished">{} (add {})</translation>
+      <translation>{} (gehitu {})</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="507"/>
       <source>{} (add more references)</source>
-      <translation type="unfinished">{} (add more references)</translation>
+      <translation>{} (gehitu erreferentzia gehiago)</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="537"/>
@@ -6497,7 +6496,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="553"/>
       <source>Reference{}</source>
-      <translation type="unfinished">Reference{}</translation>
+      <translation>Erreferentzia{}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="558"/>
@@ -6507,7 +6506,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="582"/>
       <source>Failed to resolve links. {}</source>
-      <translation type="unfinished">Failed to resolve links. {}</translation>
+      <translation>Ezin izan dira estekak ebatzi. {}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="590"/>
@@ -6517,12 +6516,12 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="593"/>
       <source>Attached with mode {}</source>
-      <translation type="unfinished">Attached with mode {}</translation>
+      <translation>{} moduan erantsia</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="599"/>
       <source>Error: {}</source>
-      <translation type="unfinished">Error: {}</translation>
+      <translation>Errorea: {}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="602"/>
@@ -6540,12 +6539,12 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="79"/>
       <source>Attachment...</source>
-      <translation type="unfinished">Attachment...</translation>
+      <translation>Eranskina...</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="83"/>
       <source>Edit attachment of selected object.</source>
-      <translation type="unfinished">Edit attachment of selected object.</translation>
+      <translation>Editatu hautatutako objektuaren eranskina.</translation>
     </message>
   </context>
 </TS>

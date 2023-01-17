@@ -2135,12 +2135,12 @@ invalid constraints, degenerated geometry, etc.</source>
   <context>
     <name>CriticalMessages</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="8322"/>
+      <location filename="../../../App/SketchObject.cpp" line="8327"/>
       <source>Sketch:</source>
       <translation>ესკიზი:</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="8323"/>
+      <location filename="../../../App/SketchObject.cpp" line="8328"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!</source>
       <translation type="unfinished">Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!</translation>
     </message>
@@ -2183,59 +2183,59 @@ invalid constraints, degenerated geometry, etc.</source>
       <translation>ავტომატური შეზღუდვის შეცდომა: თანასწორობის შეზღუდვების გადატარების შემდეგ ესკიზი ამოხსნადი არაა.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="1979"/>
+      <location filename="../../../App/SketchObject.cpp" line="1984"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>მრუდების კვეთის გამოცნობის შეცდომა. სცადეთ დაამატოთ დამთხვევების შეზღუდვები მრუდების წვეროებზე, რომლის მომრგვალებასაც ცდილობთ.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5860"/>
-      <location filename="../../../App/SketchObject.cpp" line="6034"/>
+      <location filename="../../../App/SketchObject.cpp" line="5865"/>
+      <location filename="../../../App/SketchObject.cpp" line="6039"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>B-სპლაინის გეომეტრიის ინდექსი (GeoID) დაშვებულ ლიმიტებს გარეთაა.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5863"/>
+      <location filename="../../../App/SketchObject.cpp" line="5868"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>თქვენ არ ითხოვთ ცვლილებას კვანძის გაყოფადობაში.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5868"/>
-      <location filename="../../../App/SketchObject.cpp" line="6042"/>
+      <location filename="../../../App/SketchObject.cpp" line="5873"/>
+      <location filename="../../../App/SketchObject.cpp" line="6047"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>გეომეტრიის მითითებული ინდექსი (GeoID) B-სპლაინის მრუდს არ წარმოადგენს.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5875"/>
+      <location filename="../../../App/SketchObject.cpp" line="5880"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>კვანძის ინდექსი საზღვრებს გარეთაა. დაიმახსოვრეთ, რომ OCC ნოტაციების შესაბამისად, პირველი კვანძის ინდექსი 1-ია და არა 0.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5882"/>
+      <location filename="../../../App/SketchObject.cpp" line="5887"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>სიმრავლე არ შეიძლება გაიზარდოს B-სპლაინის დონის მიღმა.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5885"/>
+      <location filename="../../../App/SketchObject.cpp" line="5890"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>სიმრავლე არ შეიძლება შემცირდეს ნულს მიღმა.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5897"/>
+      <location filename="../../../App/SketchObject.cpp" line="5902"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC-ს არ შეუძლია შეამციროს სიმრავლე მაქსიმალური ტოლერანტობის ფარგლებში.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6037"/>
+      <location filename="../../../App/SketchObject.cpp" line="6042"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>კვანძებს არ შეიძლება ნულოვანი მამრავლი ჰქონდეს.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6051"/>
+      <location filename="../../../App/SketchObject.cpp" line="6056"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
       <translation>კვანძის მამრავლი არ შეიძლება B-სპლაინის დონეზე დიდი იყოს.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6054"/>
+      <location filename="../../../App/SketchObject.cpp" line="6059"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
       <translation>კვანძის ჩასმა B-სპლაინის პარამეტრების დიაპაზონის გარეთ შეუძლებელია.</translation>
     </message>
@@ -2482,7 +2482,7 @@ invalid constraints, degenerated geometry, etc.</source>
       <translation type="unfinished">Not allowed to edit the datum because the sketch contains conflicting constraints</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="220"/>
+      <location filename="../../EditDatumDialog.cpp" line="222"/>
       <source>Dimensional constraint</source>
       <translation>სივრცული შეზღუდვა</translation>
     </message>
@@ -2899,7 +2899,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../CommandConstraints.cpp" line="4233"/>
       <source>Tangent constraint at B-spline knot is only supported with lines!</source>
-      <translation type="unfinished">Tangent constraint at B-spline knot is only supported with lines!</translation>
+      <translation>მხების მზღუდავი B-სპლაინის კვანძთან მხოლოდ ხაზებითაა მხარდაჭერილი!</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4249"/>
@@ -5629,8 +5629,8 @@ Select the method to attach this sketch to selected objects.</source>
       <location filename="../../Command.cpp" line="390"/>
       <source>Sketch with a support face cannot be reoriented.
 Do you want to detach it from the support?</source>
-      <translation type="unfinished">Sketch with a support face cannot be reoriented.
-Do you want to detach it from the support?</translation>
+      <translation>საყრდნობი ზედაპირის მქონე ესკიზის ორიენტაციის შეცვლა შეუძლებელია.
+გნებავთ ის საყრდენს მოხსნათ?</translation>
     </message>
   </context>
   <context>
@@ -5864,7 +5864,7 @@ Eigen Sparse QR ალგორითმი ოპტიმიზებული
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="415"/>
       <source>Maximum number of iterations of the solver used for determination of Redundant constraints</source>
-      <translation type="unfinished">Maximum number of iterations of the solver used for determination of Redundant constraints</translation>
+      <translation>დამატებითი შეზღუდვების დადგენისთვის გამოყენებული ამომხსნელის იტერაციების მაქსიმალური რაოდენობა</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="418"/>

@@ -170,7 +170,7 @@
       <translation>Gehitu talde bat</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="988"/>
+      <location filename="../ManualAlignment.cpp" line="985"/>
       <source>Align</source>
       <translation>Lerrokatu</translation>
     </message>
@@ -485,12 +485,12 @@
   <context>
     <name>Gui::AlignmentView</name>
     <message>
-      <location filename="../ManualAlignment.cpp" line="428"/>
+      <location filename="../ManualAlignment.cpp" line="425"/>
       <source>Movable object</source>
       <translation>Objektu mugikorra</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="430"/>
+      <location filename="../ManualAlignment.cpp" line="427"/>
       <source>Fixed object</source>
       <translation>Objektu finkoa</translation>
     </message>
@@ -853,7 +853,7 @@ while doing a left or right click and move the mouse up or down</source>
   <context>
     <name>Gui::Dialog::CommandModel</name>
     <message>
-      <location filename="../DlgCustomizeSpaceball.cpp" line="465"/>
+      <location filename="../DlgCustomizeSpaceball.cpp" line="464"/>
       <source>Commands</source>
       <translation>Komandoak</translation>
     </message>
@@ -1262,16 +1262,15 @@ Hau markatuta ez badago, propietateak izen bakarra izan behar du eta 'obj.Izena'
     <message>
       <location filename="../DlgKeyboard.ui" line="134"/>
       <source>Multi-key sequence delay: </source>
-      <translation type="unfinished">Multi-key sequence delay: </translation>
+      <translation>Tekla anitzeko sekuentziaren atzerapena: </translation>
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="153"/>
       <source>Time in milliseconds to wait for the next key stroke of the current key sequence.
 For example, pressing 'F' twice in less than the time delay setting here will be
 be treated as shorctcut key sequence 'F, F'.</source>
-      <translation type="unfinished">Time in milliseconds to wait for the next key stroke of the current key sequence.
-For example, pressing 'F' twice in less than the time delay setting here will be
-be treated as shorctcut key sequence 'F, F'.</translation>
+      <translation>Uneko tekla-sekuentziako hurrengo tekla-kolpea itxaroten emango den denbora, milisegundotan.
+Adibiez, 'F' bi aldiz sakatzen bada ezarritako denbora-tartearen barruan, lasterbidea 'F, F' sekuentzia izango da.</translation>
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="183"/>
@@ -1285,7 +1284,7 @@ same time. The one with the highest priority will be triggered.</translation>
     <message>
       <location filename="../DlgKeyboard.ui" line="188"/>
       <source>Shortcut priority list:</source>
-      <translation type="unfinished">Shortcut priority list:</translation>
+      <translation>Lasterbide-lehentasunen zerrenda:</translation>
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="235"/>
@@ -1342,7 +1341,7 @@ same time. The one with the highest priority will be triggered.</translation>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="122"/>
       <source>Type to search...</source>
-      <translation type="unfinished">Type to search...</translation>
+      <translation>Idatzi bilatzeko...</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="199"/>
@@ -1465,7 +1464,7 @@ same time. The one with the highest priority will be triggered.</translation>
     <message>
       <location filename="../DlgToolbars.ui" line="334"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; The changes become active the next time you load the appropriate workbench&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; The changes become active the next time you load the appropriate workbench&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Oharra:&lt;/span&gt; Lan-mahai egokia kargatzerakoan gaituko dira aldaketak&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../DlgToolbarsImp.cpp" line="84"/>
@@ -1560,27 +1559,27 @@ same time. The one with the highest priority will be triggered.</translation>
   <context>
     <name>Gui::Dialog::DlgCustomizeSpaceball</name>
     <message>
-      <location filename="../DlgCustomizeSpaceball.cpp" line="665"/>
+      <location filename="../DlgCustomizeSpaceball.cpp" line="664"/>
       <source>Spaceball Buttons</source>
       <translation>Spaceballen botoiak</translation>
     </message>
     <message>
-      <location filename="../DlgCustomizeSpaceball.cpp" line="671"/>
+      <location filename="../DlgCustomizeSpaceball.cpp" line="670"/>
       <source>No Spaceball Present</source>
       <translation>Ez dago Spaceballik</translation>
     </message>
     <message>
-      <location filename="../DlgCustomizeSpaceball.cpp" line="723"/>
+      <location filename="../DlgCustomizeSpaceball.cpp" line="722"/>
       <source>Buttons</source>
       <translation>Botoiak</translation>
     </message>
     <message>
-      <location filename="../DlgCustomizeSpaceball.cpp" line="724"/>
+      <location filename="../DlgCustomizeSpaceball.cpp" line="723"/>
       <source>Reset</source>
       <translation>Berrezarri</translation>
     </message>
     <message>
-      <location filename="../DlgCustomizeSpaceball.cpp" line="754"/>
+      <location filename="../DlgCustomizeSpaceball.cpp" line="753"/>
       <source>Print Reference</source>
       <translation>Inprimaketa-erreferentzia</translation>
     </message>
@@ -1630,7 +1629,7 @@ same time. The one with the highest priority will be triggered.</translation>
     <message>
       <location filename="../DlgDisplayProperties.ui" line="193"/>
       <source>Point color:</source>
-      <translation type="unfinished">Point color:</translation>
+      <translation>Puntuaren kolorea:</translation>
     </message>
     <message>
       <location filename="../DlgDisplayProperties.ui" line="208"/>
@@ -1951,15 +1950,15 @@ same time. The one with the highest priority will be triggered.</translation>
 will be substituted with locale separator, except
 in Python Console and Macro Editor where a
 dot/period will always be printed.</source>
-      <translation type="unfinished">If enabled, numerical keypad decimal separator
-will be substituted with locale separator, except
-in Python Console and Macro Editor where a
-dot/period will always be printed.</translation>
+      <translation>Gaituta badago, zenbakizko teklatuaren dezimalen bereizlea
+hizkuntza-ezarpenetako hizkuntzaren bereizlearekin
+ordeztuko da, Python kontsolan eta makro-editorean salbu,
+horietan beti puntu bat inprimatuko baita.</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="114"/>
       <source>Substitute decimal separator (numpad)</source>
-      <translation type="unfinished">Substitute decimal separator (numpad)</translation>
+      <translation>Ordeztu dezimalen bereizlea (zenbakizko teklatua)</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="130"/>
@@ -1984,7 +1983,7 @@ dot/period will always be printed.</translation>
     <message>
       <location filename="../DlgGeneral.ui" line="241"/>
       <source>Import config...</source>
-      <translation type="unfinished">Import config...</translation>
+      <translation>Inportatu konfigurazioa...</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="248"/>
@@ -2081,7 +2080,7 @@ Zure pantaila-tamainaren edo gustu pertsonalen arabera doitu daiteke.</translati
     <message>
       <location filename="../DlgGeneral.ui" line="531"/>
       <source>Workbench selector position :</source>
-      <translation type="unfinished">Workbench selector position :</translation>
+      <translation>Lan-mahaien hautatzailearen kokalekua :</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="538"/>
@@ -2203,7 +2202,7 @@ abioko pantaila erakutsiko du.</translation>
     <message>
       <location filename="../DlgGeneralImp.cpp" line="474"/>
       <source>Choose a FreeCAD config file to import</source>
-      <translation type="unfinished">Choose a FreeCAD config file to import</translation>
+      <translation>Aukeratu inportatuko den FreeCAD konfigurazio-fitxategia</translation>
     </message>
     <message>
       <location filename="../DlgGeneralImp.cpp" line="485"/>
@@ -2961,7 +2960,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     <message>
       <location filename="../DlgProjectInformation.ui" line="300"/>
       <source>&amp;Comment:</source>
-      <translation type="unfinished">&amp;Comment:</translation>
+      <translation>&amp;Iruzkina:</translation>
     </message>
     <message>
       <source/>
@@ -3075,12 +3074,12 @@ Zehaztu beste direktorio, mesedez.</translation>
       <translation>Goiko emaitzak iragazteko erabiliko den bilaketa-eredu bat</translation>
     </message>
     <message>
-      <location filename="../DlgPropertyLink.cpp" line="98"/>
+      <location filename="../DlgPropertyLink.cpp" line="99"/>
       <source>Reset</source>
       <translation>Berrezarri</translation>
     </message>
     <message>
-      <location filename="../DlgPropertyLink.cpp" line="99"/>
+      <location filename="../DlgPropertyLink.cpp" line="100"/>
       <source>Clear</source>
       <translation>Garbitu</translation>
     </message>
@@ -3454,16 +3453,17 @@ can be rendered directly by GPU.
 Note: Sometimes this feature may lead to a host of different
 issues ranging from graphical anomalies to GPU crash bugs. Remember to
 report this setting as enabled when seeking support on the FreeCAD forums</source>
-      <translation type="unfinished">If selected, Vertex Buffer Objects (VBO) will be used.
-A VBO is an OpenGL feature that provides methods for uploading
-vertex data (position, normal vector, color, etc.) to the graphics card.
-VBOs offer substantial performance gains because the data resides
-in the graphics memory rather than the system memory and so it
-can be rendered directly by GPU.
+      <translation>Hautatuta badago, Vertex Buffer Objects (VBO) erabiliko da.
+VBO bat erpinen datuak (posizioa, bektore normala, kolorea, etab.)
+txartel grafikoan kargatzeko hornitzen dituen OpenGL eginbide bat da.
+VBOek errendimendu-hobekuntza nabarmenak ematen dituzte datuak
+memoria grafikoan daudelako sistemaren memorian egon ordez, eta
+zuzenean GPUak errendatu ditzakeelako.
 
-Note: Sometimes this feature may lead to a host of different
-issues ranging from graphical anomalies to GPU crash bugs. Remember to
-report this setting as enabled when seeking support on the FreeCAD forums</translation>
+Oharra: Zenbaitetan, eginbide horrek beste arazo batzuk eragin
+ditzake, adibidez anormaltasun grafikoak edo GPUa kraskatzen duten akatsak.
+Gogoan izan ezarpen hori gaituta daukazula FreeCAD foroetan laguntza eske
+ari bazara.</translation>
     </message>
     <message>
       <location filename="../DlgSettings3DView.ui" line="224"/>
@@ -3474,13 +3474,13 @@ There are 3 options available to achieve this:
 3) 'Centralized', manually turn off cache in all nodes of all view provider, and
 only cache at the scene graph root node. This offers the fastest rendering speed
 but slower response to any scene changes.</source>
-      <translation type="unfinished">'Render Caching' is another way to say 'Rendering Acceleration'.
-There are 3 options available to achieve this:
-1) 'Auto' (default), let Coin3D decide where to cache.
-2) 'Distributed', manually turn on cache for all view provider root node.
-3) 'Centralized', manually turn off cache in all nodes of all view provider, and
-only cache at the scene graph root node. This offers the fastest rendering speed
-but slower response to any scene changes.</translation>
+      <translation>'Errendatze-cachea' da 'errendatze-azelerazioa' esateko beste modu bat.
+Hiru aukera daude hori lortzeko: 
+1) 'Auto' (lehenetsia), utzi Coin3D liburutegiari erabakitzen zer sartu cachean.
+2) 'Banatua', aktibatu eskuz cachea bista-hornitzaileen erro-nodo guztietan.
+3) 'Zentralizatua', desaktibatu eskuz cachea bista-hornitzaile guztien nodo guztietan
+eta sartu cachean eszena-grafoaren erro-nodoa soilik. Horrek errendatze-abiadura
+azkarrena eskaintzen du, baina erantzun motelagoa eszena-aldaketetan.</translation>
     </message>
     <message>
       <location filename="../DlgSettings3DView.ui" line="237"/>
@@ -4099,7 +4099,7 @@ formatuaren arabera</translation>
     <message>
       <location filename="../DlgSettingsDocument.ui" line="559"/>
       <source>Allow objects to have same label</source>
-      <translation type="unfinished">Allow objects to have same label</translation>
+      <translation>Onartu objektuek etiketa bera izan dezaten</translation>
     </message>
     <message>
       <location filename="../DlgSettingsDocument.ui" line="562"/>
@@ -4825,7 +4825,7 @@ Free Turntable: the part will be rotated around the z-axis.</translation>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="300"/>
       <source>Free Turntable</source>
-      <translation type="unfinished">Free Turntable</translation>
+      <translation>Tornu librea</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="308"/>
@@ -5233,12 +5233,12 @@ espazioa baino gehiago behar dutenean</translation>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="309"/>
       <source>Switches the colors of the gradient</source>
-      <translation type="unfinished">Switches the colors of the gradient</translation>
+      <translation>Gradientearen koloreak alderantzikatzen ditu</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="312"/>
       <source>Switch</source>
-      <translation type="unfinished">Switch</translation>
+      <translation>Alderantzikatu</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="332"/>
@@ -5475,7 +5475,7 @@ Hobespen-sistema hobespen orokorretan ezarritakoa da.</translation>
     <message>
       <location filename="../DlgWorkbenches.ui" line="272"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-size:8pt; font-weight:600;"&gt;Note:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; The changes become active the next time you start the application&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-size:8pt; font-weight:600;"&gt;Note:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; The changes become active the next time you start the application&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-size:8pt; font-weight:600;"&gt;Oharra:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; Aplikazioa abiarazten duzun hurrengoan aktibatuko dira aldaketak&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -5781,7 +5781,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../MouseButtons.ui" line="48"/>
       <source>Panning:</source>
-      <translation type="unfinished">Panning:</translation>
+      <translation>Panoramika:</translation>
     </message>
     <message>
       <location filename="../MouseButtons.ui" line="68"/>
@@ -6100,12 +6100,12 @@ The 'Status' column shows whether the document could be recovered.</source>
   <context>
     <name>Gui::Dialog::PrintModel</name>
     <message>
-      <location filename="../DlgCustomizeSpaceball.cpp" line="646"/>
+      <location filename="../DlgCustomizeSpaceball.cpp" line="645"/>
       <source>Button</source>
       <translation>Botoia</translation>
     </message>
     <message>
-      <location filename="../DlgCustomizeSpaceball.cpp" line="648"/>
+      <location filename="../DlgCustomizeSpaceball.cpp" line="647"/>
       <source>Command</source>
       <translation>Komandoa</translation>
     </message>
@@ -6267,7 +6267,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../DlgObjectSelection.ui" line="164"/>
       <source>Show dependencies</source>
-      <translation type="unfinished">Show dependencies</translation>
+      <translation>Erakutsi mendekotasunak</translation>
     </message>
     <message>
       <location filename="../DlgObjectSelection.cpp" line="115"/>
@@ -6399,7 +6399,7 @@ hautatutako objektuekin</translation>
     <message>
       <location filename="../ReportView.cpp" line="574"/>
       <source>Show Report view on</source>
-      <translation type="unfinished">Show Report view on</translation>
+      <translation>Erakutsi txosten-bista honakoan</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="595"/>
@@ -6656,13 +6656,13 @@ Aldaketak gorde nahi dituzu?</translation>
   <context>
     <name>Gui::FileChooser</name>
     <message>
-      <location filename="../FileDialog.cpp" line="754"/>
-      <location filename="../FileDialog.cpp" line="756"/>
+      <location filename="../FileDialog.cpp" line="751"/>
+      <location filename="../FileDialog.cpp" line="753"/>
       <source>Select a file</source>
       <translation>Hautatu fitxategi bat</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="759"/>
+      <location filename="../FileDialog.cpp" line="756"/>
       <source>Select a directory</source>
       <translation>Hautatu direktorio bat</translation>
     </message>
@@ -6670,13 +6670,13 @@ Aldaketak gorde nahi dituzu?</translation>
   <context>
     <name>Gui::FileDialog</name>
     <message>
-      <location filename="../FileDialog.cpp" line="205"/>
+      <location filename="../FileDialog.cpp" line="204"/>
       <source>Save as</source>
       <translation>Gorde honela</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="281"/>
-      <location filename="../FileDialog.cpp" line="334"/>
+      <location filename="../FileDialog.cpp" line="280"/>
+      <location filename="../FileDialog.cpp" line="333"/>
       <source>Open</source>
       <translation>Ireki</translation>
     </message>
@@ -6684,12 +6684,12 @@ Aldaketak gorde nahi dituzu?</translation>
   <context>
     <name>Gui::FileOptionsDialog</name>
     <message>
-      <location filename="../FileDialog.cpp" line="443"/>
+      <location filename="../FileDialog.cpp" line="442"/>
       <source>Extended</source>
       <translation>Hedatua</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="485"/>
+      <location filename="../FileDialog.cpp" line="484"/>
       <source>All files (*.*)</source>
       <translation>Fitxategi guztiak (*.*)</translation>
     </message>
@@ -6823,12 +6823,12 @@ Aldaketak gorde nahi dituzu?</translation>
   <context>
     <name>Gui::InputField</name>
     <message>
-      <location filename="../InputField.cpp" line="198"/>
+      <location filename="../InputField.cpp" line="197"/>
       <source>Edit</source>
       <translation>Editatu</translation>
     </message>
     <message>
-      <location filename="../InputField.cpp" line="218"/>
+      <location filename="../InputField.cpp" line="217"/>
       <source>Save value</source>
       <translation>Gorde balioa</translation>
     </message>
@@ -6859,7 +6859,7 @@ Aldaketak gorde nahi dituzu?</translation>
   <context>
     <name>Gui::LabelEditor</name>
     <message>
-      <location filename="../Widgets.cpp" line="1496"/>
+      <location filename="../Widgets.cpp" line="1495"/>
       <source>List</source>
       <translation>Zerrenda</translation>
     </message>
@@ -6976,63 +6976,63 @@ Aldaketak gorde nahi dituzu?</translation>
   <context>
     <name>Gui::MainWindow</name>
     <message>
-      <location filename="../MainWindow.cpp" line="299"/>
-      <location filename="../MainWindow.cpp" line="1958"/>
+      <location filename="../MainWindow.cpp" line="298"/>
+      <location filename="../MainWindow.cpp" line="1952"/>
       <source>Dimension</source>
       <translation>Kota</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="349"/>
+      <location filename="../MainWindow.cpp" line="348"/>
       <source>Ready</source>
       <translation>Prest</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="766"/>
+      <location filename="../MainWindow.cpp" line="760"/>
       <source>Help addon needed!</source>
       <translation>Laguntza-gehigarria behar da.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="767"/>
+      <location filename="../MainWindow.cpp" line="761"/>
       <source>The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</source>
       <translation>%1(e)n laguntza-sistema "Laguntza" gehigarriaren bidez kudeatzen da. Gehigarrien kudeatzailearen bidez instalatu daiteke.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="769"/>
+      <location filename="../MainWindow.cpp" line="763"/>
       <source>Open Addon Manager</source>
       <translation>Ireki gehigarrien kudeatzailea</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="964"/>
+      <location filename="../MainWindow.cpp" line="958"/>
       <source>Close All</source>
       <translation>Itxi dena</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1168"/>
-      <location filename="../MainWindow.cpp" line="1169"/>
-      <location filename="../MainWindow.cpp" line="1170"/>
+      <location filename="../MainWindow.cpp" line="1162"/>
+      <location filename="../MainWindow.cpp" line="1163"/>
+      <location filename="../MainWindow.cpp" line="1164"/>
       <source>Toggles this toolbar</source>
       <translation>Tresna-barra hau aktibatzen/desaktibatzen du</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1183"/>
-      <location filename="../MainWindow.cpp" line="1184"/>
-      <location filename="../MainWindow.cpp" line="1185"/>
+      <location filename="../MainWindow.cpp" line="1177"/>
+      <location filename="../MainWindow.cpp" line="1178"/>
+      <location filename="../MainWindow.cpp" line="1179"/>
       <source>Toggles this dockable window</source>
       <translation>Aktibatu/desaktibatu leiho atrakagarri hau</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1749"/>
-      <location filename="../MainWindow.cpp" line="1841"/>
+      <location filename="../MainWindow.cpp" line="1743"/>
+      <location filename="../MainWindow.cpp" line="1835"/>
       <source>Unsaved document</source>
       <translation>Gorde gabeko dokumentua</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1750"/>
+      <location filename="../MainWindow.cpp" line="1744"/>
       <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
       <translation>Esportatutako objektuak kanpoko estekak ditu. Gorde dokumentua gutxienez behin hura esportatu baino lehen.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1842"/>
+      <location filename="../MainWindow.cpp" line="1836"/>
       <source>To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</source>
       <translation>Kanpoko objektuekin estekatzeko, dokumentua gutxienez behin gorde behar da.
@@ -7042,63 +7042,63 @@ Dokumentua gorde nahi al duzu?</translation>
   <context>
     <name>Gui::ManualAlignment</name>
     <message>
-      <location filename="../ManualAlignment.cpp" line="802"/>
-      <location filename="../ManualAlignment.cpp" line="960"/>
-      <location filename="../ManualAlignment.cpp" line="965"/>
-      <location filename="../ManualAlignment.cpp" line="970"/>
-      <location filename="../ManualAlignment.cpp" line="1002"/>
+      <location filename="../ManualAlignment.cpp" line="799"/>
+      <location filename="../ManualAlignment.cpp" line="957"/>
+      <location filename="../ManualAlignment.cpp" line="962"/>
+      <location filename="../ManualAlignment.cpp" line="967"/>
+      <location filename="../ManualAlignment.cpp" line="999"/>
       <source>Manual alignment</source>
       <translation>Eskuzko lerrokatzea</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="802"/>
+      <location filename="../ManualAlignment.cpp" line="799"/>
       <source>The alignment is already in progress.</source>
       <translation>Lerrokatzea abian dago.</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="815"/>
+      <location filename="../ManualAlignment.cpp" line="812"/>
       <source>Alignment[*]</source>
       <translation>Lerrokatzea [*]</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="822"/>
+      <location filename="../ManualAlignment.cpp" line="819"/>
       <source>Please, select at least one point in the left and the right view</source>
       <translation>Hautatu gutxienez puntu bat ezkerreko eta eskuineko bistan</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="823"/>
+      <location filename="../ManualAlignment.cpp" line="820"/>
       <source>Please, select at least %1 points in the left and the right view</source>
       <translation>Hautatu gutxienez %1 puntu ezkerreko eta eskuineko bistan</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="876"/>
+      <location filename="../ManualAlignment.cpp" line="873"/>
       <source>Please pick points in the left and right view</source>
       <translation>Aukeratu ezkerreko zein eskuineko bistetako puntuak</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="932"/>
+      <location filename="../ManualAlignment.cpp" line="929"/>
       <source>The alignment has finished</source>
       <translation>Lerrokatzea amaitu da</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="950"/>
+      <location filename="../ManualAlignment.cpp" line="947"/>
       <source>The alignment has been canceled</source>
       <translation>Lerrokatzea bertan behera utzi da</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="961"/>
-      <location filename="../ManualAlignment.cpp" line="1023"/>
+      <location filename="../ManualAlignment.cpp" line="958"/>
+      <location filename="../ManualAlignment.cpp" line="1020"/>
       <source>Too few points picked in the left view. At least %1 points are needed.</source>
       <translation>Puntu gutxiegi aukeratu dira ezkerreko bistan. Gutxienez %1 puntu behar dira.</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="966"/>
-      <location filename="../ManualAlignment.cpp" line="1028"/>
+      <location filename="../ManualAlignment.cpp" line="963"/>
+      <location filename="../ManualAlignment.cpp" line="1025"/>
       <source>Too few points picked in the right view. At least %1 points are needed.</source>
       <translation>Puntu gutxiegi aukeratu dira eskuineko bistan. Gutxienez %1 puntu behar dira.</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="971"/>
+      <location filename="../ManualAlignment.cpp" line="968"/>
       <source>Different number of points picked in left and right view.
 On the left view %1 points are picked,
 on the right view %2 points are picked.</source>
@@ -7107,34 +7107,34 @@ Ezkerreko bistan %1 puntu aukeratu dira,
 eskuineko bistan %2 puntu aukeratu dira.</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="982"/>
+      <location filename="../ManualAlignment.cpp" line="979"/>
       <source>Try to align group of views</source>
       <translation>Saiatu bista-taldea lerrokatzen</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1003"/>
+      <location filename="../ManualAlignment.cpp" line="1000"/>
       <source>The alignment failed.
 How do you want to proceed?</source>
       <translation>Lerrokatzeak huts egin du.
 Nola jarraitu nahi duzu?</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1033"/>
+      <location filename="../ManualAlignment.cpp" line="1030"/>
       <source>Different number of points picked in left and right view. On the left view %1 points are picked, on the right view %2 points are picked.</source>
       <translation>Puntu kopuru desberdina aukeratu da ezkerreko eta eskuineko bistetan. Ezkerreko bistan %1 puntu aukeratu dira, eskuineko bistan %2 puntu aukeratu dira.</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1240"/>
+      <location filename="../ManualAlignment.cpp" line="1237"/>
       <source>Point picked at (%1,%2,%3)</source>
       <translation>Puntu hautatua (%1,%2,%3)</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1245"/>
+      <location filename="../ManualAlignment.cpp" line="1242"/>
       <source>No point was found on model</source>
       <translation>Ez da punturik aurkitu ereduan</translation>
     </message>
     <message>
-      <location filename="../ManualAlignment.cpp" line="1251"/>
+      <location filename="../ManualAlignment.cpp" line="1248"/>
       <source>No point was picked</source>
       <translation>Ez da punturik aukeratu</translation>
     </message>
@@ -7263,17 +7263,17 @@ Nola jarraitu nahi duzu?</translation>
   <context>
     <name>Gui::ProgressDialog</name>
     <message>
-      <location filename="../ProgressDialog.cpp" line="221"/>
+      <location filename="../ProgressDialog.cpp" line="219"/>
       <source>Remaining: %1</source>
       <translation>Falta da: %1</translation>
     </message>
     <message>
-      <location filename="../ProgressDialog.cpp" line="322"/>
+      <location filename="../ProgressDialog.cpp" line="320"/>
       <source>Aborting</source>
       <translation>Abortatzen</translation>
     </message>
     <message>
-      <location filename="../ProgressDialog.cpp" line="323"/>
+      <location filename="../ProgressDialog.cpp" line="321"/>
       <source>Do you really want to abort the operation?</source>
       <translation>Benetan eragiketa bertan behera utzi nahi duzu?</translation>
     </message>
@@ -7302,48 +7302,48 @@ Nola jarraitu nahi duzu?</translation>
   <context>
     <name>Gui::PropertyEditor::PropertyEditor</name>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="292"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="290"/>
       <source>Edit</source>
       <translation>Editatu</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="302"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="300"/>
       <source>property</source>
       <translation>propietatea</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="632"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="630"/>
       <source>Auto expand</source>
       <translation>Hedatu automatikoki</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="637"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="635"/>
       <source>Show all</source>
       <translation>Erakutsi dena</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="671"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="669"/>
       <source>Expression...</source>
       <translation>Adierazpena...</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="677"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="675"/>
       <source>Add property</source>
       <translation>Gehitu propietatea</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="683"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="794"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="681"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="792"/>
       <source>Rename property group</source>
       <translation>Aldatu propietate-taldearen izena</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="700"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="698"/>
       <source>Remove property</source>
       <translation>Kendu propietatea</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="794"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="792"/>
       <source>Group name:</source>
       <translation>Taldearen izena:</translation>
     </message>
@@ -7597,17 +7597,17 @@ Datuak gorde gabe irten nahi duzu?</translation>
   <context>
     <name>Gui::SelectModule</name>
     <message>
-      <location filename="../FileDialog.cpp" line="852"/>
+      <location filename="../FileDialog.cpp" line="849"/>
       <source>Select module</source>
       <translation>Hautatu modulua</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="854"/>
+      <location filename="../FileDialog.cpp" line="851"/>
       <source>Open %1 as</source>
       <translation>Ireki %1 honela:</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="906"/>
+      <location filename="../FileDialog.cpp" line="903"/>
       <source>Select</source>
       <translation>Hautatu</translation>
     </message>
@@ -8077,7 +8077,7 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
     <message>
       <location filename="Translator.cpp" line="168"/>
       <source>Serbian, Latin</source>
-      <translation type="unfinished">Serbian, Latin</translation>
+      <translation>Serbiera, latinoa</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="169"/>
@@ -8133,7 +8133,7 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
   <context>
     <name>Gui::TreeDockWidget</name>
     <message>
-      <location filename="../Tree.cpp" line="3094"/>
+      <location filename="../Tree.cpp" line="3112"/>
       <source>Tree view</source>
       <translation>Zuhaitz-bista</translation>
     </message>
@@ -8141,7 +8141,7 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
   <context>
     <name>Gui::TreePanel</name>
     <message>
-      <location filename="../Tree.cpp" line="3020"/>
+      <location filename="../Tree.cpp" line="3038"/>
       <source>Search</source>
       <translation>Bilatu</translation>
     </message>
@@ -8159,163 +8159,163 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
       <translation>Bilatu objektuak</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="890"/>
+      <location filename="../Tree.cpp" line="883"/>
       <source>Activate document</source>
       <translation>Aktibatu dokumentua</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="897"/>
+      <location filename="../Tree.cpp" line="890"/>
       <source>Activate document %1</source>
       <translation>Aktibatu %1 dokumentua</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="934"/>
+      <location filename="../Tree.cpp" line="927"/>
       <source>Group</source>
       <translation>Taldea</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2747"/>
+      <location filename="../Tree.cpp" line="2765"/>
       <source>Labels &amp; Attributes</source>
       <translation>Etiketak eta atributuak</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2748"/>
+      <location filename="../Tree.cpp" line="2766"/>
       <source>Description</source>
       <translation>Deskribapena</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2749"/>
+      <location filename="../Tree.cpp" line="2767"/>
       <source>Application</source>
       <translation>Aplikazioa</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2751"/>
+      <location filename="../Tree.cpp" line="2769"/>
       <source>Show hidden items</source>
       <translation>Erakutsi ezkutuko elementuak</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2752"/>
+      <location filename="../Tree.cpp" line="2770"/>
       <source>Show hidden tree view items</source>
       <translation>Erakutsi zuhaitz-bistako elementu ezkutuak</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2754"/>
+      <location filename="../Tree.cpp" line="2772"/>
       <source>Hide item</source>
       <translation>Ezkutatu elementuak</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2755"/>
+      <location filename="../Tree.cpp" line="2773"/>
       <source>Hide the item in tree</source>
       <translation>Ezkutatu elementua zuhaitzean</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2757"/>
+      <location filename="../Tree.cpp" line="2775"/>
       <source>Create group...</source>
       <translation>Sortu taldea...</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2758"/>
+      <location filename="../Tree.cpp" line="2776"/>
       <source>Create a group</source>
       <translation>Sortu talde bat</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2760"/>
-      <location filename="../Tree.cpp" line="4874"/>
+      <location filename="../Tree.cpp" line="2778"/>
+      <location filename="../Tree.cpp" line="4892"/>
       <source>Rename</source>
       <translation>Aldatu izena</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2761"/>
+      <location filename="../Tree.cpp" line="2779"/>
       <source>Rename object</source>
       <translation>Aldatu objektuaren izena</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2763"/>
+      <location filename="../Tree.cpp" line="2781"/>
       <source>Finish editing</source>
       <translation>Amaitu edizioa</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2764"/>
+      <location filename="../Tree.cpp" line="2782"/>
       <source>Finish editing object</source>
       <translation>Amaitu objektuaren edizioa</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2766"/>
+      <location filename="../Tree.cpp" line="2784"/>
       <source>Add dependent objects to selection</source>
       <translation>Gehitu mendeko objektuak hautapenari</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2767"/>
+      <location filename="../Tree.cpp" line="2785"/>
       <source>Adds all dependent objects to the selection</source>
       <translation>Mendeko objektu guztiak hautapenari gehitzen dizkio</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2769"/>
+      <location filename="../Tree.cpp" line="2787"/>
       <source>Close document</source>
       <translation>Itxi dokumentua</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2770"/>
+      <location filename="../Tree.cpp" line="2788"/>
       <source>Close the document</source>
       <translation>Itxi dokumentua</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2772"/>
+      <location filename="../Tree.cpp" line="2790"/>
       <source>Reload document</source>
       <translation>Birkargatu dokumentua</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2773"/>
+      <location filename="../Tree.cpp" line="2791"/>
       <source>Reload a partially loaded document</source>
       <translation>Birkargatu partzialki kargatutako dokumentu bat</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2775"/>
+      <location filename="../Tree.cpp" line="2793"/>
       <source>Skip recomputes</source>
       <translation>Saltatu birkalkuluak</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2776"/>
+      <location filename="../Tree.cpp" line="2794"/>
       <source>Enable or disable recomputations of document</source>
       <translation>Gaitu edo desgaitu dokumentuaren birkalkuluak</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2778"/>
+      <location filename="../Tree.cpp" line="2796"/>
       <source>Allow partial recomputes</source>
       <translation>Onartu birkalkulu partzialak</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2780"/>
+      <location filename="../Tree.cpp" line="2798"/>
       <source>Enable or disable recomputating editing object when 'skip recomputation' is enabled</source>
       <translation>Gaitu edo desgaitu objektuaren edizioa birkalkulatzea 'Saltatu birkalkulua' gaituta dagoenean</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2782"/>
+      <location filename="../Tree.cpp" line="2800"/>
       <source>Mark to recompute</source>
       <translation>Markatu birkalkulurako</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2783"/>
+      <location filename="../Tree.cpp" line="2801"/>
       <source>Mark this object to be recomputed</source>
       <translation>Markatu objektu hau birkalkulatua izan dadin</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2786"/>
+      <location filename="../Tree.cpp" line="2804"/>
       <source>Recompute object</source>
       <translation>Birkalkulatu objektua</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2787"/>
+      <location filename="../Tree.cpp" line="2805"/>
       <source>Recompute the selected object</source>
       <translation>Birkalkulatu hautatutako objektua</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="4845"/>
+      <location filename="../Tree.cpp" line="4863"/>
       <source> (but must be executed)</source>
       <translation> (baina exekutatu behar da)</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="4847"/>
+      <location filename="../Tree.cpp" line="4865"/>
       <source>%1, Internal name: %2</source>
       <translation>%1, barne-izena: %2</translation>
     </message>
@@ -8517,14 +8517,14 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
   <context>
     <name>PropertyListDialog</name>
     <message>
-      <location filename="../Widgets.cpp" line="1421"/>
-      <location filename="../Widgets.cpp" line="1432"/>
+      <location filename="../Widgets.cpp" line="1420"/>
+      <location filename="../Widgets.cpp" line="1431"/>
       <source>Invalid input</source>
       <translation>Baliogabeko sarrera</translation>
     </message>
     <message>
-      <location filename="../Widgets.cpp" line="1421"/>
-      <location filename="../Widgets.cpp" line="1432"/>
+      <location filename="../Widgets.cpp" line="1420"/>
+      <location filename="../Widgets.cpp" line="1431"/>
       <source>Input in line %1 is not a number</source>
       <translation>%1 lerroko sarrera ez da zenbaki bat</translation>
     </message>
@@ -8532,39 +8532,39 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
   <context>
     <name>QDockWidget</name>
     <message>
-      <location filename="../MainWindow.cpp" line="399"/>
+      <location filename="../MainWindow.cpp" line="398"/>
       <source>Tree view</source>
       <translation>Zuhaitz-bista</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="427"/>
+      <location filename="../MainWindow.cpp" line="426"/>
       <source>Property view</source>
       <translation>Propietateen bista</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="445"/>
+      <location filename="../MainWindow.cpp" line="444"/>
       <source>Selection view</source>
       <translation>Hautapen-bista</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="467"/>
+      <location filename="../MainWindow.cpp" line="466"/>
       <source>Combo View</source>
       <translation>Bista konbinatua</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="519"/>
+      <location filename="../MainWindow.cpp" line="500"/>
+      <source>DAG View</source>
+      <translation>DAG bista</translation>
+    </message>
+    <message>
+      <location filename="../MainWindow.cpp" line="518"/>
       <source>Report view</source>
       <translation>Txosten-bista</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="539"/>
+      <location filename="../MainWindow.cpp" line="538"/>
       <source>Python console</source>
       <translation>Python kontsola</translation>
-    </message>
-    <message>
-      <location filename="../MainWindow.cpp" line="501"/>
-      <source>DAG View</source>
-      <translation>DAG bista</translation>
     </message>
     <message>
       <location filename="../DlgDisplayPropertiesImp.cpp" line="52"/>
@@ -8680,7 +8680,7 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
       <translation>PDFa esportatzen...</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="597"/>
+      <location filename="../MainWindow.cpp" line="591"/>
       <location filename="../CommandDoc.cpp" line="1189"/>
       <source>Unsaved document</source>
       <translation>Gorde gabeko dokumentua</translation>
@@ -8947,22 +8947,22 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../Document.cpp" line="131"/>
       <source>Do you want to skip confirmation of further critical message notifications while loading the file?</source>
-      <translation type="unfinished">Do you want to skip confirmation of further critical message notifications while loading the file?</translation>
+      <translation>Beste mezu kritiko batzuen jakinarazpenen berrespena saltatu fitxategia kargatzean?</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="132"/>
       <source>Critical Message</source>
-      <translation type="unfinished">Critical Message</translation>
+      <translation>Mezu kritikoa</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="190"/>
       <source>Too many message notifications. Notification temporarily stopped. Look at the report view for more information.</source>
-      <translation type="unfinished">Too many message notifications. Notification temporarily stopped. Look at the report view for more information.</translation>
+      <translation>Mezu-jakinarazpen gehiegi. Jakinarazpenak aldi baterako gelditu dira. Begiratu txostena informazio gehiagorako.</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="209"/>
       <source>Warning</source>
-      <translation type="unfinished">Warning</translation>
+      <translation>Abisua</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="213"/>
@@ -8972,7 +8972,7 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../Document.cpp" line="217"/>
       <source>Critical</source>
-      <translation type="unfinished">Critical</translation>
+      <translation>Kritikoa</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1221"/>
@@ -9254,32 +9254,32 @@ Mesedez, ireki nabigatzaile-leiho bat eta idatzi: http://localhost:%1.</translat
       <translation>Elkarrizketa-koadro hau itxi nahi duzu?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="599"/>
+      <location filename="../MainWindow.cpp" line="593"/>
       <source>Do you want to save your changes to document '%1' before closing?</source>
       <translation>'%1' dokumentuko aldaketak gorde nahi dituzu aplikazioa itxi baino lehen?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="602"/>
+      <location filename="../MainWindow.cpp" line="596"/>
       <source>Do you want to save your changes to document before closing?</source>
       <translation>Dokumentuko aldaketak gorde nahi dituzu aplikazioa itxi baino lehen?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="604"/>
+      <location filename="../MainWindow.cpp" line="598"/>
       <source>If you don't save, your changes will be lost.</source>
       <translation>Gordetzen ez baduzu, zure aldaketak galdu egingo dira.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="609"/>
+      <location filename="../MainWindow.cpp" line="603"/>
       <source>Apply answer to all</source>
       <translation>Aplikatu erantzuna denei</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="699"/>
+      <location filename="../MainWindow.cpp" line="693"/>
       <source>%1 Document(s) not saved</source>
       <translation>%1 dokumentu ez dira gorde</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="700"/>
+      <location filename="../MainWindow.cpp" line="694"/>
       <source>Some documents could not be saved. Do you want to cancel closing?</source>
       <translation>Zenbait dokumentu ezin izan dira gorde. Ixtea bertan behera utzi nahi duzu?</translation>
     </message>
@@ -9410,8 +9410,8 @@ eduki ditzakete eta ez dira digitu batekin hasi behar.</translation>
       <translation>Huts egin du '%1' objektuari propietatea gehitzeak: %2</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2036"/>
-      <location filename="../Tree.cpp" line="2232"/>
+      <location filename="../Tree.cpp" line="2054"/>
+      <location filename="../Tree.cpp" line="2250"/>
       <source>Drag &amp; drop failed</source>
       <translation>Arrastatu eta jaregiteak huts egin du</translation>
     </message>
@@ -9581,13 +9581,13 @@ egindako aldaketak galdu egingo direla.</translation>
   <context>
     <name>StdCmdActivateNextWindow</name>
     <message>
-      <location filename="../CommandWindow.cpp" line="198"/>
+      <location filename="../CommandWindow.cpp" line="171"/>
       <source>Ne&amp;xt</source>
       <translation>H&amp;urrengoa</translation>
     </message>
     <message>
-      <location filename="../CommandWindow.cpp" line="199"/>
-      <location filename="../CommandWindow.cpp" line="201"/>
+      <location filename="../CommandWindow.cpp" line="172"/>
+      <location filename="../CommandWindow.cpp" line="174"/>
       <source>Activate next window</source>
       <translation>Aktibatu hurrengo leihoa</translation>
     </message>
@@ -9595,13 +9595,13 @@ egindako aldaketak galdu egingo direla.</translation>
   <context>
     <name>StdCmdActivatePrevWindow</name>
     <message>
-      <location filename="../CommandWindow.cpp" line="227"/>
+      <location filename="../CommandWindow.cpp" line="200"/>
       <source>Pre&amp;vious</source>
       <translation>Au&amp;rrekoa</translation>
     </message>
     <message>
-      <location filename="../CommandWindow.cpp" line="228"/>
-      <location filename="../CommandWindow.cpp" line="230"/>
+      <location filename="../CommandWindow.cpp" line="201"/>
+      <location filename="../CommandWindow.cpp" line="203"/>
       <source>Activate previous window</source>
       <translation>Aktibatu aurreko leihoa</translation>
     </message>
@@ -9621,20 +9621,6 @@ egindako aldaketak galdu egingo direla.</translation>
     </message>
   </context>
   <context>
-    <name>StdCmdArrangeIcons</name>
-    <message>
-      <location filename="../CommandWindow.cpp" line="55"/>
-      <source>Arrange &amp;Icons</source>
-      <translation>Leihoen &amp;ikonoak</translation>
-    </message>
-    <message>
-      <location filename="../CommandWindow.cpp" line="56"/>
-      <location filename="../CommandWindow.cpp" line="58"/>
-      <source>Arrange Icons</source>
-      <translation>Leihoen ikonoak</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdAxisCross</name>
     <message>
       <location filename="../CommandView.cpp" line="2060"/>
@@ -9647,13 +9633,13 @@ egindako aldaketak galdu egingo direla.</translation>
   <context>
     <name>StdCmdCascadeWindows</name>
     <message>
-      <location filename="../CommandWindow.cpp" line="110"/>
+      <location filename="../CommandWindow.cpp" line="83"/>
       <source>&amp;Cascade</source>
       <translation>&amp;Teilakatua</translation>
     </message>
     <message>
-      <location filename="../CommandWindow.cpp" line="111"/>
-      <location filename="../CommandWindow.cpp" line="113"/>
+      <location filename="../CommandWindow.cpp" line="84"/>
+      <location filename="../CommandWindow.cpp" line="86"/>
       <source>Tile pragmatic</source>
       <translation>Teilakatu leihoak</translation>
     </message>
@@ -9661,13 +9647,13 @@ egindako aldaketak galdu egingo direla.</translation>
   <context>
     <name>StdCmdCloseActiveWindow</name>
     <message>
-      <location filename="../CommandWindow.cpp" line="138"/>
+      <location filename="../CommandWindow.cpp" line="111"/>
       <source>Cl&amp;ose</source>
       <translation>It&amp;xi</translation>
     </message>
     <message>
-      <location filename="../CommandWindow.cpp" line="139"/>
-      <location filename="../CommandWindow.cpp" line="141"/>
+      <location filename="../CommandWindow.cpp" line="112"/>
+      <location filename="../CommandWindow.cpp" line="114"/>
       <source>Close active window</source>
       <translation>Itxi leiho aktiboa</translation>
     </message>
@@ -9675,13 +9661,13 @@ egindako aldaketak galdu egingo direla.</translation>
   <context>
     <name>StdCmdCloseAllWindows</name>
     <message>
-      <location filename="../CommandWindow.cpp" line="170"/>
+      <location filename="../CommandWindow.cpp" line="143"/>
       <source>Close Al&amp;l</source>
       <translation>Itxi &amp;denak</translation>
     </message>
     <message>
-      <location filename="../CommandWindow.cpp" line="171"/>
-      <location filename="../CommandWindow.cpp" line="173"/>
+      <location filename="../CommandWindow.cpp" line="144"/>
+      <location filename="../CommandWindow.cpp" line="146"/>
       <source>Close all windows</source>
       <translation>Itxi leiho guztiak</translation>
     </message>
@@ -9857,13 +9843,13 @@ egindako aldaketak galdu egingo direla.</translation>
   <context>
     <name>StdCmdDockViewMenu</name>
     <message>
-      <location filename="../CommandWindow.cpp" line="307"/>
+      <location filename="../CommandWindow.cpp" line="280"/>
       <source>Panels</source>
       <translation>Panelak</translation>
     </message>
     <message>
-      <location filename="../CommandWindow.cpp" line="308"/>
-      <location filename="../CommandWindow.cpp" line="310"/>
+      <location filename="../CommandWindow.cpp" line="281"/>
+      <location filename="../CommandWindow.cpp" line="283"/>
       <source>List of available dock panels</source>
       <translation>Panel eskuragarrien zerrenda</translation>
     </message>
@@ -10430,7 +10416,7 @@ egindako aldaketak galdu egingo direla.</translation>
       <translation>Sortu dokumentu huts berri bat</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1946"/>
+      <location filename="../MainWindow.cpp" line="1940"/>
       <location filename="../DocumentRecovery.cpp" line="391"/>
       <source>Unnamed</source>
       <translation>Izenik gabea</translation>
@@ -10934,13 +10920,13 @@ egindako aldaketak galdu egingo direla.</translation>
   <context>
     <name>StdCmdStatusBar</name>
     <message>
-      <location filename="../CommandWindow.cpp" line="398"/>
+      <location filename="../CommandWindow.cpp" line="371"/>
       <source>Status bar</source>
       <translation>Egoera-barra</translation>
     </message>
     <message>
-      <location filename="../CommandWindow.cpp" line="399"/>
-      <location filename="../CommandWindow.cpp" line="401"/>
+      <location filename="../CommandWindow.cpp" line="372"/>
+      <location filename="../CommandWindow.cpp" line="374"/>
       <source>Toggles the status bar</source>
       <translation>Egoera-barra txandakatzen du</translation>
     </message>
@@ -10976,13 +10962,13 @@ egindako aldaketak galdu egingo direla.</translation>
   <context>
     <name>StdCmdTileWindows</name>
     <message>
-      <location filename="../CommandWindow.cpp" line="82"/>
+      <location filename="../CommandWindow.cpp" line="55"/>
       <source>&amp;Tile</source>
       <translation>&amp;Lauzak</translation>
     </message>
     <message>
-      <location filename="../CommandWindow.cpp" line="83"/>
-      <location filename="../CommandWindow.cpp" line="85"/>
+      <location filename="../CommandWindow.cpp" line="56"/>
+      <location filename="../CommandWindow.cpp" line="58"/>
       <source>Tile the windows</source>
       <translation>Jarri leihoak lauza moduan</translation>
     </message>
@@ -11070,13 +11056,13 @@ egindako aldaketak galdu egingo direla.</translation>
   <context>
     <name>StdCmdToolBarMenu</name>
     <message>
-      <location filename="../CommandWindow.cpp" line="343"/>
+      <location filename="../CommandWindow.cpp" line="316"/>
       <source>Tool&amp;bars</source>
       <translation>Tresna-&amp;barrak</translation>
     </message>
     <message>
-      <location filename="../CommandWindow.cpp" line="344"/>
-      <location filename="../CommandWindow.cpp" line="346"/>
+      <location filename="../CommandWindow.cpp" line="317"/>
+      <location filename="../CommandWindow.cpp" line="319"/>
       <source>Toggles this window</source>
       <translation>Leiho hau aktibatzen/desaktibatzen du</translation>
     </message>
@@ -11210,13 +11196,13 @@ egindako aldaketak galdu egingo direla.</translation>
   <context>
     <name>StdCmdUserInterface</name>
     <message>
-      <location filename="../CommandWindow.cpp" line="285"/>
+      <location filename="../CommandWindow.cpp" line="258"/>
       <source>Dock views</source>
       <translation>Atrakatu bistak</translation>
     </message>
     <message>
-      <location filename="../CommandWindow.cpp" line="286"/>
-      <location filename="../CommandWindow.cpp" line="288"/>
+      <location filename="../CommandWindow.cpp" line="259"/>
+      <location filename="../CommandWindow.cpp" line="261"/>
       <source>Dock all top-level views</source>
       <translation>Atrakatu goi-mailako bista guztiak</translation>
     </message>
@@ -11616,13 +11602,13 @@ egindako aldaketak galdu egingo direla.</translation>
   <context>
     <name>StdCmdWindows</name>
     <message>
-      <location filename="../CommandWindow.cpp" line="261"/>
+      <location filename="../CommandWindow.cpp" line="234"/>
       <source>&amp;Windows...</source>
       <translation>Lei&amp;hoak...</translation>
     </message>
     <message>
-      <location filename="../CommandWindow.cpp" line="262"/>
-      <location filename="../CommandWindow.cpp" line="264"/>
+      <location filename="../CommandWindow.cpp" line="235"/>
+      <location filename="../CommandWindow.cpp" line="237"/>
       <source>Windows list</source>
       <translation>Leihoen zerrenda</translation>
     </message>
@@ -11630,9 +11616,9 @@ egindako aldaketak galdu egingo direla.</translation>
   <context>
     <name>StdCmdWindowsMenu</name>
     <message>
-      <location filename="../CommandWindow.cpp" line="444"/>
-      <location filename="../CommandWindow.cpp" line="445"/>
-      <location filename="../CommandWindow.cpp" line="447"/>
+      <location filename="../CommandWindow.cpp" line="417"/>
+      <location filename="../CommandWindow.cpp" line="418"/>
+      <location filename="../CommandWindow.cpp" line="420"/>
       <source>Activates this window</source>
       <translation>Leiho hau aktibatzen du</translation>
     </message>
@@ -11698,13 +11684,13 @@ egindako aldaketak galdu egingo direla.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3711"/>
       <source>Recall working view</source>
-      <translation type="unfinished">Recall working view</translation>
+      <translation>Berreskuratu laneko bista</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3712"/>
       <location filename="../CommandView.cpp" line="3713"/>
       <source>Recall previously stored temporary working view</source>
-      <translation type="unfinished">Recall previously stored temporary working view</translation>
+      <translation>Berreskuratu aurretik gorde den aldi baterako laneko bista</translation>
     </message>
   </context>
   <context>
@@ -11712,13 +11698,13 @@ egindako aldaketak galdu egingo direla.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3681"/>
       <source>Store working view</source>
-      <translation type="unfinished">Store working view</translation>
+      <translation>Biltegiratu laneko bista</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3682"/>
       <location filename="../CommandView.cpp" line="3683"/>
       <source>Store a document-specific temporary working view</source>
-      <translation type="unfinished">Store a document-specific temporary working view</translation>
+      <translation>Biltegiratu dokumentuan espezifikoa den aldi baterako laneko bista</translation>
     </message>
   </context>
   <context>
@@ -12115,32 +12101,32 @@ Jarraitu nahi al duzu?</translation>
     <message>
       <location filename="../TreeParams.cpp" line="1139"/>
       <source>Tree view item background. Only effective in overlay.</source>
-      <translation type="unfinished">Tree view item background. Only effective in overlay.</translation>
+      <translation>Zuhaitz-bistaren elementuen atzeko planoa. Gainjartzean soilik du eragina.</translation>
     </message>
     <message>
       <location filename="../TreeParams.cpp" line="1167"/>
       <source>Tree view item background padding.</source>
-      <translation type="unfinished">Tree view item background padding.</translation>
+      <translation>Zuhaitz-bistaren elementuaren atzeko planoaren betegarria.</translation>
     </message>
     <message>
       <location filename="../TreeParams.cpp" line="1195"/>
       <source>Hide extra tree view column for item description.</source>
-      <translation type="unfinished">Hide extra tree view column for item description.</translation>
+      <translation>Ezkutatu elementuaren deskribapenerako zuhaitz-bistaren zutabe gehigarria.</translation>
     </message>
     <message>
       <location filename="../TreeParams.cpp" line="1223"/>
       <source>Hide tree view scroll bar in dock overlay.</source>
-      <translation type="unfinished">Hide tree view scroll bar in dock overlay.</translation>
+      <translation>Ezkutatu zuhaitz-bistaren korritze-barra panela gainjartzean.</translation>
     </message>
     <message>
       <location filename="../TreeParams.cpp" line="1251"/>
       <source>Hide tree view header view in dock overlay.</source>
-      <translation type="unfinished">Hide tree view header view in dock overlay.</translation>
+      <translation>Ezkutatu zuhaitz-bistaren goiburuaren bista panela gainjartzean.</translation>
     </message>
     <message>
       <location filename="../TreeParams.cpp" line="1279"/>
       <source>Allow tree view columns to be manually resized.</source>
-      <translation type="unfinished">Allow tree view columns to be manually resized.</translation>
+      <translation>Onartu zuhaitz-bistaren zutabeen tamaina eskuz aldatu ahal izan daitezen.</translation>
     </message>
   </context>
   <context>

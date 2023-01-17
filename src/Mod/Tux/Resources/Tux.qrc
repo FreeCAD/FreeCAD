@@ -128,5 +128,6 @@
         <file>translations/Tux_bg.qm</file>
         <file>translations/Tux_ka.qm</file>
         <file>translations/Tux_sr-CS.qm</file>
+        <file>translations/Tux_be.qm</file>
     </qresource>
 </RCC>

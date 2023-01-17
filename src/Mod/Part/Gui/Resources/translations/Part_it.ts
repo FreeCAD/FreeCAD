@@ -2057,12 +2057,12 @@ della proiezione.</translation>
     <message>
       <location filename="../../Command.cpp" line="2535"/>
       <source>Persistent section cut</source>
-      <translation type="unfinished">Persistent section cut</translation>
+      <translation>Taglio sezione persistente</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2536"/>
       <source>Creates a persistent section cut of visible part objects</source>
-      <translation type="unfinished">Creates a persistent section cut of visible part objects</translation>
+      <translation>Crea una sezione persistente di oggetti di Parti visibili</translation>
     </message>
   </context>
   <context>
@@ -2322,7 +2322,7 @@ della proiezione.</translation>
       <translation>Converti mesh</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1071"/>
+      <location filename="../../TaskAttacher.cpp" line="1077"/>
       <source>Edit attachment</source>
       <translation>Modifica allegato</translation>
     </message>
@@ -2337,28 +2337,28 @@ della proiezione.</translation>
       <translation>Loft</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="256"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="261"/>
       <source>Edge</source>
       <translation>Bordo</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="297"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="302"/>
       <source>Wire</source>
       <translation>Filo</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="349"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="401"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="354"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="406"/>
       <source>Face</source>
       <translation>Faccia</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="464"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="469"/>
       <source>Shell</source>
       <translation>Shell</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="516"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="521"/>
       <source>Solid</source>
       <translation>Solido</translation>
     </message>
@@ -2753,7 +2753,7 @@ all'interno della proprietà Posizionamento.</translation>
     <message>
       <location filename="../../DlgExportStep.ui" line="107"/>
       <source>Use legacy export function</source>
-      <translation type="unfinished">Use legacy export function</translation>
+      <translation>Usa la funzione di esportazione obsoleta</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="120"/>
@@ -4604,7 +4604,7 @@ verrà utilizzato il vettore normale del piano di schizzo</translation>
     <message>
       <location filename="../../SectionCutting.ui" line="20"/>
       <source>Permanent Section Cutting</source>
-      <translation type="unfinished">Permanent Section Cutting</translation>
+      <translation>Taglio Della Sezione Permanente</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="32"/>
@@ -4694,7 +4694,7 @@ saranno visibili solo i tagli creati</translation>
     <message>
       <location filename="../../SectionCutting.ui" line="404"/>
       <source>Keep only cuts visible when closing</source>
-      <translation type="unfinished">Keep only cuts visible when closing</translation>
+      <translation>Mantieni solo i tagli visibili durante la chiusura</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.cpp" line="429"/>
@@ -4705,80 +4705,80 @@ saranno visibili solo i tagli creati</translation>
   <context>
     <name>PartGui::ShapeBuilderWidget</name>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="215"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="220"/>
       <source>Unsupported</source>
       <translation>Non supportato</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="215"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="220"/>
       <source>Box selection for shells is not supported</source>
       <translation>La selezione a finestra per le shell non è supportata</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="224"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="243"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="271"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="312"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="364"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="416"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="479"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="229"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="248"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="276"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="317"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="369"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="421"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="484"/>
       <source>Wrong selection</source>
       <translation>Selezione errata</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="224"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="243"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="229"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="248"/>
       <source>Select two vertices</source>
       <translation>Selezionare due vertici</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="271"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="364"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="276"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="369"/>
       <source>Select one or more edges</source>
       <translation>Selezionare uno o più spigoli</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="312"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="317"/>
       <source>Select three or more vertices</source>
       <translation>Selezionare tre o più vertici</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="416"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="421"/>
       <source>Select two or more faces</source>
       <translation>Selezionare due o più facce</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="479"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="484"/>
       <source>Select only one part object</source>
       <translation>Selezionare un solo oggetto parte</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="531"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="536"/>
       <source>Select two vertices to create an edge</source>
       <translation>Selezionare due vertici per creare uno spigolo</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="538"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="543"/>
       <source>Select adjacent edges</source>
       <translation>Selezionare i bordi adiacenti</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="545"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="550"/>
       <source>Select a list of vertices</source>
       <translation>Selezionare un elenco di vertici</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="552"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="557"/>
       <source>Select a closed set of edges</source>
       <translation>Selezionare un insieme chiuso di bordi</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="559"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="564"/>
       <source>Select adjacent faces</source>
       <translation>Selezionare facce adiacenti</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="566"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="571"/>
       <source>All shape types can be selected</source>
       <translation>Si possono  selezionare tutti i tipi di forme</translation>
     </message>
@@ -4920,7 +4920,7 @@ saranno visibili solo i tagli creati</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="124"/>
-      <location filename="../../TaskAttacher.cpp" line="329"/>
+      <location filename="../../TaskAttacher.cpp" line="335"/>
       <source>Attachment Offset (in local coordinates):</source>
       <translation>Offset di associazione (in coordinate locali):</translation>
     </message>
@@ -5001,77 +5001,77 @@ dell'oggetto da associare.</translation>
       <translation>Capovolgi le facce</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="312"/>
+      <location filename="../../TaskAttacher.cpp" line="318"/>
       <source>OCC error: %1</source>
       <translation>Errore OCC: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="314"/>
+      <location filename="../../TaskAttacher.cpp" line="320"/>
       <source>unknown error</source>
       <translation>errore sconosciuto</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="317"/>
+      <location filename="../../TaskAttacher.cpp" line="323"/>
       <source>Attachment mode failed: %1</source>
       <translation>Modalità di associazione non riuscita: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="321"/>
+      <location filename="../../TaskAttacher.cpp" line="327"/>
       <source>Not attached</source>
       <translation>Non associato</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="325"/>
+      <location filename="../../TaskAttacher.cpp" line="331"/>
       <source>Attached with mode %1</source>
       <translation>Associato con modalità %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="329"/>
+      <location filename="../../TaskAttacher.cpp" line="335"/>
       <source>Attachment Offset (inactive - not attached):</source>
       <translation>Offset di associazione (inattivo - non associato):</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="626"/>
+      <location filename="../../TaskAttacher.cpp" line="632"/>
       <source>Face</source>
       <translation>Faccia</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="633"/>
+      <location filename="../../TaskAttacher.cpp" line="639"/>
       <source>Edge</source>
       <translation>Bordo</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="640"/>
+      <location filename="../../TaskAttacher.cpp" line="646"/>
       <source>Vertex</source>
       <translation>Vertice</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="705"/>
+      <location filename="../../TaskAttacher.cpp" line="711"/>
       <source>Selecting...</source>
       <translation>Selezione...</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="709"/>
+      <location filename="../../TaskAttacher.cpp" line="715"/>
       <source>Reference%1</source>
       <translation>Riferimento%1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="756"/>
+      <location filename="../../TaskAttacher.cpp" line="762"/>
       <source>Not editable because rotation of AttachmentOffset is bound by expressions.</source>
       <translation>Non modificabile perché la rotazione di AttachmentOffset è vincolata da espressioni.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="822"/>
+      <location filename="../../TaskAttacher.cpp" line="828"/>
       <source>Reference combinations:</source>
       <translation>Combinazioni di riferimenti:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="839"/>
+      <location filename="../../TaskAttacher.cpp" line="845"/>
       <source>%1 (add %2)</source>
       <translation>%1 (aggiungere %2)</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="844"/>
+      <location filename="../../TaskAttacher.cpp" line="850"/>
       <source>%1 (add more references)</source>
       <translation>%1 (aggiungere ulteriori riferimenti)</translation>
     </message>
@@ -5291,7 +5291,7 @@ Controlli BOP individuali:</translation>
   <context>
     <name>PartGui::TaskDlgAttacher</name>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1112"/>
+      <location filename="../../TaskAttacher.cpp" line="1118"/>
       <source>Datum dialog: Input error</source>
       <translation>Dialogo dei riferimenti: errore di Input</translation>
     </message>
@@ -6180,12 +6180,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="78"/>
       <source>Computing the result failed with an error:</source>
-      <translation type="unfinished">Computing the result failed with an error:</translation>
+      <translation>Il calcolo del risultato è fallito con un errore:</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="79"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+      <translation>Fare clic su 'Continua' per creare comunque la funzionalità, o 'Annulla' per annullare.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="80"/>
@@ -6203,17 +6203,17 @@ Do you want to continue?</source>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="198"/>
       <source>Select at least two objects, or one or more compounds</source>
-      <translation type="unfinished">Select at least two objects, or one or more compounds</translation>
+      <translation>Selezionare almeno due oggetti, o uno o più composti</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="294"/>
       <source>Select base object, then the object to embed, and then invoke this tool.</source>
-      <translation type="unfinished">Select base object, then the object to embed, and then invoke this tool.</translation>
+      <translation>Selezionare l'oggetto base, quindi l'oggetto da incorporare, quindi invocare questo strumento.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="388"/>
       <source>Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</source>
-      <translation type="unfinished">Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</translation>
+      <translation>Selezionare l'oggetto in cui effettuare un ritaglio, quindi l'oggetto che dovrebbe adattarsi al ritaglio, quindi invocare questo strumento.</translation>
     </message>
   </context>
   <context>
@@ -6221,12 +6221,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="186"/>
       <source>Connect objects</source>
-      <translation type="unfinished">Connect objects</translation>
+      <translation>Collega oggetti</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="191"/>
       <source>Fuses objects, taking care to preserve voids.</source>
-      <translation type="unfinished">Fuses objects, taking care to preserve voids.</translation>
+      <translation>Fonde gli oggetti, avendo cura di preservare i vuoti.</translation>
     </message>
   </context>
   <context>
@@ -6234,12 +6234,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="282"/>
       <source>Embed object</source>
-      <translation type="unfinished">Embed object</translation>
+      <translation>Incorpora oggetto</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="287"/>
       <source>Fuses one object into another, taking care to preserve voids.</source>
-      <translation type="unfinished">Fuses one object into another, taking care to preserve voids.</translation>
+      <translation>Fonde un oggetto in un altro, avendo cura di preservare i vuoti.</translation>
     </message>
   </context>
   <context>
@@ -6247,12 +6247,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="376"/>
       <source>Cutout for object</source>
-      <translation type="unfinished">Cutout for object</translation>
+      <translation>Ritaglia per l'oggetto</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="381"/>
       <source>Makes a cutout in one object to fit another object.</source>
-      <translation type="unfinished">Makes a cutout in one object to fit another object.</translation>
+      <translation>Crea un ritaglio in un oggetto per adattarsi ad un altro oggetto.</translation>
     </message>
   </context>
   <context>
@@ -6262,14 +6262,14 @@ Do you want to continue?</source>
       <location filename="../../../BOPTools/SplitFeatures.py" line="298"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="492"/>
       <source>Computing the result failed with an error:</source>
-      <translation type="unfinished">Computing the result failed with an error:</translation>
+      <translation>Il calcolo del risultato è fallito con un errore:</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="156"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="299"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="493"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+      <translation>Fare clic su 'Continua' per creare comunque la funzionalità, o 'Annulla' per annullare.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="157"/>
@@ -6293,7 +6293,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="180"/>
       <source>Boolean fragments</source>
-      <translation type="unfinished">Boolean fragments</translation>
+      <translation>Frammenti booleani</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="189"/>
@@ -6302,49 +6302,49 @@ or from the shapes inside a compound.
 This is a boolean union which is then sliced at the intersections
 of the original shapes.
 A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation type="unfinished">Create a 'Boolean Fragments' object from two or more selected objects,
-or from the shapes inside a compound.
-This is a boolean union which is then sliced at the intersections
-of the original shapes.
-A 'Compound Filter' can be used to extract the individual slices.</translation>
+      <translation>Crea un oggetto 'Frammenti Booleani' da due o più oggetti selezionati,
+o dalle forme all'interno di un composto.
+Si tratta di un'unione booleana che viene poi affettata alle intersezioni
+delle forme originali.
+Un 'Composto Filtro' può essere usato per estrarre le singole fette.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="534"/>
       <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
-      <translation type="unfinished">Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</translation>
+      <translation>Selezionare almeno due oggetti, o uno o più composti. Se è selezionato un solo composto, le forme composte saranno intersecate tra di loro (altrimenti, i composti con auto-intersezioni non sono validi).</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="337"/>
       <source>Slice to compound</source>
-      <translation type="unfinished">Slice to compound</translation>
+      <translation>Affetta in un composto</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="344"/>
       <source>Slice a selected object by using other objects as cutting tools.
 The resulting pieces will be stored in a compound.
 A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation type="unfinished">Slice a selected object by using other objects as cutting tools.
-The resulting pieces will be stored in a compound.
-A 'Compound Filter' can be used to extract the individual slices.</translation>
+      <translation>Affetta un oggetto selezionato usando altri oggetti come strumenti di taglio.
+I pezzi risultanti saranno memorizzati in un composto.
+Un 'Composto Filtro' può essere usato per estrarre le singole fette.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="353"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="384"/>
       <source>Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</source>
-      <translation type="unfinished">Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</translation>
+      <translation>Seleziona almeno due oggetti. Il primo è l'oggetto da affettare; il resto sono oggetti con cui tagliare.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="369"/>
       <source>Slice apart</source>
-      <translation type="unfinished">Slice apart</translation>
+      <translation>Affetta</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="375"/>
       <source>Slice a selected object by other objects, and split it apart.
 It will create a 'Compound Filter' for each slice.</source>
-      <translation type="unfinished">Slice a selected object by other objects, and split it apart.
-It will create a 'Compound Filter' for each slice.</translation>
+      <translation>Affetta l'oggetto selezionato con gli altri oggetti, e lo dividerà in parti.
+Creerà un 'Composto Filtro' per ogni ritaglio.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="517"/>
@@ -6357,10 +6357,10 @@ It will create a 'Compound Filter' for each slice.</translation>
 or with the shapes inside a compound.
 This means the overlapping volumes of the shapes will be removed.
 A 'Compound Filter' can be used to extract the remaining pieces.</source>
-      <translation type="unfinished">Perform an 'exclusive OR' boolean operation with two or more selected objects,
-or with the shapes inside a compound.
-This means the overlapping volumes of the shapes will be removed.
-A 'Compound Filter' can be used to extract the remaining pieces.</translation>
+      <translation>Esegue un'operazione booleana 'esclusiva OR' con due o più oggetti selezionati,
+o con le forme all'interno di un composto.
+Questo significa che i volumi sovrapposti delle forme saranno rimossi.
+Un 'Composto Filtro' può essere usato per estrarre i pezzi rimanenti.</translation>
     </message>
   </context>
   <context>
@@ -6376,15 +6376,15 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
 area, or length, or by choosing specific items.
 If a second object is selected, it will be used as reference, for example,
 for collision or distance filtering.</source>
-      <translation type="unfinished">Filter out objects from a selected compound by characteristics like volume,
-area, or length, or by choosing specific items.
-If a second object is selected, it will be used as reference, for example,
-for collision or distance filtering.</translation>
+      <translation>Filtra gli oggetti da un composto selezionato per caratteristiche come volume,
+area o lunghezza, o scegliendo elementi specifici.
+Se è selezionato un secondo oggetto, verrà usato come riferimento, ad esempio,
+per il filtraggio di collisione o distanza.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="70"/>
       <source>First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</source>
-      <translation type="unfinished">First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</translation>
+      <translation>Seleziona prima una forma che è un composto. Se viene selezionato un secondo oggetto (opzionale) sarà trattato come una forma.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="71"/>
@@ -6395,12 +6395,12 @@ for collision or distance filtering.</translation>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="110"/>
       <source>Computing the result failed with an error:</source>
-      <translation type="unfinished">Computing the result failed with an error:</translation>
+      <translation>Il calcolo del risultato è fallito con un errore:</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="111"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+      <translation>Fare clic su 'Continua' per creare comunque la funzionalità, o 'Annulla' per annullare.</translation>
     </message>
   </context>
   <context>
@@ -6414,13 +6414,13 @@ for collision or distance filtering.</translation>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="56"/>
       <source>Split up a compound of shapes into separate objects.
 It will create a 'Compound Filter' for each shape.</source>
-      <translation type="unfinished">Split up a compound of shapes into separate objects.
-It will create a 'Compound Filter' for each shape.</translation>
+      <translation>Divide un composto di forme in oggetti separati.
+Creerà un 'filtro composto' per ogni forma.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="62"/>
       <source>First select a shape that is a compound.</source>
-      <translation type="unfinished">First select a shape that is a compound.</translation>
+      <translation>Prima selezionare una forma che è un composto.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="63"/>
@@ -6438,7 +6438,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="91"/>
       <source>Failed to parse link (more than one colon encountered)</source>
-      <translation type="unfinished">Failed to parse link (more than one colon encountered)</translation>
+      <translation>Analisi del collegamento non riuscita (più di due-punti incontrati)</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="204"/>

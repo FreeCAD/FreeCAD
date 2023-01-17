@@ -64,6 +64,7 @@
         <file>FreeCAD_bg.qm</file>
         <file>FreeCAD_ka.qm</file>
         <file>FreeCAD_sr-CS.qm</file>
+        <file>FreeCAD_be.qm</file>
         
     </qresource>
 </RCC> 

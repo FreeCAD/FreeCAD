@@ -895,22 +895,22 @@ so that self intersection is avoided.</translation>
       <translation>Mover um objeto dentro da árvore</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="292"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="295"/>
       <source>Mirrored</source>
       <translation>Espelhado</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="320"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="323"/>
       <source>Make LinearPattern</source>
       <translation>Criar um padrão linear</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="358"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="361"/>
       <source>PolarPattern</source>
       <translation>Padrão polar</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="386"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="389"/>
       <source>Scaled</source>
       <translation>Redimensionado</translation>
     </message>
@@ -1433,39 +1433,39 @@ Se for zero, é igual ao Raio2</translation>
       <translation>Parâmetros primitivos</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="718"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="760"/>
       <source>Cone radii are equal</source>
       <translation>Os raios do cone são iguais</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="719"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="761"/>
       <source>The radii for cones must not be equal!</source>
       <translation>Os raios para os cones não podem ser iguais!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="794"/>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="799"/>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="804"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="836"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="841"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="846"/>
       <source>Invalid wedge parameters</source>
       <translation>Parâmetros de cunha inválidos</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="795"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="837"/>
       <source>X min must not be equal to X max!</source>
       <translation>X min não pode ser igual a X max!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="800"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="842"/>
       <source>Y min must not be equal to Y max!</source>
       <translation>Y min não pode ser igual a Y max!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="805"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="847"/>
       <source>Z min must not be equal to Z max!</source>
       <translation>Z min não pode ser igual a Z max!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="843"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="885"/>
       <source>Create primitive</source>
       <translation>Criar primitiva</translation>
     </message>
@@ -1475,7 +1475,7 @@ Se for zero, é igual ao Raio2</translation>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="14"/>
       <source>Form</source>
-      <translation>Formulário</translation>
+      <translation>Forma</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="22"/>
@@ -2161,12 +2161,12 @@ clique novamente para terminar a seleção</translation>
       <translation>Actualizar a vista</translation>
     </message>
     <message>
-      <location filename="../../TaskLinearPatternParameters.cpp" line="105"/>
+      <location filename="../../TaskLinearPatternParameters.cpp" line="108"/>
       <source>Remove</source>
       <translation>Remover</translation>
     </message>
     <message>
-      <location filename="../../TaskLinearPatternParameters.cpp" line="333"/>
+      <location filename="../../TaskLinearPatternParameters.cpp" line="336"/>
       <source>Error</source>
       <translation>Erro</translation>
     </message>
@@ -2310,52 +2310,52 @@ clique novamente para terminar a seleção</translation>
       <translation>Actualizar a vista</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="73"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="75"/>
       <source>Remove</source>
       <translation>Remover</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="86"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="89"/>
       <source>Edit</source>
       <translation>Editar</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="90"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="93"/>
       <source>Delete</source>
       <translation>Excluir</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="94"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="97"/>
       <source>Add mirrored transformation</source>
       <translation>Adicionar uma transformação espelhada</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="98"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="101"/>
       <source>Add linear pattern</source>
       <translation>Adicionar um padrão linear</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="102"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="105"/>
       <source>Add polar pattern</source>
       <translation>Adicionar um padrão polar</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="106"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="109"/>
       <source>Add scaled transformation</source>
       <translation>Adicionar transformação com escala</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="110"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="113"/>
       <source>Move up</source>
       <translation>Mover para cima</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="114"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="117"/>
       <source>Move down</source>
       <translation>Move para baixo</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="141"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="144"/>
       <source>Right-click to add</source>
       <translation>Botão direito do mouse para adicionar</translation>
     </message>
@@ -2875,12 +2875,12 @@ medido ao longo da direção especificada</translation>
       <translation>Actualizar a vista</translation>
     </message>
     <message>
-      <location filename="../../TaskPolarPatternParameters.cpp" line="112"/>
+      <location filename="../../TaskPolarPatternParameters.cpp" line="114"/>
       <source>Remove</source>
       <translation>Remover</translation>
     </message>
     <message>
-      <location filename="../../TaskPolarPatternParameters.cpp" line="333"/>
+      <location filename="../../TaskPolarPatternParameters.cpp" line="335"/>
       <source>Error</source>
       <translation>Erro</translation>
     </message>
@@ -2888,7 +2888,7 @@ medido ao longo da direção especificada</translation>
   <context>
     <name>PartDesignGui::TaskPrimitiveParameters</name>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="893"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="935"/>
       <source>Attachment</source>
       <translation>Fixação</translation>
     </message>
@@ -4451,20 +4451,20 @@ Disponível apenas para furos que não tem histórico</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="251"/>
-      <location filename="../../TaskHoleParameters.cpp" line="591"/>
+      <location filename="../../TaskHoleParameters.cpp" line="618"/>
       <source>Standard</source>
       <translation>Padrão</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="256"/>
-      <location filename="../../TaskHoleParameters.cpp" line="592"/>
-      <location filename="../../TaskHoleParameters.cpp" line="603"/>
+      <location filename="../../TaskHoleParameters.cpp" line="619"/>
+      <location filename="../../TaskHoleParameters.cpp" line="630"/>
       <source>Close</source>
       <translation>Fechar</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="261"/>
-      <location filename="../../TaskHoleParameters.cpp" line="593"/>
+      <location filename="../../TaskHoleParameters.cpp" line="620"/>
       <source>Wide</source>
       <translation>Largo</translation>
     </message>
@@ -4611,12 +4611,12 @@ acima de 90: raio maior do furo na parte inferior</translation>
       <translation>Invertido</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="602"/>
+      <location filename="../../TaskHoleParameters.cpp" line="629"/>
       <source>Normal</source>
       <translation>Normal</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="604"/>
+      <location filename="../../TaskHoleParameters.cpp" line="631"/>
       <source>Loose</source>
       <translation>Solto</translation>
     </message>

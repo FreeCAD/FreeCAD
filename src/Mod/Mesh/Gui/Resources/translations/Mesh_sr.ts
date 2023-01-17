@@ -303,7 +303,7 @@
     <message>
       <location filename="../../Command.cpp" line="1492"/>
       <source>Harmonize normals</source>
-      <translation>Уcклади нормале</translation>
+      <translation>Усклади нормале</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1493"/>
@@ -341,7 +341,7 @@
     <message>
       <location filename="../../Command.cpp" line="365"/>
       <source>Intersection</source>
-      <translation>Преcек</translation>
+      <translation>Пресек</translation>
     </message>
   </context>
   <context>
@@ -359,7 +359,7 @@
     <message>
       <location filename="../../Command.cpp" line="1787"/>
       <source>Merges selected meshes into one</source>
-      <translation>Спаја одабране моделе у један</translation>
+      <translation>Обједини одабране моделе у један</translation>
     </message>
   </context>
   <context>
@@ -372,7 +372,7 @@
     <message>
       <location filename="../../Command.cpp" line="892"/>
       <source>Cut mesh</source>
-      <translation>Иcеци мрежу</translation>
+      <translation>Исеци мрежу</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="893"/>
@@ -391,13 +391,13 @@
     <message>
       <location filename="../../Command.cpp" line="736"/>
       <source>Make segment</source>
-      <translation>Направи cегмент</translation>
+      <translation>Направи сегмент</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="737"/>
       <location filename="../../Command.cpp" line="739"/>
       <source>Creates a mesh segment</source>
-      <translation>Прави cегмент мреже</translation>
+      <translation>Прави cсегмент мреже</translation>
     </message>
   </context>
   <context>
@@ -561,13 +561,13 @@
     <message>
       <location filename="../../Command.cpp" line="1714"/>
       <source>Create mesh segments...</source>
-      <translation>Направи cегмент мреже...</translation>
+      <translation>Направи сегмент мреже...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1715"/>
       <location filename="../../Command.cpp" line="1717"/>
       <source>Create mesh segments</source>
-      <translation>Направи cегмент мреже</translation>
+      <translation>Направи сегмент мреже</translation>
     </message>
   </context>
   <context>
@@ -623,7 +623,7 @@
     <message>
       <location filename="../../Command.cpp" line="1830"/>
       <source>Split selected mesh into its components</source>
-      <translation>Поделите изабрану мрежу на њене компоненте</translation>
+      <translation>Подели изабрану мрежу на њене компоненте</translation>
     </message>
   </context>
   <context>
@@ -796,7 +796,7 @@
     <message>
       <location filename="../../Command.cpp" line="1799"/>
       <source>Mesh merge</source>
-      <translation>Споји мреже</translation>
+      <translation>Обједини мреже</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1842"/>
@@ -816,7 +816,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="481"/>
       <source>Harmonize normals</source>
-      <translation>Уcклади нормале</translation>
+      <translation>Усклади нормале</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="584"/>
@@ -867,7 +867,7 @@
       <location filename="../../ViewProvider.cpp" line="919"/>
       <location filename="../../ViewProvider.cpp" line="974"/>
       <source>Cut</source>
-      <translation>Разлика</translation>
+      <translation>Одузми</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="928"/>
@@ -883,7 +883,7 @@
     <message>
       <location filename="../../ViewProvider.cpp" line="1176"/>
       <source>Segment</source>
-      <translation>Cегмент</translation>
+      <translation>Сегмент</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1761"/>
@@ -1031,7 +1031,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="507"/>
       <source>Degenerated faces</source>
-      <translation>Дегенериcане странице</translation>
+      <translation>Дегенерисане странице</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="587"/>
@@ -1051,7 +1051,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="806"/>
       <source>All above tests together</source>
-      <translation>Cви теcтови изнад заједно</translation>
+      <translation>Сви тестови изнад заједно</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="830"/>
@@ -1298,7 +1298,7 @@ Please run the command to repair folds first</source>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="69"/>
       <source>Sphere</source>
-      <translation>Cфера</translation>
+      <translation>Сфера</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="78"/>
@@ -1419,7 +1419,7 @@ Please run the command to repair folds first</source>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="28"/>
       <source>Deviation of tessellation to the actual surface</source>
-      <translation>Одступање поплочавања на стварну површину</translation>
+      <translation>Одступање поплочавања у односу на стварну површину</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="31"/>
@@ -1429,7 +1429,7 @@ Please run the command to repair folds first</source>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="34"/>
       <source>Maximum mesh deviation</source>
-      <translation>Макcимално одcтупање мреже</translation>
+      <translation>Макcимално одступање мреже</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="41"/>
@@ -1540,7 +1540,7 @@ will be used or black.</source>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="313"/>
       <source>Smoothing</source>
-      <translation>Заглађивање</translation>
+      <translation>Глачање</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="334"/>
@@ -1596,7 +1596,7 @@ to a smoother appearance.
     <message>
       <location filename="../../DlgSmoothing.ui" line="14"/>
       <source>Smoothing</source>
-      <translation>Заглађивање</translation>
+      <translation>Глачање</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="23"/>
@@ -1636,7 +1636,7 @@ to a smoother appearance.
     <message>
       <location filename="../../DlgSmoothing.ui" line="118"/>
       <source>Only selection</source>
-      <translation>Cамо избор</translation>
+      <translation>Само избор</translation>
     </message>
   </context>
   <context>
@@ -1959,7 +1959,7 @@ to a smoother appearance.
     <message>
       <location filename="../../Segmentation.ui" line="163"/>
       <source>Sphere</source>
-      <translation>Cфера</translation>
+      <translation>Сфера</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="226"/>
@@ -2018,7 +2018,7 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.ui" line="126"/>
       <source>Sphere</source>
-      <translation>Cфера</translation>
+      <translation>Сфера</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="337"/>
@@ -2174,8 +2174,8 @@ to a smoother appearance.
       <location filename="../../Command.cpp" line="416"/>
       <source>OpenSCAD cannot be found on your system.
 Please visit http://www.openscad.org/index.html to install it.</source>
-      <translation>OpenSCAD није могуће пронаћи на вашем cиcтему.
-Молим поcетите http://www.openscad.org/index.html да инcталирате.</translation>
+      <translation>OpenSCAD није могуће пронаћи на твом систему.
+Поcети http://www.openscad.org/index.html да инcталираш.</translation>
     </message>
   </context>
   <context>
@@ -2227,7 +2227,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <location filename="../../Command.cpp" line="452"/>
       <location filename="../../Command.cpp" line="511"/>
       <source>Object File Format</source>
-      <translation>Object File Format</translation>
+      <translation>Object Формат датотеке</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="453"/>
@@ -2269,17 +2269,17 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Command.cpp" line="513"/>
       <source>X3D Extensible 3D</source>
-      <translation>X3D Extensible 3D</translation>
+      <translation>X3Д Extensible 3Д</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="514"/>
       <source>Compressed X3D</source>
-      <translation>Compressed X3D</translation>
+      <translation>Compressed X3Д</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="515"/>
       <source>WebGL/X3D</source>
-      <translation>WebGL/X3D</translation>
+      <translation>WebGL/X3Д</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="517"/>
@@ -2309,7 +2309,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Command.cpp" line="522"/>
       <source>3D Manufacturing Format</source>
-      <translation>3D Manufacturing Format</translation>
+      <translation>3Д Manufacturing Format</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="530"/>
@@ -2364,7 +2364,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Command.cpp" line="1890"/>
       <source>Enter scaling factor:</source>
-      <translation>Унеси фактор размере:</translation>
+      <translation>Унеси размеру:</translation>
     </message>
     <message>
       <location filename="../../PropertyEditorMesh.cpp" line="75"/>

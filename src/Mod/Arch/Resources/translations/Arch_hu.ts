@@ -1820,7 +1820,7 @@ kiválasszák a mértékegységet a fájl megnyitásakor.</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="460"/>
-      <location filename="../../ArchPrecast.py" line="1394"/>
+      <location filename="../../ArchPrecast.py" line="1396"/>
       <location filename="../../ArchWall.py" line="508"/>
       <location filename="../../ArchCommands.py" line="1000"/>
       <source>Length</source>
@@ -1828,14 +1828,14 @@ kiválasszák a mértékegységet a fájl megnyitásakor.</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="470"/>
-      <location filename="../../ArchPrecast.py" line="1395"/>
+      <location filename="../../ArchPrecast.py" line="1397"/>
       <location filename="../../ArchWall.py" line="514"/>
       <source>Width</source>
       <translation>Szélesség</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="477"/>
-      <location filename="../../ArchPrecast.py" line="1396"/>
+      <location filename="../../ArchPrecast.py" line="1398"/>
       <location filename="../../ArchWall.py" line="520"/>
       <source>Height</source>
       <translation>Magasság</translation>
@@ -2038,6 +2038,42 @@ kiválasszák a mértékegységet a fájl megnyitásakor.</translation>
       <translation>Épületrész létrehozása</translation>
     </message>
     <message>
+      <location filename="../../ArchBuildingPart.py" line="907"/>
+      <source>Deactivate</source>
+      <translation>Kikapcsolás</translation>
+    </message>
+    <message>
+      <location filename="../../ArchBuildingPart.py" line="909"/>
+      <source>Activate</source>
+      <translation>Bekapcsol</translation>
+    </message>
+    <message>
+      <location filename="../../ArchBuildingPart.py" line="917"/>
+      <source>Set working plane</source>
+      <translation type="unfinished">Set working plane</translation>
+    </message>
+    <message>
+      <location filename="../../ArchBuildingPart.py" line="925"/>
+      <source>Write camera position</source>
+      <translation type="unfinished">Write camera position</translation>
+    </message>
+    <message>
+      <location filename="../../ArchBuildingPart.py" line="932"/>
+      <source>Create group...</source>
+      <translation>Csoport létrehozása...</translation>
+    </message>
+    <message>
+      <location filename="../../ArchBuildingPart.py" line="939"/>
+      <location filename="../../ArchMaterial.py" line="221"/>
+      <source>Reorder children alphabetically</source>
+      <translation type="unfinished">Reorder children alphabetically</translation>
+    </message>
+    <message>
+      <location filename="../../ArchBuildingPart.py" line="946"/>
+      <source>Clone level up</source>
+      <translation type="unfinished">Clone level up</translation>
+    </message>
+    <message>
       <location filename="../../InitGui.py" line="43"/>
       <location filename="../../InitGui.py" line="206"/>
       <location filename="../../InitGui.py" line="207"/>
@@ -2060,12 +2096,12 @@ kiválasszák a mértékegységet a fájl megnyitásakor.</translation>
       <translation>Profil létrehozása</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="599"/>
+      <location filename="../../ArchProfile.py" line="608"/>
       <source>Profile</source>
       <translation>Profil</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="532"/>
+      <location filename="../../ArchSite.py" line="533"/>
       <source>Please either select only Building objects or nothing at all!
 
 Site is not allowed to accept any other object besides Building.
@@ -2082,7 +2118,7 @@ Más tárgy eltávolításra kerül a kiválasztásból.
 Megjegyzés: Megváltoztathatja a beállításokban.</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="535"/>
+      <location filename="../../ArchSite.py" line="536"/>
       <source>There is no valid object in the selection.
 
 Site creation aborted.</source>
@@ -2091,7 +2127,7 @@ Site creation aborted.</source>
 Szint létrehozása megszakítva.</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="542"/>
+      <location filename="../../ArchSite.py" line="543"/>
       <source>Create Site</source>
       <translation>Oldal létrehozása</translation>
     </message>
@@ -2109,18 +2145,18 @@ Szint létrehozása megszakítva.</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="243"/>
-      <location filename="../../ArchComponent.py" line="1656"/>
+      <location filename="../../ArchComponent.py" line="1645"/>
       <location filename="../../ArchSpace.py" line="250"/>
       <source>Please select a base object</source>
-      <translation type="unfinished">Please select a base object</translation>
+      <translation>Kérjük válassza ki az alap tárgyat</translation>
+    </message>
+    <message>
+      <location filename="../../ArchRoof.py" line="1010"/>
+      <source>Roof</source>
+      <translation>Tető</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="1011"/>
-      <source>Roof</source>
-      <translation type="unfinished">Roof</translation>
-    </message>
-    <message>
-      <location filename="../../ArchRoof.py" line="1012"/>
       <source>Parameters of the roof profiles :
 * Angle : slope in degrees relative to the horizontal.
 * Run : horizontal distance between the wall and the ridge.
@@ -2132,57 +2168,57 @@ Szint létrehozása megszakítva.</translation>
 If Angle = 0 and Run = 0 then the profile is identical to the relative profile.
 If Angle = 0 then the angle is calculated so that the height is the same as the relative profile.
 If Run = 0 then the run is calculated so that the height is the same as the relative profile.</source>
-      <translation type="unfinished">Parameters of the roof profiles :
-* Angle : slope in degrees relative to the horizontal.
-* Run : horizontal distance between the wall and the ridge.
-* Thickness : thickness of the roof.
-* Overhang : horizontal distance between the eave and the wall.
-* Height : height of the ridge above the base (calculated automatically).
-* IdRel : Id of the relative profile used for automatic calculations.
+      <translation>A tetőprofilok paraméterei:
+* Szög: lejtés fokban a vízszinteshez képest.
+* Futás: vízszintes távolság a fal és a gerinc között.
+* Vastagság: a tető vastagsága.
+* Túlnyúlás: vízszintes távolság az eresz és a fal között.
+* Magasság: a gerinc magassága az alap felett (automatikusan kiszámított).
+* IdRel: Az automatikus számításokhoz használt relatív profil azonosítója.
 ---
-If Angle = 0 and Run = 0 then the profile is identical to the relative profile.
-If Angle = 0 then the angle is calculated so that the height is the same as the relative profile.
-If Run = 0 then the run is calculated so that the height is the same as the relative profile.</translation>
+Ha szög = 0 és Futás = 0, akkor a profil megegyezik a relatív profillal.
+Ha szög = 0, akkor a szöget úgy kell kiszámítani, hogy a magasság megegyezik a relatív profillal.
+Ha Futás = 0, akkor a futás kiszámítása úgy történik, hogy a magasság megegyezik a relatív profillal.</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1013"/>
+      <location filename="../../ArchRoof.py" line="1012"/>
       <source>Id</source>
       <translation>Azonosító</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1014"/>
+      <location filename="../../ArchRoof.py" line="1013"/>
       <source>Angle (deg)</source>
-      <translation type="unfinished">Angle (deg)</translation>
+      <translation>Szög (fok)</translation>
+    </message>
+    <message>
+      <location filename="../../ArchRoof.py" line="1014"/>
+      <source>Run (mm)</source>
+      <translation>Futás (mm)</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="1015"/>
-      <source>Run (mm)</source>
-      <translation type="unfinished">Run (mm)</translation>
+      <source>IdRel</source>
+      <translation>IdRel</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="1016"/>
-      <source>IdRel</source>
-      <translation type="unfinished">IdRel</translation>
+      <source>Thickness (mm)</source>
+      <translation>Vastagság (mm)</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="1017"/>
-      <source>Thickness (mm)</source>
-      <translation type="unfinished">Thickness (mm)</translation>
+      <source>Overhang (mm)</source>
+      <translation>Túlnyúlás (mm)</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="1018"/>
-      <source>Overhang (mm)</source>
-      <translation type="unfinished">Overhang (mm)</translation>
-    </message>
-    <message>
-      <location filename="../../ArchRoof.py" line="1019"/>
       <source>Height (mm)</source>
-      <translation type="unfinished">Height (mm)</translation>
+      <translation>Magasság (mm)</translation>
     </message>
     <message>
       <location filename="../../ArchWindowPresets.py" line="504"/>
       <source>Door</source>
-      <translation type="unfinished">Door</translation>
+      <translation>Ajtó</translation>
     </message>
     <message>
       <location filename="../../ArchCutPlane.py" line="151"/>
@@ -2192,22 +2228,22 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchCutPlane.py" line="185"/>
       <source>Cut Plane</source>
-      <translation type="unfinished">Cut Plane</translation>
+      <translation>Vágási sík</translation>
     </message>
     <message>
       <location filename="../../ArchCutPlane.py" line="186"/>
       <source>Cut Plane options</source>
-      <translation type="unfinished">Cut Plane options</translation>
+      <translation>Vágási sík beállítások</translation>
     </message>
     <message>
       <location filename="../../ArchCutPlane.py" line="187"/>
       <source>Which side to cut</source>
-      <translation type="unfinished">Which side to cut</translation>
+      <translation>Melyik oldalon vágjon</translation>
     </message>
     <message>
       <location filename="../../ArchCutPlane.py" line="188"/>
       <source>Behind</source>
-      <translation type="unfinished">Behind</translation>
+      <translation>Mögött</translation>
     </message>
     <message>
       <location filename="../../ArchCutPlane.py" line="189"/>
@@ -2215,9 +2251,19 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Elölnézet</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="739"/>
+      <location filename="../../ArchReference.py" line="498"/>
+      <source>Reload reference</source>
+      <translation type="unfinished">Reload reference</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReference.py" line="506"/>
+      <source>Open reference</source>
+      <translation type="unfinished">Open reference</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReference.py" line="758"/>
       <source>Create external reference</source>
-      <translation type="unfinished">Create external reference</translation>
+      <translation>Külső hivatkozás készítése</translation>
     </message>
     <message>
       <location filename="../../importSH3D.py" line="70"/>
@@ -2225,7 +2271,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../importDAE.py" line="126"/>
       <location filename="../../import3DS.py" line="83"/>
       <source>Error: Couldn't determine character encoding</source>
-      <translation type="unfinished">Error: Couldn't determine character encoding</translation>
+      <translation>Hiba: Nem állapítható meg a karakterkódolás</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="48"/>
@@ -2250,47 +2296,47 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../importSHP.py" line="70"/>
       <source>Choose which field provides shapes elevations:</source>
-      <translation type="unfinished">Choose which field provides shapes elevations:</translation>
+      <translation>Válassza ki, hogy melyik mező adja meg az alakzatok magasságát:</translation>
     </message>
     <message>
       <location filename="../../importSHP.py" line="111"/>
       <source>No shape found in this file</source>
-      <translation type="unfinished">No shape found in this file</translation>
+      <translation>A fájlban nincsenek alakzatok</translation>
     </message>
     <message>
       <location filename="../../importSHP.py" line="136"/>
       <source>Shapefile module not found</source>
-      <translation type="unfinished">Shapefile module not found</translation>
+      <translation>Alakzat modul nem található</translation>
     </message>
     <message>
       <location filename="../../importSHP.py" line="137"/>
       <source>The shapefile python library was not found on your system. Would you like to download it now from &lt;a href="https://github.com/GeospatialPython/pyshp"&gt;https://github.com/GeospatialPython/pyshp&lt;/a&gt;? It will be placed in your macros folder.</source>
-      <translation type="unfinished">The shapefile python library was not found on your system. Would you like to download it now from &lt;a href="https://github.com/GeospatialPython/pyshp"&gt;https://github.com/GeospatialPython/pyshp&lt;/a&gt;? It will be placed in your macros folder.</translation>
+      <translation>Alakzatmodul python könyvtár nem található a rendszeren. Szeretné most letölteni a &lt;a href="https://github.com/GeospatialPython/pyshp"&gt;https://github.com/GeospatialPython/pyshp&lt;/a&gt;? A makrók mappájába kerül.</translation>
     </message>
     <message>
       <location filename="../../importSHP.py" line="143"/>
       <source>Error: Unable to download from:</source>
-      <translation type="unfinished">Error: Unable to download from:</translation>
+      <translation>Hiba: Nem lehet letölteni innen:</translation>
     </message>
     <message>
       <location filename="../../importSHP.py" line="155"/>
       <source>Could not download shapefile module. Aborting.</source>
-      <translation type="unfinished">Could not download shapefile module. Aborting.</translation>
+      <translation>Alakzat modul nem letölthető. Megszakítja a folyamatot.</translation>
     </message>
     <message>
       <location filename="../../importSHP.py" line="158"/>
       <source>Shapefile module not downloaded. Aborting.</source>
-      <translation type="unfinished">Shapefile module not downloaded. Aborting.</translation>
+      <translation>Alakzat modul nincs letöltve. Megszakítva.</translation>
     </message>
     <message>
       <location filename="../../importSHP.py" line="161"/>
       <source>Shapefile module not found. Aborting.</source>
-      <translation type="unfinished">Shapefile module not found. Aborting.</translation>
+      <translation>Alakzat modul nem található. Megszakítva.</translation>
     </message>
     <message>
       <location filename="../../importSHP.py" line="162"/>
       <source>The shapefile library can be downloaded from the following URL and installed in your macros folder:</source>
-      <translation type="unfinished">The shapefile library can be downloaded from the following URL and installed in your macros folder:</translation>
+      <translation>Az alakzatfájltár a következő URL-címről tölthető le, és a makrók mappájába telepíthető:</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="84"/>
@@ -2302,223 +2348,236 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchWindow.py" line="226"/>
       <location filename="../../ArchWindow.py" line="271"/>
       <source>Create Window</source>
-      <translation type="unfinished">Create Window</translation>
+      <translation>Ablak létrehozása</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="242"/>
       <source>Choose a face on an existing object or select a preset</source>
-      <translation type="unfinished">Choose a face on an existing object or select a preset</translation>
+      <translation>Válasszon egy felületet a meglévő objektumon vagy válasszon egy előre beállítottat</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="294"/>
       <source>Window not based on sketch. Window not aligned or resized.</source>
-      <translation type="unfinished">Window not based on sketch. Window not aligned or resized.</translation>
+      <translation>Az ablak nem a vázlaton alapul. Az ablak nincs igazítva vagy átméretezve.</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="304"/>
       <source>No Width and/or Height constraint in window sketch. Window not resized.</source>
-      <translation type="unfinished">No Width and/or Height constraint in window sketch. Window not resized.</translation>
+      <translation>Nincs szélességi és/vagy magassági korlátozás az ablak vázlatában. Az ablak nincs átméretezve.</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="307"/>
       <source>No window found. Cannot continue.</source>
-      <translation type="unfinished">No window found. Cannot continue.</translation>
+      <translation>Nem található ablak. Nem folytatható.</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="363"/>
       <source>Window options</source>
-      <translation type="unfinished">Window options</translation>
+      <translation>Ablak beállítások</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="367"/>
       <source>Auto include in host object</source>
-      <translation type="unfinished">Auto include in host object</translation>
+      <translation>Kiszolgáló objektum automatikus hozzáadása</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="373"/>
       <source>Sill height</source>
-      <translation type="unfinished">Sill height</translation>
+      <translation>Könyöklő magassága</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1263"/>
+      <location filename="../../ArchWindow.py" line="1290"/>
       <source>This window has no defined opening</source>
-      <translation type="unfinished">This window has no defined opening</translation>
+      <translation>Ennek az ablakban nincs meghatározva a nyitása</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1540"/>
-      <location filename="../../ArchWindow.py" line="1589"/>
-      <location filename="../../ArchWindow.py" line="1750"/>
+      <location filename="../../ArchWindow.py" line="1567"/>
+      <location filename="../../ArchWindow.py" line="1616"/>
+      <location filename="../../ArchWindow.py" line="1777"/>
       <source>Get selected edge</source>
-      <translation type="unfinished">Get selected edge</translation>
+      <translation>Kiválasztott élt kapja</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1689"/>
+      <location filename="../../ArchWindow.py" line="1716"/>
       <source>Unable to create component</source>
-      <translation type="unfinished">Unable to create component</translation>
+      <translation>Nem sikerült létrehozni egy összetevőt</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1727"/>
+      <location filename="../../ArchWindow.py" line="1754"/>
       <source>Window elements</source>
-      <translation type="unfinished">Window elements</translation>
+      <translation>Ablak elemek</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1728"/>
+      <location filename="../../ArchWindow.py" line="1755"/>
       <source>Hole wire</source>
-      <translation type="unfinished">Hole wire</translation>
+      <translation>Drótháló lyuk</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1729"/>
+      <location filename="../../ArchWindow.py" line="1756"/>
       <source>The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</source>
-      <translation type="unfinished">The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</translation>
+      <translation>A hordozó objektumon lévő furat meghatározásához használt drótháló száma. A nulla értékkel automatikusan a legnagyobb dróthálót fogadja el</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1730"/>
+      <location filename="../../ArchWindow.py" line="1757"/>
       <source>Pick selected</source>
       <translation>Véletlenszerűen kiválasztott</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1731"/>
-      <location filename="../../ArchAxisSystem.py" line="356"/>
-      <location filename="../../ArchAxis.py" line="774"/>
-      <location filename="../../ArchComponent.py" line="1941"/>
-      <location filename="../../ArchSectionPlane.py" line="1499"/>
-      <location filename="../../ArchSpace.py" line="790"/>
+      <location filename="../../ArchWindow.py" line="1758"/>
+      <location filename="../../ArchAxisSystem.py" line="370"/>
+      <location filename="../../ArchAxis.py" line="802"/>
+      <location filename="../../ArchComponent.py" line="1931"/>
+      <location filename="../../ArchSectionPlane.py" line="1506"/>
+      <location filename="../../ArchSpace.py" line="793"/>
       <source>Remove</source>
       <translation>Törlés</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1732"/>
-      <location filename="../../ArchAxisSystem.py" line="357"/>
-      <location filename="../../ArchAxis.py" line="775"/>
-      <location filename="../../ArchComponent.py" line="1942"/>
-      <location filename="../../ArchSpace.py" line="784"/>
+      <location filename="../../ArchWindow.py" line="1759"/>
+      <location filename="../../ArchAxisSystem.py" line="371"/>
+      <location filename="../../ArchAxis.py" line="803"/>
+      <location filename="../../ArchComponent.py" line="1932"/>
+      <location filename="../../ArchSpace.py" line="787"/>
       <source>Add</source>
       <translation>Hozzáad</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1733"/>
+      <location filename="../../ArchSite.py" line="920"/>
+      <location filename="../../ArchReference.py" line="490"/>
+      <location filename="../../ArchWindow.py" line="1760"/>
+      <location filename="../../ArchIFCView.py" line="55"/>
+      <location filename="../../ArchAxisSystem.py" line="250"/>
+      <location filename="../../ArchMaterial.py" line="493"/>
+      <location filename="../../ArchMaterial.py" line="787"/>
+      <location filename="../../ArchGrid.py" line="320"/>
+      <location filename="../../ArchSchedule.py" line="378"/>
+      <location filename="../../ArchAxis.py" line="631"/>
+      <location filename="../../ArchComponent.py" line="1487"/>
+      <location filename="../../ArchSectionPlane.py" line="1237"/>
       <source>Edit</source>
       <translation>Szerkesztés</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1734"/>
+      <location filename="../../ArchWindow.py" line="1761"/>
       <source>Create/update component</source>
-      <translation type="unfinished">Create/update component</translation>
+      <translation>Létrehozni/frissíteni összetevőt</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1735"/>
+      <location filename="../../ArchWindow.py" line="1762"/>
       <source>Base 2D object</source>
-      <translation type="unfinished">Base 2D object</translation>
+      <translation>Alap 2D objektumot</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1736"/>
-      <location filename="../../ArchWindow.py" line="1741"/>
+      <location filename="../../ArchWindow.py" line="1763"/>
+      <location filename="../../ArchWindow.py" line="1768"/>
       <source>Wires</source>
       <translation>Drótvázak</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1737"/>
-      <location filename="../../ArchComponent.py" line="1949"/>
+      <location filename="../../ArchWindow.py" line="1764"/>
+      <location filename="../../ArchComponent.py" line="1939"/>
       <source>Components</source>
       <translation>Összetevők</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1738"/>
+      <location filename="../../ArchWindow.py" line="1765"/>
       <source>Create new component</source>
       <translation>Új összetevő létrehozásához</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1739"/>
-      <location filename="../../ArchMaterial.py" line="826"/>
-      <location filename="../../ArchMaterial.py" line="845"/>
+      <location filename="../../ArchWindow.py" line="1766"/>
+      <location filename="../../ArchMaterial.py" line="869"/>
+      <location filename="../../ArchMaterial.py" line="888"/>
       <source>Name</source>
       <translation>Név</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1740"/>
-      <location filename="../../ArchComponent.py" line="2001"/>
+      <location filename="../../ArchWindow.py" line="1767"/>
+      <location filename="../../ArchComponent.py" line="1991"/>
       <location filename="../../ArchCommands.py" line="1617"/>
       <source>Type</source>
       <translation>Típus</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1742"/>
-      <location filename="../../ArchMaterial.py" line="826"/>
-      <location filename="../../ArchMaterial.py" line="845"/>
+      <location filename="../../ArchWindow.py" line="1769"/>
+      <location filename="../../ArchMaterial.py" line="869"/>
+      <location filename="../../ArchMaterial.py" line="888"/>
       <source>Thickness</source>
       <translation>Vastagság</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1743"/>
-      <location filename="../../ArchPrecast.py" line="1400"/>
+      <location filename="../../ArchWindow.py" line="1770"/>
+      <location filename="../../ArchPrecast.py" line="1402"/>
       <source>Offset</source>
       <translation>Eltolás</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1744"/>
+      <location filename="../../ArchWindow.py" line="1771"/>
       <source>Hinge</source>
       <translation>Zsanér</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1745"/>
+      <location filename="../../ArchWindow.py" line="1772"/>
       <source>Opening mode</source>
       <translation>Nyitás módja</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1746"/>
-      <location filename="../../ArchWindow.py" line="1748"/>
+      <location filename="../../ArchWindow.py" line="1773"/>
+      <location filename="../../ArchWindow.py" line="1775"/>
       <source>+ default</source>
       <translation>+ alapértelmezett</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1747"/>
+      <location filename="../../ArchWindow.py" line="1774"/>
       <source>If this is checked, the default Frame value of this window will be added to the value entered here</source>
-      <translation type="unfinished">If this is checked, the default Frame value of this window will be added to the value entered here</translation>
+      <translation>Ha ez be van jelölve, az ablak keret alapérték hozzáadódik az itt megadott értékhez</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1749"/>
+      <location filename="../../ArchWindow.py" line="1776"/>
       <source>If this is checked, the default Offset value of this window will be added to the value entered here</source>
-      <translation type="unfinished">If this is checked, the default Offset value of this window will be added to the value entered here</translation>
+      <translation>Ha ez be van jelölve, az ablak eltolás alapérték hozzáadódik az itt megadott értékhez</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1751"/>
+      <location filename="../../ArchWindow.py" line="1778"/>
       <source>Press to retrieve the selected edge</source>
-      <translation type="unfinished">Press to retrieve the selected edge</translation>
+      <translation>Nyomja meg a kiválasztott él lekéréséhez</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1752"/>
+      <location filename="../../ArchWindow.py" line="1236"/>
+      <location filename="../../ArchWindow.py" line="1779"/>
       <source>Invert opening direction</source>
-      <translation type="unfinished">Invert opening direction</translation>
+      <translation>Nyitásirány megfordítása</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1753"/>
+      <location filename="../../ArchWindow.py" line="1244"/>
+      <location filename="../../ArchWindow.py" line="1780"/>
       <source>Invert hinge position</source>
-      <translation type="unfinished">Invert hinge position</translation>
+      <translation>Zsanér pozíció megfordítása</translation>
     </message>
     <message>
       <location filename="../../ArchAxisSystem.py" line="82"/>
       <source>Only axes must be selected</source>
-      <translation type="unfinished">Only axes must be selected</translation>
+      <translation>Csak tengelyeket kell kijelölni</translation>
     </message>
     <message>
       <location filename="../../ArchAxisSystem.py" line="86"/>
       <source>Create Axis System</source>
-      <translation type="unfinished">Create Axis System</translation>
+      <translation>Tengelyrendszer létrehozása</translation>
     </message>
     <message>
       <location filename="../../ArchAxisSystem.py" line="91"/>
       <source>Please select at least one axis</source>
-      <translation type="unfinished">Please select at least one axis</translation>
+      <translation>Kérlek válassz legalább egy tengelyt</translation>
     </message>
     <message>
-      <location filename="../../ArchAxisSystem.py" line="355"/>
-      <location filename="../../ArchAxis.py" line="773"/>
-      <location filename="../../ArchComponent.py" line="1948"/>
+      <location filename="../../ArchAxisSystem.py" line="369"/>
+      <location filename="../../ArchAxis.py" line="801"/>
+      <location filename="../../ArchComponent.py" line="1938"/>
       <source>Axes</source>
-      <translation type="unfinished">Axes</translation>
+      <translation>Tengelyek</translation>
     </message>
     <message>
-      <location filename="../../ArchAxisSystem.py" line="358"/>
+      <location filename="../../ArchAxisSystem.py" line="372"/>
       <source>Axis system components</source>
       <translation type="unfinished">Axis system components</translation>
     </message>
@@ -2593,23 +2652,28 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation type="unfinished">Create multi-material</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="826"/>
-      <location filename="../../ArchMaterial.py" line="845"/>
+      <location filename="../../ArchMaterial.py" line="214"/>
+      <source>Merge duplicates</source>
+      <translation type="unfinished">Merge duplicates</translation>
+    </message>
+    <message>
+      <location filename="../../ArchMaterial.py" line="869"/>
+      <location filename="../../ArchMaterial.py" line="888"/>
       <source>Material</source>
       <translation>Anyag</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="877"/>
+      <location filename="../../ArchMaterial.py" line="920"/>
       <source>New layer</source>
       <translation type="unfinished">New layer</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="914"/>
+      <location filename="../../ArchMaterial.py" line="957"/>
       <source>Total thickness</source>
       <translation>Teljes vastagság</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="928"/>
+      <location filename="../../ArchMaterial.py" line="971"/>
       <source>depends on the object</source>
       <translation type="unfinished">depends on the object</translation>
     </message>
@@ -2660,187 +2724,187 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation type="unfinished">Total column size is larger than width</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="406"/>
+      <location filename="../../ArchGrid.py" line="420"/>
       <source>Grid</source>
       <translation>Rács</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="407"/>
+      <location filename="../../ArchGrid.py" line="421"/>
       <source>Total width</source>
       <translation type="unfinished">Total width</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="408"/>
+      <location filename="../../ArchGrid.py" line="422"/>
       <source>Total height</source>
       <translation type="unfinished">Total height</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="409"/>
+      <location filename="../../ArchGrid.py" line="423"/>
       <source>Add row</source>
       <translation>Sor hozzáadás</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="410"/>
+      <location filename="../../ArchGrid.py" line="424"/>
       <source>Del row</source>
       <translation>Sor törlés</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="411"/>
+      <location filename="../../ArchGrid.py" line="425"/>
       <source>Add col</source>
       <translation type="unfinished">Add col</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="412"/>
+      <location filename="../../ArchGrid.py" line="426"/>
       <source>Del col</source>
       <translation type="unfinished">Del col</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="413"/>
+      <location filename="../../ArchGrid.py" line="427"/>
       <source>Create span</source>
       <translation type="unfinished">Create span</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="414"/>
+      <location filename="../../ArchGrid.py" line="428"/>
       <source>Remove span</source>
       <translation type="unfinished">Remove span</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="415"/>
+      <location filename="../../ArchGrid.py" line="429"/>
       <source>Rows</source>
       <translation type="unfinished">Rows</translation>
     </message>
     <message>
-      <location filename="../../ArchGrid.py" line="415"/>
+      <location filename="../../ArchGrid.py" line="429"/>
       <source>Columns</source>
       <translation type="unfinished">Columns</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="987"/>
+      <location filename="../../ArchPrecast.py" line="989"/>
       <source>Precast elements</source>
       <translation type="unfinished">Precast elements</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="988"/>
+      <location filename="../../ArchPrecast.py" line="990"/>
       <source>Slab type</source>
       <translation type="unfinished">Slab type</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="989"/>
+      <location filename="../../ArchPrecast.py" line="991"/>
       <source>Chamfer</source>
       <translation>Letörés</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="990"/>
+      <location filename="../../ArchPrecast.py" line="992"/>
       <source>Dent length</source>
       <translation type="unfinished">Dent length</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="991"/>
+      <location filename="../../ArchPrecast.py" line="993"/>
       <source>Dent width</source>
       <translation type="unfinished">Dent width</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="992"/>
+      <location filename="../../ArchPrecast.py" line="994"/>
       <source>Dent height</source>
       <translation type="unfinished">Dent height</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="993"/>
+      <location filename="../../ArchPrecast.py" line="995"/>
       <source>Slab base</source>
       <translation type="unfinished">Slab base</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="994"/>
+      <location filename="../../ArchPrecast.py" line="996"/>
       <source>Number of holes</source>
       <translation type="unfinished">Number of holes</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="995"/>
+      <location filename="../../ArchPrecast.py" line="997"/>
       <source>Major diameter of holes</source>
       <translation type="unfinished">Major diameter of holes</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="996"/>
+      <location filename="../../ArchPrecast.py" line="998"/>
       <source>Minor diameter of holes</source>
       <translation type="unfinished">Minor diameter of holes</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="997"/>
+      <location filename="../../ArchPrecast.py" line="999"/>
       <source>Spacing between holes</source>
       <translation type="unfinished">Spacing between holes</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="998"/>
+      <location filename="../../ArchPrecast.py" line="1000"/>
       <source>Number of grooves</source>
       <translation type="unfinished">Number of grooves</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="999"/>
+      <location filename="../../ArchPrecast.py" line="1001"/>
       <source>Depth of grooves</source>
       <translation type="unfinished">Depth of grooves</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1000"/>
+      <location filename="../../ArchPrecast.py" line="1002"/>
       <source>Height of grooves</source>
       <translation type="unfinished">Height of grooves</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1001"/>
+      <location filename="../../ArchPrecast.py" line="1003"/>
       <source>Spacing between grooves</source>
       <translation type="unfinished">Spacing between grooves</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1002"/>
+      <location filename="../../ArchPrecast.py" line="1004"/>
       <source>Number of risers</source>
       <translation type="unfinished">Number of risers</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1003"/>
+      <location filename="../../ArchPrecast.py" line="1005"/>
       <source>Length of down floor</source>
       <translation type="unfinished">Length of down floor</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1004"/>
+      <location filename="../../ArchPrecast.py" line="1006"/>
       <source>Height of risers</source>
       <translation type="unfinished">Height of risers</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1005"/>
+      <location filename="../../ArchPrecast.py" line="1007"/>
       <source>Depth of treads</source>
-      <translation type="unfinished">Depth of treads</translation>
-    </message>
-    <message>
-      <location filename="../../ArchPrecast.py" line="1390"/>
-      <source>Precast options</source>
-      <translation type="unfinished">Precast options</translation>
-    </message>
-    <message>
-      <location filename="../../ArchPrecast.py" line="1391"/>
-      <source>Dents list</source>
-      <translation type="unfinished">Dents list</translation>
+      <translation>Futófelület mélysége</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1392"/>
-      <source>Add dent</source>
-      <translation type="unfinished">Add dent</translation>
+      <source>Precast options</source>
+      <translation>Előregyártási lehetőségek</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1393"/>
+      <source>Dents list</source>
+      <translation>Mélyedések listája</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPrecast.py" line="1394"/>
+      <source>Add dent</source>
+      <translation>Mélyedés hozzáadása</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPrecast.py" line="1395"/>
       <source>Remove dent</source>
-      <translation type="unfinished">Remove dent</translation>
-    </message>
-    <message>
-      <location filename="../../ArchPrecast.py" line="1397"/>
-      <source>Slant</source>
-      <translation type="unfinished">Slant</translation>
-    </message>
-    <message>
-      <location filename="../../ArchPrecast.py" line="1398"/>
-      <source>Level</source>
-      <translation type="unfinished">Level</translation>
+      <translation>Mélyedés eltávolítása</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1399"/>
+      <source>Slant</source>
+      <translation>Ferde</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPrecast.py" line="1400"/>
+      <source>Level</source>
+      <translation>Szint</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPrecast.py" line="1401"/>
       <source>Rotation</source>
       <translation>Forgatás</translation>
     </message>
@@ -2854,184 +2918,189 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchPanel.py" line="121"/>
       <location filename="../../ArchSectionPlane.py" line="105"/>
       <source>View of</source>
-      <translation type="unfinished">View of</translation>
+      <translation>Nézete a</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="170"/>
       <location filename="../../ArchPanel.py" line="199"/>
       <source>Create Panel</source>
-      <translation type="unfinished">Create Panel</translation>
+      <translation>Panel létrehozása</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="346"/>
       <source>Create Panel Cut</source>
-      <translation type="unfinished">Create Panel Cut</translation>
+      <translation>Panel kivágás létrehozása</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="372"/>
       <source>Create Panel Sheet</source>
-      <translation type="unfinished">Create Panel Sheet</translation>
+      <translation>Panel lap létrehozása</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="742"/>
       <source>Error computing shape of</source>
-      <translation type="unfinished">Error computing shape of</translation>
+      <translation>Számítási hiba ennél az alakzatnál</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1495"/>
+      <location filename="../../ArchPanel.py" line="1497"/>
       <source>Tools</source>
       <translation>Eszközök</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1499"/>
+      <location filename="../../ArchPanel.py" line="1501"/>
       <source>Edit views positions</source>
-      <translation type="unfinished">Edit views positions</translation>
+      <translation>Nézet pozíciók szerkesztése</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1589"/>
+      <location filename="../../ArchPanel.py" line="1591"/>
       <source>This object has no face</source>
-      <translation type="unfinished">This object has no face</translation>
+      <translation>Ennek az objektumnak nincs felülete</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="83"/>
       <source>Curtain Wall</source>
-      <translation type="unfinished">Curtain Wall</translation>
+      <translation>Függönyfal</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="117"/>
       <location filename="../../ArchCurtainWall.py" line="144"/>
       <source>Create Curtain Wall</source>
-      <translation type="unfinished">Create Curtain Wall</translation>
+      <translation>Függönyfal létrehozás</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="121"/>
       <location filename="../../ArchPipe.py" line="128"/>
       <source>Create Pipe</source>
-      <translation type="unfinished">Create Pipe</translation>
+      <translation>Cső létrehozása</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="158"/>
       <source>Please select exactly 2 or 3 Pipe objects</source>
-      <translation type="unfinished">Please select exactly 2 or 3 Pipe objects</translation>
+      <translation>Kérjük, válasszon ki pontosan 2 vagy 3 cső tárgyat</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="163"/>
       <source>Please select only Pipe objects</source>
-      <translation type="unfinished">Please select only Pipe objects</translation>
+      <translation>Kérem csak cső tárgyakat válasszon</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="167"/>
       <source>Create Connector</source>
-      <translation type="unfinished">Create Connector</translation>
+      <translation>Csatlakozó létrehozása</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="221"/>
       <source>Unable to build the base path</source>
-      <translation type="unfinished">Unable to build the base path</translation>
+      <translation>Nem sikerült létrehozni az alap útvonalat</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="237"/>
       <source>Unable to build the profile</source>
-      <translation type="unfinished">Unable to build the profile</translation>
+      <translation>Nem sikerült felépíteni a profilt</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="269"/>
       <source>Unable to build the pipe</source>
-      <translation type="unfinished">Unable to build the pipe</translation>
+      <translation>Nem sikerült felépíteni a csövet</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="288"/>
       <source>The base object is not a Part</source>
-      <translation type="unfinished">The base object is not a Part</translation>
+      <translation>Az alap tárgy nem alkatrész</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="291"/>
       <source>Too many wires in the base shape</source>
-      <translation type="unfinished">Too many wires in the base shape</translation>
+      <translation>Túl sok drótváz az alap alakzatban</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="294"/>
       <source>The base wire is closed</source>
-      <translation type="unfinished">The base wire is closed</translation>
+      <translation>Az alap drótváz zárt</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="308"/>
       <source>The profile is not a 2D Part</source>
-      <translation type="unfinished">The profile is not a 2D Part</translation>
+      <translation>A felület profil nem 2D alkatrész</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="311"/>
       <source>The profile is not closed</source>
-      <translation type="unfinished">The profile is not closed</translation>
+      <translation>A profil nem zárt</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="379"/>
       <source>Only the 3 first wires will be connected</source>
-      <translation type="unfinished">Only the 3 first wires will be connected</translation>
+      <translation>Csak az első 3 drótváz lesz csatlakoztatva</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="399"/>
       <location filename="../../ArchPipe.py" line="446"/>
       <source>Common vertex not found</source>
-      <translation type="unfinished">Common vertex not found</translation>
+      <translation>Nem található közös végpont</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="418"/>
       <source>Pipes are already aligned</source>
-      <translation type="unfinished">Pipes are already aligned</translation>
+      <translation>Csövek már összeigazítottak</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="458"/>
       <source>At least 2 pipes must align</source>
-      <translation type="unfinished">At least 2 pipes must align</translation>
+      <translation>Legalább 2 csövet igazítani kell</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="286"/>
       <source>Unable to retrieve value from object</source>
-      <translation type="unfinished">Unable to retrieve value from object</translation>
+      <translation>Nem sikerült lekérdezni a tárgy értékét</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="497"/>
+      <location filename="../../ArchSchedule.py" line="386"/>
+      <source>Attach spreadsheet</source>
+      <translation type="unfinished">Attach spreadsheet</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSchedule.py" line="511"/>
       <source>Import CSV File</source>
-      <translation type="unfinished">Import CSV File</translation>
+      <translation>CSV fájl importálás</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="530"/>
+      <location filename="../../ArchSchedule.py" line="544"/>
       <location filename="../../ArchCommands.py" line="1088"/>
       <source>Export CSV File</source>
-      <translation type="unfinished">Export CSV File</translation>
+      <translation>CSV fájl exportálás</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="551"/>
+      <location filename="../../ArchSchedule.py" line="565"/>
       <source>Unable to recognize that file type</source>
-      <translation type="unfinished">Unable to recognize that file type</translation>
+      <translation>Ismeretlen file-típus</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="573"/>
-      <location filename="../../ArchSchedule.py" line="591"/>
+      <location filename="../../ArchSchedule.py" line="587"/>
+      <location filename="../../ArchSchedule.py" line="605"/>
       <location filename="../../ArchCommands.py" line="999"/>
       <source>Description</source>
       <translation>Leírás</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="573"/>
-      <location filename="../../ArchSchedule.py" line="591"/>
-      <location filename="../../ArchComponent.py" line="2002"/>
+      <location filename="../../ArchSchedule.py" line="587"/>
+      <location filename="../../ArchSchedule.py" line="605"/>
+      <location filename="../../ArchComponent.py" line="1992"/>
       <location filename="../../ArchCommands.py" line="1618"/>
       <source>Value</source>
       <translation>Érték</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="573"/>
-      <location filename="../../ArchSchedule.py" line="591"/>
+      <location filename="../../ArchSchedule.py" line="587"/>
+      <location filename="../../ArchSchedule.py" line="605"/>
       <location filename="../../ArchCommands.py" line="1619"/>
       <source>Unit</source>
       <translation>Egység</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="651"/>
+      <location filename="../../ArchSchedule.py" line="667"/>
       <source>Schedule</source>
-      <translation type="unfinished">Schedule</translation>
+      <translation>Ütemezés</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="150"/>
@@ -3042,55 +3111,55 @@ Floor object is not allowed to accept Site, Building, or Floor objects.
 Site, Building, and Floor objects will be removed from the selection.
 
 You can change that in the preferences.</source>
-      <translation type="unfinished">You can put anything but the following objects: Site, Building, and Floor - in a Floor object.
+      <translation>Mindent elhelyezhet, kivéve a következő tárgyakat: föld, épület és padló - a padlóobjektumban.
 
-Floor object is not allowed to accept Site, Building, or Floor objects.
+A padlóobjektumok nem fogadhatnak terepet, épületet vagy padlót.
 
-Site, Building, and Floor objects will be removed from the selection.
+A terep, az épület és a padló objektumai törlődnek a kijelölésből.
 
-You can change that in the preferences.</translation>
+Ezt a beállításokban módosíthatja.</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="154"/>
       <source>There is no valid object in the selection.
 
 Floor creation aborted.</source>
-      <translation type="unfinished">There is no valid object in the selection.
+      <translation>Nem található érvényes tárgy a kiválasztásban.
 
-Floor creation aborted.</translation>
+Szint létrehozása megszakítva.</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="161"/>
       <source>Create Floor</source>
-      <translation type="unfinished">Create Floor</translation>
+      <translation>Szint létrehozás</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="96"/>
       <source>Create Axis</source>
-      <translation type="unfinished">Create Axis</translation>
+      <translation>Tengelyek létrehozása</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="776"/>
+      <location filename="../../ArchAxis.py" line="804"/>
       <source>Distances (mm) and angles (deg) between axes</source>
-      <translation type="unfinished">Distances (mm) and angles (deg) between axes</translation>
+      <translation>Tengelyek közti távolságok (mm) és szögek (fokban)</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="777"/>
+      <location filename="../../ArchAxis.py" line="805"/>
       <source>Axis</source>
       <translation>Tengely</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="778"/>
+      <location filename="../../ArchAxis.py" line="806"/>
       <source>Distance</source>
       <translation>Távolság</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="779"/>
+      <location filename="../../ArchAxis.py" line="807"/>
       <source>Angle</source>
       <translation>Szög</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="780"/>
+      <location filename="../../ArchAxis.py" line="808"/>
       <source>Label</source>
       <translation>Címke</translation>
     </message>
@@ -3098,125 +3167,126 @@ Floor creation aborted.</translation>
       <location filename="../../importOBJ.py" line="79"/>
       <location filename="../../importOBJ.py" line="90"/>
       <source>Found a shape containing curves, triangulating</source>
-      <translation type="unfinished">Found a shape containing curves, triangulating</translation>
+      <translation>Találtam egy görbét tartalmazó alakzatot, háromszögesítés</translation>
     </message>
     <message>
       <location filename="../../importOBJ.py" line="363"/>
       <source>Successfully imported</source>
-      <translation type="unfinished">Successfully imported</translation>
+      <translation>Sikeresen importálva</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="915"/>
       <source>Error computing the shape of this object</source>
-      <translation type="unfinished">Error computing the shape of this object</translation>
+      <translation>Hiba a tárgy alakjának számítása közben</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="936"/>
       <source>has no solid</source>
-      <translation type="unfinished">has no solid</translation>
+      <translation>nem szilárd test</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="943"/>
       <source>has an invalid shape</source>
-      <translation type="unfinished">has an invalid shape</translation>
+      <translation>van egy érvénytelen alakzat</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="945"/>
       <source>has a null shape</source>
-      <translation type="unfinished">has a null shape</translation>
+      <translation>van egy nulla alakja</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1510"/>
+      <location filename="../../ArchSite.py" line="928"/>
+      <location filename="../../ArchComponent.py" line="1496"/>
       <source>Toggle subcomponents</source>
-      <translation type="unfinished">Toggle subcomponents</translation>
+      <translation>Al összetevők ki-/ bekapcsolása</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1633"/>
+      <location filename="../../ArchComponent.py" line="1622"/>
       <source>Closing Sketch edit</source>
-      <translation type="unfinished">Closing Sketch edit</translation>
+      <translation>Vázlat szerkesztés bezárása</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1940"/>
+      <location filename="../../ArchComponent.py" line="1930"/>
       <source>Component</source>
       <translation type="unfinished">Component</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1943"/>
+      <location filename="../../ArchComponent.py" line="1933"/>
       <source>Components of this object</source>
       <translation type="unfinished">Components of this object</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1944"/>
+      <location filename="../../ArchComponent.py" line="1934"/>
       <source>Base component</source>
       <translation type="unfinished">Base component</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1945"/>
+      <location filename="../../ArchComponent.py" line="1935"/>
       <source>Additions</source>
       <translation type="unfinished">Additions</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1946"/>
+      <location filename="../../ArchComponent.py" line="1936"/>
       <source>Subtractions</source>
       <translation type="unfinished">Subtractions</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1947"/>
+      <location filename="../../ArchComponent.py" line="1937"/>
       <source>Objects</source>
       <translation>Objektumok</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1950"/>
+      <location filename="../../ArchComponent.py" line="1940"/>
       <source>Fixtures</source>
       <translation type="unfinished">Fixtures</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1951"/>
+      <location filename="../../ArchComponent.py" line="1941"/>
       <source>Group</source>
       <translation>Csoport</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1952"/>
+      <location filename="../../ArchComponent.py" line="1942"/>
       <source>Hosts</source>
       <translation>Állomások</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1953"/>
+      <location filename="../../ArchComponent.py" line="1943"/>
       <source>Edit IFC properties</source>
       <translation type="unfinished">Edit IFC properties</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1954"/>
+      <location filename="../../ArchComponent.py" line="1944"/>
       <source>Edit standard code</source>
       <translation type="unfinished">Edit standard code</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2000"/>
+      <location filename="../../ArchComponent.py" line="1990"/>
       <source>Property</source>
       <translation>Tulajdonság</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2005"/>
+      <location filename="../../ArchComponent.py" line="1995"/>
       <source>Add property...</source>
       <translation type="unfinished">Add property...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2006"/>
+      <location filename="../../ArchComponent.py" line="1996"/>
       <source>Add property set...</source>
       <translation type="unfinished">Add property set...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2007"/>
+      <location filename="../../ArchComponent.py" line="1997"/>
       <source>New...</source>
       <translation>Új...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2145"/>
+      <location filename="../../ArchComponent.py" line="2135"/>
       <source>New property</source>
       <translation type="unfinished">New property</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2180"/>
+      <location filename="../../ArchComponent.py" line="2170"/>
       <source>New property set</source>
       <translation type="unfinished">New property set</translation>
     </message>
@@ -3237,83 +3307,88 @@ Floor creation aborted.</translation>
       <translation type="unfinished">Create Section Plane</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1498"/>
+      <location filename="../../ArchSectionPlane.py" line="1245"/>
+      <source>Toggle Cutview</source>
+      <translation type="unfinished">Toggle Cutview</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSectionPlane.py" line="1505"/>
       <source>Section plane settings</source>
       <translation type="unfinished">Section plane settings</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1500"/>
+      <location filename="../../ArchSectionPlane.py" line="1507"/>
       <source>Remove highlighted objects from the list above</source>
       <translation type="unfinished">Remove highlighted objects from the list above</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1501"/>
+      <location filename="../../ArchSectionPlane.py" line="1508"/>
       <source>Add selected</source>
       <translation>Kiválasztott hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1502"/>
+      <location filename="../../ArchSectionPlane.py" line="1509"/>
       <source>Add selected object(s) to the scope of this section plane</source>
       <translation type="unfinished">Add selected object(s) to the scope of this section plane</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1503"/>
+      <location filename="../../ArchSectionPlane.py" line="1510"/>
       <source>Objects seen by this section plane:</source>
       <translation type="unfinished">Objects seen by this section plane:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1504"/>
+      <location filename="../../ArchSectionPlane.py" line="1511"/>
       <source>Section plane placement:</source>
       <translation type="unfinished">Section plane placement:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1505"/>
+      <location filename="../../ArchSectionPlane.py" line="1512"/>
       <source>Rotate X</source>
       <translation type="unfinished">Rotate X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1506"/>
+      <location filename="../../ArchSectionPlane.py" line="1513"/>
       <source>Rotates the plane along the X axis</source>
       <translation type="unfinished">Rotates the plane along the X axis</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1507"/>
+      <location filename="../../ArchSectionPlane.py" line="1514"/>
       <source>Rotate Y</source>
       <translation type="unfinished">Rotate Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1508"/>
+      <location filename="../../ArchSectionPlane.py" line="1515"/>
       <source>Rotates the plane along the Y axis</source>
       <translation type="unfinished">Rotates the plane along the Y axis</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1509"/>
+      <location filename="../../ArchSectionPlane.py" line="1516"/>
       <source>Rotate Z</source>
       <translation type="unfinished">Rotate Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1510"/>
+      <location filename="../../ArchSectionPlane.py" line="1517"/>
       <source>Rotates the plane along the Z axis</source>
       <translation type="unfinished">Rotates the plane along the Z axis</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1511"/>
+      <location filename="../../ArchSectionPlane.py" line="1518"/>
       <source>Resize</source>
       <translation type="unfinished">Resize</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1512"/>
+      <location filename="../../ArchSectionPlane.py" line="1519"/>
       <source>Resizes the plane to fit the objects in the list above</source>
       <translation type="unfinished">Resizes the plane to fit the objects in the list above</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1513"/>
+      <location filename="../../ArchSectionPlane.py" line="1520"/>
       <location filename="../../ArchWall.py" line="528"/>
       <source>Center</source>
       <translation>Középre</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1514"/>
+      <location filename="../../ArchSectionPlane.py" line="1521"/>
       <source>Centers the plane on the objects in the list above</source>
       <translation type="unfinished">Centers the plane on the objects in the list above</translation>
     </message>
@@ -3354,12 +3429,12 @@ Building creation aborted.</translation>
       <translation type="unfinished">Create Space</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="773"/>
+      <location filename="../../ArchSpace.py" line="776"/>
       <source>Set text position</source>
       <translation type="unfinished">Set text position</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="777"/>
+      <location filename="../../ArchSpace.py" line="780"/>
       <source>Space boundaries</source>
       <translation type="unfinished">Space boundaries</translation>
     </message>
@@ -3452,6 +3527,11 @@ Building creation aborted.</translation>
       <translation type="unfinished">Error: Unable to modify the base object of this wall</translation>
     </message>
     <message>
+      <location filename="../../ArchWall.py" line="1736"/>
+      <source>Flip direction</source>
+      <translation>Irányok megfordítása</translation>
+    </message>
+    <message>
       <location filename="../../ArchCommands.py" line="407"/>
       <source>Invalid cutplane</source>
       <translation type="unfinished">Invalid cutplane</translation>
@@ -3464,22 +3544,22 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="693"/>
       <source>is not valid</source>
-      <translation type="unfinished">is not valid</translation>
+      <translation>ez érvénytelen</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="695"/>
       <source>doesn't contain any solid</source>
-      <translation type="unfinished">doesn't contain any solid</translation>
+      <translation>nem tartalmazhat semmilyen szilárd testet</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="701"/>
       <source>contains a non-closed solid</source>
-      <translation type="unfinished">contains a non-closed solid</translation>
+      <translation>le nem zárt szilárd testet tartalmaz</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="703"/>
       <source>contains faces that are not part of any solid</source>
-      <translation type="unfinished">contains faces that are not part of any solid</translation>
+      <translation>tartalmaz felületet, amelyek nem tartoznak semmilyen szilárd testhez</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="993"/>
@@ -3489,7 +3569,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="994"/>
       <source>Set description</source>
-      <translation type="unfinished">Set description</translation>
+      <translation>Leírás megadása</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="995"/>
@@ -3499,17 +3579,17 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="996"/>
       <source>Copy Length</source>
-      <translation type="unfinished">Copy Length</translation>
+      <translation>Másolás hossza</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="997"/>
       <source>Copy Area</source>
-      <translation type="unfinished">Copy Area</translation>
+      <translation>Másolási terület</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="998"/>
       <source>Export CSV</source>
-      <translation type="unfinished">Export CSV</translation>
+      <translation>Exportálás CSVbe</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1001"/>
@@ -3524,74 +3604,74 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1126"/>
       <source>Object doesn't have settable IFC Attributes</source>
-      <translation type="unfinished">Object doesn't have settable IFC Attributes</translation>
+      <translation>Tárgy nem rendelkezik beállítható IFC-jellemzőkkel</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1132"/>
       <source>Disabling Brep force flag of object</source>
-      <translation type="unfinished">Disabling Brep force flag of object</translation>
+      <translation>Brep erő zászló letiltása a tárgyon</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1135"/>
       <location filename="../../ArchCommands.py" line="1138"/>
       <source>Enabling Brep force flag of object</source>
-      <translation type="unfinished">Enabling Brep force flag of object</translation>
+      <translation>Brep erő jelző engedélyezése a tárgyon</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1330"/>
       <source>Add space boundary</source>
-      <translation type="unfinished">Add space boundary</translation>
+      <translation>Hely határvonal hozzáadása</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1334"/>
       <source>Grouping</source>
-      <translation type="unfinished">Grouping</translation>
+      <translation>Csoportosítás</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1362"/>
       <source>Remove space boundary</source>
-      <translation type="unfinished">Remove space boundary</translation>
+      <translation>Távolítsa el a hely határvonalán</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1366"/>
       <source>Ungrouping</source>
-      <translation type="unfinished">Ungrouping</translation>
+      <translation>Csoportbontás</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1397"/>
       <source>Split Mesh</source>
-      <translation type="unfinished">Split Mesh</translation>
+      <translation>Háló osztása</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1437"/>
       <source>Mesh to Shape</source>
-      <translation type="unfinished">Mesh to Shape</translation>
+      <translation>Hálókat alakzatokká</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1518"/>
       <source>All good! No problems found</source>
-      <translation type="unfinished">All good! No problems found</translation>
+      <translation>Minden jó! Nincs probléma</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1570"/>
       <location filename="../../ArchCommands.py" line="1595"/>
       <source>Create Component</source>
-      <translation type="unfinished">Create Component</translation>
+      <translation>Összetevő létrehozás</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1616"/>
       <source>Key</source>
-      <translation type="unfinished">Key</translation>
+      <translation>Kulcs</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1626"/>
       <source>The object doesn't have an IfcProperties attribute. Cancel spreadsheet creation for object:</source>
-      <translation type="unfinished">The object doesn't have an IfcProperties attribute. Cancel spreadsheet creation for object:</translation>
+      <translation>A tárgy nem rendelkezik Ifc tulajdonságattribútummal. Törölje a táblázat létrehozását a tárgyhoz:</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1644"/>
       <source>Create IFC properties spreadsheet</source>
-      <translation type="unfinished">Create IFC properties spreadsheet</translation>
+      <translation>IFC tulajdonság táblázat létrehozása</translation>
     </message>
   </context>
   <context>
@@ -3599,12 +3679,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="196"/>
       <source>Multiple Structures</source>
-      <translation type="unfinished">Multiple Structures</translation>
+      <translation>Több szerkezet</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="199"/>
       <source>Create multiple Arch Structure objects from a selected base, using each selected edge as an extrusion path</source>
-      <translation type="unfinished">Create multiple Arch Structure objects from a selected base, using each selected edge as an extrusion path</translation>
+      <translation>Több architektúra-szerkezeti tárgy létrehozása egy kijelölt alapból, az egyes kijelölt élek mint kihúzási útvonalak használatával</translation>
     </message>
   </context>
   <context>
@@ -3612,12 +3692,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="233"/>
       <source>Structural System</source>
-      <translation type="unfinished">Structural System</translation>
+      <translation>Szerkezeti rendszer</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="236"/>
       <source>Create a structural system object from a selected structure and axis</source>
-      <translation type="unfinished">Create a structural system object from a selected structure and axis</translation>
+      <translation>Szerkezeti elrendezési tárgy létrehozása kijelölt szerkezetekből és tengelyekből</translation>
     </message>
   </context>
   <context>
@@ -3630,7 +3710,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="274"/>
       <source>Creates a structure object from scratch or from a selected object (sketch, wire, face or solid)</source>
-      <translation type="unfinished">Creates a structure object from scratch or from a selected object (sketch, wire, face or solid)</translation>
+      <translation>Létrehoz egy tárgy felépítést vázlatból vagy egy kijelölt tárgyból (vázlat, vonal, felület vagy szilárd test)</translation>
     </message>
   </context>
   <context>
@@ -3639,123 +3719,123 @@ Building creation aborted.</translation>
       <location filename="../../ArchStructure.py" line="676"/>
       <location filename="../../ArchStructure.py" line="1321"/>
       <source>An optional extrusion path for this element</source>
-      <translation type="unfinished">An optional extrusion path for this element</translation>
+      <translation>Egy választható kihúzási útvonalat ehhez az elemhez</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="678"/>
       <source>The computed length of the extrusion path</source>
-      <translation type="unfinished">The computed length of the extrusion path</translation>
+      <translation>A kihúzási útvonal számított hossza</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="680"/>
       <source>Start offset distance along the extrusion path (positive: extend, negative: trim)</source>
-      <translation type="unfinished">Start offset distance along the extrusion path (positive: extend, negative: trim)</translation>
+      <translation>Kezdeti eltolási távolság a kihúzási útvonal mentén (pozitív: kiterjesztés, negatív: vágás)</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="682"/>
       <source>End offset distance along the extrusion path (positive: extend, negative: trim)</source>
-      <translation type="unfinished">End offset distance along the extrusion path (positive: extend, negative: trim)</translation>
+      <translation>Végponti eltolási távolság a kihúzás útvonal mentén (pozitív: hosszabbítás, negatív: vágás)</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="684"/>
       <source>Automatically align the Base of the Structure perpendicular to the Tool axis</source>
-      <translation type="unfinished">Automatically align the Base of the Structure perpendicular to the Tool axis</translation>
+      <translation>A szerszámtengelyre merőleges szerkezetalap automatikus igazítása</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="686"/>
       <source>X offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</source>
-      <translation type="unfinished">X offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</translation>
+      <translation>X eltolás az alappont és a szerszámtengely között (csak akkor használható, ha a BasePerpendicularTool igaz)</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="688"/>
       <source>Y offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</source>
-      <translation type="unfinished">Y offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</translation>
+      <translation>Y eltolás az alap eredete és a szerszámtengely között (csak akkor használható, ha a BasePerpendicularTool igaz)</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="690"/>
       <source>Mirror the Base along its Y axis (only used if BasePerpendicularToTool is True)</source>
-      <translation type="unfinished">Mirror the Base along its Y axis (only used if BasePerpendicularToTool is True)</translation>
+      <translation>Tükrözze az alap mentén az Y tengely (csak akkor használják, ha BasePerpendicularTool igaz)</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="692"/>
       <source>Base rotation around the Tool axis (only used if BasePerpendicularToTool is True)</source>
-      <translation type="unfinished">Base rotation around the Tool axis (only used if BasePerpendicularToTool is True)</translation>
+      <translation>Alap forgás a szerszámtengely körül (csak akkor használható, ha a BasePerpendicularTool igaz)</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="694"/>
       <location filename="../../ArchPanel.py" line="404"/>
       <source>The length of this element, if not based on a profile</source>
-      <translation type="unfinished">The length of this element, if not based on a profile</translation>
+      <translation>Ennek az elemnek a hossza, ha nem profilon áll</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="696"/>
       <location filename="../../ArchPanel.py" line="406"/>
       <source>The width of this element, if not based on a profile</source>
-      <translation type="unfinished">The width of this element, if not based on a profile</translation>
+      <translation>Ennek az elemnek a szélessége, ha nem profilon áll</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="698"/>
       <source>The height or extrusion depth of this element. Keep 0 for automatic</source>
-      <translation type="unfinished">The height or extrusion depth of this element. Keep 0 for automatic</translation>
+      <translation>Ez az elem magassága vagy kihúzás nagysága. 0 megtartása automatikushoz</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="700"/>
       <location filename="../../ArchPanel.py" line="433"/>
       <location filename="../../ArchWall.py" line="754"/>
       <source>The normal extrusion direction of this object (keep (0,0,0) for automatic normal)</source>
-      <translation type="unfinished">The normal extrusion direction of this object (keep (0,0,0) for automatic normal)</translation>
+      <translation>Ennek a tárgynak az aktuális kihúzás iránya (automatikus normál (0,0,0) megtartása)</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="702"/>
       <location filename="../../ArchPrecast.py" line="68"/>
       <source>The structural nodes of this element</source>
-      <translation type="unfinished">The structural nodes of this element</translation>
+      <translation>Ennek az elemnek a szerkezeti csomópontjai</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="704"/>
       <source>A description of the standard profile this element is based upon</source>
-      <translation type="unfinished">A description of the standard profile this element is based upon</translation>
+      <translation>A szokásos profil leírása amin ez az elem alapszik</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="706"/>
       <source>Offset distance between the centerline and the nodes line</source>
-      <translation type="unfinished">Offset distance between the centerline and the nodes line</translation>
+      <translation>A középtengely és az egyenes csomópontok közti eltolás</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="708"/>
       <location filename="../../ArchPanel.py" line="430"/>
       <source>The facemaker type to use to build the profile of this object</source>
-      <translation type="unfinished">The facemaker type to use to build the profile of this object</translation>
+      <translation>Ennek a tárgynak a felület profiljához használt felületlétrehozó típus</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1012"/>
       <source>If the nodes are visible or not</source>
-      <translation type="unfinished">If the nodes are visible or not</translation>
+      <translation>Ha látja vagy nem látja a csomópontokat</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1014"/>
       <source>The width of the nodes line</source>
-      <translation type="unfinished">The width of the nodes line</translation>
+      <translation>A csomópont egyenes vastagsága</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1016"/>
       <source>The size of the node points</source>
-      <translation type="unfinished">The size of the node points</translation>
+      <translation>A csomópont pontok mérete</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1019"/>
       <source>The color of the nodes line</source>
-      <translation type="unfinished">The color of the nodes line</translation>
+      <translation>A csomópont vonal színe</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1022"/>
       <source>The type of structural node</source>
-      <translation type="unfinished">The type of structural node</translation>
+      <translation>Szerkezeti csomópont típusa</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1356"/>
       <source>Axes systems this structure is built on</source>
-      <translation type="unfinished">Axes systems this structure is built on</translation>
+      <translation>A tengelyrendszerek, amelyekre ez a szerkezet épül</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1357"/>
@@ -3779,7 +3859,7 @@ Building creation aborted.</translation>
     </message>
     <message>
       <location filename="../../ArchEquipment.py" line="311"/>
-      <location filename="../../ArchMaterial.py" line="289"/>
+      <location filename="../../ArchMaterial.py" line="296"/>
       <source>A standard code (MasterFormat, OmniClass,...)</source>
       <translation type="unfinished">A standard code (MasterFormat, OmniClass,...)</translation>
     </message>
@@ -3857,7 +3937,7 @@ Building creation aborted.</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="552"/>
-      <location filename="../../ArchSectionPlane.py" line="1007"/>
+      <location filename="../../ArchSectionPlane.py" line="1002"/>
       <source>The line width of this object</source>
       <translation type="unfinished">The line width of this object</translation>
     </message>
@@ -4002,24 +4082,14 @@ Building creation aborted.</translation>
       <translation type="unfinished">A margin to use when autosize is turned on</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="265"/>
+      <location filename="../../ArchProfile.py" line="266"/>
       <source>Outside Diameter</source>
       <translation type="unfinished">Outside Diameter</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="266"/>
+      <location filename="../../ArchProfile.py" line="267"/>
       <source>Wall thickness</source>
       <translation type="unfinished">Wall thickness</translation>
-    </message>
-    <message>
-      <location filename="../../ArchProfile.py" line="290"/>
-      <location filename="../../ArchProfile.py" line="324"/>
-      <location filename="../../ArchProfile.py" line="348"/>
-      <location filename="../../ArchProfile.py" line="381"/>
-      <location filename="../../ArchProfile.py" line="411"/>
-      <location filename="../../ArchProfile.py" line="438"/>
-      <source>Width of the beam</source>
-      <translation type="unfinished">Width of the beam</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="291"/>
@@ -4028,203 +4098,213 @@ Building creation aborted.</translation>
       <location filename="../../ArchProfile.py" line="382"/>
       <location filename="../../ArchProfile.py" line="412"/>
       <location filename="../../ArchProfile.py" line="439"/>
-      <source>Height of the beam</source>
-      <translation type="unfinished">Height of the beam</translation>
+      <source>Width of the beam</source>
+      <translation type="unfinished">Width of the beam</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="292"/>
+      <location filename="../../ArchProfile.py" line="326"/>
+      <location filename="../../ArchProfile.py" line="350"/>
+      <location filename="../../ArchProfile.py" line="383"/>
+      <location filename="../../ArchProfile.py" line="413"/>
       <location filename="../../ArchProfile.py" line="440"/>
-      <source>Thickness of the web</source>
-      <translation type="unfinished">Thickness of the web</translation>
+      <source>Height of the beam</source>
+      <translation>Fénycsóva magassága</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="293"/>
       <location filename="../../ArchProfile.py" line="441"/>
+      <source>Thickness of the web</source>
+      <translation>Háló vastagsága</translation>
+    </message>
+    <message>
+      <location filename="../../ArchProfile.py" line="294"/>
+      <location filename="../../ArchProfile.py" line="442"/>
       <source>Thickness of the flanges</source>
-      <translation type="unfinished">Thickness of the flanges</translation>
+      <translation>Peremek vastagsága</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="350"/>
+      <location filename="../../ArchProfile.py" line="351"/>
       <source>Thickness of the sides</source>
-      <translation type="unfinished">Thickness of the sides</translation>
-    </message>
-    <message>
-      <location filename="../../ArchProfile.py" line="383"/>
-      <source>Thickness of the webs</source>
-      <translation type="unfinished">Thickness of the webs</translation>
+      <translation>Oldalak vastagsága</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="384"/>
+      <source>Thickness of the webs</source>
+      <translation>Hálók vastagsága</translation>
+    </message>
+    <message>
+      <location filename="../../ArchProfile.py" line="385"/>
       <source>Thickness of the flange</source>
-      <translation type="unfinished">Thickness of the flange</translation>
+      <translation>Perem vastagsága</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="413"/>
+      <location filename="../../ArchProfile.py" line="414"/>
       <source>Thickness of the legs</source>
-      <translation type="unfinished">Thickness of the legs</translation>
+      <translation>A tartók vastagsága</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="589"/>
+      <location filename="../../ArchSite.py" line="590"/>
       <source>The base terrain of this site</source>
       <translation type="unfinished">The base terrain of this site</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="591"/>
+      <location filename="../../ArchSite.py" line="592"/>
       <source>The street and house number of this site, with postal box or apartment number if needed</source>
       <translation type="unfinished">The street and house number of this site, with postal box or apartment number if needed</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="593"/>
+      <location filename="../../ArchSite.py" line="594"/>
       <source>The postal or zip code of this site</source>
       <translation type="unfinished">The postal or zip code of this site</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="595"/>
+      <location filename="../../ArchSite.py" line="596"/>
       <source>The city of this site</source>
       <translation type="unfinished">The city of this site</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="597"/>
+      <location filename="../../ArchSite.py" line="598"/>
       <source>The region, province or county of this site</source>
       <translation type="unfinished">The region, province or county of this site</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="599"/>
+      <location filename="../../ArchSite.py" line="600"/>
       <source>The country of this site</source>
       <translation type="unfinished">The country of this site</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="601"/>
-      <location filename="../../ArchSite.py" line="603"/>
+      <location filename="../../ArchSite.py" line="602"/>
+      <location filename="../../ArchSite.py" line="604"/>
       <source>The latitude of this site</source>
       <translation type="unfinished">The latitude of this site</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="605"/>
+      <location filename="../../ArchSite.py" line="606"/>
       <source>Angle between the true North and the North direction in this document</source>
       <translation type="unfinished">Angle between the true North and the North direction in this document</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="610"/>
+      <location filename="../../ArchSite.py" line="611"/>
       <source>The elevation of level 0 of this site</source>
       <translation type="unfinished">The elevation of level 0 of this site</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="612"/>
+      <location filename="../../ArchSite.py" line="613"/>
       <source>A URL that shows this site in a mapping website</source>
-      <translation type="unfinished">A URL that shows this site in a mapping website</translation>
+      <translation>Egy URL-cím ami leképzett weboldalon jeleníti meg ezt az oldalt</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="614"/>
+      <location filename="../../ArchSite.py" line="615"/>
       <location filename="../../ArchComponent.py" line="196"/>
       <source>Other shapes that are appended to this object</source>
       <translation type="unfinished">Other shapes that are appended to this object</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="616"/>
+      <location filename="../../ArchSite.py" line="617"/>
       <location filename="../../ArchComponent.py" line="198"/>
       <source>Other shapes that are subtracted from this object</source>
       <translation type="unfinished">Other shapes that are subtracted from this object</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="618"/>
+      <location filename="../../ArchSite.py" line="619"/>
       <location filename="../../ArchComponent.py" line="221"/>
       <source>The area of the projection of this object onto the XY plane</source>
       <translation type="unfinished">The area of the projection of this object onto the XY plane</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="620"/>
+      <location filename="../../ArchSite.py" line="621"/>
       <source>The perimeter length of this terrain</source>
       <translation type="unfinished">The perimeter length of this terrain</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="622"/>
+      <location filename="../../ArchSite.py" line="623"/>
       <source>The volume of earth to be added to this terrain</source>
       <translation type="unfinished">The volume of earth to be added to this terrain</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="624"/>
+      <location filename="../../ArchSite.py" line="625"/>
       <source>The volume of earth to be removed from this terrain</source>
       <translation type="unfinished">The volume of earth to be removed from this terrain</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="626"/>
+      <location filename="../../ArchSite.py" line="627"/>
       <source>An extrusion vector to use when performing boolean operations</source>
       <translation type="unfinished">An extrusion vector to use when performing boolean operations</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="629"/>
+      <location filename="../../ArchSite.py" line="630"/>
       <source>Remove splitters from the resulting shape</source>
       <translation type="unfinished">Remove splitters from the resulting shape</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="631"/>
+      <location filename="../../ArchSite.py" line="632"/>
       <source>An optional offset between the model (0,0,0) origin and the point indicated by the geocoordinates</source>
       <translation type="unfinished">An optional offset between the model (0,0,0) origin and the point indicated by the geocoordinates</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="635"/>
+      <location filename="../../ArchSite.py" line="636"/>
       <location filename="../../ArchIFC.py" line="69"/>
       <source>The type of this object</source>
       <translation type="unfinished">The type of this object</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="639"/>
+      <location filename="../../ArchSite.py" line="640"/>
       <source>The time zone where this site is located</source>
       <translation type="unfinished">The time zone where this site is located</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="641"/>
+      <location filename="../../ArchSite.py" line="642"/>
       <source>An optional EPW File for the location of this site. Refer to the Site documentation to know how to obtain one</source>
       <translation type="unfinished">An optional EPW File for the location of this site. Refer to the Site documentation to know how to obtain one</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="835"/>
+      <location filename="../../ArchSite.py" line="836"/>
       <source>Show wind rose diagram or not. Uses solar diagram scale. Needs Ladybug module</source>
       <translation type="unfinished">Show wind rose diagram or not. Uses solar diagram scale. Needs Ladybug module</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="837"/>
+      <location filename="../../ArchSite.py" line="838"/>
       <source>Show solar diagram or not</source>
       <translation type="unfinished">Show solar diagram or not</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="839"/>
+      <location filename="../../ArchSite.py" line="840"/>
       <source>The scale of the solar diagram</source>
       <translation type="unfinished">The scale of the solar diagram</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="842"/>
+      <location filename="../../ArchSite.py" line="843"/>
       <source>The position of the solar diagram</source>
       <translation type="unfinished">The position of the solar diagram</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="844"/>
+      <location filename="../../ArchSite.py" line="845"/>
       <source>The color of the solar diagram</source>
       <translation type="unfinished">The color of the solar diagram</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="848"/>
+      <location filename="../../ArchSite.py" line="849"/>
       <source>When set to 'True North' the whole geometry will be rotated to match the true north of this site</source>
       <translation type="unfinished">When set to 'True North' the whole geometry will be rotated to match the true north of this site</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="852"/>
+      <location filename="../../ArchSite.py" line="853"/>
       <source>Show compass or not</source>
       <translation type="unfinished">Show compass or not</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="854"/>
+      <location filename="../../ArchSite.py" line="855"/>
       <source>The rotation of the Compass relative to the Site</source>
       <translation type="unfinished">The rotation of the Compass relative to the Site</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="856"/>
+      <location filename="../../ArchSite.py" line="857"/>
       <source>The position of the Compass relative to the Site placement</source>
       <translation type="unfinished">The position of the Compass relative to the Site placement</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="858"/>
+      <location filename="../../ArchSite.py" line="859"/>
       <source>Update the Declination value based on the compass rotation</source>
       <translation type="unfinished">Update the Declination value based on the compass rotation</translation>
     </message>
@@ -4434,7 +4514,7 @@ Building creation aborted.</translation>
       <translation type="unfinished">Show elevation opening symbols if available</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1479"/>
+      <location filename="../../ArchWindow.py" line="1506"/>
       <source>The number of the wire that defines the hole. A value of 0 means automatic</source>
       <translation type="unfinished">The number of the wire that defines the hole. A value of 0 means automatic</translation>
     </message>
@@ -4673,7 +4753,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchStairs.py" line="416"/>
       <source>The type of connection between the lower floor slab and the start of the stairs</source>
-      <translation type="unfinished">The type of connection between the lower floor slab and the start of the stairs</translation>
+      <translation>Az alsó szint és a lépcső kezdete közötti kapcsolat típusa</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="419"/>
@@ -4711,43 +4791,43 @@ Building creation aborted.</translation>
       <translation type="unfinished">When true, the fence will be colored like the original post and section.</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="287"/>
-      <location filename="../../ArchMaterial.py" line="718"/>
+      <location filename="../../ArchMaterial.py" line="294"/>
+      <location filename="../../ArchMaterial.py" line="742"/>
       <source>A description for this material</source>
       <translation type="unfinished">A description for this material</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="291"/>
+      <location filename="../../ArchMaterial.py" line="298"/>
       <source>A URL where to find information about this material</source>
       <translation type="unfinished">A URL where to find information about this material</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="293"/>
+      <location filename="../../ArchMaterial.py" line="300"/>
       <source>The transparency value of this material</source>
       <translation type="unfinished">The transparency value of this material</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="295"/>
+      <location filename="../../ArchMaterial.py" line="302"/>
       <source>The color of this material</source>
       <translation>Ennek az anyagnak a színe</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="297"/>
+      <location filename="../../ArchMaterial.py" line="304"/>
       <source>The color of this material when cut</source>
       <translation type="unfinished">The color of this material when cut</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="719"/>
+      <location filename="../../ArchMaterial.py" line="743"/>
       <source>The list of layer names</source>
       <translation type="unfinished">The list of layer names</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="720"/>
+      <location filename="../../ArchMaterial.py" line="744"/>
       <source>The list of layer materials</source>
       <translation type="unfinished">The list of layer materials</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="721"/>
+      <location filename="../../ArchMaterial.py" line="745"/>
       <source>The list of layer thicknesses</source>
       <translation type="unfinished">The list of layer thicknesses</translation>
     </message>
@@ -4944,13 +5024,13 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchPanel.py" line="839"/>
       <location filename="../../ArchPanel.py" line="941"/>
-      <location filename="../../ArchSectionPlane.py" line="1261"/>
+      <location filename="../../ArchSectionPlane.py" line="1268"/>
       <source>The linked object</source>
       <translation type="unfinished">The linked object</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="841"/>
-      <location filename="../../ArchSectionPlane.py" line="1271"/>
+      <location filename="../../ArchSectionPlane.py" line="1278"/>
       <source>The line width of the rendered objects</source>
       <translation type="unfinished">The line width of the rendered objects</translation>
     </message>
@@ -5530,90 +5610,90 @@ Building creation aborted.</translation>
       <translation type="unfinished">Geometry further than this value will be cut off. Keep zero for unlimited.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="989"/>
+      <location filename="../../ArchSectionPlane.py" line="984"/>
       <source>The display length of this section plane</source>
       <translation type="unfinished">The display length of this section plane</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="995"/>
+      <location filename="../../ArchSectionPlane.py" line="990"/>
       <source>The display height of this section plane</source>
       <translation type="unfinished">The display height of this section plane</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1001"/>
+      <location filename="../../ArchSectionPlane.py" line="996"/>
       <source>The size of the arrows of this section plane</source>
       <translation type="unfinished">The size of the arrows of this section plane</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1004"/>
+      <location filename="../../ArchSectionPlane.py" line="999"/>
       <source>The transparency of this object</source>
       <translation type="unfinished">The transparency of this object</translation>
     </message>
     <message>
+      <location filename="../../ArchSectionPlane.py" line="1005"/>
       <location filename="../../ArchSectionPlane.py" line="1010"/>
-      <location filename="../../ArchSectionPlane.py" line="1015"/>
       <source>Show the cut in the 3D view</source>
       <translation type="unfinished">Show the cut in the 3D view</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1012"/>
+      <location filename="../../ArchSectionPlane.py" line="1007"/>
       <source>The color of this object</source>
       <translation type="unfinished">The color of this object</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1017"/>
+      <location filename="../../ArchSectionPlane.py" line="1012"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
       <translation type="unfinished">The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1020"/>
+      <location filename="../../ArchSectionPlane.py" line="1015"/>
       <source>Show the label in the 3D view</source>
       <translation type="unfinished">Show the label in the 3D view</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1022"/>
+      <location filename="../../ArchSectionPlane.py" line="1017"/>
       <location filename="../../ArchSpace.py" line="509"/>
       <source>The name of the font</source>
       <translation type="unfinished">The name of the font</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1025"/>
+      <location filename="../../ArchSectionPlane.py" line="1020"/>
       <location filename="../../ArchSpace.py" line="515"/>
       <source>The size of the text font</source>
       <translation type="unfinished">The size of the text font</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1263"/>
+      <location filename="../../ArchSectionPlane.py" line="1270"/>
       <source>The rendering mode to use</source>
       <translation type="unfinished">The rendering mode to use</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1267"/>
+      <location filename="../../ArchSectionPlane.py" line="1274"/>
       <source>If cut geometry is shown or not</source>
       <translation type="unfinished">If cut geometry is shown or not</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1269"/>
+      <location filename="../../ArchSectionPlane.py" line="1276"/>
       <source>If cut geometry is filled or not</source>
       <translation type="unfinished">If cut geometry is filled or not</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1274"/>
+      <location filename="../../ArchSectionPlane.py" line="1281"/>
       <source>The size of the texts inside this object</source>
       <translation type="unfinished">The size of the texts inside this object</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1277"/>
+      <location filename="../../ArchSectionPlane.py" line="1284"/>
       <source>If checked, source objects are displayed regardless of being visible in the 3D model</source>
       <translation type="unfinished">If checked, source objects are displayed regardless of being visible in the 3D model</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1279"/>
+      <location filename="../../ArchSectionPlane.py" line="1286"/>
       <source>The line color of the projected objects</source>
       <translation type="unfinished">The line color of the projected objects</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1281"/>
+      <location filename="../../ArchSectionPlane.py" line="1288"/>
       <source>The color of the cut faces (if turned on)</source>
       <translation type="unfinished">The color of the cut faces (if turned on)</translation>
     </message>
@@ -5864,7 +5944,7 @@ Building creation aborted.</translation>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="953"/>
+      <location filename="../../ArchBuildingPart.py" line="998"/>
       <source>Writing camera position</source>
       <translation type="unfinished">Writing camera position</translation>
     </message>
@@ -6006,12 +6086,12 @@ Building creation aborted.</translation>
   <context>
     <name>Arch_Site</name>
     <message>
-      <location filename="../../ArchSite.py" line="504"/>
+      <location filename="../../ArchSite.py" line="505"/>
       <source>Site</source>
       <translation>Oldal</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="508"/>
+      <location filename="../../ArchSite.py" line="509"/>
       <source>Creates a site object including selected objects.</source>
       <translation type="unfinished">Creates a site object including selected objects.</translation>
     </message>
@@ -6021,7 +6101,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchRoof.py" line="206"/>
       <source>Roof</source>
-      <translation type="unfinished">Roof</translation>
+      <translation>Tető</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="210"/>
@@ -6058,12 +6138,12 @@ Building creation aborted.</translation>
   <context>
     <name>Arch_Reference</name>
     <message>
-      <location filename="../../ArchReference.py" line="728"/>
+      <location filename="../../ArchReference.py" line="747"/>
       <source>External reference</source>
       <translation type="unfinished">External reference</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="732"/>
+      <location filename="../../ArchReference.py" line="751"/>
       <source>Creates an external reference object</source>
       <translation type="unfinished">Creates an external reference object</translation>
     </message>
@@ -6201,8 +6281,8 @@ Building creation aborted.</translation>
   <context>
     <name>Arch_MaterialTools</name>
     <message>
-      <location filename="../../ArchMaterial.py" line="983"/>
-      <location filename="../../ArchMaterial.py" line="986"/>
+      <location filename="../../ArchMaterial.py" line="1031"/>
+      <location filename="../../ArchMaterial.py" line="1034"/>
       <source>Material tools</source>
       <translation type="unfinished">Material tools</translation>
     </message>
@@ -6322,12 +6402,12 @@ Building creation aborted.</translation>
   <context>
     <name>Arch_Nest</name>
     <message>
-      <location filename="../../ArchPanel.py" line="1518"/>
+      <location filename="../../ArchPanel.py" line="1520"/>
       <source>Nest</source>
       <translation type="unfinished">Nest</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1522"/>
+      <location filename="../../ArchPanel.py" line="1524"/>
       <source>Nests a series of selected shapes in a container</source>
       <translation type="unfinished">Nests a series of selected shapes in a container</translation>
     </message>
@@ -6335,8 +6415,8 @@ Building creation aborted.</translation>
   <context>
     <name>Arch_PanelTools</name>
     <message>
-      <location filename="../../ArchPanel.py" line="1686"/>
-      <location filename="../../ArchPanel.py" line="1689"/>
+      <location filename="../../ArchPanel.py" line="1688"/>
+      <location filename="../../ArchPanel.py" line="1691"/>
       <source>Panel tools</source>
       <translation type="unfinished">Panel tools</translation>
     </message>
@@ -6346,7 +6426,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCurtainWall.py" line="101"/>
       <source>Curtain Wall</source>
-      <translation type="unfinished">Curtain Wall</translation>
+      <translation>Függönyfal</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="105"/>
@@ -6394,7 +6474,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSchedule.py" line="61"/>
       <source>Schedule</source>
-      <translation type="unfinished">Schedule</translation>
+      <translation>Ütemezés</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="64"/>
@@ -6407,7 +6487,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchFloor.py" line="112"/>
       <source>Level</source>
-      <translation type="unfinished">Level</translation>
+      <translation>Szint</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="116"/>
@@ -6431,8 +6511,8 @@ Building creation aborted.</translation>
   <context>
     <name>Arch_AxisTools</name>
     <message>
-      <location filename="../../ArchAxis.py" line="793"/>
-      <location filename="../../ArchAxis.py" line="796"/>
+      <location filename="../../ArchAxis.py" line="821"/>
+      <location filename="../../ArchAxis.py" line="824"/>
       <source>Axis tools</source>
       <translation type="unfinished">Axis tools</translation>
     </message>
@@ -6533,7 +6613,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1388"/>
       <source>Split Mesh</source>
-      <translation type="unfinished">Split Mesh</translation>
+      <translation>Háló osztása</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1391"/>
@@ -6546,7 +6626,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1413"/>
       <source>Mesh to Shape</source>
-      <translation type="unfinished">Mesh to Shape</translation>
+      <translation>Hálókat alakzatokká</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1416"/>
@@ -6676,12 +6756,22 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1661"/>
       <source>Toggle subcomponents</source>
-      <translation type="unfinished">Toggle subcomponents</translation>
+      <translation>Al összetevők ki-/ bekapcsolása</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1664"/>
       <source>Shows or hides the subcomponents of this object</source>
       <translation type="unfinished">Shows or hides the subcomponents of this object</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <location filename="../../ArchSite.py" line="940"/>
+      <location filename="../../ArchIFCView.py" line="67"/>
+      <location filename="../../ArchAxis.py" line="643"/>
+      <source>Transform</source>
+      <translation>Átalakítás</translation>
     </message>
   </context>
 </TS>

@@ -42,5 +42,6 @@
         <file>translations/Test_bg.qm</file>
         <file>translations/Test_ka.qm</file>
         <file>translations/Test_sr-CS.qm</file>
+        <file>translations/Test_be.qm</file>
     </qresource>
 </RCC>

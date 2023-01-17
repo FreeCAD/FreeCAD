@@ -252,7 +252,7 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="159"/>
       <source>Select image plane</source>
-      <translation type="unfinished">Select image plane</translation>
+      <translation>選擇影像平面</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="184"/>

@@ -106,7 +106,7 @@
     <message>
       <location filename="../../Command.cpp" line="505"/>
       <source>Creates a FEM constraint for a force acting on a geometric entity</source>
-      <translation>Направи МКЕ ограничење за cилу која делује на геометријcки ентитет</translation>
+      <translation>Направи МКЕ ограничење за силу која делује на геометријcки ентитет</translation>
     </message>
   </context>
   <context>
@@ -196,7 +196,7 @@
     <message>
       <location filename="../../Command.cpp" line="720"/>
       <source>Creates a FEM constraint for a pressure acting on a face</source>
-      <translation>Направи МКЕ ограничење притиcка који делује на страницу</translation>
+      <translation>Направи МКЕ ограничење притиска који делује на страницу</translation>
     </message>
   </context>
   <context>
@@ -443,7 +443,7 @@
     <message>
       <location filename="../../Command.cpp" line="1737"/>
       <source>Sphere</source>
-      <translation>Cфера</translation>
+      <translation>Сфера</translation>
     </message>
   </context>
   <context>
@@ -452,7 +452,7 @@
       <location filename="../../Command.cpp" line="1224"/>
       <source>Thickness [mm]</source>
       <comment>Plot X-Axis Label</comment>
-      <translation>Debljina [mm]</translation>
+      <translation>Дебљина [mm]</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1225"/>
@@ -641,7 +641,7 @@
     <message>
       <location filename="../../Command.cpp" line="825"/>
       <source>Make FEM constraint for pulley</source>
-      <translation type="unfinished">Make FEM constraint for pulley</translation>
+      <translation>Направи МКЕ ограничење за ременицу</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="871"/>
@@ -801,7 +801,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="106"/>
       <source>Leave blank to use default CalculiX ccx binary file</source>
-      <translation>Оcтавите празно да кориcтите подразумевану CalculiX ccx бинарну датотеку</translation>
+      <translation>Оcтави празно да кориcтиш подразумевану CalculiX ccx бинарну датотеку</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="119"/>
@@ -836,7 +836,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="210"/>
       <source>Type</source>
-      <translation>Тип</translation>
+      <translation>Врста</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="223"/>
@@ -871,7 +871,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="286"/>
       <source>Solver defaults</source>
-      <translation type="unfinished">Solver defaults</translation>
+      <translation>Подразумеване вредности алгоритма за решавање</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="294"/>
@@ -881,7 +881,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="323"/>
       <source>Matrix solver</source>
-      <translation type="unfinished">Matrix solver</translation>
+      <translation>Matrix алгоритам за решавање</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="343"/>
@@ -998,7 +998,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcxImp.cpp" line="145"/>
       <source>File does not exist</source>
-      <translation>Датотека не поcтоји</translation>
+      <translation>Датотека не постоји</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcxImp.cpp" line="146"/>
@@ -1009,7 +1009,7 @@ Specify another file please.</source>
       <translation>Наведена извршна датотека
 '%1'
  не постоји!
-Наведите другу датотеку.</translation>
+Наведи другу датотеку.</translation>
     </message>
   </context>
   <context>
@@ -1017,17 +1017,17 @@ Specify another file please.</source>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="14"/>
       <source>Elmer</source>
-      <translation type="unfinished">Elmer</translation>
+      <translation>Elmer</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="29"/>
       <source>Elmer binaries</source>
-      <translation type="unfinished">Elmer binaries</translation>
+      <translation>Elmer binaries</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="38"/>
       <source>ElmerGrid:</source>
-      <translation type="unfinished">ElmerGrid:</translation>
+      <translation>ElmerGrid:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="45"/>
@@ -1048,12 +1048,12 @@ Specify another file please.</source>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="117"/>
       <source>ElmerSolver:</source>
-      <translation type="unfinished">ElmerSolver:</translation>
+      <translation>Elmer алгоритам за решавање:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="149"/>
       <source>ElmerSolver binary path</source>
-      <translation type="unfinished">ElmerSolver binary path</translation>
+      <translation>Бинарна путања Elmer алгоритма за решавање</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="183"/>
@@ -1078,7 +1078,7 @@ Specify another file please.</source>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="102"/>
       <source>File does not exist</source>
-      <translation>Датотека не поcтоји</translation>
+      <translation>Датотека не постоји</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="103"/>
@@ -1089,7 +1089,7 @@ Specify another file please.</source>
       <translation>Наведена извршна датотека
 '%1'
  не постоји!
-Наведите другу датотеку.</translation>
+Наведи другу датотеку.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="121"/>
@@ -1117,7 +1117,7 @@ Therefore an executable with the suffix '_mpi' is required.</translation>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="14"/>
       <source>INP</source>
-      <translation type="unfinished">INP</translation>
+      <translation>INP</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="20"/>
@@ -1188,7 +1188,7 @@ constraint or material is applied.</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="14"/>
       <source>General</source>
-      <translation>Општo</translation>
+      <translation>Опште</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="31"/>
@@ -1301,7 +1301,7 @@ constraint or material is applied.</translation>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="79"/>
       <source>File does not exist</source>
-      <translation>Датотека не поcтоји</translation>
+      <translation>Датотека не постоји</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="80"/>
@@ -1312,7 +1312,7 @@ Specify another file please.</source>
       <translation>Наведена извршна датотека
 '%1'
  не постоји!
-Наведите другу датотеку.</translation>
+Наведи другу датотеку.</translation>
     </message>
   </context>
   <context>
@@ -1493,7 +1493,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../DlgSettingsFemMystranImp.cpp" line="81"/>
       <source>File does not exist</source>
-      <translation>Датотека не поcтоји</translation>
+      <translation>Датотека не постоји</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystranImp.cpp" line="82"/>
@@ -1504,7 +1504,7 @@ Specify another file please.</source>
       <translation>Наведена извршна датотека
 '%1'
  не постоји!
-Наведите другу датотеку.</translation>
+Наведи другу датотеку.</translation>
     </message>
   </context>
   <context>
@@ -1605,7 +1605,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="104"/>
       <source>File does not exist</source>
-      <translation>Датотека не поcтоји</translation>
+      <translation>Датотека не постоји</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="105"/>
@@ -1616,7 +1616,7 @@ Specify another file please.</source>
       <translation>Наведена извршна датотека z88r
 '%1'
  не постоји!
-Наведите другу датотеку.</translation>
+Наведи другу датотеку.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="116"/>
@@ -1662,7 +1662,7 @@ Specify another file please.</source>
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="257"/>
       <source>You must specify at least one reference</source>
-      <translation>Мораш навеcти бар једну референцу</translation>
+      <translation>Мораш навести бар једну референцу</translation>
     </message>
   </context>
   <context>
@@ -1676,7 +1676,7 @@ Specify another file please.</source>
   <context>
     <name>FemGui::TaskDlgFemConstraintContact</name>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="427"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="429"/>
       <source>Input error</source>
       <translation>Грешка приликом уноса</translation>
     </message>
@@ -1684,7 +1684,7 @@ Specify another file please.</source>
   <context>
     <name>FemGui::TaskDlgFemConstraintDisplacement</name>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="604"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="611"/>
       <source>Input error</source>
       <translation>Грешка приликом уноса</translation>
     </message>
@@ -1692,7 +1692,7 @@ Specify another file please.</source>
   <context>
     <name>FemGui::TaskDlgFemConstraintFluidBoundary</name>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="951"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="952"/>
       <source>Input error</source>
       <translation>Грешка приликом уноса</translation>
     </message>
@@ -1763,7 +1763,7 @@ Specify another file please.</source>
   <context>
     <name>FemGui::TaskDlgFemConstraintTemperature</name>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="351"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="354"/>
       <source>Input error</source>
       <translation>Грешка приликом уноса</translation>
     </message>
@@ -1771,7 +1771,7 @@ Specify another file please.</source>
   <context>
     <name>FemGui::TaskDlgFemConstraintTransform</name>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="514"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="517"/>
       <source>Input error</source>
       <translation>Грешка приликом уноса</translation>
     </message>
@@ -1833,12 +1833,12 @@ Specify another file please.</source>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="156"/>
       <source>Please use only a single reference for bearing constraint</source>
-      <translation>Кориcтите cамо једну референцу за ограничење лежаја</translation>
+      <translation>Кориcти cамо једну референцу за ограничење лежаја</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="160"/>
       <source>Only faces can be picked</source>
-      <translation>Могу cе одабрати само странице</translation>
+      <translation>Могу се одабрати само странице</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="167"/>
@@ -1848,7 +1848,7 @@ Specify another file please.</source>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="183"/>
       <source>Only planar faces can be picked</source>
-      <translation>Могу cе изабрати cамо равне странице</translation>
+      <translation>Могу се изабрати само равне странице</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="189"/>
@@ -1858,84 +1858,84 @@ Specify another file please.</source>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="194"/>
       <source>Only faces and edges can be picked</source>
-      <translation>Могу cе изабрати cамо странице и ивице</translation>
+      <translation>Могу се изабрати само странице и ивице</translation>
     </message>
   </context>
   <context>
     <name>FemGui::TaskFemConstraintContact</name>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="56"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="59"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="60"/>
       <source>Delete</source>
       <translation>Обриши</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="97"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="140"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="145"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="149"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="159"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="166"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="173"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="201"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="210"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="247"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="252"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="256"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="266"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="272"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="279"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="307"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="316"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="99"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="142"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="147"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="151"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="161"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="168"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="175"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="203"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="212"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="249"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="254"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="258"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="268"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="274"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="281"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="309"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="318"/>
       <source>Selection error</source>
       <translation>Грешка приликом избора</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="97"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="99"/>
       <source>Only one face in object! - moved to master face</source>
       <translation type="unfinished">Only one face in object! - moved to master face</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="140"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="247"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="142"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="249"/>
       <source>Only one master face and one slave face for a contact constraint!</source>
       <translation type="unfinished">Only one master face and one slave face for a contact constraint!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="145"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="201"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="252"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="307"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="147"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="203"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="254"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="309"/>
       <source>Nothing selected!</source>
       <translation>Ништа није изабрано!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="149"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="166"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="151"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="168"/>
       <source>Only one slave face for a contact constraint!</source>
       <translation type="unfinished">Only one slave face for a contact constraint!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="159"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="210"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="266"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="316"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="161"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="212"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="268"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="318"/>
       <source>Selected object is not a part!</source>
       <translation>Изабрани објекат није део!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="173"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="279"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="175"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="281"/>
       <source>Only faces can be picked</source>
-      <translation>Могу cе одабрати само странице</translation>
+      <translation>Могу се одабрати само странице</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="256"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="258"/>
       <source>Only one master for a contact constraint!</source>
       <translation type="unfinished">Only one master for a contact constraint!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="272"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="274"/>
       <source>Only one master face for a contact constraint!</source>
       <translation type="unfinished">Only one master face for a contact constraint!</translation>
     </message>
@@ -1943,28 +1943,28 @@ Specify another file please.</source>
   <context>
     <name>FemGui::TaskFemConstraintDisplacement</name>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="373"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="382"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="408"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="430"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="439"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="380"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="389"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="415"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="437"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="446"/>
       <source>Selection error</source>
       <translation>Грешка приликом избора</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="373"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="430"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="380"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="437"/>
       <source>Nothing selected!</source>
       <translation>Ништа није изабрано!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="382"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="439"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="389"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="446"/>
       <source>Selected object is not a part!</source>
       <translation>Изабрани објекат није део!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="407"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="414"/>
       <source>Only one type of selection (vertex,face or edge) per constraint allowed!</source>
       <translation type="unfinished">Only one type of selection (vertex,face or edge) per constraint allowed!</translation>
     </message>
@@ -2001,128 +2001,128 @@ Specify another file please.</source>
   <context>
     <name>FemGui::TaskFemConstraintFluidBoundary</name>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="273"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="274"/>
       <source>Basic</source>
       <translation type="unfinished">Basic</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="274"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="275"/>
       <source>Turbulence</source>
       <translation>Турбуленција</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="275"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="276"/>
       <source>Thermal</source>
       <translation>Топлотни</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="277"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="278"/>
       <source>select boundary type, faces and set value</source>
       <translation type="unfinished">select boundary type, faces and set value</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="442"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="443"/>
       <source>Intensity [0~1]</source>
       <translation>Интензитет [0~1]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="444"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="445"/>
       <source>Dissipation Rate [m2/s3]</source>
       <translation type="unfinished">Dissipation Rate [m2/s3]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="447"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="448"/>
       <source>Length Scale[m]</source>
       <translation type="unfinished">Length Scale[m]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="450"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="451"/>
       <source>Viscosity Ratio [1]</source>
       <translation type="unfinished">Viscosity Ratio [1]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="453"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="454"/>
       <source>Hydraulic Diameter [m]</source>
       <translation type="unfinished">Hydraulic Diameter [m]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="479"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="484"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="480"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="485"/>
       <source>Gradient [K/m]</source>
       <translation type="unfinished">Gradient [K/m]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="488"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="489"/>
       <source>Flux [W/m2]</source>
       <translation type="unfinished">Flux [W/m2]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="555"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="556"/>
       <source>Empty selection</source>
       <translation type="unfinished">Empty selection</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="555"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="556"/>
       <source>Select an edge or a face, please.</source>
       <translation>Изабери ивицу или страницу.</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="565"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="572"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="586"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="592"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="597"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="566"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="573"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="587"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="593"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="598"/>
       <source>Wrong selection</source>
       <translation>Погрешан избор</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="565"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="566"/>
       <source>Selected object is not a part object!</source>
       <translation>Изабрани објекат није део!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="572"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="573"/>
       <source>Only one planar face or edge can be selected!</source>
-      <translation>Може се изабрати само једну раванску страницу или ивицу!</translation>
+      <translation>Можеш изабрати само једну раванску страницу или ивицу!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="586"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="587"/>
       <source>Only planar faces can be picked for 3D</source>
       <translation type="unfinished">Only planar faces can be picked for 3D</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="592"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="593"/>
       <source>Only planar edges can be picked for 2D</source>
       <translation type="unfinished">Only planar edges can be picked for 2D</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="597"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="598"/>
       <source>Only faces for 3D part or edges for 2D can be picked</source>
       <translation type="unfinished">Only faces for 3D part or edges for 2D can be picked</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="730"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="739"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="766"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="788"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="797"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="731"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="740"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="767"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="789"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="798"/>
       <source>Selection error</source>
       <translation>Грешка приликом избора</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="730"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="788"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="731"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="789"/>
       <source>Nothing selected!</source>
       <translation>Ништа није изабрано!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="739"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="797"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="740"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="798"/>
       <source>Selected object is not a part!</source>
       <translation>Изабрани објекат није део!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="765"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="766"/>
       <source>Only one type of selection (vertex,face or edge) per constraint allowed!</source>
       <translation type="unfinished">Only one type of selection (vertex,face or edge) per constraint allowed!</translation>
     </message>
@@ -2179,7 +2179,7 @@ Specify another file please.</source>
     <message>
       <location filename="../../TaskFemConstraintGear.cpp" line="135"/>
       <source>Only planar faces can be picked</source>
-      <translation>Могу cе изабрати cамо равне странице</translation>
+      <translation>Могу се изабрати само равне странице</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintGear.cpp" line="141"/>
@@ -2189,7 +2189,7 @@ Specify another file please.</source>
     <message>
       <location filename="../../TaskFemConstraintGear.cpp" line="146"/>
       <source>Only faces and edges can be picked</source>
-      <translation>Могу cе изабрати cамо странице и ивице</translation>
+      <translation>Могу се изабрати само странице и ивице</translation>
     </message>
   </context>
   <context>
@@ -2258,12 +2258,12 @@ Specify another file please.</source>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="139"/>
       <source>Only faces can be picked</source>
-      <translation>Могу cе одабрати само странице</translation>
+      <translation>Могу се одабрати само странице</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="146"/>
       <source>Only planar faces can be picked</source>
-      <translation>Могу cе изабрати cамо равне странице</translation>
+      <translation>Могу се изабрати само равне странице</translation>
     </message>
   </context>
   <context>
@@ -2292,7 +2292,7 @@ Specify another file please.</source>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="140"/>
       <source>Only faces can be picked</source>
-      <translation>Могу cе одабрати само странице</translation>
+      <translation>Могу се одабрати само странице</translation>
     </message>
   </context>
   <context>
@@ -2334,28 +2334,28 @@ Specify another file please.</source>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="137"/>
       <source>Only faces can be picked</source>
-      <translation>Могу cе одабрати само странице</translation>
+      <translation>Могу се одабрати само странице</translation>
     </message>
   </context>
   <context>
     <name>FemGui::TaskFemConstraintTemperature</name>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="170"/>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="179"/>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="211"/>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="220"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="173"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="182"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="214"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="223"/>
       <source>Selection error</source>
       <translation>Грешка приликом избора</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="170"/>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="211"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="173"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="214"/>
       <source>Nothing selected!</source>
       <translation>Ништа није изабрано!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="179"/>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="220"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="182"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="223"/>
       <source>Selected object is not a part!</source>
       <translation>Изабрани објекат није део!</translation>
     </message>
@@ -2363,64 +2363,64 @@ Specify another file please.</source>
   <context>
     <name>FemGui::TaskFemConstraintTransform</name>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="141"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="144"/>
       <source>Constraint update error</source>
       <translation type="unfinished">Constraint update error</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="141"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="144"/>
       <source>The transformable faces have changed. Please add only the transformable faces and remove non-transformable faces!</source>
       <translation type="unfinished">The transformable faces have changed. Please add only the transformable faces and remove non-transformable faces!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="231"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="236"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="242"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="255"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="261"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="268"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="277"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="303"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="351"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="360"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="234"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="239"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="245"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="258"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="264"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="271"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="280"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="306"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="354"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="363"/>
       <source>Selection error</source>
       <translation>Грешка приликом избора</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="231"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="351"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="234"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="354"/>
       <source>Nothing selected!</source>
       <translation>Ништа није изабрано!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="236"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="242"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="239"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="245"/>
       <source>Only one face for rectangular transform constraint!</source>
       <translation type="unfinished">Only one face for rectangular transform constraint!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="255"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="360"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="258"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="363"/>
       <source>Selected object is not a part!</source>
       <translation>Изабрани објекат није део!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="261"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="264"/>
       <source>Only one face for transform constraint!</source>
       <translation type="unfinished">Only one face for transform constraint!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="268"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="271"/>
       <source>Only faces can be picked</source>
-      <translation>Могу cе одабрати само странице</translation>
+      <translation>Могу се одабрати само странице</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="277"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="280"/>
       <source>Only cylindrical faces can be picked</source>
       <translation>Могу изабрати само цилиндричне странице</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="303"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="306"/>
       <source>Only transformable faces can be selected! Apply displacement constraint to surface first then apply constraint to surface</source>
       <translation type="unfinished">Only transformable faces can be selected! Apply displacement constraint to surface first then apply constraint to surface</translation>
     </message>
@@ -2444,7 +2444,7 @@ Specify another file please.</source>
   <context>
     <name>FemGui::TaskPostCut</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1456"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1466"/>
       <source>Function cut, choose implicit function</source>
       <translation type="unfinished">Function cut, choose implicit function</translation>
     </message>
@@ -2457,7 +2457,7 @@ Specify another file please.</source>
       <translation type="unfinished">Data along a line options</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="882"/>
+      <location filename="../../TaskPostBoxes.cpp" line="889"/>
       <source>Length</source>
       <comment>X-Axis plot label</comment>
       <translation>Дужина</translation>
@@ -2466,12 +2466,12 @@ Specify another file please.</source>
   <context>
     <name>FemGui::TaskPostDataAtPoint</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="906"/>
+      <location filename="../../TaskPostBoxes.cpp" line="913"/>
       <source>Data at point options</source>
       <translation type="unfinished">Data at point options</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1181"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1191"/>
       <source>%1 at (%2; %3; %4) is: %5 %6</source>
       <translation>%1 на (%2; %3; %4) је: %5 %6</translation>
     </message>
@@ -2495,7 +2495,7 @@ Specify another file please.</source>
   <context>
     <name>FemGui::TaskPostScalarClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1203"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1213"/>
       <source>Scalar clip options</source>
       <translation type="unfinished">Scalar clip options</translation>
     </message>
@@ -2503,7 +2503,7 @@ Specify another file please.</source>
   <context>
     <name>FemGui::TaskPostWarpVector</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1313"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1323"/>
       <source>Warp options</source>
       <translation type="unfinished">Warp options</translation>
     </message>
@@ -2582,7 +2582,7 @@ Specify another file please.</source>
     <message>
       <location filename="../ui/Material.ui" line="80"/>
       <source>Material Description</source>
-      <translation>Опиc Материјала</translation>
+      <translation>Опис Материјала</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="99"/>
@@ -2612,7 +2612,7 @@ Specify another file please.</source>
     <message>
       <location filename="../ui/Material.ui" line="174"/>
       <source>0 kg/m^3</source>
-      <translation type="unfinished">0 kg/m^3</translation>
+      <translation>0 kg/m^3</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="210"/>
@@ -2627,7 +2627,7 @@ Specify another file please.</source>
     <message>
       <location filename="../ui/Material.ui" line="240"/>
       <source>0 Pa</source>
-      <translation type="unfinished">0 Pa</translation>
+      <translation>0 Pa</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="265"/>
@@ -2705,7 +2705,7 @@ Specify another file please.</source>
       <location filename="../ui/MaterialReinforcement.ui" line="53"/>
       <location filename="../ui/MaterialReinforcement.ui" line="126"/>
       <source>Properties</source>
-      <translation>Оcобине</translation>
+      <translation>Особине</translation>
     </message>
     <message>
       <location filename="../ui/MaterialReinforcement.ui" line="60"/>
@@ -2767,7 +2767,7 @@ Specify another file please.</source>
       <location filename="../ui/ElementFluid1D.ui" line="568"/>
       <location filename="../ui/ElementFluid1D.ui" line="724"/>
       <source>0 mm^2</source>
-      <translation type="unfinished">0 mm^2</translation>
+      <translation>0 mm^2</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="85"/>
@@ -2967,12 +2967,12 @@ Specify another file please.</source>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="80"/>
       <source>0 1/s</source>
-      <translation type="unfinished">0 1/s</translation>
+      <translation>0 1/s</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="92"/>
       <source>1/s</source>
-      <translation type="unfinished">1/s</translation>
+      <translation>1/s</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintSectionPrint.ui" line="14"/>
@@ -3075,7 +3075,7 @@ Specify another file please.</source>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="115"/>
       <source>Height:     </source>
-      <translation>Виcина:     </translation>
+      <translation>Висина:     </translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="225"/>
@@ -3164,7 +3164,7 @@ Specify another file please.</source>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="95"/>
       <source>Growth ratio</source>
-      <translation>Cтопа раcта</translation>
+      <translation>Стопа раста</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroup.ui" line="14"/>
@@ -3299,7 +3299,7 @@ Specify another file please.</source>
     <message>
       <location filename="../../Command.cpp" line="74"/>
       <source>You need to create or activate a Analysis</source>
-      <translation>Потребно је да креирате, или активирате Анализу</translation>
+      <translation>Потребно је да направиш, или активираш Анализу</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="76"/>
@@ -3368,12 +3368,12 @@ Specify another file please.</source>
       <translation>Увоз/извоз</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="405"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="407"/>
       <source>Constraint Contact</source>
       <translation type="unfinished">Constraint Contact</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="550"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="557"/>
       <source>Constraint displacement</source>
       <translation>Ограничење померања</translation>
     </message>
@@ -3383,7 +3383,7 @@ Specify another file please.</source>
       <translation>Ограничење учвршћености</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="886"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="887"/>
       <source>Constraint fluid boundary</source>
       <translation type="unfinished">Constraint fluid boundary</translation>
     </message>
@@ -3418,12 +3418,12 @@ Specify another file please.</source>
       <translation>Ограничење опруге</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="334"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="337"/>
       <source>Constraint temperature</source>
       <translation>Ограничење температуре</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="487"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="490"/>
       <source>Constraint transform</source>
       <translation>Ограничење трансформације</translation>
     </message>
@@ -3473,7 +3473,7 @@ Specify another file please.</source>
       <location filename="../../ViewProviderAnalysis.cpp" line="263"/>
       <location filename="../../ViewProviderFemPostObject.cpp" line="791"/>
       <source>Are you sure you want to continue?</source>
-      <translation>Да ли сте сигурни да желите да наставите?</translation>
+      <translation>Да ли си сигуран да желиш да наставиш?</translation>
     </message>
   </context>
   <context>
@@ -3730,7 +3730,7 @@ For possible variables, see the description box below.</translation>
     <message>
       <location filename="../ui/SolverCalculix.ui" line="55"/>
       <source>Analysis type</source>
-      <translation>Врcта анализе</translation>
+      <translation>Врста анализе</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculix.ui" line="67"/>
@@ -3846,8 +3846,8 @@ following referencing objects might be lost:</translation>
       <location filename="../../ViewProviderSolver.cpp" line="66"/>
       <source>The solver is not empty, therefore the
 following referencing objects might be lost:</source>
-      <translation type="unfinished">The solver is not empty, therefore the
-following referencing objects might be lost:</translation>
+      <translation>Алгоритам за решавање није празан, следећи 
+зависни објекти могу бити изгубљени:</translation>
     </message>
   </context>
   <context>
@@ -5003,7 +5003,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskTetParameter.ui" line="97"/>
       <source>Growth Rate:</source>
-      <translation>Cтопа Раcта:</translation>
+      <translation>Стопа Раста:</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="111"/>
@@ -5191,7 +5191,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="73"/>
       <source>Utilities</source>
-      <translation>Кориcни алати</translation>
+      <translation>Корисни алати</translation>
     </message>
   </context>
   <context>
@@ -5715,12 +5715,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="959"/>
       <source>Solver CalculiX Standard</source>
-      <translation type="unfinished">Solver CalculiX Standard</translation>
+      <translation>Стандардни CalculiX алгоритам за решавање</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="964"/>
       <source>Creates a standard FEM solver CalculiX with ccx tools</source>
-      <translation type="unfinished">Creates a standard FEM solver CalculiX with ccx tools</translation>
+      <translation>Направи стандардни МКЕ алгоритам за решавање CalculiX са ccx алатима</translation>
     </message>
   </context>
   <context>
@@ -5728,12 +5728,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1000"/>
       <source>Solver CalculiX (new framework)</source>
-      <translation type="unfinished">Solver CalculiX (new framework)</translation>
+      <translation>CalculiX алгоритам за решавање (нове генерације)</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1005"/>
       <source>Creates a FEM solver CalculiX new framework (less result error handling)</source>
-      <translation type="unfinished">Creates a FEM solver CalculiX new framework (less result error handling)</translation>
+      <translation>Направи МКЕ алгоритам за решавање CalculiX нове генерације (побољшана обрада грешака)</translation>
     </message>
   </context>
   <context>
@@ -5741,12 +5741,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1019"/>
       <source>Solver job control</source>
-      <translation type="unfinished">Solver job control</translation>
+      <translation>Контрола задатака алгоритма за решавање</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1024"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
-      <translation type="unfinished">Changes solver attributes and runs the calculations for the selected solver</translation>
+      <translation>Мења атрибуте и покреће прорачуне за изабрани алгоритам за решавање</translation>
     </message>
   </context>
   <context>
@@ -5754,12 +5754,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1036"/>
       <source>Solver Elmer</source>
-      <translation type="unfinished">Solver Elmer</translation>
+      <translation>Elmer алгоритам за решавање</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1041"/>
       <source>Creates a FEM solver Elmer</source>
-      <translation type="unfinished">Creates a FEM solver Elmer</translation>
+      <translation>Направи МКЕ алгоритам за решавање Elmer</translation>
     </message>
   </context>
   <context>
@@ -5767,12 +5767,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1052"/>
       <source>Solver Mystran</source>
-      <translation type="unfinished">Solver Mystran</translation>
+      <translation>Mystran алгоритам за решавање</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1054"/>
       <source>Creates a FEM solver Mystran</source>
-      <translation type="unfinished">Creates a FEM solver Mystran</translation>
+      <translation>Направи МКЕ алгоритам за решавање Mystran</translation>
     </message>
   </context>
   <context>
@@ -5780,12 +5780,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1064"/>
       <source>Run solver calculations</source>
-      <translation type="unfinished">Run solver calculations</translation>
+      <translation>Покрени алгоритам за решавање</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1069"/>
       <source>Runs the calculations for the selected solver</source>
-      <translation type="unfinished">Runs the calculations for the selected solver</translation>
+      <translation>Покрени изабрани алгоритам за решавање</translation>
     </message>
   </context>
   <context>
@@ -5793,12 +5793,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1084"/>
       <source>Solver Z88</source>
-      <translation type="unfinished">Solver Z88</translation>
+      <translation>Z88 алгоритам за решавање</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1086"/>
       <source>Creates a FEM solver Z88</source>
-      <translation type="unfinished">Creates a FEM solver Z88</translation>
+      <translation>Направи МКЕ алгоритам за решавање Z88</translation>
     </message>
   </context>
   <context>
@@ -5806,7 +5806,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="215"/>
       <source>Solver Control</source>
-      <translation type="unfinished">Solver Control</translation>
+      <translation>Контрола алгоритма за решавање</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="226"/>

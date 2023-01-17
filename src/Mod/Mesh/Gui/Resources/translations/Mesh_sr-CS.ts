@@ -359,7 +359,7 @@
     <message>
       <location filename="../../Command.cpp" line="1787"/>
       <source>Merges selected meshes into one</source>
-      <translation>Spoji odabrane modele u jedan</translation>
+      <translation>Objedini odabrane modele u jedan</translation>
     </message>
   </context>
   <context>
@@ -372,7 +372,7 @@
     <message>
       <location filename="../../Command.cpp" line="892"/>
       <source>Cut mesh</source>
-      <translation>Iceci mrežu</translation>
+      <translation>Iseci mrežu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="893"/>
@@ -492,7 +492,7 @@
       <location filename="../../Command.cpp" line="1317"/>
       <location filename="../../Command.cpp" line="1319"/>
       <source>Mark a component to remove it from the mesh</source>
-      <translation>Označi komponenturadi uklanjanja iz mreže</translation>
+      <translation>Označi komponentu radi uklanjanja iz mreže</translation>
     </message>
   </context>
   <context>
@@ -623,7 +623,7 @@
     <message>
       <location filename="../../Command.cpp" line="1830"/>
       <source>Split selected mesh into its components</source>
-      <translation>Podelite izabranu mrežu na njene komponente</translation>
+      <translation>Podeli izabranu mrežu na njene komponente</translation>
     </message>
   </context>
   <context>
@@ -796,7 +796,7 @@
     <message>
       <location filename="../../Command.cpp" line="1799"/>
       <source>Mesh merge</source>
-      <translation>Spoji mreže</translation>
+      <translation>Objedini mreže</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1842"/>
@@ -1419,7 +1419,7 @@ Pokreni prvo komandu za popravku nabora</translation>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="28"/>
       <source>Deviation of tessellation to the actual surface</source>
-      <translation>Odstupanje popločavanja na stvarnu površinu</translation>
+      <translation>Odstupanje popločavanja u odnosu na stvarnu površinu</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="31"/>
@@ -1540,7 +1540,7 @@ osvetljenja ili crna boja.</translation>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="313"/>
       <source>Smoothing</source>
-      <translation>Zaglađivanje</translation>
+      <translation>Glačanje</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="334"/>
@@ -1596,7 +1596,7 @@ to a smoother appearance.
     <message>
       <location filename="../../DlgSmoothing.ui" line="14"/>
       <source>Smoothing</source>
-      <translation>Zaglađivanje</translation>
+      <translation>Glačanje</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="23"/>
@@ -2174,8 +2174,8 @@ to a smoother appearance.
       <location filename="../../Command.cpp" line="416"/>
       <source>OpenSCAD cannot be found on your system.
 Please visit http://www.openscad.org/index.html to install it.</source>
-      <translation>OpenSCAD nije moguće pronaći na vašem sistemu.
-Molim posetite http://www.openscad.org/index.html da instalirate.</translation>
+      <translation>OpenSCAD nije moguće pronaći na tvom sistemu.
+Poseti http://www.openscad.org/index.html da instaliraš.</translation>
     </message>
   </context>
   <context>
@@ -2227,7 +2227,7 @@ Molim posetite http://www.openscad.org/index.html da instalirate.</translation>
       <location filename="../../Command.cpp" line="452"/>
       <location filename="../../Command.cpp" line="511"/>
       <source>Object File Format</source>
-      <translation type="unfinished">Object File Format</translation>
+      <translation>Object format datoteke</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="453"/>
@@ -2259,7 +2259,7 @@ Molim posetite http://www.openscad.org/index.html da instalirate.</translation>
     <message>
       <location filename="../../Command.cpp" line="510"/>
       <source>Simple Model Format</source>
-      <translation type="unfinished">Simple Model Format</translation>
+      <translation>Simple Model Format</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="512"/>
@@ -2364,7 +2364,7 @@ Molim posetite http://www.openscad.org/index.html da instalirate.</translation>
     <message>
       <location filename="../../Command.cpp" line="1890"/>
       <source>Enter scaling factor:</source>
-      <translation>Unesi koeficijent skaliranja:</translation>
+      <translation>Unesi razmeru:</translation>
     </message>
     <message>
       <location filename="../../PropertyEditorMesh.cpp" line="75"/>
@@ -2433,7 +2433,7 @@ Molim posetite http://www.openscad.org/index.html da instalirate.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
       <source>Boolean</source>
-      <translation>Bulova</translation>
+      <translation>Bulove</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>

@@ -1001,6 +1001,7 @@ risanjem spremenite s tipkama [ in ]</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="199"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="397"/>
       <source>Annotations</source>
       <translation>Pripisi</translation>
     </message>
@@ -1128,11 +1129,6 @@ risanjem spremenite s tipkama [ in ]</translation>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="385"/>
       <source>Selected</source>
       <translation>Izbrano</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="397"/>
-      <source>Texts/dims</source>
-      <translation>Besedila / kote</translation>
     </message>
     <message>
       <location filename="../ui/dialogHatch.ui" line="14"/>
@@ -1551,13 +1547,13 @@ stalno širino"), družina (npr. "Arial,Helvetica,sans") ali ime s slogom (npr.
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="144"/>
-      <source>text above (2D)</source>
-      <translation>besedilo zgoraj (2D)</translation>
+      <source>World</source>
+      <translation>Okolje</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="149"/>
-      <source> text inside (3D)</source>
-      <translation> besedilo znotraj (3D)</translation>
+      <source>Screen</source>
+      <translation type="unfinished">Screen</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="161"/>
@@ -3321,7 +3317,7 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="95"/>
-      <location filename="../../draftutils/gui_utils.py" line="720"/>
+      <location filename="../../draftutils/gui_utils.py" line="713"/>
       <location filename="../../draftutils/utils.py" line="1014"/>
       <location filename="../../draftmake/make_patharray.py" line="161"/>
       <location filename="../../draftmake/make_patharray.py" line="330"/>
@@ -3342,7 +3338,7 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="132"/>
-      <location filename="../../draftutils/gui_utils.py" line="729"/>
+      <location filename="../../draftutils/gui_utils.py" line="722"/>
       <location filename="../../draftmake/make_patharray.py" line="170"/>
       <location filename="../../draftmake/make_patharray.py" line="181"/>
       <location filename="../../draftmake/make_patharray.py" line="339"/>
@@ -3379,22 +3375,22 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
       <translation>Vidnost izključena; odstranjeno s seznama: </translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="603"/>
+      <location filename="../../draftutils/gui_utils.py" line="596"/>
       <source>image is Null</source>
       <translation>slika je ničelna</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="609"/>
+      <location filename="../../draftutils/gui_utils.py" line="602"/>
       <source>filename does not exist on the system or in the resource file</source>
       <translation>imena datoteke ni v sistemu ali v mapi z viri</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="668"/>
+      <location filename="../../draftutils/gui_utils.py" line="661"/>
       <source>unable to load texture</source>
       <translation>ustroja ni mogoče naložiti</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="738"/>
+      <location filename="../../draftutils/gui_utils.py" line="731"/>
       <source>Does not have 'ViewObject.RootNode'.</source>
       <translation>Nima 'ViewObject.RootNode' (KorenskoVozlišče.PogledaPredmeta).</translation>
     </message>
@@ -3753,73 +3749,73 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="797"/>
       <source>: this object is not editable</source>
-      <translation type="unfinished">: this object is not editable</translation>
+      <translation>: tega predmeta ni mogoče urejati</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="68"/>
       <source>Annotation style editor</source>
-      <translation type="unfinished">Annotation style editor</translation>
+      <translation>Urejevalnik pripisnih slogov</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="290"/>
       <source>Open styles file</source>
-      <translation type="unfinished">Open styles file</translation>
+      <translation>Odpri datoteko slogov</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="292"/>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="314"/>
       <source>JSON file (*.json)</source>
-      <translation type="unfinished">JSON file (*.json)</translation>
+      <translation>Datoteka JSON (*.json)</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="312"/>
       <source>Save styles file</source>
-      <translation type="unfinished">Save styles file</translation>
+      <translation>Shrani datoteko slogov</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_drawing.py" line="77"/>
       <source>The Drawing Workbench is obsolete since 0.17, consider using the TechDraw Workbench instead.</source>
-      <translation type="unfinished">The Drawing Workbench is obsolete since 0.17, consider using the TechDraw Workbench instead.</translation>
+      <translation>Delovno okolje Drawing je zastarelo od različice 0.17 dalje. Predlagamo uporabo delovnega okolje TehRisanje (TechDraw).</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_drawing.py" line="81"/>
       <location filename="../../draftguitools/gui_shape2dview.py" line="68"/>
       <source>Select an object to project</source>
-      <translation type="unfinished">Select an object to project</translation>
+      <translation>Izberite predmet za preslikavanje</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_points.py" line="134"/>
       <location filename="../../draftguitools/gui_points.py" line="147"/>
       <source>Create Point</source>
-      <translation type="unfinished">Create Point</translation>
+      <translation>Ustvari točko</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="79"/>
       <source>Select an object to rotate</source>
-      <translation type="unfinished">Select an object to rotate</translation>
+      <translation>Izberite predmet za sukanje</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="99"/>
       <source>Pick rotation center</source>
-      <translation type="unfinished">Pick rotation center</translation>
+      <translation>Izberite središče sukanja</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="193"/>
       <location filename="../../draftguitools/gui_rotate.py" line="402"/>
       <source>Base angle</source>
-      <translation type="unfinished">Base angle</translation>
+      <translation>Izhodiščni kot</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="194"/>
       <location filename="../../draftguitools/gui_rotate.py" line="403"/>
       <source>The base angle you wish to start the rotation from</source>
-      <translation type="unfinished">The base angle you wish to start the rotation from</translation>
+      <translation>Izhodiščni kót, iz katerega želite začeti sukanje</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="199"/>
       <location filename="../../draftguitools/gui_rotate.py" line="406"/>
       <source>Pick base angle</source>
-      <translation type="unfinished">Pick base angle</translation>
+      <translation>Izberite izhodiščni kot</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="205"/>
@@ -3832,29 +3828,29 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
       <location filename="../../draftguitools/gui_rotate.py" line="416"/>
       <source>The amount of rotation you wish to perform.
 The final angle will be the base angle plus this amount.</source>
-      <translation type="unfinished">The amount of rotation you wish to perform.
-The final angle will be the base angle plus this amount.</translation>
+      <translation>Koliko želite zasukati.
+Končni kót bo seštevek izhodiščnega in tega kóta.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="213"/>
       <location filename="../../draftguitools/gui_rotate.py" line="424"/>
       <source>Pick rotation angle</source>
-      <translation type="unfinished">Pick rotation angle</translation>
+      <translation>Izberite kót sukanja</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="65"/>
       <source>Add to group</source>
-      <translation type="unfinished">Add to group</translation>
+      <translation>Dodaj v skupino</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="68"/>
       <source>Ungroup</source>
-      <translation type="unfinished">Ungroup</translation>
+      <translation>Razdruži</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="70"/>
       <source>Add new group</source>
-      <translation type="unfinished">Add new group</translation>
+      <translation>Dodaj novo skupino</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="159"/>
@@ -3864,7 +3860,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="193"/>
       <source>No new selection. You must select non-empty groups or objects inside groups.</source>
-      <translation type="unfinished">No new selection. You must select non-empty groups or objects inside groups.</translation>
+      <translation>Ni novega izbora. Izbrati je treba skupine, ki niso prazne, ali predmete znotraj skupin.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="203"/>
@@ -3874,27 +3870,27 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="250"/>
       <source>Add new Layer</source>
-      <translation type="unfinished">Add new Layer</translation>
+      <translation>Dodaj novo plast</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="304"/>
       <source>Add to construction group</source>
-      <translation type="unfinished">Add to construction group</translation>
+      <translation>Dodaj v skupino pomagal</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="355"/>
       <source>Add a new group with a given name</source>
-      <translation type="unfinished">Add a new group with a given name</translation>
+      <translation>Dodaj novo skupino z določenim imenom</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="383"/>
       <source>Add group</source>
-      <translation type="unfinished">Add group</translation>
+      <translation>Dodaj skupino</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="385"/>
       <source>Group name</source>
-      <translation type="unfinished">Group name</translation>
+      <translation>Ime skupine</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="392"/>
@@ -3909,52 +3905,52 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_edit_sketcher_objects.py" line="63"/>
       <source>Sketch is too complex to edit: it is suggested to use sketcher default editor</source>
-      <translation type="unfinished">Sketch is too complex to edit: it is suggested to use sketcher default editor</translation>
+      <translation>Očrt je prezapleten za urejanje: predlagana je uporaba privzetega urejevalnika očrtov</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="76"/>
       <source>Fillet radius</source>
-      <translation type="unfinished">Fillet radius</translation>
+      <translation>Polmer zaokrožitve</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="79"/>
       <source>Radius of fillet</source>
-      <translation type="unfinished">Radius of fillet</translation>
+      <translation>Polmer zaokrožitve</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="107"/>
       <source>Enter radius.</source>
-      <translation type="unfinished">Enter radius.</translation>
+      <translation>Vnesite polmer.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="126"/>
       <source>Delete original objects:</source>
-      <translation type="unfinished">Delete original objects:</translation>
+      <translation>Brisanje izvornih predmetov:</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="131"/>
       <source>Chamfer mode:</source>
-      <translation type="unfinished">Chamfer mode:</translation>
+      <translation>Način prisekovanja:</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="148"/>
       <source>Two elements needed.</source>
-      <translation type="unfinished">Two elements needed.</translation>
+      <translation>Potrebni sta dve prvini.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="155"/>
       <source>Test object</source>
-      <translation type="unfinished">Test object</translation>
+      <translation>Preizkusni predmet</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="156"/>
       <source>Test object removed</source>
-      <translation type="unfinished">Test object removed</translation>
+      <translation>Preizkusni predmet odstranjen</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="158"/>
       <source>Fillet cannot be created</source>
-      <translation type="unfinished">Fillet cannot be created</translation>
+      <translation>Zaokrožitve ni mogoče izvesti</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="188"/>
@@ -3964,70 +3960,70 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_polygons.py" line="231"/>
       <source>Create Polygon (Part)</source>
-      <translation type="unfinished">Create Polygon (Part)</translation>
+      <translation>Ustvari mnogokotnik (Del)</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_polygons.py" line="250"/>
       <source>Create Polygon</source>
-      <translation type="unfinished">Create Polygon</translation>
+      <translation>Ustvari mnogokotnik</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_split.py" line="64"/>
       <source>Click anywhere on a line to split it.</source>
-      <translation type="unfinished">Click anywhere on a line to split it.</translation>
+      <translation>Kliknite kamor koli na črto, da jo presekate.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_split.py" line="106"/>
       <source>Split line</source>
-      <translation type="unfinished">Split line</translation>
+      <translation>Presekaj črto</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="94"/>
       <source>Select objects to trim or extend</source>
-      <translation type="unfinished">Select objects to trim or extend</translation>
+      <translation>Izberite predmete za prirezovanje/podaljšanje</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="173"/>
       <location filename="../../draftguitools/gui_offset.py" line="143"/>
       <source>Pick distance</source>
-      <translation type="unfinished">Pick distance</translation>
+      <translation>Izberite razdaljo</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="222"/>
       <source>Offset angle</source>
-      <translation type="unfinished">Offset angle</translation>
+      <translation>Kót odmika</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="483"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported.</source>
-      <translation type="unfinished">Unable to trim these objects, only Draft wires and arcs are supported.</translation>
+      <translation>Teh predmetov ni mogoče prirezati, le izrisna (Draft) črtovja in loki imajo to možnost.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="488"/>
       <source>Unable to trim these objects, too many wires</source>
-      <translation type="unfinished">Unable to trim these objects, too many wires</translation>
+      <translation>Ni mogoče prirezati teh predmetov, preveč črtovij</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="505"/>
       <source>These objects don't intersect.</source>
-      <translation type="unfinished">These objects don't intersect.</translation>
+      <translation>Ti predmeti se ne sekajo.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="508"/>
       <source>Too many intersection points.</source>
-      <translation type="unfinished">Too many intersection points.</translation>
+      <translation>Preveč presečišč.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="120"/>
       <source>Spline has been closed</source>
-      <translation type="unfinished">Spline has been closed</translation>
+      <translation>Zlepek je bil sklenjen</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="131"/>
       <location filename="../../draftguitools/gui_beziers.py" line="141"/>
       <location filename="../../draftguitools/gui_beziers.py" line="370"/>
       <source>Last point has been removed</source>
-      <translation type="unfinished">Last point has been removed</translation>
+      <translation>Zadnja točka je bila odstranjena</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="184"/>
@@ -4037,7 +4033,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_styles.py" line="75"/>
       <source>Change Style</source>
-      <translation type="unfinished">Change Style</translation>
+      <translation>Spremeni slog</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="92"/>
@@ -4514,14 +4510,14 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="344"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="341"/>
       <source>Fuse:</source>
-      <translation type="unfinished">Fuse:</translation>
+      <translation>Združi:</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="310"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="358"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="355"/>
       <source>Create Link array:</source>
-      <translation type="unfinished">Create Link array:</translation>
+      <translation>Ustvari vezano razpostavitev:</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="328"/>
@@ -4675,14 +4671,18 @@ The final angle will be the base angle plus this amount.</translation>
       <translation type="unfinished">ShapeString: string has no wires</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/draft_annotation.py" line="89"/>
-      <location filename="../../draftobjects/draft_annotation.py" line="105"/>
+      <location filename="../../draftobjects/draft_annotation.py" line="83"/>
       <source>added view property 'ScaleMultiplier'</source>
       <translation type="unfinished">added view property 'ScaleMultiplier'</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/draft_annotation.py" line="125"/>
-      <location filename="../../draftobjects/draft_annotation.py" line="130"/>
+      <location filename="../../draftobjects/draft_annotation.py" line="85"/>
+      <source>added view property 'AnnotationStyle'</source>
+      <translation type="unfinished">added view property 'AnnotationStyle'</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/draft_annotation.py" line="108"/>
+      <location filename="../../draftobjects/draft_annotation.py" line="113"/>
       <source>migrated 'DraftText' type to 'Text'</source>
       <translation type="unfinished">migrated 'DraftText' type to 'Text'</translation>
     </message>
@@ -4990,7 +4990,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="173"/>
       <source>This function is deprecated. Do not use this function directly.</source>
-      <translation type="unfinished">This function is deprecated. Do not use this function directly.</translation>
+      <translation>Ta zmožnost je zastarela. Ne uporabljajte je neposredno.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="174"/>
@@ -5129,14 +5129,14 @@ The final angle will be the base angle plus this amount.</translation>
       <translation type="unfinished">Merging layer:</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_base.py" line="437"/>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="240"/>
+      <location filename="../../draftviewproviders/view_base.py" line="438"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="277"/>
       <location filename="../../draftviewproviders/view_hatch.py" line="82"/>
       <source>Edit</source>
       <translation>Uredi</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_base.py" line="445"/>
+      <location filename="../../draftviewproviders/view_base.py" line="446"/>
       <location filename="../../draftviewproviders/view_wire.py" line="171"/>
       <source>Flatten</source>
       <translation type="unfinished">Flatten</translation>
@@ -5299,9 +5299,24 @@ The final angle will be the base angle plus this amount.</translation>
       <translation type="unfinished">Unable to upgrade these objects.</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_text.py" line="229"/>
+      <location filename="../../draftviewproviders/view_text.py" line="186"/>
       <source>Text</source>
       <translation>Besedilo</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/label.py" line="253"/>
+      <source>updated view property 'TextFont' to 'FontName'</source>
+      <translation type="unfinished">updated view property 'TextFont' to 'FontName'</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/label.py" line="254"/>
+      <source>updated view property 'TextSize' to 'FontSize'</source>
+      <translation type="unfinished">updated view property 'TextSize' to 'FontSize'</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/dimension.py" line="217"/>
+      <source>added view property 'TextColor'</source>
+      <translation type="unfinished">added view property 'TextColor'</translation>
     </message>
   </context>
   <context>
@@ -5412,27 +5427,27 @@ from menu Tools -&gt; Addon Manager</translation>
       <translation type="unfinished">Create chamfer</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="274"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="264"/>
       <source>Save style</source>
       <translation type="unfinished">Save style</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="275"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="265"/>
       <source>Name of this new style:</source>
       <translation type="unfinished">Name of this new style:</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="282"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="272"/>
       <source>Warning</source>
       <translation>Opozorilo</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="283"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="273"/>
       <source>Name exists. Overwrite?</source>
       <translation type="unfinished">Name exists. Overwrite?</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="318"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="308"/>
       <source>Error: json module not found. Unable to save style</source>
       <translation type="unfinished">Error: json module not found. Unable to save style</translation>
     </message>
@@ -5535,6 +5550,41 @@ from menu Tools -&gt; Addon Manager</translation>
       <location filename="../../draftviewproviders/view_wpproxy.py" line="119"/>
       <source>Writing objects shown/hidden state</source>
       <translation type="unfinished">Writing objects shown/hidden state</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="226"/>
+      <source>Millimeters</source>
+      <translation type="unfinished">Millimeters</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="227"/>
+      <source>Centimeters</source>
+      <translation type="unfinished">Centimeters</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="228"/>
+      <source>Meters</source>
+      <translation type="unfinished">Meters</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="229"/>
+      <source>Inches</source>
+      <translation>Palci</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="230"/>
+      <source>Feet</source>
+      <translation type="unfinished">Feet</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="231"/>
+      <source>Architectural</source>
+      <translation type="unfinished">Architectural</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="307"/>
+      <source>The preferred unit you are currently working with.</source>
+      <translation type="unfinished">The preferred unit you are currently working with.</translation>
     </message>
   </context>
   <context>
@@ -7082,14 +7132,14 @@ set True for fusion or False for compound</translation>
       <translation type="unfinished">Show the individual array elements (only for Link arrays)</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="65"/>
+      <location filename="../../draftobjects/label.py" line="68"/>
       <source>The position of the tip of the leader line.
 This point can be decorated with an arrow or another symbol.</source>
       <translation type="unfinished">The position of the tip of the leader line.
 This point can be decorated with an arrow or another symbol.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="79"/>
+      <location filename="../../draftobjects/label.py" line="82"/>
       <source>Object, and optionally subelement, whose properties will be displayed
 as 'Text', depending on 'Label Type'.
 
@@ -7100,7 +7150,7 @@ as 'Text', depending on 'Label Type'.
 'Target' won't be used if 'Label Type' is set to 'Custom'.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="109"/>
+      <location filename="../../draftobjects/label.py" line="112"/>
       <source>The list of points defining the leader line; normally a list of three points.
 
 The first point should be the position of the text, that is, the 'Placement',
@@ -7121,7 +7171,7 @@ If 'Straight Direction' is set to 'Custom', the 'Points' property
 can be set as a list of arbitrary points.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="124"/>
+      <location filename="../../draftobjects/label.py" line="127"/>
       <source>The direction of the straight segment of the leader line.
 
 If 'Custom' is chosen, the points of the leader can be specified by
@@ -7132,7 +7182,7 @@ If 'Custom' is chosen, the points of the leader can be specified by
 assigning a custom list to the 'Points' attribute.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="142"/>
+      <location filename="../../draftobjects/label.py" line="145"/>
       <source>The length of the straight segment of the leader line.
 
 This is an oriented distance; if it is negative, the line will be drawn
@@ -7145,17 +7195,17 @@ to the left or below the 'Text', otherwise to the right or above it,
 depending on the value of 'Straight Direction'.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="156"/>
+      <location filename="../../draftobjects/label.py" line="159"/>
       <source>The placement of the 'Text' element in 3D space</source>
       <translation type="unfinished">The placement of the 'Text' element in 3D space</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="166"/>
+      <location filename="../../draftobjects/label.py" line="169"/>
       <source>The text to display when 'Label Type' is set to 'Custom'</source>
       <translation type="unfinished">The text to display when 'Label Type' is set to 'Custom'</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="181"/>
+      <location filename="../../draftobjects/label.py" line="184"/>
       <source>The text displayed by this label.
 
 This property is read-only, as the final text depends on 'Label Type',
@@ -7168,7 +7218,7 @@ and the object defined in 'Target'.
 The 'Custom Text' is displayed only if 'Label Type' is set to 'Custom'.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="216"/>
+      <location filename="../../draftobjects/label.py" line="219"/>
       <source>The type of information displayed by this label.
 
 If 'Custom' is chosen, the contents of 'Custom Text' will be used.
@@ -7187,8 +7237,7 @@ For 'Position', 'Length', and 'Area' these properties will be extracted from the
 or from the subelement 'VertexN', 'EdgeN', or 'FaceN', respectively, if it is specified.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/draft_annotation.py" line="83"/>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="86"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="89"/>
       <source>General scaling factor that affects the annotation consistently
 because it scales the text, and the line decorations, if any,
 in the same proportion.</source>
@@ -7197,8 +7246,7 @@ because it scales the text, and the line decorations, if any,
 in the same proportion.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/draft_annotation.py" line="93"/>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="104"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="107"/>
       <source>Annotation style to apply to this object.
 When using a saved style some of the view properties will become read-only;
 they will only be editable by changing the style through the 'Annotation style editor' tool.</source>
@@ -7581,17 +7629,17 @@ This property is read-only, as the number depends on the points in 'Point Object
       <translation type="unfinished">Radius to use to fillet the corner.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="137"/>
+      <location filename="../../draftobjects/dimension.py" line="140"/>
       <source>The normal direction of the text of the dimension</source>
       <translation type="unfinished">The normal direction of the text of the dimension</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="150"/>
+      <location filename="../../draftobjects/dimension.py" line="153"/>
       <source>The object measured by this dimension object</source>
       <translation type="unfinished">The object measured by this dimension object</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="167"/>
+      <location filename="../../draftobjects/dimension.py" line="170"/>
       <source>The object, and specific subelements of it,
 that this dimension object is measuring.
 
@@ -7608,7 +7656,7 @@ There are various possibilities:
 - An arc object, and its edge.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="190"/>
+      <location filename="../../draftobjects/dimension.py" line="193"/>
       <source>A point through which the dimension line, or an extrapolation of it, will pass.
 
 - For linear dimensions, this property controls how close the dimension line
@@ -7627,7 +7675,7 @@ that displays the measured radius or diameter.
 that displays the measured angle.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="233"/>
+      <location filename="../../draftobjects/dimension.py" line="247"/>
       <source>Starting point of the dimension line.
 
 If it is a radius dimension it will be the center of the arc.
@@ -7638,7 +7686,7 @@ If it is a radius dimension it will be the center of the arc.
 If it is a diameter dimension it will be a point that lies on the arc.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="247"/>
+      <location filename="../../draftobjects/dimension.py" line="261"/>
       <source>Ending point of the dimension line.
 
 If it is a radius or diameter dimension
@@ -7649,14 +7697,14 @@ If it is a radius or diameter dimension
 it will be a point that lies on the arc.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="259"/>
+      <location filename="../../draftobjects/dimension.py" line="273"/>
       <source>The direction of the dimension line.
 If this remains '(0,0,0)', the direction will be calculated automatically.</source>
       <translation type="unfinished">The direction of the dimension line.
 If this remains '(0,0,0)', the direction will be calculated automatically.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="276"/>
+      <location filename="../../draftobjects/dimension.py" line="290"/>
       <source>The value of the measurement.
 
 This property is read-only because the value is calculated
@@ -7673,28 +7721,28 @@ If the 'Linked Geometry' is an arc or circle, this 'Distance'
 is the radius or diameter, depending on the 'Diameter' property.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="287"/>
+      <location filename="../../draftobjects/dimension.py" line="301"/>
       <source>When measuring circular arcs, it determines whether to display
 the radius or the diameter value</source>
       <translation type="unfinished">When measuring circular arcs, it determines whether to display
 the radius or the diameter value</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="507"/>
+      <location filename="../../draftobjects/dimension.py" line="509"/>
       <source>Starting angle of the dimension line (circular arc).
 The arc is drawn counter-clockwise.</source>
       <translation type="unfinished">Starting angle of the dimension line (circular arc).
 The arc is drawn counter-clockwise.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="518"/>
+      <location filename="../../draftobjects/dimension.py" line="520"/>
       <source>Ending angle of the dimension line (circular arc).
 The arc is drawn counter-clockwise.</source>
       <translation type="unfinished">Ending angle of the dimension line (circular arc).
 The arc is drawn counter-clockwise.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="533"/>
+      <location filename="../../draftobjects/dimension.py" line="535"/>
       <source>The center point of the dimension line, which is a circular arc.
 
 This is normally the point where two line segments, or their extensions
@@ -7705,7 +7753,7 @@ This is normally the point where two line segments, or their extensions
 intersect, resulting in the measured 'Angle' between them.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="547"/>
+      <location filename="../../draftobjects/dimension.py" line="549"/>
       <source>The value of the measurement.
 
 This property is read-only because the value is calculated from
@@ -7891,70 +7939,49 @@ the 'First Angle' and 'Last Angle' properties.</translation>
       <translation type="unfinished">Show the individual array elements</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="74"/>
-      <location filename="../../draftviewproviders/view_text.py" line="63"/>
-      <source>The size of the text</source>
-      <translation type="unfinished">The size of the text</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_label.py" line="83"/>
-      <location filename="../../draftviewproviders/view_text.py" line="72"/>
-      <source>The font of the text</source>
-      <translation type="unfinished">The font of the text</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_label.py" line="92"/>
-      <location filename="../../draftviewproviders/view_label.py" line="119"/>
-      <location filename="../../draftviewproviders/view_text.py" line="81"/>
-      <source>The vertical alignment of the text</source>
-      <translation type="unfinished">The vertical alignment of the text</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_label.py" line="102"/>
-      <location filename="../../draftviewproviders/view_text.py" line="90"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="141"/>
       <source>Text color</source>
       <translation>Barva besedila</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="111"/>
-      <source>The maximum number of characters on each line of the text box</source>
-      <translation type="unfinished">The maximum number of characters on each line of the text box</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_label.py" line="128"/>
-      <location filename="../../draftviewproviders/view_text.py" line="98"/>
+      <location filename="../../draftviewproviders/view_label.py" line="89"/>
+      <location filename="../../draftviewproviders/view_text.py" line="65"/>
       <source>Line spacing (relative to font size)</source>
       <translation type="unfinished">Line spacing (relative to font size)</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="139"/>
-      <source>The size of the arrow</source>
-      <translation type="unfinished">The size of the arrow</translation>
+      <location filename="../../draftviewproviders/view_label.py" line="61"/>
+      <source>Vertical alignment</source>
+      <translation type="unfinished">Vertical alignment</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="148"/>
-      <source>The type of arrow of this label</source>
-      <translation type="unfinished">The type of arrow of this label</translation>
+      <location filename="../../draftviewproviders/view_label.py" line="72"/>
+      <source>Maximum number of characters on each line of the text box</source>
+      <translation type="unfinished">Maximum number of characters on each line of the text box</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="159"/>
+      <location filename="../../draftviewproviders/view_label.py" line="80"/>
+      <location filename="../../draftviewproviders/view_text.py" line="56"/>
+      <source>Horizontal alignment</source>
+      <translation type="unfinished">Horizontal alignment</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_label.py" line="122"/>
       <source>The type of frame around the text of this object</source>
       <translation type="unfinished">The type of frame around the text of this object</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="168"/>
+      <location filename="../../draftviewproviders/view_label.py" line="131"/>
       <source>Display a leader line or not</source>
       <translation type="unfinished">Display a leader line or not</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="177"/>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="119"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="153"/>
       <source>Line width</source>
       <translation>Širina črte</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="186"/>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="126"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="160"/>
       <source>Line color</source>
       <translation>Barva črte</translation>
     </message>
@@ -8014,51 +8041,51 @@ the 'First Angle' and 'Last Angle' properties.</translation>
       <translation type="unfinished">The line color of the objects contained within this layer, when used on a TechDraw page</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="138"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="123"/>
       <source>Font name</source>
       <translation>Ime pisave</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="147"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="132"/>
       <source>Font size</source>
       <translation>Velikost pisave</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="156"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="125"/>
       <source>Spacing between text and dimension line</source>
       <translation type="unfinished">Spacing between text and dimension line</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="165"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="134"/>
       <source>Rotate the dimension text 180 degrees</source>
       <translation type="unfinished">Rotate the dimension text 180 degrees</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="175"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="144"/>
       <source>Text Position.
 Leave '(0,0,0)' for automatic position</source>
       <translation type="unfinished">Text Position.
 Leave '(0,0,0)' for automatic position</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="186"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="155"/>
       <source>Text override.
 Write '$dim' so that it is replaced by the dimension length.</source>
       <translation type="unfinished">Text override.
 Write '$dim' so that it is replaced by the dimension length.</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="197"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="168"/>
       <source>The number of decimals to show</source>
       <translation type="unfinished">The number of decimals to show</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="206"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="177"/>
       <source>Show the unit suffix</source>
       <translation type="unfinished">Show the unit suffix</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="217"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="188"/>
       <source>A unit to express the measurement.
 Leave blank for system default.
 Use 'arch' to force US arch notation</source>
@@ -8067,41 +8094,43 @@ Leave blank for system default.
 Use 'arch' to force US arch notation</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="231"/>
+      <location filename="../../draftviewproviders/view_label.py" line="102"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="201"/>
       <source>Arrow size</source>
       <translation>Velikost puščice</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="240"/>
+      <location filename="../../draftviewproviders/view_label.py" line="111"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="210"/>
       <source>Arrow type</source>
       <translation>Vrsta puščice</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="250"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="220"/>
       <source>Rotate the dimension arrows 180 degrees</source>
       <translation type="unfinished">Rotate the dimension arrows 180 degrees</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="261"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="231"/>
       <source>The distance the dimension line is extended
 past the extension lines</source>
       <translation type="unfinished">The distance the dimension line is extended
 past the extension lines</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="270"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="240"/>
       <source>Length of the extension lines</source>
       <translation type="unfinished">Length of the extension lines</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="280"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="250"/>
       <source>Length of the extension line
 beyond the dimension line</source>
       <translation type="unfinished">Length of the extension line
 beyond the dimension line</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="289"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="259"/>
       <source>Shows the dimension line and arrows</source>
       <translation type="unfinished">Shows the dimension line and arrows</translation>
     </message>
@@ -8109,7 +8138,7 @@ beyond the dimension line</translation>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../draftviewproviders/view_base.py" line="460"/>
+      <location filename="../../draftviewproviders/view_base.py" line="462"/>
       <location filename="../../draftviewproviders/view_hatch.py" line="90"/>
       <source>Transform</source>
       <translation>Preoblikuj</translation>

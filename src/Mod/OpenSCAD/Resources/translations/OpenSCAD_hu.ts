@@ -107,12 +107,12 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="266"/>
       <source>Maximum fragment size</source>
-      <translation type="unfinished">Maximum fragment size</translation>
+      <translation>A töredék maximum mérete</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="385"/>
       <source>Convexity</source>
-      <translation type="unfinished">Convexity</translation>
+      <translation>Domborúság</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="286"/>
@@ -253,7 +253,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="474"/>
       <source>Minkowski sum</source>
-      <translation type="unfinished">Minkowski sum</translation>
+      <translation>Minkowski összeg</translation>
     </message>
     <message>
       <location filename="../../OpenSCADUtils.py" line="709"/>
@@ -263,7 +263,7 @@
     <message>
       <location filename="../../OpenSCADUtils.py" line="721"/>
       <source>Error: either all shapes must be 2D or all shapes must be 3D</source>
-      <translation type="unfinished">Error: either all shapes must be 2D or all shapes must be 3D</translation>
+      <translation>Hiba: vagy minden alakzatnak 2D-snek kell lennie, vagy minden alakzatnak 3D-snek kell lennie</translation>
     </message>
     <message>
       <location filename="../../importCSG.py" line="557"/>
@@ -374,7 +374,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="276"/>
       <source>Create Feature that allows increasing the tolerance</source>
-      <translation type="unfinished">Create Feature that allows increasing the tolerance</translation>
+      <translation>Hozzon létre egy funkciót, amely lehetővé teszi a tolerancia növelését</translation>
     </message>
   </context>
   <context>
@@ -387,7 +387,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="293"/>
       <source>Expand all placements downwards in the Tree view</source>
-      <translation type="unfinished">Expand all placements downwards in the Tree view</translation>
+      <translation>Az összes elhelyezés kibontása lefelé a fanézetben</translation>
     </message>
   </context>
   <context>
@@ -400,7 +400,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="314"/>
       <source>Replace an object in the Tree view. Please select old, new, and parent object</source>
-      <translation type="unfinished">Replace an object in the Tree view. Please select old, new, and parent object</translation>
+      <translation>Tárgy cseréje fanézetben. Kérjük, válassza ki a régi, új és szülő tárgyakat</translation>
     </message>
   </context>
   <context>
@@ -452,7 +452,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="555"/>
       <source>Use OpenSCAD to create a hull</source>
-      <translation type="unfinished">Use OpenSCAD to create a hull</translation>
+      <translation>Az OpenSCAD használata hajótest létrehozásához</translation>
     </message>
   </context>
   <context>
@@ -460,12 +460,12 @@
     <message>
       <location filename="../../InitGui.py" line="152"/>
       <source>OpenSCAD Tools</source>
-      <translation type="unfinished">OpenSCAD Tools</translation>
+      <translation>OpenSCAD eszközök</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="156"/>
       <source>Frequently-used Part WB tools</source>
-      <translation type="unfinished">Frequently-used Part WB tools</translation>
+      <translation>Gyakran használt munkaterületi eszközök rész</translation>
     </message>
   </context>
   <context>
@@ -473,12 +473,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="571"/>
       <source>Minkowski sum</source>
-      <translation type="unfinished">Minkowski sum</translation>
+      <translation>Minkowski összeg</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="574"/>
       <source>Use OpenSCAD to create a Minkowski sum</source>
-      <translation type="unfinished">Use OpenSCAD to create a Minkowski sum</translation>
+      <translation>Minkowski összeg létrehozása az OpenSCAD használatával</translation>
     </message>
   </context>
 </TS>

@@ -737,109 +737,109 @@ Spreadsheet.my_alias_name のように、エイリアスでセルを参照して
     <name>QtColorPicker</name>
     <message>
       <location filename="../../qtcolorpicker.cpp" line="286"/>
-      <location filename="../../qtcolorpicker.cpp" line="413"/>
-      <location filename="../../qtcolorpicker.cpp" line="523"/>
+      <location filename="../../qtcolorpicker.cpp" line="412"/>
+      <location filename="../../qtcolorpicker.cpp" line="522"/>
       <source>Black</source>
       <translation>黒</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="414"/>
-      <location filename="../../qtcolorpicker.cpp" line="524"/>
+      <location filename="../../qtcolorpicker.cpp" line="413"/>
+      <location filename="../../qtcolorpicker.cpp" line="523"/>
       <source>White</source>
       <translation>白</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="415"/>
-      <location filename="../../qtcolorpicker.cpp" line="525"/>
+      <location filename="../../qtcolorpicker.cpp" line="414"/>
+      <location filename="../../qtcolorpicker.cpp" line="524"/>
       <source>Red</source>
       <translation>赤</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="416"/>
-      <location filename="../../qtcolorpicker.cpp" line="526"/>
+      <location filename="../../qtcolorpicker.cpp" line="415"/>
+      <location filename="../../qtcolorpicker.cpp" line="525"/>
       <source>Dark red</source>
       <translation>濃赤</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="417"/>
-      <location filename="../../qtcolorpicker.cpp" line="527"/>
+      <location filename="../../qtcolorpicker.cpp" line="416"/>
+      <location filename="../../qtcolorpicker.cpp" line="526"/>
       <source>Green</source>
       <translation>緑</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="418"/>
-      <location filename="../../qtcolorpicker.cpp" line="528"/>
+      <location filename="../../qtcolorpicker.cpp" line="417"/>
+      <location filename="../../qtcolorpicker.cpp" line="527"/>
       <source>Dark green</source>
       <translation>深緑</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="419"/>
-      <location filename="../../qtcolorpicker.cpp" line="529"/>
+      <location filename="../../qtcolorpicker.cpp" line="418"/>
+      <location filename="../../qtcolorpicker.cpp" line="528"/>
       <source>Blue</source>
       <translation>青</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="420"/>
-      <location filename="../../qtcolorpicker.cpp" line="530"/>
+      <location filename="../../qtcolorpicker.cpp" line="419"/>
+      <location filename="../../qtcolorpicker.cpp" line="529"/>
       <source>Dark blue</source>
       <translation>群青色</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="421"/>
-      <location filename="../../qtcolorpicker.cpp" line="531"/>
+      <location filename="../../qtcolorpicker.cpp" line="420"/>
+      <location filename="../../qtcolorpicker.cpp" line="530"/>
       <source>Cyan</source>
       <translation>水色</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="422"/>
-      <location filename="../../qtcolorpicker.cpp" line="532"/>
+      <location filename="../../qtcolorpicker.cpp" line="421"/>
+      <location filename="../../qtcolorpicker.cpp" line="531"/>
       <source>Dark cyan</source>
       <translation>濃いシアン</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="423"/>
-      <location filename="../../qtcolorpicker.cpp" line="533"/>
+      <location filename="../../qtcolorpicker.cpp" line="422"/>
+      <location filename="../../qtcolorpicker.cpp" line="532"/>
       <source>Magenta</source>
       <translation>赤紫</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="424"/>
-      <location filename="../../qtcolorpicker.cpp" line="534"/>
+      <location filename="../../qtcolorpicker.cpp" line="423"/>
+      <location filename="../../qtcolorpicker.cpp" line="533"/>
       <source>Dark magenta</source>
       <translation>濃いマゼンタ</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="425"/>
-      <location filename="../../qtcolorpicker.cpp" line="535"/>
+      <location filename="../../qtcolorpicker.cpp" line="424"/>
+      <location filename="../../qtcolorpicker.cpp" line="534"/>
       <source>Yellow</source>
       <translation>黄</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="426"/>
-      <location filename="../../qtcolorpicker.cpp" line="536"/>
+      <location filename="../../qtcolorpicker.cpp" line="425"/>
+      <location filename="../../qtcolorpicker.cpp" line="535"/>
       <source>Dark yellow</source>
       <translation>濃黄</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="427"/>
-      <location filename="../../qtcolorpicker.cpp" line="537"/>
+      <location filename="../../qtcolorpicker.cpp" line="426"/>
+      <location filename="../../qtcolorpicker.cpp" line="536"/>
       <source>Gray</source>
       <translation>灰色</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="428"/>
-      <location filename="../../qtcolorpicker.cpp" line="538"/>
+      <location filename="../../qtcolorpicker.cpp" line="427"/>
+      <location filename="../../qtcolorpicker.cpp" line="537"/>
       <source>Dark gray</source>
       <translation>濃灰色</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="429"/>
-      <location filename="../../qtcolorpicker.cpp" line="539"/>
+      <location filename="../../qtcolorpicker.cpp" line="428"/>
+      <location filename="../../qtcolorpicker.cpp" line="538"/>
       <source>Light gray</source>
       <translation>明るい灰色</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="451"/>
+      <location filename="../../qtcolorpicker.cpp" line="450"/>
       <source>Custom Color</source>
       <translation>カスタム色</translation>
     </message>

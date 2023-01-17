@@ -460,7 +460,7 @@
     <message>
       <location filename="../../InitGui.py" line="152"/>
       <source>OpenSCAD Tools</source>
-      <translation type="unfinished">OpenSCAD Tools</translation>
+      <translation>OpenSCAD 工具</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="156"/>

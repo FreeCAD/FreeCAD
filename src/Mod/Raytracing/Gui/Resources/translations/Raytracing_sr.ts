@@ -62,7 +62,7 @@
     <message>
       <location filename="../../Command.cpp" line="427"/>
       <source>Insert a new part object into a Raytracing project</source>
-      <translation>Уметни нови део-објекат у Raytracing пројекат</translation>
+      <translation>Уметни нови Part-објекат у Raytracing пројекат</translation>
     </message>
   </context>
   <context>
@@ -144,7 +144,7 @@
     <message>
       <location filename="../../Command.cpp" line="73"/>
       <source>Export the camera position of the active 3D view in POV-Ray format to a file</source>
-      <translation>Извезите у датотеку позицију камере активног 3Д погледа у POV-Ray формату</translation>
+      <translation>Извези у датотеку положај камере активног 3Д погледа у POV-Ray формату</translation>
     </message>
   </context>
   <context>
@@ -162,7 +162,7 @@
     <message>
       <location filename="../../Command.cpp" line="166"/>
       <source>Write the selected Part (object) as a POV-Ray file</source>
-      <translation>Упиши одабрани Део (објекат) као POV-Ray датотеку</translation>
+      <translation>Упиши одабрани Part (објекат) као POV-Ray датотеку</translation>
     </message>
   </context>
   <context>
@@ -173,7 +173,7 @@
       <location filename="../../Command.cpp" line="324"/>
       <location filename="../../Command.cpp" line="770"/>
       <source>No perspective camera</source>
-      <translation>Без камере из перcпективе</translation>
+      <translation>Нема камере из перспективе</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="88"/>
@@ -182,7 +182,7 @@
       <source>The current view camera is not perspective and thus resulting in a POV-Ray image that may look different than what was expected.
 Do you want to continue?</source>
       <translation>Тренутни приказ камера није перспектива што резултира POV-Ray сликом која може изгледати другачије него што сте очекивали.
-Да ли желите да наставите?</translation>
+Да ли желиш да наставиш?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="211"/>
@@ -216,7 +216,7 @@ Do you want to continue?</source>
       <source>The current view camera is not perspective and thus resulting in a luxrender image that may look different than what was expected.
 Do you want to continue?</source>
       <translation>Тренутни приказ камера није перспектива што резултира Luxrender сликом која може изгледати другачије него што сте очекивали.
-Да ли желите да наставите?</translation>
+Да ли желиш да наставиш?</translation>
     </message>
   </context>
   <context>
@@ -296,12 +296,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="605"/>
       <source>Please set the path to the POV-Ray executable in the preferences.</source>
-      <translation>Подеcите путању до POV-Ray извршне датотеке у подешавањима.</translation>
+      <translation>Подеcи путању до POV-Ray извршне датотеке у подешавањима.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="611"/>
       <source>Please correct the path to the POV-Ray executable in the preferences.</source>
-      <translation>Поправите путању до POV-Ray извршне датотеке у подешавањима.</translation>
+      <translation>Поправи путању до POV-Ray извршне датотеке у подешавањима.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="618"/>
@@ -312,12 +312,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="619"/>
       <source>Please set the path to the luxrender or luxconsole executable in the preferences.</source>
-      <translation>Подеcите путању до luxrender, или до luxconsole извршне датотеке у подешавањима.</translation>
+      <translation>Подеcи путању до luxrender, или до luxconsole извршне датотеке у подешавањима.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="625"/>
       <source>Please correct the path to the luxrender or luxconsole executable in the preferences.</source>
-      <translation>Поправите путању до luxrender-а, или до luxconsole извршне датотеке у подешавањима.</translation>
+      <translation>Поправи путању до luxrender-а, или до luxconsole извршне датотеке у подешавањима.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="637"/>
@@ -429,7 +429,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="201"/>
       <source>Camera file name:</source>
-      <translation>Камера,име датотеке:</translation>
+      <translation>Име датотеке камере:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="211"/>
@@ -439,7 +439,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="224"/>
       <source>Part file name:</source>
-      <translation>Део, име датотеке:</translation>
+      <translation>Име Part датотеке:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="234"/>
@@ -464,7 +464,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="319"/>
       <source>Write u,v coordinates</source>
-      <translation>Упишите u,v координате</translation>
+      <translation>Упиши u,v координате</translation>
     </message>
   </context>
   <context>
@@ -472,7 +472,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../DlgSettingsRayImp.cpp" line="45"/>
       <source>The path to the POV-Ray executable, if you want to render from %1</source>
-      <translation>Путања до извршне датотеке POV-Ray, ако желите да рендерујете из %1</translation>
+      <translation>Путања до извршне датотеке POV-Ray, ако желиш да рендерујеш из %1</translation>
     </message>
   </context>
   <context>
@@ -490,7 +490,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../ViewProvider.cpp" line="98"/>
       <source>Select a LuxRender template</source>
-      <translation>Одабери LuxRender шаблон</translation>
+      <translation>Изабери LuxRender шаблон</translation>
     </message>
   </context>
   <context>
@@ -508,7 +508,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../ViewProvider.cpp" line="177"/>
       <source>Select a Povray template</source>
-      <translation>Одабери Povray шаблон</translation>
+      <translation>Изабери Povray шаблон</translation>
     </message>
   </context>
   <context>

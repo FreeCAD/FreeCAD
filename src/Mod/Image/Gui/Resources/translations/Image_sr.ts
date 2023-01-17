@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="102"/>
       <source>Create a planar image in the 3D space</source>
-      <translation>Ставите слику на неку од равни у 3Д простору</translation>
+      <translation>Стави слику на неку од равни у 3Д простору</translation>
     </message>
   </context>
   <context>

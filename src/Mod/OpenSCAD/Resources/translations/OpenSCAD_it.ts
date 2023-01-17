@@ -107,12 +107,12 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="266"/>
       <source>Maximum fragment size</source>
-      <translation type="unfinished">Maximum fragment size</translation>
+      <translation>Dimensione massima del frammento</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="385"/>
       <source>Convexity</source>
-      <translation type="unfinished">Convexity</translation>
+      <translation>Convessità</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="286"/>
@@ -253,7 +253,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="474"/>
       <source>Minkowski sum</source>
-      <translation type="unfinished">Minkowski sum</translation>
+      <translation>Somma Minkowski</translation>
     </message>
     <message>
       <location filename="../../OpenSCADUtils.py" line="709"/>
@@ -263,7 +263,7 @@
     <message>
       <location filename="../../OpenSCADUtils.py" line="721"/>
       <source>Error: either all shapes must be 2D or all shapes must be 3D</source>
-      <translation type="unfinished">Error: either all shapes must be 2D or all shapes must be 3D</translation>
+      <translation>Errore: tutte le forme devono essere 2D o tutte le forme devono essere 3D</translation>
     </message>
     <message>
       <location filename="../../importCSG.py" line="557"/>
@@ -374,7 +374,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="276"/>
       <source>Create Feature that allows increasing the tolerance</source>
-      <translation type="unfinished">Create Feature that allows increasing the tolerance</translation>
+      <translation>Crea funzionalità che permette di aumentare la tolleranza</translation>
     </message>
   </context>
   <context>
@@ -387,7 +387,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="293"/>
       <source>Expand all placements downwards in the Tree view</source>
-      <translation type="unfinished">Expand all placements downwards in the Tree view</translation>
+      <translation>Espandi tutti i posizionamenti verso il basso nella vista ad albero</translation>
     </message>
   </context>
   <context>
@@ -400,7 +400,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="314"/>
       <source>Replace an object in the Tree view. Please select old, new, and parent object</source>
-      <translation type="unfinished">Replace an object in the Tree view. Please select old, new, and parent object</translation>
+      <translation>Sostituisci un oggetto nella vista ad albero. Seleziona il vecchio oggetto, il nuovo e il genitore</translation>
     </message>
   </context>
   <context>
@@ -452,7 +452,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="555"/>
       <source>Use OpenSCAD to create a hull</source>
-      <translation type="unfinished">Use OpenSCAD to create a hull</translation>
+      <translation>Usa OpenSCAD per creare un "hull"</translation>
     </message>
   </context>
   <context>
@@ -460,12 +460,12 @@
     <message>
       <location filename="../../InitGui.py" line="152"/>
       <source>OpenSCAD Tools</source>
-      <translation type="unfinished">OpenSCAD Tools</translation>
+      <translation>Strumenti OpenSCAD</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="156"/>
       <source>Frequently-used Part WB tools</source>
-      <translation type="unfinished">Frequently-used Part WB tools</translation>
+      <translation>Strumenti Part di uso frequente</translation>
     </message>
   </context>
   <context>
@@ -473,12 +473,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="571"/>
       <source>Minkowski sum</source>
-      <translation type="unfinished">Minkowski sum</translation>
+      <translation>Somma Minkowski</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="574"/>
       <source>Use OpenSCAD to create a Minkowski sum</source>
-      <translation type="unfinished">Use OpenSCAD to create a Minkowski sum</translation>
+      <translation>Usa OpenSCAD per creare una somma Minkowski</translation>
     </message>
   </context>
 </TS>

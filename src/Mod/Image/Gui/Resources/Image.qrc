@@ -45,5 +45,6 @@
         <file>translations/Image_bg.qm</file>
         <file>translations/Image_ka.qm</file>
         <file>translations/Image_sr-CS.qm</file>
+        <file>translations/Image_be.qm</file>
     </qresource>
 </RCC> 

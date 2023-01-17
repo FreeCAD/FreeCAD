@@ -173,12 +173,12 @@
     <message>
       <location filename="../../Command.cpp" line="60"/>
       <source>Merge cells</source>
-      <translation>Spoji ćelije</translation>
+      <translation>Objedini ćelije</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="61"/>
       <source>Merge selected cells</source>
-      <translation>Spojite izabrane ćelije</translation>
+      <translation>Objedini izabrane ćelije</translation>
     </message>
   </context>
   <context>
@@ -214,7 +214,7 @@
     <message>
       <location filename="../../Command.cpp" line="116"/>
       <source>Split previously merged cells</source>
-      <translation>Podelite prethodno spojene ćelije</translation>
+      <translation>Podelite prethodno objedinjene ćelije</translation>
     </message>
   </context>
   <context>
@@ -263,7 +263,7 @@
     <message>
       <location filename="../../Command.cpp" line="745"/>
       <source>Underline text</source>
-      <translation>Podvučen tekst</translation>
+      <translation>Podvučeni tekst</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="746"/>
@@ -284,7 +284,7 @@
     <message>
       <location filename="../../Command.cpp" line="80"/>
       <source>Merge cells</source>
-      <translation>Spoji ćelije</translation>
+      <translation>Objedini ćelije</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="135"/>
@@ -434,7 +434,7 @@
 Type '=' if you want to use an expression.
 The expression must evaluate to a string of some cell address.</source>
       <translation>Početna adresa ćelije za povezivanje.
-Otkucajte '=' ako želite da koristite izraz.
+Otkucaj '=' ako želiš da koristiš izraz.
 Izraz se mora odnositi na znakovni niz neke adrese ćelije.</translation>
     </message>
     <message>
@@ -443,7 +443,7 @@ Izraz se mora odnositi na znakovni niz neke adrese ćelije.</translation>
 Type '=' if you want to use an expression.
 The expression must evaluate to a string of some cell address.</source>
       <translation>Krajnja adresa ćelije za povezivanje.
-Otkucajte '=' ako želite da koristite izraz.
+Otkucaj '=' ako želiš da koristiš izraz.
 Izraz se mora odnositi na znakovni niz neke adrese ćelije.</translation>
     </message>
     <message>
@@ -458,7 +458,7 @@ be hidden to the dependency checking.
 Useful to avoid cyclic dependencies, but use with caution!</source>
       <translation>Zavisnost sa referentnom tabelom će
 biti skrivena za proveru zavisnosti.
-Korisno da biste izbegli ciklične zavisnosti, ali koristite oprezno!</translation>
+Korisno da bi izbegao kružne zavisnosti, ali koristi oprezno!</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="131"/>
@@ -555,7 +555,7 @@ switch the design configuration. The property will be created if not exist.</tra
     <message>
       <location filename="../../DlgSheetConf.ui" line="79"/>
       <source>Optional property group name.</source>
-      <translation>Opciono ime grupe svojstava.</translation>
+      <translation>Neobavezno ime grupe osobina.</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="88"/>
@@ -736,117 +736,117 @@ switch the design configuration. The property will be created if not exist.</tra
       <location filename="../../SpreadsheetView.cpp" line="432"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation>Na primer, pozivajte se na ćeliju po alternativnom imenu
-Spreadsheet.moj_nadimak_ime umesto Spreadsheet.B1</translation>
+      <translation>Na primer, pozivaj se na ćeliju po alternativnom imenu
+Spreadsheet.moje_alternativno_ime umesto Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
     <name>QtColorPicker</name>
     <message>
       <location filename="../../qtcolorpicker.cpp" line="286"/>
-      <location filename="../../qtcolorpicker.cpp" line="413"/>
-      <location filename="../../qtcolorpicker.cpp" line="523"/>
+      <location filename="../../qtcolorpicker.cpp" line="412"/>
+      <location filename="../../qtcolorpicker.cpp" line="522"/>
       <source>Black</source>
       <translation>Crna</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="414"/>
-      <location filename="../../qtcolorpicker.cpp" line="524"/>
+      <location filename="../../qtcolorpicker.cpp" line="413"/>
+      <location filename="../../qtcolorpicker.cpp" line="523"/>
       <source>White</source>
       <translation>Belo</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="415"/>
-      <location filename="../../qtcolorpicker.cpp" line="525"/>
+      <location filename="../../qtcolorpicker.cpp" line="414"/>
+      <location filename="../../qtcolorpicker.cpp" line="524"/>
       <source>Red</source>
       <translation>Crvena</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="416"/>
-      <location filename="../../qtcolorpicker.cpp" line="526"/>
+      <location filename="../../qtcolorpicker.cpp" line="415"/>
+      <location filename="../../qtcolorpicker.cpp" line="525"/>
       <source>Dark red</source>
       <translation>Tamno crvena</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="417"/>
-      <location filename="../../qtcolorpicker.cpp" line="527"/>
+      <location filename="../../qtcolorpicker.cpp" line="416"/>
+      <location filename="../../qtcolorpicker.cpp" line="526"/>
       <source>Green</source>
       <translation>Zelena</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="418"/>
-      <location filename="../../qtcolorpicker.cpp" line="528"/>
+      <location filename="../../qtcolorpicker.cpp" line="417"/>
+      <location filename="../../qtcolorpicker.cpp" line="527"/>
       <source>Dark green</source>
       <translation>Tamno zelena</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="419"/>
-      <location filename="../../qtcolorpicker.cpp" line="529"/>
+      <location filename="../../qtcolorpicker.cpp" line="418"/>
+      <location filename="../../qtcolorpicker.cpp" line="528"/>
       <source>Blue</source>
       <translation>Plava</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="420"/>
-      <location filename="../../qtcolorpicker.cpp" line="530"/>
+      <location filename="../../qtcolorpicker.cpp" line="419"/>
+      <location filename="../../qtcolorpicker.cpp" line="529"/>
       <source>Dark blue</source>
       <translation>Tamno plava</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="421"/>
-      <location filename="../../qtcolorpicker.cpp" line="531"/>
+      <location filename="../../qtcolorpicker.cpp" line="420"/>
+      <location filename="../../qtcolorpicker.cpp" line="530"/>
       <source>Cyan</source>
       <translation>Plavičasta</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="422"/>
-      <location filename="../../qtcolorpicker.cpp" line="532"/>
+      <location filename="../../qtcolorpicker.cpp" line="421"/>
+      <location filename="../../qtcolorpicker.cpp" line="531"/>
       <source>Dark cyan</source>
       <translation>Tamno plavičasta</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="423"/>
-      <location filename="../../qtcolorpicker.cpp" line="533"/>
+      <location filename="../../qtcolorpicker.cpp" line="422"/>
+      <location filename="../../qtcolorpicker.cpp" line="532"/>
       <source>Magenta</source>
       <translation>Ružičasta</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="424"/>
-      <location filename="../../qtcolorpicker.cpp" line="534"/>
+      <location filename="../../qtcolorpicker.cpp" line="423"/>
+      <location filename="../../qtcolorpicker.cpp" line="533"/>
       <source>Dark magenta</source>
       <translation>Tamna ružičasta</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="425"/>
-      <location filename="../../qtcolorpicker.cpp" line="535"/>
+      <location filename="../../qtcolorpicker.cpp" line="424"/>
+      <location filename="../../qtcolorpicker.cpp" line="534"/>
       <source>Yellow</source>
       <translation>Žuta</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="426"/>
-      <location filename="../../qtcolorpicker.cpp" line="536"/>
+      <location filename="../../qtcolorpicker.cpp" line="425"/>
+      <location filename="../../qtcolorpicker.cpp" line="535"/>
       <source>Dark yellow</source>
       <translation>Tamno žuta</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="427"/>
-      <location filename="../../qtcolorpicker.cpp" line="537"/>
+      <location filename="../../qtcolorpicker.cpp" line="426"/>
+      <location filename="../../qtcolorpicker.cpp" line="536"/>
       <source>Gray</source>
       <translation>Siva</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="428"/>
-      <location filename="../../qtcolorpicker.cpp" line="538"/>
+      <location filename="../../qtcolorpicker.cpp" line="427"/>
+      <location filename="../../qtcolorpicker.cpp" line="537"/>
       <source>Dark gray</source>
       <translation>Tamno siva</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="429"/>
-      <location filename="../../qtcolorpicker.cpp" line="539"/>
+      <location filename="../../qtcolorpicker.cpp" line="428"/>
+      <location filename="../../qtcolorpicker.cpp" line="538"/>
       <source>Light gray</source>
       <translation>Svetlo siva</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="451"/>
+      <location filename="../../qtcolorpicker.cpp" line="450"/>
       <source>Custom Color</source>
       <translation>Sopstvena boja</translation>
     </message>
@@ -872,8 +872,8 @@ Spreadsheet.moj_nadimak_ime umesto Spreadsheet.B1</translation>
       <location filename="../../Sheet.ui" line="52"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation>Na primer, pozivajte se na ćeliju po alternativnom imenu
-Spreadsheet.moj_nadimak_ime umesto Spreadsheet.B1</translation>
+      <translation>Na primer, pozivaj se na ćeliju po alternativnom imenu
+Spreadsheet.moje_alternativno_ime umesto Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
@@ -890,7 +890,7 @@ Spreadsheet.moj_nadimak_ime umesto Spreadsheet.B1</translation>
 Do you want to continue?</source>
       <translation>Nepodudaranje broja izvornih i ciljnih ćelija. Delimično povezivanje može i dalje raditi.
 
-Da li želite da nastavite?</translation>
+Da li želiš da nastaviš?</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="225"/>
@@ -930,7 +930,7 @@ Da li želite da nastavite?</translation>
     <message>
       <location filename="../../DlgSettings.ui" line="58"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Znak koji se koristi kao graničnik polja. Podrazumevano je tabulator, ali se takođe često koriste zarezi (,) i tačka-zarez (;). Izaberite sa liste ili unesite svoje u polje. Mora biti jedan znak ili reči &lt;span style=" font-style:italic;"&gt;tabulator&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;zarez&lt;/span&gt;, ili &lt;span style=" font-style:italic;"&gt;tačka zarez&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Znak koji se koristi kao graničnik polja. Podrazumevano je tabulator, ali se takođe često koriste zarezi (,) i tačka-zarez (;). Izaberi sa liste ili unesi svoj u polje. Mora biti jedan znak ili reči &lt;span style=" font-style:italic;"&gt;tabulator&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;zarez&lt;/span&gt;, ili &lt;span style=" font-style:italic;"&gt;tačka zarez&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="74"/>
@@ -977,7 +977,7 @@ Da li želite da nastavite?</translation>
       <location filename="../../SheetTableView.cpp" line="128"/>
       <source>Insert %n row(s) above</source>
       <translation type="unfinished">
-        <numerusform>Umetni %n red(ove) iznad</numerusform>
+        <numerusform>Umetni %n red(ova) iznad</numerusform>
         <numerusform>Insert %n row(s) above</numerusform>
         <numerusform>Insert %n row(s) above</numerusform>
       </translation>
@@ -986,7 +986,7 @@ Da li želite da nastavite?</translation>
       <location filename="../../SheetTableView.cpp" line="132"/>
       <source>Insert %n row(s) below</source>
       <translation type="unfinished">
-        <numerusform>Umetni %n red(ove) ispod</numerusform>
+        <numerusform>Umetni %n red(ova) ispod</numerusform>
         <numerusform>Insert %n row(s) below</numerusform>
         <numerusform>Insert %n row(s) below</numerusform>
       </translation>
@@ -995,7 +995,7 @@ Da li želite da nastavite?</translation>
       <location filename="../../SheetTableView.cpp" line="136"/>
       <source>Insert %n non-contiguous rows</source>
       <translation type="unfinished">
-        <numerusform>Umetni %n nesusedne redove</numerusform>
+        <numerusform>Umetni %n nesusednih redova</numerusform>
         <numerusform>Insert %n non-contiguous rows</numerusform>
         <numerusform>Insert %n non-contiguous rows</numerusform>
       </translation>
@@ -1013,7 +1013,7 @@ Da li želite da nastavite?</translation>
       <location filename="../../SheetTableView.cpp" line="153"/>
       <source>Insert %n column(s) left</source>
       <translation type="unfinished">
-        <numerusform>Umetni %n kolonu(e) levo</numerusform>
+        <numerusform>Umetni %n kolonu(a) levo</numerusform>
         <numerusform>Insert %n column(s) left</numerusform>
         <numerusform>Insert %n column(s) left</numerusform>
       </translation>
@@ -1022,7 +1022,7 @@ Da li želite da nastavite?</translation>
       <location filename="../../SheetTableView.cpp" line="157"/>
       <source>Insert %n column(s) right</source>
       <translation type="unfinished">
-        <numerusform>Umetni %n kolonu(e) desno</numerusform>
+        <numerusform>Umetni %n kolonu(a) desno</numerusform>
         <numerusform>Insert %n column(s) right</numerusform>
         <numerusform>Insert %n column(s) right</numerusform>
       </translation>
@@ -1031,7 +1031,7 @@ Da li želite da nastavite?</translation>
       <location filename="../../SheetTableView.cpp" line="161"/>
       <source>Insert %n non-contiguous columns</source>
       <translation type="unfinished">
-        <numerusform>Umetni %n nesusedne kolone</numerusform>
+        <numerusform>Umetni %n nesusednih kolona</numerusform>
         <numerusform>Insert %n non-contiguous columns</numerusform>
         <numerusform>Insert %n non-contiguous columns</numerusform>
       </translation>
@@ -1073,7 +1073,7 @@ Da li želite da nastavite?</translation>
       <location filename="../../SheetTableView.cpp" line="197"/>
       <location filename="../../SheetTableView.cpp" line="616"/>
       <source>Merge cells</source>
-      <translation>Spoji ćelije</translation>
+      <translation>Objedini ćelije</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="199"/>

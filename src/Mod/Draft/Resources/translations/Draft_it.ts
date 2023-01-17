@@ -1001,6 +1001,7 @@ utilizzando i tasti [ e ] durante il disegno</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="199"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="397"/>
       <source>Annotations</source>
       <translation>Annotazioni</translation>
     </message>
@@ -1128,11 +1129,6 @@ utilizzando i tasti [ e ] durante il disegno</translation>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="385"/>
       <source>Selected</source>
       <translation>Selezionato</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="397"/>
-      <source>Texts/dims</source>
-      <translation>Testi/quote</translation>
     </message>
     <message>
       <location filename="../ui/dialogHatch.ui" line="14"/>
@@ -1549,13 +1545,13 @@ Può essere un nome di carattere come "Arial", uno stile predefinito come "sans"
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="144"/>
-      <source>text above (2D)</source>
-      <translation>testo sopra (2D)</translation>
+      <source>World</source>
+      <translation>Globale</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="149"/>
-      <source> text inside (3D)</source>
-      <translation> testo all'interno (3D)</translation>
+      <source>Screen</source>
+      <translation type="unfinished">Screen</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="161"/>
@@ -3315,7 +3311,7 @@ Per abilitare FreeCAD a  scaricare queste librerie, rispondere Sì.</translation
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="95"/>
-      <location filename="../../draftutils/gui_utils.py" line="720"/>
+      <location filename="../../draftutils/gui_utils.py" line="713"/>
       <location filename="../../draftutils/utils.py" line="1014"/>
       <location filename="../../draftmake/make_patharray.py" line="161"/>
       <location filename="../../draftmake/make_patharray.py" line="330"/>
@@ -3336,7 +3332,7 @@ Per abilitare FreeCAD a  scaricare queste librerie, rispondere Sì.</translation
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="132"/>
-      <location filename="../../draftutils/gui_utils.py" line="729"/>
+      <location filename="../../draftutils/gui_utils.py" line="722"/>
       <location filename="../../draftmake/make_patharray.py" line="170"/>
       <location filename="../../draftmake/make_patharray.py" line="181"/>
       <location filename="../../draftmake/make_patharray.py" line="339"/>
@@ -3373,24 +3369,24 @@ Per abilitare FreeCAD a  scaricare queste librerie, rispondere Sì.</translation
       <translation>Visibilità disattivata; rimosso dall'elenco: </translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="603"/>
+      <location filename="../../draftutils/gui_utils.py" line="596"/>
       <source>image is Null</source>
-      <translation type="unfinished">image is Null</translation>
+      <translation>l'immagine è Null</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="609"/>
+      <location filename="../../draftutils/gui_utils.py" line="602"/>
       <source>filename does not exist on the system or in the resource file</source>
       <translation>il nome file non esiste nel sistema o nei file risorsa</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="668"/>
+      <location filename="../../draftutils/gui_utils.py" line="661"/>
       <source>unable to load texture</source>
       <translation>impossibile caricare la texture</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="738"/>
+      <location filename="../../draftutils/gui_utils.py" line="731"/>
       <source>Does not have 'ViewObject.RootNode'.</source>
-      <translation type="unfinished">Does not have 'ViewObject.RootNode'.</translation>
+      <translation>Non ha 'ViewObject.RootNode'.</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="650"/>
@@ -3436,7 +3432,7 @@ Per abilitare FreeCAD a  scaricare queste librerie, rispondere Sì.</translation
     <message>
       <location filename="../../draftutils/utils.py" line="709"/>
       <source>Objects have different placements. Distance between the two base points: </source>
-      <translation type="unfinished">Objects have different placements. Distance between the two base points: </translation>
+      <translation>Gli oggetti hanno diversi posizionamenti. Distanza tra i due punti base: </translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="712"/>
@@ -4070,7 +4066,7 @@ L'angolo finale sarà l'angolo base più questa quantità.</translation>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="177"/>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="840"/>
       <source>Active object must have more than two points/nodes</source>
-      <translation type="unfinished">Active object must have more than two points/nodes</translation>
+      <translation>L'oggetto attivo deve avere più di due punti/nodi</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="200"/>
@@ -4490,12 +4486,12 @@ L'angolo finale sarà l'angolo base più questa quantità.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="203"/>
       <source>The angle is above 360 degrees. It is set to this value to proceed.</source>
-      <translation type="unfinished">The angle is above 360 degrees. It is set to this value to proceed.</translation>
+      <translation>L'angolo è superiore a 360 gradi. È impostato su questo valore per procedere.</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="206"/>
       <source>The angle is below -360 degrees. It is set to this value to proceed.</source>
-      <translation type="unfinished">The angle is below -360 degrees. It is set to this value to proceed.</translation>
+      <translation>L'angolo è inferiore a -360 gradi. È impostato su questo valore per procedere.</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="286"/>
@@ -4669,14 +4665,18 @@ L'angolo finale sarà l'angolo base più questa quantità.</translation>
       <translation>Forma da testo: la stringa non ha polilinee</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/draft_annotation.py" line="89"/>
-      <location filename="../../draftobjects/draft_annotation.py" line="105"/>
+      <location filename="../../draftobjects/draft_annotation.py" line="83"/>
       <source>added view property 'ScaleMultiplier'</source>
       <translation type="unfinished">added view property 'ScaleMultiplier'</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/draft_annotation.py" line="125"/>
-      <location filename="../../draftobjects/draft_annotation.py" line="130"/>
+      <location filename="../../draftobjects/draft_annotation.py" line="85"/>
+      <source>added view property 'AnnotationStyle'</source>
+      <translation type="unfinished">added view property 'AnnotationStyle'</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/draft_annotation.py" line="108"/>
+      <location filename="../../draftobjects/draft_annotation.py" line="113"/>
       <source>migrated 'DraftText' type to 'Text'</source>
       <translation>tipo 'DraftText' migrato a 'Text'</translation>
     </message>
@@ -5123,14 +5123,14 @@ L'angolo finale sarà l'angolo base più questa quantità.</translation>
       <translation>Unisci layer:</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_base.py" line="437"/>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="240"/>
+      <location filename="../../draftviewproviders/view_base.py" line="438"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="277"/>
       <location filename="../../draftviewproviders/view_hatch.py" line="82"/>
       <source>Edit</source>
       <translation>Modifica</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_base.py" line="445"/>
+      <location filename="../../draftviewproviders/view_base.py" line="446"/>
       <location filename="../../draftviewproviders/view_wire.py" line="171"/>
       <source>Flatten</source>
       <translation type="unfinished">Flatten</translation>
@@ -5293,9 +5293,24 @@ L'angolo finale sarà l'angolo base più questa quantità.</translation>
       <translation>Impossibile promuovere questi oggetti.</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_text.py" line="229"/>
+      <location filename="../../draftviewproviders/view_text.py" line="186"/>
       <source>Text</source>
       <translation>Testo</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/label.py" line="253"/>
+      <source>updated view property 'TextFont' to 'FontName'</source>
+      <translation type="unfinished">updated view property 'TextFont' to 'FontName'</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/label.py" line="254"/>
+      <source>updated view property 'TextSize' to 'FontSize'</source>
+      <translation type="unfinished">updated view property 'TextSize' to 'FontSize'</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/dimension.py" line="217"/>
+      <source>added view property 'TextColor'</source>
+      <translation type="unfinished">added view property 'TextColor'</translation>
     </message>
   </context>
   <context>
@@ -5406,27 +5421,27 @@ dal menu Strumenti -&gt; Addon Manager</translation>
       <translation>Crea smusso</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="274"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="264"/>
       <source>Save style</source>
       <translation>Salva stile</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="275"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="265"/>
       <source>Name of this new style:</source>
       <translation>Nome di questo nuovo stile:</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="282"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="272"/>
       <source>Warning</source>
       <translation>Attenzione</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="283"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="273"/>
       <source>Name exists. Overwrite?</source>
       <translation>Il nome esiste. Sovrascrivere?</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="318"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="308"/>
       <source>Error: json module not found. Unable to save style</source>
       <translation>Errore: modulo json non trovato. Impossibile salvare lo stile</translation>
     </message>
@@ -5529,6 +5544,41 @@ dal menu Strumenti -&gt; Addon Manager</translation>
       <location filename="../../draftviewproviders/view_wpproxy.py" line="119"/>
       <source>Writing objects shown/hidden state</source>
       <translation type="unfinished">Writing objects shown/hidden state</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="226"/>
+      <source>Millimeters</source>
+      <translation type="unfinished">Millimeters</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="227"/>
+      <source>Centimeters</source>
+      <translation type="unfinished">Centimeters</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="228"/>
+      <source>Meters</source>
+      <translation type="unfinished">Meters</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="229"/>
+      <source>Inches</source>
+      <translation>Pollici</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="230"/>
+      <source>Feet</source>
+      <translation type="unfinished">Feet</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="231"/>
+      <source>Architectural</source>
+      <translation type="unfinished">Architectural</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="307"/>
+      <source>The preferred unit you are currently working with.</source>
+      <translation type="unfinished">The preferred unit you are currently working with.</translation>
     </message>
   </context>
   <context>
@@ -6170,7 +6220,7 @@ Creare un gruppo prima di usare questo strumento.</translation>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="167"/>
       <source>Selects the contents of selected groups. For selected non-group objects, the contents of the group they are in is selected.</source>
-      <translation type="unfinished">Selects the contents of selected groups. For selected non-group objects, the contents of the group they are in is selected.</translation>
+      <translation>Seleziona il contenuto dei gruppi selezionati. Per gli oggetti selezionati non di gruppo, il contenuto del gruppo in cui sono è selezionato.</translation>
     </message>
   </context>
   <context>
@@ -7073,14 +7123,14 @@ imposta 'Vero' se il risultato è una fusione o 'Falso' se è un composto</trans
       <translation type="unfinished">Show the individual array elements (only for Link arrays)</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="65"/>
+      <location filename="../../draftobjects/label.py" line="68"/>
       <source>The position of the tip of the leader line.
 This point can be decorated with an arrow or another symbol.</source>
       <translation>La posizione del vertice della linea direttrice.
 Questo punto può essere decorato con una freccia o un altro simbolo.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="79"/>
+      <location filename="../../draftobjects/label.py" line="82"/>
       <source>Object, and optionally subelement, whose properties will be displayed
 as 'Text', depending on 'Label Type'.
 
@@ -7091,7 +7141,7 @@ as 'Text', depending on 'Label Type'.
 'Target' won't be used if 'Label Type' is set to 'Custom'.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="109"/>
+      <location filename="../../draftobjects/label.py" line="112"/>
       <source>The list of points defining the leader line; normally a list of three points.
 
 The first point should be the position of the text, that is, the 'Placement',
@@ -7112,7 +7162,7 @@ If 'Straight Direction' is set to 'Custom', the 'Points' property
 can be set as a list of arbitrary points.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="124"/>
+      <location filename="../../draftobjects/label.py" line="127"/>
       <source>The direction of the straight segment of the leader line.
 
 If 'Custom' is chosen, the points of the leader can be specified by
@@ -7123,7 +7173,7 @@ Se viene selezionato 'Personalizza', i punti della direttrice possono essere
 definiti assegnando una lista personalizzata nell'attributo 'Punti'.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="142"/>
+      <location filename="../../draftobjects/label.py" line="145"/>
       <source>The length of the straight segment of the leader line.
 
 This is an oriented distance; if it is negative, the line will be drawn
@@ -7136,17 +7186,17 @@ a sinistra o sotto il 'Testo', altrimenti a destra o sopra,
 a seconda del valore di 'Direzione dritta'.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="156"/>
+      <location filename="../../draftobjects/label.py" line="159"/>
       <source>The placement of the 'Text' element in 3D space</source>
       <translation>Il posizionamento dell'elemento 'Testo' nello spazio 3D</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="166"/>
+      <location filename="../../draftobjects/label.py" line="169"/>
       <source>The text to display when 'Label Type' is set to 'Custom'</source>
       <translation>Il testo da visualizzare quando 'Tipo etichetta' è impostato su 'Personalizzato'</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="181"/>
+      <location filename="../../draftobjects/label.py" line="184"/>
       <source>The text displayed by this label.
 
 This property is read-only, as the final text depends on 'Label Type',
@@ -7159,7 +7209,7 @@ e dall'oggetto definito in 'Obiettivo'.
 Il 'Testo Personalizzato' viene visualizzato solo se 'Tipo di etichetta' è impostato su 'Personalizzato'.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="216"/>
+      <location filename="../../draftobjects/label.py" line="219"/>
       <source>The type of information displayed by this label.
 
 If 'Custom' is chosen, the contents of 'Custom Text' will be used.
@@ -7178,8 +7228,7 @@ Per 'Posizione', 'Lunghezza' e 'Area' queste proprietà saranno estratte dall'og
 o dal sottoelemento 'VertexN', 'EdgeN', o 'FaceN', rispettivamente, se è specificato.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/draft_annotation.py" line="83"/>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="86"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="89"/>
       <source>General scaling factor that affects the annotation consistently
 because it scales the text, and the line decorations, if any,
 in the same proportion.</source>
@@ -7188,8 +7237,7 @@ because it scales the text, and the line decorations, if any,
 in the same proportion.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/draft_annotation.py" line="93"/>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="104"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="107"/>
       <source>Annotation style to apply to this object.
 When using a saved style some of the view properties will become read-only;
 they will only be editable by changing the style through the 'Annotation style editor' tool.</source>
@@ -7227,7 +7275,7 @@ Questo è utile per regolare la differenza tra centro della forma e punto di rif
     <message>
       <location filename="../../draftobjects/patharray.py" line="227"/>
       <source>Alignment vector for 'Tangent' mode</source>
-      <translation type="unfinished">Alignment vector for 'Tangent' mode</translation>
+      <translation>Vettore di allineamento per la modalità 'Tangente'</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="235"/>
@@ -7572,17 +7620,17 @@ Questa proprietà è in sola lettura, poiché il numero dipende dai punti in 'Po
       <translation>Raggio da utilizzare per raccordare l'angolo.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="137"/>
+      <location filename="../../draftobjects/dimension.py" line="140"/>
       <source>The normal direction of the text of the dimension</source>
       <translation>La direzione normale del testo della quotatura</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="150"/>
+      <location filename="../../draftobjects/dimension.py" line="153"/>
       <source>The object measured by this dimension object</source>
       <translation>L'oggetto quotato da questo oggetto dimensione</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="167"/>
+      <location filename="../../draftobjects/dimension.py" line="170"/>
       <source>The object, and specific subelements of it,
 that this dimension object is measuring.
 
@@ -7599,7 +7647,7 @@ Vi sono varie possibilità:
 - Un oggetto arco ed il suo bordo.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="190"/>
+      <location filename="../../draftobjects/dimension.py" line="193"/>
       <source>A point through which the dimension line, or an extrapolation of it, will pass.
 
 - For linear dimensions, this property controls how close the dimension line
@@ -7617,7 +7665,7 @@ che mostra il raggio o il diametro misurato.
 che mostra l'angolo misurato.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="233"/>
+      <location filename="../../draftobjects/dimension.py" line="247"/>
       <source>Starting point of the dimension line.
 
 If it is a radius dimension it will be the center of the arc.
@@ -7628,7 +7676,7 @@ Se si tratta della dimensione del raggio, sarà il centro dell'arco.
 Se si tratta della dimensione del diametro sarà un punto che giace sull'arco.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="247"/>
+      <location filename="../../draftobjects/dimension.py" line="261"/>
       <source>Ending point of the dimension line.
 
 If it is a radius or diameter dimension
@@ -7639,14 +7687,14 @@ Se è la dimensione del raggio o del diametro
 sarà un punto che giace sull'arco.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="259"/>
+      <location filename="../../draftobjects/dimension.py" line="273"/>
       <source>The direction of the dimension line.
 If this remains '(0,0,0)', the direction will be calculated automatically.</source>
       <translation>La direzione della linea di quotatura.
 Se rimane '(0,0,0)', la direzione sarà calcolata automaticamente.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="276"/>
+      <location filename="../../draftobjects/dimension.py" line="290"/>
       <source>The value of the measurement.
 
 This property is read-only because the value is calculated
@@ -7661,27 +7709,27 @@ Questa proprietà è di sola lettura perchè il valore è calcolato dalle propri
 Se la 'Geometria collegata' è un arco o un cerchio, questa 'Distanza' è il raggio o il diametro, in funzione della proprietà 'Diametro'.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="287"/>
+      <location filename="../../draftobjects/dimension.py" line="301"/>
       <source>When measuring circular arcs, it determines whether to display
 the radius or the diameter value</source>
       <translation>Quando si misura gli archi circolari, determina se visualizzare il valore del raggio o del diametro</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="507"/>
+      <location filename="../../draftobjects/dimension.py" line="509"/>
       <source>Starting angle of the dimension line (circular arc).
 The arc is drawn counter-clockwise.</source>
       <translation>Angolo iniziale della linea di quotatura (arco circolare).
 L'arco è disegnato in senso antiorario.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="518"/>
+      <location filename="../../draftobjects/dimension.py" line="520"/>
       <source>Ending angle of the dimension line (circular arc).
 The arc is drawn counter-clockwise.</source>
       <translation>Angolo finale della linea di quotatura (arco circolare).
 L'arco è disegnato in senso antiorario.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="533"/>
+      <location filename="../../draftobjects/dimension.py" line="535"/>
       <source>The center point of the dimension line, which is a circular arc.
 
 This is normally the point where two line segments, or their extensions
@@ -7691,7 +7739,7 @@ intersect, resulting in the measured 'Angle' between them.</source>
 Questo, solitamente, è il punto in cui due segmenti di linea, o le loro estensioni, si intersecano, con conseguente 'Angolo' misurato tra loro.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="547"/>
+      <location filename="../../draftobjects/dimension.py" line="549"/>
       <source>The value of the measurement.
 
 This property is read-only because the value is calculated from
@@ -7877,70 +7925,49 @@ dalle proprietà dell' 'Angolo iniziale' e 'Angolo finale'.</translation>
       <translation>Mostra i singoli elementi della serie</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="74"/>
-      <location filename="../../draftviewproviders/view_text.py" line="63"/>
-      <source>The size of the text</source>
-      <translation>La dimensione del testo</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_label.py" line="83"/>
-      <location filename="../../draftviewproviders/view_text.py" line="72"/>
-      <source>The font of the text</source>
-      <translation>Il carattere del testo</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_label.py" line="92"/>
-      <location filename="../../draftviewproviders/view_label.py" line="119"/>
-      <location filename="../../draftviewproviders/view_text.py" line="81"/>
-      <source>The vertical alignment of the text</source>
-      <translation>L'allineamento verticale del testo</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_label.py" line="102"/>
-      <location filename="../../draftviewproviders/view_text.py" line="90"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="141"/>
       <source>Text color</source>
       <translation>Colore testo</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="111"/>
-      <source>The maximum number of characters on each line of the text box</source>
-      <translation>Il numero massimo di caratteri in ogni riga della casella di testo</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_label.py" line="128"/>
-      <location filename="../../draftviewproviders/view_text.py" line="98"/>
+      <location filename="../../draftviewproviders/view_label.py" line="89"/>
+      <location filename="../../draftviewproviders/view_text.py" line="65"/>
       <source>Line spacing (relative to font size)</source>
       <translation>Interlinea (relativo alla dimensione del carattere)</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="139"/>
-      <source>The size of the arrow</source>
-      <translation>La dimensione della freccia</translation>
+      <location filename="../../draftviewproviders/view_label.py" line="61"/>
+      <source>Vertical alignment</source>
+      <translation type="unfinished">Vertical alignment</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="148"/>
-      <source>The type of arrow of this label</source>
-      <translation>Il tipo di freccia di questa etichetta</translation>
+      <location filename="../../draftviewproviders/view_label.py" line="72"/>
+      <source>Maximum number of characters on each line of the text box</source>
+      <translation type="unfinished">Maximum number of characters on each line of the text box</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="159"/>
+      <location filename="../../draftviewproviders/view_label.py" line="80"/>
+      <location filename="../../draftviewproviders/view_text.py" line="56"/>
+      <source>Horizontal alignment</source>
+      <translation type="unfinished">Horizontal alignment</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_label.py" line="122"/>
       <source>The type of frame around the text of this object</source>
       <translation>Il tipo di cornice attorno al testo di questo oggetto</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="168"/>
+      <location filename="../../draftviewproviders/view_label.py" line="131"/>
       <source>Display a leader line or not</source>
       <translation>Visualizza linee guida o no</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="177"/>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="119"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="153"/>
       <source>Line width</source>
       <translation>Spessore linea</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="186"/>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="126"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="160"/>
       <source>Line color</source>
       <translation>Colore della linea</translation>
     </message>
@@ -8000,51 +8027,51 @@ dalle proprietà dell' 'Angolo iniziale' e 'Angolo finale'.</translation>
       <translation>Il colore della riga degli oggetti contenuti in questo layer, quando usato in una pagina TechDraw</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="138"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="123"/>
       <source>Font name</source>
       <translation>Tipo di carattere</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="147"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="132"/>
       <source>Font size</source>
       <translation>Dimensione del carattere</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="156"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="125"/>
       <source>Spacing between text and dimension line</source>
       <translation>La spaziatura tra il testo e la linea di quota</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="165"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="134"/>
       <source>Rotate the dimension text 180 degrees</source>
       <translation>Ruota il testo della quota di 180 gradi</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="175"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="144"/>
       <source>Text Position.
 Leave '(0,0,0)' for automatic position</source>
       <translation>Posizione del testo.
 Lascia '(0,0,0)' per la posizione automatica</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="186"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="155"/>
       <source>Text override.
 Write '$dim' so that it is replaced by the dimension length.</source>
       <translation>Sovrascrittura del testo.
 Scrivi '$dim' in modo che sia sostituito dalla lunghezza della quota.</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="197"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="168"/>
       <source>The number of decimals to show</source>
       <translation>Il numero di decimali da mostrare</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="206"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="177"/>
       <source>Show the unit suffix</source>
       <translation>Visualizza il suffisso dell'unità</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="217"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="188"/>
       <source>A unit to express the measurement.
 Leave blank for system default.
 Use 'arch' to force US arch notation</source>
@@ -8053,39 +8080,41 @@ Lasciare vuoto per il sistema predefinito.
 Usare 'arch' per forzare la notazione dell'arco statunitense</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="231"/>
+      <location filename="../../draftviewproviders/view_label.py" line="102"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="201"/>
       <source>Arrow size</source>
       <translation>Dimensione freccia</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="240"/>
+      <location filename="../../draftviewproviders/view_label.py" line="111"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="210"/>
       <source>Arrow type</source>
       <translation>Tipo di freccia</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="250"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="220"/>
       <source>Rotate the dimension arrows 180 degrees</source>
       <translation>Ruota le frecce della quotatura di 180 gradi</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="261"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="231"/>
       <source>The distance the dimension line is extended
 past the extension lines</source>
       <translation>La lunghezza della linea di quota oltre le linee di riferimento</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="270"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="240"/>
       <source>Length of the extension lines</source>
       <translation>Lunghezza delle linee di estensione</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="280"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="250"/>
       <source>Length of the extension line
 beyond the dimension line</source>
       <translation>Lunghezza della linea di estensione oltre la linea di quota</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="289"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="259"/>
       <source>Shows the dimension line and arrows</source>
       <translation>Mostra la linea di quotatura e le frecce</translation>
     </message>
@@ -8093,7 +8122,7 @@ beyond the dimension line</source>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../draftviewproviders/view_base.py" line="460"/>
+      <location filename="../../draftviewproviders/view_base.py" line="462"/>
       <location filename="../../draftviewproviders/view_hatch.py" line="90"/>
       <source>Transform</source>
       <translation>Trasforma</translation>

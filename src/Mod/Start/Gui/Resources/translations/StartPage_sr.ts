@@ -56,7 +56,7 @@
     <message>
       <location filename="TranslationTexts.py" line="52"/>
       <source>This section contains documentation useful for FreeCAD users in general: a list of all the workbenches, detailed instructions on how to install and use the FreeCAD application, tutorials, and all you need to get started.</source>
-      <translation>Овај одељак садржи општу документацију корисну за кориснике FreeCAD-а: листу свих радних окружења, детаљна упутства о томе како да инсталирате и користите FreeCAD програм, туторијале и све што вам је потребно за почетак.</translation>
+      <translation>Овај одељак садржи општу документацију корисну за кориснике FreeCAD-а: листу свих радних окружења, детаљна упутства о томе како да инсталираш и користиш FreeCAD програм, туторијале и све што је потребно за почетак.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="53"/>
@@ -66,7 +66,7 @@
     <message>
       <location filename="TranslationTexts.py" line="54"/>
       <source>This section gathers documentation for advanced users and people interested in writing python scripts. You will also find there a repository of macros, instructions on how to install and use them, and more information about customizing FreeCAD to your specific needs.</source>
-      <translation>Овај одељак прикупља документацију за напредне кориснике и људе заинтересоване за писање python скрипти. Тамо ћете такође пронаћи спремиште макро-а, упутства о томе како да их инсталирате и користите, и више информација о прилагођавању FreeCAD-а вашим специфичним потребама.</translation>
+      <translation>Овај одељак прикупља документацију за напредне кориснике и људе заинтересоване за писање python скрипти. Тамо ћеш такође пронаћи спремиште макро-а, упутства о томе како да их инсталираш и користиш, и више информација о прилагођавању FreeCAD-а твојим специфичним потребама.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="55"/>
@@ -76,7 +76,7 @@
     <message>
       <location filename="TranslationTexts.py" line="56"/>
       <source>This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</source>
-      <translation>Овај одељак садржи материјал за програмере: Како сами компајлирати FreeCAD, како је структуриран изворни код FreeCAD-а + како се кретати по њему, како развити нове радне површине и/или уградити FreeCAD у своју апликацију.</translation>
+      <translation>Овај одељак садржи материјал за програмере: Како сам компајлирати FreeCAD, како је структуриран изворни код FreeCAD-а + како се кретати по њему, како развити нове радне површине и/или уградити FreeCAD у своју апликацију.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="57"/>
@@ -86,7 +86,7 @@
     <message>
       <location filename="TranslationTexts.py" line="58"/>
       <source>The FreeCAD manual is another, more linear way to present the information contained in this wiki. It is made to be read like a book, and will gently introduce you to many other pages from the hubs above. &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;e-book versions&lt;/a&gt; are also available.</source>
-      <translation>Приручник за FreeCAD је још један, линеарнији начин за представљање информација садржаних у овој wiki. Направљена је да се чита као књига и нежно ће вас упознати са многим другим страницама из горе наведених чворишта. &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;верзије е-књига&lt;/a&gt;су такође доступне.</translation>
+      <translation>Приручник за FreeCAD је још један, линеарнији начин за представљање информација садржаних у овој wiki. Направљен је да се чита као књига и полако ће те упознати са многим другим страницама из горе наведених чворишта. &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;верзије е-књига&lt;/a&gt;су такође доступне.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="59"/>
@@ -106,17 +106,17 @@
     <message>
       <location filename="TranslationTexts.py" line="62"/>
       <source>The &lt;a href="http://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecadweb.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
-      <translation>&lt;a href="http://forum.freecadweb.org"&gt;Форум FreeCAD-а&lt;/a&gt; је сјајно место за добијање помоћи од других корисника и програмера FreeCAD-а. Форум има много одељака за различите врсте проблема и теме дискусије. Ако сте неодлучни, објавите у општијем одељку &lt;a href="https://forum.freecadweb.org/viewforum.php?f=3"&gt;Помоћ при коришћењу FreeCAD-а&lt;/a&gt;.</translation>
+      <translation>&lt;a href="http://forum.freecadweb.org"&gt;Форум FreeCAD-а&lt;/a&gt; је сјајно место за добијање помоћи од других корисника и програмера FreeCAD-а. Форум има много одељака за различите врсте проблема и теме дискусије. Ако имаш недоумице, објави у општем одељку &lt;a href="https://forum.freecadweb.org/viewforum.php?f=3"&gt;Помоћ при коришћењу FreeCAD-а&lt;/a&gt;.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="63"/>
       <source>If it is the first time you are posting on the forum, be sure to &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=2264"&gt;read the guidelines&lt;/a&gt; first!</source>
-      <translation>Ако по први пут објављујете на форуму, као прво &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=2264"&gt;прочитајте смернице&lt;/a&gt;!</translation>
+      <translation>Ако по први пут објављујеш на форуму, као прво &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=2264"&gt;прочитај смернице&lt;/a&gt;!</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="64"/>
       <source>FreeCAD also maintains a public &lt;a href="https://www.freecadweb.org/tracker"&gt;bug tracker&lt;/a&gt; where anybody can submit bugs and propose new features. To avoid causing extra work and give the best chances to see your bug solved, make sure you read the &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=5236"&gt;bug submission guide&lt;/a&gt; before posting.</source>
-      <translation>FreeCAD такође одржава заједница &lt;a href="https://www.freecadweb.org/tracker"&gt;пратиоци грешака&lt;/a&gt; где свако може да пријави грешке и предложи нове функције. Да избегнете сувишан посао и да добијете најбољу прилика да ваша грешка буде решена, као прво прочитајте &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=5236"&gt;упутство о пријави грешке&lt;/a&gt; пре објављивања.</translation>
+      <translation>FreeCAD такође одржава заједница &lt;a href="https://www.freecadweb.org/tracker"&gt;пратиоци грешака&lt;/a&gt; где свако може да пријави грешке и предложи нове функције. Да избегнеш сувишан посао и да са највећом вероватноћом твој проблем буде решен, прво прочитај &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=5236"&gt;упутство о пријави грешке&lt;/a&gt; пре објављивања.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="65"/>
@@ -126,17 +126,17 @@
     <message>
       <location filename="TranslationTexts.py" line="66"/>
       <source>Below is a list of available extra workbenches that can be added to your FreeCAD installation. Browse and install them from menu Tools -&gt; Addons manager. You can learn more about any of them by clicking the links below.</source>
-      <translation>Испод је списак доступних додатних радних окружења која се могу додати у вашу инсталацију FreeCAD-а. Прегледајте и инсталирајте их из менија „Алати → Менаџер додатака“. Можете сазнати више о било ком од њих кликом на линкове испод.</translation>
+      <translation>Испод је списак доступних додатних радних окружења која се могу додати у твоју инсталацију FreeCAD-а. Прегледај их и инсталирај из менија „Алати → Менаџер додатака“. Можеш сазнати више о било ком од њих кликом на линкове испод.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="67"/>
       <source>If not bundled with your FreeCAD version, install the FreeCAD documentation package to get documentation hubs, workbench help and individual command documentation without an internet connection.</source>
-      <translation>Ако није у пакету са вашом верзијом FreeCAD-а, инсталирајте пакет документације за FreeCAD да бисте добили чворишта документације, помоћ за радну окружење и документацију о појединачним командама без интернет везе.</translation>
+      <translation>Ако није у пакету са твојом верзијом FreeCAD-а, инсталирај пакет документације за FreeCAD да би добио чворишта документације, помоћ за радно окружење и документацију о појединачним командама без интернет везе.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="68"/>
       <source>Cannot fetch information from GitHub. &lt;a href="EnableDownload.py"&gt;Authorize FreeCAD to access the internet&lt;/a&gt; and reload the Start page.</source>
-      <translation>Не могу да довучем информације са ГитХаба. &lt;a href="EnableDownload.py"&gt;Овластите FreeCAD да приступи интернету&lt;/a&gt; и да поново учита почетну страницу.</translation>
+      <translation>Не могу да довучем информације са ГитХаба. &lt;a href="EnableDownload.py"&gt;Овласти FreeCAD да приступи интернету&lt;/a&gt; и да поново учита почетну страницу.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="69"/>
@@ -146,7 +146,7 @@
     <message>
       <location filename="TranslationTexts.py" line="70"/>
       <source>Below are the latest changes added to the &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD source code&lt;/a&gt;. These changes might not reflect yet in the FreeCAD version that you are currently running. Check the &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt;available options&lt;/a&gt; if you wish to obtain a development version.</source>
-      <translation>Испод се налазе последње измене додате &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;изворном коду FreeCAD-а&lt;/a&gt;. Ове промене се можда још увек неће одразити на верзију FreeCAD-а коју тренутно користите. Провери &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt;доступне опције&lt;/a&gt; ако желите да набавите развојну верзију.</translation>
+      <translation>Испод се налазе последње измене додате &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;изворном коду FreeCAD-а&lt;/a&gt;. Ове промене се можда још увек неће одразити на верзију FreeCAD-а коју тренутно користиш. Провери &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt;доступне опције&lt;/a&gt; ако желиш да набавиш развојну верзију.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="71"/>
@@ -156,7 +156,7 @@
     <message>
       <location filename="TranslationTexts.py" line="72"/>
       <source>You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</source>
-      <translation>Можете да конфигуришете сопствену фасциклу да се приказује овде у менију Уреди -&gt; Подешавања -&gt; Старт -&gt; Прикажи додатни фолдер</translation>
+      <translation>Можеш да конфигуришеш сопствену фасциклу да се приказује овде у менију Уреди -&gt; Подешавања -&gt; Старт -&gt; Прикажи додатни фолдер</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="73"/>
@@ -191,7 +191,7 @@
     <message>
       <location filename="TranslationTexts.py" line="79"/>
       <source>To open any of the links above in your desktop browser, Right-click -&gt; Open in external browser</source>
-      <translation>Да бисте отворили било коју од горњих веза у веб-прегледачу, кликните десним тастером миша -&gt; Отвори у спољном веб-прегледачу</translation>
+      <translation>Да би отворио било коју од горњих веза у веб-прегледачу, кликни десним тастером миша -&gt; Отвори у спољном веб-прегледачу</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="80"/>
@@ -255,7 +255,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="26"/>
       <source>An optional HTML template that will be used instead of the default start page.</source>
-      <translation>Опционални HTML шаблон који ће се користити уместо унапред дефинисане почетне странице.</translation>
+      <translation>Необавезни HTML шаблон који ће се користити уместо унапред дефинисане почетне странице.</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="42"/>
@@ -280,7 +280,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="69"/>
       <source>If you want the examples to show on the first page</source>
-      <translation>Ако желите да се примери приказују на првој страници</translation>
+      <translation>Ако желиш да се примери приказују на првој страници</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="91"/>
@@ -292,7 +292,7 @@
       <source>An optional custom folder to be displayed at the bottom of the first page.
 By using ";;" to separate paths, you can add several folders here</source>
       <translation>Опција да се сопствена фасцикла приказује на дну прве странице.
-Ако користите ";;" да бисте раздвојили путање, можете додати неколико фасцикли</translation>
+Ако користиш ";;" да би раздвојио путање, можеш додати неколико фасцикли</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="127"/>
@@ -302,7 +302,7 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="134"/>
       <source>Shows a notepad next to the file thumbnails, where you can keep notes across sessions</source>
-      <translation>Приказује бележницу поред умањених сличица датотека, где можете да водите белешке</translation>
+      <translation>Приказује бележницу поред умањених слика датотека, где можеш да водиш белешке</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="153"/>
@@ -347,7 +347,7 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="279"/>
       <source>The color of the version text</source>
-      <translation>Боја текста информишућег текста о верзији</translation>
+      <translation>Боја текста информационог текста о верзији</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="299"/>
@@ -467,7 +467,7 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="607"/>
       <source>Choose which workbench to switch to after the program launches</source>
-      <translation>Изабери на који радно окружење желите да се пребаците након покретања програма</translation>
+      <translation>Изабери на који радно окружење желиш да се пребациш након покретања програма</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="614"/>
@@ -492,7 +492,7 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="654"/>
       <source>If application is started by opening a file, apply the two settings above</source>
-      <translation>Ако је апликација покренута отварањем датотеке, примените две горње поставке</translation>
+      <translation>Ако је апликација покренута отварањем датотеке, примени две горње поставке</translation>
     </message>
   </context>
 </TS>

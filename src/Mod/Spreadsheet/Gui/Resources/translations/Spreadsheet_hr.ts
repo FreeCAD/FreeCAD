@@ -750,109 +750,109 @@ Spreadsheet.my_alias_name umjesto Spreadsheet.B1
     <name>QtColorPicker</name>
     <message>
       <location filename="../../qtcolorpicker.cpp" line="286"/>
-      <location filename="../../qtcolorpicker.cpp" line="413"/>
-      <location filename="../../qtcolorpicker.cpp" line="523"/>
+      <location filename="../../qtcolorpicker.cpp" line="412"/>
+      <location filename="../../qtcolorpicker.cpp" line="522"/>
       <source>Black</source>
       <translation>Crna</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="414"/>
-      <location filename="../../qtcolorpicker.cpp" line="524"/>
+      <location filename="../../qtcolorpicker.cpp" line="413"/>
+      <location filename="../../qtcolorpicker.cpp" line="523"/>
       <source>White</source>
       <translation>Bijela</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="415"/>
-      <location filename="../../qtcolorpicker.cpp" line="525"/>
+      <location filename="../../qtcolorpicker.cpp" line="414"/>
+      <location filename="../../qtcolorpicker.cpp" line="524"/>
       <source>Red</source>
       <translation>Crvena</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="416"/>
-      <location filename="../../qtcolorpicker.cpp" line="526"/>
+      <location filename="../../qtcolorpicker.cpp" line="415"/>
+      <location filename="../../qtcolorpicker.cpp" line="525"/>
       <source>Dark red</source>
       <translation>Tamno crvena</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="417"/>
-      <location filename="../../qtcolorpicker.cpp" line="527"/>
+      <location filename="../../qtcolorpicker.cpp" line="416"/>
+      <location filename="../../qtcolorpicker.cpp" line="526"/>
       <source>Green</source>
       <translation>Zelena</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="418"/>
-      <location filename="../../qtcolorpicker.cpp" line="528"/>
+      <location filename="../../qtcolorpicker.cpp" line="417"/>
+      <location filename="../../qtcolorpicker.cpp" line="527"/>
       <source>Dark green</source>
       <translation>Tamno zelena</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="419"/>
-      <location filename="../../qtcolorpicker.cpp" line="529"/>
+      <location filename="../../qtcolorpicker.cpp" line="418"/>
+      <location filename="../../qtcolorpicker.cpp" line="528"/>
       <source>Blue</source>
       <translation>Plava</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="420"/>
-      <location filename="../../qtcolorpicker.cpp" line="530"/>
+      <location filename="../../qtcolorpicker.cpp" line="419"/>
+      <location filename="../../qtcolorpicker.cpp" line="529"/>
       <source>Dark blue</source>
       <translation>Tamno plava</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="421"/>
-      <location filename="../../qtcolorpicker.cpp" line="531"/>
+      <location filename="../../qtcolorpicker.cpp" line="420"/>
+      <location filename="../../qtcolorpicker.cpp" line="530"/>
       <source>Cyan</source>
       <translation>Modra</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="422"/>
-      <location filename="../../qtcolorpicker.cpp" line="532"/>
+      <location filename="../../qtcolorpicker.cpp" line="421"/>
+      <location filename="../../qtcolorpicker.cpp" line="531"/>
       <source>Dark cyan</source>
       <translation>Tamno modra</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="423"/>
-      <location filename="../../qtcolorpicker.cpp" line="533"/>
+      <location filename="../../qtcolorpicker.cpp" line="422"/>
+      <location filename="../../qtcolorpicker.cpp" line="532"/>
       <source>Magenta</source>
       <translation>Ružičasta</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="424"/>
-      <location filename="../../qtcolorpicker.cpp" line="534"/>
+      <location filename="../../qtcolorpicker.cpp" line="423"/>
+      <location filename="../../qtcolorpicker.cpp" line="533"/>
       <source>Dark magenta</source>
       <translation>Tamno ružičasta</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="425"/>
-      <location filename="../../qtcolorpicker.cpp" line="535"/>
+      <location filename="../../qtcolorpicker.cpp" line="424"/>
+      <location filename="../../qtcolorpicker.cpp" line="534"/>
       <source>Yellow</source>
       <translation>Žuta</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="426"/>
-      <location filename="../../qtcolorpicker.cpp" line="536"/>
+      <location filename="../../qtcolorpicker.cpp" line="425"/>
+      <location filename="../../qtcolorpicker.cpp" line="535"/>
       <source>Dark yellow</source>
       <translation>Tamno žuta</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="427"/>
-      <location filename="../../qtcolorpicker.cpp" line="537"/>
+      <location filename="../../qtcolorpicker.cpp" line="426"/>
+      <location filename="../../qtcolorpicker.cpp" line="536"/>
       <source>Gray</source>
       <translation>Siva</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="428"/>
-      <location filename="../../qtcolorpicker.cpp" line="538"/>
+      <location filename="../../qtcolorpicker.cpp" line="427"/>
+      <location filename="../../qtcolorpicker.cpp" line="537"/>
       <source>Dark gray</source>
       <translation>Tamno siva</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="429"/>
-      <location filename="../../qtcolorpicker.cpp" line="539"/>
+      <location filename="../../qtcolorpicker.cpp" line="428"/>
+      <location filename="../../qtcolorpicker.cpp" line="538"/>
       <source>Light gray</source>
       <translation>Svjetlo siva</translation>
     </message>
     <message>
-      <location filename="../../qtcolorpicker.cpp" line="451"/>
+      <location filename="../../qtcolorpicker.cpp" line="450"/>
       <source>Custom Color</source>
       <translation>Prilagođena boja</translation>
     </message>
@@ -1170,7 +1170,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../../App/Spreadsheet_legacy.py" line="753"/>
       <source>Apply the changes to the current cell</source>
-      <translation type="unfinished">Apply the changes to the current cell</translation>
+      <translation>Primijenite promjene na trenutnu ćeliju</translation>
     </message>
     <message>
       <location filename="../../../App/Spreadsheet_legacy.py" line="755"/>
@@ -1180,7 +1180,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../../App/Spreadsheet_legacy.py" line="757"/>
       <source>Deletes the contents of the current cell</source>
-      <translation type="unfinished">Deletes the contents of the current cell</translation>
+      <translation>Briše sadržaj trenutne ćelije</translation>
     </message>
     <message>
       <location filename="../../../App/Spreadsheet_legacy.py" line="759"/>
@@ -1190,7 +1190,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../../App/Spreadsheet_legacy.py" line="761"/>
       <source>Updates the values handled by controllers</source>
-      <translation type="unfinished">Updates the values handled by controllers</translation>
+      <translation>Ažurira vrijednosti kojima upravljaju regulatori</translation>
     </message>
     <message>
       <location filename="../../../App/Spreadsheet_legacy.py" line="907"/>
@@ -1200,13 +1200,13 @@ Do you want to continue?</source>
     <message>
       <location filename="../../../App/Spreadsheet_legacy.py" line="933"/>
       <source>Add controller</source>
-      <translation type="unfinished">Add controller</translation>
+      <translation>Dodaj regulator</translation>
     </message>
     <message>
       <location filename="../../../App/Spreadsheet_legacy.py" line="959"/>
       <location filename="../../../App/Spreadsheet_legacy.py" line="973"/>
       <source>Add property controller</source>
-      <translation type="unfinished">Add property controller</translation>
+      <translation>Dodaj značajke regulator</translation>
     </message>
   </context>
   <context>
@@ -1219,7 +1219,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../../App/Spreadsheet_legacy.py" line="905"/>
       <source>Adds a spreadsheet object to the active document</source>
-      <translation type="unfinished">Adds a spreadsheet object to the active document</translation>
+      <translation>Dodaje objekt proračunske tablice u aktivni dokument</translation>
     </message>
   </context>
   <context>
@@ -1227,12 +1227,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../../App/Spreadsheet_legacy.py" line="919"/>
       <source>Add controller</source>
-      <translation type="unfinished">Add controller</translation>
+      <translation>Dodaj regulator</translation>
     </message>
     <message>
       <location filename="../../../App/Spreadsheet_legacy.py" line="922"/>
       <source>Adds a cell controller to a selected spreadsheet</source>
-      <translation type="unfinished">Adds a cell controller to a selected spreadsheet</translation>
+      <translation>Dodaje kontroler ćelije odabranoj proračunskoj tablici</translation>
     </message>
   </context>
   <context>
@@ -1240,12 +1240,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../../App/Spreadsheet_legacy.py" line="944"/>
       <source>Add property controller</source>
-      <translation type="unfinished">Add property controller</translation>
+      <translation>Dodaj značajke regulator</translation>
     </message>
     <message>
       <location filename="../../../App/Spreadsheet_legacy.py" line="947"/>
       <source>Adds a property controller to a selected spreadsheet</source>
-      <translation type="unfinished">Adds a property controller to a selected spreadsheet</translation>
+      <translation>Dodaje kontroler značajki odabranoj proračunskoj tablici</translation>
     </message>
   </context>
   <context>

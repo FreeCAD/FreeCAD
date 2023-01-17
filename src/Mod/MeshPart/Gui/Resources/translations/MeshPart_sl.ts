@@ -579,12 +579,12 @@ Izberite drugi lik.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="47"/>
       <source>Unwrap Mesh</source>
-      <translation type="unfinished">Unwrap Mesh</translation>
+      <translation>Razvij ploskovje</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="50"/>
       <source>Find a flat representation of a mesh.</source>
-      <translation type="unfinished">Find a flat representation of a mesh.</translation>
+      <translation>Iskanje ravninske predstavitve ploskovja.</translation>
     </message>
   </context>
   <context>
@@ -592,12 +592,12 @@ Izberite drugi lik.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="79"/>
       <source>Unwrap Face</source>
-      <translation type="unfinished">Unwrap Face</translation>
+      <translation>Razvij ploskev</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="82"/>
       <source>Find a flat representation of a face.</source>
-      <translation type="unfinished">Find a flat representation of a face.</translation>
+      <translation>Iskanje ravninske predstavitve ploskve.</translation>
     </message>
   </context>
 </TS>

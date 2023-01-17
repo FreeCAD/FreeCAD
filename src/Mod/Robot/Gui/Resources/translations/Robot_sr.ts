@@ -52,7 +52,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="57"/>
       <source>Create a new empty trajectory</source>
-      <translation>Направинову празну путању</translation>
+      <translation>Направи нову празну путању</translation>
     </message>
   </context>
   <context>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="316"/>
       <source>Generate a Trajectory from a set of edges</source>
-      <translation>Створи путању од више ивица</translation>
+      <translation>Створи Путању од више ивица</translation>
     </message>
   </context>
   <context>
@@ -524,7 +524,7 @@
     <message>
       <location filename="../../TrajectorySimulate.ui" line="272"/>
       <source>Type</source>
-      <translation>Тип</translation>
+      <translation>Врста</translation>
     </message>
     <message>
       <location filename="../../TrajectorySimulate.ui" line="277"/>
@@ -689,7 +689,7 @@
     <message>
       <location filename="../../TaskTrajectory.ui" line="317"/>
       <source>Type</source>
-      <translation>Тип</translation>
+      <translation>Врста</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectory.ui" line="322"/>

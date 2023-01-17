@@ -136,7 +136,7 @@
     <message>
       <location filename="../../BrowserView.cpp" line="623"/>
       <source>File does not exist!</source>
-      <translation>Датотека не поcтоји!</translation>
+      <translation>Датотека не постоји!</translation>
     </message>
   </context>
   <context>
@@ -151,7 +151,7 @@
     <message>
       <location filename="../../BrowserView.cpp" line="616"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
-      <translation>Дошло је до грешака приликом учитавања датотеке. Неки подаци су можда измењени или уопште нису опорављени. У приказу извештаја потражите одређеније информације о предметима у питању.</translation>
+      <translation>Дошло је до грешака приликом учитавања датотеке. Неки подаци су можда измењени или уопште нису опорављени. У приказу извештаја потражи одређеније информације на ову тему.</translation>
     </message>
     <message>
       <location filename="../../BrowserView.cpp" line="619"/>

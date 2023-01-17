@@ -75,12 +75,12 @@
   <context>
     <name>CmdTechDraw3PtAngleDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1037"/>
+      <location filename="../../CommandCreateDims.cpp" line="1036"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1038"/>
+      <location filename="../../CommandCreateDims.cpp" line="1037"/>
       <source>Insert 3-Point Angle Dimension</source>
       <translation>Winkelmaß über 3 Punkte einfügen</translation>
     </message>
@@ -88,12 +88,12 @@
   <context>
     <name>CmdTechDrawActiveView</name>
     <message>
-      <location filename="../../Command.cpp" line="445"/>
+      <location filename="../../Command.cpp" line="437"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="446"/>
+      <location filename="../../Command.cpp" line="438"/>
       <source>Insert Active View (3D View)</source>
       <translation>Aktive (3D-)Ansicht einfügen</translation>
     </message>
@@ -101,12 +101,12 @@
   <context>
     <name>CmdTechDrawAngleDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="944"/>
+      <location filename="../../CommandCreateDims.cpp" line="943"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="945"/>
+      <location filename="../../CommandCreateDims.cpp" line="944"/>
       <source>Insert Angle Dimension</source>
       <translation>Winkelmaß einfügen</translation>
     </message>
@@ -127,17 +127,17 @@
   <context>
     <name>CmdTechDrawArchView</name>
     <message>
-      <location filename="../../Command.cpp" line="1405"/>
+      <location filename="../../Command.cpp" line="1401"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1406"/>
+      <location filename="../../Command.cpp" line="1402"/>
       <source>Insert Arch Workbench Object</source>
       <translation>Objekt des Arch-Arbeitsbereiches einfügen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1407"/>
+      <location filename="../../Command.cpp" line="1403"/>
       <source>Insert a View of a Section Plane from Arch Workbench</source>
       <translation>Ansicht einer Schnittebene aus dem Arbeitsbereich Arch einfügen</translation>
     </message>
@@ -145,12 +145,12 @@
   <context>
     <name>CmdTechDrawBalloon</name>
     <message>
-      <location filename="../../Command.cpp" line="1037"/>
+      <location filename="../../Command.cpp" line="1035"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1038"/>
+      <location filename="../../Command.cpp" line="1036"/>
       <source>Insert Balloon Annotation</source>
       <translation>Hinweisfeld einfügen</translation>
     </message>
@@ -176,12 +176,12 @@
   <context>
     <name>CmdTechDrawClipGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="1104"/>
+      <location filename="../../Command.cpp" line="1100"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1105"/>
+      <location filename="../../Command.cpp" line="1101"/>
       <source>Insert Clip Group</source>
       <translation>Ausschnittsgruppe einfügen</translation>
     </message>
@@ -189,12 +189,12 @@
   <context>
     <name>CmdTechDrawClipGroupAdd</name>
     <message>
-      <location filename="../../Command.cpp" line="1141"/>
+      <location filename="../../Command.cpp" line="1137"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1142"/>
+      <location filename="../../Command.cpp" line="1138"/>
       <source>Add View to Clip Group</source>
       <translation>Ansicht zu Ausschnittsgruppe hinzufügen</translation>
     </message>
@@ -202,12 +202,12 @@
   <context>
     <name>CmdTechDrawClipGroupRemove</name>
     <message>
-      <location filename="../../Command.cpp" line="1225"/>
+      <location filename="../../Command.cpp" line="1221"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1226"/>
+      <location filename="../../Command.cpp" line="1222"/>
       <source>Remove View from Clip Group</source>
       <translation>Ansicht aus Ausschnittsgruppe entfernen</translation>
     </message>
@@ -215,17 +215,17 @@
   <context>
     <name>CmdTechDrawComplexSection</name>
     <message>
-      <location filename="../../Command.cpp" line="629"/>
+      <location filename="../../Command.cpp" line="621"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="630"/>
+      <location filename="../../Command.cpp" line="622"/>
       <source>Insert Complex Section</source>
       <translation>Komplexe Schnittansicht einfügen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="631"/>
+      <location filename="../../Command.cpp" line="623"/>
       <source>Insert a Complex Section</source>
       <translation>Eine komplexe Schnittansicht einfügen</translation>
     </message>
@@ -295,12 +295,12 @@
   <context>
     <name>CmdTechDrawDetailView</name>
     <message>
-      <location filename="../../Command.cpp" line="756"/>
+      <location filename="../../Command.cpp" line="748"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="757"/>
+      <location filename="../../Command.cpp" line="749"/>
       <source>Insert Detail View</source>
       <translation>Detailansicht einfügen</translation>
     </message>
@@ -308,12 +308,12 @@
   <context>
     <name>CmdTechDrawDiameterDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="348"/>
+      <location filename="../../CommandCreateDims.cpp" line="347"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="349"/>
+      <location filename="../../CommandCreateDims.cpp" line="348"/>
       <source>Insert Diameter Dimension</source>
       <translation>Durchmessermaß einfügen</translation>
     </message>
@@ -321,12 +321,12 @@
   <context>
     <name>CmdTechDrawDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="105"/>
+      <location filename="../../CommandCreateDims.cpp" line="104"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="106"/>
+      <location filename="../../CommandCreateDims.cpp" line="105"/>
       <source>Insert Dimension</source>
       <translation>Maß einfügen</translation>
     </message>
@@ -334,17 +334,17 @@
   <context>
     <name>CmdTechDrawDraftView</name>
     <message>
-      <location filename="../../Command.cpp" line="1349"/>
+      <location filename="../../Command.cpp" line="1345"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1350"/>
+      <location filename="../../Command.cpp" line="1346"/>
       <source>Insert Draft Workbench Object</source>
       <translation>Objekt des Draft-Arbeitsbereiches einfügen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1351"/>
+      <location filename="../../Command.cpp" line="1347"/>
       <source>Insert a View of a Draft Workbench object</source>
       <translation>Ansicht eines Objekts des Draft-Arbeitsbereichs einfügen</translation>
     </message>
@@ -352,22 +352,22 @@
   <context>
     <name>CmdTechDrawExportPageDXF</name>
     <message>
-      <location filename="../../Command.cpp" line="1572"/>
+      <location filename="../../Command.cpp" line="1568"/>
       <source>File</source>
       <translation>Datei</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1573"/>
+      <location filename="../../Command.cpp" line="1569"/>
       <source>Export Page as DXF</source>
       <translation>Seite als DXF-Datei exportieren</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1607"/>
+      <location filename="../../Command.cpp" line="1603"/>
       <source>Save DXF file</source>
       <translation>DXF-Datei speichern</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1608"/>
+      <location filename="../../Command.cpp" line="1604"/>
       <source>DXF (*.dxf)</source>
       <translation>DXF (*.dxf)</translation>
     </message>
@@ -375,12 +375,12 @@
   <context>
     <name>CmdTechDrawExportPageSVG</name>
     <message>
-      <location filename="../../Command.cpp" line="1531"/>
+      <location filename="../../Command.cpp" line="1527"/>
       <source>File</source>
       <translation>Datei</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1532"/>
+      <location filename="../../Command.cpp" line="1528"/>
       <source>Export Page as SVG</source>
       <translation>Seite als SVG-Datei exportieren</translation>
     </message>
@@ -388,17 +388,17 @@
   <context>
     <name>CmdTechDrawExtendShortenLineGroup</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1627"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1663"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1628"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1664"/>
       <source>Extend Line</source>
       <translation>Linie verlängern</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1629"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1665"/>
       <source>Extend a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</source>
       <translation>Eine Hilfslinie oder Mittellinie an beiden Enden verlängern:&lt;br&gt;- Eine Längendifferenz angeben (optional)&lt;br&gt;- Eine einzelne Linie auswählen&lt;br&gt;- Dieses Werkzeug anklicken</translation>
     </message>
@@ -406,17 +406,17 @@
   <context>
     <name>CmdTechDrawExtensionAreaAnnotation</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1730"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1766"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1731"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1767"/>
       <source>Calculate the area of selected faces</source>
       <translation>Flächeninhalt der ausgewählten Flächen berechnen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1732"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1768"/>
       <source>Select several faces&lt;br&gt;    - click this tool</source>
       <translation>Mehrere Flächen auswählen&lt;br&gt;    - Dieses Werkzeug anklicken</translation>
     </message>
@@ -520,17 +520,17 @@
   <context>
     <name>CmdTechDrawExtensionChangeLineAttributes</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="731"/>
+      <location filename="../../CommandExtensionPack.cpp" line="747"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="732"/>
+      <location filename="../../CommandExtensionPack.cpp" line="748"/>
       <source>Change Line Attributes</source>
       <translation>Linienmerkmale ändern</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="733"/>
+      <location filename="../../CommandExtensionPack.cpp" line="749"/>
       <source>Change the attributes of cosmetic lines and centerlines:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more lines&lt;br&gt;- Click this tool</source>
       <translation>Merkmale von Hilfslinien und Mittellinien ändern:&lt;br&gt;- Linienmerkmale angeben (optional)&lt;br&gt;- Eine oder mehrere Linien auswählen&lt;br&gt;- Dieses Werkzeug anklicken</translation>
     </message>
@@ -544,13 +544,13 @@
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="226"/>
-      <location filename="../../CommandExtensionPack.cpp" line="326"/>
+      <location filename="../../CommandExtensionPack.cpp" line="328"/>
       <source>Add Circle Centerlines</source>
       <translation>Kreismittellinien hinzufügen</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="227"/>
-      <location filename="../../CommandExtensionPack.cpp" line="327"/>
+      <location filename="../../CommandExtensionPack.cpp" line="329"/>
       <source>Add centerlines to circles and arcs:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles or arcs&lt;br&gt;- Click this tool</source>
       <translation>Mittellinien zu Kreisen und Bögen hinzufügen:&lt;br&gt;- Linienmerkmale angeben (optional)&lt;br&gt;- Einen oder mehrere Kreise oder Bögen auswählen&lt;br&gt;- Dieses Werkzeug anklicken</translation>
     </message>
@@ -828,17 +828,17 @@
   <context>
     <name>CmdTechDrawExtensionDrawCirclesGroup</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1041"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1062"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1042"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1063"/>
       <source>Add Cosmetic Circle</source>
       <translation>Hilfskreis hinzufügen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1043"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1064"/>
       <source>Add a cosmetic circle based on two vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius)&lt;br&gt;- Click this tool</source>
       <translation>Einen Hifskreis basierend auf zwei Knotenpunkten hinzufügen:&lt;br&gt;- Linienmerkmale angeben (optional)&lt;br&gt;- Knotenpunkt 1 (Mittelpunkt) auswählen&lt;br&gt;- Knotenpunkt 2 (Radius) angeben&lt;br&gt;- Dieses Werkzeug anklicken</translation>
     </message>
@@ -846,19 +846,19 @@
   <context>
     <name>CmdTechDrawExtensionDrawCosmArc</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="880"/>
+      <location filename="../../CommandExtensionPack.cpp" line="900"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="881"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1127"/>
+      <location filename="../../CommandExtensionPack.cpp" line="901"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1149"/>
       <source>Add Cosmetic Arc</source>
       <translation>Hilfsbogen hinzufügen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="882"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1128"/>
+      <location filename="../../CommandExtensionPack.cpp" line="902"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1151"/>
       <source>Add a cosmetic counter clockwise arc based on three vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius and start angle)&lt;br&gt;- Select vertex 3 (end angle)&lt;br&gt;- Click this tool</source>
       <translation>Einen gegen den Uhrzeigersinn verlaufenden, auf drei Knotenpunkten basierenden Bogen hinzufügen:&lt;br&gt;- Linienmerkmale angeben (optional)&lt;br&gt;- Knotenpunkt 1 (Mittelpunkt) auswählen&lt;br&gt;- Knotenpunkt 2 (Radius und Bogenanfang) auswählen&lt;br&gt;- Knotenpunkt 3 (Bogenende) auswählen&lt;br&gt;- Dieses Werkzeug anklicken</translation>
     </message>
@@ -866,19 +866,19 @@
   <context>
     <name>CmdTechDrawExtensionDrawCosmCircle</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="941"/>
+      <location filename="../../CommandExtensionPack.cpp" line="963"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="942"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1118"/>
+      <location filename="../../CommandExtensionPack.cpp" line="964"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1140"/>
       <source>Add Cosmetic Circle</source>
       <translation>Hilfskreis hinzufügen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="943"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1119"/>
+      <location filename="../../CommandExtensionPack.cpp" line="965"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1141"/>
       <source>Add a cosmetic circle based on two vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius)&lt;br&gt;- Click this tool</source>
       <translation>Einen Hifskreis basierend auf zwei Knotenpunkten hinzufügen:&lt;br&gt;- Linienmerkmale angeben (optional)&lt;br&gt;- Knotenpunkt 1 (Mittelpunkt) auswählen&lt;br&gt;- Knotenpunkt 2 (Radius) angeben&lt;br&gt;- Dieses Werkzeug anklicken</translation>
     </message>
@@ -886,23 +886,23 @@
   <context>
     <name>CmdTechDrawExtensionDrawCosmCircle3Points</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1006"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1027"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1007"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1137"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1028"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1160"/>
       <source>Add Cosmetic Circle 3 Points</source>
       <translation>Hilfskreis über 3 Punkte hinzufügen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1008"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1029"/>
       <source>Add a cosmetic circle based on three vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select 3 vertexes&lt;br&gt;- Click this tool</source>
       <translation>Einen Hifskreis basierend auf drei Knotenpunkten hinzufügen:&lt;br&gt;- Linienmerkmale angeben (optional)&lt;br&gt;- Drei Knotenpunkte auswählen&lt;br&gt;- Dieses Werkzeug anklicken</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1138"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1162"/>
       <source>Add a cosmetic circle based on three vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select three vertexes&lt;br&gt;- Click this tool</source>
       <translation>Einen Hifskreis basierend auf drei Knotenpunkten hinzufügen:&lt;br&gt;- Linienmerkmale angeben (optional)&lt;br&gt;- Drei Knotenpunkte auswählen&lt;br&gt;- Dieses Werkzeug anklicken</translation>
     </message>
@@ -910,19 +910,19 @@
   <context>
     <name>CmdTechDrawExtensionExtendLine</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1557"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1593"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1558"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1696"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1594"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1732"/>
       <source>Extend Line</source>
       <translation>Linie verlängern</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1559"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1697"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1595"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1733"/>
       <source>Extend a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</source>
       <translation>Eine Hilfslinie oder Mittellinie an beiden Enden verlängern:&lt;br&gt;- Eine Längendifferenz angeben (optional)&lt;br&gt;- Eine einzelne Linie auswählen&lt;br&gt;- Dieses Werkzeug anklicken</translation>
     </message>
@@ -936,13 +936,13 @@
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="152"/>
-      <location filename="../../CommandExtensionPack.cpp" line="334"/>
+      <location filename="../../CommandExtensionPack.cpp" line="337"/>
       <source>Add Bolt Circle Centerlines</source>
       <translation>Lochkreismittellinien hinzufügen</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="153"/>
-      <location filename="../../CommandExtensionPack.cpp" line="335"/>
+      <location filename="../../CommandExtensionPack.cpp" line="338"/>
       <source>Add centerlines to a circular pattern of circles:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select three or more circles forming a circular pattern&lt;br&gt;- Click this tool</source>
       <translation>Mittellinien zu einer kreisförmigen Anordnung von Kreisen hinzufügen:&lt;br&gt;- Linienmerkmale angeben (optional)&lt;br&gt;- Drei oder mehr Kreise einer kreisförmigen Anordnung auswählen&lt;br&gt;- Dieses Werkzeug anklicken</translation>
     </message>
@@ -1046,17 +1046,17 @@
   <context>
     <name>CmdTechDrawExtensionLinePPGroup</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1273"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1299"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1274"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1300"/>
       <source>Add Cosmetic Parallel Line</source>
       <translation>Parallele Hilfslinie hinzufügen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1275"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1301"/>
       <source>Add a cosmetic line parallel to another line through a vertex:&lt;br&gt;- Select a line&lt;br&gt;- Select a vertex&lt;br&gt;- Click this tool</source>
       <translation>Eine Hilfslinie parallel zu einer anderen Linie durch einen Knotenpunkt hinzufügen&lt;br&gt;- Eine Linie auswählen&lt;br&gt;- Einen Knotenpunkt auswählen&lt;br&gt;- Dieses Werkzeug anklicken</translation>
     </message>
@@ -1064,19 +1064,19 @@
   <context>
     <name>CmdTechDrawExtensionLineParallel</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1205"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1230"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1206"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1342"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1231"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1369"/>
       <source>Add Cosmetic Parallel Line</source>
       <translation>Parallele Hilfslinie hinzufügen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1207"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1343"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1232"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1371"/>
       <source>Add a cosmetic line parallel to another line through a vertex:&lt;br&gt;- Select a line&lt;br&gt;- Select a vertex&lt;br&gt;- Click this tool</source>
       <translation>Eine Hilfslinie parallel zu einer anderen Linie durch einen Knotenpunkt hinzufügen&lt;br&gt;- Eine Linie auswählen&lt;br&gt;- Einen Knotenpunkt auswählen&lt;br&gt;- Dieses Werkzeug anklicken</translation>
     </message>
@@ -1084,19 +1084,19 @@
   <context>
     <name>CmdTechDrawExtensionLinePerpendicular</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1239"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1264"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1240"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1350"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1265"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1378"/>
       <source>Add Cosmetic Perpendicular Line</source>
       <translation>Senkrechte Hilfslinie hinzufügen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1241"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1351"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1267"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1380"/>
       <source>Add a cosmetic line perpendicular to another line through a vertex:&lt;br&gt;- Select a line&lt;br&gt;- Select a vertex&lt;br&gt;- Click this tool</source>
       <translation>Eine Hilfslinie senkrecht zu einer anderen Linie durch einen Knotenpunkt hinzufügen&lt;br&gt;- Eine Linie auswählen&lt;br&gt;- Einen Knotenpunkt auswählen&lt;br&gt;- Dieses Werkzeug anklicken</translation>
     </message>
@@ -1104,17 +1104,17 @@
   <context>
     <name>CmdTechDrawExtensionLockUnlockView</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1376"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1406"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1377"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1407"/>
       <source>Lock/Unlock View</source>
       <translation>Ansicht fixieren/lösen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1378"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1408"/>
       <source>Lock or unlock the position of a view:&lt;br&gt;- Select a single view&lt;br&gt;- Click this tool</source>
       <translation>Die Position einer Ansicht fixieren/lösen:&lt;br&gt;- Eine einzige Ansicht auswählen&lt;br&gt;- Dieses Werkzeug anklicken</translation>
     </message>
@@ -1200,17 +1200,17 @@
   <context>
     <name>CmdTechDrawExtensionPositionSectionView</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1419"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1450"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1420"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1451"/>
       <source>Position Section View</source>
       <translation>Schnittansicht ausrichten</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1421"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1452"/>
       <source>Orthogonally align a section view with its source view:&lt;br&gt;- Select a single section view&lt;br&gt;- Click this tool</source>
       <translation>Eine Schnittansicht rechtwinklig und fluchtend mit der Quellansicht ausrichten:&lt;br&gt;- Eine einzelne Schnittansicht auswählen&lt;br&gt;- Dieses Werkzeug anklicken</translation>
     </message>
@@ -1236,17 +1236,17 @@
   <context>
     <name>CmdTechDrawExtensionSelectLineAttributes</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="697"/>
+      <location filename="../../CommandExtensionPack.cpp" line="712"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="698"/>
+      <location filename="../../CommandExtensionPack.cpp" line="713"/>
       <source>Select Line Attributes, Cascade Spacing and Delta Distance</source>
       <translation>Linienmerkmale, Zeilenabstand und Längendifferenz auswählen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="699"/>
+      <location filename="../../CommandExtensionPack.cpp" line="714"/>
       <source>Select the attributes for new cosmetic lines and centerlines, and specify the cascade spacing and delta distance:&lt;br&gt;- Click this tool&lt;br&gt;- Specify the attributes, spacing and distance in the dialog box&lt;br&gt;- Press OK</source>
       <translation>Linienmerkmale für neue Hilfslinien und Mittellinien auswählen, sowie Zeilenabstand und Längendifferenz angeben:&lt;br&gt;- Dieses Werkzeug anklicken&lt;br&gt;- Im Dialogfenster Merkmale auswählen, Zeilenabstand und Längendifferenz angeben&lt;br&gt;- OK drücken</translation>
     </message>
@@ -1254,19 +1254,19 @@
   <context>
     <name>CmdTechDrawExtensionShortenLine</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1592"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1628"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1593"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1704"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1629"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1740"/>
       <source>Shorten Line</source>
       <translation>Linie kürzen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1594"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1705"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1630"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1741"/>
       <source>Shorten a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</source>
       <translation>Kürzt eine Hilfslinie oder Mittellinie an beiden Enden:&lt;br&gt;- Eine Längendifferenz angeben (optional)&lt;br&gt;- Eine einzelne Linie auswählen&lt;br&gt;- Dieses Werkzeug anklicken</translation>
     </message>
@@ -1274,19 +1274,19 @@
   <context>
     <name>CmdTechDrawExtensionThreadBoltBottom</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="530"/>
+      <location filename="../../CommandExtensionPack.cpp" line="537"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="531"/>
-      <location filename="../../CommandExtensionPack.cpp" line="671"/>
+      <location filename="../../CommandExtensionPack.cpp" line="538"/>
+      <location filename="../../CommandExtensionPack.cpp" line="684"/>
       <source>Add Cosmetic Thread Bolt Bottom View</source>
       <translation>Hilfslinien für Außengewinde in Achsansicht hinzufügen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="532"/>
-      <location filename="../../CommandExtensionPack.cpp" line="672"/>
+      <location filename="../../CommandExtensionPack.cpp" line="540"/>
+      <location filename="../../CommandExtensionPack.cpp" line="686"/>
       <source>Add a cosmetic thread to the top or bottom view of bolts/screws/rods:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles&lt;br&gt;- Click this tool</source>
       <translation>Eine Hilfslinie für Außengewinde in die Ansicht nach oben oder unten von Bolzen/Schrauben/Gewindestangen hinzufügen:&lt;br&gt;- Linienmerkmale angeben (optional)&lt;br&gt;- Einen oder mehrere Kreise auswählen&lt;br&gt;- Dieses Werkzeug anklicken</translation>
     </message>
@@ -1294,19 +1294,19 @@
   <context>
     <name>CmdTechDrawExtensionThreadBoltSide</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="428"/>
+      <location filename="../../CommandExtensionPack.cpp" line="433"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="429"/>
-      <location filename="../../CommandExtensionPack.cpp" line="663"/>
+      <location filename="../../CommandExtensionPack.cpp" line="434"/>
+      <location filename="../../CommandExtensionPack.cpp" line="674"/>
       <source>Add Cosmetic Thread Bolt Side View</source>
       <translation>Hilfslinien für Außengewinde in Seitenansicht hinzufügen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="430"/>
-      <location filename="../../CommandExtensionPack.cpp" line="664"/>
+      <location filename="../../CommandExtensionPack.cpp" line="435"/>
+      <location filename="../../CommandExtensionPack.cpp" line="677"/>
       <source>Add a cosmetic thread to the side view of a bolt/screw/rod:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</source>
       <translation>Zwei Hilfslinien für Außengewinde in die Seitenansicht von Bolzen/Schrauben/Gewindestangen hinzufügen:&lt;br&gt;- Linienmerkmale angeben (optional)&lt;br&gt;- Zwei parallele Linien auswählen&lt;br&gt;- Dieses Werkzeug anklicken</translation>
     </message>
@@ -1314,19 +1314,19 @@
   <context>
     <name>CmdTechDrawExtensionThreadHoleBottom</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="479"/>
+      <location filename="../../CommandExtensionPack.cpp" line="485"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="480"/>
-      <location filename="../../CommandExtensionPack.cpp" line="655"/>
+      <location filename="../../CommandExtensionPack.cpp" line="486"/>
+      <location filename="../../CommandExtensionPack.cpp" line="664"/>
       <source>Add Cosmetic Thread Hole Bottom View</source>
       <translation>Hilfslinien für Innengewinde in Achsansicht hinzufügen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="481"/>
-      <location filename="../../CommandExtensionPack.cpp" line="656"/>
+      <location filename="../../CommandExtensionPack.cpp" line="487"/>
+      <location filename="../../CommandExtensionPack.cpp" line="667"/>
       <source>Add a cosmetic thread to the top or bottom view of holes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles&lt;br&gt;- Click this tool</source>
       <translation>Eine Hilfslinie für Innengewinde in die Ansicht nach oben oder unten von Gewindebohrungen hinzufügen:&lt;br&gt;- Linienmerkmale angeben (optional)&lt;br&gt;- Einen oder mehrere Kreise auswählen&lt;br&gt;- Dieses Werkzeug anklicken</translation>
     </message>
@@ -1334,19 +1334,19 @@
   <context>
     <name>CmdTechDrawExtensionThreadHoleSide</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="377"/>
+      <location filename="../../CommandExtensionPack.cpp" line="381"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="378"/>
-      <location filename="../../CommandExtensionPack.cpp" line="647"/>
+      <location filename="../../CommandExtensionPack.cpp" line="382"/>
+      <location filename="../../CommandExtensionPack.cpp" line="655"/>
       <source>Add Cosmetic Thread Hole Side View</source>
       <translation>Hilfslinien für Innengewinde in Seitenansicht hinzufügen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="379"/>
-      <location filename="../../CommandExtensionPack.cpp" line="648"/>
+      <location filename="../../CommandExtensionPack.cpp" line="383"/>
+      <location filename="../../CommandExtensionPack.cpp" line="657"/>
       <source>Add a cosmetic thread to the side view of a hole:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</source>
       <translation>Zwei Hilfslinien für Innengewinde in die Seitenansicht von Gewindebohrungen hinzufügen:&lt;br&gt;- Linienmerkmale angeben (optional)&lt;br&gt;- Zwei parallele Linien auswählen&lt;br&gt;- Dieses Werkzeug anklicken</translation>
     </message>
@@ -1354,17 +1354,17 @@
   <context>
     <name>CmdTechDrawExtensionThreadsGroup</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="564"/>
+      <location filename="../../CommandExtensionPack.cpp" line="572"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="565"/>
+      <location filename="../../CommandExtensionPack.cpp" line="573"/>
       <source>Add Cosmetic Thread Hole Side View</source>
       <translation>Hilfslinien für Innengewinde in Seitenansicht hinzufügen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="566"/>
+      <location filename="../../CommandExtensionPack.cpp" line="574"/>
       <source>Add a cosmetic thread to the side view of a hole:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</source>
       <translation>Zwei Hilfslinien für Innengewinde in die Seitenansicht von Gewindebohrungen hinzufügen:&lt;br&gt;- Linienmerkmale angeben (optional)&lt;br&gt;- Zwei parallele Linien auswählen&lt;br&gt;- Dieses Werkzeug anklicken</translation>
     </message>
@@ -1372,17 +1372,17 @@
   <context>
     <name>CmdTechDrawExtensionVertexAtIntersection</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="790"/>
+      <location filename="../../CommandExtensionPack.cpp" line="807"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="791"/>
+      <location filename="../../CommandExtensionPack.cpp" line="808"/>
       <source>Add Cosmetic Intersection Vertex(es)</source>
       <translation>Hilfsschnittpunkte hinzufügen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="792"/>
+      <location filename="../../CommandExtensionPack.cpp" line="810"/>
       <source>Add cosmetic vertex(es) at the intersection(s) of selected edges:&lt;br&gt;- Select two edges (lines, circles and/or arcs)&lt;br&gt;- Click this tool</source>
       <translation>Hilfsschnittpunkte an den Kreuzungen ausgewählter Kanten hinzufügen:&lt;br&gt;- Zwei Kanten (Linien, Kreise und/oder Bögen) auswählen&lt;br&gt;- Dieses Werkzeug anklicken</translation>
     </message>
@@ -1390,22 +1390,22 @@
   <context>
     <name>CmdTechDrawExtentGroup</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1209"/>
+      <location filename="../../CommandCreateDims.cpp" line="1208"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1210"/>
+      <location filename="../../CommandCreateDims.cpp" line="1209"/>
       <source>Insert Extent Dimension</source>
       <translation>Maß über alles einfügen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1276"/>
+      <location filename="../../CommandCreateDims.cpp" line="1275"/>
       <source>Horizontal Extent</source>
       <translation>Horizontale Ausdehnung</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1280"/>
+      <location filename="../../CommandCreateDims.cpp" line="1279"/>
       <source>Vertical Extent</source>
       <translation>Vertikale Ausdehnung</translation>
     </message>
@@ -1452,12 +1452,12 @@
   <context>
     <name>CmdTechDrawHorizontalDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="665"/>
+      <location filename="../../CommandCreateDims.cpp" line="664"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="666"/>
+      <location filename="../../CommandCreateDims.cpp" line="665"/>
       <source>Insert Horizontal Dimension</source>
       <translation>Horizontales Maß einfügen</translation>
     </message>
@@ -1465,12 +1465,12 @@
   <context>
     <name>CmdTechDrawHorizontalExtentDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1302"/>
+      <location filename="../../CommandCreateDims.cpp" line="1301"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1303"/>
+      <location filename="../../CommandCreateDims.cpp" line="1302"/>
       <source>Insert Horizontal Extent Dimension</source>
       <translation>Maß für die horizontale Ausdehnung einfügen</translation>
     </message>
@@ -1478,28 +1478,28 @@
   <context>
     <name>CmdTechDrawImage</name>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="238"/>
+      <location filename="../../CommandDecorate.cpp" line="237"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="239"/>
+      <location filename="../../CommandDecorate.cpp" line="238"/>
       <source>Insert Bitmap Image</source>
       <translation>Bitmap-Grafik einfügen</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="240"/>
-      <location filename="../../CommandDecorate.cpp" line="242"/>
+      <location filename="../../CommandDecorate.cpp" line="239"/>
+      <location filename="../../CommandDecorate.cpp" line="241"/>
       <source>Insert Bitmap from a file into a page</source>
       <translation>Grafik aus einer Bitmap-Datei in eine Seite einfügen</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="257"/>
+      <location filename="../../CommandDecorate.cpp" line="256"/>
       <source>Select an Image File</source>
       <translation>Eine Bilddatei auswählen</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="259"/>
+      <location filename="../../CommandDecorate.cpp" line="258"/>
       <source>Image (*.png *.jpg *.jpeg)</source>
       <translation>Bild (*.png *.jpg *.jpeg)</translation>
     </message>
@@ -1507,12 +1507,12 @@
   <context>
     <name>CmdTechDrawLandmarkDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1508"/>
+      <location filename="../../CommandCreateDims.cpp" line="1507"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1509"/>
+      <location filename="../../CommandCreateDims.cpp" line="1508"/>
       <source>Insert Landmark Dimension - EXPERIMENTAL</source>
       <translation>Maß zwischen Orientierungspunkten einfügen - EXPERIMENTELL</translation>
     </message>
@@ -1533,12 +1533,12 @@
   <context>
     <name>CmdTechDrawLengthDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="570"/>
+      <location filename="../../CommandCreateDims.cpp" line="569"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="571"/>
+      <location filename="../../CommandCreateDims.cpp" line="570"/>
       <source>Insert Length Dimension</source>
       <translation>Längenmaß einfügen</translation>
     </message>
@@ -1546,12 +1546,12 @@
   <context>
     <name>CmdTechDrawLinkDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1132"/>
+      <location filename="../../CommandCreateDims.cpp" line="1131"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1133"/>
+      <location filename="../../CommandCreateDims.cpp" line="1132"/>
       <source>Link Dimension to 3D Geometry</source>
       <translation>Maß mit 3D-Geometrie verknüpfen</translation>
     </message>
@@ -1585,22 +1585,22 @@
   <context>
     <name>CmdTechDrawPageTemplate</name>
     <message>
-      <location filename="../../Command.cpp" line="163"/>
+      <location filename="../../Command.cpp" line="159"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="164"/>
+      <location filename="../../Command.cpp" line="160"/>
       <source>Insert Page using Template</source>
       <translation>Neues Zeichnungsblatt aus einer Vorlage erstellen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="177"/>
+      <location filename="../../Command.cpp" line="173"/>
       <source>Select a Template File</source>
       <translation>Vorlage auswählen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="178"/>
+      <location filename="../../Command.cpp" line="174"/>
       <source>Template (*.svg *.dxf)</source>
       <translation>Vorlage (*.svg *.dxf)</translation>
     </message>
@@ -1608,12 +1608,12 @@
   <context>
     <name>CmdTechDrawPrintAll</name>
     <message>
-      <location filename="../../Command.cpp" line="280"/>
+      <location filename="../../Command.cpp" line="272"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="281"/>
+      <location filename="../../Command.cpp" line="273"/>
       <source>Print All Pages</source>
       <translation>Alle Seiten drucken</translation>
     </message>
@@ -1621,12 +1621,12 @@
   <context>
     <name>CmdTechDrawProjectShape</name>
     <message>
-      <location filename="../../Command.cpp" line="1635"/>
+      <location filename="../../Command.cpp" line="1631"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1636"/>
+      <location filename="../../Command.cpp" line="1632"/>
       <source>Project shape...</source>
       <translation>Fläche projizieren...</translation>
     </message>
@@ -1634,17 +1634,17 @@
   <context>
     <name>CmdTechDrawProjectionGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="804"/>
+      <location filename="../../Command.cpp" line="796"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="805"/>
+      <location filename="../../Command.cpp" line="797"/>
       <source>Insert Projection Group</source>
       <translation>Ansichtengruppe einfügen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="806"/>
+      <location filename="../../Command.cpp" line="798"/>
       <source>Insert multiple linked views of drawable object(s)</source>
       <translation>Mehrere verbundene Ansichten der ausgewählten Bauteile einfügen</translation>
     </message>
@@ -1665,12 +1665,12 @@
   <context>
     <name>CmdTechDrawRadiusDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="227"/>
+      <location filename="../../CommandCreateDims.cpp" line="226"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="228"/>
+      <location filename="../../CommandCreateDims.cpp" line="227"/>
       <source>Insert Radius Dimension</source>
       <translation>Radienmaß einfügen</translation>
     </message>
@@ -1678,12 +1678,12 @@
   <context>
     <name>CmdTechDrawRedrawPage</name>
     <message>
-      <location filename="../../Command.cpp" line="244"/>
+      <location filename="../../Command.cpp" line="236"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="245"/>
+      <location filename="../../Command.cpp" line="237"/>
       <source>Redraw Page</source>
       <translation>Seite neu zeichnen</translation>
     </message>
@@ -1704,22 +1704,22 @@
   <context>
     <name>CmdTechDrawSectionGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="475"/>
+      <location filename="../../Command.cpp" line="467"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="476"/>
+      <location filename="../../Command.cpp" line="468"/>
       <source>Insert a simple or complex Section View</source>
       <translation>Eine einfache oder komplexe Schnittansicht einfügen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="541"/>
+      <location filename="../../Command.cpp" line="533"/>
       <source>Section View</source>
       <translation>Schnitt, Schnittansicht</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="545"/>
+      <location filename="../../Command.cpp" line="537"/>
       <source>Complex Section</source>
       <translation>Komplexe Schnittansicht</translation>
     </message>
@@ -1727,12 +1727,12 @@
   <context>
     <name>CmdTechDrawSectionView</name>
     <message>
-      <location filename="../../Command.cpp" line="567"/>
+      <location filename="../../Command.cpp" line="559"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="568"/>
+      <location filename="../../Command.cpp" line="560"/>
       <source>Insert Section View</source>
       <translation>Schnittansicht einfügen</translation>
     </message>
@@ -1753,17 +1753,17 @@
   <context>
     <name>CmdTechDrawSpreadsheetView</name>
     <message>
-      <location filename="../../Command.cpp" line="1469"/>
+      <location filename="../../Command.cpp" line="1465"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1470"/>
+      <location filename="../../Command.cpp" line="1466"/>
       <source>Insert Spreadsheet View</source>
       <translation>Tabellenansicht einfügen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1471"/>
+      <location filename="../../Command.cpp" line="1467"/>
       <source>Insert View to a spreadsheet</source>
       <translation>Ansicht in eine Tabelle einfügen</translation>
     </message>
@@ -1874,17 +1874,17 @@
   <context>
     <name>CmdTechDrawSymbol</name>
     <message>
-      <location filename="../../Command.cpp" line="1298"/>
+      <location filename="../../Command.cpp" line="1294"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1299"/>
+      <location filename="../../Command.cpp" line="1295"/>
       <source>Insert SVG Symbol</source>
       <translation>SVG-Zeichnungselement einfügen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1300"/>
+      <location filename="../../Command.cpp" line="1296"/>
       <source>Insert symbol from an SVG file</source>
       <translation>Zeichnungselement aus einer SVG-Datei einfügen</translation>
     </message>
@@ -1892,13 +1892,13 @@
   <context>
     <name>CmdTechDrawToggleFrame</name>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="290"/>
+      <location filename="../../CommandDecorate.cpp" line="289"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
+      <location filename="../../CommandDecorate.cpp" line="290"/>
       <location filename="../../CommandDecorate.cpp" line="291"/>
-      <location filename="../../CommandDecorate.cpp" line="292"/>
       <source>Turn View Frames On/Off</source>
       <translation>Ansichtsrahmen ein- oder ausschalten</translation>
     </message>
@@ -1906,12 +1906,12 @@
   <context>
     <name>CmdTechDrawVerticalDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="760"/>
+      <location filename="../../CommandCreateDims.cpp" line="759"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="761"/>
+      <location filename="../../CommandCreateDims.cpp" line="760"/>
       <source>Insert Vertical Dimension</source>
       <translation>Vertikales Maß einfügen</translation>
     </message>
@@ -1919,12 +1919,12 @@
   <context>
     <name>CmdTechDrawVerticalExtentDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1417"/>
+      <location filename="../../CommandCreateDims.cpp" line="1416"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1418"/>
+      <location filename="../../CommandCreateDims.cpp" line="1417"/>
       <source>Insert Vertical Extent Dimension</source>
       <translation>Maß für die vertikale Ausdehnung einfügen</translation>
     </message>
@@ -1932,17 +1932,17 @@
   <context>
     <name>CmdTechDrawView</name>
     <message>
-      <location filename="../../Command.cpp" line="305"/>
+      <location filename="../../Command.cpp" line="297"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="306"/>
+      <location filename="../../Command.cpp" line="298"/>
       <source>Insert View</source>
       <translation>Ansicht einfügen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="307"/>
+      <location filename="../../Command.cpp" line="299"/>
       <source>Insert a View</source>
       <translation>Fügt eine Ansicht ein</translation>
     </message>
@@ -1964,58 +1964,58 @@
     <name>Command</name>
     <message>
       <location filename="../../Command.cpp" line="116"/>
-      <location filename="../../Command.cpp" line="191"/>
+      <location filename="../../Command.cpp" line="187"/>
       <source>Drawing create page</source>
       <translation>Zeichnungsseite erstellen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="391"/>
+      <location filename="../../Command.cpp" line="383"/>
       <source>Create view</source>
       <translation>Ansicht erstellen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="889"/>
+      <location filename="../../Command.cpp" line="881"/>
       <source>Create Projection Group</source>
       <translation>Ansichtengruppe erstellen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1122"/>
+      <location filename="../../Command.cpp" line="1118"/>
       <source>Create Clip</source>
       <translation>Ausschnitt erstellen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1194"/>
+      <location filename="../../Command.cpp" line="1190"/>
       <source>ClipGroupAdd</source>
       <translation>ClipGroupAdd</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1265"/>
+      <location filename="../../Command.cpp" line="1261"/>
       <source>ClipGroupRemove</source>
       <translation>ClipGroupRemove</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1324"/>
+      <location filename="../../Command.cpp" line="1320"/>
       <source>Create Symbol</source>
       <translation>Symbol erstellen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1380"/>
+      <location filename="../../Command.cpp" line="1376"/>
       <source>Create DraftView</source>
       <translation>Draft Ansicht erstellen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1447"/>
+      <location filename="../../Command.cpp" line="1443"/>
       <source>Create ArchView</source>
       <translation>Arch Ansicht erstellen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1495"/>
+      <location filename="../../Command.cpp" line="1491"/>
       <source>Create spreadsheet view</source>
       <translation>Kalkulationstabellenansicht erstellen</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="716"/>
-      <location filename="../../Command.cpp" line="1615"/>
+      <location filename="../../Command.cpp" line="1611"/>
       <source>Save page to dxf</source>
       <translation>Seite als dxf speichern</translation>
     </message>
@@ -2035,8 +2035,8 @@
       <translation>Anmerkung erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1553"/>
-      <location filename="../../CommandCreateDims.cpp" line="1633"/>
+      <location filename="../../CommandCreateDims.cpp" line="1552"/>
+      <location filename="../../CommandCreateDims.cpp" line="1632"/>
       <source>Create Dimension</source>
       <translation>Maß erstellen</translation>
     </message>
@@ -2061,22 +2061,22 @@
       <translation>Geometrische Schraffur erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="267"/>
+      <location filename="../../CommandDecorate.cpp" line="266"/>
       <source>Create Image</source>
       <translation>Bild erstellen</translation>
     </message>
     <message>
-      <location filename="../../QGIViewBalloon.cpp" line="498"/>
+      <location filename="../../QGIViewBalloon.cpp" line="478"/>
       <source>Drag Balloon</source>
       <translation>Hinweisfeld ziehen</translation>
     </message>
     <message>
-      <location filename="../../QGIViewDimension.cpp" line="693"/>
+      <location filename="../../QGIViewDimension.cpp" line="691"/>
       <source>Drag Dimension</source>
       <translation>Maß ziehen</translation>
     </message>
     <message>
-      <location filename="../../QGSPage.cpp" line="531"/>
+      <location filename="../../QGSPage.cpp" line="528"/>
       <source>Create Balloon</source>
       <translation>Hinweisfeld erstellen</translation>
     </message>
@@ -2131,18 +2131,18 @@
       <translation>Anmerkung bearbeiten</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="503"/>
+      <location filename="../../TaskSectionView.cpp" line="501"/>
       <source>Create SectionView</source>
       <translation>Schnittansicht erstellen</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="562"/>
+      <location filename="../../TaskComplexSection.cpp" line="560"/>
       <source>Create ComplexSection</source>
       <translation>Komplexe Schnittansicht erstellen</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="645"/>
-      <location filename="../../TaskSectionView.cpp" line="563"/>
+      <location filename="../../TaskComplexSection.cpp" line="643"/>
+      <location filename="../../TaskSectionView.cpp" line="561"/>
       <source>Edit SectionView</source>
       <translation>Schnittansicht bearbeiten</translation>
     </message>
@@ -2257,72 +2257,72 @@
       <translation>Lochkreismittellinien</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="186"/>
+      <location filename="../../CommandExtensionPack.cpp" line="187"/>
       <source>Circle Centerlines</source>
       <translation>Kreismittellinien</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="360"/>
+      <location filename="../../CommandExtensionPack.cpp" line="364"/>
       <source>Cosmetic Thread Hole Side</source>
       <translation>Hilfslinien für Innengewinde in Seitenansicht</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="411"/>
+      <location filename="../../CommandExtensionPack.cpp" line="416"/>
       <source>Cosmetic Thread Bolt Side</source>
       <translation>Hilfslinien für Außengewinde in Seitenansicht</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="462"/>
+      <location filename="../../CommandExtensionPack.cpp" line="468"/>
       <source>Cosmetic Thread Hole Bottom</source>
       <translation>Hilfslinien für Innengewinde in Achsansicht</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="513"/>
+      <location filename="../../CommandExtensionPack.cpp" line="520"/>
       <source>Cosmetic Thread Bolt Bottom</source>
       <translation>Hilfslinien für Außengewinde in Achsansicht</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="749"/>
+      <location filename="../../CommandExtensionPack.cpp" line="766"/>
       <source>Change Line Attributes</source>
       <translation>Linienmerkmale ändern</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="808"/>
+      <location filename="../../CommandExtensionPack.cpp" line="826"/>
       <source>Cosmetic Intersection Vertex(es)</source>
       <translation>Hilfsschnittpunkt(e)</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="854"/>
+      <location filename="../../CommandExtensionPack.cpp" line="873"/>
       <source>Cosmetic Arc</source>
       <translation>Hilfsbogen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="917"/>
+      <location filename="../../CommandExtensionPack.cpp" line="938"/>
       <source>Cosmetic Circle</source>
       <translation>Hilfskreis</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="977"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1000"/>
       <source>Cosmetic Circle 3 Points</source>
       <translation>Hilfskreis über 3 Punkte</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1163"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1188"/>
       <source>Cosmetic Line Parallel/Perpendicular</source>
       <translation>Hilfslinie Parallel/Senkrecht</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1393"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1424"/>
       <source>Lock/Unlock View</source>
       <translation>Ansicht fixieren/lösen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1486"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1519"/>
       <source>Extend/Shorten Line</source>
       <translation>Linie verlängern/kürzen</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1792"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1827"/>
       <source>Calculate Face Area</source>
       <translation>Flächeninhalt berechnen</translation>
     </message>
@@ -2606,59 +2606,96 @@
       <location filename="../../CommandAnnotate.cpp" line="1349"/>
       <location filename="../../CommandAnnotate.cpp" line="1356"/>
       <location filename="../../CommandAnnotate.cpp" line="1420"/>
-      <location filename="../../CommandCreateDims.cpp" line="1526"/>
-      <location filename="../../CommandCreateDims.cpp" line="1534"/>
-      <location filename="../../Command.cpp" line="383"/>
-      <location filename="../../Command.cpp" line="609"/>
-      <location filename="../../Command.cpp" line="726"/>
-      <location filename="../../Command.cpp" line="733"/>
-      <location filename="../../Command.cpp" line="738"/>
-      <location filename="../../Command.cpp" line="775"/>
-      <location filename="../../Command.cpp" line="881"/>
-      <location filename="../../Command.cpp" line="1154"/>
-      <location filename="../../Command.cpp" line="1171"/>
-      <location filename="../../Command.cpp" line="1176"/>
-      <location filename="../../Command.cpp" line="1185"/>
-      <location filename="../../Command.cpp" line="1238"/>
-      <location filename="../../Command.cpp" line="1257"/>
-      <location filename="../../Command.cpp" line="1370"/>
-      <location filename="../../Command.cpp" line="1434"/>
-      <location filename="../../Command.cpp" line="1440"/>
-      <location filename="../../Command.cpp" line="1483"/>
+      <location filename="../../CommandCreateDims.cpp" line="1525"/>
+      <location filename="../../CommandCreateDims.cpp" line="1533"/>
+      <location filename="../../Command.cpp" line="375"/>
+      <location filename="../../Command.cpp" line="601"/>
+      <location filename="../../Command.cpp" line="718"/>
+      <location filename="../../Command.cpp" line="725"/>
+      <location filename="../../Command.cpp" line="730"/>
+      <location filename="../../Command.cpp" line="767"/>
+      <location filename="../../Command.cpp" line="873"/>
+      <location filename="../../Command.cpp" line="1150"/>
+      <location filename="../../Command.cpp" line="1167"/>
+      <location filename="../../Command.cpp" line="1172"/>
+      <location filename="../../Command.cpp" line="1181"/>
+      <location filename="../../Command.cpp" line="1234"/>
+      <location filename="../../Command.cpp" line="1253"/>
+      <location filename="../../Command.cpp" line="1366"/>
+      <location filename="../../Command.cpp" line="1430"/>
+      <location filename="../../Command.cpp" line="1436"/>
+      <location filename="../../Command.cpp" line="1479"/>
       <source>Wrong selection</source>
       <translation>Falsche Auswahl</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="384"/>
-      <location filename="../../Command.cpp" line="882"/>
+      <location filename="../../Command.cpp" line="376"/>
+      <location filename="../../Command.cpp" line="874"/>
       <source>No Shapes, Groups or Links in this selection</source>
       <translation>Keine Formen, Gruppen oder Link-Objekte in dieser Auswahl</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="610"/>
-      <location filename="../../Command.cpp" line="776"/>
+      <location filename="../../Command.cpp" line="602"/>
+      <location filename="../../Command.cpp" line="768"/>
       <source>Select at least 1 DrawViewPart object as Base.</source>
       <translation>Wähle mindestens 1 DrawViewPart-Objekt als Basis aus</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="727"/>
+      <location filename="../../Command.cpp" line="719"/>
       <source>I do not know what base view to use.</source>
       <translation>Ich weiß nicht, welche Basisansicht verwendet werden soll.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="734"/>
+      <location filename="../../Command.cpp" line="726"/>
       <source>No Base View, Shapes, Groups or Links in this selection</source>
       <translation>Diese Auswahl enthält keine Basisansicht, Formen, Gruppen oder Link-Objekte</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="739"/>
+      <location filename="../../Command.cpp" line="731"/>
       <source>No profile object found in selection</source>
       <translation>Kein Profilobjekt in der Auswahl gefunden</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="346"/>
-      <location filename="../../CommandDecorate.cpp" line="353"/>
-      <location filename="../../CommandDecorate.cpp" line="360"/>
+      <location filename="../../CommandDecorate.cpp" line="345"/>
+      <location filename="../../CommandDecorate.cpp" line="352"/>
+      <location filename="../../CommandDecorate.cpp" line="359"/>
+      <location filename="../../CommandCreateDims.cpp" line="252"/>
+      <location filename="../../CommandCreateDims.cpp" line="373"/>
+      <location filename="../../CommandCreateDims.cpp" line="595"/>
+      <location filename="../../CommandCreateDims.cpp" line="691"/>
+      <location filename="../../CommandCreateDims.cpp" line="786"/>
+      <location filename="../../CommandCreateDims.cpp" line="969"/>
+      <location filename="../../CommandCreateDims.cpp" line="1062"/>
+      <location filename="../../CommandCreateDims.cpp" line="1335"/>
+      <location filename="../../CommandCreateDims.cpp" line="1674"/>
+      <location filename="../../CommandCreateDims.cpp" line="1681"/>
+      <location filename="../../CommandCreateDims.cpp" line="1688"/>
+      <location filename="../../Command.cpp" line="951"/>
+      <location filename="../../Command.cpp" line="958"/>
+      <location filename="../../Command.cpp" line="966"/>
+      <location filename="../../Command.cpp" line="978"/>
+      <source>Incorrect selection</source>
+      <translation>Falsche Auswahl</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="1675"/>
+      <location filename="../../Command.cpp" line="952"/>
+      <source>Select an object first</source>
+      <translation>Zuerst ein Objekt auswählen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="1682"/>
+      <location filename="../../Command.cpp" line="959"/>
+      <source>Too many objects selected</source>
+      <translation>Zu viele Objekte ausgewählt</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="1689"/>
+      <location filename="../../Command.cpp" line="967"/>
+      <source>Create a page first.</source>
+      <translation>Erstellen Sie zunächst eine Seite.</translation>
+    </message>
+    <message>
       <location filename="../../CommandCreateDims.cpp" line="253"/>
       <location filename="../../CommandCreateDims.cpp" line="374"/>
       <location filename="../../CommandCreateDims.cpp" line="596"/>
@@ -2667,303 +2704,266 @@
       <location filename="../../CommandCreateDims.cpp" line="970"/>
       <location filename="../../CommandCreateDims.cpp" line="1063"/>
       <location filename="../../CommandCreateDims.cpp" line="1336"/>
-      <location filename="../../CommandCreateDims.cpp" line="1675"/>
-      <location filename="../../CommandCreateDims.cpp" line="1682"/>
-      <location filename="../../CommandCreateDims.cpp" line="1689"/>
-      <location filename="../../Command.cpp" line="959"/>
-      <location filename="../../Command.cpp" line="966"/>
-      <location filename="../../Command.cpp" line="974"/>
-      <location filename="../../Command.cpp" line="986"/>
-      <source>Incorrect selection</source>
-      <translation>Falsche Auswahl</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="1676"/>
-      <location filename="../../Command.cpp" line="960"/>
-      <source>Select an object first</source>
-      <translation>Zuerst ein Objekt auswählen</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="1683"/>
-      <location filename="../../Command.cpp" line="967"/>
-      <source>Too many objects selected</source>
-      <translation>Zu viele Objekte ausgewählt</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="1690"/>
-      <location filename="../../Command.cpp" line="975"/>
-      <source>Create a page first.</source>
-      <translation>Erstellen Sie zunächst eine Seite.</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="254"/>
-      <location filename="../../CommandCreateDims.cpp" line="375"/>
-      <location filename="../../CommandCreateDims.cpp" line="597"/>
-      <location filename="../../CommandCreateDims.cpp" line="693"/>
-      <location filename="../../CommandCreateDims.cpp" line="788"/>
-      <location filename="../../CommandCreateDims.cpp" line="971"/>
-      <location filename="../../CommandCreateDims.cpp" line="1064"/>
-      <location filename="../../CommandCreateDims.cpp" line="1337"/>
-      <location filename="../../Command.cpp" line="987"/>
+      <location filename="../../Command.cpp" line="979"/>
       <source>No View of a Part in selection.</source>
       <translation>Keine Teileansicht in der Auswahl.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1155"/>
+      <location filename="../../Command.cpp" line="1151"/>
       <source>Select one Clip group and one View.</source>
       <translation>Wähle eine Ausschnittsgruppe und eine Ansicht.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1172"/>
+      <location filename="../../Command.cpp" line="1168"/>
       <source>Select exactly one View to add to group.</source>
       <translation>Wähle genau eine Ansicht aus, die zur Gruppe hinzugefügt werden soll.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1177"/>
+      <location filename="../../Command.cpp" line="1173"/>
       <source>Select exactly one Clip group.</source>
       <translation>Wähle genau eine Ausschnittsgruppe aus.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1186"/>
+      <location filename="../../Command.cpp" line="1182"/>
       <source>Clip and View must be from same Page.</source>
       <translation>Ausschnitt und Ansicht müssen von der selben Seite sein.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1239"/>
+      <location filename="../../Command.cpp" line="1235"/>
       <source>Select exactly one View to remove from Group.</source>
       <translation>Wähle genau eine Ansicht aus, die aus der Gruppe entfernt werden soll.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1258"/>
+      <location filename="../../Command.cpp" line="1254"/>
       <source>View does not belong to a Clip</source>
       <translation>Ansicht gehört nicht zu einem Ausschnitt</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1317"/>
+      <location filename="../../Command.cpp" line="1313"/>
       <source>Choose an SVG file to open</source>
       <translation>Wählen Sie eine SVG-Datei zum Öffnen aus</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1319"/>
+      <location filename="../../Command.cpp" line="1315"/>
       <source>Scalable Vector Graphic</source>
       <translation>Skalierbare Vektorgrafik</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1319"/>
+      <location filename="../../Command.cpp" line="1315"/>
       <source>All Files</source>
       <translation>Alle Dateien</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1371"/>
+      <location filename="../../Command.cpp" line="1367"/>
       <source>Select at least one object.</source>
       <translation>Wähle mindestens ein Objekt.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1435"/>
+      <location filename="../../Command.cpp" line="1431"/>
       <source>Please select only 1 Arch Section.</source>
       <translation>Bitte nur einen Schnitt aus dem Arbeitsbereich Arch auswählen.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1441"/>
+      <location filename="../../Command.cpp" line="1437"/>
       <source>No Arch Sections in selection.</source>
       <translation>Es wurde kein Schnitt aus dem Arbeitsbereich Arch ausgewählt.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1484"/>
+      <location filename="../../Command.cpp" line="1480"/>
       <source>Select exactly one Spreadsheet object.</source>
       <translation>Wählen Sie genau ein Kalkulationstabellen-Objekt.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1556"/>
+      <location filename="../../Command.cpp" line="1552"/>
       <source>No Drawing View</source>
       <translation>Keine Zeichnungsansicht</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1557"/>
+      <location filename="../../Command.cpp" line="1553"/>
       <source>Open Drawing View before attempting export to SVG.</source>
       <translation>Öffnen Sie die Zeichnungsansichten vor dem Export nach SVG.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1592"/>
+      <location filename="../../Command.cpp" line="1588"/>
       <source>Can not export selection</source>
       <translation>Kann die Auswahl nicht exportieren</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1593"/>
+      <location filename="../../Command.cpp" line="1589"/>
       <source>Page contains DrawViewArch which will not be exported. Continue?</source>
       <translation>Seite enthält DrawViewArch, die nicht exportiert werden wird. Fortfahren?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="301"/>
-      <location filename="../../CommandCreateDims.cpp" line="422"/>
+      <location filename="../../CommandCreateDims.cpp" line="300"/>
+      <location filename="../../CommandCreateDims.cpp" line="421"/>
       <source>Ellipse Curve Warning</source>
       <translation>Ellipsen Warnung</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="302"/>
+      <location filename="../../CommandCreateDims.cpp" line="301"/>
       <source>Selected edge is an Ellipse.  Radius will be approximate. Continue?</source>
       <translation>Ausgewählte Kante ist eine Ellipse. Radius wird angenähert. Fortfahren?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="311"/>
-      <location filename="../../CommandCreateDims.cpp" line="432"/>
+      <location filename="../../CommandCreateDims.cpp" line="310"/>
+      <location filename="../../CommandCreateDims.cpp" line="431"/>
       <source>BSpline Curve Warning</source>
       <translation>B-Spline Warnung</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="312"/>
+      <location filename="../../CommandCreateDims.cpp" line="311"/>
       <source>Selected edge is a BSpline.  Radius will be approximate. Continue?</source>
       <translation>Ausgewählte Kante ist ein B-Spline. Radius wird angenähert. Fortfahren?</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="367"/>
-      <location filename="../../CommandDecorate.cpp" line="373"/>
-      <location filename="../../CommandCreateDims.cpp" line="274"/>
-      <location filename="../../CommandCreateDims.cpp" line="290"/>
-      <location filename="../../CommandCreateDims.cpp" line="395"/>
-      <location filename="../../CommandCreateDims.cpp" line="411"/>
-      <location filename="../../CommandCreateDims.cpp" line="618"/>
-      <location filename="../../CommandCreateDims.cpp" line="635"/>
-      <location filename="../../CommandCreateDims.cpp" line="713"/>
-      <location filename="../../CommandCreateDims.cpp" line="729"/>
-      <location filename="../../CommandCreateDims.cpp" line="808"/>
-      <location filename="../../CommandCreateDims.cpp" line="824"/>
-      <location filename="../../CommandCreateDims.cpp" line="991"/>
-      <location filename="../../CommandCreateDims.cpp" line="1007"/>
-      <location filename="../../CommandCreateDims.cpp" line="1084"/>
-      <location filename="../../CommandCreateDims.cpp" line="1100"/>
-      <location filename="../../CommandCreateDims.cpp" line="1170"/>
-      <location filename="../../CommandCreateDims.cpp" line="1176"/>
-      <location filename="../../CommandCreateDims.cpp" line="1365"/>
-      <location filename="../../CommandCreateDims.cpp" line="1380"/>
-      <location filename="../../CommandCreateDims.cpp" line="1470"/>
-      <location filename="../../TaskDimRepair.cpp" line="154"/>
-      <location filename="../../TaskDimRepair.cpp" line="168"/>
-      <location filename="../../TaskDimRepair.cpp" line="183"/>
+      <location filename="../../CommandDecorate.cpp" line="366"/>
+      <location filename="../../CommandDecorate.cpp" line="372"/>
+      <location filename="../../CommandCreateDims.cpp" line="273"/>
+      <location filename="../../CommandCreateDims.cpp" line="289"/>
+      <location filename="../../CommandCreateDims.cpp" line="394"/>
+      <location filename="../../CommandCreateDims.cpp" line="410"/>
+      <location filename="../../CommandCreateDims.cpp" line="617"/>
+      <location filename="../../CommandCreateDims.cpp" line="634"/>
+      <location filename="../../CommandCreateDims.cpp" line="712"/>
+      <location filename="../../CommandCreateDims.cpp" line="728"/>
+      <location filename="../../CommandCreateDims.cpp" line="807"/>
+      <location filename="../../CommandCreateDims.cpp" line="823"/>
+      <location filename="../../CommandCreateDims.cpp" line="990"/>
+      <location filename="../../CommandCreateDims.cpp" line="1006"/>
+      <location filename="../../CommandCreateDims.cpp" line="1083"/>
+      <location filename="../../CommandCreateDims.cpp" line="1099"/>
+      <location filename="../../CommandCreateDims.cpp" line="1169"/>
+      <location filename="../../CommandCreateDims.cpp" line="1175"/>
+      <location filename="../../CommandCreateDims.cpp" line="1364"/>
+      <location filename="../../CommandCreateDims.cpp" line="1379"/>
+      <location filename="../../CommandCreateDims.cpp" line="1469"/>
+      <location filename="../../TaskDimRepair.cpp" line="145"/>
+      <location filename="../../TaskDimRepair.cpp" line="159"/>
+      <location filename="../../TaskDimRepair.cpp" line="174"/>
       <location filename="../../TaskDimension.cpp" line="400"/>
       <source>Incorrect Selection</source>
       <translation>Falsche Auswahl</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="275"/>
+      <location filename="../../CommandCreateDims.cpp" line="274"/>
       <source>Can not make 2d radius dimension from selection</source>
-      <translation type="unfinished">Can not make 2d radius dimension from selection</translation>
+      <translation>Kann aus dieser Auswahl kein 2D-Radienmaß erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="291"/>
+      <location filename="../../CommandCreateDims.cpp" line="290"/>
       <source>Can not make 3d radius dimension from selection</source>
-      <translation type="unfinished">Can not make 3d radius dimension from selection</translation>
+      <translation>Kann aus dieser Auswahl kein 3D-Radienmaß erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="320"/>
-      <location filename="../../CommandCreateDims.cpp" line="441"/>
+      <location filename="../../CommandCreateDims.cpp" line="319"/>
+      <location filename="../../CommandCreateDims.cpp" line="440"/>
       <source>BSpline Curve Error</source>
       <translation>BSpline Kurvenfehler</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="321"/>
+      <location filename="../../CommandCreateDims.cpp" line="320"/>
       <source>Selected edge is a BSpline and a radius can not be calculated.</source>
       <translation>Die ausgewählte Kante ist ein B-Spline; ein Radius kann nicht berechnet werden.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="396"/>
+      <location filename="../../CommandCreateDims.cpp" line="395"/>
       <source>Can not make 2d diameter dimension from selection</source>
-      <translation type="unfinished">Can not make 2d diameter dimension from selection</translation>
+      <translation>Kann aus dieser Auswahl kein 2D-Durchmessermaß erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="412"/>
+      <location filename="../../CommandCreateDims.cpp" line="411"/>
       <source>Can not make 3d diameter dimension from selection</source>
-      <translation type="unfinished">Can not make 3d diameter dimension from selection</translation>
+      <translation>Kann aus dieser Auswahl kein 3D-Durchmessermaß erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="423"/>
+      <location filename="../../CommandCreateDims.cpp" line="422"/>
       <source>Selected edge is an Ellipse.  Diameter will be approximate. Continue?</source>
       <translation>Ausgewählte Kante ist eine Ellipse. Durchmesser wird angenähert. Fortfahren?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="433"/>
+      <location filename="../../CommandCreateDims.cpp" line="432"/>
       <source>Selected edge is a BSpline.  Diameter will be approximate. Continue?</source>
       <translation>Ausgewählte Kante ist ein B-Spline. Durchmesser wird angenähert. Fortfahren?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="442"/>
+      <location filename="../../CommandCreateDims.cpp" line="441"/>
       <source>Selected edge is a BSpline and a diameter can not be calculated.</source>
       <translation>Die ausgewählte Kante ist ein B-Spline; ein Durchmesser kann nicht berechnet werden.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="619"/>
+      <location filename="../../CommandCreateDims.cpp" line="618"/>
       <source>Can not make 2d linear dimension from selection</source>
-      <translation type="unfinished">Can not make 2d linear dimension from selection</translation>
+      <translation>Kann aus dieser Auswahl kein 2D-Längenmaß erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="636"/>
+      <location filename="../../CommandCreateDims.cpp" line="635"/>
       <source>Can not make 3d linear dimension from selection</source>
-      <translation type="unfinished">Can not make 3d linear dimension from selection</translation>
+      <translation>Kann aus dieser Auswahl kein 3D-Längenmaß erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="714"/>
+      <location filename="../../CommandCreateDims.cpp" line="713"/>
       <source>Can not make 2d horizontal dimension from selection</source>
-      <translation type="unfinished">Can not make 2d horizontal dimension from selection</translation>
+      <translation>Kann aus dieser Auswahl kein horizontales 2D-Maß erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="730"/>
+      <location filename="../../CommandCreateDims.cpp" line="729"/>
       <source>Can not make 3d horizontal dimension from selection</source>
-      <translation type="unfinished">Can not make 3d horizontal dimension from selection</translation>
+      <translation>Kann aus dieser Auswahl kein horizontales 3D-Maß erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="809"/>
+      <location filename="../../CommandCreateDims.cpp" line="808"/>
       <source>Can not make 2d vertical dimension from selection</source>
-      <translation type="unfinished">Can not make 2d vertical dimension from selection</translation>
+      <translation>Kann aus dieser Auswahl kein vertikales 2D-Maß erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="825"/>
+      <location filename="../../CommandCreateDims.cpp" line="824"/>
       <source>Can not make 3d vertical dimension from selection</source>
-      <translation type="unfinished">Can not make 3d vertical dimension from selection</translation>
+      <translation>Kann aus dieser Auswahl kein vertikales 3D-Maß erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="992"/>
-      <location filename="../../CommandCreateDims.cpp" line="1085"/>
+      <location filename="../../CommandCreateDims.cpp" line="991"/>
+      <location filename="../../CommandCreateDims.cpp" line="1084"/>
       <source>Can not make 2d angle dimension from selection</source>
-      <translation type="unfinished">Can not make 2d angle dimension from selection</translation>
+      <translation>Kann aus dieser Auswahl kein 2D-Winkelmaß erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1008"/>
-      <location filename="../../CommandCreateDims.cpp" line="1101"/>
+      <location filename="../../CommandCreateDims.cpp" line="1007"/>
+      <location filename="../../CommandCreateDims.cpp" line="1100"/>
       <source>Can not make 3d angle dimension from selection</source>
-      <translation type="unfinished">Can not make 3d angle dimension from selection</translation>
+      <translation>Kann aus dieser Auswahl kein 3D-Winkelmaß erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1366"/>
+      <location filename="../../CommandCreateDims.cpp" line="1365"/>
       <source>Can not make 2d extent dimension from selection</source>
-      <translation type="unfinished">Can not make 2d extent dimension from selection</translation>
+      <translation>Kann aus dieser Auswahl kein 2D-Maß für die Gesamtausdehnung erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1381"/>
+      <location filename="../../CommandCreateDims.cpp" line="1380"/>
       <source>Can not make 3d extent dimension from selection</source>
-      <translation type="unfinished">Can not make 3d extent dimension from selection</translation>
+      <translation>Kann aus dieser Auswahl kein 3D-Maß für die Gesamtausdehnung erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1471"/>
+      <location filename="../../CommandCreateDims.cpp" line="1470"/>
       <source>There is no Dimension in your selection</source>
-      <translation type="unfinished">There is no Dimension in your selection</translation>
+      <translation>Die Auswahl enthält kein Maß</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1171"/>
+      <location filename="../../CommandCreateDims.cpp" line="1170"/>
       <source>There is no 3D object in your selection</source>
       <translation>Sie haben kein 3D-Objekt ausgewählt</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1177"/>
+      <location filename="../../CommandCreateDims.cpp" line="1176"/>
       <source>There are no 3D Edges or Vertices in your selection</source>
       <translation>Es gibt keine 3D-Kanten oder Ecken in Ihrer Auswahl</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1527"/>
+      <location filename="../../CommandCreateDims.cpp" line="1526"/>
       <source>Select 2 point objects and 1 View. (1)</source>
       <translation>Wähle 2 Punktobjekte und 1 Ansicht. (1)</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1535"/>
+      <location filename="../../CommandCreateDims.cpp" line="1534"/>
       <source>Select 2 point objects and 1 View. (2)</source>
       <translation>Wähle 2 Punktobjekte und 1 Ansicht. (2)</translation>
     </message>
@@ -2983,12 +2983,12 @@
       <location filename="../../CommandAnnotate.cpp" line="1258"/>
       <location filename="../../CommandAnnotate.cpp" line="1336"/>
       <location filename="../../CommandAnnotate.cpp" line="1402"/>
-      <location filename="../../CommandCreateDims.cpp" line="147"/>
-      <location filename="../../CommandCreateDims.cpp" line="480"/>
-      <location filename="../../CommandCreateDims.cpp" line="866"/>
-      <location filename="../../CommandCreateDims.cpp" line="1222"/>
-      <location filename="../../CommandCreateDims.cpp" line="1316"/>
-      <location filename="../../CommandCreateDims.cpp" line="1431"/>
+      <location filename="../../CommandCreateDims.cpp" line="146"/>
+      <location filename="../../CommandCreateDims.cpp" line="479"/>
+      <location filename="../../CommandCreateDims.cpp" line="865"/>
+      <location filename="../../CommandCreateDims.cpp" line="1221"/>
+      <location filename="../../CommandCreateDims.cpp" line="1315"/>
+      <location filename="../../CommandCreateDims.cpp" line="1430"/>
       <location filename="../../CommandStack.cpp" line="75"/>
       <location filename="../../CommandStack.cpp" line="191"/>
       <location filename="../../CommandStack.cpp" line="251"/>
@@ -3001,14 +3001,14 @@
       <location filename="../../CommandExtensionDims.cpp" line="1431"/>
       <location filename="../../CommandExtensionDims.cpp" line="1789"/>
       <location filename="../../CommandExtensionDims.cpp" line="2044"/>
-      <location filename="../../Command.cpp" line="487"/>
-      <location filename="../../Command.cpp" line="580"/>
-      <location filename="../../Command.cpp" line="642"/>
-      <location filename="../../CommandExtensionPack.cpp" line="272"/>
-      <location filename="../../CommandExtensionPack.cpp" line="579"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1057"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1288"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1642"/>
+      <location filename="../../Command.cpp" line="479"/>
+      <location filename="../../Command.cpp" line="572"/>
+      <location filename="../../Command.cpp" line="634"/>
+      <location filename="../../CommandExtensionPack.cpp" line="273"/>
+      <location filename="../../CommandExtensionPack.cpp" line="587"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1078"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1314"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1678"/>
       <source>Task In Progress</source>
       <translation>Aufgabe in Bearbeitung</translation>
     </message>
@@ -3028,12 +3028,12 @@
       <location filename="../../CommandAnnotate.cpp" line="1259"/>
       <location filename="../../CommandAnnotate.cpp" line="1337"/>
       <location filename="../../CommandAnnotate.cpp" line="1403"/>
-      <location filename="../../CommandCreateDims.cpp" line="148"/>
-      <location filename="../../CommandCreateDims.cpp" line="481"/>
-      <location filename="../../CommandCreateDims.cpp" line="867"/>
-      <location filename="../../CommandCreateDims.cpp" line="1223"/>
-      <location filename="../../CommandCreateDims.cpp" line="1317"/>
-      <location filename="../../CommandCreateDims.cpp" line="1432"/>
+      <location filename="../../CommandCreateDims.cpp" line="147"/>
+      <location filename="../../CommandCreateDims.cpp" line="480"/>
+      <location filename="../../CommandCreateDims.cpp" line="866"/>
+      <location filename="../../CommandCreateDims.cpp" line="1222"/>
+      <location filename="../../CommandCreateDims.cpp" line="1316"/>
+      <location filename="../../CommandCreateDims.cpp" line="1431"/>
       <location filename="../../CommandStack.cpp" line="76"/>
       <location filename="../../CommandStack.cpp" line="192"/>
       <location filename="../../CommandStack.cpp" line="252"/>
@@ -3046,14 +3046,14 @@
       <location filename="../../CommandExtensionDims.cpp" line="1432"/>
       <location filename="../../CommandExtensionDims.cpp" line="1790"/>
       <location filename="../../CommandExtensionDims.cpp" line="2045"/>
-      <location filename="../../Command.cpp" line="488"/>
-      <location filename="../../Command.cpp" line="581"/>
-      <location filename="../../Command.cpp" line="643"/>
-      <location filename="../../CommandExtensionPack.cpp" line="273"/>
-      <location filename="../../CommandExtensionPack.cpp" line="580"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1058"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1289"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1643"/>
+      <location filename="../../Command.cpp" line="480"/>
+      <location filename="../../Command.cpp" line="573"/>
+      <location filename="../../Command.cpp" line="635"/>
+      <location filename="../../CommandExtensionPack.cpp" line="274"/>
+      <location filename="../../CommandExtensionPack.cpp" line="588"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1079"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1315"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1679"/>
       <source>Close active task dialog and try again.</source>
       <translation>Den aktiven Aufgaben-Dialog schliessen und erneut versuchen.</translation>
     </message>
@@ -3224,33 +3224,33 @@
       <translation>Einige Flächen in der Auswahl sind bereits schraffiert. Ersetzen?</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="312"/>
+      <location filename="../../CommandDecorate.cpp" line="311"/>
       <source>No TechDraw Page</source>
       <translation>Keine TechDraw-Seite</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="313"/>
+      <location filename="../../CommandDecorate.cpp" line="312"/>
       <source>Need a TechDraw Page for this command</source>
       <translation>Benötige eine TechDraw-Seite für diesen Befehl</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="347"/>
+      <location filename="../../CommandDecorate.cpp" line="346"/>
       <source>Select a Face first</source>
       <translation>Wählen Sie zuerst eine Fläche</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="354"/>
+      <location filename="../../CommandDecorate.cpp" line="353"/>
       <source>No TechDraw object in selection</source>
       <translation>Diese Auswahl enthält kein TechDraw-Objekt</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="361"/>
+      <location filename="../../CommandDecorate.cpp" line="360"/>
       <source>Create a page to insert.</source>
       <translation>Erzeugen Sie eine Seite zum Einfügen des Objekts.</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="368"/>
-      <location filename="../../CommandDecorate.cpp" line="374"/>
+      <location filename="../../CommandDecorate.cpp" line="367"/>
+      <location filename="../../CommandDecorate.cpp" line="373"/>
       <source>No Faces to hatch in this selection</source>
       <translation>Diese Auswahl enthält keine zu schraffierende Flächen</translation>
     </message>
@@ -3302,19 +3302,19 @@
       <translation>Seite als SVG-Datei exportieren</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="221"/>
-      <location filename="../../ViewProviderTemplate.cpp" line="197"/>
+      <location filename="../../ViewProviderPage.cpp" line="217"/>
+      <location filename="../../ViewProviderTemplate.cpp" line="199"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="169"/>
       <source>Are you sure you want to continue?</source>
       <translation>Bist du sicher, dass du fortfahren möchtest?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="242"/>
+      <location filename="../../ViewProviderPage.cpp" line="238"/>
       <source>Show drawing</source>
       <translation>Zeichnung anzeigen</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="244"/>
+      <location filename="../../ViewProviderPage.cpp" line="240"/>
       <source>Toggle KeepUpdated</source>
       <translation>Automatisches Aktualisieren umschalten</translation>
     </message>
@@ -3341,7 +3341,7 @@
     <message>
       <location filename="../../TaskRichAnno.cpp" line="102"/>
       <location filename="../../TaskRichAnno.cpp" line="240"/>
-      <location filename="../../QGIRichAnno.cpp" line="312"/>
+      <location filename="../../QGIRichAnno.cpp" line="310"/>
       <source>Rich text editor</source>
       <translation>Rich-Text Editor</translation>
     </message>
@@ -3423,8 +3423,8 @@
       <translation>Die Richtung derAnsicht in BaseView-Koordinaten</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="693"/>
-      <location filename="../../TaskSectionView.cpp" line="610"/>
+      <location filename="../../TaskComplexSection.cpp" line="691"/>
+      <location filename="../../TaskSectionView.cpp" line="608"/>
       <source>Operation Failed</source>
       <translation>Vorgang fehlgeschlagen</translation>
     </message>
@@ -3515,15 +3515,15 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1468"/>
       <location filename="../../CommandExtensionDims.cpp" line="2248"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1437"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1893"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1468"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1930"/>
       <source>Selection is empty</source>
       <translation>Nichts ausgewählt</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1474"/>
       <location filename="../../CommandExtensionDims.cpp" line="2264"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1901"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1937"/>
       <source>No object selected</source>
       <translation>Kein Objekt ausgewählt</translation>
     </message>
@@ -3538,17 +3538,17 @@
       <translation>Weniger als drei Kreise ausgewählt</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1436"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1467"/>
       <source>TechDraw Position Section View</source>
       <translation>Schnittansicht ausrichten</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1976"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2018"/>
       <source>TechDraw Thread Hole Side</source>
       <translation>TechDraw Gewindebohrung in der Seitenansicht</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1977"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2019"/>
       <source>Please select two straight lines</source>
       <translation>Bitte zwei gerade Linien auswählen</translation>
     </message>
@@ -3619,24 +3619,24 @@
       <translation type="unfinished">Maximum roughness grade number</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.cpp" line="86"/>
+      <location filename="../../TaskDimRepair.cpp" line="79"/>
       <source>Dimension Repair</source>
-      <translation type="unfinished">Dimension Repair</translation>
+      <translation>Maß reparieren</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.cpp" line="155"/>
+      <location filename="../../TaskDimRepair.cpp" line="146"/>
       <source>Can not use references from a different View</source>
-      <translation type="unfinished">Can not use references from a different View</translation>
+      <translation>Referenzen aus einer anderen Ansicht können nicht verwendet werden</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.cpp" line="169"/>
+      <location filename="../../TaskDimRepair.cpp" line="160"/>
       <source>Can not make a dimension from selection</source>
-      <translation type="unfinished">Can not make a dimension from selection</translation>
+      <translation>Kann aus dieser Auswahl kein Maß erstellen</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.cpp" line="184"/>
+      <location filename="../../TaskDimRepair.cpp" line="175"/>
       <source>Can not make dimension from selection</source>
-      <translation type="unfinished">Can not make dimension from selection</translation>
+      <translation>Kann aus dieser Auswahl kein Maß erstellen</translation>
     </message>
   </context>
   <context>
@@ -3657,8 +3657,8 @@ it has a weld symbol that would become broken.</source>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="181"/>
       <location filename="../../ViewProviderLeader.cpp" line="227"/>
       <location filename="../../ViewProviderWeld.cpp" line="149"/>
-      <location filename="../../ViewProviderPage.cpp" line="224"/>
-      <location filename="../../ViewProviderTemplate.cpp" line="201"/>
+      <location filename="../../ViewProviderPage.cpp" line="220"/>
+      <location filename="../../ViewProviderTemplate.cpp" line="203"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="156"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="172"/>
       <source>Object dependencies</source>
@@ -3688,7 +3688,7 @@ it has a weld symbol that would become broken.</source>
       <translation>Diese Ansicht kann nicht gelöscht werden, weil ihr eine Hinweislinie zugeordnet ist, die dadurch unbrauchbar werden würde.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="215"/>
+      <location filename="../../ViewProviderPage.cpp" line="211"/>
       <source>The page is not empty, therefore the
 following referencing objects might be lost:</source>
       <translation>Das Zeichnungsblatt ist nicht leer, deshalb könnten die
@@ -3707,7 +3707,7 @@ the following referencing objects might be lost:</source>
       <translation>Die Ansichtengruppe ist nicht leer, deshalb könnten folgende Referenzobjekte verloren gehen:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderTemplate.cpp" line="194"/>
+      <location filename="../../ViewProviderTemplate.cpp" line="196"/>
       <source>The following referencing object might break:</source>
       <translation>Das nachfolgende Referenzobjekt könnte unbrauchbar werden:</translation>
     </message>
@@ -3810,8 +3810,8 @@ it has a tile weld that would become broken.</source>
   <context>
     <name>TaskPojGroup</name>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="490"/>
-      <location filename="../../TaskSectionView.cpp" line="430"/>
+      <location filename="../../TaskComplexSection.cpp" line="488"/>
+      <location filename="../../TaskSectionView.cpp" line="428"/>
       <source> updates pending</source>
       <translation> Aktualisierungen ausstehend</translation>
     </message>
@@ -4567,27 +4567,27 @@ das Schraffieren einer Fläche mit einem PAT-Schraffurmuster</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="55"/>
       <source>Monochrome text color</source>
-      <translation type="unfinished">Monochrome text color</translation>
+      <translation>Textfarbe für einfarbige Darstellung</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="180"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check this to use light text and lines on dark backgrounds.  Set Page Color to a dark color. Transparent or light color faces are recommended with this option.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check this to use light text and lines on dark backgrounds.  Set Page Color to a dark color. Transparent or light color faces are recommended with this option.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Aktivieren, um helle Texte und Linien auf dunklen Hintergründen zu verwenden. Seitenfarbe auf eine dunkle Farbe setzen. Für diese Option werden transparente oder helle Farbflächen empfohlen.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="183"/>
       <source>Light on dark</source>
-      <translation type="unfinished">Light on dark</translation>
+      <translation>Hell auf dunkel</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="236"/>
       <source>Page Color</source>
-      <translation type="unfinished">Page Color</translation>
+      <translation>Blattfarbe</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="427"/>
       <source>Use a light color for dark text and dark color for light text.</source>
-      <translation type="unfinished">Use a light color for dark text and dark color for light text.</translation>
+      <translation>Eine helle Farbe für dunklen Text verwenden oder eine dunkle Farbe für hellen Text.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="467"/>
@@ -4642,12 +4642,12 @@ das Schraffieren einer Fläche mit einem PAT-Schraffurmuster</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="620"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked FreeCAD will use a single colour for all text and lines.  If unchecked FreeCAD will attempt to use lighter versions of preferred colours.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked FreeCAD will use a single colour for all text and lines.  If unchecked FreeCAD will attempt to use lighter versions of preferred colours.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wenn aktiviert, wird FreeCAD eine einzige Farbe für alle Texte und Linien verwenden. Wenn nicht aktiviert, versucht FreeCAD hellere Versionen bevorzugter Farben zu verwenden.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="623"/>
       <source>Monochrome</source>
-      <translation type="unfinished">Monochrome</translation>
+      <translation>Einfarbig</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="654"/>
@@ -5365,7 +5365,7 @@ Do you want to continue?</source>
       <translation>DXF (*.dxf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1213"/>
+      <location filename="../../MDIViewPage.cpp" line="1210"/>
       <source>Selected:</source>
       <translation>Ausgewählt:</translation>
     </message>
@@ -5844,7 +5844,7 @@ Do you want to continue?</source>
       <translation>Jetzt aktualisieren</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="692"/>
+      <location filename="../../TaskComplexSection.cpp" line="690"/>
       <source>Can not continue. Object * %1 or %2 not found.</source>
       <translation>Kann nicht fortfahren. Objekt * %1 oder %2 nicht gefunden.</translation>
     </message>
@@ -6812,7 +6812,7 @@ Du kannst weitere Punkte auswählen, um Liniensegmente zu erhalten.</translation
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="118"/>
-      <location filename="../../TaskLeaderLine.cpp" line="469"/>
+      <location filename="../../TaskLeaderLine.cpp" line="467"/>
       <source>Pick Points</source>
       <translation>Punkte auswählen</translation>
     </message>
@@ -6893,51 +6893,51 @@ Du kannst weitere Punkte auswählen, um Liniensegmente zu erhalten.</translation
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="273"/>
-      <location filename="../../TaskLeaderLine.cpp" line="634"/>
-      <location filename="../../TaskLeaderLine.cpp" line="686"/>
-      <location filename="../../TaskLeaderLine.cpp" line="703"/>
+      <location filename="../../TaskLeaderLine.cpp" line="632"/>
+      <location filename="../../TaskLeaderLine.cpp" line="684"/>
+      <location filename="../../TaskLeaderLine.cpp" line="701"/>
       <source>Edit points</source>
       <translation>Punkte bearbeiten</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="481"/>
+      <location filename="../../TaskLeaderLine.cpp" line="479"/>
       <source>Edit Points</source>
       <translation>Punkte bearbeiten</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="498"/>
-      <location filename="../../TaskLeaderLine.cpp" line="541"/>
+      <location filename="../../TaskLeaderLine.cpp" line="496"/>
+      <location filename="../../TaskLeaderLine.cpp" line="539"/>
       <source>Pick a starting point for leader line</source>
       <translation>Wähle einen Startpunkt für die Hinweislinie</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="501"/>
+      <location filename="../../TaskLeaderLine.cpp" line="499"/>
       <source>Save Points</source>
       <translation>Punkte speichern</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="524"/>
+      <location filename="../../TaskLeaderLine.cpp" line="522"/>
       <source>Click and drag markers to adjust leader line</source>
       <translation>Klicke und ziehe Markierungen, um die Hinweislinie anzupassen</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="527"/>
-      <location filename="../../TaskLeaderLine.cpp" line="544"/>
+      <location filename="../../TaskLeaderLine.cpp" line="525"/>
+      <location filename="../../TaskLeaderLine.cpp" line="542"/>
       <source>Save changes</source>
       <translation>Änderungen speichern</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="572"/>
+      <location filename="../../TaskLeaderLine.cpp" line="570"/>
       <source>Left click to set a point</source>
       <translation>Linksklick, um einen Punkt zu setzen</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="598"/>
+      <location filename="../../TaskLeaderLine.cpp" line="596"/>
       <source>Press OK or Cancel to continue</source>
       <translation>OK oder Abbrechen drücken, um fortzufahren</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="698"/>
+      <location filename="../../TaskLeaderLine.cpp" line="696"/>
       <source>In progress edit abandoned. Start over.</source>
       <translation>Bearbeitung abgebrochen. Fang noch mal von vorne an.</translation>
     </message>
@@ -7601,12 +7601,12 @@ mit dem vorgegebenen X/Y-Abstand</translation>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="442"/>
+      <location filename="../../TaskSectionView.cpp" line="440"/>
       <source>Nothing to apply. No section direction picked yet</source>
       <translation>Nichts zu tun. Es wurde keine Schnittausrichtung ausgewählt</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="609"/>
+      <location filename="../../TaskSectionView.cpp" line="607"/>
       <source>Can not continue. Object * %1 or %2 not found.</source>
       <translation>Kann nicht fortfahren. Objekt * %1 oder %2 nicht gefunden.</translation>
     </message>
@@ -7861,7 +7861,7 @@ mit dem vorgegebenen X/Y-Abstand</translation>
   <context>
     <name>TechDraw_ComplexSection</name>
     <message>
-      <location filename="../../Command.cpp" line="547"/>
+      <location filename="../../Command.cpp" line="539"/>
       <source>Insert complex Section View</source>
       <translation>Komplexe Schnittansicht einfügen</translation>
     </message>
@@ -7898,7 +7898,7 @@ mit dem vorgegebenen X/Y-Abstand</translation>
   <context>
     <name>TechDraw_HorizontalExtent</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1277"/>
+      <location filename="../../CommandCreateDims.cpp" line="1276"/>
       <source>Insert Horizontal Extent Dimension</source>
       <translation>Maß für die horizontale Ausdehnung einfügen</translation>
     </message>
@@ -7922,7 +7922,7 @@ mit dem vorgegebenen X/Y-Abstand</translation>
   <context>
     <name>TechDraw_SectionView</name>
     <message>
-      <location filename="../../Command.cpp" line="542"/>
+      <location filename="../../Command.cpp" line="534"/>
       <source>Insert simple Section View</source>
       <translation>Einfachen Schnitt einfügen</translation>
     </message>
@@ -7962,7 +7962,7 @@ mit dem vorgegebenen X/Y-Abstand</translation>
   <context>
     <name>TechDraw_VerticalExtentDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1281"/>
+      <location filename="../../CommandCreateDims.cpp" line="1280"/>
       <source>Insert Vertical Extent Dimension</source>
       <translation>Maß für die vertikale Ausdehnung einfügen</translation>
     </message>
@@ -8154,7 +8154,7 @@ mit dem vorgegebenen X/Y-Abstand</translation>
     <message>
       <location filename="../../TaskDimRepair.ui" line="14"/>
       <source>Dimension Repair</source>
-      <translation type="unfinished">Dimension Repair</translation>
+      <translation>Maß reparieren</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.ui" line="20"/>
@@ -8174,12 +8174,12 @@ mit dem vorgegebenen X/Y-Abstand</translation>
     <message>
       <location filename="../../TaskDimRepair.ui" line="68"/>
       <source>Replace References with Current Selection</source>
-      <translation type="unfinished">Replace References with Current Selection</translation>
+      <translation>Referenzen durch aktuelle Auswahl ersetzen</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.ui" line="80"/>
       <source>References 2D</source>
-      <translation type="unfinished">References 2D</translation>
+      <translation>2D-Referenzen</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.ui" line="88"/>
@@ -8189,7 +8189,7 @@ mit dem vorgegebenen X/Y-Abstand</translation>
     <message>
       <location filename="../../TaskDimRepair.ui" line="95"/>
       <source>The View that owns this Dimension</source>
-      <translation type="unfinished">The View that owns this Dimension</translation>
+      <translation>Die Ansicht, die dieses Maß enthält</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.ui" line="114"/>
@@ -8199,12 +8199,12 @@ mit dem vorgegebenen X/Y-Abstand</translation>
     <message>
       <location filename="../../TaskDimRepair.ui" line="139"/>
       <source>The subelements of the View that define the geometry for this Dimension</source>
-      <translation type="unfinished">The subelements of the View that define the geometry for this Dimension</translation>
+      <translation>Die Bestandeile der Ansicht, die die Geometrie für dieses Maß festlegen</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.ui" line="163"/>
       <source>References 3D</source>
-      <translation type="unfinished">References 3D</translation>
+      <translation>3D-Referenzen</translation>
     </message>
   </context>
   <context>
@@ -8212,41 +8212,41 @@ mit dem vorgegebenen X/Y-Abstand</translation>
     <message>
       <location filename="../../DlgStringListEditor.ui" line="17"/>
       <source>String List Editor</source>
-      <translation type="unfinished">String List Editor</translation>
+      <translation>Zeichenkettenlisten-Editor</translation>
     </message>
     <message>
       <location filename="../../DlgStringListEditor.ui" line="31"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Double click to edit a line.  New lines are added at the current location in the list.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Double click to edit a line.  New lines are added at the current location in the list.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Doppelklicken um eine Zeile zu bearbeiten. Neue Zeilen werden an der aktuellen Stelle zur Liste hinzugefügt.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawRadialGroup</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="135"/>
+      <location filename="../../CommandCreateDims.cpp" line="134"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="136"/>
+      <location filename="../../CommandCreateDims.cpp" line="135"/>
       <source>Insert Radius Dimension</source>
       <translation>Radienmaß einfügen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="201"/>
+      <location filename="../../CommandCreateDims.cpp" line="200"/>
       <source>Radius Dimension</source>
-      <translation type="unfinished">Radius Dimension</translation>
+      <translation>Radienmaß</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="205"/>
+      <location filename="../../CommandCreateDims.cpp" line="204"/>
       <source>Diameter Linear</source>
-      <translation type="unfinished">Diameter Linear</translation>
+      <translation>Linearer Durchmesser</translation>
     </message>
   </context>
   <context>
     <name>TechDraw_RadiusDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="202"/>
+      <location filename="../../CommandCreateDims.cpp" line="201"/>
       <source>Insert Radius Dimension</source>
       <translation>Radienmaß einfügen</translation>
     </message>
@@ -8254,7 +8254,7 @@ mit dem vorgegebenen X/Y-Abstand</translation>
   <context>
     <name>TechDraw_DiameterDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="206"/>
+      <location filename="../../CommandCreateDims.cpp" line="205"/>
       <source>Insert Diameter Dimension</source>
       <translation>Durchmessermaß einfügen</translation>
     </message>
@@ -8262,27 +8262,27 @@ mit dem vorgegebenen X/Y-Abstand</translation>
   <context>
     <name>CmdTechDrawLinearGroup</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="468"/>
+      <location filename="../../CommandCreateDims.cpp" line="467"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="469"/>
+      <location filename="../../CommandCreateDims.cpp" line="468"/>
       <source>Insert Linear Dimension</source>
-      <translation type="unfinished">Insert Linear Dimension</translation>
+      <translation>Längenmaß einfügen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="541"/>
+      <location filename="../../CommandCreateDims.cpp" line="540"/>
       <source>Linear Dimension</source>
-      <translation type="unfinished">Linear Dimension</translation>
+      <translation>Längenmaß</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="544"/>
+      <location filename="../../CommandCreateDims.cpp" line="543"/>
       <source>Horizontal Linear</source>
       <translation type="unfinished">Horizontal Linear</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="548"/>
+      <location filename="../../CommandCreateDims.cpp" line="547"/>
       <source>Vertical Linear</source>
       <translation type="unfinished">Vertical Linear</translation>
     </message>
@@ -8290,54 +8290,54 @@ mit dem vorgegebenen X/Y-Abstand</translation>
   <context>
     <name>TechDraw_LengthDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="542"/>
+      <location filename="../../CommandCreateDims.cpp" line="541"/>
       <source>Insert Linear Dimension</source>
-      <translation type="unfinished">Insert Linear Dimension</translation>
+      <translation>Längenmaß einfügen</translation>
     </message>
   </context>
   <context>
     <name>TechDraw_HorizontalLinear</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="545"/>
+      <location filename="../../CommandCreateDims.cpp" line="544"/>
       <source>Insert Horizontal Linear Dimension</source>
-      <translation type="unfinished">Insert Horizontal Linear Dimension</translation>
+      <translation>Horizontales Maß einfügen</translation>
     </message>
   </context>
   <context>
     <name>TechDraw_VerticalDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="549"/>
+      <location filename="../../CommandCreateDims.cpp" line="548"/>
       <source>Insert Vertical Linear Dimension</source>
-      <translation type="unfinished">Insert Vertical Linear Dimension</translation>
+      <translation>Vertikales Maß einfügen</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawAngularGroup</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="854"/>
+      <location filename="../../CommandCreateDims.cpp" line="853"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="855"/>
+      <location filename="../../CommandCreateDims.cpp" line="854"/>
       <source>Insert Angular Dimension</source>
-      <translation type="unfinished">Insert Angular Dimension</translation>
+      <translation>Winkelmaß einfügen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="920"/>
+      <location filename="../../CommandCreateDims.cpp" line="919"/>
       <source>Angular Dimension</source>
-      <translation type="unfinished">Angular Dimension</translation>
+      <translation>Winkelmaß</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="923"/>
+      <location filename="../../CommandCreateDims.cpp" line="922"/>
       <source>3Pt Angular Dimension</source>
-      <translation type="unfinished">3Pt Angular Dimension</translation>
+      <translation>Winkelmaß über 3 Punkte</translation>
     </message>
   </context>
   <context>
     <name>TechDraw_AngleDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="921"/>
+      <location filename="../../CommandCreateDims.cpp" line="920"/>
       <source>Insert Angle Dimension</source>
       <translation>Winkelmaß einfügen</translation>
     </message>
@@ -8345,7 +8345,7 @@ mit dem vorgegebenen X/Y-Abstand</translation>
   <context>
     <name>TechDraw_3PtAngleDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="924"/>
+      <location filename="../../CommandCreateDims.cpp" line="923"/>
       <source>Insert 3-Point Angle Dimension</source>
       <translation>Winkelmaß über 3 Punkte einfügen</translation>
     </message>
@@ -8353,32 +8353,32 @@ mit dem vorgegebenen X/Y-Abstand</translation>
   <context>
     <name>CmdTechDrawDimensionRepair</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1456"/>
+      <location filename="../../CommandCreateDims.cpp" line="1455"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1457"/>
+      <location filename="../../CommandCreateDims.cpp" line="1456"/>
       <source>Repair Dimension References</source>
-      <translation type="unfinished">Repair Dimension References</translation>
+      <translation>Maßreferenzen reparieren</translation>
     </message>
   </context>
   <context>
     <name>TechDrawGui::TaskDimRepair</name>
     <message>
-      <location filename="../../TaskDimRepair.cpp" line="102"/>
+      <location filename="../../TaskDimRepair.cpp" line="95"/>
       <source>Object Name</source>
-      <translation type="unfinished">Object Name</translation>
+      <translation>Objektname</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.cpp" line="103"/>
+      <location filename="../../TaskDimRepair.cpp" line="96"/>
       <source>Object Label</source>
-      <translation type="unfinished">Object Label</translation>
+      <translation>Objektbezeichnung</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.cpp" line="104"/>
+      <location filename="../../TaskDimRepair.cpp" line="97"/>
       <source>SubElement</source>
-      <translation type="unfinished">SubElement</translation>
+      <translation>Unterelement</translation>
     </message>
   </context>
 </TS>

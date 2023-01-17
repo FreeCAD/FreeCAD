@@ -150,7 +150,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="87"/>
       <source>Create a new body and make it active</source>
-      <translation>Направи ново тело и учините га активним</translation>
+      <translation>Направи ново тело и учини га активним</translation>
     </message>
   </context>
   <context>
@@ -217,7 +217,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="429"/>
       <source>Create a clone</source>
-      <translation>Направи клона</translation>
+      <translation>Направи клон</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="430"/>
@@ -258,7 +258,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="604"/>
       <source>Duplicates the selected object and adds it to the active body</source>
-      <translation>Дуплицира изабрани објекат и додаје га у активно тело</translation>
+      <translation>Дуплира изабрани објекат и додаје га у активно тело</translation>
     </message>
   </context>
   <context>
@@ -294,7 +294,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="1146"/>
       <source>Groove a selected sketch</source>
-      <translation>Направи ротирајући жљеб помоћу изабране cкице</translation>
+      <translation>Направи ротирајући жљеб помоћу изабране скице</translation>
     </message>
   </context>
   <context>
@@ -650,7 +650,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="1493"/>
       <source>Sweep a selected sketch along a helix and remove it from the body</source>
-      <translation>Извуците изабрану скицу дуж хеликса и одузми од тела</translation>
+      <translation>Извуци изабрану скицу дуж хеликса и одузми од тела</translation>
     </message>
   </context>
   <context>
@@ -835,7 +835,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="446"/>
       <source>Create Clone</source>
-      <translation>Направи клона</translation>
+      <translation>Направи клон</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="297"/>
@@ -895,22 +895,22 @@ so that self intersection is avoided.</translation>
       <translation>Помери објекат унутар стабла</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="292"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="295"/>
       <source>Mirrored</source>
       <translation>Симетрично пресликано</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="320"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="323"/>
       <source>Make LinearPattern</source>
       <translation>Направи правоугаоно умножавање</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="358"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="361"/>
       <source>PolarPattern</source>
       <translation>Кружно умножавање</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="386"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="389"/>
       <source>Scaled</source>
       <translation>Скалирано</translation>
     </message>
@@ -1070,9 +1070,9 @@ so that self intersection is avoided.</translation>
       <source>To create a new PartDesign object, there must be an active Body object in the document.
 
 Please select a body from below, or create a new body.</source>
-      <translation>Да бисте направили нови Part Design објекат, у документу мора постојати активно тело.
+      <translation>Да би направио нови Part Design објекат, у документу мора постојати активно тело.
 
-Изабери тело испод или направите ново тело.</translation>
+Изабери тело испод или направи ново тело.</translation>
     </message>
     <message>
       <location filename="../../DlgActiveBody.ui" line="36"/>
@@ -1361,7 +1361,7 @@ If zero, it is equal to Radius2</source>
     <message>
       <location filename="../../DlgReference.ui" line="20"/>
       <source>You selected geometries which are not part of the active body. Please define how to handle those selections. If you do not want those references, cancel the command.</source>
-      <translation>Изабрали сте геометрију која није део активног тела. Дефинишите како поступати са тим избором. Ако не желите те референце, поништите команду.</translation>
+      <translation>Изабрао си геометрију која није део активног тела. Дефиниши како поступати са тим избором. Ако не желиш те референце, поништи команду.</translation>
     </message>
     <message>
       <location filename="../../DlgReference.ui" line="42"/>
@@ -1384,7 +1384,7 @@ If zero, it is equal to Radius2</source>
     <message>
       <location filename="../../ReferenceSelection.cpp" line="270"/>
       <source>Selecting this will cause circular dependency.</source>
-      <translation>Ако изаберете ово проузроковаћете циркуларну међузависност.</translation>
+      <translation>Ако изабереш ово проузроковаћеш кружну зависност.</translation>
     </message>
   </context>
   <context>
@@ -1412,7 +1412,7 @@ If zero, it is equal to Radius2</source>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="53"/>
       <source>Cut</source>
-      <translation>Разлика</translation>
+      <translation>Одузми</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="58"/>
@@ -1438,39 +1438,39 @@ If zero, it is equal to Radius2</source>
       <translation>Параметри примитивних тела</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="718"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="760"/>
       <source>Cone radii are equal</source>
       <translation>Полупречници конуса су једнаки</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="719"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="761"/>
       <source>The radii for cones must not be equal!</source>
       <translation>Полупречници конуса не смеју бити једнаки!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="794"/>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="799"/>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="804"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="836"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="841"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="846"/>
       <source>Invalid wedge parameters</source>
       <translation>Неисправни параметри клина</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="795"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="837"/>
       <source>X min must not be equal to X max!</source>
       <translation>X мин не сме бити једнако са X max!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="800"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="842"/>
       <source>Y min must not be equal to Y max!</source>
       <translation>Y мин не сме бити једнако са Y max!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="805"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="847"/>
       <source>Z min must not be equal to Z max!</source>
       <translation>Z мин не сме бити једнако са Z max!</translation>
     </message>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="843"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="885"/>
       <source>Create primitive</source>
       <translation>Направи примитивно тело</translation>
     </message>
@@ -1488,8 +1488,8 @@ If zero, it is equal to Radius2</source>
       <location filename="../../TaskChamferParameters.cpp" line="170"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
-      <translation>Кликни на дугме да бисте ушли у режим избора,
-кликните поново да бисте завршили избор</translation>
+      <translation>Кликни на дугме да би ушао у режим избора,
+кликни поново да би завршио избор</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="26"/>
@@ -1505,13 +1505,13 @@ click again to end selection</source>
       <location filename="../../TaskChamferParameters.ui" line="52"/>
       <source>- select an item to highlight it
 - double-click on an item to see the chamfers</source>
-      <translation>- изаберите ставку да бисте је истакли
-- двапут кликните на ставку да бисте видели оборене ивице</translation>
+      <translation>- изабери ставку да би је истакао
+- двапут кликни на ставку да би видео оборене ивице</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="67"/>
       <source>Type</source>
-      <translation>Тип</translation>
+      <translation>Врста</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="75"/>
@@ -1632,8 +1632,8 @@ click again to end selection</source>
       <location filename="../../TaskDraftParameters.cpp" line="137"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
-      <translation>Кликни на дугме да бисте ушли у режим избора,
-кликните поново да бисте завршили избор</translation>
+      <translation>Кликни на дугме да би ушао у режим избора,
+кликни поново да би завршио избор</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="26"/>
@@ -1649,8 +1649,8 @@ click again to end selection</source>
       <location filename="../../TaskDraftParameters.ui" line="52"/>
       <source>- select an item to highlight it
 - double-click on an item to see the drafts</source>
-      <translation>- изаберите ставку да бисте је истакли
-- двапут кликните на ставку да бисте видели нагнуту</translation>
+      <translation>- изабери ставку да би је истакао
+- двапут кликни на ставку да би је видео нагнуту</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="65"/>
@@ -1861,8 +1861,8 @@ click again to end selection</source>
       <location filename="../../TaskFilletParameters.cpp" line="124"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
-      <translation>Кликни на дугме да бисте ушли у режим избора,
-кликните поново да бисте завршили избор</translation>
+      <translation>Кликни на дугме да би ушао у режим избора,
+кликни поново да би завршио избор</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="26"/>
@@ -1878,8 +1878,8 @@ click again to end selection</source>
       <location filename="../../TaskFilletParameters.ui" line="52"/>
       <source>- select an item to highlight it
 - double-click on an item to see the fillets</source>
-      <translation>- изаберите ставку да бисте је истакли
-- двапут кликните на ставку да бисте видели заобљења</translation>
+      <translation>- изабери ставку да би је истакао
+- двапут кликни на ставку да би је видео заобљену</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="65"/>
@@ -2166,12 +2166,12 @@ click again to end selection</source>
       <translation>Ажурирај поглед</translation>
     </message>
     <message>
-      <location filename="../../TaskLinearPatternParameters.cpp" line="105"/>
+      <location filename="../../TaskLinearPatternParameters.cpp" line="108"/>
       <source>Remove</source>
       <translation>Уклони</translation>
     </message>
     <message>
-      <location filename="../../TaskLinearPatternParameters.cpp" line="333"/>
+      <location filename="../../TaskLinearPatternParameters.cpp" line="336"/>
       <source>Error</source>
       <translation>Грешка</translation>
     </message>
@@ -2315,52 +2315,52 @@ click again to end selection</source>
       <translation>Ажурирај поглед</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="73"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="75"/>
       <source>Remove</source>
       <translation>Уклони</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="86"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="89"/>
       <source>Edit</source>
       <translation>Уреди</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="90"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="93"/>
       <source>Delete</source>
       <translation>Обриши</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="94"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="97"/>
       <source>Add mirrored transformation</source>
       <translation>Додај симетричну трансформацију</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="98"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="101"/>
       <source>Add linear pattern</source>
       <translation>Додај правоугаоно умножавање</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="102"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="105"/>
       <source>Add polar pattern</source>
       <translation>Додај кружно умножавање</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="106"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="109"/>
       <source>Add scaled transformation</source>
       <translation>Додај скалирану трансформацију</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="110"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="113"/>
       <source>Move up</source>
       <translation>Помери нагоре</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="114"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="117"/>
       <source>Move down</source>
       <translation>Померите надоле</translation>
     </message>
     <message>
-      <location filename="../../TaskMultiTransformParameters.cpp" line="141"/>
+      <location filename="../../TaskMultiTransformParameters.cpp" line="144"/>
       <source>Right-click to add</source>
       <translation>Десни клик за додавање</translation>
     </message>
@@ -2400,7 +2400,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="75"/>
       <source>Up to face</source>
-      <translation>До површи</translation>
+      <translation>До странице</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="76"/>
@@ -2418,7 +2418,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="22"/>
       <source>Type</source>
-      <translation>Тип</translation>
+      <translation>Врста</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="30"/>
@@ -2819,7 +2819,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="76"/>
       <source>Up to face</source>
-      <translation>До површи</translation>
+      <translation>До странице</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="77"/>
@@ -2880,12 +2880,12 @@ measured along the specified direction</source>
       <translation>Ажурирај поглед</translation>
     </message>
     <message>
-      <location filename="../../TaskPolarPatternParameters.cpp" line="112"/>
+      <location filename="../../TaskPolarPatternParameters.cpp" line="114"/>
       <source>Remove</source>
       <translation>Уклони</translation>
     </message>
     <message>
-      <location filename="../../TaskPolarPatternParameters.cpp" line="333"/>
+      <location filename="../../TaskPolarPatternParameters.cpp" line="335"/>
       <source>Error</source>
       <translation>Грешка</translation>
     </message>
@@ -2893,7 +2893,7 @@ measured along the specified direction</source>
   <context>
     <name>PartDesignGui::TaskPrimitiveParameters</name>
     <message>
-      <location filename="../../TaskPrimitiveParameters.cpp" line="893"/>
+      <location filename="../../TaskPrimitiveParameters.cpp" line="935"/>
       <source>Attachment</source>
       <translation>Прилог</translation>
     </message>
@@ -3067,8 +3067,8 @@ measured along the specified direction</source>
       <location filename="../../TaskThicknessParameters.cpp" line="136"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
-      <translation>Кликни на дугме да бисте ушли у режим избора,
-кликните поново да бисте завршили избор</translation>
+      <translation>Кликни на дугме да би ушао у режим избора,
+кликни поново да би завршио избор</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="26"/>
@@ -3084,8 +3084,8 @@ click again to end selection</source>
       <location filename="../../TaskThicknessParameters.ui" line="52"/>
       <source>- select an item to highlight it
 - double-click on an item to see the features</source>
-      <translation>- изаберите ставку да бисте је истакли
-- двапут кликните на ставку да бисте је видели са танким зидом</translation>
+      <translation>- изабери ставку да би је истакао
+- двапут кликни на ставку да би је видео са танким зидом</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="65"/>
@@ -3110,7 +3110,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="112"/>
       <source>Recto Verso</source>
-      <translation>Recto Verso</translation>
+      <translation>Напред назад</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="120"/>
@@ -3120,13 +3120,13 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="128"/>
       <source>Arc</source>
-      <translation>Лук</translation>
+      <translation>Заобљење</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="133"/>
       <location filename="../../TaskThicknessParameters.ui" line="143"/>
       <source>Intersection</source>
-      <translation>Преcек</translation>
+      <translation>Пресек</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="150"/>
@@ -3157,7 +3157,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskTransformedMessages.cpp" line="37"/>
       <source>Transformed feature messages</source>
-      <translation>Трансформисане поруке које се тичу типског облика</translation>
+      <translation>Поруке о трансформацији</translation>
     </message>
   </context>
   <context>
@@ -3288,7 +3288,7 @@ click again to end selection</source>
     <message>
       <location filename="../../ViewProviderMultiTransform.h" line="38"/>
       <source>MultiTransform parameters</source>
-      <translation>Параметри вишеструке трансформацие</translation>
+      <translation>Параметри вишеструке трансформације</translation>
     </message>
   </context>
   <context>
@@ -3312,7 +3312,7 @@ click again to end selection</source>
     <message>
       <location filename="../../ViewProviderThickness.h" line="41"/>
       <source>Thickness parameters</source>
-      <translation>Параметри танкозидности</translation>
+      <translation>Параметри танкозидости</translation>
     </message>
   </context>
   <context>
@@ -3328,7 +3328,7 @@ click again to end selection</source>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="200"/>
       <source>Create an additive box by its width, height, and length</source>
-      <translation>Додај направљену кутију на основу њене ширине, висине и дижине</translation>
+      <translation>Додај направљену кутију на основу њене ширине, висине и дужине</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="204"/>
@@ -3371,42 +3371,42 @@ click again to end selection</source>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="356"/>
       <source>Create a subtractive box by its width, height and length</source>
-      <translation>Одузмите направљену кутију на основу њене ширине, висине и дижине</translation>
+      <translation>Одузми направљену кутију на основу њене ширине, висине и дужине</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="360"/>
       <source>Create a subtractive cylinder by its radius, height and angle</source>
-      <translation>Одузмите направљени цилиндар на основу његовог радијуса, висине и угла</translation>
+      <translation>Одузми направљени цилиндар на основу његовог радијуса, висине и угла</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="364"/>
       <source>Create a subtractive sphere by its radius and various angles</source>
-      <translation>Одузмите направљену сферу на основу њеног радијуса и различитих углова</translation>
+      <translation>Одузми направљену сферу на основу њеног радијуса и различитих углова</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="368"/>
       <source>Create a subtractive cone</source>
-      <translation>Одузмите направљени конус</translation>
+      <translation>Одузми направљени конус</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="372"/>
       <source>Create a subtractive ellipsoid</source>
-      <translation>Одузмите направљени елипсоид</translation>
+      <translation>Одузми направљени елипсоид</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="376"/>
       <source>Create a subtractive torus</source>
-      <translation>Одузмите направљени торус</translation>
+      <translation>Одузми направљени торус</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="380"/>
       <source>Create a subtractive prism</source>
-      <translation>Одузмите призму</translation>
+      <translation>Одузми призму</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="384"/>
       <source>Create a subtractive wedge</source>
-      <translation>Одузмите клин</translation>
+      <translation>Одузми клин</translation>
     </message>
   </context>
   <context>
@@ -3437,7 +3437,7 @@ click again to end selection</source>
     <message>
       <location filename="../../CommandBody.cpp" line="953"/>
       <source>Move tip</source>
-      <translation>Померите крајњи</translation>
+      <translation>Помери крајњи</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="954"/>
@@ -3447,7 +3447,7 @@ click again to end selection</source>
     <message>
       <location filename="../../CommandBody.cpp" line="955"/>
       <source>Do you want the last feature to be the new tip?</source>
-      <translation>Да ли желите да задњи типски облик буде проглашен за крајњи?</translation>
+      <translation>Да ли желиш да задњи типски облик буде проглашен за крајњи?</translation>
     </message>
   </context>
   <context>
@@ -3472,7 +3472,7 @@ click again to end selection</source>
     <message>
       <location filename="../../Command.cpp" line="145"/>
       <source>There is no active body. Please make a body active before inserting a datum entity.</source>
-      <translation>Нема активног тела. Учините тело активним пре него што уметнете помоћни ентитет.</translation>
+      <translation>Нема активног тела. Учини тело активним пре него што уметнеш помоћни ентитет.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="409"/>
@@ -3487,27 +3487,27 @@ click again to end selection</source>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="652"/>
       <source>You have to select a single face as support for a sketch!</source>
-      <translation>Морате одабрати једну страницу као оcнову за cкицу!</translation>
+      <translation>Мораш изабрати једну страницу као основу за скицу!</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="655"/>
       <source>No support face selected</source>
-      <translation>Није одабрана страница као оcнова</translation>
+      <translation>Није одабрана страница као основа</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="656"/>
       <source>You have to select a face as support for a sketch!</source>
-      <translation>Морате одабрати страницу као оcнову за cкицу!</translation>
+      <translation>Мораш изабрати страницу као основу за скицу!</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="659"/>
       <source>No planar support</source>
-      <translation>Нема равни као оcнове</translation>
+      <translation>Нема равни као основе</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="660"/>
       <source>You need a planar face as support for a sketch!</source>
-      <translation>Потребна је равна страница као оcнова за cкицу!</translation>
+      <translation>Потребна је равна страница као основа за скицу!</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="663"/>
@@ -3517,7 +3517,7 @@ click again to end selection</source>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="664"/>
       <source>Please create a plane first or select a face to sketch on</source>
-      <translation>Да би сте могли цртати скицу прво направите раван или изаберите страницу</translation>
+      <translation>Да би могао цртати скицу прво направи раван или изабери страницу</translation>
     </message>
     <message>
       <location filename="../../ViewProviderHole.cpp" line="79"/>
@@ -3553,7 +3553,7 @@ click again to end selection</source>
     <message>
       <location filename="../../Command.cpp" line="776"/>
       <source>Ensure that the body contains a feature before attempting a subtractive command.</source>
-      <translation>Уверите се да тело садржи типски облик пре него што покушате да примените алатку која прави удубљење.</translation>
+      <translation>Увери се да тело садржи типски облик пре него што покушаш да примениш алатку која прави удубљење.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="797"/>
@@ -3563,7 +3563,7 @@ click again to end selection</source>
     <message>
       <location filename="../../Command.cpp" line="798"/>
       <source>Consider using a ShapeBinder or a BaseFeature to reference external geometry in a body.</source>
-      <translation>Размислите о коришћењу повезивача облика или основног типског облика као референцу на спољашњу геометрију у телу.</translation>
+      <translation>Размисли о коришћењу повезивача облика или основног типског облика као референцу на спољашњу геометрију у телу.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="820"/>
@@ -3612,7 +3612,7 @@ click again to end selection</source>
     <message>
       <location filename="../../Command.cpp" line="1580"/>
       <source>%1 works only on parts.</source>
-      <translation>%1 ради cамо на телима.</translation>
+      <translation>%1 ради само на телима.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1590"/>
@@ -3728,7 +3728,7 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="489"/>
       <source>Please edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</source>
-      <translation>Уреди '%1' и редефинишите да бисте користили основну или помоћну раван као раван скице.</translation>
+      <translation>Уреди '%1' и редефиниши да би користио основну или помоћну раван као раван скице.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="551"/>
@@ -3813,7 +3813,7 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="270"/>
       <source>It is not possible to create a subtractive feature without a base feature available</source>
-      <translation>Није могуће применити типске облике које праве удубљења ако немате на располагању основни типски облик</translation>
+      <translation>Не можеш применити типске облике који праве удубљења ако немаш на располагању основни типски облик</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="287"/>
@@ -3842,9 +3842,9 @@ This may lead to unexpected results.</source>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</source>
-      <translation>Да бисте користили PartDesign, потребно вам је активно тело у документу. Активирајте једно (двоструки клик) или га направите.
+      <translation>Да би користио PartDesign, потребно је активно тело у документу. Активирај једно (двоструки клик) или га направи.
 
-Ако имате наслеђени документ са PartDesign објектима без тела, користите функцију миграције у PartDesign-у да бисте их ставили у тело.</translation>
+Ако имаш наслеђени документ са PartDesign објектима без тела, користи функцију миграције у PartDesign-у да би их ставио у тело.</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="169"/>
@@ -3854,7 +3854,7 @@ If you have a legacy document with PartDesign objects without Body, use the migr
     <message>
       <location filename="../../Utils.cpp" line="170"/>
       <source>To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</source>
-      <translation>Да бисте направили нови Part Design објекат, у документу мора постојати активно тело. Активирајте једно (двоструки клик) или га направите.</translation>
+      <translation>Да би направио нови Part Design објекат, у документу мора постојати активно тело. Активирај једно (двоструки клик) или га направи.</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="205"/>
@@ -3864,7 +3864,7 @@ If you have a legacy document with PartDesign objects without Body, use the migr
     <message>
       <location filename="../../Utils.cpp" line="206"/>
       <source>In order to use this feature it needs to belong to a body object in the document.</source>
-      <translation>Да бисте користили овај типски облик, он мора да припада телу у документу.</translation>
+      <translation>Да би користио овај типски облик, он мора да припада телу у документу.</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="238"/>
@@ -3874,7 +3874,7 @@ If you have a legacy document with PartDesign objects without Body, use the migr
     <message>
       <location filename="../../Utils.cpp" line="239"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
-      <translation>Да бисте користили овај типски облик, он мора да припада делу у документу.</translation>
+      <translation>Да би користио овај типски облик, он мора да припада делу у документу.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDressUp.cpp" line="50"/>
@@ -4008,12 +4008,12 @@ This feature is broken and can't be edited.</source>
     <message>
       <location filename="../../WorkflowManager.cpp" line="138"/>
       <source>The document "%1" you are editing was designed with an old version of PartDesign workbench.</source>
-      <translation>Документ „%1“ који уређујете је направњен са старом верзијом Part Design радног окружења.</translation>
+      <translation>Документ „%1“ који уређујеш је направљен са старом верзијом Part Design радног окружења.</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="141"/>
       <source>Do you want to migrate in order to use modern PartDesign features?</source>
-      <translation>Да ли желите да мигрирате да бисте користили модерне функције Part Design радног окружења?</translation>
+      <translation>Да ли желиш да мигрираш да би користио модерне функције Part Design радног окружења?</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="144"/>
@@ -4023,16 +4023,16 @@ This feature is broken and can't be edited.</source>
     <message>
       <location filename="../../WorkflowManager.cpp" line="148"/>
       <source>Do you want to make the migration automatically?</source>
-      <translation>Да ли желите да извршите миграцију аутоматски?</translation>
+      <translation>Да ли желиш да извршиш миграцију аутоматски?</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="150"/>
       <source>Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design -&gt; Migrate'.</source>
-      <translation>Напомена: Ако одлучите да мигрирате, нећете моћи да уређујете датотеку са старијим верзијама FreeCAD-а.
-Ако одбијете да мигрирате, нећете моћи да користите нове функције PartDesign-а као што су тела и делови. Као резултат тога, такође нећете моћи да користите своје делове у Ассемблз радном окружењу.
-Мада моћи ћете Part Designда мигрирате у било ком тренутку касније помоћу 'Part Design -&gt; Миграција'.</translation>
+      <translation>Напомена: Ако одлучиш да мигрираш, нећеш моћи да уређујеш датотеку са старијим верзијама FreeCAD-а.
+Ако одбијеш да мигрираш, нећеш моћи да користиш нове функције PartDesign-а као што су тела и делови. Као резултат тога, такође нећеш моћи да користиш своје делове у Assembly радном окружењу.
+Мада моћи ћеш Part Design да мигрираш у било ком тренутку касније помоћу 'Part Design -&gt; Миграција'.</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="159"/>
@@ -4265,7 +4265,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="137"/>
       <source>Type</source>
-      <translation>Тип</translation>
+      <translation>Врста</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="145"/>
@@ -4404,7 +4404,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
       <source>Live update of changes to the thread
 Note that the calculation can take some time</source>
       <translation>Ажурирање промена на навоју у реалном времену
-Имајте на уму да прорачун може потрајати</translation>
+Имај на уму да прорачун може потрајати</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="95"/>
@@ -4461,32 +4461,32 @@ Only available for holes without thread</source>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="251"/>
-      <location filename="../../TaskHoleParameters.cpp" line="591"/>
+      <location filename="../../TaskHoleParameters.cpp" line="618"/>
       <source>Standard</source>
       <translation>Стандард</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="256"/>
-      <location filename="../../TaskHoleParameters.cpp" line="592"/>
-      <location filename="../../TaskHoleParameters.cpp" line="603"/>
+      <location filename="../../TaskHoleParameters.cpp" line="619"/>
+      <location filename="../../TaskHoleParameters.cpp" line="630"/>
       <source>Close</source>
       <translation>Затвори</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="261"/>
-      <location filename="../../TaskHoleParameters.cpp" line="593"/>
+      <location filename="../../TaskHoleParameters.cpp" line="620"/>
       <source>Wide</source>
       <translation>Широк</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="275"/>
       <source>Class</source>
-      <translation>Klasa</translation>
+      <translation>Класа</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="288"/>
       <source>Tolerance class for threaded holes according to hole profile</source>
-      <translation>Класа толеранције за рупе са навојем spram профилa рупе</translation>
+      <translation>Класа толеранције за рупе са навојем спрам профила рупе</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="301"/>
@@ -4540,7 +4540,7 @@ Only available for holes without thread</source>
       <location filename="../../TaskHoleParameters.ui" line="446"/>
       <location filename="../../TaskHoleParameters.ui" line="609"/>
       <source>Type</source>
-      <translation>Тип</translation>
+      <translation>Врста</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="459"/>
@@ -4550,7 +4550,7 @@ Only available for holes without thread</source>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="472"/>
       <source>Check to override the values predefined by the 'Type'</source>
-      <translation>Означите да бисте sopstvenim vrednostima заменили вредности унапред дефинисане sa 'Тип'</translation>
+      <translation>Означи да би сопственим вредностима заменио вредности унапред дефинисане са 'Тип'</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="475"/>
@@ -4606,7 +4606,7 @@ account for the depth of blind holes</translation>
 under 90: smaller hole radius at the bottom
 over 90: larger hole radius at the bottom</source>
       <translation>Угао конусне рупе
-90 degree: права рупа
+90 степени: права рупа
 испод 90: мањи полупречник рупе на дну
 изнад 90: већи полупречник рупе на дну</translation>
     </message>
@@ -4621,12 +4621,12 @@ over 90: larger hole radius at the bottom</source>
       <translation>Обрнуто</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="602"/>
+      <location filename="../../TaskHoleParameters.cpp" line="629"/>
       <source>Normal</source>
       <translation>Обичне</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="604"/>
+      <location filename="../../TaskHoleParameters.cpp" line="631"/>
       <source>Loose</source>
       <translation type="unfinished">Loose</translation>
     </message>
@@ -4674,12 +4674,12 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
       <source>Apply a pattern</source>
-      <translation>Primeni uмножавање</translation>
+      <translation>Примени умножавање</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>Apply a dress-up feature</source>
-      <translation>Primeni tипске облике за кориговање</translation>
+      <translation>Примени типске облике за кориговање</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
@@ -4803,7 +4803,7 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../../WizardShaft/WizardShaft.py" line="187"/>
       <location filename="../../../WizardShaft/WizardShaft.py" line="212"/>
       <source>Start the shaft design wizard</source>
-      <translation>Покрените чаробњака за прорачун вратила</translation>
+      <translation>Покрени чаробњака за прорачун вратила</translation>
     </message>
   </context>
 </TS>

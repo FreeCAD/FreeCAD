@@ -281,7 +281,7 @@
     <message>
       <location filename="../panels/DlgSelectPostProcessor.ui" line="42"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select one of the post processors.&lt;/p&gt;&lt;p&gt;FreeCAD comes with several post processors pre-installed, please make sure at least one of them is enabled in your preferences.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Изаберите један од постпроцесора.&lt;/p&gt;&lt;p&gt;FreeCAD долази са неколико већ инсталираних претпроцесора, молим вас будите сигурни да је најмање један омогућен и вашим подешавањима.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Изабери један од постпроцесора.&lt;/p&gt;&lt;p&gt;FreeCAD долази са неколико већ инсталираних претпроцесора, буди сигуран да је најмање један омогућен у подешавањима.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="14"/>
@@ -381,7 +381,7 @@
     <message>
       <location filename="../panels/PropertyCreate.ui" line="58"/>
       <source>Type</source>
-      <translation>Тип</translation>
+      <translation>Врста</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="65"/>
@@ -639,7 +639,7 @@
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="182"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Radius of the Cylinder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Radius of the Cylinder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Полупречник цилиндра.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="189"/>
@@ -650,7 +650,7 @@
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="196"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Height of the Cylinder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Height of the Cylinder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Висина цилиндра.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="209"/>
@@ -660,7 +660,7 @@
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="216"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Length of the Box.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Length of the Box.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Дужина кутије.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="223"/>
@@ -670,12 +670,12 @@
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="230"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Width of the Box.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Width of the Box.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ширина кутије.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="244"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Height of the Box.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Height of the Box.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Висина кутије.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="257"/>
@@ -1106,7 +1106,7 @@
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="255"/>
       <source>Stop</source>
-      <translation>Cтоп</translation>
+      <translation>Заустави</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="131"/>
@@ -1137,7 +1137,7 @@
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="188"/>
       <source>W =</source>
-      <translation type="unfinished">W =</translation>
+      <translation>W =</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="195"/>
@@ -1348,7 +1348,7 @@
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="139"/>
       <source>Disable</source>
-      <translation>Онемогућите</translation>
+      <translation>Онемогући</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="146"/>
@@ -1403,7 +1403,7 @@
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="134"/>
       <source>Spiral</source>
-      <translation>Cпирала</translation>
+      <translation>Спирала</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="139"/>
@@ -1998,7 +1998,7 @@
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="52"/>
       <location filename="../panels/ToolEditor.ui" line="43"/>
       <source>Type</source>
-      <translation>Тип</translation>
+      <translation>Врста</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="65"/>
@@ -2264,7 +2264,7 @@
     <message>
       <location filename="../preferences/PathJob.ui" line="32"/>
       <source>General</source>
-      <translation>Општo</translation>
+      <translation>Опште</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="38"/>
@@ -2513,7 +2513,7 @@
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="14"/>
       <source>GUI</source>
-      <translation type="unfinished">GUI</translation>
+      <translation>GUI</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="23"/>
@@ -3268,7 +3268,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="38"/>
       <source>Stop</source>
-      <translation>Cтоп</translation>
+      <translation>Заустави</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="55"/>
@@ -3396,7 +3396,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="99"/>
       <source>path</source>
-      <translation>Путања</translation>
+      <translation>путања</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="106"/>
@@ -3477,7 +3477,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="21"/>
       <source>General</source>
-      <translation>Општo</translation>
+      <translation>Опште</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="39"/>
@@ -3720,7 +3720,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="697"/>
       <source>Link Stock and Model</source>
-      <translation>Повежите припремак и модел</translation>
+      <translation>Повежи припремак и модел</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="707"/>

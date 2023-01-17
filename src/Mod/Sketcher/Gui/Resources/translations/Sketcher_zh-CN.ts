@@ -421,7 +421,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="1899"/>
       <source>Create a coincident constraint between points, or a concentric constraint between circles, arcs, and ellipses</source>
-      <translation type="unfinished">Create a coincident constraint between points, or a concentric constraint between circles, arcs, and ellipses</translation>
+      <translation>在点之间创建重合约束，或在圆、弧和椭圆之间的同心约束</translation>
     </message>
   </context>
   <context>
@@ -579,7 +579,7 @@ on the selected vertex</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5315"/>
       <source>Fix the diameter if a circle is chosen, or the radius if an arc/spline pole is chosen</source>
-      <translation type="unfinished">Fix the diameter if a circle is chosen, or the radius if an arc/spline pole is chosen</translation>
+      <translation>如果选中了圆，则固定直径，如果选中了圆弧/样条 极点，则固定半径</translation>
     </message>
   </context>
   <context>
@@ -1194,14 +1194,14 @@ with respect to a line or a third point</source>
       <source>Set the 'Support' of a sketch.
 First select the supporting geometry, for example, a face or an edge of a solid object,
 then call this command, then choose the desired sketch.</source>
-      <translation type="unfinished">Set the 'Support' of a sketch.
-First select the supporting geometry, for example, a face or an edge of a solid object,
-then call this command, then choose the desired sketch.</translation>
+      <translation>设置草图的“支撑”。
+首先选择支撑几何结构，例如实体对象的面或边，
+然后调用此命令，再选择所需草图。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="555"/>
       <source>Some of the selected objects depend on the sketch to be mapped. Circular dependencies are not allowed.</source>
-      <translation type="unfinished">Some of the selected objects depend on the sketch to be mapped. Circular dependencies are not allowed.</translation>
+      <translation>某些选定对象依赖于要映射的草图。不允许循环依赖。</translation>
     </message>
   </context>
   <context>
@@ -1929,12 +1929,12 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../DrawSketchHandlerCircle.h" line="107"/>
       <location filename="../../DrawSketchHandlerCircle.h" line="280"/>
       <source>Add sketch circle</source>
-      <translation type="unfinished">Add sketch circle</translation>
+      <translation>添加草绘圆</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="732"/>
       <source>Add sketch ellipse</source>
-      <translation type="unfinished">Add sketch ellipse</translation>
+      <translation>添加草绘椭圆</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="262"/>
@@ -2005,7 +2005,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="438"/>
       <source>Convert to NURBS</source>
-      <translation type="unfinished">Convert to NURBS</translation>
+      <translation>转换为 NURBS</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="512"/>
@@ -2040,12 +2040,12 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="789"/>
       <source>Exposing Internal Geometry</source>
-      <translation type="unfinished">Exposing Internal Geometry</translation>
+      <translation>暴露内部几何元素</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="999"/>
       <source>Create symmetric geometry</source>
-      <translation type="unfinished">Create symmetric geometry</translation>
+      <translation>创建对称几何图形</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1153"/>
@@ -2132,12 +2132,12 @@ invalid constraints, degenerated geometry, etc.</source>
   <context>
     <name>CriticalMessages</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="8322"/>
+      <location filename="../../../App/SketchObject.cpp" line="8327"/>
       <source>Sketch:</source>
       <translation type="unfinished">Sketch:</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="8323"/>
+      <location filename="../../../App/SketchObject.cpp" line="8328"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!</source>
       <translation type="unfinished">Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!</translation>
     </message>
@@ -2180,59 +2180,59 @@ invalid constraints, degenerated geometry, etc.</source>
       <translation>自动约束错误: 应用相等约束后草图无法求解。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="1979"/>
+      <location filename="../../../App/SketchObject.cpp" line="1984"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>无法猜测曲线的交叉点。尝试在你打算做圆角的曲线顶点之间添加一个重合约束。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5860"/>
-      <location filename="../../../App/SketchObject.cpp" line="6034"/>
+      <location filename="../../../App/SketchObject.cpp" line="5865"/>
+      <location filename="../../../App/SketchObject.cpp" line="6039"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>贝赛尔样条几何图形索引(GeoID) 超出了界限。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5863"/>
+      <location filename="../../../App/SketchObject.cpp" line="5868"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>你被要求不对多重性节点做任何修改。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5868"/>
-      <location filename="../../../App/SketchObject.cpp" line="6042"/>
+      <location filename="../../../App/SketchObject.cpp" line="5873"/>
+      <location filename="../../../App/SketchObject.cpp" line="6047"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>提供的几何图形索引 (GeoId) 不是贝赛尔样条曲线</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5875"/>
+      <location filename="../../../App/SketchObject.cpp" line="5880"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>结指数超出界限。请注意, 按照 OCC 符号, 第一个节点的索引为1, 而不是0。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5882"/>
+      <location filename="../../../App/SketchObject.cpp" line="5887"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>无法重复增加到超过贝塞尔曲线的自由度。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5885"/>
+      <location filename="../../../App/SketchObject.cpp" line="5890"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>多重性不能小于0.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5897"/>
+      <location filename="../../../App/SketchObject.cpp" line="5902"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC 无法在最大公差范围内减少多重性。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6037"/>
+      <location filename="../../../App/SketchObject.cpp" line="6042"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation type="unfinished">Knot cannot have zero multiplicity.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6051"/>
+      <location filename="../../../App/SketchObject.cpp" line="6056"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
       <translation type="unfinished">Knot multiplicity cannot be higher than the degree of the BSpline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6054"/>
+      <location filename="../../../App/SketchObject.cpp" line="6059"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
       <translation>不能在B样条参数范围之外插入节点。</translation>
     </message>
@@ -2479,7 +2479,7 @@ invalid constraints, degenerated geometry, etc.</source>
       <translation>由于草图包含冲突的约束无法编辑基准</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="220"/>
+      <location filename="../../EditDatumDialog.cpp" line="222"/>
       <source>Dimensional constraint</source>
       <translation>尺寸约束</translation>
     </message>
