@@ -1188,6 +1188,23 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
                                 ccol = (ccol[0],ccol[1],ccol[2],t)
         return ccol
 
+    def getHingeEdgeIndices(self):
+
+        """returns a list of hinge edge indices (0-based)"""
+
+        # WindowParts example:
+        # ["OuterFrame", "Frame",       "Wire0,Wire1",             "100.0+V", "0.00+V",
+        #  "InnerFrame", "Frame",       "Wire2,Wire3,Edge8,Mode1", "100.0",   "100.0+V",
+        #  "InnerGlass", "Glass panel", "Wire3",                   "10.0",    "150.0+V"]
+
+        idxs = []
+        parts = self.Object.WindowParts
+        for i in range(len(parts) // 5):
+            for s in parts[(i * 5) + 2].split(","):
+                if "Edge" in s:
+                    idxs.append(int(s[4:]) - 1) # Edge indices in string are 1-based.
+        return idxs
+
     def setEdit(self, vobj, mode):
         if mode != 0:
             return None
@@ -1216,22 +1233,11 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         return True
 
     def setupContextMenu(self, vobj, menu):
-        # WindowParts example:
-        # ["OuterFrame", "Frame",       "Wire0,Wire1",             "100.0+V", "0.00+V",
-        #  "InnerFrame", "Frame",       "Wire2,Wire3,Edge8,Mode1", "100.0",   "100.0+V",
-        #  "InnerGlass", "Glass panel", "Wire3",                   "10.0",    "150.0+V"]
-
-        hasOpening = False
-        parts = self.Object.WindowParts
-        for i in range(len(parts) // 5):
-            wireData = parts[2 + (i * 5)]
-            if wireData.find("Edge") >= 0:
-                hasOpening = True
-                break
+        hingeIdxs = self.getHingeEdgeIndices()
 
         super().contextMenuAddEdit(menu)
 
-        if hasOpening:
+        if len(hingeIdxs) > 0:
             actionInvertOpening = QtGui.QAction(QtGui.QIcon(":/icons/Arch_Window_Tree.svg"),
                                                 translate("Arch", "Invert opening direction"),
                                                 menu)
@@ -1240,6 +1246,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
                                    self.invertOpening)
             menu.addAction(actionInvertOpening)
 
+        if len(hingeIdxs) == 1:
             actionInvertHinge = QtGui.QAction(QtGui.QIcon(":/icons/Arch_Window_Tree.svg"),
                                               translate("Arch", "Invert hinge position"),
                                               menu)
@@ -1259,9 +1266,24 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
 
     def invertHinge(self):
 
-        """swaps the hinges found in this window"""
+        """swaps the hinge edge of a single hinge edge window"""
 
-        pairs = [["Edge6","Edge8"],["Edge5","Edge7"]]
+        idxs = self.getHingeEdgeIndices()
+        if len(idxs) != 1:
+            return
+
+        idx = idxs[0]
+        end = 0
+        for wire in self.Object.Base.Shape.Wires:
+            sta = end
+            end += len(wire.Edges)
+            if sta <= idx < end:
+                new = idx + 2 # A rectangular wire is assumed.
+                if not (sta <= new < end):
+                    new = idx - 2
+                break
+
+        pairs = [["Edge" + str(idx + 1), "Edge" + str(new + 1)]]
         self.invertPairs(pairs)
         # Also invert opening direction, so the door still opens towards
         # the same side of the wall
