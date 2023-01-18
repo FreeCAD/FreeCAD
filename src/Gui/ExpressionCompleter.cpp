@@ -105,6 +105,24 @@ public:
     //
     // QModelIndex of a non-root property item has doc field as the document
     // index, and obj field as the object index.
+    //
+    // An item is uniquely identified by the pair (row, father_link) in the QModelIndex
+    // 
+    // The completion tree structure created takes into account the current document and object
+    //
+    // It is done as such, in order to have contextual completion (prop -> object -> files):
+    // * root (-1,-1)
+    // |
+    // |----- documents 
+    // |----- current documents' objects [externally set]
+    // |----- current objects' props  [externally set]
+    // 
+    // This complicates the decoding schema for the root, where the childcount will be
+    // doc.size() + current_doc.Objects.size() + current_obj.Props.size().
+    // 
+    // This is reflected in the complexity of the DATA function.
+    //
+
     union Info {
         struct {
             qint32 doc;
@@ -149,8 +167,25 @@ public:
         return v;
     }
 
+   // The completion tree structure created takes into account the current document and object
+    //
+    // It is done as such:
+    // * root (-1,-1)
+    // |
+    // |----- documents
+    // |----- current documents' objects [externally set]
+    // |----- current objects' props  [externally set]
+    //
+    // This complicates the decoding schema for the root, where the childcount will be
+    // doc.size() + current_doc.Objects.size() + current_obj.Props.size().
+    //
+    // this function is called in two modes: 
+    // - obtain the count of a node identified by Info,row => count != nullptr, v==nullptr
+    // - get the text of an item. This text will contain separators but NO full path
     void _data(const Info &info, int row, QVariant *v, int *count, bool sep=false) const {
         int idx;
+        // identify the document index. For any children of the root, it is given by traversing
+        // the flat list and identified by [row]
         idx = info.d.doc<0?row:info.d.doc;
         const auto &docs = App::GetApplication().getDocuments();
         int docSize = (int)docs.size()*2;
@@ -160,46 +195,72 @@ public:
         App::Document *doc = nullptr;
         App::DocumentObject *obj = nullptr;
         const char *propName = nullptr;
+        // check if the document is uniquely identified: either the correct index in info.d.doc
+        // OR if, the node is a descendant of the root, its row lands within 0...docsize
         if(idx>=0 && idx<docSize)
             doc = docs[idx/2];
         else {
+            // if we're looking at the ROOT, or the row identifies one of the other ROOT elements
+            // |----- current documents' objects, rows: docs.size             ... docs.size + objs.size
+            // |----- current objects' props,     rows: docs.size + objs.size ... docs.size + objs.size+  props.size
+            //
+            // We need to process the ROOT so we get the correct count for its children
             doc = App::GetApplication().getDocument(currentDoc.c_str());
-            if(!doc)
+            if(!doc) // no current, there are no additional objects
                 return;
+
+            // move to the current documents' objects' range
             idx -= docSize;
             if(info.d.doc<0)
                 row = idx;
+
             const auto &objs = doc->getObjects();
             objSize = (int)objs.size()*2;
+            // if this is a valid object, we found our object and break.
+            // if not, this may be the root or one of current object's properties
             if(idx>=0 && idx<objSize) {
                 obj = objs[idx/2];
-                if(inList.count(obj))
+                // if they are in the ignore list skip
+                if(inList.count(obj)) 
                     return;
             } else if (!noProperty) {
+                // need to check the current object's props range, or we're parsing the ROOT
                 auto cobj = doc->getObject(currentObj.c_str());
                 if(cobj) {
+                    // move to the props range of the current object
                     idx -= objSize;
                     if(info.d.doc<0)
                         row = idx;
+                    // get the properties
                     cobj->getPropertyNamedList(props);
                     propSize = (int)props.size();
+
+                    // if this is an invalid index, bail out 
+                    // if it's the ROOT break! 
                     if(idx >= propSize)
                         return;
                     if(idx>=0) {
-                        obj = cobj;
+                        obj = cobj; // we only set the active object if we're not processing the root.
                         propName = props[idx].first;
                     }
                 }
             }
         }
+        // the item is the ROOT or a CHILD of the root
         if(info.d.doc<0) {
+            // and we're asking for a count, compute it
             if(count)
+                // note that if we're dealing with a valid DOC node (row>0, ROOT_info)
+                // objSize and propSize will be zero because of the early exit above
                 *count = docSize + objSize + propSize;
             if(idx>=0 && v) {
+                // we're asking for this child's data, and IT's NOT THE ROOT
                 QString res;
+                // we resolved the property
                 if(propName)
                     res = QString::fromLatin1(propName);
                 else if(obj) {
+                    // the object has been resolved, use the saved idx to figure out quotation or not.
                     if(idx & 1)
                         res = QString::fromUtf8(quote(obj->Label.getStrValue()).c_str());
                     else
@@ -207,6 +268,7 @@ public:
                     if(sep && !noProperty)
                         res += QLatin1Char('.');
                 } else {
+                    // the document has been resolved, use the saved idx to figure out quotation or not.
                     if(idx & 1)
                         res = QString::fromUtf8(quote(doc->Label.getStrValue()).c_str());
                     else
@@ -216,20 +278,27 @@ public:
                 }
                 v->setValue(res);
             }
+            // done processing the ROOT or any child items
             return;
         }
 
+        // object not resolved
         if(!obj) {
+            // are we pointing to an object item, or our father (info) is an object
             idx = info.d.obj<0?row:info.d.obj;
             const auto &objs = doc->getObjects();
             objSize = (int)objs.size()*2;
+            // if invalid index, or in the ignore list bail out
             if(idx<0 || idx>=objSize || inList.count(obj))
                 return;
             obj = objs[idx/2];
+
             if(info.d.obj<0) {
+                // if this is AN actual Object item and not a root 
                 if(count)
-                    *count = objSize;
+                    *count = objSize; // set the correct count if requested
                 if(v) {
+                    // resolve the name
                     QString res;
                     if(idx&1)
                         res = QString::fromUtf8(quote(obj->Label.getStrValue()).c_str());
@@ -246,14 +315,21 @@ public:
         if(noProperty)
             return;
         if(!propName) {
+            // try to resolve the property; it's always a child
             idx = row;
             obj->getPropertyNamedList(props);
             propSize = (int)props.size();
+
+            // set the property size count
+            if (count) {
+                *count = propSize;
+            }
+            // return if the property is invalid
             if(idx<0 || idx>=propSize)
                 return;
+            // resolve property name
             propName = props[idx].first;
-            if(count)
-                *count = propSize;
+            
         }
         if(v)
             *v = QString::fromLatin1(propName);
@@ -263,9 +339,11 @@ public:
     QModelIndex parent(const QModelIndex & index) const override {
         if(!index.isValid())
             return QModelIndex();
+        
         Info info;
         Info parentInfo;
         info = parentInfo = getInfo(index);
+
         if(info.d.obj>=0) {
             parentInfo.d.obj = -1;
             return createIndex(info.d.obj,0,infoId(parentInfo));
@@ -282,6 +360,7 @@ public:
             return QModelIndex();
         Info info;
         if(!parent.isValid()) {
+            // this index's parent is the ROOT.
             info.d.doc = -1;
             info.d.obj = -1;
         }else{
@@ -300,6 +379,7 @@ public:
         Info info;
         int row = 0;
         if(!parent.isValid()) {
+            // root.
             info.d.doc = -1;
             info.d.obj = -1;
             row = -1;
