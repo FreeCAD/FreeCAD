@@ -468,9 +468,9 @@ ConstraintPointOnBSpline::ConstraintPointOnBSpline(double* point, double* initpa
     : bsp(b)
 {
     // This is always going to be true
-    numpoints = b.degree + 1;
+    numpoints = bsp.degree + 1;
 
-    pvec.reserve(2 + b.degree + 1);
+    pvec.reserve(2 + 2*numpoints);
     pvec.push_back(point);
     pvec.push_back(initparam);
 
@@ -479,23 +479,22 @@ ConstraintPointOnBSpline::ConstraintPointOnBSpline(double* point, double* initpa
     // find relevant poles
     startpole = 0;
     // TODO: Adjust for periodic knot
-    for (size_t j = 1; j < b.mult.size() && *(b.knots[j]) <= *initparam; ++j)
-        startpole += b.mult[j];
-    if (!b.periodic && startpole >= b.poles.size())
-        startpole = b.poles.size() - 1;
+    for (size_t j = 1; j < bsp.mult.size() && *(bsp.knots[j]) <= *initparam; ++j)
+        startpole += bsp.mult[j];
+    if (!bsp.periodic && startpole >= bsp.poles.size())
+        startpole = bsp.poles.size() - bsp.degree - 1;
 
     for (size_t i = 0; i < numpoints; ++i) {
         if (coordidx == 0)
-            pvec.push_back(b.poles[(startpole + i) % b.poles.size()].x);
+            pvec.push_back(bsp.poles[(startpole + i) % bsp.poles.size()].x);
         else
-            pvec.push_back(b.poles[(startpole + i) % b.poles.size()].y);
+            pvec.push_back(bsp.poles[(startpole + i) % bsp.poles.size()].y);
     }
     for (size_t i = 0; i < numpoints; ++i)
-        pvec.push_back(b.weights[(startpole + i) % b.weights.size()]);
+        pvec.push_back(bsp.weights[(startpole + i) % bsp.weights.size()]);
 
-    factors.resize(numpoints);
-    if (b.flattenedknots.empty())
-        b.setupFlattenedKnots();
+    if (bsp.flattenedknots.empty())
+        bsp.setupFlattenedKnots();
 
     origpvec = pvec;
     rescale();
@@ -560,12 +559,12 @@ double ConstraintPointOnBSpline::grad(double *gcsparam)
 
     for (size_t i = 0; i < numpoints; ++i) {
         if (gcsparam == poleat(i)) {
-            factors[i] = bsp.getLinCombFactor(*theparam(), startpole + bsp.degree, startpole + i);
-            deriv += -(*weightat(i) * factors[i]);
+            auto factorsI = bsp.getLinCombFactor(*theparam(), startpole + bsp.degree, startpole + i);
+            deriv += -(*weightat(i) * factorsI);
         }
         if (gcsparam == weightat(i)) {
-            factors[i] = bsp.getLinCombFactor(*theparam(), startpole + bsp.degree, startpole + i);
-            deriv += (*thepoint() - *poleat(i)) * factors[i];
+            auto factorsI = bsp.getLinCombFactor(*theparam(), startpole + bsp.degree, startpole + i);
+            deriv += (*thepoint() - *poleat(i)) * factorsI;
         }
     }
 

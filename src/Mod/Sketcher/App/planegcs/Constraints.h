@@ -251,7 +251,6 @@ namespace GCS
         double error() override;
         double grad(double *) override;
         void setupInputs();
-        std::vector<double> factors;
         size_t numpoints;
         BSpline& bsp;
         unsigned int startpole;
