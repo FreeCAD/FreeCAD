@@ -240,8 +240,9 @@ namespace GCS
         inline double* thepoint() { return pvec[0]; }
         // TODO: better name because param has a different meaning here?
         inline double* theparam() { return pvec[1]; }
-        inline double* poleat(size_t i) { return pvec[2 + i]; }
-        inline double* weightat(size_t i) { return pvec[2 + numpoints + i]; }
+        inline double* poleat(size_t i) { return pvec[2 + (startpole + i) % bsp.poles.size()]; }
+        inline double* weightat(size_t i) { return pvec[2 + bsp.poles.size() + (startpole + i) % bsp.weights.size()]; }
+        void setStartPole(double u);
     public:
         /// TODO: Explain how it's provided
         /// coordidx = 0 if x, 1 if y

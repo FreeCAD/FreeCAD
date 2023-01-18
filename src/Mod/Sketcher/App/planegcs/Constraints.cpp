@@ -470,28 +470,20 @@ ConstraintPointOnBSpline::ConstraintPointOnBSpline(double* point, double* initpa
     // This is always going to be true
     numpoints = bsp.degree + 1;
 
-    pvec.reserve(2 + 2*numpoints);
+    pvec.reserve(2 + 2*b.poles.size());
     pvec.push_back(point);
     pvec.push_back(initparam);
 
-    // The startpole logic is repeated in a lot of places,
-    // for example in GCS and slope at knot
-    // find relevant poles
-    startpole = 0;
-    // TODO: Adjust for periodic knot
-    for (size_t j = 1; j < bsp.mult.size() && *(bsp.knots[j]) <= *initparam; ++j)
-        startpole += bsp.mult[j];
-    if (!bsp.periodic && startpole >= bsp.poles.size())
-        startpole = bsp.poles.size() - bsp.degree - 1;
+    setStartPole(*initparam);
 
-    for (size_t i = 0; i < numpoints; ++i) {
+    for (size_t i = 0; i < b.poles.size(); ++i) {
         if (coordidx == 0)
-            pvec.push_back(bsp.poles[(startpole + i) % bsp.poles.size()].x);
+            pvec.push_back(b.poles[i].x);
         else
-            pvec.push_back(bsp.poles[(startpole + i) % bsp.poles.size()].y);
+            pvec.push_back(b.poles[i].y);
     }
-    for (size_t i = 0; i < numpoints; ++i)
-        pvec.push_back(bsp.weights[(startpole + i) % bsp.weights.size()]);
+    for (size_t i = 0; i < b.weights.size(); ++i)
+        pvec.push_back(b.weights[i]);
 
     if (bsp.flattenedknots.empty())
         bsp.setupFlattenedKnots();
@@ -505,6 +497,18 @@ ConstraintType ConstraintPointOnBSpline::getTypeId()
     return PointOnBSpline;
 }
 
+void ConstraintPointOnBSpline::setStartPole(double u)
+{
+    // The startpole logic is repeated in a lot of places,
+    // for example in GCS and slope at knot
+    // find relevant poles
+    startpole = 0;
+    for (size_t j = 1; j < bsp.mult.size() && *(bsp.knots[j]) <= u; ++j)
+        startpole += bsp.mult[j];
+    if (!bsp.periodic && startpole >= bsp.poles.size())
+        startpole = bsp.poles.size() - bsp.degree - 1;
+}
+
 void ConstraintPointOnBSpline::rescale(double coef)
 {
     scale = coef * 1.0;
@@ -512,6 +516,10 @@ void ConstraintPointOnBSpline::rescale(double coef)
 
 double ConstraintPointOnBSpline::error()
 {
+    if (*theparam() < bsp.flattenedknots[startpole + bsp.degree] ||
+        *theparam() > bsp.flattenedknots[startpole + bsp.degree + 1])
+        setStartPole(*theparam());
+
     double sum = 0;
     double wsum = 0;
 
