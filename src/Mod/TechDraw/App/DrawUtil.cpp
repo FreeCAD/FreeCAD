@@ -22,39 +22,39 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <cmath>
-# include <cstdlib>
-# include <cstring>
-# include <sstream>
+#include <cmath>
+#include <cstdlib>
+#include <cstring>
+#include <sstream>
 
-# include <boost_regex.hpp>
+#include <boost_regex.hpp>
 
-# include <QChar>
-# include <QPointF>
-# include <QString>
+#include <QChar>
+#include <QPointF>
+#include <QString>
 
-# include <BRep_Builder.hxx>
-# include <BRep_Tool.hxx>
-# include <BRepAdaptor_Curve.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <BRepBndLib.hxx>
-# include <BRepBuilderAPI_MakeEdge.hxx>
-# include <BRepExtrema_DistShapeShape.hxx>
-# include <BRepLProp_CLProps.hxx>
-# include <BRepLProp_CurveTool.hxx>
-# include <BRepLProp_SLProps.hxx>
-# include <BRepTools.hxx>
-# include <GCPnts_AbscissaPoint.hxx>
-# include <GeomAPI_ExtremaCurveCurve.hxx>
-# include <gp_Ax3.hxx>
-# include <gp_Dir.hxx>
-# include <gp_Elips.hxx>
-# include <gp_Pnt.hxx>
-# include <gp_Vec.hxx>
-# include <Precision.hxx>
-# include <TopExp.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
+#include <BRepAdaptor_Curve.hxx>
+#include <BRepAdaptor_Surface.hxx>
+#include <BRepBndLib.hxx>
+#include <BRepBuilderAPI_MakeEdge.hxx>
+#include <BRepExtrema_DistShapeShape.hxx>
+#include <BRepLProp_CLProps.hxx>
+#include <BRepLProp_CurveTool.hxx>
+#include <BRepLProp_SLProps.hxx>
+#include <BRepTools.hxx>
+#include <BRep_Builder.hxx>
+#include <BRep_Tool.hxx>
+#include <GCPnts_AbscissaPoint.hxx>
+#include <GeomAPI_ExtremaCurveCurve.hxx>
+#include <Precision.hxx>
+#include <TopExp.hxx>
+#include <TopExp_Explorer.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
+#include <gp_Ax3.hxx>
+#include <gp_Dir.hxx>
+#include <gp_Elips.hxx>
+#include <gp_Pnt.hxx>
+#include <gp_Vec.hxx>
 #endif
 
 #include <App/Application.h>
@@ -72,7 +72,7 @@
 
 using namespace TechDraw;
 
-/*static*/ int DrawUtil::getIndexFromName(std::string geomName)
+/*static*/ int DrawUtil::getIndexFromName(const std::string& geomName)
 {
     //   Base::Console().Message("DU::getIndexFromName(%s)\n", geomName.c_str());
     boost::regex re("\\d+$");// one of more digits at end of string
@@ -81,8 +81,9 @@ using namespace TechDraw;
     //   char* endChar;
     std::string::const_iterator begin = geomName.begin();
     auto pos = geomName.rfind('.');
-    if (pos != std::string::npos)
+    if (pos != std::string::npos) {
         begin += pos + 1;
+    }
     std::string::const_iterator end = geomName.end();
     std::stringstream ErrorMsg;
 
@@ -93,39 +94,38 @@ using namespace TechDraw;
 
     if (boost::regex_search(begin, end, what, re, flags)) {
         return int(std::stoi(what.str()));
-    }
-    else {
+    } else {
         ErrorMsg << "getIndexFromName: malformed geometry name - " << geomName;
         throw Base::ValueError(ErrorMsg.str());
     }
 }
 
-std::string DrawUtil::getGeomTypeFromName(std::string geomName)
+std::string DrawUtil::getGeomTypeFromName(const std::string& geomName)
 {
+    if (geomName.empty()) {
+        throw Base::ValueError("getGeomTypeFromName - empty geometry name");
+    }
+
     boost::regex re("^[a-zA-Z]*");//one or more letters at start of string
     boost::match_results<std::string::const_iterator> what;
     boost::match_flag_type flags = boost::match_default;
     std::string::const_iterator begin = geomName.begin();
     auto pos = geomName.rfind('.');
-    if (pos != std::string::npos)
+    if (pos != std::string::npos) {
         begin += pos + 1;
+    }
     std::string::const_iterator end = geomName.end();
     std::stringstream ErrorMsg;
 
-    if (geomName.empty()) {
-        throw Base::ValueError("getGeomTypeFromName - empty geometry name");
-    }
-
     if (boost::regex_search(begin, end, what, re, flags)) {
         return what.str();//TODO: use std::stoi() in c++11
-    }
-    else {
+    } else {
         ErrorMsg << "In getGeomTypeFromName: malformed geometry name - " << geomName;
         throw Base::ValueError(ErrorMsg.str());
     }
 }
 
-std::string DrawUtil::makeGeomName(std::string geomType, int index)
+std::string DrawUtil::makeGeomName(const std::string& geomType, int index)
 {
     std::stringstream newName;
     newName << geomType << index;
@@ -170,8 +170,7 @@ double DrawUtil::simpleMinDist(TopoDS_Shape s1, TopoDS_Shape s2)
     int count = extss.NbSolution();
     if (count != 0) {
         return extss.Value();
-    }
-    else {
+    } else {
         return -1;
     }
 }
@@ -187,8 +186,7 @@ double DrawUtil::angleWithX(TopoDS_Edge e, bool reverse)
     Base::Vector3d u;
     if (reverse) {
         u = start - end;
-    }
-    else {
+    } else {
         u = end - start;
     }
     double result = atan2(u.y, u.x);
@@ -207,11 +205,9 @@ double DrawUtil::angleWithX(TopoDS_Edge e, TopoDS_Vertex v, double tolerance)
     BRepAdaptor_Curve adapt(e);
     if (isFirstVert(e, v, tolerance)) {
         param = adapt.FirstParameter();
-    }
-    else if (isLastVert(e, v, tolerance)) {
+    } else if (isLastVert(e, v, tolerance)) {
         param = adapt.LastParameter();
-    }
-    else {
+    } else {
         //TARFU
         Base::Console().Message("Error: DU::angleWithX - v is neither first nor last \n");
     }
@@ -240,19 +236,17 @@ double DrawUtil::incidenceAngleAtVertex(TopoDS_Edge e, TopoDS_Vertex v, double t
     int noTangents = 0;
     if (isFirstVert(e, v, tolerance)) {
         vertexParam = adapt.FirstParameter();
-        BRepLProp_CLProps prop(adapt, vertexParam + paramOffset, noTangents,
-                               Precision::Confusion());
+        BRepLProp_CLProps prop(
+            adapt, vertexParam + paramOffset, noTangents, Precision::Confusion());
         const gp_Pnt& gOffsetPoint = prop.Value();
         offsetPoint = Base::Vector3d(gOffsetPoint.X(), gOffsetPoint.Y(), gOffsetPoint.Z());
-    }
-    else if (isLastVert(e, v, tolerance)) {
+    } else if (isLastVert(e, v, tolerance)) {
         vertexParam = adapt.LastParameter();
-        BRepLProp_CLProps prop(adapt, vertexParam - paramOffset, noTangents,
-                               Precision::Confusion());
+        BRepLProp_CLProps prop(
+            adapt, vertexParam - paramOffset, noTangents, Precision::Confusion());
         const gp_Pnt& gOffsetPoint = prop.Value();
         offsetPoint = Base::Vector3d(gOffsetPoint.X(), gOffsetPoint.Y(), gOffsetPoint.Z());
-    }
-    else {
+    } else {
         //TARFU
         //        Base::Console().Message("DU::incidenceAngle - v is neither first nor last \n");
     }
@@ -306,16 +300,14 @@ DrawUtil::boxIntersect2d(Base::Vector3d point, Base::Vector3d dirIn, double xRan
     if (DrawUtil::fpCompare(dir.x, 0.0)) {//vertical case
         p1 = Base::Vector3d(point.x, point.y - (yRange / 2.0), 0.0);
         p2 = Base::Vector3d(point.x, point.y + (yRange / 2.0), 0.0);
-    }
-    else {
+    } else {
         double slope = dir.y / dir.x;
         double left = -xRange / 2.0;
         double right = xRange / 2.0;
         if (DrawUtil::fpCompare(slope, 0.0)) {//horizontal case
             p1 = Base::Vector3d(point.x - (xRange / 2.0), point.y);
             p2 = Base::Vector3d(point.x + (xRange / 2.0), point.y);
-        }
-        else {//normal case
+        } else {//normal case
             double top = yRange / 2.0;
             double bottom = -yRange / 2.0;
             double yLeft = point.y - slope * (point.x - left);
@@ -325,21 +317,17 @@ DrawUtil::boxIntersect2d(Base::Vector3d point, Base::Vector3d dirIn, double xRan
 
             if ((bottom < yLeft) && (top > yLeft)) {
                 p1 = Base::Vector3d(left, yLeft);
-            }
-            else if (yLeft <= bottom) {
+            } else if (yLeft <= bottom) {
                 p1 = Base::Vector3d(xBottom, bottom);
-            }
-            else if (yLeft >= top) {
+            } else if (yLeft >= top) {
                 p1 = Base::Vector3d(xTop, top);
             }
 
             if ((bottom < yRight) && (top > yRight)) {
                 p2 = Base::Vector3d(right, yRight);
-            }
-            else if (yRight <= bottom) {
+            } else if (yRight <= bottom) {
                 p2 = Base::Vector3d(xBottom, bottom);
-            }
-            else if (yRight >= top) {
+            } else if (yRight >= top) {
                 p2 = Base::Vector3d(xTop, top);
             }
         }
@@ -388,8 +376,8 @@ bool DrawUtil::apparentIntersection(TopoDS_Edge& edge0, TopoDS_Edge& edge1, gp_P
     gp_Vec D(gStart1.XYZ());
     gp_Vec e(gEnd0.XYZ() - gStart0.XYZ());//direction of line0
     gp_Vec f(gEnd1.XYZ() - gStart1.XYZ());//direction of line1
-    Base::Console().Message("DU::apparentInter - e: %s  f: %s\n", formatVector(e).c_str(),
-                            formatVector(f).c_str());
+    Base::Console().Message(
+        "DU::apparentInter - e: %s  f: %s\n", formatVector(e).c_str(), formatVector(f).c_str());
 
     //check for cases the algorithm doesn't handle well
     gp_Vec C1(gEnd0.XYZ());
@@ -404,8 +392,10 @@ bool DrawUtil::apparentIntersection(TopoDS_Edge& edge0, TopoDS_Edge& edge1, gp_P
     }
 
     gp_Vec g(D - C);//between a point on each line
-    Base::Console().Message("DU::apparentInter - C: %s  D: %s  g: %s\n", formatVector(C).c_str(),
-                            formatVector(D).c_str(), formatVector(g).c_str());
+    Base::Console().Message("DU::apparentInter - C: %s  D: %s  g: %s\n",
+                            formatVector(C).c_str(),
+                            formatVector(D).c_str(),
+                            formatVector(g).c_str());
 
     gp_Vec fxg = f.Crossed(g);
     double h = fxg.Magnitude();
@@ -527,11 +517,9 @@ bool DrawUtil::vectorLess(const Base::Vector3d& v1, const Base::Vector3d& v2)
     if ((v1 - v2).Length() > EWTOLERANCE) {//ie v1 != v2
         if (!DrawUtil::fpCompare(v1.x, v2.x, 2.0 * EWTOLERANCE)) {
             return (v1.x < v2.x);
-        }
-        else if (!DrawUtil::fpCompare(v1.y, v2.y, 2.0 * EWTOLERANCE)) {
+        } else if (!DrawUtil::fpCompare(v1.y, v2.y, 2.0 * EWTOLERANCE)) {
             return (v1.y < v2.y);
-        }
-        else {
+        } else {
             return (v1.z < v2.z);
         }
     }
@@ -800,17 +788,34 @@ double DrawUtil::sensibleScale(double working_scale)
     working_scale *= std::pow(10, -exponent);              //now find what 'a' is.
 
     //int choices = 10;
-    float valid_scales[2][10] = {{1.0, 1.25, 2.0, 2.5, 3.75, 5.0, 7.5, 10.0, 50.0,
+    float valid_scales[2][10] = {{1.0,
+                                  1.25,
+                                  2.0,
+                                  2.5,
+                                  3.75,
+                                  5.0,
+                                  7.5,
+                                  10.0,
+                                  50.0,
                                   100.0},//equate to 1:10, 1:8, 1:5, 1:4, 3:8, 1:2, 3:4, 1:1
                                          //          .1   .125            .375      .75
-                                 {1.0, 1.5, 2.0, 3.0, 4.0, 5.0, 8.0, 10.0, 50.0,
+                                 {1.0,
+                                  1.5,
+                                  2.0,
+                                  3.0,
+                                  4.0,
+                                  5.0,
+                                  8.0,
+                                  10.0,
+                                  50.0,
                                   100.0}};//equate to 1:1, 3:2, 2:1, 3:1, 4:1, 5:1, 8:1, 10:1
                                           //              1.5:1
     //int i = choices - 1;
     int i = 9;
     while (valid_scales[(exponent >= 0)][i]
-           > working_scale)//choose closest value smaller than 'a' from list.
-        i -= 1;            //choosing top list if exponent -ve, bottom list for +ve exponent
+           > working_scale) {//choose closest value smaller than 'a' from list.
+        i -= 1;              //choosing top list if exponent -ve, bottom list for +ve exponent
+    }
 
     //now have the appropriate scale, reapply the *10^b
     return valid_scales[(exponent >= 0)][i] * pow(10, exponent);
@@ -898,9 +903,15 @@ TopoDS_Shape DrawUtil::shapeFromString(std::string s)
     return result;
 }
 
-Base::Vector3d DrawUtil::invertY(Base::Vector3d v) { return Base::Vector3d(v.x, -v.y, v.z); }
+Base::Vector3d DrawUtil::invertY(Base::Vector3d v)
+{
+    return Base::Vector3d(v.x, -v.y, v.z);
+}
 
-QPointF DrawUtil::invertY(QPointF v) { return QPointF(v.x(), -v.y()); }
+QPointF DrawUtil::invertY(QPointF v)
+{
+    return QPointF(v.x(), -v.y());
+}
 
 
 //obs? was used in CSV prototype of Cosmetics
@@ -1014,15 +1025,13 @@ bool DrawUtil::isCrazy(TopoDS_Edge e)
     if (adapt.GetType() == GeomAbs_BSplineCurve && distance > 0.001 &&// not a closed loop
         ratio > 9999.9) {                                             // 10, 000x
         return true;                                                  //this is crazy edge
-    }
-    else if (adapt.GetType() == GeomAbs_Ellipse) {
+    } else if (adapt.GetType() == GeomAbs_Ellipse) {
         gp_Elips ellp = adapt.Ellipse();
         double major = ellp.MajorRadius();
         double minor = ellp.MinorRadius();
         if (minor < 0.001) {//too narrow
             return true;
-        }
-        else if (major > 9999.9) {//too big
+        } else if (major > 9999.9) {//too big
             return true;
         }
     }
@@ -1049,10 +1058,11 @@ Base::Vector3d DrawUtil::getFaceCenter(TopoDS_Face f)
 // test the circulation of the triangle A-B-C
 bool DrawUtil::circulation(Base::Vector3d A, Base::Vector3d B, Base::Vector3d C)
 {
-    if (A.x * B.y + A.y * C.x + B.x * C.y - C.x * B.y - C.y * A.x - B.x * A.y > 0.0)
+    if (A.x * B.y + A.y * C.x + B.x * C.y - C.x * B.y - C.y * A.x - B.x * A.y > 0.0) {
         return true;
-    else
+    } else {
         return false;
+    }
 }
 
 int DrawUtil::countSubShapes(TopoDS_Shape shape, TopAbs_ShapeEnum subShape)
@@ -1121,8 +1131,9 @@ std::list<TopoDS_Edge> DrawUtil::sort_Edges(double tol3d, std::list<TopoDS_Edge>
         edge_points.push_back(ep);
     }
 
-    if (edge_points.empty())
+    if (edge_points.empty()) {
         return std::list<TopoDS_Edge>();
+    }
 
     std::list<TopoDS_Edge> sorted;
     gp_Pnt gpChainFirst, gpChainLast;
@@ -1145,8 +1156,7 @@ std::list<TopoDS_Edge> DrawUtil::sort_Edges(double tol3d, std::list<TopoDS_Edge>
                 edge_points.erase(itEdgePoint);
                 itEdgePoint = edge_points.begin();
                 break;
-            }
-            else if (itEdgePoint->v2.SquareDistance(gpChainFirst) <= tol3d) {
+            } else if (itEdgePoint->v2.SquareDistance(gpChainFirst) <= tol3d) {
                 //found a connection from start of chain to end of edge
                 gpChainFirst = itEdgePoint->v1;
                 sorted.push_front(itEdgePoint->edge);
@@ -1154,8 +1164,7 @@ std::list<TopoDS_Edge> DrawUtil::sort_Edges(double tol3d, std::list<TopoDS_Edge>
                 edge_points.erase(itEdgePoint);
                 itEdgePoint = edge_points.begin();
                 break;
-            }
-            else if (itEdgePoint->v2.SquareDistance(gpChainLast) <= tol3d) {
+            } else if (itEdgePoint->v2.SquareDistance(gpChainLast) <= tol3d) {
                 //found a connection from end of chain to end of edge
                 gpChainLast = itEdgePoint->v1;
                 Standard_Real firstParam, lastParam;
@@ -1170,8 +1179,7 @@ std::list<TopoDS_Edge> DrawUtil::sort_Edges(double tol3d, std::list<TopoDS_Edge>
                 edge_points.erase(itEdgePoint);
                 itEdgePoint = edge_points.begin();
                 break;
-            }
-            else if (itEdgePoint->v1.SquareDistance(gpChainFirst) <= tol3d) {
+            } else if (itEdgePoint->v1.SquareDistance(gpChainFirst) <= tol3d) {
                 //found a connection from start of chain to start of edge
                 gpChainFirst = itEdgePoint->v2;
                 Standard_Real firstParam, lastParam;
@@ -1207,7 +1215,10 @@ int DrawUtil::sgn(double x)
     return (x > +Precision::Confusion()) - (x < -Precision::Confusion());
 }
 
-double DrawUtil::sqr(double x) { return x * x; }
+double DrawUtil::sqr(double x)
+{
+    return x * x;
+}
 
 void DrawUtil::angleNormalize(double& fi)
 {
@@ -1344,8 +1355,7 @@ int DrawUtil::findRootForValue(double Ax2, double Bxy, double Cy2, double Dx, do
         qA = Ax2;
         qB = Bxy * value + Dx;
         qC = Cy2 * value * value + Ey * value + F;
-    }
-    else {
+    } else {
         qA = Cy2;
         qB = Bxy * value + Ey;
         qC = Ax2 * value * value + Dx * value + F;
@@ -1358,30 +1368,25 @@ int DrawUtil::findRootForValue(double Ax2, double Bxy, double Cy2, double Dx, do
             if (fabs(qC) > Precision::Confusion()) {
                 // This equation has no solution
                 return 0;
-            }
-            else {
+            } else {
                 // Signal infinite number of solutions by returning 2, but do not touch root variables
                 return 2;
             }
-        }
-        else {
+        } else {
             roots[0] = -qC / qB;
             return 1;
         }
-    }
-    else {
+    } else {
         double qD = sqr(qB) - 4.0 * qA * qC;
         if (qD < -Precision::Confusion()) {
             // Negative discriminant => no real roots
             return 0;
-        }
-        else if (qD > +Precision::Confusion()) {
+        } else if (qD > +Precision::Confusion()) {
             // Two distinctive roots
             roots[0] = (-qB + sqrt(qD)) * 0.5 / qA;
             roots[1] = (-qB - sqrt(qD)) * 0.5 / qA;
             return 2;
-        }
-        else {
+        } else {
             // Double root
             roots[0] = -qB * 0.5 / qA;
             return 1;
@@ -1417,8 +1422,8 @@ void DrawUtil::findConicRectangleIntersections(double conicAx2, double conicBxy,
     // Find intersections with rectangle left side line
     roots[0] = rectangle.MinY;
     roots[1] = rectangle.MaxY;
-    rootCount = findRootForValue(conicAx2, conicBxy, conicCy2, conicDx, conicEy, conicF,
-                                 rectangle.MinX, false, roots);
+    rootCount = findRootForValue(
+        conicAx2, conicBxy, conicCy2, conicDx, conicEy, conicF, rectangle.MinX, false, roots);
     if (rootCount > 0) {
         mergeBoundedPoint(Base::Vector2d(rectangle.MinX, roots[0]), rectangle, intersections);
     }
@@ -1429,8 +1434,8 @@ void DrawUtil::findConicRectangleIntersections(double conicAx2, double conicBxy,
     // Find intersections with rectangle right side line
     roots[0] = rectangle.MinY;
     roots[1] = rectangle.MaxY;
-    rootCount = findRootForValue(conicAx2, conicBxy, conicCy2, conicDx, conicEy, conicF,
-                                 rectangle.MaxX, false, roots);
+    rootCount = findRootForValue(
+        conicAx2, conicBxy, conicCy2, conicDx, conicEy, conicF, rectangle.MaxX, false, roots);
     if (rootCount > 0) {
         mergeBoundedPoint(Base::Vector2d(rectangle.MaxX, roots[0]), rectangle, intersections);
     }
@@ -1441,8 +1446,8 @@ void DrawUtil::findConicRectangleIntersections(double conicAx2, double conicBxy,
     // Find intersections with rectangle top side line
     roots[0] = rectangle.MinX;
     roots[1] = rectangle.MaxX;
-    rootCount = findRootForValue(conicAx2, conicBxy, conicCy2, conicDx, conicEy, conicF,
-                                 rectangle.MinY, true, roots);
+    rootCount = findRootForValue(
+        conicAx2, conicBxy, conicCy2, conicDx, conicEy, conicF, rectangle.MinY, true, roots);
     if (rootCount > 0) {
         mergeBoundedPoint(Base::Vector2d(roots[0], rectangle.MinY), rectangle, intersections);
     }
@@ -1453,8 +1458,8 @@ void DrawUtil::findConicRectangleIntersections(double conicAx2, double conicBxy,
     // Find intersections with rectangle top side line
     roots[0] = rectangle.MinX;
     roots[1] = rectangle.MaxX;
-    rootCount = findRootForValue(conicAx2, conicBxy, conicCy2, conicDx, conicEy, conicF,
-                                 rectangle.MaxY, true, roots);
+    rootCount = findRootForValue(
+        conicAx2, conicBxy, conicCy2, conicDx, conicEy, conicF, rectangle.MaxY, true, roots);
     if (rootCount > 0) {
         mergeBoundedPoint(Base::Vector2d(roots[0], rectangle.MaxY), rectangle, intersections);
     }
@@ -1468,9 +1473,14 @@ void DrawUtil::findLineRectangleIntersections(const Base::Vector2d& linePoint, d
                                               std::vector<Base::Vector2d>& intersections)
 {
     Base::Vector2d lineDirection(Base::Vector2d::FromPolar(1.0, lineAngle));
-    findConicRectangleIntersections(0.0, 0.0, 0.0, +lineDirection.y, -lineDirection.x,
+    findConicRectangleIntersections(0.0,
+                                    0.0,
+                                    0.0,
+                                    +lineDirection.y,
+                                    -lineDirection.x,
                                     lineDirection.x * linePoint.y - lineDirection.y * linePoint.x,
-                                    rectangle, intersections);
+                                    rectangle,
+                                    intersections);
 }
 
 void DrawUtil::findCircleRectangleIntersections(const Base::Vector2d& circleCenter,
@@ -1478,9 +1488,14 @@ void DrawUtil::findCircleRectangleIntersections(const Base::Vector2d& circleCent
                                                 const Base::BoundBox2d& rectangle,
                                                 std::vector<Base::Vector2d>& intersections)
 {
-    findConicRectangleIntersections(1.0, 0.0, 1.0, -2.0 * circleCenter.x, -2.0 * circleCenter.y,
+    findConicRectangleIntersections(1.0,
+                                    0.0,
+                                    1.0,
+                                    -2.0 * circleCenter.x,
+                                    -2.0 * circleCenter.y,
                                     sqr(circleCenter.x) + sqr(circleCenter.y) - sqr(circleRadius),
-                                    rectangle, intersections);
+                                    rectangle,
+                                    intersections);
 }
 
 void DrawUtil::findLineSegmentRectangleIntersections(const Base::Vector2d& linePoint,
@@ -1504,8 +1519,7 @@ void DrawUtil::findLineSegmentRectangleIntersections(const Base::Vector2d& lineP
         if (pointPosition < segmentBasePosition - Precision::Confusion()
             || pointPosition > segmentBasePosition + segmentLength + Precision::Confusion()) {
             intersections.erase(intersections.begin() + i);
-        }
-        else {
+        } else {
             ++i;
         }
     }
@@ -1513,7 +1527,8 @@ void DrawUtil::findLineSegmentRectangleIntersections(const Base::Vector2d& lineP
     // Try to add the line segment end points
     mergeBoundedPoint(linePoint + segmentBasePosition * segmentDirection, rectangle, intersections);
     mergeBoundedPoint(linePoint + (segmentBasePosition + segmentLength) * segmentDirection,
-                      rectangle, intersections);
+                      rectangle,
+                      intersections);
 }
 
 void DrawUtil::findCircularArcRectangleIntersections(const Base::Vector2d& circleCenter,
@@ -1541,18 +1556,19 @@ void DrawUtil::findCircularArcRectangleIntersections(const Base::Vector2d& circl
 
         if (pointAngle > arcBaseAngle + arcRotation + Precision::Confusion()) {
             intersections.erase(intersections.begin() + i);
-        }
-        else {
+        } else {
             ++i;
         }
     }
 
     // Try to add the circular arc end points
     mergeBoundedPoint(circleCenter + Base::Vector2d::FromPolar(circleRadius, arcBaseAngle),
-                      rectangle, intersections);
+                      rectangle,
+                      intersections);
     mergeBoundedPoint(circleCenter
                           + Base::Vector2d::FromPolar(circleRadius, arcBaseAngle + arcRotation),
-                      rectangle, intersections);
+                      rectangle,
+                      intersections);
 }
 
 //copy whole text file from inSpec to outSpec
@@ -1572,8 +1588,8 @@ void DrawUtil::copyFile(std::string inSpec, std::string outSpec)
     }
     bool rc = fi.copyTo(outSpec.c_str());
     if (!rc) {
-        Base::Console().Message("DU::copyFile - failed - in: %s out:%s\n", inSpec.c_str(),
-                                outSpec.c_str());
+        Base::Console().Message(
+            "DU::copyFile - failed - in: %s out:%s\n", inSpec.c_str(), outSpec.c_str());
     }
 }
 
@@ -1645,15 +1661,28 @@ void DrawUtil::dumpEdge(const char* label, int i, TopoDS_Edge e)
     //Base::Console().Message("%s edge:%d start:(%.3f, %.3f, %.3f)/%0.3f end:(%.2f, %.3f, %.3f)/%.3f\n", label, i,
     //                        vStart.X(), vStart.Y(), vStart.Z(), start, vEnd.X(), vEnd.Y(), vEnd.Z(), end);
     Base::Console().Message(
-        "%s edge:%d start:(%.3f, %.3f, %.3f)  end:(%.2f, %.3f, %.3f) Orient: %d\n", label, i,
-        vStart.X(), vStart.Y(), vStart.Z(), vEnd.X(), vEnd.Y(), vEnd.Z(), e.Orientation());
+        "%s edge:%d start:(%.3f, %.3f, %.3f)  end:(%.2f, %.3f, %.3f) Orient: %d\n",
+        label,
+        i,
+        vStart.X(),
+        vStart.Y(),
+        vStart.Z(),
+        vEnd.X(),
+        vEnd.Y(),
+        vEnd.Z(),
+        e.Orientation());
     double edgeLength = GCPnts_AbscissaPoint::Length(adapt, Precision::Confusion());
     Base::Console().Message(">>>>>>> length: %.3f  distance: %.3f ration: %.3f type: %d\n",
-                            edgeLength, vStart.Distance(vEnd), edgeLength / vStart.Distance(vEnd),
+                            edgeLength,
+                            vStart.Distance(vEnd),
+                            edgeLength / vStart.Distance(vEnd),
                             adapt.GetType());
 }
 
-const char* DrawUtil::printBool(bool b) { return (b ? "True" : "False"); }
+const char* DrawUtil::printBool(bool b)
+{
+    return (b ? "True" : "False");
+}
 
 QString DrawUtil::qbaToDebug(const QByteArray& line)
 {
@@ -1664,8 +1693,7 @@ QString DrawUtil::qbaToDebug(const QByteArray& line)
         c = line[i];
         if ((c >= 0x20) && (c <= 126)) {
             s.append(QChar::fromLatin1(c));
-        }
-        else {
+        } else {
             s.append(QString::fromUtf8("<%1>").arg(c, 2, 16, QChar::fromLatin1('0')));
         }
     }
@@ -1678,10 +1706,12 @@ void DrawUtil::dumpCS(const char* text, const gp_Ax2& CS)
     gp_Dir baseX = CS.XDirection();
     gp_Dir baseY = CS.YDirection();
     gp_Pnt baseOrg = CS.Location();
-    Base::Console().Message(
-        "DU::dumpCS - %s Loc: %s Axis: %s X: %s Y: %s\n", text,
-        DrawUtil::formatVector(baseOrg).c_str(), DrawUtil::formatVector(baseAxis).c_str(),
-        DrawUtil::formatVector(baseX).c_str(), DrawUtil::formatVector(baseY).c_str());
+    Base::Console().Message("DU::dumpCS - %s Loc: %s Axis: %s X: %s Y: %s\n",
+                            text,
+                            DrawUtil::formatVector(baseOrg).c_str(),
+                            DrawUtil::formatVector(baseAxis).c_str(),
+                            DrawUtil::formatVector(baseX).c_str(),
+                            DrawUtil::formatVector(baseY).c_str());
 }
 
 void DrawUtil::dumpCS3(const char* text, const gp_Ax3& CS)
@@ -1690,8 +1720,10 @@ void DrawUtil::dumpCS3(const char* text, const gp_Ax3& CS)
     gp_Dir baseX = CS.XDirection();
     gp_Dir baseY = CS.YDirection();
     gp_Pnt baseOrg = CS.Location();
-    Base::Console().Message(
-        "DU::dumpCS3 - %s Loc: %s Axis: %s X: %s Y: %s\n", text,
-        DrawUtil::formatVector(baseOrg).c_str(), DrawUtil::formatVector(baseAxis).c_str(),
-        DrawUtil::formatVector(baseX).c_str(), DrawUtil::formatVector(baseY).c_str());
+    Base::Console().Message("DU::dumpCS3 - %s Loc: %s Axis: %s X: %s Y: %s\n",
+                            text,
+                            DrawUtil::formatVector(baseOrg).c_str(),
+                            DrawUtil::formatVector(baseAxis).c_str(),
+                            DrawUtil::formatVector(baseX).c_str(),
+                            DrawUtil::formatVector(baseY).c_str());
 }

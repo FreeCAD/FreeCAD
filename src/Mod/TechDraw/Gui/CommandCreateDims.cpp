@@ -1222,12 +1222,13 @@ void CmdTechDrawDimensionRepair::activated(int iMsg)
         dim = static_cast<TechDraw::DrawViewDimension*>(dimObjs.at(0));
     }
 
-    ReferenceVector references2d;
-    ReferenceVector references3d;
-    //TechDraw::DrawViewPart* partFeat =
-    TechDraw::getReferencesFromSelection(references2d, references3d);
+    //    ReferenceVector references2d;
+    //    ReferenceVector references3d;
+    //    //TechDraw::DrawViewPart* partFeat =
+    //    TechDraw::getReferencesFromSelection(references2d, references3d);
 
-    Gui::Control().showDialog(new TaskDlgDimReference(dim, references2d, references3d));
+    //    Gui::Control().showDialog(new TaskDlgDimReference(dim, references2d, references3d));
+    Gui::Control().showDialog(new TaskDlgDimReference(dim));
 }
 
 bool CmdTechDrawDimensionRepair::isActive(void)
