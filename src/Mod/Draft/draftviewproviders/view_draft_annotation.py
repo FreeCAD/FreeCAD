@@ -217,18 +217,16 @@ class ViewProviderDraftAnnotation(object):
                     style = styles[vobj.AnnotationStyle]
                     for visprop in style.keys():
                         if visprop in properties:
-                            try:
-                                getattr(vobj, visprop).setValue(style[visprop])
-                                _msg("setValue: "
-                                     "'{}', '{}'".format(visprop,
-                                                         style[visprop]))
-                            except AttributeError:
-                                setattr(vobj, visprop, style[visprop])
-                                _msg("setattr: "
-                                     "'{}', '{}'".format(visprop,
-                                                         style[visprop]))
                             # make property read-only
-                            vobj.setPropertyStatus(visprop, 'ReadOnly')
+                            vobj.setPropertyStatus(visprop, "ReadOnly")
+                            value = style[visprop]
+                            try:
+                                if vobj.getTypeIdOfProperty(visprop) == "App::PropertyColor":
+                                    value = value & 0xFFFFFF00
+                                setattr(vobj, visprop, value)
+                                _msg("setattr: '{}', '{}'".format(visprop, value))
+                            except:
+                                pass
 
     def execute(self, vobj):
         """Execute when the object is created or recomputed."""
