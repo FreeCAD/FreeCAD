@@ -122,38 +122,107 @@ public:
     // 
     // This is reflected in the complexity of the DATA function.
     //
+    // Example encoding of a QMODEL Index
+    //    
+    //    ROOT (row -1, [-1,-1,-1,0]), info represented as [-1,-1,-1,0]
+    //    |-- doc 1 (non contextual)                 - (row 0, [-1,-1,-1,0]) = encode as parent => [0,-1,-1,0]
+    //    |-- doc 2 (non contextual)                 - (row 1, [-1,-1,-1,0]) = encode as parent => [1,-1,-1,0]
+    //    |   |- doc 2.obj1                          - (row 0, [1,-1,-1,0])  = encode as parent => [1, 0,-1,0]
+    //    |   |- doc 2.obj2                          - (row 1, [1,-1,-1,0])  = encode as parent => [1, 1,-1,0]
+    //    |   |- doc 2.obj3                          - (row 2, [1,-1,-1,0])  = encode as parent => [1, 2,-1,0]
+    //    |      |- doc 2.obj3.prop1                 - (row 0, [1, 2,-1,0])  = encode as parent => [1, 2, 0,0]
+    //    |      |- doc 2.obj3.prop2                 - (row 1, [1, 2,-1,0])  = encode as parent => [1, 2, 1,0]
+    //    |      |- doc 2.obj3.prop3                 - (row 2, [1, 2,-1,0])  = encode as parent => [1, 2, 2,0]
+    //    |         |- doc 2.obj3.prop3.path0        - (row 0, [1, 2, 2,0])  = encode as parent => INVALID, LEAF ITEM
+    //    |         |- doc 2.obj3.prop3.path1        - (row 1, [1, 2, 2,0])  = encode as parent => INVALID, LEAF ITEM
+    //    |
+    //    |
+    //    |-- doc 3 (non contextual)                 - (row 2, [-1,-1,-1,0]) = encode as parent => [2,-1,-1,0]
+    //    |                                          
+    //    |-- obj1 (current doc - contextual)        - (row 3, [-1,-1,-1,0]) = encode as parent => [3,-1,-1,1]
+    //    |-- obj2 (current doc - contextual)        - (row 4, [-1,-1,-1,0]) = encode as parent => [4,-1,-1,1]
+    //    |   |- obj2.prop1 (contextual)             - (row 0, [4,-1,-1,1])  = encode as parent => [4,-1,0,1]
+    //    |   |- obj2.prop2 (contextual)             - (row 1, [4,-1,-1,1])  = encode as parent => [4,-1,1,1]
+    //    |      | - obj2.prop2.path1 (contextual)   - (row 0, [4,-1,0 ,1])  = encode as parent => INVALID, LEAF ITEM
+    //    |      | - obj2.prop2.path2 (contextual)   - (row 1, [4,-1,1 ,1])  = encode as parent => INVALID, LEAF ITEM
+    //    |                                          
+    //    |-- prop1 (current obj - contextual)       - (row 5, [-1,-1,-1,0]) = encode as parent => [5,-1,-1,1]
+    //    |-- prop2 (current obj - contextual)       - (row 6, [-1,-1,-1,0]) = encode as parent => [6,-1,-1,1]
+    //        |-- prop2.path1 (contextual)           - (row 0, [ 6,-1,-1,0]) = encode as parent => INVALID, LEAF ITEM
+    //        |-- prop2.path2 (contextual)           - (row 1, [ 6,-1,-1,0]) = encode as parent => INVALID, LEAF ITEM
+    //    
+    
+    struct Info {
+        qint32 doc;
+        qint32 obj;
+        qint32 prop;
+        quint32 contextualHierarchy : 1;
 
-    union Info {
-        struct {
-            qint32 doc;
-            qint32 obj;
-        }d;
-        struct {
-            qint16 doc;
-            qint16 obj;
-        }d32;
-        void *ptr;
+        static const Info root;
     };
 
-    static void *infoId(const Info &info) {
-        if(sizeof(void*) >= sizeof(info))
-            return info.ptr;
+    union InfoPtrEncoding
+    {
+        quint64 d_enc;
+        struct
+        {
+            quint8 doc;
+            quint8 prop;
+            quint16 obj:15;
+            quint16 contextualHierarchy:1;
+        } d32;
+        void* ptr;
 
-        Info info32;
-        info32.d32.doc = (qint16)info.d.doc;
-        info32.d32.obj = (qint16)info.d.obj;
-        return info32.ptr;
+        InfoPtrEncoding(const Info& info)
+        {
+            d_enc = 0;
+            if (sizeof(void*) <  sizeof(InfoPtrEncoding)) {
+                d32.doc = (quint8)(info.doc+1);
+                d32.obj = (quint16)(info.obj+1);
+                d32.prop = (quint8)(info.prop+1);
+                d32.contextualHierarchy = info.contextualHierarchy;
+            } else {
+                d_enc = ((quint64(info.doc+1) & ((1ULL << 23) - 1)) << 41ULL)
+                      | (quint64(info.contextualHierarchy) << 40ULL)
+                      | ((quint64(info.obj+1) & ((1ULL << 24) - 1)) << 16ULL) 
+                      | (quint64(info.prop+1) & ((1ULL << 16) - 1));
+            }
+        }
+        InfoPtrEncoding(void* ptr)
+        {
+            d_enc = 0;
+            this->ptr = ptr;
+        }
+
+        Info DecodeInfo()
+        {
+            Info info;
+            
+            if (sizeof(void*) < sizeof(InfoPtrEncoding)) {
+                info.doc = qint32(d32.doc) - 1;
+                info.obj = qint32(d32.obj) -1;
+                info.prop = qint32(d32.prop) -1;
+                info.contextualHierarchy = d32.contextualHierarchy;
+            } else {
+                info.doc = ((d_enc >> 41ULL) & ((1ULL << 23) - 1)) - 1;
+                info.contextualHierarchy = ((d_enc >> 40ULL) & 1);
+                info.obj = ((d_enc >> 16ULL) & ((1ULL << 24) - 1)) - 1;
+                info.prop = (d_enc & ((1ULL << 16) - 1)) - 1;         
+            }
+            return info;
+        }
     };
+
+    static void* infoId(const Info& info)
+    {
+        InfoPtrEncoding ptrEnc(info);
+        return ptrEnc.ptr;
+    }
+     
 
     static Info getInfo(const QModelIndex &index) {
-        Info info;
-        info.ptr = index.internalPointer();
-        if(sizeof(void*) >= sizeof(Info))
-            return info;
-        Info res;
-        res.d.doc = info.d32.doc;
-        res.d.obj = info.d32.obj;
-        return res;
+        InfoPtrEncoding enc(index.internalPointer());
+        return enc.DecodeInfo();
     }
 
     QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const override {
@@ -162,7 +231,8 @@ public:
         QVariant v;
         Info info = getInfo(index);
         _data(info,index.row(),&v,nullptr,role==Qt::UserRole);
-        FC_TRACE(info.d.doc << "," << info.d.obj << "," << index.row()
+        FC_TRACE(  info.doc << "," << info.obj << "," << info.prop << "," 
+                << info.contextualHierarchy << "," << index.row()
                 << ": " << v.toString().toUtf8().constData());
         return v;
     }
@@ -186,7 +256,7 @@ public:
         int idx;
         // identify the document index. For any children of the root, it is given by traversing
         // the flat list and identified by [row]
-        idx = info.d.doc<0?row:info.d.doc;
+        idx = info.doc<0?row:info.doc;
         const auto &docs = App::GetApplication().getDocuments();
         int docSize = (int)docs.size()*2;
         int objSize = 0;
@@ -195,7 +265,8 @@ public:
         App::Document *doc = nullptr;
         App::DocumentObject *obj = nullptr;
         const char *propName = nullptr;
-        // check if the document is uniquely identified: either the correct index in info.d.doc
+        App::Property* prop = nullptr;
+        // check if the document is uniquely identified: either the correct index in info.doc
         // OR if, the node is a descendant of the root, its row lands within 0...docsize
         if(idx>=0 && idx<docSize)
             doc = docs[idx/2];
@@ -211,7 +282,7 @@ public:
 
             // move to the current documents' objects' range
             idx -= docSize;
-            if(info.d.doc<0)
+            if(info.doc<0)
                 row = idx;
 
             const auto &objs = doc->getObjects();
@@ -229,7 +300,7 @@ public:
                 if(cobj) {
                     // move to the props range of the current object
                     idx -= objSize;
-                    if(info.d.doc<0)
+                    if(info.doc<0)
                         row = idx;
                     // get the properties
                     cobj->getPropertyNamedList(props);
@@ -242,12 +313,13 @@ public:
                     if(idx>=0) {
                         obj = cobj; // we only set the active object if we're not processing the root.
                         propName = props[idx].first;
+                        prop = props[idx].second;
                     }
                 }
             }
         }
         // the item is the ROOT or a CHILD of the root
-        if(info.d.doc<0) {
+        if(info.doc<0) {
             // and we're asking for a count, compute it
             if(count)
                 // note that if we're dealing with a valid DOC node (row>0, ROOT_info)
@@ -285,7 +357,7 @@ public:
         // object not resolved
         if(!obj) {
             // are we pointing to an object item, or our father (info) is an object
-            idx = info.d.obj<0?row:info.d.obj;
+            idx = info.obj<0?row:info.obj;
             const auto &objs = doc->getObjects();
             objSize = (int)objs.size()*2;
             // if invalid index, or in the ignore list bail out
@@ -293,7 +365,7 @@ public:
                 return;
             obj = objs[idx/2];
 
-            if(info.d.obj<0) {
+            if(info.obj<0) {
                 // if this is AN actual Object item and not a root 
                 if(count)
                     *count = objSize; // set the correct count if requested
@@ -316,23 +388,56 @@ public:
             return;
         if(!propName) {
             // try to resolve the property; it's always a child
-            idx = row;
+            idx = info.prop < 0 ? row : info.prop;
             obj->getPropertyNamedList(props);
             propSize = (int)props.size();
-
-            // set the property size count
-            if (count) {
-                *count = propSize;
-            }
             // return if the property is invalid
-            if(idx<0 || idx>=propSize)
+            if (idx < 0 || idx >= propSize) {
                 return;
-            // resolve property name
+            }
             propName = props[idx].first;
-            
+            prop = props[idx].second;
+            // if this is a root object item
+            if (info.prop < 0) {
+                // set the property size count
+                if (count) {
+                    *count = propSize;
+                }
+                if (v) {
+                    *v = QString::fromLatin1(propName);
+                }
+                return;
+            }
         }
-        if(v)
-            *v = QString::fromLatin1(propName);
+
+        // resolve paths
+        if (prop) {
+            // idx identifies the path
+            idx = row;
+            std::vector<App::ObjectIdentifier> paths;
+            prop->getPaths(paths);
+            // need to filter out irrelevant paths (len 1, aka just this object identifier)
+            // wishing I had an erase_if_with_lastswap for optims :)
+            auto res = std::remove_if(
+                paths.begin(), paths.end(), [](const App::ObjectIdentifier& path) -> bool {
+                    return path.getComponents().size() == 0;
+            });
+            paths.erase(res, paths.end());
+            
+            if (count) 
+            {
+                *count = paths.size();
+            }
+            // if it's a property node  (row -1)
+            if (idx < 0 || idx >= paths.size()) {
+                return;
+            }
+
+            if (v) 
+            {
+                *v = QString::fromLatin1(paths[idx].getSubPathStr().c_str());
+            }
+        }
         return;
     }
 
@@ -340,39 +445,115 @@ public:
         if(!index.isValid())
             return QModelIndex();
         
-        Info info;
-        Info parentInfo;
-        info = parentInfo = getInfo(index);
+        Info parentInfo = getInfo(index); 
+        Info grandParentInfo = parentInfo;
+        
 
-        if(info.d.obj>=0) {
-            parentInfo.d.obj = -1;
-            return createIndex(info.d.obj,0,infoId(parentInfo));
+        if (parentInfo.contextualHierarchy) {
+            // for contextual hierarchy we have this:
+            // ROOT -> Object in Current Doc -> Prop In Object -> PropPath
+            // ROOT -> prop in Current Object -> prop Path
+
+            if (parentInfo.prop >= 0) {
+                grandParentInfo.prop = -1;
+                return createIndex(parentInfo.prop, 0, infoId(grandParentInfo));
+            }
+            // if the parent is the object or a prop attached to the root, we just need the below line
+            return createIndex(parentInfo.doc, 0, infoId(Info::root));
+        } else {
+            if (parentInfo.prop >= 0) {
+                grandParentInfo.prop = -1;
+                return createIndex(parentInfo.prop, 0, infoId(grandParentInfo));
+            }
+            if (parentInfo.obj >= 0) {
+                grandParentInfo.obj = -1;
+                return createIndex(parentInfo.obj, 0, infoId(grandParentInfo));
+            }
+            if (parentInfo.doc >= 0) {
+                grandParentInfo.doc = -1;
+                return createIndex(parentInfo.doc, 0, infoId(grandParentInfo));
+            }
         }
-        if(info.d.doc>=0) {
-            parentInfo.d.doc = -1;
-            return createIndex(info.d.doc,0,infoId(parentInfo));
-        }
+        
+
         return QModelIndex();
+    }
+
+    // returns true if succesful, false if it's a leaf
+    bool modelIndexToParentInfo(QModelIndex element, Info & info) const
+    {
+        Info parentInfo;
+        info = Info::root;
+
+        if (element.isValid()) {
+
+            parentInfo = getInfo(element);
+            info = parentInfo;
+
+            // Our wonderful element is a child of the root
+            if (parentInfo.doc < 0) {
+                // need special casing to properly identify this model's object
+                const auto& docs = App::GetApplication().getDocuments();
+
+                info.doc = element.row();
+
+                // if my element is a contextual descendant of root (current doc object list, current object prop list)
+                // mark it as such
+                if (element.row() >= docs.size()) {
+                    info.contextualHierarchy = 1;
+                }
+            } else if (parentInfo.contextualHierarchy) {
+
+                const auto& docs = App::GetApplication().getDocuments();
+                auto cdoc = App::GetApplication().getDocument(currentDoc.c_str());
+
+                if (cdoc) {
+                    auto objsSize = cdoc->getObjects().size();
+                    int idx = parentInfo.doc - docs.size();
+                    if (idx < cdoc->getObjects().size()) {
+                        //  |-- Parent (OBJECT)        - (row 4, [-1,-1,-1,0]) = encode as element => [parent.row,-1,-1,1]
+                        //      |- element (PROP)            - (row 0, [parent.row,-1,-1,1])  = encode as element => [parent.row,-1,parent.row,1]
+
+                        info.doc = parentInfo.doc;
+                        info.obj =
+                            -1;// object information is determined by the DOC index actually
+                        info.prop = element.row();
+                        info.contextualHierarchy = 1;
+                    } else {
+                        // if my parent (parentINfo) is a prop, it means the element is a prop path
+                        // which is a leaf, so we cannot add a child, which means we cannot build
+                        // the info as a potential father
+                        return false;
+                    }
+                } else {
+                    // something went wrong.
+                    return false;
+                }
+
+            }
+            // regular hierarchy
+            else if (parentInfo.obj <= 0) {
+                info.obj = element.row();
+            } else if (parentInfo.prop <= 0) {
+                info.prop = element.row();
+            } else {
+                return false;
+            }
+        }
+        return true;
     }
 
     QModelIndex index(int row, int column, const QModelIndex & parent = QModelIndex()) const override {
         if(row<0)
             return QModelIndex();
-        Info info;
-        if(!parent.isValid()) {
-            // this index's parent is the ROOT.
-            info.d.doc = -1;
-            info.d.obj = -1;
-        }else{
-            info = getInfo(parent);
-            if(info.d.doc<=0)
-                info.d.doc = parent.row();
-            else if(info.d.obj<=0)
-                info.d.obj = parent.row();
-            else
-                return QModelIndex();
+        Info grandParentInfo;
+        Info myParentInfoEncoded = Info::root;
+        bool success = modelIndexToParentInfo(parent, myParentInfoEncoded);
+        if (!success) {
+            return QModelIndex();
         }
-        return createIndex(row,column,infoId(info));
+        
+        return createIndex(row, column, infoId(myParentInfoEncoded));
     }
 
     int rowCount(const QModelIndex & parent = QModelIndex()) const override {
@@ -380,21 +561,17 @@ public:
         int row = 0;
         if(!parent.isValid()) {
             // root.
-            info.d.doc = -1;
-            info.d.obj = -1;
+            info = Info::root;
             row = -1;
         }else{
-            info = getInfo(parent);
-            if(info.d.doc<0)
-                info.d.doc = parent.row();
-            else if(info.d.obj<0)
-                info.d.obj = parent.row();
-            else
+            if (!modelIndexToParentInfo(parent, info)) {
                 return 0;
+            }
         }
         int count = 0;
         _data(info,row,nullptr,&count);
-        FC_TRACE(info.d.doc << "," << info.d.obj << "," << row << " row count " << count);
+        FC_TRACE(  info.doc << "," << info.obj << "," << info.prop << "," 
+                << info.contextualHierarchy << "," << row << " row count " << count);
         return count;
     }
 
@@ -408,6 +585,8 @@ private:
     std::string currentObj;
     bool noProperty;
 };
+
+const ExpressionCompleterModel::Info ExpressionCompleterModel::Info::root = {-1, -1, -1, 0};
 
 /**
  * @brief Construct an ExpressionCompleter object.
@@ -466,8 +645,9 @@ QString ExpressionCompleter::pathFromIndex ( const QModelIndex & index ) const
     }while(parent.isValid());
 
     auto info = ExpressionCompleterModel::getInfo(index);
-    FC_TRACE("join path " << info.d.doc << "," << info.d.obj << "," << index.row()
-            << ": " << res.toUtf8().constData());
+    FC_TRACE("join path " << info.doc << "," << info.obj << "," << info.prop << ","
+                          << info.contextualHierarchy << "," << index.row()
+                          << ": " << res.toUtf8().constData());
     return res;
 }
 
@@ -479,15 +659,17 @@ QStringList ExpressionCompleter::splitPath ( const QString & input ) const
         return l;
 
     int retry = 0;
+    std::string lastElem;
     std::string trim;
     while(1) {
         try {
+            // this will not work for incomplete Tokens at the end
             App::ObjectIdentifier p = ObjectIdentifier::parse(
                     currentObj.getObject(), path);
 
             std::vector<std::string> sl = p.getStringList();
             auto sli = sl.begin();
-            if(retry && !sl.empty())
+            if(retry>1 && !sl.empty())
                 sl.pop_back();
             if(!trim.empty() && boost::ends_with(sl.back(),trim))
                 sl.back().resize(sl.back().size()-trim.size());
@@ -495,20 +677,37 @@ QStringList ExpressionCompleter::splitPath ( const QString & input ) const
                 l << Base::Tools::fromStdString(*sli);
                 ++sli;
             }
+            if (lastElem.size()) {
+                l << Base::Tools::fromStdString(lastElem);
+            }
             FC_TRACE("split path " << path
                     << " -> " << l.join(QLatin1String("/")).toUtf8().constData());
             return l;
         }
         catch (const Base::Exception &e) {
             FC_TRACE("split path " << path << " error: " << e.what());
-            if(!retry) {
+            if (!retry) {
+                size_t lastElemStart = path.rfind('.');
+                
+                if (lastElemStart == std::string::npos) 
+                {
+                    lastElemStart = path.rfind('#');
+                }
+                if (lastElemStart != std::string::npos ) {
+                    if (lastElemStart != path.size() - 1)
+                        lastElem = path.substr(lastElemStart+1);
+                    path = path.substr(0, lastElemStart);
+                } 
+                retry++;
+                continue;
+            }else if(retry==1) {
                 char last = path[path.size()-1];
                 if(last!='#' && last!='.' && path.find('#')!=std::string::npos) {
                     path += "._self";
                     ++retry;
                     continue;
                 }
-            }else if(retry==1) {
+            }else if(retry==2) {
                 path.resize(path.size()-6);
                 char last = path[path.size()-1];
                 if(last!='.' && last!='<' && path.find("#<<")!=std::string::npos) {
@@ -517,7 +716,7 @@ QStringList ExpressionCompleter::splitPath ( const QString & input ) const
                     trim = ">>";
                     continue;
                 }
-            }
+            } 
             return QStringList() << input;
         }
     }
@@ -528,6 +727,8 @@ QStringList ExpressionCompleter::splitPath ( const QString & input ) const
 
 void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
 {
+    FC_TRACE("SlotUpdate:" << prefix.toUtf8().constData());
+
     init();
 
     // ExpressionParser::tokenize() only supports std::string but we need a tuple QString
@@ -634,11 +835,16 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
     if (trim && trim < int(completionPrefix.size()))
         completionPrefix.resize(completionPrefix.size() - trim);
 
+    FC_TRACE("Completion Prefix:" << completionPrefix.toUtf8().constData());
     // Set completion prefix
     setCompletionPrefix(completionPrefix);
-
-    if (!completionPrefix.isEmpty() && widget()->hasFocus())
+    
+    if (!completionPrefix.isEmpty() && widget()->hasFocus()) {
+        FC_TRACE("Complete on Prefix" << completionPrefix.toUtf8().constData());
         complete();
+        FC_TRACE("Complete Done");
+
+    }
     else {
         if (auto p = popup())
             p->setVisible(false);
