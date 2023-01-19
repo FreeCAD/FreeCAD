@@ -499,7 +499,7 @@ public:
 
                 // if my element is a contextual descendant of root (current doc object list, current object prop list)
                 // mark it as such
-                if (element.row() >= docs.size()) {
+                if (element.row() >= docs.size()*2) {
                     info.contextualHierarchy = 1;
                 }
             } else if (parentInfo.contextualHierarchy) {
@@ -508,9 +508,9 @@ public:
                 auto cdoc = App::GetApplication().getDocument(currentDoc.c_str());
 
                 if (cdoc) {
-                    auto objsSize = cdoc->getObjects().size();
+                    auto objsSize = cdoc->getObjects().size()*2;
                     int idx = parentInfo.doc - docs.size();
-                    if (idx < cdoc->getObjects().size()) {
+                    if (idx < cdoc->getObjects().size()*2) {
                         //  |-- Parent (OBJECT)        - (row 4, [-1,-1,-1,0]) = encode as element => [parent.row,-1,-1,1]
                         //      |- element (PROP)            - (row 0, [parent.row,-1,-1,1])  = encode as element => [parent.row,-1,parent.row,1]
 
@@ -678,7 +678,12 @@ QStringList ExpressionCompleter::splitPath ( const QString & input ) const
                 ++sli;
             }
             if (lastElem.size()) {
-                l << Base::Tools::fromStdString(lastElem);
+                if (lastElem != "#") {
+                    l << Base::Tools::fromStdString(lastElem);
+                } else {
+                    // add empty string 
+                    l << QString();
+                }
             }
             FC_TRACE("split path " << path
                     << " -> " << l.join(QLatin1String("/")).toUtf8().constData());
@@ -696,8 +701,10 @@ QStringList ExpressionCompleter::splitPath ( const QString & input ) const
                 if (lastElemStart != std::string::npos ) {
                     if (lastElemStart != path.size() - 1)
                         lastElem = path.substr(lastElemStart+1);
+                    else 
+                        lastElem = "#";
                     path = path.substr(0, lastElemStart);
-                } 
+                }
                 retry++;
                 continue;
             }else if(retry==1) {
