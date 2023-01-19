@@ -119,8 +119,9 @@ DimensionGeometryType TechDraw::validateDimSelection(
         TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(ref.getObject());
         if (dvp) {
             dvpSave = dvp;
-            //TODO: check for non-empty subname?
-            subNames.push_back(ref.getSubName());
+            if (!ref.getSubName().empty()) {
+                subNames.push_back(ref.getSubName());
+            }
         }
     }
     if (!dvpSave) {
@@ -128,9 +129,14 @@ DimensionGeometryType TechDraw::validateDimSelection(
         return isInvalid;
     }
 
-    if (subNames.front().empty()) {
+    if (subNames.empty()) {
         //no geometry referenced. can not make a dim from this mess. We are being called to validate
         //a selection for a 3d reference
+        return isViewReference;
+    }
+
+    if (subNames.front().empty()) {
+        //can this still happen?
         return isViewReference;
     }
 
@@ -237,11 +243,11 @@ bool TechDraw::checkGeometryOccurences(StringVector subNames, GeomCountMap keyed
         std::string geometryType = DrawUtil::getGeomTypeFromName(sub);
         std::map<std::string, int>::iterator it0(foundCounts.find(geometryType));
         if (it0 == foundCounts.end()) {
-            //already have this geometryType
-            it0->second++;
-        } else {
             //first occurrence of this geometryType
             foundCounts[geometryType] = 1;
+        } else {
+            //already have this geometryType
+            it0->second++;
         }
     }
 
