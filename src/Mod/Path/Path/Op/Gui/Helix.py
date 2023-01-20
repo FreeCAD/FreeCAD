@@ -60,7 +60,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         return form
 
     def getFields(self, obj):
-        """getFields(obj) ... transfers values from UI to obj's proprties"""
+        """getFields(obj) ... transfers values from UI to obj's properties"""
         Path.Log.track()
         if obj.Direction != str(self.form.direction.currentData()):
             obj.Direction = str(self.form.direction.currentData())

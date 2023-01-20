@@ -744,7 +744,7 @@ PropertyMeshKernel::PropertyMeshKernel()
   : _meshObject(new MeshObject()), meshPyObject(nullptr)
 {
     // Note: Normally this property is a member of a document object, i.e. the setValue()
-    // method gets called in the constructor of a sublcass of DocumentObject, e.g. Mesh::Feature.
+    // method gets called in the constructor of a subclass of DocumentObject, e.g. Mesh::Feature.
     // This means that the created MeshObject here will be replaced and deleted immediately.
     // However, we anyway create this object in case we use this class in another context.
 }
