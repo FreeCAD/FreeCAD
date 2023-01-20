@@ -1187,15 +1187,26 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
         if preferences["MERGE_MATERIALS"]:
             for added_mat in added_mats:
                 if (
-                    "Description" in added_mat.Material
-                    and "DiffuseColor" in added_mat.Material
-                    and "DiffuseColor" in mdict  # Description has been set thus it is in mdict
+                    "Description" in added_mat.Material  # Description has been set thus it is in mdict
                     and added_mat.Material["Description"] == mdict["Description"]
-                    and added_mat.Material["DiffuseColor"] == mdict["DiffuseColor"]
                 ):
-                    matobj = added_mat
-                    add_material = False
-                    break
+                    if (
+                        (
+                            "DiffuseColor" in added_mat.Material
+                            and "DiffuseColor" in mdict
+                            and added_mat.Material["DiffuseColor"] == mdict["DiffuseColor"]
+                        )  # color in added mat with the same matname and new mat is the same
+                        or
+                        (
+                            "DiffuseColor" not in added_mat.Material
+                            and "DiffuseColor" not in mdict
+                        )  # there is no color in added mat with the same matname and new mat
+                        # on modell imported from ArchiCAD color was not found for all IFC material objects, 
+                        # thus DiffuseColor was not set for created materials, workaround to merge these too
+                    ):
+                        matobj = added_mat
+                        add_material = False
+                        break
 
         # add a new material object
         if add_material is True:
