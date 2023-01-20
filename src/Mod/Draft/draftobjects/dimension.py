@@ -124,11 +124,6 @@ class DimensionBase(DraftAnnotation):
     objects.
     """
 
-    def __init__(self, obj, tp="Dimension"):
-        super().__init__(obj, tp)
-        self.set_properties(obj)
-        obj.Proxy = self
-
     def set_properties(self, obj):
         """Set basic properties only if they don't exist."""
         properties = obj.PropertiesList
@@ -197,8 +192,7 @@ class DimensionBase(DraftAnnotation):
             obj.Dimline = App.Vector(0, 1, 0)
 
     def onDocumentRestored(self, obj):
-        """Execute code when the document is restored.
-        """
+        """Execute code when the document is restored."""
         super().onDocumentRestored(obj)
 
         if not hasattr(obj, "ViewObject"):
@@ -208,13 +202,17 @@ class DimensionBase(DraftAnnotation):
             return
         if hasattr(vobj, "TextColor"):
             return
-
         self.update_properties_0v21(obj, vobj)
 
     def update_properties_0v21(self, obj, vobj):
+        """Update view properties."""
         vobj.Proxy.set_text_properties(vobj, vobj.PropertiesList)
         vobj.TextColor = vobj.LineColor
-        _wrn("v0.21, " + obj.Label + ", " + translate("draft", "added view property 'TextColor'"))
+        _wrn("v0.21, " + obj.Label + ", "
+             + translate("draft", "added view property 'TextColor'"))
+        _wrn("v0.21, " + obj.Label + ", "
+             + translate("draft", "renamed 'DisplayMode' options to 'World/Screen'"))
+
 
 class LinearDimension(DimensionBase):
     """The linear dimension object.
@@ -227,7 +225,9 @@ class LinearDimension(DimensionBase):
     """
 
     def __init__(self, obj):
-        super().__init__(obj, "LinearDimension")
+        obj.Proxy = self
+        self.set_properties(obj)
+        self.Type = "LinearDimension"
 
     def set_properties(self, obj):
         """Set basic properties only if they don't exist."""
@@ -303,6 +303,11 @@ class LinearDimension(DimensionBase):
                             "Radial dimension",
                             _tip)
             obj.Diameter = False
+
+    def onDocumentRestored(self, obj):
+        """Execute code when the document is restored."""
+        super().onDocumentRestored(obj)
+        self.Type = "LinearDimension"
 
     def onChanged(self, obj, prop):
         """Execute when a property is changed.
@@ -493,7 +498,9 @@ class AngularDimension(DimensionBase):
     """
 
     def __init__(self, obj):
-        super().__init__(obj, "AngularDimension")
+        obj.Proxy = self
+        self.set_properties(obj)
+        self.Type = "AngularDimension"
 
     def set_properties(self, obj):
         """Set basic properties only if they don't exist."""
@@ -551,6 +558,11 @@ class AngularDimension(DimensionBase):
                             "Angular dimension",
                             _tip)
             obj.Angle = 0
+
+    def onDocumentRestored(self, obj):
+        """Execute code when the document is restored."""
+        super().onDocumentRestored(obj)
+        self.Type = "AngularDimension"
 
     def execute(self, obj):
         """Execute when the object is created or recomputed.
