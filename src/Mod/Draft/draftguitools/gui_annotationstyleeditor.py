@@ -145,7 +145,7 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
         meta = self.doc.Meta
         for key, value in meta.items():
             if key.startswith("Draft_Style_"):
-                styles[key[12:]] = json.loads(value)
+                styles[key[12:]] = self.repair_style(json.loads(value))
         return styles
 
     def save_meta(self, styles):
@@ -288,28 +288,27 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
                 self.renamed[style] = newname
 
     def on_import(self):
-        """imports styles from a json file"""
+        """Import styles from a json file."""
         filename = QtGui.QFileDialog.getOpenFileName(
             QtGui.QApplication.activeWindow(),
             translate("draft","Open styles file"),
             None,
             translate("draft","JSON file (*.json)"))
         if filename and filename[0]:
+            nstyles = {}
             with open(filename[0]) as f:
-                nstyles = json.load(f)
-                if nstyles:
-                    self.styles.update(nstyles)
-                    l1 = self.form.comboBoxStyles.itemText(0)
-                    l2 = self.form.comboBoxStyles.itemText(1)
-                    self.form.comboBoxStyles.clear()
-                    self.form.comboBoxStyles.addItem(l1)
-                    self.form.comboBoxStyles.addItem(l2)
-                    for style in self.styles.keys():
+                for key, val in json.load(f).items():
+                    nstyles[key] = self.repair_style(val)
+            if nstyles:
+                self.styles.update(nstyles)
+                for style in self.styles.keys():
+                    if self.form.comboBoxStyles.findText(style) == -1:
                         self.form.comboBoxStyles.addItem(style)
-                    print("Styles updated from " + filename[0])
+                self.fill_editor(self.current_style) # The current style may have changed.
+                print("Styles updated from " + filename[0])
 
     def on_export(self):
-        """exports styles to a json file"""
+        """Export styles to a json file."""
         filename = QtGui.QFileDialog.getSaveFileName(
             QtGui.QApplication.activeWindow(),
             translate("draft","Save styles file"),
@@ -321,18 +320,36 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
                 json.dump(self.styles,f,indent=4)
             print("Styles saved to " + filename[0])
 
+    def repair_style(self, style):
+        """Repair a V0.19 or V0.20 style.
+
+        Some properties were missing or misspelled.
+        Some float values were wrongly stored as strings.
+        """
+        new = {}
+        for key, val in DEFAULT.items():
+            if style.get(key) is None:
+                new[key] = val[1]
+            elif type(style[key]) == type(val[1]):
+                new[key] = style[key]
+            elif isinstance(style[key], str):
+                new[key] = float(style[key].replace(",", "."))
+            else:
+                new[key] = val[1]
+        return new
+
     def fill_editor(self, style=None):
         """Fill the editor fields with the contents of a style."""
-        if style is None:
+        if style is None or style == "":
             style = {}
             for key, val in DEFAULT.items():
                 style[key] = val[1]
-
-        if not isinstance(style, dict):
-            if style in self.styles:
-                style = self.styles[style]
-            else:
-                print("debug: unable to fill dialog from style", style)
+        elif isinstance(style, dict):
+            pass
+        elif isinstance(style, str) and style in self.styles:
+            style = self.styles[style]
+        else:
+            print("debug: unable to fill dialog from style", style)
 
         for key, value in style.items():
             control = getattr(self.form, key)
@@ -386,7 +403,7 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
         return values
 
     def get_annotations(self):
-        """Get all the objects that support annotation styles."""
+        """Get all objects that support annotation styles."""
         users = []
         for obj in self.doc.Objects:
             vobj = obj.ViewObject
