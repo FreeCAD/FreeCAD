@@ -1161,6 +1161,8 @@ void RecentMacrosAction::setFiles(const QStringList& files)
     QList<QAction*> recentFiles = groupAction()->actions();
 
     int numRecentFiles = std::min<int>(recentFiles.count(), files.count());
+    QStringList existingCommands;
+    auto accel_col = QString::fromStdString(shortcut_modifiers);
     for (int index = 0; index < numRecentFiles; index++) {
         QFileInfo fi(files[index]);
         recentFiles[index]->setText(QString::fromLatin1("%1 %2").arg(index+1).arg(fi.baseName()));
@@ -1173,9 +1175,8 @@ void RecentMacrosAction::setFiles(const QStringList& files)
             auto check = Application::Instance->commandManager().checkAcceleratorForConflicts(qPrintable(accel_tmp));
             if (check) {
                 recentFiles[index]->setShortcut(QKeySequence());
-                auto msg = QStringLiteral("Recent macros : keyboard shortcut %1 disabled because conflicting with %2")
-                                                            .arg(accel_tmp, QLatin1String(check->getName()));
-                Base::Console().Warning("%s\n", qPrintable(msg));
+                accel_col.append(accel_tmp);
+                existingCommands.append(QLatin1String(check->getName()));
             }
             else {
                 accel = accel_tmp;
@@ -1192,6 +1193,20 @@ void RecentMacrosAction::setFiles(const QStringList& files)
         recentFiles[index]->setVisible(false);
         recentFiles[index]->setText(QString());
         recentFiles[index]->setToolTip(QString());
+    }
+    // Raise a single warning no matter how many conflicts
+    if (!existingCommands.isEmpty()) {
+        auto msgMain = QStringLiteral("Recent macros : keyboard shortcut(s)");
+        for (int index = 0; index < accel_col.count(); index++) {
+            msgMain = msgMain + QStringLiteral(" %1").arg(accel_col[index]);
+        }
+        msgMain = msgMain + QStringLiteral(" disabled because conflicting with");
+        for (int index = 0; index < existingCommands.count(); index++) {
+            msgMain = msgMain + QStringLiteral(" %1").arg(existingCommands[index]);
+        }
+        msgMain = msgMain + QStringLiteral(" respectively.\nHint: In Preferences -> Macros -> Recent Macros -> Keyboard Modifiers"
+                                           " contains Ctrl+Shift+ as default, this may have been changed unintentionally.");
+        Base::Console().Warning("%s\n", qPrintable(msgMain));
     }
 }
 
