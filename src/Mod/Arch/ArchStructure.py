@@ -850,7 +850,7 @@ class _Structure(ArchComponent.Component):
                                 # provide selected edges, or groups, in obj.ArchSketchEdges for processing in getStructureBaseShapeWires() (getSortedClusters) as override
                                 # returned a {dict} ( or a [list] )
                         # get slab wires; use original wires if structureBaseShapeWires() provided none
-                        if structureBaseShapeWires:  # would be false (none) if both base ArchSketch and obj do not have the edges stored / inputed by user
+                        if structureBaseShapeWires:  # would be false (none) if both base ArchSketch and obj do not have the edges stored / inputted by user
                             # if structureBaseShapeWires is {dict}
                             baseShapeWires = structureBaseShapeWires.get('slabWires')
                             faceMaker = structureBaseShapeWires.get('faceMaker')
