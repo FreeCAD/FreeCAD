@@ -25,7 +25,7 @@ BraceWrapping:
   AfterNamespace: true
   AfterUnion: true
   BeforeCatch: true
-  BeforeElse: false
+  BeforeElse: true
   IndentBraces: false
   SplitEmptyFunction: false
   SplitEmptyRecord: true
@@ -39,7 +39,7 @@ ContinuationIndentWidth: 4
 IndentCaseLabels: true
 IndentPPDirectives: None
 IndentWidth: 4
-InsertBraces: true
+InsertBraces: false
 KeepEmptyLinesAtTheStartOfBlocks: true
 MaxEmptyLinesToKeep: 2
 NamespaceIndentation: None
