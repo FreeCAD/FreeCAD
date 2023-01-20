@@ -102,14 +102,10 @@ endif(SWIG_FOUND)
 if (EXISTS ${CMAKE_SOURCE_DIR}/src/zipios++ AND NOT FREECAD_USE_EXTERNAL_ZIPIOS)
 SET(zipios_SRCS
     ../zipios++/backbuffer.h
-    ../zipios++/basicentry.cpp
-    ../zipios++/basicentry.h
     ../zipios++/collcoll.cpp
     ../zipios++/collcoll.h
     ../zipios++/deflateoutputstreambuf.cpp
     ../zipios++/deflateoutputstreambuf.h
-    ../zipios++/dircoll.cpp
-    ../zipios++/dircoll.h
     ../zipios++/directory.cpp
     ../zipios++/directory.h
     ../zipios++/fcoll.cpp
