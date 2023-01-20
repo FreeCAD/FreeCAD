@@ -404,7 +404,11 @@ public:
                     *count = propSize;
                 }
                 if (v) {
-                    *v = QString::fromLatin1(propName);
+                    QString res = QString::fromLatin1(propName);
+                    if (sep && propSize) {
+                        res += QLatin1Char('.');
+                    }
+                    *v = res;
                 }
                 return;
             }
@@ -435,7 +439,15 @@ public:
 
             if (v) 
             {
-                *v = QString::fromLatin1(paths[idx].getSubPathStr().c_str());
+                auto str = paths[idx].getSubPathStr();
+                if (str.size() && (str[0] == '.' || str[0] == '#')) 
+                {
+                    // skip the "."
+                    *v = QString::fromLatin1(str.c_str() + 1);
+                } else {
+                    *v = QString::fromLatin1(str.c_str());
+                }
+                
             }
         }
         return;
