@@ -827,11 +827,21 @@ def argb_to_rgba(color):
 
     Usage:
 
-        freecad_int = argb_to_rgba(qt_int)
-        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")\
-            .SetUnsigned("DefaultShapeColor", freecad_int)
+        qt_int = self.form.ShapeColor.property("color").rgba() # Note: returns ARGB int
+        qt_int = self.form.ShapeColor.property("color").rgb()  # Note: returns ARGB int
+        fc_int = argb_to_rgba(qt_int)
 
-        obj.ViewObject.ShapeColor = freecad_int & 0xFFFFFF00
+        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")\
+            .SetUnsigned("DefaultShapeColor", fc_int)
+
+        obj.ViewObject.ShapeColor = fc_int & 0xFFFFFF00
+
+    Related:
+
+        getRgbF() returns an RGBA tuple. 4 floats in the range 0.0 - 1.0. Alpha is always 1.
+        Alpha should be set to zero or removed before using the tuple to change a color property:
+
+        obj.ViewObject.ShapeColor = self.form.ShapeColor.property("color").getRgbF()[:3]
     """
     return ((color & 0xFFFFFF) << 8) + ((color & 0xFF000000) >> 24)
 
