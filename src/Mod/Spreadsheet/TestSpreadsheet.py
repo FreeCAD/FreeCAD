@@ -1369,7 +1369,7 @@ class SpreadsheetCases(unittest.TestCase):
             sheet.set(cell,str(i))
         used_range = sheet.getUsedRange()
         self.assertEquals(used_range,("C3","Z20"))
-        
+
         for i,cell in enumerate(test_cells):
             sheet.set(cell,"")
             sheet.setAlignment(cell,"center")
@@ -1400,7 +1400,7 @@ class SpreadsheetCases(unittest.TestCase):
             sheet.set(cell,str(i))
         non_empty_range = sheet.getNonEmptyRange()
         self.assertEquals(non_empty_range,("C3","Z20"))
-        
+
         for i,cell in enumerate(test_cells):
             sheet.set(cell,"")
             sheet.setAlignment(cell,"center")

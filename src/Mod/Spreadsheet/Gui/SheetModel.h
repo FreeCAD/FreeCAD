@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Eivind Kvedalen (eivind@kvedalen.name) 2015             *
+ *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -40,7 +40,7 @@ class SheetModel : public QAbstractTableModel
 public:
     explicit SheetModel(Spreadsheet::Sheet * _sheet, QObject *parent = nullptr);
     ~SheetModel() override;
-    
+
     explicit SheetModel(QObject *parent);
     int rowCount(const QModelIndex &parent = QModelIndex()) const override ;
     int columnCount(const QModelIndex &parent = QModelIndex()) const override;
