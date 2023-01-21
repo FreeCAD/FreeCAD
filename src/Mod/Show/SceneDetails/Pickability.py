@@ -1,6 +1,5 @@
 #/***************************************************************************
-# *   Copyright (c) Victor Titov (DeepSOIC)                                 *
-# *                                           (vv.titov@gmail.com) 2019     *
+# *   Copyright (c) 2019 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -24,7 +23,7 @@
 from Show.SceneDetail import SceneDetail
 
 class Pickability(SceneDetail):
-    """Pickability(object, pickstyle = None):Plugin for TempoVis for altering pick style 
+    """Pickability(object, pickstyle = None):Plugin for TempoVis for altering pick style
     of objects (i.e., selectability).
     pickstyle may be:
         PS_REGULAR = 0 # selectable
@@ -33,17 +32,17 @@ class Pickability(SceneDetail):
     class_id = 'SDPickability'
     propname = ''
     objname = ''
-    
+
     def __init__(self, object, pickstyle = None):
         self.objname = object.Name
         self.doc = object.Document
-        self.key = self.objname 
+        self.key = self.objname
         if pickstyle is not None:
             self.data = pickstyle
-        
+
     def scene_value(self):
         return getPickStyle(self.doc.getObject(self.objname).ViewObject)
-    
+
     def apply_data(self, val):
         setPickStyle(self.doc.getObject(self.objname).ViewObject, val)
 
@@ -65,7 +64,7 @@ def getPickStyleNode(viewprovider, make_if_missing = True):
         pick_style.style.setValue(coin.SoPickStyle.SHAPE)
         viewprovider.RootNode.insertChild(pick_style, 0)
         return pick_style
-            
+
 
 def getPickStyle(viewprovider):
     ps = getPickStyleNode(viewprovider, make_if_missing= False)
