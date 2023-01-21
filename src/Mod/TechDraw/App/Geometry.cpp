@@ -102,7 +102,7 @@ Wire::Wire(const TopoDS_Wire &w)
         BaseGeomPtr bg = BaseGeom::baseFactory(edge);
         if (bg) {
             geoms.push_back(bg);
-        } 
+        }
     }
 }
 

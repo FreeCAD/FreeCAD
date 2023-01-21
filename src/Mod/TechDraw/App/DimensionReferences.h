@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2022 WandererFan <wandererfan@gmail.com                 *
+ *   Copyright (c) 2022 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -19,7 +19,7 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
- 
+
 #ifndef TECHDRAW_DIMENSIONREFERENCES_H
 #define TECHDRAW_DIMENSIONREFERENCES_H
 
