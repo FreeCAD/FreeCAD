@@ -88,7 +88,7 @@ public:
     void mapToPage(DrawViewPart* dvp);
     void invertY();
     void dump(std::string text) const;
-    
+
 private:
     pointPair m_ends;
     Base::Vector3d m_vertex;
