@@ -251,6 +251,12 @@ bool TechDraw::checkGeometryOccurences(StringVector subNames, GeomCountMap keyed
         }
     }
 
+    //hybrid dims (vertex-edge) can skip this check
+    if (foundCounts.size() > 1) {
+        //this is a hybrid dimension
+        return true;
+    }
+
     //check found geometry counts against required counts
     for (auto& foundItem : foundCounts) {
         std::string currentKey = foundItem.first;
