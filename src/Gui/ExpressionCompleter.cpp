@@ -387,7 +387,6 @@ public:
         if(noProperty)
             return;
         if(!propName) {
-            // try to resolve the property; it's always a child
             idx = info.prop < 0 ? row : info.prop;
             obj->getPropertyNamedList(props);
             propSize = (int)props.size();
@@ -420,8 +419,8 @@ public:
             idx = row;
             std::vector<App::ObjectIdentifier> paths;
             prop->getPaths(paths);
-            // need to filter out irrelevant paths (len 1, aka just this object identifier)
-            // wishing I had an erase_if_with_lastswap for optims :)
+
+            // need to filter out irrelevant paths (len 1, aka just this object identifier)       
             auto res = std::remove_if(
                 paths.begin(), paths.end(), [](const App::ObjectIdentifier& path) -> bool {
                     return path.getComponents().size() == 0;
@@ -432,7 +431,8 @@ public:
             {
                 *count = paths.size();
             }
-            // if it's a property node  (row -1)
+            
+            // check to see if this is a valid path
             if (idx < 0 || idx >= paths.size()) {
                 return;
             }
@@ -491,7 +491,7 @@ public:
         return QModelIndex();
     }
 
-    // returns true if succesful, false if it's a leaf
+    // returns true if succesful, false if 'element' identifies a Leaf
     bool modelIndexToParentInfo(QModelIndex element, Info & info) const
     {
         Info parentInfo;
@@ -514,7 +514,7 @@ public:
                 if (element.row() >= docs.size()*2) {
                     info.contextualHierarchy = 1;
                 }
-            } else if (parentInfo.contextualHierarchy) {
+            } else if (parentInfo.contextualHierarchy) { 
 
                 const auto& docs = App::GetApplication().getDocuments();
                 auto cdoc = App::GetApplication().getDocument(currentDoc.c_str());
@@ -532,13 +532,13 @@ public:
                         info.prop = element.row();
                         info.contextualHierarchy = 1;
                     } else {
-                        // if my parent (parentINfo) is a prop, it means the element is a prop path
-                        // which is a leaf, so we cannot add a child, which means we cannot build
-                        // the info as a potential father
+                        // if my parent (parentInfo) is a prop, it means that our element is a prop path
+                        // and that is a leaf item (we don't split prop paths further)
+                        // we can't encode leaf items into an "Info" 
                         return false;
                     }
                 } else {
-                    // something went wrong.
+                    // no contextual document
                     return false;
                 }
 
@@ -559,14 +559,17 @@ public:
         if(row<0)
             return QModelIndex();
         Info myParentInfoEncoded = Info::root;
-        bool success = modelIndexToParentInfo(parent, myParentInfoEncoded);
-        if (!success) {
+
+        // encode the parent's QModelIndex into an 'Info' structure
+        bool parentCanHaveChildren = modelIndexToParentInfo(parent, myParentInfoEncoded);
+        if (!parentCanHaveChildren) {
             return QModelIndex();
         }
         
         return createIndex(row, column, infoId(myParentInfoEncoded));
     }
 
+    // function returns how many children the QModelIndex parent has
     int rowCount(const QModelIndex & parent = QModelIndex()) const override {
         Info info;
         int row = 0;
@@ -575,6 +578,8 @@ public:
             info = Info::root;
             row = -1;
         }else{
+            // try to encode the parent's QModelIndex into an info structure 
+            // if the paren't can't have any children, return 0
             if (!modelIndexToParentInfo(parent, info)) {
                 return 0;
             }
