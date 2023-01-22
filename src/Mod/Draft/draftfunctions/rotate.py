@@ -146,10 +146,7 @@ def rotate(objectslist, angle, center=App.Vector(0, 0, 0),
                 newobj = make_copy.make_copy(obj)
             else:
                 newobj = obj
-            # Workaround for `faulty` implementation of Base.Placement.rotate(center, axis, angle).
-            # See: https://forum.freecadweb.org/viewtopic.php?p=613196#p613196
-            offset_rotation = App.Placement(App.Vector(0, 0, 0), App.Rotation(real_axis, angle), real_center)
-            newobj.Placement = offset_rotation * newobj.Placement
+            newobj.Placement.rotate(real_center, real_axis, angle, comp=True)
 
         elif hasattr(obj, "Shape"):
             if copy:
