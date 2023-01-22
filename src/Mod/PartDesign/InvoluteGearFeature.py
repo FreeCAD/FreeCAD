@@ -21,12 +21,13 @@
 
 import pathlib
 import FreeCAD, Part
+from PySide import QtCore
 from fcgear import involute
 from fcgear import fcgear
 
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from PySide import QtCore, QtGui
+    from PySide import QtGui
 
 __title__="PartDesign InvoluteGearObject management"
 __author__ = "Juergen Riegel"
@@ -91,29 +92,35 @@ class _InvoluteGear:
                 else:
                     setattr(obj, name, default)
 
+        # for details about the property's docstring translation,
+        # see https://tracker.freecadweb.org/view.php?id=2524
         ensure_property("App::PropertyInteger", "NumberOfTeeth",
-            doc="Number of gear teeth",
+            doc=QtCore.QT_TRANSLATE_NOOP("App::Property", "Number of gear teeth"),
             default=26)
         ensure_property("App::PropertyLength", "Modules",
-            doc="Modules of the gear",
+            doc=QtCore.QT_TRANSLATE_NOOP("App::Property", "Modules of the gear"),
             default="2.5 mm")
         ensure_property("App::PropertyAngle", "PressureAngle",
-            doc="Pressure angle of gear teeth",
+            doc=QtCore.QT_TRANSLATE_NOOP("App::Property", "Pressure angle of gear teeth"),
             default="20 deg")
         ensure_property("App::PropertyBool", "HighPrecision",
-            doc="True=2 curves with each 3 control points False=1 curve with 4 control points.",
+            doc=QtCore.QT_TRANSLATE_NOOP("App::Property",
+                "True=2 curves with each 3 control points False=1 curve with 4 control points."),
             default=True)
         ensure_property("App::PropertyBool", "ExternalGear",
-            doc="True=external Gear False=internal Gear",
+            doc=QtCore.QT_TRANSLATE_NOOP("App::Property", "True=external Gear False=internal Gear"),
             default=True)
         ensure_property("App::PropertyFloat", "AddendumCoefficient",
-            doc="The height of the tooth from the pitch circle up to its tip, normalized by the module.",
+            doc=QtCore.QT_TRANSLATE_NOOP("App::Property",
+                "The height of the tooth from the pitch circle up to its tip, normalized by the module."),
             default=lambda: 1.0 if obj.ExternalGear else 0.6)
         ensure_property("App::PropertyFloat","DedendumCoefficient",
-            doc="The height of the tooth from the pitch circle down to its root, normalized by the module.",
+            doc=QtCore.QT_TRANSLATE_NOOP("App::Property",
+                "The height of the tooth from the pitch circle down to its root, normalized by the module."),
             default=1.25)
         ensure_property("App::PropertyFloat","RootFilletCoefficient",
-            doc="The radius of the fillet at the root of the tooth, normalized by the module.",
+            doc=QtCore.QT_TRANSLATE_NOOP("App::Property",
+                "The radius of the fillet at the root of the tooth, normalized by the module."),
             default=lambda: 0.375 if is_restore else 0.38)
 
     def execute(self,obj):
@@ -202,8 +209,9 @@ class _InvoluteGearTaskPanel:
     def assignToolTipsFromPropertyDocs(self):
         def assign(property_name, *widgets):
             doc = self.obj.getDocumentationOfProperty(property_name)
+            translated_doc = QtGui.QApplication.translate("App::Property", doc)
             for w in widgets:
-                w.setToolTip(doc)
+                w.setToolTip(translated_doc)
 
         # we assign the tool tip to both, the label and the input field, for user convenience
         assign("Modules", self.form.Quantity_Modules, self.form.label_Modules)
