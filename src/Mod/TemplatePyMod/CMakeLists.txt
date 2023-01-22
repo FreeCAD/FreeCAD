@@ -1,12 +1,12 @@
 
 
-fc_copy_to_mod_path("TemplatePyMod" 
-	InitGui.py
-	Init.py
-	Commands.py
-	PythonQt.py
-	Tests.py
-	DocumentObject.py
+fc_copy_to_mod_path("TemplatePyMod"
+    InitGui.py
+    Init.py
+    Commands.py
+    PythonQt.py
+    Tests.py
+    DocumentObject.py
 )
 
 INSTALL(

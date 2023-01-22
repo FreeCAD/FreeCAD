@@ -88,13 +88,13 @@ class AddonInstallerGUI(QtCore.QObject):
 
         # Dependency check
         deps = MissingDependencies(self.addon_to_install, self.addons)
-        
+
         # Python interpreter version check
         stop_installation = self._check_python_version(deps)
         if stop_installation:
             self.finished.emit()
             return
-        
+
         # Required Python
         if hasattr(deps, "python_requires") and deps.python_requires:
             # Disallowed packages:
@@ -107,7 +107,7 @@ class AddonInstallerGUI(QtCore.QObject):
         # Remove any disallowed packages from the optional list
         if hasattr(deps, "python_optional") and deps.python_optional:
             self._clean_up_optional(deps)
-            
+
         # Missing FreeCAD workbenches
         if hasattr(deps, "wbs") and deps.wbs:
             stop_installation = self._report_missing_workbenches(deps.wbs)
@@ -529,7 +529,7 @@ class MacroInstallerGUI(QtCore.QObject):
             "User parameter:BaseApp/Workbench/Global/Toolbar"
         )
         self.macro_dir = FreeCAD.getUserMacroDir(True)
-    
+
     def __del__(self):
         if self.worker_thread and hasattr(self.worker_thread, "quit"):
             self.worker_thread.quit()

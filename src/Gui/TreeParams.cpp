@@ -170,7 +170,7 @@ public:
         if(it == funcs.end())
             return;
         it->second(this);
-        
+
     }
 
 

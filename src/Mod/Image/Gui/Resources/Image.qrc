@@ -1,5 +1,5 @@
 <RCC>
-    <qresource> 
+    <qresource>
         <file>icons/Image_Open.svg</file>
         <file>icons/Image_CreateImagePlane.svg</file>
         <file>icons/Image_Scaling.svg</file>
@@ -47,4 +47,4 @@
         <file>translations/Image_sr-CS.qm</file>
         <file>translations/Image_be.qm</file>
     </qresource>
-</RCC> 
+</RCC>

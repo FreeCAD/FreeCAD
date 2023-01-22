@@ -332,8 +332,8 @@ Quantity Quantity::MegaNewton       (1e+9          ,Unit(1,1,-2));
 
 Quantity Quantity::NewtonPerMeter        (1.00         ,Unit(0,1,-2)); //Newton per meter (N/m or kg/s^2)
 Quantity Quantity::MilliNewtonPerMeter   (1e-3         ,Unit(0,1,-2));
-Quantity Quantity::KiloNewtonPerMeter    (1e3          ,Unit(0,1,-2)); 
-Quantity Quantity::MegaNewtonPerMeter    (1e6          ,Unit(0,1,-2)); 
+Quantity Quantity::KiloNewtonPerMeter    (1e3          ,Unit(0,1,-2));
+Quantity Quantity::MegaNewtonPerMeter    (1e6          ,Unit(0,1,-2));
 
 Quantity Quantity::Pascal           (0.001         ,Unit(-1,1,-2)); // Pascal (kg/m/s^2 or N/m^2)
 Quantity Quantity::KiloPascal       (1.00          ,Unit(-1,1,-2));

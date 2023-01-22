@@ -4577,7 +4577,7 @@ void System::identifyConflictingRedundantConstraints(   Algorithm alg,
                 }
             }
         }
-        
+
         if (conflictingMap.empty())
             break;
 
