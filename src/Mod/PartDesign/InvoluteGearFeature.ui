@@ -15,7 +15,7 @@
   </property>
   <layout class="QFormLayout" name="formLayout">
    <item row="0" column="0">
-    <widget class="QLabel" name="label_9">
+    <widget class="QLabel" name="label_NumberOfTeeth">
      <property name="text">
       <string>Number of teeth:</string>
      </property>
@@ -35,7 +35,7 @@
     </widget>
    </item>
    <item row="1" column="0">
-    <widget class="QLabel" name="label_8">
+    <widget class="QLabel" name="label_Modules">
      <property name="text">
       <string>Module:</string>
      </property>
@@ -79,7 +79,7 @@
     </widget>
    </item>
    <item row="2" column="0">
-    <widget class="QLabel" name="label_6">
+    <widget class="QLabel" name="label_PressureAngle">
      <property name="text">
       <string>Pressure angle:</string>
      </property>
@@ -120,7 +120,7 @@
     </widget>
    </item>
    <item row="3" column="0">
-    <widget class="QLabel" name="label_7">
+    <widget class="QLabel" name="label_HighPrecision">
      <property name="text">
       <string>High precision:</string>
      </property>
@@ -147,7 +147,7 @@
     </widget>
    </item>
    <item row="4" column="0">
-    <widget class="QLabel" name="label_10">
+    <widget class="QLabel" name="label_ExternalGear">
      <property name="text">
       <string>External gear:</string>
      </property>
@@ -174,7 +174,7 @@
     </widget>
    </item>
    <item row="5" column="0">
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="label_Addendum">
      <property name="text">
       <string>Addendum Coefficient</string>
      </property>
@@ -194,7 +194,7 @@
     </widget>
    </item>
    <item row="6" column="0">
-    <widget class="QLabel" name="label_2">
+    <widget class="QLabel" name="label_Dedendum">
      <property name="text">
       <string>Dedendum Coefficient</string>
      </property>
@@ -214,7 +214,7 @@
     </widget>
    </item>
    <item row="7" column="0">
-    <widget class="QLabel" name="label_3">
+    <widget class="QLabel" name="label_RootFillet">
      <property name="text">
       <string>Root Fillet Coefficient</string>
      </property>

@@ -166,6 +166,7 @@ class _InvoluteGearTaskPanel:
 
         self.form=FreeCADGui.PySideUic.loadUi(str(pathlib.Path(__file__).with_suffix(".ui")))
         self.form.setWindowIcon(QtGui.QIcon(":/icons/PartDesign_InternalExternalGear.svg"))
+        self.assignToolTipsFromPropertyDocs()
 
         def assignValue(property_name, fitView=False):
             """Returns a function that takes a single value and assigns it to the given property"""
@@ -197,6 +198,22 @@ class _InvoluteGearTaskPanel:
         if mode == 0: # fresh created
             self.obj.Proxy.execute(self.obj)  # calculate once
             FreeCAD.Gui.SendMsgToActiveView("ViewFit")
+
+    def assignToolTipsFromPropertyDocs(self):
+        def assign(property_name, *widgets):
+            doc = self.obj.getDocumentationOfProperty(property_name)
+            for w in widgets:
+                w.setToolTip(doc)
+
+        # we assign the tool tip to both, the label and the input field, for user convenience
+        assign("Modules", self.form.Quantity_Modules, self.form.label_Modules)
+        assign("PressureAngle", self.form.Quantity_PressureAngle, self.form.label_PressureAngle)
+        assign("NumberOfTeeth", self.form.spinBox_NumberOfTeeth, self.form.label_NumberOfTeeth)
+        assign("HighPrecision", self.form.comboBox_HighPrecision, self.form.label_HighPrecision)
+        assign("ExternalGear", self.form.comboBox_ExternalGear, self.form.label_ExternalGear)
+        assign("AddendumCoefficient", self.form.doubleSpinBox_Addendum, self.form.label_Addendum)
+        assign("DedendumCoefficient", self.form.doubleSpinBox_Dedendum, self.form.label_Dedendum)
+        assign("RootFilletCoefficient", self.form.doubleSpinBox_RootFillet, self.form.label_RootFillet)
 
     def transferTo(self):
         "Transfer from the dialog to the object"
