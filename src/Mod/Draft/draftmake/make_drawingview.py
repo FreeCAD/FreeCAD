@@ -40,17 +40,17 @@ from draftobjects.drawingview import DrawingView
 def make_drawing_view(obj, page, lwmod=None, tmod=None, otherProjection=None):
     """
     make_drawing_view(object,page,[lwmod,tmod])
-    
+
     This function is OBSOLETE, since TechDraw substituted the Drawing Workbench.
-    Add a View of the given object to the given page. 
+    Add a View of the given object to the given page.
 
     Parameters
     ----------
-    lwmod : 
-        modifies lineweights (in percent), 
-    
+    lwmod :
+        modifies lineweights (in percent),
+
     tmod :
-        modifies text heights (in percent). 
+        modifies text heights (in percent).
 
     The Hint scale, X and Y of the page are used.
         TODO: Document it properly

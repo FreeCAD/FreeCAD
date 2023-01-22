@@ -35,9 +35,9 @@ from draftmake.make_copy import make_copy
 
 def heal(objlist=None, delete=True, reparent=True):
     """heal([objlist],[delete],[reparent])
-    
+
     Recreate Draft objects that are damaged, for example if created from an
-    earlier version. If ran without arguments, all the objects in the document 
+    earlier version. If ran without arguments, all the objects in the document
     will be healed if they are damaged.
 
     Parameters
@@ -48,7 +48,7 @@ def heal(objlist=None, delete=True, reparent=True):
         If delete is True, the damaged objects are deleted (default).
 
     reparent : bool
-        If reparent is True (default), new objects go at the very same place 
+        If reparent is True (default), new objects go at the very same place
         in the tree than their original.
     """
 
