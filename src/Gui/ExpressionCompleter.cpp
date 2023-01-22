@@ -901,8 +901,8 @@ void ExpressionLineEdit::setDocumentObject(const App::DocumentObject * currentDo
         completer->setCaseSensitivity(Qt::CaseInsensitive);
         if (!exactMatch)
             completer->setFilterMode(Qt::MatchContains);
-        connect(completer, SIGNAL(activated(QString)), this, SLOT(slotCompleteText(QString)));
-        connect(completer, SIGNAL(highlighted(QString)), this, SLOT(slotCompleteText(QString)));
+        connect(completer, SIGNAL(activated(QString)), this, SLOT(slotCompleteTextSelected(QString)));
+        connect(completer, SIGNAL(highlighted(QString)), this, SLOT(slotCompleteTextHighlighted(QString)));
         connect(this, SIGNAL(textChanged2(QString, int)), completer, SLOT(slotUpdate(QString, int)));
     }
 }
@@ -940,19 +940,45 @@ void ExpressionLineEdit::slotTextChanged(const QString & text)
     }
 }
 
-void ExpressionLineEdit::slotCompleteText(const QString & completionPrefix)
+void ExpressionLineEdit::slotCompleteText(const QString & completionPrefix, bool isActivated)
 {
     int start,end;
     completer->getPrefixRange(start,end);
     QString before(text().left(start));
     QString after(text().mid(end));
 
-    Base::FlagToggler<bool> flag(block,false);
-    before += completionPrefix;
-    setText(before + after);
-    setCursorPosition(before.length());
-    completer->updatePrefixEnd(before.length());
+    {
+        Base::FlagToggler<bool> flag(block, false);
+        before += completionPrefix;
+        setText(before + after);
+        setCursorPosition(before.length());
+        completer->updatePrefixEnd(before.length());
+    }
+
+    // chain completions if we select an entry from the completer drop down
+    // and that entry ends with '.' or '#'
+    if(isActivated)
+    {
+        std::string textToComplete = completionPrefix.toUtf8().constData();
+        if (textToComplete.size() &&
+            (*textToComplete.crbegin() == '.' || *textToComplete.crbegin() == '#'))
+        {
+            Base::FlagToggler<bool> flag(block, true);
+            slotTextChanged(before + after);
+        }
+    }    
 }
+
+void ExpressionLineEdit::slotCompleteTextHighlighted(const QString& completionPrefix)
+{
+    slotCompleteText(completionPrefix, false);
+}
+
+void ExpressionLineEdit::slotCompleteTextSelected(const QString& completionPrefix)
+{
+    slotCompleteText(completionPrefix, true);
+}
+
 
 void ExpressionLineEdit::keyPressEvent(QKeyEvent *e) {
     Base::FlagToggler<bool> flag(block,true);
