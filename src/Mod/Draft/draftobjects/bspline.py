@@ -49,7 +49,7 @@ class BSpline(DraftObject):
                 "If the B-spline is closed or not")
         obj.addProperty("App::PropertyBool","Closed", "Draft", _tip)
 
-        _tip = QT_TRANSLATE_NOOP("App::Property", 
+        _tip = QT_TRANSLATE_NOOP("App::Property",
                 "Create a face if this spline is closed")
         obj.addProperty("App::PropertyBool","MakeFace", "Draft",_tip)
 

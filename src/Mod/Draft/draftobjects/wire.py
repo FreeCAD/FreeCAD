@@ -91,7 +91,7 @@ class Wire(DraftObject):
         _tip = QT_TRANSLATE_NOOP("App::Property",
                 "The area of this object")
         obj.addProperty("App::PropertyArea","Area", "Draft",_tip)
-        
+
         obj.MakeFace = get_param("fillmode",True)
         obj.Closed = False
 

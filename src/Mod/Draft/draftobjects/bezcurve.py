@@ -45,7 +45,7 @@ class BezCurve(DraftObject):
                 "The points of the Bezier curve")
         obj.addProperty("App::PropertyVectorList", "Points", "Draft", _tip)
 
-        _tip = QT_TRANSLATE_NOOP("App::Property", 
+        _tip = QT_TRANSLATE_NOOP("App::Property",
                 "The degree of the Bezier function")
         obj.addProperty("App::PropertyInteger", "Degree", "Draft", _tip)
 
@@ -99,7 +99,7 @@ class BezCurve(DraftObject):
         #fp.Continuity = [0]*numsegments
 
     def onChanged(self, fp, prop):
-        if prop == 'Closed': 
+        if prop == 'Closed':
             # if remove the last entry when curve gets opened
             oldlen = len(fp.Continuity)
             newlen = (len(self._segpoleslst(fp))-1+1*fp.Closed)
@@ -108,15 +108,15 @@ class BezCurve(DraftObject):
             if oldlen < newlen:
                 fp.Continuity = fp.Continuity + [0]*(newlen-oldlen)
 
-        if (hasattr(fp,'Closed') and 
-                fp.Closed and 
+        if (hasattr(fp,'Closed') and
+                fp.Closed and
                 prop in  ['Points','Degree','Closed'] and
                 len(fp.Points) % fp.Degree):
             # the curve editing tools can't handle extra points
-            fp.Points=fp.Points[:(fp.Degree*(len(fp.Points)//fp.Degree))] 
+            fp.Points=fp.Points[:(fp.Degree*(len(fp.Points)//fp.Degree))]
             #for closed curves
 
-        if prop in ["Degree"] and fp.Degree >= 1: 
+        if prop in ["Degree"] and fp.Degree >= 1:
             self.resetcontinuity(fp)
 
         if prop in ["Points","Degree","Continuity","Closed"]:
@@ -149,7 +149,7 @@ class BezCurve(DraftObject):
             if hasattr(fp,"Area") and hasattr(w,"Area"):
                 fp.Area = w.Area
             if hasattr(fp,"Length") and hasattr(w,"Length"):
-                fp.Length = w.Length            
+                fp.Length = w.Length
         fp.Placement = plm
 
     @classmethod
