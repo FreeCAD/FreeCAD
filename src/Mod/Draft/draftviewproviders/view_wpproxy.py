@@ -71,8 +71,8 @@ class ViewProviderWorkingPlaneProxy:
         vobj.LineWidth = 1
 
         param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-        c = param.GetUnsigned("ColorHelpers",674321151)
-        vobj.LineColor = (float((c>>24)&0xFF)/255.0,float((c>>16)&0xFF)/255.0,float((c>>8)&0xFF)/255.0,0.0)
+        c = param.GetUnsigned("ColorHelpers", 674321151)
+        vobj.LineColor = c & 0xFFFFFF00
 
         vobj.Proxy = self
         vobj.RestoreView = True
