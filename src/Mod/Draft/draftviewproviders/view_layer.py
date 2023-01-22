@@ -254,8 +254,10 @@ class ViewProviderLayer:
 
     def onChanged(self, vobj, prop):
         """Execute when a view property is changed."""
-        if prop in ("LineColor", "ShapeColor", "LineWidth",
-                    "DrawStyle", "Transparency", "Visibility"):
+        if (prop in ("LineColor", "ShapeColor", "LineWidth",
+                    "DrawStyle", "Transparency", "Visibility")
+                and hasattr(vobj, "OverrideLineColorChildren")
+                and hasattr(vobj, "OverrideShapeColorChildren")):
             self.change_view_properties(vobj, prop)
 
         if (prop in ("LineColor", "ShapeColor")
