@@ -491,7 +491,7 @@ public:
         return QModelIndex();
     }
 
-    // returns true if succesful, false if 'element' identifies a Leaf
+    // returns true if successful, false if 'element' identifies a Leaf
     bool modelIndexToParentInfo(QModelIndex element, Info & info) const
     {
         Info parentInfo;
@@ -676,7 +676,7 @@ QStringList ExpressionCompleter::splitPath ( const QString & input ) const
 
     int retry = 0;
     std::string lastElem;  // used to recover in case of parse failure after ".". 
-    std::string trim;      // used to delte ._self added for another recovery path 
+    std::string trim;      // used to delete ._self added for another recovery path 
     while(1) {
         try {
             // this will not work for incomplete Tokens at the end
