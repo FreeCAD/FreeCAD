@@ -558,7 +558,6 @@ public:
     QModelIndex index(int row, int column, const QModelIndex & parent = QModelIndex()) const override {
         if(row<0)
             return QModelIndex();
-        Info grandParentInfo;
         Info myParentInfoEncoded = Info::root;
         bool success = modelIndexToParentInfo(parent, myParentInfoEncoded);
         if (!success) {
@@ -671,11 +670,13 @@ QStringList ExpressionCompleter::splitPath ( const QString & input ) const
         return l;
 
     int retry = 0;
-    std::string lastElem;
-    std::string trim;
+    std::string lastElem;  // used to recover in case of parse failure after ".". 
+    std::string trim;      // used to delte ._self added for another recovery path 
     while(1) {
         try {
             // this will not work for incomplete Tokens at the end
+            // "Sketch." will fail to parse and complete.
+
             App::ObjectIdentifier p = ObjectIdentifier::parse(
                     currentObj.getObject(), path);
 
@@ -690,10 +691,11 @@ QStringList ExpressionCompleter::splitPath ( const QString & input ) const
                 ++sli;
             }
             if (lastElem.size()) {
-                if (lastElem != "#") {
+                // # is a special token to indicate our path ends in "." or "#"
+                if (lastElem != "#") { 
                     l << Base::Tools::fromStdString(lastElem);
                 } else {
-                    // add empty string 
+                    // add empty string to allow completion after "." or "#"
                     l << QString();
                 }
             }
@@ -714,7 +716,7 @@ QStringList ExpressionCompleter::splitPath ( const QString & input ) const
                     if (lastElemStart != path.size() - 1)
                         lastElem = path.substr(lastElemStart+1);
                     else 
-                        lastElem = "#";
+                        lastElem = "#"; // required to allow completion on Sketch.
                     path = path.substr(0, lastElemStart);
                 }
                 retry++;
