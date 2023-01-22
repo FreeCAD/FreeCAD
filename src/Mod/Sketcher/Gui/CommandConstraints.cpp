@@ -2571,13 +2571,6 @@ void CmdSketcherConstrainPointOnObject::activated(int iMsg)
 
                 const Part::Geometry *geom = Obj->getGeometry(curves[iCrv].GeoId);
 
-                if( geom && geom->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ){
-                    // unsupported until normal to B-spline at any point implemented.
-                    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                                         QObject::tr("Point on B-spline edge currently unsupported."));
-                    continue;
-                }
-
                 if( geom && isBsplinePole(geom)) {
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                                         QObject::tr("Select an edge that is not a B-spline weight."));
@@ -2657,15 +2650,6 @@ void CmdSketcherConstrainPointOnObject::applyConstraint(std::vector<SelIdPair> &
         allOK = false; //constraining a point of an element onto the element is a bad idea...
 
     const Part::Geometry *geom = Obj->getGeometry(GeoIdCrv);
-
-    if( geom && geom->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ){
-        // unsupported until normal to B-spline at any point implemented.
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Point on B-spline edge currently unsupported."));
-        abortCommand();
-
-        return;
-    }
 
     if( geom && isBsplinePole(geom)) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -4203,11 +4187,26 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
 
         if (isVertex(GeoId1,PosId1) && isVertex(GeoId2,PosId2)) { // endpoint-to-endpoint tangency
 
+            if (isBsplineKnot(Obj, GeoId2)) {
+                std::swap(GeoId1,GeoId2);
+                std::swap(PosId1,PosId2);
+            }
+
             if (isSimpleVertex(Obj, GeoId1, PosId1) ||
                 isSimpleVertex(Obj, GeoId2, PosId2)) {
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                    QObject::tr("Cannot add a tangency constraint at an unconnected point!"));
-                return;
+                if (isBsplineKnot(Obj, GeoId1)) {
+                    const Part::Geometry *geom2 = Obj->getGeometry(GeoId2);
+                    if (!geom2 || geom2->getTypeId() !=Part::GeomLineSegment::getClassTypeId()) {
+                        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                             QObject::tr("Tangent constraint at B-spline knot is only supported with lines!"));
+                        return;
+                    }
+                }
+                else {
+                    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                         QObject::tr("Cannot add a tangency constraint at an unconnected point!"));
+                    return;
+                }
             }
 
             openCommand(QT_TRANSLATE_NOOP("Command", "Add tangent constraint"));

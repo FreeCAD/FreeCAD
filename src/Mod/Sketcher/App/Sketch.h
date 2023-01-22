@@ -283,6 +283,7 @@ public:
     /// add a tangency constraint between two geometries
     int addTangentConstraint(int geoId1, int geoId2);
     int addTangentLineAtBSplineKnotConstraint(int checkedlinegeoId, int checkedbsplinegeoId, int checkedknotgeoid);
+    int addTangentLineEndpointAtBSplineKnotConstraint(int checkedlinegeoId, PointPos endpointPos, int checkedbsplinegeoId, int checkedknotgeoid);
     int addAngleAtPointConstraint(
             int geoId1, PointPos pos1,
             int geoId2, PointPos pos2,
@@ -341,6 +342,8 @@ public:
     int addEqualConstraint(int geoId1, int geoId2);
     /// add a point on line constraint
     int addPointOnObjectConstraint(int geoId1, PointPos pos1, int geoId2, bool driving = true);
+    /// add a point on B-spline constraint: needs a parameter
+    int addPointOnObjectConstraint(int geoId1, PointPos pos1, int geoId2,double* pointparam, bool driving = true);
     /// add a symmetric constraint between two points with respect to a line
     int addSymmetricConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2, int geoId3);
     /// add a symmetric constraint between three points, the last point is in the middle of the first two

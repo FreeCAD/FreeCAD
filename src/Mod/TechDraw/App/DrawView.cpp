@@ -487,7 +487,7 @@ void DrawView::handleChangedPropertyType(Base::XMLReader &reader, const char * T
             } else {
                 Scale.setValue(1.0);
             }
-        } 
+        }
     }
     else if (prop->isDerivedFrom(App::PropertyLinkList::getClassTypeId())
         && strcmp(prop->getName(), "Source") == 0) {

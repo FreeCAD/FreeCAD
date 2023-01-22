@@ -28,8 +28,8 @@
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
-#include <Mod/TechDraw/TechDrawGlobal.h>
 #include <Mod/TechDraw/App/DrawViewDimension.h>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
 
 class Ui_TaskDimRepair;
@@ -42,14 +42,12 @@ class DocumentObject;
 namespace TechDrawGui
 {
 
-class TaskDimRepair : public QWidget
+class TaskDimRepair: public QWidget
 {
     Q_OBJECT
 
 public:
-    TaskDimRepair(TechDraw::DrawViewDimension* inDvd,
-                  TechDraw::ReferenceVector references2d,
-                  TechDraw::ReferenceVector references3d);
+    TaskDimRepair(TechDraw::DrawViewDimension* inDvd);
     ~TaskDimRepair();
 
 public:
@@ -60,12 +58,13 @@ protected Q_SLOTS:
     void slotUseSelection();
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent* e);
 
     void setUiPrimary();
     void replaceReferences();
     void updateUi();
-    void fillList(QListWidget* lwItems, std::vector<std::string> labels, std::vector<std::string> names);
+    void fillList(QListWidget* lwItems, std::vector<std::string> labels,
+                  std::vector<std::string> names);
     void loadTableWidget(QTableWidget* tw, TechDraw::ReferenceVector refs);
     void saveDimState();
     void restoreDimState();
@@ -73,8 +72,6 @@ protected:
 private:
     std::unique_ptr<Ui_TaskDimRepair> ui;
     TechDraw::DrawViewDimension* m_dim;
-    TechDraw::ReferenceVector m_references2d;
-    TechDraw::ReferenceVector m_references3d;
     long int m_dimType;
 
     long int m_saveMeasureType;
@@ -82,16 +79,16 @@ private:
     TechDraw::DrawViewPart* m_saveDvp;
     TechDraw::ReferenceVector m_saveRefs2d;
     TechDraw::ReferenceVector m_saveRefs3d;
+    TechDraw::ReferenceVector m_toApply2d;
+    TechDraw::ReferenceVector m_toApply3d;
 };
 
-class TaskDlgDimReference : public Gui::TaskView::TaskDialog
+class TaskDlgDimReference: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
 public:
-    TaskDlgDimReference(TechDraw::DrawViewDimension* inDvd,
-                        TechDraw::ReferenceVector references2d,
-                        TechDraw::ReferenceVector references3d);
+    TaskDlgDimReference(TechDraw::DrawViewDimension* inDvd);
     ~TaskDlgDimReference();
 
 public:
@@ -104,19 +101,23 @@ public:
     /// is called by the framework if the dialog is rejected (Cancel)
     virtual bool reject();
     /// is called by the framework if the user presses the help button
-    virtual void helpRequested() { return;}
+    virtual void helpRequested()
+    {
+        return;
+    }
     virtual bool isAllowedAlterDocument(void) const
-    { return false; }
+    {
+        return false;
+    }
 
     void update();
 
 protected:
-
 private:
-    TaskDimRepair * widget;
+    TaskDimRepair* widget;
     Gui::TaskView::TaskBox* taskbox;
 };
 
-} //namespace TechDrawGui
+}//namespace TechDrawGui
 
-#endif // #ifndef TECHDRAW_TASKDIMREPAIR_H
+#endif// #ifndef TECHDRAW_TASKDIMREPAIR_H

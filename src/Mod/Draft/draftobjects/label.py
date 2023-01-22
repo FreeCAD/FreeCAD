@@ -45,9 +45,9 @@ class Label(DraftAnnotation):
     """The Draft Label object."""
 
     def __init__(self, obj):
-        super().__init__(obj, "Label")
-        self.set_properties(obj)
         obj.Proxy = self
+        self.set_properties(obj)
+        self.Type = "Label"
 
     def set_properties(self, obj):
         """Set properties only if they don't exist."""
@@ -223,9 +223,9 @@ class Label(DraftAnnotation):
             obj.LabelType = get_label_types()
 
     def onDocumentRestored(self, obj):
-        """Execute code when the document is restored.
-        """
+        """Execute code when the document is restored."""
         super().onDocumentRestored(obj)
+        self.Type = "Label"
 
         if not hasattr(obj, "ViewObject"):
             return
@@ -234,10 +234,10 @@ class Label(DraftAnnotation):
             return
         if hasattr(vobj, "FontName") and hasattr(vobj, "FontSize"):
             return
-
         self.update_properties_0v21(obj, vobj)
 
     def update_properties_0v21(self, obj, vobj):
+        """Update view properties."""
         old_fontname = vobj.TextFont
         old_fontsize = vobj.TextSize
         vobj.removeProperty("TextFont")
@@ -250,12 +250,15 @@ class Label(DraftAnnotation):
         # switched: "2D text" becomes "World" and "3D text" becomes "Screen".
         # It should be the other way around:
         vobj.DisplayMode = "World" if vobj.DisplayMode == "Screen" else "Screen"
-        _wrn("v0.21, " + obj.Label + ", " + translate("draft", "updated view property 'TextFont' to 'FontName'"))
-        _wrn("v0.21, " + obj.Label + ", " + translate("draft", "updated view property 'TextSize' to 'FontSize'"))
+        _wrn("v0.21, " + obj.Label + ", "
+             + translate("draft", "renamed view property 'TextFont' to 'FontName'"))
+        _wrn("v0.21, " + obj.Label + ", "
+             + translate("draft", "renamed view property 'TextSize' to 'FontSize'"))
+        _wrn("v0.21, " + obj.Label + ", "
+             + translate("draft", "renamed 'DisplayMode' options to 'World/Screen'"))
 
     def onChanged(self, obj, prop):
         """Execute when a property is changed."""
-        super().onChanged(obj, prop)
         self.show_and_hide(obj, prop)
 
     def show_and_hide(self, obj, prop):

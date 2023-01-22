@@ -71,7 +71,8 @@ namespace GCS
         EqualLineLength = 25,
         CenterOfGravity = 26,
         WeightedLinearCombination = 27,
-        SlopeAtBSplineKnot = 28
+        SlopeAtBSplineKnot = 28,
+        PointOnBSpline = 29
     };
 
     enum InternalAlignmentType {
@@ -230,6 +231,30 @@ namespace GCS
         std::vector<double> factors;
         std::vector<double> slopefactors;
         size_t numpoles;
+    };
+
+    // Point On BSpline
+    class ConstraintPointOnBSpline : public Constraint
+    {
+    private:
+        inline double* thepoint() { return pvec[0]; }
+        // TODO: better name because param has a different meaning here?
+        inline double* theparam() { return pvec[1]; }
+        inline double* poleat(size_t i) { return pvec[2 + (startpole + i) % bsp.poles.size()]; }
+        inline double* weightat(size_t i) { return pvec[2 + bsp.poles.size() + (startpole + i) % bsp.weights.size()]; }
+        void setStartPole(double u);
+    public:
+        /// TODO: Explain how it's provided
+        /// coordidx = 0 if x, 1 if y
+        ConstraintPointOnBSpline(double* point, double* initparam, int coordidx, BSpline& b);
+        ConstraintType getTypeId() override;
+        void rescale(double coef=1.) override;
+        double error() override;
+        double grad(double *) override;
+        void setupInputs();
+        size_t numpoints;
+        BSpline& bsp;
+        unsigned int startpole;
     };
 
     // Difference

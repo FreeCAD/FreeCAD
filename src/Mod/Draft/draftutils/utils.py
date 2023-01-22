@@ -53,27 +53,29 @@ if App.GuiUp:
     # The module is used to prevent complaints from code checkers (flake8)
     True if Draft_rc else False
 
-param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-
 ARROW_TYPES = ["Dot", "Circle", "Arrow", "Tick", "Tick-2"]
 arrowtypes = ARROW_TYPES
 
+param_draft = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+param_view  = App.ParamGet("User parameter:BaseApp/Preferences/View")
+
 ANNOTATION_STYLE = {
-    "FontName": ("font", param.GetString("textfont", "Sans")),
-    "FontSize": ("str", str(param.GetFloat("textheight", 100))),
-    "LineSpacing": ("float", 1),
+    "FontName":        ("font",  param_draft.GetString("textfont", "Sans")),
+    "FontSize":        ("float", param_draft.GetFloat("textheight", 100)),
+    "LineSpacing":     ("float", param_draft.GetFloat("LineSpacing", 1)),
+    "TextColor":       ("color", param_draft.GetUnsigned("DefaultTextColor", 255)),
     "ScaleMultiplier": ("float", 1),
-    "ShowUnit": ("bool", False),
-    "UnitOverride": ("str", ""),
-    "Decimals": ("int", 2),
-    "ShowLines": ("bool", True),
-    "LineWidth": ("int", param.GetInt("linewidth", 1)),
-    "LineColor": ("color", param.GetInt("color", 255)),
-    "ArrowType": ("index", param.GetInt("dimsymbol", 0)),
-    "ArrowSize": ("str", str(param.GetFloat("arrowsize", 20))),
-    "DimensionOvershoot": ("str", str(param.GetFloat("dimovershoot", 20))),
-    "ExtensionLines": ("str", str(param.GetFloat("extlines", 300))),
-    "ExtensionOvershoot": ("str", str(param.GetFloat("extovershoot", 20))),
+    "ShowUnit":        ("bool",  param_draft.GetBool("showUnit", True)),
+    "UnitOverride":    ("str",   param_draft.GetString("overrideUnit", "")),
+    "Decimals":        ("int",   param_draft.GetInt("dimPrecision", 2)),
+    "ShowLine":        ("bool",  True),
+    "LineWidth":       ("int",   param_view.GetInt("DefaultShapeLineWidth", 1)),
+    "ArrowType":       ("index", param_draft.GetInt("dimsymbol", 0)),
+    "ArrowSize":       ("float", param_draft.GetFloat("arrowsize", 20)),
+    "LineColor":       ("color", param_view.GetUnsigned("DefaultShapeLineColor", 255)),
+    "DimOvershoot":    ("float", param_draft.GetFloat("dimovershoot", 20)),
+    "ExtLines":        ("float", param_draft.GetFloat("extlines", 300)),
+    "ExtOvershoot":    ("float", param_draft.GetFloat("extovershoot", 20)),
 }
 
 
@@ -797,8 +799,10 @@ def get_rgb(color, testbw=True):
 
     Parameters
     ----------
+    color : list or tuple with RGB values
+        The values must be in the 0.0-1.0 range.
     testwb : bool (default = True)
-        pure white will be converted into pure black
+        Pure white will be converted into pure black.
     """
     r = str(hex(int(color[0]*255)))[2:].zfill(2)
     g = str(hex(int(color[1]*255)))[2:].zfill(2)
@@ -813,6 +817,39 @@ def get_rgb(color, testbw=True):
 
 
 getrgb = get_rgb
+
+
+def argb_to_rgba(color):
+    """Change byte order of a 4 byte color int from ARGB (Qt) to RGBA (FreeCAD).
+
+    Alpha in both integers is always 255.
+    Alpha in color properties, although ignored, is always zero however.
+
+    Usage:
+
+        qt_int = self.form.ShapeColor.property("color").rgba() # Note: returns ARGB int
+        qt_int = self.form.ShapeColor.property("color").rgb()  # Note: returns ARGB int
+        fc_int = argb_to_rgba(qt_int)
+
+        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")\
+            .SetUnsigned("DefaultShapeColor", fc_int)
+
+        obj.ViewObject.ShapeColor = fc_int & 0xFFFFFF00
+
+    Related:
+
+        getRgbF() returns an RGBA tuple. 4 floats in the range 0.0 - 1.0. Alpha is always 1.
+        Alpha should be set to zero or removed before using the tuple to change a color property:
+
+        obj.ViewObject.ShapeColor = self.form.ShapeColor.property("color").getRgbF()[:3]
+    """
+    return ((color & 0xFFFFFF) << 8) + ((color & 0xFF000000) >> 24)
+
+
+def rgba_to_argb(color):
+    """Change byte order of a 4 byte color int from RGBA (FreeCAD) to ARGB (Qt).
+    """
+    return ((color & 0xFFFFFF00) >> 8) + ((color & 0xFF) << 24)
 
 
 def filter_objects_for_modifiers(objects, isCopied=False):

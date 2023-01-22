@@ -27,7 +27,11 @@ import FreeCAD
 import Arch
 import ArchIFC
 
+if FreeCAD.GuiUp:
+    import FreeCADGui as Gui
+
 from draftutils.messages import _msg, _wrn
+
 
 PREDEFINED_RGB = {"black": (0, 0, 0),
                   "red": (1.0, 0, 0),

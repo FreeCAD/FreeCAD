@@ -30,18 +30,18 @@
 #include <QString>
 
 #include <Geom_Curve.hxx>
-#include <gp_Ax2.hxx>
-#include <gp_Dir.hxx>
-#include <gp_Dir2d.hxx>
-#include <gp_Pnt.hxx>
-#include <gp_Pnt2d.hxx>
-#include <gp_Vec.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Shape.hxx>
 #include <TopoDS_Vertex.hxx>
 #include <TopoDS_Wire.hxx>
+#include <gp_Ax2.hxx>
+#include <gp_Dir.hxx>
+#include <gp_Dir2d.hxx>
+#include <gp_Pnt.hxx>
+#include <gp_Pnt2d.hxx>
+#include <gp_Vec.hxx>
 
 #include <Base/Vector3D.h>
 #include <Mod/Part/App/PartFeature.h>
@@ -72,7 +72,8 @@ namespace TechDraw
 {
 
 //used by sort_Edges
-struct EdgePoints {
+struct EdgePoints
+{
     gp_Pnt v1, v2;
     std::list<TopoDS_Edge>::iterator it;
     TopoDS_Edge edge;
@@ -82,9 +83,9 @@ struct EdgePoints {
 class TechDrawExport DrawUtil
 {
 public:
-    static int getIndexFromName(std::string geomName);
-    static std::string getGeomTypeFromName(std::string geomName);
-    static std::string makeGeomName(std::string geomType, int index);
+    static int getIndexFromName(const std::string& geomName);
+    static std::string getGeomTypeFromName(const std::string& geomName);
+    static std::string makeGeomName(const std::string& geomType, int index);
     static bool isSamePoint(TopoDS_Vertex v1, TopoDS_Vertex v2, double tolerance = VERTEXTOLERANCE);
     static bool isZeroEdge(TopoDS_Edge e, double tolerance = VERTEXTOLERANCE);
     static double simpleMinDist(TopoDS_Shape s1, TopoDS_Shape s2);
@@ -117,7 +118,8 @@ public:
 
     static bool vectorLess(const Base::Vector3d& v1, const Base::Vector3d& v2);
     //!std::map require comparator to be a type not a function
-    struct vectorLessType {
+    struct vectorLessType
+    {
         bool operator()(const Base::Vector3d& a, const Base::Vector3d& b) const
         {
             return DrawUtil::vectorLess(a, b);
@@ -171,10 +173,22 @@ public:
         return Base::Vector3d(gp.x(), gp.y(), 0.0);
     }
 
-    static gp_Pnt togp_Pnt(const Base::Vector3d v) { return gp_Pnt(v.x, v.y, v.z); }
-    static gp_Dir togp_Dir(const Base::Vector3d v) { return gp_Dir(v.x, v.y, v.z); }
-    static gp_Vec togp_Vec(const Base::Vector3d v) { return gp_Vec(v.x, v.y, v.z); }
-    static QPointF toQPointF(const Base::Vector3d v) { return QPointF(v.x, v.y); }
+    static gp_Pnt togp_Pnt(const Base::Vector3d v)
+    {
+        return gp_Pnt(v.x, v.y, v.z);
+    }
+    static gp_Dir togp_Dir(const Base::Vector3d v)
+    {
+        return gp_Dir(v.x, v.y, v.z);
+    }
+    static gp_Vec togp_Vec(const Base::Vector3d v)
+    {
+        return gp_Vec(v.x, v.y, v.z);
+    }
+    static QPointF toQPointF(const Base::Vector3d v)
+    {
+        return QPointF(v.x, v.y);
+    }
 
     static std::string shapeToString(TopoDS_Shape s);
     static TopoDS_Shape shapeFromString(std::string s);

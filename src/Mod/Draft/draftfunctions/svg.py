@@ -37,7 +37,6 @@ import draftutils.utils as utils
 import draftfunctions.svgtext as svgtext
 
 from draftfunctions.svgshapes import get_proj, get_circle, get_path
-from draftutils.utils import param
 from draftutils.messages import _wrn, _err
 
 # Delay import of module until first use because it is heavy
@@ -51,6 +50,7 @@ DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 
 def get_line_style(line_style, scale):
     """Return a linestyle scaled by a factor."""
+    param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
     style = None
 
     if line_style == "Dashed":
