@@ -106,7 +106,7 @@
       Type: 'Quantity'
       URL: 'https://en.wikipedia.org/wiki/Compressive_strength'
       Description: "Compressive strength in [FreeCAD Pressure unit]"
-    Density: 
+    Density:
       Type: 'Quantity'
       URL: 'https://en.wikipedia.org/wiki/Density'
       Description: "Density in [FreeCAD Density unit]"

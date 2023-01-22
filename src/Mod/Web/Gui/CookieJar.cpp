@@ -94,7 +94,7 @@ void FcCookieJar::saveToDisk()
 
     if (m_file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         QTextStream out(&m_file);
-        for (QList<QByteArray>::iterator i = m_rawCookies.begin(); i != m_rawCookies.end(); i++) { 
+        for (QList<QByteArray>::iterator i = m_rawCookies.begin(); i != m_rawCookies.end(); i++) {
             out << (*i) + "\n";
         }
         m_file.close();

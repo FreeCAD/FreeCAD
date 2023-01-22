@@ -97,7 +97,7 @@ def find_tools(noobsolete=True):
 
     print(Usage + "\nFirst, lets find all necessary tools on your system")
     global QMAKE, LUPDATE, PYLUPDATE, LCONVERT, QT_VERSION_MAJOR
-    
+
     p = subprocess.run(["lupdate","-version"],check=True,stdout=subprocess.PIPE)
     lupdate_version = p.stdout.decode()
     result = re.search(r'.* ([456])\.([\d]+)\.([\d]+)', lupdate_version)
@@ -123,7 +123,7 @@ def find_tools(noobsolete=True):
             raise Exception("Cannot find lupdate")
     else:
         LUPDATE = "lupdate"
-    
+
     if QT_VERSION_MAJOR < 6:
         if (os.system("qmake -version") == 0):
             QMAKE = "qmake"
@@ -222,7 +222,7 @@ def update_translation(entry):
             print(str(e))
             os.chdir(cur)
             return
-         
+
         with open (f"{cur}/tsupdate_stdout.log","a") as f:
             f.write(p.stdout.decode())
             print(p.stdout.decode())

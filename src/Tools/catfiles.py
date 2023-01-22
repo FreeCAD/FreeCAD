@@ -25,11 +25,11 @@ def main():
     #        if os.path.getmtime(f) > ts:
     #            do_not_create = False
     #            break
-    #            
+    #
     #    if do_not_create:
     #        print ("Up-to-date file {0}".format(outputfile))
     #        return
-    
+
     with open(outputfile,'wb') as wfd:
         for f in args:
             with open(f,'rb') as fd:

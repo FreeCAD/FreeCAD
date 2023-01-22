@@ -20,7 +20,7 @@
 # *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 # *   USA                                                                   *
 # *                                                                         *
-# *   This file has been modified from Sliptonic original LinuxCNC post    *
+# *   This file has been modified from Sliptonic original LinuxCNC post     *
 # *   for use with Dynapath Delta 40M,50M,60M controllers. All changes      *
 # *   and modifications (c) luvtofish (luvtofish@gmail.com) 2022            *
 # ***************************************************************************
@@ -39,8 +39,8 @@ This is a post processor file for the FreeCAD Path workbench. It is used to
 take a pseudo-gcode fragment outputted by a Path object, and output
 real GCode suitable for Dynapath Delta 40,50, & 60 Controls. It has been written
 and tested on FreeCAD Path workbench bundled with FreeCAD v21.
-This post processor, once placed in the appropriate PathScripts folder, can be 
-used directly from inside FreeCAD, via the GUI importer or via python scripts with: 
+This post processor, once placed in the appropriate PathScripts folder, can be
+used directly from inside FreeCAD, via the GUI importer or via python scripts with:
 
 import delta_4060_post
 delta_4060_post.export(object,"/path/to/file.ncc","")
