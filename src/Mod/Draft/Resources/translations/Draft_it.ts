@@ -72,8 +72,70 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="199"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="209"/>
-      <source>Font size in the system units</source>
-      <translation>Dimensione del carattere nelle unità del sistema</translation>
+      <source>The font size in system units</source>
+      <translation type="unfinished">The font size in system units</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="219"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="229"/>
+      <source>The line spacing (relative to the font size)</source>
+      <translation type="unfinished">The line spacing (relative to the font size)</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="339"/>
+      <source>Lines and arrows</source>
+      <translation type="unfinished">Lines and arrows</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="348"/>
+      <source>Show line</source>
+      <translation type="unfinished">Show line</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="371"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="381"/>
+      <source>The width of the lines</source>
+      <translation type="unfinished">The width of the lines</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="384"/>
+      <source> px</source>
+      <translation> px</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="391"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="413"/>
+      <source>The type of arrows or markers to use for dimensions and labels</source>
+      <translation type="unfinished">The type of arrows or markers to use for dimensions and labels</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="445"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="455"/>
+      <source>The size of the arrows or markers in system units</source>
+      <translation type="unfinished">The size of the arrows or markers in system units</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="465"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="475"/>
+      <source>The color of lines and arrows</source>
+      <translation type="unfinished">The color of lines and arrows</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="468"/>
+      <source>Line and arrow color</source>
+      <translation type="unfinished">Line and arrow color</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="482"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="492"/>
+      <source>The distance the dimension line is additionally extended</source>
+      <translation type="unfinished">The distance the dimension line is additionally extended</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="522"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="532"/>
+      <source>The distance the extension lines are additionally extended beyond the dimension line</source>
+      <translation type="unfinished">The distance the extension lines are additionally extended beyond the dimension line</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="202"/>
@@ -81,184 +143,134 @@
       <translation>Dimensione del carattere</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="219"/>
-      <source>Line spacing in system units</source>
-      <translation>Spaziatura della linea nelle unità di sistema</translation>
-    </message>
-    <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="222"/>
       <source>Line spacing</source>
       <translation>Interlinea</translation>
     </message>
     <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="236"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="246"/>
+      <source>The color of texts, dimension texts and label texts</source>
+      <translation type="unfinished">The color of texts, dimension texts and label texts</translation>
+    </message>
+    <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="239"/>
+      <source>Text color</source>
+      <translation>Colore testo</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="256"/>
       <source>Units</source>
       <translation>Unità</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="245"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="255"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="262"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="272"/>
       <source>A multiplier factor that affects the size of texts and markers</source>
       <translation>Un fattore moltiplicatore che influisce sulla dimensione dei testi e dei marcatori</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="248"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="265"/>
       <source>Scale multiplier</source>
       <translation>Moltiplicatore di scala</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="268"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="278"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="279"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="289"/>
       <source>If it is checked it will show the unit next to the dimension value</source>
       <translation>Se è spuntato, mostra l'unità accanto al valore della dimensione</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="271"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="282"/>
       <source>Show unit</source>
       <translation>Mostra le unità di misura</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="291"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="301"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="302"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="312"/>
       <source>Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</source>
       <translation>Specificare un'unità di lunghezza valida come mm, m, in, ft, per forzare la visualizzazione del valore di dimensione in questa unità</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="294"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="305"/>
       <source>Unit override</source>
       <translation>Sostituzione di unità</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="308"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="318"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="319"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="329"/>
       <source>The number of decimals to show for dimension values</source>
       <translation>Il numero di decimali da mostrare nelle quote</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="311"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="322"/>
       <source>Decimals</source>
       <translation>Decimali</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="331"/>
-      <source>Line and arrows</source>
-      <translation>Linea e frecce</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="337"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="347"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="345"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="355"/>
       <source>If it is checked it will display the dimension line</source>
       <translation>Se è spuntato, visualizza la linea di quota</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="340"/>
-      <source>Show lines</source>
-      <translation>Mostra le linee</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="363"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="373"/>
-      <source>The width of the dimension lines</source>
-      <translation>La larghezza delle linee di quota</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="366"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="374"/>
       <source>Line width</source>
       <translation>Spessore linea</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="376"/>
-      <source>px</source>
-      <translation>px</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="386"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="396"/>
-      <source>The color of dimension lines, arrows and texts</source>
-      <translation>Il colore delle linee di quota, frecce e testi</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="389"/>
-      <source>Line / text color</source>
-      <translation>Colore linea/testo</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="410"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="432"/>
-      <source>The type of arrows or markers to use at the end of dimension lines</source>
-      <translation>Il tipo di frecce o marcatori da usare alla fine delle linee di quota</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="413"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="394"/>
       <source>Arrow type</source>
       <translation>Tipo di freccia</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="436"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="417"/>
       <source>Dot</source>
       <translation>Punto</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="441"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="422"/>
       <source>Circle</source>
       <translation>Cerchio</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="446"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="427"/>
       <source>Arrow</source>
       <translation>Freccia</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="451"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="432"/>
       <source>Tick</source>
       <translation>Tratto</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="456"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="437"/>
       <source>Tick-2</source>
       <translation>Tratto obliquo 2</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="464"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="474"/>
-      <source>The size of the dimension arrows or markers in system units</source>
-      <translation>La dimensione delle frecce o dei marcatori nelle unità di sistema</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="467"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="448"/>
       <source>Arrow size</source>
       <translation>Dimensione freccia</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="484"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="494"/>
-      <source>The distance that the dimension line is additionally extended</source>
-      <translation>Lunghezza di estensione delle linee di quota</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="487"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="485"/>
       <source>Dimension overshoot</source>
       <translation>Prolungamento della quota</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="504"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="514"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="502"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="512"/>
       <source>The length of the extension lines</source>
       <translation>Lunghezza delle linee di estensione</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="507"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="505"/>
       <source>Extension lines</source>
       <translation>Linee di estensione</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="524"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="534"/>
-      <source>The distance that the extension lines are additionally extended beyond the dimension line</source>
-      <translation>Lunghezza di estensione delle linee di riferimento oltre la linea di quota</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="527"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="525"/>
       <source>Extension overshoot</source>
       <translation>Estensione del prolungamento</translation>
     </message>
@@ -1551,7 +1563,7 @@ Può essere un nome di carattere come "Arial", uno stile predefinito come "sans"
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="149"/>
       <source>Screen</source>
-      <translation type="unfinished">Screen</translation>
+      <translation>Schermo</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="161"/>
@@ -2891,12 +2903,12 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="../../DraftGui.py" line="776"/>
       <source>If checked, an OCC-style offset will be performed instead of the classic offset</source>
-      <translation type="unfinished">If checked, an OCC-style offset will be performed instead of the classic offset</translation>
+      <translation>Se selezionato, un offset in OCC sarà eseguito invece del classico offset</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="777"/>
       <source>&amp;OCC-style offset</source>
-      <translation type="unfinished">&amp;OCC-style offset</translation>
+      <translation>offset in OCC</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="787"/>
@@ -3171,7 +3183,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="../../DraftGui.py" line="1484"/>
       <source>Invalid Tracking value. Using 0.</source>
-      <translation type="unfinished">Invalid Tracking value. Using 0.</translation>
+      <translation>Valore di tracciamento invalido. Verrà usato 0.</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="1498"/>
@@ -3191,7 +3203,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="../../DraftGui.py" line="2029"/>
       <source>Autogroup:</source>
-      <translation type="unfinished">Autogroup:</translation>
+      <translation>Gruppo automatico:</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="2358"/>
@@ -3211,7 +3223,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="../../DraftGui.py" line="2361"/>
       <source>Facebinder elements</source>
-      <translation type="unfinished">Facebinder elements</translation>
+      <translation>Elementi di Facebinder</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="46"/>
@@ -3312,7 +3324,7 @@ Per abilitare FreeCAD a  scaricare queste librerie, rispondere Sì.</translation
     <message>
       <location filename="../../draftutils/groups.py" line="95"/>
       <location filename="../../draftutils/gui_utils.py" line="713"/>
-      <location filename="../../draftutils/utils.py" line="1014"/>
+      <location filename="../../draftutils/utils.py" line="1051"/>
       <location filename="../../draftmake/make_patharray.py" line="161"/>
       <location filename="../../draftmake/make_patharray.py" line="330"/>
       <location filename="../../draftmake/make_label.py" line="195"/>
@@ -3389,89 +3401,89 @@ Per abilitare FreeCAD a  scaricare queste librerie, rispondere Sì.</translation
       <translation>Non ha 'ViewObject.RootNode'.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="650"/>
+      <location filename="../../draftutils/utils.py" line="652"/>
       <source>Solids:</source>
       <translation>Solidi:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="651"/>
+      <location filename="../../draftutils/utils.py" line="653"/>
       <source>Faces:</source>
       <translation>Facce:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="652"/>
+      <location filename="../../draftutils/utils.py" line="654"/>
       <source>Wires:</source>
       <translation>Polilinee:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="653"/>
+      <location filename="../../draftutils/utils.py" line="655"/>
       <source>Edges:</source>
       <translation>Bordi:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="654"/>
+      <location filename="../../draftutils/utils.py" line="656"/>
       <source>Vertices:</source>
       <translation>Vertici:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="658"/>
+      <location filename="../../draftutils/utils.py" line="660"/>
       <source>Face</source>
       <translation>Faccia</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="663"/>
+      <location filename="../../draftutils/utils.py" line="665"/>
       <source>Wire</source>
       <translation>Filo</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="695"/>
-      <location filename="../../draftutils/utils.py" line="699"/>
+      <location filename="../../draftutils/utils.py" line="697"/>
+      <location filename="../../draftutils/utils.py" line="701"/>
       <source>different types</source>
       <translation>diversi tipi</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="709"/>
+      <location filename="../../draftutils/utils.py" line="711"/>
       <source>Objects have different placements. Distance between the two base points: </source>
       <translation>Gli oggetti hanno diversi posizionamenti. Distanza tra i due punti base: </translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="712"/>
+      <location filename="../../draftutils/utils.py" line="714"/>
       <source>has a different value</source>
       <translation>ha un valore diverso</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="715"/>
+      <location filename="../../draftutils/utils.py" line="717"/>
       <source>doesn't exist in one of the objects</source>
       <translation>non esiste in uno degli oggetti</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="827"/>
+      <location filename="../../draftutils/utils.py" line="864"/>
       <source>%s shares a base with %d other objects. Please check if you want to modify this.</source>
       <translation type="unfinished">%s shares a base with %d other objects. Please check if you want to modify this.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="833"/>
+      <location filename="../../draftutils/utils.py" line="870"/>
       <source>%s cannot be modified because its placement is readonly.</source>
       <translation>%s non può essere modificato perché il suo posizionamento è di sola lettura.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="977"/>
+      <location filename="../../draftutils/utils.py" line="1014"/>
       <source>Wrong input: unknown document.</source>
       <translation>Input errato: documento sconosciuto.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="1055"/>
+      <location filename="../../draftutils/utils.py" line="1092"/>
       <source>This function will be deprecated in </source>
       <translation>Questa funzione sarà deprecata in </translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="1056"/>
-      <location filename="../../draftutils/utils.py" line="1059"/>
+      <location filename="../../draftutils/utils.py" line="1093"/>
+      <location filename="../../draftutils/utils.py" line="1096"/>
       <source>Please use </source>
       <translation>Per favore usa </translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="1059"/>
+      <location filename="../../draftutils/utils.py" line="1096"/>
       <source>This function will be deprecated. </source>
       <translation>Questa funzione sarà deprecata. </translation>
     </message>
@@ -3751,18 +3763,18 @@ Per abilitare FreeCAD a  scaricare queste librerie, rispondere Sì.</translation
       <translation>Editor degli stili di annotazione</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="290"/>
+      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="294"/>
       <source>Open styles file</source>
       <translation>Apri file stili</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="292"/>
-      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="314"/>
+      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="296"/>
+      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="316"/>
       <source>JSON file (*.json)</source>
       <translation>File JSON (*.json)</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="312"/>
+      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="314"/>
       <source>Save styles file</source>
       <translation>Salva file stili</translation>
     </message>
@@ -4665,20 +4677,14 @@ L'angolo finale sarà l'angolo base più questa quantità.</translation>
       <translation>Forma da testo: la stringa non ha polilinee</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/draft_annotation.py" line="83"/>
+      <location filename="../../draftobjects/draft_annotation.py" line="77"/>
       <source>added view property 'ScaleMultiplier'</source>
       <translation type="unfinished">added view property 'ScaleMultiplier'</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/draft_annotation.py" line="85"/>
+      <location filename="../../draftobjects/draft_annotation.py" line="80"/>
       <source>added view property 'AnnotationStyle'</source>
       <translation type="unfinished">added view property 'AnnotationStyle'</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/draft_annotation.py" line="108"/>
-      <location filename="../../draftobjects/draft_annotation.py" line="113"/>
-      <source>migrated 'DraftText' type to 'Text'</source>
-      <translation>tipo 'DraftText' migrato a 'Text'</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="284"/>
@@ -5124,7 +5130,7 @@ L'angolo finale sarà l'angolo base più questa quantità.</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_base.py" line="438"/>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="277"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="275"/>
       <location filename="../../draftviewproviders/view_hatch.py" line="82"/>
       <source>Edit</source>
       <translation>Modifica</translation>
@@ -5298,66 +5304,73 @@ L'angolo finale sarà l'angolo base più questa quantità.</translation>
       <translation>Testo</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="253"/>
-      <source>updated view property 'TextFont' to 'FontName'</source>
-      <translation type="unfinished">updated view property 'TextFont' to 'FontName'</translation>
+      <location filename="../../draftobjects/dimension.py" line="212"/>
+      <source>added view property 'TextColor'</source>
+      <translation type="unfinished">added view property 'TextColor'</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/text.py" line="94"/>
+      <location filename="../../draftobjects/label.py" line="258"/>
+      <location filename="../../draftobjects/dimension.py" line="214"/>
+      <source>renamed 'DisplayMode' options to 'World/Screen'</source>
+      <translation type="unfinished">renamed 'DisplayMode' options to 'World/Screen'</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="254"/>
-      <source>updated view property 'TextSize' to 'FontSize'</source>
-      <translation type="unfinished">updated view property 'TextSize' to 'FontSize'</translation>
+      <source>renamed view property 'TextFont' to 'FontName'</source>
+      <translation type="unfinished">renamed view property 'TextFont' to 'FontName'</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="217"/>
-      <source>added view property 'TextColor'</source>
-      <translation type="unfinished">added view property 'TextColor'</translation>
+      <location filename="../../draftobjects/label.py" line="256"/>
+      <source>renamed view property 'TextSize' to 'FontSize'</source>
+      <translation type="unfinished">renamed view property 'TextSize' to 'FontSize'</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../InitGui.py" line="104"/>
+      <location filename="../../InitGui.py" line="103"/>
       <source>Draft creation tools</source>
       <translation>Strumenti di creazione Draft</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="107"/>
+      <location filename="../../InitGui.py" line="106"/>
       <source>Draft annotation tools</source>
       <translation>Strumenti di annotazioni Draft</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="110"/>
+      <location filename="../../InitGui.py" line="109"/>
       <source>Draft modification tools</source>
       <translation>Strumenti di modifica Draft</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="113"/>
+      <location filename="../../InitGui.py" line="112"/>
       <source>Draft utility tools</source>
       <translation>Strumenti di utilità Draft</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="116"/>
+      <location filename="../../InitGui.py" line="115"/>
       <location filename="../../draftguitools/gui_snapper.py" line="1500"/>
       <source>Draft snap</source>
       <translation>Draft Snap</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="121"/>
+      <location filename="../../InitGui.py" line="120"/>
       <source>&amp;Drafting</source>
       <translation>&amp;Drafting</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="124"/>
+      <location filename="../../InitGui.py" line="123"/>
       <source>&amp;Annotation</source>
       <translation>&amp;Annotazione</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="127"/>
+      <location filename="../../InitGui.py" line="126"/>
       <source>&amp;Modification</source>
       <translation>&amp;Modifiche</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="130"/>
+      <location filename="../../InitGui.py" line="129"/>
       <source>&amp;Utilities</source>
       <translation>&amp;Utilità</translation>
     </message>
@@ -5380,19 +5393,19 @@ L'angolo finale sarà l'angolo base più questa quantità.</translation>
   <context>
     <name>Draft</name>
     <message>
+      <location filename="../../InitGui.py" line="135"/>
       <location filename="../../InitGui.py" line="136"/>
       <location filename="../../InitGui.py" line="137"/>
       <location filename="../../InitGui.py" line="138"/>
       <location filename="../../InitGui.py" line="139"/>
-      <location filename="../../InitGui.py" line="140"/>
       <source>Draft</source>
       <translation>Pescaggio</translation>
     </message>
     <message>
+      <location filename="../../InitGui.py" line="181"/>
       <location filename="../../InitGui.py" line="182"/>
       <location filename="../../InitGui.py" line="183"/>
       <location filename="../../InitGui.py" line="184"/>
-      <location filename="../../InitGui.py" line="185"/>
       <source>Import-Export</source>
       <translation>Importa/Esporta</translation>
     </message>
@@ -5421,27 +5434,27 @@ dal menu Strumenti -&gt; Addon Manager</translation>
       <translation>Crea smusso</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="264"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="266"/>
       <source>Save style</source>
       <translation>Salva stile</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="265"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="267"/>
       <source>Name of this new style:</source>
       <translation>Nome di questo nuovo stile:</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="272"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="274"/>
       <source>Warning</source>
       <translation>Attenzione</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="273"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="275"/>
       <source>Name exists. Overwrite?</source>
       <translation>Il nome esiste. Sovrascrivere?</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="308"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="310"/>
       <source>Error: json module not found. Unable to save style</source>
       <translation>Errore: modulo json non trovato. Impossibile salvare lo stile</translation>
     </message>
@@ -5548,17 +5561,17 @@ dal menu Strumenti -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="226"/>
       <source>Millimeters</source>
-      <translation type="unfinished">Millimeters</translation>
+      <translation>Millimetri</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="227"/>
       <source>Centimeters</source>
-      <translation type="unfinished">Centimeters</translation>
+      <translation>Centimetri</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="228"/>
       <source>Meters</source>
-      <translation type="unfinished">Meters</translation>
+      <translation>Metri</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="229"/>
@@ -5568,17 +5581,17 @@ dal menu Strumenti -&gt; Addon Manager</translation>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="230"/>
       <source>Feet</source>
-      <translation type="unfinished">Feet</translation>
+      <translation>Piedi</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="231"/>
       <source>Architectural</source>
-      <translation type="unfinished">Architectural</translation>
+      <translation>Architettonico</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="307"/>
       <source>The preferred unit you are currently working with.</source>
-      <translation type="unfinished">The preferred unit you are currently working with.</translation>
+      <translation>L'unità preferita con cui stai attualmente lavorando.</translation>
     </message>
   </context>
   <context>
@@ -6138,12 +6151,12 @@ La serie può essere trasformata in una serie ortogonale o polare cambiandone il
   <context>
     <name>Draft_AnnotationStyleEditor</name>
     <message>
-      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="78"/>
+      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="79"/>
       <source>Annotation styles...</source>
       <translation>Stili di annotazione...</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="82"/>
+      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="83"/>
       <source>Manage or create annotation styles</source>
       <translation>Gestisci o crea stili di annotazione</translation>
     </message>
@@ -6327,12 +6340,12 @@ Se sono selezionati altri oggetti, verranno ignorati.</translation>
   <context>
     <name>Draft_SetStyle</name>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="55"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="57"/>
       <source>Set style</source>
       <translation>Imposta stile</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="57"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="59"/>
       <source>Sets default styles</source>
       <translation>Imposta stili predefiniti</translation>
     </message>
@@ -6941,12 +6954,12 @@ A 'Link array' is more efficient when handling many copies but the 'Fuse' option
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../../draftobjects/text.py" line="54"/>
+      <location filename="../../draftobjects/text.py" line="57"/>
       <source>The placement of the base point of the first line</source>
       <translation type="unfinished">The placement of the base point of the first line</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/text.py" line="66"/>
+      <location filename="../../draftobjects/text.py" line="69"/>
       <source>The text displayed by this object.
 It is a list of strings; each element in the list will be displayed in its own line.</source>
       <translation>Il testo visualizzato da questo oggetto.
@@ -7620,17 +7633,17 @@ Questa proprietà è in sola lettura, poiché il numero dipende dai punti in 'Po
       <translation>Raggio da utilizzare per raccordare l'angolo.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="140"/>
+      <location filename="../../draftobjects/dimension.py" line="135"/>
       <source>The normal direction of the text of the dimension</source>
       <translation>La direzione normale del testo della quotatura</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="153"/>
+      <location filename="../../draftobjects/dimension.py" line="148"/>
       <source>The object measured by this dimension object</source>
       <translation>L'oggetto quotato da questo oggetto dimensione</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="170"/>
+      <location filename="../../draftobjects/dimension.py" line="165"/>
       <source>The object, and specific subelements of it,
 that this dimension object is measuring.
 
@@ -7647,7 +7660,7 @@ Vi sono varie possibilità:
 - Un oggetto arco ed il suo bordo.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="193"/>
+      <location filename="../../draftobjects/dimension.py" line="188"/>
       <source>A point through which the dimension line, or an extrapolation of it, will pass.
 
 - For linear dimensions, this property controls how close the dimension line
@@ -7715,21 +7728,21 @@ the radius or the diameter value</source>
       <translation>Quando si misura gli archi circolari, determina se visualizzare il valore del raggio o del diametro</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="509"/>
+      <location filename="../../draftobjects/dimension.py" line="516"/>
       <source>Starting angle of the dimension line (circular arc).
 The arc is drawn counter-clockwise.</source>
       <translation>Angolo iniziale della linea di quotatura (arco circolare).
 L'arco è disegnato in senso antiorario.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="520"/>
+      <location filename="../../draftobjects/dimension.py" line="527"/>
       <source>Ending angle of the dimension line (circular arc).
 The arc is drawn counter-clockwise.</source>
       <translation>Angolo finale della linea di quotatura (arco circolare).
 L'arco è disegnato in senso antiorario.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="535"/>
+      <location filename="../../draftobjects/dimension.py" line="542"/>
       <source>The center point of the dimension line, which is a circular arc.
 
 This is normally the point where two line segments, or their extensions
@@ -7739,7 +7752,7 @@ intersect, resulting in the measured 'Angle' between them.</source>
 Questo, solitamente, è il punto in cui due segmenti di linea, o le loro estensioni, si intersecano, con conseguente 'Angolo' misurato tra loro.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="549"/>
+      <location filename="../../draftobjects/dimension.py" line="556"/>
       <source>The value of the measurement.
 
 This property is read-only because the value is calculated from
@@ -7938,18 +7951,18 @@ dalle proprietà dell' 'Angolo iniziale' e 'Angolo finale'.</translation>
     <message>
       <location filename="../../draftviewproviders/view_label.py" line="61"/>
       <source>Vertical alignment</source>
-      <translation type="unfinished">Vertical alignment</translation>
+      <translation>Allineamento verticale</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_label.py" line="72"/>
       <source>Maximum number of characters on each line of the text box</source>
-      <translation type="unfinished">Maximum number of characters on each line of the text box</translation>
+      <translation>Numero massimo di caratteri su ogni riga della casella di testo</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_label.py" line="80"/>
       <location filename="../../draftviewproviders/view_text.py" line="56"/>
       <source>Horizontal alignment</source>
-      <translation type="unfinished">Horizontal alignment</translation>
+      <translation>Allineamento orizzontale</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_label.py" line="122"/>

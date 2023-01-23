@@ -124,7 +124,7 @@
     <message>
       <location filename="../../ImageView.cpp" line="110"/>
       <source>Stretch the image to fit the view</source>
-      <translation>rastegni sliku da odgovara prikazu</translation>
+      <translation>Rastegni sliku da odgovara prikazu</translation>
     </message>
     <message>
       <location filename="../../ImageView.cpp" line="114"/>

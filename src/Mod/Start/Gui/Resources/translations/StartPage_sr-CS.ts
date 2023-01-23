@@ -101,7 +101,7 @@
     <message>
       <location filename="TranslationTexts.py" line="61"/>
       <source>Getting help from the community</source>
-      <translation>Dobavljanje pomoći od zajednice</translation>
+      <translation>Dobijanje pomoći od FreeCAD zajednice</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="62"/>
@@ -141,7 +141,7 @@
     <message>
       <location filename="TranslationTexts.py" line="69"/>
       <source>Recent commits</source>
-      <translation>Nedavne potvrde</translation>
+      <translation>Nedavno verifikovane promene</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="70"/>
@@ -151,7 +151,7 @@
     <message>
       <location filename="TranslationTexts.py" line="71"/>
       <source>See all commits on github</source>
-      <translation>Vidi sve potvrde na github</translation>
+      <translation>Vidi sve verifikovane promene na github</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="72"/>
@@ -191,7 +191,7 @@
     <message>
       <location filename="TranslationTexts.py" line="79"/>
       <source>To open any of the links above in your desktop browser, Right-click -&gt; Open in external browser</source>
-      <translation>Da bi otvorio bilo koju od gornjih veza u veb-pregledaču, klikni desnim tasterom miša -&gt; Otvori u spoljnom veb-pregledaču</translation>
+      <translation>Da bi otvorio bilo koju od gornjih veza u veb-pregledaču, klikni desnim tasterom miša na link -&gt; Otvori u spoljnom veb-pregledaču</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="80"/>
@@ -357,7 +357,7 @@ Ako koristiš ";;" da bi razdvojio putanje, možeš dodati nekoliko fascikli</tr
     <message>
       <location filename="../../DlgStartPreferences.ui" line="306"/>
       <source>An optional image to display as background</source>
-      <translation>Opciona slika koja se prikazuje kao pozadina</translation>
+      <translation>Neobavezna slika koja se prikazuje kao pozadina</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="319"/>

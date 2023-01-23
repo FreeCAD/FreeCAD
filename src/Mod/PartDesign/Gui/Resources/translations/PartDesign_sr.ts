@@ -1015,6 +1015,21 @@ so that self intersection is avoided.</translation>
       <source>External gear:</source>
       <translation>Cпољашњи зупчаник:</translation>
     </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.ui" line="179"/>
+      <source>Addendum Coefficient</source>
+      <translation type="unfinished">Addendum Coefficient</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.ui" line="199"/>
+      <source>Dedendum Coefficient</source>
+      <translation type="unfinished">Dedendum Coefficient</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.ui" line="219"/>
+      <source>Root Fillet Coefficient</source>
+      <translation type="unfinished">Root Fillet Coefficient</translation>
+    </message>
   </context>
   <context>
     <name>PartDesign::Groove</name>
@@ -1412,7 +1427,7 @@ If zero, it is equal to Radius2</source>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="53"/>
       <source>Cut</source>
-      <translation>Одузми</translation>
+      <translation>Исецање</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="58"/>
@@ -3553,7 +3568,7 @@ click again to end selection</source>
     <message>
       <location filename="../../Command.cpp" line="776"/>
       <source>Ensure that the body contains a feature before attempting a subtractive command.</source>
-      <translation>Увери се да тело садржи типски облик пре него што покушаш да примениш алатку која прави удубљење.</translation>
+      <translation>Увери се да тело садржи бар основни типски облик пре него што покушаш да примениш алатку која прави удубљење.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="797"/>

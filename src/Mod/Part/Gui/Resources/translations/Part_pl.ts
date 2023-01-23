@@ -1109,7 +1109,7 @@
     <message>
       <location filename="../../DlgBlock.ui" line="115"/>
       <source>Profile</source>
-      <translation>Kontur</translation>
+      <translation>Profil</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="135"/>

@@ -7937,196 +7937,201 @@ Quere especificar outro directorio?</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="139"/>
+      <source>Belarusian</source>
+      <translation type="unfinished">Belarusian</translation>
+    </message>
+    <message>
+      <location filename="Translator.cpp" line="140"/>
       <source>Bulgarian</source>
       <translation>Búlgaro</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="140"/>
+      <location filename="Translator.cpp" line="141"/>
       <source>Catalan</source>
       <translation>Catalán</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="141"/>
+      <location filename="Translator.cpp" line="142"/>
       <source>Chinese Simplified</source>
       <translation>Chinés Simplificado</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="142"/>
+      <location filename="Translator.cpp" line="143"/>
       <source>Chinese Traditional</source>
       <translation>Chinés Tradicional</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="143"/>
+      <location filename="Translator.cpp" line="144"/>
       <source>Croatian</source>
       <translation>Croata</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="144"/>
+      <location filename="Translator.cpp" line="145"/>
       <source>Czech</source>
       <translation>Checo</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="145"/>
+      <location filename="Translator.cpp" line="146"/>
       <source>Dutch</source>
       <translation>Holandés</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="146"/>
+      <location filename="Translator.cpp" line="147"/>
       <source>English</source>
       <translation>Inglés</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="147"/>
+      <location filename="Translator.cpp" line="148"/>
       <source>Filipino</source>
       <translation>Filipino</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="148"/>
+      <location filename="Translator.cpp" line="149"/>
       <source>Finnish</source>
       <translation>Finés</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="149"/>
+      <location filename="Translator.cpp" line="150"/>
       <source>French</source>
       <translation>Francés</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="150"/>
+      <location filename="Translator.cpp" line="151"/>
       <source>Galician</source>
       <translation>Galego</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="152"/>
+      <location filename="Translator.cpp" line="153"/>
       <source>German</source>
       <translation>Alemán</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="153"/>
+      <location filename="Translator.cpp" line="154"/>
       <source>Greek</source>
       <translation>Grego</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="154"/>
+      <location filename="Translator.cpp" line="155"/>
       <source>Hungarian</source>
       <translation>Húngaro</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="155"/>
+      <location filename="Translator.cpp" line="156"/>
       <source>Indonesian</source>
       <translation>Indonesio</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="156"/>
+      <location filename="Translator.cpp" line="157"/>
       <source>Italian</source>
       <translation>Italiano</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="157"/>
+      <location filename="Translator.cpp" line="158"/>
       <source>Japanese</source>
       <translation>Xaponés</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="158"/>
+      <location filename="Translator.cpp" line="159"/>
       <source>Kabyle</source>
       <translation>Cabilo</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="159"/>
+      <location filename="Translator.cpp" line="160"/>
       <source>Korean</source>
       <translation>Coreano</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="160"/>
+      <location filename="Translator.cpp" line="161"/>
       <source>Lithuanian</source>
       <translation>Lituano</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="161"/>
+      <location filename="Translator.cpp" line="162"/>
       <source>Norwegian</source>
       <translation>Noruegués</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="162"/>
+      <location filename="Translator.cpp" line="163"/>
       <source>Polish</source>
       <translation>Polaco</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="163"/>
+      <location filename="Translator.cpp" line="164"/>
       <source>Portuguese, Brazilian</source>
       <translation>Portugués, Brasil</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="164"/>
+      <location filename="Translator.cpp" line="165"/>
       <source>Portuguese</source>
       <translation>Portugués</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="165"/>
+      <location filename="Translator.cpp" line="166"/>
       <source>Romanian</source>
       <translation>Romanés</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="166"/>
+      <location filename="Translator.cpp" line="167"/>
       <source>Russian</source>
       <translation>Ruso</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="167"/>
+      <location filename="Translator.cpp" line="168"/>
       <source>Serbian</source>
       <translation>Serbio</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="168"/>
+      <location filename="Translator.cpp" line="169"/>
       <source>Serbian, Latin</source>
       <translation type="unfinished">Serbian, Latin</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="169"/>
+      <location filename="Translator.cpp" line="170"/>
       <source>Slovak</source>
       <translation>Eslovaco</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="170"/>
+      <location filename="Translator.cpp" line="171"/>
       <source>Slovenian</source>
       <translation>Esloveno</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="171"/>
+      <location filename="Translator.cpp" line="172"/>
       <source>Spanish</source>
       <translation>Castelán</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="172"/>
+      <location filename="Translator.cpp" line="173"/>
       <source>Spanish, Argentina</source>
       <translation>Español, Arxentina</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="173"/>
+      <location filename="Translator.cpp" line="174"/>
       <source>Swedish</source>
       <translation>Sueco</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="174"/>
+      <location filename="Translator.cpp" line="175"/>
       <source>Turkish</source>
       <translation>Turco</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="175"/>
+      <location filename="Translator.cpp" line="176"/>
       <source>Ukrainian</source>
       <translation>Ucraíno</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="176"/>
+      <location filename="Translator.cpp" line="177"/>
       <source>Valencian</source>
       <translation>Valenciano</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="177"/>
+      <location filename="Translator.cpp" line="178"/>
       <source>Vietnamese</source>
       <translation>Vietnamita</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="151"/>
+      <location filename="Translator.cpp" line="152"/>
       <source>Georgian</source>
       <translation type="unfinished">Georgian</translation>
     </message>

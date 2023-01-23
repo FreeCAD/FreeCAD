@@ -2828,7 +2828,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../../TaskDlgPathCompound.ui" line="20"/>
       <source>Reorder children by dragging and dropping them to their correct location</source>
-      <translation>Réordonnez des enfants en les glissant-déposer à leur emplacement correct</translation>
+      <translation>Réorganiser les enfants en les faisant glisser et en les déposant à leur emplacement correct</translation>
     </message>
   </context>
   <context>
@@ -3119,7 +3119,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="51"/>
       <source>Drag to reorder, then update.</source>
-      <translation>Faites glisser pour réorganiser, puis mettez à jour.</translation>
+      <translation>Faire glisser pour réorganiser, puis mettre à jour.</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="67"/>
@@ -3144,7 +3144,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="87"/>
       <source>Update the path with the removed and reordered items.</source>
-      <translation>Mettez à jour la trajectoire avec les éléments supprimés et réorganisés.</translation>
+      <translation>Mettre à jour la trajectoire avec les éléments supprimés et réorganisés.</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="90"/>

@@ -2438,12 +2438,12 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="199"/>
       <source>Update was cancelled</source>
-      <translation type="unfinished">Update was cancelled</translation>
+      <translation>Mise à jour annulée</translation>
     </message>
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="200"/>
       <source>some addons may have been updated</source>
-      <translation type="unfinished">some addons may have been updated</translation>
+      <translation>certaines extensions ont peut-être été mises à jour</translation>
     </message>
   </context>
   <context>

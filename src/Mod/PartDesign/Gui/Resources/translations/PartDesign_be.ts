@@ -699,7 +699,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1795"/>
       <source>Thickness</source>
-      <translation type="unfinished">Thickness</translation>
+      <translation>Таўшчыня</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1796"/>
@@ -1015,6 +1015,21 @@ so that self intersection is avoided.</source>
       <source>External gear:</source>
       <translation>Вонкавае зачапленне:</translation>
     </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.ui" line="179"/>
+      <source>Addendum Coefficient</source>
+      <translation type="unfinished">Addendum Coefficient</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.ui" line="199"/>
+      <source>Dedendum Coefficient</source>
+      <translation type="unfinished">Dedendum Coefficient</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.ui" line="219"/>
+      <source>Root Fillet Coefficient</source>
+      <translation type="unfinished">Root Fillet Coefficient</translation>
+    </message>
   </context>
   <context>
     <name>PartDesign::Groove</name>
@@ -1090,7 +1105,7 @@ Please select a body from below, or create a new body.</source>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="14"/>
       <source>Geometric Primitives</source>
-      <translation>Геаметрычныя першасныя цела</translation>
+      <translation>Геаметрычныя першасныя целы</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="62"/>
@@ -2042,7 +2057,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="289"/>
       <source>Update view</source>
-      <translation type="unfinished">Update view</translation>
+      <translation>Абнавіць выгляд</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.cpp" line="51"/>
@@ -2163,7 +2178,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="124"/>
       <source>Update view</source>
-      <translation type="unfinished">Update view</translation>
+      <translation>Абнавіць выгляд</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.cpp" line="108"/>
@@ -2186,7 +2201,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="20"/>
       <source>Ruled surface</source>
-      <translation type="unfinished">Ruled surface</translation>
+      <translation>Лінейная паверхня</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="27"/>
@@ -2221,7 +2236,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="120"/>
       <source>Update view</source>
-      <translation type="unfinished">Update view</translation>
+      <translation>Абнавіць выгляд</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="50"/>
@@ -2269,7 +2284,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="79"/>
       <source>Update view</source>
-      <translation type="unfinished">Update view</translation>
+      <translation>Абнавіць выгляд</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.cpp" line="101"/>
@@ -2312,7 +2327,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="71"/>
       <source>Update view</source>
-      <translation type="unfinished">Update view</translation>
+      <translation>Абнавіць выгляд</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="75"/>
@@ -2482,7 +2497,7 @@ the sketch plane's normal vector will be used</source>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="140"/>
       <source>x</source>
-      <translation type="unfinished">x</translation>
+      <translation>x</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="147"/>
@@ -2492,7 +2507,7 @@ the sketch plane's normal vector will be used</source>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="169"/>
       <source>y</source>
-      <translation type="unfinished">y</translation>
+      <translation>y</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="176"/>
@@ -2502,7 +2517,7 @@ the sketch plane's normal vector will be used</source>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="198"/>
       <source>z</source>
-      <translation type="unfinished">z</translation>
+      <translation>z</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="205"/>
@@ -2565,7 +2580,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="373"/>
       <source>Update view</source>
-      <translation type="unfinished">Update view</translation>
+      <translation>Абнавіць выгляд</translation>
     </message>
   </context>
   <context>
@@ -2593,7 +2608,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="46"/>
       <source>Frenet</source>
-      <translation type="unfinished">Frenet</translation>
+      <translation>Вектар Фрэне</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="51"/>
@@ -2877,7 +2892,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="130"/>
       <source>Update view</source>
-      <translation type="unfinished">Update view</translation>
+      <translation>Абнавіць выгляд</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.cpp" line="114"/>
@@ -2962,7 +2977,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="122"/>
       <source>Update view</source>
-      <translation type="unfinished">Update view</translation>
+      <translation>Абнавіць выгляд</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="50"/>
@@ -3005,7 +3020,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskScaledParameters.ui" line="90"/>
       <source>Update view</source>
-      <translation type="unfinished">Update view</translation>
+      <translation>Абнавіць выгляд</translation>
     </message>
     <message>
       <location filename="../../TaskScaledParameters.cpp" line="92"/>
@@ -3090,22 +3105,22 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="65"/>
       <source>Thickness</source>
-      <translation type="unfinished">Thickness</translation>
+      <translation>Таўшчыня</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="94"/>
       <source>Mode</source>
-      <translation type="unfinished">Mode</translation>
+      <translation>Рэжым</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="102"/>
       <source>Skin</source>
-      <translation type="unfinished">Skin</translation>
+      <translation>Тэма афармлення</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="107"/>
       <source>Pipe</source>
-      <translation type="unfinished">Pipe</translation>
+      <translation>Труба</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="112"/>
@@ -3120,7 +3135,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="128"/>
       <source>Arc</source>
-      <translation type="unfinished">Arc</translation>
+      <translation>Дуга</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="133"/>
@@ -3888,7 +3903,7 @@ If you have a legacy document with PartDesign objects without Body, use the migr
     <message>
       <location filename="../../ViewProvider.cpp" line="78"/>
       <source>Set colors...</source>
-      <translation type="unfinished">Set colors...</translation>
+      <translation>Задаць колеры...</translation>
     </message>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="64"/>
@@ -4409,7 +4424,7 @@ Note that the calculation can take some time</source>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="95"/>
       <source>Update view</source>
-      <translation type="unfinished">Update view</translation>
+      <translation>Абнавіць выгляд</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="108"/>

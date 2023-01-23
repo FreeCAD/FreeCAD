@@ -3302,7 +3302,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgImportStep.ui" line="59"/>
       <source>Select this to not import any invisible objects.</source>
-      <translation>Sélectionnez cette option pour ne pas importer d'objets invisibles.</translation>
+      <translation>Sélectionner cette option pour ne pas importer d'objets invisibles.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="62"/>
@@ -5449,7 +5449,7 @@ en traçant un rectangle de sélection dans la vue 3D</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="33"/>
       <source>Wire from edges</source>
-      <translation>Fil à partir d'arêtes</translation>
+      <translation>Polyligne à partir d'arêtes</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="40"/>

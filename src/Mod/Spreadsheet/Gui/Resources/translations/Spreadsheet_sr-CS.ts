@@ -1085,7 +1085,7 @@ Da li želiš da nastaviš?</translation>
       <location filename="../../SheetTableView.cpp" line="203"/>
       <location filename="../../SheetTableView.cpp" line="620"/>
       <source>Cut</source>
-      <translation>Razlika</translation>
+      <translation>Isecanje</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="205"/>

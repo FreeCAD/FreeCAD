@@ -2440,12 +2440,12 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="199"/>
       <source>Update was cancelled</source>
-      <translation type="unfinished">Update was cancelled</translation>
+      <translation>Aktualizacja została przerwana</translation>
     </message>
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="200"/>
       <source>some addons may have been updated</source>
-      <translation type="unfinished">some addons may have been updated</translation>
+      <translation>niektóre dodatki mogły zostać zaktualizowane</translation>
     </message>
   </context>
   <context>

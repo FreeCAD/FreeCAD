@@ -686,7 +686,7 @@
       <location filename="../../AttacherTexts.cpp" line="173"/>
       <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. Plane will be aligned to folding the first edge.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Спецыяльны рэжым для складання шматкантовікаў. Аберыце чатыры рабра па парадку: рабро складання, лінія згіну, іншая лінія згіну, іншае рабро складання. Плоскасць будзе выраўнаваная па складанню першага рабра.</translation>
+      <translation>Спецыяльны рэжым для складання шматкантовікаў. Абярыце чатыры рабра па парадку: рабро складання, лінія згіну, іншая лінія згіну, іншае рабро складання. Плоскасць будзе выраўнаваная па складанню першага рабра.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="175"/>
@@ -883,7 +883,7 @@
       <location filename="../../AttacherTexts.cpp" line="98"/>
       <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. XY plane will be aligned to folding the first edge.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Спецыяльны рэжым для складання шматкантовікаў. Аберыце чатыры рабра па парадку: рабро складання, лінія згіну, іншая лінія згіну, іншае рабро складання. Плоскасць XY будзе выраўнаваная па складанню першага рабра.</translation>
+      <translation>Спецыяльны рэжым для складання шматкантовікаў. Абярыце чатыры рабра па парадку: рабро складання, лінія згіну, іншая лінія згіну, іншае рабро складання. Плоскасць XY будзе выраўнаваная па складанню першага рабра.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="100"/>
@@ -1840,7 +1840,7 @@ into its X, Y, and Z components.</source>
     <message>
       <location filename="../../Command.cpp" line="1510"/>
       <source>Mirroring...</source>
-      <translation>Люстраваць...</translation>
+      <translation>Сіметрыя...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1511"/>
@@ -1930,7 +1930,7 @@ into its X, Y, and Z components.</source>
     <message>
       <location filename="../../Command.cpp" line="213"/>
       <source>Create primitives...</source>
-      <translation>Стварыць першасныя цела...</translation>
+      <translation>Стварыць першасныя целы...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="214"/>
@@ -2324,7 +2324,7 @@ of projection.</source>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1077"/>
       <source>Edit attachment</source>
-      <translation>Змяніць укладанне</translation>
+      <translation>Змяніць мацаванне</translation>
     </message>
     <message>
       <location filename="../../TaskFaceColors.cpp" line="430"/>
@@ -2413,12 +2413,12 @@ of projection.</source>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="124"/>
       <source>Attachment Offset (in local coordinates):</source>
-      <translation type="unfinished">Attachment Offset (in local coordinates):</translation>
+      <translation>Зрушэнне прымацавання (у лакальных каардынатах):</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="136"/>
       <source>In x-direction:</source>
-      <translation type="unfinished">In x-direction:</translation>
+      <translation>Па напрамку x:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="158"/>
@@ -2430,53 +2430,53 @@ of projection.</source>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="171"/>
       <source>In y-direction:</source>
-      <translation type="unfinished">In y-direction:</translation>
+      <translation>Па напрамку y:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="203"/>
       <source>In z-direction:</source>
-      <translation type="unfinished">In z-direction:</translation>
+      <translation>Па напрамку z:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="235"/>
       <source>Around x-axis:</source>
-      <translation type="unfinished">Around x-axis:</translation>
+      <translation>Вакол восі x:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="254"/>
       <source>Rotation around the x-axis
 Note: The placement is expressed in local space of object being attached.</source>
-      <translation>Кручэнне вакол восі x
+      <translation>Вярчэнне вакол восі x
 Заўвага: размяшчэнне выяўляецца ў лакальнай прасторы прымацаванага аб'екту.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="280"/>
       <source>Around y-axis:</source>
-      <translation type="unfinished">Around y-axis:</translation>
+      <translation>Вакол восі y:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="299"/>
       <source>Rotation around the y-axis
 Note: The placement is expressed in local space of object being attached.</source>
-      <translation>Кручэнне вакол восі y
+      <translation>Вярчэнне вакол восі y
 Заўвага: размяшчэнне выяўляецца ў лакальнай прасторы прымацаванага аб'екту.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="325"/>
       <source>Around z-axis:</source>
-      <translation type="unfinished">Around z-axis:</translation>
+      <translation>Вакол восі z:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="344"/>
       <source>Rotation around the z-axis
 Note: The placement is expressed in local space of object being attached.</source>
-      <translation>Кручэнне вакол восі z
+      <translation>Вярчэнне вакол восі z
 Заўвага: размяшчэнне выяўляецца ў лакальнай прасторы прымацаванага аб'екту.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="367"/>
       <source>Flip sides</source>
-      <translation type="unfinished">Flip sides</translation>
+      <translation>Павярнуць бакі</translation>
     </message>
   </context>
   <context>
@@ -2573,7 +2573,7 @@ Note: The placement is expressed in local space of object being attached.</sourc
       <location filename="../../DlgBooleanOperation.ui" line="81"/>
       <location filename="../../DlgBooleanOperation.ui" line="119"/>
       <source>Solids</source>
-      <translation type="unfinished">Solids</translation>
+      <translation>Суцэльная целы</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="86"/>
@@ -2591,7 +2591,7 @@ Note: The placement is expressed in local space of object being attached.</sourc
       <location filename="../../DlgBooleanOperation.ui" line="96"/>
       <location filename="../../DlgBooleanOperation.ui" line="134"/>
       <source>Faces</source>
-      <translation type="unfinished">Faces</translation>
+      <translation>Грані</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="114"/>
@@ -2606,12 +2606,12 @@ Note: The placement is expressed in local space of object being attached.</sourc
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="382"/>
       <source>Select a shape on the left side, first</source>
-      <translation>Спачатку абраць фігура з левага боку</translation>
+      <translation>Спачатку абярыце фігуру з левага боку</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="387"/>
       <source>Select a shape on the right side, first</source>
-      <translation>Спачатку абраць фігура з правага боку</translation>
+      <translation>Спачатку абярыце фігуру з правага боку</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="392"/>
@@ -2926,7 +2926,7 @@ If both lengths are zero, magnitude of direction is used.</source>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="180"/>
       <source>Selecting...</source>
-      <translation type="unfinished">Selecting...</translation>
+      <translation>Абраны...</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="428"/>
@@ -3016,7 +3016,7 @@ If both lengths are zero, magnitude of direction is used.</source>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="57"/>
       <source>Selection</source>
-      <translation type="unfinished">Selection</translation>
+      <translation>Выдзяленне</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="63"/>
@@ -3354,7 +3354,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgImportStep.ui" line="141"/>
       <source>Mode</source>
-      <translation type="unfinished">Mode</translation>
+      <translation>Рэжым</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="161"/>
@@ -3540,7 +3540,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="14"/>
       <source>Geometric Primitives</source>
-      <translation>Геаметрычныя першасныя цела</translation>
+      <translation>Геаметрычныя першасныя целы</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="33"/>
@@ -4317,53 +4317,53 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="158"/>
       <source>The default line thickness for new shapes</source>
-      <translation type="unfinished">The default line thickness for new shapes</translation>
+      <translation>Першапачатковая таўшчыня лініі для новай фігуры</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="161"/>
       <location filename="../../DlgSettingsObjectColor.ui" line="229"/>
       <source>px</source>
-      <translation type="unfinished">px</translation>
+      <translation>px</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="186"/>
       <source>Vertex color</source>
-      <translation type="unfinished">Vertex color</translation>
+      <translation>Колер вяршыні</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="193"/>
       <source>The default color for new vertices</source>
-      <translation type="unfinished">The default color for new vertices</translation>
+      <translation>Першапачатковы колер для новых вяршынь</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="219"/>
       <source>Vertex size</source>
-      <translation type="unfinished">Vertex size</translation>
+      <translation>Памер вяршыні</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="226"/>
       <source>The default size for new vertices</source>
-      <translation type="unfinished">The default size for new vertices</translation>
+      <translation>Першапачатковы памер для новых вяршынь</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="254"/>
       <source>Bounding box color</source>
-      <translation type="unfinished">Bounding box color</translation>
+      <translation>Колер абмежаванага прастакутніка</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="261"/>
       <source>The color of bounding boxes in the 3D view</source>
-      <translation type="unfinished">The color of bounding boxes in the 3D view</translation>
+      <translation>Колер абмежаванага прастакутніка ў трохмерным выглядзе</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="287"/>
       <source>Bounding box font size</source>
-      <translation type="unfinished">Bounding box font size</translation>
+      <translation>Памер шрыфту абмежаванага прастакутніка</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="294"/>
       <source>The font size of bounding boxes in the 3D view</source>
-      <translation type="unfinished">The font size of bounding boxes in the 3D view</translation>
+      <translation>Памер шрыфту абмежаванага прастакутніка ў трохмерным выглядзе</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="328"/>
@@ -4371,10 +4371,10 @@ during file reading (slower but higher details).</source>
 If not checked, it depends on the option "Backlight color"
 (preferences section Display -&gt; 3D View); either the backlight color
 will be used or black.</source>
-      <translation type="unfinished">Bottom side of surface will be rendered the same way than top.
-If not checked, it depends on the option "Backlight color"
-(preferences section Display -&gt; 3D View); either the backlight color
-will be used or black.</translation>
+      <translation>Ніжні бок паверхні будзе адлюстроўвацца так жа, як і верхні.
+Калі не птушка, гэта залежыць ад налады "Колер асвятлення".
+(падзел пераваг Праецыраванне - &gt; Трохмерны выгляд);
+будзе ўжывацца альбо колер асвятлення, альбо чорны.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="334"/>
@@ -4384,7 +4384,7 @@ will be used or black.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="368"/>
       <source>Default Annotation color</source>
-      <translation type="unfinished">Default Annotation color</translation>
+      <translation>Першапачатковы колер Заметкі</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="382"/>
@@ -4394,7 +4394,7 @@ will be used or black.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="389"/>
       <source>Text color for document annotations</source>
-      <translation type="unfinished">Text color for document annotations</translation>
+      <translation>Колер тэксту для заметак у дакуменце</translation>
     </message>
   </context>
   <context>
@@ -4402,7 +4402,7 @@ will be used or black.</translation>
     <message>
       <location filename="../../Location.ui" line="14"/>
       <source>Location</source>
-      <translation type="unfinished">Location</translation>
+      <translation>Месцазнаходжанне</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="29"/>
@@ -4433,18 +4433,18 @@ will be used or black.</translation>
       <location filename="../../Location.ui" line="106"/>
       <source>Use custom vector for pad direction otherwise
 the sketch plane's normal vector will be used</source>
-      <translation type="unfinished">Use custom vector for pad direction otherwise
-the sketch plane's normal vector will be used</translation>
+      <translation>Ужываць карыстальніцкі вектар для напрамку выцягвання,
+у адваротным выпадку будзе ўжывацца вектар нармалі плоскасці эскіза</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="110"/>
       <source>Rotation axis</source>
-      <translation type="unfinished">Rotation axis</translation>
+      <translation>Восі вярчэння</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="118"/>
       <source>x</source>
-      <translation type="unfinished">x</translation>
+      <translation>x</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="125"/>
@@ -4454,7 +4454,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../Location.ui" line="147"/>
       <source>y</source>
-      <translation type="unfinished">y</translation>
+      <translation>y</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="154"/>
@@ -4464,7 +4464,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../Location.ui" line="176"/>
       <source>z</source>
-      <translation type="unfinished">z</translation>
+      <translation>z</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="183"/>
@@ -4482,22 +4482,22 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../TaskLoft.cpp" line="77"/>
       <source>Available profiles</source>
-      <translation type="unfinished">Available profiles</translation>
+      <translation>Даступныя профілі</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="78"/>
       <source>Selected profiles</source>
-      <translation type="unfinished">Selected profiles</translation>
+      <translation>Абраныя профілі</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="181"/>
       <source>Too few elements</source>
-      <translation type="unfinished">Too few elements</translation>
+      <translation>Занадта мала элементаў</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="181"/>
       <source>At least two vertices, edges, wires or faces are required.</source>
-      <translation type="unfinished">At least two vertices, edges, wires or faces are required.</translation>
+      <translation>Неабходна па меншай меры дзве вяршыні, рэбры, ломаныя лініі ці грані.</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="215"/>
@@ -4507,7 +4507,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../TaskLoft.cpp" line="244"/>
       <source>Vertex/Edge/Wire/Face</source>
-      <translation type="unfinished">Vertex/Edge/Wire/Face</translation>
+      <translation>Вяршыня/Рабро/Ломаная лінія/Грань</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="245"/>
@@ -4520,62 +4520,62 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../Mirroring.ui" line="14"/>
       <source>Mirroring</source>
-      <translation type="unfinished">Mirroring</translation>
+      <translation>Сіметрыя</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="33"/>
       <source>Shapes</source>
-      <translation type="unfinished">Shapes</translation>
+      <translation>Фігуры</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="41"/>
       <source>Mirror plane:</source>
-      <translation type="unfinished">Mirror plane:</translation>
+      <translation>Люстраная плоскасць:</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="49"/>
       <source>XY plane</source>
-      <translation type="unfinished">XY plane</translation>
+      <translation>Плоскасць XY</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="54"/>
       <source>XZ plane</source>
-      <translation type="unfinished">XZ plane</translation>
+      <translation>Плоскасць XZ</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="59"/>
       <source>YZ plane</source>
-      <translation type="unfinished">YZ plane</translation>
+      <translation>Плоскасць YZ</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="67"/>
       <source>Base point</source>
-      <translation type="unfinished">Base point</translation>
+      <translation>Базавая кропка</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="73"/>
       <source>x</source>
-      <translation type="unfinished">x</translation>
+      <translation>x</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="96"/>
       <source>y</source>
-      <translation type="unfinished">y</translation>
+      <translation>y</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="119"/>
       <source>z</source>
-      <translation type="unfinished">z</translation>
+      <translation>z</translation>
     </message>
     <message>
       <location filename="../../Mirroring.cpp" line="129"/>
       <source>Select a shape for mirroring, first.</source>
-      <translation type="unfinished">Select a shape for mirroring, first.</translation>
+      <translation>Спачатку абярыце фігуру для сіметрыі.</translation>
     </message>
     <message>
       <location filename="../../Mirroring.cpp" line="136"/>
       <source>No such document '%1'.</source>
-      <translation type="unfinished">No such document '%1'.</translation>
+      <translation>Няма такога дакумента '%1'.</translation>
     </message>
   </context>
   <context>
@@ -4609,12 +4609,12 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../SectionCutting.ui" line="20"/>
       <source>Permanent Section Cutting</source>
-      <translation type="unfinished">Permanent Section Cutting</translation>
+      <translation>Зрэз пастаяннага перасеку</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="32"/>
       <source>Cutting X</source>
-      <translation type="unfinished">Cutting X</translation>
+      <translation>Зрэз па восі X</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="44"/>
@@ -4633,22 +4633,22 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../SectionCutting.ui" line="106"/>
       <source>Cutting Y</source>
-      <translation type="unfinished">Cutting Y</translation>
+      <translation>Зрэз па восі Y</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="174"/>
       <source>Cutting Z</source>
-      <translation type="unfinished">Cutting Z</translation>
+      <translation>Зрэз па восі Z</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="242"/>
       <source>Cut face</source>
-      <translation type="unfinished">Cut face</translation>
+      <translation>Грань зрэзу</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="254"/>
       <source>Color of cut face</source>
-      <translation type="unfinished">Color of cut face</translation>
+      <translation>Колер грані зрэзу</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="257"/>
@@ -4660,9 +4660,9 @@ the sketch plane's normal vector will be used</translation>
       <source>If checked, the color and transparency
 will be taken from the cut objects.
 Works only if all objects have the same values.</source>
-      <translation type="unfinished">If checked, the color and transparency
-will be taken from the cut objects.
-Works only if all objects have the same values.</translation>
+      <translation>Калі птушка, колер і празрыстасць
+будуць узятыя з выразаных аб'ектаў.
+Працуе толькі калі ўсе аб'екты маюць аднолькавыя значэнні.</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="307"/>
@@ -4672,39 +4672,39 @@ Works only if all objects have the same values.</translation>
     <message>
       <location filename="../../SectionCutting.ui" line="329"/>
       <source>Transparency of cut face</source>
-      <translation type="unfinished">Transparency of cut face</translation>
+      <translation>Празрыстасць грані зрэзу</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="332"/>
       <source>Transparency</source>
-      <translation type="unfinished">Transparency</translation>
+      <translation>Празрыстасць</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="367"/>
       <source>Refreshes the list of visible objects</source>
-      <translation type="unfinished">Refreshes the list of visible objects</translation>
+      <translation>Абнаўляе спіс бачных аб'ектаў</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="370"/>
       <source>Refresh view</source>
-      <translation type="unfinished">Refresh view</translation>
+      <translation>Абнавіць выгляд</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="400"/>
       <source>When the dialog is closed,
 only created cuts will be visible</source>
-      <translation type="unfinished">When the dialog is closed,
-only created cuts will be visible</translation>
+      <translation>Калі зачыняецца дыялогавае акно,
+бачныя толькі створаныя зрэзы</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="404"/>
       <source>Keep only cuts visible when closing</source>
-      <translation type="unfinished">Keep only cuts visible when closing</translation>
+      <translation>Калі зачыніць, павінны быць бачныя толькі зрэзы</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.cpp" line="429"/>
       <source>Sliders are disabled for assemblies</source>
-      <translation type="unfinished">Sliders are disabled for assemblies</translation>
+      <translation>Паўзункі адключаныя для зборак</translation>
     </message>
   </context>
   <context>
@@ -4712,12 +4712,12 @@ only created cuts will be visible</translation>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="220"/>
       <source>Unsupported</source>
-      <translation type="unfinished">Unsupported</translation>
+      <translation>Не падтрымліваецца</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="220"/>
       <source>Box selection for shells is not supported</source>
-      <translation type="unfinished">Box selection for shells is not supported</translation>
+      <translation>Прастакутнік выбару для абалонкі не падтрымліваецца</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="229"/>
@@ -4734,58 +4734,58 @@ only created cuts will be visible</translation>
       <location filename="../../TaskShapeBuilder.cpp" line="229"/>
       <location filename="../../TaskShapeBuilder.cpp" line="248"/>
       <source>Select two vertices</source>
-      <translation type="unfinished">Select two vertices</translation>
+      <translation>Абраць дзве вяршыні</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="276"/>
       <location filename="../../TaskShapeBuilder.cpp" line="369"/>
       <source>Select one or more edges</source>
-      <translation type="unfinished">Select one or more edges</translation>
+      <translation>Абраць адно ці болей рэбраў</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="317"/>
       <source>Select three or more vertices</source>
-      <translation type="unfinished">Select three or more vertices</translation>
+      <translation>Абраць тры ці болей вяршыні</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="421"/>
       <source>Select two or more faces</source>
-      <translation type="unfinished">Select two or more faces</translation>
+      <translation>Абраць дзве ці болей грані</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="484"/>
       <source>Select only one part object</source>
-      <translation type="unfinished">Select only one part object</translation>
+      <translation>Абраць толькі адзін аб'ект дэталі</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="536"/>
       <source>Select two vertices to create an edge</source>
-      <translation type="unfinished">Select two vertices to create an edge</translation>
+      <translation>Абраць дзве вяршыні каб стварыць рабро</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="543"/>
       <source>Select adjacent edges</source>
-      <translation type="unfinished">Select adjacent edges</translation>
+      <translation>Абраць сумежныя рэбры</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="550"/>
       <source>Select a list of vertices</source>
-      <translation type="unfinished">Select a list of vertices</translation>
+      <translation>Абраць спіс вяршынь</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="557"/>
       <source>Select a closed set of edges</source>
-      <translation type="unfinished">Select a closed set of edges</translation>
+      <translation>Абраць замкнёны набор рэбраў</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="564"/>
       <source>Select adjacent faces</source>
-      <translation type="unfinished">Select adjacent faces</translation>
+      <translation>Абраць сумежныя грані</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="571"/>
       <source>All shape types can be selected</source>
-      <translation type="unfinished">All shape types can be selected</translation>
+      <translation>Можна абраць усе тыпы фігур</translation>
     </message>
   </context>
   <context>
@@ -4793,17 +4793,17 @@ only created cuts will be visible</translation>
     <message>
       <location filename="../../ShapeFromMesh.ui" line="14"/>
       <source>Shape from mesh</source>
-      <translation type="unfinished">Shape from mesh</translation>
+      <translation>Фігура з паліганальнай сеткі</translation>
     </message>
     <message>
       <location filename="../../ShapeFromMesh.ui" line="20"/>
       <source>Sew shape</source>
-      <translation type="unfinished">Sew shape</translation>
+      <translation>Сшыць фігуру</translation>
     </message>
     <message>
       <location filename="../../ShapeFromMesh.ui" line="32"/>
       <source>Enter tolerance for sewing shape:</source>
-      <translation type="unfinished">Enter tolerance for sewing shape:</translation>
+      <translation>Увядзіце допуск для сшывання фігуры:</translation>
     </message>
   </context>
   <context>
@@ -4811,22 +4811,22 @@ only created cuts will be visible</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="135"/>
       <source>Available profiles</source>
-      <translation type="unfinished">Available profiles</translation>
+      <translation>Даступныя профілі</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="136"/>
       <source>Selected profiles</source>
-      <translation type="unfinished">Selected profiles</translation>
+      <translation>Абраныя профілі</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="330"/>
       <source>Too few elements</source>
-      <translation type="unfinished">Too few elements</translation>
+      <translation>Занадта мала элементаў</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="330"/>
       <source>At least one edge or wire is required.</source>
-      <translation type="unfinished">At least one edge or wire is required.</translation>
+      <translation>Патрабуецца прынамсі адно рабро ці ломаная лінія.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="334"/>
@@ -4836,7 +4836,7 @@ only created cuts will be visible</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="334"/>
       <source>Select one or more edges from a single object.</source>
-      <translation type="unfinished">Select one or more edges from a single object.</translation>
+      <translation>Абраць адзін ці некалькі рэбраў аднаго аб'екту.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="341"/>
@@ -4846,7 +4846,7 @@ only created cuts will be visible</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="341"/>
       <source>'%1' cannot be used as profile and path.</source>
-      <translation type="unfinished">'%1' cannot be used as profile and path.</translation>
+      <translation>'%1' нельга ўжываць у якасці профілю і шляху.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="379"/>
@@ -4856,24 +4856,24 @@ only created cuts will be visible</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="412"/>
       <source>Done</source>
-      <translation type="unfinished">Done</translation>
+      <translation>Гатова</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="414"/>
       <source>Select one or more connected edges in the 3d view and press 'Done'</source>
-      <translation type="unfinished">Select one or more connected edges in the 3d view and press 'Done'</translation>
+      <translation>Абярыце адно ці некалькі злучаных рэбраў у трохмерным выглядзе і націсніце 'Гатова'</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="436"/>
       <location filename="../../TaskSweep.cpp" line="444"/>
       <source>Sweep path</source>
-      <translation type="unfinished">Sweep path</translation>
+      <translation>Шлях выцягвання</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="436"/>
       <location filename="../../TaskSweep.cpp" line="444"/>
       <source>The selected sweep path is invalid.</source>
-      <translation type="unfinished">The selected sweep path is invalid.</translation>
+      <translation>Абраны шлях выцягвання недапушчальны.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="456"/>
@@ -4927,12 +4927,12 @@ only created cuts will be visible</translation>
       <location filename="../../TaskAttacher.ui" line="124"/>
       <location filename="../../TaskAttacher.cpp" line="335"/>
       <source>Attachment Offset (in local coordinates):</source>
-      <translation type="unfinished">Attachment Offset (in local coordinates):</translation>
+      <translation>Зрушэнне прымацавання (у лакальных каардынатах):</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="136"/>
       <source>In x-direction:</source>
-      <translation type="unfinished">In x-direction:</translation>
+      <translation>Па напрамку x:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="158"/>
@@ -4940,100 +4940,100 @@ only created cuts will be visible</translation>
       <location filename="../../TaskAttacher.ui" line="230"/>
       <source>Note: The placement is expressed in local coordinate system
 of object being attached.</source>
-      <translation type="unfinished">Note: The placement is expressed in local coordinate system
-of object being attached.</translation>
+      <translation>Заўвага: Размяшчэнне выяўляецца ў лакальнай сістэме каардынат
+прымацаванага аб'екту.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="175"/>
       <source>In y-direction:</source>
-      <translation type="unfinished">In y-direction:</translation>
+      <translation>Па напрамку y:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="211"/>
       <source>In z-direction:</source>
-      <translation type="unfinished">In z-direction:</translation>
+      <translation>Па напрамку z:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="247"/>
       <source>Around x-axis:</source>
-      <translation type="unfinished">Around x-axis:</translation>
+      <translation>Вакол восі x:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="260"/>
       <source>Rotation around the x-axis
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
-      <translation type="unfinished">Rotation around the x-axis
-Note: The placement is expressed in local coordinate system
-of object being attached.</translation>
+      <translation>Вярчэнне вакол восі x
+Заўвага: Размяшчэнне выяўляецца ў лакальнай сістэме каардынат
+прымацаванага аб'екту.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="287"/>
       <source>Around y-axis:</source>
-      <translation type="unfinished">Around y-axis:</translation>
+      <translation>Вакол восі y:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="300"/>
       <source>Rotation around the y-axis
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
-      <translation type="unfinished">Rotation around the y-axis
-Note: The placement is expressed in local coordinate system
-of object being attached.</translation>
+      <translation>Вярчэнне вакол восі y
+Заўвага: Размяшчэнне выяўляецца ў лакальнай сістэме каардынат
+прымацаванага аб'екту.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="327"/>
       <source>Around z-axis:</source>
-      <translation type="unfinished">Around z-axis:</translation>
+      <translation>Вакол восі z:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="340"/>
       <source>Rotation around the z-axis
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
-      <translation type="unfinished">Rotation around the z-axis
-Note: The placement is expressed in local coordinate system
-of object being attached.</translation>
+      <translation>Вярчэнне вакол восі z
+Заўвага: Размяшчэнне выяўляецца ў лакальнай сістэме каардынат
+прымацаванага аб'екту.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="364"/>
       <source>Flip side of attachment and offset</source>
-      <translation type="unfinished">Flip side of attachment and offset</translation>
+      <translation>Павярнуць бок мацавання і зрушэння</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="367"/>
       <source>Flip sides</source>
-      <translation type="unfinished">Flip sides</translation>
+      <translation>Павярнуць бакі</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="318"/>
       <source>OCC error: %1</source>
-      <translation type="unfinished">OCC error: %1</translation>
+      <translation>Памылка OpenCASCADE: %1</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="320"/>
       <source>unknown error</source>
-      <translation type="unfinished">unknown error</translation>
+      <translation>невядомая памылка</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="323"/>
       <source>Attachment mode failed: %1</source>
-      <translation type="unfinished">Attachment mode failed: %1</translation>
+      <translation>Памылка рэжыму прымацавання: %1</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="327"/>
       <source>Not attached</source>
-      <translation type="unfinished">Not attached</translation>
+      <translation>Не прымацаваны</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="331"/>
       <source>Attached with mode %1</source>
-      <translation type="unfinished">Attached with mode %1</translation>
+      <translation>Прымацаваны ў рэжыме %1</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="335"/>
       <source>Attachment Offset (inactive - not attached):</source>
-      <translation type="unfinished">Attachment Offset (inactive - not attached):</translation>
+      <translation>Зрушэнне прымацавання (неактыўны - не прымацаваны):</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="632"/>
@@ -5053,32 +5053,32 @@ of object being attached.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="711"/>
       <source>Selecting...</source>
-      <translation type="unfinished">Selecting...</translation>
+      <translation>Абраны...</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="715"/>
       <source>Reference%1</source>
-      <translation type="unfinished">Reference%1</translation>
+      <translation>Апора%1</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="762"/>
       <source>Not editable because rotation of AttachmentOffset is bound by expressions.</source>
-      <translation type="unfinished">Not editable because rotation of AttachmentOffset is bound by expressions.</translation>
+      <translation>Недаступны для змены, паколькі вярчэнне Зрушэння прымацавання абмежавана выразамі.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="828"/>
       <source>Reference combinations:</source>
-      <translation type="unfinished">Reference combinations:</translation>
+      <translation>Камбінацыі арыенціраў:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="845"/>
       <source>%1 (add %2)</source>
-      <translation type="unfinished">%1 (add %2)</translation>
+      <translation>%1 (дадаць %2)</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="850"/>
       <source>%1 (add more references)</source>
-      <translation type="unfinished">%1 (add more references)</translation>
+      <translation>%1 (дадаць болей арыенціраў)</translation>
     </message>
   </context>
   <context>
@@ -5086,7 +5086,7 @@ of object being attached.</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="998"/>
       <source>Shape Content</source>
-      <translation type="unfinished">Shape Content</translation>
+      <translation>Змест фігуры</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1006"/>
@@ -5097,181 +5097,181 @@ of object being attached.</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1010"/>
       <source>Skip settings page</source>
-      <translation type="unfinished">Skip settings page</translation>
+      <translation>Прапусціць налады старонкі</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1011"/>
       <source>Skip this settings page and run the geometry check automatically.
 Default: false</source>
-      <translation type="unfinished">Skip this settings page and run the geometry check automatically.
-Default: false</translation>
+      <translation>Прапусціць гэтыя налады старонкі і выканаць праверку геаметрыі аўтаматычна.
+Першапачаткова: false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1020"/>
       <source>Run BOP check</source>
-      <translation type="unfinished">Run BOP check</translation>
+      <translation>Запусціць праверку BOP (аперацыі лагічнага значэння)</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1021"/>
       <source>Extra boolean operations check that can sometimes find errors that
 the standard BRep geometry check misses. These errors do not always 
 mean the checked object is unusable.  Default: false</source>
-      <translation type="unfinished">Extra boolean operations check that can sometimes find errors that
-the standard BRep geometry check misses. These errors do not always 
-mean the checked object is unusable.  Default: false</translation>
+      <translation>Дадатковая праверка аперацыі лагічных значэнняў, якая часам можа выяўляць памылкі,
+якія прапускае стандартная праверка геаметрыі B-Rep. Гэтыя памылкі не заўсёды
+азначаюць, што правераны аб'ект непрыдатны для ўжывання. Першапачаткова: false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1031"/>
       <source>Single-threaded</source>
-      <translation type="unfinished">Single-threaded</translation>
+      <translation>Аднапатокавы</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1032"/>
       <source>Run the geometry check in a single thread.  This is slower,
 but more stable.  Default: false</source>
-      <translation type="unfinished">Run the geometry check in a single thread.  This is slower,
-but more stable.  Default: false</translation>
+      <translation>Запусціць праверку геаметрыі ў адным патоку. Праца павольная,
+але больш стабільная. Першапачаткова: false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1041"/>
       <source>Log errors</source>
-      <translation type="unfinished">Log errors</translation>
+      <translation>Часопіс памылак</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1042"/>
       <source>Log errors to report view.  Default: true</source>
-      <translation type="unfinished">Log errors to report view.  Default: true</translation>
+      <translation>Часопіс памылак у праглядзе справаздачы. Першапачаткова: true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1049"/>
       <source>Expand shape content</source>
-      <translation type="unfinished">Expand shape content</translation>
+      <translation>Разгарнуць змест фігуры</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1050"/>
       <source>Expand shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
-      <translation type="unfinished">Expand shape content.  Changes will take effect next time you use 
-the check geometry tool.  Default: false</translation>
+      <translation>Разгарнуць змест фігуры. Змены ўступяць у сілу пры наступным ужыванні
+інструмента праверкі геаметрыі. Першапачаткова: false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1059"/>
       <source>Advanced shape content</source>
-      <translation type="unfinished">Advanced shape content</translation>
+      <translation>Пашыраны змест фігуры</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1060"/>
       <source>Show advanced shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
-      <translation type="unfinished">Show advanced shape content.  Changes will take effect next time you use 
-the check geometry tool.  Default: false</translation>
+      <translation>Адлюстраваць пашыраны змест фігуры. Змены ўступяць у сілу пры наступным ужыванні
+інструмента праверкі геаметрыі. Першапачаткова: false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1068"/>
       <source>
 Individual BOP Checks:</source>
-      <translation type="unfinished">
-Individual BOP Checks:</translation>
+      <translation>
+Асобныя праверкі BOP:</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1071"/>
       <source>  Bad type</source>
-      <translation type="unfinished">  Bad type</translation>
+      <translation>  Няправільны тып</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1072"/>
       <source>Check for bad argument types.  Default: true</source>
-      <translation type="unfinished">Check for bad argument types.  Default: true</translation>
+      <translation>Праверыць на няправільныя тыпы аргументаў. Першапачаткова: true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1079"/>
       <source>  Self-intersect</source>
-      <translation type="unfinished">  Self-intersect</translation>
+      <translation>  Самаперакрыжаванні</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1080"/>
       <source>Check for self-intersections.  Default: true</source>
-      <translation type="unfinished">Check for self-intersections.  Default: true</translation>
+      <translation>Праверыць на самаперакрыжаванні. Першапачаткова: true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1087"/>
       <source>  Too small edge</source>
-      <translation type="unfinished">  Too small edge</translation>
+      <translation>  Занадта малое рабро</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1088"/>
       <source>Check for edges that are too small.  Default: true</source>
-      <translation type="unfinished">Check for edges that are too small.  Default: true</translation>
+      <translation>Праверыць на занадта малыя рэбры. Першапачаткова: true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1095"/>
       <source>  Nonrecoverable face</source>
-      <translation type="unfinished">  Nonrecoverable face</translation>
+      <translation>  Неадноўленая грань</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1096"/>
       <source>Check for nonrecoverable faces.  Default: true</source>
-      <translation type="unfinished">Check for nonrecoverable faces.  Default: true</translation>
+      <translation>Праверыць на неадноўленыя грані. Першапачаткова: true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1103"/>
       <source>  Continuity</source>
-      <translation type="unfinished">  Continuity</translation>
+      <translation>  Бесперапыннасць</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1104"/>
       <source>Check for continuity.  Default: true</source>
-      <translation type="unfinished">Check for continuity.  Default: true</translation>
+      <translation>Праверыць на бесперапыннасць. Першапачаткова: true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1111"/>
       <source>  Incompatibility of face</source>
-      <translation type="unfinished">  Incompatibility of face</translation>
+      <translation>  Несумяшчальнасць грані</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1112"/>
       <source>Check for incompatible faces.  Default: true</source>
-      <translation type="unfinished">Check for incompatible faces.  Default: true</translation>
+      <translation>Праверыць на несумяшчальнасць граняў. Першапачаткова: true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1119"/>
       <source>  Incompatibility of vertex</source>
-      <translation type="unfinished">  Incompatibility of vertex</translation>
+      <translation>  Несумяшчальнасць вяршыні</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1120"/>
       <source>Check for incompatible vertices.  Default: true</source>
-      <translation type="unfinished">Check for incompatible vertices.  Default: true</translation>
+      <translation>Праверыць на несумяшчальнасць вяршынь. Першапачаткова: true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1127"/>
       <source>  Incompatibility of edge</source>
-      <translation type="unfinished">  Incompatibility of edge</translation>
+      <translation>  Несумяшчальнасць рабра</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1128"/>
       <source>Check for incompatible edges.  Default: true</source>
-      <translation type="unfinished">Check for incompatible edges.  Default: true</translation>
+      <translation>Праверыць на несумяшчальнасць рэбраў. Першапачаткова: true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1135"/>
       <source>  Invalid curve on surface</source>
-      <translation type="unfinished">  Invalid curve on surface</translation>
+      <translation>  Недапушчальная крывая на паверхні</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1136"/>
       <source>Check for invalid curves on surfaces.  Default: true</source>
-      <translation type="unfinished">Check for invalid curves on surfaces.  Default: true</translation>
+      <translation>Праверыць на недапушчальныя крывая на паверхні. Першапачаткова: true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1199"/>
       <source>Run check</source>
-      <translation type="unfinished">Run check</translation>
+      <translation>Запусціць праверку</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1205"/>
       <source>Results</source>
-      <translation type="unfinished">Results</translation>
+      <translation>Вынікі</translation>
     </message>
   </context>
   <context>
@@ -5279,18 +5279,18 @@ Individual BOP Checks:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="375"/>
       <source>Check Geometry Results</source>
-      <translation type="unfinished">Check Geometry Results</translation>
+      <translation>Вынікі праверкі геаметрыі</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="394"/>
       <source>Check is running...</source>
-      <translation type="unfinished">Check is running...</translation>
+      <translation>Праверка запушчана...</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="418"/>
       <location filename="../../TaskCheckGeometry.cpp" line="422"/>
       <source>Check geometry</source>
-      <translation type="unfinished">Check geometry</translation>
+      <translation>Праверка геаметрыі</translation>
     </message>
   </context>
   <context>
@@ -5298,7 +5298,7 @@ Individual BOP Checks:</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1118"/>
       <source>Datum dialog: Input error</source>
-      <translation type="unfinished">Datum dialog: Input error</translation>
+      <translation>Дыялог пункту адліку: памылка ўводу</translation>
     </message>
   </context>
   <context>
@@ -5306,7 +5306,7 @@ Individual BOP Checks:</translation>
     <message>
       <location filename="../../DlgExportStep.cpp" line="213"/>
       <source>Don't show this dialog again</source>
-      <translation type="unfinished">Don't show this dialog again</translation>
+      <translation>Болей не паказваць гэтае дыялогавае акно</translation>
     </message>
   </context>
   <context>
@@ -5314,34 +5314,34 @@ Individual BOP Checks:</translation>
     <message>
       <location filename="../../TaskFaceColors.ui" line="14"/>
       <source>Set color per face</source>
-      <translation type="unfinished">Set color per face</translation>
+      <translation>Задаць колер на грані</translation>
     </message>
     <message>
       <location filename="../../TaskFaceColors.ui" line="20"/>
       <source>Click on the faces in the 3D view to select them</source>
-      <translation type="unfinished">Click on the faces in the 3D view to select them</translation>
+      <translation>Націснуць на грань, каб абраць яе ў трохмерным выглядзе</translation>
     </message>
     <message>
       <location filename="../../TaskFaceColors.ui" line="39"/>
       <source>Faces:</source>
-      <translation type="unfinished">Faces:</translation>
+      <translation>Грані:</translation>
     </message>
     <message>
       <location filename="../../TaskFaceColors.ui" line="87"/>
       <source>Resets color for all faces of the part</source>
-      <translation type="unfinished">Resets color for all faces of the part</translation>
+      <translation>Скінуць колер для ўсіх граняў на дэталі</translation>
     </message>
     <message>
       <location filename="../../TaskFaceColors.ui" line="90"/>
       <source>Set to default</source>
-      <translation type="unfinished">Set to default</translation>
+      <translation>Задаць першапачатковым</translation>
     </message>
     <message>
       <location filename="../../TaskFaceColors.ui" line="97"/>
       <source>When checked, the you can select multiple faces
 by dragging a selection rectangle in the 3D view</source>
-      <translation type="unfinished">When checked, the you can select multiple faces
-by dragging a selection rectangle in the 3D view</translation>
+      <translation>Калі птушка, вы можаце абраць некалькі граняў,
+калі перацягнеце прастакутнік вылучэння ў трохмерным выглядзе</translation>
     </message>
     <message>
       <location filename="../../TaskFaceColors.ui" line="101"/>
@@ -5364,7 +5364,7 @@ by dragging a selection rectangle in the 3D view</translation>
     <message>
       <location filename="../../TaskLoft.ui" line="30"/>
       <source>Ruled surface</source>
-      <translation type="unfinished">Ruled surface</translation>
+      <translation>Лінейная паверхня</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.ui" line="37"/>
@@ -5383,32 +5383,32 @@ by dragging a selection rectangle in the 3D view</translation>
     <message>
       <location filename="../../TaskOffset.ui" line="34"/>
       <source>Mode</source>
-      <translation type="unfinished">Mode</translation>
+      <translation>Рэжым</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="42"/>
       <source>Skin</source>
-      <translation type="unfinished">Skin</translation>
+      <translation>Тэма афармлення</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="47"/>
       <source>Pipe</source>
-      <translation type="unfinished">Pipe</translation>
+      <translation>Труба</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="52"/>
       <source>RectoVerso</source>
-      <translation type="unfinished">RectoVerso</translation>
+      <translation>Абапал</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="60"/>
       <source>Join type</source>
-      <translation type="unfinished">Join type</translation>
+      <translation>Тып аб'яднання</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="68"/>
       <source>Arc</source>
-      <translation type="unfinished">Arc</translation>
+      <translation>Дуга</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="73"/>
@@ -5424,22 +5424,22 @@ by dragging a selection rectangle in the 3D view</translation>
     <message>
       <location filename="../../TaskOffset.ui" line="93"/>
       <source>Self-intersection</source>
-      <translation type="unfinished">Self-intersection</translation>
+      <translation>Самаперакрыжаванне</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="100"/>
       <source>Fill offset</source>
-      <translation type="unfinished">Fill offset</translation>
+      <translation>Зрушэнне запаўнення</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="114"/>
       <source>Faces</source>
-      <translation type="unfinished">Faces</translation>
+      <translation>Грані</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="144"/>
       <source>Update view</source>
-      <translation type="unfinished">Update view</translation>
+      <translation>Абнавіць выгляд</translation>
     </message>
   </context>
   <context>
@@ -5448,42 +5448,42 @@ by dragging a selection rectangle in the 3D view</translation>
       <location filename="../../TaskShapeBuilder.ui" line="14"/>
       <location filename="../../TaskShapeBuilder.ui" line="20"/>
       <source>Create shape</source>
-      <translation type="unfinished">Create shape</translation>
+      <translation>Стварыць фігуру</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="26"/>
       <source>Edge from vertices</source>
-      <translation type="unfinished">Edge from vertices</translation>
+      <translation>Рабро з вяршынь</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="33"/>
       <source>Wire from edges</source>
-      <translation type="unfinished">Wire from edges</translation>
+      <translation>Ломаная лінія з рэбраў</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="40"/>
       <source>Face from vertices</source>
-      <translation type="unfinished">Face from vertices</translation>
+      <translation>Грань з вяршынь</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="47"/>
       <source>Face from edges</source>
-      <translation type="unfinished">Face from edges</translation>
+      <translation>Грань з рэбраў</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="54"/>
       <source>Shell from faces</source>
-      <translation type="unfinished">Shell from faces</translation>
+      <translation>Абалонка з граняў</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="61"/>
       <source>Solid from shell</source>
-      <translation type="unfinished">Solid from shell</translation>
+      <translation>Суцэльнае цела з абалонкі</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="75"/>
       <source>Planar</source>
-      <translation type="unfinished">Planar</translation>
+      <translation>Плоскі</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="82"/>
@@ -5493,12 +5493,12 @@ by dragging a selection rectangle in the 3D view</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="92"/>
       <source>All faces</source>
-      <translation type="unfinished">All faces</translation>
+      <translation>Усе грані</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="101"/>
       <source>Box selection...</source>
-      <translation type="unfinished">Box selection...</translation>
+      <translation>Азначыць вобласць выбару...</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="121"/>
@@ -5516,7 +5516,7 @@ by dragging a selection rectangle in the 3D view</translation>
     <message>
       <location filename="../../TaskSweep.ui" line="23"/>
       <source>Sweep Path</source>
-      <translation type="unfinished">Sweep Path</translation>
+      <translation>Шлях выцягвання</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.ui" line="53"/>
@@ -5526,14 +5526,14 @@ by dragging a selection rectangle in the 3D view</translation>
     <message>
       <location filename="../../TaskSweep.ui" line="60"/>
       <source>Frenet</source>
-      <translation type="unfinished">Frenet</translation>
+      <translation>Вектар Фрэне</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="486"/>
       <source>Select one or more profiles and select an edge or wire
 in the 3D view for the sweep path.</source>
-      <translation type="unfinished">Select one or more profiles and select an edge or wire
-in the 3D view for the sweep path.</translation>
+      <translation>Абярыце адзін ці некалькі профіляў і абярыце рабро ці ломаную лінію
+ў трохмерным выглядзе для шляху выцягвання.</translation>
     </message>
   </context>
   <context>
@@ -5541,7 +5541,7 @@ in the 3D view for the sweep path.</translation>
     <message>
       <location filename="../../../BasicShapes/TaskTube.ui" line="14"/>
       <source>Tube</source>
-      <translation type="unfinished">Tube</translation>
+      <translation>Труба</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/TaskTube.ui" line="23"/>
@@ -5551,12 +5551,12 @@ in the 3D view for the sweep path.</translation>
     <message>
       <location filename="../../../BasicShapes/TaskTube.ui" line="46"/>
       <source>Outer radius</source>
-      <translation type="unfinished">Outer radius</translation>
+      <translation>Вонкавы радыус</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/TaskTube.ui" line="69"/>
       <source>Inner radius</source>
-      <translation type="unfinished">Inner radius</translation>
+      <translation>Унутраны радыус</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/TaskTube.ui" line="92"/>
@@ -5571,17 +5571,17 @@ in the 3D view for the sweep path.</translation>
       <location filename="../../TaskThickness.cpp" line="273"/>
       <location filename="../../TaskThickness.cpp" line="283"/>
       <source>Thickness</source>
-      <translation type="unfinished">Thickness</translation>
+      <translation>Таўшчыня</translation>
     </message>
     <message>
       <location filename="../../TaskThickness.cpp" line="171"/>
       <source>Select faces of the source object and press 'Done'</source>
-      <translation type="unfinished">Select faces of the source object and press 'Done'</translation>
+      <translation>Абярыце грані зыходнага аб'екта і націсніце 'Гатова'</translation>
     </message>
     <message>
       <location filename="../../TaskThickness.cpp" line="174"/>
       <source>Done</source>
-      <translation type="unfinished">Done</translation>
+      <translation>Гатова</translation>
     </message>
     <message>
       <location filename="../../TaskThickness.cpp" line="238"/>
@@ -5594,42 +5594,42 @@ in the 3D view for the sweep path.</translation>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="58"/>
       <source>Bull's-eye facemaker</source>
-      <translation type="unfinished">Bull's-eye facemaker</translation>
+      <translation>Майстар усенакіраваных граняў (Мішэнь яблычак)</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="63"/>
       <source>Supports making planar faces with holes with islands.</source>
-      <translation type="unfinished">Supports making planar faces with holes with islands.</translation>
+      <translation>Падтрымлівае стварэнне плоскіх граняў з адтулінамі, якія могуць утрымліваць астраўкі.</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMaker.cpp" line="175"/>
       <source>Simple</source>
-      <translation type="unfinished">Simple</translation>
+      <translation>Просты</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMaker.cpp" line="180"/>
       <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
-      <translation type="unfinished">Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</translation>
+      <translation>Зрабіць асобную плоскую грані з кожнай ломанай лініі незалежна. Без падтрымкі для адтулін; ломаныя лініі могуць знаходзіцца ў розных плоскасцях.</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerCheese.cpp" line="247"/>
       <source>Cheese facemaker</source>
-      <translation type="unfinished">Cheese facemaker</translation>
+      <translation>Майстар перфараваных граняў (Сыр)</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerCheese.cpp" line="252"/>
       <source>Supports making planar faces with holes, but no islands inside holes.</source>
-      <translation type="unfinished">Supports making planar faces with holes, but no islands inside holes.</translation>
+      <translation>Падтрымлівае стварэнне плоскіх граняў з адтулінамі, але без астраўкоў унутры адтулін.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrusion.cpp" line="337"/>
       <source>Part Extrude facemaker</source>
-      <translation type="unfinished">Part Extrude facemaker</translation>
+      <translation>Майстар граняў выдушвання дэталяў</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrusion.cpp" line="342"/>
       <source>Supports making faces with holes, does not support nesting.</source>
-      <translation type="unfinished">Supports making faces with holes, does not support nesting.</translation>
+      <translation>Падтрымлівае стварэнне граняў з адтулінамі, укладзеннасць не падтрымліваецца.</translation>
     </message>
   </context>
   <context>
@@ -5645,7 +5645,7 @@ in the 3D view for the sweep path.</translation>
     <message>
       <location filename="../../AppPartGui.cpp" line="224"/>
       <source>Part and Part Design workbench</source>
-      <translation type="unfinished">Part and Part Design workbench</translation>
+      <translation>Варштаты Дэталь і Праектаванне дэталі</translation>
     </message>
     <message>
       <location filename="../../AppPartGui.cpp" line="225"/>
@@ -5653,13 +5653,13 @@ in the 3D view for the sweep path.</translation>
       <location filename="../../AppPartGui.cpp" line="227"/>
       <location filename="../../AppPartGui.cpp" line="228"/>
       <source>Part/Part Design</source>
-      <translation type="unfinished">Part/Part Design</translation>
+      <translation>Дэталь/Праектаванне дэталі</translation>
     </message>
     <message>
       <location filename="../../AppPartGui.cpp" line="229"/>
       <location filename="../../AppPartGui.cpp" line="230"/>
       <source>Import-Export</source>
-      <translation type="unfinished">Import-Export</translation>
+      <translation>Імпарт-Экспарт</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="313"/>
@@ -5675,14 +5675,14 @@ in the 3D view for the sweep path.</translation>
       <location filename="../../Command.cpp" line="314"/>
       <location filename="../../Command.cpp" line="981"/>
       <source>Select two shapes please.</source>
-      <translation type="unfinished">Select two shapes please.</translation>
+      <translation>Абярыце, калі ласка, дзве фігуры.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="323"/>
       <location filename="../../Command.cpp" line="423"/>
       <location filename="../../Command.cpp" line="523"/>
       <source>Non-solids selected</source>
-      <translation type="unfinished">Non-solids selected</translation>
+      <translation>Абраны несуцэльныя целы</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="324"/>
@@ -5690,28 +5690,28 @@ in the 3D view for the sweep path.</translation>
       <location filename="../../Command.cpp" line="524"/>
       <source>The use of non-solids for boolean operations may lead to unexpected results.
 Do you want to continue?</source>
-      <translation type="unfinished">The use of non-solids for boolean operations may lead to unexpected results.
-Do you want to continue?</translation>
+      <translation>Выкарыстанне несуцэльных цел для аперацый лагічнага значэння можа прывесці да нечаканых вынікаў.
+Ці хочаце вы працягнуць?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="409"/>
       <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to compute common between.</source>
-      <translation type="unfinished">Select two shapes or more, please. Or, select one compound containing two or more shapes to compute common between.</translation>
+      <translation>Абярыце, калі ласка, дзве фігуры ці болей. Альбо абярыце адно злучэнне, якое змяшчае дзве ці болей фігуры, каб вылічыць агульнае паміж імі.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="509"/>
       <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused.</source>
-      <translation type="unfinished">Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused.</translation>
+      <translation>Абярыце, калі ласка, дзве фігуры ці болей. Альбо абярыце адно злучэнне, якое змяшчае дзве ці болей фігуры, каб аб'яднаць іх.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="924"/>
       <source>Select one shape or more, please.</source>
-      <translation type="unfinished">Select one shape or more, please.</translation>
+      <translation>Абярыце, калі ласка, адну фігуру ці болей.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1138"/>
       <source>All CAD Files</source>
-      <translation type="unfinished">All CAD Files</translation>
+      <translation>Усе файлы CAD</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1143"/>
@@ -5721,13 +5721,13 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../Command.cpp" line="2151"/>
       <source>You have to select either two edges or two wires.</source>
-      <translation type="unfinished">You have to select either two edges or two wires.</translation>
+      <translation>Вы павінны абраць два рабра альбо дзве ломаныя лініі.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="66"/>
       <location filename="../../TaskAttacher.cpp" line="102"/>
       <source>No reference selected</source>
-      <translation type="unfinished">No reference selected</translation>
+      <translation>Без абраных спасылак</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="81"/>
@@ -5755,7 +5755,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="78"/>
       <source>Compound Solid</source>
-      <translation type="unfinished">Compound Solid</translation>
+      <translation>Злучанае суцэльнае цела</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="79"/>
@@ -5780,254 +5780,254 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="100"/>
       <source>No Error</source>
-      <translation type="unfinished">No Error</translation>
+      <translation>Без памылак</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="101"/>
       <source>Invalid Point On Curve</source>
-      <translation type="unfinished">Invalid Point On Curve</translation>
+      <translation>Недапушчальная кропка на крывой</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="102"/>
       <source>Invalid Point On Curve On Surface</source>
-      <translation type="unfinished">Invalid Point On Curve On Surface</translation>
+      <translation>Недапушчальнай кропка на крывой паверхні</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="103"/>
       <source>Invalid Point On Surface</source>
-      <translation type="unfinished">Invalid Point On Surface</translation>
+      <translation>Недапушчальная кропка на паверхні</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="104"/>
       <source>No 3D Curve</source>
-      <translation type="unfinished">No 3D Curve</translation>
+      <translation>Без трохмернай крывой</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="105"/>
       <source>Multiple 3D Curve</source>
-      <translation type="unfinished">Multiple 3D Curve</translation>
+      <translation>Множная трохмерная крывая</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="106"/>
       <source>Invalid 3D Curve</source>
-      <translation type="unfinished">Invalid 3D Curve</translation>
+      <translation>Недапушчальная трохмерная крывая</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="107"/>
       <source>No Curve On Surface</source>
-      <translation type="unfinished">No Curve On Surface</translation>
+      <translation>Без крывой на паверхні</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="108"/>
       <source>Invalid Curve On Surface</source>
-      <translation type="unfinished">Invalid Curve On Surface</translation>
+      <translation>Недапушчальная крывая на паверхні</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="109"/>
       <source>Invalid Curve On Closed Surface</source>
-      <translation type="unfinished">Invalid Curve On Closed Surface</translation>
+      <translation>Недапушчальная крывая на замкнутай паверхні</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="110"/>
       <source>Invalid Same Range Flag</source>
-      <translation type="unfinished">Invalid Same Range Flag</translation>
+      <translation>Недапушчальны дыяпазон разметкі</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="111"/>
       <source>Invalid Same Parameter Flag</source>
-      <translation type="unfinished">Invalid Same Parameter Flag</translation>
+      <translation>Недапушчальная налада разметкі</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="112"/>
       <source>Invalid Degenerated Flag</source>
-      <translation type="unfinished">Invalid Degenerated Flag</translation>
+      <translation>Недапушчальнае памяншэнне разметкі</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="113"/>
       <source>Free Edge</source>
-      <translation type="unfinished">Free Edge</translation>
+      <translation>Свабоднае рабро</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="114"/>
       <source>Invalid MultiConnexity</source>
-      <translation type="unfinished">Invalid MultiConnexity</translation>
+      <translation>Недапушчальны шматсувязь</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="115"/>
       <source>Invalid Range</source>
-      <translation type="unfinished">Invalid Range</translation>
+      <translation>Недапушчальны дыяпазон</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="116"/>
       <source>Empty Wire</source>
-      <translation type="unfinished">Empty Wire</translation>
+      <translation>Пустая ломаная лінія</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="117"/>
       <source>Redundant Edge</source>
-      <translation type="unfinished">Redundant Edge</translation>
+      <translation>Залішняе рабро</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="118"/>
       <source>Self Intersecting Wire</source>
-      <translation type="unfinished">Self Intersecting Wire</translation>
+      <translation>Самаперакрыжаваная ломаная лінія</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="119"/>
       <source>No Surface</source>
-      <translation type="unfinished">No Surface</translation>
+      <translation>Без паверхні</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="120"/>
       <source>Invalid Wire</source>
-      <translation type="unfinished">Invalid Wire</translation>
+      <translation>Недапушчальная ломаная лінія</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="121"/>
       <source>Redundant Wire</source>
-      <translation type="unfinished">Redundant Wire</translation>
+      <translation>Залішняя ломаная лінія</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="122"/>
       <source>Intersecting Wires</source>
-      <translation type="unfinished">Intersecting Wires</translation>
+      <translation>Перакрыжаваная ломаная лінія</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="123"/>
       <source>Invalid Imbrication Of Wires</source>
-      <translation type="unfinished">Invalid Imbrication Of Wires</translation>
+      <translation>Недапушчальнае перакрыццё ломаных ліній</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="124"/>
       <source>Empty Shell</source>
-      <translation type="unfinished">Empty Shell</translation>
+      <translation>Пустая абалонка</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="125"/>
       <source>Redundant Face</source>
-      <translation type="unfinished">Redundant Face</translation>
+      <translation>Залішняя грань</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="126"/>
       <source>Unorientable Shape</source>
-      <translation type="unfinished">Unorientable Shape</translation>
+      <translation>Неарыентаваная фігура</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="127"/>
       <source>Not Closed</source>
-      <translation type="unfinished">Not Closed</translation>
+      <translation>Не замкнутая</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="128"/>
       <source>Not Connected</source>
-      <translation type="unfinished">Not Connected</translation>
+      <translation>Не злучана</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="129"/>
       <source>Sub Shape Not In Shape</source>
-      <translation type="unfinished">Sub Shape Not In Shape</translation>
+      <translation>Укладзеная фігура не знаходзіцца ў фігуры</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="130"/>
       <source>Bad Orientation</source>
-      <translation type="unfinished">Bad Orientation</translation>
+      <translation>Дрэнная арыентацыя</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="131"/>
       <source>Bad Orientation Of Sub Shape</source>
-      <translation type="unfinished">Bad Orientation Of Sub Shape</translation>
+      <translation>Дрэнная арыентацыя ўкладзенай фігуры</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="132"/>
       <source>Invalid Tolerance Value</source>
-      <translation type="unfinished">Invalid Tolerance Value</translation>
+      <translation>Недапушчальнае значэнне дакладнасці</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="133"/>
       <source>Check Failed</source>
-      <translation type="unfinished">Check Failed</translation>
+      <translation>Няўдача праверкі</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="143"/>
       <source>No Result</source>
-      <translation type="unfinished">No Result</translation>
+      <translation>Без выніку</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="147"/>
       <source>Out Of Enum Range:</source>
-      <translation type="unfinished">Out Of Enum Range:</translation>
+      <translation>Па-за дыяпазонам пералічэння:</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="159"/>
       <source>BOPAlgo CheckUnknown</source>
-      <translation type="unfinished">BOPAlgo CheckUnknown</translation>
+      <translation>BOPAlgo Праверыць невядомую</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="160"/>
       <source>BOPAlgo BadType</source>
-      <translation type="unfinished">BOPAlgo BadType</translation>
+      <translation>BOPAlgo Няправільны тып</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="161"/>
       <source>BOPAlgo SelfIntersect</source>
-      <translation type="unfinished">BOPAlgo SelfIntersect</translation>
+      <translation>BOPAlgo Самаперакрыжаванне</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="162"/>
       <source>BOPAlgo TooSmallEdge</source>
-      <translation type="unfinished">BOPAlgo TooSmallEdge</translation>
+      <translation>BOPAlgo Занадта малое рабро</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="163"/>
       <source>BOPAlgo NonRecoverableFace</source>
-      <translation type="unfinished">BOPAlgo NonRecoverableFace</translation>
+      <translation>BOPAlgo Неадноўленая грань</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="164"/>
       <source>BOPAlgo IncompatibilityOfVertex</source>
-      <translation type="unfinished">BOPAlgo IncompatibilityOfVertex</translation>
+      <translation>BOPAlgo Несумяшчальнасць вяршыні</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="165"/>
       <source>BOPAlgo IncompatibilityOfEdge</source>
-      <translation type="unfinished">BOPAlgo IncompatibilityOfEdge</translation>
+      <translation>BOPAlgo Несумяшчальнасць рабра</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="166"/>
       <source>BOPAlgo IncompatibilityOfFace</source>
-      <translation type="unfinished">BOPAlgo IncompatibilityOfFace</translation>
+      <translation>BOPAlgo Несумяшчальнасць грані</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="167"/>
       <source>BOPAlgo OperationAborted</source>
-      <translation type="unfinished">BOPAlgo OperationAborted</translation>
+      <translation>BOPAlgo Аперацыя перапынена</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="168"/>
       <source>BOPAlgo GeomAbs_C0</source>
-      <translation type="unfinished">BOPAlgo GeomAbs_C0</translation>
+      <translation>BOPAlgo Модуль геаметрыі C0</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="169"/>
       <source>BOPAlgo_InvalidCurveOnSurface</source>
-      <translation type="unfinished">BOPAlgo_InvalidCurveOnSurface</translation>
+      <translation>BOPAlgo Недапушчальная крывая на паверхні</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="170"/>
       <source>BOPAlgo NotValid</source>
-      <translation type="unfinished">BOPAlgo NotValid</translation>
+      <translation>BOPAlgo Несапраўдны</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="454"/>
       <location filename="../../TaskCheckGeometry.cpp" line="696"/>
       <source>Invalid</source>
-      <translation type="unfinished">Invalid</translation>
+      <translation>Недапушчальны</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="656"/>
       <location filename="../../TaskDimension.cpp" line="1792"/>
       <source>Selections</source>
-      <translation type="unfinished">Selections</translation>
+      <translation>Абраныя</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="663"/>
@@ -6038,72 +6038,72 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskDimension.cpp" line="1420"/>
       <source>Selection </source>
-      <translation type="unfinished">Selection </translation>
+      <translation>Выбар </translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="1504"/>
       <source>Reset selection</source>
-      <translation type="unfinished">Reset selection</translation>
+      <translation>Скінуць выбар</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="1508"/>
       <source>Toggle direct dimensions</source>
-      <translation type="unfinished">Toggle direct dimensions</translation>
+      <translation>Пераключыць прамыя вымярэнні</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="1513"/>
       <source>Toggle orthogonal dimensions</source>
-      <translation type="unfinished">Toggle orthogonal dimensions</translation>
+      <translation>Пераключыць артаганальныя вымярэнні</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="1518"/>
       <source>Clear all dimensions</source>
-      <translation type="unfinished">Clear all dimensions</translation>
+      <translation>Ачысціць усе вымярэнні</translation>
     </message>
     <message>
       <location filename="../../ViewProviderExt.cpp" line="865"/>
       <source>Set colors...</source>
-      <translation type="unfinished">Set colors...</translation>
+      <translation>Задаць колеры...</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="78"/>
       <source>Edit mirror plane</source>
-      <translation type="unfinished">Edit mirror plane</translation>
+      <translation>Змяніць плоскасць сіметрыі</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="284"/>
       <source>Edit fillet edges</source>
-      <translation type="unfinished">Edit fillet edges</translation>
+      <translation>Змяніць акругленне рэбраў</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="396"/>
       <source>Edit chamfer edges</source>
-      <translation type="unfinished">Edit chamfer edges</translation>
+      <translation>Змяніць фаску рэбраў</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="540"/>
       <source>Edit offset</source>
-      <translation type="unfinished">Edit offset</translation>
+      <translation>Змяніць зрушэнне</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="624"/>
       <source>Edit thickness</source>
-      <translation type="unfinished">Edit thickness</translation>
+      <translation>Змяніць таўшчыню</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSpline.cpp" line="97"/>
       <source>Show control points</source>
-      <translation type="unfinished">Show control points</translation>
+      <translation>Адлюстраваць кантрольныя кропкі</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAttachExtension.cpp" line="118"/>
       <source>Attachment editor</source>
-      <translation type="unfinished">Attachment editor</translation>
+      <translation>Рэдактар прымацавання</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="52"/>
       <source>Create tube</source>
-      <translation type="unfinished">Create tube</translation>
+      <translation>Стварыць трубу</translation>
     </message>
   </context>
   <context>
@@ -6111,42 +6111,42 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="33"/>
       <source>&amp;Part</source>
-      <translation type="unfinished">&amp;Part</translation>
+      <translation>&amp;Дэталь</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="34"/>
       <source>&amp;Simple</source>
-      <translation type="unfinished">&amp;Simple</translation>
+      <translation>&amp;Простая</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="35"/>
       <source>&amp;Parametric</source>
-      <translation type="unfinished">&amp;Parametric</translation>
+      <translation>&amp;Параметрычная</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="36"/>
       <source>Solids</source>
-      <translation type="unfinished">Solids</translation>
+      <translation>Суцэльная целы</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="37"/>
       <source>Part tools</source>
-      <translation type="unfinished">Part tools</translation>
+      <translation>Інструменты дэталі</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="38"/>
       <source>Boolean</source>
-      <translation type="unfinished">Boolean</translation>
+      <translation>Лагічнае значэнне</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="39"/>
       <source>Primitives</source>
-      <translation type="unfinished">Primitives</translation>
+      <translation>Першасныя целы</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
       <source>Join</source>
-      <translation type="unfinished">Join</translation>
+      <translation>Аб'яднаць</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="41"/>
@@ -6161,7 +6161,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
       <source>Create a copy</source>
-      <translation type="unfinished">Create a copy</translation>
+      <translation>Стварыць копію</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
@@ -6174,12 +6174,12 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="44"/>
       <source>Create tube</source>
-      <translation type="unfinished">Create tube</translation>
+      <translation>Стварыць трубу</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="50"/>
       <source>Creates a tube</source>
-      <translation type="unfinished">Creates a tube</translation>
+      <translation>Стварыць трубу</translation>
     </message>
   </context>
   <context>
@@ -6187,12 +6187,12 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="78"/>
       <source>Computing the result failed with an error:</source>
-      <translation type="unfinished">Computing the result failed with an error:</translation>
+      <translation>Вылічэнне выніку завяршылася памылкай:</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="79"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+      <translation>Націсніце 'Працягнуць', каб стварыць функцыю ў любым выпадку, або 'Спыніць', каб адмяніць.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="80"/>
@@ -6200,7 +6200,7 @@ Do you want to continue?</translation>
       <location filename="../../../BOPTools/JoinFeatures.py" line="295"/>
       <location filename="../../../BOPTools/JoinFeatures.py" line="389"/>
       <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>Дрэнны выбар</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="82"/>
@@ -6210,17 +6210,17 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="198"/>
       <source>Select at least two objects, or one or more compounds</source>
-      <translation type="unfinished">Select at least two objects, or one or more compounds</translation>
+      <translation>Абярыце па меншай меры два аб'екты, альбо адно ці некалькі злучэнняў</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="294"/>
       <source>Select base object, then the object to embed, and then invoke this tool.</source>
-      <translation type="unfinished">Select base object, then the object to embed, and then invoke this tool.</translation>
+      <translation>Абярыце базавы аб'ект, потым аб'ект для ўбудавання, а затым запусціце гэты інструмент.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="388"/>
       <source>Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</source>
-      <translation type="unfinished">Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</translation>
+      <translation>Абярыце аб'ект, у якім трэба зрабіць выраз, потым аб'ект, які павінен упісацца ў выраз, а затым запусціце гэты інструмент.</translation>
     </message>
   </context>
   <context>
@@ -6228,12 +6228,12 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="186"/>
       <source>Connect objects</source>
-      <translation type="unfinished">Connect objects</translation>
+      <translation>Злучыць аб'екты</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="191"/>
       <source>Fuses objects, taking care to preserve voids.</source>
-      <translation type="unfinished">Fuses objects, taking care to preserve voids.</translation>
+      <translation>Засцерагае прадметы, каб паклапаціцца аб захаванні пустэч.</translation>
     </message>
   </context>
   <context>
@@ -6241,12 +6241,12 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="282"/>
       <source>Embed object</source>
-      <translation type="unfinished">Embed object</translation>
+      <translation>Убудаваць аб'ект</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="287"/>
       <source>Fuses one object into another, taking care to preserve voids.</source>
-      <translation type="unfinished">Fuses one object into another, taking care to preserve voids.</translation>
+      <translation>Засцерагае адзін аб'ект у іншым, каб паклапаціцца аб захаванні пустэч.</translation>
     </message>
   </context>
   <context>
@@ -6254,12 +6254,12 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="376"/>
       <source>Cutout for object</source>
-      <translation type="unfinished">Cutout for object</translation>
+      <translation>Адрэзаць для аб'екту</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="381"/>
       <source>Makes a cutout in one object to fit another object.</source>
-      <translation type="unfinished">Makes a cutout in one object to fit another object.</translation>
+      <translation>Зрабіць выраз у адным аб'екце, каб ён адпавядаў іншаму аб'екту.</translation>
     </message>
   </context>
   <context>
@@ -6269,14 +6269,14 @@ Do you want to continue?</translation>
       <location filename="../../../BOPTools/SplitFeatures.py" line="298"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="492"/>
       <source>Computing the result failed with an error:</source>
-      <translation type="unfinished">Computing the result failed with an error:</translation>
+      <translation>Вылічэнне выніку завяршылася памылкай:</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="156"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="299"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="493"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+      <translation>Націсніце 'Працягнуць', каб стварыць функцыю ў любым выпадку, або 'Спыніць', каб адмяніць.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="157"/>
@@ -6287,7 +6287,7 @@ Do you want to continue?</translation>
       <location filename="../../../BOPTools/SplitFeatures.py" line="494"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="535"/>
       <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>Дрэнны выбар</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="159"/>
@@ -6300,7 +6300,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="180"/>
       <source>Boolean fragments</source>
-      <translation type="unfinished">Boolean fragments</translation>
+      <translation>Фрагменты лагічнага значэння</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="189"/>
@@ -6309,54 +6309,54 @@ or from the shapes inside a compound.
 This is a boolean union which is then sliced at the intersections
 of the original shapes.
 A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation type="unfinished">Create a 'Boolean Fragments' object from two or more selected objects,
-or from the shapes inside a compound.
-This is a boolean union which is then sliced at the intersections
-of the original shapes.
-A 'Compound Filter' can be used to extract the individual slices.</translation>
+      <translation>Стварыце аб'ект 'Фрагменты лагічнага значэння' з двух ці болей абраных аб'ектаў,
+альбо з фігур унутры злучэння.
+Гэта лагічнае аб'яднанне, якое потым разразаецца на скрыжаваннях
+зыходных фігур.
+Каб здабыць асобныя фрагменты, можна ўжыць 'Фільтр злучаных фігур'.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="534"/>
       <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
-      <translation type="unfinished">Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</translation>
+      <translation>Абярыце па меншай меры два аб'екты, альбо адно ці некалькі злучэнняў. Калі абрана толькі адное злучэнне, складовыя фігуры будуць перасякацца адзін з адным (у адваротным выпадку злучэнні з самаперакрыжаванямі недапушчальныя).</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="337"/>
       <source>Slice to compound</source>
-      <translation type="unfinished">Slice to compound</translation>
+      <translation>Разрэзаць на злучэнне</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="344"/>
       <source>Slice a selected object by using other objects as cutting tools.
 The resulting pieces will be stored in a compound.
 A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation type="unfinished">Slice a selected object by using other objects as cutting tools.
-The resulting pieces will be stored in a compound.
-A 'Compound Filter' can be used to extract the individual slices.</translation>
+      <translation>Нарэзаць абраны аб'ект, калі ўжыць іншыя аб'екты ў якасці інструментаў абрэзкі.
+Атрыманыя кавалачкі будуць захоўвацца ў злучэнні.
+Каб здабыць асобныя фрагменты, можна ўжыць 'Фільтр злучаных фігур'.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="353"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="384"/>
       <source>Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</source>
-      <translation type="unfinished">Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</translation>
+      <translation>Абярыце па меншай меры два аб'екты. Першы з іх - гэта аб'ект, які наразаецца; астатнія - гэта аб'екты, з дапамогай якіх можна нарэзаць.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="369"/>
       <source>Slice apart</source>
-      <translation type="unfinished">Slice apart</translation>
+      <translation>Разрэзаць на часткі</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="375"/>
       <source>Slice a selected object by other objects, and split it apart.
 It will create a 'Compound Filter' for each slice.</source>
-      <translation type="unfinished">Slice a selected object by other objects, and split it apart.
-It will create a 'Compound Filter' for each slice.</translation>
+      <translation>Нарэзаць абраны аб'ект іншымі аб'ектамі, і падзяліце яго на часткі.
+Гэта створыць 'Фільтр злучаных фігур' для кожнага разрэзу.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="517"/>
       <source>Boolean XOR</source>
-      <translation type="unfinished">Boolean XOR</translation>
+      <translation>Лагічная аперацыя XOR</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="525"/>
@@ -6364,10 +6364,10 @@ It will create a 'Compound Filter' for each slice.</translation>
 or with the shapes inside a compound.
 This means the overlapping volumes of the shapes will be removed.
 A 'Compound Filter' can be used to extract the remaining pieces.</source>
-      <translation type="unfinished">Perform an 'exclusive OR' boolean operation with two or more selected objects,
-or with the shapes inside a compound.
-This means the overlapping volumes of the shapes will be removed.
-A 'Compound Filter' can be used to extract the remaining pieces.</translation>
+      <translation>Выканаць лагічную аперацыю "Экслюзіўны OR', з двума ці болей абранымі аб'ектамі,
+альбо з фігурамі ўнутры злучэння.
+Гэта азначае, што аб'ёмы фігур, якія перакрываюцца, будуць выдаленыя.
+Каб здабыць пакінутыя кавалачкі, можна ўжыць 'Фільтр злучаных фігур'.</translation>
     </message>
   </context>
   <context>
@@ -6375,7 +6375,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="51"/>
       <source>Compound Filter</source>
-      <translation type="unfinished">Compound Filter</translation>
+      <translation>Фільтр злучаных фігур</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="61"/>
@@ -6383,31 +6383,31 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
 area, or length, or by choosing specific items.
 If a second object is selected, it will be used as reference, for example,
 for collision or distance filtering.</source>
-      <translation type="unfinished">Filter out objects from a selected compound by characteristics like volume,
-area, or length, or by choosing specific items.
-If a second object is selected, it will be used as reference, for example,
-for collision or distance filtering.</translation>
+      <translation>Фільтраваць аб'екты з абранага злучэння па такіх характарыстыках, як аб'ём,
+плошча ці даўжыня, альбо абраць канкрэтныя элементы.
+Калі абраны другі аб'ект, ён будзе ўжыты ў якасці эталону, напрыклад,
+для фільтрацыі сутыкненняў ці адлегласцяў.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="70"/>
       <source>First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</source>
-      <translation type="unfinished">First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</translation>
+      <translation>Спачатку абярыце фігуру, якая з'яўляецца злучэннем. Калі абраны другі аб'ект (неабавязкова), ён будзе разглядацца як трафарэт.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="71"/>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="112"/>
       <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>Дрэнны выбар</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="110"/>
       <source>Computing the result failed with an error:</source>
-      <translation type="unfinished">Computing the result failed with an error:</translation>
+      <translation>Вылічэнне выніку завяршылася памылкай:</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="111"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+      <translation>Націсніце 'Працягнуць', каб стварыць функцыю ў любым выпадку, або 'Спыніць', каб адмяніць.</translation>
     </message>
   </context>
   <context>
@@ -6415,24 +6415,24 @@ for collision or distance filtering.</translation>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="50"/>
       <source>Explode compound</source>
-      <translation type="unfinished">Explode compound</translation>
+      <translation>Разбіць злучэнне</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="56"/>
       <source>Split up a compound of shapes into separate objects.
 It will create a 'Compound Filter' for each shape.</source>
-      <translation type="unfinished">Split up a compound of shapes into separate objects.
-It will create a 'Compound Filter' for each shape.</translation>
+      <translation>Падзяляе злучэнне фігур на асобныя аб'екты.
+Гэта створыць 'Фільтр злучаных фігур' для кожнай фігуры.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="62"/>
       <source>First select a shape that is a compound.</source>
-      <translation type="unfinished">First select a shape that is a compound.</translation>
+      <translation>Спачатку абярыце фігуру, якая з'яўляецца злучэннем.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="63"/>
       <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>Дрэнны выбар</translation>
     </message>
   </context>
   <context>
@@ -6440,22 +6440,22 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="87"/>
       <source>No object named {}</source>
-      <translation type="unfinished">No object named {}</translation>
+      <translation>Няма аб'екта з назвай {}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="91"/>
       <source>Failed to parse link (more than one colon encountered)</source>
-      <translation type="unfinished">Failed to parse link (more than one colon encountered)</translation>
+      <translation>Не атрымалася ўдалося апрацаваць спасылак (сустракаецца больш, чым аднаго двукроп'е)</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="204"/>
       <source>Object {} is neither movable nor attachable, can't edit attachment</source>
-      <translation type="unfinished">Object {} is neither movable nor attachable, can't edit attachment</translation>
+      <translation>Аб'ект {} не з'яўляецца ні рухомым, ні прымацаваным, нельга мяняць мацаванне</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="214"/>
       <source>{} is not attachable. You can still use attachment editor dialog to align the object, but the attachment won't be parametric.</source>
-      <translation type="unfinished">{} is not attachable. You can still use attachment editor dialog to align the object, but the attachment won't be parametric.</translation>
+      <translation>{} не прымацаваны. Вы ўсё яшчэ можаце ўжыць дыялогавае акно рэдактара мацавання для выраўноўвання аб'екта, але мацаванне не будзе параметрычным.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="215"/>
@@ -6472,72 +6472,72 @@ It will create a 'Compound Filter' for each shape.</translation>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="272"/>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="317"/>
       <source>Edit attachment of {}</source>
-      <translation type="unfinished">Edit attachment of {}</translation>
+      <translation>Змяніць мацаванне {}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="362"/>
       <source>Ignored. Can't attach object to itself!</source>
-      <translation type="unfinished">Ignored. Can't attach object to itself!</translation>
+      <translation>Ігнараваць. Немагчыма прымацаваць аб'ект да самога сябе!</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="365"/>
       <source>{} depends on object being attached, can't use it for attachment</source>
-      <translation type="unfinished">{} depends on object being attached, can't use it for attachment</translation>
+      <translation>{} залежыць ад прымацаванага аб'екту, нельга ўжываць яго для мацавання</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="505"/>
       <source>{} (add {})</source>
-      <translation type="unfinished">{} (add {})</translation>
+      <translation>{} (дадаць {})</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="507"/>
       <source>{} (add more references)</source>
-      <translation type="unfinished">{} (add more references)</translation>
+      <translation>{} (дадаць болей арыенціраў)</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="537"/>
       <source>Reference combinations:</source>
-      <translation type="unfinished">Reference combinations:</translation>
+      <translation>Камбінацыі арыенціраў:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="553"/>
       <source>Reference{}</source>
-      <translation type="unfinished">Reference{}</translation>
+      <translation>Адносіны{}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="558"/>
       <source>Selecting...</source>
-      <translation type="unfinished">Selecting...</translation>
+      <translation>Абраны...</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="582"/>
       <source>Failed to resolve links. {}</source>
-      <translation type="unfinished">Failed to resolve links. {}</translation>
+      <translation>Не атрымалася дазволіць спасылкі. {}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="590"/>
       <source>Not attached</source>
-      <translation type="unfinished">Not attached</translation>
+      <translation>Не прымацаваны</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="593"/>
       <source>Attached with mode {}</source>
-      <translation type="unfinished">Attached with mode {}</translation>
+      <translation>Прымацаваны ў рэжыме {}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="599"/>
       <source>Error: {}</source>
-      <translation type="unfinished">Error: {}</translation>
+      <translation>Памылка: {}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="602"/>
       <source>Attachment Offset (in local coordinates):</source>
-      <translation type="unfinished">Attachment Offset (in local coordinates):</translation>
+      <translation>Зрушэнне прымацавання (у лакальных каардынатах):</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="605"/>
       <source>Attachment Offset (inactive - not attached):</source>
-      <translation type="unfinished">Attachment Offset (inactive - not attached):</translation>
+      <translation>Зрушэнне прымацавання (неактыўны - не прымацаваны):</translation>
     </message>
   </context>
   <context>
@@ -6545,12 +6545,12 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="79"/>
       <source>Attachment...</source>
-      <translation type="unfinished">Attachment...</translation>
+      <translation>Прымацаваныя...</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="83"/>
       <source>Edit attachment of selected object.</source>
-      <translation type="unfinished">Edit attachment of selected object.</translation>
+      <translation>Змяніць мацаванне абранага аб'екту.</translation>
     </message>
   </context>
 </TS>

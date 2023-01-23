@@ -163,7 +163,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="2308"/>
       <source>Boolean operation</source>
-      <translation>Bulova operacija</translation>
+      <translation>Bulova Operacija</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2309"/>
@@ -1015,6 +1015,21 @@ so that self intersection is avoided.</translation>
       <source>External gear:</source>
       <translation>Spoljašnji zupčanik:</translation>
     </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.ui" line="179"/>
+      <source>Addendum Coefficient</source>
+      <translation type="unfinished">Addendum Coefficient</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.ui" line="199"/>
+      <source>Dedendum Coefficient</source>
+      <translation type="unfinished">Dedendum Coefficient</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.ui" line="219"/>
+      <source>Root Fillet Coefficient</source>
+      <translation type="unfinished">Root Fillet Coefficient</translation>
+    </message>
   </context>
   <context>
     <name>PartDesign::Groove</name>
@@ -1412,7 +1427,7 @@ nula, onda je jednak poluprečniku 2</translation>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="53"/>
       <source>Cut</source>
-      <translation>Razlika</translation>
+      <translation>Isecanje</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="58"/>
@@ -3110,7 +3125,7 @@ klikni ponovo da bi završio izbor</translation>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="112"/>
       <source>Recto Verso</source>
-      <translation>Recto Verso</translation>
+      <translation>Napred-nazad</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="120"/>
@@ -3553,7 +3568,7 @@ klikni ponovo da bi završio izbor</translation>
     <message>
       <location filename="../../Command.cpp" line="776"/>
       <source>Ensure that the body contains a feature before attempting a subtractive command.</source>
-      <translation>Uveri se da telo sadrži tipski oblik pre nego što pokušaš da primeniš alatku koja pravi udubljenje.</translation>
+      <translation>Uveri se da telo sadrži bar osnovni tipski oblik pre nego što pokušaš da primeniš alatku koja pravi udubljenje.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="797"/>

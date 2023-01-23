@@ -673,7 +673,7 @@ instalirani dodaci će se provjeriti na dostupna ažuriranja
     <message>
       <location filename="../../AddonManagerOptions.ui" line="380"/>
       <source>Activate Addon Manager options intended for developers of new Addons.</source>
-      <translation type="unfinished">Activate Addon Manager options intended for developers of new Addons.</translation>
+      <translation>Aktivirajte Upravitelj dodataka opcije namijenjene programerima novih Dodataka.</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="383"/>
@@ -691,7 +691,7 @@ instalirani dodaci će se provjeriti na dostupna ažuriranja
     <message>
       <location filename="../../package_details.ui" line="49"/>
       <source>Uninstalls a selected macro or workbench</source>
-      <translation>Deinstaliraj označenu makronaredbu ili radnu površinu</translation>
+      <translation>Deinstaliraj označenu makronaredbu ili radni stol</translation>
     </message>
     <message>
       <location filename="../../package_details.ui" line="52"/>
@@ -803,7 +803,7 @@ instalirani dodaci će se provjeriti na dostupna ažuriranja
     <message>
       <location filename="../../developer_mode_add_content.ui" line="33"/>
       <source>Macro</source>
-      <translation>Makro</translation>
+      <translation>Makro naredbe</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="38"/>
@@ -850,7 +850,7 @@ instalirani dodaci će se provjeriti na dostupna ažuriranja
     <message>
       <location filename="../../developer_mode_add_content.ui" line="125"/>
       <source>Workbench class name</source>
-      <translation type="unfinished">Workbench class name</translation>
+      <translation>Naziv klase Radnog stola</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="132"/>
@@ -1325,7 +1325,7 @@ instalirani dodaci će se provjeriti na dostupna ažuriranja
     <message>
       <location filename="../../NetworkManager.py" line="405"/>
       <source>Addon Manager: Unexpected {} response from server</source>
-      <translation type="unfinished">Addon Manager: Unexpected {} response from server</translation>
+      <translation>Upravitelj dodataka: Neočekivani {} odgovor s poslužitelja</translation>
     </message>
     <message>
       <location filename="../../NetworkManager.py" line="505"/>
@@ -1349,7 +1349,7 @@ instalirani dodaci će se provjeriti na dostupna ažuriranja
       <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="90"/>
       <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="107"/>
       <source>Removing Addon</source>
-      <translation type="unfinished">Removing Addon</translation>
+      <translation>Uklanjanje dodatka</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="95"/>
@@ -1660,12 +1660,12 @@ instalirani dodaci će se provjeriti na dostupna ažuriranja
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="518"/>
       <source>Internal Workbench</source>
-      <translation type="unfinished">Internal Workbench</translation>
+      <translation>Unutarnji Radni stol</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="521"/>
       <source>External Addon</source>
-      <translation type="unfinished">External Addon</translation>
+      <translation>Vanjski dodatak</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="524"/>
@@ -1681,7 +1681,7 @@ instalirani dodaci će se provjeriti na dostupna ažuriranja
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="149"/>
       <source>This addon requires Python packages that are not installed, and cannot be installed automatically. To use this workbench you must install the following Python packages manually:</source>
-      <translation type="unfinished">This addon requires Python packages that are not installed, and cannot be installed automatically. To use this workbench you must install the following Python packages manually:</translation>
+      <translation>Ovaj dodatak zahtijeva Python pakete koji nisu instalirani i ne mogu se automatski instalirati. Za korištenje ovog radnog stola morate ručno instalirati sljedeće Python pakete:</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="158"/>
@@ -1706,7 +1706,7 @@ instalirani dodaci će se provjeriti na dostupna ažuriranja
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="192"/>
       <source>Addon &apos;{}&apos; requires the following workbenches, which are not available in your copy of FreeCAD:</source>
-      <translation type="unfinished">Addon &apos;{}&apos; requires the following workbenches, which are not available in your copy of FreeCAD:</translation>
+      <translation>Dodatak &apos;{}&apos; zahtijeva sljedeće radne stolove, koji nisu dostupni u vašoj kopiji FreeCAD-a:</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="199"/>
@@ -1782,7 +1782,7 @@ instalirani dodaci će se provjeriti na dostupna ažuriranja
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="441"/>
       <source>Installing Addon</source>
-      <translation type="unfinished">Installing Addon</translation>
+      <translation>Instaliranje Dodatka</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="442"/>
@@ -1961,7 +1961,9 @@ instalirani dodaci će se provjeriti na dostupna ažuriranja
     <message>
       <location filename="../../package_list.py" line="228"/>
       <source>Click for details about workbench {}</source>
-      <translation type="unfinished">Click for details about workbench {}</translation>
+      <translation>Kliknite za detalje o Radnom stolu {}
+
+</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="232"/>
@@ -2231,7 +2233,7 @@ instalirani dodaci će se provjeriti na dostupna ažuriranja
     <message>
       <location filename="../../Addon.py" line="365"/>
       <source>{}: Unrecognized internal workbench &apos;{}&apos;</source>
-      <translation type="unfinished">{}: Unrecognized internal workbench &apos;{}&apos;</translation>
+      <translation>{}: Neprepoznati interni Radni stol &apos;{}&apos;</translation>
     </message>
     <message>
       <location filename="../../Addon.py" line="400"/>
@@ -2286,7 +2288,7 @@ instalirani dodaci će se provjeriti na dostupna ažuriranja
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="253"/>
       <source>Workbenches list was updated.</source>
-      <translation type="unfinished">Workbenches list was updated.</translation>
+      <translation>Popis radnih stolova je ažuriran.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="269"/>
@@ -2328,7 +2330,7 @@ instalirani dodaci će se provjeriti na dostupna ažuriranja
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="599"/>
       <source>Unable to fetch git updates for workbench {}</source>
-      <translation type="unfinished">Unable to fetch git updates for workbench {}</translation>
+      <translation>Nije moguće dohvatiti git ažuriranja za radni stol {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="614"/>
@@ -2455,12 +2457,12 @@ instalirani dodaci će se provjeriti na dostupna ažuriranja
     <message>
       <location filename="../../AddonManager.py" line="149"/>
       <source>&amp;Addon manager</source>
-      <translation type="unfinished">&amp;Addon manager</translation>
+      <translation>Upr&amp;avitelj dodataka</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="153"/>
       <source>Manage external workbenches, macros, and preference packs</source>
-      <translation type="unfinished">Manage external workbenches, macros, and preference packs</translation>
+      <translation>Upravljajte vanjskim radnim stolovima, makronaredbama i paketima postavki</translation>
     </message>
   </context>
   <context>

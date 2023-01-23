@@ -1234,7 +1234,7 @@ constraint or material is applied.</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="187"/>
       <source>Path:</source>
-      <translation type="unfinished">Path:</translation>
+      <translation>Шлях:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="247"/>
@@ -1254,7 +1254,7 @@ constraint or material is applied.</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="300"/>
       <source>Results</source>
-      <translation type="unfinished">Results</translation>
+      <translation>Вынікі</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="311"/>
@@ -3267,17 +3267,17 @@ Specify another file please.</translation>
     <message>
       <location filename="../../PlaneWidget.ui" line="22"/>
       <source>x</source>
-      <translation type="unfinished">x</translation>
+      <translation>x</translation>
     </message>
     <message>
       <location filename="../../PlaneWidget.ui" line="32"/>
       <source>y</source>
-      <translation type="unfinished">y</translation>
+      <translation>y</translation>
     </message>
     <message>
       <location filename="../../PlaneWidget.ui" line="42"/>
       <source>z</source>
-      <translation type="unfinished">z</translation>
+      <translation>z</translation>
     </message>
     <message>
       <location filename="../../PlaneWidget.ui" line="58"/>
@@ -3310,7 +3310,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="77"/>
       <source>Cancel</source>
-      <translation type="unfinished">Cancel</translation>
+      <translation>Скасаваць</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemConstraint.cpp" line="139"/>
@@ -3366,7 +3366,7 @@ Specify another file please.</translation>
       <location filename="../../AppFemGui.cpp" line="178"/>
       <location filename="../../AppFemGui.cpp" line="179"/>
       <source>Import-Export</source>
-      <translation type="unfinished">Import-Export</translation>
+      <translation>Імпарт-Экспарт</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="407"/>
@@ -3446,7 +3446,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="112"/>
       <source>Faces</source>
-      <translation type="unfinished">Faces</translation>
+      <translation>Грані</translation>
     </message>
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="113"/>
@@ -3789,17 +3789,17 @@ For possible variables, see the description box below.</translation>
     <message>
       <location filename="../../SphereWidget.ui" line="22"/>
       <source>x</source>
-      <translation type="unfinished">x</translation>
+      <translation>x</translation>
     </message>
     <message>
       <location filename="../../SphereWidget.ui" line="32"/>
       <source>y</source>
-      <translation type="unfinished">y</translation>
+      <translation>y</translation>
     </message>
     <message>
       <location filename="../../SphereWidget.ui" line="42"/>
       <source>z</source>
-      <translation type="unfinished">z</translation>
+      <translation>z</translation>
     </message>
     <message>
       <location filename="../../SphereWidget.ui" line="110"/>
@@ -3980,7 +3980,7 @@ following referencing objects might be lost:</translation>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="158"/>
       <source>Location</source>
-      <translation type="unfinished">Location</translation>
+      <translation>Месцазнаходжанне</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="172"/>
@@ -4053,7 +4053,7 @@ following referencing objects might be lost:</translation>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="205"/>
       <source>Location</source>
-      <translation type="unfinished">Location</translation>
+      <translation>Месцазнаходжанне</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="219"/>
@@ -4690,17 +4690,17 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="26"/>
       <source>x</source>
-      <translation type="unfinished">x</translation>
+      <translation>x</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="36"/>
       <source>y</source>
-      <translation type="unfinished">y</translation>
+      <translation>y</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="46"/>
       <source>z</source>
-      <translation type="unfinished">z</translation>
+      <translation>z</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="62"/>
@@ -4725,7 +4725,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="207"/>
       <source>Mode</source>
-      <translation type="unfinished">Mode</translation>
+      <translation>Рэжым</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="221"/>
@@ -4753,17 +4753,17 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskPostDataAtPoint.ui" line="23"/>
       <source>x</source>
-      <translation type="unfinished">x</translation>
+      <translation>x</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAtPoint.ui" line="33"/>
       <source>y</source>
-      <translation type="unfinished">y</translation>
+      <translation>y</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAtPoint.ui" line="43"/>
       <source>z</source>
-      <translation type="unfinished">z</translation>
+      <translation>z</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAtPoint.ui" line="86"/>
@@ -4791,7 +4791,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="28"/>
       <source>Mode</source>
-      <translation type="unfinished">Mode</translation>
+      <translation>Рэжым</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="42"/>
@@ -4860,7 +4860,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="162"/>
       <source>Transparency</source>
-      <translation type="unfinished">Transparency</translation>
+      <translation>Празрыстасць</translation>
     </message>
   </context>
   <context>
@@ -5172,7 +5172,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="68"/>
       <source>Results</source>
-      <translation type="unfinished">Results</translation>
+      <translation>Вынікі</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="69"/>
@@ -5993,7 +5993,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="454"/>
       <source>Information</source>
-      <translation type="unfinished">Information</translation>
+      <translation>Інфармацыя</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="456"/>
