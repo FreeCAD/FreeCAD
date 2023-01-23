@@ -348,7 +348,7 @@ Node_Block *TopBlock=nullptr;
 
 // error func
 void yyerror(char *errorinfo)
-	{  ActFilter->addError(errorinfo);  }
+    {  ActFilter->addError(errorinfo);  }
 
 
 // for VC9 (isatty and fileno not supported anymore)
