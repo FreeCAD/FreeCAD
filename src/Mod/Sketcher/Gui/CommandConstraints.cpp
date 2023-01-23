@@ -1915,32 +1915,54 @@ bool CmdSketcherConstrainCoincident::substituteConstraintCombinations(SketchObje
 
     const std::vector< Constraint * > &cvals = Obj->Constraints.getValues();
 
+    // NOTE: This function does not either open or commit a command as it is used for group addition
+    // it relies on such infrastructure being provided by the caller.
+
     int j=0;
     for (std::vector<Constraint *>::const_iterator it = cvals.begin(); it != cvals.end(); ++it,++j) {
-        if( (*it)->Type == Sketcher::Tangent &&
-            (*it)->FirstPos == Sketcher::PointPos::none && (*it)->SecondPos == Sketcher::PointPos::none &&
+        if ((*it)->Type == Sketcher::Tangent &&
             (*it)->Third == GeoEnum::GeoUndef &&
             (((*it)->First == GeoId1 && (*it)->Second == GeoId2) ||
-            ((*it)->Second == GeoId1 && (*it)->First == GeoId2)) ) {
+             ((*it)->Second == GeoId1 && (*it)->First == GeoId2))) {
+            if ((*it)->FirstPos == Sketcher::PointPos::none && (*it)->SecondPos == Sketcher::PointPos::none) {
 
-            // NOTE: This function does not either open or commit a command as it is used for group addition
-            // it relies on such infrastructure being provided by the caller.
+                if( constraintExists ) {
+                    // try to remove any pre-existing direct coincident constraints
+                    Gui::cmdAppObjectArgs(Obj, "delConstraintOnPoint(%i,%i)", GeoId1, static_cast<int>(PosId1));
+                }
 
-            if( constraintExists ) {
-                // try to remove any pre-existing direct coincident constraints
-                Gui::cmdAppObjectArgs(Obj, "delConstraintOnPoint(%i,%i)", GeoId1, static_cast<int>(PosId1));
+                Gui::cmdAppObjectArgs(Obj, "delConstraint(%i)", j);
+
+                doEndpointTangency(Obj, GeoId1, GeoId2, PosId1, PosId2);
+
+                notifyConstraintSubstitutions(QObject::tr("Endpoint to endpoint tangency was applied instead."));
+
+                getSelection().clearSelection();
+                return true;
             }
+            else if (isBsplineKnot(Obj, GeoId1) != isBsplineKnot(Obj, GeoId2)) {
+                // Replace with knot-to-endpoint tangency
 
-            Gui::cmdAppObjectArgs(Obj, "delConstraint(%i)", j);
+                if (isBsplineKnot(Obj, GeoId2)) {
+                    std::swap(GeoId1,GeoId2);
+                    std::swap(PosId1,PosId2);
+                }
 
-            doEndpointTangency(Obj, GeoId1, GeoId2, PosId1, PosId2);
+                // if a similar tangency already exists this must result in bad constraints
+                if ((*it)->SecondPos == Sketcher::PointPos::none) {
+                    Gui::cmdAppObjectArgs(Obj, "delConstraint(%i)", j);
 
-            notifyConstraintSubstitutions(QObject::tr("Endpoint to endpoint tangency was applied instead."));
+                    doEndpointTangency(Obj, GeoId1, GeoId2, PosId1, PosId2);
 
-            getSelection().clearSelection();
-            return true;
+                    notifyConstraintSubstitutions(QObject::tr("B-spline knot to endpoint tangency was applied instead."));
+
+                    getSelection().clearSelection();
+                    return true;
+                }
+            }
         }
     }
+
 
     return false;
 }
