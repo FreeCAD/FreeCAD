@@ -1009,6 +1009,21 @@ so that self intersection is avoided.</source>
         <source>External gear:</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../../../InvoluteGearFeature.ui" line="179"/>
+        <source>Addendum Coefficient</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../InvoluteGearFeature.ui" line="199"/>
+        <source>Dedendum Coefficient</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../InvoluteGearFeature.ui" line="219"/>
+        <source>Root Fillet Coefficient</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PartDesign::Groove</name>

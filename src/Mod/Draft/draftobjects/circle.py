@@ -42,7 +42,7 @@ class Circle(DraftObject):
         super(Circle, self).__init__(obj, "Circle")
 
         _tip = QT_TRANSLATE_NOOP("App::Property", "Start angle of the arc")
-        obj.addProperty("App::PropertyAngle", "FirstAngle", 
+        obj.addProperty("App::PropertyAngle", "FirstAngle",
                         "Draft", _tip)
 
         _tip = QT_TRANSLATE_NOOP("App::Property", "End angle of the arc (for a full circle, \

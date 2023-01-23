@@ -91,7 +91,7 @@ App::Color PreferencesGui::sectionLineColor()
 
 QColor PreferencesGui::sectionLineQColor()
 {
-//if the App::Color version has already lightened the color, we don't want to do it agin
+//if the App::Color version has already lightened the color, we don't want to do it again
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
     App::Color fcColor;

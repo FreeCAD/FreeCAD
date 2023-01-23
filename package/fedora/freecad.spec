@@ -123,10 +123,10 @@ Requires:       python3-matplotlib
 Requires:       python3-pivy
 Requires:       python3-pyside2
 Requires:	qt5-assistant
-%if %{bundled_smesh} 
+%if %{bundled_smesh}
 Provides:       bundled(smesh) = %{bundled_smesh_version}
 %endif
-%if %{bundled_pycxx} 
+%if %{bundled_pycxx}
 Provides:       bundled(python-pycxx)
 %endif
 Recommends:	python3-pysolar

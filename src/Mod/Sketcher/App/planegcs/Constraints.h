@@ -251,10 +251,9 @@ namespace GCS
         void rescale(double coef=1.) override;
         double error() override;
         double grad(double *) override;
-        void setupInputs();
         size_t numpoints;
         BSpline& bsp;
-        unsigned int startpole;
+        size_t startpole;
     };
 
     // Difference

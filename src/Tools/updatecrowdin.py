@@ -114,7 +114,7 @@ locations = [["AddonManager","../Mod/AddonManager/Resources/translations","../Mo
              ["Tux","../Mod/Tux/Resources/translations","../Mod/Tux/Resources/Tux.qrc"],
              ["TechDraw","../Mod/TechDraw/Gui/Resources/translations","../Mod/TechDraw/Gui/Resources/TechDraw.qrc"],
              ]
-             
+
 THRESHOLD = 25 # how many % must be translated for the translation to be included in FreeCAD
 
 class CrowdinUpdater:
@@ -228,7 +228,7 @@ def updateqrc(qrcpath,lncode):
     "updates a qrc file with the given translation entry"
 
     #print("opening " + qrcpath + "...")
-    
+
     # getting qrc file contents
     if not os.path.exists(qrcpath):
         print("ERROR: Resource file " + qrcpath + " doesn't exist")
@@ -287,7 +287,7 @@ def updateTranslatorCpp(lncode):
     cppfile = os.path.join(os.path.dirname(__file__),"..","Gui","Language","Translator.cpp")
     l = QtCore.QLocale(lncode)
     lnname = l.languageToString(l.language())
-    
+
     # read file contents
     f = open(cppfile,"r")
     cppcode = []
@@ -359,9 +359,9 @@ def doLanguage(lncode):
         qrcpath = os.path.abspath(target[2])
         doFile(basefilepath,targetpath,lncode,qrcpath)
     print(" done")
-    
+
 def applyTranslations(languages):
-    
+
     global tempfolder
     currentfolder = os.getcwd()
     tempfolder = tempfile.mkdtemp()
@@ -469,7 +469,7 @@ if __name__ == "__main__":
         print("Updating Translator.cpp...")
         for ln in languages:
             updateTranslatorCpp(ln)
-    
+
     elif command == "updateTranslator":
         print("retrieving list of languages...")
         status = updater.status()
@@ -477,7 +477,7 @@ if __name__ == "__main__":
         languages = [item['languageId'] for item in status if item['translationProgress'] > THRESHOLD]
         print("Updating Translator.cpp...")
         for ln in languages:
-            updateTranslatorCpp(ln)   
+            updateTranslatorCpp(ln)
 
     elif command == "gather":
         import updatets

@@ -38,7 +38,7 @@ std::string PropertyColumnWidthsPy::representation() const
 
 PyObject *PropertyColumnWidthsPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of PropertyColumnWidthsPy and the Twin object 
+    // create a new instance of PropertyColumnWidthsPy and the Twin object
     return new PropertyColumnWidthsPy(new PropertyColumnWidths);
 }
 
@@ -55,5 +55,5 @@ PyObject *PropertyColumnWidthsPy::getCustomAttributes(const char* /*attr*/) cons
 
 int PropertyColumnWidthsPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

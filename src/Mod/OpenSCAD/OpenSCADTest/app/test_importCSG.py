@@ -154,13 +154,13 @@ class TestImportCSG(unittest.TestCase):
         self.assertTrue (wire is not None)
         self.assertAlmostEqual (wire.Shape.Area, 5000.0)
         FreeCAD.closeDocument(doc.Name)
-    
+
     def test_import_polyhedron(self):
         doc = self.utility_create_scad(
 """
 polyhedron(
   points=[ [10,10,0],[10,-10,0],[-10,-10,0],[-10,10,0], // the four points at base
-           [0,0,10]  ],                                 // the apex point 
+           [0,0,10]  ],                                 // the apex point
   faces=[ [0,1,4],[1,2,4],[2,3,4],[3,0,4],              // each triangle side
               [1,0,3],[2,1,3] ]                         // two triangles for square base
  );
@@ -229,7 +229,7 @@ polyhedron(
         self.assertTrue (object is not None)
         self.assertAlmostEqual (object.Shape.Volume, 4.5*math.pi, 5)
         FreeCAD.closeDocument(doc.Name)
-       
+
     def test_import_linear_extrude(self):
         doc = self.utility_create_scad("linear_extrude(height = 20) square([20, 10], center = true);", "linear_extrude_simple")
         object = doc.ActiveObject
@@ -291,13 +291,13 @@ polyhedron(
         self.assertTrue (object is not None)
         self.assertAlmostEqual (object.Shape.Volume, 8.000000, 6)
         FreeCAD.closeDocument(doc.Name)
-        
+
         doc = self.utility_create_scad("resize([2,2,0]) cube();", "resize_with_zero")
         object = doc.ActiveObject
         self.assertTrue (object is not None)
         self.assertAlmostEqual (object.Shape.Volume, 4.000000, 6)
         FreeCAD.closeDocument(doc.Name)
-        
+
         doc = self.utility_create_scad("resize([2,0,0], auto=true) cube();", "resize_with_auto")
         object = doc.ActiveObject
         self.assertTrue (object is not None)
@@ -349,7 +349,7 @@ resize(newsize = [0,0,10], auto = [0,0,0]) {
             self.assertAlmostEqual (object.Shape.BoundBox.YMin, -4.5, 6)
             self.assertAlmostEqual (object.Shape.BoundBox.YMax, 4.5, 6)
             FreeCAD.closeDocument(doc.Name)
-        
+
             testfile = join(self.test_dir, "Surface.dat").replace('\\','/')
             doc = self.utility_create_scad(f"surface(file = \"{testfile}\", convexity = 5);", "surface_uncentered_dat")
             object = doc.ActiveObject
@@ -390,7 +390,7 @@ resize(newsize = [0,0,10], auto = [0,0,0]) {
         self.assertAlmostEqual (object.Shape.Area, 0.75*0.75 - 0.25*0.25, 3)
         FreeCAD.closeDocument(doc.Name)
 
-        # Unimplemented functionality: 
+        # Unimplemented functionality:
 
         # With cut=false, the twisted unit square projects to a circle of radius sqrt(0.5)
         #doc = self.utility_create_scad(f"projection(cut=false) {base_shape}", "projection_circle")

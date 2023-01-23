@@ -27,29 +27,29 @@ def generateDoc():
 				os.environ['PATH'] = os.environ['PATH'] + ';' + binpath
 		else:
 				os.environ['PATH'] = os.environ['PATH'] + ':' + binpath
-	
+
 		# Import FreeCAD module
 		sys.path.append(binpath)
 		print('Write documentation for module \'FreeCAD\'')
 		pydoc.writedoc('FreeCAD')
 		print('')
-	
+
 		# Module directory
 		ModDirs = dircache.listdir(modpath)
 
-		# Search for module paths and append them to Python path 
+		# Search for module paths and append them to Python path
 		#for Dir in ModDirs:
 		#	if (Dir != '__init__.py'):
 		#			sys.path.append( os.path.join(modpath,Dir) )
 
-		# Walk through the module paths again and try loading the modules to create HTML files 
+		# Walk through the module paths again and try loading the modules to create HTML files
 		for Dir in ModDirs:
 				dest = os.path.join(modpath,Dir)
 				print('Write documentation for module \'' + Dir + '\'')
 				if (Dir != '__init__.py'):
 						writedocs(dest)
 						print('')
-						
+
 		# Now we must create a document and create instances of all Python classes which
 		# cannot be directly created by a module.
 
@@ -61,10 +61,10 @@ def generateDoc():
 						if file.find('.html') > 0:
 								print('  Adding file ' + file + ' to archive')
 								zip.write(file)
-	
+
 		print('done.')
 		zip.close()
-	
+
 		# Remove all HTML files
 		print('Cleaning up HTML files...')
 		for file in os.listdir('.'):
@@ -72,7 +72,7 @@ def generateDoc():
 						if file.find('.html') > 0:
 								print('  Removing ' + file)
 								os.remove(file)
-		
+
 		os.chdir(cwd)
 		print('done.')
 
