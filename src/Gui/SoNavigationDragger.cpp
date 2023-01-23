@@ -88,7 +88,7 @@ RotTransDragger::RotTransDragger()
    // $(SO_DRAGGER_DIR)/rotTransDragger.iv"
    if (SO_KIT_IS_FIRST_INSTANCE())
      readDefaultParts("SoNavigationDraggerLayout.iv",
-					  NavigationDraggerLayout,
+                 NavigationDraggerLayout,
                       strlen(NavigationDraggerLayout));
 
    // Fields that always show current state of the dragger.
