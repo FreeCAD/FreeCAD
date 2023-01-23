@@ -329,8 +329,12 @@ public:
                 // we're asking for this child's data, and IT's NOT THE ROOT
                 QString res;
                 // we resolved the property
-                if(propName)
+                if (propName)
+                {
                     res = QString::fromLatin1(propName);
+                    if (sep && !noProperty)
+                        res += QLatin1Char('.');
+                }
                 else if(obj) {
                     // the object has been resolved, use the saved idx to figure out quotation or not.
                     if(idx & 1)
@@ -689,15 +693,20 @@ QStringList ExpressionCompleter::splitPath ( const QString & input ) const
             auto sli = sl.begin();
             if(retry>1 && !sl.empty())
                 sl.pop_back();
-            if(!trim.empty() && boost::ends_with(sl.back(),trim))
-                sl.back().resize(sl.back().size()-trim.size());
-            while (sli != sl.end()) {
-                l << Base::Tools::fromStdString(*sli);
-                ++sli;
+
+            if (!sl.empty())  {
+                if (!trim.empty() && boost::ends_with(sl.back(), trim))
+                    sl.back().resize(sl.back().size() - trim.size());
+                while (sli != sl.end()) {
+                    l << Base::Tools::fromStdString(*sli);
+                    ++sli;
+                }
             }
             if (lastElem.size()) {
-                // # is a special token to indicate our path ends in "." or "#"
-                if (lastElem != "#") { 
+                // if we finish in a trailing separator
+                if (!lastElem.empty()) {
+                    // erase the separator
+                    lastElem.erase(lastElem.begin());
                     l << Base::Tools::fromStdString(lastElem);
                 } else {
                     // add empty string to allow completion after "." or "#"
@@ -718,15 +727,20 @@ QStringList ExpressionCompleter::splitPath ( const QString & input ) const
                     lastElemStart = path.rfind('#');
                 }
                 if (lastElemStart != std::string::npos ) {
-                    if (lastElemStart != path.size() - 1)
-                        lastElem = path.substr(lastElemStart+1);
-                    else 
-                        lastElem = "#"; // required to allow completion on Sketch.
+                    lastElem = path.substr(lastElemStart);
                     path = path.substr(0, lastElemStart);
                 }
                 retry++;
                 continue;
             }else if(retry==1) {
+                // restore path from retry 0
+                if (lastElem.size() > 1)
+                {
+                    path = path + lastElem;
+                    lastElem = "";                    
+                }
+                // else... we don't reset lastElem if it's a '.' or '#' to allow chaining completions
+                
                 char last = path[path.size()-1];
                 if(last!='#' && last!='.' && path.find('#')!=std::string::npos) {
                     path += "._self";
