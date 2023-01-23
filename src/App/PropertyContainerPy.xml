@@ -33,13 +33,13 @@ name : str\n    Property name.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getTypeOfProperty">
-		  <Documentation>
-			  <UserDocu>getTypeOfProperty(name) -> list\n
+      <Documentation>
+        <UserDocu>getTypeOfProperty(name) -> list\n
 Returns the type of a named property. This can be a list conformed by elements in
 (Hidden, NoRecompute, NoPersist, Output, ReadOnly, Transient).\n
 name : str\n    Property name.</UserDocu>
-		  </Documentation>
-	  </Methode>
+      </Documentation>
+    </Methode>
     <Methode Name="getTypeIdOfProperty">
       <Documentation>
         <UserDocu>getTypeIdOfProperty(name) -> str\n
@@ -70,21 +70,21 @@ name : str\n    Property name.</UserDocu>
             </Documentation>
         </Methode>
       <Methode Name="getGroupOfProperty">
-		  <Documentation>
-			  <UserDocu>getGroupOfProperty(name) -> str\n
+      <Documentation>
+        <UserDocu>getGroupOfProperty(name) -> str\n
 Returns the name of the group which the property belongs to in this class.
 The properties are sorted in different named groups for convenience.\n
 name : str\n    Property name.</UserDocu>
-		  </Documentation>
-	  </Methode>
+      </Documentation>
+    </Methode>
       <Methode Name="setGroupOfProperty">
-		  <Documentation>
-			  <UserDocu>setGroupOfProperty(name, group) -> None\n
+      <Documentation>
+        <UserDocu>setGroupOfProperty(name, group) -> None\n
 Set the name of the group of a dynamic property.\n
 name : str\n    Property name.
 group : str\n    Group name.</UserDocu>
-		  </Documentation>
-	  </Methode>
+      </Documentation>
+    </Methode>
       <Methode Name="setPropertyStatus">
             <Documentation>
                 <UserDocu>setPropertyStatus(name, val) -> None\n
@@ -101,29 +101,29 @@ Get property status.\n
 name : str\n    Property name. If empty, returns a list of supported text names of the status.</UserDocu>
             </Documentation>
       </Methode>
-	  <Methode Name="getDocumentationOfProperty">
-		  <Documentation>
-			  <UserDocu>getDocumentationOfProperty(name) -> str\n
+    <Methode Name="getDocumentationOfProperty">
+      <Documentation>
+        <UserDocu>getDocumentationOfProperty(name) -> str\n
 Returns the documentation string of the property of this class.\n
 name : str\n    Property name.</UserDocu>
-		  </Documentation>
-	  </Methode>
-	  <Methode Name="setDocumentationOfProperty">
-		  <Documentation>
-			  <UserDocu>setDocumentationOfProperty(name, docstring) -> None\n
+      </Documentation>
+    </Methode>
+    <Methode Name="setDocumentationOfProperty">
+      <Documentation>
+        <UserDocu>setDocumentationOfProperty(name, docstring) -> None\n
 Set the documentation string of a dynamic property of this class.\n
 name : str\n    Property name.
 docstring : str\n    Documentation string.</UserDocu>
-		  </Documentation>
-	  </Methode>
-	  <Methode Name="getEnumerationsOfProperty">
-		  <Documentation>
-			  <UserDocu>getEnumerationsOfProperty(name) -> list or  None\n
+      </Documentation>
+    </Methode>
+    <Methode Name="getEnumerationsOfProperty">
+      <Documentation>
+        <UserDocu>getEnumerationsOfProperty(name) -> list or  None\n
 Return all enumeration strings of the property of this class or None if not a
 PropertyEnumeration.\n
 name : str\n    Property name.</UserDocu>
-		  </Documentation>
-	  </Methode>
+      </Documentation>
+    </Methode>
       <Methode Name="dumpPropertyContent" Keyword="true" Const="true">
             <Documentation>
                 <UserDocu>dumpPropertyContent(Property, Compression=3) -> bytearray\n

@@ -236,8 +236,8 @@ LDFLAGS='-Wl,--as-needed -Wl,--no-undefined'; export LDFLAGS
 
 make fc_version
 for I in src/Build/Version.h src/Build/Version.h.out; do
-	sed -i 's,FCRevision      \"Unknown\",FCRevision      \"%{release} (Git)\",' $I
-	sed -i 's,FCRepositoryURL \"Unknown\",FCRepositoryURL \"git://github.com/FreeCAD/FreeCAD.git master\",' $I
+    sed -i 's,FCRevision      \"Unknown\",FCRevision      \"%{release} (Git)\",' $I
+    sed -i 's,FCRepositoryURL \"Unknown\",FCRepositoryURL \"git://github.com/FreeCAD/FreeCAD.git master\",' $I
 done
 
 %{make_build}
