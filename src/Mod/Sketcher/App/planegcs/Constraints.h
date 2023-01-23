@@ -665,7 +665,7 @@ namespace GCS
     public:
         ConstraintPointOnParabola(Point &p, Parabola &e);
         ConstraintPointOnParabola(Point &p, ArcOfParabola &a);
-	~ConstraintPointOnParabola() override;
+    ~ConstraintPointOnParabola() override;
         #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
         inline ConstraintPointOnParabola(){}
         #endif

@@ -6552,7 +6552,7 @@ std::unique_ptr<const GeometryFacade> SketchObject::getGeometryFacade(int GeoId)
 static gp_Vec2d ProjVecOnPlane_UV( const gp_Vec& V, const gp_Pln& Pl)
 {
   return gp_Vec2d( V.Dot(Pl.Position().XDirection()),
-	           V.Dot(Pl.Position().YDirection()));
+                   V.Dot(Pl.Position().YDirection()));
 }
 
 // Auxiliary Method: returns vector projection in UVN space of plane

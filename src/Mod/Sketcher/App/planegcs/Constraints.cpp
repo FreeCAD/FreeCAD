@@ -2255,10 +2255,9 @@ void ConstraintPointOnParabola::errorgrad(double *err, double *grad, double *par
     proj = point_to_focus.scalarProd(xdir, &dproj);
 
     if (err)
-	*err = pf - 2*focal - proj;
+    *err = pf - 2*focal - proj;
     if (grad)
-	*grad = dpf - 2*dfocal - dproj;
-
+    *grad = dpf - 2*dfocal - dproj;
 }
 
 double ConstraintPointOnParabola::error()
