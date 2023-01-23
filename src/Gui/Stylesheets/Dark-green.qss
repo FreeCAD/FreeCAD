@@ -801,8 +801,8 @@ Gui--PropertyEditor--PropertyEditor QAbstractSpinBox:disabled {
 
 /* hack to hide weird redundant information inside cells with links and no editable data (but editable via "..." button) */
 Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QLabel {
-	color: black;
-	background-color: #dadfc5;
+    color: black;
+    background-color: #dadfc5;
 }
 
 /* hack to disable margin inside Property values to following elements */
