@@ -138,7 +138,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
             "Helix Drill",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Extra value to stay away from final profile- good for roughing toolpath"
+                "Extra value to stay away from final profile- good for roughing toolpath",
             ),
         )
 
