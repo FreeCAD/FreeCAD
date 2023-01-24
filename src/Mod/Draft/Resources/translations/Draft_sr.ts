@@ -72,8 +72,70 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="199"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="209"/>
-      <source>Font size in the system units</source>
-      <translation>Величина фонта за јединице мере</translation>
+      <source>The font size in system units</source>
+      <translation type="unfinished">The font size in system units</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="219"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="229"/>
+      <source>The line spacing (relative to the font size)</source>
+      <translation type="unfinished">The line spacing (relative to the font size)</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="339"/>
+      <source>Lines and arrows</source>
+      <translation type="unfinished">Lines and arrows</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="348"/>
+      <source>Show line</source>
+      <translation type="unfinished">Show line</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="371"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="381"/>
+      <source>The width of the lines</source>
+      <translation type="unfinished">The width of the lines</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="384"/>
+      <source> px</source>
+      <translation> px</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="391"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="413"/>
+      <source>The type of arrows or markers to use for dimensions and labels</source>
+      <translation type="unfinished">The type of arrows or markers to use for dimensions and labels</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="445"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="455"/>
+      <source>The size of the arrows or markers in system units</source>
+      <translation type="unfinished">The size of the arrows or markers in system units</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="465"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="475"/>
+      <source>The color of lines and arrows</source>
+      <translation type="unfinished">The color of lines and arrows</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="468"/>
+      <source>Line and arrow color</source>
+      <translation type="unfinished">Line and arrow color</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="482"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="492"/>
+      <source>The distance the dimension line is additionally extended</source>
+      <translation type="unfinished">The distance the dimension line is additionally extended</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="522"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="532"/>
+      <source>The distance the extension lines are additionally extended beyond the dimension line</source>
+      <translation type="unfinished">The distance the extension lines are additionally extended beyond the dimension line</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="202"/>
@@ -81,184 +143,134 @@
       <translation>Величина фонта</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="219"/>
-      <source>Line spacing in system units</source>
-      <translation>Проред у јединицама мере</translation>
-    </message>
-    <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="222"/>
       <source>Line spacing</source>
       <translation>Проред</translation>
     </message>
     <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="236"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="246"/>
+      <source>The color of texts, dimension texts and label texts</source>
+      <translation type="unfinished">The color of texts, dimension texts and label texts</translation>
+    </message>
+    <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="239"/>
+      <source>Text color</source>
+      <translation>Боја текста</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="256"/>
       <source>Units</source>
       <translation>Мерне јединице</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="245"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="255"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="262"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="272"/>
       <source>A multiplier factor that affects the size of texts and markers</source>
       <translation>Множилац који утиче на величину текста и ознака</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="248"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="265"/>
       <source>Scale multiplier</source>
       <translation>Множилац размере</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="268"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="278"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="279"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="289"/>
       <source>If it is checked it will show the unit next to the dimension value</source>
       <translation>Ако је чекирано, приказаће јединицу мере поред вредности коте</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="271"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="282"/>
       <source>Show unit</source>
       <translation>Прикажи мерне јединице</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="291"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="301"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="302"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="312"/>
       <source>Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</source>
       <translation>Наведи важећу јединицу дужине као што је мм, м, ин, фт, да би наметнуо приказивање вредности коте у овој мерној јединици</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="294"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="305"/>
       <source>Unit override</source>
       <translation>Јединице за замену</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="308"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="318"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="319"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="329"/>
       <source>The number of decimals to show for dimension values</source>
       <translation>Број децимала које треба приказати за вредности кота</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="311"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="322"/>
       <source>Decimals</source>
       <translation>Децимале</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="331"/>
-      <source>Line and arrows</source>
-      <translation>Линије и стрелице</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="337"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="347"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="345"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="355"/>
       <source>If it is checked it will display the dimension line</source>
       <translation>Ако је означено, приказаће се котна линија</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="340"/>
-      <source>Show lines</source>
-      <translation>Прикажи линије</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="363"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="373"/>
-      <source>The width of the dimension lines</source>
-      <translation>Ширина котних линија</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="366"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="374"/>
       <source>Line width</source>
       <translation>Ширина линије</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="376"/>
-      <source>px</source>
-      <translation>px</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="386"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="396"/>
-      <source>The color of dimension lines, arrows and texts</source>
-      <translation>Боја котних линија, стрелица и текста</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="389"/>
-      <source>Line / text color</source>
-      <translation>Боја линије / текста</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="410"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="432"/>
-      <source>The type of arrows or markers to use at the end of dimension lines</source>
-      <translation>Врста стрелица или ознака које ће се користити на крају котних линија</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="413"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="394"/>
       <source>Arrow type</source>
       <translation>Врста стрелице</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="436"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="417"/>
       <source>Dot</source>
       <translation>Тачка</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="441"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="422"/>
       <source>Circle</source>
       <translation>Круг</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="446"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="427"/>
       <source>Arrow</source>
       <translation>Cтрелица</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="451"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="432"/>
       <source>Tick</source>
       <translation>Коса црта</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="456"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="437"/>
       <source>Tick-2</source>
       <translation>Коса црта 2</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="464"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="474"/>
-      <source>The size of the dimension arrows or markers in system units</source>
-      <translation>Величина котних стрелица или ознака</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="467"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="448"/>
       <source>Arrow size</source>
       <translation>Величина стрелице</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="484"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="494"/>
-      <source>The distance that the dimension line is additionally extended</source>
-      <translation>Растојање на које се котна линија додатно продужава</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="487"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="485"/>
       <source>Dimension overshoot</source>
       <translation>Продужетак котне линије</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="504"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="514"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="502"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="512"/>
       <source>The length of the extension lines</source>
       <translation>Дужина помоћних котних линија</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="507"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="505"/>
       <source>Extension lines</source>
       <translation>Помоћне котне линије</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="524"/>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="534"/>
-      <source>The distance that the extension lines are additionally extended beyond the dimension line</source>
-      <translation>Растојање на које се помоћне котне линије додатно продужавају изнад котне линије</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="527"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="525"/>
       <source>Extension overshoot</source>
       <translation>Продужетак помоћне котне линије</translation>
     </message>
@@ -763,7 +775,7 @@ view each time a command is started</source>
       <source>An optional offset to give to the working plane
 above its base position. Use this together with one
 of the buttons above</source>
-      <translation>Опциони одмак који се даје радној равни
+      <translation>Одмак који се може додати радној равни
 изнад свог основног положаја. Користи заједно са једним
 од дугмади изнад</translation>
     </message>
@@ -1260,12 +1272,12 @@ If this option is checked, the base objects will be selected instead.</source>
     <message>
       <location filename="../ui/preferences-draft.ui" line="264"/>
       <source>If this option is set, when creating Draft objects on top of an existing face of another object, the "Support" property of the Draft object will be set to the base object. This was the standard behaviour before FreeCAD 0.19</source>
-      <translation type="unfinished">If this option is set, when creating Draft objects on top of an existing face of another object, the "Support" property of the Draft object will be set to the base object. This was the standard behaviour before FreeCAD 0.19</translation>
+      <translation>Ако је ова опција чекирана, када правите Draft објекте на страници неког другог објекта, особина „Support“ (Основа) објекта биће постављена на базни објекат. Ово је било стандардно понашање пре FreeCAD-а 0.19</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="267"/>
       <source>Set the Support property when possible</source>
-      <translation>Подеси особину „Основа“ када је то могуће</translation>
+      <translation>Подеси особину „Support“ (Основа) када је то могуће</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="280"/>
@@ -1551,7 +1563,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="149"/>
       <source>Screen</source>
-      <translation type="unfinished">Screen</translation>
+      <translation>Екран</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="161"/>
@@ -3171,7 +3183,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="../../DraftGui.py" line="1484"/>
       <source>Invalid Tracking value. Using 0.</source>
-      <translation type="unfinished">Invalid Tracking value. Using 0.</translation>
+      <translation>Неисправна вредност размака између слова. Користиће се 0.</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="1498"/>
@@ -3315,7 +3327,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="../../draftutils/groups.py" line="95"/>
       <location filename="../../draftutils/gui_utils.py" line="713"/>
-      <location filename="../../draftutils/utils.py" line="1014"/>
+      <location filename="../../draftutils/utils.py" line="1051"/>
       <location filename="../../draftmake/make_patharray.py" line="161"/>
       <location filename="../../draftmake/make_patharray.py" line="330"/>
       <location filename="../../draftmake/make_label.py" line="195"/>
@@ -3392,89 +3404,89 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation type="unfinished">Does not have 'ViewObject.RootNode'.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="650"/>
+      <location filename="../../draftutils/utils.py" line="652"/>
       <source>Solids:</source>
       <translation>Тела:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="651"/>
+      <location filename="../../draftutils/utils.py" line="653"/>
       <source>Faces:</source>
       <translation>Странице:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="652"/>
+      <location filename="../../draftutils/utils.py" line="654"/>
       <source>Wires:</source>
       <translation>Жице:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="653"/>
+      <location filename="../../draftutils/utils.py" line="655"/>
       <source>Edges:</source>
       <translation>Ивице:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="654"/>
+      <location filename="../../draftutils/utils.py" line="656"/>
       <source>Vertices:</source>
       <translation>Темена:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="658"/>
+      <location filename="../../draftutils/utils.py" line="660"/>
       <source>Face</source>
       <translation>Страница</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="663"/>
+      <location filename="../../draftutils/utils.py" line="665"/>
       <source>Wire</source>
       <translation>Жица</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="695"/>
-      <location filename="../../draftutils/utils.py" line="699"/>
+      <location filename="../../draftutils/utils.py" line="697"/>
+      <location filename="../../draftutils/utils.py" line="701"/>
       <source>different types</source>
       <translation>различите врсте</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="709"/>
+      <location filename="../../draftutils/utils.py" line="711"/>
       <source>Objects have different placements. Distance between the two base points: </source>
       <translation>Објекти имају различите положаје. Растојање између две базне тачке: </translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="712"/>
+      <location filename="../../draftutils/utils.py" line="714"/>
       <source>has a different value</source>
       <translation>има другачију вредност</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="715"/>
+      <location filename="../../draftutils/utils.py" line="717"/>
       <source>doesn't exist in one of the objects</source>
       <translation>не постоји у једном од објеката</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="827"/>
+      <location filename="../../draftutils/utils.py" line="864"/>
       <source>%s shares a base with %d other objects. Please check if you want to modify this.</source>
       <translation>%s дели базу са %d другим објектима. Размисли да ли желиш да измениш ово.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="833"/>
+      <location filename="../../draftutils/utils.py" line="870"/>
       <source>%s cannot be modified because its placement is readonly.</source>
       <translation>%s се не може изменити јер је његов положај само за читање.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="977"/>
+      <location filename="../../draftutils/utils.py" line="1014"/>
       <source>Wrong input: unknown document.</source>
       <translation>Погрешан унос: непознат документ.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="1055"/>
+      <location filename="../../draftutils/utils.py" line="1092"/>
       <source>This function will be deprecated in </source>
       <translation>Ова функција ће бити застарела у </translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="1056"/>
-      <location filename="../../draftutils/utils.py" line="1059"/>
+      <location filename="../../draftutils/utils.py" line="1093"/>
+      <location filename="../../draftutils/utils.py" line="1096"/>
       <source>Please use </source>
       <translation>Користи </translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="1059"/>
+      <location filename="../../draftutils/utils.py" line="1096"/>
       <source>This function will be deprecated. </source>
       <translation>Ова функција ће бити застарела. </translation>
     </message>
@@ -3754,18 +3766,18 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>Уредник изгледа Напомене</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="290"/>
+      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="294"/>
       <source>Open styles file</source>
       <translation>Отвори датотеку са стиловима</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="292"/>
-      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="314"/>
+      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="296"/>
+      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="316"/>
       <source>JSON file (*.json)</source>
       <translation>JSON датотека (*.json)</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="312"/>
+      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="314"/>
       <source>Save styles file</source>
       <translation>Сачувај датотеку са стиловима</translation>
     </message>
@@ -4248,7 +4260,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="113"/>
       <source>Point array</source>
-      <translation>Умножавање тачака</translation>
+      <translation>Умножавање по тачкама</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="73"/>
@@ -4668,20 +4680,14 @@ The final angle will be the base angle plus this amount.</source>
       <translation>Текстуални облик: знаковни низ нема жице</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/draft_annotation.py" line="83"/>
+      <location filename="../../draftobjects/draft_annotation.py" line="77"/>
       <source>added view property 'ScaleMultiplier'</source>
       <translation type="unfinished">added view property 'ScaleMultiplier'</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/draft_annotation.py" line="85"/>
+      <location filename="../../draftobjects/draft_annotation.py" line="80"/>
       <source>added view property 'AnnotationStyle'</source>
       <translation type="unfinished">added view property 'AnnotationStyle'</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/draft_annotation.py" line="108"/>
-      <location filename="../../draftobjects/draft_annotation.py" line="113"/>
-      <source>migrated 'DraftText' type to 'Text'</source>
-      <translation type="unfinished">migrated 'DraftText' type to 'Text'</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="284"/>
@@ -4943,12 +4949,12 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftmake/make_label.py" line="272"/>
       <source>Wrong input: label_type must be a string.</source>
-      <translation type="unfinished">Wrong input: label_type must be a string.</translation>
+      <translation>Погрешан унос: врста_ознаке (label_type) мора бити знаковни низ.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="277"/>
       <source>Wrong input: label_type must be one of the following: </source>
-      <translation type="unfinished">Wrong input: label_type must be one of the following: </translation>
+      <translation>Погрешан унос: врста_ознаке (label_type) мора бити једно од следећег: </translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="286"/>
@@ -5127,7 +5133,7 @@ The final angle will be the base angle plus this amount.</source>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_base.py" line="438"/>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="277"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="275"/>
       <location filename="../../draftviewproviders/view_hatch.py" line="82"/>
       <source>Edit</source>
       <translation>Уреди</translation>
@@ -5301,66 +5307,73 @@ The final angle will be the base angle plus this amount.</source>
       <translation>Текст</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="253"/>
-      <source>updated view property 'TextFont' to 'FontName'</source>
-      <translation type="unfinished">updated view property 'TextFont' to 'FontName'</translation>
+      <location filename="../../draftobjects/dimension.py" line="212"/>
+      <source>added view property 'TextColor'</source>
+      <translation type="unfinished">added view property 'TextColor'</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/text.py" line="94"/>
+      <location filename="../../draftobjects/label.py" line="258"/>
+      <location filename="../../draftobjects/dimension.py" line="214"/>
+      <source>renamed 'DisplayMode' options to 'World/Screen'</source>
+      <translation type="unfinished">renamed 'DisplayMode' options to 'World/Screen'</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="254"/>
-      <source>updated view property 'TextSize' to 'FontSize'</source>
-      <translation type="unfinished">updated view property 'TextSize' to 'FontSize'</translation>
+      <source>renamed view property 'TextFont' to 'FontName'</source>
+      <translation type="unfinished">renamed view property 'TextFont' to 'FontName'</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="217"/>
-      <source>added view property 'TextColor'</source>
-      <translation type="unfinished">added view property 'TextColor'</translation>
+      <location filename="../../draftobjects/label.py" line="256"/>
+      <source>renamed view property 'TextSize' to 'FontSize'</source>
+      <translation type="unfinished">renamed view property 'TextSize' to 'FontSize'</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../InitGui.py" line="104"/>
+      <location filename="../../InitGui.py" line="103"/>
       <source>Draft creation tools</source>
       <translation>Draft алатке за прављење</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="107"/>
+      <location filename="../../InitGui.py" line="106"/>
       <source>Draft annotation tools</source>
       <translation>Draft алатке за напомене</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="110"/>
+      <location filename="../../InitGui.py" line="109"/>
       <source>Draft modification tools</source>
       <translation>Draft алатке за измене</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="113"/>
+      <location filename="../../InitGui.py" line="112"/>
       <source>Draft utility tools</source>
       <translation>Draft помоћне алатке</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="116"/>
+      <location filename="../../InitGui.py" line="115"/>
       <location filename="../../draftguitools/gui_snapper.py" line="1500"/>
       <source>Draft snap</source>
       <translation>Draft хватање</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="121"/>
+      <location filename="../../InitGui.py" line="120"/>
       <source>&amp;Drafting</source>
       <translation>&amp;Drafting</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="124"/>
+      <location filename="../../InitGui.py" line="123"/>
       <source>&amp;Annotation</source>
       <translation>&amp;Напомена</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="127"/>
+      <location filename="../../InitGui.py" line="126"/>
       <source>&amp;Modification</source>
       <translation>&amp;Modification</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="130"/>
+      <location filename="../../InitGui.py" line="129"/>
       <source>&amp;Utilities</source>
       <translation>&amp;Utilities</translation>
     </message>
@@ -5383,19 +5396,19 @@ The final angle will be the base angle plus this amount.</source>
   <context>
     <name>Draft</name>
     <message>
+      <location filename="../../InitGui.py" line="135"/>
       <location filename="../../InitGui.py" line="136"/>
       <location filename="../../InitGui.py" line="137"/>
       <location filename="../../InitGui.py" line="138"/>
       <location filename="../../InitGui.py" line="139"/>
-      <location filename="../../InitGui.py" line="140"/>
       <source>Draft</source>
       <translation>Цртеж</translation>
     </message>
     <message>
+      <location filename="../../InitGui.py" line="181"/>
       <location filename="../../InitGui.py" line="182"/>
       <location filename="../../InitGui.py" line="183"/>
       <location filename="../../InitGui.py" line="184"/>
-      <location filename="../../InitGui.py" line="185"/>
       <source>Import-Export</source>
       <translation>Увоз/извоз</translation>
     </message>
@@ -5424,27 +5437,27 @@ from menu Tools -&gt; Addon Manager</source>
       <translation>Направи обарање ивица</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="264"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="266"/>
       <source>Save style</source>
       <translation>Сачувај стил</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="265"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="267"/>
       <source>Name of this new style:</source>
       <translation>Назив овог новог стила:</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="272"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="274"/>
       <source>Warning</source>
       <translation type="unfinished">Warning</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="273"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="275"/>
       <source>Name exists. Overwrite?</source>
       <translation>Име постоји. Да препишем?</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="308"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="310"/>
       <source>Error: json module not found. Unable to save style</source>
       <translation>Грешка: јсон модул није пронађен. Није могуће сачувати стил</translation>
     </message>
@@ -5551,17 +5564,17 @@ from menu Tools -&gt; Addon Manager</source>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="226"/>
       <source>Millimeters</source>
-      <translation type="unfinished">Millimeters</translation>
+      <translation>Мilimetara</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="227"/>
       <source>Centimeters</source>
-      <translation type="unfinished">Centimeters</translation>
+      <translation>Цentimetara</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="228"/>
       <source>Meters</source>
-      <translation type="unfinished">Meters</translation>
+      <translation>Метара</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="229"/>
@@ -5571,17 +5584,17 @@ from menu Tools -&gt; Addon Manager</source>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="230"/>
       <source>Feet</source>
-      <translation type="unfinished">Feet</translation>
+      <translation>Стопа</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="231"/>
       <source>Architectural</source>
-      <translation type="unfinished">Architectural</translation>
+      <translation>Архитектонски</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="307"/>
       <source>The preferred unit you are currently working with.</source>
-      <translation type="unfinished">The preferred unit you are currently working with.</translation>
+      <translation>Повлашћене мерне јединице са којима тренутно радите.</translation>
     </message>
   </context>
   <context>
@@ -6142,12 +6155,12 @@ The array can be turned into an orthogonal or a polar array by changing its type
   <context>
     <name>Draft_AnnotationStyleEditor</name>
     <message>
-      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="78"/>
+      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="79"/>
       <source>Annotation styles...</source>
       <translation>Стилови напомена...</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="82"/>
+      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="83"/>
       <source>Manage or create annotation styles</source>
       <translation>Направи стилове напомена или управљај њима</translation>
     </message>
@@ -6331,12 +6344,12 @@ If other objects are selected they are ignored.</source>
   <context>
     <name>Draft_SetStyle</name>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="55"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="57"/>
       <source>Set style</source>
       <translation>Подеси стил</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="57"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="59"/>
       <source>Sets default styles</source>
       <translation>Подеси подразумевани стил</translation>
     </message>
@@ -6554,7 +6567,7 @@ Objects added to this layer can share the same visual properties such as line co
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="67"/>
       <source>Point array</source>
-      <translation>Умножавање тачака</translation>
+      <translation>Умножавање по тачкама</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="70"/>
@@ -6866,7 +6879,7 @@ These projections can be used to create technical drawings with the TechDraw Wor
     <message>
       <location filename="../../draftguitools/gui_shapestrings.py" line="66"/>
       <source>Shape from text</source>
-      <translation type="unfinished">Shape from text</translation>
+      <translation>Текстуални облик</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_shapestrings.py" line="68"/>
@@ -6947,12 +6960,12 @@ A 'Link array' is more efficient when handling many copies but the 'Fuse' option
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../../draftobjects/text.py" line="54"/>
+      <location filename="../../draftobjects/text.py" line="57"/>
       <source>The placement of the base point of the first line</source>
       <translation>Положај базне тачке прве линије</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/text.py" line="66"/>
+      <location filename="../../draftobjects/text.py" line="69"/>
       <source>The text displayed by this object.
 It is a list of strings; each element in the list will be displayed in its own line.</source>
       <translation>Текст који приказује овај објекат.
@@ -7078,12 +7091,12 @@ set True for fusion or False for compound</source>
     <message>
       <location filename="../../draftobjects/polygon.py" line="52"/>
       <source>Radius of the control circle</source>
-      <translation type="unfinished">Radius of the control circle</translation>
+      <translation>Полупречник контролног круга</translation>
     </message>
     <message>
       <location filename="../../draftobjects/polygon.py" line="56"/>
       <source>How the polygon must be drawn from the control circle</source>
-      <translation type="unfinished">How the polygon must be drawn from the control circle</translation>
+      <translation>Како многоугао треба да буде нацртан у односу на контролни круг</translation>
     </message>
     <message>
       <location filename="../../draftobjects/polygon.py" line="60"/>
@@ -7194,12 +7207,12 @@ depending on the value of 'Straight Direction'.</source>
     <message>
       <location filename="../../draftobjects/label.py" line="159"/>
       <source>The placement of the 'Text' element in 3D space</source>
-      <translation type="unfinished">The placement of the 'Text' element in 3D space</translation>
+      <translation>Положај елемента 'Text' у 3Д простору</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="169"/>
       <source>The text to display when 'Label Type' is set to 'Custom'</source>
-      <translation type="unfinished">The text to display when 'Label Type' is set to 'Custom'</translation>
+      <translation>Текст који ће се приказати када је „Врста ознаке“ (Label Type) подешен на „Сопствено“</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="184"/>
@@ -7254,7 +7267,7 @@ they will only be editable by changing the style through the 'Annotation style e
       <location filename="../../draftobjects/patharray.py" line="169"/>
       <location filename="../../draftobjects/array.py" line="82"/>
       <source>The base object that will be duplicated</source>
-      <translation type="unfinished">The base object that will be duplicated</translation>
+      <translation>Базни објекат који ће бити дуплиран</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="192"/>
@@ -7268,29 +7281,29 @@ Leave this property empty to create copies along the entire 'Path Object'.</sour
     <message>
       <location filename="../../draftobjects/patharray.py" line="200"/>
       <source>Number of copies to create</source>
-      <translation type="unfinished">Number of copies to create</translation>
+      <translation>Број копија које треба направити</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="219"/>
       <source>Additional translation that will be applied to each copy.
 This is useful to adjust for the difference between shape centre and shape reference point.</source>
-      <translation type="unfinished">Additional translation that will be applied to each copy.
-This is useful to adjust for the difference between shape centre and shape reference point.</translation>
+      <translation>Додатно померање које ће бити примењено на сваку копију.
+Ово је корисно за подешавање разлике између центра објекта и референтне тачке објекта.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="227"/>
       <source>Alignment vector for 'Tangent' mode</source>
-      <translation type="unfinished">Alignment vector for 'Tangent' mode</translation>
+      <translation>Вектор поравнања за режим 'Тангент'</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="235"/>
       <source>Force use of 'Vertical Vector' as local Z direction when using 'Original' or 'Tangent' alignment mode</source>
-      <translation type="unfinished">Force use of 'Vertical Vector' as local Z direction when using 'Original' or 'Tangent' alignment mode</translation>
+      <translation>Присилно коришћење „Вертикални вектор“ (Vertical Vector) као локалног Z смера када се користи „Оригинални“ или „Тангентни“ режим поравнања</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="243"/>
       <source>Direction of the local Z axis when 'Force Vertical' is true</source>
-      <translation type="unfinished">Direction of the local Z axis when 'Force Vertical' is true</translation>
+      <translation>Правац локалне Z осе када је 'Присили вертикално' (Force Vertical) подешено на тачно</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="251"/>
@@ -7300,19 +7313,19 @@ This is useful to adjust for the difference between shape centre and shape refer
 - Tangent: similar to 'Original' but the local X axis is pre-aligned to 'Tangent Vector'.
 
 To get better results with 'Original' or 'Tangent' you may have to set 'Force Vertical' to true.</source>
-      <translation type="unfinished">Method to orient the copies along the path.
-- Original: X is curve tangent, Y is normal, and Z is the cross product.
-- Frenet: aligns the object following the local coordinate system along the path.
-- Tangent: similar to 'Original' but the local X axis is pre-aligned to 'Tangent Vector'.
+      <translation>Начини оријентације копија дуж путање.
+- Оригинал: X је тангента на криву, Y је нормала, а Z на основу X и Y.
+- Френет: поравнава објекат пратећи локални координатни систем дуж путање.
+- Тангент: слично 'Оригинал', али локална X оса је унапред поравната са 'Tangent Vector'.
 
-To get better results with 'Original' or 'Tangent' you may have to set 'Force Vertical' to true.</translation>
+Да би добио боље резултате са 'Оригинал' или 'Тангент', можда ћеш морати да подесиш 'Присили вертикално' (Force Vertical) на тачно.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="262"/>
       <source>Orient the copies along the path depending on the 'Align Mode'.
 Otherwise the copies will have the same orientation as the original Base object.</source>
-      <translation type="unfinished">Orient the copies along the path depending on the 'Align Mode'.
-Otherwise the copies will have the same orientation as the original Base object.</translation>
+      <translation>Копије ће дуж путање бити усмерене у зависности од особине 'Режим поравнања' ('Align Mode').
+У супротном, копије ће имати исту оријентацију као оригинални базни објекат.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="98"/>
@@ -7320,10 +7333,10 @@ Otherwise the copies will have the same orientation as the original Base object.
 - Ortho: places the copies in the direction of the global X, Y, Z axes.
 - Polar: places the copies along a circular arc, up to a specified angle, and with certain orientation defined by a center and an axis.
 - Circular: places the copies in concentric circular layers around the base object.</source>
-      <translation type="unfinished">The type of array to create.
-- Ortho: places the copies in the direction of the global X, Y, Z axes.
-- Polar: places the copies along a circular arc, up to a specified angle, and with certain orientation defined by a center and an axis.
-- Circular: places the copies in concentric circular layers around the base object.</translation>
+      <translation>Врсте умножавања које можете направити.
+- Правоугаоно: поставља копије у правцу главних X, Y, Z оса.
+- Полар: поставља копије по кружном луку, до одређеног угла, и са одређеном оријентацијом дефинисаном центром и осом.
+- Кружно: поставља копије у концентричне кружне прстенове око базног објекта.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="109"/>
@@ -7449,7 +7462,7 @@ This property is read-only, as the number depends on the points in 'Point Object
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="57"/>
       <source>The base object this 2D view must represent</source>
-      <translation type="unfinished">The base object this 2D view must represent</translation>
+      <translation>Базни објекат који овај 2Д поглед мора представљати</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="62"/>
@@ -7464,7 +7477,7 @@ This property is read-only, as the number depends on the points in 'Point Object
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="75"/>
       <source>The indices of the faces to be projected in Individual Faces mode</source>
-      <translation type="unfinished">The indices of the faces to be projected in Individual Faces mode</translation>
+      <translation>Индекси страница које ће се пројицирати у режиму Појединачне странице</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="80"/>
@@ -7625,17 +7638,17 @@ This property is read-only, as the number depends on the points in 'Point Object
       <translation>Полупречник који ће се користити за заобљење угла.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="140"/>
+      <location filename="../../draftobjects/dimension.py" line="135"/>
       <source>The normal direction of the text of the dimension</source>
       <translation>Нормални правац текста коте</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="153"/>
+      <location filename="../../draftobjects/dimension.py" line="148"/>
       <source>The object measured by this dimension object</source>
       <translation>Објекат мерен овом котом</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="170"/>
+      <location filename="../../draftobjects/dimension.py" line="165"/>
       <source>The object, and specific subelements of it,
 that this dimension object is measuring.
 
@@ -7652,7 +7665,7 @@ There are various possibilities:
 - Објекат кружни лук и његова ивица.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="193"/>
+      <location filename="../../draftobjects/dimension.py" line="188"/>
       <source>A point through which the dimension line, or an extrapolation of it, will pass.
 
 - For linear dimensions, this property controls how close the dimension line
@@ -7661,14 +7674,14 @@ is to the measured object.
 that displays the measured radius or diameter.
 - For angular dimensions, this controls the radius of the dimension arc
 that displays the measured angle.</source>
-      <translation type="unfinished">A point through which the dimension line, or an extrapolation of it, will pass.
+      <translation>Тачка кроз коју ће проћи котна линија, или њена екстраполација.
 
-- For linear dimensions, this property controls how close the dimension line
-is to the measured object.
-- For radial dimensions, this controls the direction of the dimension line
-that displays the measured radius or diameter.
-- For angular dimensions, this controls the radius of the dimension arc
-that displays the measured angle.</translation>
+- За линеарне коте, ово контролише колико је близу котна линија 
+мереном објекту.
+- За радијалне коте, ово контролише правац котне линије
+који приказује измерени полупречник или пречник.
+- За угаоне коте, ово контролише полупречник котног лука
+који приказује измерени угао.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="247"/>
@@ -7676,10 +7689,10 @@ that displays the measured angle.</translation>
 
 If it is a radius dimension it will be the center of the arc.
 If it is a diameter dimension it will be a point that lies on the arc.</source>
-      <translation type="unfinished">Starting point of the dimension line.
+      <translation>Почетна тачка котне линије.
 
-If it is a radius dimension it will be the center of the arc.
-If it is a diameter dimension it will be a point that lies on the arc.</translation>
+Ако је кота радијуса, то ће бити центар лука.
+Ако је то кота пречника, то ће бити тачка која лежи на луку.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="261"/>
@@ -7696,8 +7709,8 @@ it will be a point that lies on the arc.</source>
       <location filename="../../draftobjects/dimension.py" line="273"/>
       <source>The direction of the dimension line.
 If this remains '(0,0,0)', the direction will be calculated automatically.</source>
-      <translation type="unfinished">The direction of the dimension line.
-If this remains '(0,0,0)', the direction will be calculated automatically.</translation>
+      <translation>Правац котне линије.
+Ако ово остане '(0,0,0)', правац ће се аутоматски израчунати.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="290"/>
@@ -7720,44 +7733,43 @@ is the radius or diameter, depending on the 'Diameter' property.</translation>
       <location filename="../../draftobjects/dimension.py" line="301"/>
       <source>When measuring circular arcs, it determines whether to display
 the radius or the diameter value</source>
-      <translation type="unfinished">When measuring circular arcs, it determines whether to display
-the radius or the diameter value</translation>
+      <translation>Приликом мерења кружних лукова, ово одређује да ли ће се приказати
+полупречник или вредност пречника</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="509"/>
+      <location filename="../../draftobjects/dimension.py" line="516"/>
       <source>Starting angle of the dimension line (circular arc).
 The arc is drawn counter-clockwise.</source>
-      <translation type="unfinished">Starting angle of the dimension line (circular arc).
-The arc is drawn counter-clockwise.</translation>
+      <translation>Почетни угао котне линије (кружни лук).
+Лук је нацртан у смеру супротном од казаљке на сату.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="520"/>
+      <location filename="../../draftobjects/dimension.py" line="527"/>
       <source>Ending angle of the dimension line (circular arc).
 The arc is drawn counter-clockwise.</source>
-      <translation type="unfinished">Ending angle of the dimension line (circular arc).
-The arc is drawn counter-clockwise.</translation>
+      <translation>Крајњи угао котне линије (кружни лук).
+Лук је нацртан у смеру супротном од казаљке на сату.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="535"/>
+      <location filename="../../draftobjects/dimension.py" line="542"/>
       <source>The center point of the dimension line, which is a circular arc.
 
 This is normally the point where two line segments, or their extensions
 intersect, resulting in the measured 'Angle' between them.</source>
-      <translation type="unfinished">The center point of the dimension line, which is a circular arc.
+      <translation>Централна тачка котне линије, која представља кружни лук.
 
-This is normally the point where two line segments, or their extensions
-intersect, resulting in the measured 'Angle' between them.</translation>
+Ово је обично тачка у којој се укрштају две линије или њихова продужења, што резултира измереним 'Угао' између њих.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/dimension.py" line="549"/>
+      <location filename="../../draftobjects/dimension.py" line="556"/>
       <source>The value of the measurement.
 
 This property is read-only because the value is calculated from
 the 'First Angle' and 'Last Angle' properties.</source>
-      <translation type="unfinished">The value of the measurement.
+      <translation>Вредност мерења.
 
-This property is read-only because the value is calculated from
-the 'First Angle' and 'Last Angle' properties.</translation>
+Ова особина је само за читање јер се вредност израчунава из
+својства 'Почетни угао' и 'Крајњи угао'.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/rectangle.py" line="46"/>
@@ -7948,18 +7960,18 @@ the 'First Angle' and 'Last Angle' properties.</translation>
     <message>
       <location filename="../../draftviewproviders/view_label.py" line="61"/>
       <source>Vertical alignment</source>
-      <translation type="unfinished">Vertical alignment</translation>
+      <translation>Вертикално поравнање</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_label.py" line="72"/>
       <source>Maximum number of characters on each line of the text box</source>
-      <translation type="unfinished">Maximum number of characters on each line of the text box</translation>
+      <translation>Максималан број знакова у сваком реду текстуалног оквира</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_label.py" line="80"/>
       <location filename="../../draftviewproviders/view_text.py" line="56"/>
       <source>Horizontal alignment</source>
-      <translation type="unfinished">Horizontal alignment</translation>
+      <translation>Хоризонтално поравнање</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_label.py" line="122"/>

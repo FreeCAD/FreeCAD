@@ -26,7 +26,7 @@
     <message>
       <location filename="TranslationTexts.py" line="46"/>
       <source>Recent files</source>
-      <translation type="unfinished">Recent files</translation>
+      <translation>Апошнія файлы</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="47"/>
@@ -447,7 +447,7 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="554"/>
       <source>px</source>
-      <translation type="unfinished">px</translation>
+      <translation>px</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="572"/>

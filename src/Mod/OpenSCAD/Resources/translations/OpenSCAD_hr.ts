@@ -57,32 +57,32 @@
       <location filename="../ui/openscadprefs-base.ui" line="139"/>
       <location filename="../ui/openscadprefs-base.ui" line="162"/>
       <source>The maximum number of faces of a polygon, prism or frustum. If fn is greater than this value the object is considered to be a circular. Set to 0 for no limit</source>
-      <translation>Maksimalni broj ploha na poligonu, prizmi i slično. Ako je fn veći od ove vrijednosti, smatra se da je objekt obli. O označava da nema limita</translation>
+      <translation>Maksimalni broj ploha na višekutniku, prizmi i slično. Ako je fn veći od ove vrijednosti, smatra se da je objekt obli. O označava da nema limita</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="142"/>
       <source>Maximum number of faces for polygons (fn)</source>
-      <translation>Maksimalni broj ploha za poligone (fn)</translation>
+      <translation>Maksimalni broj ploha za višekutmike (fn)</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="182"/>
       <source>Send to OpenSCAD via:</source>
-      <translation type="unfinished">Send to OpenSCAD via:</translation>
+      <translation>Pošalji u OpenSCAD putem:</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="195"/>
       <source>The transfer mechanism for getting data to and from OpenSCAD</source>
-      <translation type="unfinished">The transfer mechanism for getting data to and from OpenSCAD</translation>
+      <translation>Mehanizam prijenosa za dobivanje podataka u i iz OpenSCAD-a</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="205"/>
       <source>Standard temp directory</source>
-      <translation type="unfinished">Standard temp directory</translation>
+      <translation>Standardni privremeni direktorij</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="210"/>
       <source>User-specified directory</source>
-      <translation type="unfinished">User-specified directory</translation>
+      <translation>Imenik koji je odredio korisnik</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="215"/>
@@ -174,7 +174,7 @@
       <location filename="../../InitGui.py" line="135"/>
       <location filename="../../InitGui.py" line="148"/>
       <source>If OpenSCAD execution fails to load the temporary file, use FreeCAD's OpenSCAD Workbench Preferences to change the transfer mechanism.</source>
-      <translation type="unfinished">If OpenSCAD execution fails to load the temporary file, use FreeCAD's OpenSCAD Workbench Preferences to change the transfer mechanism.</translation>
+      <translation>Ako izvođenje OpenSCAD-a ne uspije učitati privremenu datoteku, koristite FreeCAD-ove OpenSCAD Workbench Preferences za promjenu mehanizma prijenosa.</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="143"/>

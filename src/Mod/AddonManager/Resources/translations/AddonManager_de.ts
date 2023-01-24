@@ -477,7 +477,7 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
     <message>
       <location filename="../../developer_mode_people_table.ui" line="26"/>
       <source>People</source>
-      <translation type="unfinished">People</translation>
+      <translation>Personen</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people_table.ui" line="57"/>
@@ -539,7 +539,7 @@ Soll der Addon-Manager sie automatisch installieren? &quot;Ignorieren&quot; wäh
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="34"/>
       <source>Maximum FreeCAD Version Supported</source>
-      <translation type="unfinished">Maximum FreeCAD Version Supported</translation>
+      <translation>Maximal unterstützte FreeCAD-Version</translation>
     </message>
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="48"/>
@@ -1283,7 +1283,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../manage_python_dependencies.py" line="200"/>
       <source>Processing, please wait...</source>
-      <translation type="unfinished">Processing, please wait...</translation>
+      <translation>In Bearbeitung, bitte warten...</translation>
     </message>
     <message>
       <location filename="../../manage_python_dependencies.py" line="251"/>
@@ -1294,7 +1294,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../manage_python_dependencies.py" line="353"/>
       <source>Updating...</source>
-      <translation type="unfinished">Updating...</translation>
+      <translation>Wird aktualisiert...</translation>
     </message>
     <message>
       <location filename="../../NetworkManager.py" line="95"/>
@@ -1324,7 +1324,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../NetworkManager.py" line="505"/>
       <source>Error with encrypted connection</source>
-      <translation type="unfinished">Error with encrypted connection</translation>
+      <translation>Fehler mit verschlüsselter Verbindung</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="83"/>
@@ -1348,7 +1348,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="95"/>
       <source>Removing {}</source>
-      <translation type="unfinished">Removing {}</translation>
+      <translation>{} wird entfernt</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="120"/>
@@ -1536,7 +1536,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_details.py" line="925"/>
       <source>Return to package list</source>
-      <translation type="unfinished">Return to package list</translation>
+      <translation>Zurück zur Paketliste</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="934"/>
@@ -1551,7 +1551,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_connection_checker.py" line="67"/>
       <source>Checking connection</source>
-      <translation type="unfinished">Checking connection</translation>
+      <translation>Verbindung wird überprüft</translation>
     </message>
     <message>
       <location filename="../../addonmanager_connection_checker.py" line="68"/>
@@ -1727,13 +1727,13 @@ installed addons will be checked for available updates
       <location filename="../../addonmanager_installer_gui.py" line="318"/>
       <location filename="../../addonmanager_installer_gui.py" line="319"/>
       <source>Installing dependencies</source>
-      <translation type="unfinished">Installing dependencies</translation>
+      <translation>Abhängigkeiten werden installiert</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="344"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="84"/>
       <source>Cannot execute Python</source>
-      <translation type="unfinished">Cannot execute Python</translation>
+      <translation>Python kann nicht ausgeführt werden</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="349"/>
@@ -1766,7 +1766,7 @@ installed addons will be checked for available updates
       <location filename="../../addonmanager_installer_gui.py" line="396"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="112"/>
       <source>Package installation failed</source>
-      <translation type="unfinished">Package installation failed</translation>
+      <translation>Paketinstallation fehlgeschlagen</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="400"/>
@@ -1841,7 +1841,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_devmode.py" line="204"/>
       <source>Invalid metadata in file {}</source>
-      <translation type="unfinished">Invalid metadata in file {}</translation>
+      <translation>Ungültige Metadaten in Datei {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="246"/>
@@ -1892,7 +1892,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_devmode.py" line="632"/>
       <source>Minimum Python Version Detected</source>
-      <translation type="unfinished">Minimum Python Version Detected</translation>
+      <translation>Ermittelte minimale Python-Version</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="636"/>
@@ -1902,7 +1902,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_devmode.py" line="648"/>
       <source>Install Vermin?</source>
-      <translation type="unfinished">Install Vermin?</translation>
+      <translation>Vermin installieren?</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="652"/>
@@ -1918,7 +1918,7 @@ installed addons will be checked for available updates
       <location filename="../../addonmanager_devmode.py" line="686"/>
       <location filename="../../addonmanager_devmode.py" line="701"/>
       <source>Installation failed</source>
-      <translation type="unfinished">Installation failed</translation>
+      <translation>Installation fehlgeschlagen</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="691"/>
@@ -1940,7 +1940,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_list.py" line="161"/>
       <source>Filter is valid</source>
-      <translation type="unfinished">Filter is valid</translation>
+      <translation>Filter ist gültig</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="167"/>
@@ -1975,32 +1975,32 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_list.py" line="421"/>
       <source>updated</source>
-      <translation type="unfinished">updated</translation>
+      <translation>aktualisiert</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="442"/>
       <location filename="../../package_list.py" line="500"/>
       <source>Up-to-date</source>
-      <translation type="unfinished">Up-to-date</translation>
+      <translation>Auf dem neuesten Stand</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="444"/>
       <location filename="../../package_list.py" line="504"/>
       <location filename="../../package_list.py" line="805"/>
       <source>Update available</source>
-      <translation type="unfinished">Update available</translation>
+      <translation>Aktualisierung verfügbar</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="447"/>
       <location filename="../../package_list.py" line="510"/>
       <source>Pending restart</source>
-      <translation type="unfinished">Pending restart</translation>
+      <translation>Ausstehender Neustart</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="454"/>
       <location filename="../../package_list.py" line="517"/>
       <source>DISABLED</source>
-      <translation type="unfinished">DISABLED</translation>
+      <translation>DEAKTIVIERT</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="468"/>
@@ -2010,12 +2010,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_list.py" line="476"/>
       <source>Unknown version</source>
-      <translation type="unfinished">Unknown version</translation>
+      <translation>Unbekannte Version</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="479"/>
       <source>Installed on</source>
-      <translation type="unfinished">Installed on</translation>
+      <translation>Installiert am</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="490"/>
@@ -2060,7 +2060,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_list.py" line="801"/>
       <source>Not installed</source>
-      <translation type="unfinished">Not installed</translation>
+      <translation>Nicht installiert</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="809"/>
@@ -2085,7 +2085,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../change_branch.py" line="113"/>
       <source>There are local changes</source>
-      <translation type="unfinished">There are local changes</translation>
+      <translation>Es gibt lokale Änderungen</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="117"/>
@@ -2116,7 +2116,7 @@ installed addons will be checked for available updates
       <location filename="../../change_branch.py" line="264"/>
       <source>Local name</source>
       <comment>Table header for git ref name</comment>
-      <translation type="unfinished">Local name</translation>
+      <translation>Lokaler Name</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="270"/>
@@ -2159,7 +2159,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_workers_installation.py" line="171"/>
       <source>Downloaded package.xml for {}</source>
-      <translation type="unfinished">Downloaded package.xml for {}</translation>
+      <translation>package.xml für {} heruntergeladen</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_installation.py" line="218"/>
@@ -2174,17 +2174,17 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_workers_installation.py" line="234"/>
       <source>Downloaded metadata.txt for {}</source>
-      <translation type="unfinished">Downloaded metadata.txt for {}</translation>
+      <translation>metadata.txt für {} heruntergeladen</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_installation.py" line="279"/>
       <source>Downloaded requirements.txt for {}</source>
-      <translation type="unfinished">Downloaded requirements.txt for {}</translation>
+      <translation>requirements.txt für {} heruntergeladen</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_installation.py" line="297"/>
       <source>Downloaded icon for {}</source>
-      <translation type="unfinished">Downloaded icon for {}</translation>
+      <translation>Symbol für {} heruntergeladen</translation>
     </message>
     <message>
       <location filename="../../addonmanager_macro.py" line="201"/>
@@ -2421,27 +2421,27 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="72"/>
       <source>Installing</source>
-      <translation type="unfinished">Installing</translation>
+      <translation>Wird installiert</translation>
     </message>
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="75"/>
       <source>Succeeded</source>
-      <translation type="unfinished">Succeeded</translation>
+      <translation>Erfolgreich</translation>
     </message>
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="77"/>
       <source>Failed</source>
-      <translation type="unfinished">Failed</translation>
+      <translation>Fehlgeschlagen</translation>
     </message>
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="199"/>
       <source>Update was cancelled</source>
-      <translation type="unfinished">Update was cancelled</translation>
+      <translation>Aktualisierung wurde abgebrochen</translation>
     </message>
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="200"/>
       <source>some addons may have been updated</source>
-      <translation type="unfinished">some addons may have been updated</translation>
+      <translation>Einige Addons wurden möglicherweise aktualisiert</translation>
     </message>
   </context>
   <context>

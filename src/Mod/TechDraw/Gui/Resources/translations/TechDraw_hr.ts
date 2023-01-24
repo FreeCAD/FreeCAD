@@ -75,12 +75,12 @@
   <context>
     <name>CmdTechDraw3PtAngleDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1036"/>
+      <location filename="../../CommandCreateDims.cpp" line="775"/>
       <source>TechDraw</source>
       <translation>Tehničko Crtanje</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1037"/>
+      <location filename="../../CommandCreateDims.cpp" line="776"/>
       <source>Insert 3-Point Angle Dimension</source>
       <translation>Umetnite novu dimenziju kuta sa 3 točke</translation>
     </message>
@@ -101,12 +101,12 @@
   <context>
     <name>CmdTechDrawAngleDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="943"/>
+      <location filename="../../CommandCreateDims.cpp" line="679"/>
       <source>TechDraw</source>
       <translation>Tehničko Crtanje</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="944"/>
+      <location filename="../../CommandCreateDims.cpp" line="680"/>
       <source>Insert Angle Dimension</source>
       <translation>Umetnite novu dimenziju kuta</translation>
     </message>
@@ -134,12 +134,12 @@
     <message>
       <location filename="../../Command.cpp" line="1402"/>
       <source>Insert Arch Workbench Object</source>
-      <translation>Umetni objekt radne površine Luk</translation>
+      <translation>Umetni objekt Radnog stola Luk</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1403"/>
       <source>Insert a View of a Section Plane from Arch Workbench</source>
-      <translation>Umetni pogled na presjek ravni Arhitekt radne površine</translation>
+      <translation>Umetni Pogled na Presjek ravni Radnog stola Arhitekt</translation>
     </message>
   </context>
   <context>
@@ -308,12 +308,12 @@
   <context>
     <name>CmdTechDrawDiameterDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="347"/>
+      <location filename="../../CommandCreateDims.cpp" line="258"/>
       <source>TechDraw</source>
       <translation>Tehničko Crtanje</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="348"/>
+      <location filename="../../CommandCreateDims.cpp" line="259"/>
       <source>Insert Diameter Dimension</source>
       <translation>Umetnite dimenziju promjera</translation>
     </message>
@@ -321,12 +321,12 @@
   <context>
     <name>CmdTechDrawDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="104"/>
+      <location filename="../../CommandCreateDims.cpp" line="102"/>
       <source>TechDraw</source>
       <translation>Tehničko Crtanje</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="105"/>
+      <location filename="../../CommandCreateDims.cpp" line="103"/>
       <source>Insert Dimension</source>
       <translation>Umetnite dimenziju</translation>
     </message>
@@ -341,12 +341,12 @@
     <message>
       <location filename="../../Command.cpp" line="1346"/>
       <source>Insert Draft Workbench Object</source>
-      <translation>Umetni objekt radne površine Nacrt</translation>
+      <translation>Umetni objekt Radnog stola Nacrt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1347"/>
       <source>Insert a View of a Draft Workbench object</source>
-      <translation>Umetni pogled na objekt Radne površine Nacrt</translation>
+      <translation>Umetni pogled na objekt Radnog stola Nacrt</translation>
     </message>
   </context>
   <context>
@@ -1404,22 +1404,22 @@
   <context>
     <name>CmdTechDrawExtentGroup</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1208"/>
+      <location filename="../../CommandCreateDims.cpp" line="952"/>
       <source>TechDraw</source>
       <translation>Tehničko Crtanje</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1209"/>
+      <location filename="../../CommandCreateDims.cpp" line="953"/>
       <source>Insert Extent Dimension</source>
       <translation>Umetnite dimenziju do granice</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1275"/>
+      <location filename="../../CommandCreateDims.cpp" line="1021"/>
       <source>Horizontal Extent</source>
       <translation>Vodoravno do granice</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1279"/>
+      <location filename="../../CommandCreateDims.cpp" line="1026"/>
       <source>Vertical Extent</source>
       <translation>Vertikalno do granice</translation>
     </message>
@@ -1447,7 +1447,7 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="170"/>
       <source>Apply Geometric Hatch to Face</source>
-      <translation>Dodaje šrafuru na naličje</translation>
+      <translation>Dodaje geometrijsku ispunu uzorka na lice</translation>
     </message>
   </context>
   <context>
@@ -1460,18 +1460,18 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="72"/>
       <source>Hatch a Face using Image File</source>
-      <translation>Šrafiraj naličje koristeći datoteku slike</translation>
+      <translation>Lice ispuni uzorkom koristeći datoteku slike</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawHorizontalDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="664"/>
+      <location filename="../../CommandCreateDims.cpp" line="483"/>
       <source>TechDraw</source>
       <translation>Tehničko Crtanje</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="665"/>
+      <location filename="../../CommandCreateDims.cpp" line="484"/>
       <source>Insert Horizontal Dimension</source>
       <translation>Umetnite vodoravnu dimenziju</translation>
     </message>
@@ -1479,12 +1479,12 @@
   <context>
     <name>CmdTechDrawHorizontalExtentDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1301"/>
+      <location filename="../../CommandCreateDims.cpp" line="1049"/>
       <source>TechDraw</source>
       <translation>Tehničko Crtanje</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1302"/>
+      <location filename="../../CommandCreateDims.cpp" line="1050"/>
       <source>Insert Horizontal Extent Dimension</source>
       <translation>Umetnite vodoravnu dimenziju do granice</translation>
     </message>
@@ -1521,12 +1521,12 @@
   <context>
     <name>CmdTechDrawLandmarkDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1507"/>
+      <location filename="../../CommandCreateDims.cpp" line="1257"/>
       <source>TechDraw</source>
       <translation>Tehničko Crtanje</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1508"/>
+      <location filename="../../CommandCreateDims.cpp" line="1258"/>
       <source>Insert Landmark Dimension - EXPERIMENTAL</source>
       <translation>Umetni Landmark Dimension - EXPERIMENTAL</translation>
     </message>
@@ -1547,12 +1547,12 @@
   <context>
     <name>CmdTechDrawLengthDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="569"/>
+      <location filename="../../CommandCreateDims.cpp" line="384"/>
       <source>TechDraw</source>
       <translation>Tehničko Crtanje</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="570"/>
+      <location filename="../../CommandCreateDims.cpp" line="385"/>
       <source>Insert Length Dimension</source>
       <translation>Umetnite dužnu dimenziju</translation>
     </message>
@@ -1560,12 +1560,12 @@
   <context>
     <name>CmdTechDrawLinkDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1131"/>
+      <location filename="../../CommandCreateDims.cpp" line="872"/>
       <source>TechDraw</source>
       <translation>Tehničko Crtanje</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1132"/>
+      <location filename="../../CommandCreateDims.cpp" line="873"/>
       <source>Link Dimension to 3D Geometry</source>
       <translation>Poveži dimenziju na 3D geometriju</translation>
     </message>
@@ -1679,12 +1679,12 @@
   <context>
     <name>CmdTechDrawRadiusDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="226"/>
+      <location filename="../../CommandCreateDims.cpp" line="132"/>
       <source>TechDraw</source>
       <translation>Tehničko Crtanje</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="227"/>
+      <location filename="../../CommandCreateDims.cpp" line="133"/>
       <source>Insert Radius Dimension</source>
       <translation>Umetni dimenziju polumjera</translation>
     </message>
@@ -1922,12 +1922,12 @@
   <context>
     <name>CmdTechDrawVerticalDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="759"/>
+      <location filename="../../CommandCreateDims.cpp" line="582"/>
       <source>TechDraw</source>
       <translation>Tehničko Crtanje</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="760"/>
+      <location filename="../../CommandCreateDims.cpp" line="583"/>
       <source>Insert Vertical Dimension</source>
       <translation>Umetnite vertikalnu dimenziju</translation>
     </message>
@@ -1935,12 +1935,12 @@
   <context>
     <name>CmdTechDrawVerticalExtentDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1416"/>
+      <location filename="../../CommandCreateDims.cpp" line="1162"/>
       <source>TechDraw</source>
       <translation>Tehničko Crtanje</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1417"/>
+      <location filename="../../CommandCreateDims.cpp" line="1163"/>
       <source>Insert Vertical Extent Dimension</source>
       <translation>Umetnite vertikalnu dimenziju do granice</translation>
     </message>
@@ -2051,30 +2051,30 @@
       <translation>Stvori Napomenu</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1552"/>
-      <location filename="../../CommandCreateDims.cpp" line="1632"/>
+      <location filename="../../CommandCreateDims.cpp" line="1305"/>
+      <location filename="../../CommandCreateDims.cpp" line="1385"/>
       <source>Create Dimension</source>
       <translation>Stvori Dimenziju</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.cpp" line="203"/>
       <source>Create Hatch</source>
-      <translation>Stvori Šrafuru</translation>
+      <translation>Ispuni uzorkom</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.cpp" line="237"/>
       <source>Update Hatch</source>
-      <translation>Ažuriraj Šrafuru</translation>
+      <translation>Ažuriraj Ispunu uzorkom</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="118"/>
       <source>Remove old Hatch</source>
-      <translation>Ukloni staru Šrafuru</translation>
+      <translation>Ukloni staru ispunu uzorka</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="197"/>
       <source>Create GeomHatch</source>
-      <translation>Stvori geometrijsku Šrafuru</translation>
+      <translation>Stvori geometrijsku ispunu uzorka</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="266"/>
@@ -2356,6 +2356,11 @@
       <source>Surface Finish Symbols</source>
       <translation type="unfinished">Surface Finish Symbols</translation>
     </message>
+    <message>
+      <location filename="../../TaskDimRepair.cpp" line="239"/>
+      <source>Repair Dimension</source>
+      <translation type="unfinished">Repair Dimension</translation>
+    </message>
   </context>
   <context>
     <name>CompassWidget</name>
@@ -2626,8 +2631,8 @@
       <location filename="../../CommandAnnotate.cpp" line="1349"/>
       <location filename="../../CommandAnnotate.cpp" line="1356"/>
       <location filename="../../CommandAnnotate.cpp" line="1420"/>
-      <location filename="../../CommandCreateDims.cpp" line="1525"/>
-      <location filename="../../CommandCreateDims.cpp" line="1533"/>
+      <location filename="../../CommandCreateDims.cpp" line="1277"/>
+      <location filename="../../CommandCreateDims.cpp" line="1286"/>
       <location filename="../../Command.cpp" line="375"/>
       <location filename="../../Command.cpp" line="601"/>
       <location filename="../../Command.cpp" line="718"/>
@@ -2679,17 +2684,17 @@
       <location filename="../../CommandDecorate.cpp" line="345"/>
       <location filename="../../CommandDecorate.cpp" line="352"/>
       <location filename="../../CommandDecorate.cpp" line="359"/>
-      <location filename="../../CommandCreateDims.cpp" line="252"/>
-      <location filename="../../CommandCreateDims.cpp" line="373"/>
-      <location filename="../../CommandCreateDims.cpp" line="595"/>
-      <location filename="../../CommandCreateDims.cpp" line="691"/>
-      <location filename="../../CommandCreateDims.cpp" line="786"/>
-      <location filename="../../CommandCreateDims.cpp" line="969"/>
-      <location filename="../../CommandCreateDims.cpp" line="1062"/>
-      <location filename="../../CommandCreateDims.cpp" line="1335"/>
-      <location filename="../../CommandCreateDims.cpp" line="1674"/>
-      <location filename="../../CommandCreateDims.cpp" line="1681"/>
-      <location filename="../../CommandCreateDims.cpp" line="1688"/>
+      <location filename="../../CommandCreateDims.cpp" line="166"/>
+      <location filename="../../CommandCreateDims.cpp" line="292"/>
+      <location filename="../../CommandCreateDims.cpp" line="418"/>
+      <location filename="../../CommandCreateDims.cpp" line="518"/>
+      <location filename="../../CommandCreateDims.cpp" line="617"/>
+      <location filename="../../CommandCreateDims.cpp" line="713"/>
+      <location filename="../../CommandCreateDims.cpp" line="809"/>
+      <location filename="../../CommandCreateDims.cpp" line="1084"/>
+      <location filename="../../CommandCreateDims.cpp" line="1437"/>
+      <location filename="../../CommandCreateDims.cpp" line="1445"/>
+      <location filename="../../CommandCreateDims.cpp" line="1454"/>
       <location filename="../../Command.cpp" line="951"/>
       <location filename="../../Command.cpp" line="958"/>
       <location filename="../../Command.cpp" line="966"/>
@@ -2698,32 +2703,32 @@
       <translation>Netočan odabir</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1675"/>
+      <location filename="../../CommandCreateDims.cpp" line="1438"/>
       <location filename="../../Command.cpp" line="952"/>
       <source>Select an object first</source>
       <translation>Najprije odaberite objekt</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1682"/>
+      <location filename="../../CommandCreateDims.cpp" line="1446"/>
       <location filename="../../Command.cpp" line="959"/>
       <source>Too many objects selected</source>
       <translation>Previše objekata odabrano</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1689"/>
+      <location filename="../../CommandCreateDims.cpp" line="1455"/>
       <location filename="../../Command.cpp" line="967"/>
       <source>Create a page first.</source>
       <translation>Najprije napravite stranicu.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="253"/>
-      <location filename="../../CommandCreateDims.cpp" line="374"/>
-      <location filename="../../CommandCreateDims.cpp" line="596"/>
-      <location filename="../../CommandCreateDims.cpp" line="692"/>
-      <location filename="../../CommandCreateDims.cpp" line="787"/>
-      <location filename="../../CommandCreateDims.cpp" line="970"/>
-      <location filename="../../CommandCreateDims.cpp" line="1063"/>
-      <location filename="../../CommandCreateDims.cpp" line="1336"/>
+      <location filename="../../CommandCreateDims.cpp" line="167"/>
+      <location filename="../../CommandCreateDims.cpp" line="293"/>
+      <location filename="../../CommandCreateDims.cpp" line="419"/>
+      <location filename="../../CommandCreateDims.cpp" line="519"/>
+      <location filename="../../CommandCreateDims.cpp" line="618"/>
+      <location filename="../../CommandCreateDims.cpp" line="714"/>
+      <location filename="../../CommandCreateDims.cpp" line="810"/>
+      <location filename="../../CommandCreateDims.cpp" line="1085"/>
       <location filename="../../Command.cpp" line="979"/>
       <source>No View of a Part in selection.</source>
       <translation>Ne postoji Pogled na Dio u odabiru.</translation>
@@ -2815,176 +2820,176 @@
 </translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="300"/>
-      <location filename="../../CommandCreateDims.cpp" line="421"/>
+      <location filename="../../CommandCreateDims.cpp" line="212"/>
+      <location filename="../../CommandCreateDims.cpp" line="338"/>
       <source>Ellipse Curve Warning</source>
       <translation>Krivulja elipse Upozorenje</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="301"/>
+      <location filename="../../CommandCreateDims.cpp" line="213"/>
       <source>Selected edge is an Ellipse.  Radius will be approximate. Continue?</source>
       <translation>Odabrani rub je elipsa. Polumjer će biti približan. Nastaviti?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="310"/>
-      <location filename="../../CommandCreateDims.cpp" line="431"/>
+      <location filename="../../CommandCreateDims.cpp" line="223"/>
+      <location filename="../../CommandCreateDims.cpp" line="349"/>
       <source>BSpline Curve Warning</source>
       <translation>Krivulja BSpline Upozorenje</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="311"/>
+      <location filename="../../CommandCreateDims.cpp" line="224"/>
       <source>Selected edge is a BSpline.  Radius will be approximate. Continue?</source>
       <translation>Odabrani rub je BSpline. Polumjer će biti približan. Nastaviti?</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="366"/>
       <location filename="../../CommandDecorate.cpp" line="372"/>
-      <location filename="../../CommandCreateDims.cpp" line="273"/>
-      <location filename="../../CommandCreateDims.cpp" line="289"/>
-      <location filename="../../CommandCreateDims.cpp" line="394"/>
-      <location filename="../../CommandCreateDims.cpp" line="410"/>
-      <location filename="../../CommandCreateDims.cpp" line="617"/>
-      <location filename="../../CommandCreateDims.cpp" line="634"/>
-      <location filename="../../CommandCreateDims.cpp" line="712"/>
-      <location filename="../../CommandCreateDims.cpp" line="728"/>
-      <location filename="../../CommandCreateDims.cpp" line="807"/>
-      <location filename="../../CommandCreateDims.cpp" line="823"/>
-      <location filename="../../CommandCreateDims.cpp" line="990"/>
-      <location filename="../../CommandCreateDims.cpp" line="1006"/>
-      <location filename="../../CommandCreateDims.cpp" line="1083"/>
-      <location filename="../../CommandCreateDims.cpp" line="1099"/>
-      <location filename="../../CommandCreateDims.cpp" line="1169"/>
-      <location filename="../../CommandCreateDims.cpp" line="1175"/>
-      <location filename="../../CommandCreateDims.cpp" line="1364"/>
-      <location filename="../../CommandCreateDims.cpp" line="1379"/>
-      <location filename="../../CommandCreateDims.cpp" line="1469"/>
-      <location filename="../../TaskDimRepair.cpp" line="145"/>
-      <location filename="../../TaskDimRepair.cpp" line="159"/>
-      <location filename="../../TaskDimRepair.cpp" line="174"/>
+      <location filename="../../CommandCreateDims.cpp" line="187"/>
+      <location filename="../../CommandCreateDims.cpp" line="202"/>
+      <location filename="../../CommandCreateDims.cpp" line="313"/>
+      <location filename="../../CommandCreateDims.cpp" line="328"/>
+      <location filename="../../CommandCreateDims.cpp" line="440"/>
+      <location filename="../../CommandCreateDims.cpp" line="456"/>
+      <location filename="../../CommandCreateDims.cpp" line="538"/>
+      <location filename="../../CommandCreateDims.cpp" line="554"/>
+      <location filename="../../CommandCreateDims.cpp" line="637"/>
+      <location filename="../../CommandCreateDims.cpp" line="652"/>
+      <location filename="../../CommandCreateDims.cpp" line="733"/>
+      <location filename="../../CommandCreateDims.cpp" line="748"/>
+      <location filename="../../CommandCreateDims.cpp" line="829"/>
+      <location filename="../../CommandCreateDims.cpp" line="844"/>
+      <location filename="../../CommandCreateDims.cpp" line="912"/>
+      <location filename="../../CommandCreateDims.cpp" line="919"/>
+      <location filename="../../CommandCreateDims.cpp" line="1112"/>
+      <location filename="../../CommandCreateDims.cpp" line="1126"/>
+      <location filename="../../CommandCreateDims.cpp" line="1218"/>
+      <location filename="../../TaskDimRepair.cpp" line="126"/>
+      <location filename="../../TaskDimRepair.cpp" line="138"/>
+      <location filename="../../TaskDimRepair.cpp" line="149"/>
       <location filename="../../TaskDimension.cpp" line="400"/>
       <source>Incorrect Selection</source>
       <translation>Netočan odabir</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="274"/>
+      <location filename="../../CommandCreateDims.cpp" line="188"/>
       <source>Can not make 2d radius dimension from selection</source>
       <translation type="unfinished">Can not make 2d radius dimension from selection</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="290"/>
+      <location filename="../../CommandCreateDims.cpp" line="203"/>
       <source>Can not make 3d radius dimension from selection</source>
       <translation type="unfinished">Can not make 3d radius dimension from selection</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="319"/>
-      <location filename="../../CommandCreateDims.cpp" line="440"/>
+      <location filename="../../CommandCreateDims.cpp" line="234"/>
+      <location filename="../../CommandCreateDims.cpp" line="360"/>
       <source>BSpline Curve Error</source>
       <translation type="unfinished">BSpline Curve Error</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="320"/>
+      <location filename="../../CommandCreateDims.cpp" line="235"/>
       <source>Selected edge is a BSpline and a radius can not be calculated.</source>
       <translation type="unfinished">Selected edge is a BSpline and a radius can not be calculated.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="395"/>
+      <location filename="../../CommandCreateDims.cpp" line="314"/>
       <source>Can not make 2d diameter dimension from selection</source>
       <translation type="unfinished">Can not make 2d diameter dimension from selection</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="411"/>
+      <location filename="../../CommandCreateDims.cpp" line="329"/>
       <source>Can not make 3d diameter dimension from selection</source>
       <translation type="unfinished">Can not make 3d diameter dimension from selection</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="422"/>
+      <location filename="../../CommandCreateDims.cpp" line="339"/>
       <source>Selected edge is an Ellipse.  Diameter will be approximate. Continue?</source>
       <translation>Odabrani rub je elipsa. Promjer će biti približan. Nastaviti?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="432"/>
+      <location filename="../../CommandCreateDims.cpp" line="350"/>
       <source>Selected edge is a BSpline.  Diameter will be approximate. Continue?</source>
       <translation>Odabrani rub je BSpline. Promjer će biti približan. Nastaviti?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="441"/>
+      <location filename="../../CommandCreateDims.cpp" line="361"/>
       <source>Selected edge is a BSpline and a diameter can not be calculated.</source>
       <translation type="unfinished">Selected edge is a BSpline and a diameter can not be calculated.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="618"/>
+      <location filename="../../CommandCreateDims.cpp" line="441"/>
       <source>Can not make 2d linear dimension from selection</source>
       <translation type="unfinished">Can not make 2d linear dimension from selection</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="635"/>
+      <location filename="../../CommandCreateDims.cpp" line="457"/>
       <source>Can not make 3d linear dimension from selection</source>
       <translation type="unfinished">Can not make 3d linear dimension from selection</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="713"/>
+      <location filename="../../CommandCreateDims.cpp" line="539"/>
       <source>Can not make 2d horizontal dimension from selection</source>
       <translation type="unfinished">Can not make 2d horizontal dimension from selection</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="729"/>
+      <location filename="../../CommandCreateDims.cpp" line="555"/>
       <source>Can not make 3d horizontal dimension from selection</source>
       <translation>Ne mogu napraviti 3D vodoravnu dimenziju iz odabira</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="808"/>
+      <location filename="../../CommandCreateDims.cpp" line="638"/>
       <source>Can not make 2d vertical dimension from selection</source>
       <translation>Ne mogu napraviti 2D okomitu dimenziju iz odabira</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="824"/>
+      <location filename="../../CommandCreateDims.cpp" line="653"/>
       <source>Can not make 3d vertical dimension from selection</source>
       <translation>Ne mogu napraviti 3D okomitu dimenziju iz odabira</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="991"/>
-      <location filename="../../CommandCreateDims.cpp" line="1084"/>
+      <location filename="../../CommandCreateDims.cpp" line="734"/>
+      <location filename="../../CommandCreateDims.cpp" line="830"/>
       <source>Can not make 2d angle dimension from selection</source>
       <translation>Ne mogu napraviti 2D kutnu dimenziju iz odabira</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1007"/>
-      <location filename="../../CommandCreateDims.cpp" line="1100"/>
+      <location filename="../../CommandCreateDims.cpp" line="749"/>
+      <location filename="../../CommandCreateDims.cpp" line="845"/>
       <source>Can not make 3d angle dimension from selection</source>
       <translation>Ne mogu napraviti 3D kutnu dimenziju iz odabira</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1365"/>
+      <location filename="../../CommandCreateDims.cpp" line="1113"/>
       <source>Can not make 2d extent dimension from selection</source>
       <translation>Ne mogu napraviti 2D prođirenu dimenziju iz odabira</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1380"/>
+      <location filename="../../CommandCreateDims.cpp" line="1127"/>
       <source>Can not make 3d extent dimension from selection</source>
       <translation>Ne mogu napraviti 3D prođirenu dimenziju iz odabira</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1470"/>
+      <location filename="../../CommandCreateDims.cpp" line="1219"/>
       <source>There is no Dimension in your selection</source>
       <translation>Nema Dimenzije u odabiru</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1170"/>
+      <location filename="../../CommandCreateDims.cpp" line="913"/>
       <source>There is no 3D object in your selection</source>
       <translation>Nema 3D objekta u odabranom</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1176"/>
+      <location filename="../../CommandCreateDims.cpp" line="920"/>
       <source>There are no 3D Edges or Vertices in your selection</source>
       <translation>Ne postoje 3D rubovi ili vrhovi na vašem odabiru</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1526"/>
+      <location filename="../../CommandCreateDims.cpp" line="1278"/>
       <source>Select 2 point objects and 1 View. (1)</source>
       <translation>Odaberite 2 objekta Točke i 1 Pogled.(1)</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1534"/>
+      <location filename="../../CommandCreateDims.cpp" line="1287"/>
       <source>Select 2 point objects and 1 View. (2)</source>
       <translation>Odaberite 2 objekta Točke i 1 Pogled.(2)</translation>
     </message>
@@ -3005,11 +3010,15 @@
       <location filename="../../CommandAnnotate.cpp" line="1336"/>
       <location filename="../../CommandAnnotate.cpp" line="1402"/>
       <location filename="../../CommandCreateDims.cpp" line="146"/>
-      <location filename="../../CommandCreateDims.cpp" line="479"/>
-      <location filename="../../CommandCreateDims.cpp" line="865"/>
-      <location filename="../../CommandCreateDims.cpp" line="1221"/>
-      <location filename="../../CommandCreateDims.cpp" line="1315"/>
-      <location filename="../../CommandCreateDims.cpp" line="1430"/>
+      <location filename="../../CommandCreateDims.cpp" line="272"/>
+      <location filename="../../CommandCreateDims.cpp" line="398"/>
+      <location filename="../../CommandCreateDims.cpp" line="498"/>
+      <location filename="../../CommandCreateDims.cpp" line="597"/>
+      <location filename="../../CommandCreateDims.cpp" line="693"/>
+      <location filename="../../CommandCreateDims.cpp" line="789"/>
+      <location filename="../../CommandCreateDims.cpp" line="966"/>
+      <location filename="../../CommandCreateDims.cpp" line="1064"/>
+      <location filename="../../CommandCreateDims.cpp" line="1177"/>
       <location filename="../../CommandStack.cpp" line="75"/>
       <location filename="../../CommandStack.cpp" line="191"/>
       <location filename="../../CommandStack.cpp" line="251"/>
@@ -3050,11 +3059,15 @@
       <location filename="../../CommandAnnotate.cpp" line="1337"/>
       <location filename="../../CommandAnnotate.cpp" line="1403"/>
       <location filename="../../CommandCreateDims.cpp" line="147"/>
-      <location filename="../../CommandCreateDims.cpp" line="480"/>
-      <location filename="../../CommandCreateDims.cpp" line="866"/>
-      <location filename="../../CommandCreateDims.cpp" line="1222"/>
-      <location filename="../../CommandCreateDims.cpp" line="1316"/>
-      <location filename="../../CommandCreateDims.cpp" line="1431"/>
+      <location filename="../../CommandCreateDims.cpp" line="273"/>
+      <location filename="../../CommandCreateDims.cpp" line="399"/>
+      <location filename="../../CommandCreateDims.cpp" line="499"/>
+      <location filename="../../CommandCreateDims.cpp" line="598"/>
+      <location filename="../../CommandCreateDims.cpp" line="694"/>
+      <location filename="../../CommandCreateDims.cpp" line="790"/>
+      <location filename="../../CommandCreateDims.cpp" line="967"/>
+      <location filename="../../CommandCreateDims.cpp" line="1065"/>
+      <location filename="../../CommandCreateDims.cpp" line="1178"/>
       <location filename="../../CommandStack.cpp" line="76"/>
       <location filename="../../CommandStack.cpp" line="192"/>
       <location filename="../../CommandStack.cpp" line="252"/>
@@ -3238,12 +3251,12 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="106"/>
       <source>Replace Hatch?</source>
-      <translation>Zamijeni šrafiranje?</translation>
+      <translation>Zamijeni ispunu uzorka?</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="107"/>
       <source>Some Faces in selection are already hatched.  Replace?</source>
-      <translation>Neka su lica u odabiru već šrafirana. Zamijeniti?</translation>
+      <translation>Neka su lica u odabiru već ispunjena uzorkom. Zamijeniti?</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="311"/>
@@ -3274,7 +3287,7 @@
       <location filename="../../CommandDecorate.cpp" line="367"/>
       <location filename="../../CommandDecorate.cpp" line="373"/>
       <source>No Faces to hatch in this selection</source>
-      <translation>Nema lica za šrafiranje u ovom odabiru</translation>
+      <translation>Nema lica za ispunu uzorkom u ovom odabiru</translation>
     </message>
     <message>
       <location filename="../../DrawGuiUtil.cpp" line="109"/>
@@ -3598,12 +3611,12 @@
     <message>
       <location filename="../../TaskHatch.cpp" line="97"/>
       <source>Create Face Hatch</source>
-      <translation type="unfinished">Create Face Hatch</translation>
+      <translation>Napravi ispunjavanje uzorkom</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.cpp" line="109"/>
       <source>Edit Face Hatch</source>
-      <translation type="unfinished">Edit Face Hatch</translation>
+      <translation>Uredi ispunjavanje uzorkom</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.cpp" line="199"/>
@@ -3641,22 +3654,22 @@
       <translation>Maksimalni broj stupnja hrapavosti</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.cpp" line="79"/>
+      <location filename="../../TaskDimRepair.cpp" line="67"/>
       <source>Dimension Repair</source>
       <translation>Popravak Dimenzije</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.cpp" line="146"/>
+      <location filename="../../TaskDimRepair.cpp" line="127"/>
       <source>Can not use references from a different View</source>
       <translation>Ne mogu koristiti reference iz drugog pogleda</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.cpp" line="160"/>
+      <location filename="../../TaskDimRepair.cpp" line="139"/>
       <source>Can not make a dimension from selection</source>
       <translation>Ne može se napraviti Dimenzija iz odabira</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.cpp" line="175"/>
+      <location filename="../../TaskDimRepair.cpp" line="150"/>
       <source>Can not make dimension from selection</source>
       <translation>Ne može  napraviti Dimenziju iz odabira</translation>
     </message>
@@ -4045,7 +4058,7 @@ Faces must be detected in order to use hatching, but there
 can be a performance penalty in complex models.</source>
       <translation>Ako je označeno, Tehničko crtanje će pokušati izgraditi lica pomoću
 linijskih segmenata korištenjem algoritma za uklanjanje skrivenih linija.
-Lica se moraju otkriti kako bi se šrafirala, ali to
+Lica se moraju otkriti kako bi se ispunila uzorkom, ali to
 može smanjiti performanse u složenim modelima.
 </translation>
     </message>
@@ -4173,14 +4186,14 @@ Promijenite se samo ako znate što radite!
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="420"/>
       <source>Max SVG Hatch Tiles</source>
-      <translation>Maksimalni broj pločica SVG šrafure</translation>
+      <translation>Maksimalni broj pločica SVG ispune uzorkom</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="433"/>
       <source>Limit of 64x64 pixel SVG tiles used to hatch a single face.
 For large scalings you might get an error about to many SVG tiles.
 Then you need to increase the tile limit.</source>
-      <translation>SVG pločice veličine 64 x 64 piksela koriste se za izvlačenje jednog lica.
+      <translation>SVG pločice veličine 64 x 64 piksela koriste se za ispunu uzorkom jednog lica.
 Za velika skaliranja možda ćete dobiti pogrešku u vezi s previše SVG pločica.
 Zatim morate povećati broj ograničenje pločica.
 </translation>
@@ -4188,13 +4201,13 @@ Zatim morate povećati broj ograničenje pločica.
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="463"/>
       <source>Max PAT Hatch Segments</source>
-      <translation>Maksimalni broj PAT segmenata šrafure</translation>
+      <translation>Maksimalni broj PAT segmenata ispune uzorka</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="476"/>
       <source>Maximum hatch line segments to use
 when hatching a face with a PAT pattern</source>
-      <translation>Maksimalni segmenti linija šrafiranja koji se koriste
+      <translation>Maksimalni segmenti linija ispune uzorka koji se koriste
 kad se šrafira lice s PAT uzorkom
 </translation>
     </message>
@@ -5093,8 +5106,7 @@ za Grupe Prikaza
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="725"/>
       <source>Default PAT pattern definition file for geometric hatching</source>
-      <translation>Zadana datoteka definicije PAT uzorka za geometrijsko šrafiranje
-</translation>
+      <translation>Zadana datoteka definicije PAT uzorka za geometrijsko ispunjavanje uzorkom</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="749"/>
@@ -5164,7 +5176,7 @@ Brzo, ali rezultat je zbirka kratkih ravnih linija.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="70"/>
       <source>Use Polygon Approximation</source>
-      <translation>Upotrijebite aproksimaciju poligona</translation>
+      <translation>Upotrijebite aproksimaciju višekutnika</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="83"/>
@@ -6684,7 +6696,7 @@ be used instead of the dimension value</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="328"/>
       <source>Dimension line angle</source>
-      <translation type="unfinished">Dimension line angle</translation>
+      <translation>Kut mjerne crte kotiranja</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="335"/>
@@ -6747,7 +6759,7 @@ be used instead of the dimension value</translation>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="26"/>
       <source>Apply Geometric Hatch to Face</source>
-      <translation>Dodaje šrafuru na naličje</translation>
+      <translation>Dodaje geometrijsku ispunu uzorka na lice</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="38"/>
@@ -6825,22 +6837,22 @@ be used instead of the dimension value</translation>
     <message>
       <location filename="../../TaskHatch.ui" line="26"/>
       <source>Apply Hatch to Face</source>
-      <translation>Dodaj šrafuru na lice</translation>
+      <translation>Dodaj ispunu uzorka na lice</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="38"/>
       <source>Select an Svg or Bitmap file</source>
-      <translation type="unfinished">Select an Svg or Bitmap file</translation>
+      <translation>Odaberite Svg ili Bitmap datoteku</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="41"/>
       <source>Pattern Parameters</source>
-      <translation type="unfinished">Pattern Parameters</translation>
+      <translation>Parametri uzorka</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="55"/>
       <source>Choose an Svg or Bitmap file as a pattern</source>
-      <translation type="unfinished">Choose an Svg or Bitmap file as a pattern</translation>
+      <translation>Odaberite Svg ili Bitmap datoteku kao uzorak</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="114"/>
@@ -6850,7 +6862,7 @@ be used instead of the dimension value</translation>
     <message>
       <location filename="../../TaskHatch.ui" line="133"/>
       <source>Color of pattern lines (Svg Only)</source>
-      <translation type="unfinished">Color of pattern lines (Svg Only)</translation>
+      <translation>Boja linija uzorka (samo Svg)</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="166"/>
@@ -6865,22 +6877,22 @@ be used instead of the dimension value</translation>
     <message>
       <location filename="../../TaskHatch.ui" line="85"/>
       <source>Enlarges/shrinks the pattern (Svg Only)</source>
-      <translation type="unfinished">Enlarges/shrinks the pattern (Svg Only)</translation>
+      <translation>Povećava/smanjuje uzorak (samo Svg)</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="140"/>
       <source>Rotation the pattern (degrees)</source>
-      <translation type="unfinished">Rotation the pattern (degrees)</translation>
+      <translation>Rotacija uzorka (stupnjevi)</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="159"/>
       <source>Svg Pattern Scale</source>
-      <translation type="unfinished">Svg Pattern Scale</translation>
+      <translation>Skaliranje Svg uzorka</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="107"/>
       <source>Svg Line Color</source>
-      <translation type="unfinished">Svg Line Color</translation>
+      <translation>Boja Svg linije</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="62"/>
@@ -8005,7 +8017,7 @@ koristeći zadani X/Y razmak</translation>
   <context>
     <name>TechDraw_HorizontalExtent</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1276"/>
+      <location filename="../../CommandCreateDims.cpp" line="1023"/>
       <source>Insert Horizontal Extent Dimension</source>
       <translation>Umetnite vodoravnu dimenziju do granice</translation>
     </message>
@@ -8071,7 +8083,7 @@ koristeći zadani X/Y razmak</translation>
   <context>
     <name>TechDraw_VerticalExtentDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1280"/>
+      <location filename="../../CommandCreateDims.cpp" line="1027"/>
       <source>Insert Vertical Extent Dimension</source>
       <translation>Umetnite vertikalnu dimenziju do granice</translation>
     </message>
@@ -8086,18 +8098,18 @@ koristeći zadani X/Y razmak</translation>
     <message>
       <location filename="../../Workbench.cpp" line="39"/>
       <source>Extensions: Attributes/Modifications</source>
-      <translation type="unfinished">Extensions: Attributes/Modifications</translation>
+      <translation>Proširenja: Svojstava/Izmjena</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
       <location filename="../../Workbench.cpp" line="56"/>
       <source>Extensions: Centerlines/Threading</source>
-      <translation type="unfinished">Extensions: Centerlines/Threading</translation>
+      <translation>Proširenja: Središnjih linija/Navoja</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="41"/>
       <source>Extensions: Dimensions</source>
-      <translation type="unfinished">Extensions: Dimensions</translation>
+      <translation>Proširenja: Dimenzija</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="42"/>
@@ -8283,37 +8295,37 @@ koristeći zadani X/Y razmak</translation>
       <translation>Oznaka</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.ui" line="68"/>
+      <location filename="../../TaskDimRepair.ui" line="86"/>
       <source>Replace References with Current Selection</source>
       <translation>Zamijeni reference trenutnim odabirom</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.ui" line="80"/>
+      <location filename="../../TaskDimRepair.ui" line="98"/>
       <source>References 2D</source>
       <translation>2D reference</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.ui" line="88"/>
+      <location filename="../../TaskDimRepair.ui" line="106"/>
       <source>Object</source>
       <translation>Objekt</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.ui" line="95"/>
+      <location filename="../../TaskDimRepair.ui" line="119"/>
       <source>The View that owns this Dimension</source>
       <translation type="unfinished">The View that owns this Dimension</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.ui" line="114"/>
+      <location filename="../../TaskDimRepair.ui" line="138"/>
       <source>Geometry</source>
       <translation>Geometrija</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.ui" line="139"/>
+      <location filename="../../TaskDimRepair.ui" line="163"/>
       <source>The subelements of the View that define the geometry for this Dimension</source>
       <translation type="unfinished">The subelements of the View that define the geometry for this Dimension</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.ui" line="163"/>
+      <location filename="../../TaskDimRepair.ui" line="187"/>
       <source>References 3D</source>
       <translation>3D reference</translation>
     </message>
@@ -8332,144 +8344,14 @@ koristeći zadani X/Y razmak</translation>
     </message>
   </context>
   <context>
-    <name>CmdTechDrawRadialGroup</name>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="134"/>
-      <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="135"/>
-      <source>Insert Radius Dimension</source>
-      <translation>Umetni dimenziju polumjera</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="200"/>
-      <source>Radius Dimension</source>
-      <translation>Dimenzija polumjera</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="204"/>
-      <source>Diameter Linear</source>
-      <translation type="unfinished">Diameter Linear</translation>
-    </message>
-  </context>
-  <context>
-    <name>TechDraw_RadiusDimension</name>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="201"/>
-      <source>Insert Radius Dimension</source>
-      <translation>Umetni dimenziju polumjera</translation>
-    </message>
-  </context>
-  <context>
-    <name>TechDraw_DiameterDimension</name>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="205"/>
-      <source>Insert Diameter Dimension</source>
-      <translation>Umetnite dimenziju promjera</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdTechDrawLinearGroup</name>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="467"/>
-      <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="468"/>
-      <source>Insert Linear Dimension</source>
-      <translation type="unfinished">Insert Linear Dimension</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="540"/>
-      <source>Linear Dimension</source>
-      <translation>Linearna dimenzija</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="543"/>
-      <source>Horizontal Linear</source>
-      <translation type="unfinished">Horizontal Linear</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="547"/>
-      <source>Vertical Linear</source>
-      <translation type="unfinished">Vertical Linear</translation>
-    </message>
-  </context>
-  <context>
-    <name>TechDraw_LengthDimension</name>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="541"/>
-      <source>Insert Linear Dimension</source>
-      <translation type="unfinished">Insert Linear Dimension</translation>
-    </message>
-  </context>
-  <context>
-    <name>TechDraw_HorizontalLinear</name>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="544"/>
-      <source>Insert Horizontal Linear Dimension</source>
-      <translation type="unfinished">Insert Horizontal Linear Dimension</translation>
-    </message>
-  </context>
-  <context>
-    <name>TechDraw_VerticalDimension</name>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="548"/>
-      <source>Insert Vertical Linear Dimension</source>
-      <translation type="unfinished">Insert Vertical Linear Dimension</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdTechDrawAngularGroup</name>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="853"/>
-      <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="854"/>
-      <source>Insert Angular Dimension</source>
-      <translation>Umetni dimenziju kuta</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="919"/>
-      <source>Angular Dimension</source>
-      <translation>Dimenzija ugla</translation>
-    </message>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="922"/>
-      <source>3Pt Angular Dimension</source>
-      <translation type="unfinished">3Pt Angular Dimension</translation>
-    </message>
-  </context>
-  <context>
-    <name>TechDraw_AngleDimension</name>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="920"/>
-      <source>Insert Angle Dimension</source>
-      <translation>Umetnite novu dimenziju kuta</translation>
-    </message>
-  </context>
-  <context>
-    <name>TechDraw_3PtAngleDimension</name>
-    <message>
-      <location filename="../../CommandCreateDims.cpp" line="923"/>
-      <source>Insert 3-Point Angle Dimension</source>
-      <translation>Umetnite novu dimenziju kuta sa 3 točke</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdTechDrawDimensionRepair</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1455"/>
+      <location filename="../../CommandCreateDims.cpp" line="1202"/>
       <source>TechDraw</source>
       <translation>Tehničko Crtanje</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1456"/>
+      <location filename="../../CommandCreateDims.cpp" line="1203"/>
       <source>Repair Dimension References</source>
       <translation type="unfinished">Repair Dimension References</translation>
     </message>
@@ -8477,17 +8359,17 @@ koristeći zadani X/Y razmak</translation>
   <context>
     <name>TechDrawGui::TaskDimRepair</name>
     <message>
-      <location filename="../../TaskDimRepair.cpp" line="95"/>
+      <location filename="../../TaskDimRepair.cpp" line="82"/>
       <source>Object Name</source>
       <translation>Naziv objekta</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.cpp" line="96"/>
+      <location filename="../../TaskDimRepair.cpp" line="82"/>
       <source>Object Label</source>
       <translation>Oznaka objekta</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.cpp" line="97"/>
+      <location filename="../../TaskDimRepair.cpp" line="82"/>
       <source>SubElement</source>
       <translation>Podelement</translation>
     </message>

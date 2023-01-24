@@ -1014,6 +1014,21 @@ so that self intersection is avoided.</source>
       <source>External gear:</source>
       <translation>Yttre kuggar:</translation>
     </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.ui" line="179"/>
+      <source>Addendum Coefficient</source>
+      <translation type="unfinished">Addendum Coefficient</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.ui" line="199"/>
+      <source>Dedendum Coefficient</source>
+      <translation type="unfinished">Dedendum Coefficient</translation>
+    </message>
+    <message>
+      <location filename="../../../InvoluteGearFeature.ui" line="219"/>
+      <source>Root Fillet Coefficient</source>
+      <translation type="unfinished">Root Fillet Coefficient</translation>
+    </message>
   </context>
   <context>
     <name>PartDesign::Groove</name>
@@ -1677,7 +1692,7 @@ click again to end selection</translation>
       <location filename="../../TaskDraftParameters.cpp" line="273"/>
       <location filename="../../TaskDraftParameters.cpp" line="275"/>
       <source>There must be at least one item</source>
-      <translation type="unfinished">There must be at least one item</translation>
+      <translation>Det måste finnas minst ett objekt</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.cpp" line="241"/>
@@ -1687,7 +1702,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskDraftParameters.cpp" line="241"/>
       <source>At least one item must be kept.</source>
-      <translation type="unfinished">At least one item must be kept.</translation>
+      <translation>Minst ett objekt måste finnas kvar.</translation>
     </message>
   </context>
   <context>
@@ -1711,7 +1726,7 @@ click again to end selection</translation>
       <location filename="../../TaskDressUpParameters.cpp" line="303"/>
       <location filename="../../TaskDressUpParameters.cpp" line="305"/>
       <source>There must be at least one item</source>
-      <translation>Det måste finnas minst ett objekt</translation>
+      <translation type="unfinished">There must be at least one item</translation>
     </message>
   </context>
   <context>
@@ -1906,7 +1921,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskFilletParameters.cpp" line="179"/>
       <source>At least one item must be kept.</source>
-      <translation>Minst ett objekt måste finnas kvar.</translation>
+      <translation type="unfinished">At least one item must be kept.</translation>
     </message>
   </context>
   <context>

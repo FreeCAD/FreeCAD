@@ -811,7 +811,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="43"/>
       <source>Workbench</source>
-      <translation type="unfinished">Workbench</translation>
+      <translation>Варштат</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="51"/>
@@ -1636,7 +1636,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="450"/>
       <source>Workbench</source>
-      <translation type="unfinished">Workbench</translation>
+      <translation>Варштат</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="451"/>
@@ -1983,26 +1983,26 @@ installed addons will be checked for available updates
       <location filename="../../package_list.py" line="442"/>
       <location filename="../../package_list.py" line="500"/>
       <source>Up-to-date</source>
-      <translation type="unfinished">Up-to-date</translation>
+      <translation>Актуальная</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="444"/>
       <location filename="../../package_list.py" line="504"/>
       <location filename="../../package_list.py" line="805"/>
       <source>Update available</source>
-      <translation type="unfinished">Update available</translation>
+      <translation>Даступна абнаўленне</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="447"/>
       <location filename="../../package_list.py" line="510"/>
       <source>Pending restart</source>
-      <translation type="unfinished">Pending restart</translation>
+      <translation>У чаканні перазапуску</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="454"/>
       <location filename="../../package_list.py" line="517"/>
       <source>DISABLED</source>
-      <translation type="unfinished">DISABLED</translation>
+      <translation>ВЫКЛЮЧАНЫ</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="468"/>
@@ -2012,12 +2012,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_list.py" line="476"/>
       <source>Unknown version</source>
-      <translation type="unfinished">Unknown version</translation>
+      <translation>Невядомая версія</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="479"/>
       <source>Installed on</source>
-      <translation type="unfinished">Installed on</translation>
+      <translation>Усталяваны на</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="490"/>
@@ -2027,7 +2027,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_list.py" line="776"/>
       <source>Show Addons containing:</source>
-      <translation type="unfinished">Show Addons containing:</translation>
+      <translation>Паказаць дадаткі, якія змяшчаюць:</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="779"/>
@@ -2047,7 +2047,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_list.py" line="788"/>
       <source>Preference Packs</source>
-      <translation type="unfinished">Preference Packs</translation>
+      <translation>Пакеты перавагі</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="791"/>
@@ -2062,12 +2062,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_list.py" line="801"/>
       <source>Not installed</source>
-      <translation type="unfinished">Not installed</translation>
+      <translation>Не ўсталяваны</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="809"/>
       <source>Filter</source>
-      <translation type="unfinished">Filter</translation>
+      <translation>Фільтр</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="812"/>
@@ -2077,22 +2077,22 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../change_branch.py" line="100"/>
       <source>DANGER: Developer feature</source>
-      <translation type="unfinished">DANGER: Developer feature</translation>
+      <translation>НЕБЯСПЕКА: функцыя распрацоўкі</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="104"/>
       <source>DANGER: Switching branches is intended for developers and beta testers, and may result in broken, non-backwards compatible documents, instability, crashes, and/or the premature heat death of the universe. Are you sure you want to continue?</source>
-      <translation type="unfinished">DANGER: Switching branches is intended for developers and beta testers, and may result in broken, non-backwards compatible documents, instability, crashes, and/or the premature heat death of the universe. Are you sure you want to continue?</translation>
+      <translation>НЕБЯСПЕКА: Пераключэнне галін прызначана для распрацоўкі і бэта-тэстараў, і можа прывесці да пашкоджання дакументаў, якія не сумяшчальныя з зваротнай сувяззю, нестабільнасці, збояў і/ці заўчаснай цеплавой смерці сусвету. Вы жадаеце працягнуць?</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="113"/>
       <source>There are local changes</source>
-      <translation type="unfinished">There are local changes</translation>
+      <translation>Ёсць лакальныя змены</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="117"/>
       <source>WARNING: This repo has uncommitted local changes. Are you sure you want to change branches (bringing the changes with you)?</source>
-      <translation type="unfinished">WARNING: This repo has uncommitted local changes. Are you sure you want to change branches (bringing the changes with you)?</translation>
+      <translation>УВАГА: у гэтым сховішчы ёсць незафіксаваныя лакальныя змены. Вы ўпэўненыя, што жадаеце змяніць галіну (і прынесці змены з сабою)?</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="169"/>
@@ -2118,7 +2118,7 @@ installed addons will be checked for available updates
       <location filename="../../change_branch.py" line="264"/>
       <source>Local name</source>
       <comment>Table header for git ref name</comment>
-      <translation type="unfinished">Local name</translation>
+      <translation>Лакальная назва</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="270"/>
@@ -2130,268 +2130,268 @@ installed addons will be checked for available updates
       <location filename="../../change_branch.py" line="276"/>
       <source>Local updated</source>
       <comment>Table header for git update time of local branch</comment>
-      <translation type="unfinished">Local updated</translation>
+      <translation>Лакальнае абнаўленне</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="282"/>
       <source>Remote updated</source>
       <comment>Table header for git update time of remote branch</comment>
-      <translation type="unfinished">Remote updated</translation>
+      <translation>Падаленае абнаўленне</translation>
     </message>
     <message>
       <location filename="../../addonmanager_dependency_installer.py" line="126"/>
       <source>Installation of Python package {} failed</source>
-      <translation type="unfinished">Installation of Python package {} failed</translation>
+      <translation>Не атрымалася ўсталяваць пакет Python {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_dependency_installer.py" line="153"/>
       <source>Installation of optional package failed</source>
-      <translation type="unfinished">Installation of optional package failed</translation>
+      <translation>Не атрымалася ўсталяваць неабавязковы пакет</translation>
     </message>
     <message>
       <location filename="../../addonmanager_dependency_installer.py" line="182"/>
       <source>Installing required dependency {}</source>
-      <translation type="unfinished">Installing required dependency {}</translation>
+      <translation>Ўстаноўка неабходнай залежнасці {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_dependency_installer.py" line="196"/>
       <source>Installation of Addon {} failed</source>
-      <translation type="unfinished">Installation of Addon {} failed</translation>
+      <translation>Не атрымалася ўсталяваць дадатак {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_installation.py" line="171"/>
       <source>Downloaded package.xml for {}</source>
-      <translation type="unfinished">Downloaded package.xml for {}</translation>
+      <translation>Спампаваць package.xml для {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_installation.py" line="218"/>
       <source>Failed to decode {} file for Addon &apos;{}&apos;</source>
-      <translation type="unfinished">Failed to decode {} file for Addon &apos;{}&apos;</translation>
+      <translation>Не атрымалася дэкадаваць файл {} для дадатку &apos;{}&apos;</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_installation.py" line="227"/>
       <source>Any dependency information in this file will be ignored</source>
-      <translation type="unfinished">Any dependency information in this file will be ignored</translation>
+      <translation>Любая інфармацыя пра залежнасці ў гэтым файле будзе праігнараваная</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_installation.py" line="234"/>
       <source>Downloaded metadata.txt for {}</source>
-      <translation type="unfinished">Downloaded metadata.txt for {}</translation>
+      <translation>Спампаваць metadata.txt для {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_installation.py" line="279"/>
       <source>Downloaded requirements.txt for {}</source>
-      <translation type="unfinished">Downloaded requirements.txt for {}</translation>
+      <translation>Спампаваць requirements.txt для {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_installation.py" line="297"/>
       <source>Downloaded icon for {}</source>
-      <translation type="unfinished">Downloaded icon for {}</translation>
+      <translation>Спампаваць гузік для {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_macro.py" line="201"/>
       <location filename="../../addonmanager_macro.py" line="254"/>
       <source>Syntax error while reading {} from macro {}</source>
-      <translation type="unfinished">Syntax error while reading {} from macro {}</translation>
+      <translation>Сінтаксічная памылка пры чытанні {} з макраса {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_macro.py" line="277"/>
       <source>Unable to open macro wiki page at {}</source>
-      <translation type="unfinished">Unable to open macro wiki page at {}</translation>
+      <translation>Не атрымалася адчыніць вікі-старонку макрасу ў {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_macro.py" line="291"/>
       <source>Unable to fetch the code of this macro.</source>
-      <translation type="unfinished">Unable to fetch the code of this macro.</translation>
+      <translation>Не атрымалася выняць код гэтага макраса.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_macro.py" line="306"/>
       <source>Unable to retrieve a description from the wiki for macro {}</source>
-      <translation type="unfinished">Unable to retrieve a description from the wiki for macro {}</translation>
+      <translation>Не атрымалася атрымаць апісанне з вікі-старонкі для макраса {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_macro.py" line="340"/>
       <source>Unable to open macro code URL {}</source>
-      <translation type="unfinished">Unable to open macro code URL {}</translation>
+      <translation>Не атрымалася адчыніць спасылак URL {} коду макраса</translation>
     </message>
     <message>
       <location filename="../../addonmanager_macro.py" line="501"/>
       <source>Unable to fetch macro-specified file {} from {}</source>
-      <translation type="unfinished">Unable to fetch macro-specified file {} from {}</translation>
+      <translation>Не атрымалася выняць паказаны файл макраса {} з {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_macro.py" line="509"/>
       <source>Could not locate macro-specified file {} (should have been at {})</source>
-      <translation type="unfinished">Could not locate macro-specified file {} (should have been at {})</translation>
+      <translation>Не атрымалася знайсці паказаны файл макраса {} (павінен знаходзіцца ў {})</translation>
     </message>
     <message>
       <location filename="../../Addon.py" line="365"/>
       <source>{}: Unrecognized internal workbench &apos;{}&apos;</source>
-      <translation type="unfinished">{}: Unrecognized internal workbench &apos;{}&apos;</translation>
+      <translation>{}: Непрызнаны ўнутраны варштат &apos;{}&apos;</translation>
     </message>
     <message>
       <location filename="../../Addon.py" line="400"/>
       <source>Addon Developer Warning: Repository URL set in package.xml file for addon {} ({}) does not match the URL it was fetched from ({})</source>
-      <translation type="unfinished">Addon Developer Warning: Repository URL set in package.xml file for addon {} ({}) does not match the URL it was fetched from ({})</translation>
+      <translation>Папярэджанне распрацоўкі дадатку: спасылак сховішча, які ўсталяваны ў файле package.xml для дадатку {} ({}) не адпавядае спасылку, з якога ён быў выняты ({})</translation>
     </message>
     <message>
       <location filename="../../Addon.py" line="408"/>
       <source>Addon Developer Warning: Repository branch set in package.xml file for addon {} ({}) does not match the branch it was fetched from ({})</source>
-      <translation type="unfinished">Addon Developer Warning: Repository branch set in package.xml file for addon {} ({}) does not match the branch it was fetched from ({})</translation>
+      <translation>Папярэджанне распрацоўкі дадатку: галіна сховішча, якая ўсталявана ў файле package.xml для дадатку {} ({}) не адпавядае галіне, з якой яна была вынята ({})</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller.py" line="105"/>
       <source>An unknown error occurred</source>
-      <translation type="unfinished">An unknown error occurred</translation>
+      <translation>Адбылася невядомая памылка</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller.py" line="123"/>
       <source>Could not find addon {} to remove it.</source>
-      <translation type="unfinished">Could not find addon {} to remove it.</translation>
+      <translation>Не атрымалася знайсці дадатак {} каб выдаліць.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller.py" line="146"/>
       <source>Execution of Addon&apos;s uninstall.py script failed. Proceeding with uninstall...</source>
-      <translation type="unfinished">Execution of Addon&apos;s uninstall.py script failed. Proceeding with uninstall...</translation>
+      <translation>Не атрымалася выканаць сцэнар uninstall.py дадатку. Прыступаем да выдалення...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller.py" line="169"/>
       <source>Removed extra installed file {}</source>
-      <translation type="unfinished">Removed extra installed file {}</translation>
+      <translation>Выдалены дадаткова ўсталяваны файл {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller.py" line="181"/>
       <source>Error while trying to remove extra installed file {}</source>
-      <translation type="unfinished">Error while trying to remove extra installed file {}</translation>
+      <translation>Памылка пры спробе выдаліць дадаткова ўсталяваны файл {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller.py" line="242"/>
       <source>Error while trying to remove macro file {}: </source>
-      <translation type="unfinished">Error while trying to remove macro file {}: </translation>
+      <translation>Памылка пры спробе выдаліць файл макраса {}: </translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="118"/>
       <source>Failed to connect to GitHub. Check your connection and proxy settings.</source>
-      <translation type="unfinished">Failed to connect to GitHub. Check your connection and proxy settings.</translation>
+      <translation>Не атрымалася падлучыцца да GitHub. Калі ласка, праверце вашае падключэнне і налады проксі.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="180"/>
       <source>WARNING: Duplicate addon {} ignored</source>
-      <translation type="unfinished">WARNING: Duplicate addon {} ignored</translation>
+      <translation>УВАГА: Паўторны дадатак {} ігнараваны</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="253"/>
       <source>Workbenches list was updated.</source>
-      <translation type="unfinished">Workbenches list was updated.</translation>
+      <translation>Спіс варштатаў быў абноўлены.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="269"/>
       <source>Git is disabled, skipping git macros</source>
-      <translation type="unfinished">Git is disabled, skipping git macros</translation>
+      <translation>Git адключаны, прапушчаны макрасы git</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="317"/>
       <source>Attempting to change non-git Macro setup to use git
 </source>
-      <translation type="unfinished">Attempting to change non-git Macro setup to use git
+      <translation>Спроба змяніць наладу макраса, які адрозніваецца ад git, на ўжыванне git
 </translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="334"/>
       <source>An error occurred updating macros from GitHub, trying clean checkout...</source>
-      <translation type="unfinished">An error occurred updating macros from GitHub, trying clean checkout...</translation>
+      <translation>Адбылася памылка пры абнаўленні макрасаў з GitHub, спроба зрабіць clean checkout...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="339"/>
       <source>Attempting to do a clean checkout...</source>
-      <translation type="unfinished">Attempting to do a clean checkout...</translation>
+      <translation>Спроба выканаць clean checkout...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="351"/>
       <source>Clean checkout succeeded</source>
-      <translation type="unfinished">Clean checkout succeeded</translation>
+      <translation>Паспяховы clean checkout</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="361"/>
       <source>Failed to update macros from GitHub -- try clearing the Addon Manager&apos;s cache.</source>
-      <translation type="unfinished">Failed to update macros from GitHub -- try clearing the Addon Manager&apos;s cache.</translation>
+      <translation>Не атрымалася абнавіць макрасы з GitHub -- паспрабуйце ачысціць кэш Кіравання дадаткамі.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="384"/>
       <source>Error connecting to the Wiki, FreeCAD cannot retrieve the Wiki macro list at this time</source>
-      <translation type="unfinished">Error connecting to the Wiki, FreeCAD cannot retrieve the Wiki macro list at this time</translation>
+      <translation>Памылка злучэння з Wiki, FreeCAD ў бягучы час не можа атрымаць спіс макрасаў Wiki</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="599"/>
       <source>Unable to fetch git updates for workbench {}</source>
-      <translation type="unfinished">Unable to fetch git updates for workbench {}</translation>
+      <translation>Не атрымалася атрымаць абнаўленні git для варштату {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="614"/>
       <source>git status failed for {}</source>
-      <translation type="unfinished">git status failed for {}</translation>
+      <translation>Памылка git status для {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="659"/>
       <source>Failed to read metadata from {name}</source>
-      <translation type="unfinished">Failed to read metadata from {name}</translation>
+      <translation>Не атрымалася прачытаць метададзеныя з {name}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="684"/>
       <source>Failed to fetch code for macro &apos;{name}&apos;</source>
-      <translation type="unfinished">Failed to fetch code for macro &apos;{name}&apos;</translation>
+      <translation>Не атрымалася выняць код для макраса &apos;{name}&apos;</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="739"/>
       <source>Caching macro code...</source>
-      <translation type="unfinished">Caching macro code...</translation>
+      <translation>Кэшаванне коду макраса...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="762"/>
       <source>Addon Manager: a worker process failed to complete while fetching {name}</source>
-      <translation type="unfinished">Addon Manager: a worker process failed to complete while fetching {name}</translation>
+      <translation>Кіраванне дадаткамі: працоўнаму працэсу не атрымалася выняць {name}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="777"/>
       <source>Out of {num_macros} macros, {num_failed} timed out while processing</source>
-      <translation type="unfinished">Out of {num_macros} macros, {num_failed} timed out while processing</translation>
+      <translation>Для {num_macros} макрасаў скончыўся час чакання {num_failed} падчас апрацоўкі</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="799"/>
       <source>Addon Manager: a worker process failed to halt ({name})</source>
-      <translation type="unfinished">Addon Manager: a worker process failed to halt ({name})</translation>
+      <translation>Кіраванне дадаткамі: не атрымалася спыніць працоўны працэс ({name})</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="840"/>
       <source>Getting metadata from macro {}</source>
-      <translation type="unfinished">Getting metadata from macro {}</translation>
+      <translation>Атрыманне метададзеных з макраса {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="854"/>
       <source>Timeout while fetching metadata for macro {}</source>
-      <translation type="unfinished">Timeout while fetching metadata for macro {}</translation>
+      <translation>Выйшаў час чакання пры выманні метададзеных з макрасу {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="865"/>
       <source>Failed to kill process for macro {}!
 </source>
-      <translation type="unfinished">Failed to kill process for macro {}!
+      <translation>Не атрымалася завяршыць працэс для макраса {}!
 </translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="888"/>
       <source>Retrieving macro description...</source>
-      <translation type="unfinished">Retrieving macro description...</translation>
+      <translation>Атрыманне апісання макрасу...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="892"/>
       <source>Retrieving info from git</source>
-      <translation type="unfinished">Retrieving info from git</translation>
+      <translation>Атрыманне інфармацыі з git</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="897"/>
       <source>Retrieving info from wiki</source>
-      <translation type="unfinished">Retrieving info from wiki</translation>
+      <translation>Атрыманне інфармацыі з вікі</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.py" line="273"/>
@@ -2403,47 +2403,47 @@ installed addons will be checked for available updates
       <location filename="../../AddonManagerOptions.py" line="279"/>
       <source>Branch name</source>
       <comment>Preferences header for custom repositories</comment>
-      <translation type="unfinished">Branch name</translation>
+      <translation>Назва галіны</translation>
     </message>
     <message>
       <location filename="../../addonmanager_git.py" line="116"/>
       <source>Basic git update failed with the following message:</source>
-      <translation type="unfinished">Basic git update failed with the following message:</translation>
+      <translation>Не атрымалася базавае абнаўленне git з наступным паведамленнем:</translation>
     </message>
     <message>
       <location filename="../../addonmanager_git.py" line="124"/>
       <source>Backing up the original directory and re-cloning</source>
-      <translation type="unfinished">Backing up the original directory and re-cloning</translation>
+      <translation>Рэзервовае капіяванне зыходнага каталога і паўторнае кланаванне</translation>
     </message>
     <message>
       <location filename="../../addonmanager_git.py" line="233"/>
       <source>Failed to clone {} into {} using git</source>
-      <translation type="unfinished">Failed to clone {} into {} using git</translation>
+      <translation>Не атрымалася кланаваць {} у {} з дапамогай git</translation>
     </message>
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="72"/>
       <source>Installing</source>
-      <translation type="unfinished">Installing</translation>
+      <translation>Усталяванне</translation>
     </message>
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="75"/>
       <source>Succeeded</source>
-      <translation type="unfinished">Succeeded</translation>
+      <translation>Паспяхова</translation>
     </message>
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="77"/>
       <source>Failed</source>
-      <translation type="unfinished">Failed</translation>
+      <translation>Не атрымалася</translation>
     </message>
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="199"/>
       <source>Update was cancelled</source>
-      <translation type="unfinished">Update was cancelled</translation>
+      <translation>Абнаўленне было скасавана</translation>
     </message>
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="200"/>
       <source>some addons may have been updated</source>
-      <translation type="unfinished">some addons may have been updated</translation>
+      <translation>магчыма, некаторыя дадаткі былі абноўленыя</translation>
     </message>
   </context>
   <context>
@@ -2451,12 +2451,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManager.py" line="149"/>
       <source>&amp;Addon manager</source>
-      <translation type="unfinished">&amp;Addon manager</translation>
+      <translation>&amp;Кіраванне дадаткамі</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="153"/>
       <source>Manage external workbenches, macros, and preference packs</source>
-      <translation type="unfinished">Manage external workbenches, macros, and preference packs</translation>
+      <translation>Кіраваць вонкавымі варштатамі, макрасамі і пакетамі пераваг</translation>
     </message>
   </context>
   <context>
@@ -2464,12 +2464,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="121"/>
       <source>Finished removing {}</source>
-      <translation type="unfinished">Finished removing {}</translation>
+      <translation>Скончана выдаленне {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="136"/>
       <source>Failed to remove some files</source>
-      <translation type="unfinished">Failed to remove some files</translation>
+      <translation>Не атрымалася выдаліць некаторыя файлы</translation>
     </message>
   </context>
   <context>
@@ -2477,7 +2477,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="194"/>
       <source>Finished updating the following addons</source>
-      <translation type="unfinished">Finished updating the following addons</translation>
+      <translation>Скончана абнаўленне наступных дадаткаў</translation>
     </message>
   </context>
 </TS>

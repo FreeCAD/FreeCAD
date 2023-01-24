@@ -472,7 +472,7 @@ Useful to avoid cyclic dependencies, but use with caution!</source>
     <message>
       <location filename="../../DlgBindSheet.ui" line="147"/>
       <source>Cancel</source>
-      <translation type="unfinished">Cancel</translation>
+      <translation>Скасаваць</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="154"/>
@@ -564,7 +564,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../DlgSheetConf.ui" line="95"/>
       <source>Cancel</source>
-      <translation type="unfinished">Cancel</translation>
+      <translation>Скасаваць</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="102"/>
@@ -607,7 +607,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="95"/>
       <source>Left</source>
-      <translation type="unfinished">Left</translation>
+      <translation>Злева</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="102"/>
@@ -618,7 +618,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="109"/>
       <source>Right</source>
-      <translation type="unfinished">Right</translation>
+      <translation>Справа</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="141"/>
@@ -628,12 +628,12 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="148"/>
       <source>Top</source>
-      <translation type="unfinished">Top</translation>
+      <translation>Зверху</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="162"/>
       <source>Bottom</source>
-      <translation type="unfinished">Bottom</translation>
+      <translation>Знізу</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="188"/>
@@ -746,13 +746,13 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <location filename="../../qtcolorpicker.cpp" line="412"/>
       <location filename="../../qtcolorpicker.cpp" line="522"/>
       <source>Black</source>
-      <translation type="unfinished">Black</translation>
+      <translation>Чорны</translation>
     </message>
     <message>
       <location filename="../../qtcolorpicker.cpp" line="413"/>
       <location filename="../../qtcolorpicker.cpp" line="523"/>
       <source>White</source>
-      <translation type="unfinished">White</translation>
+      <translation>Белы</translation>
     </message>
     <message>
       <location filename="../../qtcolorpicker.cpp" line="414"/>
@@ -1165,7 +1165,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../../App/Spreadsheet_legacy.py" line="751"/>
       <source>Apply</source>
-      <translation type="unfinished">Apply</translation>
+      <translation>Прымяніць</translation>
     </message>
     <message>
       <location filename="../../../App/Spreadsheet_legacy.py" line="753"/>

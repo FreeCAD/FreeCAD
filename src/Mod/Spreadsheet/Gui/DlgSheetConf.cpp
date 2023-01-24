@@ -109,12 +109,12 @@ App::Property *DlgSheetConf::prepare(CellAddress &from, CellAddress &to,
             e.ReportException();
             FC_THROWM(Base::RuntimeError, "Failed to parse expression for property");
         }
-        if(expr->hasComponent() || !expr->isDerivedFrom(App::VariableExpression::getClassTypeId())) 
+        if(expr->hasComponent() || !expr->isDerivedFrom(App::VariableExpression::getClassTypeId()))
             FC_THROWM(Base::RuntimeError, "Invalid property expression: " << expr->toString());
 
         path = static_cast<App::VariableExpression*>(expr.get())->getPath();
         auto obj = path.getDocumentObject();
-        if(!obj) 
+        if(!obj)
             FC_THROWM(Base::RuntimeError, "Invalid object referenced in: " << expr->toString());
 
         int pseudoType;
@@ -182,7 +182,7 @@ void DlgSheetConf::accept()
 
         std::string exprTxt(ui->lineEditProp->text().trimmed().toUtf8().constData());
         App::ExpressionPtr expr(App::Expression::parse(sheet,exprTxt));
-        if(expr->hasComponent() || !expr->isDerivedFrom(App::VariableExpression::getClassTypeId())) 
+        if(expr->hasComponent() || !expr->isDerivedFrom(App::VariableExpression::getClassTypeId()))
             FC_THROWM(Base::RuntimeError, "Invalid property expression: " << expr->toString());
 
         AutoTransaction guard("Setup conf table");

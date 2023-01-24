@@ -462,6 +462,123 @@ double ConstraintSlopeAtBSplineKnot::grad(double *param)
     return scale * result;
 }
 
+// Point On BSpline
+
+ConstraintPointOnBSpline::ConstraintPointOnBSpline(double* point, double* initparam, int coordidx, BSpline& b)
+    : bsp(b)
+{
+    // This is always going to be true
+    numpoints = bsp.degree + 1;
+
+    pvec.reserve(2 + 2*b.poles.size());
+    pvec.push_back(point);
+    pvec.push_back(initparam);
+
+    setStartPole(*initparam);
+
+    for (size_t i = 0; i < b.poles.size(); ++i) {
+        if (coordidx == 0)
+            pvec.push_back(b.poles[i].x);
+        else
+            pvec.push_back(b.poles[i].y);
+    }
+    for (size_t i = 0; i < b.weights.size(); ++i)
+        pvec.push_back(b.weights[i]);
+
+    if (bsp.flattenedknots.empty())
+        bsp.setupFlattenedKnots();
+
+    origpvec = pvec;
+    rescale();
+}
+
+ConstraintType ConstraintPointOnBSpline::getTypeId()
+{
+    return PointOnBSpline;
+}
+
+void ConstraintPointOnBSpline::setStartPole(double u)
+{
+    // The startpole logic is repeated in a lot of places,
+    // for example in GCS and slope at knot
+    // find relevant poles
+    startpole = 0;
+    for (size_t j = 1; j < bsp.mult.size() && *(bsp.knots[j]) <= u; ++j)
+        startpole += bsp.mult[j];
+    if (!bsp.periodic && startpole >= bsp.poles.size())
+        startpole = bsp.poles.size() - bsp.degree - 1;
+}
+
+void ConstraintPointOnBSpline::rescale(double coef)
+{
+    scale = coef * 1.0;
+}
+
+double ConstraintPointOnBSpline::error()
+{
+    if (*theparam() < bsp.flattenedknots[startpole + bsp.degree] ||
+        *theparam() > bsp.flattenedknots[startpole + bsp.degree + 1])
+        setStartPole(*theparam());
+
+    double sum = 0;
+    double wsum = 0;
+
+    // TODO: maybe make it global so it doesn't have to be created every time
+    VEC_D d(numpoints);
+    for (size_t i = 0; i < numpoints; ++i)
+        d[i] = *poleat(i) * *weightat(i);
+    sum = BSpline::splineValue(*theparam(), startpole + bsp.degree, bsp.degree, d, bsp.flattenedknots);
+    for (size_t i = 0; i < numpoints; ++i)
+        d[i] = *weightat(i);
+    wsum = BSpline::splineValue(*theparam(), startpole + bsp.degree, bsp.degree, d, bsp.flattenedknots);
+
+    // TODO: Change the poles as the point moves between pieces
+
+    return scale * (*thepoint() * wsum - sum);
+}
+
+double ConstraintPointOnBSpline::grad(double *gcsparam)
+{
+    double deriv=0.;
+    if (gcsparam == thepoint()) {
+        VEC_D d(numpoints);
+        for (size_t i = 0; i < numpoints; ++i)
+            d[i] = *weightat(i);
+        double wsum = BSpline::splineValue(*theparam(), startpole + bsp.degree, bsp.degree, d, bsp.flattenedknots);
+        deriv += wsum;
+    }
+
+    if (gcsparam == theparam()) {
+        VEC_D d(numpoints - 1);
+        for (size_t i = 1; i < numpoints; ++i) {
+            d[i-1] =
+                (*poleat(i) * *weightat(i) - *poleat(i-1) * *weightat(i-1)) /
+                (bsp.flattenedknots[startpole+i+bsp.degree] - bsp.flattenedknots[startpole+i]);
+        }
+        double slopevalue = BSpline::splineValue(*theparam(), startpole + bsp.degree, bsp.degree-1, d, bsp.flattenedknots);
+        for (size_t i = 1; i < numpoints; ++i) {
+            d[i-1] =
+                (*weightat(i) - *weightat(i-1)) /
+                (bsp.flattenedknots[startpole+i+bsp.degree] - bsp.flattenedknots[startpole+i]);
+        }
+        double wslopevalue = BSpline::splineValue(*theparam(), startpole + bsp.degree, bsp.degree-1, d, bsp.flattenedknots);
+        deriv += (*thepoint() * wslopevalue - slopevalue) * bsp.degree;
+    }
+
+    for (size_t i = 0; i < numpoints; ++i) {
+        if (gcsparam == poleat(i)) {
+            auto factorsI = bsp.getLinCombFactor(*theparam(), startpole + bsp.degree, startpole + i);
+            deriv += -(*weightat(i) * factorsI);
+        }
+        if (gcsparam == weightat(i)) {
+            auto factorsI = bsp.getLinCombFactor(*theparam(), startpole + bsp.degree, startpole + i);
+            deriv += (*thepoint() - *poleat(i)) * factorsI;
+        }
+    }
+
+    return scale * deriv;
+}
+
 // Difference
 ConstraintDifference::ConstraintDifference(double *p1, double *p2, double *d)
 {
@@ -2138,10 +2255,9 @@ void ConstraintPointOnParabola::errorgrad(double *err, double *grad, double *par
     proj = point_to_focus.scalarProd(xdir, &dproj);
 
     if (err)
-	*err = pf - 2*focal - proj;
+    *err = pf - 2*focal - proj;
     if (grad)
-	*grad = dpf - 2*dfocal - dproj;
-
+    *grad = dpf - 2*dfocal - dproj;
 }
 
 double ConstraintPointOnParabola::error()

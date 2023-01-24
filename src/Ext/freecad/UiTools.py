@@ -11,7 +11,7 @@ class QUiLoader(QtUiTools.QUiLoader):
     def __init__(self, arg = None):
         super(QUiLoader, self).__init__(arg)
         self.ui = Gui.PySideUic
-    
+
     def createWidget(self, className, parent = None, name = ""):
         widget = self.ui.createCustomWidget(className, parent, name)
         if not widget:

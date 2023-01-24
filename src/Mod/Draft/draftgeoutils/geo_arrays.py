@@ -100,7 +100,7 @@ def get_twisted_placements(path, count=15, rot_factor=0.25):
         places.append(place)
 
         params.append((v0, tan, angle, rot))
-        
+
         increment += inc
 
     return places, params

@@ -123,10 +123,10 @@ Requires:       python3-matplotlib
 Requires:       python3-pivy
 Requires:       python3-pyside2
 Requires:	qt5-assistant
-%if %{bundled_smesh} 
+%if %{bundled_smesh}
 Provides:       bundled(smesh) = %{bundled_smesh_version}
 %endif
-%if %{bundled_pycxx} 
+%if %{bundled_pycxx}
 Provides:       bundled(python-pycxx)
 %endif
 Recommends:	python3-pysolar
@@ -236,8 +236,8 @@ LDFLAGS='-Wl,--as-needed -Wl,--no-undefined'; export LDFLAGS
 
 make fc_version
 for I in src/Build/Version.h src/Build/Version.h.out; do
-	sed -i 's,FCRevision      \"Unknown\",FCRevision      \"%{release} (Git)\",' $I
-	sed -i 's,FCRepositoryURL \"Unknown\",FCRepositoryURL \"git://github.com/FreeCAD/FreeCAD.git master\",' $I
+    sed -i 's,FCRevision      \"Unknown\",FCRevision      \"%{release} (Git)\",' $I
+    sed -i 's,FCRepositoryURL \"Unknown\",FCRepositoryURL \"git://github.com/FreeCAD/FreeCAD.git master\",' $I
 done
 
 %{make_build}

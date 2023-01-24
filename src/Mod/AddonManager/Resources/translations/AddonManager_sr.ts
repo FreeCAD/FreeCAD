@@ -72,7 +72,7 @@
     <message>
       <location filename="../../developer_mode_dependencies.ui" line="49"/>
       <source>Optional?</source>
-      <translation>Опционо?</translation>
+      <translation>Необавезно?</translation>
     </message>
   </context>
   <context>
@@ -105,7 +105,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="67"/>
       <source>Optional Python modules</source>
-      <translation>Опциони Python модули</translation>
+      <translation>Необавезни Python модули</translation>
     </message>
   </context>
   <context>
@@ -234,7 +234,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="258"/>
       <source>(Optional, only 3.x version supported)</source>
-      <translation>(Опционо, подржана је само верзија 3.x)</translation>
+      <translation>(Необавезно, подржана је само верзија 3.x)</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="265"/>
@@ -400,12 +400,12 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="69"/>
       <source>If this is an optional dependency, the Addon Manager will offer to install it (when possible), but will not block installation if the user chooses not to, or cannot, install the package.</source>
-      <translation>Ако је ово опциона зависност, Менаџер додатака ће понудити да је инсталира (када је то могуће), али неће блокирати инсталацију ако корисник одлучи да не инсталира или не може да инсталира пакет.</translation>
+      <translation>Ако је ово необавезна зависност, Менаџер додатака ће понудити да је инсталира (када је то могуће), али неће блокирати инсталацију ако корисник одлучи да не инсталира или не може да инсталира пакет.</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="72"/>
       <source>Optional</source>
-      <translation>Опционо</translation>
+      <translation>Необавезно</translation>
     </message>
   </context>
   <context>
@@ -534,7 +534,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../developer_mode_freecad_versions.ui" line="27"/>
       <location filename="../../developer_mode_freecad_versions.ui" line="41"/>
       <source>Optional</source>
-      <translation>Опционо</translation>
+      <translation>Необавезно</translation>
     </message>
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="34"/>
@@ -2438,12 +2438,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="199"/>
       <source>Update was cancelled</source>
-      <translation type="unfinished">Update was cancelled</translation>
+      <translation>Ажурирање је отказано</translation>
     </message>
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="200"/>
       <source>some addons may have been updated</source>
-      <translation type="unfinished">some addons may have been updated</translation>
+      <translation>неки додаци су можда ажурирани</translation>
     </message>
   </context>
   <context>

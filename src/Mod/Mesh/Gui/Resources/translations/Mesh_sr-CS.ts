@@ -867,7 +867,7 @@
       <location filename="../../ViewProvider.cpp" line="919"/>
       <location filename="../../ViewProvider.cpp" line="974"/>
       <source>Cut</source>
-      <translation>Razlika</translation>
+      <translation>Isecanje</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="928"/>

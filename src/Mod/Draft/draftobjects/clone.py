@@ -56,7 +56,7 @@ class Clone(DraftObject):
                 "set True for fusion or False for compound")
         obj.addProperty("App::PropertyBool", "Fuse",
                         "Draft", _tip)
-        
+
         obj.Scale = App.Vector(1,1,1)
 
     def join(self,obj,shapes):

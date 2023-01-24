@@ -85,7 +85,7 @@
       <location filename="../../AttacherTexts.cpp" line="329"/>
       <source>Revolve</source>
       <comment>Attacher reference type</comment>
-      <translation>Oblik generiran okretanjem</translation>
+      <translation>Zakreni</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="330"/>
@@ -1481,7 +1481,7 @@ na njihove X, Y ,Z komponente.</translation>
     <message>
       <location filename="../../Command.cpp" line="804"/>
       <source>Compound tools: working with lists of shapes.</source>
-      <translation>Alati složenih materijala: rad s popisima oblika.</translation>
+      <translation>Alati složenih materijala: rad s listama oblika.</translation>
     </message>
   </context>
   <context>
@@ -1919,7 +1919,7 @@ na njihove X, Y ,Z komponente.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="133"/>
       <source>Create selectable points object from selected mesh object</source>
-      <translation>Iz odabranog mrežnog objekta Izradite izabirite točke objekt 
+      <translation>Iz odabranog objekta mreže izradite objekt selektiranih točaka
 </translation>
     </message>
   </context>
@@ -2013,12 +2013,12 @@ projekcije.</translation>
     <message>
       <location filename="../../Command.cpp" line="1426"/>
       <source>Revolve...</source>
-      <translation>Oblik generiran okretanjem ...</translation>
+      <translation>Zakreni...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1427"/>
       <source>Revolve a selected shape</source>
-      <translation>Generiraj oblik okretanjem</translation>
+      <translation>Zakreće odabrani oblik</translation>
     </message>
   </context>
   <context>
@@ -2156,12 +2156,12 @@ projekcije.</translation>
     <message>
       <location filename="../../Command.cpp" line="1635"/>
       <source>Sweep...</source>
-      <translation>Sweep...</translation>
+      <translation>Zamah...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1636"/>
       <source>Utility to sweep</source>
-      <translation>Alat za Sweep</translation>
+      <translation>Alat za zamah</translation>
     </message>
   </context>
   <context>
@@ -2372,7 +2372,7 @@ projekcije.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="367"/>
       <source>Sweep</source>
-      <translation>Sweep</translation>
+      <translation>Zamah</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="198"/>
@@ -2976,7 +2976,7 @@ If both lengths are zero, magnitude of direction is used.</source>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="632"/>
       <source>Direction mode is to use an edge, but no edge is linked.</source>
-      <translation>Mod Smjera je, koristiti na rubu, ali nijedan rub nije povezan.</translation>
+      <translation>Način rada Smjera je, koristi rub, ali nijedan rub nije povezan.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="655"/>
@@ -3646,7 +3646,7 @@ tijekom čitanja datoteke (sporije, ali veći detalji).</translation>
       <location filename="../../DlgPrimitives.ui" line="168"/>
       <location filename="../../DlgPrimitives.cpp" line="1545"/>
       <source>Regular polygon</source>
-      <translation>Pravilni poligon</translation>
+      <translation>Pravilni višekutnik</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="180"/>
@@ -3763,7 +3763,7 @@ tijekom čitanja datoteke (sporije, ali veći detalji).</translation>
       <location filename="../../DlgPrimitives.ui" line="1376"/>
       <location filename="../../DlgPrimitives.ui" line="2418"/>
       <source>Polygon:</source>
-      <translation>Poligon:</translation>
+      <translation>Višekutnik:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1399"/>
@@ -4005,7 +4005,7 @@ tijekom čitanja datoteke (sporije, ali veći detalji).</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="20"/>
       <source>Revolve</source>
-      <translation>Oblik generiran okretanjem</translation>
+      <translation>Zakreni</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="42"/>
@@ -4121,7 +4121,8 @@ tijekom čitanja datoteke (sporije, ali veći detalji).</translation>
       <source>Creating Revolve failed.
 
 %1</source>
-      <translation>Stvaranje zakretanja nije uspjelo. %1</translation>
+      <translation>Stvaranje zakretanja neuspješno.
+%1</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="444"/>
@@ -4884,13 +4885,13 @@ bit će vidljivi samo stvoreni rezovi</translation>
       <location filename="../../TaskSweep.cpp" line="436"/>
       <location filename="../../TaskSweep.cpp" line="444"/>
       <source>Sweep path</source>
-      <translation>utanja za sweep</translation>
+      <translation>Staza zamaha</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="436"/>
       <location filename="../../TaskSweep.cpp" line="444"/>
       <source>The selected sweep path is invalid.</source>
-      <translation>Odabrani doseg puta je nevažeći.</translation>
+      <translation>Odabrani zamah puta je nevažeći.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="456"/>
@@ -4900,7 +4901,7 @@ bit će vidljivi samo stvoreni rezovi</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="457"/>
       <source>Sweep</source>
-      <translation>Sweep</translation>
+      <translation>Zamah</translation>
     </message>
   </context>
   <context>
@@ -5531,12 +5532,12 @@ povlačenjem pravokutnika odabira u 3D prikazu</translation>
     <message>
       <location filename="../../TaskSweep.ui" line="14"/>
       <source>Sweep</source>
-      <translation>Sweep</translation>
+      <translation>Zamah</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.ui" line="23"/>
       <source>Sweep Path</source>
-      <translation>Sweep put</translation>
+      <translation>Staza Zamaha</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.ui" line="53"/>
@@ -5553,7 +5554,7 @@ povlačenjem pravokutnika odabira u 3D prikazu</translation>
       <source>Select one or more profiles and select an edge or wire
 in the 3D view for the sweep path.</source>
       <translation>Odaberi jedan ili više profila i odaberi rub ili žicu
-u 3D pogledu kao putanju za Sweep.</translation>
+u 3D pogledu kao putanju za zamah.</translation>
     </message>
   </context>
   <context>
@@ -6198,7 +6199,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="50"/>
       <source>Creates a tube</source>
-      <translation>Pravi cijev</translation>
+      <translation>Pravi jednu cijev</translation>
     </message>
   </context>
   <context>
@@ -6461,7 +6462,7 @@ za koliziju ili filtriranje udaljenosti.</translation>
       <source>Split up a compound of shapes into separate objects.
 It will create a 'Compound Filter' for each shape.</source>
       <translation>Podijelite složeni spoj oblika u zasebne predmete.
-Stvorit će 'Složeni filtar' za svaki oblik.
+Stvorit će 'Filter sastavljanja' za svaki oblik.
 
 </translation>
     </message>

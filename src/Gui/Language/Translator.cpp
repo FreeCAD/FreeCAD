@@ -95,7 +95,7 @@ using namespace Gui;
  * Q_INIT_RESOURCE(resource);
  *
  * \endcode
- * 
+ *
  * where \a resource is the name of the .qrc file. That's all!
  */
 

@@ -35,28 +35,28 @@ class NaviCubeImplementation;
 
 class GuiExport NaviCube {
 public:
-	enum Corner {
-		TopLeftCorner,
-		TopRightCorner,
-		BottomLeftCorner,
-		BottomRightCorner
-	};
-	NaviCube(Gui::View3DInventorViewer* viewer) ;
-	virtual ~NaviCube();
-	void drawNaviCube();
-	void createContextMenu(const std::vector<std::string>& cmd);
-	bool processSoEvent(const SoEvent* ev);
-	void setCorner(Corner);
-	static void setNaviCubeCommands(const std::vector<std::string>& cmd);
-	static void setNaviCubeLabels(const std::vector<std::string>& labels);
+    enum Corner {
+        TopLeftCorner,
+        TopRightCorner,
+        BottomLeftCorner,
+        BottomRightCorner
+    };
+    NaviCube(Gui::View3DInventorViewer* viewer) ;
+    virtual ~NaviCube();
+    void drawNaviCube();
+    void createContextMenu(const std::vector<std::string>& cmd);
+    bool processSoEvent(const SoEvent* ev);
+    void setCorner(Corner);
+    static void setNaviCubeCommands(const std::vector<std::string>& cmd);
+    static void setNaviCubeLabels(const std::vector<std::string>& labels);
 private:
-	NaviCubeImplementation* m_NaviCubeImplementation;
+    NaviCubeImplementation* m_NaviCubeImplementation;
 };
 
 class HuuhaaClassPy : public Py::PythonExtension<HuuhaaClassPy> {
 public:
     Py::Object huuhaa(const Py::Tuple&);
-	static void init_type() ;
+    static void init_type() ;
 };
 
 #endif /* SRC_GUI_NAVICUBE_H_ */

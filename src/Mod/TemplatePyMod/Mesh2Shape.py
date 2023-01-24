@@ -1,4 +1,4 @@
-# FreeCAD TemplatePyMod module  
+# FreeCAD TemplatePyMod module
 # (c) 2010 Werner Mayer LGPL
 
 

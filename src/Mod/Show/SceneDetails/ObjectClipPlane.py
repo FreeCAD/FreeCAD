@@ -1,6 +1,5 @@
 #/***************************************************************************
-# *   Copyright (c) Victor Titov (DeepSOIC)                                 *
-# *                                           (vv.titov@gmail.com) 2019     *
+# *   Copyright (c) 2019 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -31,14 +30,14 @@ class ObjectClipPlane(SceneDetail):
     class_id = 'SDObjectClipPlane'
     propname = ''
     objname = ''
-    
+
     def __init__(self, object, enable = None, placement = None, offset = 0.0):
         self.objname = object.Name
         self.doc = object.Document
-        self.key = self.objname 
+        self.key = self.objname
         if enable is not None:
             self.data = self.val(enable, placement, offset)
-        
+
     def scene_value(self):
         vp = self.doc.getObject(self.objname).ViewObject
         cp = getClipPlaneNode(vp, make_if_missing= False)
@@ -50,7 +49,7 @@ class ObjectClipPlane(SceneDetail):
             D = pln.getDistanceFromOrigin()
             normal = tuple(pln.getNormal())
             return enable, (normal, D)
-    
+
     def apply_data(self, val):
         enable, pldef = val
         vp = self.doc.getObject(self.objname).ViewObject
@@ -62,12 +61,12 @@ class ObjectClipPlane(SceneDetail):
             v, d = pldef
             cp.plane.setValue(coin.SbPlane(coin.SbVec3f(*v), d))
         cp.on.setValue(enable)
-    
+
     def val(self, enable, placement = None, offset = 0.0):
-        """val(enable, placement = None, offset = 0.0): constructs a value from convenient 
-        parameters. Placement is in global CS. The cutting will be by XY plane of Placement; 
+        """val(enable, placement = None, offset = 0.0): constructs a value from convenient
+        parameters. Placement is in global CS. The cutting will be by XY plane of Placement;
         the stuff in negative Z is visible and the stuff in positive Z is invisible."""
-        
+
         pldef = None
         if enable:
             obj = self.doc.getObject(self.objname)

@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-	<Module Name="PartDesign">
-		<Content>
-			<Feature Name="Box">
-				<Documentation><Author EMail="juergen.riegel@web.de" Name="Juergen Riegel"/></Documentation>
-				<Property Type="App::PropertyDistance" Name="Length"/>
-				<Property Type="App::PropertyDistance" Name="Height"/>
-				<Property Type="App::PropertyDistance" Name="Width"/>
-				<ViewProvider>
-					<Property Type="App::PropertyInt" Name="VisMode"></Property>
-				</ViewProvider>
-			</Feature>
-	    </Content>
-	</Module>
+    <Module Name="PartDesign">
+        <Content>
+            <Feature Name="Box">
+                <Documentation><Author EMail="juergen.riegel@web.de" Name="Juergen Riegel"/></Documentation>
+                <Property Type="App::PropertyDistance" Name="Length"/>
+                <Property Type="App::PropertyDistance" Name="Height"/>
+                <Property Type="App::PropertyDistance" Name="Width"/>
+                <ViewProvider>
+                    <Property Type="App::PropertyInt" Name="VisMode"></Property>
+                </ViewProvider>
+            </Feature>
+        </Content>
+    </Module>
 </GenerateModel>

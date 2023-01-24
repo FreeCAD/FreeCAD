@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-  <PythonExport 
-      Father="PyObjectBase" 
-      Name="CoordinateSystemPy" 
-      Twin="CoordinateSystem" 
-      TwinPointer="CoordinateSystem" 
-      Include="Base/CoordinateSystem.h" 
-      FatherInclude="Base/PyObjectBase.h" 
-      Namespace="Base" 
+  <PythonExport
+      Father="PyObjectBase"
+      Name="CoordinateSystemPy"
+      Twin="CoordinateSystem"
+      TwinPointer="CoordinateSystem"
+      Include="Base/CoordinateSystem.h"
+      FatherInclude="Base/PyObjectBase.h"
+      Namespace="Base"
       Constructor="true"
-      Delete="true" 
+      Delete="true"
       FatherNamespace="Base">
     <Documentation>
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />

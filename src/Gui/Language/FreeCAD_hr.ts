@@ -127,7 +127,7 @@
     <message>
       <location filename="../CommandLink.cpp" line="140"/>
       <source>Make link group</source>
-      <translation>Napravite grupu poveznice</translation>
+      <translation>Napravi grupu poveznica</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="236"/>
@@ -137,7 +137,7 @@
     <message>
       <location filename="../CommandLink.cpp" line="289"/>
       <source>Make sub-link</source>
-      <translation>Napravite pod-vezu</translation>
+      <translation>Napravi podpoveznicu</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="577"/>
@@ -263,7 +263,7 @@
     <message>
       <location filename="../Workbench.cpp" line="521"/>
       <source>Macro</source>
-      <translation>Makro</translation>
+      <translation>Makro naredbe</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="522"/>
@@ -1280,14 +1280,14 @@ tretirati kao niz tipki prečaca 'F, F'.</translation>
       <source>This list shows commands having the same shortcut in the priority from high
 to low. If more than one command with the same shortcut are active at the
 same time. The one with the highest priority will be triggered.</source>
-      <translation type="unfinished">This list shows commands having the same shortcut in the priority from high
-to low. If more than one command with the same shortcut are active at the
-same time. The one with the highest priority will be triggered.</translation>
+      <translation>Ovaj popis prikazuje naredbe koje imaju isti prečac u prioritetu od visokog
+na niski. Ako je više od jedne naredbe s istim prečacem aktivno u
+isto vrijeme, pokrenut će se onaj s najvećim prioritetom.</translation>
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="188"/>
       <source>Shortcut priority list:</source>
-      <translation type="unfinished">Shortcut priority list:</translation>
+      <translation>Popis prioriteta prečaca:</translation>
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="235"/>
@@ -1344,7 +1344,7 @@ same time. The one with the highest priority will be triggered.</translation>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="122"/>
       <source>Type to search...</source>
-      <translation type="unfinished">Type to search...</translation>
+      <translation>Unesi za pretraživanje...</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="199"/>
@@ -1359,7 +1359,7 @@ same time. The one with the highest priority will be triggered.</translation>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="199"/>
       <source>Shortcut</source>
-      <translation type="unfinished">Shortcut</translation>
+      <translation>Prečac</translation>
     </message>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="199"/>
@@ -1427,7 +1427,7 @@ same time. The one with the highest priority will be triggered.</translation>
     <message>
       <location filename="../DlgToolbars.ui" line="57"/>
       <source>Category:</source>
-      <translation type="unfinished">Category:</translation>
+      <translation>Kategorija:</translation>
     </message>
     <message>
       <location filename="../DlgToolbars.ui" line="110"/>
@@ -1467,7 +1467,7 @@ same time. The one with the highest priority will be triggered.</translation>
     <message>
       <location filename="../DlgToolbars.ui" line="334"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; The changes become active the next time you load the appropriate workbench&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; The changes become active the next time you load the appropriate workbench&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Bilješka:&lt;/span&gt; Promjene postaju aktivne sljedeći put kada učitate odgovarajući radni stol&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../DlgToolbarsImp.cpp" line="84"/>
@@ -1632,7 +1632,7 @@ same time. The one with the highest priority will be triggered.</translation>
     <message>
       <location filename="../DlgDisplayProperties.ui" line="193"/>
       <source>Point color:</source>
-      <translation type="unfinished">Point color:</translation>
+      <translation>Boja točke:</translation>
     </message>
     <message>
       <location filename="../DlgDisplayProperties.ui" line="208"/>
@@ -1953,15 +1953,15 @@ same time. The one with the highest priority will be triggered.</translation>
 will be substituted with locale separator, except
 in Python Console and Macro Editor where a
 dot/period will always be printed.</source>
-      <translation type="unfinished">If enabled, numerical keypad decimal separator
-will be substituted with locale separator, except
-in Python Console and Macro Editor where a
-dot/period will always be printed.</translation>
+      <translation>Ako je omogućeno, decimalni razdjelnik numeričke tipkovnice
+bit će zamijenjen separatorom lokalizacije, osim
+u Python konzoli i uređivaču makronaredbi gdje će
+točka/zarez uvijek biti ispisana.</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="114"/>
       <source>Substitute decimal separator (numpad)</source>
-      <translation type="unfinished">Substitute decimal separator (numpad)</translation>
+      <translation>Zamjena decimalnog razdjelnika (numpad)</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="130"/>
@@ -2085,7 +2085,7 @@ to prema vašoj veličini zaslona ili vašem osobnom ukusu</translation>
     <message>
       <location filename="../DlgGeneral.ui" line="531"/>
       <source>Workbench selector position :</source>
-      <translation type="unfinished">Workbench selector position :</translation>
+      <translation>Položaj birača radnog stola:</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="538"/>
@@ -2094,11 +2094,11 @@ to prema vašoj veličini zaslona ili vašem osobnom ukusu</translation>
 'Toolbar': In the toolbars, as a movable toolbar.
 'Left Corner': In the menu bar, on the left corner.
 'Right Corner': In the menu bar, on the right corner.</source>
-      <translation type="unfinished">Customize where the workbench selector appears (restart required).
+      <translation>Prilagodite gdje se pojavljuje izbornik radnog stola (potrebno je ponovno pokretanje).
 
-'Toolbar': In the toolbars, as a movable toolbar.
-'Left Corner': In the menu bar, on the left corner.
-'Right Corner': In the menu bar, on the right corner.</translation>
+'Alatna traka': Na alatnim trakama, kao pomična alatna traka.
+'Lijevi kut': U traci izbornika, u lijevom kutu.
+'Desni kut': Na traci izbornika, u desnom kutu.</translation>
     </message>
     <message>
       <location filename="../DlgGeneral.ui" line="554"/>
@@ -2228,12 +2228,12 @@ prikazivati splash ekran</translation>
     <message>
       <location filename="../DlgGeneralImp.cpp" line="517"/>
       <source>Left corner</source>
-      <translation type="unfinished">Left corner</translation>
+      <translation>Lijevi ugao</translation>
     </message>
     <message>
       <location filename="../DlgGeneralImp.cpp" line="518"/>
       <source>Right corner</source>
-      <translation type="unfinished">Right corner</translation>
+      <translation>Desni ugao</translation>
     </message>
   </context>
   <context>
@@ -2964,7 +2964,7 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgProjectInformation.ui" line="300"/>
       <source>&amp;Comment:</source>
-      <translation type="unfinished">&amp;Comment:</translation>
+      <translation>&amp;Komentar:</translation>
     </message>
     <message>
       <source/>
@@ -4617,7 +4617,7 @@ Možete koristiti i obrazac: John Doe &lt;john@doe.com&gt;
     <message>
       <location filename="../DlgSettingsMacro.ui" line="14"/>
       <source>Macro</source>
-      <translation>Makro</translation>
+      <translation>Makro naredbe</translation>
     </message>
     <message>
       <location filename="../DlgSettingsMacro.ui" line="20"/>
@@ -5526,7 +5526,7 @@ Sustav preferencija je onaj skup postavki  koji se nalazi u općim preferencijam
     <message>
       <location filename="../DlgWorkbenches.ui" line="272"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-size:8pt; font-weight:600;"&gt;Note:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; The changes become active the next time you start the application&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-size:8pt; font-weight:600;"&gt;Note:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; The changes become active the next time you start the application&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-size:8pt; font-weight:600;"&gt;Note:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; Promjene postaju aktivne sljedeći put kada pokrenete aplikaciju&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -5832,7 +5832,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../MouseButtons.ui" line="48"/>
       <source>Panning:</source>
-      <translation type="unfinished">Panning:</translation>
+      <translation>Pomicanje:</translation>
     </message>
     <message>
       <location filename="../MouseButtons.ui" line="68"/>
@@ -6321,7 +6321,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../DlgObjectSelection.ui" line="164"/>
       <source>Show dependencies</source>
-      <translation type="unfinished">Show dependencies</translation>
+      <translation>Prikaži ovisnosti</translation>
     </message>
     <message>
       <location filename="../DlgObjectSelection.cpp" line="115"/>
@@ -6452,7 +6452,7 @@ izvorno odabranim prije otvaranja ovog dijaloškog okvira</translation>
     <message>
       <location filename="../ReportView.cpp" line="574"/>
       <source>Show Report view on</source>
-      <translation type="unfinished">Show Report view on</translation>
+      <translation>Prikaži pregled izvješća na</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="595"/>
@@ -7992,196 +7992,201 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <location filename="Translator.cpp" line="139"/>
+      <source>Belarusian</source>
+      <translation type="unfinished">Belarusian</translation>
+    </message>
+    <message>
+      <location filename="Translator.cpp" line="140"/>
       <source>Bulgarian</source>
       <translation>Bugarski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="140"/>
+      <location filename="Translator.cpp" line="141"/>
       <source>Catalan</source>
       <translation>Katalonski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="141"/>
+      <location filename="Translator.cpp" line="142"/>
       <source>Chinese Simplified</source>
       <translation>Kineski (pojednostavljen)</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="142"/>
+      <location filename="Translator.cpp" line="143"/>
       <source>Chinese Traditional</source>
       <translation>Kineski (tradicionalni)</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="143"/>
+      <location filename="Translator.cpp" line="144"/>
       <source>Croatian</source>
       <translation>Hrvatski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="144"/>
+      <location filename="Translator.cpp" line="145"/>
       <source>Czech</source>
       <translation>Češki</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="145"/>
+      <location filename="Translator.cpp" line="146"/>
       <source>Dutch</source>
       <translation>Nizozemski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="146"/>
+      <location filename="Translator.cpp" line="147"/>
       <source>English</source>
       <translation>Engleski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="147"/>
+      <location filename="Translator.cpp" line="148"/>
       <source>Filipino</source>
       <translation>Filipinski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="148"/>
+      <location filename="Translator.cpp" line="149"/>
       <source>Finnish</source>
       <translation>Finski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="149"/>
+      <location filename="Translator.cpp" line="150"/>
       <source>French</source>
       <translation>Francuski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="150"/>
+      <location filename="Translator.cpp" line="151"/>
       <source>Galician</source>
       <translation>Galicijski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="152"/>
+      <location filename="Translator.cpp" line="153"/>
       <source>German</source>
       <translation>Njemački</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="153"/>
+      <location filename="Translator.cpp" line="154"/>
       <source>Greek</source>
       <translation>Grčki</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="154"/>
+      <location filename="Translator.cpp" line="155"/>
       <source>Hungarian</source>
       <translation>Mađarski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="155"/>
+      <location filename="Translator.cpp" line="156"/>
       <source>Indonesian</source>
       <translation>Indonezijski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="156"/>
+      <location filename="Translator.cpp" line="157"/>
       <source>Italian</source>
       <translation>Talijanski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="157"/>
+      <location filename="Translator.cpp" line="158"/>
       <source>Japanese</source>
       <translation>Japanski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="158"/>
+      <location filename="Translator.cpp" line="159"/>
       <source>Kabyle</source>
       <translation>Kabilski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="159"/>
+      <location filename="Translator.cpp" line="160"/>
       <source>Korean</source>
       <translation>Korejski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="160"/>
+      <location filename="Translator.cpp" line="161"/>
       <source>Lithuanian</source>
       <translation>Litvanski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="161"/>
+      <location filename="Translator.cpp" line="162"/>
       <source>Norwegian</source>
       <translation>Norveški</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="162"/>
+      <location filename="Translator.cpp" line="163"/>
       <source>Polish</source>
       <translation>Poljski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="163"/>
+      <location filename="Translator.cpp" line="164"/>
       <source>Portuguese, Brazilian</source>
       <translation>Brazilski Portugalski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="164"/>
+      <location filename="Translator.cpp" line="165"/>
       <source>Portuguese</source>
       <translation>Portugalski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="165"/>
+      <location filename="Translator.cpp" line="166"/>
       <source>Romanian</source>
       <translation>Rumunjski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="166"/>
+      <location filename="Translator.cpp" line="167"/>
       <source>Russian</source>
       <translation>Ruski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="167"/>
+      <location filename="Translator.cpp" line="168"/>
       <source>Serbian</source>
       <translation>Srpski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="168"/>
+      <location filename="Translator.cpp" line="169"/>
       <source>Serbian, Latin</source>
-      <translation type="unfinished">Serbian, Latin</translation>
+      <translation>Srpski (Latinica)</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="169"/>
+      <location filename="Translator.cpp" line="170"/>
       <source>Slovak</source>
       <translation>Slovački</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="170"/>
+      <location filename="Translator.cpp" line="171"/>
       <source>Slovenian</source>
       <translation>Slovenski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="171"/>
+      <location filename="Translator.cpp" line="172"/>
       <source>Spanish</source>
       <translation>Španjolski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="172"/>
+      <location filename="Translator.cpp" line="173"/>
       <source>Spanish, Argentina</source>
       <translation>španjolski, Argentina</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="173"/>
+      <location filename="Translator.cpp" line="174"/>
       <source>Swedish</source>
       <translation>Švedski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="174"/>
+      <location filename="Translator.cpp" line="175"/>
       <source>Turkish</source>
       <translation>Turski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="175"/>
+      <location filename="Translator.cpp" line="176"/>
       <source>Ukrainian</source>
       <translation>Ukrajinski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="176"/>
+      <location filename="Translator.cpp" line="177"/>
       <source>Valencian</source>
       <translation>Valencijski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="177"/>
+      <location filename="Translator.cpp" line="178"/>
       <source>Vietnamese</source>
       <translation>Vijetnamski</translation>
     </message>
     <message>
-      <location filename="Translator.cpp" line="151"/>
+      <location filename="Translator.cpp" line="152"/>
       <source>Georgian</source>
       <translation>gruzijski</translation>
     </message>
@@ -9011,7 +9016,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../Document.cpp" line="132"/>
       <source>Critical Message</source>
-      <translation type="unfinished">Critical Message</translation>
+      <translation>Kritična poruka</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="190"/>
@@ -9021,7 +9026,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../Document.cpp" line="209"/>
       <source>Warning</source>
-      <translation type="unfinished">Warning</translation>
+      <translation>Upozorenje</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="213"/>
@@ -9031,7 +9036,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../Document.cpp" line="217"/>
       <source>Critical</source>
-      <translation type="unfinished">Critical</translation>
+      <translation>Kritično</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1221"/>
@@ -9830,7 +9835,7 @@ trenutnu kopiju će biti izgubljene.</translation>
       <location filename="../CommandStd.cpp" line="386"/>
       <location filename="../CommandStd.cpp" line="388"/>
       <source>Customize toolbars and command bars</source>
-      <translation>Prilagodba alatnih traka i traki s naredbama</translation>
+      <translation>Prilagodba alatnih traka i traka s naredbama</translation>
     </message>
   </context>
   <context>
@@ -10235,7 +10240,7 @@ trenutnu kopiju će biti izgubljene.</translation>
     <message>
       <location filename="../CommandLink.cpp" line="209"/>
       <source>Create a link to the selected object(s)</source>
-      <translation>Stvorite poveznicu na odabrani objekt(e)</translation>
+      <translation>Stvara poveznicu na odabrani(e) objekt(e)</translation>
     </message>
   </context>
   <context>
@@ -10243,12 +10248,12 @@ trenutnu kopiju će biti izgubljene.</translation>
     <message>
       <location filename="../CommandLink.cpp" line="77"/>
       <source>Make link group</source>
-      <translation>Napravite grupu poveznice</translation>
+      <translation>Napravi grupu poveznica</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="78"/>
       <source>Create a group of links</source>
-      <translation>Stvori grupu od poveznica</translation>
+      <translation>Stvara grupu poveznica</translation>
     </message>
   </context>
   <context>
@@ -10256,12 +10261,12 @@ trenutnu kopiju će biti izgubljene.</translation>
     <message>
       <location filename="../CommandLink.cpp" line="271"/>
       <source>Make sub-link</source>
-      <translation>Napravite pod-vezu</translation>
+      <translation>Napravi podpoveznicu</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="272"/>
       <source>Create a sub-object or sub-element link</source>
-      <translation>Stvorite pod-objekt ili pod-element poveznicu</translation>
+      <translation>Stvara podobjekt ili podelement poveznicu</translation>
     </message>
   </context>
   <context>
@@ -11138,7 +11143,7 @@ trenutnu kopiju će biti izgubljene.</translation>
       <location filename="../CommandWindow.cpp" line="317"/>
       <location filename="../CommandWindow.cpp" line="319"/>
       <source>Toggles this window</source>
-      <translation>Uključuje ovaj prozor</translation>
+      <translation>Uključuje/isključuje vidljivost ovog prozora</translation>
     </message>
   </context>
   <context>
@@ -11710,7 +11715,7 @@ trenutnu kopiju će biti izgubljene.</translation>
       <location filename="../CommandStd.cpp" line="71"/>
       <location filename="../CommandStd.cpp" line="73"/>
       <source>Switch between workbenches</source>
-      <translation>Prebacivanje između radnih površina</translation>
+      <translation>Zamjena između radnih stolova</translation>
     </message>
   </context>
   <context>
@@ -12311,7 +12316,7 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
     <message>
       <location filename="../Workbench.cpp" line="537"/>
       <source>&amp;Macro</source>
-      <translation>&amp;Makro</translation>
+      <translation>&amp;Makro naredbe</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="538"/>
@@ -12336,7 +12341,7 @@ Molimo provjerite Pregled izvještaja za više pojedinosti.
     <message>
       <location filename="../Workbench.cpp" line="542"/>
       <source>Macro</source>
-      <translation>Makro</translation>
+      <translation>Makro naredbe</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="543"/>

@@ -112,7 +112,7 @@ public:
     glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glColor4d(0.0,0.0,1.0,0.0f);
     glRasterPos2d(0,0);
-    
+
     //http://wiki.delphigl.com/index.php/Multisampling
     //glDrawPixels(img.width(),img.height(),GL_RGBA,GL_UNSIGNED_BYTE,img.bits());
 /*

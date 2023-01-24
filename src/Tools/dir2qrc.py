@@ -67,89 +67,89 @@ locations = [["../Gui/Language","translation.qrc"," prefix=\"/translations\""],
              ["../Mod/Sketcher/Gui/Resources","Sketcher.qrc"]]
 
 def main():
-	global Verbose,Automatic,ExtraDist,Dir,Output
-	
-	try:
-		opts, args = getopt.getopt(sys.argv[1:], "hvd:o:", ["help", "verbose", "auto", "dist", "directory=","out-file="])
-	except getopt.GetoptError:
-		# print help information and exit:
-		sys.stderr.write(Usage)
-		sys.exit(2)
+    global Verbose,Automatic,ExtraDist,Dir,Output
+    
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], "hvd:o:", ["help", "verbose", "auto", "dist", "directory=","out-file="])
+    except getopt.GetoptError:
+        # print help information and exit:
+        sys.stderr.write(Usage)
+        sys.exit(2)
 
-	# checking on the options
-	for o, a in opts:
-		if o == "-v":
-			Verbose = True
-		if o in ("-h", "--help"):
-			sys.stderr.write(Usage)
-			sys.exit()
-		if o in ("-a", "--auto"):
-			Automatic = True
-		if o in ("--dist"):
-			ExtraDist = True
-		if o in ("-o", "--out-file"):
-			Output = a
-		if o in ("-d", "--directory"):
-			print("Using path: " + a +"\n")
-			Dir = a
-			
-	if Automatic:
-		path = os.path.realpath(__file__)
-		path = os.path.dirname(path)
-		for i in locations:
-			qrcDir = os.path.realpath(join(path,i[0]))
-			if len(i) > 2:
-				updateResourceFile(qrcDir,i[1],i[2])
-			else:
-				updateResourceFile(qrcDir,i[1])
-			if ExtraDist:
-				makeTargetExtraDist(qrcDir)
-	else:
-		updateResourceFile(Dir, Output)
-		if ExtraDist:
-			makeTargetExtraDist(Dir)
+    # checking on the options
+    for o, a in opts:
+        if o == "-v":
+            Verbose = True
+        if o in ("-h", "--help"):
+            sys.stderr.write(Usage)
+            sys.exit()
+        if o in ("-a", "--auto"):
+            Automatic = True
+        if o in ("--dist"):
+            ExtraDist = True
+        if o in ("-o", "--out-file"):
+            Output = a
+        if o in ("-d", "--directory"):
+            print("Using path: " + a +"\n")
+            Dir = a
+            
+    if Automatic:
+        path = os.path.realpath(__file__)
+        path = os.path.dirname(path)
+        for i in locations:
+            qrcDir = os.path.realpath(join(path,i[0]))
+            if len(i) > 2:
+                updateResourceFile(qrcDir,i[1],i[2])
+            else:
+                updateResourceFile(qrcDir,i[1])
+            if ExtraDist:
+                makeTargetExtraDist(qrcDir)
+    else:
+        updateResourceFile(Dir, Output)
+        if ExtraDist:
+            makeTargetExtraDist(Dir)
 
 def updateResourceFile(Dir, Output,prefix=""):
-	global Verbose
-	Output = join(Dir,Output)
-	file = open(Output,"w")
-	file.write(hhcHeader % (prefix))
-	DirPath = Dir + os.path.sep
-	filelist=[]
-	for root, dirs, files in os.walk(Dir):
-		for name in files:
-			if ( (1 in [c in name for c in EndingList]) and not ('.svn' in root) ):
-				FilePathOrg = join(root,name)
-				FilePath = FilePathOrg.replace(DirPath,'')
-				FilePath = FilePath.replace('.\\','')
-				FilePath = FilePath.replace('\\','/')
-				if Verbose: print(FilePathOrg + ' -> ' + FilePath)
-				filelist.append(FilePath)
+    global Verbose
+    Output = join(Dir,Output)
+    file = open(Output,"w")
+    file.write(hhcHeader % (prefix))
+    DirPath = Dir + os.path.sep
+    filelist=[]
+    for root, dirs, files in os.walk(Dir):
+        for name in files:
+            if ( (1 in [c in name for c in EndingList]) and not ('.svn' in root) ):
+                FilePathOrg = join(root,name)
+                FilePath = FilePathOrg.replace(DirPath,'')
+                FilePath = FilePath.replace('.\\','')
+                FilePath = FilePath.replace('\\','/')
+                if Verbose: print(FilePathOrg + ' -> ' + FilePath)
+                filelist.append(FilePath)
 
 
-	filelist.sort()
-	for i in filelist:
-		file.write('        <file>' + i + '</file>\n')
+    filelist.sort()
+    for i in filelist:
+        file.write('        <file>' + i + '</file>\n')
 
-	file.write(hhcFooter)
-	file.close()
+    file.write(hhcFooter)
+    file.close()
 
 def makeTargetExtraDist(Dir):
-	extensions = EndingList[:]
-	extensions.append(".qrc")
-	extensions.append(".bat")
-	extensions.append(".ts")
-	print("EXTRA_DIST = \\")
-	DirPath = Dir + os.path.sep
-	for root, dirs, files in os.walk(Dir):
-		for name in files:
-			if ( (1 in [c in name for c in extensions]) and not ('.svn' in root) ):
-				FilePathOrg = join(root,name)
-				FilePath = FilePathOrg.replace(DirPath,'')
-				FilePath = FilePath.replace('.\\','')
-				FilePath = FilePath.replace('\\','/')
-				print("\t\t%s \\" % (FilePath))
-	print()
+    extensions = EndingList[:]
+    extensions.append(".qrc")
+    extensions.append(".bat")
+    extensions.append(".ts")
+    print("EXTRA_DIST = \\")
+    DirPath = Dir + os.path.sep
+    for root, dirs, files in os.walk(Dir):
+        for name in files:
+            if ( (1 in [c in name for c in extensions]) and not ('.svn' in root) ):
+                FilePathOrg = join(root,name)
+                FilePath = FilePathOrg.replace(DirPath,'')
+                FilePath = FilePath.replace('.\\','')
+                FilePath = FilePath.replace('\\','/')
+                print("\t\t%s \\" % (FilePath))
+    print()
 
 if __name__ == "__main__":
-	main()
+    main()
