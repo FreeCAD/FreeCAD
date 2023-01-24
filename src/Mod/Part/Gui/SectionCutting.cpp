@@ -137,6 +137,20 @@ SectionCut::SectionCut(QWidget* parent)
                 return;
             }
             BoundCompound = pcCompound->Shape.getBoundingBox();
+            // make parent objects of links visible to handle the case that
+            // the cutting is started when only an existing cut was visible
+            std::vector<App::DocumentObject*> compoundObjects;
+            pcCompound->Links.getLinks(compoundObjects);
+            for (auto itCompound = compoundObjects.begin(); itCompound != compoundObjects.end();
+                 itCompound++) {
+                App::Link* pcLink = dynamic_cast<App::Link*>(*itCompound);
+                auto LinkedObject = pcLink->getLink();
+                // only if not already visible
+                if (!(LinkedObject->Visibility.getValue())) {
+                    LinkedObject->Visibility.setValue(true);
+                    ObjectsListVisible.emplace_back(LinkedObject);
+                }
+            }
         }
     }
     if (doc->getObject(BoxZName)) {
@@ -293,22 +307,38 @@ void SectionCut::startCutting(bool isInitial)
         doc->removeObject(objectName);
     };
 
+    int compoundTransparency = -1;
+    // lambda to store the compoundTransparency
+    auto storeTransparency = [&](App::DocumentObject* cutObject) {
+        auto CompoundVP = dynamic_cast<Gui::ViewProviderGeometryObject*>(
+            Gui::Application::Instance->getViewProvider(cutObject));
+        if (CompoundVP && compoundTransparency == -1) {
+            compoundTransparency = CompoundVP->Transparency.getValue();
+        }
+    };
+
     // delete the objects we might have already created to cut
     // we must do this because we support several cuts at once and
     // it is dangerous to deal with the fact that the user is free
     // to uncheck cutting planes and to add/remove objects while this dialog is open
     // We must remove in this order because the tree hierary of the features is Z->Y->X and Cut->Box
-    
-    if (doc->getObject(CutZName))
+    if (doc->getObject(CutZName)) {
+        // the topmost cut transparency determines the overall transparency
+        storeTransparency(doc->getObject(CutZName));
         deleteObject(CutZName);
+    }
     if (doc->getObject(BoxZName))
         deleteObject(BoxZName);
-    if (doc->getObject(CutYName))
+    if (doc->getObject(CutYName)) {
+        storeTransparency(doc->getObject(CutYName));
         deleteObject(CutYName);
+    }
     if (doc->getObject(BoxYName))
         deleteObject(BoxYName);
-    if (doc->getObject(CutXName))
+    if (doc->getObject(CutXName)) {
+        storeTransparency(doc->getObject(CutXName));
         deleteObject(CutXName);
+    }
     if (doc->getObject(BoxXName))
         deleteObject(BoxXName);
     if (doc->getObject(CompoundName)) {
@@ -318,6 +348,7 @@ void SectionCut::startCutting(bool isInitial)
             Base::Console().Error("SectionCut error: compound is incorrectly named, cannot proceed\n");
             return;
         }
+        // get the compound content
         std::vector<App::DocumentObject*> compoundObjects;
         pcCompoundDel->Links.getLinks(compoundObjects);
         // first delete the compound
@@ -544,6 +575,15 @@ void SectionCut::startCutting(bool isInitial)
         }
     }
 
+    // set transparency for the compound
+    // if there was no compound, take the setting for the cut face
+    if (compoundTransparency == -1)
+        compoundTransparency = ui->CutTransparency->value();
+    auto vpCompound = dynamic_cast<Gui::ViewProviderGeometryObject*>(
+        Gui::Application::Instance->getViewProvider(pcCompound));
+    if (vpCompound)
+        vpCompound->Transparency.setValue(compoundTransparency);
+
     // compute the filled compound
     pcCompound->recomputeFeature();
 
@@ -604,6 +644,25 @@ void SectionCut::startCutting(bool isInitial)
     boxColor.setValue<QColor>(ui->CutColor->color());
     int boxTransparency = ui->CutTransparency->value();
 
+    // lambda function to set placement, shape color and transparency
+    auto setPlaceColorTransparency = [&](Part::Box* pcBox) {
+        pcBox->Placement.setValue(placement);
+        auto vpBox = dynamic_cast<Gui::ViewProviderGeometryObject*>(
+            Gui::Application::Instance->getViewProvider(pcBox));
+        if (vpBox) {
+            vpBox->ShapeColor.setValue(boxColor);
+            vpBox->Transparency.setValue(boxTransparency);
+        }
+    };
+
+    // lambda function to set transparency
+    auto setTransparency = [&](Part::Cut* pcCut) {
+        auto vpCut = dynamic_cast<Gui::ViewProviderGeometryObject*>(
+            Gui::Application::Instance->getViewProvider(pcCut));
+        if (vpCut)
+            vpCut->Transparency.setValue(compoundTransparency);
+    };
+
     if (ui->groupBoxX->isChecked()) {
         // create a box
         auto CutBox = doc->addObject("Part::Box", BoxXName);
@@ -639,13 +698,7 @@ void SectionCut::startCutting(bool isInitial)
         BoxOriginSet.z = BoundingBoxOrigin[2] - 0.5;
         placement.setPosition(BoxOriginSet);
         // set box color
-        pcBox->Placement.setValue(placement);
-        auto vpBox = dynamic_cast<Gui::ViewProviderGeometryObject*>(
-            Gui::Application::Instance->getViewProvider(pcBox));
-        if (vpBox) {
-            vpBox->ShapeColor.setValue(boxColor);
-            vpBox->Transparency.setValue(boxTransparency);
-        }
+        setPlaceColorTransparency(pcBox);
 
         // create a cut feature
         auto CutFeature = doc->addObject("Part::Cut", CutXName);
@@ -657,6 +710,8 @@ void SectionCut::startCutting(bool isInitial)
         Part::Cut* pcCut = static_cast<Part::Cut*>(CutFeature);
         pcCut->Base.setValue(CutCompound);
         pcCut->Tool.setValue(CutBox);
+        // we must set the compoundTransparency also for the cut
+        setTransparency(pcCut);
 
         // set the cut value
         ui->cutX->setValue(CutPosX);
@@ -703,13 +758,7 @@ void SectionCut::startCutting(bool isInitial)
             BoxOriginSet.y = CutPosY;
         BoxOriginSet.z = BoundingBoxOrigin[2] - 0.5;
         placement.setPosition(BoxOriginSet);
-        pcBox->Placement.setValue(placement);
-        auto vpBox = dynamic_cast<Gui::ViewProviderGeometryObject*>(
-            Gui::Application::Instance->getViewProvider(pcBox));
-        if (vpBox) {
-            vpBox->ShapeColor.setValue(boxColor);
-            vpBox->Transparency.setValue(boxTransparency);
-        }
+        setPlaceColorTransparency(pcBox);
         
         auto CutFeature = doc->addObject("Part::Cut", CutYName);
         if (!CutFeature) {
@@ -724,7 +773,8 @@ void SectionCut::startCutting(bool isInitial)
         else
             pcCut->Base.setValue(CutCompound);
         pcCut->Tool.setValue(CutBox);
-        
+        setTransparency(pcCut);
+
         // set the cut value
         ui->cutY->setValue(CutPosY);
         if (!ui->groupBoxZ->isChecked())
@@ -764,13 +814,7 @@ void SectionCut::startCutting(bool isInitial)
         else //flipped
             BoxOriginSet.z = CutPosZ;
         placement.setPosition(BoxOriginSet);
-        pcBox->Placement.setValue(placement);
-        auto vpBox = dynamic_cast<Gui::ViewProviderGeometryObject*>(
-            Gui::Application::Instance->getViewProvider(pcBox));
-        if (vpBox) {
-            vpBox->ShapeColor.setValue(boxColor);
-            vpBox->Transparency.setValue(boxTransparency);
-        }
+        setPlaceColorTransparency(pcBox);
 
         auto CutFeature = doc->addObject("Part::Cut", CutZName);
         if (!CutFeature) {
@@ -790,6 +834,7 @@ void SectionCut::startCutting(bool isInitial)
             pcCut->Base.setValue(CutCompound);
         }
         pcCut->Tool.setValue(CutBox);
+        setTransparency(pcCut);
 
         // set the cut value
         ui->cutZ->setValue(CutPosZ);
