@@ -5,7 +5,7 @@
 [Website](https://www.freecadweb.org) • 
 [Documentation](https://wiki.freecadweb.org) •
 [Forum](https://forum.freecadweb.org/) •
-[Bug tracker](https://www.freecadweb.org/tracker/) •
+[Bug tracker](https://github.com/FreeCAD/FreeCAD/issues) •
 [Git repository](https://github.com/FreeCAD/FreeCAD)
 
 
