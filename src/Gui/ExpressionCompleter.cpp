@@ -578,7 +578,8 @@ public:
         Info info;
         int row = 0;
         if(!parent.isValid()) {
-            // root.
+            // we're getting the row count for the root
+            // that is: document hierarchy _and_ contextual completion
             info = Info::root;
             row = -1;
         }else{
