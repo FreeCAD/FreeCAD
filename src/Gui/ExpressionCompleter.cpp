@@ -237,6 +237,22 @@ public:
         return v;
     }
 
+    static std::vector<App::ObjectIdentifier> retrieveSubPaths(const App::Property* prop)
+    {
+        std::vector<App::ObjectIdentifier> result;
+        if (prop)
+        {
+            prop->getPaths(result);
+            // need to filter out irrelevant paths (len 1, aka just this object identifier)       
+            auto res = std::remove_if(
+                result.begin(), result.end(), [](const App::ObjectIdentifier& path) -> bool {
+                    return path.getComponents().size() == 0;
+                });
+            result.erase(res, result.end());
+        }
+        return result;
+    }
+
    // The completion tree structure created takes into account the current document and object
     //
     // It is done as such:
@@ -332,14 +348,15 @@ public:
                 if (propName)
                 {
                     res = QString::fromLatin1(propName);
-                    if (sep && !noProperty)
+                    // resolve the property
+                    if (sep && !noProperty && retrieveSubPaths(prop).size() != 0)
                         res += QLatin1Char('.');
                 }
                 else if(obj) {
                     // the object has been resolved, use the saved idx to figure out quotation or not.
                     if(idx & 1)
                         res = QString::fromUtf8(quote(obj->Label.getStrValue()).c_str());
-                    else
+                     else
                         res = QString::fromLatin1(obj->getNameInDocument());
                     if(sep && !noProperty)
                         res += QLatin1Char('.');
@@ -408,9 +425,11 @@ public:
                 }
                 if (v) {
                     QString res = QString::fromLatin1(propName);
-                    if (sep && propSize) {
+                   
+                    // check to see if we have accessible paths from this prop name?
+                    if (sep && retrieveSubPaths(prop).size() != 0)
                         res += QLatin1Char('.');
-                    }
+                    
                     *v = res;
                 }
                 return;
@@ -421,15 +440,7 @@ public:
         if (prop) {
             // idx identifies the path
             idx = row;
-            std::vector<App::ObjectIdentifier> paths;
-            prop->getPaths(paths);
-
-            // need to filter out irrelevant paths (len 1, aka just this object identifier)       
-            auto res = std::remove_if(
-                paths.begin(), paths.end(), [](const App::ObjectIdentifier& path) -> bool {
-                    return path.getComponents().size() == 0;
-            });
-            paths.erase(res, paths.end());
+            std::vector<App::ObjectIdentifier> paths = retrieveSubPaths(prop);
             
             if (count) 
             {
