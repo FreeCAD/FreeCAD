@@ -1576,9 +1576,39 @@ void SectionCut::onFlipZclicked()
 // changes the cutface color
 void SectionCut::onCutColorclicked()
 {
-    // re-cut to change the color of all cut boxes
     if (ui->groupBoxX->isChecked() || ui->groupBoxY->isChecked() || ui->groupBoxZ->isChecked())
-        startCutting();
+        changeCutBoxColors();
+}
+
+// changes cutbox colors
+void SectionCut::changeCutBoxColors()
+{
+    // a lambda to set box color and transparency
+    auto setColorTransparency = [&](App::DocumentObject* boxObject) {
+        auto boxVP = Gui::Application::Instance->getViewProvider(boxObject);
+        auto boxVPGO = dynamic_cast<Gui::ViewProviderGeometryObject*>(boxVP);
+        if (boxVPGO) {
+            App::Color boxColor;
+            boxColor.setValue<QColor>(ui->CutColor->color());
+            boxVPGO->ShapeColor.setValue(boxColor);
+            int boxTransparency = ui->CutTransparency->value();
+            boxVPGO->Transparency.setValue(boxTransparency);
+        }
+    };
+    if (doc->getObject(BoxXName))
+        setColorTransparency(doc->getObject(BoxXName));
+    if (doc->getObject(BoxYName))
+        setColorTransparency(doc->getObject(BoxYName));
+    if (doc->getObject(BoxZName))
+        setColorTransparency(doc->getObject(BoxZName));
+
+    // we must recompute the topmost cut to make the color visible
+    if (doc->getObject(CutZName))
+        doc->getObject(CutZName)->recomputeFeature(false);
+    else if (doc->getObject(CutYName))
+        doc->getObject(CutYName)->recomputeFeature(false);
+    else if (doc->getObject(CutXName))
+        doc->getObject(CutXName)->recomputeFeature(false);
 }
 
 void SectionCut::onTransparencySliderMoved(int val)
@@ -1586,9 +1616,8 @@ void SectionCut::onTransparencySliderMoved(int val)
     ui->CutTransparency->setToolTip(QString::number(val) + QString::fromLatin1(" %"));
     // highlight the tooltip
     QToolTip::showText(QCursor::pos(), QString::number(val) + QString::fromLatin1(" %"), nullptr);
-    // re-cut to change the color of all cut boxes
     if (ui->groupBoxX->isChecked() || ui->groupBoxY->isChecked() || ui->groupBoxZ->isChecked())
-        startCutting();
+        changeCutBoxColors();
 }
 
 void SectionCut::onTransparencyChanged(int val)
