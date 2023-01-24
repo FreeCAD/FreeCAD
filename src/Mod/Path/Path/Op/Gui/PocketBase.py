@@ -115,7 +115,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             PathGuiUtil.updateInputField(obj, "ZigZagAngle", self.form.zigZagAngle)
 
     def getFields(self, obj):
-        """getFields(obj) ... transfers values from UI to obj's proprties"""
+        """getFields(obj) ... transfers values from UI to obj's properties"""
         if obj.CutMode != str(self.form.cutMode.currentData()):
             obj.CutMode = str(self.form.cutMode.currentData())
         if obj.StepOver != self.form.stepOverPercent.value():

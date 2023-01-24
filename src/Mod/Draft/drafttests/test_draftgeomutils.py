@@ -94,7 +94,7 @@ class TestDraftGeomUtils(unittest.TestCase):
             edge.Orientation = "Reversed"
             edges.append(edge)
         wire6 = Part.Wire(edges)
-        
+
         edges = []
         for start, mid, end in zip(points[:-2], points[1:-1], points[2:]):
             edge = Part.Arc(start, mid, end).toShape()
@@ -122,7 +122,7 @@ class TestDraftGeomUtils(unittest.TestCase):
                         num_subtests += 1 # TODO: it should be "with self.subtest(subtest):" but then it doesn't report failures.
                         extended = DraftGeomUtils.get_extended_wire(wire, offset_start, offset_end)
                         # Test that the extended wire's length is correctly changed
-                        self.assertAlmostEqual(extended.Length, wire.Length + offset_start + offset_end, 
+                        self.assertAlmostEqual(extended.Length, wire.Length + offset_start + offset_end,
                                                DraftGeomUtils.precision(), "'{0}.{1}' failed".format(operation, subtest))
                         if offset_start == 0.0:
                             # If offset_start is 0.0, check that the wire's start point is unchanged

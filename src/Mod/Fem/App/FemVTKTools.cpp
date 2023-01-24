@@ -678,7 +678,7 @@ std::map<std::string, std::string> _getFreeCADMechResultVectorProperties() {
 
 // see https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&start=30#p277434 for further information regarding names etc...
 // some scalar list are not needed on VTK file export but they are needed for internal VTK pipeline
-// TODO some filter to only export the needed values to VTK file but have all in FreeCAD VTK pipline
+// TODO some filter to only export the needed values to VTK file but have all in FreeCAD VTK pipeline
 std::map<std::string, std::string> _getFreeCADMechResultScalarProperties() {
     // see src/Mod/Fem/femobjects/result_mechanical.py
     // App::PropertyFloatList will be a list of scalars in vtk
@@ -706,7 +706,7 @@ std::map<std::string, std::string> _getFreeCADMechResultScalarProperties() {
     // THE MAJOR PRINCIPAL STRESS MAGNITUDE, THE INTERMEDIATE PRINCIPAL STRESS MAGNITUDE, THE MINOR PRINCIPAL STRESS MAGNITUDE
     // but I do not know how (Bernd), for some help see paraview tutorial on FreeCAD wiki
     // thus TODO they might not be exported to external file format (first I need to know how to generate them in paraview)
-    // but there are needed anyway because the pipline in FreeCAD needs the principal stress values
+    // but there are needed anyway because the pipeline in FreeCAD needs the principal stress values
     // https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&p=416006#p412800
     resFCScalProp["PrincipalMax"] = "Major Principal Stress";       // can be plotted in Paraview as THE MAJOR PRINCIPAL STRESS MAGNITUDE
     resFCScalProp["PrincipalMed"] = "Intermediate Principal Stress";// can be plotted in Paraview as THE INTERMEDIATE PRINCIPAL STRESS MAGNITUDE

@@ -1085,7 +1085,7 @@ Do you want to continue?</source>
       <location filename="../../SheetTableView.cpp" line="203"/>
       <location filename="../../SheetTableView.cpp" line="620"/>
       <source>Cut</source>
-      <translation>Одузми</translation>
+      <translation>Исецање</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="205"/>

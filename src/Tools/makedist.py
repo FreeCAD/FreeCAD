@@ -33,7 +33,7 @@ def main():
             wta = "--worktree-attributes"
         if o in ("--check"):
             check = True
-            
+
     if dfsg:
         gitattr = open("src/.gitattributes","w")
         gitattr.write("zipios++    export-ignore\n")
@@ -104,7 +104,7 @@ def main():
         out = gzip.open(TGZNAME, "wb")
         out.write(tarstream.getvalue())
         out.close()
-        
+
     if dfsg:
         os.remove("src/.gitattributes")
     print(("Created " + TGZNAME))

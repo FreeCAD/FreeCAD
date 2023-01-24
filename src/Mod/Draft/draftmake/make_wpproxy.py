@@ -37,7 +37,7 @@ if App.GuiUp:
 
 def make_workingplaneproxy(placement):
     """make_working_plane_proxy(placement)
-    
+
     Creates a Working Plane proxy object in the current document.
 
     Parameters

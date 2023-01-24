@@ -236,13 +236,13 @@
       <location filename="../../OpenSCADCommands.py" line="358"/>
       <location filename="../../OpenSCADCommands.py" line="369"/>
       <source>Add OpenSCAD Element</source>
-      <translation type="unfinished">Add OpenSCAD Element</translation>
+      <translation>OpenSCAD-Element hinzufügen</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="443"/>
       <location filename="../../OpenSCADCommands.py" line="472"/>
       <source>Perform</source>
-      <translation type="unfinished">Perform</translation>
+      <translation>Ausführen</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="469"/>
@@ -269,7 +269,7 @@
       <location filename="../../importCSG.py" line="557"/>
       <location filename="../../importCSG.py" line="1436"/>
       <source>Unsupported Function</source>
-      <translation type="unfinished">Unsupported Function</translation>
+      <translation>Nicht unterstützte Funktion</translation>
     </message>
     <message>
       <location filename="../../importCSG.py" line="557"/>
@@ -296,7 +296,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="125"/>
       <source>Color Shapes</source>
-      <translation type="unfinished">Color Shapes</translation>
+      <translation>Formen einfärben</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="128"/>

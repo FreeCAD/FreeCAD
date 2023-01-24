@@ -101,7 +101,7 @@
     <message>
       <location filename="TranslationTexts.py" line="61"/>
       <source>Getting help from the community</source>
-      <translation>Добављање помоћи од заједнице</translation>
+      <translation>Добијање помоћи од FreeCAD заједнице</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="62"/>
@@ -141,7 +141,7 @@
     <message>
       <location filename="TranslationTexts.py" line="69"/>
       <source>Recent commits</source>
-      <translation>Недавне потврде</translation>
+      <translation>Недавно верификоване промене</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="70"/>
@@ -151,7 +151,7 @@
     <message>
       <location filename="TranslationTexts.py" line="71"/>
       <source>See all commits on github</source>
-      <translation>Види све потврде на github</translation>
+      <translation>Види све верификоване промене на github</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="72"/>
@@ -191,7 +191,7 @@
     <message>
       <location filename="TranslationTexts.py" line="79"/>
       <source>To open any of the links above in your desktop browser, Right-click -&gt; Open in external browser</source>
-      <translation>Да би отворио било коју од горњих веза у веб-прегледачу, кликни десним тастером миша -&gt; Отвори у спољном веб-прегледачу</translation>
+      <translation>Да би отворио било коју од горњих веза у веб-прегледачу, кликни десним тастером миша на линк -&gt; Отвори у спољном веб-прегледачу</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="80"/>
@@ -357,7 +357,7 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="306"/>
       <source>An optional image to display as background</source>
-      <translation>Опциона слика која се приказује као позадина</translation>
+      <translation>Необавезна слика која се приказује као позадина</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="319"/>

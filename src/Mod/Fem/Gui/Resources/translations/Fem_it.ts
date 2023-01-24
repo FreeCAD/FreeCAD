@@ -1102,15 +1102,15 @@ Specificare un altro file, per favore.</translation>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="122"/>
       <source>Wrong Elmer setting: You use more than one CPU core.
 Therefore an executable with the suffix '_mpi.exe' is required.</source>
-      <translation type="unfinished">Wrong Elmer setting: You use more than one CPU core.
-Therefore an executable with the suffix '_mpi.exe' is required.</translation>
+      <translation>Impostazione Elmer errata: Si utilizza più di un core della CPU.
+Pertanto è richiesto un eseguibile con il suffisso '_mpi.exe'.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="132"/>
       <source>Wrong Elmer setting: You use more than one CPU core.
 Therefore an executable with the suffix '_mpi' is required.</source>
-      <translation type="unfinished">Wrong Elmer setting: You use more than one CPU core.
-Therefore an executable with the suffix '_mpi' is required.</translation>
+      <translation>Impostazione Elmer errata: Si utilizza più di un core della CPU.
+Pertanto è richiesto un eseguibile con il suffisso '_mpi'.</translation>
     </message>
   </context>
   <context>
@@ -1219,7 +1219,7 @@ constraint or material is applied.</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="116"/>
       <source>Create a directory in the same folder in which the FCStd file of the document is located. Use Subfolder for each solver (e.g. for a file ./mydoc.FCStd and a solver with the label Elmer002 use ./mydoc/Elmer002).</source>
-      <translation type="unfinished">Create a directory in the same folder in which the FCStd file of the document is located. Use Subfolder for each solver (e.g. for a file ./mydoc.FCStd and a solver with the label Elmer002 use ./mydoc/Elmer002).</translation>
+      <translation>Creare una directory nella stessa cartella in cui si trova il file FCStd del documento. Usare una Sottocartella per ogni solver (ad es. per un file ./mydoc.FCStd e un solver con l'etichetta Elmer002 usare ./mydoc/Elmer002).</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="142"/>
@@ -5239,7 +5239,7 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="92"/>
       <source>Add a clipping plane on a selected face</source>
-      <translation type="unfinished">Add a clipping plane on a selected face</translation>
+      <translation>Aggiungi un piano di taglio su una faccia selezionata</translation>
     </message>
   </context>
   <context>
@@ -5248,7 +5248,7 @@ normale della faccia è usata come direzione</translation>
       <location filename="../../../femcommands/commands.py" line="143"/>
       <location filename="../../../femcommands/commands.py" line="147"/>
       <source>Remove all clipping planes</source>
-      <translation type="unfinished">Remove all clipping planes</translation>
+      <translation>Rimuovi tutti i piani di taglio</translation>
     </message>
   </context>
   <context>
@@ -5425,7 +5425,7 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="392"/>
       <source>Beam rotation</source>
-      <translation type="unfinished">Beam rotation</translation>
+      <translation>Rotazione trave</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="396"/>
@@ -5451,7 +5451,7 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="426"/>
       <source>Elasticity equation</source>
-      <translation type="unfinished">Elasticity equation</translation>
+      <translation>Equazione di elasticità</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="430"/>
@@ -5564,7 +5564,7 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="640"/>
       <source>Reinforced material (concrete)</source>
-      <translation type="unfinished">Reinforced material (concrete)</translation>
+      <translation>Materiale rinforzato (calcestruzzo)</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="644"/>
@@ -5577,12 +5577,12 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="657"/>
       <source>Material for solid</source>
-      <translation type="unfinished">Material for solid</translation>
+      <translation>Materiale per il solido</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="662"/>
       <source>Creates a FEM material for solid</source>
-      <translation type="unfinished">Creates a FEM material for solid</translation>
+      <translation>Crea un materiale FEM per il solido</translation>
     </message>
   </context>
   <context>
@@ -5616,7 +5616,7 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="739"/>
       <source>Clear FEM mesh</source>
-      <translation type="unfinished">Clear FEM mesh</translation>
+      <translation>Elimina le mesh FEM</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="743"/>
@@ -5630,7 +5630,7 @@ normale della faccia è usata come direzione</translation>
       <location filename="../../../femcommands/commands.py" line="764"/>
       <location filename="../../../femcommands/commands.py" line="768"/>
       <source>Display FEM mesh info</source>
-      <translation type="unfinished">Display FEM mesh info</translation>
+      <translation>Mostra informazioni FEM mesh</translation>
     </message>
   </context>
   <context>
@@ -5703,7 +5703,7 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="937"/>
       <source>Purge results</source>
-      <translation type="unfinished">Purge results</translation>
+      <translation>Azzera i risultati</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="942"/>
@@ -5716,7 +5716,7 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="959"/>
       <source>Solver CalculiX Standard</source>
-      <translation type="unfinished">Solver CalculiX Standard</translation>
+      <translation>Risolutore CalculiX Standard</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="964"/>
@@ -5729,12 +5729,12 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1000"/>
       <source>Solver CalculiX (new framework)</source>
-      <translation type="unfinished">Solver CalculiX (new framework)</translation>
+      <translation>Solutore CalculiX (nuovo framework)</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1005"/>
       <source>Creates a FEM solver CalculiX new framework (less result error handling)</source>
-      <translation type="unfinished">Creates a FEM solver CalculiX new framework (less result error handling)</translation>
+      <translation>Crea un solutore FEM CalculiX nuovo framework (meno gestione degli errori di risultato)</translation>
     </message>
   </context>
   <context>
@@ -5755,12 +5755,12 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1036"/>
       <source>Solver Elmer</source>
-      <translation type="unfinished">Solver Elmer</translation>
+      <translation>Risolutore Elmer</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1041"/>
       <source>Creates a FEM solver Elmer</source>
-      <translation type="unfinished">Creates a FEM solver Elmer</translation>
+      <translation>Crea un risolutore FEM Elmer</translation>
     </message>
   </context>
   <context>
@@ -5768,12 +5768,12 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1052"/>
       <source>Solver Mystran</source>
-      <translation type="unfinished">Solver Mystran</translation>
+      <translation>Risolutore Mystran</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1054"/>
       <source>Creates a FEM solver Mystran</source>
-      <translation type="unfinished">Creates a FEM solver Mystran</translation>
+      <translation>Crea un risolutore FEM Mystran</translation>
     </message>
   </context>
   <context>
@@ -5781,12 +5781,12 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1064"/>
       <source>Run solver calculations</source>
-      <translation type="unfinished">Run solver calculations</translation>
+      <translation>Esegue calcoli del risolutore</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1069"/>
       <source>Runs the calculations for the selected solver</source>
-      <translation type="unfinished">Runs the calculations for the selected solver</translation>
+      <translation>Esegue i calcoli per il risolutore selezionato</translation>
     </message>
   </context>
   <context>
@@ -5920,7 +5920,7 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="295"/>
       <source>Selection mode</source>
-      <translation type="unfinished">Selection mode</translation>
+      <translation>Modalità selezione</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="297"/>
@@ -6005,7 +6005,7 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="569"/>
       <source>Histogram of {}</source>
-      <translation type="unfinished">Histogram of {}</translation>
+      <translation>Istogramma di {}</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="570"/>

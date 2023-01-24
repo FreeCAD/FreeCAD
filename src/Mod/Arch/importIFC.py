@@ -1201,7 +1201,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                             "DiffuseColor" not in added_mat.Material
                             and "DiffuseColor" not in mdict
                         )  # there is no color in added mat with the same matname and new mat
-                        # on modell imported from ArchiCAD color was not found for all IFC material objects, 
+                        # on model imported from ArchiCAD color was not found for all IFC material objects,
                         # thus DiffuseColor was not set for created materials, workaround to merge these too
                     ):
                         matobj = added_mat

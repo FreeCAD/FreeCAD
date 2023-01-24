@@ -219,12 +219,12 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="55"/>
       <source>Scale image plane</source>
-      <translation type="unfinished">Scale image plane</translation>
+      <translation>Escala del plano de la imagen</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="59"/>
       <source>Scales an image plane by defining a distance between two points</source>
-      <translation type="unfinished">Scales an image plane by defining a distance between two points</translation>
+      <translation>Escala un plano de imagen definiendo una distancia entre dos puntos</translation>
     </message>
   </context>
   <context>
@@ -232,7 +232,7 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="139"/>
       <source>Scale image plane</source>
-      <translation type="unfinished">Scale image plane</translation>
+      <translation>Escala del plano de la imagen</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="140"/>
@@ -242,27 +242,27 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="141"/>
       <source>Select first point</source>
-      <translation type="unfinished">Select first point</translation>
+      <translation>Seleccione el primer punto</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="156"/>
       <source>Enter distance</source>
-      <translation type="unfinished">Enter distance</translation>
+      <translation>Ingrese la distancia</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="159"/>
       <source>Select image plane</source>
-      <translation>Seleccionar plano de la imagen</translation>
+      <translation>Seleccionar plano de imagen</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="184"/>
       <source>Select second point</source>
-      <translation type="unfinished">Select second point</translation>
+      <translation>Seleccione el segundo punto</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="193"/>
       <source>Select Image Plane and type distance</source>
-      <translation type="unfinished">Select Image Plane and type distance</translation>
+      <translation>Seleccione el plano de la imagen y escriba la distancia</translation>
     </message>
   </context>
 </TS>

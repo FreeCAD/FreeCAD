@@ -1,5 +1,5 @@
 #***************************************************************************
-#*   (c) Milos Koutny (milos.koutny@gmail.com) 2012                        *
+#*   Copyright (c) 2012 Milos Koutny <milos.koutny@gmail.com>              *
 #*                                                                         *
 #*   This file is part of the FreeCAD CAx development system.              *
 #*                                                                         *
@@ -19,7 +19,6 @@
 #*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 #*   USA                                                                   *
 #*                                                                         *
-#*   Milos Koutny 2010                                                     *
 #***************************************************************************/
 
 import FreeCAD, Part, os, FreeCADGui
@@ -50,7 +49,7 @@ EmpDisplayMode=2 # 0='Flat Lines', 1='Shaded', 2='Wireframe', 3='Points'; recomm
 
 IDF_sort=0 # 0-sort per refdes [1 - part number (not preferred)/refdes] 2-sort per footprint/refdes
 
-IDF_diag=0 # 0/1=disabled/enabled output (footprint.lst/missing_models.lst) 
+IDF_diag=0 # 0/1=disabled/enabled output (footprint.lst/missing_models.lst)
 IDF_diag_path="/tmp" # path for output of footprint.lst and missing_models.lst
 
 
@@ -72,7 +71,7 @@ def insert(filename,docname):
     doc=FreeCAD.getDocument(docname)
     FreeCAD.Console.PrintMessage('Started import of "'+filename+'" file')
     process_emn(doc,filename)
-	
+
 def process_emn(doc,filename):
    """process_emn(document, filename)-> adds emn geometry from emn file"""
    emnfile=pythonopen(filename, "r")
@@ -84,7 +83,7 @@ def process_emn(doc,filename):
    placement=[] #no placement
    place_item=[] #empty place item
    emnlines=emnfile.readlines()
-   emnfile.close()   
+   emnfile.close()
    passed_sections=[]
    current_section=""
    section_counter=0
@@ -142,10 +141,10 @@ def Process_board_outline(doc,board_outline,drills,board_thickness):
     out_shape=[]
     out_face=[]
     for point in board_outline:
-       vertex=Base.Vector(point[1],point[2],0) 
+       vertex=Base.Vector(point[1],point[2],0)
        vertex_index+=1
        if vertex_index==0:
-          lines=point[0] 
+          lines=point[0]
        elif lines==point[0]:
            if point[3]!=0 and point[3]!=360:
               out_shape.append(Part.Arc(prev_vertex,mid_point(prev_vertex,vertex,point[3]),vertex))
@@ -161,8 +160,8 @@ def Process_board_outline(doc,board_outline,drills,board_thickness):
           out_shape=Part.Wire(out_shape.Edges)
           out_face.append(Part.Face(out_shape))
           out_shape=[]
-          vertex_index=0 
-          lines=point[0] 
+          vertex_index=0
+          lines=point[0]
        prev_vertex=vertex
     if lines!=-1:
       out_shape=Part.Shape(out_shape)
@@ -180,7 +179,7 @@ def Process_board_outline(doc,board_outline,drills,board_thickness):
         out_shape=Part.Wire(out_shape.Edges)
         outline=outline.cut(Part.Face(out_shape))
       doc_outline=doc.addObject("Part::Feature","Board_outline")
-      doc_outline.Shape=outline 
+      doc_outline.Shape=outline
       #FreeCADGui.Selection.addSelection(doc_outline)
       #FreeCADGui.runCommand("Draft_Upgrade")
       #outline=FreeCAD.ActiveDocument.getObject("Union").Shape
@@ -194,7 +193,7 @@ def Process_board_outline(doc,board_outline,drills,board_thickness):
 
 def mid_point(prev_vertex,vertex,angle):
     """mid_point(prev_vertex,vertex,angle)-> mid_vertex
-       
+
        returns mid point on arc of angle between prev_vertex and vertex"""
     angle=radians(angle/2)
     basic_angle=atan2(vertex.y-prev_vertex.y,vertex.x-prev_vertex.x)-pi/2
@@ -204,7 +203,7 @@ def mid_point(prev_vertex,vertex,angle):
 
 def split_records(line_record):
     """split_records(line_record)-> list of strings(records)
-       
+
        standard separator list separator is space, records containing encapsulated by " """
     split_result=[]
     quote_pos=line_record.find('"')
@@ -213,18 +212,18 @@ def split_records(line_record):
           split_result.extend(line_record[ :quote_pos].split())
           line_record=line_record[quote_pos: ]
           quote_pos=line_record.find('"',1)
-       else: 
+       else:
           quote_pos=line_record.find('"',1)
        if quote_pos!=-1:
           split_result.append(line_record[ :quote_pos+1])
           line_record=line_record[quote_pos+1: ]
        else:
-          split_result.append(line_record) 
+          split_result.append(line_record)
           line_record=""
        quote_pos=line_record.find('"')
     split_result.extend(line_record.split())
     return split_result
-	
+
 def process_emp(doc,filename,placement,board_thickness):
    """process_emp(doc,filename,placement,board_thickness) -> place components from emn file to board"""
    filename=filename.partition(".emn")[0]+".emp"
@@ -237,7 +236,7 @@ def process_emp(doc,filename,placement,board_thickness):
    comp_PartNumber="" # no Part Number
    comp_height=0 # no Comp Height
    emplines=empfile.readlines()
-   empfile.close()   
+   empfile.close()
    passed_sections=[]
    current_section=""
    section_counter=0
@@ -250,7 +249,7 @@ def process_emp(doc,filename,placement,board_thickness):
         current_section=""
         if comp_PartNumber!="":
           if comp_height==0:
-            comp_height=0.1	
+            comp_height=0.1
           comps.append((comp_PartNumber,[Process_comp_outline(doc,comp_outline,comp_height),comp_GeometryName]))
           comp_PartNumber=""
           comp_outline=[]
@@ -279,7 +278,7 @@ def process_emp(doc,filename,placement,board_thickness):
      for compx in comps:
        empfile.writelines(str(compx[1][1])+"\n")
      empfile.close()
-   #End section of list footprint  
+   #End section of list footprint
    comps=dict(comps)
    grp=doc.addObject("App::DocumentObjectGroup", "EMP Models")
    for place_item in placement:
@@ -307,7 +306,7 @@ def Process_comp_outline(doc,comp_outline,comp_height):
        comp_outline.append([0.0,0.0,0.0])
        comp_outline.append([0.1,0.0,360.0])
     for point in comp_outline:
-       vertex=Base.Vector(point[0],point[1],0) 
+       vertex=Base.Vector(point[0],point[1],0)
        vertex_index+=1
        if vertex_index>0:
          if point[2]!=0 and point[2]!=360:
@@ -328,13 +327,13 @@ def Process_comp_outline(doc,comp_outline,comp_height):
     return out_shape
 
 def place_steps(doc,placement,board_thickness):
-    """ place_steps(doc,placement,board_thickness)->place step models on board 
+    """ place_steps(doc,placement,board_thickness)->place step models on board
 
         list of models and path to step files is set at start of this script
                  model_tab_filename= "" &   step_path="" """
     model_file=pythonopen(model_tab_filename, "r")
     model_lines=model_file.readlines()
-    model_file.close()   
+    model_file.close()
     model_dict=[]
     if IDF_diag==1:
         model_file=pythonopen(IDF_diag_path+"/missing_models.lst", "w")
@@ -342,9 +341,9 @@ def place_steps(doc,placement,board_thickness):
     #prev_step="*?.*?" #hope nobody will insert this step filename
     step_dict=[]
     for model_line in model_lines:
-        model_records=split_records(model_line)  
+        model_records=split_records(model_line)
         if len(model_records)>1 and model_records[0] and not model_records[0] in keys:
-           keys.append(model_records[0])  
+           keys.append(model_records[0])
            model_dict.append((str(model_records[0]).replace('"',''),str(model_records[1]).replace('"','')))
     model_dict=dict(model_dict)
     validkeys=filter(lambda x:x in  [place_item[2] for place_item in placement], model_dict.keys())
@@ -380,11 +379,11 @@ def place_steps(doc,placement,board_thickness):
         placmnt=Base.Placement(Base.Vector(place_item[3],place_item[4],z_pos),toQuaternion(rotateY,place_item[5]*pi/180,0))
         step_model.Placement=placmnt
         grp.addObject(step_model)
-      else: 
+      else:
         if IDF_diag==1:
             model_file.writelines(str(place_item[0])+" "+str(place_item[2])+"\n")
-            model_file.close() 
-    
+            model_file.close()
+
 def toQuaternion(heading, attitude,bank): # rotation heading=around Y, attitude =around Z,  bank attitude =around X
     """toQuaternion(heading, attitude,bank)->FreeCAD.Base.Rotation(Quternion)"""
     c1 = cos(heading/2)
@@ -399,7 +398,7 @@ def toQuaternion(heading, attitude,bank): # rotation heading=around Y, attitude 
     x = c1c2*s3 + s1s2*c3
     y = s1*c2*c3 + c1*s2*s3
     z = c1*s2*c3 - s1*c2*s3
-    return  FreeCAD.Base.Rotation(x,y,z,w)  
+    return  FreeCAD.Base.Rotation(x,y,z,w)
 
 def Per_point(prev_vertex,vertex):
     """Per_point(center,vertex)->per point
@@ -411,4 +410,4 @@ def Per_point(prev_vertex,vertex):
     perpoint=Base.Vector(2*prev_vertex.x-vertex.x,2*prev_vertex.y-vertex.y,0)
     return perpoint
 
-  
+

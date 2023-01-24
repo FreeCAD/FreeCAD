@@ -542,8 +542,8 @@ da quella proprietà.
       <location filename="../../DlgSheetConf.ui" line="64"/>
       <source>Type in an expression to specify the object and property name to dynamically
 switch the design configuration. The property will be created if not exist.</source>
-      <translation type="unfinished">Type in an expression to specify the object and property name to dynamically
-switch the design configuration. The property will be created if not exist.</translation>
+      <translation>Digitare un'espressione per specificare il nome dell'oggetto e della proprietà per
+cambiare dinamicamente la configurazione del progetto. La proprietà verrà creata se non esiste.</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="72"/>

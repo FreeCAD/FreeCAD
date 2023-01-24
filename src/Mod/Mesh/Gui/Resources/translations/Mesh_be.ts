@@ -1734,7 +1734,7 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="171"/>
       <source>Selection</source>
-      <translation type="unfinished">Selection</translation>
+      <translation>Выдзяленне</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="179"/>
@@ -2054,7 +2054,7 @@ to a smoother appearance.
       <location filename="../../Selection.ui" line="14"/>
       <location filename="../../Selection.ui" line="20"/>
       <source>Selection</source>
-      <translation type="unfinished">Selection</translation>
+      <translation>Выдзяленне</translation>
     </message>
     <message>
       <location filename="../../Selection.ui" line="39"/>
@@ -2191,7 +2191,7 @@ Please visit http://www.openscad.org/index.html to install it.</translation>
     <message>
       <location filename="../../AppMeshGui.cpp" line="159"/>
       <source>Import-Export</source>
-      <translation type="unfinished">Import-Export</translation>
+      <translation>Імпарт-Экспарт</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="447"/>
@@ -2433,7 +2433,7 @@ Please visit http://www.openscad.org/index.html to install it.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
       <source>Boolean</source>
-      <translation type="unfinished">Boolean</translation>
+      <translation>Лагічнае значэнне</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>

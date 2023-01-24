@@ -93,7 +93,7 @@
       <location filename="../../Command.cpp" line="265"/>
       <location filename="../../Command.cpp" line="267"/>
       <source>Cuts a point cloud with a picked polygon</source>
-      <translation>Izreže pokazni oblak s bere poligona</translation>
+      <translation>Reže oblak točaka odabranim višekutnikom</translation>
     </message>
   </context>
   <context>

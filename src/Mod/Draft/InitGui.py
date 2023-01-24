@@ -81,7 +81,6 @@ class DraftWorkbench(FreeCADGui.Workbench):
             import Draft_rc
             import DraftTools
             import DraftGui
-            import DraftFillet
             FreeCADGui.addLanguagePath(":/translations")
             FreeCADGui.addIconPath(":/icons")
         except Exception as exc:

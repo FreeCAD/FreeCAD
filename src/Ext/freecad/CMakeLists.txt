@@ -1,4 +1,4 @@
-EXECUTE_PROCESS(COMMAND ${PYTHON_EXECUTABLE} -c 
+EXECUTE_PROCESS(COMMAND ${PYTHON_EXECUTABLE} -c
 "from distutils.sysconfig import get_python_lib; print(get_python_lib(plat_specific=True))"
 OUTPUT_VARIABLE python_libs OUTPUT_STRIP_TRAILING_WHITESPACE )
 SET(PYTHON_MAIN_DIR ${python_libs})

@@ -598,7 +598,7 @@ Seleziona una forma diversa, per favore.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="82"/>
       <source>Find a flat representation of a face.</source>
-      <translation type="unfinished">Find a flat representation of a face.</translation>
+      <translation>Trova una rappresentazione piatta di una faccia.</translation>
     </message>
   </context>
 </TS>

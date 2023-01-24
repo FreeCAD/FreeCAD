@@ -88,7 +88,7 @@
     <message>
       <location filename="../../Command.cpp" line="462"/>
       <source>Create fluid boundary condition on face entity for Computional Fluid Dynamics</source>
-      <translation type="unfinished">Create fluid boundary condition on face entity for Computional Fluid Dynamics</translation>
+      <translation>Napravi granične uslove numeričke mehanike fluida za entitet stranice</translation>
     </message>
   </context>
   <context>
@@ -1386,12 +1386,12 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="23"/>
       <source>Card resources</source>
-      <translation type="unfinished">Card resources</translation>
+      <translation>Biblioteke kartica</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="31"/>
       <source>The cards built-in to FreeCAD will be listed as available.</source>
-      <translation type="unfinished">The cards built-in to FreeCAD will be listed as available.</translation>
+      <translation>Biće dostupne i kartice materijala ugrađene u FreeCAD.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="34"/>
@@ -1401,24 +1401,23 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="50"/>
       <source>Also cards from FreeCAD's preferences directory will be listed as available.</source>
-      <translation type="unfinished">Also cards from FreeCAD's preferences directory will be listed as available.</translation>
+      <translation>Biće dostupne i kartice materijala iz fascikle Materials, korisnikove FreeCAD fascikle sa podešavanjima.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="53"/>
       <source>Use materials from Materials directory in user's FreeCAD preference directory</source>
-      <translation type="unfinished">Use materials from Materials directory in user's FreeCAD preference directory</translation>
+      <translation>Koristi kartice materijala iz korisnikove FreeCAD fascikle sa podešavanjima</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="69"/>
       <source>Also material cards also from the specified directory
 will be listed as available.</source>
-      <translation type="unfinished">Also material cards also from the specified directory
-will be listed as available.</translation>
+      <translation>Biće dostupne i kartice materijala iz ovde navedene fascikle.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="73"/>
       <source>Use materials from user defined directory</source>
-      <translation type="unfinished">Use materials from user defined directory</translation>
+      <translation>Koristi materijale iz korisnikom definisane fascikle</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="100"/>
@@ -1428,29 +1427,29 @@ will be listed as available.</translation>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="148"/>
       <source>Card sorting and duplicates</source>
-      <translation type="unfinished">Card sorting and duplicates</translation>
+      <translation>Sortiranje kartica i duplikati</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="154"/>
       <source>Duplicate cards will be deleted from the displayed material card list.</source>
-      <translation type="unfinished">Duplicate cards will be deleted from the displayed material card list.</translation>
+      <translation>Duplikati kartica će biti obrisani sa prikazane liste kartica materijala.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="157"/>
       <source>Delete card duplicates</source>
-      <translation type="unfinished">Delete card duplicates</translation>
+      <translation>Obriši duplikate kartica</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="173"/>
       <source>Material cards appear sorted by their resources (locations).
 If unchecked, they will be sorted by their name.</source>
-      <translation type="unfinished">Material cards appear sorted by their resources (locations).
-If unchecked, they will be sorted by their name.</translation>
+      <translation>Kartice materijala će se pojavljivati sortirane prema bibliotekama kojima pripadaju (lokacijama).
+Ako nije čekirano, biće sortirani po imenima.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMaterial.ui" line="177"/>
       <source>Sort by resources</source>
-      <translation type="unfinished">Sort by resources</translation>
+      <translation>Sortiraj po bibliotekama</translation>
     </message>
   </context>
   <context>
@@ -2560,7 +2559,7 @@ Navedi drugu datoteku.</translation>
     <message>
       <location filename="../ui/Material.ui" line="48"/>
       <source>Material card</source>
-      <translation type="unfinished">Material card</translation>
+      <translation>Kartica materijala</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="56"/>
@@ -2570,7 +2569,7 @@ Navedi drugu datoteku.</translation>
     <message>
       <location filename="../ui/Material.ui" line="64"/>
       <source>Material name</source>
-      <translation type="unfinished">Material name</translation>
+      <translation>Ime materijala</translation>
     </message>
     <message>
       <location filename="../ui/MaterialReinforcement.ui" line="74"/>
@@ -2587,27 +2586,27 @@ Navedi drugu datoteku.</translation>
     <message>
       <location filename="../ui/Material.ui" line="99"/>
       <source>Editing material</source>
-      <translation type="unfinished">Editing material</translation>
+      <translation>Uređivanje materijala</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="107"/>
       <source>use FreeCAD material editor</source>
-      <translation type="unfinished">use FreeCAD material editor</translation>
+      <translation>koristi FreeCAD urednik materijala</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="123"/>
       <source>use this task panel</source>
-      <translation type="unfinished">use this task panel</translation>
+      <translation>koristi ovaj panel zadataka</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="144"/>
       <source>Basic Properties</source>
-      <translation type="unfinished">Basic Properties</translation>
+      <translation>Osnovne osobine</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="155"/>
       <source>Density                     </source>
-      <translation type="unfinished">Density                     </translation>
+      <translation>Gustina                     </translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="174"/>
@@ -2617,12 +2616,12 @@ Navedi drugu datoteku.</translation>
     <message>
       <location filename="../ui/Material.ui" line="210"/>
       <source>Mechanical Properties</source>
-      <translation type="unfinished">Mechanical Properties</translation>
+      <translation>Mehaničke osobine</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="221"/>
       <source>Young's Modulus:</source>
-      <translation type="unfinished">Young's Modulus:</translation>
+      <translation>Jangov modul elastičnosti:</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="240"/>
@@ -2632,12 +2631,12 @@ Navedi drugu datoteku.</translation>
     <message>
       <location filename="../ui/Material.ui" line="265"/>
       <source>Poisson Ratio:</source>
-      <translation type="unfinished">Poisson Ratio:</translation>
+      <translation>Poasonov koeficijent:</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="314"/>
       <source>Fluidic Properties</source>
-      <translation type="unfinished">Fluidic Properties</translation>
+      <translation>Osobine tečnosti</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="325"/>
@@ -2688,12 +2687,12 @@ Navedi drugu datoteku.</translation>
     <message>
       <location filename="../ui/Material.ui" line="523"/>
       <source>Vol Expansion Coeff</source>
-      <translation type="unfinished">Vol Expansion Coeff</translation>
+      <translation>Koeficijent zapreminskog širenja</translation>
     </message>
     <message>
       <location filename="../ui/MaterialReinforcement.ui" line="29"/>
       <source>Matrix Material</source>
-      <translation type="unfinished">Matrix Material</translation>
+      <translation>Osnovni materijal</translation>
     </message>
     <message>
       <location filename="../ui/MaterialReinforcement.ui" line="45"/>
@@ -2728,7 +2727,7 @@ Navedi drugu datoteku.</translation>
     <message>
       <location filename="../ui/MaterialReinforcement.ui" line="102"/>
       <source>Reinforcement Material</source>
-      <translation type="unfinished">Reinforcement Material</translation>
+      <translation>Armirani materijal</translation>
     </message>
   </context>
   <context>
@@ -5066,7 +5065,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
       <source>&amp;Materials</source>
-      <translation type="unfinished">&amp;Materials</translation>
+      <translation>&amp;Materijali</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
@@ -5220,7 +5219,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="57"/>
       <source>Analysis container</source>
-      <translation>Analiza MKD</translation>
+      <translation>Analiza MKE</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="62"/>
@@ -5524,12 +5523,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="533"/>
       <source>Material editor</source>
-      <translation type="unfinished">Material editor</translation>
+      <translation>Urednik materijala</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="537"/>
       <source>Opens the FreeCAD material editor</source>
-      <translation type="unfinished">Opens the FreeCAD material editor</translation>
+      <translation>Otvara FreeCAD urednik materijala</translation>
     </message>
   </context>
   <context>
@@ -5537,12 +5536,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="553"/>
       <source>Material for fluid</source>
-      <translation type="unfinished">Material for fluid</translation>
+      <translation>Tečni materijal</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="557"/>
       <source>Creates a FEM material for fluid</source>
-      <translation type="unfinished">Creates a FEM material for fluid</translation>
+      <translation>Zadaj karakteristike tečnog materijala</translation>
     </message>
   </context>
   <context>
@@ -5550,12 +5549,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="570"/>
       <source>Nonlinear mechanical material</source>
-      <translation type="unfinished">Nonlinear mechanical material</translation>
+      <translation>Nelinearni materijal</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="574"/>
       <source>Creates a nonlinear mechanical material</source>
-      <translation type="unfinished">Creates a nonlinear mechanical material</translation>
+      <translation>Zadaj karakteristike nelinearnog materijala</translation>
     </message>
   </context>
   <context>
@@ -5563,12 +5562,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="640"/>
       <source>Reinforced material (concrete)</source>
-      <translation type="unfinished">Reinforced material (concrete)</translation>
+      <translation>Armirani materijal (beton)</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="644"/>
       <source>Creates a material for reinforced matrix material such as concrete</source>
-      <translation type="unfinished">Creates a material for reinforced matrix material such as concrete</translation>
+      <translation>Zadaj karakteristike osnovnog materijala armiranog materijala</translation>
     </message>
   </context>
   <context>
@@ -5576,12 +5575,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="657"/>
       <source>Material for solid</source>
-      <translation type="unfinished">Material for solid</translation>
+      <translation>Čvrsti materijal</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="662"/>
       <source>Creates a FEM material for solid</source>
-      <translation type="unfinished">Creates a FEM material for solid</translation>
+      <translation>Zadaj karakteristike čvrstog materijala</translation>
     </message>
   </context>
   <context>

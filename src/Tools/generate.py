@@ -23,7 +23,7 @@ Generate source code out of an model definition.
 Author:
   (c) 2006 Juergen Riegel
   juergen.riegel@web.de
-	Licence: GPL
+    Licence: GPL
 
 Version:
   0.2

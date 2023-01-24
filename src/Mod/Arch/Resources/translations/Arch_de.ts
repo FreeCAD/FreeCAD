@@ -1831,132 +1831,132 @@ unit to work with when opening the file.</source>
       <translation type="unfinished">Con&amp;tinue</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="764"/>
+      <location filename="../../ArchStructure.py" line="775"/>
       <source>Error: The base shape couldn't be extruded along this tool object</source>
       <translation type="unfinished">Error: The base shape couldn't be extruded along this tool object</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="790"/>
+      <location filename="../../ArchStructure.py" line="801"/>
       <location filename="../../ArchWall.py" line="959"/>
       <source>This mesh is an invalid solid</source>
       <translation type="unfinished">This mesh is an invalid solid</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="835"/>
+      <location filename="../../ArchStructure.py" line="865"/>
       <location filename="../../ArchPanel.py" line="538"/>
       <source>Facemaker returned an error</source>
       <translation type="unfinished">Facemaker returned an error</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1148"/>
+      <location filename="../../ArchStructure.py" line="1180"/>
       <source>Node Tools</source>
       <translation type="unfinished">Node Tools</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1153"/>
+      <location filename="../../ArchStructure.py" line="1185"/>
       <source>Reset nodes</source>
       <translation type="unfinished">Reset nodes</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1160"/>
+      <location filename="../../ArchStructure.py" line="1192"/>
       <source>Edit nodes</source>
       <translation type="unfinished">Edit nodes</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1166"/>
+      <location filename="../../ArchStructure.py" line="1198"/>
       <source>Extend nodes</source>
       <translation type="unfinished">Extend nodes</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1167"/>
+      <location filename="../../ArchStructure.py" line="1199"/>
       <source>Extends the nodes of this element to reach the nodes of another element</source>
       <translation type="unfinished">Extends the nodes of this element to reach the nodes of another element</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1173"/>
+      <location filename="../../ArchStructure.py" line="1205"/>
       <source>Connect nodes</source>
       <translation type="unfinished">Connect nodes</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1174"/>
+      <location filename="../../ArchStructure.py" line="1206"/>
       <source>Connects nodes of this element with the nodes of another element</source>
       <translation type="unfinished">Connects nodes of this element with the nodes of another element</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1180"/>
+      <location filename="../../ArchStructure.py" line="1212"/>
       <source>Toggle all nodes</source>
       <translation type="unfinished">Toggle all nodes</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1181"/>
+      <location filename="../../ArchStructure.py" line="1213"/>
       <source>Toggles all structural nodes of the document on/off</source>
       <translation type="unfinished">Toggles all structural nodes of the document on/off</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1186"/>
+      <location filename="../../ArchStructure.py" line="1218"/>
       <source>Extrusion Tools</source>
       <translation type="unfinished">Extrusion Tools</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1191"/>
-      <location filename="../../ArchStructure.py" line="1325"/>
+      <location filename="../../ArchStructure.py" line="1223"/>
+      <location filename="../../ArchStructure.py" line="1357"/>
       <source>Select tool...</source>
       <translation type="unfinished">Select tool...</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1192"/>
+      <location filename="../../ArchStructure.py" line="1224"/>
       <source>Select object or edges to be used as a Tool (extrusion path)</source>
       <translation type="unfinished">Select object or edges to be used as a Tool (extrusion path)</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1215"/>
       <location filename="../../ArchStructure.py" line="1247"/>
+      <location filename="../../ArchStructure.py" line="1279"/>
       <source>Choose another Structure object:</source>
       <translation type="unfinished">Choose another Structure object:</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1220"/>
       <location filename="../../ArchStructure.py" line="1252"/>
+      <location filename="../../ArchStructure.py" line="1284"/>
       <source>The chosen object is not a Structure</source>
       <translation type="unfinished">The chosen object is not a Structure</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1223"/>
       <location filename="../../ArchStructure.py" line="1255"/>
+      <location filename="../../ArchStructure.py" line="1287"/>
       <source>The chosen object has no structural nodes</source>
       <translation type="unfinished">The chosen object has no structural nodes</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1226"/>
       <location filename="../../ArchStructure.py" line="1258"/>
+      <location filename="../../ArchStructure.py" line="1290"/>
       <source>One of these objects has more than 2 nodes</source>
       <translation type="unfinished">One of these objects has more than 2 nodes</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1233"/>
       <location filename="../../ArchStructure.py" line="1265"/>
+      <location filename="../../ArchStructure.py" line="1297"/>
       <source>Unable to find a suitable intersection point</source>
       <translation type="unfinished">Unable to find a suitable intersection point</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1236"/>
+      <location filename="../../ArchStructure.py" line="1268"/>
       <source>Intersection found.
 </source>
       <translation type="unfinished">Intersection found.
 </translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1268"/>
+      <location filename="../../ArchStructure.py" line="1300"/>
       <source>Intersection found.</source>
       <translation type="unfinished">Intersection found.</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1304"/>
+      <location filename="../../ArchStructure.py" line="1336"/>
       <source>Done</source>
       <translation>Fertig</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1409"/>
+      <location filename="../../ArchStructure.py" line="1441"/>
       <location filename="../../ArchPanel.py" line="770"/>
       <source>Couldn't compute a shape</source>
       <translation type="unfinished">Couldn't compute a shape</translation>
@@ -2024,12 +2024,12 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchBuildingPart.py" line="917"/>
       <source>Set working plane</source>
-      <translation type="unfinished">Set working plane</translation>
+      <translation>Arbeitsebene einstellen</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="925"/>
       <source>Write camera position</source>
-      <translation type="unfinished">Write camera position</translation>
+      <translation>Kameraposition schreiben</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="932"/>
@@ -2040,7 +2040,7 @@ unit to work with when opening the file.</source>
       <location filename="../../ArchBuildingPart.py" line="939"/>
       <location filename="../../ArchMaterial.py" line="221"/>
       <source>Reorder children alphabetically</source>
-      <translation type="unfinished">Reorder children alphabetically</translation>
+      <translation>Kinder alphabetisch neu ordnen</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="946"/>
@@ -2227,12 +2227,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchReference.py" line="498"/>
       <source>Reload reference</source>
-      <translation type="unfinished">Reload reference</translation>
+      <translation>Referenz neu laden</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="506"/>
       <source>Open reference</source>
-      <translation type="unfinished">Open reference</translation>
+      <translation>Referenz öffnen</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="758"/>
@@ -2360,44 +2360,44 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation type="unfinished">Sill height</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1290"/>
+      <location filename="../../ArchWindow.py" line="1312"/>
       <source>This window has no defined opening</source>
       <translation type="unfinished">This window has no defined opening</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1567"/>
-      <location filename="../../ArchWindow.py" line="1616"/>
-      <location filename="../../ArchWindow.py" line="1777"/>
+      <location filename="../../ArchWindow.py" line="1589"/>
+      <location filename="../../ArchWindow.py" line="1638"/>
+      <location filename="../../ArchWindow.py" line="1799"/>
       <source>Get selected edge</source>
       <translation type="unfinished">Get selected edge</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1716"/>
+      <location filename="../../ArchWindow.py" line="1738"/>
       <source>Unable to create component</source>
       <translation type="unfinished">Unable to create component</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1754"/>
+      <location filename="../../ArchWindow.py" line="1776"/>
       <source>Window elements</source>
       <translation type="unfinished">Window elements</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1755"/>
+      <location filename="../../ArchWindow.py" line="1777"/>
       <source>Hole wire</source>
       <translation type="unfinished">Hole wire</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1756"/>
+      <location filename="../../ArchWindow.py" line="1778"/>
       <source>The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</source>
       <translation type="unfinished">The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1757"/>
+      <location filename="../../ArchWindow.py" line="1779"/>
       <source>Pick selected</source>
       <translation>Ausgewählte wählen</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1758"/>
+      <location filename="../../ArchWindow.py" line="1780"/>
       <location filename="../../ArchAxisSystem.py" line="370"/>
       <location filename="../../ArchAxis.py" line="802"/>
       <location filename="../../ArchComponent.py" line="1931"/>
@@ -2407,7 +2407,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Entfernen</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1759"/>
+      <location filename="../../ArchWindow.py" line="1781"/>
       <location filename="../../ArchAxisSystem.py" line="371"/>
       <location filename="../../ArchAxis.py" line="803"/>
       <location filename="../../ArchComponent.py" line="1932"/>
@@ -2418,7 +2418,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchSite.py" line="920"/>
       <location filename="../../ArchReference.py" line="490"/>
-      <location filename="../../ArchWindow.py" line="1760"/>
+      <location filename="../../ArchWindow.py" line="1782"/>
       <location filename="../../ArchIFCView.py" line="55"/>
       <location filename="../../ArchAxisSystem.py" line="250"/>
       <location filename="../../ArchMaterial.py" line="493"/>
@@ -2432,99 +2432,99 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Bearbeiten</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1761"/>
+      <location filename="../../ArchWindow.py" line="1783"/>
       <source>Create/update component</source>
       <translation type="unfinished">Create/update component</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1762"/>
+      <location filename="../../ArchWindow.py" line="1784"/>
       <source>Base 2D object</source>
       <translation type="unfinished">Base 2D object</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1763"/>
-      <location filename="../../ArchWindow.py" line="1768"/>
+      <location filename="../../ArchWindow.py" line="1785"/>
+      <location filename="../../ArchWindow.py" line="1790"/>
       <source>Wires</source>
       <translation type="unfinished">Wires</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1764"/>
+      <location filename="../../ArchWindow.py" line="1786"/>
       <location filename="../../ArchComponent.py" line="1939"/>
       <source>Components</source>
       <translation>Komponenten</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1765"/>
+      <location filename="../../ArchWindow.py" line="1787"/>
       <source>Create new component</source>
       <translation type="unfinished">Create new component</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1766"/>
+      <location filename="../../ArchWindow.py" line="1788"/>
       <location filename="../../ArchMaterial.py" line="869"/>
       <location filename="../../ArchMaterial.py" line="888"/>
       <source>Name</source>
       <translation>Name</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1767"/>
+      <location filename="../../ArchWindow.py" line="1789"/>
       <location filename="../../ArchComponent.py" line="1991"/>
       <location filename="../../ArchCommands.py" line="1617"/>
       <source>Type</source>
       <translation>Typ</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1769"/>
+      <location filename="../../ArchWindow.py" line="1791"/>
       <location filename="../../ArchMaterial.py" line="869"/>
       <location filename="../../ArchMaterial.py" line="888"/>
       <source>Thickness</source>
       <translation>Dicke</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1770"/>
+      <location filename="../../ArchWindow.py" line="1792"/>
       <location filename="../../ArchPrecast.py" line="1402"/>
       <source>Offset</source>
       <translation>Versetzen</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1771"/>
+      <location filename="../../ArchWindow.py" line="1793"/>
       <source>Hinge</source>
       <translation type="unfinished">Hinge</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1772"/>
+      <location filename="../../ArchWindow.py" line="1794"/>
       <source>Opening mode</source>
       <translation type="unfinished">Opening mode</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1773"/>
-      <location filename="../../ArchWindow.py" line="1775"/>
+      <location filename="../../ArchWindow.py" line="1795"/>
+      <location filename="../../ArchWindow.py" line="1797"/>
       <source>+ default</source>
       <translation type="unfinished">+ default</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1774"/>
+      <location filename="../../ArchWindow.py" line="1796"/>
       <source>If this is checked, the default Frame value of this window will be added to the value entered here</source>
       <translation type="unfinished">If this is checked, the default Frame value of this window will be added to the value entered here</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1776"/>
+      <location filename="../../ArchWindow.py" line="1798"/>
       <source>If this is checked, the default Offset value of this window will be added to the value entered here</source>
       <translation type="unfinished">If this is checked, the default Offset value of this window will be added to the value entered here</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1778"/>
+      <location filename="../../ArchWindow.py" line="1800"/>
       <source>Press to retrieve the selected edge</source>
       <translation type="unfinished">Press to retrieve the selected edge</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1236"/>
-      <location filename="../../ArchWindow.py" line="1779"/>
+      <location filename="../../ArchWindow.py" line="1242"/>
+      <location filename="../../ArchWindow.py" line="1801"/>
       <source>Invert opening direction</source>
       <translation type="unfinished">Invert opening direction</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1244"/>
-      <location filename="../../ArchWindow.py" line="1780"/>
+      <location filename="../../ArchWindow.py" line="1251"/>
+      <location filename="../../ArchWindow.py" line="1802"/>
       <source>Invert hinge position</source>
       <translation type="unfinished">Invert hinge position</translation>
     </message>
@@ -2628,7 +2628,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchMaterial.py" line="214"/>
       <source>Merge duplicates</source>
-      <translation type="unfinished">Merge duplicates</translation>
+      <translation>Duplikate zusammenführen</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="869"/>
@@ -3031,7 +3031,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchSchedule.py" line="386"/>
       <source>Attach spreadsheet</source>
-      <translation type="unfinished">Attach spreadsheet</translation>
+      <translation>Kalkulationstabelle anhängen</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="511"/>
@@ -3283,7 +3283,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1245"/>
       <source>Toggle Cutview</source>
-      <translation type="unfinished">Toggle Cutview</translation>
+      <translation>Schnittansicht umschalten</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1505"/>
@@ -3543,7 +3543,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="994"/>
       <source>Set description</source>
-      <translation type="unfinished">Set description</translation>
+      <translation>Beschreibung festlegen</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="995"/>
@@ -3553,17 +3553,17 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="996"/>
       <source>Copy Length</source>
-      <translation type="unfinished">Copy Length</translation>
+      <translation>Länge kopieren</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="997"/>
       <source>Copy Area</source>
-      <translation type="unfinished">Copy Area</translation>
+      <translation>Bereich kopieren</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="998"/>
       <source>Export CSV</source>
-      <translation type="unfinished">Export CSV</translation>
+      <translation>CSV exportieren</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1001"/>
@@ -3578,7 +3578,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1126"/>
       <source>Object doesn't have settable IFC Attributes</source>
-      <translation type="unfinished">Object doesn't have settable IFC Attributes</translation>
+      <translation>Objekt hat keine einstellbaren IFC-Attribute</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1132"/>
@@ -3599,7 +3599,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1334"/>
       <source>Grouping</source>
-      <translation type="unfinished">Grouping</translation>
+      <translation>Gruppierung</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1362"/>
@@ -3624,18 +3624,18 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1518"/>
       <source>All good! No problems found</source>
-      <translation type="unfinished">All good! No problems found</translation>
+      <translation>Alles gut! Keine Probleme gefunden</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1570"/>
       <location filename="../../ArchCommands.py" line="1595"/>
       <source>Create Component</source>
-      <translation type="unfinished">Create Component</translation>
+      <translation>Komponente erstellen</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1616"/>
       <source>Key</source>
-      <translation type="unfinished">Key</translation>
+      <translation>Schlüssel</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1626"/>
@@ -3645,7 +3645,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1644"/>
       <source>Create IFC properties spreadsheet</source>
-      <translation type="unfinished">Create IFC properties spreadsheet</translation>
+      <translation>Kalkulationstabelle für IFC-Eigenschaften erstellen</translation>
     </message>
   </context>
   <context>
@@ -3653,7 +3653,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="196"/>
       <source>Multiple Structures</source>
-      <translation type="unfinished">Multiple Structures</translation>
+      <translation>Mehrfache Strukturen</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="199"/>
@@ -3666,7 +3666,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="233"/>
       <source>Structural System</source>
-      <translation type="unfinished">Structural System</translation>
+      <translation>Strukturelles System</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="236"/>
@@ -3691,44 +3691,44 @@ Building creation aborted.</translation>
     <name>App::Property</name>
     <message>
       <location filename="../../ArchStructure.py" line="676"/>
-      <location filename="../../ArchStructure.py" line="1321"/>
+      <location filename="../../ArchStructure.py" line="1353"/>
       <source>An optional extrusion path for this element</source>
       <translation type="unfinished">An optional extrusion path for this element</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="678"/>
       <source>The computed length of the extrusion path</source>
-      <translation type="unfinished">The computed length of the extrusion path</translation>
+      <translation>Die berechnete Länge des Extrusionspfades</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="680"/>
       <source>Start offset distance along the extrusion path (positive: extend, negative: trim)</source>
-      <translation type="unfinished">Start offset distance along the extrusion path (positive: extend, negative: trim)</translation>
+      <translation>Startversatz entlang des Extrusionspfades (positiv: verlängern, negativ: beschneiden)</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="682"/>
       <source>End offset distance along the extrusion path (positive: extend, negative: trim)</source>
-      <translation type="unfinished">End offset distance along the extrusion path (positive: extend, negative: trim)</translation>
+      <translation>Endversatz entlang des Extrusionspfades (positiv: verlängern, negativ: beschneiden)</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="684"/>
       <source>Automatically align the Base of the Structure perpendicular to the Tool axis</source>
-      <translation type="unfinished">Automatically align the Base of the Structure perpendicular to the Tool axis</translation>
+      <translation>Die Basis der Struktur automatisch senkrecht zur Werkzeugachse ausrichten</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="686"/>
       <source>X offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</source>
-      <translation type="unfinished">X offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</translation>
+      <translation>X-Versatz zwischen dem Basis-Ursprung und der Werkzeugachse (wird nur verwendet, wenn BasePerpendicularToTool auf True steht)</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="688"/>
       <source>Y offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</source>
-      <translation type="unfinished">Y offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</translation>
+      <translation>Y-Versatz zwischen dem Basis-Ursprung und der Werkzeugachse (wird nur verwendet, wenn BasePerpendicularToTool auf True steht)</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="690"/>
       <source>Mirror the Base along its Y axis (only used if BasePerpendicularToTool is True)</source>
-      <translation type="unfinished">Mirror the Base along its Y axis (only used if BasePerpendicularToTool is True)</translation>
+      <translation>Basis entlang ihrer Y-Achse spiegeln (wird nur verwendet, wenn BasePerpendicularToTool auf True steht)</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="692"/>
@@ -3763,12 +3763,12 @@ Building creation aborted.</translation>
       <location filename="../../ArchStructure.py" line="702"/>
       <location filename="../../ArchPrecast.py" line="68"/>
       <source>The structural nodes of this element</source>
-      <translation type="unfinished">The structural nodes of this element</translation>
+      <translation>Die Strukturknoten dieses Elements</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="704"/>
       <source>A description of the standard profile this element is based upon</source>
-      <translation type="unfinished">A description of the standard profile this element is based upon</translation>
+      <translation>Eine Beschreibung des Standardprofils dieses Elements basiert darauf</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="706"/>
@@ -3782,42 +3782,48 @@ Building creation aborted.</translation>
       <translation type="unfinished">The facemaker type to use to build the profile of this object</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1012"/>
+      <location filename="../../ArchStructure.py" line="711"/>
+      <location filename="../../ArchStructure.py" line="719"/>
+      <source>Selected edges (or group of edges) of the base ArchSketch, to use in creating the shape of this Arch Structure (instead of using all the Base shape's edges by default).  Input are index numbers of edges or groups.</source>
+      <translation type="unfinished">Selected edges (or group of edges) of the base ArchSketch, to use in creating the shape of this Arch Structure (instead of using all the Base shape's edges by default).  Input are index numbers of edges or groups.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchStructure.py" line="1044"/>
       <source>If the nodes are visible or not</source>
       <translation type="unfinished">If the nodes are visible or not</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1014"/>
+      <location filename="../../ArchStructure.py" line="1046"/>
       <source>The width of the nodes line</source>
       <translation type="unfinished">The width of the nodes line</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1016"/>
+      <location filename="../../ArchStructure.py" line="1048"/>
       <source>The size of the node points</source>
       <translation type="unfinished">The size of the node points</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1019"/>
+      <location filename="../../ArchStructure.py" line="1051"/>
       <source>The color of the nodes line</source>
       <translation type="unfinished">The color of the nodes line</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1022"/>
+      <location filename="../../ArchStructure.py" line="1054"/>
       <source>The type of structural node</source>
       <translation type="unfinished">The type of structural node</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1356"/>
+      <location filename="../../ArchStructure.py" line="1388"/>
       <source>Axes systems this structure is built on</source>
       <translation type="unfinished">Axes systems this structure is built on</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1357"/>
+      <location filename="../../ArchStructure.py" line="1389"/>
       <source>The element numbers to exclude when this structure is based on axes</source>
       <translation type="unfinished">The element numbers to exclude when this structure is based on axes</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1358"/>
+      <location filename="../../ArchStructure.py" line="1390"/>
       <source>If true the element are aligned with axes</source>
       <translation type="unfinished">If true the element are aligned with axes</translation>
     </message>
@@ -3892,7 +3898,7 @@ Building creation aborted.</translation>
       <location filename="../../ArchBuildingPart.py" line="346"/>
       <location filename="../../ArchSectionPlane.py" line="913"/>
       <source>The shape of this object</source>
-      <translation type="unfinished">The shape of this object</translation>
+      <translation>Die Form dieses Objekts</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="348"/>
@@ -3918,12 +3924,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="555"/>
       <source>An optional unit to express levels</source>
-      <translation type="unfinished">An optional unit to express levels</translation>
+      <translation>Eine optionale Einheit zum Ausdrücken von Ebenen</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="557"/>
       <source>A transformation to apply to the level mark</source>
-      <translation type="unfinished">A transformation to apply to the level mark</translation>
+      <translation>Eine Transformation, die auf die Ebenenmarkierung angewendet werden soll</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="560"/>
@@ -3948,17 +3954,17 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="570"/>
       <source>The font to be used for texts</source>
-      <translation type="unfinished">The font to be used for texts</translation>
+      <translation>Die für Texte zu verwendende Schriftart</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="573"/>
       <source>The font size of texts</source>
-      <translation type="unfinished">The font size of texts</translation>
+      <translation>Die Schriftgröße von Texten</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="576"/>
       <source>The individual face colors</source>
-      <translation type="unfinished">The individual face colors</translation>
+      <translation>Die individuellen Oberflächenfarben</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="580"/>
@@ -3973,7 +3979,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="585"/>
       <source>Camera position data associated with this object</source>
-      <translation type="unfinished">Camera position data associated with this object</translation>
+      <translation>Kamerapositionsdaten, die diesem Objekt zugeordnet sind</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="588"/>
@@ -4003,27 +4009,27 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="603"/>
       <source>The line width of child objects</source>
-      <translation type="unfinished">The line width of child objects</translation>
+      <translation>Die Linienbreite von Kindobjekten</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="606"/>
       <source>The line color of child objects</source>
-      <translation type="unfinished">The line color of child objects</translation>
+      <translation>Die Linienfarbe von Kindobjekten</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="610"/>
       <source>The shape color of child objects</source>
-      <translation type="unfinished">The shape color of child objects</translation>
+      <translation>Die Formfarbe von Kindobjekten</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="614"/>
       <source>The transparency of child objects</source>
-      <translation type="unfinished">The transparency of child objects</translation>
+      <translation>Die Transparenz von Kindobjekten</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="618"/>
       <source>Cut the view above this level</source>
-      <translation type="unfinished">Cut the view above this level</translation>
+      <translation>Ansicht oberhalb dieser Ebene abschneiden</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="620"/>
@@ -4058,12 +4064,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchProfile.py" line="266"/>
       <source>Outside Diameter</source>
-      <translation type="unfinished">Outside Diameter</translation>
+      <translation>Außendurchmesser</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="267"/>
       <source>Wall thickness</source>
-      <translation type="unfinished">Wall thickness</translation>
+      <translation>Wandstärke</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="291"/>
@@ -4095,12 +4101,12 @@ Building creation aborted.</translation>
       <location filename="../../ArchProfile.py" line="294"/>
       <location filename="../../ArchProfile.py" line="442"/>
       <source>Thickness of the flanges</source>
-      <translation type="unfinished">Thickness of the flanges</translation>
+      <translation>Dicke der Flansche</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="351"/>
       <source>Thickness of the sides</source>
-      <translation type="unfinished">Thickness of the sides</translation>
+      <translation>Dicke der Seiten</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="384"/>
@@ -4110,7 +4116,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchProfile.py" line="385"/>
       <source>Thickness of the flange</source>
-      <translation type="unfinished">Thickness of the flange</translation>
+      <translation>Dicke des Flansches</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="414"/>
@@ -4135,23 +4141,23 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSite.py" line="596"/>
       <source>The city of this site</source>
-      <translation type="unfinished">The city of this site</translation>
+      <translation>Die Stadt dieses Grundstücks</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="598"/>
       <source>The region, province or county of this site</source>
-      <translation type="unfinished">The region, province or county of this site</translation>
+      <translation>Die Region, Provinz oder Verwaltungsbezirk dieses Grundstücks</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="600"/>
       <source>The country of this site</source>
-      <translation type="unfinished">The country of this site</translation>
+      <translation>Das Land dieses Grundstücks</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="602"/>
       <location filename="../../ArchSite.py" line="604"/>
       <source>The latitude of this site</source>
-      <translation type="unfinished">The latitude of this site</translation>
+      <translation>Der Breitengrad dieses Grundstücks</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="606"/>
@@ -4270,7 +4276,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSite.py" line="855"/>
       <source>The rotation of the Compass relative to the Site</source>
-      <translation type="unfinished">The rotation of the Compass relative to the Site</translation>
+      <translation>Die Drehung des Kompasses relativ zum Grundstück</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="857"/>
@@ -4425,17 +4431,17 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchWindow.py" line="600"/>
       <source>The width of this window</source>
-      <translation type="unfinished">The width of this window</translation>
+      <translation>Die Breite dieses Fensters</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="602"/>
       <source>The height of this window</source>
-      <translation type="unfinished">The height of this window</translation>
+      <translation>Die Höhe dieses Fensters</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="604"/>
       <source>The normal direction of this window</source>
-      <translation type="unfinished">The normal direction of this window</translation>
+      <translation>Die normale Ausrichtung dieses Fensters</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="606"/>
@@ -4445,27 +4451,27 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchWindow.py" line="609"/>
       <source>The frame size of this window</source>
-      <translation type="unfinished">The frame size of this window</translation>
+      <translation>Die Rahmengröße dieses Fensters</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="611"/>
       <source>The offset size of this window</source>
-      <translation type="unfinished">The offset size of this window</translation>
+      <translation>Der Versatz dieses Fensters</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="613"/>
       <source>The area of this window</source>
-      <translation type="unfinished">The area of this window</translation>
+      <translation>Der Bereich dieses Fensters</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="615"/>
       <source>The width of louvre elements</source>
-      <translation type="unfinished">The width of louvre elements</translation>
+      <translation>Die Breite der Gitterelemente</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="617"/>
       <source>The space between louvre elements</source>
-      <translation type="unfinished">The space between louvre elements</translation>
+      <translation>Der Abstand zwischen den Gitterelementen</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="619"/>
@@ -4488,7 +4494,7 @@ Building creation aborted.</translation>
       <translation type="unfinished">Show elevation opening symbols if available</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1506"/>
+      <location filename="../../ArchWindow.py" line="1528"/>
       <source>The number of the wire that defines the hole. A value of 0 means automatic</source>
       <translation type="unfinished">The number of the wire that defines the hole. A value of 0 means automatic</translation>
     </message>
@@ -4505,17 +4511,17 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchTruss.py" line="150"/>
       <source>The angle of the truss</source>
-      <translation type="unfinished">The angle of the truss</translation>
+      <translation>Der Winkel der Träger</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="154"/>
       <source>The slant type of this truss</source>
-      <translation type="unfinished">The slant type of this truss</translation>
+      <translation>Die Schräge dieses Trägers</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="158"/>
       <source>The normal direction of this truss</source>
-      <translation type="unfinished">The normal direction of this truss</translation>
+      <translation>Die normale Ausrichtung dieses Trägers</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="162"/>
@@ -4580,17 +4586,17 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchStairs.py" line="273"/>
       <source>The length of these stairs, if no baseline is defined</source>
-      <translation type="unfinished">The length of these stairs, if no baseline is defined</translation>
+      <translation>Die Länge dieser Treppen, wenn keine Grundlinie definiert ist</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="275"/>
       <source>The width of these stairs</source>
-      <translation type="unfinished">The width of these stairs</translation>
+      <translation>Die Breite dieser Treppe</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="277"/>
       <source>The total height of these stairs</source>
-      <translation type="unfinished">The total height of these stairs</translation>
+      <translation>Die Gesamthöhe dieser Treppe</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="279"/>
@@ -4605,22 +4611,22 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchStairs.py" line="289"/>
       <source>The number of risers in these stairs</source>
-      <translation type="unfinished">The number of risers in these stairs</translation>
+      <translation>Die Anzahl der Steigungen in dieser Treppe</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="291"/>
       <source>The depth of the treads of these stairs</source>
-      <translation type="unfinished">The depth of the treads of these stairs</translation>
+      <translation>Die Tiefe der Stufen dieser Treppe</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="294"/>
       <source>The height of the risers of these stairs</source>
-      <translation type="unfinished">The height of the risers of these stairs</translation>
+      <translation>Die Höhe der Stufen dieser Treppe</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="297"/>
       <source>The size of the nosing</source>
-      <translation type="unfinished">The size of the nosing</translation>
+      <translation>Die Größe der Nase</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="299"/>
@@ -4768,7 +4774,7 @@ Building creation aborted.</translation>
       <location filename="../../ArchMaterial.py" line="294"/>
       <location filename="../../ArchMaterial.py" line="742"/>
       <source>A description for this material</source>
-      <translation type="unfinished">A description for this material</translation>
+      <translation>Eine Beschreibung für dieses Material</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="298"/>
@@ -4778,7 +4784,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchMaterial.py" line="300"/>
       <source>The transparency value of this material</source>
-      <translation type="unfinished">The transparency value of this material</translation>
+      <translation>Der Transparenzwert dieses Materials</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="302"/>
@@ -4788,17 +4794,17 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchMaterial.py" line="304"/>
       <source>The color of this material when cut</source>
-      <translation type="unfinished">The color of this material when cut</translation>
+      <translation>Die Farbe dieses Materials beim Schneiden</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="743"/>
       <source>The list of layer names</source>
-      <translation type="unfinished">The list of layer names</translation>
+      <translation>Die Liste der Ebenen-Namen</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="744"/>
       <source>The list of layer materials</source>
-      <translation type="unfinished">The list of layer materials</translation>
+      <translation>Die Liste der Ebenen-Materialien</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="745"/>
@@ -4808,12 +4814,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchIFC.py" line="66"/>
       <source>IFC data</source>
-      <translation type="unfinished">IFC data</translation>
+      <translation>IFC-Daten</translation>
     </message>
     <message>
       <location filename="../../ArchIFC.py" line="73"/>
       <source>IFC properties of this object</source>
-      <translation type="unfinished">IFC properties of this object</translation>
+      <translation>IFC-Eigenschaften dieses Objekts</translation>
     </message>
     <message>
       <location filename="../../ArchIFC.py" line="289"/>
@@ -4824,17 +4830,17 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchPrecast.py" line="62"/>
       <source>The length of this element</source>
-      <translation type="unfinished">The length of this element</translation>
+      <translation>Die Länge dieses Elements</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="64"/>
       <source>The width of this element</source>
-      <translation type="unfinished">The width of this element</translation>
+      <translation>Die Breite dieses Elements</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="66"/>
       <source>The height of this element</source>
-      <translation type="unfinished">The height of this element</translation>
+      <translation>Die Höhe dieses Elements</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="96"/>
@@ -5100,22 +5106,22 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchPanel.py" line="1229"/>
       <source>The font file</source>
-      <translation type="unfinished">The font file</translation>
+      <translation>Die Schriftartdatei</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1231"/>
       <source>The width of the sheet</source>
-      <translation type="unfinished">The width of the sheet</translation>
+      <translation>Die Breite des Blattes</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1234"/>
       <source>The height of the sheet</source>
-      <translation type="unfinished">The height of the sheet</translation>
+      <translation>Die Höhe des Blattes</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1237"/>
       <source>The fill ratio of this sheet</source>
-      <translation type="unfinished">The fill ratio of this sheet</translation>
+      <translation>Das Füllverhältnis dieses Blattes</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1242"/>
@@ -5180,7 +5186,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCurtainWall.py" line="205"/>
       <source>The number of horizontal mullions</source>
-      <translation type="unfinished">The number of horizontal mullions</translation>
+      <translation>Die Anzahl der horizontalen Riegel</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="209"/>
@@ -5225,12 +5231,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCurtainWall.py" line="242"/>
       <source>The number of panels</source>
-      <translation type="unfinished">The number of panels</translation>
+      <translation>Die Anzahl der Panele</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="246"/>
       <source>The thickness of the panels</source>
-      <translation type="unfinished">The thickness of the panels</translation>
+      <translation>Die Dicke der Panele</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="250"/>
@@ -5295,32 +5301,32 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchPipe.py" line="360"/>
       <source>The type of this connector</source>
-      <translation type="unfinished">The type of this connector</translation>
+      <translation>Der Typ dieses Verbinders</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="95"/>
       <source>The description column</source>
-      <translation type="unfinished">The description column</translation>
+      <translation>Die Beschreibungsspalte</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="97"/>
       <source>The values column</source>
-      <translation type="unfinished">The values column</translation>
+      <translation>Die Wertespalte</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="99"/>
       <source>The units column</source>
-      <translation type="unfinished">The units column</translation>
+      <translation>Die Einheitenspalte</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="101"/>
       <source>The objects column</source>
-      <translation type="unfinished">The objects column</translation>
+      <translation>Die Objektspalte</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="103"/>
       <source>The filter column</source>
-      <translation type="unfinished">The filter column</translation>
+      <translation>Die Filterspalte</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="105"/>
@@ -5346,17 +5352,17 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchAxis.py" line="120"/>
       <source>The intervals between axes</source>
-      <translation type="unfinished">The intervals between axes</translation>
+      <translation>Die Intervalle zwischen den Achsen</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="122"/>
       <source>The angles of each axis</source>
-      <translation type="unfinished">The angles of each axis</translation>
+      <translation>Die Winkel jeder Achse</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="124"/>
       <source>The label of each axis</source>
-      <translation type="unfinished">The label of each axis</translation>
+      <translation>Die Beschriftung jeder Achse</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="126"/>
@@ -5366,7 +5372,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchAxis.py" line="128"/>
       <source>The length of the axes</source>
-      <translation type="unfinished">The length of the axes</translation>
+      <translation>Die Länge der Achsen</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="135"/>
@@ -5401,12 +5407,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchAxis.py" line="244"/>
       <source>The color of this axis</source>
-      <translation type="unfinished">The color of this axis</translation>
+      <translation>Die Farbe dieser Achse</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="247"/>
       <source>The number of the first axis</source>
-      <translation type="unfinished">The number of the first axis</translation>
+      <translation>Die Nummer der ersten Achse</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="250"/>
@@ -5416,7 +5422,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchAxis.py" line="253"/>
       <source>The font size</source>
-      <translation type="unfinished">The font size</translation>
+      <translation>Die Schriftgröße</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="256"/>
@@ -5446,7 +5452,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="206"/>
       <source>A material for this object</source>
-      <translation type="unfinished">A material for this object</translation>
+      <translation>Ein Material für dieses Objekt</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="212"/>
@@ -5466,7 +5472,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="224"/>
       <source>The perimeter length of the horizontal area</source>
-      <translation type="unfinished">The perimeter length of the horizontal area</translation>
+      <translation>Die Umfangslänge des horizontalen Bereichs</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="227"/>
@@ -5601,18 +5607,18 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="999"/>
       <source>The transparency of this object</source>
-      <translation type="unfinished">The transparency of this object</translation>
+      <translation>Die Transparenz dieses Objekts</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1005"/>
       <location filename="../../ArchSectionPlane.py" line="1010"/>
       <source>Show the cut in the 3D view</source>
-      <translation type="unfinished">Show the cut in the 3D view</translation>
+      <translation>Schnitt in der 3D-Ansicht anzeigen</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1007"/>
       <source>The color of this object</source>
-      <translation type="unfinished">The color of this object</translation>
+      <translation>Die Farbe dieses Objekts</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1012"/>
@@ -5628,33 +5634,33 @@ Building creation aborted.</translation>
       <location filename="../../ArchSectionPlane.py" line="1017"/>
       <location filename="../../ArchSpace.py" line="509"/>
       <source>The name of the font</source>
-      <translation type="unfinished">The name of the font</translation>
+      <translation>Der Name der Schriftart</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1020"/>
       <location filename="../../ArchSpace.py" line="515"/>
       <source>The size of the text font</source>
-      <translation type="unfinished">The size of the text font</translation>
+      <translation>Die Größe der Textschriftart</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1270"/>
       <source>The rendering mode to use</source>
-      <translation type="unfinished">The rendering mode to use</translation>
+      <translation>Der zu verwendende Rendering-Modus</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1274"/>
       <source>If cut geometry is shown or not</source>
-      <translation type="unfinished">If cut geometry is shown or not</translation>
+      <translation>Ob die Schnittgeometrie angezeigt wird oder nicht</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1276"/>
       <source>If cut geometry is filled or not</source>
-      <translation type="unfinished">If cut geometry is filled or not</translation>
+      <translation>Ob die Schnittgeometrie gefüllt ist oder nicht</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1281"/>
       <source>The size of the texts inside this object</source>
-      <translation type="unfinished">The size of the texts inside this object</translation>
+      <translation>Die Größe der Texte innerhalb dieses Objekts</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1284"/>
@@ -5679,7 +5685,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSpace.py" line="272"/>
       <source>The computed floor area of this space</source>
-      <translation type="unfinished">The computed floor area of this space</translation>
+      <translation>Die berechnete Bodenfläche dieses Raumes</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="274"/>
@@ -5749,17 +5755,17 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSpace.py" line="512"/>
       <source>The color of the area text</source>
-      <translation type="unfinished">The color of the area text</translation>
+      <translation>Die Farbe des Bereichstextes</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="518"/>
       <source>The size of the first line of text</source>
-      <translation type="unfinished">The size of the first line of text</translation>
+      <translation>Die Größe der ersten Zeile des Textes</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="521"/>
       <source>The space between the lines of text</source>
-      <translation type="unfinished">The space between the lines of text</translation>
+      <translation>Der Abstand zwischen den Textzeilen</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="524"/>
@@ -5779,7 +5785,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSpace.py" line="533"/>
       <source>Show the unit suffix</source>
-      <translation type="unfinished">Show the unit suffix</translation>
+      <translation>Einheitensuffix anzeigen</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="734"/>
@@ -5870,8 +5876,8 @@ Building creation aborted.</translation>
   <context>
     <name>Arch_StructureTools</name>
     <message>
-      <location filename="../../ArchStructure.py" line="1469"/>
-      <location filename="../../ArchStructure.py" line="1472"/>
+      <location filename="../../ArchStructure.py" line="1501"/>
+      <location filename="../../ArchStructure.py" line="1504"/>
       <source>Structure tools</source>
       <translation type="unfinished">Structure tools</translation>
     </message>
@@ -5948,7 +5954,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../InitGui.py" line="85"/>
       <source>Axis tools</source>
-      <translation type="unfinished">Axis tools</translation>
+      <translation>Achsenwerkzeuge</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="91"/>
@@ -5958,12 +5964,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../InitGui.py" line="99"/>
       <source>Material tools</source>
-      <translation type="unfinished">Material tools</translation>
+      <translation>Materialwerkzeuge</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="103"/>
       <source>Pipe tools</source>
-      <translation type="unfinished">Pipe tools</translation>
+      <translation>Rohrwerkzeuge</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="145"/>
@@ -6013,12 +6019,12 @@ Building creation aborted.</translation>
       <location filename="../../InitGui.py" line="192"/>
       <location filename="../../InitGui.py" line="196"/>
       <source>&amp;Draft</source>
-      <translation type="unfinished">&amp;Draft</translation>
+      <translation>&amp;Entwurf</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="185"/>
       <source>Creation</source>
-      <translation type="unfinished">Creation</translation>
+      <translation>Erstellung</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="189"/>
@@ -6028,7 +6034,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../InitGui.py" line="193"/>
       <source>Modification</source>
-      <translation type="unfinished">Modification</translation>
+      <translation>Änderung</translation>
     </message>
   </context>
   <context>
@@ -6088,12 +6094,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCutPlane.py" line="79"/>
       <source>Cut with line</source>
-      <translation type="unfinished">Cut with line</translation>
+      <translation>Mit einer Linie beschneiden</translation>
     </message>
     <message>
       <location filename="../../ArchCutPlane.py" line="82"/>
       <source>Cut an object with a line</source>
-      <translation type="unfinished">Cut an object with a line</translation>
+      <translation>Ein Objekt mit einer Linie beschneiden</translation>
     </message>
   </context>
   <context>
@@ -6114,7 +6120,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchReference.py" line="747"/>
       <source>External reference</source>
-      <translation type="unfinished">External reference</translation>
+      <translation>Externe Referenz</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="751"/>
@@ -6244,7 +6250,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchMaterial.py" line="150"/>
       <source>Multi-Material</source>
-      <translation type="unfinished">Multi-Material</translation>
+      <translation>Mehrfach-Material</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="154"/>
@@ -6258,7 +6264,7 @@ Building creation aborted.</translation>
       <location filename="../../ArchMaterial.py" line="1031"/>
       <location filename="../../ArchMaterial.py" line="1034"/>
       <source>Material tools</source>
-      <translation type="unfinished">Material tools</translation>
+      <translation>Materialwerkzeuge</translation>
     </message>
   </context>
   <context>
@@ -6276,22 +6282,22 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchGrid.py" line="98"/>
       <source>The number of rows</source>
-      <translation type="unfinished">The number of rows</translation>
+      <translation>Die Anzahl der Zeilen</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="100"/>
       <source>The number of columns</source>
-      <translation type="unfinished">The number of columns</translation>
+      <translation>Die Anzahl der Spalten</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="102"/>
       <source>The sizes for rows</source>
-      <translation type="unfinished">The sizes for rows</translation>
+      <translation>Die Größen der Zeilen</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="104"/>
       <source>The sizes of columns</source>
-      <translation type="unfinished">The sizes of columns</translation>
+      <translation>Die Größen der Spalten</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="106"/>
@@ -6306,12 +6312,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchGrid.py" line="111"/>
       <source>The total width of this grid</source>
-      <translation type="unfinished">The total width of this grid</translation>
+      <translation>Die Gesamtbreite dieses Gitters</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="113"/>
       <source>The total height of this grid</source>
-      <translation type="unfinished">The total height of this grid</translation>
+      <translation>Die Gesamthöhe dieses Gitters</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="115"/>
@@ -6440,7 +6446,7 @@ Building creation aborted.</translation>
       <location filename="../../ArchPipe.py" line="513"/>
       <location filename="../../ArchPipe.py" line="516"/>
       <source>Pipe tools</source>
-      <translation type="unfinished">Pipe tools</translation>
+      <translation>Rohrwerkzeuge</translation>
     </message>
   </context>
   <context>
@@ -6488,7 +6494,7 @@ Building creation aborted.</translation>
       <location filename="../../ArchAxis.py" line="821"/>
       <location filename="../../ArchAxis.py" line="824"/>
       <source>Axis tools</source>
-      <translation type="unfinished">Axis tools</translation>
+      <translation>Achsenwerkzeuge</translation>
     </message>
   </context>
   <context>
@@ -6561,7 +6567,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1321"/>
       <source>Add component</source>
-      <translation type="unfinished">Add component</translation>
+      <translation>Komponente hinzufügen</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1324"/>
@@ -6574,7 +6580,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1353"/>
       <source>Remove component</source>
-      <translation type="unfinished">Remove component</translation>
+      <translation>Komponente entfernen</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1356"/>
@@ -6639,7 +6645,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1492"/>
       <source>Close holes</source>
-      <translation type="unfinished">Close holes</translation>
+      <translation>Löcher schließen</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1495"/>
@@ -6704,7 +6710,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1585"/>
       <source>Clone component</source>
-      <translation type="unfinished">Clone component</translation>
+      <translation>Komponente klonen</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1589"/>
@@ -6717,7 +6723,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1635"/>
       <source>Create IFC spreadsheet...</source>
-      <translation type="unfinished">Create IFC spreadsheet...</translation>
+      <translation>IFC-Kalulationstabelle erstellen...</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1639"/>

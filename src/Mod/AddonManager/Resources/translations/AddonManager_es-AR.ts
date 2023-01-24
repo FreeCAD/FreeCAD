@@ -2438,12 +2438,12 @@ los complementos instalados serán revisados por actualizaciones disponibles
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="199"/>
       <source>Update was cancelled</source>
-      <translation type="unfinished">Update was cancelled</translation>
+      <translation>Actualización cancelada</translation>
     </message>
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="200"/>
       <source>some addons may have been updated</source>
-      <translation type="unfinished">some addons may have been updated</translation>
+      <translation>algunos complementos pueden haber sido actualizados</translation>
     </message>
   </context>
   <context>

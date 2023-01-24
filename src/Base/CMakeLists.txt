@@ -196,7 +196,6 @@ SET(FreeCADBase_UNITAPI_SRCS
     Unit.h
     Unit.cpp
     UnitPyImp.cpp
-    
 )
 SOURCE_GROUP("Units" FILES ${FreeCADBase_UNITAPI_SRCS})
 

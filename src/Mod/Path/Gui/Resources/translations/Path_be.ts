@@ -131,7 +131,7 @@
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="24"/>
       <source>Solids</source>
-      <translation type="unfinished">Solids</translation>
+      <translation>Суцэльная целы</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="34"/>
@@ -1512,7 +1512,7 @@
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="132"/>
       <source>Output</source>
-      <translation type="unfinished">Output</translation>
+      <translation>Вывад</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="138"/>
@@ -2538,12 +2538,12 @@
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="75"/>
       <source>The default line thickness for new shapes</source>
-      <translation type="unfinished">The default line thickness for new shapes</translation>
+      <translation>Першапачатковая таўшчыня лініі для новай фігуры</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="78"/>
       <source>px</source>
-      <translation type="unfinished">px</translation>
+      <translation>px</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="103"/>
@@ -2948,12 +2948,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DogboneEdit.ui" line="94"/>
       <source>Left</source>
-      <translation type="unfinished">Left</translation>
+      <translation>Злева</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="99"/>
       <source>Right</source>
-      <translation type="unfinished">Right</translation>
+      <translation>Справа</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="107"/>
@@ -3514,7 +3514,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="128"/>
       <source>Output</source>
-      <translation type="unfinished">Output</translation>
+      <translation>Вывад</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="134"/>

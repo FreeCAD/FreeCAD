@@ -131,7 +131,7 @@ void ViewProviderFemPostPipeline::onSelectionChanged(const Gui::SelectionChanges
 
 void ViewProviderFemPostPipeline::updateColorBars()
 {
-    
+
     // take all visible childs and update its shape coloring
     auto children = claimChildren();
     for (auto& child : children) {
@@ -155,7 +155,7 @@ void ViewProviderFemPostPipeline::transformField(char *FieldName, double FieldFa
     vtkSmartPointer<vtkDataObject> data = obj->Data.getValue();
     if (!data || !data->IsA("vtkDataSet"))
         return;
-    
+
     vtkDataSet *dset = vtkDataSet::SafeDownCast(data);
     vtkDataArray *pdata = dset->GetPointData()->GetArray(FieldName);
     if (!pdata)

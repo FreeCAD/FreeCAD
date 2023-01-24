@@ -112,13 +112,13 @@ static inline void drawBorder(QPainter *painter, const QStyleOptionViewItem &opt
         painter->drawRect(rect.adjusted(0,0,-1,-1));
         return;
     }
-    if(flags & Sheet::BorderLeft) 
+    if(flags & Sheet::BorderLeft)
         painter->drawLine(rect.topLeft(), rect.bottomLeft());
-    if(flags & Sheet::BorderTop) 
+    if(flags & Sheet::BorderTop)
         painter->drawLine(rect.topLeft(), rect.topRight());
-    if(flags & Sheet::BorderRight) 
+    if(flags & Sheet::BorderRight)
         painter->drawLine(rect.topRight(), rect.bottomRight());
-    if(flags & Sheet::BorderBottom) 
+    if(flags & Sheet::BorderBottom)
         painter->drawLine(rect.bottomLeft(), rect.bottomRight());
 }
 

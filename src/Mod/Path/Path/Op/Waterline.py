@@ -369,7 +369,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                 "Clearing Options",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Complete the operation in a single pass at depth, or mulitiple passes to final depth.",
+                    "Complete the operation in a single pass at depth, or multiple passes to final depth.",
                 ),
             ),
             (

@@ -671,12 +671,12 @@ gli addons installati verranno controllati per gli aggiornamenti disponibili
     <message>
       <location filename="../../AddonManagerOptions.ui" line="380"/>
       <source>Activate Addon Manager options intended for developers of new Addons.</source>
-      <translation type="unfinished">Activate Addon Manager options intended for developers of new Addons.</translation>
+      <translation>Attiva le opzioni Addon Manager destinate agli sviluppatori di nuovi Addons.</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="383"/>
       <source>Addon developer mode</source>
-      <translation type="unfinished">Addon developer mode</translation>
+      <translation>Modalità sviluppatore Addon</translation>
     </message>
   </context>
   <context>
@@ -1174,7 +1174,7 @@ gli addons installati verranno controllati per gli aggiornamenti disponibili
     <message>
       <location filename="../../AddonManager.py" line="304"/>
       <source>Worker process {} is taking a long time to stop...</source>
-      <translation type="unfinished">Worker process {} is taking a long time to stop...</translation>
+      <translation>Il processo in corso {} sta impiegando molto tempo per fermarsi...</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="362"/>
@@ -1254,7 +1254,7 @@ gli addons installati verranno controllati per gli aggiornamenti disponibili
     <message>
       <location filename="../../AddonManager.py" line="1026"/>
       <source>Execution of macro failed. See console for failure details.</source>
-      <translation type="unfinished">Execution of macro failed. See console for failure details.</translation>
+      <translation>Esecuzione della macro non riuscita. Consultare la console per i dettagli dell'errore.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_people_table.py" line="87"/>
@@ -1301,7 +1301,7 @@ gli addons installati verranno controllati per gli aggiornamenti disponibili
     <message>
       <location filename="../../NetworkManager.py" line="95"/>
       <source>Could not import QtNetwork -- it does not appear to be installed on your system. Your provider may have a package for this dependency (often called &quot;python3-pyside2.qtnetwork&quot;)</source>
-      <translation type="unfinished">Could not import QtNetwork -- it does not appear to be installed on your system. Your provider may have a package for this dependency (often called &quot;python3-pyside2.qtnetwork&quot;)</translation>
+      <translation>Impossibile importare QtNetwork -- non sembra essere installato sul sistema. Il tuo provider può avere un pacchetto per questa dipendenza (spesso chiamata &quot;python3-pyside2.qtnetwork&quot;)</translation>
     </message>
     <message>
       <location filename="../../NetworkManager.py" line="220"/>
@@ -1723,7 +1723,7 @@ gli addons installati verranno controllati per gli aggiornamenti disponibili
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="270"/>
       <source>Optional dependency on {} ignored because it is not in the allow-list</source>
-      <translation type="unfinished">Optional dependency on {} ignored because it is not in the allow-list</translation>
+      <translation>Dipendenza opzionale da {} ignorata perché non è nella lista permessi</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="318"/>
@@ -1884,7 +1884,7 @@ gli addons installati verranno controllati per gli aggiornamenti disponibili
       <location filename="../../addonmanager_devmode.py" line="593"/>
       <source>No Vermin, cancelling operation.</source>
       <comment>NOTE: Vermin is a Python package and proper noun - do not translate</comment>
-      <translation type="unfinished">No Vermin, cancelling operation.</translation>
+      <translation>Vermin assente, annullamento operazione.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="600"/>
@@ -2027,7 +2027,7 @@ gli addons installati verranno controllati per gli aggiornamenti disponibili
     <message>
       <location filename="../../package_list.py" line="776"/>
       <source>Show Addons containing:</source>
-      <translation type="unfinished">Show Addons containing:</translation>
+      <translation>Mostra Addons contenente:</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="779"/>
@@ -2047,7 +2047,7 @@ gli addons installati verranno controllati per gli aggiornamenti disponibili
     <message>
       <location filename="../../package_list.py" line="788"/>
       <source>Preference Packs</source>
-      <translation type="unfinished">Preference Packs</translation>
+      <translation>Pacchetti Preferenze</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="791"/>
@@ -2136,7 +2136,7 @@ gli addons installati verranno controllati per gli aggiornamenti disponibili
       <location filename="../../change_branch.py" line="282"/>
       <source>Remote updated</source>
       <comment>Table header for git update time of remote branch</comment>
-      <translation type="unfinished">Remote updated</translation>
+      <translation>Aggiornato da remoto</translation>
     </message>
     <message>
       <location filename="../../addonmanager_dependency_installer.py" line="126"/>
@@ -2304,12 +2304,12 @@ gli addons installati verranno controllati per gli aggiornamenti disponibili
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="339"/>
       <source>Attempting to do a clean checkout...</source>
-      <translation type="unfinished">Attempting to do a clean checkout...</translation>
+      <translation>Tentativo di fare un check out pulito...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="351"/>
       <source>Clean checkout succeeded</source>
-      <translation type="unfinished">Clean checkout succeeded</translation>
+      <translation>Checkout pulito riuscito</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="361"/>
@@ -2438,12 +2438,12 @@ gli addons installati verranno controllati per gli aggiornamenti disponibili
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="199"/>
       <source>Update was cancelled</source>
-      <translation type="unfinished">Update was cancelled</translation>
+      <translation>Aggiornamento annullato</translation>
     </message>
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="200"/>
       <source>some addons may have been updated</source>
-      <translation type="unfinished">some addons may have been updated</translation>
+      <translation>alcuni addons potrebbero essere stati aggiornati</translation>
     </message>
   </context>
   <context>
