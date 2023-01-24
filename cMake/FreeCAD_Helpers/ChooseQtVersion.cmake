@@ -77,7 +77,7 @@ macro(ChooseQtVersion)
       find_package(Qt6 QUIET COMPONENTS Core)
       if (NOT Qt6_FOUND)
         message(FATAL_ERROR
-          "Could not find a valid Qt installation. Consider setting Qt5_DIR or Qt6_DIR (as needed).")
+          "Could not find a valid Qt installation.")
       endif ()
       set(_FREECAD_QT_VERSION 6)
     endif ()
