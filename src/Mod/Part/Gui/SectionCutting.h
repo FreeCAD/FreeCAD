@@ -85,6 +85,7 @@ private:
     const char* CutXName = "SectionCutX";
     const char* CutYName = "SectionCutY";
     const char* CutZName = "SectionCutZ";
+    void changeCutBoxColors();
 };
 
 } // namespace PartGui
