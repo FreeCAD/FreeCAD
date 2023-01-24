@@ -277,9 +277,9 @@
         </property>
         <property name="color" stdset="0">
          <color>
-          <red>204</red>
-          <green>204</green>
-          <blue>204</blue>
+          <red>203</red>
+          <green>203</green>
+          <blue>203</blue>
          </color>
         </property>
         <property name="prefEntry" stdset="0">
@@ -347,10 +347,10 @@ Works only if all objects have the same values.</string>
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
-        <property name="prefEntry">
+        <property name="prefEntry" stdset="0">
          <cstring>DefaultShapeTransparency</cstring>
         </property>
-        <property name="prefPath">
+        <property name="prefPath" stdset="0">
          <cstring>View</cstring>
         </property>
        </widget>
