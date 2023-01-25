@@ -205,8 +205,9 @@ public:
                       | ((quint64(info.prop+1) & k_maskProp) << k_offsetProp);
             }
         }
-        InfoPtrEncoding(void* pointer) : d_enc(0), ptr(pointer)
+        InfoPtrEncoding(void* pointer) : d_enc(0)
         {
+            this->ptr = pointer;
         }
 
         Info DecodeInfo()
@@ -463,7 +464,7 @@ public:
             }
 
             // check to see if this is a valid path
-            if (idx < 0 || idx >= paths.size()) {
+            if (idx < 0 || idx >= static_cast<int>(paths.size())) {
                 return;
             }
 
@@ -541,7 +542,7 @@ public:
 
                 // if my element is a contextual descendant of root (current doc object list, current object prop list)
                 // mark it as such
-                if (element.row() >= docs.size()*2) {
+                if (element.row() >= static_cast<int>(docs.size()*2)) {
                     info.contextualHierarchy = 1;
                 }
             } else if (parentInfo.contextualHierarchy) {
@@ -550,9 +551,9 @@ public:
                 auto cdoc = App::GetApplication().getDocument(currentDoc.c_str());
 
                 if (cdoc) {
-                    auto objsSize = cdoc->getObjects().size()*2;
-                    int idx = parentInfo.doc - docs.size();
-                    if (idx < cdoc->getObjects().size()*2) {
+                    int objsSize = static_cast<int>(cdoc->getObjects().size()*2);
+                    int idx = parentInfo.doc - static_cast<int>(docs.size());
+                    if (idx < objsSize) {
                         //  |-- Parent (OBJECT)        - (row 4, [-1,-1,-1,0]) = encode as element => [parent.row,-1,-1,1]
                         //      |- element (PROP)            - (row 0, [parent.row,-1,-1,1])  = encode as element => [parent.row,-1,parent.row,1]
 
