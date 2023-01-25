@@ -65,8 +65,9 @@ public:
         if(obj) {
             currentDoc = obj->getDocument()->getName();
             currentObj = obj->getNameInDocument();
-            if(!noProperty && checkInList)
+            if (!noProperty && checkInList) {
                 inList = obj->getInListEx(true);
+            }
         } else {
             currentDoc.clear();
             currentObj.clear();
@@ -113,17 +114,17 @@ public:
     // It is done as such, in order to have contextual completion (prop -> object -> files):
     // * root (-1,-1)
     // |
-    // |----- documents 
+    // |----- documents
     // |----- current documents' objects [externally set]
     // |----- current objects' props  [externally set]
-    // 
+    //
     // This complicates the decoding schema for the root, where the childcount will be
     // doc.size() + current_doc.Objects.size() + current_obj.Props.size().
-    // 
+    //
     // This is reflected in the complexity of the DATA function.
     //
     // Example encoding of a QMODEL Index
-    //    
+    //
     //    ROOT (row -1, [-1,-1,-1,0]), info represented as [-1,-1,-1,0]
     //    |-- doc 1 (non contextual)                 - (row 0, [-1,-1,-1,0]) = encode as parent => [0,-1,-1,0]
     //    |-- doc 2 (non contextual)                 - (row 1, [-1,-1,-1,0]) = encode as parent => [1,-1,-1,0]
@@ -138,19 +139,19 @@ public:
     //    |
     //    |
     //    |-- doc 3 (non contextual)                 - (row 2, [-1,-1,-1,0]) = encode as parent => [2,-1,-1,0]
-    //    |                                          
+    //    |
     //    |-- obj1 (current doc - contextual)        - (row 3, [-1,-1,-1,0]) = encode as parent => [3,-1,-1,1]
     //    |-- obj2 (current doc - contextual)        - (row 4, [-1,-1,-1,0]) = encode as parent => [4,-1,-1,1]
     //    |   |- obj2.prop1 (contextual)             - (row 0, [4,-1,-1,1])  = encode as parent => [4,-1,0,1]
     //    |   |- obj2.prop2 (contextual)             - (row 1, [4,-1,-1,1])  = encode as parent => [4,-1,1,1]
     //    |      | - obj2.prop2.path1 (contextual)   - (row 0, [4,-1,0 ,1])  = encode as parent => INVALID, LEAF ITEM
     //    |      | - obj2.prop2.path2 (contextual)   - (row 1, [4,-1,1 ,1])  = encode as parent => INVALID, LEAF ITEM
-    //    |                                          
+    //    |
     //    |-- prop1 (current obj - contextual)       - (row 5, [-1,-1,-1,0]) = encode as parent => [5,-1,-1,1]
     //    |-- prop2 (current obj - contextual)       - (row 6, [-1,-1,-1,0]) = encode as parent => [6,-1,-1,1]
     //        |-- prop2.path1 (contextual)           - (row 0, [ 6,-1,-1,0]) = encode as parent => INVALID, LEAF ITEM
     //        |-- prop2.path2 (contextual)           - (row 1, [ 6,-1,-1,0]) = encode as parent => INVALID, LEAF ITEM
-    //    
+    //
     
     struct Info {
         qint32 doc;
@@ -160,6 +161,23 @@ public:
 
         static const Info root;
     };
+
+    static const quint64 k_numBitsProp                  = 16ULL;    // 0 .. 15
+    static const quint64 k_numBitsObj                   = 24ULL;    // 16.. 39
+    static const quint64 k_numBitsContextualHierarchy   = 1;        // 40
+    static const quint64 k_numBitsDocuments             = 23ULL;    // 41.. 63
+
+    static const quint64 k_offsetProp                   = 0;
+    static const quint64 k_offsetObj                    = k_offsetProp + k_numBitsProp;
+    static const quint64 k_offsetContextualHierarchy    = k_offsetObj + k_numBitsObj;
+    static const quint64 k_offsetDocuments              = k_offsetContextualHierarchy + k_numBitsContextualHierarchy;
+
+    static const quint64 k_maskProp                     = ((1ULL << k_numBitsProp) - 1);
+    static const quint64 k_maskObj                      = ((1ULL << k_numBitsObj) - 1);
+    static const quint64 k_maskContextualHierarchy      = ((1ULL << k_numBitsContextualHierarchy) - 1);
+    static const quint64 k_maskDocuments                = ((1ULL << k_numBitsDocuments) - 1);
+
+
 
     union InfoPtrEncoding
     {
@@ -173,25 +191,22 @@ public:
         } d32;
         void* ptr;
 
-        InfoPtrEncoding(const Info& info)
+        InfoPtrEncoding(const Info& info) : d_enc(0)
         {
-            d_enc = 0;
             if (sizeof(void*) <  sizeof(InfoPtrEncoding)) {
                 d32.doc = (quint8)(info.doc+1);
                 d32.obj = (quint16)(info.obj+1);
                 d32.prop = (quint8)(info.prop+1);
                 d32.contextualHierarchy = info.contextualHierarchy;
             } else {
-                d_enc = ((quint64(info.doc+1) & ((1ULL << 23) - 1)) << 41ULL)
-                      | (quint64(info.contextualHierarchy) << 40ULL)
-                      | ((quint64(info.obj+1) & ((1ULL << 24) - 1)) << 16ULL) 
-                      | (quint64(info.prop+1) & ((1ULL << 16) - 1));
+                d_enc = ((quint64(info.doc+1) & k_maskDocuments ) << k_offsetDocuments)
+                      | ((quint64(info.contextualHierarchy) & k_maskContextualHierarchy) << k_offsetContextualHierarchy)
+                      | ((quint64(info.obj+1) & k_maskObj) << k_offsetObj)
+                      | ((quint64(info.prop+1) & k_maskProp) << k_offsetProp);
             }
         }
-        InfoPtrEncoding(void* ptr)
+        InfoPtrEncoding(void* pointer) : d_enc(0), ptr(pointer)
         {
-            d_enc = 0;
-            this->ptr = ptr;
         }
 
         Info DecodeInfo()
@@ -204,10 +219,10 @@ public:
                 info.prop = qint32(d32.prop) -1;
                 info.contextualHierarchy = d32.contextualHierarchy;
             } else {
-                info.doc = ((d_enc >> 41ULL) & ((1ULL << 23) - 1)) - 1;
-                info.contextualHierarchy = ((d_enc >> 40ULL) & 1);
-                info.obj = ((d_enc >> 16ULL) & ((1ULL << 24) - 1)) - 1;
-                info.prop = (d_enc & ((1ULL << 16) - 1)) - 1;         
+                info.doc                    = ((d_enc >> k_offsetDocuments) & k_maskDocuments) - 1;
+                info.contextualHierarchy    = ((d_enc >> k_offsetContextualHierarchy) & k_maskContextualHierarchy);
+                info.obj                    = ((d_enc >> k_offsetObj) & k_maskObj) - 1;
+                info.prop                   = ((d_enc >> k_offsetProp) & k_maskProp) - 1;         
             }
             return info;
         }
@@ -932,9 +947,9 @@ void ExpressionLineEdit::setDocumentObject(const App::DocumentObject * currentDo
         completer->setCaseSensitivity(Qt::CaseInsensitive);
         if (!exactMatch)
             completer->setFilterMode(Qt::MatchContains);
-        connect(completer, SIGNAL(activated(QString)), this, SLOT(slotCompleteTextSelected(QString)));
-        connect(completer, SIGNAL(highlighted(QString)), this, SLOT(slotCompleteTextHighlighted(QString)));
-        connect(this, SIGNAL(textChanged2(QString, int)), completer, SLOT(slotUpdate(QString, int)));
+        connect(completer, qOverload<const QString&>(&QCompleter::activated), this, &ExpressionLineEdit::slotCompleteTextSelected);
+        connect(completer, qOverload<const QString&>(&QCompleter::highlighted), this, &ExpressionLineEdit::slotCompleteTextHighlighted);
+        connect(this, &ExpressionLineEdit::textChanged2, completer, &ExpressionCompleter::slotUpdate);
     }
 }
 
