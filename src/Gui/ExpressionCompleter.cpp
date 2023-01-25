@@ -65,8 +65,9 @@ public:
         if(obj) {
             currentDoc = obj->getDocument()->getName();
             currentObj = obj->getNameInDocument();
-            if(!noProperty && checkInList)
+            if (!noProperty && checkInList) {
                 inList = obj->getInListEx(true);
+            }
         } else {
             currentDoc.clear();
             currentObj.clear();
@@ -161,6 +162,23 @@ public:
         static const Info root;
     };
 
+    static const quint64 k_numBitsProp                  = 16ULL;    // 0 .. 15
+    static const quint64 k_numBitsObj                   = 24ULL;    // 16.. 39
+    static const quint64 k_numBitsContextualHierarchy   = 1;        // 40
+    static const quint64 k_numBitsDocuments             = 23ULL;    // 41.. 63
+
+    static const quint64 k_offsetProp                   = 0;
+    static const quint64 k_offsetObj                    = k_offsetProp + k_numBitsProp;
+    static const quint64 k_offsetContextualHierarchy    = k_offsetObj + k_numBitsObj;
+    static const quint64 k_offsetDocuments              = k_offsetContextualHierarchy + k_numBitsContextualHierarchy;
+
+    static const quint64 k_maskProp                     = ((1ULL << k_numBitsProp) - 1);
+    static const quint64 k_maskObj                      = ((1ULL << k_numBitsObj) - 1);
+    static const quint64 k_maskContextualHierarchy      = ((1ULL << k_numBitsContextualHierarchy) - 1);
+    static const quint64 k_maskDocuments                = ((1ULL << k_numBitsDocuments) - 1);
+
+
+
     union InfoPtrEncoding
     {
         quint64 d_enc;
@@ -173,25 +191,23 @@ public:
         } d32;
         void* ptr;
 
-        InfoPtrEncoding(const Info& info)
+        InfoPtrEncoding(const Info& info) : d_enc(0)
         {
-            d_enc = 0;
             if (sizeof(void*) <  sizeof(InfoPtrEncoding)) {
                 d32.doc = (quint8)(info.doc+1);
                 d32.obj = (quint16)(info.obj+1);
                 d32.prop = (quint8)(info.prop+1);
                 d32.contextualHierarchy = info.contextualHierarchy;
             } else {
-                d_enc = ((quint64(info.doc+1) & ((1ULL << 23) - 1)) << 41ULL)
-                      | (quint64(info.contextualHierarchy) << 40ULL)
-                      | ((quint64(info.obj+1) & ((1ULL << 24) - 1)) << 16ULL)
-                      | (quint64(info.prop+1) & ((1ULL << 16) - 1));
+                d_enc = ((quint64(info.doc+1) & k_maskDocuments ) << k_offsetDocuments)
+                      | ((quint64(info.contextualHierarchy) & k_maskContextualHierarchy) << k_offsetContextualHierarchy)
+                      | ((quint64(info.obj+1) & k_maskObj) << k_offsetObj)
+                      | ((quint64(info.prop+1) & k_maskProp) << k_offsetProp);
             }
         }
-        InfoPtrEncoding(void* ptr)
+        InfoPtrEncoding(void* pointer) : d_enc(0)
         {
-            d_enc = 0;
-            this->ptr = ptr;
+            this->ptr = pointer;
         }
 
         Info DecodeInfo()
@@ -204,10 +220,10 @@ public:
                 info.prop = qint32(d32.prop) -1;
                 info.contextualHierarchy = d32.contextualHierarchy;
             } else {
-                info.doc = ((d_enc >> 41ULL) & ((1ULL << 23) - 1)) - 1;
-                info.contextualHierarchy = ((d_enc >> 40ULL) & 1);
-                info.obj = ((d_enc >> 16ULL) & ((1ULL << 24) - 1)) - 1;
-                info.prop = (d_enc & ((1ULL << 16) - 1)) - 1;
+                info.doc                    = ((d_enc >> k_offsetDocuments) & k_maskDocuments) - 1;
+                info.contextualHierarchy    = ((d_enc >> k_offsetContextualHierarchy) & k_maskContextualHierarchy);
+                info.obj                    = ((d_enc >> k_offsetObj) & k_maskObj) - 1;
+                info.prop                   = ((d_enc >> k_offsetProp) & k_maskProp) - 1;
             }
             return info;
         }
@@ -538,8 +554,8 @@ public:
                 auto cdoc = App::GetApplication().getDocument(currentDoc.c_str());
 
                 if (cdoc) {
-                    auto objsSize = static_cast<int>(cdoc->getObjects().size()*2);
-                    int idx = parentInfo.doc - docs.size();
+                    int objsSize = static_cast<int>(cdoc->getObjects().size()*2);
+                    int idx = parentInfo.doc - static_cast<int>(docs.size());
                     if (idx < objsSize) {
                         //  |-- Parent (OBJECT)        - (row 4, [-1,-1,-1,0]) = encode as element => [parent.row,-1,-1,1]
                         //      |- element (PROP)            - (row 0, [parent.row,-1,-1,1])  = encode as element => [parent.row,-1,parent.row,1]
@@ -935,9 +951,9 @@ void ExpressionLineEdit::setDocumentObject(const App::DocumentObject * currentDo
         completer->setCaseSensitivity(Qt::CaseInsensitive);
         if (!exactMatch)
             completer->setFilterMode(Qt::MatchContains);
-        connect(completer, SIGNAL(activated(QString)), this, SLOT(slotCompleteTextSelected(QString)));
-        connect(completer, SIGNAL(highlighted(QString)), this, SLOT(slotCompleteTextHighlighted(QString)));
-        connect(this, SIGNAL(textChanged2(QString, int)), completer, SLOT(slotUpdate(QString, int)));
+        connect(completer, qOverload<const QString&>(&QCompleter::activated), this, &ExpressionLineEdit::slotCompleteTextSelected);
+        connect(completer, qOverload<const QString&>(&QCompleter::highlighted), this, &ExpressionLineEdit::slotCompleteTextHighlighted);
+        connect(this, &ExpressionLineEdit::textChanged2, completer, &ExpressionCompleter::slotUpdate);
     }
 }
 
