@@ -1,4 +1,6 @@
-# Dec 2022 Bumped min (ubuntu 20.04: 3.16.3-1ubuntu1.20.04.1)
+# As of January 2023 we require CMake 3.16.3
+# see https://forum.freecadweb.org/viewtopic.php?f=10&t=72173
+# for further info why
 cmake_minimum_required(VERSION 3.16.3 FATAL_ERROR)
 
 # policy CMP0072 was introduced with CMake 3.11

@@ -154,9 +154,8 @@ macro(SetupPython)
         set(PYTHONINTERP_FOUND ${Python3_Interpreter_FOUND})
     endif()
     
-    # prevent python3 lower than 3.6
-    if (${PYTHON_VERSION_STRING} VERSION_LESS "3.6")
-         message(FATAL_ERROR "To build FreeCAD you need at least Python 3.6\n")
+    if (${PYTHON_VERSION_STRING} VERSION_LESS "3.8")
+         message(FATAL_ERROR "To build FreeCAD you need at least Python 3.8\n")
     endif()
 
 endmacro(SetupPython)
