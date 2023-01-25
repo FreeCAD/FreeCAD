@@ -107,23 +107,23 @@ public:
     // index, and obj field as the object index.
     //
     // An item is uniquely identified by the pair (row, father_link) in the QModelIndex
-    // 
+    //
     // The completion tree structure created takes into account the current document and object
     //
     // It is done as such, in order to have contextual completion (prop -> object -> files):
     // * root (-1,-1)
     // |
-    // |----- documents 
+    // |----- documents
     // |----- current documents' objects [externally set]
     // |----- current objects' props  [externally set]
-    // 
+    //
     // This complicates the decoding schema for the root, where the childcount will be
     // doc.size() + current_doc.Objects.size() + current_obj.Props.size().
-    // 
+    //
     // This is reflected in the complexity of the DATA function.
     //
     // Example encoding of a QMODEL Index
-    //    
+    //
     //    ROOT (row -1, [-1,-1,-1,0]), info represented as [-1,-1,-1,0]
     //    |-- doc 1 (non contextual)                 - (row 0, [-1,-1,-1,0]) = encode as parent => [0,-1,-1,0]
     //    |-- doc 2 (non contextual)                 - (row 1, [-1,-1,-1,0]) = encode as parent => [1,-1,-1,0]
@@ -138,20 +138,20 @@ public:
     //    |
     //    |
     //    |-- doc 3 (non contextual)                 - (row 2, [-1,-1,-1,0]) = encode as parent => [2,-1,-1,0]
-    //    |                                          
+    //    |
     //    |-- obj1 (current doc - contextual)        - (row 3, [-1,-1,-1,0]) = encode as parent => [3,-1,-1,1]
     //    |-- obj2 (current doc - contextual)        - (row 4, [-1,-1,-1,0]) = encode as parent => [4,-1,-1,1]
     //    |   |- obj2.prop1 (contextual)             - (row 0, [4,-1,-1,1])  = encode as parent => [4,-1,0,1]
     //    |   |- obj2.prop2 (contextual)             - (row 1, [4,-1,-1,1])  = encode as parent => [4,-1,1,1]
     //    |      | - obj2.prop2.path1 (contextual)   - (row 0, [4,-1,0 ,1])  = encode as parent => INVALID, LEAF ITEM
     //    |      | - obj2.prop2.path2 (contextual)   - (row 1, [4,-1,1 ,1])  = encode as parent => INVALID, LEAF ITEM
-    //    |                                          
+    //    |
     //    |-- prop1 (current obj - contextual)       - (row 5, [-1,-1,-1,0]) = encode as parent => [5,-1,-1,1]
     //    |-- prop2 (current obj - contextual)       - (row 6, [-1,-1,-1,0]) = encode as parent => [6,-1,-1,1]
     //        |-- prop2.path1 (contextual)           - (row 0, [ 6,-1,-1,0]) = encode as parent => INVALID, LEAF ITEM
     //        |-- prop2.path2 (contextual)           - (row 1, [ 6,-1,-1,0]) = encode as parent => INVALID, LEAF ITEM
-    //    
-    
+    //
+
     struct Info {
         qint32 doc;
         qint32 obj;
@@ -184,7 +184,7 @@ public:
             } else {
                 d_enc = ((quint64(info.doc+1) & ((1ULL << 23) - 1)) << 41ULL)
                       | (quint64(info.contextualHierarchy) << 40ULL)
-                      | ((quint64(info.obj+1) & ((1ULL << 24) - 1)) << 16ULL) 
+                      | ((quint64(info.obj+1) & ((1ULL << 24) - 1)) << 16ULL)
                       | (quint64(info.prop+1) & ((1ULL << 16) - 1));
             }
         }
@@ -197,7 +197,7 @@ public:
         Info DecodeInfo()
         {
             Info info;
-            
+
             if (sizeof(void*) < sizeof(InfoPtrEncoding)) {
                 info.doc = qint32(d32.doc) - 1;
                 info.obj = qint32(d32.obj) -1;
@@ -207,7 +207,7 @@ public:
                 info.doc = ((d_enc >> 41ULL) & ((1ULL << 23) - 1)) - 1;
                 info.contextualHierarchy = ((d_enc >> 40ULL) & 1);
                 info.obj = ((d_enc >> 16ULL) & ((1ULL << 24) - 1)) - 1;
-                info.prop = (d_enc & ((1ULL << 16) - 1)) - 1;         
+                info.prop = (d_enc & ((1ULL << 16) - 1)) - 1;
             }
             return info;
         }
@@ -218,7 +218,7 @@ public:
         InfoPtrEncoding ptrEnc(info);
         return ptrEnc.ptr;
     }
-     
+
 
     static Info getInfo(const QModelIndex &index) {
         InfoPtrEncoding enc(index.internalPointer());
@@ -231,7 +231,7 @@ public:
         QVariant v;
         Info info = getInfo(index);
         _data(info,index.row(),&v,nullptr,role==Qt::UserRole);
-        FC_TRACE(  info.doc << "," << info.obj << "," << info.prop << "," 
+        FC_TRACE(  info.doc << "," << info.obj << "," << info.prop << ","
                 << info.contextualHierarchy << "," << index.row()
                 << ": " << v.toString().toUtf8().constData());
         return v;
@@ -243,7 +243,7 @@ public:
         if (prop)
         {
             prop->getPaths(result);
-            // need to filter out irrelevant paths (len 1, aka just this object identifier)       
+            // need to filter out irrelevant paths (len 1, aka just this object identifier)
             auto res = std::remove_if(
                 result.begin(), result.end(), [](const App::ObjectIdentifier& path) -> bool {
                     return path.getComponents().size() == 0;
@@ -265,7 +265,7 @@ public:
     // This complicates the decoding schema for the root, where the childcount will be
     // doc.size() + current_doc.Objects.size() + current_obj.Props.size().
     //
-    // this function is called in two modes: 
+    // this function is called in two modes:
     // - obtain the count of a node identified by Info,row => count != nullptr, v==nullptr
     // - get the text of an item. This text will contain separators but NO full path
     void _data(const Info &info, int row, QVariant *v, int *count, bool sep=false) const {
@@ -308,7 +308,7 @@ public:
             if(idx>=0 && idx<objSize) {
                 obj = objs[idx/2];
                 // if they are in the ignore list skip
-                if(inList.count(obj)) 
+                if(inList.count(obj))
                     return;
             } else if (!noProperty) {
                 // need to check the current object's props range, or we're parsing the ROOT
@@ -322,8 +322,8 @@ public:
                     cobj->getPropertyNamedList(props);
                     propSize = (int)props.size();
 
-                    // if this is an invalid index, bail out 
-                    // if it's the ROOT break! 
+                    // if this is an invalid index, bail out
+                    // if it's the ROOT break!
                     if(idx >= propSize)
                         return;
                     if(idx>=0) {
@@ -387,7 +387,7 @@ public:
             obj = objs[idx/2];
 
             if(info.obj<0) {
-                // if this is AN actual Object item and not a root 
+                // if this is AN actual Object item and not a root
                 if(count)
                     *count = objSize; // set the correct count if requested
                 if(v) {
@@ -425,11 +425,11 @@ public:
                 }
                 if (v) {
                     QString res = QString::fromLatin1(propName);
-                   
+
                     // check to see if we have accessible paths from this prop name?
                     if (sep && retrieveSubPaths(prop).size() != 0)
                         res += QLatin1Char('.');
-                    
+
                     *v = res;
                 }
                 return;
@@ -441,28 +441,28 @@ public:
             // idx identifies the path
             idx = row;
             std::vector<App::ObjectIdentifier> paths = retrieveSubPaths(prop);
-            
-            if (count) 
+
+            if (count)
             {
                 *count = paths.size();
             }
-            
+
             // check to see if this is a valid path
             if (idx < 0 || idx >= paths.size()) {
                 return;
             }
 
-            if (v) 
+            if (v)
             {
                 auto str = paths[idx].getSubPathStr();
-                if (str.size() && (str[0] == '.' || str[0] == '#')) 
+                if (str.size() && (str[0] == '.' || str[0] == '#'))
                 {
                     // skip the "."
                     *v = QString::fromLatin1(str.c_str() + 1);
                 } else {
                     *v = QString::fromLatin1(str.c_str());
                 }
-                
+
             }
         }
         return;
@@ -471,10 +471,10 @@ public:
     QModelIndex parent(const QModelIndex & index) const override {
         if(!index.isValid())
             return QModelIndex();
-        
-        Info parentInfo = getInfo(index); 
+
+        Info parentInfo = getInfo(index);
         Info grandParentInfo = parentInfo;
-        
+
 
         if (parentInfo.contextualHierarchy) {
             // for contextual hierarchy we have this:
@@ -501,7 +501,7 @@ public:
                 return createIndex(parentInfo.doc, 0, infoId(grandParentInfo));
             }
         }
-        
+
 
         return QModelIndex();
     }
@@ -529,7 +529,7 @@ public:
                 if (element.row() >= docs.size()*2) {
                     info.contextualHierarchy = 1;
                 }
-            } else if (parentInfo.contextualHierarchy) { 
+            } else if (parentInfo.contextualHierarchy) {
 
                 const auto& docs = App::GetApplication().getDocuments();
                 auto cdoc = App::GetApplication().getDocument(currentDoc.c_str());
@@ -549,7 +549,7 @@ public:
                     } else {
                         // if my parent (parentInfo) is a prop, it means that our element is a prop path
                         // and that is a leaf item (we don't split prop paths further)
-                        // we can't encode leaf items into an "Info" 
+                        // we can't encode leaf items into an "Info"
                         return false;
                     }
                 } else {
@@ -580,7 +580,7 @@ public:
         if (!parentCanHaveChildren) {
             return QModelIndex();
         }
-        
+
         return createIndex(row, column, infoId(myParentInfoEncoded));
     }
 
@@ -594,7 +594,7 @@ public:
             info = Info::root;
             row = -1;
         }else{
-            // try to encode the parent's QModelIndex into an info structure 
+            // try to encode the parent's QModelIndex into an info structure
             // if the paren't can't have any children, return 0
             if (!modelIndexToParentInfo(parent, info)) {
                 return 0;
@@ -602,7 +602,7 @@ public:
         }
         int count = 0;
         _data(info,row,nullptr,&count);
-        FC_TRACE(  info.doc << "," << info.obj << "," << info.prop << "," 
+        FC_TRACE(  info.doc << "," << info.obj << "," << info.prop << ","
                 << info.contextualHierarchy << "," << row << " row count " << count);
         return count;
     }
@@ -691,8 +691,8 @@ QStringList ExpressionCompleter::splitPath ( const QString & input ) const
         return l;
 
     int retry = 0;
-    std::string lastElem;  // used to recover in case of parse failure after ".". 
-    std::string trim;      // used to delete ._self added for another recovery path 
+    std::string lastElem;  // used to recover in case of parse failure after ".".
+    std::string trim;      // used to delete ._self added for another recovery path
     while(1) {
         try {
             // this will not work for incomplete Tokens at the end
@@ -733,8 +733,8 @@ QStringList ExpressionCompleter::splitPath ( const QString & input ) const
             FC_TRACE("split path " << path << " error: " << e.what());
             if (!retry) {
                 size_t lastElemStart = path.rfind('.');
-                
-                if (lastElemStart == std::string::npos) 
+
+                if (lastElemStart == std::string::npos)
                 {
                     lastElemStart = path.rfind('#');
                 }
@@ -749,10 +749,10 @@ QStringList ExpressionCompleter::splitPath ( const QString & input ) const
                 if (lastElem.size() > 1)
                 {
                     path = path + lastElem;
-                    lastElem = "";                    
+                    lastElem = "";
                 }
                 // else... we don't reset lastElem if it's a '.' or '#' to allow chaining completions
-                
+
                 char last = path[path.size()-1];
                 if(last!='#' && last!='.' && path.find('#')!=std::string::npos) {
                     path += "._self";
@@ -768,7 +768,7 @@ QStringList ExpressionCompleter::splitPath ( const QString & input ) const
                     trim = ">>";
                     continue;
                 }
-            } 
+            }
             return QStringList() << input;
         }
     }
@@ -890,7 +890,7 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
     FC_TRACE("Completion Prefix:" << completionPrefix.toUtf8().constData());
     // Set completion prefix
     setCompletionPrefix(completionPrefix);
-    
+
     if (!completionPrefix.isEmpty() && widget()->hasFocus()) {
         FC_TRACE("Complete on Prefix" << completionPrefix.toUtf8().constData());
         complete();
@@ -997,7 +997,7 @@ void ExpressionLineEdit::slotCompleteText(const QString & completionPrefix, bool
             Base::FlagToggler<bool> flag(block, true);
             slotTextChanged(before + after);
         }
-    }    
+    }
 }
 
 void ExpressionLineEdit::slotCompleteTextHighlighted(const QString& completionPrefix)
