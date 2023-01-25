@@ -141,9 +141,8 @@ SectionCut::SectionCut(QWidget* parent)
             // the cutting is started when only an existing cut was visible
             std::vector<App::DocumentObject*> compoundObjects;
             pcCompound->Links.getLinks(compoundObjects);
-            for (auto itCompound = compoundObjects.begin(); itCompound != compoundObjects.end();
-                 itCompound++) {
-                App::Link* pcLink = dynamic_cast<App::Link*>(*itCompound);
+            for (auto aCompoundObj : compoundObjects) {
+                App::Link* pcLink = dynamic_cast<App::Link*>(aCompoundObj);
                 auto LinkedObject = pcLink->getLink();
                 // only if not already visible
                 if (!(LinkedObject->Visibility.getValue())) {
