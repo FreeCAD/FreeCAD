@@ -253,7 +253,7 @@ public:
         return result;
     }
 
-   // The completion tree structure created takes into account the current document and object
+    // The completion tree structure created takes into account the current document and object
     //
     // It is done as such:
     // * root (-1,-1)
@@ -284,8 +284,9 @@ public:
         App::Property* prop = nullptr;
         // check if the document is uniquely identified: either the correct index in info.doc
         // OR if, the node is a descendant of the root, its row lands within 0...docsize
-        if(idx>=0 && idx<docSize)
+        if(idx>=0 && idx<docSize) {
             doc = docs[idx/2];
+        }
         else {
             // if we're looking at the ROOT, or the row identifies one of the other ROOT elements
             // |----- current documents' objects, rows: docs.size             ... docs.size + objs.size
@@ -337,16 +338,16 @@ public:
         // the item is the ROOT or a CHILD of the root
         if(info.doc<0) {
             // and we're asking for a count, compute it
-            if(count)
+            if(count) {
                 // note that if we're dealing with a valid DOC node (row>0, ROOT_info)
                 // objSize and propSize will be zero because of the early exit above
                 *count = docSize + objSize + propSize;
+            }
             if(idx>=0 && v) {
                 // we're asking for this child's data, and IT's NOT THE ROOT
                 QString res;
                 // we resolved the property
-                if (propName)
-                {
+                if (propName) {
                     res = QString::fromLatin1(propName);
                     // resolve the property
                     if (sep && !noProperty && retrieveSubPaths(prop).size() != 0)
@@ -360,7 +361,8 @@ public:
                         res = QString::fromLatin1(obj->getNameInDocument());
                     if(sep && !noProperty)
                         res += QLatin1Char('.');
-                } else {
+                }
+                else {
                     // the document has been resolved, use the saved idx to figure out quotation or not.
                     if(idx & 1)
                         res = QString::fromUtf8(quote(doc->Label.getStrValue()).c_str());
