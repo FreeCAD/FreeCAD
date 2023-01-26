@@ -83,6 +83,8 @@ class BSpline(DraftObject):
         return params
 
     def onChanged(self, fp, prop):
+        self.props_changed_store(prop)
+
         if prop == "Parameterization":
             if fp.Parameterization < 0.:
                 fp.Parameterization = 0.
@@ -90,12 +92,15 @@ class BSpline(DraftObject):
                 fp.Parameterization = 1.0
 
     def execute(self, obj):
+        if self.props_changed_placement_only() \
+                or not obj.Points:
+            obj.positionBySupport()
+            self.props_changed_clear()
+            return
+
         import Part
 
         self.assureProperties(obj)
-
-        if not obj.Points:
-            obj.positionBySupport()
 
         self.knotSeq = self.parameterization(obj.Points, obj.Parameterization, obj.Closed)
         plm = obj.Placement
@@ -131,6 +136,7 @@ class BSpline(DraftObject):
                 obj.Area = shape.Area
         obj.Placement = plm
         obj.positionBySupport()
+        self.props_changed_clear()
 
 
 # Alias for compatibility with v0.18 and earlier

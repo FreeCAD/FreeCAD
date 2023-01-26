@@ -381,7 +381,9 @@ class Array(DraftLink):
 
     def execute(self, obj):
         """Execute when the object is created or recomputed."""
-        if not obj.Base:
+        if self.props_changed_placement_only() \
+                or not obj.Base:
+            self.props_changed_clear()
             return
 
         pl = obj.Placement
@@ -419,7 +421,9 @@ class Array(DraftLink):
                                   axis, center,
                                   obj.NumberCircles, obj.Symmetry)
 
-        return super(Array, self).buildShape(obj, pl, pls)
+        self.buildShape(obj, pl, pls)
+        self.props_changed_clear()
+        return (not self.use_link)
 
 
 # Alias for compatibility with v0.18 and earlier

@@ -77,8 +77,14 @@ class BezCurve(DraftObject):
         obj.setEditorMode("Continuity", 1)
 
     def execute(self, fp):
+        if self.props_changed_placement_only():
+            fp.positionBySupport()
+            self.props_changed_clear()
+            return
+
         self.createGeometry(fp)
         fp.positionBySupport()
+        self.props_changed_clear()
 
     def _segpoleslst(self,fp):
         """Split the points into segments."""
@@ -99,6 +105,8 @@ class BezCurve(DraftObject):
         #fp.Continuity = [0]*numsegments
 
     def onChanged(self, fp, prop):
+        self.props_changed_store(prop)
+
         if prop == 'Closed':
             # if remove the last entry when curve gets opened
             oldlen = len(fp.Continuity)

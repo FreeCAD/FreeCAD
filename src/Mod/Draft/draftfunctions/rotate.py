@@ -121,19 +121,6 @@ def rotate(objectslist, angle, center=App.Vector(0, 0, 0),
                 newobj.ViewObject.RotationAxis = "Z"
                 newobj.ViewObject.Rotation = -angle
 
-        elif utils.get_type(obj) == "Point":
-            if copy:
-                newobj = make_copy.make_copy(obj)
-            else:
-                newobj = obj
-            v = App.Vector(newobj.X, newobj.Y, newobj.Z)
-            rv = v.sub(real_center)
-            rv = DraftVecUtils.rotate(rv, math.radians(angle), real_axis)
-            v = real_center.add(rv)
-            newobj.X = v.x
-            newobj.Y = v.y
-            newobj.Z = v.z
-
         elif obj.isDerivedFrom("App::DocumentObjectGroup"):
             if copy:
                 newobj = newgroups[obj.Name]

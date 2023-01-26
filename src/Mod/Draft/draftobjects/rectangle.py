@@ -74,6 +74,11 @@ class Rectangle(DraftObject):
 
     def execute(self, obj):
         """This method is run when the object is created or recomputed."""
+        if self.props_changed_placement_only():
+            obj.positionBySupport()
+            self.props_changed_clear()
+            return
+
         import Part
 
         if (obj.Length.Value == 0) or (obj.Height.Value == 0):
@@ -164,8 +169,11 @@ class Rectangle(DraftObject):
             obj.Area = shape.Area
 
         obj.Placement = plm
-
         obj.positionBySupport()
+        self.props_changed_clear()
+
+    def onChanged(self, obj, prop):
+        self.props_changed_store(prop)
 
 
 # Alias for compatibility with v0.18 and earlier
