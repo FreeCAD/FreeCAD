@@ -180,8 +180,6 @@ public:
     static const quint64 k_maskContextualHierarchy      = ((1ULL << k_numBitsContextualHierarchy) - 1);
     static const quint64 k_maskDocuments                = ((1ULL << k_numBitsDocuments) - 1);
 
-
-
     union InfoPtrEncoding
     {
         quint64 d_enc;
@@ -253,12 +251,12 @@ public:
     {
         if (role != Qt::EditRole && role != Qt::DisplayRole && role != Qt::UserRole)
             return QVariant();
-        QVariant v;
+        QVariant variant;
         Info info = getInfo(index);
-        _data(info, index.row(), &v, nullptr, role == Qt::UserRole);
+        _data(info, index.row(), &variant, nullptr, role == Qt::UserRole);
         FC_TRACE(info.doc << "," << info.obj << "," << info.prop << "," << info.contextualHierarchy
-                          << "," << index.row() << ": " << v.toString().toUtf8().constData());
-        return v;
+                          << "," << index.row() << ": " << variant.toString().toUtf8().constData());
+        return variant;
     }
 
     static std::vector<App::ObjectIdentifier> retrieveSubPaths(const App::Property* prop)
@@ -269,7 +267,7 @@ public:
             // need to filter out irrelevant paths (len 1, aka just this object identifier)
             auto res = std::remove_if(
                 result.begin(), result.end(), [](const App::ObjectIdentifier& path) -> bool {
-                    return path.getComponents().size() == 0;
+                    return path.getComponents().empty();
                 });
             result.erase(res, result.end());
         }
@@ -375,7 +373,7 @@ public:
                 if (propName) {
                     res = QString::fromLatin1(propName);
                     // resolve the property
-                    if (sep && !noProperty && retrieveSubPaths(prop).size() != 0)
+                    if (sep && !noProperty && !retrieveSubPaths(prop).empty())
                         res += QLatin1Char('.');
                 }
                 else if (obj) {
@@ -454,7 +452,7 @@ public:
                     QString res = QString::fromLatin1(propName);
 
                     // check to see if we have accessible paths from this prop name?
-                    if (sep && retrieveSubPaths(prop).size() != 0)
+                    if (sep && !retrieveSubPaths(prop).empty())
                         res += QLatin1Char('.');
                     *v = res;
                 }
