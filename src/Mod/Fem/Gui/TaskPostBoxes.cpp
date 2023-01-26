@@ -32,6 +32,7 @@
 
 # include <QApplication>
 # include <QMessageBox>
+# include <QMetaMethod>
 # include <QToolTip>
 #endif
 
@@ -241,8 +242,9 @@ void TaskDlgPost::connectSlots()
 {
     // Connect emitAddedFunction() with slotAddedFunction()
     QObject* sender = nullptr;
+    int indexSignal = 0;
     for (const auto dlg : m_boxes) {
-        int indexSignal = dlg->metaObject()->indexOfSignal(QMetaObject::normalizedSignature("emitAddedFunction()"));
+        indexSignal = dlg->metaObject()->indexOfSignal(QMetaObject::normalizedSignature("emitAddedFunction()"));
         if (indexSignal >= 0) {
             sender = dlg;
             break;
@@ -253,7 +255,8 @@ void TaskDlgPost::connectSlots()
         for (const auto dlg : m_boxes) {
             int indexSlot = dlg->metaObject()->indexOfSlot(QMetaObject::normalizedSignature("slotAddedFunction()"));
             if (indexSlot >= 0) {
-                connect(sender, SIGNAL(emitAddedFunction()), dlg, SLOT(slotAddedFunction()));
+                connect(sender, sender->metaObject()->method(indexSignal),
+                        dlg, dlg->metaObject()->method(indexSlot));
             }
         }
     }
