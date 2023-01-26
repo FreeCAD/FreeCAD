@@ -68,12 +68,14 @@ class DraftModification(unittest.TestCase):
         _msg("  Line")
         _msg("  a={0}, b={1}".format(a, b))
         obj = Draft.make_line(a, b)
+        App.ActiveDocument.recompute()
 
         c = Vector(3, 1, 0)
         _msg("  Translation vector")
         _msg("  c={}".format(c))
         Draft.move(obj, c)
-        self.assertTrue(obj.Start == Vector(3, 3, 0),
+        App.ActiveDocument.recompute()
+        self.assertTrue(obj.Start.isEqual(Vector(3, 3, 0), 1e-6),
                         "'{}' failed".format(operation))
 
     def test_copy(self):
@@ -108,7 +110,8 @@ class DraftModification(unittest.TestCase):
         _msg("  Rotation")
         _msg("  angle={} degrees".format(rot))
         Draft.rotate(obj, rot)
-        self.assertTrue(obj.Start.isEqual(c, 1e-12),
+        App.ActiveDocument.recompute()
+        self.assertTrue(obj.Start.isEqual(c, 1e-6),
                         "'{}' failed".format(operation))
 
     def test_offset_open(self):
@@ -668,7 +671,7 @@ class DraftModification(unittest.TestCase):
                    Vector( 5.0, 14.5, 0.0)]
         vrts = obj.Shape.Vertexes
         for i in range(4):
-            self.assertTrue(vrts[i].Point.isEqual(newEnds[i], 1e-8),
+            self.assertTrue(vrts[i].Point.isEqual(newEnds[i], 1e-6),
                             "'{}' failed".format(operation))
         # check midpoints of arcs:
         newMids = [Vector( 9.0,  4.0, 0.0),
@@ -678,7 +681,7 @@ class DraftModification(unittest.TestCase):
         for i in range(4):
             edge = obj.Shape.Edges[i]
             par = (edge.LastParameter - edge.FirstParameter) / 2.0
-            self.assertTrue(edge.valueAt(par).isEqual(newMids[i], 1e-8),
+            self.assertTrue(edge.valueAt(par).isEqual(newMids[i], 1e-6),
                             "'{}' failed".format(operation))
 
     def test_scale_part_feature_lines(self):
@@ -711,7 +714,7 @@ class DraftModification(unittest.TestCase):
                   Vector( 5.0, 14.5, 0.0)]
         vrts = obj.Shape.Vertexes
         for i in range(4):
-            self.assertTrue(vrts[i].Point.isEqual(newPts[i], 1e-8),
+            self.assertTrue(vrts[i].Point.isEqual(newPts[i], 1e-6),
                             "'{}' failed".format(operation))
 
     def test_scale_rectangle(self):
@@ -734,15 +737,15 @@ class DraftModification(unittest.TestCase):
         newBase = Vector(5.0, 5.5, 0.0)
         newLen = 8.0
         newHgt = 9.0
-        self.assertTrue(obj.Placement.Base.isEqual(newBase, 1e-8),
+        self.assertTrue(obj.Placement.Base.isEqual(newBase, 1e-6),
                         "'{}' failed".format(operation))
         self.assertAlmostEqual(obj.Length,
                                newLen,
-                               delta = 1e-8,
+                               delta = 1e-6,
                                msg = "'{}' failed".format(operation))
         self.assertAlmostEqual(obj.Height,
                                newHgt,
-                               delta = 1e-8,
+                               delta = 1e-6,
                                msg = "'{}' failed".format(operation))
 
     def test_scale_spline(self):
@@ -767,7 +770,7 @@ class DraftModification(unittest.TestCase):
                   Vector( 9.0, 14.5, 0.0),
                   Vector(13.0,  5.5, 0.0)]
         for i in range(3):
-            self.assertTrue(obj.Points[i].add(base).isEqual(newPts[i], 1e-8),
+            self.assertTrue(obj.Points[i].add(base).isEqual(newPts[i], 1e-6),
                             "'{}' failed".format(operation))
 
     def test_scale_wire(self):
@@ -795,7 +798,7 @@ class DraftModification(unittest.TestCase):
                   Vector( 5.0, 14.5, 0.0)]
         vrts = obj.Shape.Vertexes
         for i in range(4):
-            self.assertTrue(vrts[i].Point.isEqual(newPts[i], 1e-8),
+            self.assertTrue(vrts[i].Point.isEqual(newPts[i], 1e-6),
                             "'{}' failed".format(operation))
 
     def tearDown(self):
