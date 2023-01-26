@@ -143,11 +143,13 @@ SectionCut::SectionCut(QWidget* parent)
             pcCompound->Links.getLinks(compoundObjects);
             for (auto aCompoundObj : compoundObjects) {
                 App::Link* pcLink = dynamic_cast<App::Link*>(aCompoundObj);
-                auto LinkedObject = pcLink->getLink();
-                // only if not already visible
-                if (!(LinkedObject->Visibility.getValue())) {
-                    LinkedObject->Visibility.setValue(true);
-                    ObjectsListVisible.emplace_back(LinkedObject);
+                auto LinkedObject = pcLink ? pcLink->getLink() : nullptr;
+                if (LinkedObject) {
+                    // only if not already visible
+                    if (!(LinkedObject->Visibility.getValue())) {
+                        LinkedObject->Visibility.setValue(true);
+                        ObjectsListVisible.emplace_back(LinkedObject);
+                    }
                 }
             }
         }
@@ -390,9 +392,14 @@ void SectionCut::startCutting(bool isInitial)
     std::vector<App::DocumentObject*> ObjectsListCut;
     bool isLinkAssembly = false;
     for (it = ObjectsListVisible.begin(); it != ObjectsListVisible.end(); ++it) {
+        App::DocumentObject* object = it->getObject();
+        if (!object) {
+            continue;
+        }
+
         // we need all Link objects in App::Part for example for Assembly 4
-        if (it->getObject()->getTypeId() == Base::Type::fromName("App::Part")) {
-            App::Part* pcPart = static_cast<App::Part*>(it->getObject());
+        if (object->getTypeId() == Base::Type::fromName("App::Part")) {
+            App::Part* pcPart = static_cast<App::Part*>(object);
            
             // collect all its link objects
             auto groupObjects = pcPart->Group.getValue();
@@ -405,22 +412,26 @@ void SectionCut::startCutting(bool isInitial)
             }
         }
         // get all shapes that are also Part::Features
-        if (it->getObject()->getPropertyByName("Shape")
-            && it->getObject()->getTypeId().isDerivedFrom(Base::Type::fromName("Part::Feature"))) {
-            // sort out 2D objects, datums, App:Parts, compounds and objects that are part of a PartDesign body
-            if (!it->getObject()->getTypeId().isDerivedFrom(Base::Type::fromName("Part::Part2DObject"))
-                && !it->getObject()->getTypeId().isDerivedFrom(Base::Type::fromName("Part::Datum"))
-                && !it->getObject()->getTypeId().isDerivedFrom(Base::Type::fromName("PartDesign::Feature"))
-                && !it->getObject()->getTypeId().isDerivedFrom(Base::Type::fromName("Part::Compound"))
-                && it->getObject()->getTypeId() != Base::Type::fromName("App::Part"))
-                ObjectsListCut.push_back(it->getObject());
+        if (object->getPropertyByName("Shape")
+            && object->getTypeId().isDerivedFrom(Base::Type::fromName("Part::Feature"))) {
+            // sort out 2D objects, datums, App:Parts, compounds and objects that are
+            // part of a PartDesign body
+            if (!object->getTypeId().isDerivedFrom(
+                    Base::Type::fromName("Part::Part2DObject"))
+                && !object->getTypeId().isDerivedFrom(Base::Type::fromName("Part::Datum"))
+                && !object->getTypeId().isDerivedFrom(
+                    Base::Type::fromName("PartDesign::Feature"))
+                && !object->getTypeId().isDerivedFrom(
+                    Base::Type::fromName("Part::Compound"))
+                && object->getTypeId() != Base::Type::fromName("App::Part"))
+                ObjectsListCut.push_back(object);
         }
         // get Links that are derived from Part objects
-        if (it->getObject()->getTypeId() == Base::Type::fromName("App::Link")) {
-            App::Link* pcLink = static_cast<App::Link*>(it->getObject());
+        if (object->getTypeId() == Base::Type::fromName("App::Link")) {
+            App::Link* pcLink = static_cast<App::Link*>(object);
             auto linkedObject = doc->getObject(pcLink->LinkedObject.getObjectName());
             if (linkedObject && linkedObject->getTypeId().isDerivedFrom(Base::Type::fromName("Part::Feature")))
-                ObjectsListCut.push_back(it->getObject());
+                ObjectsListCut.push_back(object);
         }
     }
 
@@ -441,13 +452,19 @@ void SectionCut::startCutting(bool isInitial)
     std::vector<App::DocumentObject*>::iterator it3;
     // check list of visible objects and not cut list because we want to repove from the cut list
     for (it = ObjectsListVisible.begin(); it != ObjectsListVisible.end(); ++it) {
-        if ( it->getObject()->getTypeId().isDerivedFrom(Base::Type::fromName("Part::Boolean"))
-            || it->getObject()->getTypeId().isDerivedFrom(Base::Type::fromName("Part::MultiCommon"))
-            || it->getObject()->getTypeId().isDerivedFrom(Base::Type::fromName("Part::MultiFuse"))
-            || it->getObject()->getTypeId().isDerivedFrom(Base::Type::fromName("Part::Thickness"))
-            || it->getObject()->getTypeId().isDerivedFrom(Base::Type::fromName("Part::FilletBase")) ) {
+        App::DocumentObject* object = it->getObject();
+        if (!object) {
+            continue;
+        }
+
+        if (object->getTypeId().isDerivedFrom(Base::Type::fromName("Part::Boolean"))
+            || object->getTypeId().isDerivedFrom(Base::Type::fromName("Part::MultiCommon"))
+            || object->getTypeId().isDerivedFrom(Base::Type::fromName("Part::MultiFuse"))
+            || object->getTypeId().isDerivedFrom(Base::Type::fromName("Part::Thickness"))
+            || object->getTypeId().isDerivedFrom(
+                Base::Type::fromName("Part::FilletBase"))) {
             // get possible links
-            auto subObjectList = it->getObject()->getOutList();
+            auto subObjectList = object->getOutList();
             // if there are links, delete them
             if (!subObjectList.empty()) {
                 for (it2 = subObjectList.begin(); it2 != subObjectList.end(); ++it2) {
@@ -588,7 +605,10 @@ void SectionCut::startCutting(bool isInitial)
 
     // make all objects invisible so that only the compound remains
     for (it = ObjectsListVisible.begin(); it != ObjectsListVisible.end(); ++it) {
-        it->getObject()->Visibility.setValue(false);
+        App::DocumentObject* object = it->getObject();
+        if (object) {
+            object->Visibility.setValue(false);
+        }
     }
 
     // the area in which we can cut is the size of the compound
