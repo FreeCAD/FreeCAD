@@ -1122,10 +1122,10 @@ class SurveyTaskPanel:
 def toggleIfcBrepFlag(obj):
     """toggleIfcBrepFlag(obj): toggles the IFC brep flag of the given object, forcing it
     to be exported as brep geometry or not."""
-    if not hasattr(obj,"IfcAttributes"):
-        FreeCAD.Console.PrintMessage(translate("Arch","Object doesn't have settable IFC Attributes"))
+    if not hasattr(obj,"IfcData"):
+        FreeCAD.Console.PrintMessage(translate("Arch","Object doesn't have settable IFCData"))
     else:
-        d = obj.IfcAttributes
+        d = obj.IfcData
         if "FlagForceBrep" in d.keys():
             if d["FlagForceBrep"] == "True":
                 d["FlagForceBrep"] = "False"
@@ -1136,7 +1136,7 @@ def toggleIfcBrepFlag(obj):
         else:
             d["FlagForceBrep"] = "True"
             FreeCAD.Console.PrintMessage(translate("Arch","Enabling Brep force flag of object")+" "+obj.Label+"\n")
-        obj.IfcAttributes = d
+        obj.IfcData = d
 
 
 def makeCompoundFromSelected(objects=None):
