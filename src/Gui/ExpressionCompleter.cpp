@@ -49,9 +49,10 @@ Q_DECLARE_METATYPE(App::ObjectIdentifier)
 using namespace App;
 using namespace Gui;
 
-class ExpressionCompleterModel: public QAbstractItemModel {
+class ExpressionCompleterModel: public QAbstractItemModel
+{
 public:
-    ExpressionCompleterModel(QObject *parent, bool noProperty)
+    ExpressionCompleterModel(QObject* parent, bool noProperty)
         :QAbstractItemModel(parent), noProperty(noProperty)
     {
     }
@@ -60,21 +61,22 @@ public:
         noProperty = enabled;
     }
 
-    void setDocumentObject(const App::DocumentObject *obj, bool checkInList) {
+    void setDocumentObject(const App::DocumentObject* obj, bool checkInList)
+    {
         beginResetModel();
-        if(obj) {
+        if (obj) {
             currentDoc = obj->getDocument()->getName();
             currentObj = obj->getNameInDocument();
             if (!noProperty && checkInList) {
                 inList = obj->getInListEx(true);
             }
-        } else {
+        }
+        else {
             currentDoc.clear();
             currentObj.clear();
             inList.clear();
         }
         endResetModel();
-
     }
 
     // This ExpressionCompleter model works without any physical items.
@@ -153,7 +155,8 @@ public:
     //        |-- prop2.path2 (contextual)           - (row 1, [ 6,-1,-1,0]) = encode as parent => INVALID, LEAF ITEM
     //
 
-    struct Info {
+    struct Info
+    {
         qint32 doc;
         qint32 obj;
         qint32 prop;
@@ -177,8 +180,6 @@ public:
     static const quint64 k_maskContextualHierarchy      = ((1ULL << k_numBitsContextualHierarchy) - 1);
     static const quint64 k_maskDocuments                = ((1ULL << k_numBitsDocuments) - 1);
 
-
-
     union InfoPtrEncoding
     {
         quint64 d_enc;
@@ -186,26 +187,30 @@ public:
         {
             quint8 doc;
             quint8 prop;
-            quint16 obj:15;
-            quint16 contextualHierarchy:1;
+            quint16 obj : 15;
+            quint16 contextualHierarchy : 1;
         } d32;
         void* ptr;
 
-        InfoPtrEncoding(const Info& info) : d_enc(0)
+        InfoPtrEncoding(const Info& info)
+            : d_enc(0)
         {
-            if (sizeof(void*) <  sizeof(InfoPtrEncoding)) {
-                d32.doc = (quint8)(info.doc+1);
-                d32.obj = (quint16)(info.obj+1);
-                d32.prop = (quint8)(info.prop+1);
+            if (sizeof(void*) < sizeof(InfoPtrEncoding)) {
+                d32.doc = (quint8)(info.doc + 1);
+                d32.obj = (quint16)(info.obj + 1);
+                d32.prop = (quint8)(info.prop + 1);
                 d32.contextualHierarchy = info.contextualHierarchy;
-            } else {
-                d_enc = ((quint64(info.doc+1) & k_maskDocuments ) << k_offsetDocuments)
-                      | ((quint64(info.contextualHierarchy) & k_maskContextualHierarchy) << k_offsetContextualHierarchy)
-                      | ((quint64(info.obj+1) & k_maskObj) << k_offsetObj)
-                      | ((quint64(info.prop+1) & k_maskProp) << k_offsetProp);
+            }
+            else {
+                d_enc = ((quint64(info.doc + 1) & k_maskDocuments) << k_offsetDocuments)
+                    | ((quint64(info.contextualHierarchy) & k_maskContextualHierarchy)
+                       << k_offsetContextualHierarchy)
+                    | ((quint64(info.obj + 1) & k_maskObj) << k_offsetObj)
+                    | ((quint64(info.prop + 1) & k_maskProp) << k_offsetProp);
             }
         }
-        InfoPtrEncoding(void* pointer) : d_enc(0)
+        InfoPtrEncoding(void* pointer)
+            : d_enc(0)
         {
             this->ptr = pointer;
         }
@@ -213,17 +218,18 @@ public:
         Info DecodeInfo()
         {
             Info info;
-
             if (sizeof(void*) < sizeof(InfoPtrEncoding)) {
                 info.doc = qint32(d32.doc) - 1;
-                info.obj = qint32(d32.obj) -1;
-                info.prop = qint32(d32.prop) -1;
+                info.obj = qint32(d32.obj) - 1;
+                info.prop = qint32(d32.prop) - 1;
                 info.contextualHierarchy = d32.contextualHierarchy;
-            } else {
-                info.doc                    = ((d_enc >> k_offsetDocuments) & k_maskDocuments) - 1;
-                info.contextualHierarchy    = ((d_enc >> k_offsetContextualHierarchy) & k_maskContextualHierarchy);
-                info.obj                    = ((d_enc >> k_offsetObj) & k_maskObj) - 1;
-                info.prop                   = ((d_enc >> k_offsetProp) & k_maskProp) - 1;
+            }
+            else {
+                info.doc = ((d_enc >> k_offsetDocuments) & k_maskDocuments) - 1;
+                info.contextualHierarchy =
+                    ((d_enc >> k_offsetContextualHierarchy) & k_maskContextualHierarchy);
+                info.obj = ((d_enc >> k_offsetObj) & k_maskObj) - 1;
+                info.prop = ((d_enc >> k_offsetProp) & k_maskProp) - 1;
             }
             return info;
         }
@@ -235,34 +241,33 @@ public:
         return ptrEnc.ptr;
     }
 
-
-    static Info getInfo(const QModelIndex &index) {
+    static Info getInfo(const QModelIndex& index)
+    {
         InfoPtrEncoding enc(index.internalPointer());
         return enc.DecodeInfo();
     }
 
-    QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const override {
-        if(role!=Qt::EditRole && role!=Qt::DisplayRole && role!=Qt::UserRole)
+    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override
+    {
+        if (role != Qt::EditRole && role != Qt::DisplayRole && role != Qt::UserRole)
             return QVariant();
-        QVariant v;
+        QVariant variant;
         Info info = getInfo(index);
-        _data(info,index.row(),&v,nullptr,role==Qt::UserRole);
-        FC_TRACE(  info.doc << "," << info.obj << "," << info.prop << ","
-                << info.contextualHierarchy << "," << index.row()
-                << ": " << v.toString().toUtf8().constData());
-        return v;
+        _data(info, index.row(), &variant, nullptr, role == Qt::UserRole);
+        FC_TRACE(info.doc << "," << info.obj << "," << info.prop << "," << info.contextualHierarchy
+                          << "," << index.row() << ": " << variant.toString().toUtf8().constData());
+        return variant;
     }
 
     static std::vector<App::ObjectIdentifier> retrieveSubPaths(const App::Property* prop)
     {
         std::vector<App::ObjectIdentifier> result;
-        if (prop)
-        {
+        if (prop) {
             prop->getPaths(result);
             // need to filter out irrelevant paths (len 1, aka just this object identifier)
             auto res = std::remove_if(
                 result.begin(), result.end(), [](const App::ObjectIdentifier& path) -> bool {
-                    return path.getComponents().size() == 0;
+                    return path.getComponents().empty();
                 });
             result.erase(res, result.end());
         }
@@ -284,24 +289,25 @@ public:
     // this function is called in two modes:
     // - obtain the count of a node identified by Info,row => count != nullptr, v==nullptr
     // - get the text of an item. This text will contain separators but NO full path
-    void _data(const Info &info, int row, QVariant *v, int *count, bool sep=false) const {
+    void _data(const Info& info, int row, QVariant* v, int* count, bool sep = false) const
+    {
         int idx;
         // identify the document index. For any children of the root, it is given by traversing
         // the flat list and identified by [row]
-        idx = info.doc<0?row:info.doc;
+        idx = info.doc < 0 ? row : info.doc;
         const auto &docs = App::GetApplication().getDocuments();
-        int docSize = (int)docs.size()*2;
+        int docSize = (int)docs.size() * 2;
         int objSize = 0;
         int propSize = 0;
         std::vector<std::pair<const char*, App::Property*> > props;
-        App::Document *doc = nullptr;
-        App::DocumentObject *obj = nullptr;
-        const char *propName = nullptr;
+        App::Document* doc = nullptr;
+        App::DocumentObject* obj = nullptr;
+        const char* propName = nullptr;
         App::Property* prop = nullptr;
         // check if the document is uniquely identified: either the correct index in info.doc
         // OR if, the node is a descendant of the root, its row lands within 0...docsize
-        if(idx>=0 && idx<docSize) {
-            doc = docs[idx/2];
+        if (idx >= 0 && idx < docSize) {
+            doc = docs[idx / 2];
         }
         else {
             // if we're looking at the ROOT, or the row identifies one of the other ROOT elements
@@ -310,30 +316,31 @@ public:
             //
             // We need to process the ROOT so we get the correct count for its children
             doc = App::GetApplication().getDocument(currentDoc.c_str());
-            if(!doc) // no current, there are no additional objects
+            if (!doc)// no current, there are no additional objects
                 return;
 
             // move to the current documents' objects' range
             idx -= docSize;
-            if(info.doc<0)
+            if (info.doc < 0)
                 row = idx;
 
             const auto &objs = doc->getObjects();
-            objSize = (int)objs.size()*2;
+            objSize = (int)objs.size() * 2;
             // if this is a valid object, we found our object and break.
             // if not, this may be the root or one of current object's properties
-            if(idx>=0 && idx<objSize) {
-                obj = objs[idx/2];
+            if (idx >= 0 && idx < objSize) {
+                obj = objs[idx / 2];
                 // if they are in the ignore list skip
-                if(inList.count(obj))
+                if (inList.count(obj))
                     return;
-            } else if (!noProperty) {
+            }
+            else if (!noProperty) {
                 // need to check the current object's props range, or we're parsing the ROOT
                 auto cobj = doc->getObject(currentObj.c_str());
-                if(cobj) {
+                if (cobj) {
                     // move to the props range of the current object
                     idx -= objSize;
-                    if(info.doc<0)
+                    if (info.doc < 0)
                         row = idx;
                     // get the properties
                     cobj->getPropertyNamedList(props);
@@ -341,9 +348,9 @@ public:
 
                     // if this is an invalid index, bail out
                     // if it's the ROOT break!
-                    if(idx >= propSize)
+                    if (idx >= propSize)
                         return;
-                    if(idx>=0) {
+                    if (idx >= 0) {
                         obj = cobj; // we only set the active object if we're not processing the root.
                         propName = props[idx].first;
                         prop = props[idx].second;
@@ -352,39 +359,39 @@ public:
             }
         }
         // the item is the ROOT or a CHILD of the root
-        if(info.doc<0) {
+        if (info.doc < 0) {
             // and we're asking for a count, compute it
-            if(count) {
+            if (count) {
                 // note that if we're dealing with a valid DOC node (row>0, ROOT_info)
                 // objSize and propSize will be zero because of the early exit above
                 *count = docSize + objSize + propSize;
             }
-            if(idx>=0 && v) {
+            if (idx >= 0 && v) {
                 // we're asking for this child's data, and IT's NOT THE ROOT
                 QString res;
                 // we resolved the property
                 if (propName) {
                     res = QString::fromLatin1(propName);
                     // resolve the property
-                    if (sep && !noProperty && retrieveSubPaths(prop).size() != 0)
+                    if (sep && !noProperty && !retrieveSubPaths(prop).empty())
                         res += QLatin1Char('.');
                 }
-                else if(obj) {
+                else if (obj) {
                     // the object has been resolved, use the saved idx to figure out quotation or not.
-                    if(idx & 1)
+                    if (idx & 1)
                         res = QString::fromUtf8(quote(obj->Label.getStrValue()).c_str());
-                     else
+                    else
                         res = QString::fromLatin1(obj->getNameInDocument());
-                    if(sep && !noProperty)
+                    if (sep && !noProperty)
                         res += QLatin1Char('.');
                 }
                 else {
                     // the document has been resolved, use the saved idx to figure out quotation or not.
-                    if(idx & 1)
+                    if (idx & 1)
                         res = QString::fromUtf8(quote(doc->Label.getStrValue()).c_str());
                     else
                         res = QString::fromLatin1(doc->getName());
-                    if(sep)
+                    if (sep)
                         res += QLatin1Char('#');
                 }
                 v->setValue(res);
@@ -394,28 +401,28 @@ public:
         }
 
         // object not resolved
-        if(!obj) {
+        if (!obj) {
             // are we pointing to an object item, or our father (info) is an object
-            idx = info.obj<0?row:info.obj;
+            idx = info.obj < 0 ? row : info.obj;
             const auto &objs = doc->getObjects();
-            objSize = (int)objs.size()*2;
+            objSize = (int)objs.size() * 2;
             // if invalid index, or in the ignore list bail out
-            if(idx<0 || idx>=objSize || inList.count(obj))
+            if (idx < 0 || idx >= objSize || inList.count(obj))
                 return;
-            obj = objs[idx/2];
+            obj = objs[idx / 2];
 
-            if(info.obj<0) {
+            if (info.obj < 0) {
                 // if this is AN actual Object item and not a root
-                if(count)
+                if (count)
                     *count = objSize; // set the correct count if requested
-                if(v) {
+                if (v) {
                     // resolve the name
                     QString res;
-                    if(idx&1)
+                    if (idx & 1)
                         res = QString::fromUtf8(quote(obj->Label.getStrValue()).c_str());
                     else
                         res = QString::fromLatin1(obj->getNameInDocument());
-                    if(sep && !noProperty)
+                    if (sep && !noProperty)
                         res += QLatin1Char('.');
                     v->setValue(res);
                 }
@@ -423,9 +430,9 @@ public:
             }
         }
 
-        if(noProperty)
+        if (noProperty)
             return;
-        if(!propName) {
+        if (!propName) {
             idx = info.prop < 0 ? row : info.prop;
             obj->getPropertyNamedList(props);
             propSize = (int)props.size();
@@ -445,9 +452,8 @@ public:
                     QString res = QString::fromLatin1(propName);
 
                     // check to see if we have accessible paths from this prop name?
-                    if (sep && retrieveSubPaths(prop).size() != 0)
+                    if (sep && !retrieveSubPaths(prop).empty())
                         res += QLatin1Char('.');
-
                     *v = res;
                 }
                 return;
@@ -460,8 +466,7 @@ public:
             idx = row;
             std::vector<App::ObjectIdentifier> paths = retrieveSubPaths(prop);
 
-            if (count)
-            {
+            if (count) {
                 *count = paths.size();
             }
 
@@ -470,29 +475,26 @@ public:
                 return;
             }
 
-            if (v)
-            {
+            if (v) {
                 auto str = paths[idx].getSubPathStr();
-                if (str.size() && (str[0] == '.' || str[0] == '#'))
-                {
+                if (str.size() && (str[0] == '.' || str[0] == '#')) {
                     // skip the "."
                     *v = QString::fromLatin1(str.c_str() + 1);
-                } else {
+                }
+                else {
                     *v = QString::fromLatin1(str.c_str());
                 }
-
             }
         }
         return;
     }
 
     QModelIndex parent(const QModelIndex & index) const override {
-        if(!index.isValid())
+        if (!index.isValid())
             return QModelIndex();
 
         Info parentInfo = getInfo(index);
         Info grandParentInfo = parentInfo;
-
 
         if (parentInfo.contextualHierarchy) {
             // for contextual hierarchy we have this:
@@ -505,7 +507,8 @@ public:
             }
             // if the parent is the object or a prop attached to the root, we just need the below line
             return createIndex(parentInfo.doc, 0, infoId(Info::root));
-        } else {
+        }
+        else {
             if (parentInfo.prop >= 0) {
                 grandParentInfo.prop = -1;
                 return createIndex(parentInfo.prop, 0, infoId(grandParentInfo));
@@ -531,7 +534,6 @@ public:
         info = Info::root;
 
         if (element.isValid()) {
-
             parentInfo = getInfo(element);
             info = parentInfo;
 
@@ -539,7 +541,7 @@ public:
             if (parentInfo.doc < 0) {
                 // need special casing to properly identify this model's object
                 const auto& docs = App::GetApplication().getDocuments();
-                auto docsSize = static_cast<int>(docs.size()*2);
+                auto docsSize = static_cast<int>(docs.size() * 2);
 
                 info.doc = element.row();
 
@@ -548,30 +550,31 @@ public:
                 if (element.row() >= docsSize) {
                     info.contextualHierarchy = 1;
                 }
-            } else if (parentInfo.contextualHierarchy) {
-
+            }
+            else if (parentInfo.contextualHierarchy) {
                 const auto& docs = App::GetApplication().getDocuments();
                 auto cdoc = App::GetApplication().getDocument(currentDoc.c_str());
 
                 if (cdoc) {
-                    int objsSize = static_cast<int>(cdoc->getObjects().size()*2);
+                    int objsSize = static_cast<int>(cdoc->getObjects().size() * 2);
                     int idx = parentInfo.doc - static_cast<int>(docs.size());
                     if (idx < objsSize) {
-                        //  |-- Parent (OBJECT)        - (row 4, [-1,-1,-1,0]) = encode as element => [parent.row,-1,-1,1]
-                        //      |- element (PROP)            - (row 0, [parent.row,-1,-1,1])  = encode as element => [parent.row,-1,parent.row,1]
+                        //  |-- Parent (OBJECT)   - (row 4, [-1,-1,-1,0]) = encode as element => [parent.row,-1,-1,1]
+                        //      |- element (PROP) - (row 0, [parent.row,-1,-1,1]) = encode as element => [parent.row,-1,parent.row,1]
 
                         info.doc = parentInfo.doc;
-                        info.obj =
-                            -1;// object information is determined by the DOC index actually
+                        info.obj = -1;// object information is determined by the DOC index actually
                         info.prop = element.row();
                         info.contextualHierarchy = 1;
-                    } else {
+                    }
+                    else {
                         // if my parent (parentInfo) is a prop, it means that our element is a prop path
                         // and that is a leaf item (we don't split prop paths further)
                         // we can't encode leaf items into an "Info"
                         return false;
                     }
-                } else {
+                }
+                else {
                     // no contextual document
                     return false;
                 }
@@ -580,17 +583,20 @@ public:
             // regular hierarchy
             else if (parentInfo.obj <= 0) {
                 info.obj = element.row();
-            } else if (parentInfo.prop <= 0) {
+            }
+            else if (parentInfo.prop <= 0) {
                 info.prop = element.row();
-            } else {
+            }
+            else {
                 return false;
             }
         }
         return true;
     }
 
-    QModelIndex index(int row, int column, const QModelIndex & parent = QModelIndex()) const override {
-        if(row<0)
+    QModelIndex index(int row, int column,
+        const QModelIndex & parent = QModelIndex()) const override {
+        if (row < 0)
             return QModelIndex();
         Info myParentInfoEncoded = Info::root;
 
@@ -599,20 +605,21 @@ public:
         if (!parentCanHaveChildren) {
             return QModelIndex();
         }
-
         return createIndex(row, column, infoId(myParentInfoEncoded));
     }
 
     // function returns how many children the QModelIndex parent has
-    int rowCount(const QModelIndex & parent = QModelIndex()) const override {
+    int rowCount(const QModelIndex& parent = QModelIndex()) const override
+    {
         Info info;
         int row = 0;
-        if(!parent.isValid()) {
+        if (!parent.isValid()) {
             // we're getting the row count for the root
             // that is: document hierarchy _and_ contextual completion
             info = Info::root;
             row = -1;
-        }else{
+        }
+        else {
             // try to encode the parent's QModelIndex into an info structure
             // if the paren't can't have any children, return 0
             if (!modelIndexToParentInfo(parent, info)) {
@@ -620,13 +627,14 @@ public:
             }
         }
         int count = 0;
-        _data(info,row,nullptr,&count);
-        FC_TRACE(  info.doc << "," << info.obj << "," << info.prop << ","
-                << info.contextualHierarchy << "," << row << " row count " << count);
+        _data(info, row, nullptr, &count);
+        FC_TRACE(info.doc << "," << info.obj << "," << info.prop << "," << info.contextualHierarchy
+                          << "," << row << " row count " << count);
         return count;
     }
 
-    int columnCount(const QModelIndex &) const override {
+    int columnCount(const QModelIndex&) const override
+    {
         return 1;
     }
 
@@ -646,8 +654,8 @@ const ExpressionCompleterModel::Info ExpressionCompleterModel::Info::root = {-1,
  * @param parent Parent object owning the completer.
  */
 
-ExpressionCompleter::ExpressionCompleter(const App::DocumentObject * currentDocObj,
-        QObject *parent, bool noProperty, bool checkInList)
+ExpressionCompleter::ExpressionCompleter(const App::DocumentObject* currentDocObj,
+    QObject* parent, bool noProperty, bool checkInList)
     : QCompleter(parent), currentObj(currentDocObj)
     , noProperty(noProperty), checkInList(checkInList)
 {
@@ -655,7 +663,7 @@ ExpressionCompleter::ExpressionCompleter(const App::DocumentObject * currentDocO
 }
 
 void ExpressionCompleter::init() {
-    if(model())
+    if (model())
         return;
 
     auto m = new ExpressionCompleterModel(this,noProperty);
@@ -663,29 +671,30 @@ void ExpressionCompleter::init() {
     setModel(m);
 }
 
-void ExpressionCompleter::setDocumentObject(const App::DocumentObject *obj, bool _checkInList) {
-    if(!obj || !obj->getNameInDocument())
+void ExpressionCompleter::setDocumentObject(const App::DocumentObject* obj, bool _checkInList)
+{
+    if (!obj || !obj->getNameInDocument())
         currentObj = App::DocumentObjectT();
     else
         currentObj = obj;
     setCompletionPrefix(QString());
     checkInList = _checkInList;
     auto m = model();
-    if(m)
+    if (m)
         static_cast<ExpressionCompleterModel*>(m)->setDocumentObject(obj, checkInList);
 }
 
 void ExpressionCompleter::setNoProperty(bool enabled) {
     noProperty = enabled;
     auto m = model();
-    if(m)
+    if (m)
         static_cast<ExpressionCompleterModel*>(m)->setNoProperty(enabled);
 }
 
-QString ExpressionCompleter::pathFromIndex ( const QModelIndex & index ) const
+QString ExpressionCompleter::pathFromIndex(const QModelIndex& index) const
 {
     auto m = model();
-    if(!m || !index.isValid())
+    if (!m || !index.isValid())
         return QString();
 
     QString res;
@@ -693,7 +702,7 @@ QString ExpressionCompleter::pathFromIndex ( const QModelIndex & index ) const
     do {
         res = m->data(parent, Qt::UserRole).toString() + res;
         parent = parent.parent();
-    }while(parent.isValid());
+    } while (parent.isValid());
 
     auto info = ExpressionCompleterModel::getInfo(index);
     FC_TRACE("join path " << info.doc << "," << info.obj << "," << info.prop << ","
@@ -702,35 +711,35 @@ QString ExpressionCompleter::pathFromIndex ( const QModelIndex & index ) const
     return res;
 }
 
-QStringList ExpressionCompleter::splitPath ( const QString & input ) const
+QStringList ExpressionCompleter::splitPath(const QString& input) const
 {
-    QStringList l;
+    QStringList resultList;
     std::string path = input.toUtf8().constData();
-    if(path.empty())
-        return l;
+    if (path.empty())
+        return resultList;
 
     int retry = 0;
     std::string lastElem;  // used to recover in case of parse failure after ".".
     std::string trim;      // used to delete ._self added for another recovery path
-    while(1) {
+    while (1) {
         try {
             // this will not work for incomplete Tokens at the end
             // "Sketch." will fail to parse and complete.
 
-            App::ObjectIdentifier p = ObjectIdentifier::parse(
+            App::ObjectIdentifier ident = ObjectIdentifier::parse(
                     currentObj.getObject(), path);
 
-            std::vector<std::string> sl = p.getStringList();
-            auto sli = sl.begin();
-            if(retry>1 && !sl.empty())
-                sl.pop_back();
+            std::vector<std::string> stringList = ident.getStringList();
+            auto stringListIter = stringList.begin();
+            if (retry > 1 && !stringList.empty())
+                stringList.pop_back();
 
-            if (!sl.empty())  {
-                if (!trim.empty() && boost::ends_with(sl.back(), trim))
-                    sl.back().resize(sl.back().size() - trim.size());
-                while (sli != sl.end()) {
-                    l << Base::Tools::fromStdString(*sli);
-                    ++sli;
+            if (!stringList.empty()) {
+                if (!trim.empty() && boost::ends_with(stringList.back(), trim))
+                    stringList.back().resize(stringList.back().size() - trim.size());
+                while (stringListIter != stringList.end()) {
+                    resultList << Base::Tools::fromStdString(*stringListIter);
+                    ++stringListIter;
                 }
             }
             if (lastElem.size()) {
@@ -738,50 +747,49 @@ QStringList ExpressionCompleter::splitPath ( const QString & input ) const
                 if (!lastElem.empty()) {
                     // erase the separator
                     lastElem.erase(lastElem.begin());
-                    l << Base::Tools::fromStdString(lastElem);
+                    resultList << Base::Tools::fromStdString(lastElem);
                 } else {
                     // add empty string to allow completion after "." or "#"
-                    l << QString();
+                    resultList << QString();
                 }
             }
-            FC_TRACE("split path " << path
-                    << " -> " << l.join(QLatin1String("/")).toUtf8().constData());
-            return l;
+            FC_TRACE("split path " << path << " -> "
+                                   << resultList.join(QLatin1String("/")).toUtf8().constData());
+            return resultList;
         }
-        catch (const Base::Exception &e) {
-            FC_TRACE("split path " << path << " error: " << e.what());
+        catch (const Base::Exception& except) {
+            FC_TRACE("split path " << path << " error: " << except.what());
             if (!retry) {
                 size_t lastElemStart = path.rfind('.');
 
-                if (lastElemStart == std::string::npos)
-                {
+                if (lastElemStart == std::string::npos) {
                     lastElemStart = path.rfind('#');
                 }
-                if (lastElemStart != std::string::npos ) {
+                if (lastElemStart != std::string::npos) {
                     lastElem = path.substr(lastElemStart);
                     path = path.substr(0, lastElemStart);
                 }
                 retry++;
                 continue;
-            }else if(retry==1) {
+            }
+            else if (retry == 1) {
                 // restore path from retry 0
-                if (lastElem.size() > 1)
-                {
+                if (lastElem.size() > 1) {
                     path = path + lastElem;
                     lastElem = "";
                 }
                 // else... we don't reset lastElem if it's a '.' or '#' to allow chaining completions
-
-                char last = path[path.size()-1];
-                if(last!='#' && last!='.' && path.find('#')!=std::string::npos) {
+                char last = path[path.size() - 1];
+                if (last != '#' && last != '.' && path.find('#') != std::string::npos) {
                     path += "._self";
                     ++retry;
                     continue;
                 }
-            }else if(retry==2) {
-                path.resize(path.size()-6);
-                char last = path[path.size()-1];
-                if(last!='.' && last!='<' && path.find("#<<")!=std::string::npos) {
+            }
+            else if (retry == 2) {
+                path.resize(path.size() - 6);
+                char last = path[path.size() - 1];
+                if (last != '.' && last != '<' && path.find("#<<") != std::string::npos) {
                     path += ">>._self";
                     ++retry;
                     trim = ">>";
@@ -805,13 +813,17 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
     // ExpressionParser::tokenize() only supports std::string but we need a tuple QString
     // because due to UTF-8 encoding a std::string may be longer than a QString
     // See https://forum.freecadweb.org/viewtopic.php?f=3&t=69931
-    auto tokenizeExpression = [](const QString & expr) {
-        std::vector<std::tuple<int, int, std::string> > result = ExpressionParser::tokenize(expr.toStdString());
-        std::vector<std::tuple<int, int, QString> > tokens;
-        std::transform(result.cbegin(), result.cend(), std::back_inserter(tokens), [](const std::tuple<int, int, std::string>& item) {
-            return std::make_tuple(get<0>(item), get<1>(item), QString::fromStdString(get<2>(item)));
-        });
-
+    auto tokenizeExpression = [](const QString& expr) {
+        std::vector<std::tuple<int, int, std::string>> result =
+            ExpressionParser::tokenize(expr.toStdString());
+        std::vector<std::tuple<int, int, QString>> tokens;
+        std::transform(result.cbegin(),
+                       result.cend(),
+                       std::back_inserter(tokens),
+                       [](const std::tuple<int, int, std::string>& item) {
+                           return std::make_tuple(
+                               get<0>(item), get<1>(item), QString::fromStdString(get<2>(item)));
+                       });
         return tokens;
     };
 
@@ -825,8 +837,8 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
 
     // No tokens
     if (tokens.empty()) {
-        if (auto p = popup())
-            p->setVisible(false);
+        if (auto itemView = popup())
+            itemView->setVisible(false);
         return;
     }
 
@@ -834,7 +846,7 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
 
     // Pop those trailing tokens depending on the given position, which may be
     // in the middle of a token, and we shall include that token.
-    for(auto it = tokens.begin(); it != tokens.end(); ++it) {
+    for (auto it = tokens.begin(); it != tokens.end(); ++it) {
         if (get<1>(*it) >= pos) {
             // Include the immediately followed '.' or '#', because we'll be
             // inserting these separators too, in ExpressionCompleteModel::pathFromIndex()
@@ -855,14 +867,15 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
 
     // First, check if we have unclosing string starting from the end
     bool stringing = false;
-    for(; i >= 0; --i) {
+    for (; i >= 0; --i) {
         int token = get<0>(tokens[i]);
         if (token == ExpressionParser::STRING) {
             stringing = false;
             break;
         }
 
-        if (token == ExpressionParser::LT && i > 0 && get<0>(tokens[i-1])==ExpressionParser::LT) {
+        if (token == ExpressionParser::LT && i > 0
+            && get<0>(tokens[i - 1]) == ExpressionParser::LT) {
             --i;
             stringing = true;
             break;
@@ -871,14 +884,14 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
 
     // Not an unclosed string and the last character is a space
     if (!stringing && !prefix.isEmpty() && prefix[prefixEnd-1] == QChar(32)) {
-        if (auto p = popup())
-            p->setVisible(false);
+        if (auto itemView = popup())
+            itemView->setVisible(false);
         return;
     }
 
     if (!stringing) {
         i = static_cast<long>(tokens.size()) - 1;
-        for (;i>=0;--i) {
+        for (; i >= 0; --i) {
             int token = get<0>(tokens[i]);
             if (token != '.' &&
                 token != '#' &&
@@ -887,7 +900,6 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
                 token != ExpressionParser::UNIT)
                 break;
         }
-
         ++i;
     }
 
@@ -917,12 +929,13 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
 
     }
     else {
-        if (auto p = popup())
-            p->setVisible(false);
+        if (auto itemView = popup())
+            itemView->setVisible(false);
     }
 }
 
-ExpressionLineEdit::ExpressionLineEdit(QWidget *parent, bool noProperty, char checkPrefix, bool checkInList)
+ExpressionLineEdit::ExpressionLineEdit(QWidget* parent, bool noProperty,
+    char checkPrefix, bool checkInList)
     : QLineEdit(parent)
     , completer(nullptr)
     , block(true)
@@ -938,7 +951,8 @@ void ExpressionLineEdit::setPrefix(char prefix) {
     checkPrefix = prefix;
 }
 
-void ExpressionLineEdit::setDocumentObject(const App::DocumentObject * currentDocObj, bool _checkInList)
+void ExpressionLineEdit::setDocumentObject(const App::DocumentObject* currentDocObj,
+    bool _checkInList)
 {
     checkInList = _checkInList;
     if (completer) {
@@ -951,15 +965,19 @@ void ExpressionLineEdit::setDocumentObject(const App::DocumentObject * currentDo
         completer->setCaseSensitivity(Qt::CaseInsensitive);
         if (!exactMatch)
             completer->setFilterMode(Qt::MatchContains);
-        connect(completer, qOverload<const QString&>(&QCompleter::activated), this, &ExpressionLineEdit::slotCompleteTextSelected);
-        connect(completer, qOverload<const QString&>(&QCompleter::highlighted), this, &ExpressionLineEdit::slotCompleteTextHighlighted);
-        connect(this, &ExpressionLineEdit::textChanged2, completer, &ExpressionCompleter::slotUpdate);
+        connect(completer, qOverload<const QString&>(&QCompleter::activated),
+                this, &ExpressionLineEdit::slotCompleteTextSelected);
+        connect(completer,
+                qOverload<const QString&>(&QCompleter::highlighted),
+                this, &ExpressionLineEdit::slotCompleteTextHighlighted);
+        connect(this, &ExpressionLineEdit::textChanged2,
+                completer, &ExpressionCompleter::slotUpdate);
     }
 }
 
 void ExpressionLineEdit::setNoProperty(bool enabled) {
     noProperty = enabled;
-    if(completer)
+    if (completer)
         completer->setNoProperty(enabled);
 }
 
@@ -984,7 +1002,7 @@ void ExpressionLineEdit::hideCompleter()
 void ExpressionLineEdit::slotTextChanged(const QString & text)
 {
     if (!block) {
-        if(!text.size() || (checkPrefix && text[0]!=QLatin1Char(checkPrefix)))
+        if (!text.size() || (checkPrefix && text[0] != QLatin1Char(checkPrefix)))
             return;
         Q_EMIT textChanged2(text,cursorPosition());
     }
@@ -1007,12 +1025,10 @@ void ExpressionLineEdit::slotCompleteText(const QString & completionPrefix, bool
 
     // chain completions if we select an entry from the completer drop down
     // and that entry ends with '.' or '#'
-    if(isActivated)
-    {
+    if (isActivated) {
         std::string textToComplete = completionPrefix.toUtf8().constData();
-        if (textToComplete.size() &&
-            (*textToComplete.crbegin() == '.' || *textToComplete.crbegin() == '#'))
-        {
+        if (textToComplete.size()
+            && (*textToComplete.crbegin() == '.' || *textToComplete.crbegin() == '#')) {
             Base::FlagToggler<bool> flag(block, true);
             slotTextChanged(before + after);
         }
@@ -1030,14 +1046,15 @@ void ExpressionLineEdit::slotCompleteTextSelected(const QString& completionPrefi
 }
 
 
-void ExpressionLineEdit::keyPressEvent(QKeyEvent *e) {
+void ExpressionLineEdit::keyPressEvent(QKeyEvent* e)
+{
     Base::FlagToggler<bool> flag(block,true);
     QLineEdit::keyPressEvent(e);
 }
 
-void ExpressionLineEdit::contextMenuEvent(QContextMenuEvent *event)
+void ExpressionLineEdit::contextMenuEvent(QContextMenuEvent* event)
 {
-    QMenu *menu = createStandardContextMenu();
+    QMenu* menu = createStandardContextMenu();
     menu->addSeparator();
     QAction* match = menu->addAction(tr("Exact match"));
 
@@ -1062,7 +1079,7 @@ void ExpressionLineEdit::contextMenuEvent(QContextMenuEvent *event)
 
 ///////////////////////////////////////////////////////////////////////
 
-ExpressionTextEdit::ExpressionTextEdit(QWidget *parent)
+ExpressionTextEdit::ExpressionTextEdit(QWidget* parent)
     : QPlainTextEdit(parent)
     , completer(nullptr)
     , block(true)
@@ -1071,13 +1088,14 @@ ExpressionTextEdit::ExpressionTextEdit(QWidget *parent)
     connect(this, &QPlainTextEdit::textChanged, this, &ExpressionTextEdit::slotTextChanged);
 }
 
-void ExpressionTextEdit::setExactMatch(bool enabled) {
+void ExpressionTextEdit::setExactMatch(bool enabled)
+{
     exactMatch = enabled;
     if (completer)
         completer->setFilterMode(exactMatch ? Qt::MatchStartsWith : Qt::MatchContains);
 }
 
-void ExpressionTextEdit::setDocumentObject(const App::DocumentObject * currentDocObj)
+void ExpressionTextEdit::setDocumentObject(const App::DocumentObject* currentDocObj)
 {
     if (completer) {
         completer->setDocumentObject(currentDocObj);
@@ -1090,9 +1108,12 @@ void ExpressionTextEdit::setDocumentObject(const App::DocumentObject * currentDo
             completer->setFilterMode(Qt::MatchContains);
         completer->setWidget(this);
         completer->setCaseSensitivity(Qt::CaseInsensitive);
-        connect(completer, qOverload<const QString&>(&QCompleter::activated), this, &ExpressionTextEdit::slotCompleteText);
-        connect(completer, qOverload<const QString&>(&QCompleter::highlighted), this, &ExpressionTextEdit::slotCompleteText);
-        connect(this, &ExpressionTextEdit::textChanged2, completer, &ExpressionCompleter::slotUpdate);
+        connect(completer, qOverload<const QString&>(&QCompleter::activated), this,
+            &ExpressionTextEdit::slotCompleteText);
+        connect(completer, qOverload<const QString&>(&QCompleter::highlighted), this,
+            &ExpressionTextEdit::slotCompleteText);
+        connect(this, &ExpressionTextEdit::textChanged2, completer,
+            &ExpressionCompleter::slotUpdate);
     }
 }
 
@@ -1115,28 +1136,30 @@ void ExpressionTextEdit::slotTextChanged()
     }
 }
 
-void ExpressionTextEdit::slotCompleteText(const QString & completionPrefix)
+void ExpressionTextEdit::slotCompleteText(const QString& completionPrefix)
 {
     QTextCursor cursor = textCursor();
     int start,end;
     completer->getPrefixRange(start,end);
     int pos = cursor.positionInBlock();
-    if(pos<end)
-        cursor.movePosition(QTextCursor::NextCharacter,QTextCursor::MoveAnchor,end-pos);
+    if (pos < end) {
+        cursor.movePosition(QTextCursor::NextCharacter, QTextCursor::MoveAnchor, end - pos);
+    }
     cursor.movePosition(QTextCursor::PreviousCharacter,QTextCursor::KeepAnchor,end-start);
     Base::FlagToggler<bool> flag(block,false);
     cursor.insertText(completionPrefix);
     completer->updatePrefixEnd(cursor.positionInBlock());
 }
 
-void ExpressionTextEdit::keyPressEvent(QKeyEvent *e) {
+void ExpressionTextEdit::keyPressEvent(QKeyEvent* e)
+{
     Base::FlagToggler<bool> flag(block,true);
     QPlainTextEdit::keyPressEvent(e);
 }
 
-void ExpressionTextEdit::contextMenuEvent(QContextMenuEvent *event)
+void ExpressionTextEdit::contextMenuEvent(QContextMenuEvent* event)
 {
-    QMenu *menu = createStandardContextMenu();
+    QMenu* menu = createStandardContextMenu();
     menu->addSeparator();
     QAction* match = menu->addAction(tr("Exact match"));
 
