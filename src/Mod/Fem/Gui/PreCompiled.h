@@ -86,6 +86,7 @@
 #include <QFileInfo>
 #include <QApplication>
 #include <QMessageBox>
+#include <QMetaMethod>
 #include <QAction>
 #include <QString>
 #include <QSlider>
