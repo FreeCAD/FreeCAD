@@ -270,13 +270,18 @@ QFont NaviCube::getDefaultSansserifFont()
     QFont font(QString::fromLatin1("Helvetica"));
     if (font.styleHint() & QFont::SansSerif)
         return font;
-    // on Windows 11 there is no longer a Helvetia font
+    // on Windows 10 or newer there is no Helvetia font
     // therefore if we did not found a Helvetica font check for
-    // the DejaVu Sans which is in Windows 11
-    font.setFamily(QString::fromLatin1("DejaVu Sans"));
-    // on Windows 11 sansserif fonts like DejaVu Sans does not have the
+    // first the Bahnschrift font (in all Windows since 2017
+    // if this is also not found (on Win 7), we check for the 
+    // the DejaVu Sans fonts
+    font.setFamily(QString::fromLatin1("Bahnschrift"));
+    // on Windows 11 sansserif fonts like Bahnschrift do not have the
     // styleHint QFont::SansSerif but QFont::AnyStyle
     // however, in future they might have, thus allow both
+    if (font.styleHint() == QFont::SansSerif || font.styleHint() == QFont::AnyStyle)
+        return font;
+    font.setFamily(QString::fromLatin1("DejaVu Sans"));
     if (font.styleHint() == QFont::SansSerif || font.styleHint() == QFont::AnyStyle)
         return font;
     return font; // We failed, but return whatever we have anyway
