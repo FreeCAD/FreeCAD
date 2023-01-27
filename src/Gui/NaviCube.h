@@ -41,22 +41,18 @@ public:
         BottomLeftCorner,
         BottomRightCorner
     };
-    NaviCube(Gui::View3DInventorViewer* viewer) ;
+    NaviCube(Gui::View3DInventorViewer* viewer);
     virtual ~NaviCube();
     void drawNaviCube();
     void createContextMenu(const std::vector<std::string>& cmd);
     bool processSoEvent(const SoEvent* ev);
     void setCorner(Corner);
+    static QFont getDefaultSansserifFont();
     static void setNaviCubeCommands(const std::vector<std::string>& cmd);
     static void setNaviCubeLabels(const std::vector<std::string>& labels);
+
 private:
     NaviCubeImplementation* m_NaviCubeImplementation;
-};
-
-class HuuhaaClassPy : public Py::PythonExtension<HuuhaaClassPy> {
-public:
-    Py::Object huuhaa(const Py::Tuple&);
-    static void init_type() ;
 };
 
 #endif /* SRC_GUI_NAVICUBE_H_ */

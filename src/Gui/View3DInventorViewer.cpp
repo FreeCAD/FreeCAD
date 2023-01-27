@@ -1176,6 +1176,23 @@ NaviCube* View3DInventorViewer::getNavigationCube() const
     return naviCube;
 }
 
+void View3DInventorViewer::createNavigationCube()
+{
+    if (!naviCube) {
+        naviCube = new NaviCube(this);
+        naviCubeEnabled = true;
+    }
+}
+
+void View3DInventorViewer::deleteNavigationCube()
+{
+    if (naviCube) {
+        delete naviCube;
+        naviCube = nullptr;
+        naviCubeEnabled = false;
+    }
+}
+
 void View3DInventorViewer::setAxisCross(bool on)
 {
     SoNode* scene = getSceneGraph();

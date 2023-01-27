@@ -51,7 +51,6 @@
 #include "Application.h"
 #include "Command.h"
 #include "MainWindow.h"
-
 #include "View3DInventorViewer.h"
 #include "View3DInventor.h"
 
@@ -120,6 +119,7 @@ public:
     void OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::MessageType Reason) override;
 
     bool processSoEvent(const SoEvent* ev);
+
 private:
     bool mousePressed(short x, short y);
     bool mouseReleased(short x, short y);
@@ -146,6 +146,7 @@ private:
     QString str(const char* str);
     char* enum2str(int);
     QMenu* createNaviCubeMenu();
+
 public:
     enum { //
         TEX_FRONT = 1, // 0 is reserved for 'nothing picked'
@@ -213,6 +214,8 @@ public:
     bool m_MightDrag = false;
     double m_BorderWidth;
     NaviCube::Corner m_Corner = NaviCube::TopRightCorner;
+    int m_CubeTextSize = 0;
+    std::string m_CubeTextString;
 
     QtGLFramebufferObject* m_PickingFramebuffer;
 
@@ -251,7 +254,6 @@ bool NaviCube::processSoEvent(const SoEvent* ev) {
     return m_NaviCubeImplementation->processSoEvent(ev);
 }
 
-
 vector<string> NaviCubeImplementation::m_commands;
 vector<string> NaviCubeImplementation::m_labels;
 
@@ -261,21 +263,44 @@ void NaviCube::setCorner(Corner c) {
     m_NaviCubeImplementation->m_PrevHeight = 0;
 }
 
+// sets a default sansserif font
+// the Helvetica font is a good start for most OSes
+QFont NaviCube::getDefaultSansserifFont()
+{
+    QFont font(QString::fromLatin1("Helvetica"));
+    if (font.styleHint() & QFont::SansSerif)
+        return font;
+    // on Windows 11 there is no longer a Helvetia font
+    // therefore if we did not found a Helvetica font check for
+    // the DejaVu Sans which is in Windows 11
+    font.setFamily(QString::fromLatin1("DejaVu Sans"));
+    // on Windows 11 sansserif fonts like DejaVu Sans does not have the
+    // styleHint QFont::SansSerif but QFont::AnyStyle
+    // however, in future they might have, thus allow both
+    if (font.styleHint() == QFont::SansSerif || font.styleHint() == QFont::AnyStyle)
+        return font;
+    return font; // We failed, but return whatever we have anyway
+}
+
 NaviCubeImplementation::NaviCubeImplementation(
     Gui::View3DInventorViewer* viewer) {
 
     m_View3DInventorViewer = viewer;
 
-    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NaviCube");
+    auto hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/NaviCube");
     hGrp->Attach(this);
 
     OnChange(*hGrp, "TextColor");
     OnChange(*hGrp, "FrontColor");
     OnChange(*hGrp, "HiliteColor");
     OnChange(*hGrp, "ButtonColor");
+    OnChange(*hGrp, "CornerNaviCube");
     OnChange(*hGrp, "CubeSize");
     OnChange(*hGrp, "BorderWidth");
     OnChange(*hGrp, "BorderColor");
+    OnChange(*hGrp, "FontSize");
+    OnChange(*hGrp, "FontString");
 
     m_PickingFramebuffer = nullptr;
     m_Menu = createNaviCubeMenu();
@@ -294,10 +319,11 @@ NaviCubeImplementation::~NaviCubeImplementation() {
         delete* t;
 }
 
-void NaviCubeImplementation::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::MessageType reason)
+void NaviCubeImplementation::OnChange(ParameterGrp::SubjectType& rCaller,
+                                      ParameterGrp::MessageType reason)
 {
     const auto& rGrp = static_cast<ParameterGrp&>(rCaller);
-
+    
     if (strcmp(reason, "TextColor") == 0) {
         m_TextColor.setRgba(rGrp.GetUnsigned(reason, QColor(0, 0, 0, 255).rgba()));
     }
@@ -310,14 +336,24 @@ void NaviCubeImplementation::OnChange(ParameterGrp::SubjectType& rCaller, Parame
     else if (strcmp(reason, "ButtonColor") == 0) {
         m_ButtonColor.setRgba(rGrp.GetUnsigned(reason, QColor(226, 233, 239, 128).rgba()));
     }
+    else if (strcmp(reason, "CornerNaviCube") == 0) {
+        m_Corner = static_cast<NaviCube::Corner>(rGrp.GetInt(reason, 1));
+    }
     else if (strcmp(reason, "CubeSize") == 0) {
-        m_CubeWidgetSize = (rGrp.GetInt(reason, 132));
+        m_CubeWidgetSize = rGrp.GetInt(reason, 132);
     }
     else if (strcmp(reason, "BorderWidth") == 0) {
-        m_BorderWidth = rGrp.GetFloat("BorderWidth", 1.1);
+        m_BorderWidth = rGrp.GetFloat(reason, 1.1);
     }
     else if (strcmp(reason, "BorderColor") == 0) {
         m_BorderColor.setRgba(rGrp.GetUnsigned(reason, QColor(50, 50, 50, 255).rgba()));
+    }
+    else if (strcmp(reason, "FontSize") == 0) {
+        m_CubeTextSize = rGrp.GetInt(reason, 100);
+    }
+    else if (strcmp(reason, "FontString") == 0) {
+        m_CubeTextString = (rGrp.GetASCII(
+            reason, NaviCube::getDefaultSansserifFont().family().toStdString().c_str()));
     }
 }
 
@@ -381,7 +417,9 @@ auto convertWeights = [](int weight) -> QFont::Weight {
     return QFont::Thin;
 };
 
-GLuint NaviCubeImplementation::createCubeFaceTex(QtGLWidget* gl, float gap, const char* text, int shape) {
+GLuint NaviCubeImplementation::createCubeFaceTex(QtGLWidget* gl, float gap, const char* text,
+                                                 int shape)
+{  
     int texSize = m_CubeWidgetSize * m_OverSample;
     float gapi = texSize * gap;
     QImage image(texSize, texSize, QImage::Format_ARGB32);
@@ -391,17 +429,22 @@ GLuint NaviCubeImplementation::createCubeFaceTex(QtGLWidget* gl, float gap, cons
     paint.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
 
     if (text) {
-        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NaviCube");
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/NaviCube");
         paint.setPen(Qt::white);
-        QFont sansFont(str("Helvetica"), 0.18 * texSize);
+        QFont sansFont;
+        // check the user settings
         QString fontString = QString::fromUtf8((hGrp->GetASCII("FontString")).c_str());
         if (fontString.isEmpty()) {
+            // load a font as start
+            sansFont.fromString(NaviCube::getDefaultSansserifFont().family());
+            sansFont.setPointSize(int(0.18 * texSize));
             // Improving readability
             sansFont.setWeight(convertWeights(hGrp->GetInt("FontWeight", 87)));
             sansFont.setStretch(hGrp->GetInt("FontStretch", 62));
-        }
-        else {
-            sansFont.fromString(fontString);
+            // store font size and name
+            hGrp->SetInt("FontSize", sansFont.pointSize());
+            hGrp->SetASCII("FontString", sansFont.family().toStdString());
         }
         // Override fromString
         if (hGrp->GetInt("FontWeight") > 0) {
@@ -410,13 +453,18 @@ GLuint NaviCubeImplementation::createCubeFaceTex(QtGLWidget* gl, float gap, cons
         if (hGrp->GetInt("FontStretch") > 0) {
             sansFont.setStretch(hGrp->GetInt("FontStretch"));
         }
+        sansFont.fromString(QString::fromStdString(m_CubeTextString));
+        sansFont.setPointSize(m_CubeTextSize);
         paint.setFont(sansFont);
-        paint.drawText(QRect(0, 0, texSize, texSize), Qt::AlignCenter, qApp->translate("Gui::NaviCube", text));
+        paint.drawText(
+            QRect(0, 0, texSize, texSize), Qt::AlignCenter, qApp->translate("Gui::NaviCube", text));
     }
     else if (shape == SHAPE_SQUARE) {
         QPainterPath pathSquare;
-        auto rectSquare = QRectF(gapi, gapi, (qreal)texSize - 2.0 * gapi, (qreal)texSize - 2.0 * gapi);
-        // Qt's coordinate system is x->left y->down, this must be taken into account on operations
+        auto rectSquare =
+            QRectF(gapi, gapi, (qreal)texSize - 2.0 * gapi, (qreal)texSize - 2.0 * gapi);
+        // Qt's coordinate system is x->left y->down,
+        // this must be taken into account on operations
         pathSquare.moveTo(rectSquare.left()         , rectSquare.bottom() - gapi);
         pathSquare.lineTo(rectSquare.left() + gapi  , rectSquare.bottom());
         pathSquare.lineTo(rectSquare.right() - gapi , rectSquare.bottom());
@@ -460,7 +508,6 @@ GLuint NaviCubeImplementation::createCubeFaceTex(QtGLWidget* gl, float gap, cons
     texture->setMagnificationFilter(QOpenGLTexture::Linear);
     return texture->textureId();
 }
-
 
 GLuint NaviCubeImplementation::createButtonTex(QtGLWidget* gl, int button) {
     int texSize = m_CubeWidgetSize * m_OverSample;
@@ -693,9 +740,9 @@ void NaviCubeImplementation::addFace(float gap, const Vector3f& x, const Vector3
     }
 
     // TEX_TOP, TEX_FRONT_FACE, TEX_TOP
-    // TEX_TOP 			frontTex,
-    // TEX_FRONT_FACE	pickTex,
-    // TEX_TOP 			pickId
+    // TEX_TOP        frontTex,
+    // TEX_FRONT_FACE pickTex,
+    // TEX_TOP        pickId
     Face* FaceFront = new Face(
         m_IndexArray.size(),
         4,
@@ -963,7 +1010,8 @@ void NaviCubeImplementation::handleResize() {
 
 void NaviCubeImplementation::drawNaviCube(bool pickMode) {
     // initializes stuff here when we actually have a context
-    // FIXME actually now that we have Qt5, we could probably do this earlier (as we do not need the opengl context)
+    // FIXME actually now that we have Qt5, we could probably do this earlier
+    // (as we do not need the opengl context)
     if (!m_NaviCubeInitialised) {
         auto gl = static_cast<QtGLWidget*>(m_View3DInventorViewer->viewport());
         if (!gl)
@@ -1060,7 +1108,8 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode) {
 
     if (!pickMode) {
         // Draw the axes
-        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NaviCube");
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/NaviCube");
         bool ShowCS = hGrp->GetBool("ShowCS", 1);
         if (ShowCS) {
             glDisable(GL_TEXTURE_2D);
@@ -1103,8 +1152,8 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode) {
         for (int pass = 0; pass < 3; pass++) {
             for (vector<Face*>::iterator f = m_Faces.begin(); f != m_Faces.end(); f++) {
                 //if (pickMode) { // pick should not be drawn in tree passes
-                //	glColor3ub((*f)->m_PickId, 0, 0);
-                //	glBindTexture(GL_TEXTURE_2D, (*f)->m_PickTextureId);
+                // glColor3ub((*f)->m_PickId, 0, 0);
+                // glBindTexture(GL_TEXTURE_2D, (*f)->m_PickTextureId);
                 //} else {
                 if (pass != (*f)->m_RenderPass)
                     continue;
@@ -1132,7 +1181,8 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode) {
                 if (pass != f->m_RenderPass)
                     continue;
                 if (f->m_TextureId == f->m_PickTextureId) {
-                    if (f->m_PickTexId == TEX_FRONT_FACE || f->m_PickTexId == TEX_EDGE_FACE || f->m_PickTexId == TEX_CORNER_FACE) {
+                    if (f->m_PickTexId == TEX_FRONT_FACE || f->m_PickTexId == TEX_EDGE_FACE
+                        || f->m_PickTexId == TEX_CORNER_FACE) {
                         glBegin(GL_POLYGON);
                         for (const Vector3f& v : m_VertexArrays2[f->m_PickId]) {
                             glVertex3f(v[0], v[1], v[2]);
@@ -1730,7 +1780,6 @@ bool NaviCubeImplementation::processSoEvent(const SoEvent* ev) {
     return false;
 }
 
-
 QString NaviCubeImplementation::str(const char* str) {
     return QString::fromLatin1(str);
 }
@@ -1744,8 +1793,6 @@ void NaviCube::setNaviCubeLabels(const std::vector<std::string>& labels)
 {
     NaviCubeImplementation::m_labels = labels;
 }
-
-
 
 DEF_3DV_CMD(ViewIsometricCmd)
 ViewIsometricCmd::ViewIsometricCmd()
