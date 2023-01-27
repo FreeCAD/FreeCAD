@@ -158,22 +158,19 @@ void DlgObjectSelection::init(const std::vector<App::DocumentObject*> &objs,
     useOriginalsBtn->setToolTip(tr("Ignore dependencies and proceed with objects\noriginally selected prior to opening this dialog"));
     ui->buttonBox->addButton(useOriginalsBtn, QDialogButtonBox::ResetRole);
 
-    connect(ui->treeWidget, SIGNAL(itemChanged(QTreeWidgetItem*,int)),
-            this, SLOT(onObjItemChanged(QTreeWidgetItem*,int)));
-    connect(ui->depList, SIGNAL(itemChanged(QTreeWidgetItem*,int)),
-            this, SLOT(onDepItemChanged(QTreeWidgetItem*,int)));
-    connect(ui->inList, SIGNAL(itemChanged(QTreeWidgetItem*,int)),
-            this, SLOT(onDepItemChanged(QTreeWidgetItem*,int)));
-    connect(ui->treeWidget, SIGNAL(itemSelectionChanged()),
-            this, SLOT(onItemSelectionChanged()));
-    connect(useOriginalsBtn, SIGNAL(clicked()),
-            this, SLOT(onUseOriginalsBtnClicked()));
+    connect(ui->treeWidget, &QTreeWidget::itemChanged, this, &DlgObjectSelection::onObjItemChanged);
+    connect(ui->depList, &QTreeWidget::itemChanged, this, &DlgObjectSelection::onDepItemChanged);
+    connect(ui->inList, &QTreeWidget::itemChanged, this, &DlgObjectSelection::onDepItemChanged);
+    connect(ui->treeWidget, &QTreeWidget::itemSelectionChanged,
+            this, &DlgObjectSelection::onItemSelectionChanged);
+    connect(useOriginalsBtn, &QPushButton::clicked,
+            this, &DlgObjectSelection::onUseOriginalsBtnClicked);
 
-    connect(ui->buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-    connect(ui->buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+    connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &DlgObjectSelection::accept);
+    connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &DlgObjectSelection::reject);
 
     timer.setSingleShot(true);
-    connect(&timer, SIGNAL(timeout()), this, SLOT(checkItemChanged()));
+    connect(&timer, &QTimer::timeout, this, &DlgObjectSelection::checkItemChanged);
 }
 
 /**

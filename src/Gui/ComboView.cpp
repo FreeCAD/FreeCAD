@@ -58,7 +58,8 @@ ComboView::ComboView(bool showModel, Gui::Document* pcDocument, QWidget *parent)
     tabs->setTabPosition(QTabWidget::North);
     pLayout->addWidget( tabs, 0, 0 );
 
-    connect(tabs, SIGNAL(currentChanged(int)), this, SLOT(onCurrentTabChanged(int)));
+    connect(tabs, qOverload<int>(&QTabWidget::currentChanged),
+            this, &ComboView::onCurrentTabChanged);
     if (showModel) {
         // splitter between tree and property view
         auto splitter = new QSplitter();
