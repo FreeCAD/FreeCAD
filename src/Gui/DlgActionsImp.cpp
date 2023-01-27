@@ -386,10 +386,8 @@ IconDialog::IconDialog(QWidget* parent)
     ui->setupUi(this);
     ui->listWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     // signals and slots connections
-    connect(ui->listWidget, SIGNAL(itemClicked (QListWidgetItem *)),
-            this, SLOT(accept()));
-    connect(ui->addButton, SIGNAL(clicked()),
-            this, SLOT(onAddIconPath()));
+    connect(ui->listWidget, &QListWidget::itemClicked, this, &IconDialog::accept);
+    connect(ui->addButton, &QPushButton::clicked, this, &IconDialog::onAddIconPath);
 
     QListWidgetItem* item;
     QStringList names = BitmapFactory().findIconFiles();
@@ -503,10 +501,8 @@ IconFolders::IconFolders(const QStringList& paths, QWidget* parent)
     resize(600,400);
     auto buttonBox = new QDialogButtonBox(this);
     buttonBox->setStandardButtons(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
-    connect(buttonBox, SIGNAL(accepted()),
-            this, SLOT(accept()));
-    connect(buttonBox, SIGNAL(rejected()),
-            this, SLOT(reject()));
+    connect(buttonBox, &QDialogButtonBox::accepted, this, &IconFolders::accept);
+    connect(buttonBox, &QDialogButtonBox::rejected, this, &IconFolders::reject);
 
     gridLayout = new QGridLayout();
     auto mainLayout = new QGridLayout(this);
@@ -536,7 +532,7 @@ IconFolders::IconFolders(const QStringList& paths, QWidget* parent)
         }
 
         buttonMap.append(qMakePair(edit, removeButton));
-        connect(removeButton, SIGNAL(clicked()), this, SLOT(removeFolder()));
+        connect(removeButton, &QPushButton::clicked, this, &IconFolders::removeFolder);
     }
 
     textLabel = new QLabel(this);
@@ -547,7 +543,7 @@ IconFolders::IconFolders(const QStringList& paths, QWidget* parent)
     gridLayout->addWidget(textLabel, maxRow, 0, 1, 1);
     gridLayout->addWidget(addButton, maxRow, 1, 1, 1);
 
-    connect(addButton, SIGNAL(clicked()), this, SLOT(addFolder()));
+    connect(addButton, &QPushButton::clicked, this, &IconFolders::addFolder);
     if (numPaths >= this->maxLines)
         addButton->setDisabled(true);
 }

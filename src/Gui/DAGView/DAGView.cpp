@@ -54,7 +54,8 @@ View::View(QWidget* parentIn): QGraphicsView(parentIn)
   conDelete = Application::Instance->signalDeleteDocument.connect(boost::bind(&View::slotDeleteDocument, this, bp::_1));
 
   //just update the dagview when the gui process is idle.
-  connect(QAbstractEventDispatcher::instance(), SIGNAL(awake()), this, SLOT(awakeSlot()));
+  connect(QAbstractEventDispatcher::instance(), &QAbstractEventDispatcher::awake,
+          this, &View::awakeSlot);
 }
 
 View::~View()

@@ -57,7 +57,7 @@ DemoMode::DemoMode(QWidget* /*parent*/, Qt::WindowFlags fl)
     wasHidden = false;
     showHideTimer = new QTimer(this);
     showHideTimer->setInterval(5000);
-    connect(showHideTimer, SIGNAL(timeout()), this, SLOT(hide()));
+    connect(showHideTimer, &QTimer::timeout, this, &DemoMode::hide);
 }
 
 /** Destroys the object and frees any allocated resources */

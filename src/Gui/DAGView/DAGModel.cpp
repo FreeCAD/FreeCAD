@@ -129,7 +129,7 @@ Model::Model(QObject *parentIn, const Gui::Document &documentIn) : QGraphicsScen
 #ifndef Q_OS_MAC
   renameAction->setShortcut(Qt::Key_F2);
 #endif
-  connect(renameAction, SIGNAL(triggered()), this, SLOT(onRenameSlot()));
+  connect(renameAction, &QAction::triggered, this, &Model::renameAcceptedSlot);
 
   editingFinishedAction = new QAction(this);
   editingFinishedAction->setText(tr("Finish editing"));
@@ -1102,8 +1102,8 @@ void Model::onRenameSlot()
   auto lineEdit = new LineEdit();
   auto text = (*theGraph)[selections.front()].text.get();
   lineEdit->setText(text->toPlainText());
-  connect(lineEdit, SIGNAL(acceptedSignal()), this, SLOT(renameAcceptedSlot()));
-  connect(lineEdit, SIGNAL(rejectedSignal()), this, SLOT(renameRejectedSlot()));
+  connect(lineEdit, &LineEdit::acceptedSignal, this, &Model::renameAcceptedSlot);
+  connect(lineEdit, &LineEdit::rejectedSignal, this, &Model::renameRejectedSlot);
 
   proxy = this->addWidget(lineEdit);
   proxy->setGeometry(text->sceneBoundingRect());

@@ -73,10 +73,10 @@ DlgCustomCommandsImp::DlgCustomCommandsImp( QWidget* parent  )
     pal.setColor(QPalette::Inactive, QPalette::HighlightedText, pal.color(QPalette::Active, QPalette::HighlightedText));
     ui->categoryTreeWidget->setPalette( pal );
 
-    connect(ui->commandTreeWidget, SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),
-            this, SLOT(onDescription(QTreeWidgetItem*)));
-    connect(ui->categoryTreeWidget, SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),
-            this, SLOT(onGroupActivated(QTreeWidgetItem*)));
+    connect(ui->commandTreeWidget, &QTreeWidget::currentItemChanged,
+            this, &DlgCustomCommandsImp::onDescription); 
+    connect(ui->commandTreeWidget, &QTreeWidget::currentItemChanged,
+            this, &DlgCustomCommandsImp::onGroupActivated); 
 
     CommandManager & cCmdMgr = Application::Instance->commandManager();
     std::map<std::string,Command*> sCommands = cCmdMgr.getCommands();
