@@ -61,6 +61,7 @@
 #include "Document.h"
 #include "FileDialog.h"
 #include "MainWindow.h"
+#include "NaviCube.h"
 #include "NavigationStyle.h"
 #include "SoFCDB.h"
 #include "SoFCSelectionAction.h"
@@ -350,37 +351,56 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         }
     }
     else if (strcmp(Reason,"EyeDistance") == 0) {
-        _viewer->getSoRenderManager()->setStereoOffset(rGrp.GetFloat("EyeDistance",5.0));
+        _viewer->getSoRenderManager()->setStereoOffset(rGrp.GetFloat("EyeDistance", 5.0));
     }
     else if (strcmp(Reason,"CornerCoordSystem") == 0) {
-        _viewer->setFeedbackVisibility(rGrp.GetBool("CornerCoordSystem",true));
+        _viewer->setFeedbackVisibility(rGrp.GetBool("CornerCoordSystem", true));
     }
     else if (strcmp(Reason,"CornerCoordSystemSize") == 0) {
-        _viewer->setFeedbackSize(rGrp.GetInt("CornerCoordSystemSize",10));
+        _viewer->setFeedbackSize(rGrp.GetInt("CornerCoordSystemSize", 10));
     }
     else if (strcmp(Reason,"ShowAxisCross") == 0) {
-        _viewer->setAxisCross(rGrp.GetBool("ShowAxisCross",false));
+        _viewer->setAxisCross(rGrp.GetBool("ShowAxisCross", false));
     }
     else if (strcmp(Reason,"UseAutoRotation") == 0) {
-        _viewer->setAnimationEnabled(rGrp.GetBool("UseAutoRotation",false));
+        _viewer->setAnimationEnabled(rGrp.GetBool("UseAutoRotation", false));
     }
     else if (strcmp(Reason,"Gradient") == 0) {
-        _viewer->setGradientBackground((rGrp.GetBool("Gradient",true)));
+        _viewer->setGradientBackground((rGrp.GetBool("Gradient", true)));
     }
     else if (strcmp(Reason,"ShowFPS") == 0) {
-        _viewer->setEnabledFPSCounter(rGrp.GetBool("ShowFPS",false));
+        _viewer->setEnabledFPSCounter(rGrp.GetBool("ShowFPS", false));
     }
     else if (strcmp(Reason,"ShowNaviCube") == 0) {
-        _viewer->setEnabledNaviCube(rGrp.GetBool("ShowNaviCube",true));
+        _viewer->setEnabledNaviCube(rGrp.GetBool("ShowNaviCube", true));
     }
     else if (strcmp(Reason, "CornerNaviCube") == 0) {
         _viewer->setNaviCubeCorner(rGrp.GetInt("CornerNaviCube", 1));
     }
+    else if (strcmp(Reason, "CubeSize") == 0) {
+        _viewer->getNavigationCube()->setSize(rGrp.GetInt("CubeSize", 132));
+    }
+    else if (strcmp(Reason, "NaviRotateToNearest") == 0) {
+        _viewer->getNavigationCube()->setNaviRotateToNearest(
+            rGrp.GetBool("NaviRotateToNearest", true));
+    }
+    else if (strcmp(Reason, "NaviStepByTurn") == 0) {
+        _viewer->getNavigationCube()->setNaviStepByTurn(rGrp.GetInt("NaviStepByTurn", 8));
+    }
+    else if (strcmp(Reason, "FontSize") == 0) {
+        _viewer->getNavigationCube()->setFontSize(
+            rGrp.GetInt("FontSize", _viewer->getNavigationCube()->getDefaultFontSize()));
+    }
+    else if (strcmp(Reason, "FontString") == 0) {
+        std::string font = rGrp.GetASCII(
+            "FontString", NaviCube::getDefaultSansserifFont().family().toStdString().c_str());
+        _viewer->getNavigationCube()->setFont(font);
+    }
     else if (strcmp(Reason,"UseVBO") == 0) {
-        _viewer->setEnabledVBO(rGrp.GetBool("UseVBO",false));
+        _viewer->setEnabledVBO(rGrp.GetBool("UseVBO", false));
     }
     else if (strcmp(Reason,"RenderCache") == 0) {
-        _viewer->setRenderCache(rGrp.GetInt("RenderCache",0));
+        _viewer->setRenderCache(rGrp.GetInt("RenderCache", 0));
     }
     else if (strcmp(Reason,"Orthographic") == 0) {
         // check whether a perspective or orthogrphic camera should be set

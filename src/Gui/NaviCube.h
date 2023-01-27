@@ -47,7 +47,13 @@ public:
     void createContextMenu(const std::vector<std::string>& cmd);
     bool processSoEvent(const SoEvent* ev);
     void setCorner(Corner);
+    void setSize(int size);
+    void setNaviRotateToNearest(bool toNearest);
+    void setNaviStepByTurn(int steps);
+    void setFont(std::string font);
+    void setFontSize(int size);
     static QFont getDefaultSansserifFont();
+    int getDefaultFontSize();
     static void setNaviCubeCommands(const std::vector<std::string>& cmd);
     static void setNaviCubeLabels(const std::vector<std::string>& labels);
 
