@@ -112,6 +112,7 @@ class NaviCubeImplementation : public ParameterGrp::ObserverType {
 public:
     explicit NaviCubeImplementation(Gui::View3DInventorViewer*);
     ~NaviCubeImplementation() override;
+    int getDefaultFontSize();
     void drawNaviCube();
     void createContextMenu(const std::vector<std::string>& cmd);
 
@@ -214,8 +215,10 @@ public:
     bool m_MightDrag = false;
     double m_BorderWidth;
     NaviCube::Corner m_Corner = NaviCube::TopRightCorner;
+    bool m_RotateToNearest = true;
+    int m_NaviStepByTurn = 8;
     int m_CubeTextSize = 0;
-    std::string m_CubeTextString;
+    std::string m_CubeTextFont;
 
     QtGLFramebufferObject* m_PickingFramebuffer;
 
@@ -263,6 +266,31 @@ void NaviCube::setCorner(Corner c) {
     m_NaviCubeImplementation->m_PrevHeight = 0;
 }
 
+void NaviCube::setSize(int size)
+{
+    m_NaviCubeImplementation->m_CubeWidgetSize = size;
+}
+
+void NaviCube::setNaviRotateToNearest(bool toNearest)
+{
+    m_NaviCubeImplementation->m_RotateToNearest = toNearest;
+}
+
+void NaviCube::setNaviStepByTurn(int steps)
+{
+    m_NaviCubeImplementation->m_NaviStepByTurn = steps;
+}
+
+void NaviCube::setFont(std::string font)
+{
+    m_NaviCubeImplementation->m_CubeTextFont = font;
+}
+
+void NaviCube::setFontSize(int size)
+{
+    m_NaviCubeImplementation->m_CubeTextSize = size;
+}
+
 // sets a default sansserif font
 // the Helvetica font is a good start for most OSes
 QFont NaviCube::getDefaultSansserifFont()
@@ -287,6 +315,11 @@ QFont NaviCube::getDefaultSansserifFont()
     return font; // We failed, but return whatever we have anyway
 }
 
+int NaviCube::getDefaultFontSize()
+{
+    return this->m_NaviCubeImplementation->getDefaultFontSize();
+}
+
 NaviCubeImplementation::NaviCubeImplementation(
     Gui::View3DInventorViewer* viewer) {
 
@@ -302,6 +335,8 @@ NaviCubeImplementation::NaviCubeImplementation(
     OnChange(*hGrp, "ButtonColor");
     OnChange(*hGrp, "CornerNaviCube");
     OnChange(*hGrp, "CubeSize");
+    OnChange(*hGrp, "NaviRotateToNearest");
+    OnChange(*hGrp, "NaviStepByTurn");
     OnChange(*hGrp, "BorderWidth");
     OnChange(*hGrp, "BorderColor");
     OnChange(*hGrp, "FontSize");
@@ -312,7 +347,8 @@ NaviCubeImplementation::NaviCubeImplementation(
 }
 
 NaviCubeImplementation::~NaviCubeImplementation() {
-    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NaviCube");
+    auto hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/NaviCube");
     hGrp->Detach(this);
 
     delete m_Menu;
@@ -322,6 +358,12 @@ NaviCubeImplementation::~NaviCubeImplementation() {
         delete* f;
     for (vector<QOpenGLTexture*>::iterator t = m_glTextures.begin(); t != m_glTextures.end(); t++)
         delete* t;
+}
+
+int NaviCubeImplementation::getDefaultFontSize()
+{
+    int texSize = m_CubeWidgetSize * m_OverSample;
+    return int(0.18 * texSize);
 }
 
 void NaviCubeImplementation::OnChange(ParameterGrp::SubjectType& rCaller,
@@ -347,6 +389,12 @@ void NaviCubeImplementation::OnChange(ParameterGrp::SubjectType& rCaller,
     else if (strcmp(reason, "CubeSize") == 0) {
         m_CubeWidgetSize = rGrp.GetInt(reason, 132);
     }
+    else if (strcmp(reason, "NaviRotateToNearest") == 0) {
+        m_RotateToNearest = rGrp.GetBool(reason, true);
+    }
+    else if (strcmp(reason, "NaviStepByTurn") == 0) {
+        m_NaviStepByTurn = rGrp.GetInt(reason, 8);
+    }
     else if (strcmp(reason, "BorderWidth") == 0) {
         m_BorderWidth = rGrp.GetFloat(reason, 1.1);
     }
@@ -354,10 +402,10 @@ void NaviCubeImplementation::OnChange(ParameterGrp::SubjectType& rCaller,
         m_BorderColor.setRgba(rGrp.GetUnsigned(reason, QColor(50, 50, 50, 255).rgba()));
     }
     else if (strcmp(reason, "FontSize") == 0) {
-        m_CubeTextSize = rGrp.GetInt(reason, 100);
+        m_CubeTextSize = rGrp.GetInt(reason, getDefaultFontSize());
     }
     else if (strcmp(reason, "FontString") == 0) {
-        m_CubeTextString = (rGrp.GetASCII(
+        m_CubeTextFont = (rGrp.GetASCII(
             reason, NaviCube::getDefaultSansserifFont().family().toStdString().c_str()));
     }
 }
@@ -439,18 +487,7 @@ GLuint NaviCubeImplementation::createCubeFaceTex(QtGLWidget* gl, float gap, cons
         paint.setPen(Qt::white);
         QFont sansFont;
         // check the user settings
-        QString fontString = QString::fromUtf8((hGrp->GetASCII("FontString")).c_str());
-        if (fontString.isEmpty()) {
-            // load a font as start
-            sansFont.fromString(NaviCube::getDefaultSansserifFont().family());
-            sansFont.setPointSize(int(0.18 * texSize));
-            // Improving readability
-            sansFont.setWeight(convertWeights(hGrp->GetInt("FontWeight", 87)));
-            sansFont.setStretch(hGrp->GetInt("FontStretch", 62));
-            // store font size and name
-            hGrp->SetInt("FontSize", sansFont.pointSize());
-            hGrp->SetASCII("FontString", sansFont.family().toStdString());
-        }
+        QString fontString = QString::fromUtf8(m_CubeTextFont.c_str());
         // Override fromString
         if (hGrp->GetInt("FontWeight") > 0) {
             sansFont.setWeight(convertWeights(hGrp->GetInt("FontWeight")));
@@ -458,7 +495,7 @@ GLuint NaviCubeImplementation::createCubeFaceTex(QtGLWidget* gl, float gap, cons
         if (hGrp->GetInt("FontStretch") > 0) {
             sansFont.setStretch(hGrp->GetInt("FontStretch"));
         }
-        sansFont.fromString(QString::fromStdString(m_CubeTextString));
+        sansFont.fromString(fontString);
         sansFont.setPointSize(m_CubeTextSize);
         paint.setFont(sansFont);
         paint.drawText(
@@ -820,7 +857,8 @@ void NaviCubeImplementation::initNaviCube(QtGLWidget* gl) {
 
     if (labels.size() != 6) {
         labels.clear();
-        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NaviCube");
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/NaviCube");
         labels.push_back(hGrp->GetASCII("TextFront", "FRONT"));
         labels.push_back(hGrp->GetASCII("TextRear", "REAR"));
         labels.push_back(hGrp->GetASCII("TextTop", "TOP"));
@@ -985,7 +1023,8 @@ void NaviCubeImplementation::handleResize() {
                 m_CubeWidgetPosY = view[1] - (m_PrevHeight - m_CubeWidgetPosY);
         }
         else { // initial position
-            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NaviCube");
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Preferences/NaviCube");
             int m_CubeWidgetOffsetX = hGrp->GetInt("OffsetX", 0);
             int m_CubeWidgetOffsetY = hGrp->GetInt("OffsetY", 0);
             switch (m_Corner) {
@@ -1378,11 +1417,8 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
         float rot = 45;
         float tilt = 90 - Base::toDegrees(atan(sqrt(2.0)));
         int pick = pickFace(x, y);
-
-        ParameterGrp::handle hGrpNavi = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NaviCube");
-        long step = Base::clamp(hGrpNavi->GetInt("NaviStepByTurn", 8), 4L, 36L);
+        long step = Base::clamp(long(m_NaviStepByTurn), 4L, 36L);
         float rotStepAngle = 360.0f / step;
-        bool toNearest = hGrpNavi->GetBool("NaviRotateToNearest", true);
         bool applyRotation = true;
 
         SbRotation viewRot = CurrentViewRot;
@@ -1398,7 +1434,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
             // we use here the same rotation logic used by other programs using OCC like "CAD Assistant"
             // when current matrix's 0,0 entry is larger than its |1,0| entry, we already have the final result
             // otherwise rotate around y
-            if (toNearest) {
+            if (m_RotateToNearest) {
                 if (ViewRotMatrix[0][0] < 0 && abs(ViewRotMatrix[0][0]) >= abs(ViewRotMatrix[1][0]))
                     viewRot = rotateView(viewRot, 2, 180);
                 else if (ViewRotMatrix[1][0] > 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
@@ -1409,7 +1445,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
             break;
         case TEX_REAR:
             viewRot = setView(180, 90);
-            if (toNearest) {
+            if (m_RotateToNearest) {
                 if (ViewRotMatrix[0][0] > 0 && abs(ViewRotMatrix[0][0]) >= abs(ViewRotMatrix[1][0]))
                     viewRot = rotateView(viewRot, 2, 180);
                 else if (ViewRotMatrix[1][0] > 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
@@ -1420,7 +1456,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
             break;
         case TEX_LEFT:
             viewRot = setView(270, 90);
-            if (toNearest) {
+            if (m_RotateToNearest) {
                 if (ViewRotMatrix[0][1] > 0 && abs(ViewRotMatrix[0][1]) >= abs(ViewRotMatrix[1][1]))
                     viewRot = rotateView(viewRot, 2, 180);
                 else if (ViewRotMatrix[1][1] > 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
@@ -1431,7 +1467,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
             break;
         case TEX_RIGHT:
             viewRot = setView(90, 90);
-            if (toNearest) {
+            if (m_RotateToNearest) {
                 if (ViewRotMatrix[0][1] < 0 && abs(ViewRotMatrix[0][1]) >= abs(ViewRotMatrix[1][1]))
                     viewRot = rotateView(viewRot, 2, 180);
                 else if (ViewRotMatrix[1][1] > 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
@@ -1442,7 +1478,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
             break;
         case TEX_TOP:
             viewRot = setView(0, 0);
-            if (toNearest) {
+            if (m_RotateToNearest) {
                 if (ViewRotMatrix[0][0] < 0 && abs(ViewRotMatrix[0][0]) >= abs(ViewRotMatrix[1][0]))
                     viewRot = rotateView(viewRot, 2, 180);
                 else if (ViewRotMatrix[1][0] > 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
@@ -1453,7 +1489,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
             break;
         case TEX_BOTTOM:
             viewRot = setView(0, 180);
-            if (toNearest) {
+            if (m_RotateToNearest) {
                 if (ViewRotMatrix[0][0] < 0 && abs(ViewRotMatrix[0][0]) >= abs(ViewRotMatrix[1][0]))
                     viewRot = rotateView(viewRot, 2, 180);
                 else if (ViewRotMatrix[1][0] > 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
@@ -1466,7 +1502,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
             // set to FRONT then rotate
             viewRot = setView(0, 90);
             viewRot = rotateView(viewRot, 1, 45);
-            if (toNearest) {
+            if (m_RotateToNearest) {
                 if (ViewRotMatrix[0][0] < 0 && abs(ViewRotMatrix[0][0]) >= abs(ViewRotMatrix[1][0]))
                     viewRot = rotateView(viewRot, 2, 180);
                 else if (ViewRotMatrix[1][0] > 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
@@ -1479,7 +1515,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
             // set to FRONT then rotate
             viewRot = setView(0, 90);
             viewRot = rotateView(viewRot, 1, -45);
-            if (toNearest) {
+            if (m_RotateToNearest) {
                 if (ViewRotMatrix[0][0] < 0 && abs(ViewRotMatrix[0][0]) >= abs(ViewRotMatrix[1][0]))
                     viewRot = rotateView(viewRot, 2, 180);
                 else if (ViewRotMatrix[1][0] > 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
@@ -1492,7 +1528,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
             // set to REAR then rotate
             viewRot = setView(180, 90);
             viewRot = rotateView(viewRot, 1, -45);
-            if (toNearest) {
+            if (m_RotateToNearest) {
                 if (ViewRotMatrix[0][0] > 0 && abs(ViewRotMatrix[0][0]) >= abs(ViewRotMatrix[1][0]))
                     viewRot = rotateView(viewRot, 2, 180);
                 else if (ViewRotMatrix[1][0] > 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
@@ -1505,7 +1541,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
             // set to REAR then rotate
             viewRot = setView(180, 90);
             viewRot = rotateView(viewRot, 1, 45);
-            if (toNearest) {
+            if (m_RotateToNearest) {
                 if (ViewRotMatrix[0][0] > 0 && abs(ViewRotMatrix[0][0]) >= abs(ViewRotMatrix[1][0]))
                     viewRot = rotateView(viewRot, 2, 180);
                 else if (ViewRotMatrix[1][0] > 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
@@ -1518,7 +1554,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
             // set to FRONT then rotate
             viewRot = setView(0, 90);
             viewRot = rotateView(viewRot, 0, 45);
-            if (toNearest) {
+            if (m_RotateToNearest) {
                 if (ViewRotMatrix[1][2] < 0 && abs(ViewRotMatrix[1][2]) >= abs(ViewRotMatrix[0][2]))
                     viewRot = rotateView(viewRot, 2, 180);
                 else if (ViewRotMatrix[0][2] > 0 && abs(ViewRotMatrix[0][2]) > abs(ViewRotMatrix[1][2]))
@@ -1531,7 +1567,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
             // set to FRONT then rotate
             viewRot = setView(0, 90);
             viewRot = rotateView(viewRot, 0, -45);
-            if (toNearest) {
+            if (m_RotateToNearest) {
                 if (ViewRotMatrix[1][2] < 0 && abs(ViewRotMatrix[1][2]) >= abs(ViewRotMatrix[0][2]))
                     viewRot = rotateView(viewRot, 2, 180);
                 else if (ViewRotMatrix[0][2] > 0 && abs(ViewRotMatrix[0][2]) > abs(ViewRotMatrix[1][2]))
@@ -1544,7 +1580,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
             // set to REAR then rotate
             viewRot = setView(180, 90);
             viewRot = rotateView(viewRot, 0, 45);
-            if (toNearest) {
+            if (m_RotateToNearest) {
                 if (ViewRotMatrix[1][2] < 0 && abs(ViewRotMatrix[1][2]) >= abs(ViewRotMatrix[0][2]))
                     viewRot = rotateView(viewRot, 2, 180);
                 else if (ViewRotMatrix[0][2] > 0 && abs(ViewRotMatrix[0][2]) > abs(ViewRotMatrix[1][2]))
@@ -1568,7 +1604,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
             // set to LEFT then rotate
             viewRot = setView(270, 90);
             viewRot = rotateView(viewRot, 1, 45);
-            if (toNearest) {
+            if (m_RotateToNearest) {
                 if (ViewRotMatrix[0][1] > 0 && abs(ViewRotMatrix[0][1]) >= abs(ViewRotMatrix[1][1]))
                     viewRot = rotateView(viewRot, 2, 180);
                 else if (ViewRotMatrix[1][1] > 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
@@ -1581,7 +1617,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
             // set to RIGHT then rotate
             viewRot = setView(90, 90);
             viewRot = rotateView(viewRot, 1, 45);
-            if (toNearest) {
+            if (m_RotateToNearest) {
                 if (ViewRotMatrix[0][1] < 0 && abs(ViewRotMatrix[0][1]) >= abs(ViewRotMatrix[1][1]))
                     viewRot = rotateView(viewRot, 2, 180);
                 else if (ViewRotMatrix[1][1] > 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
@@ -1594,7 +1630,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
             // set to RIGHT then rotate
             viewRot = setView(90, 90);
             viewRot = rotateView(viewRot, 1, -45);
-            if (toNearest) {
+            if (m_RotateToNearest) {
                 if (ViewRotMatrix[0][1] < 0 && abs(ViewRotMatrix[0][1]) >= abs(ViewRotMatrix[1][1]))
                     viewRot = rotateView(viewRot, 2, 180);
                 else if (ViewRotMatrix[1][1] > 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
@@ -1607,7 +1643,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
             // set to LEFT then rotate
             viewRot = setView(270, 90);
             viewRot = rotateView(viewRot, 1, -45);
-            if (toNearest) {
+            if (m_RotateToNearest) {
                 if (ViewRotMatrix[0][1] > 0 && abs(ViewRotMatrix[0][1]) >= abs(ViewRotMatrix[1][1]))
                     viewRot = rotateView(viewRot, 2, 180);
                 else if (ViewRotMatrix[1][1] > 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
@@ -1622,7 +1658,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
             // - z-axis is not rotated larger than 120 deg from (0, 1, 0) -> we are already there
             // - y-axis is not rotated larger than 120 deg from (0, 1, 0)
             // - x-axis is not rotated larger than 120 deg from (0, 1, 0)
-            if (toNearest) {
+            if (m_RotateToNearest) {
                 if (ViewRotMatrix[1][0] > 0.4823)
                     viewRot = rotateView(viewRot, 0, -120, SbVec3f(1, 1, 1));
                 else if (ViewRotMatrix[1][1] > 0.4823)
@@ -1631,7 +1667,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
             break;
         case TEX_BOTTOM_FRONT_RIGHT:
             viewRot = setView(90 + rot - 90, 90 + tilt);
-            if (toNearest) {
+            if (m_RotateToNearest) {
                 if (ViewRotMatrix[1][0] < -0.4823)
                     viewRot = rotateView(viewRot, 0, 120, SbVec3f(-1, 1, 1));
                 else if (ViewRotMatrix[1][1] > 0.4823)
@@ -1640,7 +1676,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
             break;
         case TEX_BOTTOM_RIGHT_REAR:
             viewRot = setView(180 + rot - 90, 90 + tilt);
-            if (toNearest) {
+            if (m_RotateToNearest) {
                 if (ViewRotMatrix[1][0] < -0.4823)
                     viewRot = rotateView(viewRot, 0, -120, SbVec3f(-1, -1, 1));
                 else if (ViewRotMatrix[1][1] < -0.4823)
@@ -1649,7 +1685,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
             break;
         case TEX_BOTTOM_REAR_LEFT:
             viewRot = setView(270 + rot - 90, 90 + tilt);
-            if (toNearest) {
+            if (m_RotateToNearest) {
                 if (ViewRotMatrix[1][0] > 0.4823)
                     viewRot = rotateView(viewRot, 0, 120, SbVec3f(1, -1, 1));
                 else if (ViewRotMatrix[1][1] < -0.4823)
@@ -1658,7 +1694,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
             break;
         case TEX_TOP_RIGHT_FRONT:
             viewRot = setView(rot, 90 - tilt);
-            if (toNearest) {
+            if (m_RotateToNearest) {
                 if (ViewRotMatrix[1][0] > 0.4823)
                     viewRot = rotateView(viewRot, 0, -120, SbVec3f(-1, 1, -1));
                 else if (ViewRotMatrix[1][1] < -0.4823)
@@ -1667,7 +1703,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
             break;
         case TEX_TOP_FRONT_LEFT:
             viewRot = setView(rot - 90, 90 - tilt);
-            if (toNearest) {
+            if (m_RotateToNearest) {
                 if (ViewRotMatrix[1][0] < -0.4823)
                     viewRot = rotateView(viewRot, 0, 120, SbVec3f(1, 1, -1));
                 else if (ViewRotMatrix[1][1] < -0.4823)
@@ -1676,7 +1712,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
             break;
         case TEX_TOP_LEFT_REAR:
             viewRot = setView(rot - 180, 90 - tilt);
-            if (toNearest) {
+            if (m_RotateToNearest) {
                 if (ViewRotMatrix[1][0] < -0.4823)
                     viewRot = rotateView(viewRot, 0, -120, SbVec3f(1, -1, -1));
                 else if (ViewRotMatrix[1][1] > 0.4823)
@@ -1685,7 +1721,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
             break;
         case TEX_TOP_REAR_RIGHT:
             viewRot = setView(rot - 270, 90 - tilt);
-            if (toNearest) {
+            if (m_RotateToNearest) {
                 if (ViewRotMatrix[1][0] > 0.4823)
                     viewRot = rotateView(viewRot, 0, 120, SbVec3f(-1, -1, -1));
                 else if (ViewRotMatrix[1][1] > 0.4823)
@@ -1724,7 +1760,6 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
     }
     return true;
 }
-
 
 void NaviCubeImplementation::setHilite(int hilite) {
     if (hilite != m_HiliteId) {
