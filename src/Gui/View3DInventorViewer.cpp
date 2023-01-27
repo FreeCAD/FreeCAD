@@ -3358,7 +3358,9 @@ SoPath* View3DInventorViewer::pickFilterCB(void* viewer, const SoPickedPoint* pp
         std::string e = vp->getElement(pp->getDetail());
         vp->getSelectionShape(e.c_str());
         static char buf[513];
-        snprintf(buf,512,"Hovered: %s (%f,%f,%f)"
+        snprintf(buf,
+                 sizeof(buf),
+                 "Hovered: %s (%f,%f,%f)"
                  ,e.c_str()
                  ,pp->getPoint()[0]
                  ,pp->getPoint()[1]
