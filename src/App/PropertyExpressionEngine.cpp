@@ -316,8 +316,8 @@ void PropertyExpressionEngine::Restore(Base::XMLReader &reader)
  * @brief Update graph structure with given path and expression.
  * @param path Path
  * @param expression Expression to query for dependencies
- * @param nodes Map with nodes of graph
- * @param revNodes Reverse map of nodes
+ * @param nodes Map with nodes of graph, including dependencies of 'expression'
+ * @param revNodes Reverse map of the nodes, containing only the given paths, without dependencies.
  * @param edges Edges in graph
  */
 
@@ -352,8 +352,6 @@ void PropertyExpressionEngine::buildGraphStructures(const ObjectIdentifier & pat
                 if (nodes.find(cPath) == nodes.end()) {
                     int s = nodes.size();
                     nodes[cPath] = s;
-                    // for consistency, to avoid other engineers debugging this:
-                    // revNodes[s] = cPath;
                 }
                 edges.emplace_back(nodes[path], nodes[cPath]);
             }
@@ -520,8 +518,8 @@ struct cycle_detector : public boost::dfs_visitor<> {
 /**
  * @brief Build a graph of all expressions in \a exprs.
  * @param exprs Expressions to use in graph
- * @param revNodes Map from int to ObjectIndentifer
- * @param g Graph to update
+ * @param revNodes Map from int[nodeid] to ObjectIndentifer. 
+ * @param g Graph to update. May contains additional nodes than in revNodes, because of outside dependencies.
  */
 
 void PropertyExpressionEngine::buildGraph(const ExpressionMap & exprs,
@@ -550,8 +548,6 @@ void PropertyExpressionEngine::buildGraph(const ExpressionMap & exprs,
     }
 
     // Create graph
-    // revNodes is missing information regarding dependencies
-    // nodes.size is the right way to select the correct # of nodes for the graph
     g = DiGraph(nodes.size());
 
     // Add edges to graph
@@ -590,6 +586,8 @@ std::vector<App::ObjectIdentifier> PropertyExpressionEngine::computeEvaluationOr
     topological_sort(g, std::back_inserter(c));
 
     for (std::vector<int>::iterator i = c.begin(); i != c.end(); ++i) {
+        // we return the evaluation order for our properties, not the dependencies
+        // the topo sort will contain node ids for both our props and their deps
         if (revNodes.find(*i) != revNodes.end())
             evaluationOrder.push_back(revNodes[*i]);
     }
