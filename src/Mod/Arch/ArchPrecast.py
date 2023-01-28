@@ -120,9 +120,12 @@ class _PrecastBeam(_Precast):
         dentheight = obj.DentHeight.Value
         dents = obj.Dents
 
-        if (length == 0) or (width == 0) or (height == 0):
-            return
-        if (chamfer >= width/2) or (chamfer >= height/2):
+        if length == 0 \
+                or width == 0 \
+                or height == 0 \
+                or chamfer >= width / 2 \
+                or chamfer >= height / 2:
+            FreeCAD.Console.PrintWarning(obj.Label + " " + translate("Arch", "has a null shape") + "\n")
             return
 
         import Part
@@ -233,9 +236,12 @@ class _PrecastIbeam(_Precast):
         base = obj.BeamBase.Value
         slant = obj.Chamfer.Value
 
-        if (length == 0) or (width == 0) or (height == 0):
-            return
-        if (slant*2 >= width) or (base*2+slant*2 >= height):
+        if length == 0 \
+                or width == 0 \
+                or height == 0 \
+                or slant * 2 >= width \
+                or base * 2 + slant * 2 >= height:
+            FreeCAD.Console.PrintWarning(obj.Label + " " + translate("Arch", "has a null shape") + "\n")
             return
 
         import Part
@@ -308,9 +314,12 @@ class _PrecastPillar(_Precast):
         number = obj.GrooveNumber
         dents = obj.Dents
 
-        if (length == 0) or (width == 0) or (height == 0):
-            return
-        if (chamfer >= width/2) or (chamfer >= length/2):
+        if length == 0 \
+                or width == 0 \
+                or height == 0 \
+                or chamfer >= width / 2 \
+                or chamfer >= length / 2:
+            FreeCAD.Console.PrintWarning(obj.Label + " " + translate("Arch", "has a null shape") + "\n")
             return
 
         import Part
@@ -437,9 +446,12 @@ class _PrecastPanel(_Precast):
         dentheight = obj.DentHeight.Value
         dentwidth = obj.DentWidth.Value
 
-        if (length == 0) or (width == 0) or (height == 0):
-            return
-        if ((chamfer+dentwidth) >= width) or (dentheight >= height):
+        if length == 0 \
+                or width == 0 \
+                or height == 0 \
+                or chamfer + dentwidth >= width \
+                or dentheight >= height:
+            FreeCAD.Console.PrintWarning(obj.Label + " " + translate("Arch", "has a null shape") + "\n")
             return
 
         import Part
@@ -555,20 +567,22 @@ class _PrecastSlab(_Precast):
         holeminor = obj.HoleMinor.Value
         holespacing = obj.HoleSpacing.Value
 
-        slant = (height-base) / 3 # this gives the inclination of the vertical walls
+        slant = (height - base) / 3 # this gives the inclination of the vertical walls
+        if base == 0:
+            base = min(height / 4, 50)
+            obj.SlabBase = base
 
-        if (length == 0) or (width == 0) or (height == 0):
+        if length == 0 \
+                or width == 0 \
+                or height == 0 \
+                or width <= slant * 2 \
+                or height < base * 2 \
+                or (holenumber > 0 and (holespacing == 0 or holemajor == 0 or holeminor == 0)) \
+                or holemajor < holeminor:
+            FreeCAD.Console.PrintWarning(obj.Label + " " + translate("Arch", "has a null shape") + "\n")
             return
-        if base >= height:
-            return
-        if height < (base*2):
-            return
-        if (holenumber > 0) and ( (holespacing == 0) or (holemajor == 0) or (holeminor == 0) ):
-            return
-        if holemajor < holeminor:
-            return
+
         import Part
-
         p = []
         if slabtype == "Champagne":
             p.append(Vector(0,0,0))
@@ -657,16 +671,14 @@ class _PrecastStairs(_Precast):
         riser = obj.Riser.Value
         tread = obj.Tread.Value
 
-        if not width:
+        if width == 0 \
+                or steps == 0 \
+                or riser == 0 \
+                or tread == 0 \
+                or height == 0:
+            FreeCAD.Console.PrintWarning(obj.Label + " " + translate("Arch", "has a null shape") + "\n")
             return
-        if not steps:
-            return
-        if not riser:
-            return
-        if not tread:
-            return
-        if not height:
-            return
+
         if length < tread:
             length = tread # minimum
 
@@ -886,23 +898,26 @@ class _PrecastTaskPanel:
 
         # restore presets
         param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-        self.valueChamfer.setText(str(param.GetFloat("PrecastChamfer",0.0)))
-        self.valueDentLength.setText(str(param.GetFloat("PrecastDentLength",0.0)))
-        self.valueDentWidth.setText(str(param.GetFloat("PrecastDentWidth",0.0)))
-        self.valueDentHeight.setText(str(param.GetFloat("PrecastDentHeight",0.0)))
-        self.valueBase.setText(str(param.GetFloat("PrecastBase",0.0)))
-        self.valueHoleMajor.setText(str(param.GetFloat("PrecastHoleMajor",0.0)))
-        self.valueHoleMinor.setText(str(param.GetFloat("PrecastHoleMinor",0.0)))
-        self.valueHoleSpacing.setText(str(param.GetFloat("PrecastHoleSpacing",0.0)))
-        self.valueGrooveDepth.setText(str(param.GetFloat("PrecastGrooveDepth",0.0)))
-        self.valueGrooveHeight.setText(str(param.GetFloat("PrecastGrooveHeight",0.0)))
-        self.valueGrooveSpacing.setText(str(param.GetFloat("PrecastGrooveSpacing",0.0)))
-        self.valueDownLength.setText(str(param.GetFloat("PrecastDownLength",0.0)))
-        self.valueRiser.setText(str(param.GetFloat("PrecastRiser",0.0)))
-        self.valueTread.setText(str(param.GetFloat("PrecastTread",0.0)))
+        self.restoreValue(self.valueChamfer, param.GetFloat("PrecastChamfer", 0.0))
+        self.restoreValue(self.valueDentLength, param.GetFloat("PrecastDentLength", 0.0))
+        self.restoreValue(self.valueDentWidth, param.GetFloat("PrecastDentWidth", 0.0))
+        self.restoreValue(self.valueDentHeight, param.GetFloat("PrecastDentHeight", 0.0))
+        self.restoreValue(self.valueBase, param.GetFloat("PrecastBase", 0.0))
+        self.restoreValue(self.valueHoleMajor, param.GetFloat("PrecastHoleMajor", 0.0))
+        self.restoreValue(self.valueHoleMinor, param.GetFloat("PrecastHoleMinor", 0.0))
+        self.restoreValue(self.valueHoleSpacing, param.GetFloat("PrecastHoleSpacing", 0.0))
+        self.restoreValue(self.valueGrooveDepth, param.GetFloat("PrecastGrooveDepth", 0.0))
+        self.restoreValue(self.valueGrooveHeight, param.GetFloat("PrecastGrooveHeight", 0.0))
+        self.restoreValue(self.valueGrooveSpacing, param.GetFloat("PrecastGrooveSpacing", 0.0))
+        self.restoreValue(self.valueDownLength, param.GetFloat("PrecastDownLength", 0.0))
+        self.restoreValue(self.valueRiser, param.GetFloat("PrecastRiser", 0.0))
+        self.restoreValue(self.valueTread, param.GetFloat("PrecastTread", 0.0))
 
         self.retranslateUi(self.form)
         self.form.hide()
+
+    def restoreValue(self, widget, val):
+        widget.setText(FreeCAD.Units.Quantity(val, FreeCAD.Units.Length).UserString)
 
     def getValues(self):
         d = {}
