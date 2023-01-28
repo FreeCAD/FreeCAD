@@ -90,8 +90,12 @@ BuildAndInstallDesignerPlugin()
 
 CreatePackagingTargets()
 
-PrintFinalReport()
+if(MSVC AND FREECAD_LIBPACK_USE AND LIBPACK_FOUND)
+    CopyLibpackDirectories()
+endif()
 
 if (BUILD_TEST)
     add_subdirectory(tests)
 endif()
+
+PrintFinalReport()
