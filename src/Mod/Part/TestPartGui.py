@@ -20,28 +20,45 @@
 #   USA                                                                   *
 #**************************************************************************
 
-import FreeCAD, FreeCADGui, os, sys, unittest, Part, PartGui
+import os
+import sys
+import unittest
+import FreeCAD
+import FreeCADGui
+import Part
+import PartGui
+from PySide import QtWidgets
 
+def findDockWidget(name):
+    """ Get a dock widget by name """
+    mw = FreeCADGui.getMainWindow()
+    dws = mw.findChildren(QtWidgets.QDockWidget)
+    for dw in dws:
+        if dw.objectName() == name:
+            return dw
+    return None
 
+"""
 #---------------------------------------------------------------------------
 # define the test cases to test the FreeCAD Part module
 #---------------------------------------------------------------------------
+"""
 
 
 #class PartGuiTestCases(unittest.TestCase):
-#	def setUp(self):
-#		self.Doc = FreeCAD.newDocument("PartGuiTest")
+#    def setUp(self):
+#        self.Doc = FreeCAD.newDocument("PartGuiTest")
 #
-#	def testBoxCase(self):
-#		self.Box = self.Doc.addObject('Part::SketchObject','SketchBox')
-#		self.Box.addGeometry(Part.LineSegment(App.Vector(-99.230339,36.960674,0),App.Vector(69.432587,36.960674,0)))
-#		self.Box.addGeometry(Part.LineSegment(App.Vector(69.432587,36.960674,0),App.Vector(69.432587,-53.196629,0)))
-#		self.Box.addGeometry(Part.LineSegment(App.Vector(69.432587,-53.196629,0),App.Vector(-99.230339,-53.196629,0)))
-#		self.Box.addGeometry(Part.LineSegment(App.Vector(-99.230339,-53.196629,0),App.Vector(-99.230339,36.960674,0)))
+#    def testBoxCase(self):
+#        self.Box = self.Doc.addObject('Part::SketchObject','SketchBox')
+#        self.Box.addGeometry(Part.LineSegment(App.Vector(-99.230339,36.960674,0),App.Vector(69.432587,36.960674,0)))
+#        self.Box.addGeometry(Part.LineSegment(App.Vector(69.432587,36.960674,0),App.Vector(69.432587,-53.196629,0)))
+#        self.Box.addGeometry(Part.LineSegment(App.Vector(69.432587,-53.196629,0),App.Vector(-99.230339,-53.196629,0)))
+#        self.Box.addGeometry(Part.LineSegment(App.Vector(-99.230339,-53.196629,0),App.Vector(-99.230339,36.960674,0)))
 #
-#	def tearDown(self):
-#		#closing doc
-#		FreeCAD.closeDocument("PartGuiTest")
+#    def tearDown(self):
+#        #closing doc
+#        FreeCAD.closeDocument("PartGuiTest")
 class PartGuiViewProviderTestCases(unittest.TestCase):
     def setUp(self):
         self.Doc = FreeCAD.newDocument("PartGuiTest")
@@ -60,3 +77,27 @@ class PartGuiViewProviderTestCases(unittest.TestCase):
     def tearDown(self):
         #closing doc
         FreeCAD.closeDocument("PartGuiTest")
+
+class SectionCutTestCases(unittest.TestCase):
+    def setUp(self):
+        self.Doc = FreeCAD.newDocument("SectionCut")
+
+    def testOpenDialog(self):
+        box = self.Doc.addObject("Part::Box", "SectionCutBoxX")
+        comp = self.Doc.addObject("Part::Compound", "SectionCutCompound")
+        comp.Links = box
+        grp = self.Doc.addObject("App::DocumentObjectGroup", "SectionCutX")
+        grp.addObject(comp)
+        self.Doc.recompute()
+
+        FreeCADGui.runCommand("Part_SectionCut")
+        dw = findDockWidget("Section Cutting")
+        if dw:
+            box = dw.findChild(QtWidgets.QDialogButtonBox)
+            button = box.button(box.Close)
+            button.click()
+        else:
+            print ("No Section Cutting panel found")
+
+    def tearDown(self):
+        FreeCAD.closeDocument("SectionCut")
