@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2022 FreeCAD Project Association                        *
+# *   Copyright (c) 2022-2023 FreeCAD Project Association                   *
 # *                                                                         *
 # *   This file is part of FreeCAD.                                         *
 # *                                                                         *
