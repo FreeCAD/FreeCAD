@@ -352,6 +352,8 @@ void PropertyExpressionEngine::buildGraphStructures(const ObjectIdentifier & pat
                 if (nodes.find(cPath) == nodes.end()) {
                     int s = nodes.size();
                     nodes[cPath] = s;
+                    // for consistency, to avoid other engineers debugging this:
+                    // revNodes[s] = cPath;
                 }
                 edges.emplace_back(nodes[path], nodes[cPath]);
             }
@@ -548,7 +550,9 @@ void PropertyExpressionEngine::buildGraph(const ExpressionMap & exprs,
     }
 
     // Create graph
-    g = DiGraph(revNodes.size());
+    // revNodes is missing information regarding dependencies
+    // nodes.size is the right way to select the correct # of nodes for the graph
+    g = DiGraph(nodes.size());
 
     // Add edges to graph
     for (std::vector<Edge>::const_iterator i = edges.begin(); i != edges.end(); ++i)
