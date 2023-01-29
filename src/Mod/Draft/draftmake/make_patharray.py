@@ -57,7 +57,9 @@ def make_path_array(base_object, path_object, count=4,
                     tan_vector=App.Vector(1, 0, 0),
                     force_vertical=False,
                     vertical_vector=App.Vector(0, 0, 1),
-                    use_link=True):
+                    use_link=True,
+                    start_offset=0.0,
+                    end_offset=0.0):
     """Make a Draft PathArray object.
 
     Distribute copies of a `base_object` along `path_object`
@@ -144,6 +146,15 @@ def make_path_array(base_object, path_object, count=4,
         It defaults to `True`, in which case the copies are `App::Link`
         elements. Otherwise, the copies are shape copies which makes
         the resulting array heavier.
+    
+    start_offset: float, optional
+        It defaults to 0.0.
+        It is the distance from the beginning of the path to offset the first copy.
+
+    end_offset: float, optional
+        It defaults to 0.0.
+        It is the distance from the end of the path to offset the last copy.
+
 
     Returns
     -------
@@ -278,6 +289,25 @@ def make_path_array(base_object, path_object, count=4,
         new_obj = doc.addObject("Part::FeaturePython", "PathArray")
         PathArray(new_obj)
 
+    _msg("start_offset: {}".format(start_offset))
+    try:
+        utils.type_check([(start_offset, (int, float))],
+                         name=_name)
+    except TypeError:
+        _err(translate("draft","Wrong input: must be a number."))
+        return None
+    start_offset = float(start_offset)
+
+    _msg("end_offset: {}".format(end_offset))
+    try:
+        utils.type_check([(end_offset, (int, float))],
+                         name=_name)
+    except TypeError:
+        _err(translate("draft","Wrong input: must be a number."))
+        return None
+    end_offset = float(end_offset)
+
+
     new_obj.Base = base_object
     new_obj.PathObject = path_object
     new_obj.Count = count
@@ -288,6 +318,8 @@ def make_path_array(base_object, path_object, count=4,
     new_obj.TangentVector = tan_vector
     new_obj.ForceVertical = force_vertical
     new_obj.VerticalVector = vertical_vector
+    new_obj.StartOffset = start_offset
+    new_obj.EndOffset = end_offset
 
     if App.GuiUp:
         if use_link:

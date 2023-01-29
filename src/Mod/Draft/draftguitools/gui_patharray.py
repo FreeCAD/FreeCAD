@@ -113,6 +113,8 @@ class PathArray(gui_base_original.Modifier):
             force_vertical = False
             vertical_vector = App.Vector(0, 0, 1)
             use_link = self.use_link
+            start_offset = 0.0
+            end_offset = 0.0
 
             _edge_list_str = list()
             _edge_list_str = ["'" + edge + "'" for edge in subelements]
@@ -134,7 +136,9 @@ class PathArray(gui_base_original.Modifier):
             _cmd += "tan_vector=" + DraftVecUtils.toString(tan_vector) + ", "
             _cmd += "force_vertical=" + str(force_vertical) + ", "
             _cmd += "vertical_vector=" + vertical_vector_str + ", "
-            _cmd += "use_link=" + str(use_link)
+            _cmd += "use_link=" + str(use_link) + ", "
+            _cmd += "start_offset=" + str(start_offset) + ", "
+            _cmd += "end_offset=" + str(end_offset)
             _cmd += ")"
 
             _cmd_list = ["_obj_ = " + _cmd,
