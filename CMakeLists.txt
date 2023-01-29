@@ -101,3 +101,7 @@ if (BUILD_TEST)
 endif()
 
 PrintFinalReport()
+
+message("\n=================================================\n"
+        "Now run 'cmake --build ${CMAKE_BINARY_DIR}' to build ${PROJECT_NAME}\n"
+        "=================================================\n")
