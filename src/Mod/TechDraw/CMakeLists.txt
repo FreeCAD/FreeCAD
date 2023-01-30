@@ -20,6 +20,7 @@ set(TechDraw_ToolsScripts
     TechDrawTools/__init__.py
     TechDrawTools/CommandMoveView.py
     TechDrawTools/CommandShareView.py
+    TechDrawTools/Command3DLengthDimension.py
     TechDrawTools/TaskMoveView.py
     TechDrawTools/TaskShareView.py
     TechDrawTools/TDToolsUtil.py

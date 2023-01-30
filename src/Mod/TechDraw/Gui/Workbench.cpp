@@ -152,6 +152,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *annotations << "TechDraw_Annotation";
     *annotations << "TechDraw_RichTextAnnotation";
     *annotations << "TechDraw_Balloon";
+    *annotations << "TechDraw_3DLengthDimension";
 
     // stacking
     Gui::MenuItem* stacking = new Gui::MenuItem;
@@ -280,6 +281,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     //    *dims << "TechDraw_VerticalExtentDimension";
     *dims << "TechDraw_LinkDimension";
     *dims << "TechDraw_Balloon";
+    *dims << "TechDraw_3DLengthDimension";
     *dims << "TechDraw_LandmarkDimension";
     //    *dims << "TechDraw_Dimension"
     *dims << "TechDraw_DimensionRepair";
@@ -428,6 +430,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     //    *dims << "TechDraw_VerticalExtentDimension";
     *dims << "TechDraw_LinkDimension";
     *dims << "TechDraw_Balloon";
+    *dims << "TechDraw_3DLengthDimension";
     *dims << "TechDraw_LandmarkDimension";
     //    *dims << "TechDraw_Dimension";
     *dims << "TechDraw_DimensionRepair";
