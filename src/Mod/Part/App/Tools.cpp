@@ -645,7 +645,7 @@ Handle (Poly_Triangulation) Part::Tools::triangulationOfFace(const TopoDS_Face& 
     TopoDS_Shape shape = mkBuilder.Shape();
     shape.Location(loc);
 
-    BRepMesh_IncrementalMesh(shape, 0.1);
+    BRepMesh_IncrementalMesh(shape, 0.005, false, 1, true);
     return BRep_Tool::Triangulation(TopoDS::Face(shape), loc);
 }
 
@@ -671,7 +671,7 @@ Handle(Poly_Polygon3D) Part::Tools::polygonOfEdge(const TopoDS_Edge& edge, TopLo
     TopLoc_Location inv = loc.Inverted();
     shape.Location(inv);
 
-    BRepMesh_IncrementalMesh(shape, 0.1);
+    BRepMesh_IncrementalMesh(shape, 0.005, false, 1, true);
     TopLoc_Location tmp;
     return BRep_Tool::Polygon3D(TopoDS::Edge(shape), tmp);
 }
