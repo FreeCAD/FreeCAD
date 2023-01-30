@@ -47,7 +47,7 @@
     <message>
       <location filename="../../Command.cpp" line="176"/>
       <source>Scale...</source>
-      <translation type="unfinished">Scale...</translation>
+      <translation>Маштаб...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="177"/>

@@ -4702,7 +4702,7 @@ bodo prikazane le prerezne ploskve</translation>
       <translation>Pri zaprtju pusti vidne le prereze</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.cpp" line="429"/>
+      <location filename="../../SectionCutting.cpp" line="466"/>
       <source>Sliders are disabled for assemblies</source>
       <translation>Drsniki so za sestave onemogočeni</translation>
     </message>

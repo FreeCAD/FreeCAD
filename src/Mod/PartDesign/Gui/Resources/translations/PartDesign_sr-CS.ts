@@ -3903,7 +3903,7 @@ Ako imaš nasleđeni dokument sa PartDesign objektima bez tela, koristi funkciju
     <message>
       <location filename="../../ViewProvider.cpp" line="78"/>
       <source>Set colors...</source>
-      <translation>Podesi boje...</translation>
+      <translation>Ofarbaj stranice</translation>
     </message>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="64"/>

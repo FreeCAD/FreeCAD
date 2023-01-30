@@ -4242,7 +4242,7 @@ irakurtzen den bitartean (motelagoa baino xehetasun gehiagokoa).</translation>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="189"/>
       <source>defaultFont</source>
-      <translation type="unfinished">defaultFont</translation>
+      <translation>letraLehenetsia</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="202"/>
@@ -4700,7 +4700,7 @@ sortutako mozketak soilik daude ikusgai</translation>
       <translation>Mozteak ixtean soilik mantendu ikusgai</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.cpp" line="429"/>
+      <location filename="../../SectionCutting.cpp" line="466"/>
       <source>Sliders are disabled for assemblies</source>
       <translation>Graduatzaileak desgaituta daude muntaketetarako</translation>
     </message>

@@ -67,7 +67,7 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../Command.cpp" line="185"/>
       <source>Create section from mesh and plane</source>
-      <translation type="unfinished">Create section from mesh and plane</translation>
+      <translation>Стварыць перасек з паліганальнай сеткі і плоскасці</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="186"/>
@@ -85,13 +85,13 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../Command.cpp" line="84"/>
       <source>Trim mesh with a plane</source>
-      <translation type="unfinished">Trim mesh with a plane</translation>
+      <translation>Абрэзаць паліганальную сетку плоскасцю</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="85"/>
       <location filename="../../Command.cpp" line="86"/>
       <source>Trims a mesh with a plane</source>
-      <translation type="unfinished">Trims a mesh with a plane</translation>
+      <translation>Абразае паліганальную сетку плоскасцю</translation>
     </message>
   </context>
   <context>

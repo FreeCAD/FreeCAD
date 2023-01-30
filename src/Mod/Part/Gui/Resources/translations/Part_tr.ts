@@ -4686,7 +4686,7 @@ yalnızca oluşturulan kesimler görünür</translation>
       <translation>Kapatırken yalnızca kesimleri görünür tutun</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.cpp" line="429"/>
+      <location filename="../../SectionCutting.cpp" line="466"/>
       <source>Sliders are disabled for assemblies</source>
       <translation type="unfinished">Sliders are disabled for assemblies</translation>
     </message>

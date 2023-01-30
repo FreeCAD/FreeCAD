@@ -1793,7 +1793,7 @@ Specificare un altro file, per favore.</translation>
   <context>
     <name>FemGui::TaskDlgPost</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="289"/>
+      <location filename="../../TaskPostBoxes.cpp" line="292"/>
       <source>Input error</source>
       <translation>Errore di input</translation>
     </message>
@@ -2437,7 +2437,7 @@ Specificare un altro file, per favore.</translation>
   <context>
     <name>FemGui::TaskPostClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="464"/>
+      <location filename="../../TaskPostBoxes.cpp" line="467"/>
       <source>Clip region, choose implicit function</source>
       <translation type="unfinished">Clip region, choose implicit function</translation>
     </message>
@@ -2445,7 +2445,7 @@ Specificare un altro file, per favore.</translation>
   <context>
     <name>FemGui::TaskPostCut</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1466"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1469"/>
       <source>Function cut, choose implicit function</source>
       <translation type="unfinished">Function cut, choose implicit function</translation>
     </message>
@@ -2453,12 +2453,12 @@ Specificare un altro file, per favore.</translation>
   <context>
     <name>FemGui::TaskPostDataAlongLine</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="606"/>
+      <location filename="../../TaskPostBoxes.cpp" line="609"/>
       <source>Data along a line options</source>
       <translation type="unfinished">Data along a line options</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="889"/>
+      <location filename="../../TaskPostBoxes.cpp" line="892"/>
       <source>Length</source>
       <comment>X-Axis plot label</comment>
       <translation>Lunghezza</translation>
@@ -2467,12 +2467,12 @@ Specificare un altro file, per favore.</translation>
   <context>
     <name>FemGui::TaskPostDataAtPoint</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="913"/>
+      <location filename="../../TaskPostBoxes.cpp" line="916"/>
       <source>Data at point options</source>
       <translation type="unfinished">Data at point options</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1191"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1194"/>
       <source>%1 at (%2; %3; %4) is: %5 %6</source>
       <translation>%1 a (%2; %3; %4) è: %5 %6</translation>
     </message>
@@ -2480,7 +2480,7 @@ Specificare un altro file, per favore.</translation>
   <context>
     <name>FemGui::TaskPostDisplay</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="373"/>
+      <location filename="../../TaskPostBoxes.cpp" line="376"/>
       <source>Result display options</source>
       <translation>Opzioni di visualizzazione dei risultati</translation>
     </message>
@@ -2488,7 +2488,7 @@ Specificare un altro file, per favore.</translation>
   <context>
     <name>FemGui::TaskPostFunction</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="439"/>
+      <location filename="../../TaskPostBoxes.cpp" line="442"/>
       <source>Implicit function</source>
       <translation>Funzione implicita</translation>
     </message>
@@ -2496,7 +2496,7 @@ Specificare un altro file, per favore.</translation>
   <context>
     <name>FemGui::TaskPostScalarClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1213"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1216"/>
       <source>Scalar clip options</source>
       <translation type="unfinished">Scalar clip options</translation>
     </message>
@@ -2504,7 +2504,7 @@ Specificare un altro file, per favore.</translation>
   <context>
     <name>FemGui::TaskPostWarpVector</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1323"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1326"/>
       <source>Warp options</source>
       <translation type="unfinished">Warp options</translation>
     </message>
@@ -3429,7 +3429,7 @@ Specificare un altro file, per favore.</translation>
       <translation>Vincolo trasformazione</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="271"/>
+      <location filename="../../TaskPostBoxes.cpp" line="274"/>
       <source>Edit post processing object</source>
       <translation>Modificare oggetto post processing</translation>
     </message>
@@ -4730,7 +4730,7 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="221"/>
       <source>Field</source>
-      <translation type="unfinished">Field</translation>
+      <translation>Campo</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="231"/>
@@ -4778,7 +4778,7 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../TaskPostDataAtPoint.ui" line="142"/>
       <source>Field</source>
-      <translation type="unfinished">Field</translation>
+      <translation>Campo</translation>
     </message>
   </context>
   <context>
@@ -4825,7 +4825,7 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="79"/>
       <source>Field</source>
-      <translation type="unfinished">Field</translation>
+      <translation>Campo</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="116"/>
@@ -5495,7 +5495,7 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="481"/>
       <source>Creates a FEM equation for electric forces</source>
-      <translation type="unfinished">Creates a FEM equation for electric forces</translation>
+      <translation>Crea un'equazione FEM per le forze elettriche</translation>
     </message>
   </context>
   <context>
@@ -5503,12 +5503,12 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="494"/>
       <source>Heat equation</source>
-      <translation type="unfinished">Heat equation</translation>
+      <translation>Equazione di calore</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="498"/>
       <source>Creates a FEM equation for heat</source>
-      <translation type="unfinished">Creates a FEM equation for heat</translation>
+      <translation>Crea un'equazione FEM per il calore</translation>
     </message>
   </context>
   <context>
@@ -5517,7 +5517,7 @@ normale della faccia è usata come direzione</translation>
       <location filename="../../../femcommands/commands.py" line="512"/>
       <location filename="../../../femcommands/commands.py" line="516"/>
       <source>Open FEM examples</source>
-      <translation type="unfinished">Open FEM examples</translation>
+      <translation>Apri esempi FEM</translation>
     </message>
   </context>
   <context>
@@ -5525,12 +5525,12 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="533"/>
       <source>Material editor</source>
-      <translation type="unfinished">Material editor</translation>
+      <translation>Editor dei materiali</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="537"/>
       <source>Opens the FreeCAD material editor</source>
-      <translation type="unfinished">Opens the FreeCAD material editor</translation>
+      <translation>Apre l'editor dei materiali FreeCAD</translation>
     </message>
   </context>
   <context>
@@ -5538,12 +5538,12 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="553"/>
       <source>Material for fluid</source>
-      <translation type="unfinished">Material for fluid</translation>
+      <translation>Materiale per fluido</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="557"/>
       <source>Creates a FEM material for fluid</source>
-      <translation type="unfinished">Creates a FEM material for fluid</translation>
+      <translation>Crea un materiale FEM per il fluido</translation>
     </message>
   </context>
   <context>
@@ -5695,7 +5695,7 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="922"/>
       <source>Shows and visualizes selected result data</source>
-      <translation type="unfinished">Shows and visualizes selected result data</translation>
+      <translation>Mostra e visualizza i dati dei risultati selezionati</translation>
     </message>
   </context>
   <context>
@@ -5721,7 +5721,7 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="964"/>
       <source>Creates a standard FEM solver CalculiX with ccx tools</source>
-      <translation type="unfinished">Creates a standard FEM solver CalculiX with ccx tools</translation>
+      <translation>Crea un risolutore FEM standard CalculiX con strumenti ccx</translation>
     </message>
   </context>
   <context>
@@ -5747,7 +5747,7 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1024"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
-      <translation type="unfinished">Changes solver attributes and runs the calculations for the selected solver</translation>
+      <translation>Cambia gli attributi di solutore ed esegue i calcoli per il solutore selezionato</translation>
     </message>
   </context>
   <context>
@@ -5794,12 +5794,12 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1084"/>
       <source>Solver Z88</source>
-      <translation type="unfinished">Solver Z88</translation>
+      <translation>Risolutore Z88</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1086"/>
       <source>Creates a FEM solver Z88</source>
-      <translation type="unfinished">Creates a FEM solver Z88</translation>
+      <translation>Crea un solutore FEM Z88</translation>
     </message>
   </context>
   <context>
@@ -5807,18 +5807,18 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="215"/>
       <source>Solver Control</source>
-      <translation type="unfinished">Solver Control</translation>
+      <translation>Controllo Risolutore</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="226"/>
       <source>Working Directory</source>
-      <translation type="unfinished">Working Directory</translation>
+      <translation>Directory di lavoro</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="230"/>
       <location filename="../../../femsolver/solver_taskpanel.py" line="306"/>
       <source>Write</source>
-      <translation type="unfinished">Write</translation>
+      <translation>Scrivi</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="231"/>
@@ -5831,7 +5831,7 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="248"/>
       <source>Elapsed Time:</source>
-      <translation type="unfinished">Elapsed Time:</translation>
+      <translation>Tempo trascorso:</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="308"/>
@@ -5843,17 +5843,17 @@ normale della faccia è usata come direzione</translation>
       <location filename="../../../femsolver/solver_taskpanel.py" line="310"/>
       <location filename="../../../femsolver/solver_taskpanel.py" line="314"/>
       <source>Re-write</source>
-      <translation type="unfinished">Re-write</translation>
+      <translation>Riscrivi</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="316"/>
       <source>Re-run</source>
-      <translation type="unfinished">Re-run</translation>
+      <translation>Esegui di nuovo</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="318"/>
       <source>Abort</source>
-      <translation type="unfinished">Abort</translation>
+      <translation>Interrompi</translation>
     </message>
   </context>
   <context>
@@ -5874,12 +5874,12 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="130"/>
       <source>Select Faces/Edges/Vertexes</source>
-      <translation type="unfinished">Select Faces/Edges/Vertexes</translation>
+      <translation>Selezionare facce/bordi/vertici</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="134"/>
       <source>To add references: select them in the 3D view  and click "Add".</source>
-      <translation type="unfinished">To add references: select them in the 3D view  and click "Add".</translation>
+      <translation>Per aggiungere riferimenti: selezionarli nella vista 3D e fare clic su "Aggiungi".</translation>
     </message>
   </context>
   <context>
@@ -5887,7 +5887,7 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="149"/>
       <source>Select Solids</source>
-      <translation type="unfinished">Select Solids</translation>
+      <translation>Seleziona i solidi</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="153"/>
@@ -5910,12 +5910,12 @@ normale della faccia è usata come direzione</translation>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="278"/>
       <source>Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements are allowed to select: {}{}{}</source>
-      <translation type="unfinished">Click on "Add" and select geometric elements to add them to the list.{}The following geometry elements are allowed to select: {}{}{}</translation>
+      <translation>Fare clic su "Aggiungi" e selezionare gli elementi geometrici per aggiungerli alla lista.{}I seguenti elementi geometrici possono essere selezionati: {}{}{}{}</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="281"/>
       <source>{}If no geometry is added to the list, all remaining ones are used.</source>
-      <translation type="unfinished">{}If no geometry is added to the list, all remaining ones are used.</translation>
+      <translation>{}Se non viene aggiunta alcuna geometria all'elenco, vengono usate tutte quelle rimanenti.</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="295"/>
@@ -5999,8 +5999,8 @@ normale della faccia è usata come direzione</translation>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="456"/>
       <source>No histogram available.
 Please select a result type first.</source>
-      <translation type="unfinished">No histogram available.
-Please select a result type first.</translation>
+      <translation>Nessun istogramma disponibile.
+Per favore seleziona prima un tipo di risultato.</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="569"/>
@@ -6021,7 +6021,7 @@ Please select a result type first.</translation>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="718"/>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="730"/>
       <source>No result object</source>
-      <translation type="unfinished">No result object</translation>
+      <translation>Nessun oggetto risultato</translation>
     </message>
   </context>
 </TS>

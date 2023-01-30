@@ -2339,7 +2339,7 @@
     <message>
       <location filename="../../TaskDimRepair.cpp" line="239"/>
       <source>Repair Dimension</source>
-      <translation type="unfinished">Repair Dimension</translation>
+      <translation>Dimensión de Reparación</translation>
     </message>
   </context>
   <context>

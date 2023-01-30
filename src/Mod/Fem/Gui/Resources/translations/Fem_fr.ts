@@ -333,7 +333,7 @@
     <message>
       <location filename="../../Command.cpp" line="1761"/>
       <source>Apply changes to parameters directly and not on recompute only...</source>
-      <translation>Appliquer les modifications aux paramètres directement et non pas seulement lors de la calculation...</translation>
+      <translation>Appliquer les changements aux paramètres directement et non lors du recalcul seulement...</translation>
     </message>
   </context>
   <context>
@@ -509,7 +509,7 @@
       <location filename="../../Command.cpp" line="1508"/>
       <location filename="../../Command.cpp" line="1514"/>
       <source>Select a Clip filter which clips a STRESS field along a line, please.</source>
-      <translation>Sélectionnez un filtre d'écrêtage qui écrête un champ de contrainte le long d'une ligne, s'il vous plaît.</translation>
+      <translation>Sélectionner un filtre d'écrêtage qui écrête un champ de contrainte le long d'une ligne.</translation>
     </message>
   </context>
   <context>
@@ -877,7 +877,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="294"/>
       <source>Number of CPU's to use</source>
-      <translation>Nombre de CPU à utiliser</translation>
+      <translation>Nombre de cœurs du CPU à utiliser</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="323"/>
@@ -1069,12 +1069,12 @@ Veuillez spécifiez un autre fichier.</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="208"/>
       <source>CPU cores to be used:</source>
-      <translation>Cœurs de CPU à utiliser :</translation>
+      <translation>Nombre de cœurs du CPU à utiliser :</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="218"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; It is recommended to use an even number of cores to benefit from mesh symmetries. (Using 8 cores can be faster than 9 cores.)&lt;br/&gt;&lt;span style=" font-weight:600;"&gt;Note too:&lt;/span&gt; In extreme cases ElmerSolver might not converge if the core number is too high.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Remarque :&lt;/span&gt; Il est recommandé d'utiliser un nombre pair de cœurs pour bénéficier de la symétrie de maillage. (L'utilisation de 8 cœurs peut être plus rapide que 9 cœurs.)&lt;br/&gt;&lt;span style=" font-weight:600;"&gt;Note également :&lt;/span&gt; Dans les cas extrêmes, ElmerSolver ne peut pas converger si le nombre de noyaux est trop élevé.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Remarque :&lt;/span&gt; il est recommandé d'utiliser un nombre pair de cœurs pour bénéficier de la symétrie de maillage. (utiliser 8 cœurs peut être plus rapide qu'avec 9 cœurs.)&lt;br/&gt;&lt;span style=" font-weight:600;"&gt;Autre remarque :&lt;/span&gt; dans les cas extrêmes, le solveur Elmer ne peut pas converger si le nombre de coeurs est trop élevé.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="102"/>
@@ -1263,7 +1263,7 @@ la contrainte ou le matériau est appliqué.</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="327"/>
       <source>Restore result dialog settings</source>
-      <translation>Restaurer les paramètres du dialogue de résultat</translation>
+      <translation>Restaurer les paramètres de la boîte de dialogue des résultats</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="346"/>
@@ -1788,7 +1788,7 @@ Veuillez spécifier un autre fichier.</translation>
   <context>
     <name>FemGui::TaskDlgPost</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="289"/>
+      <location filename="../../TaskPostBoxes.cpp" line="292"/>
       <source>Input error</source>
       <translation>Erreur de saisie</translation>
     </message>
@@ -2014,7 +2014,7 @@ Veuillez spécifier un autre fichier.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="278"/>
       <source>select boundary type, faces and set value</source>
-      <translation>sélectionnez le type de limite, les faces et affecter la valeur</translation>
+      <translation>sélectionner le type de limite, les faces et affecter la valeur</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="443"/>
@@ -2034,7 +2034,7 @@ Veuillez spécifier un autre fichier.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="451"/>
       <source>Viscosity Ratio [1]</source>
-      <translation>Taux de Viscosité [1]</translation>
+      <translation>Taux de viscosité [1]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="454"/>
@@ -2426,13 +2426,13 @@ Veuillez spécifier un autre fichier.</translation>
     <message>
       <location filename="../../TaskObjectName.cpp" line="42"/>
       <source>TaskObjectName</source>
-      <translation>Nom de l'Objet Tache</translation>
+      <translation>Nom de l'objet</translation>
     </message>
   </context>
   <context>
     <name>FemGui::TaskPostClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="464"/>
+      <location filename="../../TaskPostBoxes.cpp" line="467"/>
       <source>Clip region, choose implicit function</source>
       <translation>Région d'écrêtage, choisissez une fonction implicite</translation>
     </message>
@@ -2440,7 +2440,7 @@ Veuillez spécifier un autre fichier.</translation>
   <context>
     <name>FemGui::TaskPostCut</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1466"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1469"/>
       <source>Function cut, choose implicit function</source>
       <translation>Coupe de fonction, choisissez une fonction implicite</translation>
     </message>
@@ -2448,12 +2448,12 @@ Veuillez spécifier un autre fichier.</translation>
   <context>
     <name>FemGui::TaskPostDataAlongLine</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="606"/>
+      <location filename="../../TaskPostBoxes.cpp" line="609"/>
       <source>Data along a line options</source>
       <translation>Options des données le long d'une ligne</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="889"/>
+      <location filename="../../TaskPostBoxes.cpp" line="892"/>
       <source>Length</source>
       <comment>X-Axis plot label</comment>
       <translation>Longueur</translation>
@@ -2462,12 +2462,12 @@ Veuillez spécifier un autre fichier.</translation>
   <context>
     <name>FemGui::TaskPostDataAtPoint</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="913"/>
+      <location filename="../../TaskPostBoxes.cpp" line="916"/>
       <source>Data at point options</source>
       <translation>Options des données au point</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1191"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1194"/>
       <source>%1 at (%2; %3; %4) is: %5 %6</source>
       <translation>%1 à (%2; %3; %4) est : %5 %6</translation>
     </message>
@@ -2475,7 +2475,7 @@ Veuillez spécifier un autre fichier.</translation>
   <context>
     <name>FemGui::TaskPostDisplay</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="373"/>
+      <location filename="../../TaskPostBoxes.cpp" line="376"/>
       <source>Result display options</source>
       <translation>Options d'affichage des résultats</translation>
     </message>
@@ -2483,7 +2483,7 @@ Veuillez spécifier un autre fichier.</translation>
   <context>
     <name>FemGui::TaskPostFunction</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="439"/>
+      <location filename="../../TaskPostBoxes.cpp" line="442"/>
       <source>Implicit function</source>
       <translation>Fonction implicite</translation>
     </message>
@@ -2491,7 +2491,7 @@ Veuillez spécifier un autre fichier.</translation>
   <context>
     <name>FemGui::TaskPostScalarClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1213"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1216"/>
       <source>Scalar clip options</source>
       <translation>Options de l'écrêtage scalaire</translation>
     </message>
@@ -2499,7 +2499,7 @@ Veuillez spécifier un autre fichier.</translation>
   <context>
     <name>FemGui::TaskPostWarpVector</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1323"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1326"/>
       <source>Warp options</source>
       <translation>Options de la déformation</translation>
     </message>
@@ -2509,7 +2509,7 @@ Veuillez spécifier un autre fichier.</translation>
     <message>
       <location filename="../../TaskTetParameter.cpp" line="41"/>
       <source>Tet Parameter</source>
-      <translation>Paramètre de TET</translation>
+      <translation>Paramètre des tétraèdres</translation>
     </message>
   </context>
   <context>
@@ -2588,12 +2588,12 @@ Veuillez spécifier un autre fichier.</translation>
     <message>
       <location filename="../ui/Material.ui" line="107"/>
       <source>use FreeCAD material editor</source>
-      <translation>utiliser l'éditeur de matériaux de FreeCAD</translation>
+      <translation>Utiliser l'éditeur de matériaux de FreeCAD</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="123"/>
       <source>use this task panel</source>
-      <translation>utiliser ce panneau de tâches</translation>
+      <translation>Utiliser ce panneau des tâches</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="144"/>
@@ -2603,7 +2603,7 @@ Veuillez spécifier un autre fichier.</translation>
     <message>
       <location filename="../ui/Material.ui" line="155"/>
       <source>Density                     </source>
-      <translation>Densité                     </translation>
+      <translation>Densité :                     </translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="174"/>
@@ -2653,7 +2653,7 @@ Veuillez spécifier un autre fichier.</translation>
     <message>
       <location filename="../ui/Material.ui" line="391"/>
       <source>Thermal Conductivity:</source>
-      <translation>Conductivité thermique:</translation>
+      <translation>Conductivité thermique :</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="410"/>
@@ -2674,7 +2674,7 @@ Veuillez spécifier un autre fichier.</translation>
     <message>
       <location filename="../ui/Material.ui" line="479"/>
       <source>Specific Heat:</source>
-      <translation>Chaleur spécifique :</translation>
+      <translation>Capacité thermique massique :</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="498"/>
@@ -2689,7 +2689,7 @@ Veuillez spécifier un autre fichier.</translation>
     <message>
       <location filename="../ui/MaterialReinforcement.ui" line="29"/>
       <source>Matrix Material</source>
-      <translation>Matrice du matériau</translation>
+      <translation>Matériau composite</translation>
     </message>
     <message>
       <location filename="../ui/MaterialReinforcement.ui" line="45"/>
@@ -2737,12 +2737,12 @@ Veuillez spécifier un autre fichier.</translation>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="26"/>
       <source>Fluid Section Parameter</source>
-      <translation>Paramètre de section du fluide</translation>
+      <translation>Paramètre de la section fluide</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="45"/>
       <source>Liquid Section Parameter</source>
-      <translation>Paramètre de section du liquide</translation>
+      <translation>Paramètre de la section liquide</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="64"/>
@@ -2903,12 +2903,12 @@ Veuillez spécifier un autre fichier.</translation>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="829"/>
       <source>Gas Section Parameter</source>
-      <translation>Paramètre de section gaz</translation>
+      <translation>Paramètre de la section gazeuse</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="843"/>
       <source>Open Channel Section Parameter</source>
-      <translation>Paramètre de Section du Canal à Surface Libre</translation>
+      <translation>Paramètre de la section du canal à la surface libre</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintTie.ui" line="14"/>
@@ -2973,7 +2973,7 @@ Veuillez spécifier un autre fichier.</translation>
     <message>
       <location filename="../ui/ConstraintSectionPrint.ui" line="14"/>
       <source>SectionPrint parameter</source>
-      <translation>Paramètre de l'empreinte de section</translation>
+      <translation>Paramètre d'affichage de la section</translation>
     </message>
     <message>
       <location filename="../ui/InitialPressure.ui" line="14"/>
@@ -3087,7 +3087,7 @@ Veuillez spécifier un autre fichier.</translation>
     <message>
       <location filename="../ui/ElementGeometry2D.ui" line="14"/>
       <source>Shell thickness parameter</source>
-      <translation>Paramètre de l'épaisseur de l'élément de type coque</translation>
+      <translation>Paramètre de l'épaisseur d'un élément de type coque</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry2D.ui" line="77"/>
@@ -3145,12 +3145,12 @@ Veuillez spécifier un autre fichier.</translation>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="14"/>
       <source>Mesh boundary layer settings</source>
-      <translation>Paramètres de calque limite de maillage</translation>
+      <translation>Paramètres de la couche limite du maillage</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="37"/>
       <source>Max Layers</source>
-      <translation>Couches max</translation>
+      <translation>Nombre maximum de couches</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="88"/>
@@ -3208,7 +3208,7 @@ Veuillez spécifier un autre fichier.</translation>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="26"/>
       <source>FEM Mesh Parameter</source>
-      <translation>Paramètre de maillage FEM</translation>
+      <translation>Paramètres de maillage FEM</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="37"/>
@@ -3424,7 +3424,7 @@ Veuillez spécifier un autre fichier.</translation>
       <translation>Contrainte de déformation</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="271"/>
+      <location filename="../../TaskPostBoxes.cpp" line="274"/>
       <source>Edit post processing object</source>
       <translation>Modifier le post-traitement de l'objet</translation>
     </message>
@@ -3497,7 +3497,7 @@ Veuillez spécifier un autre fichier.</translation>
     <message>
       <location filename="../ui/ResultShow.ui" line="57"/>
       <source>von Mises Stress</source>
-      <translation>contraintes de von Mises</translation>
+      <translation>Critère de von Mises</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="70"/>
@@ -3517,7 +3517,7 @@ Veuillez spécifier un autre fichier.</translation>
     <message>
       <location filename="../ui/ResultShow.ui" line="97"/>
       <source>Min Principal Stress</source>
-      <translation>Contrainte principale mini</translation>
+      <translation>Contrainte principale min.</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="110"/>
@@ -3527,7 +3527,7 @@ Veuillez spécifier un autre fichier.</translation>
     <message>
       <location filename="../ui/ResultShow.ui" line="117"/>
       <source>Max Shear Stress (Tresca)</source>
-      <translation>Contrainte de cisaillement max. (Tresca)</translation>
+      <translation>Critère de cisaillement max. (Tresca)</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="130"/>
@@ -3613,7 +3613,7 @@ Pour les variables possibles, voir la zone de description ci-dessous.</translati
     <message>
       <location filename="../ui/ResultShow.ui" line="359"/>
       <source>P1 - P3 # Max - Min Principal Stress</source>
-      <translation>P1 - P3 # Max. - Min. contrainte principale</translation>
+      <translation>P1 - P3 # contrainte principale Max. - Min.</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="14"/>
@@ -3643,12 +3643,12 @@ Pour les variables possibles, voir la zone de description ci-dessous.</translati
     <message>
       <location filename="../ui/ResultHints.ui" line="118"/>
       <source>network pressure: NP</source>
-      <translation>pression réseau : NP</translation>
+      <translation>pression du réseau : NP</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="128"/>
       <source>strain: exx, eyy, ezz, exy, exz, eyz</source>
-      <translation>contrainte : exx, eyy, ezz, exy, exz, eyz</translation>
+      <translation>déformations : exx, eyy, ezz, exy, exz, eyz</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="138"/>
@@ -3658,12 +3658,12 @@ Pour les variables possibles, voir la zone de description ci-dessous.</translati
     <message>
       <location filename="../ui/ResultHints.ui" line="158"/>
       <source>von Mises stress: vM</source>
-      <translation>contrainte de von Mises : vM</translation>
+      <translation>Critère de von Mises : vM</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="178"/>
       <source>max shear stress: MS</source>
-      <translation>contrainte maximale de cisaillement : MS</translation>
+      <translation>critère de cisaillement maximale : MS</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="188"/>
@@ -3683,7 +3683,7 @@ Pour les variables possibles, voir la zone de description ci-dessous.</translati
     <message>
       <location filename="../ui/ResultHints.ui" line="218"/>
       <source>med principal stress: P2</source>
-      <translation>contrainte principale med: P2</translation>
+      <translation>contrainte principale moy. : P2</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="228"/>
@@ -3693,12 +3693,12 @@ Pour les variables possibles, voir la zone de description ci-dessous.</translati
     <message>
       <location filename="../ui/ResultHints.ui" line="238"/>
       <source>min principal stress: P3</source>
-      <translation>contrainte principale min: P3</translation>
+      <translation>contrainte principale min. : P3</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="148"/>
       <source>reinforcement ratio: rx, ry, rz</source>
-      <translation>ratio de renfort: rx, ry, rz</translation>
+      <translation>taux de renfort : rx, ry, rz</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="248"/>
@@ -3880,12 +3880,12 @@ following referencing objects might be lost:</source>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="49"/>
       <source>Nodes: 0</source>
-      <translation>Noeuds: 0</translation>
+      <translation>Noeuds : 0</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="60"/>
       <source>Poly</source>
-      <translation>Poly</translation>
+      <translation>Polygones</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="70"/>
@@ -3905,17 +3905,17 @@ following referencing objects might be lost:</source>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="96"/>
       <source>Angle-search</source>
-      <translation>Angle-Rechercher</translation>
+      <translation>Recherche d'angles</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="102"/>
       <source>Collect adjacent nodes</source>
-      <translation>Propager au nœuds adjacent</translation>
+      <translation>Propager aux nœuds adjacents</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="111"/>
       <source>Stop angle:</source>
-      <translation>Angle d'arrêt:</translation>
+      <translation>Angle d'arrêt :</translation>
     </message>
   </context>
   <context>
@@ -4445,7 +4445,7 @@ vecteur normal de la face est utilisée comme sens</translation>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.ui" line="20"/>
       <source>Select a single face, click Add or Remove</source>
-      <translation>Sélectionnez une seule face, cliquez sur Ajouter ou Supprimer</translation>
+      <translation>Sélectionner une seule face, cliquer sur Ajouter ou Supprimer</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.ui" line="35"/>
@@ -4588,7 +4588,7 @@ vecteur normal de la face est utilisée comme sens</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="44"/>
       <source>Select a face, click Add or Remove</source>
-      <translation>Sélectionnez une face, cliquez sur Ajouter ou Supprimer</translation>
+      <translation>Sélectionner une face, cliquer sur Ajouter ou Supprimer</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="65"/>
@@ -5000,12 +5000,12 @@ vecteur normal de la face est utilisée comme sens</translation>
     <message>
       <location filename="../../TaskTetParameter.ui" line="111"/>
       <source>Nbr. Segs per Edge:</source>
-      <translation>Nombre de segments par bord:</translation>
+      <translation>Nombre de segments par bord :</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="128"/>
       <source>Nbr. Segs per Radius:</source>
-      <translation>nombre de segment par rayon:</translation>
+      <translation>Nombre de segments par rayon :</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="144"/>
@@ -5020,7 +5020,7 @@ vecteur normal de la face est utilisée comme sens</translation>
     <message>
       <location filename="../../TaskTetParameter.ui" line="180"/>
       <source>Triangle count:</source>
-      <translation>Nombre de triangles:</translation>
+      <translation>Nombre de triangles :</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="194"/>
@@ -5338,12 +5338,12 @@ vecteur normal de la face est utilisée comme sens</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="290"/>
       <source>Constraint sectionprint</source>
-      <translation>Contrainte d'empreinte de section</translation>
+      <translation>Contrainte d'affichage de la section</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="294"/>
       <source>Creates a FEM constraint sectionprint</source>
-      <translation>Crée une contrainte FEM de type empreinte de section</translation>
+      <translation>Crée une contrainte FEM d'affichage de la section</translation>
     </message>
   </context>
   <context>
@@ -5403,12 +5403,12 @@ vecteur normal de la face est utilisée comme sens</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="375"/>
       <source>Shell plate thickness</source>
-      <translation>Épaisseur de l'élément de type coque</translation>
+      <translation>Épaisseur d'un élément de type coque</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="379"/>
       <source>Creates a FEM shell plate thickness</source>
-      <translation>Crée une épaisseur FEM de l'élément de type coque</translation>
+      <translation>Crée une épaisseur FEM d'un élément de type coque</translation>
     </message>
   </context>
   <context>
@@ -5790,7 +5790,7 @@ vecteur normal de la face est utilisée comme sens</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1086"/>
       <source>Creates a FEM solver Z88</source>
-      <translation>Créer un solveur Z88 FEM</translation>
+      <translation>Crée un solveur Z88 FEM</translation>
     </message>
   </context>
   <context>
@@ -5944,12 +5944,12 @@ vecteur normal de la face est utilisée comme sens</translation>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="351"/>
       <source>von Mises Stress</source>
-      <translation>contraintes de von Mises</translation>
+      <translation>Critère de von Mises</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="363"/>
       <source>Max Shear Stress</source>
-      <translation>Contrainte maximale de cisaillement</translation>
+      <translation>Critère de cisaillement maximale</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="375"/>
@@ -5974,7 +5974,7 @@ vecteur normal de la face est utilisée comme sens</translation>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="423"/>
       <source>Min Principal Stress</source>
-      <translation>Contrainte principale mini</translation>
+      <translation>Contrainte principale min.</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="435"/>

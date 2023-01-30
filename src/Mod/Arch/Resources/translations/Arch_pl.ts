@@ -3606,8 +3606,8 @@ Tworzenie budynku zostało przerwane.</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1126"/>
-      <source>Object doesn't have settable IFC Attributes</source>
-      <translation>Obiekt nie posiada ustawialnych atrybutów IFC</translation>
+      <source>Object doesn't have settable IFCData</source>
+      <translation type="unfinished">Object doesn't have settable IFCData</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1132"/>
@@ -3814,7 +3814,7 @@ Tworzenie budynku zostało przerwane.</translation>
       <location filename="../../ArchStructure.py" line="711"/>
       <location filename="../../ArchStructure.py" line="719"/>
       <source>Selected edges (or group of edges) of the base ArchSketch, to use in creating the shape of this Arch Structure (instead of using all the Base shape's edges by default).  Input are index numbers of edges or groups.</source>
-      <translation type="unfinished">Selected edges (or group of edges) of the base ArchSketch, to use in creating the shape of this Arch Structure (instead of using all the Base shape's edges by default).  Input are index numbers of edges or groups.</translation>
+      <translation>Wybrano krawędzie (lub grupę krawędzi) podstawowego Szkicu Architektonicznego, aby użyć ich do tworzenia kształtu tej konstrukcji Architektury (zamiast używać domyślnie wszystkich krawędzi kształtu podstawowego). Wprowadza się wartości dla numerów indeksów krawędzi lub grup.</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1044"/>

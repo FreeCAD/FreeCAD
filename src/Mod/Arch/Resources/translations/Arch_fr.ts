@@ -3571,8 +3571,8 @@ La création du bâtiment est abandonnée.</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1126"/>
-      <source>Object doesn't have settable IFC Attributes</source>
-      <translation>L'objet n'a pas d'attributs IFC paramétrables</translation>
+      <source>Object doesn't have settable IFCData</source>
+      <translation type="unfinished">Object doesn't have settable IFCData</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1132"/>
@@ -3779,7 +3779,7 @@ La création du bâtiment est abandonnée.</translation>
       <location filename="../../ArchStructure.py" line="711"/>
       <location filename="../../ArchStructure.py" line="719"/>
       <source>Selected edges (or group of edges) of the base ArchSketch, to use in creating the shape of this Arch Structure (instead of using all the Base shape's edges by default).  Input are index numbers of edges or groups.</source>
-      <translation type="unfinished">Selected edges (or group of edges) of the base ArchSketch, to use in creating the shape of this Arch Structure (instead of using all the Base shape's edges by default).  Input are index numbers of edges or groups.</translation>
+      <translation>Arêtes sélectionnées (ou groupe d'arêtes) de l'esquisse Arch de base, à utiliser pour créer la forme de cette Arch structure (au lieu d'utiliser toutes les arêtes de la forme de base par défaut).  Les entrées sont des numéros d'index d'arêtes ou de groupes.</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1044"/>
