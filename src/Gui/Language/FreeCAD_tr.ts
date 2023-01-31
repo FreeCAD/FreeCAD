@@ -757,37 +757,37 @@ while doing a left or right click and move the mouse up or down</source>
   <context>
     <name>Gui::Dialog::CameraDialog</name>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="239"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="277"/>
       <source>Camera settings</source>
       <translation>Kamera ayarları</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="246"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="284"/>
       <source>Orientation</source>
       <translation>Yönlendirme</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="260"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="298"/>
       <source>Q0</source>
       <translation>Q0</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="270"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="308"/>
       <source>Q1</source>
       <translation>Q1</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="280"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="318"/>
       <source>Q2</source>
       <translation>Q2</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="290"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="328"/>
       <source>Q3</source>
       <translation>Q3</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="299"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="337"/>
       <source>Current view</source>
       <translation>Geçerli görünüm</translation>
     </message>
@@ -4700,7 +4700,7 @@ Ayrıca formu da kullanabilirsiniz: John Doe &lt;john@doe.com&gt;</translation>
     <name>Gui::Dialog::DlgSettingsNavigation</name>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="14"/>
-      <location filename="../DlgSettingsNavigation.ui" line="183"/>
+      <location filename="../DlgSettingsNavigation.ui" line="244"/>
       <source>Navigation</source>
       <translation>Gezinme</translation>
     </message>
@@ -4726,6 +4726,7 @@ Ayrıca formu da kullanabilirsiniz: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="87"/>
+      <location filename="../DlgSettingsNavigation.ui" line="149"/>
       <source>Corner where navigation cube is shown</source>
       <translation>Gezinme küpünün gösterildiği köşe</translation>
     </message>
@@ -4761,43 +4762,58 @@ Ayrıca formu da kullanabilirsiniz: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="142"/>
+      <source>Font name:</source>
+      <translation type="unfinished">Font name:</translation>
+    </message>
+    <message>
+      <location filename="../DlgSettingsNavigation.ui" line="165"/>
       <source>Cube size</source>
       <translation>Küp boyutu</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="149"/>
+      <location filename="../DlgSettingsNavigation.ui" line="172"/>
       <source>Size of the navigation cube</source>
       <translation>Gezinme küpü boyutu</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="189"/>
+      <location filename="../DlgSettingsNavigation.ui" line="200"/>
+      <source>Font size:</source>
+      <translation type="unfinished">Font size:</translation>
+    </message>
+    <message>
+      <location filename="../DlgSettingsNavigation.ui" line="213"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Font size for the NaviCube text&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Font size for the NaviCube text&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../DlgSettingsNavigation.ui" line="250"/>
       <source>3D Navigation</source>
       <translation>3D Gezinme</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="226"/>
+      <location filename="../DlgSettingsNavigation.ui" line="287"/>
       <source>List the mouse button configs for each chosen navigation setting.
 Select a set and then press the button to view said configurations.</source>
       <translation>Seçilen her gezinti ayarı için fare düğmesi yapılandırmalarını listele.
 Bahsedilen yapılandırmaları görmek için bir ayar seçin ve sonra düğmeye basın.</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="230"/>
+      <location filename="../DlgSettingsNavigation.ui" line="291"/>
       <source>Mouse...</source>
       <translation>Fare...</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="251"/>
+      <location filename="../DlgSettingsNavigation.ui" line="312"/>
       <source>Navigation settings set</source>
       <translation>Gezinti ayarları ayarı</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="261"/>
+      <location filename="../DlgSettingsNavigation.ui" line="322"/>
       <source>Orbit style</source>
       <translation>Yörünge stili</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="280"/>
+      <location filename="../DlgSettingsNavigation.ui" line="341"/>
       <source>Rotation orbit style.
 Trackball: moving the mouse horizontally will rotate the part around the y-axis
 Turntable: the part will be rotated around the z-axis (with constrained axes).
@@ -4808,116 +4824,116 @@ Turntable: the part will be rotated around the z-axis (with constrained axes).
 Free Turntable: the part will be rotated around the z-axis.</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="290"/>
+      <location filename="../DlgSettingsNavigation.ui" line="351"/>
       <source>Turntable</source>
       <translation>Döner tabla</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="295"/>
+      <location filename="../DlgSettingsNavigation.ui" line="356"/>
       <source>Trackball</source>
       <translation>Trackball</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="300"/>
+      <location filename="../DlgSettingsNavigation.ui" line="361"/>
       <source>Free Turntable</source>
       <translation type="unfinished">Free Turntable</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="308"/>
+      <location filename="../DlgSettingsNavigation.ui" line="369"/>
       <source>Rotation mode</source>
       <translation>Döndürme modu</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="327"/>
+      <location filename="../DlgSettingsNavigation.ui" line="388"/>
       <source>Rotations in 3D will use current cursor position as center for rotation</source>
       <translation>3B' daki dönüşler, dönüş merkezi olarak geçerli imleç konumunu kullanacak</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="334"/>
+      <location filename="../DlgSettingsNavigation.ui" line="395"/>
       <source>Window center</source>
       <translation>Pencere merkezi</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="339"/>
+      <location filename="../DlgSettingsNavigation.ui" line="400"/>
       <source>Drag at cursor</source>
       <translation>İmleç ile sürükle</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="344"/>
+      <location filename="../DlgSettingsNavigation.ui" line="405"/>
       <source>Object center</source>
       <translation>Nesne merkezi</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="352"/>
+      <location filename="../DlgSettingsNavigation.ui" line="413"/>
       <source>Default camera orientation</source>
       <translation>Varsayılan kamera yönü</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="371"/>
+      <location filename="../DlgSettingsNavigation.ui" line="432"/>
       <source>Default camera orientation when creating a new document or selecting the home view</source>
       <translation>Yeni bir belge oluştururken veya ev görünümünü seçerkenki varsayılan kamera yönlendirmesi</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="378"/>
+      <location filename="../DlgSettingsNavigation.ui" line="439"/>
       <source>Camera zoom</source>
       <translation>Kamera yakınlaştırma</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="397"/>
+      <location filename="../DlgSettingsNavigation.ui" line="458"/>
       <source>Sets camera zoom for new documents.
 The value is the diameter of the sphere to fit on the screen.</source>
       <translation>Yeni belgeler için kamera yakınlaştırılmasını ayarlar.
 Değeri, ekrana sığdırılacak kürenin çapıdır.</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="401"/>
+      <location filename="../DlgSettingsNavigation.ui" line="462"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="426"/>
+      <location filename="../DlgSettingsNavigation.ui" line="487"/>
       <source>Enable animated rotations</source>
       <translation>Hareketli dönüşleri etkinleştir</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="429"/>
+      <location filename="../DlgSettingsNavigation.ui" line="490"/>
       <source>Enable animation</source>
       <translation>Animasyonu etkinleştir</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="445"/>
+      <location filename="../DlgSettingsNavigation.ui" line="506"/>
       <source>Zoom operations will be performed at position of mouse pointer</source>
       <translation>Yakınlaştırma işlemleri, fare işaretçisi konumunda yapılacak</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="448"/>
+      <location filename="../DlgSettingsNavigation.ui" line="509"/>
       <source>Zoom at cursor</source>
       <translation>İmlece yaklaş</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="464"/>
+      <location filename="../DlgSettingsNavigation.ui" line="525"/>
       <source> Zoom step</source>
       <translation> Yakınlaştırma adımı</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="482"/>
+      <location filename="../DlgSettingsNavigation.ui" line="543"/>
       <source>How much will be zoomed.
 Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
       <translation>Yakınlaştırma miktarı.
 1 yakınlaştırma adımı, adım başına 7.5 katsayı anlamına gelir.</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="526"/>
+      <location filename="../DlgSettingsNavigation.ui" line="587"/>
       <source>Direction of zoom operations will be inverted</source>
       <translation>Yakınlaştırma işlemlerinin yönü ters çevrilecek</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="529"/>
+      <location filename="../DlgSettingsNavigation.ui" line="590"/>
       <source>Invert zoom</source>
       <translation>Zoomu tersine çevir</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="545"/>
+      <location filename="../DlgSettingsNavigation.ui" line="606"/>
       <source>Prevents view tilting when pinch-zooming.
 Affects only gesture navigation style.
 Mouse tilting is not disabled by this setting.</source>
@@ -4926,57 +4942,57 @@ Yalnızca hareketle gezinme stilini etkiler.
 Bu ayarla fareyi eğme devre dışı bırakılmaz.</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="550"/>
+      <location filename="../DlgSettingsNavigation.ui" line="611"/>
       <source>Disable touchscreen tilt gesture</source>
       <translation>DokunmatikEkran eğim hareketini devre dışı bırak</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="137"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="155"/>
       <source>Isometric</source>
       <translation>İzometrik</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="138"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="156"/>
       <source>Dimetric</source>
       <translation>Dimetrik</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="139"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="157"/>
       <source>Trimetric</source>
       <translation>Trimetrik</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="140"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="158"/>
       <source>Top</source>
       <translation>üst</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="141"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="159"/>
       <source>Front</source>
       <translation>Ön</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="142"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="160"/>
       <source>Left</source>
       <translation>Sol</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="143"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="161"/>
       <source>Right</source>
       <translation>Sağ</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="144"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="162"/>
       <source>Rear</source>
       <translation>Arka</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="145"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="163"/>
       <source>Bottom</source>
       <translation>Alt</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="146"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="164"/>
       <source>Custom</source>
       <translation>Özel</translation>
     </message>
@@ -6633,7 +6649,7 @@ Do you want to save your changes?</source>
   <context>
     <name>Gui::ExpressionLineEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="659"/>
+      <location filename="../ExpressionCompleter.cpp" line="1059"/>
       <source>Exact match</source>
       <translation>Tam eşleşme</translation>
     </message>
@@ -6641,7 +6657,7 @@ Do you want to save your changes?</source>
   <context>
     <name>Gui::ExpressionTextEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="758"/>
+      <location filename="../ExpressionCompleter.cpp" line="1164"/>
       <source>Exact match</source>
       <translation>Tam eşleşme</translation>
     </message>
@@ -9204,12 +9220,12 @@ Please open a browser window and type in: http://localhost:%1.</source>
       <translation>Seçenekler...</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2102"/>
+      <location filename="../View3DInventorViewer.cpp" line="2119"/>
       <source>Out of memory</source>
       <translation>Yetersiz bellek</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2103"/>
+      <location filename="../View3DInventorViewer.cpp" line="2120"/>
       <source>Not enough memory available to display the data.</source>
       <translation>Verileri görüntülemek için yetersiz bellek.</translation>
     </message>
@@ -12125,12 +12141,12 @@ Hala ilerlemek istiyor musunuz?</translation>
   <context>
     <name>ViewIsometricCmd</name>
     <message>
-      <location filename="../NaviCube.cpp" line="1755"/>
+      <location filename="../NaviCube.cpp" line="1807"/>
       <source>Isometric</source>
       <translation>İzometrik</translation>
     </message>
     <message>
-      <location filename="../NaviCube.cpp" line="1756"/>
+      <location filename="../NaviCube.cpp" line="1808"/>
       <source>Set NaviCube to Isometric mode</source>
       <translation>NaviKüp'ü izometrik moda ayarla</translation>
     </message>
@@ -12138,12 +12154,12 @@ Hala ilerlemek istiyor musunuz?</translation>
   <context>
     <name>ViewOrthographicCmd</name>
     <message>
-      <location filename="../NaviCube.cpp" line="1775"/>
+      <location filename="../NaviCube.cpp" line="1827"/>
       <source>Orthographic</source>
       <translation>Ortografik</translation>
     </message>
     <message>
-      <location filename="../NaviCube.cpp" line="1776"/>
+      <location filename="../NaviCube.cpp" line="1828"/>
       <source>Set View to Orthographic mode</source>
       <translation>Görüntüyü ortografik moda ayarla</translation>
     </message>
@@ -12151,12 +12167,12 @@ Hala ilerlemek istiyor musunuz?</translation>
   <context>
     <name>ViewPerspectiveCmd</name>
     <message>
-      <location filename="../NaviCube.cpp" line="1796"/>
+      <location filename="../NaviCube.cpp" line="1848"/>
       <source>Perspective</source>
       <translation>Perspektif</translation>
     </message>
     <message>
-      <location filename="../NaviCube.cpp" line="1797"/>
+      <location filename="../NaviCube.cpp" line="1849"/>
       <source>Set View to Perspective mode</source>
       <translation>Görüntüyü perspektif moduna ayarla</translation>
     </message>
@@ -12164,12 +12180,12 @@ Hala ilerlemek istiyor musunuz?</translation>
   <context>
     <name>ViewZoomToFitCmd</name>
     <message>
-      <location filename="../NaviCube.cpp" line="1817"/>
+      <location filename="../NaviCube.cpp" line="1869"/>
       <source>Zoom to fit</source>
       <translation>Sığacak şekilde yakınlaştır</translation>
     </message>
     <message>
-      <location filename="../NaviCube.cpp" line="1818"/>
+      <location filename="../NaviCube.cpp" line="1870"/>
       <source>Zoom so that model fills the view</source>
       <translation>Modeli görünümü dolduracak şekilde yakınlaştır</translation>
     </message>

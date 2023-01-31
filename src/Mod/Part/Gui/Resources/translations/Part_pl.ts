@@ -2253,7 +2253,7 @@ Ujęcie widoku określa kierunek rzutowania.</translation>
     <message>
       <location filename="../../Command.cpp" line="989"/>
       <source>Section</source>
-      <translation>Przekrój</translation>
+      <translation>Przecięcie</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1041"/>
@@ -2561,7 +2561,7 @@ Uwaga: Położenie jest wyrażone w przestrzeni lokalnej dołączanego obiektu.<
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="56"/>
       <source>Section</source>
-      <translation>Przecięcie</translation>
+      <translation>Przekrój</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="76"/>
@@ -4700,7 +4700,7 @@ only created cuts will be visible</source>
       <translation>Zachowaj tylko przecięcia widoczne podczas zamykania</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.cpp" line="429"/>
+      <location filename="../../SectionCutting.cpp" line="466"/>
       <source>Sliders are disabled for assemblies</source>
       <translation>Suwaki są wyłączone dla złożeń</translation>
     </message>

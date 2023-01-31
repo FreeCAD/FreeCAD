@@ -1059,7 +1059,7 @@ Zehaztu beste fitxategi bat.</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="183"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Leave blank to use default Elmer elmer binary file&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; To use multithreading you must specify here&lt;br&gt; the executable variant with the suffix &amp;quot;_mpi&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Leave blank to use default Elmer elmer binary file&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; To use multithreading you must specify here&lt;br&gt; the executable variant with the suffix &amp;quot;_mpi&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Utzi hutsik Elmer fitxategi bitar lehenetsia erabiltzeko&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; Hari anitz erabiltzeko, exekugatarriaren aldaera hemen&lt;br&gt; adierazi behar da, &amp;quot;_mpi&amp;quot; atzizkiarekin.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="196"/>
@@ -1074,7 +1074,7 @@ Zehaztu beste fitxategi bat.</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="218"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; It is recommended to use an even number of cores to benefit from mesh symmetries. (Using 8 cores can be faster than 9 cores.)&lt;br/&gt;&lt;span style=" font-weight:600;"&gt;Note too:&lt;/span&gt; In extreme cases ElmerSolver might not converge if the core number is too high.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; It is recommended to use an even number of cores to benefit from mesh symmetries. (Using 8 cores can be faster than 9 cores.)&lt;br/&gt;&lt;span style=" font-weight:600;"&gt;Note too:&lt;/span&gt; In extreme cases ElmerSolver might not converge if the core number is too high.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Oharra:&lt;/span&gt; Nukleoen kopuru bikoitia erabiltzea gomendatzen da, amaraunen simetriaren abantailaz baliatzeko (8 nukleo erabiltzea, 9 erabiltzea baino azkarragoa izan daiteke).&lt;br/&gt;&lt;span style=" font-weight:600;"&gt;Bigarren oharra:&lt;/span&gt; Muturreko kasuetan, ElmerSolver ebazleak ez du konbergituko nukleo kopurua handiegia bada.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="102"/>
@@ -1794,7 +1794,7 @@ Zehaztu beste fitxategi bat.</translation>
   <context>
     <name>FemGui::TaskDlgPost</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="289"/>
+      <location filename="../../TaskPostBoxes.cpp" line="292"/>
       <source>Input error</source>
       <translation>Sarrera-errorea</translation>
     </message>
@@ -2438,7 +2438,7 @@ Zehaztu beste fitxategi bat.</translation>
   <context>
     <name>FemGui::TaskPostClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="464"/>
+      <location filename="../../TaskPostBoxes.cpp" line="467"/>
       <source>Clip region, choose implicit function</source>
       <translation>Ebaki eskualdea, aukeratu funtzio inplizitua</translation>
     </message>
@@ -2446,7 +2446,7 @@ Zehaztu beste fitxategi bat.</translation>
   <context>
     <name>FemGui::TaskPostCut</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1466"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1469"/>
       <source>Function cut, choose implicit function</source>
       <translation>Funtzio moztua, aukeratu funtzio inplizitua</translation>
     </message>
@@ -2454,12 +2454,12 @@ Zehaztu beste fitxategi bat.</translation>
   <context>
     <name>FemGui::TaskPostDataAlongLine</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="606"/>
+      <location filename="../../TaskPostBoxes.cpp" line="609"/>
       <source>Data along a line options</source>
       <translation>Lerro baten luzeran dauden datuen aukerak</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="889"/>
+      <location filename="../../TaskPostBoxes.cpp" line="892"/>
       <source>Length</source>
       <comment>X-Axis plot label</comment>
       <translation>Luzera</translation>
@@ -2468,12 +2468,12 @@ Zehaztu beste fitxategi bat.</translation>
   <context>
     <name>FemGui::TaskPostDataAtPoint</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="913"/>
+      <location filename="../../TaskPostBoxes.cpp" line="916"/>
       <source>Data at point options</source>
       <translation>Puntu bateko datuek aukerak</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1191"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1194"/>
       <source>%1 at (%2; %3; %4) is: %5 %6</source>
       <translation>%1 hemen: (%2; %3; %4) honakoa da: %5 %6</translation>
     </message>
@@ -2481,7 +2481,7 @@ Zehaztu beste fitxategi bat.</translation>
   <context>
     <name>FemGui::TaskPostDisplay</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="373"/>
+      <location filename="../../TaskPostBoxes.cpp" line="376"/>
       <source>Result display options</source>
       <translation>Emaitza erakusteko aukerak</translation>
     </message>
@@ -2489,7 +2489,7 @@ Zehaztu beste fitxategi bat.</translation>
   <context>
     <name>FemGui::TaskPostFunction</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="439"/>
+      <location filename="../../TaskPostBoxes.cpp" line="442"/>
       <source>Implicit function</source>
       <translation>Funtzio inplizitua</translation>
     </message>
@@ -2497,7 +2497,7 @@ Zehaztu beste fitxategi bat.</translation>
   <context>
     <name>FemGui::TaskPostScalarClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1213"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1216"/>
       <source>Scalar clip options</source>
       <translation>Ebaketa eskalarraren aukerak</translation>
     </message>
@@ -2505,7 +2505,7 @@ Zehaztu beste fitxategi bat.</translation>
   <context>
     <name>FemGui::TaskPostWarpVector</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1323"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1326"/>
       <source>Warp options</source>
       <translation>Bihurritze-aukerak</translation>
     </message>
@@ -2993,7 +2993,7 @@ Zehaztu beste fitxategi bat.</translation>
     <message>
       <location filename="../ui/BodyHeatSource.ui" line="20"/>
       <source>Body heat in W/kg:</source>
-      <translation type="unfinished">Body heat in W/kg:</translation>
+      <translation>Gorputz-beroa (W/kg):</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="22"/>
@@ -3430,7 +3430,7 @@ Zehaztu beste fitxategi bat.</translation>
       <translation>Murriztu transformazioa</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="271"/>
+      <location filename="../../TaskPostBoxes.cpp" line="274"/>
       <source>Edit post processing object</source>
       <translation>Editatu prozesu osteko objektua</translation>
     </message>

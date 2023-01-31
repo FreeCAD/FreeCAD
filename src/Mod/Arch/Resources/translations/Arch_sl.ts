@@ -3600,8 +3600,8 @@ Ustvarjanj stavbe prekinjeno.</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1126"/>
-      <source>Object doesn't have settable IFC Attributes</source>
-      <translation>Predmet nima nastavljivih značilk IFCja</translation>
+      <source>Object doesn't have settable IFCData</source>
+      <translation type="unfinished">Object doesn't have settable IFCData</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1132"/>
@@ -3808,7 +3808,7 @@ Ustvarjanj stavbe prekinjeno.</translation>
       <location filename="../../ArchStructure.py" line="711"/>
       <location filename="../../ArchStructure.py" line="719"/>
       <source>Selected edges (or group of edges) of the base ArchSketch, to use in creating the shape of this Arch Structure (instead of using all the Base shape's edges by default).  Input are index numbers of edges or groups.</source>
-      <translation type="unfinished">Selected edges (or group of edges) of the base ArchSketch, to use in creating the shape of this Arch Structure (instead of using all the Base shape's edges by default).  Input are index numbers of edges or groups.</translation>
+      <translation>Izbrani robovi ali skupina robov izhodiščnega arhitekturnega očrta (ArchSketch), ki ga želite uporabiti pri ustvarjanju oblike te arhitekturne konstrukcije namesto privzete uporabe vseh robov izhodiščne oblike. Vnesejo se enolične številke robov ali skupin.</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1044"/>
@@ -6017,12 +6017,12 @@ Ustvarjanj stavbe prekinjeno.</translation>
     <message>
       <location filename="../../InitGui.py" line="169"/>
       <source>Draft modification tools</source>
-      <translation type="unfinished">Draft modification tools</translation>
+      <translation>Orodja za preoblikovanje izrisov</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="172"/>
       <source>Draft snap</source>
-      <translation type="unfinished">Draft snap</translation>
+      <translation>Pripenjanje pri izrisovanju</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="177"/>

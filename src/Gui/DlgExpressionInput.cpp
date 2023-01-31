@@ -57,8 +57,10 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
     ui->setupUi(this);
 
     // Connect signal(s)
-    connect(ui->expression, SIGNAL(textChanged(QString)), this, SLOT(textChanged(QString)));
-    connect(ui->discardBtn, SIGNAL(clicked()), this, SLOT(setDiscarded()));
+    connect(ui->expression, &ExpressionLineEdit::textChanged,
+        this, &DlgExpressionInput::textChanged);
+    connect(ui->discardBtn, &QPushButton::clicked,
+        this, &DlgExpressionInput::setDiscarded);
 
     if (expression) {
         ui->expression->setText(Base::Tools::fromStdString(expression->toString()));

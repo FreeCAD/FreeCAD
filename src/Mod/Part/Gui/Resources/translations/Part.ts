@@ -4664,7 +4664,7 @@ only created cuts will be visible</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../SectionCutting.cpp" line="429"/>
+        <location filename="../../SectionCutting.cpp" line="466"/>
         <source>Sliders are disabled for assemblies</source>
         <translation type="unfinished"></translation>
     </message>

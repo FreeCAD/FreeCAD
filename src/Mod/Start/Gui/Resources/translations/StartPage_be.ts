@@ -327,7 +327,7 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="217"/>
       <source>Background color</source>
-      <translation type="unfinished">Background color</translation>
+      <translation>Колер фону</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="229"/>

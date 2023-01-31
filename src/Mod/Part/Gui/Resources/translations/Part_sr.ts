@@ -1195,7 +1195,7 @@
     <message>
       <location filename="../../Command.cpp" line="2215"/>
       <source>Set the color of each individual face of the selected object.</source>
-      <translation>Подеси боју сваке појединачне странице изабраног објекта.</translation>
+      <translation>Офарбај појединачне странице изабраног објекта.</translation>
     </message>
   </context>
   <context>
@@ -4697,7 +4697,7 @@ only created cuts will be visible</source>
       <translation>После затварања видљиви само исечени пресеци</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.cpp" line="429"/>
+      <location filename="../../SectionCutting.cpp" line="466"/>
       <source>Sliders are disabled for assemblies</source>
       <translation>Клизачи су онемогућени за склопове</translation>
     </message>
@@ -5309,7 +5309,7 @@ Individual BOP Checks:</source>
     <message>
       <location filename="../../TaskFaceColors.ui" line="14"/>
       <source>Set color per face</source>
-      <translation>Подеси боју појединачне странице</translation>
+      <translation>Офарбај појединачне странице</translation>
     </message>
     <message>
       <location filename="../../TaskFaceColors.ui" line="20"/>
@@ -5329,7 +5329,7 @@ Individual BOP Checks:</source>
     <message>
       <location filename="../../TaskFaceColors.ui" line="90"/>
       <source>Set to default</source>
-      <translation>Постави на подразумевану вредност</translation>
+      <translation>Подразумевана боја</translation>
     </message>
     <message>
       <location filename="../../TaskFaceColors.ui" line="97"/>
@@ -6057,7 +6057,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../ViewProviderExt.cpp" line="865"/>
       <source>Set colors...</source>
-      <translation>Подеси боје...</translation>
+      <translation>Офарбај странице</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="78"/>

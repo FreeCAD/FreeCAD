@@ -3589,8 +3589,8 @@ Creazione Edificio interrotta.</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1126"/>
-      <source>Object doesn't have settable IFC Attributes</source>
-      <translation>L'oggetto non ha attributi IFC impostabili</translation>
+      <source>Object doesn't have settable IFCData</source>
+      <translation type="unfinished">Object doesn't have settable IFCData</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1132"/>
@@ -4118,7 +4118,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchProfile.py" line="351"/>
       <source>Thickness of the sides</source>
-      <translation type="unfinished">Thickness of the sides</translation>
+      <translation>Spessore dei lati</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="384"/>
@@ -4232,7 +4232,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchSite.py" line="632"/>
       <source>An optional offset between the model (0,0,0) origin and the point indicated by the geocoordinates</source>
-      <translation type="unfinished">An optional offset between the model (0,0,0) origin and the point indicated by the geocoordinates</translation>
+      <translation>Scostamento facoltativo tra l'origine del modello (0,0,0) e il punto indicato dalle geocoordinate</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="636"/>
@@ -4433,7 +4433,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchWindow.py" line="596"/>
       <source>The depth of the hole that this window makes in its host object. If 0, the value will be calculated automatically.</source>
-      <translation type="unfinished">The depth of the hole that this window makes in its host object. If 0, the value will be calculated automatically.</translation>
+      <translation>La profondità del foro che questa finestra crea nel suo oggetto ospitante. Se è 0, il valore viene calcolato automaticamente.</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="598"/>
@@ -4458,7 +4458,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchWindow.py" line="606"/>
       <source>The preset number this window is based on</source>
-      <translation type="unfinished">The preset number this window is based on</translation>
+      <translation>Il numero preimpostato su cui si basa questa finestra</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="609"/>

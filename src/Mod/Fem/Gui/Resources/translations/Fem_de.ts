@@ -1771,7 +1771,7 @@ Bitte eine andere Datei angeben.</translation>
   <context>
     <name>FemGui::TaskDlgPost</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="289"/>
+      <location filename="../../TaskPostBoxes.cpp" line="292"/>
       <source>Input error</source>
       <translation>Eingabefehler</translation>
     </message>
@@ -2415,7 +2415,7 @@ Bitte eine andere Datei angeben.</translation>
   <context>
     <name>FemGui::TaskPostClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="464"/>
+      <location filename="../../TaskPostBoxes.cpp" line="467"/>
       <source>Clip region, choose implicit function</source>
       <translation>Schneide Region aus, wähle implizite Funktion</translation>
     </message>
@@ -2423,7 +2423,7 @@ Bitte eine andere Datei angeben.</translation>
   <context>
     <name>FemGui::TaskPostCut</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1466"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1469"/>
       <source>Function cut, choose implicit function</source>
       <translation>Funktionsschnitt, implizite Funktion wählen</translation>
     </message>
@@ -2431,12 +2431,12 @@ Bitte eine andere Datei angeben.</translation>
   <context>
     <name>FemGui::TaskPostDataAlongLine</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="606"/>
+      <location filename="../../TaskPostBoxes.cpp" line="609"/>
       <source>Data along a line options</source>
       <translation>Optionen für Daten entlang einer Linie</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="889"/>
+      <location filename="../../TaskPostBoxes.cpp" line="892"/>
       <source>Length</source>
       <comment>X-Axis plot label</comment>
       <translation>Länge</translation>
@@ -2445,12 +2445,12 @@ Bitte eine andere Datei angeben.</translation>
   <context>
     <name>FemGui::TaskPostDataAtPoint</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="913"/>
+      <location filename="../../TaskPostBoxes.cpp" line="916"/>
       <source>Data at point options</source>
       <translation>Daten an Punkt Optionen</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1191"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1194"/>
       <source>%1 at (%2; %3; %4) is: %5 %6</source>
       <translation>%1 bei (%2; %3; %4) ist: %5 %6</translation>
     </message>
@@ -2458,7 +2458,7 @@ Bitte eine andere Datei angeben.</translation>
   <context>
     <name>FemGui::TaskPostDisplay</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="373"/>
+      <location filename="../../TaskPostBoxes.cpp" line="376"/>
       <source>Result display options</source>
       <translation>Ergebnisanzeigeoptionen</translation>
     </message>
@@ -2466,7 +2466,7 @@ Bitte eine andere Datei angeben.</translation>
   <context>
     <name>FemGui::TaskPostFunction</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="439"/>
+      <location filename="../../TaskPostBoxes.cpp" line="442"/>
       <source>Implicit function</source>
       <translation>Implizite Funktion</translation>
     </message>
@@ -2474,7 +2474,7 @@ Bitte eine andere Datei angeben.</translation>
   <context>
     <name>FemGui::TaskPostScalarClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1213"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1216"/>
       <source>Scalar clip options</source>
       <translation>Skalar-Ausschnitt-Optionen</translation>
     </message>
@@ -2482,7 +2482,7 @@ Bitte eine andere Datei angeben.</translation>
   <context>
     <name>FemGui::TaskPostWarpVector</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1323"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1326"/>
       <source>Warp options</source>
       <translation>Verformungsoptionen</translation>
     </message>
@@ -3407,7 +3407,7 @@ Bitte eine andere Datei angeben.</translation>
       <translation>Randbedingung Verformung</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="271"/>
+      <location filename="../../TaskPostBoxes.cpp" line="274"/>
       <source>Edit post processing object</source>
       <translation>Nachbearbeitungsobjekt bearbeiten</translation>
     </message>
@@ -5796,7 +5796,7 @@ Normalenvektors der Fläche wird als Richtung verwendet</translation>
       <location filename="../../../femsolver/solver_taskpanel.py" line="230"/>
       <location filename="../../../femsolver/solver_taskpanel.py" line="306"/>
       <source>Write</source>
-      <translation type="unfinished">Write</translation>
+      <translation>Schreiben</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="231"/>
@@ -5809,7 +5809,7 @@ Normalenvektors der Fläche wird als Richtung verwendet</translation>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="248"/>
       <source>Elapsed Time:</source>
-      <translation type="unfinished">Elapsed Time:</translation>
+      <translation>Verstrichene Zeit:</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="308"/>
@@ -5821,17 +5821,17 @@ Normalenvektors der Fläche wird als Richtung verwendet</translation>
       <location filename="../../../femsolver/solver_taskpanel.py" line="310"/>
       <location filename="../../../femsolver/solver_taskpanel.py" line="314"/>
       <source>Re-write</source>
-      <translation type="unfinished">Re-write</translation>
+      <translation>Erneut schreiben</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="316"/>
       <source>Re-run</source>
-      <translation type="unfinished">Re-run</translation>
+      <translation>Erneut ausführen</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="318"/>
       <source>Abort</source>
-      <translation type="unfinished">Abort</translation>
+      <translation>Abbrechen</translation>
     </message>
   </context>
   <context>
@@ -5898,7 +5898,7 @@ Normalenvektors der Fläche wird als Richtung verwendet</translation>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="295"/>
       <source>Selection mode</source>
-      <translation type="unfinished">Selection mode</translation>
+      <translation>Auswahlmodus</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="297"/>
@@ -5936,7 +5936,7 @@ Normalenvektors der Fläche wird als Richtung verwendet</translation>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="363"/>
       <source>Max Shear Stress</source>
-      <translation type="unfinished">Max Shear Stress</translation>
+      <translation>Max. Scherspannung</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="375"/>
@@ -5983,7 +5983,7 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="569"/>
       <source>Histogram of {}</source>
-      <translation type="unfinished">Histogram of {}</translation>
+      <translation>Histogramm von {}</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="570"/>
@@ -5999,7 +5999,7 @@ Please select a result type first.</translation>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="718"/>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="730"/>
       <source>No result object</source>
-      <translation type="unfinished">No result object</translation>
+      <translation>Kein Ergebnisobjekt</translation>
     </message>
   </context>
 </TS>

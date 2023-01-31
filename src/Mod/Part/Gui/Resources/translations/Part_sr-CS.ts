@@ -1195,7 +1195,7 @@
     <message>
       <location filename="../../Command.cpp" line="2215"/>
       <source>Set the color of each individual face of the selected object.</source>
-      <translation>Podesi boju svake pojedinačne stranice izabranog objekta.</translation>
+      <translation>Ofarbaj pojedinačne stranice izabranog objekta.</translation>
     </message>
   </context>
   <context>
@@ -4697,7 +4697,7 @@ only created cuts will be visible</source>
       <translation>Posle zatvaranja vidljivi samo isečeni preseci</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.cpp" line="429"/>
+      <location filename="../../SectionCutting.cpp" line="466"/>
       <source>Sliders are disabled for assemblies</source>
       <translation>Klizači su onemogućeni za sklopove</translation>
     </message>
@@ -5309,7 +5309,7 @@ Pojedinačne provere bulovih operacija:</translation>
     <message>
       <location filename="../../TaskFaceColors.ui" line="14"/>
       <source>Set color per face</source>
-      <translation>Podesi boju pojedinačne stranice</translation>
+      <translation>Ofarbaj pojedinačne stranice</translation>
     </message>
     <message>
       <location filename="../../TaskFaceColors.ui" line="20"/>
@@ -5329,7 +5329,7 @@ Pojedinačne provere bulovih operacija:</translation>
     <message>
       <location filename="../../TaskFaceColors.ui" line="90"/>
       <source>Set to default</source>
-      <translation>Podesi na podrazumevanu vrednost</translation>
+      <translation>Podrazumevana boja</translation>
     </message>
     <message>
       <location filename="../../TaskFaceColors.ui" line="97"/>
@@ -6057,7 +6057,7 @@ Da li želiš da nastaviš?</translation>
     <message>
       <location filename="../../ViewProviderExt.cpp" line="865"/>
       <source>Set colors...</source>
-      <translation>Podesi boje...</translation>
+      <translation>Ofarbaj stranice</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="78"/>

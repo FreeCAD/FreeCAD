@@ -173,8 +173,8 @@ void DlgSettingsNavigation::loadSettings()
         q3 = hCustom->GetFloat("Q3", q3);
     }
 
-    connect(ui->comboNewDocView, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(onNewDocViewChanged(int)));
+    connect(ui->comboNewDocView, qOverload<int>(&QComboBox::currentIndexChanged),
+        this, &DlgSettingsNavigation::onNewDocViewChanged);
 
     // fill up font styles
     hGrp = App::GetApplication().GetParameterGroupByPath(
@@ -338,8 +338,8 @@ CameraDialog::CameraDialog(QWidget* parent)
     currentViewButton->setObjectName(QString::fromLatin1("currentView"));
     layout->addWidget(currentViewButton, 4, 1, 2, 1);
 
-    QObject::connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-    QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+    connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
+    connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
     QMetaObject::connectSlotsByName(this);
 }
 

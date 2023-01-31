@@ -3027,9 +3027,9 @@ Not available if Draft preference option &apos;Use Part Primitives&apos; is enab
     <message>
         <location filename="../../DraftGui.py" line="1035"/>
         <location filename="../../draftguitools/gui_selectplane.py" line="527"/>
-        <location filename="../../draftguitools/gui_offset.py" line="243"/>
-        <location filename="../../draftguitools/gui_offset.py" line="260"/>
-        <location filename="../../draftguitools/gui_offset.py" line="324"/>
+        <location filename="../../draftguitools/gui_offset.py" line="246"/>
+        <location filename="../../draftguitools/gui_offset.py" line="263"/>
+        <location filename="../../draftguitools/gui_offset.py" line="327"/>
         <source>Offset</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3927,7 +3927,7 @@ The final angle will be the base angle plus this amount.</source>
     </message>
     <message>
         <location filename="../../draftguitools/gui_trimex.py" line="173"/>
-        <location filename="../../draftguitools/gui_offset.py" line="143"/>
+        <location filename="../../draftguitools/gui_offset.py" line="146"/>
         <source>Pick distance</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4332,22 +4332,22 @@ The final angle will be the base angle plus this amount.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftguitools/gui_offset.py" line="76"/>
+        <location filename="../../draftguitools/gui_offset.py" line="79"/>
         <source>Select an object to offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftguitools/gui_offset.py" line="82"/>
+        <location filename="../../draftguitools/gui_offset.py" line="85"/>
         <source>Offset only works on one object at a time.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftguitools/gui_offset.py" line="92"/>
+        <location filename="../../draftguitools/gui_offset.py" line="95"/>
         <source>Cannot offset this object type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftguitools/gui_offset.py" line="123"/>
+        <location filename="../../draftguitools/gui_offset.py" line="126"/>
         <source>Offset of Bezier curves is currently not supported</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5034,34 +5034,34 @@ The final angle will be the base angle plus this amount.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftviewproviders/view_layer.py" line="462"/>
+        <location filename="../../draftviewproviders/view_layer.py" line="464"/>
         <source>Activate this layer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftviewproviders/view_layer.py" line="468"/>
+        <location filename="../../draftviewproviders/view_layer.py" line="470"/>
         <source>Select layer contents</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftviewproviders/view_layer.py" line="506"/>
-        <location filename="../../draftviewproviders/view_layer.py" line="520"/>
+        <location filename="../../draftviewproviders/view_layer.py" line="508"/>
+        <location filename="../../draftviewproviders/view_layer.py" line="522"/>
         <source>Merge layer duplicates</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftviewproviders/view_layer.py" line="512"/>
-        <location filename="../../draftviewproviders/view_layer.py" line="568"/>
+        <location filename="../../draftviewproviders/view_layer.py" line="514"/>
+        <location filename="../../draftviewproviders/view_layer.py" line="570"/>
         <source>Add new layer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftviewproviders/view_layer.py" line="553"/>
+        <location filename="../../draftviewproviders/view_layer.py" line="555"/>
         <source>Relabeling layer:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftviewproviders/view_layer.py" line="557"/>
+        <location filename="../../draftviewproviders/view_layer.py" line="559"/>
         <source>Merging layer:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5262,6 +5262,11 @@ The final angle will be the base angle plus this amount.</source>
         <source>renamed view property &apos;TextSize&apos; to &apos;FontSize&apos;</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../../draftobjects/layer.py" line="81"/>
+        <source>added missing view properties</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Workbench</name>
@@ -5405,7 +5410,7 @@ from menu Tools -&gt; Addon Manager</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftguitools/gui_offset.py" line="329"/>
+        <location filename="../../draftguitools/gui_offset.py" line="332"/>
         <source>Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6692,12 +6697,12 @@ convert closed edges into filled faces and parametric polygons, and merge faces 
 <context>
     <name>Draft_Offset</name>
     <message>
-        <location filename="../../draftguitools/gui_offset.py" line="63"/>
+        <location filename="../../draftguitools/gui_offset.py" line="66"/>
         <source>Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftguitools/gui_offset.py" line="66"/>
+        <location filename="../../draftguitools/gui_offset.py" line="69"/>
         <source>Offsets of the selected object.
 It can also create an offset copy of the original object.
 CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each click.</source>
@@ -6913,7 +6918,7 @@ set True for fusion or False for compound</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/layer.py" line="59"/>
+        <location filename="../../draftobjects/layer.py" line="55"/>
         <source>The objects that are part of this layer</source>
         <translation type="unfinished"></translation>
     </message>

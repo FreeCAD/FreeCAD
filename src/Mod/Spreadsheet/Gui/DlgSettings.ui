@@ -20,6 +20,64 @@
    <string>Spreadsheet</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="groupBox1">
+     <property name="title">
+      <string>Display Settings</string>
+     </property>
+     <layout class="QHBoxLayout" name="gridLayout1">
+      <item row="0" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkBoxShowAlias">
+        <property name="toolTip">
+         <string>If checked, use the custom presentation to display cell string.</string>
+        </property>
+        <property name="text">
+         <string>Show alias in cell with format</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>showAliasName</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Spreadsheet</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <spacer name="horizontalSpacer1">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="0" column="2">
+       <widget class="Gui::PrefLineEdit" name="formatString">
+        <property name="text">
+            <string notr="true">%V = %A</string>
+        </property>
+        <property name="toolTip">
+         <string>The format of the custom cell string presentation.
+Defaults to: %V = %A
+
+%A - alias name
+%V - cell value</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>DisplayAliasFormatString</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Spreadsheet</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
    <item row="0" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
@@ -150,7 +208,7 @@
       </layout>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item row="2" column="0">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -175,6 +233,11 @@
   <customwidget>
    <class>Gui::PrefLineEdit</class>
    <extends>QLineEdit</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

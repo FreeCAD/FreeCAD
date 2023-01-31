@@ -222,12 +222,12 @@
     <message>
       <location filename="../../Command.cpp" line="622"/>
       <source>Insert Complex Section</source>
-      <translation type="unfinished">Insert Complex Section</translation>
+      <translation>Txertatu sekzio konplexua</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="623"/>
       <source>Insert a Complex Section</source>
-      <translation type="unfinished">Insert a Complex Section</translation>
+      <translation>Txertatu sekzio konplexua</translation>
     </message>
   </context>
   <context>
@@ -1711,7 +1711,7 @@
     <message>
       <location filename="../../Command.cpp" line="468"/>
       <source>Insert a simple or complex Section View</source>
-      <translation type="unfinished">Insert a simple or complex Section View</translation>
+      <translation>Txertatu sekzio-bista sinplea edo konplexua</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="533"/>
@@ -1721,7 +1721,7 @@
     <message>
       <location filename="../../Command.cpp" line="537"/>
       <source>Complex Section</source>
-      <translation type="unfinished">Complex Section</translation>
+      <translation>Sekzio konplexua</translation>
     </message>
   </context>
   <context>
@@ -2347,7 +2347,7 @@
     <message>
       <location filename="../../Widgets/CompassWidget.cpp" line="158"/>
       <source>View Direction as Angle</source>
-      <translation type="unfinished">View Direction as Angle</translation>
+      <translation>Bista-norabidea angelu gisa</translation>
     </message>
     <message>
       <location filename="../../Widgets/CompassWidget.cpp" line="160"/>
@@ -2648,17 +2648,17 @@
     <message>
       <location filename="../../Command.cpp" line="719"/>
       <source>I do not know what base view to use.</source>
-      <translation type="unfinished">I do not know what base view to use.</translation>
+      <translation>Ez dakit zein oinarri-bista erabili.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="726"/>
       <source>No Base View, Shapes, Groups or Links in this selection</source>
-      <translation type="unfinished">No Base View, Shapes, Groups or Links in this selection</translation>
+      <translation>Ez dago oinarri-bistarik, formarik, talderik edo estekarik hautapen honetan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="731"/>
       <source>No profile object found in selection</source>
-      <translation type="unfinished">No profile object found in selection</translation>
+      <translation>Ez da profil-objekturik aurkitu hautapenean</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="345"/>
@@ -3276,7 +3276,7 @@
     <message>
       <location filename="../../DrawGuiUtil.cpp" line="110"/>
       <source>No Drawing Pages available.</source>
-      <translation type="unfinished">No Drawing Pages available.</translation>
+      <translation>Ez dago marrazte-orrialderik erabilgarri.</translation>
     </message>
     <message>
       <location filename="../../DrawGuiUtil.cpp" line="143"/>
@@ -3302,7 +3302,7 @@
     <message>
       <location filename="../../MDIViewPage.cpp" line="566"/>
       <source>Document Name: </source>
-      <translation type="unfinished">Document Name: </translation>
+      <translation>Dokumentu-izena: </translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="674"/>
@@ -3376,22 +3376,22 @@
     <message>
       <location filename="../../TaskActiveView.cpp" line="97"/>
       <source>No Main Window</source>
-      <translation type="unfinished">No Main Window</translation>
+      <translation>Ez dago leiho nagusirik</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.cpp" line="98"/>
       <source>Can not find the main window</source>
-      <translation type="unfinished">Can not find the main window</translation>
+      <translation>Ez da leiho nagusia aurkitu</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.cpp" line="132"/>
       <source>No 3D Viewer</source>
-      <translation type="unfinished">No 3D Viewer</translation>
+      <translation>Ez dago 3D bisorerik</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.cpp" line="133"/>
       <source>Can not find a 3D viewer</source>
-      <translation type="unfinished">Can not find a 3D viewer</translation>
+      <translation>Ez da 3D bisorerik aurkitu</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.cpp" line="163"/>
@@ -3416,18 +3416,18 @@
     <message>
       <location filename="../../TaskComplexSection.cpp" line="136"/>
       <source>New Complex Section</source>
-      <translation type="unfinished">New Complex Section</translation>
+      <translation>Sekzio konplexu berria</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="179"/>
       <source>Edit Complex Section</source>
-      <translation type="unfinished">Edit Complex Section</translation>
+      <translation>Editatu sekzio konplexua</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="217"/>
       <location filename="../../TaskSectionView.cpp" line="226"/>
       <source>Current View Direction</source>
-      <translation type="unfinished">Current View Direction</translation>
+      <translation>Uneko bista-norabidea</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="218"/>
@@ -5721,28 +5721,28 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskComplexSection.ui" line="20"/>
       <source>Complex Section</source>
-      <translation type="unfinished">Complex Section</translation>
+      <translation>Sekzio konplexua</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="36"/>
       <source>Object Selection</source>
-      <translation type="unfinished">Object Selection</translation>
+      <translation>Objektu-hautapena</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="44"/>
       <source>Objects to section</source>
-      <translation type="unfinished">Objects to section</translation>
+      <translation>Objektuak sekziora</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="51"/>
       <location filename="../../TaskComplexSection.ui" line="79"/>
       <source>Use Selection</source>
-      <translation type="unfinished">Use Selection</translation>
+      <translation>Erabili hautapena</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="58"/>
       <source>Profile object</source>
-      <translation type="unfinished">Profile object</translation>
+      <translation>Profil-objektua</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="91"/>
@@ -5782,7 +5782,7 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskComplexSection.ui" line="154"/>
       <source>Projection Strategy</source>
-      <translation type="unfinished">Projection Strategy</translation>
+      <translation>Proiekzio-estrategia</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="179"/>
@@ -5818,7 +5818,7 @@ Jarraitu nahi duzu?</translation>
     <message>
       <location filename="../../TaskComplexSection.ui" line="249"/>
       <source>Set View Direction</source>
-      <translation type="unfinished">Set View Direction</translation>
+      <translation>Ezarri bista-norabidea</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="266"/>
@@ -6690,7 +6690,7 @@ be used instead of the dimension value</translation>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="77"/>
       <source>Rotation</source>
-      <translation type="unfinished">Rotation</translation>
+      <translation>Biraketa</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="97"/>
@@ -6700,7 +6700,7 @@ be used instead of the dimension value</translation>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="104"/>
       <source>Offset X</source>
-      <translation type="unfinished">Offset X</translation>
+      <translation>X desplazamendua</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="117"/>
@@ -6710,7 +6710,7 @@ be used instead of the dimension value</translation>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="223"/>
       <source>Offset Y</source>
-      <translation type="unfinished">Offset Y</translation>
+      <translation>Y desplazamendua</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="70"/>
@@ -6753,7 +6753,7 @@ be used instead of the dimension value</translation>
     <message>
       <location filename="../../TaskHatch.ui" line="38"/>
       <source>Select an Svg or Bitmap file</source>
-      <translation type="unfinished">Select an Svg or Bitmap file</translation>
+      <translation>Hautatu SVG edo bitmap fitxategi bat</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="41"/>
@@ -6763,12 +6763,12 @@ be used instead of the dimension value</translation>
     <message>
       <location filename="../../TaskHatch.ui" line="55"/>
       <source>Choose an Svg or Bitmap file as a pattern</source>
-      <translation type="unfinished">Choose an Svg or Bitmap file as a pattern</translation>
+      <translation>Aukeratu SVG edo bitmap fitxategi bat eredu gisa</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="114"/>
       <source>Offset X</source>
-      <translation type="unfinished">Offset X</translation>
+      <translation>X desplazamendua</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="133"/>
@@ -6778,12 +6778,12 @@ be used instead of the dimension value</translation>
     <message>
       <location filename="../../TaskHatch.ui" line="166"/>
       <source>Rotation</source>
-      <translation type="unfinished">Rotation</translation>
+      <translation>Biraketa</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="173"/>
       <source>Offset Y</source>
-      <translation type="unfinished">Offset Y</translation>
+      <translation>Y desplazamendua</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="85"/>
@@ -7555,7 +7555,7 @@ emandako X/Y espazioa erabilita</translation>
     <message>
       <location filename="../../TaskSectionView.ui" line="171"/>
       <source>Set View Direction</source>
-      <translation type="unfinished">Set View Direction</translation>
+      <translation>Ezarri bista-norabidea</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="188"/>
@@ -8108,23 +8108,23 @@ emandako X/Y espazioa erabilita</translation>
     <message>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="80"/>
       <source>Select View</source>
-      <translation type="unfinished">Select View</translation>
+      <translation>Hautatu bista</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="102"/>
       <source>Select From Page.</source>
-      <translation type="unfinished">Select From Page.</translation>
+      <translation>Hautatu jatorrizko orrialdea.</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="103"/>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="126"/>
       <source>Select Page</source>
-      <translation type="unfinished">Select Page</translation>
+      <translation>Hautatu orrialdea</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="125"/>
       <source>Select To Page.</source>
-      <translation type="unfinished">Select To Page.</translation>
+      <translation>Hautatu helburuko orrialdea.</translation>
     </message>
   </context>
   <context>
@@ -8132,48 +8132,48 @@ emandako X/Y espazioa erabilita</translation>
     <message>
       <location filename="../../../TechDrawTools/CommandShareView.py" line="47"/>
       <source>Share View</source>
-      <translation type="unfinished">Share View</translation>
+      <translation>Partekatu bista</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/CommandShareView.py" line="50"/>
       <source>Share a View on a second Page</source>
-      <translation type="unfinished">Share a View on a second Page</translation>
+      <translation>Partekatu bista bat bigarren orrialde batean</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="46"/>
       <source>Share View with another Page</source>
-      <translation type="unfinished">Share View with another Page</translation>
+      <translation>Partekatu bista beste orrialde batekin</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="47"/>
       <source>View to share</source>
-      <translation type="unfinished">View to share</translation>
+      <translation>Partekatuko den bista</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="79"/>
       <source>Select View to share from list.</source>
-      <translation type="unfinished">Select View to share from list.</translation>
+      <translation>Hautatu partekatuko den bista zerrendan.</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="80"/>
       <source>Select View</source>
-      <translation type="unfinished">Select View</translation>
+      <translation>Hautatu bista</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="102"/>
       <source>Select From Page.</source>
-      <translation type="unfinished">Select From Page.</translation>
+      <translation>Hautatu jatorrizko orrialdea.</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="103"/>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="127"/>
       <source>Select Page</source>
-      <translation type="unfinished">Select Page</translation>
+      <translation>Hautatu orrialdea</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="126"/>
       <source>Select To Page.</source>
-      <translation type="unfinished">Select To Page.</translation>
+      <translation>Hautatu helburuko orrialdea.</translation>
     </message>
   </context>
   <context>
@@ -8265,17 +8265,17 @@ emandako X/Y espazioa erabilita</translation>
     <message>
       <location filename="../../TaskDimRepair.cpp" line="82"/>
       <source>Object Name</source>
-      <translation type="unfinished">Object Name</translation>
+      <translation>Objetuaren izena</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.cpp" line="82"/>
       <source>Object Label</source>
-      <translation type="unfinished">Object Label</translation>
+      <translation>Objektuaren etiketa</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.cpp" line="82"/>
       <source>SubElement</source>
-      <translation type="unfinished">SubElement</translation>
+      <translation>Azpielementua</translation>
     </message>
   </context>
 </TS>

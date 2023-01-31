@@ -851,7 +851,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1052"/>
       <source>Remove folds</source>
-      <translation>Enlever les plis</translation>
+      <translation>Supprimer des plis</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1092"/>
@@ -1385,7 +1385,7 @@ Please run the command to repair folds first</source>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="828"/>
       <source>Alt+O</source>
-      <translation>Alt+F</translation>
+      <translation>Alt+O</translation>
     </message>
   </context>
   <context>
@@ -1534,7 +1534,7 @@ sera utilisée soit du noir.</translation>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="276"/>
       <source>Show bounding-box for highlighted or selected meshes</source>
-      <translation>Afficher la boîte englobante du maillage mis en évidence ou sélectionné</translation>
+      <translation>Afficher la boîte englobante du maillage sélectionné ou mis en surbrillance</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="313"/>
@@ -2145,7 +2145,7 @@ Avec l'ombrage à plat les normales de surface ne sont pas définies par un somm
     <message>
       <location filename="../../Command.cpp" line="1577"/>
       <source>Boundings of %1:</source>
-      <translation>Límites de %1:</translation>
+      <translation>Límites de %1 :</translation>
     </message>
   </context>
   <context>

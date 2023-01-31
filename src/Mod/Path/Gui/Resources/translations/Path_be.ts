@@ -6,17 +6,17 @@
     <message>
       <location filename="../../Command.cpp" line="46"/>
       <source>Path</source>
-      <translation type="unfinished">Path</translation>
+      <translation>Шлях</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="47"/>
       <source>Area</source>
-      <translation type="unfinished">Area</translation>
+      <translation>Плошча</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="48"/>
       <source>Creates a feature area from selected objects</source>
-      <translation type="unfinished">Creates a feature area from selected objects</translation>
+      <translation>Стварае вобласць уласцівасцяў з абраных аб'ектаў</translation>
     </message>
   </context>
   <context>
@@ -24,17 +24,17 @@
     <message>
       <location filename="../../Command.cpp" line="128"/>
       <source>Path</source>
-      <translation type="unfinished">Path</translation>
+      <translation>Шлях</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="129"/>
       <source>Area workplane</source>
-      <translation type="unfinished">Area workplane</translation>
+      <translation>Плошча працоўнай плоскасці</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="130"/>
       <source>Select a workplane for a FeatureArea</source>
-      <translation type="unfinished">Select a workplane for a FeatureArea</translation>
+      <translation>Абярыце плошчу працоўнай плоскасці для вобласці ўласцівасцяў</translation>
     </message>
   </context>
   <context>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../../Command.cpp" line="218"/>
       <source>Path</source>
-      <translation type="unfinished">Path</translation>
+      <translation>Шлях</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="219"/>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../Command.cpp" line="220"/>
       <source>Creates a compound from selected paths</source>
-      <translation type="unfinished">Creates a compound from selected paths</translation>
+      <translation>Стварае злучэнне з абраных шляхоў</translation>
     </message>
   </context>
   <context>
@@ -60,17 +60,17 @@
     <message>
       <location filename="../../Command.cpp" line="270"/>
       <source>Path</source>
-      <translation type="unfinished">Path</translation>
+      <translation>Шлях</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="271"/>
       <source>From Shape</source>
-      <translation type="unfinished">From Shape</translation>
+      <translation>З фігуры</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="272"/>
       <source>Creates a path from a selected shape</source>
-      <translation type="unfinished">Creates a path from a selected shape</translation>
+      <translation>Стварае шлях з абранай фігуры</translation>
     </message>
   </context>
   <context>
@@ -78,27 +78,27 @@
     <message>
       <location filename="../../Command.cpp" line="97"/>
       <source>Create Path Area View</source>
-      <translation type="unfinished">Create Path Area View</translation>
+      <translation>Стварыць выгляд вобласці шляху</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="106"/>
       <source>Create Path Area</source>
-      <translation type="unfinished">Create Path Area</translation>
+      <translation>Стварыць вобласць шляху</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="194"/>
       <source>Select Workplane for Path Area</source>
-      <translation type="unfinished">Select Workplane for Path Area</translation>
+      <translation>Абраць працоўную плоскасць для вобласці шляху</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="245"/>
       <source>Create Path Compound</source>
-      <translation type="unfinished">Create Path Compound</translation>
+      <translation>Стварыць злучэнне шляху</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="315"/>
       <source>Create Path Shape</source>
-      <translation type="unfinished">Create Path Shape</translation>
+      <translation>Стварыць фігуру шляху</translation>
     </message>
   </context>
   <context>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="14"/>
       <source>Create Job</source>
-      <translation type="unfinished">Create Job</translation>
+      <translation>Стварыць заданне</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="23"/>
@@ -116,17 +116,17 @@
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="32"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a template to be used for the job.&lt;/p&gt;&lt;p&gt;In case there are no templates you can create one through the popup menu of an existing job. Name the file job_*.json and place it in the macro or the path directory (see preferences) in order to be selectable from this list.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a template to be used for the job.&lt;/p&gt;&lt;p&gt;In case there are no templates you can create one through the popup menu of an existing job. Name the file job_*.json and place it in the macro or the path directory (see preferences) in order to be selectable from this list.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Абярыце шаблон, які будзе ўжывацца для задання.&lt;/p&gt;&lt;p&gt;Калі шаблоны адсутнічаюць, вы можаце стварыць адзін з іх праз усплывальнае меню існуючага задання. Назавіце файл job_*.json і змесціце яго ў макрас ці ў каталог шляху (глядзіце перавагі), каб яго можна было абраць з гэтага спісу.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="42"/>
       <source>Model</source>
-      <translation type="unfinished">Model</translation>
+      <translation>Мадэль</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="14"/>
       <source>Select Base Models</source>
-      <translation type="unfinished">Select Base Models</translation>
+      <translation>Абярыце базавыя мадэлі</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="24"/>
@@ -141,32 +141,32 @@
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="44"/>
       <source>Base Models</source>
-      <translation type="unfinished">Base Models</translation>
+      <translation>Базавыя мадэлі</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="14"/>
       <source>Job Template Export</source>
-      <translation type="unfinished">Job Template Export</translation>
+      <translation>Экспартаваць шаблон задання</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="20"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled include all post processing settings in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled include all post processing settings in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Калі ўключана, уключыць усе налады пасляапрацоўкі ў шаблон.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="23"/>
       <source>Post Processing</source>
-      <translation type="unfinished">Post Processing</translation>
+      <translation>Пасляапрацоўка</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="38"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hint about the current post processing configuration.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hint about the current post processing configuration.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Падказка аб бягучай налады пасляапрацоўкі.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="48"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled tool controller definitions are stored in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled tool controller definitions are stored in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Калі ўключана, вызначэнне кантролеру інструментаў захоўваецца ў шаблоне.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="51"/>
@@ -176,87 +176,87 @@
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="60"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check all tool controllers which should be included in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check all tool controllers which should be included in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Праверыць усе кантралёры інструментаў, якія павінны быць уключаны ў шаблон.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="70"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to include values of the SetupSheet in the template.&lt;/p&gt;&lt;p&gt;Any values of the SetupSheet that are changed from their default are preselected. If this field not selected the current SetupSheet was not modified.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to include values of the SetupSheet in the template.&lt;/p&gt;&lt;p&gt;Any values of the SetupSheet that are changed from their default are preselected. If this field not selected the current SetupSheet was not modified.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Уключыць значэнні Аркуша налад у шаблон.&lt;/p&gt;&lt;p&gt; Папярэдне выбіраюцца любыя значэнні Аркуш налад, якія былі змененыя ў параўнанні з іх першапачатковымі значэннямі. Калі гэтае поле не абрана, бягучы Аркуш налад не быў зменены.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="73"/>
       <source>Setup Sheet</source>
-      <translation type="unfinished">Setup Sheet</translation>
+      <translation>Аркуш налад</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="82"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to include the default heights for operations in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to include the default heights for operations in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Уключыць, каб змясціць першапачатковыя вышыні для аперацый у шаблоне.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="85"/>
       <source>Operation Heights</source>
-      <translation type="unfinished">Operation Heights</translation>
+      <translation>Аперацыі вышыні</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="95"/>
       <source>Operation Depths</source>
-      <translation type="unfinished">Operation Depths</translation>
+      <translation>Аперацыі глыбіні</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="105"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to include the default rapid tool speeds in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to include the default rapid tool speeds in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Уключыць, каб змясціць хуткасць падачы першапачатковага інструменту ў шаблоне.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="108"/>
       <source>Tool Rapid Speeds</source>
-      <translation type="unfinished">Tool Rapid Speeds</translation>
+      <translation>Хуткасць падачы хуткага інструмента</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="118"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to include the default coolant mode in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to include the default coolant mode in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Уключыць, каб змясціць першапачатковы рэжым астуджэння ў шаблоне.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="121"/>
       <source>Coolant Mode</source>
-      <translation type="unfinished">Coolant Mode</translation>
+      <translation>Рэжым астуджэння</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="131"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable all Operations for which the configuration values should be exported.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Note that only operations are listed which currently have configuration values setup.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable all Operations for which the configuration values should be exported.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Note that only operations are listed which currently have configuration values setup.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Уключыць усе аперацыі, для якіх варта экспартаваць значэнні налад.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Звярніце ўвагу, што пералічаныя толькі аперацыі, для якіх у бягучы час маюць значэнні налады.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="141"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled the creation of stock is included in the template. If a template does not include a stock definition the default stock creation algorithm will be used (creation from the Base object's bound box).&lt;/p&gt;&lt;p&gt;This option is most useful if stock is a box or cylinder, or if the machine has a standard placement for machining.&lt;/p&gt;&lt;p&gt;Note that this option is disabled if a stock object from an existing solid is used in the job - they cannot be stored in a template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled the creation of stock is included in the template. If a template does not include a stock definition the default stock creation algorithm will be used (creation from the Base object's bound box).&lt;/p&gt;&lt;p&gt;This option is most useful if stock is a box or cylinder, or if the machine has a standard placement for machining.&lt;/p&gt;&lt;p&gt;Note that this option is disabled if a stock object from an existing solid is used in the job - they cannot be stored in a template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt; Калі ўключана, то стварэнне прыпуску ўключана ў шаблон. Калі шаблон не ўтрымлівае вызначэнне прыпуску, будзе ўжывацца алгарытм стварэння першапачатковага прыпуску (стварэнне з звязанага поля базавага аб'екта).&lt;/p&gt;&lt;p&gt;Гэтая налада найбольш карысная, калі прыпуск уяўляе сабой паралелепіпед ці цыліндр, альбо калі станок мае стандартнае размяшчэнне для апрацоўкі.&lt;/p&gt;&lt;p&gt;Звярніце ўвагу, што гэтая налада адключаная, калі ў заданні ўжываюцца стандартныя аб'екты з існуючага суцэльнага цела - яны не могуць быць захаваныя ў шаблоне.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="144"/>
       <source>Stock</source>
-      <translation type="unfinished">Stock</translation>
+      <translation>Прыпуск</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="153"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled the current size settings for the stock object are included in the template.&lt;/p&gt;&lt;p&gt;For Box and Cylinder stocks this means the actual size of the stock solid being created.&lt;/p&gt;&lt;p&gt;For stock from the Base object's bound box it means the extra material in all directions. A stock object created from such a template will get its basic size from the new job's Base object and apply the stored extra settings.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled the current size settings for the stock object are included in the template.&lt;/p&gt;&lt;p&gt;For Box and Cylinder stocks this means the actual size of the stock solid being created.&lt;/p&gt;&lt;p&gt;For stock from the Base object's bound box it means the extra material in all directions. A stock object created from such a template will get its basic size from the new job's Base object and apply the stored extra settings.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Калі ўключана, бягучыя налады памеру для аб'екта прыпуску ўключаны ў шаблон.&lt;/p&gt;&lt;p&gt;Для прыпуску паралелепіпеда і цыліндра гэта азначае фактычны памер створанага аб'екта прыпуску.&lt;/p&gt;&lt;p&gt;Для прыпуску з звязанага поля базавага аб'екта гэта азначае дадатковы матэрыял ва ўсіх напрамках. Аб'ект прыпуску, які створаны на аснове такога шаблону, атрымае свой базавы памер з базавага аб'екта новага задання, і прыменіць захаваныя дадатковыя налады.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="156"/>
       <source>Extent</source>
-      <translation type="unfinished">Extent</translation>
+      <translation>Ступень</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="172"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hint about the current stock extent setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hint about the current stock extent setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Падказка аб бягучым прыпуску налад ступені.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="179"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled the current placement of the stock solid is stored in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled the current placement of the stock solid is stored in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Калі ўключана, бягучае размяшчэнне прыпуску суцэльнага цела захоўваецца ў шаблоне.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="182"/>
@@ -266,7 +266,7 @@
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="198"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hint about the current stock placement.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hint about the current stock placement.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Падказка аб бягучым прыпуску размяшчэння.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="236"/>
@@ -276,57 +276,57 @@
     <message>
       <location filename="../panels/DlgSelectPostProcessor.ui" line="14"/>
       <source>Post Processor</source>
-      <translation type="unfinished">Post Processor</translation>
+      <translation>Пасляапрацоўка</translation>
     </message>
     <message>
       <location filename="../panels/DlgSelectPostProcessor.ui" line="42"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select one of the post processors.&lt;/p&gt;&lt;p&gt;FreeCAD comes with several post processors pre-installed, please make sure at least one of them is enabled in your preferences.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select one of the post processors.&lt;/p&gt;&lt;p&gt;FreeCAD comes with several post processors pre-installed, please make sure at least one of them is enabled in your preferences.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Абраць адзін з пасляапрацоўкі.&lt;/p&gt;&lt;p&gt;FreeCAD пастаўляецца з некалькімі прадусталяванымі пасляапрацоўкамі, калі ласка, пераканайцеся, што хаця б адзін з іх уключаны ў вашых наладах.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="14"/>
       <source>Tool Controller Editor</source>
-      <translation type="unfinished">Tool Controller Editor</translation>
+      <translation>Рэдактар кантролера інструментаў</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="29"/>
       <source>Controller</source>
-      <translation type="unfinished">Controller</translation>
+      <translation>Кантролер</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="35"/>
       <source>Controller Name /  Tool Number</source>
-      <translation type="unfinished">Controller Name /  Tool Number</translation>
+      <translation>Назва кантролера / Нумар інструмента</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="67"/>
       <source>Horiz. Feed</source>
-      <translation type="unfinished">Horiz. Feed</translation>
+      <translation>Гарызантальны канал</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="96"/>
       <source>Vert. Feed</source>
-      <translation type="unfinished">Vert. Feed</translation>
+      <translation>Вертыкальны канал</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="125"/>
       <source>Horiz Rapid</source>
-      <translation type="unfinished">Horiz Rapid</translation>
+      <translation>Гарызантальны хуткі</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="154"/>
       <source>Vert Rapid</source>
-      <translation type="unfinished">Vert Rapid</translation>
+      <translation>Вертыкальны хуткі</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="186"/>
       <source>Spindle</source>
-      <translation type="unfinished">Spindle</translation>
+      <translation>Шпіндзель</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="196"/>
       <source>Forward</source>
-      <translation type="unfinished">Forward</translation>
+      <translation>Наперад</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="201"/>
@@ -645,7 +645,7 @@
       <location filename="../panels/DressupPathBoundary.ui" line="189"/>
       <location filename="../panels/DressupPathBoundary.ui" line="237"/>
       <source>Height</source>
-      <translation type="unfinished">Height</translation>
+      <translation>Вышыня</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="196"/>
@@ -792,12 +792,12 @@
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="24"/>
       <source>X</source>
-      <translation type="unfinished">X</translation>
+      <translation>X</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="29"/>
       <source>Y</source>
-      <translation type="unfinished">Y</translation>
+      <translation>Y</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="40"/>
@@ -961,7 +961,7 @@
       <location filename="../panels/SetupGlobal.ui" line="241"/>
       <location filename="../panels/SetupGlobal.ui" line="247"/>
       <source>Coolant Mode</source>
-      <translation type="unfinished">Coolant Mode</translation>
+      <translation>Рэжым астуджэння</translation>
     </message>
     <message>
       <location filename="../panels/PageOpCustomEdit.ui" line="62"/>
@@ -1487,12 +1487,12 @@
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="58"/>
       <source>X:</source>
-      <translation type="unfinished">X:</translation>
+      <translation>X:</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="75"/>
       <source>Y:</source>
-      <translation type="unfinished">Y:</translation>
+      <translation>Y:</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="95"/>
@@ -1927,7 +1927,7 @@
     <message>
       <location filename="../panels/SetupGlobal.ui" line="97"/>
       <source>Offset</source>
-      <translation type="unfinished">Offset</translation>
+      <translation>Зрушэнне</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="107"/>
@@ -2274,7 +2274,7 @@
     <message>
       <location filename="../preferences/PathJob.ui" line="44"/>
       <source>Path</source>
-      <translation type="unfinished">Path</translation>
+      <translation>Шлях</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="51"/>
@@ -2315,7 +2315,7 @@
       <location filename="../preferences/PathJob.ui" line="148"/>
       <location filename="../preferences/PathJob.ui" line="249"/>
       <source>Post Processor</source>
-      <translation type="unfinished">Post Processor</translation>
+      <translation>Пасляапрацоўка</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="160"/>
@@ -2410,7 +2410,7 @@
     <message>
       <location filename="../preferences/PathJob.ui" line="346"/>
       <source>Stock</source>
-      <translation type="unfinished">Stock</translation>
+      <translation>Прыпуск</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="365"/>
@@ -2451,7 +2451,7 @@
       <location filename="../preferences/PathJob.ui" line="461"/>
       <location filename="../preferences/PathJob.ui" line="497"/>
       <source>Height</source>
-      <translation type="unfinished">Height</translation>
+      <translation>Вышыня</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="477"/>
@@ -2653,7 +2653,7 @@
     <message>
       <location filename="../preferences/Advanced.ui" line="20"/>
       <source>Warnings</source>
-      <translation type="unfinished">Warnings</translation>
+      <translation>Папярэджанні</translation>
     </message>
     <message>
       <location filename="../preferences/Advanced.ui" line="26"/>
@@ -3043,7 +3043,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="33"/>
       <source>Height</source>
-      <translation type="unfinished">Height</translation>
+      <translation>Вышыня</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="40"/>
@@ -3209,7 +3209,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="273"/>
       <source>Coolant Mode</source>
-      <translation type="unfinished">Coolant Mode</translation>
+      <translation>Рэжым астуджэння</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="280"/>
@@ -3492,7 +3492,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="57"/>
       <source>Model</source>
-      <translation type="unfinished">Model</translation>
+      <translation>Мадэль</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="85"/>
@@ -3594,7 +3594,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="420"/>
       <source>Stock</source>
-      <translation type="unfinished">Stock</translation>
+      <translation>Прыпуск</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="441"/>
@@ -3619,7 +3619,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="464"/>
       <source>Refresh</source>
-      <translation type="unfinished">Refresh</translation>
+      <translation>Абнавіць</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="498"/>
@@ -3645,7 +3645,7 @@ p, li { white-space: pre-wrap; }
       <location filename="../panels/PathEdit.ui" line="560"/>
       <location filename="../panels/PathEdit.ui" line="596"/>
       <source>Height</source>
-      <translation type="unfinished">Height</translation>
+      <translation>Вышыня</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="576"/>
@@ -3791,7 +3791,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1054"/>
       <source>Offset</source>
-      <translation type="unfinished">Offset</translation>
+      <translation>Зрушэнне</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1064"/>
@@ -3831,7 +3831,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1115"/>
       <source>Coolant Mode</source>
-      <translation type="unfinished">Coolant Mode</translation>
+      <translation>Рэжым астуджэння</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1146"/>
@@ -3868,7 +3868,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1217"/>
       <source>Spindle</source>
-      <translation type="unfinished">Spindle</translation>
+      <translation>Шпіндзель</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1237"/>

@@ -6,27 +6,27 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="14"/>
       <source>Annotation Styles Editor</source>
-      <translation type="unfinished">Annotation Styles Editor</translation>
+      <translation>Рэдактар стыляў Заметка</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="20"/>
       <source>Style name</source>
-      <translation type="unfinished">Style name</translation>
+      <translation>Назва стылю</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="38"/>
       <source>The name of your style. Existing style names can be edited.</source>
-      <translation type="unfinished">The name of your style. Existing style names can be edited.</translation>
+      <translation>Назва вашага стылю. Існуючыя назвы стыляў можна змяніць.</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="50"/>
       <source>Add new...</source>
-      <translation type="unfinished">Add new...</translation>
+      <translation>Дадаць новы...</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="79"/>
       <source>Renames the selected style</source>
-      <translation type="unfinished">Renames the selected style</translation>
+      <translation>Пераназваць абраны стыль</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="82"/>
@@ -36,7 +36,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="110"/>
       <source>Deletes the selected style</source>
-      <translation type="unfinished">Deletes the selected style</translation>
+      <translation>Выдаліць абраны стыль</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="113"/>
@@ -46,56 +46,56 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="120"/>
       <source>Import styles from json file</source>
-      <translation type="unfinished">Import styles from json file</translation>
+      <translation>Імпартаваць стылі з файла json</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="130"/>
       <source>Export styles to json file</source>
-      <translation type="unfinished">Export styles to json file</translation>
+      <translation>Экспартаваць стылі ў файл json</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="164"/>
       <source>Text</source>
-      <translation type="unfinished">Text</translation>
+      <translation>Тэкст</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="170"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="192"/>
       <source>The font to use for texts and dimensions</source>
-      <translation type="unfinished">The font to use for texts and dimensions</translation>
+      <translation>Шрыфт для тэкста і вымярэння</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="173"/>
       <source>Font name</source>
-      <translation type="unfinished">Font name</translation>
+      <translation>Назва шрыфту</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="199"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="209"/>
       <source>The font size in system units</source>
-      <translation type="unfinished">The font size in system units</translation>
+      <translation>Памер шрыфту ў сістэмных адзінках вымярэння</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="219"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="229"/>
       <source>The line spacing (relative to the font size)</source>
-      <translation type="unfinished">The line spacing (relative to the font size)</translation>
+      <translation>Міжрадковы інтэрвал (адносна памеру шрыфту)</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="339"/>
       <source>Lines and arrows</source>
-      <translation type="unfinished">Lines and arrows</translation>
+      <translation>Лініі і стрэлкі</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="348"/>
       <source>Show line</source>
-      <translation type="unfinished">Show line</translation>
+      <translation>Адлюстраваць лінію</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="371"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="381"/>
       <source>The width of the lines</source>
-      <translation type="unfinished">The width of the lines</translation>
+      <translation>Шырыня ліній</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="384"/>
@@ -106,36 +106,36 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="391"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="413"/>
       <source>The type of arrows or markers to use for dimensions and labels</source>
-      <translation type="unfinished">The type of arrows or markers to use for dimensions and labels</translation>
+      <translation>Тып стрэлак ці маркераў, якія варта ўжываць для вымярэнняў і метак</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="445"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="455"/>
       <source>The size of the arrows or markers in system units</source>
-      <translation type="unfinished">The size of the arrows or markers in system units</translation>
+      <translation>Памер стрэлак ці маркераў у сістэмных адзінках вымярэння</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="465"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="475"/>
       <source>The color of lines and arrows</source>
-      <translation type="unfinished">The color of lines and arrows</translation>
+      <translation>Колер ліній і стрэлак</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="468"/>
       <source>Line and arrow color</source>
-      <translation type="unfinished">Line and arrow color</translation>
+      <translation>Колер лініі і стрэлкі</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="482"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="492"/>
       <source>The distance the dimension line is additionally extended</source>
-      <translation type="unfinished">The distance the dimension line is additionally extended</translation>
+      <translation>Адлегласць, на якое дадаткова пашыраецца лінія вымярэння</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="522"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="532"/>
       <source>The distance the extension lines are additionally extended beyond the dimension line</source>
-      <translation type="unfinished">The distance the extension lines are additionally extended beyond the dimension line</translation>
+      <translation>Адлегласць, на якое выносныя лініі дадаткова выходзяць за межы лініі вымярэння</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="202"/>
@@ -145,18 +145,18 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="222"/>
       <source>Line spacing</source>
-      <translation type="unfinished">Line spacing</translation>
+      <translation>Міжрадковы інтэрвал</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="236"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="246"/>
       <source>The color of texts, dimension texts and label texts</source>
-      <translation type="unfinished">The color of texts, dimension texts and label texts</translation>
+      <translation>Колер тэксту, тэкст вымярэння і тэксту метак</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="239"/>
       <source>Text color</source>
-      <translation type="unfinished">Text color</translation>
+      <translation>Колер тэксту</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="256"/>
@@ -167,51 +167,51 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="262"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="272"/>
       <source>A multiplier factor that affects the size of texts and markers</source>
-      <translation type="unfinished">A multiplier factor that affects the size of texts and markers</translation>
+      <translation>Множнік, які ўплывае на памер тэкстаў і маркераў</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="265"/>
       <source>Scale multiplier</source>
-      <translation type="unfinished">Scale multiplier</translation>
+      <translation>Маштабны множнік</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="279"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="289"/>
       <source>If it is checked it will show the unit next to the dimension value</source>
-      <translation type="unfinished">If it is checked it will show the unit next to the dimension value</translation>
+      <translation>Калі птушка, побач са значэннем вымярэння будзе адлюстроўвацца адзінка вымярэння</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="282"/>
       <source>Show unit</source>
-      <translation type="unfinished">Show unit</translation>
+      <translation>Адлюстраваць адзінку вымярэння</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="302"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="312"/>
       <source>Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</source>
-      <translation type="unfinished">Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</translation>
+      <translation>Паказвае дапушчальную адзінку даўжыні (такую як мм, м, цаля, фут), каб прымусова адлюстраваць значэнне вымярэння ў гэтай адзінцы вымярэння</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="305"/>
       <source>Unit override</source>
-      <translation type="unfinished">Unit override</translation>
+      <translation>Пераазначэнне адзінкі вымярэння</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="319"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="329"/>
       <source>The number of decimals to show for dimension values</source>
-      <translation type="unfinished">The number of decimals to show for dimension values</translation>
+      <translation>Колькасць дзесятковых знакаў, для адлюстравання значэнняў вымярэння</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="322"/>
       <source>Decimals</source>
-      <translation type="unfinished">Decimals</translation>
+      <translation>Дзесятковыя</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="345"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="355"/>
       <source>If it is checked it will display the dimension line</source>
-      <translation type="unfinished">If it is checked it will display the dimension line</translation>
+      <translation>Калі птушка, будзе адлюстравана лінія вымярэння</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="374"/>
@@ -221,58 +221,58 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="394"/>
       <source>Arrow type</source>
-      <translation type="unfinished">Arrow type</translation>
+      <translation>Тып стрэлкі</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="417"/>
       <source>Dot</source>
-      <translation type="unfinished">Dot</translation>
+      <translation>Кропка</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="422"/>
       <source>Circle</source>
-      <translation type="unfinished">Circle</translation>
+      <translation>Акружнасць</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="427"/>
       <source>Arrow</source>
-      <translation type="unfinished">Arrow</translation>
+      <translation>Стрэлка</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="432"/>
       <source>Tick</source>
-      <translation type="unfinished">Tick</translation>
+      <translation>Зачэп</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="437"/>
       <source>Tick-2</source>
-      <translation type="unfinished">Tick-2</translation>
+      <translation>Зачэп-2</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="448"/>
       <source>Arrow size</source>
-      <translation type="unfinished">Arrow size</translation>
+      <translation>Памер стрэлкі</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="485"/>
       <source>Dimension overshoot</source>
-      <translation type="unfinished">Dimension overshoot</translation>
+      <translation>Перавышэнне вымярэння</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="502"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="512"/>
       <source>The length of the extension lines</source>
-      <translation type="unfinished">The length of the extension lines</translation>
+      <translation>Даўжыня вынасных ліній</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="505"/>
       <source>Extension lines</source>
-      <translation type="unfinished">Extension lines</translation>
+      <translation>Вынасная лінія</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="525"/>
       <source>Extension overshoot</source>
-      <translation type="unfinished">Extension overshoot</translation>
+      <translation>Пашырэнне дапаможнай лініі</translation>
     </message>
   </context>
   <context>
@@ -280,55 +280,55 @@
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="26"/>
       <source>Circular array</source>
-      <translation type="unfinished">Circular array</translation>
+      <translation>Кругавы масіў</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="44"/>
       <source>(Placeholder for the icon)</source>
-      <translation type="unfinished">(Placeholder for the icon)</translation>
+      <translation>(Запаўняльнік для гузіку)</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="53"/>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="63"/>
       <source>Distance from one layer of objects to the next layer of objects.</source>
-      <translation type="unfinished">Distance from one layer of objects to the next layer of objects.</translation>
+      <translation>Адлегласць ад аднаго пласта аб'ектаў да наступнага пласта аб'ектаў.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="56"/>
       <source>Radial distance</source>
-      <translation type="unfinished">Radial distance</translation>
+      <translation>Радыяльная адлегласць</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="76"/>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="87"/>
       <source>Distance from one element in one ring of the array to the next element in the same ring.
 It cannot be zero.</source>
-      <translation type="unfinished">Distance from one element in one ring of the array to the next element in the same ring.
-It cannot be zero.</translation>
+      <translation>Адлегласць ад аднаго элемента ў адным кальцы масіва да наступнага элемента ў тым жа кальцы.
+Яно не можа быць роўным нулю.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="80"/>
       <source>Tangential distance</source>
-      <translation type="unfinished">Tangential distance</translation>
+      <translation>Тангенцыйная адлегласць</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="101"/>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="112"/>
       <source>Number of circular layers or rings to create, including a copy of the original object.
 It must be at least 2.</source>
-      <translation type="unfinished">Number of circular layers or rings to create, including a copy of the original object.
-It must be at least 2.</translation>
+      <translation>Колькасць кругавых пластоў ці кольцаў, якія ствараюцца, разам з копіяй зыходнага аб'екта.
+Іх павінна быць не менш чым 2.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="105"/>
       <source>Number of circular layers</source>
-      <translation type="unfinished">Number of circular layers</translation>
+      <translation>Колькасць кругавых пластоў</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="126"/>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="136"/>
       <source>The number of symmetry lines in the circular array.</source>
-      <translation type="unfinished">The number of symmetry lines in the circular array.</translation>
+      <translation>Колькасць ліній сіметрыі ў кругавым масіве.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="129"/>
@@ -339,45 +339,45 @@ It must be at least 2.</translation>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="151"/>
       <source>The coordinates of the point through which the axis of rotation passes.
 Change the direction of the axis itself in the property editor.</source>
-      <translation type="unfinished">The coordinates of the point through which the axis of rotation passes.
-Change the direction of the axis itself in the property editor.</translation>
+      <translation>Каардынаты кропкі, праз якую праходзіць вось вярчэння.
+Зменіце напрамак самой восі ў рэдактары ўласцівасцяў.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="155"/>
       <source>Center of rotation</source>
-      <translation type="unfinished">Center of rotation</translation>
+      <translation>Цэнтр вярчэння</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="163"/>
       <source>X</source>
-      <translation type="unfinished">X</translation>
+      <translation>X</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="183"/>
       <source>Y</source>
-      <translation type="unfinished">Y</translation>
+      <translation>Y</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="203"/>
       <source>Z</source>
-      <translation type="unfinished">Z</translation>
+      <translation>Z</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="225"/>
       <source>Reset the coordinates of the center of rotation.</source>
-      <translation type="unfinished">Reset the coordinates of the center of rotation.</translation>
+      <translation>Скінуць каардынаты цэнтру вярчэння.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="228"/>
       <source>Reset point</source>
-      <translation type="unfinished">Reset point</translation>
+      <translation>Скінуць кропку</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="240"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation type="unfinished">If checked, the resulting objects in the array will be fused if they touch each other.
-This only works if "Link array" is off.</translation>
+      <translation>Калі птушка, выніковыя аб'екты ў масіве будуць аб'яднаныя, калі яны дакранаюцца адзін з адным.
+Гэта працуе толькі калі выключана "Звязаная сетка".</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="244"/>
@@ -388,13 +388,13 @@ This only works if "Link array" is off.</translation>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="251"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation type="unfinished">If checked, the resulting object will be a "Link array" instead of a regular array.
-A Link array is more efficient when creating multiple copies, but it cannot be fused together.</translation>
+      <translation>Калі птушка, выніковы аб'ект будзе ўяўляць сабой "Звязаная сетка" замест звычайнага масіва.
+Звязаная сетка больш эфектыўная пры стварэнні некалькіх копій, але да яе нельга ўжыць аб'яднанне.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="255"/>
       <source>Link array</source>
-      <translation type="unfinished">Link array</translation>
+      <translation>Звязаная сетка</translation>
     </message>
   </context>
   <context>
@@ -402,24 +402,24 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="26"/>
       <source>Orthogonal array</source>
-      <translation type="unfinished">Orthogonal array</translation>
+      <translation>Артаганальны масіў</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="44"/>
       <source>(Placeholder for the icon)</source>
-      <translation type="unfinished">(Placeholder for the icon)</translation>
+      <translation>(Запаўняльнік для гузіку)</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="51"/>
       <source>Number of elements in the array in the specified direction, including a copy of the original object.
 The number must be at least 1 in each direction.</source>
-      <translation type="unfinished">Number of elements in the array in the specified direction, including a copy of the original object.
-The number must be at least 1 in each direction.</translation>
+      <translation>Колькасць элементаў у масіве ў паказаным напрамку, разам з копіяй зыходнага аб'екта.
+Колькасць павінна быць не менш чым 1 у кожным напрамку.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="55"/>
       <source>Number of elements</source>
-      <translation type="unfinished">Number of elements</translation>
+      <translation>Колькасць элементаў</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="63"/>
@@ -427,7 +427,7 @@ The number must be at least 1 in each direction.</translation>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="223"/>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="314"/>
       <source>X</source>
-      <translation type="unfinished">X</translation>
+      <translation>X</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="80"/>
@@ -435,7 +435,7 @@ The number must be at least 1 in each direction.</translation>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="243"/>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="334"/>
       <source>Y</source>
-      <translation type="unfinished">Y</translation>
+      <translation>Y</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="97"/>
@@ -443,78 +443,78 @@ The number must be at least 1 in each direction.</translation>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="266"/>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="354"/>
       <source>Z</source>
-      <translation type="unfinished">Z</translation>
+      <translation>Z</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="119"/>
       <source>Distance between the elements in the X direction.
 Normally, only the X value is necessary; the other two values can give an additional shift in their respective directions.
 Negative values will result in copies produced in the negative direction.</source>
-      <translation type="unfinished">Distance between the elements in the X direction.
-Normally, only the X value is necessary; the other two values can give an additional shift in their respective directions.
-Negative values will result in copies produced in the negative direction.</translation>
+      <translation>Адлегласць паміж элементамі ў напрамку X.
+Звычайна патрабуецца толькі значэнне X; два іншых значэння могуць даць дадатковы зрух у адпаведных напрамках.
+Адмоўныя значэння прывядуць да стварэння копій у адмоўным напрамку.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="124"/>
       <source>X intervals</source>
-      <translation type="unfinished">X intervals</translation>
+      <translation>Адлегласць у напрамку X</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="197"/>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="288"/>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="379"/>
       <source>Reset the distances.</source>
-      <translation type="unfinished">Reset the distances.</translation>
+      <translation>Скінуць адлегласці.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="200"/>
       <source>Reset X</source>
-      <translation type="unfinished">Reset X</translation>
+      <translation>Скінуць X</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="210"/>
       <source>Distance between the elements in the Y direction.
 Normally, only the Y value is necessary; the other two values can give an additional shift in their respective directions.
 Negative values will result in copies produced in the negative direction.</source>
-      <translation type="unfinished">Distance between the elements in the Y direction.
-Normally, only the Y value is necessary; the other two values can give an additional shift in their respective directions.
-Negative values will result in copies produced in the negative direction.</translation>
+      <translation>Адлегласць паміж элементамі ў напрамку Y.
+Звычайна патрабуецца толькі значэнне Y; два іншых значэння могуць даць дадатковы зрух у адпаведных напрамках.
+Адмоўныя значэння прывядуць да стварэння копій у адмоўным напрамку.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="215"/>
       <source>Y intervals</source>
-      <translation type="unfinished">Y intervals</translation>
+      <translation>Адлегласць у напрамку Y</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="291"/>
       <source>Reset Y</source>
-      <translation type="unfinished">Reset Y</translation>
+      <translation>Скінуць Y</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="301"/>
       <source>Distance between the elements in the Z direction.
 Normally, only the Z value is necessary; the other two values can give an additional shift in their respective directions.
 Negative values will result in copies produced in the negative direction.</source>
-      <translation type="unfinished">Distance between the elements in the Z direction.
-Normally, only the Z value is necessary; the other two values can give an additional shift in their respective directions.
-Negative values will result in copies produced in the negative direction.</translation>
+      <translation>Адлегласць паміж элементамі ў напрамку Z.
+Звычайна патрабуецца толькі значэнне Z; два іншых значэння могуць даць дадатковы зрух у адпаведных напрамках.
+Адмоўныя значэння прывядуць да стварэння копій у адмоўным напрамку.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="306"/>
       <source>Z intervals</source>
-      <translation type="unfinished">Z intervals</translation>
+      <translation>Адлегласць у напрамку Z</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="382"/>
       <source>Reset Z</source>
-      <translation type="unfinished">Reset Z</translation>
+      <translation>Скінуць Z</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="394"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation type="unfinished">If checked, the resulting objects in the array will be fused if they touch each other.
-This only works if "Link array" is off.</translation>
+      <translation>Калі птушка, выніковыя аб'екты ў масіве будуць аб'яднаныя, калі яны дакранаюцца адзін з адным.
+Гэта працуе толькі калі выключана "Звязаная сетка".</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="398"/>
@@ -525,13 +525,13 @@ This only works if "Link array" is off.</translation>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="405"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation type="unfinished">If checked, the resulting object will be a "Link array" instead of a regular array.
-A Link array is more efficient when creating multiple copies, but it cannot be fused together.</translation>
+      <translation>Калі птушка, выніковы аб'ект будзе ўяўляць сабой "Звязаная сетка" замест звычайнага масіва.
+Звязаная сетка больш эфектыўная пры стварэнні некалькіх копій, але да яе нельга ўжыць аб'яднанне.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="409"/>
       <source>Link array</source>
-      <translation type="unfinished">Link array</translation>
+      <translation>Звязаная сетка</translation>
     </message>
   </context>
   <context>
@@ -539,12 +539,12 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="26"/>
       <source>Polar array</source>
-      <translation type="unfinished">Polar array</translation>
+      <translation>Палярная сетка</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="44"/>
       <source>(Placeholder for the icon)</source>
-      <translation type="unfinished">(Placeholder for the icon)</translation>
+      <translation>(Запаўняльнік для гузіку)</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="53"/>
@@ -552,71 +552,71 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
       <source>Sweeping angle of the polar distribution.
 A negative angle produces a polar pattern in the opposite direction.
 The maximum absolute value is 360 degrees.</source>
-      <translation type="unfinished">Sweeping angle of the polar distribution.
-A negative angle produces a polar pattern in the opposite direction.
-The maximum absolute value is 360 degrees.</translation>
+      <translation>Вугал нахілу палярнага размеркавання.
+Адмоўны вугал стварае палярны сектар у супрацьлеглым напрамку.
+Найбольшае абсалютнае значэнне складае 360 градусаў.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="58"/>
       <source>Polar angle</source>
-      <translation type="unfinished">Polar angle</translation>
+      <translation>Палярны вугал</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="86"/>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="97"/>
       <source>Number of elements in the array, including a copy of the original object.
 It must be at least 2.</source>
-      <translation type="unfinished">Number of elements in the array, including a copy of the original object.
-It must be at least 2.</translation>
+      <translation>Колькасць элементаў у масіве, разам з копіяй зыходнага аб'екта.
+Іх павінна быць не менш чым 2.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="90"/>
       <source>Number of elements</source>
-      <translation type="unfinished">Number of elements</translation>
+      <translation>Колькасць элементаў</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="113"/>
       <source>The coordinates of the point through which the axis of rotation passes.
 Change the direction of the axis itself in the property editor.</source>
-      <translation type="unfinished">The coordinates of the point through which the axis of rotation passes.
-Change the direction of the axis itself in the property editor.</translation>
+      <translation>Каардынаты кропкі, праз якую праходзіць вось вярчэння.
+Зменіце напрамак самой восі ў рэдактары ўласцівасцяў.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="117"/>
       <source>Center of rotation</source>
-      <translation type="unfinished">Center of rotation</translation>
+      <translation>Цэнтр вярчэння</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="125"/>
       <source>X</source>
-      <translation type="unfinished">X</translation>
+      <translation>X</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="145"/>
       <source>Y</source>
-      <translation type="unfinished">Y</translation>
+      <translation>Y</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="165"/>
       <source>Z</source>
-      <translation type="unfinished">Z</translation>
+      <translation>Z</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="187"/>
       <source>Reset the coordinates of the center of rotation.</source>
-      <translation type="unfinished">Reset the coordinates of the center of rotation.</translation>
+      <translation>Скінуць каардынаты цэнтру вярчэння.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="190"/>
       <source>Reset point</source>
-      <translation type="unfinished">Reset point</translation>
+      <translation>Скінуць кропку</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="202"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation type="unfinished">If checked, the resulting objects in the array will be fused if they touch each other.
-This only works if "Link array" is off.</translation>
+      <translation>Калі птушка, выніковыя аб'екты ў масіве будуць аб'яднаныя, калі яны дакранаюцца адзін з адным.
+Гэта працуе толькі калі выключана "Звязаная сетка".</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="206"/>
@@ -627,13 +627,13 @@ This only works if "Link array" is off.</translation>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="213"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation type="unfinished">If checked, the resulting object will be a "Link array" instead of a regular array.
-A Link array is more efficient when creating multiple copies, but it cannot be fused together.</translation>
+      <translation>Калі птушка, выніковы аб'ект будзе ўяўляць сабой "Звязаная сетка" замест звычайнага масіва.
+Звязаная сетка больш эфектыўная пры стварэнні некалькіх копій, але да яе нельга ўжыць аб'яднанне.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="217"/>
       <source>Link array</source>
-      <translation type="unfinished">Link array</translation>
+      <translation>Звязаная сетка</translation>
     </message>
   </context>
   <context>
@@ -641,39 +641,39 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
     <message>
       <location filename="../ui/TaskShapeString.ui" line="26"/>
       <source>ShapeString</source>
-      <translation type="unfinished">ShapeString</translation>
+      <translation>Контур радка</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="46"/>
       <source>X</source>
-      <translation type="unfinished">X</translation>
+      <translation>X</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="53"/>
       <location filename="../ui/TaskShapeString.ui" line="70"/>
       <location filename="../ui/TaskShapeString.ui" line="87"/>
       <source>Enter coordinates or select point with mouse.</source>
-      <translation type="unfinished">Enter coordinates or select point with mouse.</translation>
+      <translation>Увядзіце каардынаты ці абраць кропку мышшу.</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="63"/>
       <source>Y</source>
-      <translation type="unfinished">Y</translation>
+      <translation>Y</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="80"/>
       <source>Z</source>
-      <translation type="unfinished">Z</translation>
+      <translation>Z</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="114"/>
       <source>Reset 3d point selection</source>
-      <translation type="unfinished">Reset 3d point selection</translation>
+      <translation>Скінуць выбар трохмернай кропкі</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="120"/>
       <source>Reset Point</source>
-      <translation type="unfinished">Reset Point</translation>
+      <translation>Скінуць кропку</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="131"/>
@@ -683,22 +683,22 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
     <message>
       <location filename="../ui/TaskShapeString.ui" line="138"/>
       <source>Text to be made into ShapeString</source>
-      <translation type="unfinished">Text to be made into ShapeString</translation>
+      <translation>Тэкст, які будзе пераўтвораны ў Контур радка</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="149"/>
       <source>Height</source>
-      <translation type="unfinished">Height</translation>
+      <translation>Вышыня</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="156"/>
       <source>Height of the result</source>
-      <translation type="unfinished">Height of the result</translation>
+      <translation>Вышыня выніку</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="176"/>
       <source>Font file</source>
-      <translation type="unfinished">Font file</translation>
+      <translation>Файл шрыфту</translation>
     </message>
   </context>
   <context>
@@ -706,61 +706,61 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="14"/>
       <source>Working plane setup</source>
-      <translation type="unfinished">Working plane setup</translation>
+      <translation>Налады працоўнай плоскасці</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="20"/>
       <source>Select a face or working plane proxy or 3 vertices.
 Or choose one of the options below</source>
-      <translation type="unfinished">Select a face or working plane proxy or 3 vertices.
-Or choose one of the options below</translation>
+      <translation>Абярыце грань, ці прыблізную працоўную плоскасць, ці тры вяршыні.
+Альбо абярыце адзін з наступных варыянтаў</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="31"/>
       <source>Sets the working plane to the XY plane (ground plane)</source>
-      <translation type="unfinished">Sets the working plane to the XY plane (ground plane)</translation>
+      <translation>Задае працоўную плоскасць да плоскасці XY (гарызантальная плоскасць)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="34"/>
       <source>Top (XY)</source>
-      <translation type="unfinished">Top (XY)</translation>
+      <translation>Верх (XY)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="41"/>
       <source>Sets the working plane to the XZ plane (front plane)</source>
-      <translation type="unfinished">Sets the working plane to the XZ plane (front plane)</translation>
+      <translation>Задае працоўную плоскасць да плоскасці XZ (пярэдняя плоскасць)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="44"/>
       <source>Front (XZ)</source>
-      <translation type="unfinished">Front (XZ)</translation>
+      <translation>Перад (XZ)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="51"/>
       <source>Sets the working plane to the YZ plane (side plane)</source>
-      <translation type="unfinished">Sets the working plane to the YZ plane (side plane)</translation>
+      <translation>Задае працоўную плоскасць да плоскасці YZ (бакавая плоскасць)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="54"/>
       <source>Side (YZ)</source>
-      <translation type="unfinished">Side (YZ)</translation>
+      <translation>Бок (YZ)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="61"/>
       <source>Sets the working plane facing the current view</source>
-      <translation type="unfinished">Sets the working plane facing the current view</translation>
+      <translation>Задае працоўную плоскасць, звернутую да плоскасці твару</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="64"/>
       <source>Align to view</source>
-      <translation type="unfinished">Align to view</translation>
+      <translation>Выраўнаваць да прагляду</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="71"/>
       <source>The working plane will align to the current
 view each time a command is started</source>
-      <translation type="unfinished">The working plane will align to the current
-view each time a command is started</translation>
+      <translation>Працоўная плоскасць будзе выраўнаваная па бягучаму
+выгляду пры кожным запуску каманды</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="78"/>
@@ -770,16 +770,16 @@ view each time a command is started</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="87"/>
       <source>Offset</source>
-      <translation type="unfinished">Offset</translation>
+      <translation>Зрушэнне</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="94"/>
       <source>An optional offset to give to the working plane
 above its base position. Use this together with one
 of the buttons above</source>
-      <translation type="unfinished">An optional offset to give to the working plane
-above its base position. Use this together with one
-of the buttons above</translation>
+      <translation>Неабавязковае зрушэнне працоўнай плоскасці
+над яе базавым становішчам. Ужывайце разам з адной
+з кнопак вышэй</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="106"/>
@@ -1025,7 +1025,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="218"/>
       <source>The font to use for texts and dimensions</source>
-      <translation type="unfinished">The font to use for texts and dimensions</translation>
+      <translation>Шрыфт для тэкста і вымярэння</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="225"/>
@@ -1050,7 +1050,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="259"/>
       <source>Text color</source>
-      <translation type="unfinished">Text color</translation>
+      <translation>Колер тэксту</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="266"/>
@@ -1060,7 +1060,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="273"/>
       <source>Line spacing</source>
-      <translation type="unfinished">Line spacing</translation>
+      <translation>Міжрадковы інтэрвал</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="280"/>
@@ -1080,32 +1080,32 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="298"/>
       <source>Dot</source>
-      <translation type="unfinished">Dot</translation>
+      <translation>Кропка</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="303"/>
       <source>Circle</source>
-      <translation type="unfinished">Circle</translation>
+      <translation>Акружнасць</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="308"/>
       <source>Arrow</source>
-      <translation type="unfinished">Arrow</translation>
+      <translation>Стрэлка</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="313"/>
       <source>Tick</source>
-      <translation type="unfinished">Tick</translation>
+      <translation>Зачэп</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="318"/>
       <source>Tick-2</source>
-      <translation type="unfinished">Tick-2</translation>
+      <translation>Зачэп-2</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="326"/>
       <source>Arrow size</source>
-      <translation type="unfinished">Arrow size</translation>
+      <translation>Памер стрэлкі</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="333"/>
@@ -1115,7 +1115,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="343"/>
       <source>Show unit</source>
-      <translation type="unfinished">Show unit</translation>
+      <translation>Адлюстраваць адзінку вымярэння</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="350"/>
@@ -1125,7 +1125,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="363"/>
       <source>Unit override</source>
-      <translation type="unfinished">Unit override</translation>
+      <translation>Пераазначэнне адзінкі вымярэння</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="370"/>
@@ -1610,27 +1610,27 @@ such as "Arial:Bold"</translation>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="323"/>
       <source>Dot</source>
-      <translation type="unfinished">Dot</translation>
+      <translation>Кропка</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="328"/>
       <source>Circle</source>
-      <translation type="unfinished">Circle</translation>
+      <translation>Акружнасць</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="333"/>
       <source>Arrow</source>
-      <translation type="unfinished">Arrow</translation>
+      <translation>Стрэлка</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="338"/>
       <source>Tick</source>
-      <translation type="unfinished">Tick</translation>
+      <translation>Зачэп</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="343"/>
       <source>Tick-2</source>
-      <translation type="unfinished">Tick-2</translation>
+      <translation>Зачэп-2</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="355"/>
@@ -2428,7 +2428,7 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="190"/>
       <source>Copy</source>
-      <translation type="unfinished">Copy</translation>
+      <translation>Скапіраваць</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="212"/>
@@ -2563,7 +2563,7 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="872"/>
       <source>X</source>
-      <translation type="unfinished">X</translation>
+      <translation>X</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="894"/>
@@ -2573,7 +2573,7 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="916"/>
       <source>Y</source>
-      <translation type="unfinished">Y</translation>
+      <translation>Y</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="938"/>
@@ -2583,7 +2583,7 @@ This might fail for post DXF R12 templates.</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="960"/>
       <source>Z</source>
-      <translation type="unfinished">Z</translation>
+      <translation>Z</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="993"/>
@@ -2647,7 +2647,7 @@ This might fail for post DXF R12 templates.</translation>
       <location filename="../../draftguitools/gui_scale.py" line="227"/>
       <location filename="../../draftguitools/gui_scale.py" line="356"/>
       <source>Copy</source>
-      <translation type="unfinished">Copy</translation>
+      <translation>Скапіраваць</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="81"/>
@@ -2792,17 +2792,17 @@ This might fail for post DXF R12 templates.</translation>
       <location filename="../../DraftGui.py" line="731"/>
       <location filename="../../DraftGui.py" line="1058"/>
       <source>X</source>
-      <translation type="unfinished">X</translation>
+      <translation>X</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="732"/>
       <source>Y</source>
-      <translation type="unfinished">Y</translation>
+      <translation>Y</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="733"/>
       <source>Z</source>
-      <translation type="unfinished">Z</translation>
+      <translation>Z</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="734"/>
@@ -2991,7 +2991,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="../../DraftGui.py" line="807"/>
       <source>Height</source>
-      <translation type="unfinished">Height</translation>
+      <translation>Вышыня</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="808"/>
@@ -3062,7 +3062,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="../../DraftGui.py" line="975"/>
       <source>Circle</source>
-      <translation type="unfinished">Circle</translation>
+      <translation>Акружнасць</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="980"/>
@@ -3088,11 +3088,11 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="../../DraftGui.py" line="1035"/>
       <location filename="../../draftguitools/gui_selectplane.py" line="527"/>
-      <location filename="../../draftguitools/gui_offset.py" line="243"/>
-      <location filename="../../draftguitools/gui_offset.py" line="260"/>
-      <location filename="../../draftguitools/gui_offset.py" line="324"/>
+      <location filename="../../draftguitools/gui_offset.py" line="246"/>
+      <location filename="../../draftguitools/gui_offset.py" line="263"/>
+      <location filename="../../draftguitools/gui_offset.py" line="327"/>
       <source>Offset</source>
-      <translation type="unfinished">Offset</translation>
+      <translation>Зрушэнне</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="1041"/>
@@ -3996,7 +3996,7 @@ The final angle will be the base angle plus this amount.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="173"/>
-      <location filename="../../draftguitools/gui_offset.py" line="143"/>
+      <location filename="../../draftguitools/gui_offset.py" line="146"/>
       <source>Pick distance</source>
       <translation type="unfinished">Pick distance</translation>
     </message>
@@ -4401,22 +4401,22 @@ The final angle will be the base angle plus this amount.</translation>
       <translation type="unfinished">Upgrade</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_offset.py" line="76"/>
+      <location filename="../../draftguitools/gui_offset.py" line="79"/>
       <source>Select an object to offset</source>
       <translation type="unfinished">Select an object to offset</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_offset.py" line="82"/>
+      <location filename="../../draftguitools/gui_offset.py" line="85"/>
       <source>Offset only works on one object at a time.</source>
       <translation type="unfinished">Offset only works on one object at a time.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_offset.py" line="92"/>
+      <location filename="../../draftguitools/gui_offset.py" line="95"/>
       <source>Cannot offset this object type</source>
       <translation type="unfinished">Cannot offset this object type</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_offset.py" line="123"/>
+      <location filename="../../draftguitools/gui_offset.py" line="126"/>
       <source>Offset of Bezier curves is currently not supported</source>
       <translation type="unfinished">Offset of Bezier curves is currently not supported</translation>
     </message>
@@ -4470,7 +4470,7 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../drafttaskpanels/task_polararray.py" line="434"/>
       <location filename="../../draftmake/make_polararray.py" line="94"/>
       <source>Polar array</source>
-      <translation type="unfinished">Polar array</translation>
+      <translation>Палярная сетка</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="187"/>
@@ -4522,14 +4522,14 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="344"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="341"/>
       <source>Fuse:</source>
-      <translation type="unfinished">Fuse:</translation>
+      <translation>Аб'яднаць:</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="310"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="358"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="355"/>
       <source>Create Link array:</source>
-      <translation type="unfinished">Create Link array:</translation>
+      <translation>Стварыць звязаную сетку:</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="328"/>
@@ -4561,7 +4561,7 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="396"/>
       <location filename="../../draftmake/make_orthoarray.py" line="275"/>
       <source>Orthogonal array</source>
-      <translation type="unfinished">Orthogonal array</translation>
+      <translation>Артаганальны масіў</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="205"/>
@@ -4616,7 +4616,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="56"/>
       <source>ShapeString</source>
-      <translation type="unfinished">ShapeString</translation>
+      <translation>Контур радка</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="70"/>
@@ -4630,7 +4630,7 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="481"/>
       <location filename="../../draftmake/make_circulararray.py" line="122"/>
       <source>Circular array</source>
-      <translation type="unfinished">Circular array</translation>
+      <translation>Кругавы масіў</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="212"/>
@@ -4770,7 +4770,7 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../draftmake/make_fillet.py" line="144"/>
       <location filename="../../draftmake/make_fillet.py" line="145"/>
       <source>Segment</source>
-      <translation type="unfinished">Segment</translation>
+      <translation>Сегмент</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_fillet.py" line="165"/>
@@ -4817,7 +4817,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftmake/make_arc_3points.py" line="167"/>
       <source>Center:</source>
-      <translation type="unfinished">Center:</translation>
+      <translation>Цэнтральная кропка:</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_arc_3points.py" line="170"/>
@@ -5103,34 +5103,34 @@ The final angle will be the base angle plus this amount.</translation>
       <translation type="unfinished">Wrong input: must be a number between 0 and 100.</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="462"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="464"/>
       <source>Activate this layer</source>
       <translation type="unfinished">Activate this layer</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="468"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="470"/>
       <source>Select layer contents</source>
       <translation type="unfinished">Select layer contents</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="506"/>
-      <location filename="../../draftviewproviders/view_layer.py" line="520"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="508"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="522"/>
       <source>Merge layer duplicates</source>
       <translation type="unfinished">Merge layer duplicates</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="512"/>
-      <location filename="../../draftviewproviders/view_layer.py" line="568"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="514"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="570"/>
       <source>Add new layer</source>
       <translation type="unfinished">Add new layer</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="553"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="555"/>
       <source>Relabeling layer:</source>
       <translation type="unfinished">Relabeling layer:</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="557"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="559"/>
       <source>Merging layer:</source>
       <translation type="unfinished">Merging layer:</translation>
     </message>
@@ -5307,7 +5307,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftviewproviders/view_text.py" line="186"/>
       <source>Text</source>
-      <translation type="unfinished">Text</translation>
+      <translation>Тэкст</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="212"/>
@@ -5330,6 +5330,11 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../draftobjects/label.py" line="256"/>
       <source>renamed view property 'TextSize' to 'FontSize'</source>
       <translation type="unfinished">renamed view property 'TextSize' to 'FontSize'</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/layer.py" line="81"/>
+      <source>added missing view properties</source>
+      <translation type="unfinished">added missing view properties</translation>
     </message>
   </context>
   <context>
@@ -5476,7 +5481,7 @@ from menu Tools -&gt; Addon Manager</translation>
       <translation type="unfinished">Slope</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_offset.py" line="329"/>
+      <location filename="../../draftguitools/gui_offset.py" line="332"/>
       <source>Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</source>
       <translation type="unfinished">Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</translation>
     </message>
@@ -5527,7 +5532,7 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="157"/>
       <source>Copy</source>
-      <translation type="unfinished">Copy</translation>
+      <translation>Скапіраваць</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="158"/>
@@ -5676,7 +5681,7 @@ The path can be a polyline, B-spline, Bezier curve, or even edges from other obj
     <message>
       <location filename="../../draftguitools/gui_patharray.py" line="163"/>
       <source>Path Link array</source>
-      <translation type="unfinished">Path Link array</translation>
+      <translation>Сетка звязаная па крывой</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_patharray.py" line="166"/>
@@ -5774,7 +5779,7 @@ The lines must share a common point at the start or at the end for the operation
     <message>
       <location filename="../../draftguitools/gui_texts.py" line="60"/>
       <source>Text</source>
-      <translation type="unfinished">Text</translation>
+      <translation>Тэкст</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_texts.py" line="63"/>
@@ -6141,7 +6146,7 @@ on supported nodes and on supported objects.</translation>
     <message>
       <location filename="../../draftguitools/gui_circulararray.py" line="65"/>
       <source>Circular array</source>
-      <translation type="unfinished">Circular array</translation>
+      <translation>Кругавы масіў</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_circulararray.py" line="68"/>
@@ -6480,7 +6485,7 @@ CTRL to snap, SHIFT to constrain.</translation>
     <message>
       <location filename="../../draftguitools/gui_circles.py" line="80"/>
       <source>Circle</source>
-      <translation type="unfinished">Circle</translation>
+      <translation>Акружнасць</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_circles.py" line="84"/>
@@ -6585,7 +6590,7 @@ First select the base object, and then select the point object.</translation>
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="132"/>
       <source>PointLinkArray</source>
-      <translation type="unfinished">PointLinkArray</translation>
+      <translation>Сетка звязаная па кропках</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="135"/>
@@ -6787,7 +6792,7 @@ The resulting clone can be scaled in each of its three directions.</translation>
     <message>
       <location filename="../../draftguitools/gui_polararray.py" line="65"/>
       <source>Polar array</source>
-      <translation type="unfinished">Polar array</translation>
+      <translation>Палярная сетка</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_polararray.py" line="68"/>
@@ -6844,12 +6849,12 @@ convert closed edges into filled faces and parametric polygons, and merge faces 
   <context>
     <name>Draft_Offset</name>
     <message>
-      <location filename="../../draftguitools/gui_offset.py" line="63"/>
+      <location filename="../../draftguitools/gui_offset.py" line="66"/>
       <source>Offset</source>
-      <translation type="unfinished">Offset</translation>
+      <translation>Зрушэнне</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_offset.py" line="66"/>
+      <location filename="../../draftguitools/gui_offset.py" line="69"/>
       <source>Offsets of the selected object.
 It can also create an offset copy of the original object.
 CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each click.</source>
@@ -6950,7 +6955,7 @@ to polar or circular, and its properties can be modified.</translation>
     <message>
       <location filename="../../draftguitools/gui_array_simple.py" line="119"/>
       <source>LinkArray</source>
-      <translation type="unfinished">LinkArray</translation>
+      <translation>Артаганальная сетка</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_array_simple.py" line="122"/>
@@ -7082,7 +7087,7 @@ set True for fusion or False for compound</translation>
       <translation type="unfinished">The area of this object</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/layer.py" line="59"/>
+      <location filename="../../draftobjects/layer.py" line="55"/>
       <source>The objects that are part of this layer</source>
       <translation type="unfinished">The objects that are part of this layer</translation>
     </message>
@@ -7954,7 +7959,7 @@ the 'First Angle' and 'Last Angle' properties.</translation>
     <message>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="141"/>
       <source>Text color</source>
-      <translation type="unfinished">Text color</translation>
+      <translation>Колер тэксту</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_label.py" line="89"/>
@@ -8056,7 +8061,7 @@ the 'First Angle' and 'Last Angle' properties.</translation>
     <message>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="123"/>
       <source>Font name</source>
-      <translation type="unfinished">Font name</translation>
+      <translation>Назва шрыфту</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="132"/>
@@ -8110,13 +8115,13 @@ Use 'arch' to force US arch notation</translation>
       <location filename="../../draftviewproviders/view_label.py" line="102"/>
       <location filename="../../draftviewproviders/view_dimension.py" line="201"/>
       <source>Arrow size</source>
-      <translation type="unfinished">Arrow size</translation>
+      <translation>Памер стрэлкі</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_label.py" line="111"/>
       <location filename="../../draftviewproviders/view_dimension.py" line="210"/>
       <source>Arrow type</source>
-      <translation type="unfinished">Arrow type</translation>
+      <translation>Тып стрэлкі</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="220"/>

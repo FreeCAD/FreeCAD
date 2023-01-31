@@ -347,7 +347,7 @@
       <translation>Задаць уласцівасці клеткі</translation>
     </message>
     <message>
-      <location filename="../../SheetModel.cpp" line="468"/>
+      <location filename="../../SheetModel.cpp" line="510"/>
       <source>Edit cell</source>
       <translation>Змяніць клетку</translation>
     </message>
@@ -587,7 +587,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="33"/>
       <source>Text</source>
-      <translation type="unfinished">Text</translation>
+      <translation>Тэкст</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="43"/>
@@ -918,41 +918,69 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="26"/>
+      <source>Display Settings</source>
+      <translation type="unfinished">Display Settings</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="32"/>
+      <source>If checked, use the custom presentation to display cell string.</source>
+      <translation type="unfinished">If checked, use the custom presentation to display cell string.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="35"/>
+      <source>Show alias in cell with format</source>
+      <translation type="unfinished">Show alias in cell with format</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="64"/>
+      <source>The format of the custom cell string presentation.
+Defaults to: %V = %A
+
+%A - alias name
+%V - cell value</source>
+      <translation type="unfinished">The format of the custom cell string presentation.
+Defaults to: %V = %A
+
+%A - alias name
+%V - cell value</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="84"/>
       <source>Import/Export Settings</source>
       <translation>Імпарт/Экспарт налад</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="38"/>
+      <location filename="../../DlgSettings.ui" line="96"/>
       <source>Delimiter Character: </source>
       <translation>Знакі падзельнікі: </translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="58"/>
+      <location filename="../../DlgSettings.ui" line="116"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Знак, які ўжываецца ў якасці падзельніка палёў. Першапачаткова ўжываецца табуляцыя, але таксама часта ўжываюцца коскі (,) і кропкі з коскай (;). Абярыце з спісу ці ўвядзіце свой уласны падзельнік у поле. Ён павінен складацца з аднаго знака альбо  слоў &lt;span style=" font-style:italic;"&gt;табуляцыя&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;коска&lt;/span&gt; ці &lt;span style=" font-style:italic;"&gt;кропка з коскай&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="74"/>
+      <location filename="../../DlgSettings.ui" line="132"/>
       <source>tab</source>
       <translation>табуляцыя</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="98"/>
+      <location filename="../../DlgSettings.ui" line="156"/>
       <source>Quote Character: </source>
       <translation>Знак цытаты: </translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="105"/>
+      <location filename="../../DlgSettings.ui" line="163"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Знак, які ўжываецца для падзелу радкоў, звычайна ўяўляе сабой адзінарнае двукоссе (') ці падвоенае двукоссе (&amp;quot;). Павінен складацца з аднаго знака.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="130"/>
+      <location filename="../../DlgSettings.ui" line="188"/>
       <source>Escape Character: </source>
       <translation>Знак экранавання: </translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="137"/>
+      <location filename="../../DlgSettings.ui" line="195"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Знак Escape-паслядоўнасці, звычайна гэта зваротная касая рыса (\), ужываецца для абазначэння спецыяльных недрукаваных сімвалаў, напрыклад \t = tab. Павінен складацца з аднаго знака.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -1098,7 +1126,7 @@ Do you want to continue?</source>
       <location filename="../../SheetTableView.cpp" line="205"/>
       <location filename="../../SheetTableView.cpp" line="618"/>
       <source>Copy</source>
-      <translation type="unfinished">Copy</translation>
+      <translation>Скапіраваць</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="207"/>

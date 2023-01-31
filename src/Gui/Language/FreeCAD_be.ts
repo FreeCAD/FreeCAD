@@ -758,37 +758,37 @@ while doing a left or right click and move the mouse up or down</source>
   <context>
     <name>Gui::Dialog::CameraDialog</name>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="239"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="277"/>
       <source>Camera settings</source>
       <translation>Налады камеры</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="246"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="284"/>
       <source>Orientation</source>
       <translation type="unfinished">Orientation</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="260"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="298"/>
       <source>Q0</source>
       <translation>Q0</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="270"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="308"/>
       <source>Q1</source>
       <translation>Q1</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="280"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="318"/>
       <source>Q2</source>
       <translation>Q2</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="290"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="328"/>
       <source>Q3</source>
       <translation>Q3</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="299"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="337"/>
       <source>Current view</source>
       <translation>Бягучы выгляд</translation>
     </message>
@@ -811,7 +811,7 @@ while doing a left or right click and move the mouse up or down</source>
       <location filename="../Clipping.ui" line="122"/>
       <location filename="../Clipping.ui" line="167"/>
       <source>Offset</source>
-      <translation type="unfinished">Offset</translation>
+      <translation>Зрушэнне</translation>
     </message>
     <message>
       <location filename="../Clipping.ui" line="55"/>
@@ -1324,12 +1324,12 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../DlgKeyboard.ui" line="291"/>
       <source>Up</source>
-      <translation type="unfinished">Up</translation>
+      <translation>Уверх</translation>
     </message>
     <message>
       <location filename="../DlgKeyboard.ui" line="301"/>
       <source>Down</source>
-      <translation type="unfinished">Down</translation>
+      <translation>Уніз</translation>
     </message>
     <message>
       <source/>
@@ -4251,7 +4251,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
     <message>
       <location filename="../DlgEditorImp.cpp" line="101"/>
       <source>Text</source>
-      <translation type="unfinished">Text</translation>
+      <translation>Тэкст</translation>
     </message>
     <message>
       <location filename="../DlgEditorImp.cpp" line="105"/>
@@ -4699,7 +4699,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
     <name>Gui::Dialog::DlgSettingsNavigation</name>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="14"/>
-      <location filename="../DlgSettingsNavigation.ui" line="183"/>
+      <location filename="../DlgSettingsNavigation.ui" line="244"/>
       <source>Navigation</source>
       <translation>Навігацыя</translation>
     </message>
@@ -4725,6 +4725,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
     </message>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="87"/>
+      <location filename="../DlgSettingsNavigation.ui" line="149"/>
       <source>Corner where navigation cube is shown</source>
       <translation>Кут, у якім паказаны куб навігацыі</translation>
     </message>
@@ -4760,43 +4761,58 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
     </message>
     <message>
       <location filename="../DlgSettingsNavigation.ui" line="142"/>
+      <source>Font name:</source>
+      <translation type="unfinished">Font name:</translation>
+    </message>
+    <message>
+      <location filename="../DlgSettingsNavigation.ui" line="165"/>
       <source>Cube size</source>
       <translation>Памер куба</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="149"/>
+      <location filename="../DlgSettingsNavigation.ui" line="172"/>
       <source>Size of the navigation cube</source>
       <translation>Памер куба навігацыі</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="189"/>
+      <location filename="../DlgSettingsNavigation.ui" line="200"/>
+      <source>Font size:</source>
+      <translation type="unfinished">Font size:</translation>
+    </message>
+    <message>
+      <location filename="../DlgSettingsNavigation.ui" line="213"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Font size for the NaviCube text&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Font size for the NaviCube text&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../DlgSettingsNavigation.ui" line="250"/>
       <source>3D Navigation</source>
       <translation>Трохмерная навігацыя</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="226"/>
+      <location filename="../DlgSettingsNavigation.ui" line="287"/>
       <source>List the mouse button configs for each chosen navigation setting.
 Select a set and then press the button to view said configurations.</source>
       <translation>Спіс налад кнопак мышы для кожнай абранай налады навігацыі.
 Абярыце набор, потым націсніце кнопку, каб праглядзець названыя наладкі.</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="230"/>
+      <location filename="../DlgSettingsNavigation.ui" line="291"/>
       <source>Mouse...</source>
       <translation>Дэталі стылю навігацыі...</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="251"/>
+      <location filename="../DlgSettingsNavigation.ui" line="312"/>
       <source>Navigation settings set</source>
       <translation>Набор налад навігацыі</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="261"/>
+      <location filename="../DlgSettingsNavigation.ui" line="322"/>
       <source>Orbit style</source>
       <translation>Стыль арбіты</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="280"/>
+      <location filename="../DlgSettingsNavigation.ui" line="341"/>
       <source>Rotation orbit style.
 Trackball: moving the mouse horizontally will rotate the part around the y-axis
 Turntable: the part will be rotated around the z-axis (with constrained axes).
@@ -4807,116 +4823,116 @@ Free Turntable: the part will be rotated around the z-axis.</source>
 Свабодны паваротны круг: дэталь будзе круціцца вакол восі z.</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="290"/>
+      <location filename="../DlgSettingsNavigation.ui" line="351"/>
       <source>Turntable</source>
       <translation>Паваротны круг</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="295"/>
+      <location filename="../DlgSettingsNavigation.ui" line="356"/>
       <source>Trackball</source>
       <translation>Трэкбол</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="300"/>
+      <location filename="../DlgSettingsNavigation.ui" line="361"/>
       <source>Free Turntable</source>
       <translation>Свабодны паваротны круг</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="308"/>
+      <location filename="../DlgSettingsNavigation.ui" line="369"/>
       <source>Rotation mode</source>
       <translation>Рэжым вярчэння</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="327"/>
+      <location filename="../DlgSettingsNavigation.ui" line="388"/>
       <source>Rotations in 3D will use current cursor position as center for rotation</source>
       <translation>Вярчэнне ў 3D будзе ўжываць бягучае становішча курсора ў якасці цэнтру для вярчэння</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="334"/>
+      <location filename="../DlgSettingsNavigation.ui" line="395"/>
       <source>Window center</source>
       <translation>Цэнтр акна</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="339"/>
+      <location filename="../DlgSettingsNavigation.ui" line="400"/>
       <source>Drag at cursor</source>
       <translation>Перанесці да паказальніка</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="344"/>
+      <location filename="../DlgSettingsNavigation.ui" line="405"/>
       <source>Object center</source>
       <translation>Цэнтр аб'екту</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="352"/>
+      <location filename="../DlgSettingsNavigation.ui" line="413"/>
       <source>Default camera orientation</source>
       <translation>Першапачатковая арыентацыя камеры</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="371"/>
+      <location filename="../DlgSettingsNavigation.ui" line="432"/>
       <source>Default camera orientation when creating a new document or selecting the home view</source>
       <translation>Першапачатковая арыентацыя камеры пры стварэнні новага дакументу ці выбару пачатковага выгляду</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="378"/>
+      <location filename="../DlgSettingsNavigation.ui" line="439"/>
       <source>Camera zoom</source>
       <translation>Маштаб камеры</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="397"/>
+      <location filename="../DlgSettingsNavigation.ui" line="458"/>
       <source>Sets camera zoom for new documents.
 The value is the diameter of the sphere to fit on the screen.</source>
       <translation>Задаць маштаб камеры для новых дакументаў.
 Значэнне - гэта дыяметр сферы, які павінен змясціцца на экране.</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="401"/>
+      <location filename="../DlgSettingsNavigation.ui" line="462"/>
       <source>mm</source>
       <translation>мм</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="426"/>
+      <location filename="../DlgSettingsNavigation.ui" line="487"/>
       <source>Enable animated rotations</source>
       <translation>Уключыць анімаванае вярчэнне</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="429"/>
+      <location filename="../DlgSettingsNavigation.ui" line="490"/>
       <source>Enable animation</source>
       <translation>Уключыць анімацыю</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="445"/>
+      <location filename="../DlgSettingsNavigation.ui" line="506"/>
       <source>Zoom operations will be performed at position of mouse pointer</source>
       <translation>Аперацыі маштабавання будуць выконвацца ў становішчы паказальніка мышы</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="448"/>
+      <location filename="../DlgSettingsNavigation.ui" line="509"/>
       <source>Zoom at cursor</source>
       <translation>Маштаб на паказальніку</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="464"/>
+      <location filename="../DlgSettingsNavigation.ui" line="525"/>
       <source> Zoom step</source>
       <translation> Крок маштабавання</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="482"/>
+      <location filename="../DlgSettingsNavigation.ui" line="543"/>
       <source>How much will be zoomed.
 Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
       <translation>Наколькі будзе маштабавана.
 Крок маштабавання '1' азначае каэфіцыент 7.5 для кожнага кроку маштабавання.</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="526"/>
+      <location filename="../DlgSettingsNavigation.ui" line="587"/>
       <source>Direction of zoom operations will be inverted</source>
       <translation>Напрамак аперацый маштабавання будзе інвертаваны</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="529"/>
+      <location filename="../DlgSettingsNavigation.ui" line="590"/>
       <source>Invert zoom</source>
       <translation>Інвертаваць маштаб</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="545"/>
+      <location filename="../DlgSettingsNavigation.ui" line="606"/>
       <source>Prevents view tilting when pinch-zooming.
 Affects only gesture navigation style.
 Mouse tilting is not disabled by this setting.</source>
@@ -4925,57 +4941,57 @@ Mouse tilting is not disabled by this setting.</source>
 Нахіл мышы гэтай наладай не адключаны.</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.ui" line="550"/>
+      <location filename="../DlgSettingsNavigation.ui" line="611"/>
       <source>Disable touchscreen tilt gesture</source>
       <translation>Адключыць жэст нахілу для сэнсарнага экрану</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="137"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="155"/>
       <source>Isometric</source>
       <translation>Ізаметрычны</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="138"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="156"/>
       <source>Dimetric</source>
       <translation>Дзіметрычны</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="139"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="157"/>
       <source>Trimetric</source>
       <translation>Трыметрычны</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="140"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="158"/>
       <source>Top</source>
       <translation>Зверху</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="141"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="159"/>
       <source>Front</source>
       <translation>Спераду</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="142"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="160"/>
       <source>Left</source>
       <translation>Злева</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="143"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="161"/>
       <source>Right</source>
       <translation>Справа</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="144"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="162"/>
       <source>Rear</source>
       <translation>Ззаду</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="145"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="163"/>
       <source>Bottom</source>
       <translation>Знізу</translation>
     </message>
     <message>
-      <location filename="../DlgSettingsNavigation.cpp" line="146"/>
+      <location filename="../DlgSettingsNavigation.cpp" line="164"/>
       <source>Custom</source>
       <translation type="unfinished">Custom</translation>
     </message>
@@ -5088,72 +5104,72 @@ horizontal space in Python console</source>
     <message>
       <location filename="../DlgSettingsUnits.ui" line="53"/>
       <source>Number of decimals that should be shown for numbers and dimensions</source>
-      <translation type="unfinished">Number of decimals that should be shown for numbers and dimensions</translation>
+      <translation>Колькасць дзесятковых знакаў, якая павінна быць адлюстравана для лікаў і вымярэнняў</translation>
     </message>
     <message>
       <location filename="../DlgSettingsUnits.ui" line="70"/>
       <source>Minimum fractional inch:</source>
-      <translation type="unfinished">Minimum fractional inch:</translation>
+      <translation>Найменшая частка цалі:</translation>
     </message>
     <message>
       <location filename="../DlgSettingsUnits.ui" line="77"/>
       <source>Minimum fractional inch to be displayed</source>
-      <translation type="unfinished">Minimum fractional inch to be displayed</translation>
+      <translation>Найменшая частка цалі для адлюстравання</translation>
     </message>
     <message>
       <location filename="../DlgSettingsUnits.ui" line="131"/>
       <source>Magnitude</source>
-      <translation type="unfinished">Magnitude</translation>
+      <translation>Велічыня</translation>
     </message>
     <message>
       <location filename="../DlgSettingsUnits.ui" line="136"/>
       <source>Unit</source>
-      <translation type="unfinished">Unit</translation>
+      <translation>Адзінка вымярэння</translation>
     </message>
     <message>
       <location filename="../DlgSettingsUnitsImp.cpp" line="44"/>
       <source>Standard (mm/kg/s/degree)</source>
-      <translation type="unfinished">Standard (mm/kg/s/degree)</translation>
+      <translation>Стандартныя (мм/кг/с/градус)</translation>
     </message>
     <message>
       <location filename="../DlgSettingsUnitsImp.cpp" line="45"/>
       <source>MKS (m/kg/s/degree)</source>
-      <translation type="unfinished">MKS (m/kg/s/degree)</translation>
+      <translation>МКС (м/кг/с/градус)</translation>
     </message>
     <message>
       <location filename="../DlgSettingsUnitsImp.cpp" line="46"/>
       <source>US customary (in/lb)</source>
-      <translation type="unfinished">US customary (in/lb)</translation>
+      <translation>Звычайная адзінка вымярэння Злучаных Штатаў (цалі/фунты)</translation>
     </message>
     <message>
       <location filename="../DlgSettingsUnitsImp.cpp" line="47"/>
       <source>Imperial decimal (in/lb)</source>
-      <translation type="unfinished">Imperial decimal (in/lb)</translation>
+      <translation>Брытанскія дзесятковыя (цалі/фунты)</translation>
     </message>
     <message>
       <location filename="../DlgSettingsUnitsImp.cpp" line="48"/>
       <source>Building Euro (cm/m²/m³)</source>
-      <translation type="unfinished">Building Euro (cm/m²/m³)</translation>
+      <translation>Еўрапейская будаўнічая (см/м²/м³)</translation>
     </message>
     <message>
       <location filename="../DlgSettingsUnitsImp.cpp" line="49"/>
       <source>Building US (ft-in/sqft/cft)</source>
-      <translation type="unfinished">Building US (ft-in/sqft/cft)</translation>
+      <translation>Будаўнішыя Злучаных Штатаў (футы-цалі/кв. футы/куб. футы)</translation>
     </message>
     <message>
       <location filename="../DlgSettingsUnitsImp.cpp" line="50"/>
       <source>Metric small parts &amp; CNC(mm, mm/min)</source>
-      <translation type="unfinished">Metric small parts &amp; CNC(mm, mm/min)</translation>
+      <translation>Малыя метрычныя дэталі і CNC (мм, мм/хв)</translation>
     </message>
     <message>
       <location filename="../DlgSettingsUnitsImp.cpp" line="51"/>
       <source>Imperial for Civil Eng (ft, ft/sec)</source>
-      <translation type="unfinished">Imperial for Civil Eng (ft, ft/sec)</translation>
+      <translation>Брытанская для грамадскіх інжынераў (футы, футы/с)</translation>
     </message>
     <message>
       <location filename="../DlgSettingsUnitsImp.cpp" line="52"/>
       <source>FEM (mm, N, s)</source>
-      <translation type="unfinished">FEM (mm, N, s)</translation>
+      <translation>МКЭ (мм, Н, с)</translation>
     </message>
   </context>
   <context>
@@ -5171,84 +5187,84 @@ horizontal space in Python console</source>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="64"/>
       <source>Enable preselection and highlight by specified color</source>
-      <translation type="unfinished">Enable preselection and highlight by specified color</translation>
+      <translation>Уключыць папярэдні выбар і вылучыць зададзеным колерам</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="67"/>
       <source>Enable preselection highlighting</source>
-      <translation type="unfinished">Enable preselection highlighting</translation>
+      <translation>Уключыць падсвятленне папярэдняга выбару</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="112"/>
       <source>Enable selection highlighting and use specified color</source>
-      <translation type="unfinished">Enable selection highlighting and use specified color</translation>
+      <translation>Уключыць падсвятленне вылучэння і ўжыць зададзены колер</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="115"/>
       <source>Enable selection highlighting</source>
-      <translation type="unfinished">Enable selection highlighting</translation>
+      <translation>Уключыць падсвятленне вылучэння</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="172"/>
       <source>Background color for the model view</source>
-      <translation type="unfinished">Background color for the model view</translation>
+      <translation>Колер фону для прадстаўлення мадэлі</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="175"/>
       <source>Background color</source>
-      <translation type="unfinished">Background color</translation>
+      <translation>Колер фону</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="219"/>
       <location filename="../DlgSettingsViewColor.ui" line="244"/>
       <source>Background will have selected color</source>
-      <translation type="unfinished">Background will have selected color</translation>
+      <translation>Фон будзе мець абраны колер</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="222"/>
       <source>Simple color</source>
-      <translation type="unfinished">Simple color</translation>
+      <translation>Адзінкавы колер</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="267"/>
       <source>Background will have selected color gradient</source>
-      <translation type="unfinished">Background will have selected color gradient</translation>
+      <translation>Фон будзе мець абраны градыент колеру</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="270"/>
       <source>Color gradient</source>
-      <translation type="unfinished">Color gradient</translation>
+      <translation>Градыент колеру</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="286"/>
       <source>Top color</source>
-      <translation type="unfinished">Top color</translation>
+      <translation>Колер верху</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="309"/>
       <source>Switches the colors of the gradient</source>
-      <translation type="unfinished">Switches the colors of the gradient</translation>
+      <translation>Пераключае колеры градыенту</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="312"/>
       <source>Switch</source>
-      <translation type="unfinished">Switch</translation>
+      <translation>Пераключыць</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="332"/>
       <source>Bottom color</source>
-      <translation type="unfinished">Bottom color</translation>
+      <translation>Колер нізу</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="355"/>
       <source>Color gradient will get selected color as middle color</source>
-      <translation type="unfinished">Color gradient will get selected color as middle color</translation>
+      <translation>Градыент колеру атрымае абраны колер як сярэдні колер</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="358"/>
       <location filename="../DlgSettingsViewColor.ui" line="374"/>
       <source>Middle color</source>
-      <translation type="unfinished">Middle color</translation>
+      <translation>Колер сярэдзіны</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="415"/>
@@ -5258,22 +5274,22 @@ horizontal space in Python console</source>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="462"/>
       <source>Object being edited</source>
-      <translation type="unfinished">Object being edited</translation>
+      <translation>Аб'ект змяняецца</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="475"/>
       <source>Background color for objects in tree view that are currently edited</source>
-      <translation type="unfinished">Background color for objects in tree view that are currently edited</translation>
+      <translation>Колер фону для аб'ектаў у праглядзе дрэва, якія ў бягучы час змяняюцца</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="495"/>
       <source>Active container</source>
-      <translation type="unfinished">Active container</translation>
+      <translation>Бягучы кантэйнер</translation>
     </message>
     <message>
       <location filename="../DlgSettingsViewColor.ui" line="508"/>
       <source>Background color for active containers in tree view</source>
-      <translation type="unfinished">Background color for active containers in tree view</translation>
+      <translation>Колер фону для бягучых кантэйнераў у праглядзе дрэва</translation>
     </message>
   </context>
   <context>
@@ -5288,49 +5304,49 @@ horizontal space in Python console</source>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="14"/>
       <source>Units calculator</source>
-      <translation type="unfinished">Units calculator</translation>
+      <translation>Калькулятар адзінак вымярэнняў</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="28"/>
       <source>Input the source value and unit</source>
-      <translation type="unfinished">Input the source value and unit</translation>
+      <translation>Увядзіце значэнне крыніцы і адзінку вымярэння</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="35"/>
       <source>as:</source>
-      <translation type="unfinished">as:</translation>
+      <translation>як:</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="48"/>
       <source>Input here the unit for the result</source>
-      <translation type="unfinished">Input here the unit for the result</translation>
+      <translation>Увядзіце тут адзінку вымярэння для выніку</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="58"/>
       <source>=&gt;</source>
-      <translation type="unfinished">=&gt;</translation>
+      <translation>=&gt;</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="71"/>
       <source>Result</source>
-      <translation type="unfinished">Result</translation>
+      <translation>Вынік</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="83"/>
       <source>List of last used calculations.
 To add a calculation press Return in the value input field</source>
-      <translation type="unfinished">List of last used calculations.
-To add a calculation press Return in the value input field</translation>
+      <translation>Спіс апошніх ужытых вылічэнняў.
+Каб дадаць вылічэнне, націсніце &lt;Enter&gt; у поле ўводу значэння</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="94"/>
       <source>Quantity</source>
-      <translation type="unfinished">Quantity</translation>
+      <translation>Колькасць</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="100"/>
       <source>Quantity:</source>
-      <translation type="unfinished">Quantity:</translation>
+      <translation>Колькасць:</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="117"/>
@@ -5341,38 +5357,38 @@ To add a calculation press Return in the value input field</translation>
       <location filename="../DlgUnitsCalculator.ui" line="124"/>
       <source>Unit system to be used for the Quantity
 The preference system is the one set in the general preferences.</source>
-      <translation type="unfinished">Unit system to be used for the Quantity
-The preference system is the one set in the general preferences.</translation>
+      <translation>Сістэма адзінак вымярэння, якая ўжываецца для вызначэння колькасці
+Сістэма пераваг - гэта сістэма, якая ўсталяваная ў агульных перавагах.</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="132"/>
       <source>Decimals:</source>
-      <translation type="unfinished">Decimals:</translation>
+      <translation>Дзесятковыя:</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="139"/>
       <source>Decimals for the Quantity</source>
-      <translation type="unfinished">Decimals for the Quantity</translation>
+      <translation>Дзесятковыя знакі для колькасці</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="155"/>
       <source>Unit category:</source>
-      <translation type="unfinished">Unit category:</translation>
+      <translation>Катэгорыя адзінкі вымярэння:</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="168"/>
       <source>Unit category for the Quantity</source>
-      <translation type="unfinished">Unit category for the Quantity</translation>
+      <translation>Катэгорыя адзінкі вымярэння для колькасці</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="193"/>
       <source>Copy the result into the clipboard</source>
-      <translation type="unfinished">Copy the result into the clipboard</translation>
+      <translation>Скапіраваць вынік у буфер абмену</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="196"/>
       <source>Copy</source>
-      <translation type="unfinished">Copy</translation>
+      <translation>Скапіраваць</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="203"/>
@@ -5385,12 +5401,12 @@ The preference system is the one set in the general preferences.</translation>
     <message>
       <location filename="../DlgUnitsCalculatorImp.cpp" line="147"/>
       <source>unknown unit:</source>
-      <translation type="unfinished">unknown unit:</translation>
+      <translation>невядомая адзінка вымярэння:</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculatorImp.cpp" line="152"/>
       <source>unit mismatch</source>
-      <translation type="unfinished">unit mismatch</translation>
+      <translation>неадпаведная адзінка вымярэння</translation>
     </message>
   </context>
   <context>
@@ -5403,12 +5419,12 @@ The preference system is the one set in the general preferences.</translation>
     <message>
       <location filename="../DlgWorkbenches.ui" line="34"/>
       <source>Disabled workbenches</source>
-      <translation type="unfinished">Disabled workbenches</translation>
+      <translation>Адключаныя варштаты</translation>
     </message>
     <message>
       <location filename="../DlgWorkbenches.ui" line="54"/>
       <source>Enabled workbenches</source>
-      <translation type="unfinished">Enabled workbenches</translation>
+      <translation>Уключаныя варштаты</translation>
     </message>
     <message>
       <location filename="../DlgWorkbenches.ui" line="75"/>
@@ -5418,7 +5434,7 @@ The preference system is the one set in the general preferences.</translation>
     <message>
       <location filename="../DlgWorkbenches.ui" line="78"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Move the selected workbench to enabled workbenches.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Move the selected workbench to enabled workbenches.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Рухаць абраны варштат на ўключаныя варштаты.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../DlgWorkbenches.ui" line="101"/>
@@ -5428,28 +5444,28 @@ The preference system is the one set in the general preferences.</translation>
     <message>
       <location filename="../DlgWorkbenches.ui" line="104"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Move the selected item up.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The item will be moved up.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Move the selected item up.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The item will be moved up.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Рухаць абраны элемент уверх&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Абраны элемент будзе зрушаны ўверх&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../DlgWorkbenches.ui" line="127"/>
       <source>Add all to enabled workbenches</source>
-      <translation type="unfinished">Add all to enabled workbenches</translation>
+      <translation>Дадаць усё ва ўключаныя варштаты</translation>
     </message>
     <message>
       <location filename="../DlgWorkbenches.ui" line="130"/>
       <location filename="../DlgWorkbenches.ui" line="191"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Remove the selected workbench from enabled workbenches&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Remove the selected workbench from enabled workbenches&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Выдаліць абраны варштат з уключаных варштатаў&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../DlgWorkbenches.ui" line="159"/>
       <source>Sort enabled workbenches</source>
-      <translation type="unfinished">Sort enabled workbenches</translation>
+      <translation>Парадкаваць уключаныя варштаты</translation>
     </message>
     <message>
       <location filename="../DlgWorkbenches.ui" line="162"/>
       <source>&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Парадкаваць уключаныя варштаты&lt;/p&gt;</translation>
     </message>
     <message>
       <location filename="../DlgWorkbenches.ui" line="188"/>
@@ -5464,12 +5480,12 @@ The preference system is the one set in the general preferences.</translation>
     <message>
       <location filename="../DlgWorkbenches.ui" line="223"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Move the selected item down.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The item will be moved down&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Move the selected item down.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The item will be moved down&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Рухаць абраны элемент уніз&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Абраны элемент будзе зрушаны ўніз&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../DlgWorkbenches.ui" line="272"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-size:8pt; font-weight:600;"&gt;Note:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; The changes become active the next time you start the application&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-size:8pt; font-weight:600;"&gt;Note:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; The changes become active the next time you start the application&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-size:8pt; font-weight:600;"&gt;Заўвага:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt;Змены становяцца бягучымі пры наступным запуску праграмы&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -5485,62 +5501,62 @@ The preference system is the one set in the general preferences.</translation>
     <message>
       <location filename="../DocumentRecovery.ui" line="14"/>
       <source>Document Recovery</source>
-      <translation type="unfinished">Document Recovery</translation>
+      <translation>Аднаўленне дакументу</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.ui" line="33"/>
       <source>Press 'Start Recovery' to start the recovery process of the document listed below.
 
 The 'Status' column shows whether the document could be recovered.</source>
-      <translation type="unfinished">Press 'Start Recovery' to start the recovery process of the document listed below.
+      <translation>Націсніце 'Пачаць аднаўленне', каб пачаць працэс аднаўлення дакумента, які адзначаны ніжэй.
 
-The 'Status' column shows whether the document could be recovered.</translation>
+Слупок 'Стан' паказвае, ці атрымалася аднавіць дакумент.</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.ui" line="55"/>
       <source>Status of recovered documents:</source>
-      <translation type="unfinished">Status of recovered documents:</translation>
+      <translation>Стан адноўленых дакументаў:</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.ui" line="66"/>
       <source>Document Name</source>
-      <translation type="unfinished">Document Name</translation>
+      <translation>Назва дакументу</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.ui" line="71"/>
       <source>Status</source>
-      <translation type="unfinished">Status</translation>
+      <translation>Стан</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.ui" line="82"/>
       <source>Cleanup...</source>
-      <translation type="unfinished">Cleanup...</translation>
+      <translation>Ачыстка...</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="178"/>
       <source>Start Recovery</source>
-      <translation type="unfinished">Start Recovery</translation>
+      <translation>Пачаць аднаўленне</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="192"/>
       <source>Not yet recovered</source>
-      <translation type="unfinished">Not yet recovered</translation>
+      <translation>Яшчэ не аднавілася</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="266"/>
       <source>Unknown problem occurred</source>
-      <translation type="unfinished">Unknown problem occurred</translation>
+      <translation>Узнікла невядомая памылка</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="272"/>
       <location filename="../DocumentRecovery.cpp" line="291"/>
       <source>Failed to recover</source>
-      <translation type="unfinished">Failed to recover</translation>
+      <translation>Не атрымалася аднавіць</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="305"/>
       <source>Successfully recovered</source>
-      <translation type="unfinished">Successfully recovered</translation>
+      <translation>Паспяхова адноўлена</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="343"/>
@@ -5557,32 +5573,32 @@ The 'Status' column shows whether the document could be recovered.</translation>
       <location filename="../DocumentRecovery.cpp" line="510"/>
       <location filename="../DocumentRecovery.cpp" line="542"/>
       <source>Cleanup</source>
-      <translation type="unfinished">Cleanup</translation>
+      <translation>Ачыстка</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="511"/>
       <source>Are you sure you want to delete the selected transient directories?</source>
-      <translation type="unfinished">Are you sure you want to delete the selected transient directories?</translation>
+      <translation>Вы ўпэўненыя, што жадаеце выдаліць абраныя часовыя каталогі?</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="512"/>
       <source>When deleting the selected transient directory you won't be able to recover any files afterwards.</source>
-      <translation type="unfinished">When deleting the selected transient directory you won't be able to recover any files afterwards.</translation>
+      <translation>Пры выдаленні абранага часовага каталогу, пасля вы не зможаце аднавіць якія-небудзь файлы.</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="543"/>
       <source>Are you sure you want to delete all transient directories?</source>
-      <translation type="unfinished">Are you sure you want to delete all transient directories?</translation>
+      <translation>Вы ўпэўненыя, што жадаеце выдаліць усе часовыя каталогі?</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="544"/>
       <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
-      <translation type="unfinished">When deleting all transient directories you won't be able to recover any files afterwards.</translation>
+      <translation>Пры выдаленні ўсіх часовых каталогаў, пасля вы не зможаце аднавіць якія-небудзь файлы.</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="558"/>
       <source>Transient directories deleted.</source>
-      <translation type="unfinished">Transient directories deleted.</translation>
+      <translation>Часовыя каталогі выдаленыя.</translation>
     </message>
   </context>
   <context>
@@ -5590,77 +5606,77 @@ The 'Status' column shows whether the document could be recovered.</translation>
     <message>
       <location filename="../DownloadItem.cpp" line="304"/>
       <source>Save File</source>
-      <translation type="unfinished">Save File</translation>
+      <translation>Захаваць файл</translation>
     </message>
     <message>
       <location filename="../DownloadItem.cpp" line="307"/>
       <source>Download canceled: %1</source>
-      <translation type="unfinished">Download canceled: %1</translation>
+      <translation>Спампоўка скасаваная: %1</translation>
     </message>
     <message>
       <location filename="../DownloadItem.cpp" line="415"/>
       <source>Open containing folder</source>
-      <translation type="unfinished">Open containing folder</translation>
+      <translation>Адчыніць каталог, які змяшчае</translation>
     </message>
     <message>
       <location filename="../DownloadItem.cpp" line="429"/>
       <source>Error opening saved file: %1</source>
-      <translation type="unfinished">Error opening saved file: %1</translation>
+      <translation>Памылка пры адкрыцці захаванага файлу: %1</translation>
     </message>
     <message>
       <location filename="../DownloadItem.cpp" line="439"/>
       <source>Error saving: %1</source>
-      <translation type="unfinished">Error saving: %1</translation>
+      <translation>Памылка захавання: %1</translation>
     </message>
     <message>
       <location filename="../DownloadItem.cpp" line="448"/>
       <source>Network Error: %1</source>
-      <translation type="unfinished">Network Error: %1</translation>
+      <translation>Памылка сеткі: %1</translation>
     </message>
     <message>
       <location filename="../DownloadItem.cpp" line="541"/>
       <source>seconds</source>
-      <translation type="unfinished">seconds</translation>
+      <translation>секунд</translation>
     </message>
     <message>
       <location filename="../DownloadItem.cpp" line="544"/>
       <source>minutes</source>
-      <translation type="unfinished">minutes</translation>
+      <translation>хвілін</translation>
     </message>
     <message>
       <location filename="../DownloadItem.cpp" line="556"/>
       <source>- %4 %5 remaining</source>
-      <translation type="unfinished">- %4 %5 remaining</translation>
+      <translation>- засталося %4 %5</translation>
     </message>
     <message>
       <location filename="../DownloadItem.cpp" line="559"/>
       <source>%1 of %2 (%3/sec) %4</source>
-      <translation type="unfinished">%1 of %2 (%3/sec) %4</translation>
+      <translation>%1 з %2 (%3/с) %4</translation>
     </message>
     <message>
       <location filename="../DownloadItem.cpp" line="561"/>
       <source>?</source>
-      <translation type="unfinished">?</translation>
+      <translation>?</translation>
     </message>
     <message>
       <location filename="../DownloadItem.cpp" line="568"/>
       <source>%1 of %2 - Stopped</source>
-      <translation type="unfinished">%1 of %2 - Stopped</translation>
+      <translation>%1 з %2 - Спынена</translation>
     </message>
     <message>
       <location filename="../DownloadItem.cpp" line="579"/>
       <source>bytes</source>
-      <translation type="unfinished">bytes</translation>
+      <translation>байтаў</translation>
     </message>
     <message>
       <location filename="../DownloadItem.cpp" line="582"/>
       <source>kB</source>
-      <translation type="unfinished">kB</translation>
+      <translation>кБ</translation>
     </message>
     <message>
       <location filename="../DownloadItem.cpp" line="585"/>
       <source>MB</source>
-      <translation type="unfinished">MB</translation>
+      <translation>МБ</translation>
     </message>
   </context>
   <context>
@@ -5668,32 +5684,32 @@ The 'Status' column shows whether the document could be recovered.</translation>
     <message>
       <location filename="../DownloadManager.ui" line="14"/>
       <source>Downloads</source>
-      <translation type="unfinished">Downloads</translation>
+      <translation>Спампоўкі</translation>
     </message>
     <message>
       <location filename="../DownloadManager.ui" line="34"/>
       <source>Clean up</source>
-      <translation type="unfinished">Clean up</translation>
+      <translation>Ачысціць</translation>
     </message>
     <message>
       <location filename="../DownloadManager.ui" line="56"/>
       <source>0 Items</source>
-      <translation type="unfinished">0 Items</translation>
+      <translation>0 элементаў</translation>
     </message>
     <message>
       <location filename="../DownloadManager.cpp" line="77"/>
       <source>Download Manager</source>
-      <translation type="unfinished">Download Manager</translation>
+      <translation>Кіраўнік спамповак</translation>
     </message>
     <message>
       <location filename="../DownloadManager.cpp" line="299"/>
       <source>1 Download</source>
-      <translation type="unfinished">1 Download</translation>
+      <translation>1 спампоўка</translation>
     </message>
     <message>
       <location filename="../DownloadManager.cpp" line="299"/>
       <source>%1 Downloads</source>
-      <translation type="unfinished">%1 Downloads</translation>
+      <translation>%1 спамповак</translation>
     </message>
   </context>
   <context>
@@ -5701,12 +5717,12 @@ The 'Status' column shows whether the document could be recovered.</translation>
     <message>
       <location filename="../DlgActionsImp.cpp" line="431"/>
       <source>Icon folders</source>
-      <translation type="unfinished">Icon folders</translation>
+      <translation>Каталог гузікаў</translation>
     </message>
     <message>
       <location filename="../DlgActionsImp.cpp" line="567"/>
       <source>Add icon folder</source>
-      <translation type="unfinished">Add icon folder</translation>
+      <translation>Дадаць каталог гузікаў</translation>
     </message>
   </context>
   <context>
@@ -5714,17 +5730,17 @@ The 'Status' column shows whether the document could be recovered.</translation>
     <message>
       <location filename="../DlgActionsImp.cpp" line="544"/>
       <source>Add or remove custom icon folders</source>
-      <translation type="unfinished">Add or remove custom icon folders</translation>
+      <translation>Дадаць ці выдаліць карыстальніцкія каталогі гузікаў</translation>
     </message>
     <message>
       <location filename="../DlgActionsImp.cpp" line="591"/>
       <source>Remove folder</source>
-      <translation type="unfinished">Remove folder</translation>
+      <translation>Выдаліць каталог</translation>
     </message>
     <message>
       <location filename="../DlgActionsImp.cpp" line="592"/>
       <source>Removing a folder only takes effect after an application restart.</source>
-      <translation type="unfinished">Removing a folder only takes effect after an application restart.</translation>
+      <translation>Выдаленне каталогу ўступае ў сілу толькі пасля перазапуску праграмы.</translation>
     </message>
   </context>
   <context>
@@ -5732,27 +5748,27 @@ The 'Status' column shows whether the document could be recovered.</translation>
     <message>
       <location filename="../InputVector.ui" line="14"/>
       <source>Input vector</source>
-      <translation type="unfinished">Input vector</translation>
+      <translation>Увядзіце вектар</translation>
     </message>
     <message>
       <location filename="../InputVector.ui" line="20"/>
       <source>Vector</source>
-      <translation type="unfinished">Vector</translation>
+      <translation>Вектар</translation>
     </message>
     <message>
       <location filename="../InputVector.ui" line="32"/>
       <source>X:</source>
-      <translation type="unfinished">X:</translation>
+      <translation>X:</translation>
     </message>
     <message>
       <location filename="../InputVector.ui" line="49"/>
       <source>Y:</source>
-      <translation type="unfinished">Y:</translation>
+      <translation>Y:</translation>
     </message>
     <message>
       <location filename="../InputVector.ui" line="66"/>
       <source>Z:</source>
-      <translation type="unfinished">Z:</translation>
+      <translation>Z:</translation>
     </message>
   </context>
   <context>
@@ -5760,12 +5776,12 @@ The 'Status' column shows whether the document could be recovered.</translation>
     <message>
       <location filename="../MouseButtons.ui" line="14"/>
       <source>Mouse buttons</source>
-      <translation type="unfinished">Mouse buttons</translation>
+      <translation>Кнопкі мышы</translation>
     </message>
     <message>
       <location filename="../MouseButtons.ui" line="20"/>
       <source>Configuration</source>
-      <translation type="unfinished">Configuration</translation>
+      <translation>Налады стылю навігацыі:</translation>
     </message>
     <message>
       <location filename="../MouseButtons.ui" line="28"/>
@@ -5775,7 +5791,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     <message>
       <location filename="../MouseButtons.ui" line="48"/>
       <source>Panning:</source>
-      <translation type="unfinished">Panning:</translation>
+      <translation>Перамяшчэнне:</translation>
     </message>
     <message>
       <location filename="../MouseButtons.ui" line="68"/>
@@ -5785,7 +5801,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     <message>
       <location filename="../MouseButtons.ui" line="88"/>
       <source>Zooming:</source>
-      <translation type="unfinished">Zooming:</translation>
+      <translation>Маштабаванне:</translation>
     </message>
   </context>
   <context>
@@ -5795,20 +5811,20 @@ The 'Status' column shows whether the document could be recovered.</translation>
       <location filename="../DlgParameterImp.cpp" line="483"/>
       <location filename="../DlgParameterImp.cpp" line="631"/>
       <source>Expand</source>
-      <translation type="unfinished">Expand</translation>
+      <translation>Разгарнуць</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="458"/>
       <location filename="../DlgParameterImp.cpp" line="632"/>
       <source>Add sub-group</source>
-      <translation type="unfinished">Add sub-group</translation>
+      <translation>Дадаць укладзеную суполку</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="459"/>
       <location filename="../DlgParameterImp.cpp" line="506"/>
       <location filename="../DlgParameterImp.cpp" line="633"/>
       <source>Remove group</source>
-      <translation type="unfinished">Remove group</translation>
+      <translation>Выдаліць суполку</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="460"/>
@@ -5820,53 +5836,53 @@ The 'Status' column shows whether the document could be recovered.</translation>
       <location filename="../DlgParameterImp.cpp" line="462"/>
       <location filename="../DlgParameterImp.cpp" line="635"/>
       <source>Export parameter</source>
-      <translation type="unfinished">Export parameter</translation>
+      <translation>Экспартаваць наладу</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="463"/>
       <location filename="../DlgParameterImp.cpp" line="636"/>
       <source>Import parameter</source>
-      <translation type="unfinished">Import parameter</translation>
+      <translation>Імпартаваць наладу</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="481"/>
       <source>Collapse</source>
-      <translation type="unfinished">Collapse</translation>
+      <translation>Згарнуць</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="506"/>
       <source>Do you really want to remove this parameter group?</source>
-      <translation type="unfinished">Do you really want to remove this parameter group?</translation>
+      <translation>Ці сапраўды вы жадаеце выдаліць гэтую суполку налад?</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="553"/>
       <source>Existing sub-group</source>
-      <translation type="unfinished">Existing sub-group</translation>
+      <translation>Укладзеная суполка ўжо існуе</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="554"/>
       <source>The sub-group '%1' already exists.</source>
-      <translation type="unfinished">The sub-group '%1' already exists.</translation>
+      <translation>Укладзеная суполка '%1' ужо існуе.</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="567"/>
       <source>Export parameter to file</source>
-      <translation type="unfinished">Export parameter to file</translation>
+      <translation>Экспартаваць наладу ў файл</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="583"/>
       <source>Import parameter from file</source>
-      <translation type="unfinished">Import parameter from file</translation>
+      <translation>Імпартаваць наладу з файла</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="613"/>
       <source>Import Error</source>
-      <translation type="unfinished">Import Error</translation>
+      <translation>Памылка імпартавання</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="613"/>
       <source>Reading from '%1' failed.</source>
-      <translation type="unfinished">Reading from '%1' failed.</translation>
+      <translation>Не атрымалася прачытаць з '%1'.</translation>
     </message>
   </context>
   <context>
@@ -5879,22 +5895,22 @@ The 'Status' column shows whether the document could be recovered.</translation>
     <message>
       <location filename="../DlgParameterImp.cpp" line="652"/>
       <source>Remove key</source>
-      <translation type="unfinished">Remove key</translation>
+      <translation>Выдаліць ключ</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="653"/>
       <source>Rename key</source>
-      <translation type="unfinished">Rename key</translation>
+      <translation>Пераназваць ключ</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="657"/>
       <source>New</source>
-      <translation type="unfinished">New</translation>
+      <translation>Новы</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="658"/>
       <source>New string item</source>
-      <translation type="unfinished">New string item</translation>
+      <translation>Новы тэкставы элемент</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="659"/>
@@ -5923,7 +5939,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
       <location filename="../DlgParameterImp.cpp" line="869"/>
       <location filename="../DlgParameterImp.cpp" line="898"/>
       <source>Existing item</source>
-      <translation type="unfinished">Existing item</translation>
+      <translation>Элемент, які існуе</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="775"/>
@@ -5932,7 +5948,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
       <location filename="../DlgParameterImp.cpp" line="870"/>
       <location filename="../DlgParameterImp.cpp" line="899"/>
       <source>The item '%1' already exists.</source>
-      <translation type="unfinished">The item '%1' already exists.</translation>
+      <translation>Элемент '%1' ужо існуе.</translation>
     </message>
   </context>
   <context>
@@ -5951,49 +5967,49 @@ The 'Status' column shows whether the document could be recovered.</translation>
       <location filename="../Placement.ui" line="53"/>
       <location filename="../Placement.ui" line="151"/>
       <source>X:</source>
-      <translation type="unfinished">X:</translation>
+      <translation>X:</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="69"/>
       <location filename="../Placement.ui" line="167"/>
       <source>Y:</source>
-      <translation type="unfinished">Y:</translation>
+      <translation>Y:</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="85"/>
       <location filename="../Placement.ui" line="183"/>
       <source>Z:</source>
-      <translation type="unfinished">Z:</translation>
+      <translation>Z:</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="101"/>
       <source>Axial:</source>
-      <translation type="unfinished">Axial:</translation>
+      <translation>Восевы:</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="111"/>
       <source>Shift click for opposite direction</source>
-      <translation type="unfinished">Shift click for opposite direction</translation>
+      <translation>&lt;Shift+пстрычка мышшу&gt; для зваротнага напрамку</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="114"/>
       <source>Apply axial</source>
-      <translation type="unfinished">Apply axial</translation>
+      <translation>Прымяніць восевы</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="124"/>
       <source>Center:</source>
-      <translation type="unfinished">Center:</translation>
+      <translation>Цэнтральная кропка:</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="193"/>
       <source>Use center of mass</source>
-      <translation type="unfinished">Use center of mass</translation>
+      <translation>Ужыць цэнтр мас</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="200"/>
       <source>Selected points</source>
-      <translation type="unfinished">Selected points</translation>
+      <translation>Абраныя кропкі</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="210"/>
@@ -6008,52 +6024,52 @@ The 'Status' column shows whether the document could be recovered.</translation>
     <message>
       <location filename="../Placement.ui" line="237"/>
       <source>Euler angles (zy'x'')</source>
-      <translation type="unfinished">Euler angles (zy'x'')</translation>
+      <translation>Вуглы Эйлера (zy'x'')</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="290"/>
       <source>Axis:</source>
-      <translation type="unfinished">Axis:</translation>
+      <translation>Вось:</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="312"/>
       <source>Angle:</source>
-      <translation type="unfinished">Angle:</translation>
+      <translation>Вугал:</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="366"/>
       <source>Yaw (around z-axis):</source>
-      <translation type="unfinished">Yaw (around z-axis):</translation>
+      <translation>Адхіленне (вакол восі z):</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="373"/>
       <source>Yaw (around z-axis)</source>
-      <translation type="unfinished">Yaw (around z-axis)</translation>
+      <translation>Адхіленне (вакол восі z)</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="386"/>
       <source>Pitch (around y-axis):</source>
-      <translation type="unfinished">Pitch (around y-axis):</translation>
+      <translation>Падача (вакол восі y):</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="393"/>
       <source>Pitch (around y-axis)</source>
-      <translation type="unfinished">Pitch (around y-axis)</translation>
+      <translation>Падача (вакол восі y)</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="406"/>
       <source>Roll (around x-axis):</source>
-      <translation type="unfinished">Roll (around x-axis):</translation>
+      <translation>Нахіл (вакол восі x):</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="413"/>
       <source>Roll (around the x-axis)</source>
-      <translation type="unfinished">Roll (around the x-axis)</translation>
+      <translation>Нахіл (вакол восі x)</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="451"/>
       <source>Apply incremental changes</source>
-      <translation type="unfinished">Apply incremental changes</translation>
+      <translation>Прымяніць паступовыя змены</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="471"/>
@@ -6078,17 +6094,21 @@ The 'Status' column shows whether the document could be recovered.</translation>
     <message>
       <location filename="../Placement.cpp" line="611"/>
       <source>Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
-      <translation type="unfinished">Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</translation>
+      <translation>Калі ласка, абярыце 1, 2 ці 3 кропкі, перш чым націснуць гэтую кнопку. Кропка можа знаходзіцца на вяршыні, грані ці рэбры. Калі ўжываецца кропка на грані ці  рабры, то яна будзе кропкай у становішчы мышы наўздоўж грані або рэбры.
+Калі абрана 1 кропка, яна будзе ўжывацца ў якасці цэнтра кручэння.
+Калі абраны 2 кропкі, сярэдняя кропка паміж імі будзе цэнтрам вярчэння, пры неабходнасці будзе створаная новая карыстальніцкая вось.
+Калі абрана 3 кропкі, першая кропка становіцца цэнтрам вярчэння, і яна ляжыць на вектары, які перпендыкулярны плоскасці, і праходзіць праз гэтыя 3 кропкі.
+У праглядзе справаздачы прадстаўленая некаторая інфармацыя аб адлегласці і вугле, якія могуць быць карысныя пры выраўноўванні аб'ектаў. Для вашай зручнасці пры ўжыванні &lt;Shift+пстрычка мышшу&gt; адпаведныя адлегласці ці вуглы капіруюцца ў буфер абмену.</translation>
     </message>
     <message>
       <location filename="../Placement.cpp" line="707"/>
       <source>Incorrect quantity</source>
-      <translation type="unfinished">Incorrect quantity</translation>
+      <translation>Неправільная колькасць</translation>
     </message>
     <message>
       <location filename="../Placement.cpp" line="709"/>
       <source>There are input fields with incorrect input, please ensure valid placement values!</source>
-      <translation type="unfinished">There are input fields with incorrect input, please ensure valid placement values!</translation>
+      <translation>Некаторыя палі ўводу з няправільным уводам. Калі ласка, пераканайцеся ў правільнасці размяшчэння значэнняў!</translation>
     </message>
   </context>
   <context>
@@ -6096,7 +6116,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     <message>
       <location filename="../DlgCustomizeSpaceball.cpp" line="645"/>
       <source>Button</source>
-      <translation type="unfinished">Button</translation>
+      <translation>Кнопка</translation>
     </message>
     <message>
       <location filename="../DlgCustomizeSpaceball.cpp" line="647"/>
@@ -6109,12 +6129,12 @@ The 'Status' column shows whether the document could be recovered.</translation>
     <message>
       <location filename="../RemoteDebugger.ui" line="14"/>
       <source>Attach to remote debugger</source>
-      <translation type="unfinished">Attach to remote debugger</translation>
+      <translation>Прымацаваць да падаленага адладчыка</translation>
     </message>
     <message>
       <location filename="../RemoteDebugger.ui" line="24"/>
       <source>winpdb</source>
-      <translation type="unfinished">winpdb</translation>
+      <translation>winpdb</translation>
     </message>
     <message>
       <location filename="../RemoteDebugger.ui" line="30"/>
@@ -6124,22 +6144,22 @@ The 'Status' column shows whether the document could be recovered.</translation>
     <message>
       <location filename="../RemoteDebugger.ui" line="58"/>
       <source>VS Code</source>
-      <translation type="unfinished">VS Code</translation>
+      <translation>VS Code</translation>
     </message>
     <message>
       <location filename="../RemoteDebugger.ui" line="64"/>
       <source>Address:</source>
-      <translation type="unfinished">Address:</translation>
+      <translation>Адрас:</translation>
     </message>
     <message>
       <location filename="../RemoteDebugger.ui" line="78"/>
       <source>Port:</source>
-      <translation type="unfinished">Port:</translation>
+      <translation>Порт:</translation>
     </message>
     <message>
       <location filename="../RemoteDebugger.ui" line="95"/>
       <source>Redirect output</source>
-      <translation type="unfinished">Redirect output</translation>
+      <translation>Перанакіраваць вывад</translation>
     </message>
   </context>
   <context>
@@ -6152,7 +6172,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     <message>
       <location filename="../SceneInspector.ui" line="25"/>
       <source>Refresh</source>
-      <translation type="unfinished">Refresh</translation>
+      <translation>Абнавіць</translation>
     </message>
     <message>
       <location filename="../SceneInspector.ui" line="45"/>
@@ -6165,7 +6185,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     <message>
       <location filename="../SceneInspector.cpp" line="69"/>
       <source>Inventor Tree</source>
-      <translation type="unfinished">Inventor Tree</translation>
+      <translation>Дрэва Inventor</translation>
     </message>
     <message>
       <location filename="../SceneInspector.cpp" line="71"/>
@@ -6175,7 +6195,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     <message>
       <location filename="../SceneInspector.cpp" line="85"/>
       <source>Nodes</source>
-      <translation type="unfinished">Nodes</translation>
+      <translation>Вузлоў</translation>
     </message>
   </context>
   <context>
@@ -6183,7 +6203,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     <message>
       <location filename="../TextureMapping.ui" line="14"/>
       <source>Texture</source>
-      <translation type="unfinished">Texture</translation>
+      <translation>Тэкстура</translation>
     </message>
     <message>
       <location filename="../TextureMapping.ui" line="20"/>
@@ -6198,32 +6218,32 @@ The 'Status' column shows whether the document could be recovered.</translation>
     <message>
       <location filename="../TextureMapping.ui" line="33"/>
       <source>Environment</source>
-      <translation type="unfinished">Environment</translation>
+      <translation>Асяроддзе</translation>
     </message>
     <message>
       <location filename="../TextureMapping.cpp" line="66"/>
       <source>Image files (%1)</source>
-      <translation type="unfinished">Image files (%1)</translation>
+      <translation>Файлы выявы (%1)</translation>
     </message>
     <message>
       <location filename="../TextureMapping.cpp" line="131"/>
       <source>No image</source>
-      <translation type="unfinished">No image</translation>
+      <translation>Без выяў</translation>
     </message>
     <message>
       <location filename="../TextureMapping.cpp" line="131"/>
       <source>The specified file is not a valid image file.</source>
-      <translation type="unfinished">The specified file is not a valid image file.</translation>
+      <translation>Паказаны файл не з'яўляецца дапушчальным файлам выявы.</translation>
     </message>
     <message>
       <location filename="../TextureMapping.cpp" line="153"/>
       <source>No 3d view</source>
-      <translation type="unfinished">No 3d view</translation>
+      <translation>Без трохмернага выгляду</translation>
     </message>
     <message>
       <location filename="../TextureMapping.cpp" line="153"/>
       <source>No active 3d view found.</source>
-      <translation type="unfinished">No active 3d view found.</translation>
+      <translation>Без бягучага трохмернага выгляду.</translation>
     </message>
   </context>
   <context>
@@ -6246,27 +6266,27 @@ The 'Status' column shows whether the document could be recovered.</translation>
     <message>
       <location filename="../DlgObjectSelection.ui" line="14"/>
       <source>Object selection</source>
-      <translation type="unfinished">Object selection</translation>
+      <translation>Выбар аб'екту</translation>
     </message>
     <message>
       <location filename="../DlgObjectSelection.ui" line="32"/>
       <source>The selected objects contain other dependencies. Please select which objects to export. All dependencies are auto selected by default.</source>
-      <translation type="unfinished">The selected objects contain other dependencies. Please select which objects to export. All dependencies are auto selected by default.</translation>
+      <translation>Абраныя аб'екты змяшчаюць іншыя залежнасці. Калі ласка, абярыце, якія аб'екты патрэбна экспартаваць. Першапачаткова ўсе залежнасці выбіраюцца аўтаматычна.</translation>
     </message>
     <message>
       <location filename="../DlgObjectSelection.ui" line="157"/>
       <source>Auto select depending objects</source>
-      <translation type="unfinished">Auto select depending objects</translation>
+      <translation>Аўтаматычны выбар залежных аб'ектаў</translation>
     </message>
     <message>
       <location filename="../DlgObjectSelection.ui" line="164"/>
       <source>Show dependencies</source>
-      <translation type="unfinished">Show dependencies</translation>
+      <translation>Адлюстраваць залежнасці</translation>
     </message>
     <message>
       <location filename="../DlgObjectSelection.cpp" line="115"/>
       <source>Depending on</source>
-      <translation type="unfinished">Depending on</translation>
+      <translation>Залежыць ад</translation>
     </message>
     <message>
       <location filename="../DlgObjectSelection.cpp" line="116"/>
@@ -6283,7 +6303,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     <message>
       <location filename="../DlgObjectSelection.cpp" line="119"/>
       <source>Depended by</source>
-      <translation type="unfinished">Depended by</translation>
+      <translation>У залежнасці ад</translation>
     </message>
     <message>
       <location filename="../DlgObjectSelection.cpp" line="123"/>
@@ -6298,14 +6318,14 @@ The 'Status' column shows whether the document could be recovered.</translation>
     <message>
       <location filename="../DlgObjectSelection.cpp" line="157"/>
       <source>&amp;Use Original Selections</source>
-      <translation type="unfinished">&amp;Use Original Selections</translation>
+      <translation>&amp;Ужываць пачатковы выбар</translation>
     </message>
     <message>
       <location filename="../DlgObjectSelection.cpp" line="158"/>
       <source>Ignore dependencies and proceed with objects
 originally selected prior to opening this dialog</source>
-      <translation type="unfinished">Ignore dependencies and proceed with objects
-originally selected prior to opening this dialog</translation>
+      <translation>Ігнараваць залежнасці і працягнуць працу з аб'ектамі,
+якія першапачаткова абраныя да адкрыцця гэтага дыялогавага акна</translation>
     </message>
   </context>
   <context>
@@ -6336,13 +6356,13 @@ originally selected prior to opening this dialog</translation>
       <location filename="../ComboView.cpp" line="73"/>
       <location filename="../ComboView.cpp" line="141"/>
       <source>Model</source>
-      <translation type="unfinished">Model</translation>
+      <translation>Мадэль</translation>
     </message>
     <message>
       <location filename="../ComboView.cpp" line="82"/>
       <location filename="../ComboView.cpp" line="142"/>
       <source>Tasks</source>
-      <translation type="unfinished">Tasks</translation>
+      <translation>Задачы</translation>
     </message>
   </context>
   <context>
@@ -6350,7 +6370,7 @@ originally selected prior to opening this dialog</translation>
     <message>
       <location filename="../PropertyView.cpp" line="558"/>
       <source>Property View</source>
-      <translation type="unfinished">Property View</translation>
+      <translation>Выгляд уласцівасці</translation>
     </message>
   </context>
   <context>
@@ -6363,51 +6383,51 @@ originally selected prior to opening this dialog</translation>
     <message>
       <location filename="../ReportView.cpp" line="554"/>
       <source>Display message types</source>
-      <translation type="unfinished">Display message types</translation>
+      <translation>Адлюстраваць тыпы паведамленняў</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="557"/>
       <location filename="../ReportView.cpp" line="577"/>
       <source>Normal messages</source>
-      <translation type="unfinished">Normal messages</translation>
+      <translation>Звычайныя паведамленні</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="561"/>
       <location filename="../ReportView.cpp" line="581"/>
       <source>Log messages</source>
-      <translation type="unfinished">Log messages</translation>
+      <translation>Паведамленні часопісу</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="565"/>
       <location filename="../ReportView.cpp" line="585"/>
       <source>Warnings</source>
-      <translation type="unfinished">Warnings</translation>
+      <translation>Папярэджанні</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="569"/>
       <location filename="../ReportView.cpp" line="589"/>
       <source>Errors</source>
-      <translation type="unfinished">Errors</translation>
+      <translation>Памылкі</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="574"/>
       <source>Show Report view on</source>
-      <translation type="unfinished">Show Report view on</translation>
+      <translation>Адлюстраваць прагляд справаздачы на</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="595"/>
       <source>Redirect Python output</source>
-      <translation type="unfinished">Redirect Python output</translation>
+      <translation>Перанакіраваць вывад з Python</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="599"/>
       <source>Redirect Python errors</source>
-      <translation type="unfinished">Redirect Python errors</translation>
+      <translation>Перанакіраваць вывад памылак з Python</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="604"/>
       <source>Go to end</source>
-      <translation type="unfinished">Go to end</translation>
+      <translation>Перайсці да канца</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="621"/>
@@ -6417,17 +6437,17 @@ originally selected prior to opening this dialog</translation>
     <message>
       <location filename="../ReportView.cpp" line="623"/>
       <source>Save As...</source>
-      <translation type="unfinished">Save As...</translation>
+      <translation>Захаваць як...</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="631"/>
       <source>Save Report Output</source>
-      <translation type="unfinished">Save Report Output</translation>
+      <translation>Захаваць вывад справаздачы</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="632"/>
       <source>Plain Text Files</source>
-      <translation type="unfinished">Plain Text Files</translation>
+      <translation>Тэкставыя файлы</translation>
     </message>
   </context>
   <context>
@@ -6450,7 +6470,7 @@ originally selected prior to opening this dialog</translation>
     <message>
       <location filename="../SelectionView.cpp" line="61"/>
       <source>Selection View</source>
-      <translation type="unfinished">Selection View</translation>
+      <translation>Прагляд абранага</translation>
     </message>
     <message>
       <location filename="../SelectionView.cpp" line="68"/>
@@ -6465,27 +6485,27 @@ originally selected prior to opening this dialog</translation>
     <message>
       <location filename="../SelectionView.cpp" line="77"/>
       <source>Clears the search field</source>
-      <translation type="unfinished">Clears the search field</translation>
+      <translation>Ачышчае поле пошуку</translation>
     </message>
     <message>
       <location filename="../SelectionView.cpp" line="81"/>
       <source>The number of selected items</source>
-      <translation type="unfinished">The number of selected items</translation>
+      <translation>Колькасць абраных элементаў</translation>
     </message>
     <message>
       <location filename="../SelectionView.cpp" line="92"/>
       <source>Picked object list</source>
-      <translation type="unfinished">Picked object list</translation>
+      <translation>Абраны спіс аб'ектаў</translation>
     </message>
     <message>
       <location filename="../SelectionView.cpp" line="590"/>
       <source>Select only</source>
-      <translation type="unfinished">Select only</translation>
+      <translation>Абраць толькі</translation>
     </message>
     <message>
       <location filename="../SelectionView.cpp" line="592"/>
       <source>Selects only this object</source>
-      <translation type="unfinished">Selects only this object</translation>
+      <translation>Абраць толькі гэты аб'ект</translation>
     </message>
     <message>
       <location filename="../SelectionView.cpp" line="593"/>
@@ -6495,7 +6515,7 @@ originally selected prior to opening this dialog</translation>
     <message>
       <location filename="../SelectionView.cpp" line="595"/>
       <source>Deselects this object</source>
-      <translation type="unfinished">Deselects this object</translation>
+      <translation>Адмяніць выбар гэтага аб'екту</translation>
     </message>
     <message>
       <location filename="../SelectionView.cpp" line="596"/>
@@ -6633,7 +6653,7 @@ Do you want to save your changes?</translation>
   <context>
     <name>Gui::ExpressionLineEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="659"/>
+      <location filename="../ExpressionCompleter.cpp" line="1059"/>
       <source>Exact match</source>
       <translation type="unfinished">Exact match</translation>
     </message>
@@ -6641,7 +6661,7 @@ Do you want to save your changes?</translation>
   <context>
     <name>Gui::ExpressionTextEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="758"/>
+      <location filename="../ExpressionCompleter.cpp" line="1164"/>
       <source>Exact match</source>
       <translation type="unfinished">Exact match</translation>
     </message>
@@ -6869,7 +6889,7 @@ Do you want to save your changes?</translation>
       <location filename="../InputVector.h" line="446"/>
       <location filename="../InputVector.h" line="460"/>
       <source>X</source>
-      <translation type="unfinished">X</translation>
+      <translation>X</translation>
     </message>
     <message>
       <location filename="../InputVector.cpp" line="109"/>
@@ -6881,7 +6901,7 @@ Do you want to save your changes?</translation>
       <location filename="../InputVector.h" line="447"/>
       <location filename="../InputVector.h" line="461"/>
       <source>Y</source>
-      <translation type="unfinished">Y</translation>
+      <translation>Y</translation>
     </message>
     <message>
       <location filename="../InputVector.cpp" line="110"/>
@@ -6893,7 +6913,7 @@ Do you want to save your changes?</translation>
       <location filename="../InputVector.h" line="448"/>
       <location filename="../InputVector.h" line="462"/>
       <source>Z</source>
-      <translation type="unfinished">Z</translation>
+      <translation>Z</translation>
     </message>
     <message>
       <location filename="../InputVector.cpp" line="111"/>
@@ -6929,17 +6949,17 @@ Do you want to save your changes?</translation>
     <message>
       <location filename="../InputVector.cpp" line="101"/>
       <source>X:</source>
-      <translation type="unfinished">X:</translation>
+      <translation>X:</translation>
     </message>
     <message>
       <location filename="../InputVector.cpp" line="102"/>
       <source>Y:</source>
-      <translation type="unfinished">Y:</translation>
+      <translation>Y:</translation>
     </message>
     <message>
       <location filename="../InputVector.cpp" line="103"/>
       <source>Z:</source>
-      <translation type="unfinished">Z:</translation>
+      <translation>Z:</translation>
     </message>
     <message>
       <location filename="../InputVector.cpp" line="104"/>
@@ -8424,17 +8444,17 @@ Do you want to specify another directory?</translation>
     <message>
       <location filename="../DlgLocationPos.ui" line="22"/>
       <source>X:</source>
-      <translation type="unfinished">X:</translation>
+      <translation>X:</translation>
     </message>
     <message>
       <location filename="../DlgLocationPos.ui" line="43"/>
       <source>Y:</source>
-      <translation type="unfinished">Y:</translation>
+      <translation>Y:</translation>
     </message>
     <message>
       <location filename="../DlgLocationPos.ui" line="64"/>
       <source>Z:</source>
-      <translation type="unfinished">Z:</translation>
+      <translation>Z:</translation>
     </message>
     <message>
       <location filename="../DlgLocationPos.ui" line="86"/>
@@ -9210,12 +9230,12 @@ Please open a browser window and type in: http://localhost:%1.</translation>
       <translation type="unfinished">Options...</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2102"/>
+      <location filename="../View3DInventorViewer.cpp" line="2119"/>
       <source>Out of memory</source>
       <translation type="unfinished">Out of memory</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2103"/>
+      <location filename="../View3DInventorViewer.cpp" line="2120"/>
       <source>Not enough memory available to display the data.</source>
       <translation type="unfinished">Not enough memory available to display the data.</translation>
     </message>
@@ -10922,13 +10942,13 @@ the current copy will be lost.
     <message>
       <location filename="../CommandWindow.cpp" line="371"/>
       <source>Status bar</source>
-      <translation type="unfinished">Status bar</translation>
+      <translation>Радок стану</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="372"/>
       <location filename="../CommandWindow.cpp" line="374"/>
       <source>Toggles the status bar</source>
-      <translation type="unfinished">Toggles the status bar</translation>
+      <translation>Пераключыць радок стану</translation>
     </message>
   </context>
   <context>
@@ -12132,12 +12152,12 @@ Do you still want to proceed?</translation>
   <context>
     <name>ViewIsometricCmd</name>
     <message>
-      <location filename="../NaviCube.cpp" line="1755"/>
+      <location filename="../NaviCube.cpp" line="1807"/>
       <source>Isometric</source>
       <translation>Ізаметрычны</translation>
     </message>
     <message>
-      <location filename="../NaviCube.cpp" line="1756"/>
+      <location filename="../NaviCube.cpp" line="1808"/>
       <source>Set NaviCube to Isometric mode</source>
       <translation type="unfinished">Set NaviCube to Isometric mode</translation>
     </message>
@@ -12145,12 +12165,12 @@ Do you still want to proceed?</translation>
   <context>
     <name>ViewOrthographicCmd</name>
     <message>
-      <location filename="../NaviCube.cpp" line="1775"/>
+      <location filename="../NaviCube.cpp" line="1827"/>
       <source>Orthographic</source>
       <translation type="unfinished">Orthographic</translation>
     </message>
     <message>
-      <location filename="../NaviCube.cpp" line="1776"/>
+      <location filename="../NaviCube.cpp" line="1828"/>
       <source>Set View to Orthographic mode</source>
       <translation type="unfinished">Set View to Orthographic mode</translation>
     </message>
@@ -12158,12 +12178,12 @@ Do you still want to proceed?</translation>
   <context>
     <name>ViewPerspectiveCmd</name>
     <message>
-      <location filename="../NaviCube.cpp" line="1796"/>
+      <location filename="../NaviCube.cpp" line="1848"/>
       <source>Perspective</source>
       <translation type="unfinished">Perspective</translation>
     </message>
     <message>
-      <location filename="../NaviCube.cpp" line="1797"/>
+      <location filename="../NaviCube.cpp" line="1849"/>
       <source>Set View to Perspective mode</source>
       <translation type="unfinished">Set View to Perspective mode</translation>
     </message>
@@ -12171,12 +12191,12 @@ Do you still want to proceed?</translation>
   <context>
     <name>ViewZoomToFitCmd</name>
     <message>
-      <location filename="../NaviCube.cpp" line="1817"/>
+      <location filename="../NaviCube.cpp" line="1869"/>
       <source>Zoom to fit</source>
       <translation type="unfinished">Zoom to fit</translation>
     </message>
     <message>
-      <location filename="../NaviCube.cpp" line="1818"/>
+      <location filename="../NaviCube.cpp" line="1870"/>
       <source>Zoom so that model fills the view</source>
       <translation type="unfinished">Zoom so that model fills the view</translation>
     </message>

@@ -4700,7 +4700,7 @@ solo los cortes creados serán visibles</translation>
       <translation>Mantener solo los cortes visibles al cerrar</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.cpp" line="429"/>
+      <location filename="../../SectionCutting.cpp" line="466"/>
       <source>Sliders are disabled for assemblies</source>
       <translation>Los deslizadores están desactivados para ensamblar</translation>
     </message>

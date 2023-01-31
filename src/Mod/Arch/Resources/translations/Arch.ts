@@ -3509,7 +3509,7 @@ Building creation aborted.</source>
     </message>
     <message>
         <location filename="../../ArchCommands.py" line="1126"/>
-        <source>Object doesn&apos;t have settable IFC Attributes</source>
+        <source>Object doesn&apos;t have settable IFCData</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

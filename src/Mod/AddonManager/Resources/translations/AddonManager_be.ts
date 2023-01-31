@@ -1010,7 +1010,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_people.ui" line="29"/>
       <source>Name:</source>
-      <translation type="unfinished">Name:</translation>
+      <translation>Назва:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people.ui" line="39"/>
@@ -1273,28 +1273,28 @@ installed addons will be checked for available updates
       <translation>Аўтар</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="164"/>
+      <location filename="../../manage_python_dependencies.py" line="165"/>
       <source>New Python Version Detected</source>
       <translation>Выяўлена новая версія Python</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="168"/>
+      <location filename="../../manage_python_dependencies.py" line="169"/>
       <source>This appears to be the first time this version of Python has been used with the Addon Manager. Would you like to install the same auto-installed dependencies for it?</source>
       <translation>Падобна на тое, што гэта першы раз, калі гэтая версія Python ужываецца з Кіраваннем дадаткамі. Ці жадаеце вы ўсталяваць для яго тыя ж аўтаматычна ўсталяваныя залежнасці?</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="200"/>
+      <location filename="../../manage_python_dependencies.py" line="201"/>
       <source>Processing, please wait...</source>
       <translation>Апрацоўка, калі ласка, пачакайце...</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="251"/>
+      <location filename="../../manage_python_dependencies.py" line="252"/>
       <location filename="../../package_details.py" line="905"/>
       <source>Update</source>
       <translation>Абнавіць</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="353"/>
+      <location filename="../../manage_python_dependencies.py" line="354"/>
       <source>Updating...</source>
       <translation>Абнаўленне...</translation>
     </message>
@@ -1813,25 +1813,25 @@ installed addons will be checked for available updates
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="623"/>
-      <location filename="../../install_to_toolbar.py" line="100"/>
+      <location filename="../../install_to_toolbar.py" line="101"/>
       <source>Create new toolbar</source>
       <translation>Стварыць новую панэль інструментаў</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="753"/>
-      <location filename="../../install_to_toolbar.py" line="243"/>
+      <location filename="../../install_to_toolbar.py" line="244"/>
       <source>A macro installed with the FreeCAD Addon Manager</source>
       <translation>Макрасы, які ўсталяваныя з дапамогай Кіравання дадаткамі FreeCAD</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="755"/>
-      <location filename="../../install_to_toolbar.py" line="245"/>
+      <location filename="../../install_to_toolbar.py" line="246"/>
       <source>Run</source>
       <comment>Indicates a macro that can be &apos;run&apos;</comment>
       <translation>Праца</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_utility.py" line="59"/>
+      <location filename="../../addonmanager_workers_utility.py" line="60"/>
       <source>Unable to read data from GitHub: check your internet connection and proxy settings and try again.</source>
       <translation>Не атрымалася прачытаць дадзеныя з GitHub: праверце сваё інтэрнэт-злучэнне і налады проксі, і паўтарыце спробу.</translation>
     </message>
@@ -2075,65 +2075,65 @@ installed addons will be checked for available updates
       <translation>OK</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="100"/>
+      <location filename="../../change_branch.py" line="101"/>
       <source>DANGER: Developer feature</source>
       <translation>НЕБЯСПЕКА: функцыя распрацоўкі</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="104"/>
+      <location filename="../../change_branch.py" line="105"/>
       <source>DANGER: Switching branches is intended for developers and beta testers, and may result in broken, non-backwards compatible documents, instability, crashes, and/or the premature heat death of the universe. Are you sure you want to continue?</source>
       <translation>НЕБЯСПЕКА: Пераключэнне галін прызначана для распрацоўкі і бэта-тэстараў, і можа прывесці да пашкоджання дакументаў, якія не сумяшчальныя з зваротнай сувяззю, нестабільнасці, збояў і/ці заўчаснай цеплавой смерці сусвету. Вы жадаеце працягнуць?</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="113"/>
+      <location filename="../../change_branch.py" line="114"/>
       <source>There are local changes</source>
       <translation>Ёсць лакальныя змены</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="117"/>
+      <location filename="../../change_branch.py" line="118"/>
       <source>WARNING: This repo has uncommitted local changes. Are you sure you want to change branches (bringing the changes with you)?</source>
       <translation>УВАГА: у гэтым сховішчы ёсць незафіксаваныя лакальныя змены. Вы ўпэўненыя, што жадаеце змяніць галіну (і прынесці змены з сабою)?</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="169"/>
-      <location filename="../../change_branch.py" line="183"/>
-      <location filename="../../change_branch.py" line="191"/>
+      <location filename="../../change_branch.py" line="170"/>
+      <location filename="../../change_branch.py" line="184"/>
+      <location filename="../../change_branch.py" line="192"/>
       <source>Branch</source>
       <comment>git terminology</comment>
       <translation>Галіна</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="177"/>
+      <location filename="../../change_branch.py" line="178"/>
       <source>Tag</source>
       <comment>git terminology</comment>
       <translation>Метка</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="260"/>
+      <location filename="../../change_branch.py" line="261"/>
       <source>Kind</source>
       <comment>Table header for git ref type (e.g. either Tag or Branch)</comment>
       <translation>Тып</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="264"/>
+      <location filename="../../change_branch.py" line="265"/>
       <source>Local name</source>
       <comment>Table header for git ref name</comment>
       <translation>Лакальная назва</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="270"/>
+      <location filename="../../change_branch.py" line="271"/>
       <source>Tracking</source>
       <comment>Table header for git remote tracking branch name name</comment>
       <translation>Адсочванне</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="276"/>
+      <location filename="../../change_branch.py" line="277"/>
       <source>Local updated</source>
       <comment>Table header for git update time of local branch</comment>
       <translation>Лакальнае абнаўленне</translation>
     </message>
     <message>
-      <location filename="../../change_branch.py" line="282"/>
+      <location filename="../../change_branch.py" line="283"/>
       <source>Remote updated</source>
       <comment>Table header for git update time of remote branch</comment>
       <translation>Падаленае абнаўленне</translation>
@@ -2159,68 +2159,68 @@ installed addons will be checked for available updates
       <translation>Не атрымалася ўсталяваць дадатак {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="171"/>
+      <location filename="../../addonmanager_workers_installation.py" line="172"/>
       <source>Downloaded package.xml for {}</source>
       <translation>Спампаваць package.xml для {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="218"/>
+      <location filename="../../addonmanager_workers_installation.py" line="219"/>
       <source>Failed to decode {} file for Addon &apos;{}&apos;</source>
       <translation>Не атрымалася дэкадаваць файл {} для дадатку &apos;{}&apos;</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="227"/>
+      <location filename="../../addonmanager_workers_installation.py" line="228"/>
       <source>Any dependency information in this file will be ignored</source>
       <translation>Любая інфармацыя пра залежнасці ў гэтым файле будзе праігнараваная</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="234"/>
+      <location filename="../../addonmanager_workers_installation.py" line="235"/>
       <source>Downloaded metadata.txt for {}</source>
       <translation>Спампаваць metadata.txt для {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="279"/>
+      <location filename="../../addonmanager_workers_installation.py" line="280"/>
       <source>Downloaded requirements.txt for {}</source>
       <translation>Спампаваць requirements.txt для {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_installation.py" line="297"/>
+      <location filename="../../addonmanager_workers_installation.py" line="298"/>
       <source>Downloaded icon for {}</source>
       <translation>Спампаваць гузік для {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_macro.py" line="201"/>
-      <location filename="../../addonmanager_macro.py" line="254"/>
+      <location filename="../../addonmanager_macro.py" line="202"/>
+      <location filename="../../addonmanager_macro.py" line="255"/>
       <source>Syntax error while reading {} from macro {}</source>
       <translation>Сінтаксічная памылка пры чытанні {} з макраса {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_macro.py" line="277"/>
+      <location filename="../../addonmanager_macro.py" line="278"/>
       <source>Unable to open macro wiki page at {}</source>
       <translation>Не атрымалася адчыніць вікі-старонку макрасу ў {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_macro.py" line="291"/>
+      <location filename="../../addonmanager_macro.py" line="292"/>
       <source>Unable to fetch the code of this macro.</source>
       <translation>Не атрымалася выняць код гэтага макраса.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_macro.py" line="306"/>
+      <location filename="../../addonmanager_macro.py" line="307"/>
       <source>Unable to retrieve a description from the wiki for macro {}</source>
       <translation>Не атрымалася атрымаць апісанне з вікі-старонкі для макраса {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_macro.py" line="340"/>
+      <location filename="../../addonmanager_macro.py" line="341"/>
       <source>Unable to open macro code URL {}</source>
       <translation>Не атрымалася адчыніць спасылак URL {} коду макраса</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_macro.py" line="501"/>
+      <location filename="../../addonmanager_macro.py" line="502"/>
       <source>Unable to fetch macro-specified file {} from {}</source>
       <translation>Не атрымалася выняць паказаны файл макраса {} з {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_macro.py" line="509"/>
+      <location filename="../../addonmanager_macro.py" line="510"/>
       <source>Could not locate macro-specified file {} (should have been at {})</source>
       <translation>Не атрымалася знайсці паказаны файл макраса {} (павінен знаходзіцца ў {})</translation>
     </message>
@@ -2270,126 +2270,126 @@ installed addons will be checked for available updates
       <translation>Памылка пры спробе выдаліць файл макраса {}: </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="118"/>
+      <location filename="../../addonmanager_workers_startup.py" line="119"/>
       <source>Failed to connect to GitHub. Check your connection and proxy settings.</source>
       <translation>Не атрымалася падлучыцца да GitHub. Калі ласка, праверце вашае падключэнне і налады проксі.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="180"/>
+      <location filename="../../addonmanager_workers_startup.py" line="181"/>
       <source>WARNING: Duplicate addon {} ignored</source>
       <translation>УВАГА: Паўторны дадатак {} ігнараваны</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="253"/>
+      <location filename="../../addonmanager_workers_startup.py" line="254"/>
       <source>Workbenches list was updated.</source>
       <translation>Спіс варштатаў быў абноўлены.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="269"/>
+      <location filename="../../addonmanager_workers_startup.py" line="270"/>
       <source>Git is disabled, skipping git macros</source>
       <translation>Git адключаны, прапушчаны макрасы git</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="317"/>
+      <location filename="../../addonmanager_workers_startup.py" line="318"/>
       <source>Attempting to change non-git Macro setup to use git
 </source>
       <translation>Спроба змяніць наладу макраса, які адрозніваецца ад git, на ўжыванне git
 </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="334"/>
+      <location filename="../../addonmanager_workers_startup.py" line="335"/>
       <source>An error occurred updating macros from GitHub, trying clean checkout...</source>
       <translation>Адбылася памылка пры абнаўленні макрасаў з GitHub, спроба зрабіць clean checkout...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="339"/>
+      <location filename="../../addonmanager_workers_startup.py" line="340"/>
       <source>Attempting to do a clean checkout...</source>
       <translation>Спроба выканаць clean checkout...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="351"/>
+      <location filename="../../addonmanager_workers_startup.py" line="352"/>
       <source>Clean checkout succeeded</source>
       <translation>Паспяховы clean checkout</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="361"/>
+      <location filename="../../addonmanager_workers_startup.py" line="362"/>
       <source>Failed to update macros from GitHub -- try clearing the Addon Manager&apos;s cache.</source>
       <translation>Не атрымалася абнавіць макрасы з GitHub -- паспрабуйце ачысціць кэш Кіравання дадаткамі.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="384"/>
+      <location filename="../../addonmanager_workers_startup.py" line="385"/>
       <source>Error connecting to the Wiki, FreeCAD cannot retrieve the Wiki macro list at this time</source>
       <translation>Памылка злучэння з Wiki, FreeCAD ў бягучы час не можа атрымаць спіс макрасаў Wiki</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="599"/>
+      <location filename="../../addonmanager_workers_startup.py" line="600"/>
       <source>Unable to fetch git updates for workbench {}</source>
       <translation>Не атрымалася атрымаць абнаўленні git для варштату {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="614"/>
+      <location filename="../../addonmanager_workers_startup.py" line="615"/>
       <source>git status failed for {}</source>
       <translation>Памылка git status для {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="659"/>
+      <location filename="../../addonmanager_workers_startup.py" line="660"/>
       <source>Failed to read metadata from {name}</source>
       <translation>Не атрымалася прачытаць метададзеныя з {name}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="684"/>
+      <location filename="../../addonmanager_workers_startup.py" line="685"/>
       <source>Failed to fetch code for macro &apos;{name}&apos;</source>
       <translation>Не атрымалася выняць код для макраса &apos;{name}&apos;</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="739"/>
+      <location filename="../../addonmanager_workers_startup.py" line="740"/>
       <source>Caching macro code...</source>
       <translation>Кэшаванне коду макраса...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="762"/>
+      <location filename="../../addonmanager_workers_startup.py" line="763"/>
       <source>Addon Manager: a worker process failed to complete while fetching {name}</source>
       <translation>Кіраванне дадаткамі: працоўнаму працэсу не атрымалася выняць {name}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="777"/>
+      <location filename="../../addonmanager_workers_startup.py" line="778"/>
       <source>Out of {num_macros} macros, {num_failed} timed out while processing</source>
       <translation>Для {num_macros} макрасаў скончыўся час чакання {num_failed} падчас апрацоўкі</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="799"/>
+      <location filename="../../addonmanager_workers_startup.py" line="800"/>
       <source>Addon Manager: a worker process failed to halt ({name})</source>
       <translation>Кіраванне дадаткамі: не атрымалася спыніць працоўны працэс ({name})</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="840"/>
+      <location filename="../../addonmanager_workers_startup.py" line="841"/>
       <source>Getting metadata from macro {}</source>
       <translation>Атрыманне метададзеных з макраса {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="854"/>
+      <location filename="../../addonmanager_workers_startup.py" line="855"/>
       <source>Timeout while fetching metadata for macro {}</source>
       <translation>Выйшаў час чакання пры выманні метададзеных з макрасу {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="865"/>
+      <location filename="../../addonmanager_workers_startup.py" line="866"/>
       <source>Failed to kill process for macro {}!
 </source>
       <translation>Не атрымалася завяршыць працэс для макраса {}!
 </translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="888"/>
+      <location filename="../../addonmanager_workers_startup.py" line="889"/>
       <source>Retrieving macro description...</source>
       <translation>Атрыманне апісання макрасу...</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="892"/>
+      <location filename="../../addonmanager_workers_startup.py" line="893"/>
       <source>Retrieving info from git</source>
       <translation>Атрыманне інфармацыі з git</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_workers_startup.py" line="897"/>
+      <location filename="../../addonmanager_workers_startup.py" line="898"/>
       <source>Retrieving info from wiki</source>
       <translation>Атрыманне інфармацыі з вікі</translation>
     </message>

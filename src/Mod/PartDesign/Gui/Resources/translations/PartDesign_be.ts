@@ -1018,17 +1018,17 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="179"/>
       <source>Addendum Coefficient</source>
-      <translation type="unfinished">Addendum Coefficient</translation>
+      <translation>Каэфіцыент вышыня галоўкі зуба зубчастага кола</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="199"/>
       <source>Dedendum Coefficient</source>
-      <translation type="unfinished">Dedendum Coefficient</translation>
+      <translation>Каэфіцыент вышыні ножкі зуба зубчастага кола</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="219"/>
       <source>Root Fillet Coefficient</source>
-      <translation type="unfinished">Root Fillet Coefficient</translation>
+      <translation>Каэфіцыент акруглення ў западзін зуба зубчатага кола</translation>
     </message>
   </context>
   <context>
@@ -1184,7 +1184,7 @@ Please select a body from below, or create a new body.</source>
       <location filename="../../TaskPrimitiveParameters.ui" line="551"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1620"/>
       <source>Angle:</source>
-      <translation type="unfinished">Angle:</translation>
+      <translation>Вугал:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="674"/>
@@ -1339,21 +1339,21 @@ If zero, it is equal to Radius2</source>
       <location filename="../../TaskPrimitiveParameters.ui" line="2093"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="2170"/>
       <source>X:</source>
-      <translation type="unfinished">X:</translation>
+      <translation>X:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="2025"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="2113"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="2193"/>
       <source>Y:</source>
-      <translation type="unfinished">Y:</translation>
+      <translation>Y:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="2045"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="2133"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="2216"/>
       <source>Z:</source>
-      <translation type="unfinished">Z:</translation>
+      <translation>Z:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="2086"/>
@@ -1945,7 +1945,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="40"/>
       <source>Axis:</source>
-      <translation type="unfinished">Axis:</translation>
+      <translation>Вось:</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="48"/>
@@ -2653,17 +2653,17 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="190"/>
       <source>X</source>
-      <translation type="unfinished">X</translation>
+      <translation>X</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="197"/>
       <source>Y</source>
-      <translation type="unfinished">Y</translation>
+      <translation>Y</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="204"/>
       <source>Z</source>
-      <translation type="unfinished">Z</translation>
+      <translation>Z</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="540"/>
@@ -2923,7 +2923,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="22"/>
       <source>Axis:</source>
-      <translation type="unfinished">Axis:</translation>
+      <translation>Вось:</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="30"/>
@@ -2962,7 +2962,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="67"/>
       <source>Angle:</source>
-      <translation type="unfinished">Angle:</translation>
+      <translation>Вугал:</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="101"/>
@@ -4719,7 +4719,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../Workbench.cpp" line="59"/>
       <source>Refresh</source>
-      <translation type="unfinished">Refresh</translation>
+      <translation>Абнавіць</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="60"/>

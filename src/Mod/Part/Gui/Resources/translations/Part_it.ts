@@ -4697,7 +4697,7 @@ saranno visibili solo i tagli creati</translation>
       <translation>Mantieni solo i tagli visibili durante la chiusura</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.cpp" line="429"/>
+      <location filename="../../SectionCutting.cpp" line="466"/>
       <source>Sliders are disabled for assemblies</source>
       <translation>I cursori sono disabilitati per gli assiemi</translation>
     </message>

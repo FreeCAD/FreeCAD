@@ -142,7 +142,7 @@
     <message>
       <location filename="../../Command.cpp" line="375"/>
       <source>Create mesh segments</source>
-      <translation type="unfinished">Create mesh segments</translation>
+      <translation>Стварыць сегменты паліганальнай сеткі</translation>
     </message>
   </context>
   <context>

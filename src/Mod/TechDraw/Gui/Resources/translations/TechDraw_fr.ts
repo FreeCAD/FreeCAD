@@ -2339,7 +2339,7 @@
     <message>
       <location filename="../../TaskDimRepair.cpp" line="239"/>
       <source>Repair Dimension</source>
-      <translation type="unfinished">Repair Dimension</translation>
+      <translation>Réparer une cote</translation>
     </message>
   </context>
   <context>
@@ -2385,7 +2385,7 @@
     <message>
       <location filename="../../mrichtextedit.ui" line="96"/>
       <source>Undo (CTRL+Z)</source>
-      <translation>Annuler (Ctrl + Z)</translation>
+      <translation>Annuler (Ctrl+Z)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="99"/>
@@ -2401,7 +2401,7 @@
     <message>
       <location filename="../../mrichtextedit.ui" line="145"/>
       <source>Cut (CTRL+X)</source>
-      <translation>Couper (Ctrl + X)</translation>
+      <translation>Couper (Ctrl+X)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="148"/>
@@ -2411,7 +2411,7 @@
     <message>
       <location filename="../../mrichtextedit.ui" line="168"/>
       <source>Copy (CTRL+C)</source>
-      <translation>Copier (Ctrl + C)</translation>
+      <translation>Copier (Ctrl+C)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="171"/>
@@ -2421,7 +2421,7 @@
     <message>
       <location filename="../../mrichtextedit.ui" line="191"/>
       <source>Paste (CTRL+V)</source>
-      <translation>Coller (Ctrl + V)</translation>
+      <translation>Coller (Ctrl+V)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="194"/>
@@ -2431,7 +2431,7 @@
     <message>
       <location filename="../../mrichtextedit.ui" line="221"/>
       <source>Link (CTRL+L)</source>
-      <translation>Lien (Ctrl + L)</translation>
+      <translation>Lier (Ctrl+L)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="224"/>
@@ -2446,7 +2446,7 @@
     <message>
       <location filename="../../mrichtextedit.ui" line="280"/>
       <source>Italic (CTRL+I)</source>
-      <translation>Italique (Ctrl + I)</translation>
+      <translation>Italique (Ctrl+I)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="283"/>
@@ -2456,7 +2456,7 @@
     <message>
       <location filename="../../mrichtextedit.ui" line="306"/>
       <source>Underline (CTRL+U)</source>
-      <translation>Souligné (Ctrl + U)</translation>
+      <translation>Souligner (Ctrl+U)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="309"/>
@@ -2476,17 +2476,17 @@
     <message>
       <location filename="../../mrichtextedit.ui" line="362"/>
       <source>Bullet list (CTRL+-)</source>
-      <translation>Liste à puces (Ctrl + -)</translation>
+      <translation>Liste à puces (Ctrl+-)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="388"/>
       <source>Ordered list (CTRL+=)</source>
-      <translation>Liste ordonnée (Ctrl + =)</translation>
+      <translation>Liste ordonnée (Ctrl+=)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="414"/>
       <source>Decrease indentation (CTRL+,)</source>
-      <translation>Réduire l'indentation (CTRL+,)</translation>
+      <translation>Réduire l'indentation (Ctrl+,)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="417"/>
@@ -2496,7 +2496,7 @@
     <message>
       <location filename="../../mrichtextedit.ui" line="437"/>
       <source>Increase indentation (CTRL+.)</source>
-      <translation>Augmenter l'indentation (CTRL+.)</translation>
+      <translation>Augmenter l'indentation (Ctrl+.)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="440"/>
@@ -5274,7 +5274,7 @@ Fast, but result is a collection of short straight lines.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="324"/>
       <source>Size of center marks. Multiplier of vertex size.</source>
-      <translation>Taille des marques centrales. Multiplicateur de la taille du sommet.</translation>
+      <translation>Taille des marques centrales. Multiplicateur de la taille des sommets.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="349"/>
