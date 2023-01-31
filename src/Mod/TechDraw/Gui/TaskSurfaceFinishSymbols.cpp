@@ -261,14 +261,14 @@ void TaskSurfaceFinishSymbols::setUiEdit()
     pixmapItem->setZValue(-1);
     symbolScene->addItem(pixmapItem);
 
-    connect(ui->pbIcon01, SIGNAL(clicked()), this, SLOT(onIconChanged()));
-    connect(ui->pbIcon02, SIGNAL(clicked()), this, SLOT(onIconChanged()));
-    connect(ui->pbIcon03, SIGNAL(clicked()), this, SLOT(onIconChanged()));
-    connect(ui->pbIcon04, SIGNAL(clicked()), this, SLOT(onIconChanged()));
-    connect(ui->pbIcon05, SIGNAL(clicked()), this, SLOT(onIconChanged()));
-    connect(ui->pbIcon06, SIGNAL(clicked()), this, SLOT(onIconChanged()));
-    connect(ui->rbISO, SIGNAL(clicked()), this, SLOT(onISO()));
-    connect(ui->rbASME, SIGNAL(clicked()), this, SLOT(onASME()));
+    connect(ui->pbIcon01, &QPushButton::clicked, this, &TaskSurfaceFinishSymbols::onIconChanged);
+    connect(ui->pbIcon02, &QPushButton::clicked, this, &TaskSurfaceFinishSymbols::onIconChanged);
+    connect(ui->pbIcon03, &QPushButton::clicked, this, &TaskSurfaceFinishSymbols::onIconChanged);
+    connect(ui->pbIcon04, &QPushButton::clicked, this, &TaskSurfaceFinishSymbols::onIconChanged);
+    connect(ui->pbIcon05, &QPushButton::clicked, this, &TaskSurfaceFinishSymbols::onIconChanged);
+    connect(ui->pbIcon06, &QPushButton::clicked, this, &TaskSurfaceFinishSymbols::onIconChanged);
+    connect(ui->rbISO, &QPushButton::clicked, this, &TaskSurfaceFinishSymbols::onISO);
+    connect(ui->rbASME, &QPushButton::clicked, this, &TaskSurfaceFinishSymbols::onASME);
 }
 
 void TaskSurfaceFinishSymbols::onIconChanged()

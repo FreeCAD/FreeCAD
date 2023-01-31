@@ -97,9 +97,9 @@ QGILeaderLine::QGILeaderLine()
     setZValue(ZVALUE::DIMENSION);
 
     QObject::connect(m_editPath,
-                     SIGNAL(pointsUpdated(QPointF, std::vector<QPointF>)),
+                     &QGEPath::pointsUpdated,
                      this,
-                     SLOT(onLineEditFinished(QPointF, std::vector<QPointF>)));
+                     &QGILeaderLine::onLineEditFinished);
 }
 
 void QGILeaderLine::setLeaderFeature(TechDraw::DrawLeaderLine* feat)

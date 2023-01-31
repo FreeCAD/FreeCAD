@@ -315,8 +315,8 @@ void QGIRichAnno::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) {
     QGridLayout gridLayout(&dialog);
     gridLayout.addWidget(&richEdit, 0, 0, 1, 1);
 
-    connect(&richEdit, SIGNAL(saveText(QString)), &dialog, SLOT(accept()));
-    connect(&richEdit, SIGNAL(editorFinished(void)), &dialog, SLOT(reject()));
+    connect(&richEdit, &MRichTextEdit::saveText, &dialog, &QDialog::accept);
+    connect(&richEdit, &MRichTextEdit::editorFinished, &dialog, &QDialog::reject);
 
     if (dialog.exec()) {
         QString newText = richEdit.toHtml();

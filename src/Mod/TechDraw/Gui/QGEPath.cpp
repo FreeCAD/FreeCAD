@@ -216,20 +216,20 @@ void QGEPath::showMarkers(std::vector<QPointF> points)
         v->setFlag(QGraphicsItem::ItemIsFocusable, true);
         v->setParentItem(this);
         QObject::connect(
-            v, SIGNAL(dragFinished(QPointF, int)),
-            this     , SLOT  (onDragFinished(QPointF, int))
+            v, &QGMarker::dragFinished,
+            this, &QGEPath::onDragFinished
            );
         QObject::connect(
-            v, SIGNAL(dragging(QPointF, int)),
-            this     , SLOT  (onDragging(QPointF, int))
+            v, &QGMarker::dragging,
+            this, &QGEPath::onDragging
            );
         QObject::connect(
-            v, SIGNAL(doubleClick(QPointF, int)),
-            this     , SLOT  (onDoubleClick(QPointF, int))
+            v, &QGMarker::doubleClick,
+            this, &QGEPath::onDoubleClick
            );
         QObject::connect(
-            v, SIGNAL(endEdit()),
-            this     , SLOT  (onEndEdit())
+            v, &QGMarker::endEdit,
+            this, &QGEPath::onEndEdit
            );
 //TODO: double r = getMarkerSize();
 //      v->setRadius(r);

@@ -118,10 +118,10 @@ TaskLeaderLine::TaskLeaderLine(TechDrawGui::ViewProviderLeader* leadVP) :
                                             -m_lineFeat->Y.getValue(),
                                              0.0));
 
-    connect(ui->pbTracker, SIGNAL(clicked(bool)),
-            this, SLOT(onTrackerClicked(bool)));
-    connect(ui->pbCancelEdit, SIGNAL(clicked(bool)),
-            this, SLOT(onCancelEditClicked(bool)));
+    connect(ui->pbTracker, &QPushButton::clicked,
+            this, &TaskLeaderLine::onTrackerClicked);
+    connect(ui->pbCancelEdit, &QPushButton::clicked,
+            this, &TaskLeaderLine::onCancelEditClicked);
     ui->pbCancelEdit->setEnabled(false);
 
     saveState();
@@ -167,10 +167,10 @@ TaskLeaderLine::TaskLeaderLine(TechDraw::DrawView* baseFeat,
 
     setUiPrimary();
 
-    connect(ui->pbTracker, SIGNAL(clicked(bool)),
-            this, SLOT(onTrackerClicked(bool)));
-    connect(ui->pbCancelEdit, SIGNAL(clicked(bool)),
-            this, SLOT(onCancelEditClicked(bool)));
+    connect(ui->pbTracker, &QPushButton::clicked,
+            this, &TaskLeaderLine::onTrackerClicked);
+    connect(ui->pbCancelEdit, &QPushButton::clicked,
+            this, &TaskLeaderLine::onCancelEditClicked);
     ui->pbCancelEdit->setEnabled(false);
 
     m_trackerMode = QGTracker::TrackerMode::Line;
@@ -265,10 +265,10 @@ void TaskLeaderLine::setUiEdit()
 
         DrawGuiUtil::loadArrowBox(ui->cboxStartSym);
         ui->cboxStartSym->setCurrentIndex(m_lineFeat->StartSymbol.getValue());
-        connect(ui->cboxStartSym, SIGNAL(currentIndexChanged(int)), this, SLOT(onStartSymbolChanged()));
+        connect(ui->cboxStartSym, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskLeaderLine::onStartSymbolChanged);
         DrawGuiUtil::loadArrowBox(ui->cboxEndSym);
         ui->cboxEndSym->setCurrentIndex(m_lineFeat->EndSymbol.getValue());
-        connect(ui->cboxEndSym, SIGNAL(currentIndexChanged(int)), this, SLOT(onEndSymbolChanged()));
+        connect(ui->cboxEndSym, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskLeaderLine::onEndSymbolChanged);
 
         ui->pbTracker->setText(tr("Edit points"));
         if (m_vpp->getMDIViewPage()) {
@@ -285,10 +285,10 @@ void TaskLeaderLine::setUiEdit()
         ui->dsbWeight->setValue(m_lineVP->LineWidth.getValue());
         ui->cboxStyle->setCurrentIndex(m_lineVP->LineStyle.getValue());
     }
-    connect(ui->cpLineColor, SIGNAL(changed()), this, SLOT(onColorChanged()));
+    connect(ui->cpLineColor, &ColorButton::changed, this, &TaskLeaderLine::onColorChanged);
     ui->dsbWeight->setMinimum(0);
-    connect(ui->dsbWeight, SIGNAL(valueChanged(double)), this, SLOT(onLineWidthChanged()));
-    connect(ui->cboxStyle, SIGNAL(currentIndexChanged(int)), this, SLOT(onLineStyleChanged()));
+    connect(ui->dsbWeight, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskLeaderLine::onLineWidthChanged);
+    connect(ui->cboxStyle, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskLeaderLine::onLineStyleChanged);
 }
 
 void TaskLeaderLine::recomputeFeature()
@@ -516,8 +516,8 @@ void TaskLeaderLine::onTrackerClicked(bool clicked)
                 //now what? throw will generate "unknown unhandled exception"
             } else {
                 m_qgLine = qgLead;
-                connect(qgLead, SIGNAL(editComplete()),
-                this, SLOT(onPointEditComplete()));
+                connect(qgLead, &QGILeaderLine::editComplete,
+                this, &TaskLeaderLine::onPointEditComplete);
                 qgLead->startPathEdit();
                 QString msg = tr("Click and drag markers to adjust leader line");
                 getMainWindow()->statusBar()->show();

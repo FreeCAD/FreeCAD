@@ -50,8 +50,8 @@ DlgPageChooser::DlgPageChooser(
 
     fillList(labels, names);
 
-    connect(ui->bbButtons, SIGNAL(accepted()), this, SLOT(accept()));
-    connect(ui->bbButtons, SIGNAL(rejected()), this, SLOT(reject()));
+    connect(ui->bbButtons, &QDialogButtonBox::accepted, this, &QDialog::accept);
+    connect(ui->bbButtons, &QDialogButtonBox::rejected, this, &QDialog::reject);
 }
 
 /**

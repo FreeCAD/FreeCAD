@@ -82,8 +82,8 @@ TaskCosVertex::TaskCosVertex(TechDraw::DrawViewPart* baseFeat,
 
     setUiPrimary();
 
-    connect(ui->pbTracker, SIGNAL(clicked(bool)),
-            this, SLOT(onTrackerClicked(bool)));
+    connect(ui->pbTracker, &QPushButton::clicked,
+            this, &TaskCosVertex::onTrackerClicked);
 
     m_trackerMode = QGTracker::TrackerMode::Point;
 }

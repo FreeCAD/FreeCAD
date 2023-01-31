@@ -195,40 +195,40 @@ void TaskSectionView::setUiCommon(Base::Vector3d origin)
 
     enableAll(false);
 
-    connect(ui->leSymbol, SIGNAL(editingFinished()), this, SLOT(onIdentifierChanged()));
+    connect(ui->leSymbol, &QLineEdit::editingFinished, this, &TaskSectionView::onIdentifierChanged);
 
     //TODO: use event filter instead of keyboard tracking to capture enter/return keys
     // the UI file uses keyboardTracking = false so that a recomputation
     // will only be triggered when the arrow keys of the spinboxes are used
     //if this is not done, recomputes are triggered on each key press giving
     //unaccceptable UX
-    connect(ui->sbScale, SIGNAL(valueChanged(double)), this, SLOT(onScaleChanged()));
-    connect(ui->sbOrgX, SIGNAL(valueChanged(double)), this, SLOT(onXChanged()));
-    connect(ui->sbOrgY, SIGNAL(valueChanged(double)), this, SLOT(onYChanged()));
-    connect(ui->sbOrgZ, SIGNAL(valueChanged(double)), this, SLOT(onZChanged()));
+    connect(ui->sbScale, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskSectionView::onScaleChanged);
+    connect(ui->sbOrgX, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskSectionView::onXChanged);
+    connect(ui->sbOrgY, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskSectionView::onYChanged);
+    connect(ui->sbOrgZ, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskSectionView::onZChanged);
 
-    connect(ui->cmbScaleType, SIGNAL(currentIndexChanged(int)), this, SLOT(scaleTypeChanged(int)));
+    connect(ui->cmbScaleType, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskSectionView::scaleTypeChanged);
 
-    connect(ui->pbUp, SIGNAL(clicked(bool)), this, SLOT(onUpClicked()));
-    connect(ui->pbDown, SIGNAL(clicked(bool)), this, SLOT(onDownClicked()));
-    connect(ui->pbRight, SIGNAL(clicked(bool)), this, SLOT(onRightClicked()));
-    connect(ui->pbLeft, SIGNAL(clicked(bool)), this, SLOT(onLeftClicked()));
+    connect(ui->pbUp, &QToolButton::clicked, this, &TaskSectionView::onUpClicked);
+    connect(ui->pbDown, &QToolButton::clicked, this, &TaskSectionView::onDownClicked);
+    connect(ui->pbRight, &QToolButton::clicked, this, &TaskSectionView::onRightClicked);
+    connect(ui->pbLeft, &QToolButton::clicked, this, &TaskSectionView::onLeftClicked);
 
-    connect(ui->pbUpdateNow, SIGNAL(clicked(bool)), this, SLOT(updateNowClicked()));
-    connect(ui->cbLiveUpdate, SIGNAL(clicked(bool)), this, SLOT(liveUpdateClicked()));
+    connect(ui->pbUpdateNow, &QToolButton::clicked, this, &TaskSectionView::updateNowClicked);
+    connect(ui->cbLiveUpdate, &QToolButton::clicked, this, &TaskSectionView::liveUpdateClicked);
 
     m_compass = new CompassWidget(this);
     auto layout = ui->compassLayout;
     layout->addWidget(m_compass);
-    connect(m_compass, SIGNAL(angleChanged(double)), this, SLOT(slotChangeAngle(double)));
+    connect(m_compass, &CompassWidget::angleChanged, this, &TaskSectionView::slotChangeAngle);
 
     m_viewDirectionWidget = new VectorEditWidget(this);
     m_viewDirectionWidget->setLabel(QObject::tr("Current View Direction"));
     m_viewDirectionWidget->setToolTip(QObject::tr("The view direction in BaseView coordinates"));
     auto editLayout = ui->viewDirectionLayout;
     editLayout->addWidget(m_viewDirectionWidget);
-    connect(m_viewDirectionWidget, SIGNAL(valueChanged(Base::Vector3d)), this,
-            SLOT(slotViewDirectionChanged(Base::Vector3d)));
+    connect(m_viewDirectionWidget, &VectorEditWidget::valueChanged, this,
+            &TaskSectionView::slotViewDirectionChanged);
 }
 
 //save the start conditions

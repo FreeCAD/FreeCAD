@@ -53,7 +53,7 @@ TaskDimRepair::TaskDimRepair(TechDraw::DrawViewDimension* inDvd)
 {
     ui->setupUi(this);
 
-    connect(ui->pbSelection, SIGNAL(clicked(bool)), this, SLOT(slotUseSelection()));
+    connect(ui->pbSelection, &QPushButton::clicked, this, &TaskDimRepair::slotUseSelection);
 
     saveDimState();
     setUiPrimary();

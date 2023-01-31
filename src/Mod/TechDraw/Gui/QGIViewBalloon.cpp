@@ -278,13 +278,13 @@ QGIViewBalloon::QGIViewBalloon()
     balloonLabel->setPosFromCenter(0, 0);
 
     // connecting the needed slots and signals
-    QObject::connect(balloonLabel, SIGNAL(dragging(bool)), this, SLOT(balloonLabelDragged(bool)));
+    QObject::connect(balloonLabel, &QGIBalloonLabel::dragging, this, &QGIViewBalloon::balloonLabelDragged);
 
-    QObject::connect(balloonLabel, SIGNAL(dragFinished()), this, SLOT(balloonLabelDragFinished()));
+    QObject::connect(balloonLabel, &QGIBalloonLabel::dragFinished, this, &QGIViewBalloon::balloonLabelDragFinished);
 
-    QObject::connect(balloonLabel, SIGNAL(selected(bool)), this, SLOT(select(bool)));
+    QObject::connect(balloonLabel, &QGIBalloonLabel::selected, this, &QGIViewBalloon::select);
 
-    QObject::connect(balloonLabel, SIGNAL(hover(bool)), this, SLOT(hover(bool)));
+    QObject::connect(balloonLabel, &QGIBalloonLabel::hover, this, &QGIViewBalloon::hover);
 
     setZValue(ZVALUE::DIMENSION);
 }

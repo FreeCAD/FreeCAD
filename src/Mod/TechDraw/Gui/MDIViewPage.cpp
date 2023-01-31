@@ -92,22 +92,22 @@ MDIViewPage::MDIViewPage(ViewProviderPage* pageVp, Gui::Document* doc, QWidget* 
     setMouseTracking(true);
 
     m_toggleKeepUpdatedAction = new QAction(tr("Toggle &Keep Updated"), this);
-    connect(m_toggleKeepUpdatedAction, SIGNAL(triggered()), this, SLOT(toggleKeepUpdated()));
+    connect(m_toggleKeepUpdatedAction, &QAction::triggered, this, &MDIViewPage::toggleKeepUpdated);
 
     m_toggleFrameAction = new QAction(tr("Toggle &Frames"), this);
-    connect(m_toggleFrameAction, SIGNAL(triggered()), this, SLOT(toggleFrame()));
+    connect(m_toggleFrameAction, &QAction::triggered, this, &MDIViewPage::toggleFrame);
 
     m_exportSVGAction = new QAction(tr("&Export SVG"), this);
-    connect(m_exportSVGAction, SIGNAL(triggered()), this, SLOT(saveSVG()));
+    connect(m_exportSVGAction, &QAction::triggered, this, qOverload<>(&MDIViewPage::saveSVG));
 
     m_exportDXFAction = new QAction(tr("Export DXF"), this);
-    connect(m_exportDXFAction, SIGNAL(triggered()), this, SLOT(saveDXF()));
+    connect(m_exportDXFAction, &QAction::triggered, this, qOverload<>(&MDIViewPage::saveDXF));
 
     m_exportPDFAction = new QAction(tr("Export PDF"), this);
-    connect(m_exportPDFAction, SIGNAL(triggered()), this, SLOT(savePDF()));
+    connect(m_exportPDFAction, &QAction::triggered, this, qOverload<>(&MDIViewPage::savePDF));
 
     m_printAllAction = new QAction(tr("Print All Pages"), this);
-    connect(m_printAllAction, SIGNAL(triggered()), this, SLOT(printAll()));
+    connect(m_printAllAction, &QAction::triggered, this, qOverload<>(&MDIViewPage::printAll));
 
     isSelectionBlocked = false;
 
@@ -127,7 +127,7 @@ void MDIViewPage::setScene(QGSPage* scene, QGVPage* viewWidget)
 {
     m_scene = scene;
     setCentralWidget(viewWidget);//this makes viewWidget a Qt child of MDIViewPage
-    QObject::connect(m_scene, SIGNAL(selectionChanged()), this, SLOT(sceneSelectionChanged()));
+    QObject::connect(scene, &QGSPage::selectionChanged, this, &MDIViewPage::sceneSelectionChanged);
 }
 
 void MDIViewPage::setDocumentObject(const std::string& name)
@@ -347,7 +347,7 @@ void MDIViewPage::printPreview()
     printer.setPageOrientation(m_orientation);
 
     QPrintPreviewDialog dlg(&printer, this);
-    connect(&dlg, SIGNAL(paintRequested(QPrinter*)), this, SLOT(print(QPrinter*)));
+    connect(&dlg, &QPrintPreviewDialog::paintRequested, this, qOverload<QPrinter*>(&MDIViewPage::print));
     dlg.exec();
 }
 

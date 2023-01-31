@@ -106,8 +106,8 @@ TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
                                             -m_annoFeat->Y.getValue(),
                                              0.0));
 
-    connect(ui->pbEditor, SIGNAL(clicked(bool)),
-                this, SLOT(onEditorClicked(bool)));
+    connect(ui->pbEditor, &QPushButton::clicked,
+            this, &TaskRichAnno::onEditorClicked);
 }
 
 //ctor for creation
@@ -141,8 +141,8 @@ TaskRichAnno::TaskRichAnno(TechDraw::DrawView* baseFeat,
 
     setUiPrimary();
 
-    connect(ui->pbEditor, SIGNAL(clicked(bool)),
-                this, SLOT(onEditorClicked(bool)));
+    connect(ui->pbEditor, &QPushButton::clicked,
+            this, &TaskRichAnno::onEditorClicked);
 }
 
 void TaskRichAnno::updateTask()
@@ -241,10 +241,10 @@ void TaskRichAnno::onEditorClicked(bool clicked)
     m_textDialog->setMinimumWidth (400);
     m_textDialog->setMinimumHeight(400);
 
-    connect(m_rte, SIGNAL(saveText(QString)),
-            this, SLOT(onSaveAndExit(QString)));
-    connect(m_rte, SIGNAL(editorFinished()),
-            this, SLOT(onEditorExit()));
+    connect(m_rte, &MRichTextEdit::saveText,
+            this, &TaskRichAnno::onSaveAndExit);
+    connect(m_rte, &MRichTextEdit::editorFinished,
+            this, &TaskRichAnno::onEditorExit);
 
     m_textDialog->show();
 }
