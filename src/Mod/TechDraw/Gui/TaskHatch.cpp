@@ -58,12 +58,12 @@ TaskHatch::TaskHatch(TechDraw::DrawViewPart* inDvp, std::vector<std::string> sub
 {
     ui->setupUi(this);
 
-    connect(ui->fcFile, SIGNAL(fileNameSelected(QString)), this, SLOT(onFileChanged()));
-    connect(ui->sbScale, SIGNAL(valueChanged(double)), this, SLOT(onScaleChanged()));
-    connect(ui->ccColor, SIGNAL(changed()), this, SLOT(onColorChanged()));
-    connect(ui->dsbRotation, SIGNAL(valueChanged(double)), this, SLOT(onRotationChanged()));
-    connect(ui->dsbOffsetX, SIGNAL(valueChanged(double)), this, SLOT(onOffsetChanged()));
-    connect(ui->dsbOffsetY, SIGNAL(valueChanged(double)), this, SLOT(onOffsetChanged()));
+    connect(ui->fcFile, &FileChooser::fileNameSelected, this, &TaskHatch::onFileChanged);
+    connect(ui->sbScale, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskHatch::onScaleChanged);
+    connect(ui->ccColor, &ColorButton::changed, this, &TaskHatch::onColorChanged);
+    connect(ui->dsbRotation, qOverload<double>(&QDoubleSpinBox::valueChanged), this, &TaskHatch::onRotationChanged);
+    connect(ui->dsbOffsetX, qOverload<double>(&QDoubleSpinBox::valueChanged), this, &TaskHatch::onOffsetChanged);
+    connect(ui->dsbOffsetY, qOverload<double>(&QDoubleSpinBox::valueChanged), this, &TaskHatch::onOffsetChanged);
     setUiPrimary();
 }
 
@@ -78,12 +78,12 @@ TaskHatch::TaskHatch(TechDrawGui::ViewProviderHatch* inVp) :
     App::DocumentObject* obj = m_hatch->Source.getValue();
     m_dvp = static_cast<TechDraw::DrawViewPart*>(obj);
 
-    connect(ui->fcFile, SIGNAL(fileNameSelected(QString)), this, SLOT(onFileChanged()));
-    connect(ui->sbScale, SIGNAL(valueChanged(double)), this, SLOT(onScaleChanged()));
-    connect(ui->ccColor, SIGNAL(changed()), this, SLOT(onColorChanged()));
-    connect(ui->dsbRotation, SIGNAL(valueChanged(double)), this, SLOT(onRotationChanged()));
-    connect(ui->dsbOffsetX, SIGNAL(valueChanged(double)), this, SLOT(onOffsetChanged()));
-    connect(ui->dsbOffsetY, SIGNAL(valueChanged(double)), this, SLOT(onOffsetChanged()));
+    connect(ui->fcFile, &FileChooser::fileNameSelected, this, &TaskHatch::onFileChanged);
+    connect(ui->sbScale, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskHatch::onScaleChanged);
+    connect(ui->ccColor, &ColorButton::changed, this, &TaskHatch::onColorChanged);
+    connect(ui->dsbRotation, qOverload<double>(&QDoubleSpinBox::valueChanged), this, &TaskHatch::onRotationChanged);
+    connect(ui->dsbOffsetX, qOverload<double>(&QDoubleSpinBox::valueChanged), this, &TaskHatch::onOffsetChanged);
+    connect(ui->dsbOffsetY, qOverload<double>(&QDoubleSpinBox::valueChanged), this, &TaskHatch::onOffsetChanged);
 
     saveHatchState();
     setUiEdit();

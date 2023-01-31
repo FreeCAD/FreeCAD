@@ -46,13 +46,13 @@ DlgStringListEditor::DlgStringListEditor(const std::vector<std::string> texts, Q
     fillList(texts);
 
     connect(ui->lwTexts,
-            SIGNAL(itemActivated(QListWidgetItem*)),
+            &QListWidget::itemActivated,
             this,
-            SLOT(slotItemActivated(QListWidgetItem*)));
-    connect(ui->pbAdd, SIGNAL(clicked()), this, SLOT(slotAddItem()));
-    connect(ui->pbRemove, SIGNAL(clicked()), this, SLOT(slotRemoveItem()));
-    connect(ui->bbButtons, SIGNAL(accepted()), this, SLOT(accept()));
-    connect(ui->bbButtons, SIGNAL(rejected()), this, SLOT(reject()));
+            &DlgStringListEditor::slotItemActivated);
+    connect(ui->pbAdd, &QPushButton::clicked, this, &DlgStringListEditor::slotAddItem);
+    connect(ui->pbRemove, &QPushButton::clicked, this, &DlgStringListEditor::slotRemoveItem);
+    connect(ui->bbButtons, &QDialogButtonBox::accepted, this, &DlgStringListEditor::accept);
+    connect(ui->bbButtons, &QDialogButtonBox::rejected, this, &DlgStringListEditor::reject);
 }
 
 /**
