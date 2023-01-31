@@ -518,7 +518,7 @@ struct cycle_detector : public boost::dfs_visitor<> {
 /**
  * @brief Build a graph of all expressions in \a exprs.
  * @param exprs Expressions to use in graph
- * @param revNodes Map from int[nodeid] to ObjectIndentifer. 
+ * @param revNodes Map from int[nodeid] to ObjectIndentifer.
  * @param g Graph to update. May contains additional nodes than in revNodes, because of outside dependencies.
  */
 
