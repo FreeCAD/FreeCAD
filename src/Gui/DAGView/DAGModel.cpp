@@ -134,8 +134,8 @@ Model::Model(QObject *parentIn, const Gui::Document &documentIn) : QGraphicsScen
   editingFinishedAction = new QAction(this);
   editingFinishedAction->setText(tr("Finish editing"));
   editingFinishedAction->setStatusTip(tr("Finish editing object"));
-  connect(this->editingFinishedAction, SIGNAL(triggered()),
-          this, SLOT(editingFinishedSlot()));
+  connect(this->editingFinishedAction, &QAction::triggered,
+          this, &Model::editingFinishedSlot);
 
   connectNewObject = documentIn.signalNewObject.connect(boost::bind(&Model::slotNewObject, this, bp::_1));
   connectDelObject = documentIn.signalDeletedObject.connect(boost::bind(&Model::slotDeleteObject, this, bp::_1));
