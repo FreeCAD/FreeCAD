@@ -318,8 +318,8 @@ void PropertyExpressionEngine::Restore(Base::XMLReader &reader)
  * @brief Update graph structure with given path and expression.
  * @param path Path
  * @param expression Expression to query for dependencies
- * @param nodes Map with nodes of graph
- * @param revNodes Reverse map of nodes
+ * @param nodes Map with nodes of graph, including dependencies of 'expression'
+ * @param revNodes Reverse map of the nodes, containing only the given paths, without dependencies.
  * @param edges Edges in graph
  */
 
@@ -520,8 +520,8 @@ struct cycle_detector : public boost::dfs_visitor<> {
 /**
  * @brief Build a graph of all expressions in \a exprs.
  * @param exprs Expressions to use in graph
- * @param revNodes Map from int to ObjectIndentifer
- * @param g Graph to update
+ * @param revNodes Map from int[nodeid] to ObjectIndentifer.
+ * @param g Graph to update. May contain additional nodes than in revNodes, because of outside dependencies.
  */
 
 void PropertyExpressionEngine::buildGraph(const ExpressionMap & exprs,
@@ -550,7 +550,7 @@ void PropertyExpressionEngine::buildGraph(const ExpressionMap & exprs,
     }
 
     // Create graph
-    g = DiGraph(revNodes.size());
+    g = DiGraph(nodes.size());
 
     // Add edges to graph
     for (std::vector<Edge>::const_iterator i = edges.begin(); i != edges.end(); ++i)
@@ -588,6 +588,8 @@ std::vector<App::ObjectIdentifier> PropertyExpressionEngine::computeEvaluationOr
     topological_sort(g, std::back_inserter(c));
 
     for (std::vector<int>::iterator i = c.begin(); i != c.end(); ++i) {
+        // we return the evaluation order for our properties, not the dependencies
+        // the topo sort will contain node ids for both our props and their deps
         if (revNodes.find(*i) != revNodes.end())
             evaluationOrder.push_back(revNodes[*i]);
     }
