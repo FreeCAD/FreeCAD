@@ -78,10 +78,8 @@ PythonEditor::PythonEditor(QWidget* parent)
     auto uncomment = new QShortcut(this);
     uncomment->setKey(QKeySequence(QString::fromLatin1("ALT+U")));
 
-    connect(comment, SIGNAL(activated()),
-            this, SLOT(onComment()));
-    connect(uncomment, SIGNAL(activated()),
-            this, SLOT(onUncomment()));
+    connect(comment, &QShortcut::activated, this, &PythonEditor::onComment);
+    connect(uncomment, &QShortcut::activated, this, &PythonEditor::onUncomment);
 }
 
 /** Destroys the object and frees any allocated resources */

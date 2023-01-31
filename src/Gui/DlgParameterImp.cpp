@@ -104,10 +104,9 @@ DlgParameterImp::DlgParameterImp( QWidget* parent,  Qt::WindowFlags fl )
     if (ui->parameterSet->count() < 2)
         ui->parameterSet->hide();
 
-    connect(ui->parameterSet, SIGNAL(activated(int)),
-            this, SLOT(onChangeParameterSet(int)));
-    connect(paramGroup, SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),
-            this, SLOT(onGroupSelected(QTreeWidgetItem*)));
+    connect(ui->parameterSet, qOverload<int>(&QComboBox::activated),
+            this, &DlgParameterImp::onChangeParameterSet);
+    connect(paramGroup, &QTreeWidget::currentItemChanged, this, &DlgParameterImp::onGroupSelected);
     onGroupSelected(paramGroup->currentItem());
 
     // setup for function on_findGroup_changed:

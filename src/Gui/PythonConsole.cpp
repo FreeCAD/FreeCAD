@@ -954,8 +954,7 @@ void PythonConsole::changeEvent(QEvent *e)
     if (e->type() == QEvent::ParentChange) {
         auto dw = qobject_cast<QDockWidget*>(this->parentWidget());
         if (dw) {
-            connect(dw, SIGNAL(visibilityChanged(bool)),
-                    this, SLOT(visibilityChanged(bool)));
+            connect(dw, &QDockWidget::visibilityChanged, this, &PythonConsole::visibilityChanged);
         }
     }
     else if (e->type() == QEvent::StyleChange) {

@@ -132,7 +132,8 @@ void ControlSingleton::showDialog(Gui::TaskView::TaskDialog *dlg)
         if (ActiveDialog == dlg)
             return; // dialog is already defined
         ActiveDialog = dlg;
-        connect(dlg, SIGNAL(aboutToBeDestroyed()), this, SLOT(closedDialog()));
+        connect(dlg, &TaskView::TaskDialog::aboutToBeDestroyed,
+                this, &ControlSingleton::closedDialog);
     }
     // not all workbenches have the combo view enabled
     else if (!_taskPanel) {
@@ -143,7 +144,7 @@ void ControlSingleton::showDialog(Gui::TaskView::TaskDialog *dlg)
         dw->setWidget(_taskPanel);
         _taskPanel->showDialog(dlg);
         getMainWindow()->addDockWidget(Qt::LeftDockWidgetArea, dw);
-        connect(dlg, SIGNAL(destroyed()), dw, SLOT(deleteLater()));
+        connect(dlg, &TaskView::TaskDialog::destroyed, dw, &ControlSingleton::deleteLater);
 
         // if we have the normal tree view available then just tabify with it
         QWidget* treeView = Gui::DockWindowManager::instance()->getDockWindow("Tree view");
