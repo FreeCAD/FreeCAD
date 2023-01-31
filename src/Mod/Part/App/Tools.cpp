@@ -610,11 +610,17 @@ Handle (Poly_Triangulation) Part::Tools::triangulationOfFace(const TopoDS_Face& 
         return mesh;
 
     // If no triangulation exists then the shape is probably infinite
-    BRepAdaptor_Surface adapt(face);
-    double u1 = adapt.FirstUParameter();
-    double u2 = adapt.LastUParameter();
-    double v1 = adapt.FirstVParameter();
-    double v2 = adapt.LastVParameter();
+    double u1{}, u2{}, v1{}, v2{};
+    try {
+        BRepAdaptor_Surface adapt(face);
+        u1 = adapt.FirstUParameter();
+        u2 = adapt.LastUParameter();
+        v1 = adapt.FirstVParameter();
+        v2 = adapt.LastVParameter();
+    }
+    catch (const Standard_Failure&) {
+        return nullptr;
+    }
 
     auto selectRange = [](double& p1, double& p2) {
         if (Precision::IsInfinite(p1) && Precision::IsInfinite(p2)) {
