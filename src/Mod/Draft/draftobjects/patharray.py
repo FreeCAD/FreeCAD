@@ -272,7 +272,10 @@ class PathArray(DraftLink):
 
     def execute(self, obj):
         """Execute when the object is created or recomputed."""
-        if not obj.Base or not obj.PathObject:
+        if self.props_changed_placement_only() \
+                or not obj.Base \
+                or not obj.PathObject:
+            self.props_changed_clear()
             return
 
         # placement of entire PathArray object
@@ -303,9 +306,9 @@ class PathArray(DraftLink):
                                              obj.ForceVertical,
                                              obj.VerticalVector)
 
-        return super(PathArray, self).buildShape(obj,
-                                                 array_placement,
-                                                 copy_placements)
+        self.buildShape(obj, array_placement, copy_placements)
+        self.props_changed_clear()
+        return (not self.use_link)
 
     def get_wires(self, path_object, subelements):
         """Get wires from the path object."""
@@ -375,20 +378,9 @@ class PathArray(DraftLink):
 
         Add properties that don't exist.
         """
-        super(PathArray, self).migrate_attributes(obj)
         self.set_properties(obj)
         self.migrate_properties_0v19(obj)
-
-        if self.use_link:
-            self.linkSetup(obj)
-        else:
-            obj.setPropertyStatus('Shape', '-Transient')
-
-        if obj.Shape.isNull():
-            if getattr(obj, 'PlacementList', None):
-                self.buildShape(obj, obj.Placement, obj.PlacementList)
-            else:
-                self.execute(obj)
+        super(PathArray, self).onDocumentRestored(obj)
 
     def migrate_properties_0v19(self, obj):
         """Migrate properties of this class, not from the parent class."""

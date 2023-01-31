@@ -87,16 +87,7 @@ def move(objectslist, vector, copy=False):
         else:
             real_vector = vector
 
-        if utils.get_type(obj) == "Point":
-            if copy:
-                newobj = make_copy.make_copy(obj)
-            else:
-                newobj = obj
-            newobj.X = obj.X.Value + real_vector.x
-            newobj.Y = obj.Y.Value + real_vector.y
-            newobj.Z = obj.Z.Value + real_vector.z
-
-        elif obj.isDerivedFrom("App::DocumentObjectGroup"):
+        if obj.isDerivedFrom("App::DocumentObjectGroup"):
             if copy:
                 newobj = newgroups[obj.Name]
             else:

@@ -77,6 +77,11 @@ class Polygon(DraftObject):
         obj.Radius = 1
 
     def execute(self, obj):
+        if self.props_changed_placement_only():
+            obj.positionBySupport()
+            self.props_changed_clear()
+            return
+
         if (obj.FacesNumber >= 3) and (obj.Radius.Value > 0):
             import Part
             plm = obj.Placement
@@ -115,6 +120,10 @@ class Polygon(DraftObject):
                 obj.Area = shape.Area
             obj.Placement = plm
         obj.positionBySupport()
+        self.props_changed_clear()
+
+    def onChanged(self, obj, prop):
+        self.props_changed_store(prop)
 
 
 # Alias for compatibility with v0.18 and earlier

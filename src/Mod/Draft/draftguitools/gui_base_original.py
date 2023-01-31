@@ -191,7 +191,13 @@ class DraftTool:
                 pass
             self.call = None
         if self.commitList:
-            todo.ToDo.delayCommit(self.commitList)
+            last_cmd = self.commitList[-1][1][-1]
+            if last_cmd.find("recompute") >= 0:
+                self.commitList[-1] = (self.commitList[-1][0], self.commitList[-1][1][:-1])
+                todo.ToDo.delayCommit(self.commitList)
+                todo.ToDo.delayAfter(Gui.doCommand, last_cmd)
+            else:
+                todo.ToDo.delayCommit(self.commitList)
         self.commitList = []
 
     def commit(self, name, func):

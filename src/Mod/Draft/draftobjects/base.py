@@ -81,6 +81,10 @@ class DraftObject(object):
             obj.Proxy = self
         self.Type = tp
 
+    def onDocumentRestored(self,obj):
+        # Object properties are updated when the document is opened.
+        self.props_changed_clear()
+
     def __getstate__(self):
         """Return a tuple of all serializable objects or None.
 
@@ -154,6 +158,42 @@ class DraftObject(object):
             Name of the property that was modified.
         """
         pass
+
+    def props_changed_store(self, prop):
+        """Store the name of the property that will be changed in the
+        self.props_changed list.
+
+        The function should be called at the start of onChanged or onBeforeChange.
+
+        The list is used to detect Placement-only changes. In such cases the
+        Shape of an object does not need to be updated. Not updating the Shape
+        avoids Uno/Redo issues for the Windows version and is also more efficient.
+        """
+        if not hasattr(self, "props_changed"):
+            self.props_changed = [prop]
+        else:
+            self.props_changed.append(prop)
+
+    def props_changed_clear(self):
+        """Remove the self.props_changed attribute if it exists.
+
+        The function should be called just before execute returns.
+        """
+        if hasattr(self, "props_changed"):
+            delattr(self, "props_changed")
+
+    def props_changed_placement_only(self):
+        """Return `True` if the self.props_changed list, after removing `Shape`
+        and `_LinkTouched` items, only contains `Placement` items.
+        """
+        if not hasattr(self, "props_changed"):
+            return False
+        props = set(self.props_changed)
+        if "Shape" in props:
+            props.remove("Shape")
+        if "_LinkTouched" in props:
+            props.remove("_LinkTouched")
+        return props == {"Placement"}
 
 
 # Alias for compatibility with v0.18 and earlier

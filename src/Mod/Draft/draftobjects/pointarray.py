@@ -105,12 +105,19 @@ class PointArray(DraftLink):
 
     def execute(self, obj):
         """Run when the object is created or recomputed."""
+        if self.props_changed_placement_only() \
+                or not obj.Base \
+                or not obj.PointObject:
+            self.props_changed_clear()
+            return
 
         pt_list = get_point_list(obj.PointObject)
         obj.Count = len(pt_list)
         pls = build_placements(obj.Base, pt_list, obj.ExtraPlacement)
 
-        return super(PointArray, self).buildShape(obj, obj.Placement, pls)
+        self.buildShape(obj, obj.Placement, pls)
+        self.props_changed_clear()
+        return (not self.use_link)
 
     def onDocumentRestored(self, obj):
         """Execute code when the document is restored.
@@ -134,7 +141,7 @@ class PointArray(DraftLink):
 
         self.set_properties(obj)
         self.migrate_properties_0v19(obj)
-        return super(PointArray, self).onDocumentRestored(obj)
+        super(PointArray, self).onDocumentRestored(obj)
 
     def migrate_properties_0v19(self, obj):
         """Migrate properties."""
