@@ -97,8 +97,8 @@ DlgCustomizeImp::DlgCustomizeImp(QWidget* parent, Qt::WindowFlags fl)
 
     // connections
     //
-    connect(buttonHelp,  SIGNAL (clicked()), getMainWindow(), SLOT (whatsThis()));
-    connect(buttonClose, SIGNAL (clicked()), this, SLOT (close()));
+    connect(buttonHelp,  &QPushButton::clicked, getMainWindow(), &MainWindow::whatsThis);
+    connect(buttonClose, &QPushButton::clicked, this, &QDialog::close);
 }
 
 /**

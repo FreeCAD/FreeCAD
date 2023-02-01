@@ -298,12 +298,17 @@ Transform::Transform(QWidget* parent, Qt::WindowFlags fl)
     int id = 1;
     QList<Gui::QuantitySpinBox*> sb = this->findChildren<Gui::QuantitySpinBox*>();
     for (const auto & it : sb) {
-        connect(it, SIGNAL(valueChanged(double)), signalMapper, SLOT(map()));
+        connect(it, qOverload<double>(&QuantitySpinBox::valueChanged), signalMapper, qOverload<>(&QSignalMapper::map));
         signalMapper->setMapping(it, id++);
     }
 
-    connect(signalMapper, SIGNAL(mapped(int)),
-            this, SLOT(onTransformChanged(int)));
+#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
+    connect(signalMapper, qOverload<int>(&QSignalMapper::mapped),
+            this, &Transform::onTransformChanged);
+#else
+    connect(signalMapper, &QSignalMapper::mappedInt,
+            this, &Transform::onTransformChanged);
+#endif
 
     setTransformStrategy(new DefaultTransformStrategy(this));
 }

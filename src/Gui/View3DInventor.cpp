@@ -172,7 +172,7 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
     OnChange(*hGrp,"TransparentObjectRenderType");
 
     stopSpinTimer = new QTimer(this);
-    connect(stopSpinTimer, SIGNAL(timeout()), this, SLOT(stopAnimating()));
+    connect(stopSpinTimer, &QTimer::timeout, this, &View3DInventor::stopAnimating);
 }
 
 View3DInventor::~View3DInventor()
@@ -501,8 +501,8 @@ void View3DInventor::printPreview()
     restorePrinterSettings(&printer);
 
     QPrintPreviewDialog dlg(&printer, this);
-    connect(&dlg, SIGNAL(paintRequested (QPrinter *)),
-            this, SLOT(print(QPrinter *)));
+    connect(&dlg, &QPrintPreviewDialog::paintRequested,
+            this, qOverload<QPrinter*>(&View3DInventor::print));
     dlg.exec();
     savePrinterSettings(&printer);
 }

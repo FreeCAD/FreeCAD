@@ -37,7 +37,7 @@ TaskHeader::TaskHeader(const QIcon &icon, const QString &title, bool expandable,
     myTitle->setIcon(icon);
     myTitle->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
 
-    connect(myTitle, SIGNAL(clicked()), this, SLOT(fold()));
+    connect(myTitle, &ActionLabel::clicked, this, &TaskHeader::fold);
 
     QHBoxLayout *hbl = new QHBoxLayout();
     hbl->setContentsMargins(2, 2, 2, 2);

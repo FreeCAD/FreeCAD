@@ -248,10 +248,10 @@ GraphvizView::GraphvizView(App::Document & _doc, QWidget* parent)
 
     // Create worker thread
     thread = new GraphvizWorker(this);
-    connect(thread, SIGNAL(emitFinished()), this, SLOT(done()));
-    connect(thread, SIGNAL(finished()), this, SLOT(done()));
-    connect(thread, SIGNAL(error()), this, SLOT(error()));
-    connect(thread, SIGNAL(svgFileRead(const QByteArray &)), this, SLOT(svgFileRead(const QByteArray &)));
+    connect(thread, &GraphvizWorker::emitFinished, this, &GraphvizView::done);
+    connect(thread, &GraphvizWorker::finished, this, &GraphvizView::done);
+    connect(thread, &GraphvizWorker::error, this, &GraphvizView::error);
+    connect(thread, &GraphvizWorker::svgFileRead, this, &GraphvizView::svgFileRead);
 
     // Connect signal from document
     recomputeConnection = _doc.signalRecomputed.connect(boost::bind(&GraphvizView::updateSvgItem, this, bp::_1));
@@ -556,8 +556,8 @@ void GraphvizView::printPreview()
     printer.setPageOrientation(QPageLayout::Landscape);
 
     QPrintPreviewDialog dlg(&printer, this);
-    connect(&dlg, SIGNAL(paintRequested (QPrinter *)),
-            this, SLOT(print(QPrinter *)));
+    connect(&dlg, &QPrintPreviewDialog::paintRequested,
+            this, qOverload<QPrinter*>(&GraphvizView::print));
     dlg.exec();
 }
 

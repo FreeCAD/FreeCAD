@@ -451,7 +451,7 @@ FileOptionsDialog::FileOptionsDialog( QWidget* parent, Qt::WindowFlags fl )
     auto grid = this->findChild<QGridLayout*>();
     grid->addWidget(extensionButton, 4, 2, Qt::AlignLeft);
 
-    connect(extensionButton, SIGNAL(clicked()), this, SLOT(toggleExtension()));
+    connect(extensionButton, &QPushButton::clicked, this, &FileOptionsDialog::toggleExtension);
 }
 
 FileOptionsDialog::~FileOptionsDialog()
@@ -685,7 +685,7 @@ FileChooser::FileChooser ( QWidget * parent )
 
     layout->addWidget(button);
 
-    connect( button, SIGNAL(clicked()), this, SLOT(chooseFile()));
+    connect(button, &QPushButton::clicked, this, &FileChooser::chooseFile);
 
     setFocusProxy(lineEdit);
 }
@@ -907,8 +907,12 @@ SelectModule::SelectModule (const QString& type, const SelectModule::Dict& types
     gridLayout->addLayout(hboxLayout, 2, 0, 1, 1);
 
     // connections
-    connect(okButton, SIGNAL(clicked()), this, SLOT(accept()));
-    connect(group, SIGNAL(buttonClicked(int)), this, SLOT(onButtonClicked()));
+    connect(okButton, &QPushButton::clicked, this, &SelectModule::accept);
+#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
+    connect(group, qOverload<int>(&QButtonGroup::buttonClicked), this, &SelectModule::onButtonClicked);
+#else
+    connect(group, &QButtonGroup::idClicked, this, &SelectModule::onButtonClicked);
+#endif
 }
 
 SelectModule::~SelectModule()

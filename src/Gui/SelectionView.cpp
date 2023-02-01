@@ -100,16 +100,15 @@ SelectionView::SelectionView(Gui::Document* pcDocument, QWidget *parent)
 
     resize(200, 200);
 
-    connect(clearButton, SIGNAL(clicked()), searchBox, SLOT(clear()));
-    connect(searchBox, SIGNAL(textChanged(QString)), this, SLOT(search(QString)));
-    connect(searchBox, SIGNAL(editingFinished()), this, SLOT(validateSearch()));
-    connect(selectionView, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(toggleSelect(QListWidgetItem*)));
-    connect(selectionView, SIGNAL(itemEntered(QListWidgetItem*)), this, SLOT(preselect(QListWidgetItem*)));
-    connect(pickList, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(toggleSelect(QListWidgetItem*)));
-    connect(pickList, SIGNAL(itemEntered(QListWidgetItem*)), this, SLOT(preselect(QListWidgetItem*)));
-    connect(selectionView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(onItemContextMenu(QPoint)));
-    connect(enablePickList, SIGNAL(stateChanged(int)), this, SLOT(onEnablePickList()));
-
+    connect(clearButton, &QToolButton::clicked, searchBox, &QLineEdit::clear);
+    connect(searchBox, &QLineEdit::textChanged, this, &SelectionView::search);
+    connect(searchBox, &QLineEdit::editingFinished, this, &SelectionView::validateSearch);
+    connect(selectionView, &QListWidget::itemDoubleClicked, this, &SelectionView::toggleSelect);
+    connect(selectionView, &QListWidget::itemEntered, this, &SelectionView::preselect);
+    connect(pickList, &QListWidget::itemDoubleClicked, this, &SelectionView::toggleSelect);
+    connect(pickList, &QListWidget::itemEntered, this, &SelectionView::preselect);
+    connect(selectionView, &QListWidget::customContextMenuRequested, this, &SelectionView::onItemContextMenu);
+    connect(enablePickList, &QCheckBox::stateChanged, this, &SelectionView::onEnablePickList);
 }
 
 SelectionView::~SelectionView()

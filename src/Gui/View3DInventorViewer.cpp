@@ -2635,7 +2635,7 @@ void View3DInventorViewer::moveCameraTo(const SbRotation& rot, const SbVec3f& po
     anim.setEndValue(steps);
 
     QEventLoop loop;
-    QObject::connect(&anim, SIGNAL(finished()), &loop, SLOT(quit()));
+    QObject::connect(&anim, &CameraAnimation::finished, &loop, &QEventLoop::quit);
     anim.start();
     loop.exec(QEventLoop::ExcludeUserInputEvents);
 
@@ -2693,7 +2693,7 @@ void View3DInventorViewer::animatedViewAll(int steps, int ms)
     QEventLoop loop;
     QTimer timer;
     timer.setSingleShot(true);
-    QObject::connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
+    QObject::connect(&timer, &QTimer::timeout, &loop, &QEventLoop::quit);
 
     for (int i=0; i<steps; i++) {
         float s = float(i)/float(steps);

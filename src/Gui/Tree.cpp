@@ -404,63 +404,63 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
 
     this->showHiddenAction = new QAction(this);
     this->showHiddenAction->setCheckable(true);
-    connect(this->showHiddenAction, SIGNAL(triggered()),
-        this, SLOT(onShowHidden()));
+    connect(this->showHiddenAction, &QAction::triggered,
+            this, &TreeWidget::onShowHidden);
 
     this->hideInTreeAction = new QAction(this);
     this->hideInTreeAction->setCheckable(true);
-    connect(this->hideInTreeAction, SIGNAL(triggered()),
-        this, SLOT(onHideInTree()));
+    connect(this->hideInTreeAction, &QAction::triggered,
+            this, &TreeWidget::onHideInTree);
 
     this->createGroupAction = new QAction(this);
-    connect(this->createGroupAction, SIGNAL(triggered()),
-        this, SLOT(onCreateGroup()));
+    connect(this->createGroupAction, &QAction::triggered,
+            this, &TreeWidget::onCreateGroup);
 
     this->relabelObjectAction = new QAction(this);
 #ifndef Q_OS_MAC
     this->relabelObjectAction->setShortcut(Qt::Key_F2);
 #endif
-    connect(this->relabelObjectAction, SIGNAL(triggered()),
-        this, SLOT(onRelabelObject()));
+    connect(this->relabelObjectAction, &QAction::triggered,
+            this, &TreeWidget::onRelabelObject);
 
     this->finishEditingAction = new QAction(this);
-    connect(this->finishEditingAction, SIGNAL(triggered()),
-        this, SLOT(onFinishEditing()));
+    connect(this->finishEditingAction, &QAction::triggered,
+            this, &TreeWidget::onFinishEditing);
 
     this->selectDependentsAction = new QAction(this);
-    connect(this->selectDependentsAction, SIGNAL(triggered()),
-        this, SLOT(onSelectDependents()));
+    connect(this->selectDependentsAction, &QAction::triggered,
+            this, &TreeWidget::onSelectDependents);
 
     this->closeDocAction = new QAction(this);
-    connect(this->closeDocAction, SIGNAL(triggered()),
-        this, SLOT(onCloseDoc()));
+    connect(this->closeDocAction, &QAction::triggered,
+            this, &TreeWidget::onCloseDoc);
 
     this->reloadDocAction = new QAction(this);
-    connect(this->reloadDocAction, SIGNAL(triggered()),
-        this, SLOT(onReloadDoc()));
+    connect(this->reloadDocAction, &QAction::triggered,
+            this, &TreeWidget::onReloadDoc);
 
     this->skipRecomputeAction = new QAction(this);
     this->skipRecomputeAction->setCheckable(true);
-    connect(this->skipRecomputeAction, SIGNAL(toggled(bool)),
-        this, SLOT(onSkipRecompute(bool)));
+    connect(this->skipRecomputeAction, &QAction::toggled,
+            this, &TreeWidget::onSkipRecompute);
 
     this->allowPartialRecomputeAction = new QAction(this);
     this->allowPartialRecomputeAction->setCheckable(true);
-    connect(this->allowPartialRecomputeAction, SIGNAL(toggled(bool)),
-        this, SLOT(onAllowPartialRecompute(bool)));
+    connect(this->allowPartialRecomputeAction, &QAction::toggled,
+            this, &TreeWidget::onAllowPartialRecompute);
 
     this->markRecomputeAction = new QAction(this);
-    connect(this->markRecomputeAction, SIGNAL(triggered()),
-        this, SLOT(onMarkRecompute()));
+    connect(this->markRecomputeAction, &QAction::triggered,
+            this, &TreeWidget::onMarkRecompute);
 
     this->recomputeObjectAction = new QAction(this);
-    connect(this->recomputeObjectAction, SIGNAL(triggered()),
-        this, SLOT(onRecomputeObject()));
+    connect(this->recomputeObjectAction, &QAction::triggered,
+            this, &TreeWidget::onRecomputeObject);
     this->searchObjectsAction = new QAction(this);
     this->searchObjectsAction->setText(tr("Search..."));
     this->searchObjectsAction->setStatusTip(tr("Search for objects"));
-    connect(this->searchObjectsAction, SIGNAL(triggered()),
-        this, SLOT(onSearchObjects()));
+    connect(this->searchObjectsAction, &QAction::triggered,
+            this, &TreeWidget::onSearchObjects);
 
     // Setup connections
     connectNewDocument = Application::Instance->signalNewDocument.connect(boost::bind(&TreeWidget::slotNewDocument, this, bp::_1, bp::_2));
@@ -782,8 +782,8 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
     QMenu editMenu;
     QActionGroup subMenuGroup(&subMenu);
     subMenuGroup.setExclusive(true);
-    connect(&subMenuGroup, SIGNAL(triggered(QAction*)),
-        this, SLOT(onActivateDocument(QAction*)));
+    connect(&subMenuGroup, &QActionGroup::triggered,
+            this, &TreeWidget::onActivateDocument);
     MenuManager::getInstance()->setupContextMenu(&view, contextMenu);
 
     // get the current item
@@ -3027,8 +3027,8 @@ TreePanel::TreePanel(const char* name, QWidget* parent)
     pLayout->setSpacing(0);
     pLayout->setContentsMargins(0, 0, 0, 0);
     pLayout->addWidget(this->treeWidget);
-    connect(this->treeWidget, SIGNAL(emitSearchObjects()),
-        this, SLOT(showEditor()));
+    connect(this->treeWidget, &TreeWidget::emitSearchObjects,
+            this, &TreePanel::showEditor);
 
     this->searchBox = new Gui::ExpressionLineEdit(this, true);
     static_cast<ExpressionLineEdit*>(this->searchBox)->setExactMatch(Gui::ExpressionParameter::instance()->isExactMatch());
@@ -3036,10 +3036,10 @@ TreePanel::TreePanel(const char* name, QWidget* parent)
     this->searchBox->hide();
     this->searchBox->installEventFilter(this);
     this->searchBox->setPlaceholderText(tr("Search"));
-    connect(this->searchBox, SIGNAL(returnPressed()),
-        this, SLOT(accept()));
-    connect(this->searchBox, SIGNAL(textChanged(QString)),
-        this, SLOT(itemSearch(QString)));
+    connect(this->searchBox, &QLineEdit::returnPressed,
+            this, &TreePanel::accept);
+    connect(this->searchBox, &QLineEdit::textChanged,
+            this, &TreePanel::itemSearch);
 }
 
 TreePanel::~TreePanel()

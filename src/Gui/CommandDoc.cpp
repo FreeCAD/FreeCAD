@@ -1586,8 +1586,8 @@ void StdCmdAlignment::activated(int iMsg)
     std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType
         (App::GeoFeature::getClassTypeId());
     ManualAlignment* align = ManualAlignment::instance();
-    QObject::connect(align, SIGNAL(emitCanceled()), align, SLOT(deleteLater()));
-    QObject::connect(align, SIGNAL(emitFinished()), align, SLOT(deleteLater()));
+    QObject::connect(align, &ManualAlignment::emitCanceled, align, &QObject::deleteLater);
+    QObject::connect(align, &ManualAlignment::emitFinished, align, &QObject::deleteLater);
 
     // Get the fixed and moving meshes
     FixedGroup fixedGroup;

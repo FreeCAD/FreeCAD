@@ -101,8 +101,8 @@ void TaskCSysDragger::setupGui()
   incrementsBox->groupLayout()->addLayout(gridLayout);
   Content.push_back(incrementsBox);
 
-  connect(tSpinBox, SIGNAL(valueChanged(double)), this, SLOT(onTIncrementSlot(double)));
-  connect(rSpinBox, SIGNAL(valueChanged(double)), this, SLOT(onRIncrementSlot(double)));
+  connect(tSpinBox, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskCSysDragger::onTIncrementSlot);
+  connect(rSpinBox, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskCSysDragger::onRIncrementSlot);
 }
 
 void TaskCSysDragger::onTIncrementSlot(double freshValue)

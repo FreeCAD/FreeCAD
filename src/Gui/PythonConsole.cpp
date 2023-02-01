@@ -1429,7 +1429,7 @@ QString PythonConsole::readline( )
     printPrompt(PythonConsole::Special);
     this->_sourceDrain = &inputBuffer;     //< enable source drain ...
     // ... and wait until we get notified about pendingSource
-    QObject::connect( this, SIGNAL(pendingSource()), &loop, SLOT(quit()) );
+    QObject::connect( this, &PythonConsole::pendingSource, &loop, &QEventLoop::quit);
     // application is about to quit
     if (loop.exec() != 0) {
         PyErr_SetInterrupt();
