@@ -75,7 +75,7 @@ DlgCustomCommandsImp::DlgCustomCommandsImp( QWidget* parent  )
 
     connect(ui->commandTreeWidget, &QTreeWidget::currentItemChanged,
             this, &DlgCustomCommandsImp::onDescription); 
-    connect(ui->commandTreeWidget, &QTreeWidget::currentItemChanged,
+    connect(ui->categoryTreeWidget, &QTreeWidget::currentItemChanged,
             this, &DlgCustomCommandsImp::onGroupActivated); 
 
     CommandManager & cCmdMgr = Application::Instance->commandManager();
