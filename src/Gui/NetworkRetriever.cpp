@@ -351,7 +351,7 @@ void NetworkRetriever::abort()
 {
     if ( wget->state() == QProcess::Running)
     {
-        QTimer::singleShot( 2000, wget, SLOT( kill() ) );
+        QTimer::singleShot( 2000, wget, &QProcess::kill);
     }
 }
 

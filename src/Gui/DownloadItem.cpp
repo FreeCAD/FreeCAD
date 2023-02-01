@@ -412,7 +412,7 @@ void DownloadItem::tryAgain()
 void DownloadItem::contextMenuEvent (QContextMenuEvent * e)
 {
     QMenu menu;
-    QAction* a = menu.addAction(tr("Open containing folder"), this, SLOT(openFolder()));
+    QAction* a = menu.addAction(tr("Open containing folder"), this, &DownloadItem::openFolder);
     a->setEnabled(m_output.exists());
     menu.exec(e->globalPos());
 }

@@ -1273,21 +1273,21 @@ void ManualAlignment::probePickedCallback(void * ud, SoEventCallback * n)
             QAction* id = menu.exec(QCursor::pos());
             if (id == fi) {
                 // call align->align();
-                QTimer::singleShot(300, self, SLOT(onAlign()));
+                QTimer::singleShot(300, self, &ManualAlignment::onAlign);
             }
             else if ((id == rem) && (view == self->myViewer->getViewer(0))) {
-                QTimer::singleShot(300, self, SLOT(onRemoveLastPointMoveable()));
+                QTimer::singleShot(300, self, &ManualAlignment::onRemoveLastPointMoveable);
             }
             else if ((id == rem) && (view == self->myViewer->getViewer(1))) {
-                QTimer::singleShot(300, self, SLOT(onRemoveLastPointFixed()));
+                QTimer::singleShot(300, self, &ManualAlignment::onRemoveLastPointFixed);
             }
             //else if (id == cl) {
             //    // call align->clear();
-            //    QTimer::singleShot(300, self, SLOT(onClear()));
+            //    QTimer::singleShot(300, self, &ManualAlignment::onClear);
             //}
             else if (id == ca) {
                 // call align->cancel();
-                QTimer::singleShot(300, self, SLOT(onCancel()));
+                QTimer::singleShot(300, self, &ManualAlignment::onCancel);
             }
             else if (id == sync) {
                 // setup sensor connection

@@ -498,7 +498,7 @@ void DocumentRecovery::contextMenuEvent(QContextMenuEvent* ev)
     QList<QTreeWidgetItem*> items = d_ptr->ui.treeWidget->selectedItems();
     if (!items.isEmpty()) {
         QMenu menu;
-        menu.addAction(tr("Delete"), this, SLOT(onDeleteSection()));
+        menu.addAction(tr("Delete"), this, &DocumentRecovery::onDeleteSection);
         menu.exec(ev->globalPos());
     }
 }

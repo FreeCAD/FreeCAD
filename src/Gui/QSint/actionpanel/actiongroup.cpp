@@ -122,7 +122,7 @@ void ActionGroup::showHide()
     myDummy->setFixedSize(myGroup->size());
     myDummy->show();
 
-    QTimer::singleShot(myScheme->groupFoldDelay, this, SLOT(processHide()));
+    QTimer::singleShot(myScheme->groupFoldDelay, this, &ActionGroup::processHide);
   }
   else
   {
@@ -130,7 +130,7 @@ void ActionGroup::showHide()
     m_foldDirection = 1;
     m_tempHeight = 0;
 
-    QTimer::singleShot(myScheme->groupFoldDelay, this, SLOT(processShow()));
+    QTimer::singleShot(myScheme->groupFoldDelay, this, &ActionGroup::processShow);
   }
 
   myDummy->show();
@@ -153,7 +153,7 @@ void ActionGroup::processHide()
   myDummy->setFixedHeight(m_tempHeight);
   setFixedHeight(myDummy->height()+myHeader->height());
 
-  QTimer::singleShot(myScheme->groupFoldDelay, this, SLOT(processHide()));
+  QTimer::singleShot(myScheme->groupFoldDelay, this, &ActionGroup::processHide);
 
   setUpdatesEnabled(true);
 }
@@ -178,7 +178,7 @@ void ActionGroup::processShow()
   myDummy->setFixedHeight(m_tempHeight);
   setFixedHeight(myDummy->height()+myHeader->height());
 
-  QTimer::singleShot(myScheme->groupFoldDelay, this, SLOT(processShow()));
+  QTimer::singleShot(myScheme->groupFoldDelay, this, &ActionGroup::processShow);
 
   setUpdatesEnabled(true);
 }
