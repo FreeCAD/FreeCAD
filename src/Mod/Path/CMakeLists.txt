@@ -249,7 +249,7 @@ SET(Tools_Bit_SRCS
     Tools/Bit/45degree_chamfer.fctb
     Tools/Bit/5mm-thread-cutter.fctb
     Tools/Bit/5mm_Drill.fctb
-    Tools/Bit/375-18_Tap.fctb
+    Tools/Bit/375-16_Tap.fctb
     Tools/Bit/5mm_Endmill.fctb
     Tools/Bit/60degree_Vbit.fctb
     Tools/Bit/6mm_Ball_End.fctb
