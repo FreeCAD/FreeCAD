@@ -380,13 +380,13 @@ void MeshFaceAddition::addFacetCallback(void * ud, SoEventCallback * n)
                 QAction* clr = menu.addAction(MeshFaceAddition::tr("Clear"));
                 QAction* act = menu.exec(QCursor::pos());
                 if (act == add) {
-                    QTimer::singleShot(300, that, SLOT(addFace()));
+                    QTimer::singleShot(300, that, &MeshFaceAddition::addFace);
                 }
                 else if (act == swp) {
-                    QTimer::singleShot(300, that, SLOT(flipNormal()));
+                    QTimer::singleShot(300, that, &MeshFaceAddition::flipNormal);
                 }
                 else if (act == clr) {
-                    QTimer::singleShot(300, that, SLOT(clearPoints()));
+                    QTimer::singleShot(300, that, &MeshFaceAddition::clearPoints);
                 }
             }
         }
@@ -395,7 +395,7 @@ void MeshFaceAddition::addFacetCallback(void * ud, SoEventCallback * n)
             QAction* fin = menu.addAction(MeshFaceAddition::tr("Finish"));
             QAction* act = menu.exec(QCursor::pos());
             if (act == fin) {
-                QTimer::singleShot(300, that, SLOT(finishEditing()));
+                QTimer::singleShot(300, that, &MeshFaceAddition::finishEditing);
             }
         }
     }
@@ -717,7 +717,7 @@ void MeshFillHole::fileHoleCallback(void * ud, SoEventCallback * n)
                             self->myNumPoints = 2;
                             self->myVertex2 = vertex_index;
                             self->myPolygon = it->second;
-                            QTimer::singleShot(300, self, SLOT(closeBridge()));
+                            QTimer::singleShot(300, self, &MeshFillHole::closeBridge);
                         }
                     }
                 }
@@ -728,7 +728,7 @@ void MeshFillHole::fileHoleCallback(void * ud, SoEventCallback * n)
             QAction* fin = menu.addAction(MeshFillHole::tr("Finish"));
             QAction* act = menu.exec(QCursor::pos());
             if (act == fin) {
-                QTimer::singleShot(300, self, SLOT(finishEditing()));
+                QTimer::singleShot(300, self, &MeshFillHole::finishEditing);
             }
         }
     }
