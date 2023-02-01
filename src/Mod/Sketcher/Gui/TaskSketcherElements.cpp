@@ -305,7 +305,7 @@ void ElementView::contextMenuEvent (QContextMenuEvent* event)
 
     menu.addSeparator();
 
-    QAction* remove = menu.addAction(tr("Delete"), this, SLOT(deleteSelectedItems()),
+    QAction* remove = menu.addAction(tr("Delete"), this, &ElementView::deleteSelectedItems,
         QKeySequence(QKeySequence::Delete));
     remove->setEnabled(!items.isEmpty());
 

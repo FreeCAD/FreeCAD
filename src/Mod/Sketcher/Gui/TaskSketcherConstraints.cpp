@@ -485,40 +485,40 @@ void ConstraintView::contextMenuEvent (QContextMenuEvent* event)
     }
 
     // This does the same as a double-click and thus it should be the first action and with bold text
-    QAction* change = menu.addAction(tr("Change value"), this, SLOT(modifyCurrentItem()));
+    QAction* change = menu.addAction(tr("Change value"), this, &ConstraintView::modifyCurrentItem);
     change->setEnabled(isQuantity);
     menu.setDefaultAction(change);
 
-    QAction* driven = menu.addAction(tr("Toggle to/from reference"), this, SLOT(updateDrivingStatus()));
+    QAction* driven = menu.addAction(tr("Toggle to/from reference"), this, &ConstraintView::updateDrivingStatus);
     driven->setEnabled(isToggleDriving);
 
-    QAction* activate = menu.addAction(isActive ? tr("Deactivate") : tr("Activate"), this, SLOT(updateActiveStatus()));
+    QAction* activate = menu.addAction(isActive ? tr("Deactivate") : tr("Activate"), this, &ConstraintView::updateActiveStatus);
     activate->setEnabled(!items.isEmpty());
 
     menu.addSeparator();
-    QAction* show = menu.addAction(tr("Show constraints"), this, SLOT(showConstraints()));
+    QAction* show = menu.addAction(tr("Show constraints"), this, &ConstraintView::showConstraints);
     show->setEnabled(!items.isEmpty());
-    QAction* hide = menu.addAction(tr("Hide constraints"), this, SLOT(hideConstraints()));
+    QAction* hide = menu.addAction(tr("Hide constraints"), this, &ConstraintView::hideConstraints);
     hide->setEnabled(!items.isEmpty());
 
     menu.addSeparator();
     CONTEXT_ITEM("Sketcher_SelectElementsAssociatedWithConstraints","Select Elements","Sketcher_SelectElementsAssociatedWithConstraints",doSelectConstraints,true)
 
-    QAction* rename = menu.addAction(tr("Rename"), this, SLOT(renameCurrentItem())
+    QAction* rename = menu.addAction(tr("Rename"), this, &ConstraintView::renameCurrentItem
 #ifndef Q_OS_MAC // on Mac F2 doesn't seem to trigger an edit signal
         ,QKeySequence(Qt::Key_F2)
 #endif
         );
     rename->setEnabled(item != nullptr);
 
-    QAction* center = menu.addAction(tr("Center sketch"), this, SLOT(centerSelectedItems()));
+    QAction* center = menu.addAction(tr("Center sketch"), this, &ConstraintView::centerSelectedItems);
     center->setEnabled(item != nullptr);
 
-    QAction* remove = menu.addAction(tr("Delete"), this, SLOT(deleteSelectedItems()),
+    QAction* remove = menu.addAction(tr("Delete"), this, &ConstraintView::deleteSelectedItems,
         QKeySequence(QKeySequence::Delete));
     remove->setEnabled(!items.isEmpty());
 
-    QAction* swap = menu.addAction(tr("Swap constraint names"), this, SLOT(swapNamedOfSelectedItems()));
+    QAction* swap = menu.addAction(tr("Swap constraint names"), this, &ConstraintView::swapNamedOfSelectedItems);
     swap->setEnabled(items.size() == 2);
 
     menu.exec(event->globalPos());
