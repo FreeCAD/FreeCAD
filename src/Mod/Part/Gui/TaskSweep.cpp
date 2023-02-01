@@ -492,7 +492,7 @@ void TaskSweep::clicked(int id)
         }
 
         label->show();
-        QTimer::singleShot(3000, label, SLOT(hide()));
+        QTimer::singleShot(3000, label, &Gui::StatusWidget::hide);
     }
 }
 
