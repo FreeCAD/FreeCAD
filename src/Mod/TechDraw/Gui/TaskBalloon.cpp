@@ -63,7 +63,7 @@ TaskBalloon::TaskBalloon(QGIViewBalloon *parent, ViewProviderBalloon *balloonVP)
     ui->leText->setText(qs);
     ui->leText->selectAll();
     connect(ui->leText, &QLineEdit::textChanged, this, &TaskBalloon::onTextChanged);
-    QTimer::singleShot(0, ui->leText, SLOT(setFocus()));
+    QTimer::singleShot(0, ui->leText, qOverload<>(&QLineEdit::setFocus));
 
     DrawGuiUtil::loadArrowBox(ui->comboEndSymbol);
     i = parent->getBalloonFeat()->EndType.getValue();
