@@ -231,7 +231,7 @@ void TaskDressUpParameters::doubleClicked(QListWidgetItem* item) {
     Gui::Selection().clearSelection();
 
     // enable next possible single-click event after double-click time passed
-    QTimer::singleShot(QApplication::doubleClickInterval(), this, SLOT(itemClickedTimeout()));
+    QTimer::singleShot(QApplication::doubleClickInterval(), this, &TaskDressUpParameters::itemClickedTimeout);
 }
 
 void TaskDressUpParameters::setSelection(QListWidgetItem* current) {
@@ -240,7 +240,7 @@ void TaskDressUpParameters::setSelection(QListWidgetItem* current) {
 
     if (!wasDoubleClicked) {
         // we treat it as single-click event once the QApplication double-click time is passed
-        QTimer::singleShot(QApplication::doubleClickInterval(), this, SLOT(itemClickedTimeout()));
+        QTimer::singleShot(QApplication::doubleClickInterval(), this, &TaskDressUpParameters::itemClickedTimeout);
 
         // name of the item
         std::string subName = current->text().toStdString();

@@ -509,14 +509,14 @@ void TaskFeaturePick::slotDeletedObject(const Gui::ViewProviderDocumentObject& O
 void TaskFeaturePick::slotUndoDocument(const Gui::Document&)
 {
     if (origins.empty()) {
-        QTimer::singleShot(100, &Gui::Control(), SLOT(closeDialog()));
+        QTimer::singleShot(100, &Gui::Control(), &Gui::ControlSingleton::closeDialog);
     }
 }
 
 void TaskFeaturePick::slotDeleteDocument(const Gui::Document&)
 {
     origins.clear();
-    QTimer::singleShot(100, &Gui::Control(), SLOT(closeDialog()));
+    QTimer::singleShot(100, &Gui::Control(), &Gui::ControlSingleton::closeDialog);
 }
 
 void TaskFeaturePick::showExternal(bool val)
