@@ -1,15 +1,18 @@
 {
   "version": 2,
   "name": "375-18_Tap",
-  "shape": "tap.FCStd",
+  "shape": "tap.fcstd",
   "parameter": {
     "Coating": "None",
     "CuttingEdgeLength": "1.063 \"",
     "Diameter": "0.375 \"",
     "Flutes": "3",
-    "Length": "3.000 \"",
+    "Length": "2.500 \"",
+    "Pitch": "0.000 in",
+    "Rotation": "Right Hand",
     "ShankDiameter": "0.250 \"",
-    "TipAngle": "45",
+    "TPI": "18",
+    "TipAngle": "90.000 \u00b0",
     "Type": "HSS"
   },
   "attribute": {}
