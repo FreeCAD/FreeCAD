@@ -138,11 +138,3 @@ void QGIViewSection::updateView(bool update)
     draw();
     QGIView::updateView(update);
 }
-
-void QGIViewSection::drawSectionLine(TechDraw::DrawViewSection* s, bool b)
-{
-    Q_UNUSED(b);
-    Q_UNUSED(s);
-   //override QGIVP::drawSectionLine
-}
-
