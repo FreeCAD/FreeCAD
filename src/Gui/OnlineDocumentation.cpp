@@ -288,8 +288,8 @@ void HttpServer::incomingConnection(qintptr socket)
     // works asynchronously, this means that all the communication is done
     // in the two slots readClient() and discardClient().
     auto s = new QTcpSocket(this);
-    connect(s, SIGNAL(readyRead()), this, SLOT(readClient()));
-    connect(s, SIGNAL(disconnected()), this, SLOT(discardClient()));
+    connect(s, &QTcpSocket::readyRead, this, &HttpServer::readClient);
+    connect(s, &QTcpSocket::disconnected, this, &HttpServer::discardClient);
     s->setSocketDescriptor(socket);
 }
 

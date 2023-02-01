@@ -160,10 +160,10 @@ void AutoSaver::saveIfNecessary()
 NetworkAccessManager::NetworkAccessManager(QObject *parent)
     : QNetworkAccessManager(parent)
 {
-    connect(this, SIGNAL(authenticationRequired(QNetworkReply*, QAuthenticator*)),
-            SLOT(authenticationRequired(QNetworkReply*,QAuthenticator*)));
-    connect(this, SIGNAL(proxyAuthenticationRequired(const QNetworkProxy&, QAuthenticator*)),
-            SLOT(proxyAuthenticationRequired(const QNetworkProxy&, QAuthenticator*)));
+    connect(this, &QNetworkAccessManager::authenticationRequired,
+            this, &NetworkAccessManager::authenticationRequired);
+    connect(this, &QNetworkAccessManager::proxyAuthenticationRequired,
+            this, &NetworkAccessManager::proxyAuthenticationRequired);
 
     auto diskCache = new QNetworkDiskCache(this);
     QString location = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
@@ -229,9 +229,9 @@ DownloadItem::DownloadItem(QNetworkReply *reply, bool requestFileName, QWidget *
     downloadInfoLabel->setPalette(p);
     progressBar->setMaximum(0);
     tryAgainButton->hide();
-    connect(stopButton, SIGNAL(clicked()), this, SLOT(stop()));
-    connect(openButton, SIGNAL(clicked()), this, SLOT(open()));
-    connect(tryAgainButton, SIGNAL(clicked()), this, SLOT(tryAgain()));
+    connect(stopButton, &QPushButton::clicked, this, &DownloadItem::stop);
+    connect(openButton, &QPushButton::clicked, this, &DownloadItem::open);
+    connect(tryAgainButton, &QPushButton::clicked, this, &DownloadItem::tryAgain);
 
     init();
 }
@@ -244,15 +244,15 @@ void DownloadItem::init()
     // attach to the m_reply
     m_url = m_reply->url();
     m_reply->setParent(this);
-    connect(m_reply, SIGNAL(readyRead()), this, SLOT(downloadReadyRead()));
-    connect(m_reply, SIGNAL(error(QNetworkReply::NetworkError)),
-            this, SLOT(error(QNetworkReply::NetworkError)));
-    connect(m_reply, SIGNAL(downloadProgress(qint64, qint64)),
-            this, SLOT(downloadProgress(qint64, qint64)));
-    connect(m_reply, SIGNAL(metaDataChanged()),
-            this, SLOT(metaDataChanged()));
-    connect(m_reply, SIGNAL(finished()),
-            this, SLOT(finished()));
+    connect(m_reply, &QNetworkReply::readyRead, this, &DownloadItem::downloadReadyRead);
+#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
+    connect(m_reply, qOverload<QNetworkReply::NetworkError>(&QNetworkReply::error), this, &DownloadItem::error);
+#else
+    connect(m_reply, &QNetworkReply::errorOccurred, this, &DownloadItem::error);
+#endif
+    connect(m_reply, &QNetworkReply::downloadProgress, this, &DownloadItem::downloadProgress);
+    connect(m_reply, &QNetworkReply::metaDataChanged, this, &DownloadItem::metaDataChanged);
+    connect(m_reply, &QNetworkReply::finished, this, &DownloadItem::finished);
 
     // reset info
     downloadInfoLabel->clear();
@@ -496,15 +496,15 @@ void DownloadItem::metaDataChanged()
         if (url != redirectUrl) {
             url = redirectUrl;
 
-            disconnect(m_reply, SIGNAL(readyRead()), this, SLOT(downloadReadyRead()));
-            disconnect(m_reply, SIGNAL(error(QNetworkReply::NetworkError)),
-                       this, SLOT(error(QNetworkReply::NetworkError)));
-            disconnect(m_reply, SIGNAL(downloadProgress(qint64, qint64)),
-                       this, SLOT(downloadProgress(qint64, qint64)));
-            disconnect(m_reply, SIGNAL(metaDataChanged()),
-                       this, SLOT(metaDataChanged()));
-            disconnect(m_reply, SIGNAL(finished()),
-                       this, SLOT(finished()));
+            disconnect(m_reply, &QNetworkReply::readyRead, this, &DownloadItem::downloadReadyRead);
+#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
+            disconnect(m_reply, qOverload<QNetworkReply::NetworkError>(&QNetworkReply::error), this, &DownloadItem::error);
+#else
+            disconnect(m_reply, &QNetworkReply::errorOccurred, this, &DownloadItem::error);
+#endif
+            disconnect(m_reply, &QNetworkReply::downloadProgress, this, &DownloadItem::downloadProgress);
+            disconnect(m_reply, &QNetworkReply::metaDataChanged, this, &DownloadItem::metaDataChanged);
+            disconnect(m_reply, &QNetworkReply::finished, this, &DownloadItem::finished);
             m_reply->close();
             m_reply->deleteLater();
 

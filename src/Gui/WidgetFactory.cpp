@@ -377,8 +377,8 @@ ContainerDialog::ContainerDialog( QWidget* templChild )
     resize( QSize(307, 197).expandedTo(minimumSizeHint()) );
 
     // signals and slots connections
-    connect( buttonOk, SIGNAL( clicked() ), this, SLOT( accept() ) );
-    connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( reject() ) );
+    connect( buttonOk, &QPushButton::clicked, this, &QDialog::accept);
+    connect( buttonCancel, &QPushButton::clicked, this, &QDialog::reject);
 }
 
 /** Destroys the object and frees any allocated resources */

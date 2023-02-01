@@ -57,7 +57,8 @@ DlgUnitsCalculator::DlgUnitsCalculator( QWidget* parent, Qt::WindowFlags fl )
         ui->comboBoxScheme->addItem(item, i);
     }
 
-    connect(ui->ValueInput, SIGNAL(valueChanged(Base::Quantity)), this, SLOT(valueChanged(Base::Quantity)));
+    connect(ui->ValueInput, qOverload<const Base::Quantity&>(&InputField::valueChanged),
+            this, &DlgUnitsCalculator::valueChanged);
     connect(ui->ValueInput, &InputField::returnPressed,
             this, &DlgUnitsCalculator::returnPressed);
     connect(ui->ValueInput, &InputField::parseError, this, &DlgUnitsCalculator::parseError);

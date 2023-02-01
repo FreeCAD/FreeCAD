@@ -91,11 +91,11 @@ NetworkRetriever::NetworkRetriever( QObject * parent )
     wget = new QProcess(this);
 
     // if wgets exits emit signal
-    connect(wget, SIGNAL(finished(int, QProcess::ExitStatus)),
-            this, SLOT(wgetFinished(int, QProcess::ExitStatus)));
+    connect(wget, qOverload<int, QProcess::ExitStatus>(&QProcess::finished),
+            this, &NetworkRetriever::wgetFinished);
 
     // if application quits kill wget immediately to avoid dangling processes
-    connect( qApp, SIGNAL(lastWindowClosed()), wget, SLOT(kill()) );
+    connect(qApp, &QApplication::lastWindowClosed, wget, &QProcess::kill);
 }
 
 NetworkRetriever::~NetworkRetriever()
@@ -406,7 +406,7 @@ StdCmdDownloadOnlineHelp::StdCmdDownloadOnlineHelp( QObject * parent)
     wget->setFollowRelative( false );
     wget->setNoParent( true );
 
-    connect( wget, SIGNAL( wgetExited() ), this, SLOT( wgetFinished() ) );
+    connect(wget, &NetworkRetriever::wgetExited, this, &StdCmdDownloadOnlineHelp::wgetFinished);
 }
 
 StdCmdDownloadOnlineHelp::~StdCmdDownloadOnlineHelp()

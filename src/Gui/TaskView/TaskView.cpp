@@ -482,14 +482,14 @@ void TaskView::showDialog(TaskDialog *dlg)
     TaskDialogAttorney::setButtonBox(dlg, ActiveCtrl->buttonBox);
 
     // make connection to the needed signals
-    connect(ActiveCtrl->buttonBox,SIGNAL(accepted()),
-            this,SLOT(accept()));
-    connect(ActiveCtrl->buttonBox,SIGNAL(rejected()),
-            this,SLOT(reject()));
-    connect(ActiveCtrl->buttonBox,SIGNAL(helpRequested()),
-            this,SLOT(helpRequested()));
-    connect(ActiveCtrl->buttonBox,SIGNAL(clicked(QAbstractButton *)),
-            this,SLOT(clicked(QAbstractButton *)));
+    connect(ActiveCtrl->buttonBox, &QDialogButtonBox::accepted,
+            this, &TaskView::accept);
+    connect(ActiveCtrl->buttonBox, &QDialogButtonBox::rejected,
+            this, &TaskView::reject);
+    connect(ActiveCtrl->buttonBox, &QDialogButtonBox::helpRequested,
+            this, &TaskView::helpRequested);
+    connect(ActiveCtrl->buttonBox, &QDialogButtonBox::clicked,
+            this, &TaskView::clicked);
 
     const std::vector<QWidget*>& cont = dlg->getDialogContent();
 

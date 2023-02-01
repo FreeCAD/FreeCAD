@@ -70,7 +70,7 @@ DownloadManager::DownloadManager(QWidget *parent)
     ui->downloadsView->horizontalHeader()->setStretchLastSection(true);
     m_model = new DownloadModel(this);
     ui->downloadsView->setModel(m_model);
-    connect(ui->cleanupButton, SIGNAL(clicked()), this, SLOT(cleanup()));
+    connect(ui->cleanupButton, &QPushButton::clicked, this, &DownloadManager::cleanup);
     load();
 
     Gui::DockWindowManager* pDockMgr = Gui::DockWindowManager::instance();
@@ -167,7 +167,7 @@ void DownloadManager::handleUnsupportedContent(QNetworkReply *reply, bool reques
 
 void DownloadManager::addItem(DownloadItem *item)
 {
-    connect(item, SIGNAL(statusChanged()), this, SLOT(updateRow()));
+    connect(item, &DownloadItem::statusChanged, this, &DownloadManager::updateRow);
     int row = m_downloads.count();
     m_model->beginInsertRows(QModelIndex(), row, row);
     m_downloads.append(item);

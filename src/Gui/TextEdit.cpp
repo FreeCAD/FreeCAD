@@ -535,8 +535,8 @@ CompletionList::CompletionList(QPlainTextEdit* parent)
     pal.setColor(QPalette::Inactive, QPalette::HighlightedText, pal.color(QPalette::Active, QPalette::HighlightedText));
     parent->setPalette( pal );
 
-    connect(this, SIGNAL(itemActivated(QListWidgetItem *)),
-            this, SLOT(completionItem(QListWidgetItem *)));
+    connect(this, &CompletionList::itemActivated,
+            this, &CompletionList::completionItem);
 }
 
 CompletionList::~CompletionList()

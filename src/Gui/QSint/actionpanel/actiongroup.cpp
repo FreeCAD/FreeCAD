@@ -58,7 +58,7 @@ void ActionGroup::init(bool header)
   vbl->addWidget(myDummy);
   myDummy->hide();
 
-  connect(myHeader, SIGNAL(activated()), this, SLOT(showHide()));
+  connect(myHeader, &TaskHeader::activated, this, &ActionGroup::showHide);
 }
 
 void ActionGroup::setScheme(ActionPanelScheme *pointer)

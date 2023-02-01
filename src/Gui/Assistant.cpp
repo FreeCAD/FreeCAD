@@ -69,10 +69,10 @@ bool Assistant::startAssistant()
 {
     if (!proc) {
         proc = new QProcess();
-        connect(proc, SIGNAL(readyReadStandardOutput()),
-                this, SLOT(readyReadStandardOutput()));
-        connect(proc, SIGNAL(readyReadStandardError()),
-                this, SLOT(readyReadStandardError()));
+        connect(proc, &QProcess::readyReadStandardOutput,
+                this, &Assistant::readyReadStandardOutput);
+        connect(proc, &QProcess::readyReadStandardError,
+                this, &Assistant::readyReadStandardError);
     }
 
     if (proc->state() != QProcess::Running) {

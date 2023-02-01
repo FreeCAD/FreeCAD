@@ -1567,7 +1567,7 @@ VectorListWidget::VectorListWidget(int decimals, QWidget *parent)
   : PropertyEditorWidget(parent)
   , decimals(decimals)
 {
-    connect(button, SIGNAL(clicked()), this, SLOT(buttonClicked()));
+    connect(button, &QPushButton::clicked, this, &VectorListWidget::buttonClicked);
 }
 
 void VectorListWidget::buttonClicked()
@@ -2483,8 +2483,8 @@ void PlacementEditor::browse()
     }
     if (!_task) {
         _task = task;
-        connect(task, SIGNAL(placementChanged(const QVariant &, bool, bool)),
-                this, SLOT(updateValue(const QVariant&, bool, bool)));
+        connect(task, &TaskPlacement::placementChanged,
+                this, &PlacementEditor::updateValue);
     }
     task->setPlacement(value().value<Base::Placement>());
     task->setPropertyName(propertyname);
@@ -4319,10 +4319,10 @@ LinkLabel::LinkLabel (QWidget * parent, const App::Property *prop)
     
     // setLayout(layout);
     
-    connect(label, SIGNAL(linkActivated(const QString&)),
-            this, SLOT(onLinkActivated(const QString&)));
-    connect(editButton, SIGNAL(clicked()),
-            this, SLOT(onEditClicked()));
+    connect(label, &QLabel::linkActivated,
+            this, &LinkLabel::onLinkActivated);
+    connect(editButton, &QPushButton::clicked,
+            this, &LinkLabel::onEditClicked);
 }
 
 LinkLabel::~LinkLabel()

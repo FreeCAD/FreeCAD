@@ -67,8 +67,8 @@ using namespace Base;
 CommandIconView::CommandIconView ( QWidget * parent )
   : QListWidget(parent)
 {
-    connect(this, SIGNAL (currentItemChanged(QListWidgetItem *, QListWidgetItem *)),
-            this, SLOT (onSelectionChanged(QListWidgetItem *, QListWidgetItem *)) );
+    connect(this, &QListWidget::currentItemChanged,
+            this, &CommandIconView::onSelectionChanged);
 }
 
 /**
@@ -653,7 +653,7 @@ ColorButton::ColorButton(QWidget* parent)
 {
     d = new ColorButtonP();
     d->col = palette().color(QPalette::Active,QPalette::Midlight);
-    connect(this, SIGNAL(clicked()), SLOT(onChooseColor()));
+    connect(this, &ColorButton::clicked, this, &ColorButton::onChooseColor);
 
     int e = style()->pixelMetric(QStyle::PM_ButtonIconSize);
     setIconSize(QSize(2*e, e));
@@ -1254,7 +1254,7 @@ void StatusWidget::showText(int ms)
     show();
     QTimer timer;
     QEventLoop loop;
-    QObject::connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
+    QObject::connect(&timer, &QTimer::timeout, &loop, &QEventLoop::quit);
     timer.start(ms);
     loop.exec(QEventLoop::ExcludeUserInputEvents);
     hide();
@@ -1451,8 +1451,8 @@ LabelEditor::LabelEditor (QWidget * parent)
     lineEdit = new QLineEdit(this);
     layout->addWidget(lineEdit);
 
-    connect(lineEdit, SIGNAL(textChanged(const QString &)),
-            this, SLOT(validateText(const QString &)));
+    connect(lineEdit, &QLineEdit::textChanged,
+            this, &LabelEditor::validateText);
 
     button = new QPushButton(QLatin1String("..."), this);
 #if defined (Q_OS_MAC)
@@ -1460,7 +1460,7 @@ LabelEditor::LabelEditor (QWidget * parent)
 #endif
     layout->addWidget(button);
 
-    connect(button, SIGNAL(clicked()), this, SLOT(changeText()));
+    connect(button, &QPushButton::clicked, this, &LabelEditor::changeText);
 
     setFocusProxy(lineEdit);
 }
@@ -1556,7 +1556,7 @@ ExpLineEdit::ExpLineEdit(QWidget* parent, bool expressionOnly)
 {
     makeLabel(this);
 
-    QObject::connect(iconLabel, SIGNAL(clicked()), this, SLOT(openFormulaDialog()));
+    QObject::connect(iconLabel, &ExpressionLabel::clicked, this, &ExpLineEdit::openFormulaDialog);
     if (expressionOnly)
         QMetaObject::invokeMethod(this, "openFormulaDialog", Qt::QueuedConnection, QGenericReturnArgument());
 }
@@ -1673,7 +1673,7 @@ void ExpLineEdit::openFormulaDialog()
 
     auto box = new Gui::Dialog::DlgExpressionInput(
             getPath(), getExpression(),Unit(), this);
-    connect(box, SIGNAL(finished(int)), this, SLOT(finishFormulaDialog()));
+    connect(box, &Dialog::DlgExpressionInput::finished, this, &ExpLineEdit::finishFormulaDialog);
     box->show();
 
     QPoint pos = mapToGlobal(QPoint(0,0));

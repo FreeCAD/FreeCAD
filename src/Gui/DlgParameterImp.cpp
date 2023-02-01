@@ -660,8 +660,8 @@ ParameterValue::ParameterValue( QWidget * parent )
     newUlgAct = menuNew->addAction(tr("New unsigned item"), this, SLOT(onCreateUIntItem()));
     newBlnAct = menuNew->addAction(tr("New Boolean item"), this, SLOT(onCreateBoolItem()));
 
-    connect(this, SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)),
-            this, SLOT(onChangeSelectedItem(QTreeWidgetItem*, int)));
+    connect(this, &ParameterValue::itemDoubleClicked,
+            this, qOverload<QTreeWidgetItem*, int>(&ParameterValue::onChangeSelectedItem));
 }
 
 ParameterValue::~ParameterValue()

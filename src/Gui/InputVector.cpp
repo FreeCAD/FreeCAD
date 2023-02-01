@@ -74,8 +74,8 @@ LocationWidget::LocationWidget (QWidget * parent)
     auto gridLayout = new QGridLayout(this);
     gridLayout->addLayout(box, 0, 0, 1, 2);
 
-    connect(dValue, SIGNAL(activated(int)),
-            this, SLOT(on_direction_activated(int)));
+    connect(dValue, qOverload<int>(&QComboBox::activated),
+            this, &LocationWidget::on_direction_activated);
     retranslateUi();
 }
 

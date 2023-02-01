@@ -616,7 +616,7 @@ int PythonDebugger::tracer_callback(PyObject *obj, PyFrameObject *frame, int wha
                 if (bp.checkLine(line)) {
                     dbg->showDebugMarker(file, line);
                     QEventLoop loop;
-                    QObject::connect(dbg, SIGNAL(signalNextStep()), &loop, SLOT(quit()));
+                    QObject::connect(dbg, &PythonDebugger::signalNextStep, &loop, &QEventLoop::quit);
                     loop.exec();
                     dbg->hideDebugMarker(file);
                 }

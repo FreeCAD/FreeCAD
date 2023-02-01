@@ -59,8 +59,8 @@ using namespace Gui;
 GUIApplication::GUIApplication(int & argc, char ** argv)
     : GUIApplicationNativeEventAware(argc, argv)
 {
-    connect(this, SIGNAL(commitDataRequest(QSessionManager&)),
-            SLOT(commitData(QSessionManager&)), Qt::DirectConnection);
+    connect(this, &GUIApplication::commitDataRequest,
+            this, &GUIApplication::commitData, Qt::DirectConnection);
 #if QT_VERSION < QT_VERSION_CHECK(6,0,0)
     setFallbackSessionManagementEnabled(false);
 #endif
@@ -200,8 +200,8 @@ public:
     {
         // Start a QLocalServer to listen for connections
         server = new QLocalServer();
-        QObject::connect(server, SIGNAL(newConnection()),
-                         q_ptr, SLOT(receiveConnection()));
+        QObject::connect(server, &QLocalServer::newConnection,
+                         q_ptr, &GUISingleApplication::receiveConnection);
         // first attempt
         if (!server->listen(serverName)) {
             if (server->serverError() == QAbstractSocket::AddressInUseError) {
@@ -231,7 +231,7 @@ GUISingleApplication::GUISingleApplication(int & argc, char ** argv)
       d_ptr(new Private(this))
 {
     d_ptr->setupConnection();
-    connect(d_ptr->timer, SIGNAL(timeout()), this, SLOT(processMessages()));
+    connect(d_ptr->timer, &QTimer::timeout, this, &GUISingleApplication::processMessages);
 }
 
 GUISingleApplication::~GUISingleApplication()
@@ -274,8 +274,8 @@ void GUISingleApplication::receiveConnection()
     if (!socket)
         return;
 
-    connect(socket, SIGNAL(disconnected()),
-            socket, SLOT(deleteLater()));
+    connect(socket, &QLocalSocket::disconnected,
+            socket, &QLocalSocket::deleteLater);
     if (socket->waitForReadyRead()) {
         QDataStream in(socket);
         if (!in.atEnd()) {

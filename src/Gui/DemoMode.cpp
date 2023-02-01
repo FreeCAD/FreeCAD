@@ -51,7 +51,7 @@ DemoMode::DemoMode(QWidget* /*parent*/, Qt::WindowFlags fl)
 
     timer = new QTimer(this);
     timer->setInterval(1000 * ui->timeout->value());
-    connect(timer, SIGNAL(timeout()), this, SLOT(onAutoPlay()));
+    connect(timer, &QTimer::timeout, this, &DemoMode::onAutoPlay);
     oldvalue = ui->angleSlider->value();
 
     wasHidden = false;
