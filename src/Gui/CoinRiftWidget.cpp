@@ -317,7 +317,7 @@ void CoinRiftWidget::initializeGL()
 void CoinRiftWidget::paintGL()
 {
     const int ms(1000 / 75 /*fps*/);
-    QTimer::singleShot(ms, this, SLOT(updateGL()));
+    QTimer::singleShot(ms, this, &CoinRiftWidget::updateGL);
 
     // handling the safety warning
     handlingSafetyWarning();

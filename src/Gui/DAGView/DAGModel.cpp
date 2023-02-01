@@ -1109,7 +1109,7 @@ void Model::onRenameSlot()
   proxy->setGeometry(text->sceneBoundingRect());
 
   lineEdit->selectAll();
-  QTimer::singleShot(0, lineEdit, SLOT(setFocus()));
+  QTimer::singleShot(0, lineEdit, qOverload<>(&QLineEdit::setFocus));
 }
 
 void Model::renameAcceptedSlot()

@@ -452,14 +452,14 @@ ParameterGroup::ParameterGroup( QWidget * parent )
   : QTreeWidget(parent)
 {
     menuEdit = new QMenu(this);
-    expandAct = menuEdit->addAction(tr("Expand"), this, SLOT(onToggleSelectedItem()));
+    expandAct = menuEdit->addAction(tr("Expand"), this, &ParameterGroup::onToggleSelectedItem);
     menuEdit->addSeparator();
-    subGrpAct = menuEdit->addAction(tr("Add sub-group"), this, SLOT(onCreateSubgroup()));
-    removeAct = menuEdit->addAction(tr("Remove group"), this, SLOT(onDeleteSelectedItem()));
-    renameAct = menuEdit->addAction(tr("Rename group"), this, SLOT(onRenameSelectedItem()));
+    subGrpAct = menuEdit->addAction(tr("Add sub-group"), this, &ParameterGroup::onCreateSubgroup);
+    removeAct = menuEdit->addAction(tr("Remove group"), this, &ParameterGroup::onDeleteSelectedItem);
+    renameAct = menuEdit->addAction(tr("Rename group"), this, &ParameterGroup::onRenameSelectedItem);
     menuEdit->addSeparator();
-    exportAct = menuEdit->addAction(tr("Export parameter"), this, SLOT(onExportToFile()));
-    importAct = menuEdit->addAction(tr("Import parameter"), this, SLOT(onImportFromFile()));
+    exportAct = menuEdit->addAction(tr("Export parameter"), this, &ParameterGroup::onExportToFile);
+    importAct = menuEdit->addAction(tr("Import parameter"), this, &ParameterGroup::onImportFromFile);
     menuEdit->setDefaultAction(expandAct);
 }
 
@@ -646,19 +646,19 @@ ParameterValue::ParameterValue( QWidget * parent )
   : QTreeWidget(parent)
 {
     menuEdit = new QMenu(this);
-    changeAct = menuEdit->addAction(tr("Change value"), this, SLOT(onChangeSelectedItem()));
+    changeAct = menuEdit->addAction(tr("Change value"), this, qOverload<>(&ParameterValue::onChangeSelectedItem));
     menuEdit->addSeparator();
-    removeAct = menuEdit->addAction(tr("Remove key"), this, SLOT(onDeleteSelectedItem()));
-    renameAct = menuEdit->addAction(tr("Rename key"), this, SLOT(onRenameSelectedItem()));
+    removeAct = menuEdit->addAction(tr("Remove key"), this, &ParameterValue::onDeleteSelectedItem);
+    renameAct = menuEdit->addAction(tr("Rename key"), this, &ParameterValue::onRenameSelectedItem);
     menuEdit->setDefaultAction(changeAct);
 
     menuEdit->addSeparator();
     menuNew = menuEdit->addMenu(tr("New"));
-    newStrAct = menuNew->addAction(tr("New string item"), this, SLOT(onCreateTextItem()));
-    newFltAct = menuNew->addAction(tr("New float item"), this, SLOT(onCreateFloatItem()));
-    newIntAct = menuNew->addAction(tr("New integer item"), this, SLOT(onCreateIntItem()));
-    newUlgAct = menuNew->addAction(tr("New unsigned item"), this, SLOT(onCreateUIntItem()));
-    newBlnAct = menuNew->addAction(tr("New Boolean item"), this, SLOT(onCreateBoolItem()));
+    newStrAct = menuNew->addAction(tr("New string item"), this, &ParameterValue::onCreateTextItem);
+    newFltAct = menuNew->addAction(tr("New float item"), this, &ParameterValue::onCreateFloatItem);
+    newIntAct = menuNew->addAction(tr("New integer item"), this, &ParameterValue::onCreateIntItem);
+    newUlgAct = menuNew->addAction(tr("New unsigned item"), this, &ParameterValue::onCreateUIntItem);
+    newBlnAct = menuNew->addAction(tr("New Boolean item"), this, &ParameterValue::onCreateBoolItem);
 
     connect(this, &ParameterValue::itemDoubleClicked,
             this, qOverload<QTreeWidgetItem*, int>(&ParameterValue::onChangeSelectedItem));

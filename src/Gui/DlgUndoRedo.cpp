@@ -66,8 +66,9 @@ void UndoDialog::onFetchInfo()
     MDIView* mdi =  getMainWindow()->activeWindow();
     if (mdi) {
         QStringList vecUndos = mdi->undoActions();
-        for (QStringList::Iterator i = vecUndos.begin(); i != vecUndos.end(); ++i)
-            addAction(*i, this, SLOT(onSelected()));
+        for (QStringList::Iterator i = vecUndos.begin(); i != vecUndos.end(); ++i) {
+            addAction(*i, this, &UndoDialog::onSelected);
+        }
     }
 }
 
@@ -114,8 +115,9 @@ void RedoDialog::onFetchInfo()
     MDIView* mdi = getMainWindow()->activeWindow();
     if (mdi) {
         QStringList vecRedos = mdi->redoActions();
-        for (QStringList::Iterator i = vecRedos.begin(); i != vecRedos.end(); ++i)
-            addAction(*i, this, SLOT(onSelected()));
+        for (QStringList::Iterator i = vecRedos.begin(); i != vecRedos.end(); ++i) {
+            addAction(*i, this, &RedoDialog::onSelected);
+        }
     }
 }
 

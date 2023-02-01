@@ -164,7 +164,7 @@ void TaskHeader::animate()
     m_opacity = qMax(0.1, m_opacity-0.05);
   }
 
-  QTimer::singleShot(100, this, SLOT(animate()));
+  QTimer::singleShot(100, this, &TaskHeader::animate);
   update();
 }
 
@@ -177,7 +177,7 @@ void TaskHeader::enterEvent ( QEnterEvent * /*event*/ )
   m_over = true;
 
   if (isEnabled())
-    QTimer::singleShot(100, this, SLOT(animate()));
+    QTimer::singleShot(100, this, &TaskHeader::animate);
 
   update();
 }
@@ -187,7 +187,7 @@ void TaskHeader::leaveEvent ( QEvent * /*event*/ )
   m_over = false;
 
   if (isEnabled())
-    QTimer::singleShot(100, this, SLOT(animate()));
+    QTimer::singleShot(100, this, &TaskHeader::animate);
 
   update();
 }

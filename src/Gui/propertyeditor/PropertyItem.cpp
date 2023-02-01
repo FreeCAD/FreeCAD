@@ -4373,7 +4373,7 @@ void LinkLabel::onLinkActivated (const QString& s)
 {
     Q_UNUSED(s);
     auto select = new LinkSelection(qvariant_cast<App::SubObjectT>(link));
-    QTimer::singleShot(50, select, SLOT(select()));
+    QTimer::singleShot(50, select, &LinkSelection::select);
 }
 
 void LinkLabel::onEditClicked ()
