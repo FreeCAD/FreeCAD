@@ -340,7 +340,7 @@ class ControlWidget(QtGui.QWidget):
             self._writeBtt.setDisabled(False)
             self._editBtt.setDisabled(
                 not machine.solver.Proxy.editSupported()
-                or machine.state < femsolver.run.PREPARE
+                or machine.state <= femsolver.run.PREPARE
             )
 
 ##  @}
