@@ -516,6 +516,23 @@ class _EquationHeat(CommandManager):
         self.do_activated = "add_obj_on_gui_selobj_noset_edit"
 
 
+class _EquationMagnetodynamic2D(CommandManager):
+    "The FEM_EquationMagnetodynamic2D command definition"
+
+    def __init__(self):
+        super(_EquationMagnetodynamic2D, self).__init__()
+        self.menutext = Qt.QT_TRANSLATE_NOOP(
+            "FEM_EquationMagnetodynamic2D",
+            "Magnetodynamic2D equation"
+        )
+        self.tooltip = Qt.QT_TRANSLATE_NOOP(
+            "FEM_EquationMagnetodynamic2D",
+            "Creates a FEM equation for\n2D magentodynamic forces"
+        )
+        self.is_active = "with_solver_elmer"
+        self.do_activated = "add_obj_on_gui_selobj_noset_edit"
+
+
 class _Examples(CommandManager):
     "The FEM_Examples command definition"
 
@@ -1200,6 +1217,10 @@ FreeCADGui.addCommand(
 FreeCADGui.addCommand(
     "FEM_EquationHeat",
     _EquationHeat()
+)
+FreeCADGui.addCommand(
+    "FEM_EquationMagnetodynamic2D",
+    _EquationMagnetodynamic2D()
 )
 FreeCADGui.addCommand(
     "FEM_Examples",

@@ -40,6 +40,7 @@ from .equations import electrostatic
 from .equations import flow
 from .equations import flux
 from .equations import heat
+from .equations import magnetodynamic2D
 from .. import run
 from .. import solverbase
 from femtools import femutils
@@ -71,6 +72,7 @@ class Proxy(solverbase.Proxy):
         "Flux": flux,
         "Electricforce": electricforce,
         "Flow": flow,
+        "Magnetodynamic2D": magnetodynamic2D,
     }
 
     def __init__(self, obj):

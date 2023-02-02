@@ -54,12 +54,15 @@ from .equations import electrostatic_writer as ES_writer
 from .equations import flow_writer
 from .equations import flux_writer
 from .equations import heat_writer
+from .equations import magnetodynamic2D_writer as MgDyn2D_writer
 
 
 _STARTINFO_NAME = "ELMERSOLVER_STARTINFO"
 _SIF_NAME = "case.sif"
 _ELMERGRID_IFORMAT = "8"
 _ELMERGRID_OFORMAT = "2"
+_NON_CARTESIAN_CS = ["Polar 2D", "Polar 3D",
+                     "Cylindric", "Cylindric Symmetric"]
 
 
 def _getAllSubObjects(obj):
@@ -96,6 +99,7 @@ class Writer(object):
         self._handleHeat()
         self._handleFlow()
         self._handleFlux()
+        self._handleMagnetodynamic2D()
         self._addOutputSolver()
 
         self._writeSif()
@@ -531,6 +535,39 @@ class Writer(object):
             HeatW.handleHeatMaterial(activeIn)
 
     #-------------------------------------------------------------------------------------------
+    # Magnetodynamic2D
+
+    def _handleMagnetodynamic2D(self):
+        MgDyn2D = MgDyn2D_writer.MgDyn2Dwriter(self, self.solver)
+        activeIn = []
+        for equation in self.solver.Group:
+            if femutils.is_of_type(equation, "Fem::EquationElmerMagnetodynamic2D"):
+                if equation.References:
+                    activeIn = equation.References[0][1]
+                else:
+                    activeIn = self.getAllBodies()
+                # Magnetodynamic2D cannot handle all coordinate sysytems
+                if self.solver.CoordinateSystem in _NON_CARTESIAN_CS:
+                    raise WriteError(
+                        "The coordinate setting '{}'\n is not "
+                        "supported by the equation 'Magnetodynamic2D'.\n\n"
+                        "The possible settings are:\n'Cartesian 2D',\n"
+                        "'Cartesian 3D',\nor 'Axi Symmetric'".format(self.solver.CoordinateSystem)
+                    )
+                    
+                solverSection = MgDyn2D.getMagnetodynamic2DSolver(equation)
+                solverPostSection = MgDyn2D.getMagnetodynamic2DSolverPost(equation)
+                for body in activeIn:
+                    self._addSolver(body, solverSection)
+                    self._addSolver(body, solverPostSection)
+                    MgDyn2D.handleMagnetodynamic2DEquation(activeIn, equation)
+        if activeIn:
+            MgDyn2D.handleMagnetodynamic2DConstants()
+            MgDyn2D.handleMagnetodynamic2DBndConditions()
+            MgDyn2D.handleMagnetodynamic2DBodyForces(activeIn)
+            MgDyn2D.handleMagnetodynamic2DMaterial(activeIn)
+
+    #-------------------------------------------------------------------------------------------
     # Solver handling
 
     def createEmptySolver(self):
@@ -753,7 +790,7 @@ class Writer(object):
     def equation(self, body, key, attr):
         self._builder.equation(body, key, attr)
 
-    def _bodyForce(self, body, key, attr):
+    def bodyForce(self, body, key, attr):
         self._builder.bodyForce(body, key, attr)
 
     def _addSolver(self, body, solverSection):
