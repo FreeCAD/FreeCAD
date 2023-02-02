@@ -72,9 +72,8 @@
 #include <gp_Pln.hxx>
 #include <gp_Pnt.hxx>
 #include <sstream>
+#include <QtConcurrentRun>
 #endif
-
-#include <QtConcurrent>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -267,19 +266,28 @@ void DrawViewSection::onChanged(const App::Property* prop)
 
 TopoDS_Shape DrawViewSection::getShapeToCut()
 {
-    //    Base::Console().Message("DVS::getShapeToCut()\n");
-    App::DocumentObject* base = BaseView.getValue();
-    TechDraw::DrawViewPart* dvp = nullptr;
-    if (!base || !base->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
-        //this can probably only happen with scripting
+//    Base::Console().Message("DVS::getShapeToCut()\n");
+    App::DocumentObject *base = BaseView.getValue();
+    TechDraw::DrawViewPart *dvp = nullptr;
+    TechDraw::DrawViewSection *dvs = nullptr;
+    if (!base) {
         return TopoDS_Shape();
     }
-    else {
-        dvp = static_cast<TechDraw::DrawViewPart*>(base);
-    }
-    TopoDS_Shape shapeToCut = dvp->getSourceShape();
-    if (FuseBeforeCut.getValue()) {
-        shapeToCut = dvp->getSourceShapeFused();
+
+    TopoDS_Shape shapeToCut;
+    if (base->getTypeId().isDerivedFrom(TechDraw::DrawViewSection::getClassTypeId())) {
+        dvs = static_cast<TechDraw::DrawViewSection *>(base);
+        shapeToCut = dvs->getCutShape();
+    } else if (base->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+        dvp = static_cast<TechDraw::DrawViewPart *>(base);
+        shapeToCut = dvp->getSourceShape();
+        if (FuseBeforeCut.getValue()) {
+            shapeToCut = dvp->getSourceShapeFused();
+        }
+
+    } else {
+        Base::Console().Message("DVS::getShapeToCut - base is weird\n");
+        return TopoDS_Shape();
     }
     return shapeToCut;
 }
@@ -402,27 +410,20 @@ void DrawViewSection::makeSectionCut(TopoDS_Shape& baseShape)
         BRepTools::Write(m_cuttingTool, "DVSTool.brep");//debug
     }
 
-    // perform cut
-    //    BRep_Builder builder;
-    //    TopoDS_Compound cutPieces;
-    //    builder.MakeCompound(cutPieces);
-    //    TopExp_Explorer expl(myShape, TopAbs_SOLID);
-    //    for (; expl.More(); expl.Next()) {
-    //        const TopoDS_Solid& s = TopoDS::Solid(expl.Current());
-    //        BRepAlgoAPI_Cut mkCut(s, m_cuttingTool);
-    //        if (!mkCut.IsDone()) {
-    //            Base::Console().Warning("DVS: Section cut has failed in %s\n", getNameInDocument());
-    //            continue;
-    //        }
-    //        builder.Add(cutPieces, mkCut.Shape());
-    //    }
-
-    TopoDS_Shape cutPieces = TopoDS_Shape();
-    BRepAlgoAPI_Cut mkCut(myShape, m_cuttingTool);
-    if (!mkCut.IsDone()) {
-        Base::Console().Warning("DVS: Section cut has failed in %s\n", getNameInDocument());
-    } else {
-        cutPieces = mkCut.Shape();
+    //perform the cut. We cut each solid in myShape individually to avoid issues where
+    //a compound BaseShape does not cut correctly.
+    BRep_Builder builder;
+    TopoDS_Compound cutPieces;
+    builder.MakeCompound(cutPieces);
+    TopExp_Explorer expl(myShape, TopAbs_SOLID);
+    for (; expl.More(); expl.Next()) {
+        const TopoDS_Solid& s = TopoDS::Solid(expl.Current());
+        BRepAlgoAPI_Cut mkCut(s, m_cuttingTool);
+        if (!mkCut.IsDone()) {
+            Base::Console().Warning("DVS: Section cut has failed in %s\n", getNameInDocument());
+            continue;
+        }
+        builder.Add(cutPieces, mkCut.Shape());
     }
 
     // cutPieces contains result of cutting each subshape in baseShape with tool
