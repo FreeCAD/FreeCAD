@@ -137,7 +137,6 @@ class DraftTool:
         self.ui = Gui.draftToolBar
         self.featureName = name
         self.ui.sourceCmd = self
-        self.ui.show()
         if not noplanesetup:
             App.DraftWorkingPlane.setup()
         self.node = []
