@@ -88,34 +88,32 @@ class Command3DLengthDimension:
         else:
             return False
 
-    def selectionTest(self):
-        '''test correct selection'''
-        if Gui.Selection.getSelection():
-            view = Gui.Selection.getSelection()[0]
-            if Gui.Selection.getSelectionEx():
-                objectList = Gui.Selection.getSelectionEx()[0].SubElementNames
-                if len(objectList)>=2:
-                    edges = []
-                    vertexes = []
-                    for objectString in objectList:
-                        if objectString[0:4] == 'Edge':
-                            edges.append(view.getEdgeBySelection(objectString))
-                        elif objectString[0:6] == 'Vertex':
-                            vertexes.append(view.getVertexBySelection(objectString))
-                    if len(edges) >= 2:
-                        if len(vertexes)<2:
-                            vertexes = []
-                            vertexes.append(edges[0].Vertexes[0])
-                            vertexes.append(edges[0].Vertexes[1])
-                        return(edges,vertexes)
-                    else:
-                        return False
-                else:
-                    return False
-            else:
-                return False
-        else:
+        if not Gui.Selection.getSelection():
             return False
+        view = Gui.Selection.getSelection()[0]
+
+        if not Gui.Selection.getSelectionEx():
+            return False
+        objectList = Gui.Selection.getSelectionEx()[0].SubElementNames
+
+        if not len(objectList)>=2:
+            return False
+
+        edges = []
+        vertexes = []
+        for objectString in objectList:
+            if objectString[0:4] == 'Edge':
+                edges.append(view.getEdgeBySelection(objectString))
+            elif objectString[0:6] == 'Vertex':
+                vertexes.append(view.getVertexBySelection(objectString))
+        if not len(edges) >= 2:
+            return False
+
+        if len(vertexes)<2:
+            vertexes = []
+            vertexes.append(edges[0].Vertexes[0])
+            vertexes.append(edges[0].Vertexes[1])
+        return(edges,vertexes)
 
 
 
