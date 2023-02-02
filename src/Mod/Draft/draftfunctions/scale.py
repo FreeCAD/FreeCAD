@@ -147,9 +147,9 @@ def scale_vertex(obj, vertex_index, scale, center):
     Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
     """
     points = obj.Points
-    points[vertex_index] = obj.Placement.inverse().multVec(
+    points[vertex_index] = obj.getGlobalPlacement().inverse().multVec(
         scale_vector_from_center(
-            obj.Placement.multVec(points[vertex_index]),
+            obj.getGlobalPlacement().multVec(points[vertex_index]),
             scale, center))
     obj.Points = points
 
@@ -189,15 +189,15 @@ def copy_scaled_edge(obj, edge_index, scale, center):
     Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
     """
     vertex1 = scale_vector_from_center(
-        obj.Placement.multVec(obj.Points[edge_index]),
+        obj.getGlobalPlacement().multVec(obj.Points[edge_index]),
         scale, center)
     if utils.is_closed_edge(edge_index, obj):
         vertex2 = scale_vector_from_center(
-            obj.Placement.multVec(obj.Points[0]),
+            obj.getGlobalPlacement().multVec(obj.Points[0]),
             scale, center)
     else:
         vertex2 = scale_vector_from_center(
-            obj.Placement.multVec(obj.Points[edge_index+1]),
+            obj.getGlobalPlacement().multVec(obj.Points[edge_index+1]),
             scale, center)
     return make_line.make_line(vertex1, vertex2)
 

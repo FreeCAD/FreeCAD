@@ -178,6 +178,7 @@ def move_vertex(object, vertex_index, vector):
     Needed for SubObjects modifiers.
     Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
     """
+    vector = object.getGlobalPlacement().inverse().Rotation.multVec(vector)
     points = object.Points
     points[vertex_index] = points[vertex_index].add(vector)
     object.Points = points
@@ -191,11 +192,11 @@ def move_edge(object, edge_index, vector):
     Needed for SubObjects modifiers.
     Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
     """
-    moveVertex(object, edge_index, vector)
+    move_vertex(object, edge_index, vector)
     if utils.isClosedEdge(edge_index, object):
-        moveVertex(object, 0, vector)
+        move_vertex(object, 0, vector)
     else:
-        moveVertex(object, edge_index+1, vector)
+        move_vertex(object, edge_index+1, vector)
 
 
 moveEdge = move_edge
@@ -220,11 +221,11 @@ def copy_moved_edge(object, edge_index, vector):
     Needed for SubObjects modifiers.
     Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
     """
-    vertex1 = object.Placement.multVec(object.Points[edge_index]).add(vector)
+    vertex1 = object.getGlobalPlacement().multVec(object.Points[edge_index]).add(vector)
     if utils.isClosedEdge(edge_index, object):
-        vertex2 = object.Placement.multVec(object.Points[0]).add(vector)
+        vertex2 = object.getGlobalPlacement().multVec(object.Points[0]).add(vector)
     else:
-        vertex2 = object.Placement.multVec(object.Points[edge_index+1]).add(vector)
+        vertex2 = object.getGlobalPlacement().multVec(object.Points[edge_index+1]).add(vector)
     return make_line.make_line(vertex1, vertex2)
 
 ## @}

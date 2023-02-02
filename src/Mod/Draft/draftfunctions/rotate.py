@@ -190,9 +190,9 @@ def rotate_vertex(object, vertex_index, angle, center, axis):
     Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
     """
     points = object.Points
-    points[vertex_index] = object.Placement.inverse().multVec(
+    points[vertex_index] = object.getGlobalPlacement().inverse().multVec(
         rotate_vector_from_center(
-            object.Placement.multVec(points[vertex_index]),
+            object.getGlobalPlacement().multVec(points[vertex_index]),
             angle, axis, center))
     object.Points = points
 
@@ -218,11 +218,11 @@ def rotate_edge(object, edge_index, angle, center, axis):
     Needed for SubObjects modifiers.
     Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
     """
-    rotateVertex(object, edge_index, angle, center, axis)
+    rotate_vertex(object, edge_index, angle, center, axis)
     if utils.isClosedEdge(edge_index, object):
-        rotateVertex(object, 0, angle, center, axis)
+        rotate_vertex(object, 0, angle, center, axis)
     else:
-        rotateVertex(object, edge_index+1, angle, center, axis)
+        rotate_vertex(object, edge_index+1, angle, center, axis)
 
 
 rotateEdge = rotate_edge
@@ -249,15 +249,15 @@ def copy_rotated_edge(object, edge_index, angle, center, axis):
     Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
     """
     vertex1 = rotate_vector_from_center(
-        object.Placement.multVec(object.Points[edge_index]),
+        object.getGlobalPlacement().multVec(object.Points[edge_index]),
         angle, axis, center)
     if utils.isClosedEdge(edge_index, object):
         vertex2 = rotate_vector_from_center(
-            object.Placement.multVec(object.Points[0]),
+            object.getGlobalPlacement().multVec(object.Points[0]),
             angle, axis, center)
     else:
         vertex2 = rotate_vector_from_center(
-            object.Placement.multVec(object.Points[edge_index+1]),
+            object.getGlobalPlacement().multVec(object.Points[edge_index+1]),
             angle, axis, center)
     return make_line.make_line(vertex1, vertex2)
 
