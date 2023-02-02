@@ -69,16 +69,6 @@ class BaseViewProxy(object):
         return mode
 
 
-class HeatProxy(BaseProxy):
-    pass
-
-
-class HeatViewProxy(BaseViewProxy):
-
-    def getIcon(self):
-        return ":/icons/FEM_EquationHeat.svg"
-
-
 class ElasticityProxy(BaseProxy):
     pass
 
@@ -89,13 +79,17 @@ class ElasticityViewProxy(BaseViewProxy):
         return ":/icons/FEM_EquationElasticity.svg"
 
 
+class ElectricforceProxy(BaseProxy):
+    pass
+
+
 class ElectricforceViewProxy(BaseViewProxy):
 
     def getIcon(self):
         return ":/icons/FEM_EquationElectricforce.svg"
 
 
-class ElectricforceProxy(BaseProxy):
+class ElectrostaticProxy(BaseProxy):
     pass
 
 
@@ -103,10 +97,6 @@ class ElectrostaticViewProxy(BaseViewProxy):
 
     def getIcon(self):
         return ":/icons/FEM_EquationElectrostatic.svg"
-
-
-class ElectrostaticProxy(BaseProxy):
-    pass
 
 
 class FlowProxy(BaseProxy):
@@ -119,14 +109,24 @@ class FlowViewProxy(BaseViewProxy):
         return ":/icons/FEM_EquationFlow.svg"
 
 
+class FluxProxy(BaseProxy):
+    pass
+
+
 class FluxViewProxy(BaseViewProxy):
 
     def getIcon(self):
         return ":/icons/FEM_EquationFlux.svg"
 
 
-class FluxProxy(BaseProxy):
+class HeatProxy(BaseProxy):
     pass
+
+
+class HeatViewProxy(BaseViewProxy):
+
+    def getIcon(self):
+        return ":/icons/FEM_EquationHeat.svg"
 
 
 ##  @}
