@@ -4,6 +4,9 @@ body {
     font-family: FONTFAMILY;
     font-size: FONTSIZE;
 }
+body::-webkit-scrollbar {
+    display: OVERFLOW;
+}
 a, a:link, a:visited {
     text-decoration: none;
     color: LINKCOLOR;
