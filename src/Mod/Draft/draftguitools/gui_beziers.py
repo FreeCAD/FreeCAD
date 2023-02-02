@@ -187,8 +187,6 @@ class BezCurve(gui_lines.Line):
         if self.ui:
             if hasattr(self, "bezcurvetrack"):
                 self.bezcurvetrack.finalize()
-        if not utils.getParam("UiMode", 1):
-            Gui.Control.closeDialog()
         if self.obj:
             # remove temporary object, if any
             old = self.obj.Name
@@ -422,8 +420,6 @@ class CubicBezCurve(gui_lines.Line):
         if self.ui:
             if hasattr(self, "bezcurvetrack"):
                 self.bezcurvetrack.finalize()
-        if not utils.getParam("UiMode", 1):
-            Gui.Control.closeDialog()
         if self.obj:
             # remove temporary object, if any
             old = self.obj.Name

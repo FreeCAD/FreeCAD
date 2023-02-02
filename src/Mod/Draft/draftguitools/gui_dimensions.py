@@ -120,7 +120,6 @@ class Dimension(gui_base_original.Creator):
                 self.selectmode = False
                 self.set_selection()
                 _msg(translate("draft", "Pick first point"))
-                Gui.draftToolBar.show()
 
     def set_selection(self):
         """Fill the nodes according to the selected geometry."""

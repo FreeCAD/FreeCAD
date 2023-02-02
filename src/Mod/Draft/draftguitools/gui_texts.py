@@ -74,7 +74,6 @@ class Text(gui_base_original.Creator):
             self.ui.xValue.setFocus()
             self.ui.xValue.selectAll()
             _msg(translate("draft", "Pick location point"))
-            Gui.draftToolBar.show()
 
     def finish(self, cont=False):
         """Terminate the operation.

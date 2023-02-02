@@ -167,7 +167,7 @@ def get_param_type(param):
     """
     if param in ("dimsymbol", "dimPrecision", "dimorientation",
                  "precision", "defaultWP", "snapRange", "gridEvery",
-                 "linewidth", "UiMode", "modconstrain", "modsnap",
+                 "linewidth", "modconstrain", "modsnap",
                  "maxSnapEdges", "modalt", "HatchPatternResolution",
                  "snapStyle", "dimstyle", "gridSize", "gridTransparency"):
         return "int"
