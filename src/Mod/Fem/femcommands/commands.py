@@ -397,23 +397,6 @@ class _ElementRotation1D(CommandManager):
         self.do_activated = "add_obj_on_gui_noset_edit"
 
 
-class _EquationElectrostatic(CommandManager):
-    "The FEM_EquationElectrostatic command definition"
-
-    def __init__(self):
-        super(_EquationElectrostatic, self).__init__()
-        self.menutext = Qt.QT_TRANSLATE_NOOP(
-            "FEM_EquationElectrostatic",
-            "Electrostatic equation"
-        )
-        self.tooltip = Qt.QT_TRANSLATE_NOOP(
-            "FEM_EquationElectrostatic",
-            "Creates a FEM equation for electrostatic"
-        )
-        self.is_active = "with_solver_elmer"
-        self.do_activated = "add_obj_on_gui_selobj_noset_edit"
-
-
 class _EquationElasticity(CommandManager):
     "The FEM_EquationElasticity command definition"
 
@@ -426,6 +409,40 @@ class _EquationElasticity(CommandManager):
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_EquationElasticity",
             "Creates a FEM equation for elasticity"
+        )
+        self.is_active = "with_solver_elmer"
+        self.do_activated = "add_obj_on_gui_selobj_noset_edit"
+
+
+class _EquationElectricforce(CommandManager):
+    "The FEM_EquationElectricforce command definition"
+
+    def __init__(self):
+        super(_EquationElectricforce, self).__init__()
+        self.menutext = Qt.QT_TRANSLATE_NOOP(
+            "FEM_EquationElectricforce",
+            "Electricforce equation"
+        )
+        self.tooltip = Qt.QT_TRANSLATE_NOOP(
+            "FEM_EquationElectricforce",
+            "Creates a FEM equation for electric forces"
+        )
+        self.is_active = "with_solver_elmer"
+        self.do_activated = "add_obj_on_gui_selobj_noset_edit"
+
+
+class _EquationElectrostatic(CommandManager):
+    "The FEM_EquationElectrostatic command definition"
+
+    def __init__(self):
+        super(_EquationElectrostatic, self).__init__()
+        self.menutext = Qt.QT_TRANSLATE_NOOP(
+            "FEM_EquationElectrostatic",
+            "Electrostatic equation"
+        )
+        self.tooltip = Qt.QT_TRANSLATE_NOOP(
+            "FEM_EquationElectrostatic",
+            "Creates a FEM equation for electrostatic"
         )
         self.is_active = "with_solver_elmer"
         self.do_activated = "add_obj_on_gui_selobj_noset_edit"
@@ -460,23 +477,6 @@ class _EquationFlux(CommandManager):
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_EquationFlux",
             "Creates a FEM equation for flux"
-        )
-        self.is_active = "with_solver_elmer"
-        self.do_activated = "add_obj_on_gui_selobj_noset_edit"
-
-
-class _EquationElectricforce(CommandManager):
-    "The FEM_EquationElectricforce command definition"
-
-    def __init__(self):
-        super(_EquationElectricforce, self).__init__()
-        self.menutext = Qt.QT_TRANSLATE_NOOP(
-            "FEM_EquationElectricforce",
-            "Electricforce equation"
-        )
-        self.tooltip = Qt.QT_TRANSLATE_NOOP(
-            "FEM_EquationElectricforce",
-            "Creates a FEM equation for electric forces"
         )
         self.is_active = "with_solver_elmer"
         self.do_activated = "add_obj_on_gui_selobj_noset_edit"
@@ -1157,12 +1157,16 @@ FreeCADGui.addCommand(
     _ElementRotation1D()
 )
 FreeCADGui.addCommand(
-    "FEM_EquationElectrostatic",
-    _EquationElectrostatic()
-)
-FreeCADGui.addCommand(
     "FEM_EquationElasticity",
     _EquationElasticity()
+)
+FreeCADGui.addCommand(
+    "FEM_EquationElectricforce",
+    _EquationElectricforce()
+)
+FreeCADGui.addCommand(
+    "FEM_EquationElectrostatic",
+    _EquationElectrostatic()
 )
 FreeCADGui.addCommand(
     "FEM_EquationFlow",
@@ -1171,10 +1175,6 @@ FreeCADGui.addCommand(
 FreeCADGui.addCommand(
     "FEM_EquationFlux",
     _EquationFlux()
-)
-FreeCADGui.addCommand(
-    "FEM_EquationElectricforce",
-    _EquationElectricforce()
 )
 FreeCADGui.addCommand(
     "FEM_EquationHeat",
