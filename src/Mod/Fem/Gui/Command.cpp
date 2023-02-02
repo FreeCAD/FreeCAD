@@ -1344,6 +1344,136 @@ bool CmdFemCompEmConstraints::isActive()
 }
 
 
+//===========================================================================
+// FEM_CompEmEquations (dropdown toolbar button for Electromagnetic equations)
+//===========================================================================
+
+DEF_STD_CMD_ACL(CmdFEMCompEmEquations)
+
+CmdFEMCompEmEquations::CmdFEMCompEmEquations()
+    : Command("FEM_CompEmEquations")
+{
+    sAppModule = "Fem";
+    sGroup = QT_TR_NOOP("Fem");
+    sMenuText = QT_TR_NOOP("Electromagnetic equations...");
+    sToolTipText = QT_TR_NOOP(
+        "Electromagnetic equations for the Elmer solver");
+    sWhatsThis = "FEM_CompEmEquations";
+    sStatusTip = sToolTipText;
+}
+
+void CmdFEMCompEmEquations::activated(int iMsg)
+{
+    Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
+    if (iMsg == 0)
+        rcCmdMgr.runCommandByName("FEM_EquationElectricforce");
+    else if (iMsg == 1)
+        rcCmdMgr.runCommandByName("FEM_EquationElectrostatic");
+    else if (iMsg == 2)
+        rcCmdMgr.runCommandByName("FEM_EquationMagnetodynamic2D");
+    else
+        return;
+
+    // Since the default icon is reset when enabling/disabling the command we have
+    // to explicitly set the icon of the used command.
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    assert(iMsg < a.size());
+    pcAction->setIcon(a[iMsg]->icon());
+}
+
+Gui::Action* CmdFEMCompEmEquations::createAction()
+{
+    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
+    pcAction->setDropDownMenu(true);
+    applyCommandData(this->className(), pcAction);
+
+    QAction* cmd0 = pcAction->addAction(QString());
+    cmd0->setIcon(Gui::BitmapFactory().iconFromTheme("FEM_EquationElectricforce"));
+    QAction* cmd1 = pcAction->addAction(QString());
+    cmd1->setIcon(Gui::BitmapFactory().iconFromTheme("FEM_EquationElectrostatic"));
+    QAction* cmd2 = pcAction->addAction(QString());
+    cmd2->setIcon(Gui::BitmapFactory().iconFromTheme("FEM_EquationMagnetodynamic2D"));
+
+    _pcAction = pcAction;
+    languageChange();
+
+    pcAction->setIcon(cmd0->icon());
+    int defaultId = 0;
+    pcAction->setProperty("defaultAction", QVariant(defaultId));
+
+    return pcAction;
+}
+
+void CmdFEMCompEmEquations::languageChange()
+{
+    Command::languageChange();
+
+    if (!_pcAction)
+        return;
+
+    Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
+
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    Gui::Command* EquationElectricforce = rcCmdMgr.getCommandByName("FEM_EquationElectricforce");
+    if (EquationElectricforce) {
+        QAction* cmd0 = a[0];
+        cmd0->setText(QApplication::translate("FEM_EquationElectricforce",
+                                              EquationElectricforce->getMenuText()));
+        cmd0->setToolTip(QApplication::translate("FEM_EquationElectricforce",
+                                                 EquationElectricforce->getToolTipText()));
+        cmd0->setStatusTip(QApplication::translate("FEM_EquationElectricforce",
+                                                   EquationElectricforce->getStatusTip()));
+    }
+
+    Gui::Command* EquationElectrostatic = rcCmdMgr.getCommandByName("FEM_EquationElectrostatic");
+    if (EquationElectrostatic) {
+        QAction* cmd1 = a[1];
+        cmd1->setText(QApplication::translate("FEM_EquationElectrostatic",
+                                              EquationElectrostatic->getMenuText()));
+        cmd1->setToolTip(QApplication::translate("FEM_EquationElectrostatic",
+                                                 EquationElectrostatic->getToolTipText()));
+        cmd1->setStatusTip(QApplication::translate("FEM_EquationElectrostatic",
+                                                   EquationElectrostatic->getStatusTip()));
+    }
+
+    Gui::Command* EquationMagnetodynamic2D =
+        rcCmdMgr.getCommandByName("FEM_EquationMagnetodynamic2D");
+    if (EquationMagnetodynamic2D) {
+        QAction* cmd2 = a[2];
+        cmd2->setText(QApplication::translate("FEM_EquationMagnetodynamic2D",
+                                              EquationMagnetodynamic2D->getMenuText()));
+        cmd2->setToolTip(QApplication::translate("FEM_EquationMagnetodynamic2D",
+                                                 EquationMagnetodynamic2D->getToolTipText()));
+        cmd2->setStatusTip(QApplication::translate("FEM_EquationMagnetodynamic2D",
+                                                   EquationMagnetodynamic2D->getStatusTip()));
+    }
+}
+
+bool CmdFEMCompEmEquations::isActive()
+{
+    // only if there is an active analysis
+    Fem::FemAnalysis* ActiveAnalysis =
+        FemGui::ActiveAnalysisObserver::instance()->getActiveObject();
+    if (!ActiveAnalysis
+        || !ActiveAnalysis->getTypeId().isDerivedFrom(Fem::FemAnalysis::getClassTypeId()))
+        return false;
+
+    // only activate if a single Elmer object is selected
+    auto results = getSelection().getSelectionEx(nullptr, App::DocumentObject::getClassTypeId(), Gui::ResolveMode::FollowLink); //.getObjectsOfType<femsolver.elmer.solver.Proxy>();
+    if (results.size() == 1) {
+        auto object = results.begin()->getObject();
+        // FIXME: this is not unique since the Ccx solver object has the same type
+        std::string Type = "Fem::FemSolverObjectPython";
+        if (Type.compare(object->getTypeId().getName()) == 0)
+            return true;
+    }
+    return false;
+}
+
 //================================================================================================
 //================================================================================================
 // commands vtk post processing
@@ -2202,6 +2332,9 @@ void CreateFemCommands()
     // mesh
     rcCmdMgr.addCommand(new CmdFemCreateNodesSet());
     rcCmdMgr.addCommand(new CmdFemDefineNodesSet());
+
+    // equations
+    rcCmdMgr.addCommand(new CmdFEMCompEmEquations());
 
     // vtk post processing
 #ifdef FC_USE_VTK

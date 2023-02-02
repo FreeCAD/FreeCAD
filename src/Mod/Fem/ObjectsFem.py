@@ -802,6 +802,20 @@ def makeEquationHeat(
     return obj
 
 
+def makeEquationMagnetodynamic2D(
+    doc,
+    base_solver=None,
+    name="Magnetodynamic2D"
+):
+    """makeEquationMagnetodynamic2D(document, [base_solver], [name]):
+    creates a FEM magnetodynamic2D equation for a solver"""
+    from femsolver.elmer.equations import magnetodynamic2D
+    obj = magnetodynamic2D.create(doc, name)
+    if base_solver:
+        base_solver.addObject(obj)
+    return obj
+
+
 def makeSolverCalculixCcxTools(
     doc,
     name="SolverCcxTools"
