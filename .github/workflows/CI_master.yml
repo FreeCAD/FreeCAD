@@ -38,7 +38,6 @@ jobs:
       artifactBasename: Prepare-${{ github.run_id }}
 
   Build2004:
-    if: false # temporary measure because of PathAdaptative bug
     needs: [Prepare]
     uses: ./.github/workflows/sub_buildUbuntu2004.yml
     with:
