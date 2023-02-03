@@ -118,6 +118,7 @@ public:
 
     /// Observer message from the ParameterGrp
     void OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::MessageType Reason) override;
+    void applySettings(ParameterGrp&);
 
     bool processSoEvent(const SoEvent* ev);
 
@@ -329,18 +330,7 @@ NaviCubeImplementation::NaviCubeImplementation(
         "User parameter:BaseApp/Preferences/NaviCube");
     hGrp->Attach(this);
 
-    OnChange(*hGrp, "TextColor");
-    OnChange(*hGrp, "FrontColor");
-    OnChange(*hGrp, "HiliteColor");
-    OnChange(*hGrp, "ButtonColor");
-    OnChange(*hGrp, "CornerNaviCube");
-    OnChange(*hGrp, "CubeSize");
-    OnChange(*hGrp, "NaviRotateToNearest");
-    OnChange(*hGrp, "NaviStepByTurn");
-    OnChange(*hGrp, "BorderWidth");
-    OnChange(*hGrp, "BorderColor");
-    OnChange(*hGrp, "FontSize");
-    OnChange(*hGrp, "FontString");
+    applySettings(*hGrp);
 
     m_PickingFramebuffer = nullptr;
     m_Menu = createNaviCubeMenu();
@@ -364,6 +354,22 @@ int NaviCubeImplementation::getDefaultFontSize()
 {
     int texSize = m_CubeWidgetSize * m_OverSample;
     return int(0.18 * texSize);
+}
+
+void NaviCubeImplementation::applySettings(ParameterGrp& rGrp)
+{
+    NaviCubeImplementation::OnChange(rGrp, "TextColor");
+    NaviCubeImplementation::OnChange(rGrp, "FrontColor");
+    NaviCubeImplementation::OnChange(rGrp, "HiliteColor");
+    NaviCubeImplementation::OnChange(rGrp, "ButtonColor");
+    NaviCubeImplementation::OnChange(rGrp, "CornerNaviCube");
+    NaviCubeImplementation::OnChange(rGrp, "CubeSize");
+    NaviCubeImplementation::OnChange(rGrp, "NaviRotateToNearest");
+    NaviCubeImplementation::OnChange(rGrp, "NaviStepByTurn");
+    NaviCubeImplementation::OnChange(rGrp, "BorderWidth");
+    NaviCubeImplementation::OnChange(rGrp, "BorderColor");
+    NaviCubeImplementation::OnChange(rGrp, "FontSize");
+    NaviCubeImplementation::OnChange(rGrp, "FontString");
 }
 
 void NaviCubeImplementation::OnChange(ParameterGrp::SubjectType& rCaller,
