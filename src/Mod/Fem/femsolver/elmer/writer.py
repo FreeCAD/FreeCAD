@@ -417,9 +417,7 @@ class Writer(object):
                 for body in activeIn:
                     if not self._isBodyMaterialFluid(body):
                         self._addSolver(body, solverSection)
-                        # "Plane Stress" is only possible for 2D
-                        if self.solver.CoordinateSystem == "Cartesian 2D":
-                            self._handleElasticityEquation(activeIn, equation)
+                        self._handleElasticityEquation(activeIn, equation)
         if activeIn:
             self._handleElasticityConstants()
             self._handleElasticityBndConditions()
