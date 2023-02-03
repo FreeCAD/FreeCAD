@@ -723,6 +723,10 @@ class Writer(object):
         if obj is not None:
             for name in bodies:
                 gravity = self._convert(self.constsdef["Gravity"], "L/T^2")
+                if self._getBodyMaterial(name) == None:
+                    raise WriteError(
+                        "The body {} is not referenced in any material.\n\n".format(name)
+                    )
                 m = self._getBodyMaterial(name).Material
 
                 densityQuantity = Units.Quantity(m["Density"])
@@ -908,9 +912,11 @@ class Writer(object):
             equation.PotentialDifference = 0.0
 
     def _handleElectrostaticConstants(self):
+        permittivity = self._convert(self.constsdef["PermittivityOfVacuum"], "T^4*I^2/(L^3*M)")
+        permittivity = round(permittivity, 20) # to get rid of numerical artifacts
         self._constant(
             "Permittivity Of Vacuum",
-            self._convert(self.constsdef["PermittivityOfVacuum"], "T^4*I^2/(L^3*M)")
+            permittivity
         )
 
     def _handleElectrostaticMaterial(self, bodies):
