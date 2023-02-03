@@ -60,7 +60,6 @@ _STARTINFO_NAME = "ELMERSOLVER_STARTINFO"
 _SIF_NAME = "case.sif"
 _ELMERGRID_IFORMAT = "8"
 _ELMERGRID_OFORMAT = "2"
-_SOLID_PREFIX = "Solid"
 
 
 def _getAllSubObjects(obj):
@@ -320,7 +319,7 @@ class Writer(object):
                 hasHeat = True
         if hasHeat:
             self._simulation("BDF Order", self.solver.BDFOrder)
-        self._simulation("Coordinate System", "Cartesian 3D")
+        self._simulation("Coordinate System", self.solver.CoordinateSystem)
         self._simulation("Coordinate Mapping", (1, 2, 3))
         # Elmer uses SI base units, but our mesh is in mm, therefore we must tell
         # the solver that we have another scale
@@ -350,6 +349,15 @@ class Writer(object):
 
     def _updateSimulation(self, solver):
         # updates older simulations
+        if not hasattr(self.solver, "CoordinateSystem"):
+            solver.addProperty(
+                "App::PropertyEnumeration",
+                "CoordinateSystem",
+                "Coordinate System",
+                ""
+            )
+            solver.CoordinateSystem = solverClass.COORDINATE_SYSTEM
+            solver.CoordinateSystem = "Cartesian 3D"
         if not hasattr(self.solver, "BDFOrder"):
             solver.addProperty(
                 "App::PropertyIntegerConstraint",
@@ -409,7 +417,9 @@ class Writer(object):
                 for body in activeIn:
                     if not self._isBodyMaterialFluid(body):
                         self._addSolver(body, solverSection)
-                        self._handleElasticityEquation(activeIn, equation)
+                        # "Plane Stress" is only possible for 2D
+                        if self.solver.CoordinateSystem == "Cartesian 2D":
+                            self._handleElasticityEquation(activeIn, equation)
         if activeIn:
             self._handleElasticityConstants()
             self._handleElasticityBndConditions()
