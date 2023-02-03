@@ -147,6 +147,7 @@ SET (FluidMaterial_Files
     FluidMaterial/None.FCMat
     FluidMaterial/Air.FCMat
     FluidMaterial/Argon.FCMat
+    FluidMaterial/Carbon_dioxide.FCMat
     FluidMaterial/Nitrogen.FCMat
     FluidMaterial/Water.FCMat
     FluidMaterial/Readme.md
