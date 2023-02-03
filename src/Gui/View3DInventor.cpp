@@ -138,39 +138,7 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
     setCentralWidget(stack);
 
     // apply the user settings
-    OnChange(*hGrp,"EyeDistance");
-    OnChange(*hGrp,"CornerCoordSystem");
-    OnChange(*hGrp,"CornerCoordSystemSize");
-    OnChange(*hGrp,"ShowAxisCross");
-    OnChange(*hGrp,"UseAutoRotation");
-    OnChange(*hGrp,"Gradient");
-    OnChange(*hGrp,"BackgroundColor");
-    OnChange(*hGrp,"BackgroundColor2");
-    OnChange(*hGrp,"BackgroundColor3");
-    OnChange(*hGrp,"BackgroundColor4");
-    OnChange(*hGrp,"UseBackgroundColorMid");
-    OnChange(*hGrp,"ShowFPS");
-    OnChange(*hGrp,"ShowNaviCube");
-    OnChange(*hGrpNavi, "CornerNaviCube");
-    OnChange(*hGrp,"UseVBO");
-    OnChange(*hGrp,"RenderCache");
-    OnChange(*hGrp,"Orthographic");
-    OnChange(*hGrp,"HeadlightColor");
-    OnChange(*hGrp,"HeadlightDirection");
-    OnChange(*hGrp,"HeadlightIntensity");
-    OnChange(*hGrp,"EnableBacklight");
-    OnChange(*hGrp,"BacklightColor");
-    OnChange(*hGrp,"BacklightDirection");
-    OnChange(*hGrp,"BacklightIntensity");
-    OnChange(*hGrp,"NavigationStyle");
-    OnChange(*hGrp,"OrbitStyle");
-    OnChange(*hGrp,"Sensitivity");
-    OnChange(*hGrp,"ResetCursorPosition");
-    OnChange(*hGrp,"DimensionsVisible");
-    OnChange(*hGrp,"Dimensions3dVisible");
-    OnChange(*hGrp,"DimensionsDeltaVisible");
-    OnChange(*hGrp,"PickRadius");
-    OnChange(*hGrp,"TransparentObjectRenderType");
+    applySettings();
 
     stopSpinTimer = new QTimer(this);
     connect(stopSpinTimer, &QTimer::timeout, this, &View3DInventor::stopAnimating);
@@ -226,6 +194,44 @@ PyObject *View3DInventor::getPyObject()
 
     Py_INCREF(_viewerPy);
     return _viewerPy;
+}
+
+void View3DInventor::applySettings()
+{
+    // apply the user settings
+    View3DInventor::OnChange(*hGrp,"EyeDistance");
+    View3DInventor::OnChange(*hGrp,"CornerCoordSystem");
+    View3DInventor::OnChange(*hGrp,"CornerCoordSystemSize");
+    View3DInventor::OnChange(*hGrp,"ShowAxisCross");
+    View3DInventor::OnChange(*hGrp,"UseAutoRotation");
+    View3DInventor::OnChange(*hGrp,"Gradient");
+    View3DInventor::OnChange(*hGrp,"BackgroundColor");
+    View3DInventor::OnChange(*hGrp,"BackgroundColor2");
+    View3DInventor::OnChange(*hGrp,"BackgroundColor3");
+    View3DInventor::OnChange(*hGrp,"BackgroundColor4");
+    View3DInventor::OnChange(*hGrp,"UseBackgroundColorMid");
+    View3DInventor::OnChange(*hGrp,"ShowFPS");
+    View3DInventor::OnChange(*hGrp,"ShowNaviCube");
+    View3DInventor::OnChange(*hGrpNavi, "CornerNaviCube");
+    View3DInventor::OnChange(*hGrp,"UseVBO");
+    View3DInventor::OnChange(*hGrp,"RenderCache");
+    View3DInventor::OnChange(*hGrp,"Orthographic");
+    View3DInventor::OnChange(*hGrp,"HeadlightColor");
+    View3DInventor::OnChange(*hGrp,"HeadlightDirection");
+    View3DInventor::OnChange(*hGrp,"HeadlightIntensity");
+    View3DInventor::OnChange(*hGrp,"EnableBacklight");
+    View3DInventor::OnChange(*hGrp,"BacklightColor");
+    View3DInventor::OnChange(*hGrp,"BacklightDirection");
+    View3DInventor::OnChange(*hGrp,"BacklightIntensity");
+    View3DInventor::OnChange(*hGrp,"NavigationStyle");
+    View3DInventor::OnChange(*hGrp,"OrbitStyle");
+    View3DInventor::OnChange(*hGrp,"Sensitivity");
+    View3DInventor::OnChange(*hGrp,"ResetCursorPosition");
+    View3DInventor::OnChange(*hGrp,"DimensionsVisible");
+    View3DInventor::OnChange(*hGrp,"Dimensions3dVisible");
+    View3DInventor::OnChange(*hGrp,"DimensionsDeltaVisible");
+    View3DInventor::OnChange(*hGrp,"PickRadius");
+    View3DInventor::OnChange(*hGrp,"TransparentObjectRenderType");
 }
 
 void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason)
