@@ -1181,6 +1181,10 @@ class Writer(object):
         if obj is not None:
             for name in bodies:
                 gravity = self._convert(self.constsdef["Gravity"], "L/T^2")
+                if self._getBodyMaterial(name) == None:
+                    raise WriteError(
+                        "The body {} is not referenced in any material.\n\n".format(name)
+                    )
                 m = self._getBodyMaterial(name).Material
 
                 densityQuantity = Units.Quantity(m["Density"])
