@@ -175,6 +175,8 @@ void DlgSettingsNavigation::loadSettings()
 
     connect(ui->comboNewDocView, qOverload<int>(&QComboBox::currentIndexChanged),
         this, &DlgSettingsNavigation::onNewDocViewChanged);
+    connect(ui->mouseButton, &QPushButton::clicked,
+        this, &DlgSettingsNavigation::onMouseButtonClicked);
 
     // fill up font styles
     hGrp = App::GetApplication().GetParameterGroupByPath(
@@ -195,7 +197,7 @@ void DlgSettingsNavigation::loadSettings()
     ui->naviCubeFontName->setCurrentIndex(indexFamilyNames);
 }
 
-void DlgSettingsNavigation::on_mouseButton_clicked()
+void DlgSettingsNavigation::onMouseButtonClicked()
 {
     QDialog dlg(this);
     Ui_MouseButtons uimb;

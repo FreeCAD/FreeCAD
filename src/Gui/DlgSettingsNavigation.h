@@ -50,8 +50,8 @@ public:
     void saveSettings() override;
     void loadSettings() override;
 
-private Q_SLOTS:
-    void on_mouseButton_clicked();
+private:
+    void onMouseButtonClicked();
     void onNewDocViewChanged(int);
 
 protected:
