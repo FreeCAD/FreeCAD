@@ -121,6 +121,9 @@ protected Q_SLOTS:
 public:
     bool eventFilter(QObject*, QEvent* ) override;
 
+private:
+    void applySettings();
+
 protected:
     void windowStateChanged(MDIView* ) override;
     void dropEvent        (QDropEvent      * e) override;
