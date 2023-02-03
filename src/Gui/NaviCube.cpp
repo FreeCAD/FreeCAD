@@ -493,7 +493,7 @@ GLuint NaviCubeImplementation::createCubeFaceTex(QtGLWidget* gl, float gap, cons
         paint.setPen(Qt::white);
         QFont sansFont;
         // check the user settings
-        QString fontString = QString::fromUtf8(m_CubeTextFont.c_str());
+        QString fontString = QString::fromStdString(m_CubeTextFont);
         // Override fromString
         if (hGrp->GetInt("FontWeight") > 0) {
             sansFont.setWeight(convertWeights(hGrp->GetInt("FontWeight")));
