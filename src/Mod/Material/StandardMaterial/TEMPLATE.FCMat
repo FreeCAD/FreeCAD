@@ -110,7 +110,7 @@ ThermalConductivity =
 ; https://en.wikipedia.org/wiki/Volumetric_thermal_expansion_coefficient
 ThermalExpansionCoefficient =
 
-[Electrical]
+[Electromagnetic]
 ; The ratio to the permittivity of the vacuum
 ; https://en.wikipedia.org/wiki/Relative_permittivity
 RelativePermittivity =
@@ -118,6 +118,10 @@ RelativePermittivity =
 ; The electrical conductivity in [FreeCAD ElectricalConductivity unit]
 ; https://en.wikipedia.org/wiki/Electrical_resistivity_and_conductivity
 ElectricalConductivity =
+
+; The ratio to the permeability of the vacuum
+; https://en.wikipedia.org/wiki/Permeability_(electromagnetism)
+RelativePermeability =
 
 
 [Architectural]

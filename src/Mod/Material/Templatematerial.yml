@@ -155,7 +155,7 @@
       Type: 'Quantity'
       URL: 'https://en.wikipedia.org/wiki/Volumetric_thermal_expansion_coefficient'
       Description: "Thermal expansion coefficient (linear) in [FreeCAD ThermalExpansionCoefficient unit]"
-- Electrical:
+- Electromagnetic:
     RelativePermittivity:
       Type: 'Float'
       URL: 'https://en.wikipedia.org/wiki/Relative_permittivity'
@@ -164,6 +164,10 @@
       Type: 'Quantity'
       URL: 'https://en.wikipedia.org/wiki/Electrical_resistivity_and_conductivity'
       Description: "The electrical conductivity in [FreeCAD ElectricalConductivity unit]"
+    RelativePermeability:
+      Type: 'Float'
+      URL: 'https://en.wikipedia.org/wiki/Permeability_(electromagnetism)'
+      Description: "The ratio to the permeability of the vacuum"
 - Architectural:
     Color:
       Type:  'String'
