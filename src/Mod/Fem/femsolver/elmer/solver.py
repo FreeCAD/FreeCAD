@@ -35,10 +35,10 @@ import FreeCAD
 
 from . import tasks
 from .equations import elasticity
+from .equations import electricforce
 from .equations import electrostatic
 from .equations import flow
 from .equations import flux
-from .equations import electricforce
 from .equations import heat
 from .. import run
 from .. import solverbase
@@ -47,6 +47,10 @@ from femtools import femutils
 if FreeCAD.GuiUp:
     import FemGui
 
+COORDINATE_SYSTEM = ["Cartesian 1D", "Cartesian 2D", "Cartesian 3D",
+                     "Polar 2D", "Polar 3D",
+                     "Cylindric", "Cylindric Symmetric",
+                     "Axi Symmetric"]
 SIMULATION_TYPE = ["Scanning", "Steady State", "Transient"]
 
 
@@ -71,6 +75,15 @@ class Proxy(solverbase.Proxy):
 
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
+
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "CoordinateSystem",
+            "Coordinate System",
+            ""
+        )
+        obj.CoordinateSystem = COORDINATE_SYSTEM
+        obj.CoordinateSystem = "Cartesian 3D"
 
         obj.addProperty(
             "App::PropertyIntegerConstraint",
