@@ -1176,20 +1176,11 @@ NaviCube* View3DInventorViewer::getNavigationCube() const
     return naviCube;
 }
 
-void View3DInventorViewer::createNavigationCube()
-{
-    if (!naviCube) {
-        naviCube = new NaviCube(this);
-        naviCubeEnabled = true;
-    }
-}
-
-void View3DInventorViewer::deleteNavigationCube()
+void View3DInventorViewer::updateNavigationCube()
 {
     if (naviCube) {
         delete naviCube;
-        naviCube = nullptr;
-        naviCubeEnabled = false;
+        naviCube = new NaviCube(this);
     }
 }
 

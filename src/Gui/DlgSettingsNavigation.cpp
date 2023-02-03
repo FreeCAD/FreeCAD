@@ -123,8 +123,7 @@ void DlgSettingsNavigation::recreateNaviCubes()
     for (auto view : views) {
         if (auto view3d = qobject_cast<View3DInventor*>(view)) {
             auto viewer = view3d->getViewer();
-            viewer->deleteNavigationCube();
-            viewer->createNavigationCube();
+            viewer->updateNavigationCube();
         }
     }
 }
