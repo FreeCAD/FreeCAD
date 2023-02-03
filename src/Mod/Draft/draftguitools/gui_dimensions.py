@@ -46,6 +46,7 @@ import DraftVecUtils
 import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 import draftguitools.gui_trackers as trackers
+import draftutils.gui_utils as gui_utils
 
 from draftutils.translate import translate
 from draftutils.messages import _msg
@@ -180,6 +181,17 @@ class Dimension(gui_base_original.Creator):
             self.dimtrack.finalize()
             self.arctrack.finalize()
 
+    def angle_dimension_normal(self, edge1, edge2):
+        rot = App.Rotation(DraftGeomUtils.vec(edge1),
+                           DraftGeomUtils.vec(edge2),
+                           App.DraftWorkingPlane.getNormal(),
+                           "XYZ")
+        norm = rot.multVec(App.Vector(0, 0, 1))
+        vnorm = gui_utils.get_3d_view().getViewDirection()
+        if vnorm.getAngle(norm) < math.pi / 2:
+            norm = norm.negative()
+        return norm
+
     def create_with_app_measure(self):
         """Create on measurement objects.
 
@@ -213,21 +225,9 @@ class Dimension(gui_base_original.Creator):
 
     def create_angle_dimension(self):
         """Create an angular dimension from a center and two angles."""
-        normal_str = "None"
-        if len(self.edges) == 2:
-            v1 = DraftGeomUtils.vec(self.edges[0])
-            v2 = DraftGeomUtils.vec(self.edges[1])
-            norm = v1.cross(v2)
-            norm.normalize()
-            normal_str = DraftVecUtils.toString(norm)
-
         ang1 = math.degrees(self.angledata[1])
         ang2 = math.degrees(self.angledata[0])
-
-        if ang1 > 360:
-            ang1 = ang1 - 360
-        if ang2 > 360:
-            ang2 = ang2 - 360
+        norm = self.angle_dimension_normal(self.edges[0], self.edges[1])
 
         _cmd = 'Draft.make_angular_dimension'
         _cmd += '('
@@ -238,7 +238,7 @@ class Dimension(gui_base_original.Creator):
         _cmd += str(ang2)
         _cmd += '], '
         _cmd += 'dim_line=' + DraftVecUtils.toString(self.node[-1]) + ', '
-        _cmd += 'normal=' + normal_str
+        _cmd += 'normal=' + DraftVecUtils.toString(norm)
         _cmd += ')'
         _cmd_list = ['_dim_ = ' + _cmd,
                      'Draft.autogroup(_dim_)',
@@ -393,6 +393,16 @@ class Dimension(gui_base_original.Creator):
                 if len(self.edges) == 2:
                     # angular dimension
                     self.dimtrack.off()
+
+                    vnorm = gui_utils.get_3d_view().getViewDirection()
+                    anorm = self.arctrack.normal
+
+                    # Code below taken from WorkingPlane.projectPoint:
+                    cos = vnorm.dot(anorm)
+                    delta_ax_proj = (self.point - self.center).dot(anorm)
+                    proj = self.point - delta_ax_proj / cos * vnorm
+                    self.point = proj
+
                     r = self.point.sub(self.center)
                     self.arctrack.setRadius(r.Length)
                     a = self.arctrack.getAngle(self.point)
@@ -501,6 +511,7 @@ class Dimension(gui_base_original.Creator):
                                             # print("centers:",c)
                                             self.center = c[0]
                                             self.arctrack.setCenter(self.center)
+                                            self.arctrack.normal = self.angle_dimension_normal(self.edges[0], self.edges[1])
                                             self.arctrack.on()
                                             for e in self.edges:
                                                 if e.Length < 0.00003: # Edge must be long enough for the tolerance of 0.00001mm to make sense.
