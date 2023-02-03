@@ -53,6 +53,7 @@ public:
 private:
     void onMouseButtonClicked();
     void onNewDocViewChanged(int);
+    void recreateNaviCubes();
 
 protected:
     void changeEvent(QEvent *e) override;
