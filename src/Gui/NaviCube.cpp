@@ -298,11 +298,11 @@ QFont NaviCube::getDefaultSansserifFont()
     QFont font(QString::fromLatin1("Helvetica"));
     if (font.styleHint() & QFont::SansSerif)
         return font;
-    // on Windows 10 or newer there is no Helvetia font
-    // therefore if we did not found a Helvetica font check for
-    // first the Bahnschrift font (in all Windows since 2017
-    // if this is also not found (on Win 7), we check for the 
-    // the DejaVu Sans fonts
+    // on Windows 10 or newer there is no Helvetica font
+    // therefore if we didn't find a Helvetica font check
+    // for the Bahnschrift font (in all Windows since 2017)
+    // if this too is unavailable (on Win 7), we check for the
+    // DejaVu Sans fonts
     font.setFamily(QString::fromLatin1("Bahnschrift"));
     // on Windows 11 sansserif fonts like Bahnschrift do not have the
     // styleHint QFont::SansSerif but QFont::AnyStyle
@@ -370,7 +370,7 @@ void NaviCubeImplementation::OnChange(ParameterGrp::SubjectType& rCaller,
                                       ParameterGrp::MessageType reason)
 {
     const auto& rGrp = static_cast<ParameterGrp&>(rCaller);
-    
+
     if (strcmp(reason, "TextColor") == 0) {
         m_TextColor.setRgba(rGrp.GetUnsigned(reason, QColor(0, 0, 0, 255).rgba()));
     }
@@ -472,7 +472,7 @@ auto convertWeights = [](int weight) -> QFont::Weight {
 
 GLuint NaviCubeImplementation::createCubeFaceTex(QtGLWidget* gl, float gap, const char* text,
                                                  int shape)
-{  
+{
     int texSize = m_CubeWidgetSize * m_OverSample;
     float gapi = texSize * gap;
     QImage image(texSize, texSize, QImage::Format_ARGB32);

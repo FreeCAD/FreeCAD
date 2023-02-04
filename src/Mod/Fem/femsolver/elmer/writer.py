@@ -1263,7 +1263,7 @@ class Writer(object):
                     self._equation(b, "Convection", equation.Convection)
                 if equation.MagneticInduction is True:
                     self._equation(b, "Magnetic Induction", equation.MagneticInduction)
- 
+
     #-------------------------------------------------------------------------------------------
     # Flux
 
