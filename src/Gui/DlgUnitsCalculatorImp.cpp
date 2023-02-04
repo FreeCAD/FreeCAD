@@ -77,6 +77,7 @@ DlgUnitsCalculator::DlgUnitsCalculator( QWidget* parent, Qt::WindowFlags fl )
           << Base::Unit::Angle
           << Base::Unit::Area
           << Base::Unit::Density
+          << Base::Unit::CurrentDensity
           << Base::Unit::ElectricalCapacitance
           << Base::Unit::ElectricalInductance
           << Base::Unit::ElectricalConductance

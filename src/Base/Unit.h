@@ -107,6 +107,7 @@ public:
     static Unit Acceleration;
     static Unit Temperature;
 
+    static Unit CurrentDensity;
     static Unit ElectricCurrent;
     static Unit ElectricPotential;
     static Unit ElectricCharge;
