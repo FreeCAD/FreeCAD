@@ -44,6 +44,7 @@ Body 1
 End
 
 Material 1
+  Name = String "CalculiX-Steel"
   Poisson ratio = Real 0.3
   Youngs Modulus = Real 210000000000.0
 End
