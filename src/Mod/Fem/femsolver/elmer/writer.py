@@ -803,6 +803,7 @@ class Writer(object):
                         "There are two or more materials with empty references.\n\n"
                         "Set for the materials to what solid they belong to.\n"
                     )
+                self._material(name, "Name", m["Name"])
                 if density_needed is True:
                     self._material(
                         name, "Density",
@@ -935,6 +936,7 @@ class Writer(object):
                 if obj.References
                 else self._getAllBodies())
             for name in (n for n in refs if n in bodies):
+                self._material(name, "Name", m["Name"])
                 if "RelativePermittivity" in m:
                     self._material(
                         name, "Relative Permittivity",
@@ -1138,6 +1140,7 @@ class Writer(object):
                 if obj.References
                 else self._getAllBodies())
             for name in (n for n in refs if n in bodies):
+                self._material(name, "Name", m["Name"])
                 if "Density" in m:
                     self._material(
                         name, "Density",
@@ -1564,6 +1567,7 @@ class Writer(object):
                     raise WriteError(
                         "Used material does not specify the necessary 'Density'."
                     )
+                self._material(name, "Name", m["Name"])
                 self._material(
                     name, "Density",
                     self._getDensity(m))
