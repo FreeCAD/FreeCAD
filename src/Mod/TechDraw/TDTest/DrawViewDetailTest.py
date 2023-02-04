@@ -69,7 +69,7 @@ class DrawViewDetailTest(unittest.TestCase):
         loop.exec_()
 
         edges = detail.getVisibleEdges()
-        
+
         self.assertEqual(len(edges), 4, "DrawViewDetail has wrong number of edges")
         self.assertTrue("Up-to-date" in detail.State, "DrawViewDetail is not Up-to-date")
 

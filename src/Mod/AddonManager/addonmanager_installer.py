@@ -52,7 +52,7 @@ translate = FreeCAD.Qt.translate
 class InstallationMethod(IntEnum):
     """For packages installed from a git repository, in most cases it is possible to either use git
     or to download a zip archive of the addon. For a local repository, a direct copy may be used
-    instead. If "ANY" is given, the the internal code decides which to use."""
+    instead. If "ANY" is given, the internal code decides which to use."""
 
     GIT = auto()
     COPY = auto()
