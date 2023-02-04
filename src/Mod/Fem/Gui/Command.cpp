@@ -1127,6 +1127,113 @@ bool CmdFemCreateNodesSet::isActive()
 }
 
 
+//===========================================================================
+// FEM_CompEmConstraints (dropdown toolbar button for Electromagnetic constraints)
+//===========================================================================
+
+DEF_STD_CMD_ACL(CmdFemCompEmConstraints)
+
+CmdFemCompEmConstraints::CmdFemCompEmConstraints()
+    : Command("FEM_CompEmConstraints")
+{
+    sAppModule = "Fem";
+    sGroup = QT_TR_NOOP("Fem");
+    sMenuText = QT_TR_NOOP("Electromagnetic constraints...");
+    sToolTipText = QT_TR_NOOP("Electromagnetic constraints");
+    sWhatsThis = "";
+    sStatusTip = sToolTipText;
+}
+
+void CmdFemCompEmConstraints::activated(int iMsg)
+{
+    Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
+    if (iMsg == 0)
+        rcCmdMgr.runCommandByName("FEM_ConstraintElectrostaticPotential");
+    else if (iMsg == 1)
+        rcCmdMgr.runCommandByName("FEM_ConstraintCurrentDensity");
+    else
+        return;
+
+    // Since the default icon is reset when enabling/disabling the command we have
+    // to explicitly set the icon of the used command.
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    assert(iMsg < a.size());
+    pcAction->setIcon(a[iMsg]->icon());
+}
+
+Gui::Action* CmdFemCompEmConstraints::createAction()
+{
+    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
+    pcAction->setDropDownMenu(true);
+    applyCommandData(this->className(), pcAction);
+
+    QAction* cmd0 = pcAction->addAction(QString());
+    cmd0->setIcon(Gui::BitmapFactory().iconFromTheme("FEM_ConstraintElectrostaticPotential"));
+    QAction* cmd1 = pcAction->addAction(QString());
+    cmd1->setIcon(Gui::BitmapFactory().iconFromTheme("FEM_ConstraintCurrentDensity"));
+
+    _pcAction = pcAction;
+    languageChange();
+
+    pcAction->setIcon(cmd0->icon());
+    int defaultId = 0;
+    pcAction->setProperty("defaultAction", QVariant(defaultId));
+
+    return pcAction;
+}
+
+void CmdFemCompEmConstraints::languageChange()
+{
+    Command::languageChange();
+
+    if (!_pcAction)
+        return;
+
+    Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
+
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    Gui::Command* ConstraintElectrostaticPotential =
+        rcCmdMgr.getCommandByName("FEM_ConstraintElectrostaticPotential");
+    if (ConstraintElectrostaticPotential) {
+        QAction* cmd0 = a[0];
+        cmd0->setText(QApplication::translate("FEM_ConstraintElectrostaticPotential",
+                                              ConstraintElectrostaticPotential->getMenuText()));
+        cmd0->setToolTip(QApplication::translate("FEM_ConstraintElectrostaticPotential",
+                                    ConstraintElectrostaticPotential->getToolTipText()));
+        cmd0->setStatusTip(QApplication::translate("FEM_ConstraintElectrostaticPotential",
+                                    ConstraintElectrostaticPotential->getStatusTip()));
+    }
+
+    Gui::Command* ConstraintCurrentDensity =
+        rcCmdMgr.getCommandByName("FEM_ConstraintCurrentDensity");
+    if (ConstraintCurrentDensity) {
+        QAction* cmd1 = a[1];
+        cmd1->setText(QApplication::translate("FEM_ConstraintCurrentDensity",
+                                              ConstraintCurrentDensity->getMenuText()));
+        cmd1->setToolTip(QApplication::translate("FEM_ConstraintCurrentDensity",
+                                                 ConstraintCurrentDensity->getToolTipText()));
+        cmd1->setStatusTip(QApplication::translate("FEM_ConstraintCurrentDensity",
+                                                   ConstraintCurrentDensity->getStatusTip()));
+    }
+}
+
+bool CmdFemCompEmConstraints::isActive()
+{
+    // only if there is an active analysis
+    Fem::FemAnalysis* ActiveAnalysis =
+        FemGui::ActiveAnalysisObserver::instance()->getActiveObject();
+    if (!ActiveAnalysis
+        || !ActiveAnalysis->getTypeId().isDerivedFrom(Fem::FemAnalysis::getClassTypeId()))
+        return false;
+
+    return true;
+}
+
+
 //================================================================================================
 //================================================================================================
 // commands vtk post processing
@@ -1906,6 +2013,7 @@ void CreateFemCommands()
     rcCmdMgr.addCommand(new CmdFemConstraintTemperature());
     rcCmdMgr.addCommand(new CmdFemConstraintTransform());
     rcCmdMgr.addCommand(new CmdFemConstraintSpring());
+    rcCmdMgr.addCommand(new CmdFemCompEmConstraints());
 
     // mesh
     rcCmdMgr.addCommand(new CmdFemCreateNodesSet());

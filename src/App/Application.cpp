@@ -1914,6 +1914,7 @@ void Application::initTypes()
     App::PropertyAcceleration       ::init();
     App::PropertyForce              ::init();
     App::PropertyPressure           ::init();
+    App::PropertyCurrentDensity     ::init();
     App::PropertyElectricPotential  ::init();
     App::PropertyVacuumPermittivity ::init();
     App::PropertyInteger            ::init();

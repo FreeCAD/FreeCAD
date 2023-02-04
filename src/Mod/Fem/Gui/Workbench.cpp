@@ -114,10 +114,10 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
         << "FEM_ElementGeometry2D"
         << "FEM_ElementFluid1D";
 
-    Gui::ToolBarItem* electrostat = new Gui::ToolBarItem(root);
-    electrostat->setCommand("Electrostatic Constraints");
-    *electrostat
-        << "FEM_ConstraintElectrostaticPotential";
+    Gui::ToolBarItem* electromag = new Gui::ToolBarItem(root);
+    electromag->setCommand("Electromagnetic Constraints");
+    *electromag
+        << "FEM_CompEmConstraints";
 
     Gui::ToolBarItem* fluid = new Gui::ToolBarItem(root);
     fluid->setCommand("Fluid Constraints");
@@ -244,9 +244,10 @@ Gui::MenuItem* Workbench::setupMenuBar() const
         << "FEM_ElementFluid1D";
 
     Gui::MenuItem* elec = new Gui::MenuItem;
-    elec->setCommand("&Electrostatic Constraints");
+    elec->setCommand("&Electromagnetic Constraints");
     *elec
-        << "FEM_ConstraintElectrostaticPotential";
+        << "FEM_ConstraintElectrostaticPotential"
+        << "FEM_ConstraintCurrentDensity";
 
     Gui::MenuItem* fluid = new Gui::MenuItem;
     fluid->setCommand("&Fluid Constraints");

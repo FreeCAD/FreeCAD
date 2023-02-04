@@ -113,6 +113,21 @@ def makeConstraintCentrif(
     return obj
 
 
+def makeConstraintCurrentDensity(
+    doc,
+    name="ConstraintCurrentDensity"
+):
+    """makeConstraintCurrentDensity(document, [name]):
+    makes a Fem CurrentDensity object"""
+    obj = doc.addObject("Fem::ConstraintPython", name)
+    from femobjects import constraint_currentdensity
+    constraint_currentdensity.ConstraintCurrentDensity(obj)
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_constraint_currentdensity
+        view_constraint_currentdensity.VPConstraintCurrentDensity(obj.ViewObject)
+    return obj
+
+
 def makeConstraintContact(
     doc,
     name="ConstraintContact"

@@ -209,6 +209,23 @@ class _ConstraintCentrif(CommandManager):
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_set_edit"
 
+class _ConstraintCurrentDensity(CommandManager):
+    "The FEM_ConstraintCurrentDensity command definition"
+
+    def __init__(self):
+        super(_ConstraintCurrentDensity, self).__init__()
+        self.pixmap = "FEM_ConstraintCurrentDensity"
+        self.menutext = Qt.QT_TRANSLATE_NOOP(
+            "FEM_ConstraintCurrentDensity",
+            "Constraint current density"
+        )
+        self.tooltip = Qt.QT_TRANSLATE_NOOP(
+            "FEM_ConstraintCurrentDensity",
+            "Creates a FEM constraint current density"
+        )
+        self.is_active = "with_analysis"
+        self.do_activated = "add_obj_on_gui_set_edit"
+
 
 class _ConstraintElectrostaticPotential(CommandManager):
     "The FEM_ConstraintElectrostaticPotential command definition"
@@ -1111,6 +1128,10 @@ FreeCADGui.addCommand(
 FreeCADGui.addCommand(
     "FEM_ConstraintCentrif",
     _ConstraintCentrif()
+)
+FreeCADGui.addCommand(
+    "FEM_ConstraintCurrentDensity",
+    _ConstraintCurrentDensity()
 )
 FreeCADGui.addCommand(
     "FEM_ConstraintElectrostaticPotential",
