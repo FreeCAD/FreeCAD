@@ -331,6 +331,16 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
         unitString = QString::fromLatin1("C");
         factor = 1.0;
     }
+    else if (unit == Unit::CurrentDensity) {
+        if (UnitValue <= 1e3) {
+            unitString = QString::fromLatin1("A/m^2");
+            factor = 1e-6;
+        }
+        else {
+            unitString = QString::fromLatin1("A/mm^2");
+            factor = 1;
+        }
+    }
     else if (unit == Unit::MagneticFluxDensity) {
         if (UnitValue <= 1e-3) {
             unitString = QString::fromLatin1("G");

@@ -448,6 +448,8 @@ QString Unit::getTypeString() const
         return QString::fromLatin1("Acceleration");
     if(*this == Unit::Temperature                 )
         return QString::fromLatin1("Temperature");
+    if (*this == Unit::CurrentDensity)
+        return QString::fromLatin1("CurrentDensity");
     if(*this == Unit::ElectricCurrent             )
         return QString::fromLatin1("ElectricCurrent");
     if(*this == Unit::ElectricPotential           )
@@ -526,6 +528,7 @@ Unit Unit::Velocity(1,0,-1);
 Unit Unit::Acceleration(1,0,-2);
 Unit Unit::Temperature(0,0,0,0,1);
 
+Unit Unit::CurrentDensity(-2,0,0,1);
 Unit Unit::ElectricCurrent(0,0,0,1);
 Unit Unit::ElectricPotential(2,1,-3,-1);
 Unit Unit::ElectricCharge(0,0,1,1);
