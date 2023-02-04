@@ -172,6 +172,19 @@ public:
     ~PropertyDistance() override = default;
 };
 
+/** CurrentDensity property
+ * This is a property for electric current densities. It is basically a float
+ * property. On the Gui it has a quantity of Ampere/m^2.
+ */
+class AppExport PropertyCurrentDensity: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyCurrentDensity();
+    ~PropertyCurrentDensity() override = default;
+};
+
 /** ElectricPotential property
  * This is a property for electric potentials. It is basically a float
  * property. On the Gui it has a quantity of Volt.

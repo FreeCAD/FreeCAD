@@ -375,6 +375,7 @@ SET(FemGuiPythonUI_SRCS
     Resources/ui/ConstraintCentrif.ui
     Resources/ui/ConstraintTie.ui
     Resources/ui/ConstraintSectionPrint.ui
+    Resources/ui/CurrentDensity.ui
     Resources/ui/ElectrostaticPotential.ui
     Resources/ui/ElementFluid1D.ui
     Resources/ui/ElementGeometry1D.ui

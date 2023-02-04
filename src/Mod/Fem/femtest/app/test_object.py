@@ -174,6 +174,10 @@ class TestObjectType(unittest.TestCase):
             type_of_obj(ObjectsFem.makeConstraintContact(doc))
         )
         self.assertEqual(
+            "Fem::ConstraintCurrentDensity",
+            type_of_obj(ObjectsFem.makeConstraintCurrentDensity(doc))
+        )
+        self.assertEqual(
             "Fem::ConstraintDisplacement",
             type_of_obj(ObjectsFem.makeConstraintDisplacement(doc))
         )
@@ -397,6 +401,10 @@ class TestObjectType(unittest.TestCase):
         self.assertTrue(is_of_type(
             ObjectsFem.makeConstraintContact(doc),
             "Fem::ConstraintContact"
+        ))
+        self.assertTrue(is_of_type(
+            ObjectsFem.makeConstraintCurrentDensity(doc),
+            "Fem::ConstraintCurrentDensity"
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeConstraintDisplacement(doc),
@@ -678,18 +686,33 @@ class TestObjectType(unittest.TestCase):
             "Fem::ConstraintContact"
         ))
 
-        # ConstraintDisplacement
-        constraint_dicplacement = ObjectsFem.makeConstraintDisplacement(doc)
+        # ConstraintCurrentDensity
+        constraint_currentdensity = ObjectsFem.makeConstraintCurrentDensity(doc)
         self.assertTrue(is_derived_from(
-            constraint_dicplacement,
+            constraint_currentdensity,
             "App::DocumentObject"
         ))
         self.assertTrue(is_derived_from(
-            constraint_dicplacement,
+            constraint_currentdensity,
+            "Fem::ConstraintPython"
+        ))
+        self.assertTrue(is_derived_from(
+            constraint_currentdensity,
+            "Fem::ConstraintCurrentDensity"
+        ))
+
+        # ConstraintDisplacement
+        constraint_displacement = ObjectsFem.makeConstraintDisplacement(doc)
+        self.assertTrue(is_derived_from(
+            constraint_displacement,
+            "App::DocumentObject"
+        ))
+        self.assertTrue(is_derived_from(
+            constraint_displacement,
             "Fem::Constraint"
         ))
         self.assertTrue(is_derived_from(
-            constraint_dicplacement,
+            constraint_displacement,
             "Fem::ConstraintDisplacement"
         ))
 
@@ -1431,12 +1454,18 @@ class TestObjectType(unittest.TestCase):
         )
         self.assertTrue(
             ObjectsFem.makeConstraintBodyHeatSource(
-                doc).isDerivedFrom("Fem::ConstraintPython")
+                doc
+            ).isDerivedFrom("Fem::ConstraintPython")
         )
         self.assertTrue(
             ObjectsFem.makeConstraintContact(
                 doc
             ).isDerivedFrom("Fem::ConstraintContact")
+        )
+        self.assertTrue(
+            ObjectsFem.makeConstraintCurrentDensity(
+                doc
+            ).isDerivedFrom("Fem::ConstraintPython")
         )
         self.assertTrue(
             ObjectsFem.makeConstraintDisplacement(
@@ -1696,6 +1725,7 @@ def create_all_fem_objects_doc(
     analysis.addObject(ObjectsFem.makeConstraintBearing(doc))
     analysis.addObject(ObjectsFem.makeConstraintBodyHeatSource(doc))
     analysis.addObject(ObjectsFem.makeConstraintContact(doc))
+    analysis.addObject(ObjectsFem.makeConstraintCurrentDensity(doc))
     analysis.addObject(ObjectsFem.makeConstraintDisplacement(doc))
     analysis.addObject(ObjectsFem.makeConstraintElectrostaticPotential(doc))
     analysis.addObject(ObjectsFem.makeConstraintFixed(doc))

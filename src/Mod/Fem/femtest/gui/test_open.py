@@ -148,12 +148,20 @@ class TestObjectOpen(unittest.TestCase):
         self,
         doc
     ):
+        import ObjectsFem
+        from femtools.femutils import type_of_obj
+
         # see comments at file end, the code was created by some python code
 
         from femviewprovider.view_constraint_bodyheatsource import VPConstraintBodyHeatSource
         self.assertEqual(
             VPConstraintBodyHeatSource,
             doc.ConstraintBodyHeatSource.ViewObject.Proxy.__class__
+        )
+
+        self.assertEqual(
+            "Fem::ConstraintCurrentDensity",
+            type_of_obj(ObjectsFem.makeConstraintCurrentDensity(doc))
         )
 
         from femviewprovider.view_constraint_electrostaticpotential \
