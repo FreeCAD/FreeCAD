@@ -20,7 +20,7 @@ JtReader    export-ignore
 # find AddonManager Arch Complete Draft Idf Fem Material OpenSCAD Show Tux -type f -name '*.*' | sed 's|.*\.||' | sort -u
 
 # search for a specific file ending in normalized folders
-# find AddonManager Arch Complete Draft Idf Fem Material OpenSCAD Show Tux -type f -name '*.emn' 
+# find AddonManager Arch Complete Draft Idf Fem Material OpenSCAD Show Tux -type f -name '*.emn'
 
 
 # normalize the line endings of the following files

@@ -1,4 +1,4 @@
-#!/bin/sh 
+#!/bin/sh
 apt-get install --no-install-recommends --yes build-essential cmake doxygen git \
     libboost-date-time-dev libboost-dev libboost-filesystem-dev \
     libboost-graph-dev libboost-iostreams-dev libboost-program-options-dev \
