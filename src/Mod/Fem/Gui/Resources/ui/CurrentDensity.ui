@@ -63,7 +63,10 @@
       </size>
      </property>
      <property name="toolTip">
-      <string>Real part of potential x-component</string>
+      <string>Real part of potential x-component
+Note: if a face was selected this will be the value
+          in normal face direction
+          settings for y and z will be ignored</string>
      </property>
      <property name="keyboardTracking">
       <bool>true</bool>
@@ -107,7 +110,10 @@
       </size>
      </property>
      <property name="toolTip">
-      <string>Imaginary part of potential x-component</string>
+      <string>Imaginary part of potential x-component
+Note: if a face was selected this will be the value
+          in normal face direction
+          settings for y and z will be ignored</string>
      </property>
      <property name="keyboardTracking">
       <bool>true</bool>

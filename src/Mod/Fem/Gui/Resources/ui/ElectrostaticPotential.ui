@@ -241,7 +241,8 @@ with a harmonic/oscillating driving force</string>
          </size>
         </property>
         <property name="toolTip">
-         <string>Real part of potential x-component</string>
+         <string>Real part of potential x-component
+Note: has no effect if a solid was selected</string>
         </property>
         <property name="keyboardTracking">
          <bool>true</bool>
@@ -285,7 +286,8 @@ with a harmonic/oscillating driving force</string>
          </size>
         </property>
         <property name="toolTip">
-         <string>Imaginary part of potential x-component</string>
+         <string>Imaginary part of potential x-component
+Note: has no effect if a solid was selected</string>
         </property>
         <property name="keyboardTracking">
          <bool>true</bool>
@@ -339,7 +341,8 @@ with a harmonic/oscillating driving force</string>
          </size>
         </property>
         <property name="toolTip">
-         <string>Real part of potential y-component</string>
+         <string>Real part of potential y-component
+Note: has no effect if a solid was selected</string>
         </property>
         <property name="keyboardTracking">
          <bool>true</bool>
@@ -383,7 +386,8 @@ with a harmonic/oscillating driving force</string>
          </size>
         </property>
         <property name="toolTip">
-         <string>Imaginary part of potential y-component</string>
+         <string>Imaginary part of potential y-component
+Note: has no effect if a solid was selected</string>
         </property>
         <property name="keyboardTracking">
          <bool>true</bool>
@@ -437,7 +441,8 @@ with a harmonic/oscillating driving force</string>
          </size>
         </property>
         <property name="toolTip">
-         <string>Real part of potential z-component</string>
+         <string>Real part of potential z-component
+Note: has no effect if a solid was selected</string>
         </property>
         <property name="keyboardTracking">
          <bool>true</bool>
@@ -481,7 +486,8 @@ with a harmonic/oscillating driving force</string>
          </size>
         </property>
         <property name="toolTip">
-         <string>Imaginary part of potential z-component</string>
+         <string>Imaginary part of potential z-component
+Note: has no effect if a solid was selected</string>
         </property>
         <property name="keyboardTracking">
          <bool>true</bool>
