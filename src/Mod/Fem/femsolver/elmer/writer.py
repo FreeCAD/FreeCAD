@@ -60,7 +60,6 @@ _STARTINFO_NAME = "ELMERSOLVER_STARTINFO"
 _SIF_NAME = "case.sif"
 _ELMERGRID_IFORMAT = "8"
 _ELMERGRID_OFORMAT = "2"
-_SOLID_PREFIX = "Solid"
 
 
 def _getAllSubObjects(obj):
@@ -91,12 +90,12 @@ class Writer(object):
     def write_solver_input(self):
         self._handleRedifinedConstants()
         self._handleSimulation()
-        self._handleHeat()
         self._handleElasticity()
-        self._handleElectrostatic()
-        self._handleFlux()
         self._handleElectricforce()
+        self._handleElectrostatic()
+        self._handleHeat()
         self._handleFlow()
+        self._handleFlux()
         self._addOutputSolver()
 
         self._writeSif()
@@ -375,481 +374,8 @@ class Writer(object):
             )
             solver.TimestepSizes = [0.1]
 
-    def _handleHeat(self):
-        activeIn = []
-        for equation in self.solver.Group:
-            if femutils.is_of_type(equation, "Fem::EquationElmerHeat"):
-                if equation.References:
-                    activeIn = equation.References[0][1]
-                else:
-                    activeIn = self._getAllBodies()
-                solverSection = self._getHeatSolver(equation)
-                for body in activeIn:
-                    self._addSolver(body, solverSection)
-                self._handleHeatEquation(activeIn, equation)
-        if activeIn:
-            self._handleHeatConstants()
-            self._handleHeatBndConditions()
-            self._handleHeatInitial(activeIn)
-            self._handleHeatBodyForces(activeIn)
-            self._handleHeatMaterial(activeIn)
-
-    def _getHeatSolver(self, equation):
-        # check if we need to update the equation
-        self._updateHeatSolver(equation)
-        # output the equation parameters
-        s = self._createNonlinearSolver(equation)
-        s["Equation"] = equation.Name
-        s["Procedure"] = sifio.FileAttr("HeatSolve/HeatSolver")
-        s["Bubbles"] = equation.Bubbles
-        s["Exec Solver"] = "Always"
-        s["Optimize Bandwidth"] = True
-        s["Stabilize"] = equation.Stabilize
-        s["Variable"] = self._getUniqueVarName("Temperature")
-        return s
-
-    def _handleHeatConstants(self):
-        self._constant(
-            "Stefan Boltzmann",
-            self._convert(self.constsdef["StefanBoltzmann"], "M/(O^4*T^3)")
-        )
-
-    def _handleHeatEquation(self, bodies, equation):
-        for b in bodies:
-            if equation.Convection != "None":
-                self._equation(b, "Convection", equation.Convection)
-            if equation.PhaseChangeModel != "None":
-                self._equation(b, "Phase Change Model", equation.PhaseChangeModel)
-
-    def _updateHeatSolver(self, equation):
-        # updates older Heat equations
-        if not hasattr(equation, "Convection"):
-            equation.addProperty(
-                "App::PropertyEnumeration",
-                "Convection",
-                "Equation",
-                "Type of convection to be used"
-            )
-            equation.Convection = heat.CONVECTION_TYPE
-            equation.Convection = "None"
-        if not hasattr(equation, "PhaseChangeModel"):
-            equation.addProperty(
-                "App::PropertyEnumeration",
-                "PhaseChangeModel",
-                "Equation",
-                "Model for phase change"
-            )
-            equation.PhaseChangeModel = heat.PHASE_CHANGE_MODEL
-            equation.PhaseChangeModel = "None"
-
-    def _handleHeatBndConditions(self):
-        i = -1
-        for obj in self._getMember("Fem::ConstraintTemperature"):
-            i = i + 1
-            femobjects = membertools.get_several_member(self.analysis, "Fem::ConstraintTemperature")
-            femobjects[i]["Nodes"] = meshtools.get_femnodes_by_femobj_with_references(
-                self._getSingleMember("Fem::FemMeshObject").FemMesh,
-                femobjects[i]
-            )
-            NumberOfNodes = len(femobjects[i]["Nodes"])
-            if obj.References:
-                for name in obj.References[0][1]:
-                    if obj.ConstraintType == "Temperature":
-                        temp = self._getFromUi(obj.Temperature, "K", "O")
-                        self._boundary(name, "Temperature", temp)
-                    elif obj.ConstraintType == "CFlux":
-                        # the CFLUX property stores the value in µW
-                        # but the unit system is not aware of µW, only of mW
-                        flux = 0.001 * self._getFromUi(obj.CFlux, "mW", "M*L^2*T^-3")
-                        # CFLUX is the flux per mesh node
-                        flux = flux / NumberOfNodes
-                        self._boundary(name, "Temperature Load", flux)
-                self._handled(obj)
-        for obj in self._getMember("Fem::ConstraintHeatflux"):
-            if obj.References:
-                for name in obj.References[0][1]:
-                    if obj.ConstraintType == "Convection":
-                        film = self._getFromUi(obj.FilmCoef, "W/(m^2*K)", "M/(T^3*O)")
-                        temp = self._getFromUi(obj.AmbientTemp, "K", "O")
-                        self._boundary(name, "Heat Transfer Coefficient", film)
-                        self._boundary(name, "External Temperature", temp)
-                    elif obj.ConstraintType == "DFlux":
-                        flux = self._getFromUi(obj.DFlux, "W/m^2", "M*T^-3")
-                        self._boundary(name, "Heat Flux BC", True)
-                        self._boundary(name, "Heat Flux", flux)
-                self._handled(obj)
-
-    def _handleHeatInitial(self, bodies):
-        obj = self._getSingleMember("Fem::ConstraintInitialTemperature")
-        if obj is not None:
-            for name in bodies:
-                temp = self._getFromUi(obj.initialTemperature, "K", "O")
-                self._initial(name, "Temperature", temp)
-            self._handled(obj)
-
-    def _handleHeatBodyForces(self, bodies):
-        obj = self._getSingleMember("Fem::ConstraintBodyHeatSource")
-        if obj is not None:
-            for name in bodies:
-                heatSource = self._getFromUi(obj.HeatSource, "W/kg", "L^2*T^-3")
-                # according Elmer forum W/kg is correct
-                # http://www.elmerfem.org/forum/viewtopic.php?f=7&t=1765
-                # 1 watt = kg * m2 / s3 ... W/kg = m2 / s3
-                self._bodyForce(name, "Heat Source", heatSource)
-            self._handled(obj)
-
-    def _handleHeatMaterial(self, bodies):
-        tempObj = self._getSingleMember("Fem::ConstraintInitialTemperature")
-        if tempObj is not None:
-            refTemp = self._getFromUi(tempObj.initialTemperature, "K", "O")
-            for name in bodies:
-                self._material(name, "Reference Temperature", refTemp)
-        for obj in self._getMember("App::MaterialObject"):
-            m = obj.Material
-            refs = (
-                obj.References[0][1]
-                if obj.References
-                else self._getAllBodies())
-            for name in (n for n in refs if n in bodies):
-                if "Density" not in m:
-                    raise WriteError(
-                        "Used material does not specify the necessary 'Density'."
-                    )
-                self._material(
-                    name, "Density",
-                    self._getDensity(m))
-                if "ThermalConductivity" not in m:
-                    raise WriteError(
-                        "Used material does not specify the necessary 'Thermal Conductivity'."
-                    )
-                self._material(
-                    name, "Heat Conductivity",
-                    self._convert(m["ThermalConductivity"], "M*L/(T^3*O)"))
-                if "SpecificHeat" not in m:
-                    raise WriteError(
-                        "Used material does not specify the necessary 'Specific Heat'."
-                    )
-                self._material(
-                    name, "Heat Capacity",
-                    self._convert(m["SpecificHeat"], "L^2/(T^2*O)"))
-
-    def _handleElectrostatic(self):
-        activeIn = []
-        for equation in self.solver.Group:
-            if femutils.is_of_type(equation, "Fem::EquationElmerElectrostatic"):
-                if equation.References:
-                    activeIn = equation.References[0][1]
-                else:
-                    activeIn = self._getAllBodies()
-                solverSection = self._getElectrostaticSolver(equation)
-                for body in activeIn:
-                    self._addSolver(body, solverSection)
-        if activeIn:
-            self._handleElectrostaticConstants()
-            self._handleElectrostaticBndConditions()
-            # self._handleElectrostaticInitial(activeIn)
-            # self._handleElectrostaticBodyForces(activeIn)
-            self._handleElectrostaticMaterial(activeIn)
-
-    def _getElectrostaticSolver(self, equation):
-        # check if we need to update the equation
-        self._updateElectrostaticSolver(equation)
-        # output the equation parameters
-        s = self._createLinearSolver(equation)
-        s["Equation"] = "Stat Elec Solver"  # equation.Name
-        s["Procedure"] = sifio.FileAttr("StatElecSolve/StatElecSolver")
-        s["Variable"] = self._getUniqueVarName("Potential")
-        s["Variable DOFs"] = 1
-        if equation.CalculateCapacitanceMatrix is True:
-            s["Calculate Capacitance Matrix"] = equation.CalculateCapacitanceMatrix
-            s["Capacitance Matrix Filename"] = equation.CapacitanceMatrixFilename
-        if equation.CalculateElectricEnergy is True:
-            s["Calculate Electric Energy"] = equation.CalculateElectricEnergy
-        if equation.CalculateElectricField is True:
-            s["Calculate Electric Field"] = equation.CalculateElectricField
-        if equation.CalculateElectricFlux is True:
-            s["Calculate Electric Flux"] = equation.CalculateElectricFlux
-        if equation.CalculateSurfaceCharge is True:
-            s["Calculate Surface Charge"] = equation.CalculateSurfaceCharge
-        if equation.ConstantWeights is True:
-            s["Constant Weights"] = equation.ConstantWeights
-        s["Exec Solver"] = "Always"
-        s["Optimize Bandwidth"] = True
-        if (
-            equation.CalculateCapacitanceMatrix is False
-            and (equation.PotentialDifference != 0.0)
-        ):
-            s["Potential Difference"] = equation.PotentialDifference
-        s["Stabilize"] = equation.Stabilize
-        return s
-
-    def _updateElectrostaticSolver(self, equation):
-        # updates older Electrostatic equations
-        if not hasattr(equation, "CapacitanceMatrixFilename"):
-            equation.addProperty(
-                "App::PropertyFile",
-                "CapacitanceMatrixFilename",
-                "Electrostatic",
-                (
-                    "File where capacitance matrix is being saved\n"
-                    "Only used if 'CalculateCapacitanceMatrix' is true"
-                )
-            )
-            equation.CapacitanceMatrixFilename = "cmatrix.dat"
-        if not hasattr(equation, "ConstantWeights"):
-            equation.addProperty(
-                "App::PropertyBool",
-                "ConstantWeights",
-                "Electrostatic",
-                "Use constant weighting for results"
-            )
-        if not hasattr(equation, "PotentialDifference"):
-            equation.addProperty(
-                "App::PropertyFloat",
-                "PotentialDifference",
-                "Electrostatic",
-                (
-                    "Potential difference in Volt for which capacitance is\n"
-                    "calculated if 'CalculateCapacitanceMatrix' is false"
-                )
-            )
-            equation.PotentialDifference = 0.0
-
-    def _handleElectrostaticConstants(self):
-        self._constant(
-            "Permittivity Of Vacuum",
-            self._convert(self.constsdef["PermittivityOfVacuum"], "T^4*I^2/(L^3*M)")
-        )
-
-    def _handleElectrostaticMaterial(self, bodies):
-        for obj in self._getMember("App::MaterialObject"):
-            m = obj.Material
-            refs = (
-                obj.References[0][1]
-                if obj.References
-                else self._getAllBodies())
-            for name in (n for n in refs if n in bodies):
-                if "RelativePermittivity" in m:
-                    self._material(
-                        name, "Relative Permittivity",
-                        float(m["RelativePermittivity"])
-                    )
-
-    def _handleElectrostaticBndConditions(self):
-        for obj in self._getMember("Fem::ConstraintElectrostaticPotential"):
-            if obj.References:
-                for name in obj.References[0][1]:
-                    if obj.PotentialEnabled:
-                        if hasattr(obj, "Potential"):
-                            # Potential was once a float and scaled not fitting SI units
-                            if isinstance(obj.Potential, float):
-                                savePotential = obj.Potential
-                                obj.removeProperty("Potential")
-                                obj.addProperty(
-                                    "App::PropertyElectricPotential",
-                                    "Potential",
-                                    "Parameter",
-                                    "Electric Potential"
-                                )
-                                # scale to match SI units
-                                obj.Potential = savePotential * 1e6
-                            potential = float(obj.Potential.getValueAs("V"))
-                            self._boundary(name, "Potential", potential)
-                    if obj.PotentialConstant:
-                        self._boundary(name, "Potential Constant", True)
-                    if obj.ElectricInfinity:
-                        self._boundary(name, "Electric Infinity BC", True)
-                    if obj.ElectricForcecalculation:
-                        self._boundary(name, "Calculate Electric Force", True)
-                    if obj.CapacitanceBodyEnabled:
-                        if hasattr(obj, "CapacitanceBody"):
-                            self._boundary(name, "Capacitance Body", obj.CapacitanceBody)
-                self._handled(obj)
-
-    def _handleFlux(self):
-        activeIn = []
-        for equation in self.solver.Group:
-            if femutils.is_of_type(equation, "Fem::EquationElmerFlux"):
-                if equation.References:
-                    activeIn = equation.References[0][1]
-                else:
-                    activeIn = self._getAllBodies()
-                solverSection = self._getFluxSolver(equation)
-                for body in activeIn:
-                    self._addSolver(body, solverSection)
-
-    def _getFluxSolver(self, equation):
-        s = self._createLinearSolver(equation)
-        # check if we need to update the equation
-        self._updateFluxSolver(equation)
-        # output the equation parameters
-        s["Equation"] = equation.Name
-        s["Procedure"] = sifio.FileAttr("FluxSolver/FluxSolver")
-        if equation.AverageWithinMaterials is True:
-            s["Average Within Materials"] = equation.AverageWithinMaterials
-        s["Calculate Flux"] = equation.CalculateFlux
-        if equation.CalculateFluxAbs is True:
-            s["Calculate Flux Abs"] = equation.CalculateFluxAbs
-        if equation.CalculateFluxMagnitude is True:
-            s["Calculate Flux Magnitude"] = equation.CalculateFluxMagnitude
-        s["Calculate Grad"] = equation.CalculateGrad
-        if equation.CalculateGradAbs is True:
-            s["Calculate Grad Abs"] = equation.CalculateGradAbs
-        if equation.CalculateGradMagnitude is True:
-            s["Calculate Grad Magnitude"] = equation.CalculateGradMagnitude
-        if equation.DiscontinuousGalerkin is True:
-            s["Discontinuous Galerkin"] = equation.DiscontinuousGalerkin
-        if equation.EnforcePositiveMagnitude is True:
-            s["Enforce Positive Magnitude"] = equation.EnforcePositiveMagnitude
-        s["Flux Coefficient"] = equation.FluxCoefficient
-        s["Flux Variable"] = equation.FluxVariable
-        s["Stabilize"] = equation.Stabilize
-        return s
-
-    def _updateFluxSolver(self, equation):
-        # updates older Flux equations
-        if not hasattr(equation, "AverageWithinMaterials"):
-            equation.addProperty(
-                "App::PropertyBool",
-                "AverageWithinMaterials",
-                "Flux",
-                (
-                    "Enforces continuity within the same material\n"
-                    "in the 'Discontinuous Galerkin' discretization"
-                )
-            )
-        if hasattr(equation, "Bubbles"):
-            # Bubbles was removed because it is unused by Elmer for the flux solver
-            equation.removeProperty("Bubbles")
-        if not hasattr(equation, "CalculateFluxAbs"):
-            equation.addProperty(
-                "App::PropertyBool",
-                "CalculateFluxAbs",
-                "Flux",
-                "Computes absolute of flux vector"
-            )
-        if not hasattr(equation, "CalculateFluxMagnitude"):
-            equation.addProperty(
-                "App::PropertyBool",
-                "CalculateFluxMagnitude",
-                "Flux",
-                "Computes magnitude of flux vector field"
-            )
-        if not hasattr(equation, "CalculateGradAbs"):
-            equation.addProperty(
-                "App::PropertyBool",
-                "CalculateGradAbs",
-                "Flux",
-                "Computes absolute of gradient field"
-            )
-        if not hasattr(equation, "CalculateGradMagnitude"):
-            equation.addProperty(
-                "App::PropertyBool",
-                "CalculateGradMagnitude",
-                "Flux",
-                "Computes magnitude of gradient field"
-            )
-        if not hasattr(equation, "DiscontinuousGalerkin"):
-            equation.addProperty(
-                "App::PropertyBool",
-                "DiscontinuousGalerkin",
-                "Flux",
-                (
-                    "Enable if standard Galerkin approximation leads to\n"
-                    "unphysical results when there are discontinuities"
-                )
-            )
-        if not hasattr(equation, "EnforcePositiveMagnitude"):
-            equation.addProperty(
-                "App::PropertyBool",
-                "EnforcePositiveMagnitude",
-                "Flux",
-                (
-                    "If true, negative values of computed magnitude fields\n"
-                    "are a posteriori set to zero."
-                )
-            )
-        tempFluxCoefficient = ""
-        if hasattr(equation, "FluxCoefficient"):
-            if equation.FluxCoefficient not in flux.COEFFICIENTS:
-                # was an App::PropertyString and changed to
-                # App::PropertyEnumeration
-                tempFluxCoefficient = equation.FluxCoefficient
-                equation.removeProperty("FluxCoefficient")
-        if not hasattr(equation, "FluxCoefficient"):
-            equation.addProperty(
-                "App::PropertyEnumeration",
-                "FluxCoefficient",
-                "Flux",
-                "Name of proportionality coefficient\nto compute the flux"
-            )
-            equation.FluxCoefficient = flux.COEFFICIENTS
-            if tempFluxCoefficient:
-                equation.FluxCoefficient = tempFluxCoefficient
-            else:
-                equation.FluxCoefficient = "None"
-        tempFluxVariable = ""
-        if hasattr(equation, "FluxVariable"):
-            if equation.FluxVariable not in flux.VARIABLES:
-                # was an App::PropertyString and changed to
-                # App::PropertyEnumeration
-                tempFluxVariable = equation.FluxVariable
-                equation.removeProperty("FluxVariable")
-                equation.addProperty(
-                    "App::PropertyEnumeration",
-                    "FluxVariable",
-                    "Flux",
-                    "Variable name for flux calculation"
-                )
-                equation.FluxVariable = flux.VARIABLES
-                equation.FluxVariable = tempFluxVariable
-
-
-    def _handleElectricforce(self):
-        activeIn = []
-        for equation in self.solver.Group:
-            if femutils.is_of_type(equation, "Fem::EquationElmerElectricforce"):
-                if equation.References:
-                    activeIn = equation.References[0][1]
-                else:
-                    activeIn = self._getAllBodies()
-                solverSection = self._getElectricforceSolver(equation)
-                for body in activeIn:
-                    self._addSolver(body, solverSection)
-
-    def _getElectricforceSolver(self, equation):
-        # check if we need to update the equation
-        self._updateElectricforceSolver(equation)
-        # output the equation parameters
-        s = self._createEmptySolver()
-        s["Equation"] = "Electric Force"  # equation.Name
-        s["Procedure"] = sifio.FileAttr("ElectricForce/StatElecForce")
-        s["Exec Solver"] = equation.ExecSolver
-        s["Stabilize"] = equation.Stabilize
-        return s
-
-    def _updateElectricforceSolver(self, equation):
-        # updates older Electricforce equations
-        if not hasattr(equation, "ExecSolver"):
-            equation.addProperty(
-                "App::PropertyEnumeration",
-                "ExecSolver",
-                "Electric Force",
-                (
-                    "That solver is only executed after solution converged\n"
-                    "To execute always, change to 'Always'"
-                )
-            )
-            equation.ExecSolver = electricforce.SOLVER_EXEC_METHODS
-            equation.ExecSolver = "After Timestep"
-
-    def _haveMaterialSolid(self):
-        for obj in self._getMember("App::MaterialObject"):
-            m = obj.Material
-            # fluid material always has KinematicViscosity defined
-            if not ("KinematicViscosity" in m):
-                return True
-        return False
+    #-------------------------------------------------------------------------------------------
+    # Elasticity
 
     def _handleElasticity(self):
         activeIn = []
@@ -1244,7 +770,7 @@ class Writer(object):
                 # don't evaluate fluid material
                 if self._isBodyMaterialFluid(name):
                     break
-                if not "YoungsModulus" in m:
+                if "YoungsModulus" not in m:
                     Console.PrintMessage("m: {}\n".format(m))
                     # it is no fluid but also no solid
                     # -> user set no material reference at all
@@ -1253,6 +779,7 @@ class Writer(object):
                         "There are two or more materials with empty references.\n\n"
                         "Set for the materials to what solid they belong to.\n"
                     )
+                self._material(name, "Name", m["Name"])
                 if density_needed is True:
                     self._material(
                         name, "Density",
@@ -1284,21 +811,188 @@ class Writer(object):
             youngsModulus *= 1e3
         return youngsModulus
 
-    def _haveMaterialFluid(self):
+    #-------------------------------------------------------------------------------------------
+    # Electrostatic
+
+    def _handleElectrostatic(self):
+        activeIn = []
+        for equation in self.solver.Group:
+            if femutils.is_of_type(equation, "Fem::EquationElmerElectrostatic"):
+                if equation.References:
+                    activeIn = equation.References[0][1]
+                else:
+                    activeIn = self._getAllBodies()
+                solverSection = self._getElectrostaticSolver(equation)
+                for body in activeIn:
+                    self._addSolver(body, solverSection)
+        if activeIn:
+            self._handleElectrostaticConstants()
+            self._handleElectrostaticBndConditions()
+            # self._handleElectrostaticInitial(activeIn)
+            # self._handleElectrostaticBodyForces(activeIn)
+            self._handleElectrostaticMaterial(activeIn)
+
+    def _getElectrostaticSolver(self, equation):
+        # check if we need to update the equation
+        self._updateElectrostaticSolver(equation)
+        # output the equation parameters
+        s = self._createLinearSolver(equation)
+        s["Equation"] = "Stat Elec Solver"  # equation.Name
+        s["Procedure"] = sifio.FileAttr("StatElecSolve/StatElecSolver")
+        s["Variable"] = self._getUniqueVarName("Potential")
+        s["Variable DOFs"] = 1
+        if equation.CalculateCapacitanceMatrix is True:
+            s["Calculate Capacitance Matrix"] = equation.CalculateCapacitanceMatrix
+            s["Capacitance Matrix Filename"] = equation.CapacitanceMatrixFilename
+        if equation.CalculateElectricEnergy is True:
+            s["Calculate Electric Energy"] = equation.CalculateElectricEnergy
+        if equation.CalculateElectricField is True:
+            s["Calculate Electric Field"] = equation.CalculateElectricField
+        if equation.CalculateElectricFlux is True:
+            s["Calculate Electric Flux"] = equation.CalculateElectricFlux
+        if equation.CalculateSurfaceCharge is True:
+            s["Calculate Surface Charge"] = equation.CalculateSurfaceCharge
+        if equation.ConstantWeights is True:
+            s["Constant Weights"] = equation.ConstantWeights
+        s["Exec Solver"] = "Always"
+        s["Optimize Bandwidth"] = True
+        if (
+            equation.CalculateCapacitanceMatrix is False
+            and (equation.PotentialDifference != 0.0)
+        ):
+            s["Potential Difference"] = equation.PotentialDifference
+        s["Stabilize"] = equation.Stabilize
+        return s
+
+    def _updateElectrostaticSolver(self, equation):
+        # updates older Electrostatic equations
+        if not hasattr(equation, "CapacitanceMatrixFilename"):
+            equation.addProperty(
+                "App::PropertyFile",
+                "CapacitanceMatrixFilename",
+                "Electrostatic",
+                (
+                    "File where capacitance matrix is being saved\n"
+                    "Only used if 'CalculateCapacitanceMatrix' is true"
+                )
+            )
+            equation.CapacitanceMatrixFilename = "cmatrix.dat"
+        if not hasattr(equation, "ConstantWeights"):
+            equation.addProperty(
+                "App::PropertyBool",
+                "ConstantWeights",
+                "Electrostatic",
+                "Use constant weighting for results"
+            )
+        if not hasattr(equation, "PotentialDifference"):
+            equation.addProperty(
+                "App::PropertyFloat",
+                "PotentialDifference",
+                "Electrostatic",
+                (
+                    "Potential difference in Volt for which capacitance is\n"
+                    "calculated if 'CalculateCapacitanceMatrix' is false"
+                )
+            )
+            equation.PotentialDifference = 0.0
+
+    def _handleElectrostaticConstants(self):
+        permittivity = self._convert(self.constsdef["PermittivityOfVacuum"], "T^4*I^2/(L^3*M)")
+        permittivity = round(permittivity, 20) # to get rid of numerical artifacts
+        self._constant(
+            "Permittivity Of Vacuum",
+            permittivity
+        )
+
+    def _handleElectrostaticMaterial(self, bodies):
         for obj in self._getMember("App::MaterialObject"):
             m = obj.Material
-            # fluid material always has KinematicViscosity defined 
-            if "KinematicViscosity" in m:
-                return True
-        return False
+            refs = (
+                obj.References[0][1]
+                if obj.References
+                else self._getAllBodies())
+            for name in (n for n in refs if n in bodies):
+                self._material(name, "Name", m["Name"])
+                if "RelativePermittivity" in m:
+                    self._material(
+                        name, "Relative Permittivity",
+                        float(m["RelativePermittivity"])
+                    )
 
-    def _isBodyMaterialFluid(self, body):
-        # we can have the case that a body has no assigned material
-        # then assume it is a solid
-        if self._getBodyMaterial(body) is not None:
-            m = self._getBodyMaterial(body).Material
-            return "KinematicViscosity" in m
-        return False
+    def _handleElectrostaticBndConditions(self):
+        for obj in self._getMember("Fem::ConstraintElectrostaticPotential"):
+            if obj.References:
+                for name in obj.References[0][1]:
+                    if obj.PotentialEnabled:
+                        if hasattr(obj, "Potential"):
+                            # Potential was once a float and scaled not fitting SI units
+                            if isinstance(obj.Potential, float):
+                                savePotential = obj.Potential
+                                obj.removeProperty("Potential")
+                                obj.addProperty(
+                                    "App::PropertyElectricPotential",
+                                    "Potential",
+                                    "Parameter",
+                                    "Electric Potential"
+                                )
+                                # scale to match SI units
+                                obj.Potential = savePotential * 1e6
+                            potential = float(obj.Potential.getValueAs("V"))
+                            self._boundary(name, "Potential", potential)
+                    if obj.PotentialConstant:
+                        self._boundary(name, "Potential Constant", True)
+                    if obj.ElectricInfinity:
+                        self._boundary(name, "Electric Infinity BC", True)
+                    if obj.ElectricForcecalculation:
+                        self._boundary(name, "Calculate Electric Force", True)
+                    if obj.CapacitanceBodyEnabled:
+                        if hasattr(obj, "CapacitanceBody"):
+                            self._boundary(name, "Capacitance Body", obj.CapacitanceBody)
+                self._handled(obj)
+
+    #-------------------------------------------------------------------------------------------
+    # Electricforce
+
+    def _handleElectricforce(self):
+        activeIn = []
+        for equation in self.solver.Group:
+            if femutils.is_of_type(equation, "Fem::EquationElmerElectricforce"):
+                if equation.References:
+                    activeIn = equation.References[0][1]
+                else:
+                    activeIn = self._getAllBodies()
+                solverSection = self._getElectricforceSolver(equation)
+                for body in activeIn:
+                    self._addSolver(body, solverSection)
+
+    def _getElectricforceSolver(self, equation):
+        # check if we need to update the equation
+        self._updateElectricforceSolver(equation)
+        # output the equation parameters
+        s = self._createEmptySolver()
+        s["Equation"] = "Electric Force"  # equation.Name
+        s["Procedure"] = sifio.FileAttr("ElectricForce/StatElecForce")
+        s["Exec Solver"] = equation.ExecSolver
+        s["Stabilize"] = equation.Stabilize
+        return s
+
+    def _updateElectricforceSolver(self, equation):
+        # updates older Electricforce equations
+        if not hasattr(equation, "ExecSolver"):
+            equation.addProperty(
+                "App::PropertyEnumeration",
+                "ExecSolver",
+                "Electric Force",
+                (
+                    "That solver is only executed after solution converged\n"
+                    "To execute always, change to 'Always'"
+                )
+            )
+            equation.ExecSolver = electricforce.SOLVER_EXEC_METHODS
+            equation.ExecSolver = "After Timestep"
+
+    #-------------------------------------------------------------------------------------------
+    # Flow
 
     def _handleFlow(self):
         activeIn = []
@@ -1421,6 +1115,7 @@ class Writer(object):
                 if obj.References
                 else self._getAllBodies())
             for name in (n for n in refs if n in bodies):
+                self._material(name, "Name", m["Name"])
                 if "Density" in m:
                     self._material(
                         name, "Density",
@@ -1521,15 +1216,331 @@ class Writer(object):
                 if equation.MagneticInduction is True:
                     self._equation(b, "Magnetic Induction", equation.MagneticInduction)
 
+    #-------------------------------------------------------------------------------------------
+    # Flux
+
+    def _handleFlux(self):
+        activeIn = []
+        for equation in self.solver.Group:
+            if femutils.is_of_type(equation, "Fem::EquationElmerFlux"):
+                if equation.References:
+                    activeIn = equation.References[0][1]
+                else:
+                    activeIn = self._getAllBodies()
+                solverSection = self._getFluxSolver(equation)
+                for body in activeIn:
+                    self._addSolver(body, solverSection)
+
+    def _getFluxSolver(self, equation):
+        s = self._createLinearSolver(equation)
+        # check if we need to update the equation
+        self._updateFluxSolver(equation)
+        # output the equation parameters
+        s["Equation"] = equation.Name
+        s["Procedure"] = sifio.FileAttr("FluxSolver/FluxSolver")
+        if equation.AverageWithinMaterials is True:
+            s["Average Within Materials"] = equation.AverageWithinMaterials
+        s["Calculate Flux"] = equation.CalculateFlux
+        if equation.CalculateFluxAbs is True:
+            s["Calculate Flux Abs"] = equation.CalculateFluxAbs
+        if equation.CalculateFluxMagnitude is True:
+            s["Calculate Flux Magnitude"] = equation.CalculateFluxMagnitude
+        s["Calculate Grad"] = equation.CalculateGrad
+        if equation.CalculateGradAbs is True:
+            s["Calculate Grad Abs"] = equation.CalculateGradAbs
+        if equation.CalculateGradMagnitude is True:
+            s["Calculate Grad Magnitude"] = equation.CalculateGradMagnitude
+        if equation.DiscontinuousGalerkin is True:
+            s["Discontinuous Galerkin"] = equation.DiscontinuousGalerkin
+        if equation.EnforcePositiveMagnitude is True:
+            s["Enforce Positive Magnitude"] = equation.EnforcePositiveMagnitude
+        s["Flux Coefficient"] = equation.FluxCoefficient
+        s["Flux Variable"] = equation.FluxVariable
+        s["Stabilize"] = equation.Stabilize
+        return s
+
+    def _updateFluxSolver(self, equation):
+        # updates older Flux equations
+        if not hasattr(equation, "AverageWithinMaterials"):
+            equation.addProperty(
+                "App::PropertyBool",
+                "AverageWithinMaterials",
+                "Flux",
+                (
+                    "Enforces continuity within the same material\n"
+                    "in the 'Discontinuous Galerkin' discretization"
+                )
+            )
+        if hasattr(equation, "Bubbles"):
+            # Bubbles was removed because it is unused by Elmer for the flux solver
+            equation.removeProperty("Bubbles")
+        if not hasattr(equation, "CalculateFluxAbs"):
+            equation.addProperty(
+                "App::PropertyBool",
+                "CalculateFluxAbs",
+                "Flux",
+                "Computes absolute of flux vector"
+            )
+        if not hasattr(equation, "CalculateFluxMagnitude"):
+            equation.addProperty(
+                "App::PropertyBool",
+                "CalculateFluxMagnitude",
+                "Flux",
+                "Computes magnitude of flux vector field"
+            )
+        if not hasattr(equation, "CalculateGradAbs"):
+            equation.addProperty(
+                "App::PropertyBool",
+                "CalculateGradAbs",
+                "Flux",
+                "Computes absolute of gradient field"
+            )
+        if not hasattr(equation, "CalculateGradMagnitude"):
+            equation.addProperty(
+                "App::PropertyBool",
+                "CalculateGradMagnitude",
+                "Flux",
+                "Computes magnitude of gradient field"
+            )
+        if not hasattr(equation, "DiscontinuousGalerkin"):
+            equation.addProperty(
+                "App::PropertyBool",
+                "DiscontinuousGalerkin",
+                "Flux",
+                (
+                    "Enable if standard Galerkin approximation leads to\n"
+                    "unphysical results when there are discontinuities"
+                )
+            )
+        if not hasattr(equation, "EnforcePositiveMagnitude"):
+            equation.addProperty(
+                "App::PropertyBool",
+                "EnforcePositiveMagnitude",
+                "Flux",
+                (
+                    "If true, negative values of computed magnitude fields\n"
+                    "are a posteriori set to zero."
+                )
+            )
+        tempFluxCoefficient = ""
+        if hasattr(equation, "FluxCoefficient"):
+            if equation.FluxCoefficient not in flux.COEFFICIENTS:
+                # was an App::PropertyString and changed to
+                # App::PropertyEnumeration
+                tempFluxCoefficient = equation.FluxCoefficient
+                equation.removeProperty("FluxCoefficient")
+        if not hasattr(equation, "FluxCoefficient"):
+            equation.addProperty(
+                "App::PropertyEnumeration",
+                "FluxCoefficient",
+                "Flux",
+                "Name of proportionality coefficient\nto compute the flux"
+            )
+            equation.FluxCoefficient = flux.COEFFICIENTS
+            if tempFluxCoefficient:
+                equation.FluxCoefficient = tempFluxCoefficient
+            else:
+                equation.FluxCoefficient = "None"
+        tempFluxVariable = ""
+        if hasattr(equation, "FluxVariable"):
+            if equation.FluxVariable not in flux.VARIABLES:
+                # was an App::PropertyString and changed to
+                # App::PropertyEnumeration
+                tempFluxVariable = equation.FluxVariable
+                equation.removeProperty("FluxVariable")
+                equation.addProperty(
+                    "App::PropertyEnumeration",
+                    "FluxVariable",
+                    "Flux",
+                    "Variable name for flux calculation"
+                )
+                equation.FluxVariable = flux.VARIABLES
+                equation.FluxVariable = tempFluxVariable
+
+    #-------------------------------------------------------------------------------------------
+    # Heat
+
+    def _handleHeat(self):
+        activeIn = []
+        for equation in self.solver.Group:
+            if femutils.is_of_type(equation, "Fem::EquationElmerHeat"):
+                if equation.References:
+                    activeIn = equation.References[0][1]
+                else:
+                    activeIn = self._getAllBodies()
+                solverSection = self._getHeatSolver(equation)
+                for body in activeIn:
+                    self._addSolver(body, solverSection)
+                self._handleHeatEquation(activeIn, equation)
+        if activeIn:
+            self._handleHeatConstants()
+            self._handleHeatBndConditions()
+            self._handleHeatInitial(activeIn)
+            self._handleHeatBodyForces(activeIn)
+            self._handleHeatMaterial(activeIn)
+
+    def _getHeatSolver(self, equation):
+        # check if we need to update the equation
+        self._updateHeatSolver(equation)
+        # output the equation parameters
+        s = self._createNonlinearSolver(equation)
+        s["Equation"] = equation.Name
+        s["Procedure"] = sifio.FileAttr("HeatSolve/HeatSolver")
+        s["Bubbles"] = equation.Bubbles
+        s["Exec Solver"] = "Always"
+        s["Optimize Bandwidth"] = True
+        s["Stabilize"] = equation.Stabilize
+        s["Variable"] = self._getUniqueVarName("Temperature")
+        return s
+
+    def _handleHeatConstants(self):
+        self._constant(
+            "Stefan Boltzmann",
+            self._convert(self.constsdef["StefanBoltzmann"], "M/(O^4*T^3)")
+        )
+
+    def _handleHeatEquation(self, bodies, equation):
+        for b in bodies:
+            if equation.Convection != "None":
+                self._equation(b, "Convection", equation.Convection)
+            if equation.PhaseChangeModel != "None":
+                self._equation(b, "Phase Change Model", equation.PhaseChangeModel)
+
+    def _updateHeatSolver(self, equation):
+        # updates older Heat equations
+        if not hasattr(equation, "Convection"):
+            equation.addProperty(
+                "App::PropertyEnumeration",
+                "Convection",
+                "Equation",
+                "Type of convection to be used"
+            )
+            equation.Convection = heat.CONVECTION_TYPE
+            equation.Convection = "None"
+        if not hasattr(equation, "PhaseChangeModel"):
+            equation.addProperty(
+                "App::PropertyEnumeration",
+                "PhaseChangeModel",
+                "Equation",
+                "Model for phase change"
+            )
+            equation.PhaseChangeModel = heat.PHASE_CHANGE_MODEL
+            equation.PhaseChangeModel = "None"
+
+    def _handleHeatBndConditions(self):
+        i = -1
+        for obj in self._getMember("Fem::ConstraintTemperature"):
+            i = i + 1
+            femobjects = membertools.get_several_member(self.analysis, "Fem::ConstraintTemperature")
+            femobjects[i]["Nodes"] = meshtools.get_femnodes_by_femobj_with_references(
+                self._getSingleMember("Fem::FemMeshObject").FemMesh,
+                femobjects[i]
+            )
+            NumberOfNodes = len(femobjects[i]["Nodes"])
+            if obj.References:
+                for name in obj.References[0][1]:
+                    if obj.ConstraintType == "Temperature":
+                        temp = self._getFromUi(obj.Temperature, "K", "O")
+                        self._boundary(name, "Temperature", temp)
+                    elif obj.ConstraintType == "CFlux":
+                        # the CFLUX property stores the value in µW
+                        # but the unit system is not aware of µW, only of mW
+                        flux = 0.001 * self._getFromUi(obj.CFlux, "mW", "M*L^2*T^-3")
+                        # CFLUX is the flux per mesh node
+                        flux = flux / NumberOfNodes
+                        self._boundary(name, "Temperature Load", flux)
+                self._handled(obj)
+        for obj in self._getMember("Fem::ConstraintHeatflux"):
+            if obj.References:
+                for name in obj.References[0][1]:
+                    if obj.ConstraintType == "Convection":
+                        film = self._getFromUi(obj.FilmCoef, "W/(m^2*K)", "M/(T^3*O)")
+                        temp = self._getFromUi(obj.AmbientTemp, "K", "O")
+                        self._boundary(name, "Heat Transfer Coefficient", film)
+                        self._boundary(name, "External Temperature", temp)
+                    elif obj.ConstraintType == "DFlux":
+                        flux = self._getFromUi(obj.DFlux, "W/m^2", "M*T^-3")
+                        self._boundary(name, "Heat Flux BC", True)
+                        self._boundary(name, "Heat Flux", flux)
+                self._handled(obj)
+
+    def _handleHeatInitial(self, bodies):
+        obj = self._getSingleMember("Fem::ConstraintInitialTemperature")
+        if obj is not None:
+            for name in bodies:
+                temp = self._getFromUi(obj.initialTemperature, "K", "O")
+                self._initial(name, "Temperature", temp)
+            self._handled(obj)
+
+    def _outputHeatBodyForce(self, obj, name):
+        heatSource = self._getFromUi(obj.HeatSource, "W/kg", "L^2*T^-3")
+        if heatSource == 0.0:
+            # a zero heat would break Elmer (division by zero)
+            raise WriteError("The body heat source must not be zero!")
+        self._bodyForce(name, "Heat Source", heatSource)
+
+    def _handleHeatBodyForces(self, bodies):
+        bodyHeats = self._getMember("Fem::ConstraintBodyHeatSource")
+        for obj in bodyHeats:
+            if obj.References:
+                for name in obj.References[0][1]:
+                    self._outputHeatBodyForce(obj, name)
+                self._handled(obj)
+            else:
+                # if there is only one body heat without a reference
+                # add it to all bodies
+                if len(bodyHeats) == 1:
+                    for name in bodies:
+                        self._outputHeatBodyForce(obj, name)
+                else:
+                    raise WriteError(
+                        "Several body heat constraints found without reference to a body.\n"
+                        "Please set a body for each body heat constraint."
+                    )
+            self._handled(obj)
+
+    def _handleHeatMaterial(self, bodies):
+        tempObj = self._getSingleMember("Fem::ConstraintInitialTemperature")
+        if tempObj is not None:
+            refTemp = self._getFromUi(tempObj.initialTemperature, "K", "O")
+            for name in bodies:
+                self._material(name, "Reference Temperature", refTemp)
+        for obj in self._getMember("App::MaterialObject"):
+            m = obj.Material
+            refs = (
+                obj.References[0][1]
+                if obj.References
+                else self._getAllBodies())
+            for name in (n for n in refs if n in bodies):
+                if "Density" not in m:
+                    raise WriteError(
+                        "Used material does not specify the necessary 'Density'."
+                    )
+                self._material(name, "Name", m["Name"])
+                self._material(
+                    name, "Density",
+                    self._getDensity(m))
+                if "ThermalConductivity" not in m:
+                    raise WriteError(
+                        "Used material does not specify the necessary 'Thermal Conductivity'."
+                    )
+                self._material(
+                    name, "Heat Conductivity",
+                    self._convert(m["ThermalConductivity"], "M*L/(T^3*O)"))
+                if "SpecificHeat" not in m:
+                    raise WriteError(
+                        "Used material does not specify the necessary 'Specific Heat'."
+                    )
+                self._material(
+                    name, "Heat Capacity",
+                    self._convert(m["SpecificHeat"], "L^2/(T^2*O)"))
+
+    #-------------------------------------------------------------------------------------------
+    # Solver handling
+
     def _createEmptySolver(self):
         s = sifio.createSection(sifio.SOLVER)
         return s
-
-    def _hasExpression(self, equation):
-        for (obj, exp) in equation.ExpressionEngine:
-            if obj == equation:
-                return exp
-        return None
 
     def _updateLinearSolver(self, equation):
         if self._hasExpression(equation) != equation.LinearTolerance:
@@ -1618,6 +1629,39 @@ class Writer(object):
         s["Nonlinear System Newton After Tolerance"] = \
             equation.NonlinearNewtonAfterTolerance
         return s
+
+    #-------------------------------------------------------------------------------------------
+    # Helper functions
+
+    def _haveMaterialSolid(self):
+        for obj in self._getMember("App::MaterialObject"):
+            m = obj.Material
+            # fluid material always has KinematicViscosity defined
+            if not ("KinematicViscosity" in m):
+                return True
+        return False
+
+    def _haveMaterialFluid(self):
+        for obj in self._getMember("App::MaterialObject"):
+            m = obj.Material
+            # fluid material always has KinematicViscosity defined
+            if "KinematicViscosity" in m:
+                return True
+        return False
+
+    def _isBodyMaterialFluid(self, body):
+        # we can have the case that a body has no assigned material
+        # then assume it is a solid
+        if self._getBodyMaterial(body) is not None:
+            m = self._getBodyMaterial(body).Material
+            return "KinematicViscosity" in m
+        return False
+
+    def _hasExpression(self, equation):
+        for (obj, exp) in equation.ExpressionEngine:
+            if obj == equation:
+                return exp
+        return None
 
     def _getUniqueVarName(self, varName):
         postfix = 1
