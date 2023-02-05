@@ -266,6 +266,8 @@ SET(FemSolverElmerEquations_SRCS
     femsolver/elmer/equations/heat.py
     femsolver/elmer/equations/heat_writer.py
     femsolver/elmer/equations/linear.py
+    femsolver/elmer/equations/magnetodynamic.py
+    femsolver/elmer/equations/magnetodynamic_writer.py
     femsolver/elmer/equations/magnetodynamic2D.py
     femsolver/elmer/equations/magnetodynamic2D_writer.py
     femsolver/elmer/equations/nonlinear.py

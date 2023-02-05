@@ -1386,6 +1386,8 @@ void CmdFEMCompEmEquations::activated(int iMsg)
     else if (iMsg == 1)
         rcCmdMgr.runCommandByName("FEM_EquationElectricforce");
     else if (iMsg == 2)
+        rcCmdMgr.runCommandByName("FEM_EquationMagnetodynamic");
+    else if (iMsg == 3)
         rcCmdMgr.runCommandByName("FEM_EquationMagnetodynamic2D");
     else
         return;
@@ -1410,7 +1412,9 @@ Gui::Action* CmdFEMCompEmEquations::createAction()
     QAction* cmd1 = pcAction->addAction(QString());
     cmd1->setIcon(Gui::BitmapFactory().iconFromTheme("FEM_EquationElectricforce"));
     QAction* cmd2 = pcAction->addAction(QString());
-    cmd2->setIcon(Gui::BitmapFactory().iconFromTheme("FEM_EquationMagnetodynamic2D"));
+    cmd2->setIcon(Gui::BitmapFactory().iconFromTheme("FEM_EquationMagnetodynamic"));
+    QAction* cmd3 = pcAction->addAction(QString());
+    cmd3->setIcon(Gui::BitmapFactory().iconFromTheme("FEM_EquationMagnetodynamic2D"));
 
     _pcAction = pcAction;
     languageChange();
@@ -1456,15 +1460,27 @@ void CmdFEMCompEmEquations::languageChange()
                                                    EquationElectricforce->getStatusTip()));
     }
 
+    Gui::Command* EquationMagnetodynamic =
+        rcCmdMgr.getCommandByName("FEM_EquationMagnetodynamic");
+    if (EquationMagnetodynamic) {
+        QAction* cmd2 = a[2];
+        cmd2->setText(QApplication::translate("FEM_EquationMagnetodynamic",
+                                              EquationMagnetodynamic->getMenuText()));
+        cmd2->setToolTip(QApplication::translate("FEM_EquationMagnetodynamic",
+                                                 EquationMagnetodynamic->getToolTipText()));
+        cmd2->setStatusTip(QApplication::translate("FEM_EquationMagnetodynamic",
+                                                   EquationMagnetodynamic->getStatusTip()));
+    }
+
     Gui::Command* EquationMagnetodynamic2D =
         rcCmdMgr.getCommandByName("FEM_EquationMagnetodynamic2D");
     if (EquationMagnetodynamic2D) {
-        QAction* cmd2 = a[2];
-        cmd2->setText(QApplication::translate("FEM_EquationMagnetodynamic2D",
+        QAction* cmd3 = a[3];
+        cmd3->setText(QApplication::translate("FEM_EquationMagnetodynamic2D",
                                               EquationMagnetodynamic2D->getMenuText()));
-        cmd2->setToolTip(QApplication::translate("FEM_EquationMagnetodynamic2D",
+        cmd3->setToolTip(QApplication::translate("FEM_EquationMagnetodynamic2D",
                                                  EquationMagnetodynamic2D->getToolTipText()));
-        cmd2->setStatusTip(QApplication::translate("FEM_EquationMagnetodynamic2D",
+        cmd3->setStatusTip(QApplication::translate("FEM_EquationMagnetodynamic2D",
                                                    EquationMagnetodynamic2D->getStatusTip()));
     }
 }

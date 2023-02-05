@@ -84,14 +84,14 @@ class TestObjectCreate(unittest.TestCase):
         # thus they are not added to the analysis group ATM
         # https://forum.freecadweb.org/viewtopic.php?t=25283
         # thus they should not be counted
-        # solver children: equations --> 7
+        # solver children: equations --> 8
         # gmsh mesh children: group, region, boundary layer --> 3
         # resule children: mesh result --> 1
         # post pipeline children: region, scalar, cut, wrap --> 4
         # analysis itself is not in analysis group --> 1
-        # thus: -16
+        # thus: -17
 
-        self.assertEqual(len(doc.Analysis.Group), count_defmake - 16)
+        self.assertEqual(len(doc.Analysis.Group), count_defmake - 17)
         self.assertEqual(len(doc.Objects), count_defmake)
 
         fcc_print("doc objects count: {}, method: {}".format(
@@ -374,6 +374,10 @@ class TestObjectType(unittest.TestCase):
             "Fem::EquationElmerMagnetodynamic2D",
             type_of_obj(ObjectsFem.makeEquationMagnetodynamic2D(doc, solverelmer))
         )
+        self.assertEqual(
+            "Fem::EquationElmerMagnetodynamic",
+            type_of_obj(ObjectsFem.makeEquationMagnetodynamic(doc, solverelmer))
+        )
 
         fcc_print("doc objects count: {}, method: {}".format(
             len(doc.Objects),
@@ -612,6 +616,10 @@ class TestObjectType(unittest.TestCase):
         self.assertTrue(is_of_type(
             ObjectsFem.makeEquationMagnetodynamic2D(doc, solverelmer),
             "Fem::EquationElmerMagnetodynamic2D"
+        ))
+        self.assertTrue(is_of_type(
+            ObjectsFem.makeEquationMagnetodynamic(doc, solverelmer),
+            "Fem::EquationElmerMagnetodynamic"
         ))
 
         fcc_print("doc objects count: {}, method: {}".format(
@@ -1453,7 +1461,7 @@ class TestObjectType(unittest.TestCase):
             "Fem::EquationElmerHeat"
         ))
 
-         # EquationElmerMagnetodynamic2D
+        # EquationElmerMagnetodynamic2D
         equation_magnetodynamic2D = ObjectsFem.makeEquationMagnetodynamic2D(doc, solver_elmer)
         self.assertTrue(is_derived_from(
             equation_magnetodynamic2D,
@@ -1466,6 +1474,21 @@ class TestObjectType(unittest.TestCase):
         self.assertTrue(is_derived_from(
             equation_magnetodynamic2D,
             "Fem::EquationElmerMagnetodynamic2D"
+        ))
+
+        # EquationElmerMagnetodynamic
+        equation_magnetodynamic = ObjectsFem.makeEquationMagnetodynamic(doc, solver_elmer)
+        self.assertTrue(is_derived_from(
+            equation_magnetodynamic,
+            "App::DocumentObject"
+        ))
+        self.assertTrue(is_derived_from(
+            equation_magnetodynamic,
+            "App::FeaturePython"
+        ))
+        self.assertTrue(is_derived_from(
+            equation_magnetodynamic,
+            "Fem::EquationElmerMagnetodynamic"
         ))
 
         fcc_print("doc objects count: {}, method: {}".format(
@@ -1763,6 +1786,12 @@ class TestObjectType(unittest.TestCase):
                 solverelmer
             ).isDerivedFrom("App::FeaturePython")
         )
+        self.assertTrue(
+            ObjectsFem.makeEquationMagnetodynamic(
+                doc,
+                solverelmer
+            ).isDerivedFrom("App::FeaturePython")
+        )
 
         fcc_print("doc objects count: {}, method: {}".format(
             len(doc.Objects),
@@ -1845,6 +1874,7 @@ def create_all_fem_objects_doc(
     ObjectsFem.makeEquationFlux(doc, sol)
     ObjectsFem.makeEquationHeat(doc, sol)
     ObjectsFem.makeEquationMagnetodynamic2D(doc, sol)
+    ObjectsFem.makeEquationMagnetodynamic(doc, sol)
 
     doc.recompute()
 
