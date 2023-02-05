@@ -828,8 +828,6 @@ class Writer(object):
         if activeIn:
             self._handleElectrostaticConstants()
             self._handleElectrostaticBndConditions()
-            # self._handleElectrostaticInitial(activeIn)
-            # self._handleElectrostaticBodyForces(activeIn)
             self._handleElectrostaticMaterial(activeIn)
 
     def _getElectrostaticSolver(self, equation):
@@ -1015,8 +1013,6 @@ class Writer(object):
             self._handleFlowConstants()
             self._handleFlowBndConditions()
             self._handleFlowInitialVelocity(activeIn)
-            # self._handleFlowInitial(activeIn)
-            # self._handleFlowBodyForces(activeIn)
             self._handleFlowMaterial(activeIn)
 
     def _getFlowSolver(self, equation):
