@@ -44,6 +44,7 @@ Body 1
 End
 
 Material 1
+  Name = String "Steel-Generic"
   Poisson ratio = Real 0.3
   Youngs Modulus = Real 200000000000.0
 End
