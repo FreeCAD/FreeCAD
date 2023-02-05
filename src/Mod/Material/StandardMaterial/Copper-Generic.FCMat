@@ -23,5 +23,5 @@ ThermalConductivity = 398.0 W/m/K
 ThermalExpansionCoefficient = 16.5 µm/m/K
 
 [Electromagnetic]
-ElectricalConductivity = 588235.3 S/m
+ElectricalConductivity = 59.59 MS/m
 RelativePermeability = 0.999994
