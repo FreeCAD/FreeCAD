@@ -852,8 +852,6 @@ class Writer(object):
         if activeIn:
             self._handleElectrostaticConstants()
             self._handleElectrostaticBndConditions()
-            # self._handleElectrostaticInitial(activeIn)
-            # self._handleElectrostaticBodyForces(activeIn)
             self._handleElectrostaticMaterial(activeIn)
 
     def _getElectrostaticSolver(self, equation):
@@ -1040,8 +1038,6 @@ class Writer(object):
             self._handleFlowBndConditions()
             self._handleFlowInitialPressure(activeIn)
             self._handleFlowInitialVelocity(activeIn)
-            # self._handleFlowInitial(activeIn)
-            # self._handleFlowBodyForces(activeIn)
             self._handleFlowMaterial(activeIn)
 
     def _getFlowSolver(self, equation):
@@ -1188,7 +1184,7 @@ class Writer(object):
                     self._outputInitialPressure(obj, name)
                 self._handled(obj)
             else:
-                # if there is only one initial velocity without a reference
+                # if there is only one initial pressure without a reference
                 # add it to all fluid bodies
                 if len(initialPressures) == 1:
                     for name in bodies:
