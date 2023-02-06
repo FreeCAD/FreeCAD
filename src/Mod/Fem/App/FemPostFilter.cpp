@@ -91,15 +91,18 @@ DocumentObjectExecReturn* FemPostFilter::execute() {
 vtkDataObject* FemPostFilter::getInputData() {
 
     if (Input.getValue()) {
-        if (Input.getValue()->getTypeId().isDerivedFrom(Base::Type::fromName("Fem::FemPostObject")) )
+        if (Input.getValue()->getTypeId().isDerivedFrom(Base::Type::fromName("Fem::FemPostObject")))
             return Input.getValue<FemPostObject*>()->Data.getValue();
         else
-            throw std::runtime_error("The filter's Input object is not a 'Fem::FemPostObject' object!");
+            throw std::runtime_error(
+                "The filter's Input object is not a 'Fem::FemPostObject' object!");
     }
     else {
         //get the pipeline and use the pipelinedata
-        std::vector<App::DocumentObject*> objs = getDocument()->getObjectsOfType(FemPostPipeline::getClassTypeId());
-        for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it != objs.end(); ++it) {
+        std::vector<App::DocumentObject*> objs =
+            getDocument()->getObjectsOfType(FemPostPipeline::getClassTypeId());
+        for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it != objs.end();
+             ++it) {
             if (static_cast<FemPostPipeline*>(*it)->holdsPostObject(this))
                 return static_cast<FemPostObject*>(*it)->Data.getValue();
         }
@@ -115,9 +118,18 @@ PROPERTY_SOURCE(Fem::FemPostClipFilter, Fem::FemPostFilter)
 
 FemPostClipFilter::FemPostClipFilter() : FemPostFilter() {
 
-    ADD_PROPERTY_TYPE(Function, (nullptr), "Clip", App::Prop_None, "The function object which defines the clip regions");
+    ADD_PROPERTY_TYPE(Function,
+                      (nullptr),
+                      "Clip",
+                      App::Prop_None,
+                      "The function object which defines the clip regions");
     ADD_PROPERTY_TYPE(InsideOut, (false), "Clip", App::Prop_None, "Invert the clip direction");
-    ADD_PROPERTY_TYPE(CutCells, (false), "Clip", App::Prop_None, "Decides if cells are cuttet and interpolated or if the cells are kept as a whole");
+    ADD_PROPERTY_TYPE(
+        CutCells,
+        (false),
+        "Clip",
+        App::Prop_None,
+        "Decides if cells are cuttet and interpolated or if the cells are kept as a whole");
 
     FilterPipeline clip;
     m_clipper  = vtkSmartPointer<vtkTableBasedClipDataSet>::New();
@@ -143,9 +155,12 @@ void FemPostClipFilter::onChanged(const Property* prop) {
 
     if (prop == &Function) {
 
-        if (Function.getValue() && Function.getValue()->isDerivedFrom(FemPostFunction::getClassTypeId())) {
-            m_clipper->SetClipFunction(static_cast<FemPostFunction*>(Function.getValue())->getImplicitFunction());
-            m_extractor->SetImplicitFunction(static_cast<FemPostFunction*>(Function.getValue())->getImplicitFunction());
+        if (Function.getValue()
+            && Function.getValue()->isDerivedFrom(FemPostFunction::getClassTypeId())) {
+            m_clipper->SetClipFunction(
+                static_cast<FemPostFunction*>(Function.getValue())->getImplicitFunction());
+            m_extractor->SetImplicitFunction(
+                static_cast<FemPostFunction*>(Function.getValue())->getImplicitFunction());
         }
     }
     else if (prop == &InsideOut) {
@@ -190,11 +205,25 @@ PROPERTY_SOURCE(Fem::FemPostDataAlongLineFilter, Fem::FemPostFilter)
 
 FemPostDataAlongLineFilter::FemPostDataAlongLineFilter() : FemPostFilter() {
 
-    ADD_PROPERTY_TYPE(Point1, (Base::Vector3d(0.0, 0.0, 0.0)), "DataAlongLine", App::Prop_None, "The point 1 used to define end point of line");
-    ADD_PROPERTY_TYPE(Point2, (Base::Vector3d(0.0, 0.0, 1.0)), "DataAlongLine", App::Prop_None, "The point 2 used to define end point of line");
-    ADD_PROPERTY_TYPE(Resolution, (100), "DataAlongLine", App::Prop_None, "The number of intervals between the 2 end points of line");
-    ADD_PROPERTY_TYPE(XAxisData, (0), "DataAlongLine", App::Prop_None, "X axis data values used for plotting");
-    ADD_PROPERTY_TYPE(YAxisData, (0), "DataAlongLine", App::Prop_None, "Y axis data values used for plotting");
+    ADD_PROPERTY_TYPE(Point1,
+                      (Base::Vector3d(0.0, 0.0, 0.0)),
+                      "DataAlongLine",
+                      App::Prop_None,
+                      "The point 1 used to define end point of line");
+    ADD_PROPERTY_TYPE(Point2,
+                      (Base::Vector3d(0.0, 0.0, 1.0)),
+                      "DataAlongLine",
+                      App::Prop_None,
+                      "The point 2 used to define end point of line");
+    ADD_PROPERTY_TYPE(Resolution,
+                      (100),
+                      "DataAlongLine",
+                      App::Prop_None,
+                      "The number of intervals between the 2 end points of line");
+    ADD_PROPERTY_TYPE(
+        XAxisData, (0), "DataAlongLine", App::Prop_None, "X axis data values used for plotting");
+    ADD_PROPERTY_TYPE(
+        YAxisData, (0), "DataAlongLine", App::Prop_None, "Y axis data values used for plotting");
     ADD_PROPERTY_TYPE(PlotData, (""), "DataAlongLine", App::Prop_None, "Field used for plotting");
 
     PlotData.setStatus(App::Property::ReadOnly, true);
@@ -239,7 +268,9 @@ DocumentObjectExecReturn* FemPostDataAlongLineFilter::execute() {
     return Fem::FemPostFilter::execute();
 }
 
-void FemPostDataAlongLineFilter::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop)
+void FemPostDataAlongLineFilter::handleChangedPropertyType(Base::XMLReader& reader,
+                                                           const char* TypeName,
+                                                           App::Property* prop)
 // transforms properties that had been changed
 {
     // property Point1 had the App::PropertyVector and was changed to App::PropertyVectorDistance
@@ -337,8 +368,13 @@ PROPERTY_SOURCE(Fem::FemPostDataAtPointFilter, Fem::FemPostFilter)
 
 FemPostDataAtPointFilter::FemPostDataAtPointFilter() : FemPostFilter() {
 
-    ADD_PROPERTY_TYPE(Center, (Base::Vector3d(0.0, 0.0, 0.0)), "DataAtPoint", App::Prop_None, "Center of the point");
-    ADD_PROPERTY_TYPE(Radius, (0), "DataAtPoint", App::Prop_None, "Radius around the point (unused)");
+    ADD_PROPERTY_TYPE(Center,
+                      (Base::Vector3d(0.0, 0.0, 0.0)),
+                      "DataAtPoint",
+                      App::Prop_None,
+                      "Center of the point");
+    ADD_PROPERTY_TYPE(
+        Radius, (0), "DataAtPoint", App::Prop_None, "Radius around the point (unused)");
     ADD_PROPERTY_TYPE(PointData, (0), "DataAtPoint", App::Prop_None, "Point data values");
     ADD_PROPERTY_TYPE(FieldName, (""), "DataAtPoint", App::Prop_None, "Field used for plotting");
     ADD_PROPERTY_TYPE(Unit, (""), "DataAtPoint", App::Prop_None, "Unit used for the field");
@@ -436,7 +472,8 @@ PROPERTY_SOURCE(Fem::FemPostScalarClipFilter, Fem::FemPostFilter)
 
 FemPostScalarClipFilter::FemPostScalarClipFilter() : FemPostFilter() {
 
-    ADD_PROPERTY_TYPE(Value, (0), "Clip", App::Prop_None, "The scalar value used to clip the selected field");
+    ADD_PROPERTY_TYPE(
+        Value, (0), "Clip", App::Prop_None, "The scalar value used to clip the selected field");
     ADD_PROPERTY_TYPE(Scalars, (long(0)), "Clip", App::Prop_None, "The field used to clip");
     ADD_PROPERTY_TYPE(InsideOut, (false), "Clip", App::Prop_None, "Invert the clip direction");
 
@@ -544,8 +581,13 @@ PROPERTY_SOURCE(Fem::FemPostWarpVectorFilter, Fem::FemPostFilter)
 
 FemPostWarpVectorFilter::FemPostWarpVectorFilter() : FemPostFilter() {
 
-    ADD_PROPERTY_TYPE(Factor, (0), "Warp", App::Prop_None, "The factor by which the vector is added to the node positions");
-    ADD_PROPERTY_TYPE(Vector, (long(0)), "Warp", App::Prop_None, "The field added to the node position");
+    ADD_PROPERTY_TYPE(Factor,
+                      (0),
+                      "Warp",
+                      App::Prop_None,
+                      "The factor by which the vector is added to the node positions");
+    ADD_PROPERTY_TYPE(
+        Vector, (long(0)), "Warp", App::Prop_None, "The field added to the node position");
 
     FilterPipeline warp;
     m_warp      = vtkSmartPointer<vtkWarpVector>::New();
@@ -623,7 +665,11 @@ PROPERTY_SOURCE(Fem::FemPostCutFilter, Fem::FemPostFilter)
 
 FemPostCutFilter::FemPostCutFilter() : FemPostFilter() {
 
-    ADD_PROPERTY_TYPE(Function, (nullptr), "Cut", App::Prop_None, "The function object which defines the clip cut function");
+    ADD_PROPERTY_TYPE(Function,
+                      (nullptr),
+                      "Cut",
+                      App::Prop_None,
+                      "The function object which defines the clip cut function");
 
     FilterPipeline clip;
     m_cutter    = vtkSmartPointer<vtkCutter>::New();

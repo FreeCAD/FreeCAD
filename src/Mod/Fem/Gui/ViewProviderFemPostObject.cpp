@@ -92,7 +92,8 @@ public:
             views.erase(it);
     }
 
-    void selectionChanged(const Gui::SelectionChanges& msg) {
+    void selectionChanged(const Gui::SelectionChanges& msg)
+    {
         Gui::SelectionObject obj(msg);
         auto findVP = std::find_if(views.begin(), views.end(), [&obj](const auto& vp) {
             return obj.getObject() == vp->getObject();
@@ -128,8 +129,16 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemPostObject, Gui::ViewProviderDocumentObje
 ViewProviderFemPostObject::ViewProviderFemPostObject() : m_blockPropertyChanges(false)
 {
     //initialize the properties
-    ADD_PROPERTY_TYPE(Field, ((long)0), "Coloring", App::Prop_None, "Select the field used for calculating the color");
-    ADD_PROPERTY_TYPE(VectorMode, ((long)0), "Coloring", App::Prop_None, "Select what to show for a vector field");
+    ADD_PROPERTY_TYPE(Field,
+                      ((long)0),
+                      "Coloring",
+                      App::Prop_None,
+                      "Select the field used for calculating the color");
+    ADD_PROPERTY_TYPE(VectorMode,
+                      ((long)0),
+                      "Coloring",
+                      App::Prop_None,
+                      "Select what to show for a vector field");
     ADD_PROPERTY(Transparency, (0));
 
     sPixmap = "fem-femmesh-from-shape";
@@ -230,7 +239,8 @@ void ViewProviderFemPostObject::attach(App::DocumentObject* pcObj)
     m_seperator->addChild(m_faces);
 
     // Check for an already existing color bar
-    Gui::SoFCColorBar* pcBar = ((Gui::SoFCColorBar*)findFrontRootOfType(Gui::SoFCColorBar::getClassTypeId()));
+    Gui::SoFCColorBar* pcBar =
+        ((Gui::SoFCColorBar*)findFrontRootOfType(Gui::SoFCColorBar::getClassTypeId()));
     if (pcBar) {
         float fMin = m_colorBar->getMinValue();
         float fMax = m_colorBar->getMaxValue();
@@ -478,7 +488,9 @@ void ViewProviderFemPostObject::update3D() {
         m_markers->coordIndex.setNum(0);
 }
 
-void ViewProviderFemPostObject::WritePointData(vtkPoints* points, vtkDataArray* normals, vtkDataArray* tcoords) {
+void ViewProviderFemPostObject::WritePointData(vtkPoints* points, vtkDataArray* normals,
+                                               vtkDataArray* tcoords)
+{
 
     Q_UNUSED(tcoords);
 
@@ -543,11 +555,13 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange) {
         return;
     };
 
-    int array = Field.getValue() - 1; //0 is none
+    int array = Field.getValue() - 1; // 0 is none
     vtkPolyData* pd = m_currentAlgorithm->GetOutput();
     vtkDataArray* data = pd->GetPointData()->GetArray(array);
 
-    int component = VectorMode.getValue() - 1; //0 is either "Not a vector" or magnitude, for -1 is correct for magnitude. x y and z are one number too high
+    int component = VectorMode.getValue() - 1; // 0 is either "Not a vector" or magnitude,
+                                               // for -1 is correct for magnitude.
+                                               // x y and z are one number too high
     if (strcmp(VectorMode.getValueAsString(), "Not a vector") == 0)
         component = 0;
 
@@ -656,12 +670,16 @@ void ViewProviderFemPostObject::onChanged(const App::Property* prop) {
 }
 
 bool ViewProviderFemPostObject::doubleClicked() {
-    // work around for a problem in VTK implementation: https://forum.freecadweb.org/viewtopic.php?t=10587&start=130#p125688
+    // work around for a problem in VTK implementation:
+    // https://forum.freecadweb.org/viewtopic.php?t=10587&start=130#p125688
     // check if backlight is enabled
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    ParameterGrp::handle hGrp =
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     bool isBackLightEnabled = hGrp->GetBool("EnableBacklight", false);
     if (!isBackLightEnabled)
-        Base::Console().Error("Backlight is not enabled. Due to a VTK implementation problem you really should consider to enable backlight in FreeCAD display preferences if you work with VTK post processing.\n");
+        Base::Console().Error("Backlight is not enabled. Due to a VTK implementation problem you "
+                              "really should consider to enable backlight in FreeCAD display "
+                              "preferences if you work with VTK post processing.\n");
     // set edit
     Gui::Application::Instance->activeDocument()->setEdit(this, (int)ViewProvider::Default);
     return true;
@@ -784,7 +802,8 @@ bool ViewProviderFemPostObject::onDelete(const std::vector<std::string>&)
         QString bodyMessage;
         QTextStream bodyMessageStream(&bodyMessage);
         bodyMessageStream << qApp->translate("Std_Delete",
-            "The pipeline is not empty, therefore the\nfollowing referencing objects might be lost:");
+                                             "The pipeline is not empty, therefore the\nfollowing "
+                                             "referencing objects might be lost:");
         bodyMessageStream << '\n';
         for (auto ObjIterator : objs)
             bodyMessageStream << '\n' << QString::fromUtf8(ObjIterator->Label.getValue());
