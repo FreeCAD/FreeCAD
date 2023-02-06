@@ -1124,7 +1124,7 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
                 and hasattr(vobj, "ScaleMultiplier") \
                 and vobj.ScaleMultiplier != 0:
             halfarrowlength = 2 * vobj.ArrowSize.Value * vobj.ScaleMultiplier
-            arrowangle = 2 * math.asin(halfarrowlength / radius)
+            arrowangle = 2 * math.asin(min(1, halfarrowlength / radius))
 
             u1 = (self.circle.valueAt(first + arrowangle)
                   - self.circle.valueAt(first)).normalize()
