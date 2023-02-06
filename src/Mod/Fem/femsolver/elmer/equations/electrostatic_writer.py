@@ -101,10 +101,12 @@ class ESwriter:
             equation.PotentialDifference = 0.0
 
     def handleElectrostaticConstants(self):
-        self.write.constant(
-            "Permittivity Of Vacuum",
-            self.write.convert(self.write.constsdef["PermittivityOfVacuum"], "T^4*I^2/(L^3*M)")
+        permittivity = self.write.convert(
+            self.write.constsdef["PermittivityOfVacuum"],
+            "T^4*I^2/(L^3*M)"
         )
+        permittivity = round(permittivity, 20) # to get rid of numerical artifacts
+        self.write.constant("Permittivity Of Vacuum", permittivity)
 
     def handleElectrostaticMaterial(self, bodies):
         for obj in self.write.getMember("App::MaterialObject"):
@@ -125,6 +127,9 @@ class ESwriter:
         for obj in self.write.getMember("Fem::ConstraintElectrostaticPotential"):
             if obj.References:
                 for name in obj.References[0][1]:
+                    # output the FreeCAD label as comment
+                    if obj.Label:
+                        self.write.boundary(name, "! FreeCAD Name", obj.Label)
                     if obj.PotentialEnabled:
                         if hasattr(obj, "Potential"):
                             # Potential was once a float and scaled not fitting SI units
