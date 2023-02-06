@@ -194,6 +194,7 @@ class Writer(object):
         self.constsdef = {
             "Gravity": constants.gravity(),
             "StefanBoltzmann": constants.stefan_boltzmann(),
+            "PermeabilityOfVacuum": constants.vacuum_permeability(),
             "PermittivityOfVacuum": constants.vacuum_permittivity(),
             "BoltzmannConstant": constants.boltzmann_constant(),
         }
