@@ -37,6 +37,7 @@
 
 # include <vtkCellArray.h>
 # include <vtkCellData.h>
+# include <vtkDoubleArray.h>
 # include <vtkPointData.h>
 
 # include <QApplication>
@@ -623,12 +624,23 @@ void ViewProviderFemPostObject::updateData(const App::Property* p) {
     }
 }
 
-bool ViewProviderFemPostObject::setupPipeline() {
-
+bool ViewProviderFemPostObject::setupPipeline()
+{
     vtkDataObject* data = static_cast<Fem::FemPostObject*>(getObject())->Data.getValue();
 
     if (!data)
         return false;
+
+    // check all fields if there is a real/imaginary one and if so
+    // add a field with an absolute value
+    vtkSmartPointer<vtkDataObject> SPdata = data;
+    vtkDataSet* dset = vtkDataSet::SafeDownCast(SPdata);
+    std::string FieldName;
+    auto numFields = dset->GetPointData()->GetNumberOfArrays();
+    for (int i = 0; i < numFields; ++i) {
+        FieldName = std::string(dset->GetPointData()->GetArrayName(i));
+        addAbsoluteField(dset, FieldName);
+    }
 
     m_outline->SetInputData(data);
     m_surface->SetInputData(data);
@@ -637,7 +649,6 @@ bool ViewProviderFemPostObject::setupPipeline() {
 
     return true;
 }
-
 
 void ViewProviderFemPostObject::onChanged(const App::Property* prop) {
 
@@ -684,7 +695,6 @@ bool ViewProviderFemPostObject::doubleClicked() {
     Gui::Application::Instance->activeDocument()->setEdit(this, (int)ViewProvider::Default);
     return true;
 }
-
 
 bool ViewProviderFemPostObject::setEdit(int ModNum) {
 
@@ -840,5 +850,72 @@ void ViewProviderFemPostObject::onSelectionChanged(const Gui::SelectionChanges &
     if (sel.Type == Gui::SelectionChanges::AddSelection) {
         if (this->getObject()->Visibility.getValue())
             updateMaterial();
+    }
+}
+
+// if there is a real and an imaginary field, an absolute field is added
+void ViewProviderFemPostObject::addAbsoluteField(vtkDataSet* dset, std::string FieldName)
+{
+    // real field names have the suffix " re", given by Elmer
+    // if the field does not have this suffix, we can return
+    auto suffix = FieldName.substr(FieldName.size() - 3, FieldName.size() - 1);
+    if (strcmp(suffix.c_str(), " re") != 0)
+        return;
+
+    // absolute fields might have already been created, then do nothing
+    auto strAbsoluteFieldName = FieldName.substr(0, FieldName.size() - 2) + "abs";
+    vtkDataArray* testArray = dset->GetPointData()->GetArray(strAbsoluteFieldName.c_str());
+    if (testArray)
+        return;
+
+    // safety check
+    vtkDataArray* realDdata = dset->GetPointData()->GetArray(FieldName.c_str());
+    if (!realDdata)
+        return;
+
+    // now check if the imaginary counterpart exists
+    auto strImaginaryFieldName = FieldName.substr(0, FieldName.size() - 2) + "im";
+    vtkDataArray* imagDdata = dset->GetPointData()->GetArray(strImaginaryFieldName.c_str());
+    if (!imagDdata)
+        return;
+
+    // create a new array and copy over the real data
+    // since one cannot directly access the values of a vtkDataSet
+    // we need to copy them over in a loop
+    vtkSmartPointer<vtkDoubleArray> absoluteData = vtkSmartPointer<vtkDoubleArray>::New();
+    absoluteData->SetNumberOfComponents(realDdata->GetNumberOfComponents());
+    auto numTuples = realDdata->GetNumberOfTuples();
+    absoluteData->SetNumberOfTuples(numTuples);
+    double tuple[] = {0, 0, 0};
+    for (vtkIdType i = 0; i < numTuples; ++i) {
+        absoluteData->SetTuple(i, tuple);
+    }
+    // name the array
+    auto strAbsFieldName = FieldName.substr(0, FieldName.size() - 2) + "abs";
+    absoluteData->SetName(strAbsFieldName.c_str());
+
+    // add array to data set
+    dset->GetPointData()->AddArray(absoluteData);
+
+    // step through all mesh points and calculate them
+    double realValue = 0;
+    double imaginaryValue = 0;
+    double absoluteValue = 0;
+    for (int i = 0; i < dset->GetNumberOfPoints(); ++i) {
+        if (absoluteData->GetNumberOfComponents() == 1) {
+            realValue = realDdata->GetComponent(i, 0);
+            imaginaryValue = imagDdata->GetComponent(i, 0);
+            absoluteValue = sqrt(pow(realValue, 2) + pow(imaginaryValue, 2));
+            absoluteData->SetComponent(i, 0, absoluteValue);
+        }
+        // if field is a vector
+        else {
+            for (int j = 0; j < absoluteData->GetNumberOfComponents(); ++j) {
+                realValue = realDdata->GetComponent(i, j);
+                imaginaryValue = imagDdata->GetComponent(i, j);
+                absoluteValue = sqrt(pow(realValue, 2) + pow(imaginaryValue, 2));
+                absoluteData->SetComponent(i, j, absoluteValue);
+            }
+        }
     }
 }

@@ -103,7 +103,7 @@ public:
     // handling when object is deleted
     bool onDelete(const std::vector<std::string>&) override;
     bool canDelete(App::DocumentObject* obj) const override;
-    virtual void onSelectionChanged(const Gui::SelectionChanges &sel);
+    virtual void onSelectionChanged(const Gui::SelectionChanges& sel);
 
       /** @name Selection handling
       * This group of methods do the selection handling.
@@ -156,6 +156,7 @@ private:
                         vtkDataArray *tcoords);
     void WriteColorData(bool ResetColorBarRange);
     void WriteTransparency();
+    void addAbsoluteField(vtkDataSet* dset, std::string FieldName);
 
     App::Enumeration m_coloringEnum, m_vectorEnum;
     bool m_blockPropertyChanges;
