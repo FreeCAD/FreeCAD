@@ -137,11 +137,14 @@ class TaskPostBox : public Gui::TaskView::TaskBox {
     Q_OBJECT
 
 public:
-    TaskPostBox(Gui::ViewProviderDocumentObject* view, const QPixmap &icon, const QString &title, QWidget *parent = nullptr);
+    TaskPostBox(Gui::ViewProviderDocumentObject* view, const QPixmap& icon, const QString& title,
+                QWidget* parent = nullptr);
     ~TaskPostBox() override;
 
     virtual void applyPythonCode() = 0;
-    virtual bool isGuiTaskOnly() {return false;} //return true if only gui properties are manipulated
+    virtual bool isGuiTaskOnly() {
+        return false;
+    } // return true if only gui properties are manipulated
 
 protected:
     App::DocumentObject* getObject() const {
@@ -254,7 +257,8 @@ class TaskPostClip : public TaskPostBox {
     Q_OBJECT
 
 public:
-    TaskPostClip(Gui::ViewProviderDocumentObject* view, App::PropertyLink* function, QWidget* parent = nullptr);
+    TaskPostClip(Gui::ViewProviderDocumentObject* view, App::PropertyLink* function,
+                 QWidget* parent = nullptr);
     ~TaskPostClip() override;
 
     void applyPythonCode() override;
@@ -283,7 +287,8 @@ class TaskPostDataAlongLine: public TaskPostBox {
     Q_OBJECT
 
 public:
-    explicit TaskPostDataAlongLine(Gui::ViewProviderDocumentObject* view, QWidget* parent = nullptr);
+    explicit TaskPostDataAlongLine(Gui::ViewProviderDocumentObject* view,
+                                   QWidget* parent = nullptr);
     ~TaskPostDataAlongLine() override;
 
     void applyPythonCode() override;
@@ -388,7 +393,8 @@ class TaskPostCut : public TaskPostBox {
     Q_OBJECT
 
 public:
-    TaskPostCut(Gui::ViewProviderDocumentObject* view, App::PropertyLink* function, QWidget* parent = nullptr);
+    TaskPostCut(Gui::ViewProviderDocumentObject* view, App::PropertyLink* function,
+                QWidget* parent = nullptr);
     ~TaskPostCut() override;
 
     void applyPythonCode() override;
