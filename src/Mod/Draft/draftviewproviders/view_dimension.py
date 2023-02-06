@@ -1032,7 +1032,7 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
                 and vobj.ScaleMultiplier != 0 \
                 and hasattr(vobj, "FlipArrows"):
             halfarrowlength = 2 * vobj.ArrowSize.Value * vobj.ScaleMultiplier
-            arrowangle = 2 * math.asin(halfarrowlength / radius)
+            arrowangle = 2 * math.asin(min(1, halfarrowlength / radius))
             if vobj.FlipArrows:
                 arrowangle = -arrowangle
 
