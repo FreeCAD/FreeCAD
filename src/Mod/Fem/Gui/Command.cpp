@@ -1355,7 +1355,7 @@ CmdFEMCompEmEquations::CmdFEMCompEmEquations()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Electromagnetic equations...");
+    sMenuText = QT_TR_NOOP("Electromagnetic Equations");
     sToolTipText = QT_TR_NOOP(
         "Electromagnetic equations for the Elmer solver");
     sWhatsThis = "FEM_CompEmEquations";
@@ -1366,9 +1366,9 @@ void CmdFEMCompEmEquations::activated(int iMsg)
 {
     Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
     if (iMsg == 0)
-        rcCmdMgr.runCommandByName("FEM_EquationElectricforce");
-    else if (iMsg == 1)
         rcCmdMgr.runCommandByName("FEM_EquationElectrostatic");
+    else if (iMsg == 1)
+        rcCmdMgr.runCommandByName("FEM_EquationElectricforce");
     else if (iMsg == 2)
         rcCmdMgr.runCommandByName("FEM_EquationMagnetodynamic2D");
     else
@@ -1390,9 +1390,9 @@ Gui::Action* CmdFEMCompEmEquations::createAction()
     applyCommandData(this->className(), pcAction);
 
     QAction* cmd0 = pcAction->addAction(QString());
-    cmd0->setIcon(Gui::BitmapFactory().iconFromTheme("FEM_EquationElectricforce"));
+    cmd0->setIcon(Gui::BitmapFactory().iconFromTheme("FEM_EquationElectrostatic"));
     QAction* cmd1 = pcAction->addAction(QString());
-    cmd1->setIcon(Gui::BitmapFactory().iconFromTheme("FEM_EquationElectrostatic"));
+    cmd1->setIcon(Gui::BitmapFactory().iconFromTheme("FEM_EquationElectricforce"));
     QAction* cmd2 = pcAction->addAction(QString());
     cmd2->setIcon(Gui::BitmapFactory().iconFromTheme("FEM_EquationMagnetodynamic2D"));
 
@@ -1418,26 +1418,26 @@ void CmdFEMCompEmEquations::languageChange()
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     QList<QAction*> a = pcAction->actions();
 
-    Gui::Command* EquationElectricforce = rcCmdMgr.getCommandByName("FEM_EquationElectricforce");
-    if (EquationElectricforce) {
-        QAction* cmd0 = a[0];
-        cmd0->setText(QApplication::translate("FEM_EquationElectricforce",
-                                              EquationElectricforce->getMenuText()));
-        cmd0->setToolTip(QApplication::translate("FEM_EquationElectricforce",
-                                                 EquationElectricforce->getToolTipText()));
-        cmd0->setStatusTip(QApplication::translate("FEM_EquationElectricforce",
-                                                   EquationElectricforce->getStatusTip()));
-    }
-
     Gui::Command* EquationElectrostatic = rcCmdMgr.getCommandByName("FEM_EquationElectrostatic");
     if (EquationElectrostatic) {
-        QAction* cmd1 = a[1];
-        cmd1->setText(QApplication::translate("FEM_EquationElectrostatic",
+        QAction* cmd0 = a[0];
+        cmd0->setText(QApplication::translate("FEM_EquationElectrostatic",
                                               EquationElectrostatic->getMenuText()));
-        cmd1->setToolTip(QApplication::translate("FEM_EquationElectrostatic",
+        cmd0->setToolTip(QApplication::translate("FEM_EquationElectrostatic",
                                                  EquationElectrostatic->getToolTipText()));
-        cmd1->setStatusTip(QApplication::translate("FEM_EquationElectrostatic",
+        cmd0->setStatusTip(QApplication::translate("FEM_EquationElectrostatic",
                                                    EquationElectrostatic->getStatusTip()));
+    }
+
+    Gui::Command* EquationElectricforce = rcCmdMgr.getCommandByName("FEM_EquationElectricforce");
+    if (EquationElectricforce) {
+        QAction* cmd1 = a[1];
+        cmd1->setText(QApplication::translate("FEM_EquationElectricforce",
+                                              EquationElectricforce->getMenuText()));
+        cmd1->setToolTip(QApplication::translate("FEM_EquationElectricforce",
+                                                 EquationElectricforce->getToolTipText()));
+        cmd1->setStatusTip(QApplication::translate("FEM_EquationElectricforce",
+                                                   EquationElectricforce->getStatusTip()));
     }
 
     Gui::Command* EquationMagnetodynamic2D =
