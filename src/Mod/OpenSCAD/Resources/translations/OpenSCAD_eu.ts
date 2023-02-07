@@ -107,12 +107,12 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="266"/>
       <source>Maximum fragment size</source>
-      <translation type="unfinished">Maximum fragment size</translation>
+      <translation>Zati-tamaina maximoa</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="385"/>
       <source>Convexity</source>
-      <translation type="unfinished">Convexity</translation>
+      <translation>Ganbiltasuna</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="286"/>
@@ -168,18 +168,18 @@
     <message>
       <location filename="../../InitGui.py" line="130"/>
       <source>It looks like you may be using a Snap version of OpenSCAD.</source>
-      <translation type="unfinished">It looks like you may be using a Snap version of OpenSCAD.</translation>
+      <translation>Agian OpenSCADen Snap bertsio bat erabiltzen ari zara.</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="135"/>
       <location filename="../../InitGui.py" line="148"/>
       <source>If OpenSCAD execution fails to load the temporary file, use FreeCAD's OpenSCAD Workbench Preferences to change the transfer mechanism.</source>
-      <translation type="unfinished">If OpenSCAD execution fails to load the temporary file, use FreeCAD's OpenSCAD Workbench Preferences to change the transfer mechanism.</translation>
+      <translation>OpenSCAD exekuzioan aldi baterako fitxategia kargatzeak huts egiten badu, erabili FreeCADen OpenSCAD lan-mahaien hobespenak transferentzia-mekanismoa aldatzeko.</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="143"/>
       <source>It looks like you may be using a sandboxed version of FreeCAD.</source>
-      <translation type="unfinished">It looks like you may be using a sandboxed version of FreeCAD.</translation>
+      <translation>Agian OpenSCADen bertsio isolatu bat erabiltzen ari zara.</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="101"/>
@@ -452,7 +452,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="555"/>
       <source>Use OpenSCAD to create a hull</source>
-      <translation type="unfinished">Use OpenSCAD to create a hull</translation>
+      <translation>Erabili OpenSCAD krosko bat sortzeko</translation>
     </message>
   </context>
   <context>

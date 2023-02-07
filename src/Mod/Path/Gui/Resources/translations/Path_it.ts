@@ -106,7 +106,7 @@
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="14"/>
       <source>Create Job</source>
-      <translation>Crea una lavorazione</translation>
+      <translation>Crea una Lavorazione</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="23"/>
@@ -479,7 +479,7 @@
     <message>
       <location filename="../../DlgJobChooser.ui" line="17"/>
       <source>Choose a Path Job</source>
-      <translation>Scegli un Percorso di lavorazione</translation>
+      <translation>Scegli un Percorso di Lavorazione</translation>
     </message>
     <message>
       <location filename="../panels/DlgTCChooser.ui" line="23"/>
@@ -2259,7 +2259,7 @@
     <message>
       <location filename="../preferences/PathJob.ui" line="14"/>
       <source>Job Preferences</source>
-      <translation type="unfinished">Job Preferences</translation>
+      <translation>Preferenze Lavorazione</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="32"/>
@@ -3328,7 +3328,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="278"/>
       <source>Job:</source>
-      <translation>Lavoro:</translation>
+      <translation>Lavorazione:</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="300"/>
@@ -3464,7 +3464,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitSelector.ui" line="104"/>
       <source>Add To Job</source>
-      <translation>Aggiungi al Lavoro</translation>
+      <translation>Aggiungi alla Lavorazione</translation>
     </message>
   </context>
   <context>
@@ -3472,7 +3472,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="14"/>
       <source>Job Edit</source>
-      <translation type="unfinished">Job Edit</translation>
+      <translation>Modifica Lavorazione</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="21"/>

@@ -266,7 +266,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="449"/>
       <source>Create a Raytracing project to insert a view.</source>
-      <translation>Créez un projet de Lancer de rayon pour insérer une vue.</translation>
+      <translation>Créer un projet de Lancer de rayon pour insérer une vue.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="461"/>
@@ -452,7 +452,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="278"/>
       <source>Max mesh deviation:</source>
-      <translation>Écart maximum de la grille:</translation>
+      <translation>Déviation maximale du maillage :</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="306"/>

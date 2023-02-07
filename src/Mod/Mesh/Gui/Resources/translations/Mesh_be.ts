@@ -927,7 +927,7 @@
     <message>
       <location filename="../../DlgDecimating.ui" line="102"/>
       <source>Tolerance</source>
-      <translation type="unfinished">Tolerance</translation>
+      <translation>Дакладнасць</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.cpp" line="87"/>
@@ -940,7 +940,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="14"/>
       <source>Evaluate &amp; Repair Mesh</source>
-      <translation type="unfinished">Evaluate &amp; Repair Mesh</translation>
+      <translation>Ацаніць і аднавіць паліганальную сетку</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="23"/>
@@ -950,7 +950,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="46"/>
       <source>Number of faces:</source>
-      <translation type="unfinished">Number of faces:</translation>
+      <translation>Колькасць граняў:</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="69"/>
@@ -965,17 +965,17 @@
       <location filename="../../DlgEvaluateMesh.ui" line="691"/>
       <location filename="../../DlgEvaluateMesh.ui" line="753"/>
       <source>No information</source>
-      <translation>Няма інфармацыі</translation>
+      <translation>Без інфармацыі</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="79"/>
       <source>Number of edges:</source>
-      <translation type="unfinished">Number of edges:</translation>
+      <translation>Колькасць рэбраў:</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="112"/>
       <source>Number of points:</source>
-      <translation type="unfinished">Number of points:</translation>
+      <translation>Колькасць кропак:</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="147"/>
@@ -985,7 +985,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="187"/>
       <source>Orientation</source>
-      <translation type="unfinished">Orientation</translation>
+      <translation>Арыентацыя</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="234"/>
@@ -1011,52 +1011,52 @@
       <location filename="../../DlgEvaluateMesh.ui" line="783"/>
       <location filename="../../DlgEvaluateMesh.ui" line="863"/>
       <source>Repair</source>
-      <translation type="unfinished">Repair</translation>
+      <translation>Выправіць</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="267"/>
       <source>Duplicated faces</source>
-      <translation type="unfinished">Duplicated faces</translation>
+      <translation>Паўторныя грані</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="347"/>
       <source>Duplicated points</source>
-      <translation type="unfinished">Duplicated points</translation>
+      <translation>Паўторныя кропкі</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="427"/>
       <source>Non-manifolds</source>
-      <translation type="unfinished">Non-manifolds</translation>
+      <translation>Аднастайныя</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="507"/>
       <source>Degenerated faces</source>
-      <translation type="unfinished">Degenerated faces</translation>
+      <translation>Скажоныя грані</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="587"/>
       <source>Face indices</source>
-      <translation type="unfinished">Face indices</translation>
+      <translation>Індэксы граняў</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="667"/>
       <source>Self-intersections</source>
-      <translation type="unfinished">Self-intersections</translation>
+      <translation>Самаперакрыжаванні</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="735"/>
       <source>Folds on surface</source>
-      <translation type="unfinished">Folds on surface</translation>
+      <translation>Зморшчыны на паверхні</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="806"/>
       <source>All above tests together</source>
-      <translation type="unfinished">All above tests together</translation>
+      <translation>Усе вышэй пералічаныя тэсты разам узятыя</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="830"/>
       <source>Repetitive repair</source>
-      <translation type="unfinished">Repetitive repair</translation>
+      <translation>Паўторнае аднаўленне</translation>
     </message>
   </context>
   <context>
@@ -1064,7 +1064,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="148"/>
       <source>Settings...</source>
-      <translation type="unfinished">Settings...</translation>
+      <translation>Налады...</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="184"/>
@@ -1085,159 +1085,159 @@
       <location filename="../../DlgEvaluateMeshImp.cpp" line="381"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="382"/>
       <source>No information</source>
-      <translation>Няма інфармацыі</translation>
+      <translation>Без інфармацыі</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="444"/>
       <source>Flipped normals found</source>
-      <translation type="unfinished">Flipped normals found</translation>
+      <translation>Знойдзены павернутыя вектары нармалі</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="448"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="488"/>
       <source>Orientation</source>
-      <translation type="unfinished">Orientation</translation>
+      <translation>Арыентацыя</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="449"/>
       <source>Check failed due to folds on the surface.
 Please run the command to repair folds first</source>
-      <translation type="unfinished">Check failed due to folds on the surface.
-Please run the command to repair folds first</translation>
+      <translation>Праверка не атрымалася з-за зморшчын на паверхні.
+Калі ласка, спачатку запусціце каманду для аднаўлення зморшчын</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="457"/>
       <source>No flipped normals</source>
-      <translation type="unfinished">No flipped normals</translation>
+      <translation>Без павернутых вектараў нармалей</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="463"/>
       <source>%1 flipped normals</source>
-      <translation type="unfinished">%1 flipped normals</translation>
+      <translation>%1 павернутых вектараў нармалі</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="543"/>
       <source>No non-manifolds</source>
-      <translation type="unfinished">No non-manifolds</translation>
+      <translation>Без аднастайнасці</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="550"/>
       <source>%1 non-manifolds</source>
-      <translation type="unfinished">%1 non-manifolds</translation>
+      <translation>%1 аднастайнасцяў</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="597"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="600"/>
       <source>Non-manifolds</source>
-      <translation type="unfinished">Non-manifolds</translation>
+      <translation>Аднастайныя</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="600"/>
       <source>Cannot remove non-manifolds</source>
-      <translation type="unfinished">Cannot remove non-manifolds</translation>
+      <translation>Немагчыма выдаліць аднастайнасць</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="638"/>
       <source>Invalid face indices</source>
-      <translation type="unfinished">Invalid face indices</translation>
+      <translation>Недапушчальныя індэксы грані</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="645"/>
       <source>Invalid point indices</source>
-      <translation type="unfinished">Invalid point indices</translation>
+      <translation>Недапушчальныя індэксы кропкі</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="652"/>
       <source>Multiple point indices</source>
-      <translation type="unfinished">Multiple point indices</translation>
+      <translation>Множныя індэксы кропкі</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="659"/>
       <source>Invalid neighbour indices</source>
-      <translation type="unfinished">Invalid neighbour indices</translation>
+      <translation>Недапушчальныя суседнія індэксы</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="666"/>
       <source>No invalid indices</source>
-      <translation type="unfinished">No invalid indices</translation>
+      <translation>Без недапушчальных індэксаў</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="690"/>
       <source>Indices</source>
-      <translation type="unfinished">Indices</translation>
+      <translation>Індэксы</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="725"/>
       <source>No degenerations</source>
-      <translation type="unfinished">No degenerations</translation>
+      <translation>Без скажэнняў</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="731"/>
       <source>%1 degenerated faces</source>
-      <translation type="unfinished">%1 degenerated faces</translation>
+      <translation>%1 скажоных граняў</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="756"/>
       <source>Degenerations</source>
-      <translation type="unfinished">Degenerations</translation>
+      <translation>Скажэнні</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="791"/>
       <source>No duplicated faces</source>
-      <translation type="unfinished">No duplicated faces</translation>
+      <translation>Без паўторных граняў</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="797"/>
       <source>%1 duplicated faces</source>
-      <translation type="unfinished">%1 duplicated faces</translation>
+      <translation>%1 паўторных граняў</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="823"/>
       <source>Duplicated faces</source>
-      <translation type="unfinished">Duplicated faces</translation>
+      <translation>Паўторныя грані</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="857"/>
       <source>No duplicated points</source>
-      <translation type="unfinished">No duplicated points</translation>
+      <translation>Без паўторных кропак</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="863"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="888"/>
       <source>Duplicated points</source>
-      <translation type="unfinished">Duplicated points</translation>
+      <translation>Паўторныя кропкі</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="929"/>
       <source>No self-intersections</source>
-      <translation type="unfinished">No self-intersections</translation>
+      <translation>Без самаперакрыжаванняў</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="935"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="973"/>
       <source>Self-intersections</source>
-      <translation type="unfinished">Self-intersections</translation>
+      <translation>Самаперакрыжаванні</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1017"/>
       <source>No folds on surface</source>
-      <translation type="unfinished">No folds on surface</translation>
+      <translation>Без зморшчын на паверхні</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1033"/>
       <source>%1 folds on surface</source>
-      <translation type="unfinished">%1 folds on surface</translation>
+      <translation>%1 зморшчын на паверхні</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1059"/>
       <source>Folds</source>
-      <translation type="unfinished">Folds</translation>
+      <translation>Зморшчыны</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1191"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1194"/>
       <source>Mesh repair</source>
-      <translation type="unfinished">Mesh repair</translation>
+      <translation>Аднавіць паліганальную сетку</translation>
     </message>
   </context>
   <context>
@@ -1245,7 +1245,7 @@ Please run the command to repair folds first</translation>
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="14"/>
       <source>Evaluation settings</source>
-      <translation type="unfinished">Evaluation settings</translation>
+      <translation>Налады вылічэнняў</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="20"/>
@@ -1255,17 +1255,17 @@ Please run the command to repair folds first</translation>
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="26"/>
       <source>Check for non-manifold points</source>
-      <translation type="unfinished">Check for non-manifold points</translation>
+      <translation>Праверыць кропкі на аднастайнасць</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="33"/>
       <source>Enable check for folds on surface</source>
-      <translation type="unfinished">Enable check for folds on surface</translation>
+      <translation>Уключыць праверку зморшчын на паверхні</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="40"/>
       <source>Only consider zero area faces as degenerated</source>
-      <translation type="unfinished">Only consider zero area faces as degenerated</translation>
+      <translation>Лічыць скажонымі толькі грані з нулявой вобласцю</translation>
     </message>
   </context>
   <context>
@@ -1273,17 +1273,17 @@ Please run the command to repair folds first</translation>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="14"/>
       <source>Regular Solid</source>
-      <translation type="unfinished">Regular Solid</translation>
+      <translation>Звычайнае суцэльнае цела</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="29"/>
       <source>Solid:</source>
-      <translation type="unfinished">Solid:</translation>
+      <translation>Суцэльнае цела:</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="42"/>
       <source>Cube</source>
-      <translation type="unfinished">Cube</translation>
+      <translation>Куб</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="51"/>
@@ -1337,7 +1337,7 @@ Please run the command to repair folds first</translation>
       <location filename="../../DlgRegularSolid.ui" line="273"/>
       <location filename="../../DlgRegularSolid.ui" line="424"/>
       <source>Edge length:</source>
-      <translation type="unfinished">Edge length:</translation>
+      <translation>Даўжыня рабра:</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="293"/>
@@ -1346,13 +1346,13 @@ Please run the command to repair folds first</translation>
       <location filename="../../DlgRegularSolid.ui" line="642"/>
       <location filename="../../DlgRegularSolid.ui" line="746"/>
       <source>Sampling:</source>
-      <translation type="unfinished">Sampling:</translation>
+      <translation>Дыскрэтызацыя:</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="307"/>
       <location filename="../../DlgRegularSolid.ui" line="455"/>
       <source>Closed</source>
-      <translation type="unfinished">Closed</translation>
+      <translation>Зачынены</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="353"/>
@@ -1386,7 +1386,7 @@ Please run the command to repair folds first</translation>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="828"/>
       <source>Alt+O</source>
-      <translation type="unfinished">Alt+O</translation>
+      <translation>&lt;Alt+O&gt;</translation>
     </message>
   </context>
   <context>
@@ -1401,7 +1401,7 @@ Please run the command to repair folds first</translation>
     <message>
       <location filename="../../DlgRegularSolidImp.cpp" line="124"/>
       <source>No active document</source>
-      <translation>Няма бягучага дакумента</translation>
+      <translation>Без бягучага дакумента</translation>
     </message>
   </context>
   <context>
@@ -1409,7 +1409,7 @@ Please run the command to repair folds first</translation>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="14"/>
       <source>Mesh Formats</source>
-      <translation type="unfinished">Mesh Formats</translation>
+      <translation>Фарматы паліганальнай сеткі</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="20"/>
@@ -1419,32 +1419,32 @@ Please run the command to repair folds first</translation>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="28"/>
       <source>Deviation of tessellation to the actual surface</source>
-      <translation type="unfinished">Deviation of tessellation to the actual surface</translation>
+      <translation>Адхіленне брукавання ад фактычнай паверхні</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="31"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Брукаванне&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Вызначае найбольшае адхіленне мазаічнай паліганальнай сеткі ад паверхні. Чым менш значэнне, тым павольней хуткасць візуалізацыі, што прыводзіць да павелічэння дэталізацыі / дазволу.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="34"/>
       <source>Maximum mesh deviation</source>
-      <translation type="unfinished">Maximum mesh deviation</translation>
+      <translation>Найбольшае адхіленне паліганальнай сеткі</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="41"/>
       <source>Maximal deviation between mesh and object</source>
-      <translation type="unfinished">Maximal deviation between mesh and object</translation>
+      <translation>Найбольшае адхіленне паміж паліганальнай сеткай і аб'ектам</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="63"/>
       <source>ZIP compression is used when writing a mesh file in AMF format</source>
-      <translation type="unfinished">ZIP compression is used when writing a mesh file in AMF format</translation>
+      <translation>Пры запісу файла паліганальнай сеткі ў фармаце AMF ужываецца сціск ZIP</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="66"/>
       <source>Export AMF files using compression</source>
-      <translation type="unfinished">Export AMF files using compression</translation>
+      <translation>Экспартаваць сціснутыя файлы AMF</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="95"/>
@@ -1460,8 +1460,8 @@ Please run the command to repair folds first</translation>
       <location filename="../../DlgSettingsImportExportImp.cpp" line="38"/>
       <source>This parameter indicates whether ZIP compression
 is used when writing a file in AMF format</source>
-      <translation type="unfinished">This parameter indicates whether ZIP compression
-is used when writing a file in AMF format</translation>
+      <translation>Гэтая налада паказвае, ці ўжываецца сціск ZIP
+пры запісу файла ў фармаце AMF</translation>
     </message>
   </context>
   <context>
@@ -1469,47 +1469,47 @@ is used when writing a file in AMF format</translation>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="14"/>
       <source>Mesh view</source>
-      <translation type="unfinished">Mesh view</translation>
+      <translation>Прагляд паліганальнай сеткі</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="35"/>
       <source>Default appearance for new meshes</source>
-      <translation type="unfinished">Default appearance for new meshes</translation>
+      <translation>Першапачатковы выгляд для новых паліганальных сетак</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="73"/>
       <source>Default mesh color</source>
-      <translation type="unfinished">Default mesh color</translation>
+      <translation>Першапачатковы колер паліганальнай сеткі</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="80"/>
       <source>Default color for new meshes</source>
-      <translation type="unfinished">Default color for new meshes</translation>
+      <translation>Першапачатковы колер для новых паліганальных сетак</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="116"/>
       <source>Mesh transparency</source>
-      <translation type="unfinished">Mesh transparency</translation>
+      <translation>Празрыстасць паліганальнай сеткі</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="142"/>
       <source>Default line color</source>
-      <translation type="unfinished">Default line color</translation>
+      <translation>Першапачатковы колер лініі</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="149"/>
       <source>Default line color for new meshes</source>
-      <translation type="unfinished">Default line color for new meshes</translation>
+      <translation>Першапачатковы колер лініі для новых паліганальных сетак</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="185"/>
       <source>Line transparency</source>
-      <translation type="unfinished">Line transparency</translation>
+      <translation>Празрыстасць лініі</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="211"/>
       <source>Backface color</source>
-      <translation type="unfinished">Backface color</translation>
+      <translation>Колер задняй паверхні</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="251"/>
@@ -1517,30 +1517,30 @@ is used when writing a file in AMF format</translation>
 If not checked, it depends on the option "Enable backlight color"
 (preferences section Display -&gt; 3D View). Either the backlight color
 will be used or black.</source>
-      <translation type="unfinished">The bottom side of surface will be rendered the same way than top side.
-If not checked, it depends on the option "Enable backlight color"
-(preferences section Display -&gt; 3D View). Either the backlight color
-will be used or black.</translation>
+      <translation>Ніжні бок паверхні будзе адлюстроўвацца так жа, як і верхні бок.
+Калі не птушка, гэта залежыць ад налады "Уключыць колер асвятлення".
+(падзел пераваг Праецыраванне - &gt; Трохмерны выгляд).
+Будзе ўжывацца альбо колер асвятлення, альбо чорны.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="257"/>
       <source>Two-side rendering</source>
-      <translation type="unfinished">Two-side rendering</translation>
+      <translation>Двухбаковая візуалізацыя</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="273"/>
       <source>A bounding box will be displayed</source>
-      <translation type="unfinished">A bounding box will be displayed</translation>
+      <translation>Будзе адлюстраваны абмежаваны прастакутнік</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="276"/>
       <source>Show bounding-box for highlighted or selected meshes</source>
-      <translation type="unfinished">Show bounding-box for highlighted or selected meshes</translation>
+      <translation>Адлюстраваць абмежаваны прастакутнік для вылучаных ці абраных паліганальных сетак</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="313"/>
       <source>Smoothing</source>
-      <translation type="unfinished">Smoothing</translation>
+      <translation>Згладжванне</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="334"/>
@@ -1551,33 +1551,31 @@ With flat shading the surface normals are not defined per vertex that leads
 to a unreal appearance for curved surfaces while using Phong shading leads
 to a smoother appearance.
 </source>
-      <translation type="unfinished">If this option is set Phong shading is used, otherwise flat shading.
-Shading defines the appearance of surfaces.
+      <translation>Калі гэтая налад усталяваная, ужываецца зацяненне па Фонгу, інакш ужываецца плоскае зацяненне.
+Зацяненне вызначае знешні выгляд паверхняў.
 
-With flat shading the surface normals are not defined per vertex that leads
-to a unreal appearance for curved surfaces while using Phong shading leads
-to a smoother appearance.
+Пры плоскім зацяненні вектары нармалі паверхні не будуць вызначаныя для кожнай вяршыні, што прыводзіць да нерэальнага вонкавага выгляду крывалінейных паверхняў, а ўжыванне зацянення па Фонгу прыводзіць да больш плаўнага вонкавага выгляду.
 </translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="343"/>
       <source>Define normal per vertex</source>
-      <translation type="unfinished">Define normal per vertex</translation>
+      <translation>Вызначыць вектар нармалі да кожнай вяршыні</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="356"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Гэта найменшы вугал паміж дзвюма гранямі, пры якім вылічаюцца вектары нармалі для стварэння плоскага зацянення.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Калі вугал паміж вектарамі нармалі дзвюх суседніх граняў менш чым вугал згіну, грані будуць гладка заштрыхаваныя вакол іх агульнага рабра.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="404"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defining the normals per vertex is also called &lt;span style=" font-style:italic;"&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defining the normals per vertex is also called &lt;span style=" font-style:italic;"&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Падказка&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Вызначае вектары нармалей для кожнай вяршыні таксама называецца &lt;span style=" font-style:italic;"&gt;Зацяненне па Фонгу&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;пры вызначэнні вектараў нармалі для кожнай грані выклікаецца&lt;/span&gt;Плоскае зацяненне&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="359"/>
       <source>Crease angle</source>
-      <translation type="unfinished">Crease angle</translation>
+      <translation>Вугал згіну</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="369"/>
@@ -1585,10 +1583,10 @@ to a smoother appearance.
 
  If face angle ≥ crease angle, facet shading is used
  If face angle &lt; crease angle, smooth shading is used</source>
-      <translation type="unfinished">Crease angle is a threshold angle between two faces.
+      <translation>Вугал згіну - гэта парогавы вугал паміж дзвюма гранямі.
 
- If face angle ≥ crease angle, facet shading is used
- If face angle &lt; crease angle, smooth shading is used</translation>
+ Калі вугал грані ≥ вугла згіну, ужываецца зацяненне грані
+ Калі вугал грані &lt; вугла згіну, ужываецца плаўнае зацяненне</translation>
     </message>
   </context>
   <context>
@@ -1596,22 +1594,22 @@ to a smoother appearance.
     <message>
       <location filename="../../DlgSmoothing.ui" line="14"/>
       <source>Smoothing</source>
-      <translation type="unfinished">Smoothing</translation>
+      <translation>Згладжванне</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="23"/>
       <source>Method</source>
-      <translation type="unfinished">Method</translation>
+      <translation>Метад</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="29"/>
       <source>Taubin</source>
-      <translation type="unfinished">Taubin</translation>
+      <translation>Таубіна</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="39"/>
       <source>Laplace</source>
-      <translation type="unfinished">Laplace</translation>
+      <translation>Лапласа</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="49"/>
@@ -1621,22 +1619,22 @@ to a smoother appearance.
     <message>
       <location filename="../../DlgSmoothing.ui" line="55"/>
       <source>Iterations:</source>
-      <translation type="unfinished">Iterations:</translation>
+      <translation>Паўтарэнні:</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="72"/>
       <source>Lambda:</source>
-      <translation type="unfinished">Lambda:</translation>
+      <translation>Лямбда:</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="95"/>
       <source>Mu:</source>
-      <translation type="unfinished">Mu:</translation>
+      <translation>Мю:</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="118"/>
       <source>Only selection</source>
-      <translation type="unfinished">Only selection</translation>
+      <translation>Толькі абранае</translation>
     </message>
   </context>
   <context>
@@ -1649,22 +1647,22 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="104"/>
       <source>Adaptive</source>
-      <translation type="unfinished">Adaptive</translation>
+      <translation>Адаптыўны</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="106"/>
       <source>Frontal</source>
-      <translation type="unfinished">Frontal</translation>
+      <translation>Пярэдні</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="108"/>
       <source>Frontal Quad</source>
-      <translation type="unfinished">Frontal Quad</translation>
+      <translation>Пярэдні чатырохкутнік</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="109"/>
       <source>Parallelograms</source>
-      <translation type="unfinished">Parallelograms</translation>
+      <translation>Паралелаграмы</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="180"/>
@@ -1675,17 +1673,17 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="225"/>
       <source>Running gmsh...</source>
-      <translation type="unfinished">Running gmsh...</translation>
+      <translation>Запуск Gmsh...</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="247"/>
       <source>Failed to start</source>
-      <translation type="unfinished">Failed to start</translation>
+      <translation>Не атрымалася запусціць</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="254"/>
       <source>Error</source>
-      <translation type="unfinished">Error</translation>
+      <translation>Памылка</translation>
     </message>
   </context>
   <context>
@@ -1698,7 +1696,7 @@ to a smoother appearance.
     <message>
       <location filename="../../MeshEditor.cpp" line="379"/>
       <source>Flip normal</source>
-      <translation type="unfinished">Flip normal</translation>
+      <translation>Павярнуць вектар нармалі</translation>
     </message>
     <message>
       <location filename="../../MeshEditor.cpp" line="380"/>
@@ -1708,7 +1706,7 @@ to a smoother appearance.
     <message>
       <location filename="../../MeshEditor.cpp" line="395"/>
       <source>Finish</source>
-      <translation type="unfinished">Finish</translation>
+      <translation>Скончыць</translation>
     </message>
   </context>
   <context>
@@ -1716,7 +1714,7 @@ to a smoother appearance.
     <message>
       <location filename="../../MeshEditor.cpp" line="728"/>
       <source>Finish</source>
-      <translation type="unfinished">Finish</translation>
+      <translation>Скончыць</translation>
     </message>
   </context>
   <context>
@@ -1724,7 +1722,7 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="159"/>
       <source>Surface fit</source>
-      <translation type="unfinished">Surface fit</translation>
+      <translation>Запаўненне паверхні</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="166"/>
@@ -1739,7 +1737,7 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="179"/>
       <source>Region</source>
-      <translation type="unfinished">Region</translation>
+      <translation>Вобласць</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="185"/>
@@ -1754,7 +1752,7 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="197"/>
       <source>Compute</source>
-      <translation type="unfinished">Compute</translation>
+      <translation>Вылічыць</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="285"/>
@@ -1764,7 +1762,7 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="285"/>
       <source>Before fitting the surface select an area.</source>
-      <translation type="unfinished">Before fitting the surface select an area.</translation>
+      <translation>Перад запаўненнем паверхні абярыце вобласць.</translation>
     </message>
   </context>
   <context>
@@ -1772,27 +1770,27 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="14"/>
       <source>Remesh by Gmsh</source>
-      <translation type="unfinished">Remesh by Gmsh</translation>
+      <translation>Перабудаваць паліганальную сетку з дапамогай Gmsh</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="26"/>
       <source>Remeshing Parameter</source>
-      <translation type="unfinished">Remeshing Parameter</translation>
+      <translation>Налады перабудовы паліганальнай сеткі</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="32"/>
       <source>Meshing:</source>
-      <translation type="unfinished">Meshing:</translation>
+      <translation>Пабудаваць паліганальную сетку:</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="42"/>
       <source>Max element size (0.0 = Auto):</source>
-      <translation type="unfinished">Max element size (0.0 = Auto):</translation>
+      <translation>Найбольшы памер элемента (0.0 = Аўтаматычна):</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="68"/>
       <source>Min element size (0.0 = Auto):</source>
-      <translation type="unfinished">Min element size (0.0 = Auto):</translation>
+      <translation>Найменшы памер элемента (0.0 = Аўтаматычна):</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="94"/>
@@ -1802,7 +1800,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="126"/>
       <source>Gmsh</source>
-      <translation type="unfinished">Gmsh</translation>
+      <translation>Gmsh</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="134"/>
@@ -1812,7 +1810,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="154"/>
       <source>Kill</source>
-      <translation type="unfinished">Kill</translation>
+      <translation>Забіць</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="181"/>
@@ -1830,18 +1828,18 @@ to a smoother appearance.
     <message>
       <location filename="../../RemoveComponents.ui" line="14"/>
       <source>Remove components</source>
-      <translation type="unfinished">Remove components</translation>
+      <translation>Выдаліць кампаненты</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="20"/>
       <source>Select</source>
-      <translation type="unfinished">Select</translation>
+      <translation>Абраць</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="32"/>
       <location filename="../../RemoveComponents.ui" line="118"/>
       <source>Region</source>
-      <translation type="unfinished">Region</translation>
+      <translation>Вобласць</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="52"/>
@@ -1853,53 +1851,53 @@ to a smoother appearance.
       <location filename="../../RemoveComponents.ui" line="72"/>
       <location filename="../../RemoveComponents.ui" line="158"/>
       <source>Components</source>
-      <translation type="unfinished">Components</translation>
+      <translation>Кампаненты</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="79"/>
       <source>&lt; faces than</source>
-      <translation type="unfinished">&lt; faces than</translation>
+      <translation>&lt; чым граней</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="89"/>
       <location filename="../../RemoveComponents.ui" line="175"/>
       <source>Pick triangle</source>
-      <translation type="unfinished">Pick triangle</translation>
+      <translation>Выберыце трыкутнік</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="96"/>
       <source>Select whole component</source>
-      <translation type="unfinished">Select whole component</translation>
+      <translation>Абярыце ўсе кампаненты</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="106"/>
       <source>Deselect</source>
-      <translation type="unfinished">Deselect</translation>
+      <translation>Зняць выбар</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="165"/>
       <source>&gt; faces than</source>
-      <translation type="unfinished">&gt; faces than</translation>
+      <translation>&gt; чым граней</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="182"/>
       <source>Deselect whole component</source>
-      <translation type="unfinished">Deselect whole component</translation>
+      <translation>Зніміце выбар з усіх кампанентаў</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="192"/>
       <source>Region options</source>
-      <translation type="unfinished">Region options</translation>
+      <translation>Налады вобласці</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="198"/>
       <source>Respect only visible triangles</source>
-      <translation type="unfinished">Respect only visible triangles</translation>
+      <translation>Прымаць толькі бачныя трыкутнікі</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="208"/>
       <source>Respect only triangles with normals facing screen</source>
-      <translation type="unfinished">Respect only triangles with normals facing screen</translation>
+      <translation>Прымаць толькі трыкутнікі з павернутымі вектарамі нармалі да экрану</translation>
     </message>
   </context>
   <context>
@@ -1907,12 +1905,12 @@ to a smoother appearance.
     <message>
       <location filename="../../Segmentation.ui" line="14"/>
       <source>Mesh segmentation</source>
-      <translation type="unfinished">Mesh segmentation</translation>
+      <translation>Сегментацыя паліганальнай сеткі</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="20"/>
       <source>Smooth mesh</source>
-      <translation type="unfinished">Smooth mesh</translation>
+      <translation>Згладзіць паліганальную сетку</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="37"/>
@@ -1925,7 +1923,7 @@ to a smoother appearance.
       <location filename="../../Segmentation.ui" line="252"/>
       <location filename="../../Segmentation.ui" line="286"/>
       <source>Tolerance</source>
-      <translation type="unfinished">Tolerance</translation>
+      <translation>Дакладнасць</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="63"/>
@@ -1933,7 +1931,7 @@ to a smoother appearance.
       <location filename="../../Segmentation.ui" line="206"/>
       <location filename="../../Segmentation.ui" line="303"/>
       <source>Minimum number of faces</source>
-      <translation type="unfinished">Minimum number of faces</translation>
+      <translation>Найменшая колькасць граняў</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="83"/>
@@ -1944,17 +1942,17 @@ to a smoother appearance.
       <location filename="../../Segmentation.ui" line="92"/>
       <location filename="../../Segmentation.ui" line="172"/>
       <source>Curvature</source>
-      <translation type="unfinished">Curvature</translation>
+      <translation>Крывізна</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="109"/>
       <source>Tolerance (Flat)</source>
-      <translation type="unfinished">Tolerance (Flat)</translation>
+      <translation>Дакладнасць (плоскасці)</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="126"/>
       <source>Tolerance (Curved)</source>
-      <translation type="unfinished">Tolerance (Curved)</translation>
+      <translation>Дакладнасць (крывой)</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="163"/>
@@ -1964,17 +1962,17 @@ to a smoother appearance.
     <message>
       <location filename="../../Segmentation.ui" line="226"/>
       <source>Freeform</source>
-      <translation type="unfinished">Freeform</translation>
+      <translation>Свабоднай формы</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="235"/>
       <source>Max. Curvature</source>
-      <translation type="unfinished">Max. Curvature</translation>
+      <translation>Найбольшая крывізна</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="269"/>
       <source>Min. Curvature</source>
-      <translation type="unfinished">Min. Curvature</translation>
+      <translation>Найменшая крывізна</translation>
     </message>
   </context>
   <context>
@@ -1982,7 +1980,7 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.ui" line="14"/>
       <source>Mesh segmentation</source>
-      <translation type="unfinished">Mesh segmentation</translation>
+      <translation>Сегментацыя паліганальнай сеткі</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="20"/>
@@ -1994,21 +1992,21 @@ to a smoother appearance.
       <location filename="../../SegmentationBestFit.ui" line="82"/>
       <location filename="../../SegmentationBestFit.ui" line="135"/>
       <source>Parameters...</source>
-      <translation type="unfinished">Parameters...</translation>
+      <translation>Налады...</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="36"/>
       <location filename="../../SegmentationBestFit.ui" line="89"/>
       <location filename="../../SegmentationBestFit.ui" line="142"/>
       <source>Tolerance</source>
-      <translation type="unfinished">Tolerance</translation>
+      <translation>Дакладнасць</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="53"/>
       <location filename="../../SegmentationBestFit.ui" line="106"/>
       <location filename="../../SegmentationBestFit.ui" line="159"/>
       <source>Minimum number of faces</source>
-      <translation type="unfinished">Minimum number of faces</translation>
+      <translation>Найменшая колькасць граняў</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="73"/>
@@ -2069,22 +2067,22 @@ to a smoother appearance.
     <message>
       <location filename="../../Selection.ui" line="53"/>
       <source>Respect only visible triangles</source>
-      <translation type="unfinished">Respect only visible triangles</translation>
+      <translation>Прымаць толькі бачныя трыкутнікі</translation>
     </message>
     <message>
       <location filename="../../Selection.ui" line="63"/>
       <source>Respect only triangles with normals facing screen</source>
-      <translation type="unfinished">Respect only triangles with normals facing screen</translation>
+      <translation>Прымаць толькі трыкутнікі з павернутымі вектарамі нармалі да экрану</translation>
     </message>
     <message>
       <location filename="../../Selection.cpp" line="70"/>
       <source>Use a brush tool to select the area</source>
-      <translation type="unfinished">Use a brush tool to select the area</translation>
+      <translation>Ужываць інструмент пэндзля, каб абраць вобласць</translation>
     </message>
     <message>
       <location filename="../../Selection.cpp" line="73"/>
       <source>Clears completely the selected area</source>
-      <translation type="unfinished">Clears completely the selected area</translation>
+      <translation>Цалкам ачысціць абраную вобласць</translation>
     </message>
   </context>
   <context>
@@ -2099,7 +2097,7 @@ to a smoother appearance.
       <location filename="../../RemoveComponents.cpp" line="175"/>
       <location filename="../../RemoveComponents.cpp" line="232"/>
       <source>Invert</source>
-      <translation type="unfinished">Invert</translation>
+      <translation>Інвертаваць</translation>
     </message>
   </context>
   <context>
@@ -2107,38 +2105,38 @@ to a smoother appearance.
     <message>
       <location filename="../../Workbench.cpp" line="72"/>
       <source>Number of points:</source>
-      <translation type="unfinished">Number of points:</translation>
+      <translation>Колькасць кропак:</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="75"/>
       <source>Number of facets:</source>
-      <translation type="unfinished">Number of facets:</translation>
+      <translation>Колькасць граняў:</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="81"/>
       <source>Minimum bound:</source>
-      <translation type="unfinished">Minimum bound:</translation>
+      <translation>Найменшая мяжа:</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="84"/>
       <source>Maximum bound:</source>
-      <translation type="unfinished">Maximum bound:</translation>
+      <translation>Найбольшая мяжа:</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="90"/>
       <source>Mesh info box</source>
-      <translation type="unfinished">Mesh info box</translation>
+      <translation>Інфармацыйнае акно аб паліганальнай сеткі</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="104"/>
       <source>Mesh info</source>
-      <translation type="unfinished">Mesh info</translation>
+      <translation>Інфармацыя аб паліганальнай сеткі</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="126"/>
       <location filename="../../Workbench.cpp" line="128"/>
       <source>X: %1	Y: %2	Z: %3</source>
-      <translation type="unfinished">X: %1	Y: %2	Z: %3</translation>
+      <translation>X: %1	Y: %2	Z: %3</translation>
     </message>
   </context>
   <context>
@@ -2146,7 +2144,7 @@ to a smoother appearance.
     <message>
       <location filename="../../Command.cpp" line="1577"/>
       <source>Boundings of %1:</source>
-      <translation type="unfinished">Boundings of %1:</translation>
+      <translation>Межы %1:</translation>
     </message>
   </context>
   <context>
@@ -2159,14 +2157,14 @@ to a smoother appearance.
       <location filename="../../Command.cpp" line="410"/>
       <location filename="../../Command.cpp" line="415"/>
       <source>OpenSCAD</source>
-      <translation type="unfinished">OpenSCAD</translation>
+      <translation>OpenSCAD</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="269"/>
       <location filename="../../Command.cpp" line="340"/>
       <location filename="../../Command.cpp" line="411"/>
       <source>Unknown error occurred while running OpenSCAD.</source>
-      <translation type="unfinished">Unknown error occurred while running OpenSCAD.</translation>
+      <translation>Пры запуску OpenSCAD адбылася невядомая памылка.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="274"/>
@@ -2174,8 +2172,8 @@ to a smoother appearance.
       <location filename="../../Command.cpp" line="416"/>
       <source>OpenSCAD cannot be found on your system.
 Please visit http://www.openscad.org/index.html to install it.</source>
-      <translation type="unfinished">OpenSCAD cannot be found on your system.
-Please visit http://www.openscad.org/index.html to install it.</translation>
+      <translation>OpenSCAD не знойдзена ў вашай сістэме.
+Калі ласка, наведайце http://www.openscad.org/index.html каб усталяваць яго.</translation>
     </message>
   </context>
   <context>
@@ -2183,7 +2181,7 @@ Please visit http://www.openscad.org/index.html to install it.</translation>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1237"/>
       <source>Evaluate &amp; Repair Mesh</source>
-      <translation type="unfinished">Evaluate &amp; Repair Mesh</translation>
+      <translation>Ацаніць і аднавіць паліганальную сетку</translation>
     </message>
   </context>
   <context>
@@ -2196,54 +2194,54 @@ Please visit http://www.openscad.org/index.html to install it.</translation>
     <message>
       <location filename="../../Command.cpp" line="447"/>
       <source>All Mesh Files</source>
-      <translation type="unfinished">All Mesh Files</translation>
+      <translation>Усе файлы паліганальнай сеткі</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="448"/>
       <location filename="../../Command.cpp" line="505"/>
       <source>Binary STL</source>
-      <translation type="unfinished">Binary STL</translation>
+      <translation>Двайковы STL</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="449"/>
       <location filename="../../Command.cpp" line="506"/>
       <location filename="../../Command.cpp" line="507"/>
       <source>ASCII STL</source>
-      <translation type="unfinished">ASCII STL</translation>
+      <translation>ASCII STL</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="450"/>
       <location filename="../../Command.cpp" line="508"/>
       <source>Binary Mesh</source>
-      <translation type="unfinished">Binary Mesh</translation>
+      <translation>Двайковая паліганальная сетка</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="451"/>
       <location filename="../../Command.cpp" line="509"/>
       <source>Alias Mesh</source>
-      <translation type="unfinished">Alias Mesh</translation>
+      <translation>Псеўданім паліганальнай сеткі</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="452"/>
       <location filename="../../Command.cpp" line="511"/>
       <source>Object File Format</source>
-      <translation type="unfinished">Object File Format</translation>
+      <translation>Фармат файла аб'екту</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="453"/>
       <source>Inventor V2.1 ASCII</source>
-      <translation type="unfinished">Inventor V2.1 ASCII</translation>
+      <translation>Inventor V2.1 ASCII</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="454"/>
       <location filename="../../Command.cpp" line="516"/>
       <source>Stanford Polygon</source>
-      <translation type="unfinished">Stanford Polygon</translation>
+      <translation>Stanford Polygon</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="455"/>
       <source>NASTRAN</source>
-      <translation type="unfinished">NASTRAN</translation>
+      <translation>NASTRAN</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="456"/>
@@ -2254,12 +2252,12 @@ Please visit http://www.openscad.org/index.html to install it.</translation>
     <message>
       <location filename="../../Command.cpp" line="460"/>
       <source>Import mesh</source>
-      <translation type="unfinished">Import mesh</translation>
+      <translation>Імпартаваць паліганальную сетку</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="510"/>
       <source>Simple Model Format</source>
-      <translation type="unfinished">Simple Model Format</translation>
+      <translation>Просты фармат мадэлі</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="512"/>
@@ -2468,7 +2466,7 @@ Please visit http://www.openscad.org/index.html to install it.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>Mesh segmentation</source>
-      <translation type="unfinished">Mesh segmentation</translation>
+      <translation>Сегментацыя паліганальнай сеткі</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>

@@ -2086,7 +2086,7 @@
       <translation>Sortu bista aktiboa</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="294"/>
+      <location filename="../../TaskCenterLine.cpp" line="298"/>
       <source>Create CenterLine</source>
       <translation>Sortu erdiko lerroa</translation>
     </message>
@@ -2136,12 +2136,12 @@
       <translation>Sortu sekzio-bista</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="560"/>
+      <location filename="../../TaskComplexSection.cpp" line="559"/>
       <source>Create ComplexSection</source>
-      <translation type="unfinished">Create ComplexSection</translation>
+      <translation>Sortu sekzio konplexua</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="643"/>
+      <location filename="../../TaskComplexSection.cpp" line="642"/>
       <location filename="../../TaskSectionView.cpp" line="561"/>
       <source>Edit SectionView</source>
       <translation>Editatu sekzio-bista</translation>
@@ -2575,27 +2575,27 @@
       <translation>Editatu dokumentu-iturburua</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="263"/>
+      <location filename="../../mrichtextedit.cpp" line="269"/>
       <source>Document source</source>
       <translation>Dokumentu-iturburua</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="366"/>
+      <location filename="../../mrichtextedit.cpp" line="372"/>
       <source>Create a link</source>
       <translation>Sortu esteka bat</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="367"/>
+      <location filename="../../mrichtextedit.cpp" line="373"/>
       <source>Link URL:</source>
       <translation>Estekaren URLa:</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="696"/>
+      <location filename="../../mrichtextedit.cpp" line="702"/>
       <source>Select an image</source>
       <translation>Hautatu irudi bat</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="698"/>
+      <location filename="../../mrichtextedit.cpp" line="704"/>
       <source>JPEG (*.jpg);; GIF (*.gif);; PNG (*.png);; BMP (*.bmp);; All (*)</source>
       <translation>JPEG (*.jpg);; GIF (*.gif);; PNG (*.png);; BMP (*.bmp);; Denak (*)</translation>
     </message>
@@ -2852,12 +2852,12 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="188"/>
       <source>Can not make 2d radius dimension from selection</source>
-      <translation type="unfinished">Can not make 2d radius dimension from selection</translation>
+      <translation>Ezin da erradioko 2D kota egin hautapenetik</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="203"/>
       <source>Can not make 3d radius dimension from selection</source>
-      <translation type="unfinished">Can not make 3d radius dimension from selection</translation>
+      <translation>Ezin da erradioko 3D kota egin hautapenetik</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="234"/>
@@ -2873,12 +2873,12 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="314"/>
       <source>Can not make 2d diameter dimension from selection</source>
-      <translation type="unfinished">Can not make 2d diameter dimension from selection</translation>
+      <translation>Ezin da diametroko 2D kota egin hautapenetik</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="329"/>
       <source>Can not make 3d diameter dimension from selection</source>
-      <translation type="unfinished">Can not make 3d diameter dimension from selection</translation>
+      <translation>Ezin da diametroko 3D kota egin hautapenetik</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="339"/>
@@ -2898,38 +2898,38 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="441"/>
       <source>Can not make 2d linear dimension from selection</source>
-      <translation type="unfinished">Can not make 2d linear dimension from selection</translation>
+      <translation>Ezin da lineako 2D kota egin hautapenetik</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="457"/>
       <source>Can not make 3d linear dimension from selection</source>
-      <translation type="unfinished">Can not make 3d linear dimension from selection</translation>
+      <translation>Ezin da lineako 3D kota egin hautapenetik</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="539"/>
       <source>Can not make 2d horizontal dimension from selection</source>
-      <translation type="unfinished">Can not make 2d horizontal dimension from selection</translation>
+      <translation>Ezin da 2D kota horizontala egin hautapenetik</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="555"/>
       <source>Can not make 3d horizontal dimension from selection</source>
-      <translation type="unfinished">Can not make 3d horizontal dimension from selection</translation>
+      <translation>Ezin da 3D kota horizontala egin hautapenetik</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="638"/>
       <source>Can not make 2d vertical dimension from selection</source>
-      <translation type="unfinished">Can not make 2d vertical dimension from selection</translation>
+      <translation>Ezin da 2D kota bertikala egin hautapenetik</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="653"/>
       <source>Can not make 3d vertical dimension from selection</source>
-      <translation type="unfinished">Can not make 3d vertical dimension from selection</translation>
+      <translation>Ezin da 3D kota bertikala egin hautapenetik</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="734"/>
       <location filename="../../CommandCreateDims.cpp" line="830"/>
       <source>Can not make 2d angle dimension from selection</source>
-      <translation type="unfinished">Can not make 2d angle dimension from selection</translation>
+      <translation>Ezin da angeluko 2D kota egin hautapenetik</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="749"/>
@@ -3394,12 +3394,12 @@
       <translation>Ez da 3D bisorerik aurkitu</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="163"/>
+      <location filename="../../TaskCenterLine.cpp" line="167"/>
       <source>Create Center Line</source>
       <translation>Sortu erdiko lerroa</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="193"/>
+      <location filename="../../TaskCenterLine.cpp" line="197"/>
       <source>Edit Center Line</source>
       <translation>Editatu erdiko lerroa</translation>
     </message>
@@ -3436,7 +3436,7 @@
       <translation type="unfinished">The view direction in BaseView coordinates</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="691"/>
+      <location filename="../../TaskComplexSection.cpp" line="690"/>
       <location filename="../../TaskSectionView.cpp" line="608"/>
       <source>Operation Failed</source>
       <translation>Eragiketak huts egin du</translation>
@@ -3589,12 +3589,12 @@
     <message>
       <location filename="../../TaskHatch.cpp" line="97"/>
       <source>Create Face Hatch</source>
-      <translation type="unfinished">Create Face Hatch</translation>
+      <translation>Sortu aurpegi-itzaleztadura</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.cpp" line="109"/>
       <source>Edit Face Hatch</source>
-      <translation type="unfinished">Edit Face Hatch</translation>
+      <translation>Editatu aurpegi-itzaleztadura</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.cpp" line="199"/>
@@ -3604,12 +3604,12 @@
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.cpp" line="205"/>
       <source>Addition</source>
-      <translation type="unfinished">Addition</translation>
+      <translation>Batuketa</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.cpp" line="214"/>
       <source>Average roughness</source>
-      <translation type="unfinished">Average roughness</translation>
+      <translation>Batez besteko zimurtasuna</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.cpp" line="220"/>
@@ -3827,7 +3827,7 @@ hautsi daitekeen lauza-soldadura bat duelako.</translation>
   <context>
     <name>TaskPojGroup</name>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="488"/>
+      <location filename="../../TaskComplexSection.cpp" line="487"/>
       <location filename="../../TaskSectionView.cpp" line="428"/>
       <source> updates pending</source>
       <translation type="unfinished"> updates pending</translation>
@@ -4601,12 +4601,12 @@ erabiliko den itzal-lerro kopuru maximoa</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="236"/>
       <source>Page Color</source>
-      <translation type="unfinished">Page Color</translation>
+      <translation>Orrialde-kolorea</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="427"/>
       <source>Use a light color for dark text and dark color for light text.</source>
-      <translation type="unfinished">Use a light color for dark text and dark color for light text.</translation>
+      <translation>Erabili kolore argia testu ilunerako eta kolore iluna testu argirako.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="467"/>
@@ -4666,7 +4666,7 @@ erabiliko den itzal-lerro kopuru maximoa</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="623"/>
       <source>Monochrome</source>
-      <translation type="unfinished">Monochrome</translation>
+      <translation>Monokromoa</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="654"/>
@@ -5866,7 +5866,7 @@ Jarraitu nahi duzu?</translation>
       <translation>Eguneratu orain</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="690"/>
+      <location filename="../../TaskComplexSection.cpp" line="689"/>
       <source>Can not continue. Object * %1 or %2 not found.</source>
       <translation type="unfinished">Can not continue. Object * %1 or %2 not found.</translation>
     </message>
@@ -8276,6 +8276,27 @@ emandako X/Y espazioa erabilita</translation>
       <location filename="../../TaskDimRepair.cpp" line="82"/>
       <source>SubElement</source>
       <translation>Azpielementua</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDraw_AxoLengthDimension</name>
+    <message>
+      <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="50"/>
+      <source>Axonometric length dimension</source>
+      <translation type="unfinished">Axonometric length dimension</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="57"/>
+      <source>Create an axonometric length dimension&lt;br&gt;
+                - select first edge to define direction and length of the dimension line&lt;br&gt;
+                - select second edge to define the direction of the extension lines&lt;br&gt;
+                - optional: select two more vertexes which define the measurement instead of the length&lt;br&gt;
+                  of the first selected edge</source>
+      <translation type="unfinished">Create an axonometric length dimension&lt;br&gt;
+                - select first edge to define direction and length of the dimension line&lt;br&gt;
+                - select second edge to define the direction of the extension lines&lt;br&gt;
+                - optional: select two more vertexes which define the measurement instead of the length&lt;br&gt;
+                  of the first selected edge</translation>
     </message>
   </context>
 </TS>

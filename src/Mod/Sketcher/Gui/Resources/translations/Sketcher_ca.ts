@@ -82,12 +82,12 @@
   <context>
     <name>CmdSketcherClone</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1392"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1454"/>
       <source>Clone</source>
       <translation>Clona</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1393"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1456"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
       <translation>Crea un clon de la geometria prenent com a referència l'últim punt seleccionat</translation>
     </message>
@@ -156,12 +156,12 @@
   <context>
     <name>CmdSketcherCompCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1469"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1536"/>
       <source>Clone</source>
       <translation>Clona</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1470"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1538"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
       <translation>Crea un clon de la geometria prenent com a referència l'últim punt seleccionat</translation>
     </message>
@@ -665,12 +665,12 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1346"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1403"/>
       <source>Copy</source>
       <translation>Copia</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1347"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1404"/>
       <source>Creates a simple copy of the geometry taking as reference the last selected point</source>
       <translation>Crea una còpia simple de la geometria prenent com a referència l'últim punt seleccionat</translation>
     </message>
@@ -1055,12 +1055,12 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherDeleteAllConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1958"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2058"/>
       <source>Delete all constraints</source>
       <translation>Esborra totes les restriccions</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1959"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2059"/>
       <source>Delete all constraints in the sketch</source>
       <translation>Esborra totes les restriccions en el croquis</translation>
     </message>
@@ -1068,12 +1068,12 @@ with respect to a line or a third point</source>
   <context>
     <name>CmdSketcherDeleteAllGeometry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1895"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1990"/>
       <source>Delete all geometry</source>
       <translation>Esborra tota la geometria</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1896"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1991"/>
       <source>Delete all geometry and constraints in the current sketch, with the exception of external geometry</source>
       <translation>Esborra tota la geometria i restriccions en el croquis actual, excepte la geometria externa</translation>
     </message>
@@ -1256,12 +1256,12 @@ com a referencia per reflectir.</translation>
   <context>
     <name>CmdSketcherMove</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1435"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1502"/>
       <source>Move</source>
       <translation>Mou</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1436"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1503"/>
       <source>Moves the geometry taking as reference the last selected point</source>
       <translation>Mou la geometria prenent com a referència l'últim punt seleccionat</translation>
     </message>
@@ -1282,12 +1282,12 @@ com a referencia per reflectir.</translation>
   <context>
     <name>CmdSketcherRectangularArray</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1755"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1841"/>
       <source>Rectangular array</source>
       <translation>Matriu rectangular</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1756"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1842"/>
       <source>Creates a rectangular array pattern of the geometry taking as reference the last selected point</source>
       <translation>Crea un patró de matriu rectangular de la geometria prenent com a referència l'últim punt seleccionat</translation>
     </message>
@@ -1295,12 +1295,12 @@ com a referencia per reflectir.</translation>
   <context>
     <name>CmdSketcherRemoveAxesAlignment</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2022"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2126"/>
       <source>Remove axes alignment</source>
       <translation>Elimina l'alineació dels eixos</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2023"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2127"/>
       <source>Modifies constraints to remove axes alignment while trying to preserve the constraint relationship of the selection</source>
       <translation>Modifica les restriccions per eliminar l'alineació dels eixos mentre s'intenta preservar la relació de restriccions de la selecció</translation>
     </message>
@@ -1323,12 +1323,12 @@ Això esborrarà la propietat 'Suport', si existeix.</translation>
   <context>
     <name>CmdSketcherRestoreInternalAlignmentGeometry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="713"/>
+      <location filename="../../CommandSketcherTools.cpp" line="746"/>
       <source>Show/hide internal geometry</source>
       <translation>Mostra o amaga la geometria interna</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="714"/>
+      <location filename="../../CommandSketcherTools.cpp" line="747"/>
       <source>Show all internal geometry or hide unused internal geometry</source>
       <translation>Mostra tota la geometria interna, o amaga la geometria interna que no s'utilitza</translation>
     </message>
@@ -1336,8 +1336,8 @@ Això esborrarà la propietat 'Suport', si existeix.</translation>
   <context>
     <name>CmdSketcherSelectConflictingConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="446"/>
-      <location filename="../../CommandSketcherTools.cpp" line="447"/>
+      <location filename="../../CommandSketcherTools.cpp" line="468"/>
+      <location filename="../../CommandSketcherTools.cpp" line="469"/>
       <source>Select conflicting constraints</source>
       <translation>Selecciona les restriccions en confilcte</translation>
     </message>
@@ -1350,7 +1350,7 @@ Això esborrarà la propietat 'Suport', si existeix.</translation>
       <translation>Selecciona les restriccions associades</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="68"/>
+      <location filename="../../CommandSketcherTools.cpp" line="69"/>
       <source>Select the constraints associated with the selected geometrical elements</source>
       <translation>Selecciona les restriccions associades amb els elements geomètrics seleccionats</translation>
     </message>
@@ -1358,12 +1358,12 @@ Això esborrarà la propietat 'Suport', si existeix.</translation>
   <context>
     <name>CmdSketcherSelectElementsAssociatedWithConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="501"/>
+      <location filename="../../CommandSketcherTools.cpp" line="529"/>
       <source>Select associated geometry</source>
       <translation>Selecciona la geometria associada</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="502"/>
+      <location filename="../../CommandSketcherTools.cpp" line="531"/>
       <source>Select the geometrical elements associated with the selected constraints</source>
       <translation>Selecciona els elements geomètrics associats a les restriccions seleccionades</translation>
     </message>
@@ -1371,12 +1371,12 @@ Això esborrarà la propietat 'Suport', si existeix.</translation>
   <context>
     <name>CmdSketcherSelectElementsWithDoFs</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="622"/>
+      <location filename="../../CommandSketcherTools.cpp" line="653"/>
       <source>Select unconstrained DoF</source>
       <translation>Selecciona graus de llibertat sense restriccions</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="623"/>
+      <location filename="../../CommandSketcherTools.cpp" line="654"/>
       <source>Select geometrical elements where the solver still detects unconstrained degrees of freedom.</source>
       <translation>Selecciona elements geomètrics on el sistema de resolució encara detecta graus de llibertat sense restricció.</translation>
     </message>
@@ -1384,12 +1384,12 @@ Això esborrarà la propietat 'Suport', si existeix.</translation>
   <context>
     <name>CmdSketcherSelectHorizontalAxis</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="234"/>
+      <location filename="../../CommandSketcherTools.cpp" line="239"/>
       <source>Select horizontal axis</source>
       <translation>Selecciona l'eix horitzontal</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="235"/>
+      <location filename="../../CommandSketcherTools.cpp" line="240"/>
       <source>Select the local horizontal axis of the sketch</source>
       <translation>Selecciona l'eix horitzontal local del croquis</translation>
     </message>
@@ -1397,8 +1397,8 @@ Això esborrarà la propietat 'Suport', si existeix.</translation>
   <context>
     <name>CmdSketcherSelectMalformedConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="334"/>
-      <location filename="../../CommandSketcherTools.cpp" line="335"/>
+      <location filename="../../CommandSketcherTools.cpp" line="345"/>
+      <location filename="../../CommandSketcherTools.cpp" line="346"/>
       <source>Select malformed constraints</source>
       <translation>Selecciona restriccions defectuoses</translation>
     </message>
@@ -1406,12 +1406,12 @@ Això esborrarà la propietat 'Suport', si existeix.</translation>
   <context>
     <name>CmdSketcherSelectOrigin</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="144"/>
+      <location filename="../../CommandSketcherTools.cpp" line="147"/>
       <source>Select origin</source>
       <translation>Seleccionar origen</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="145"/>
+      <location filename="../../CommandSketcherTools.cpp" line="148"/>
       <source>Select the local origin point of the sketch</source>
       <translation>Selecciona el punt d'origen local del croquis</translation>
     </message>
@@ -1419,8 +1419,8 @@ Això esborrarà la propietat 'Suport', si existeix.</translation>
   <context>
     <name>CmdSketcherSelectPartiallyRedundantConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="390"/>
-      <location filename="../../CommandSketcherTools.cpp" line="391"/>
+      <location filename="../../CommandSketcherTools.cpp" line="406"/>
+      <location filename="../../CommandSketcherTools.cpp" line="407"/>
       <source>Select partially redundant constraints</source>
       <translation>Selecciona restriccions parcialment redundants</translation>
     </message>
@@ -1428,8 +1428,8 @@ Això esborrarà la propietat 'Suport', si existeix.</translation>
   <context>
     <name>CmdSketcherSelectRedundantConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="277"/>
-      <location filename="../../CommandSketcherTools.cpp" line="278"/>
+      <location filename="../../CommandSketcherTools.cpp" line="283"/>
+      <location filename="../../CommandSketcherTools.cpp" line="284"/>
       <source>Select redundant constraints</source>
       <translation>Selecciona restriccions redundants</translation>
     </message>
@@ -1437,12 +1437,12 @@ Això esborrarà la propietat 'Suport', si existeix.</translation>
   <context>
     <name>CmdSketcherSelectVerticalAxis</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="190"/>
+      <location filename="../../CommandSketcherTools.cpp" line="194"/>
       <source>Select vertical axis</source>
       <translation>Selecciona l'eix vertical</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="191"/>
+      <location filename="../../CommandSketcherTools.cpp" line="195"/>
       <source>Select the local vertical axis of the sketch</source>
       <translation>Selecciona l'eix vertical local del croquis</translation>
     </message>
@@ -1489,12 +1489,12 @@ Això esborrarà la propietat 'Suport', si existeix.</translation>
   <context>
     <name>CmdSketcherSymmetry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="826"/>
+      <location filename="../../CommandSketcherTools.cpp" line="859"/>
       <source>Symmetry</source>
       <translation>Simetria</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="827"/>
+      <location filename="../../CommandSketcherTools.cpp" line="861"/>
       <source>Creates symmetric geometry with respect to the last selected line or point</source>
       <translation>Crea una geometria simètrica respecte a l'última línia o punt seleccionats</translation>
     </message>
@@ -2039,37 +2039,37 @@ restriccions invàlides, geometries degenerades, etc.</translation>
       <translation type="unfinished">Join Curves</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="789"/>
+      <location filename="../../CommandSketcherTools.cpp" line="822"/>
       <source>Exposing Internal Geometry</source>
       <translation>Exposa la geometria interna</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="999"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1038"/>
       <source>Create symmetric geometry</source>
       <translation>Crea geometria simètrica</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1153"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1195"/>
       <source>Copy/clone/move geometry</source>
       <translation>Copia, clona o mou la geometria</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1692"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1770"/>
       <source>Create copy of geometry</source>
       <translation>Crea una còpia de la geometria</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1921"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2020"/>
       <source>Delete all geometry</source>
       <translation>Esborra tota la geometria</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1983"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2087"/>
       <source>Delete All Constraints</source>
       <translation>Suprimeix totes les restriccions</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2108"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2215"/>
       <source>Remove Axes Alignment</source>
       <translation>Elimina l'alineació d'eixos</translation>
     </message>
@@ -2444,21 +2444,21 @@ restriccions invàlides, geometries degenerades, etc.</translation>
       <location filename="../../CommandConstraints.cpp" line="7530"/>
       <location filename="../../CommandConstraints.cpp" line="7603"/>
       <location filename="../../CommandConstraints.cpp" line="7614"/>
-      <location filename="../../CommandSketcherTools.cpp" line="90"/>
-      <location filename="../../CommandSketcherTools.cpp" line="737"/>
-      <location filename="../../CommandSketcherTools.cpp" line="849"/>
-      <location filename="../../CommandSketcherTools.cpp" line="857"/>
-      <location filename="../../CommandSketcherTools.cpp" line="962"/>
-      <location filename="../../CommandSketcherTools.cpp" line="971"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1215"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1224"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1283"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1774"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1783"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1845"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2041"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2050"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2095"/>
+      <location filename="../../CommandSketcherTools.cpp" line="92"/>
+      <location filename="../../CommandSketcherTools.cpp" line="770"/>
+      <location filename="../../CommandSketcherTools.cpp" line="884"/>
+      <location filename="../../CommandSketcherTools.cpp" line="893"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1000"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1010"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1266"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1275"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1336"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1861"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1870"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1934"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2146"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2155"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2201"/>
       <source>Wrong selection</source>
       <translation>Selecció incorrecta</translation>
     </message>
@@ -3212,67 +3212,67 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation type="unfinished">Two end points, or coincident point should be selected.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="91"/>
-      <location filename="../../CommandSketcherTools.cpp" line="738"/>
-      <location filename="../../CommandSketcherTools.cpp" line="850"/>
-      <location filename="../../CommandSketcherTools.cpp" line="858"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1216"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1225"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1775"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1784"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2042"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2051"/>
+      <location filename="../../CommandSketcherTools.cpp" line="93"/>
+      <location filename="../../CommandSketcherTools.cpp" line="771"/>
+      <location filename="../../CommandSketcherTools.cpp" line="885"/>
+      <location filename="../../CommandSketcherTools.cpp" line="894"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1267"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1276"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1862"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1871"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2147"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2156"/>
       <source>Select elements from a single sketch.</source>
       <translation>Seleccioneu elements d'un únic croquis.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="599"/>
+      <location filename="../../CommandSketcherTools.cpp" line="631"/>
       <source>No constraint selected</source>
       <translation>No s'ha seleccionat cap restricció</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="600"/>
+      <location filename="../../CommandSketcherTools.cpp" line="632"/>
       <source>At least one constraint must be selected</source>
       <translation>S'ha de seleccionar com a mínim una restricció</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="963"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1001"/>
       <source>A symmetric construction requires at least two geometric elements, the last geometric element being the reference for the symmetry construction.</source>
       <translation>Una construcció simètrica necessita com a mínim dos elements geomètrics, l'últim element geomètric és la referència per a la construcció de la simetria.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="972"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1011"/>
       <source>The last element must be a point or a line serving as reference for the symmetry construction.</source>
       <translation>L'últim element ha de ser un punt o una línia que servisca com a referència per a la construcció de la simetria.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1284"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1846"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1337"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1935"/>
       <source>A copy requires at least one selected non-external geometric element</source>
       <translation>Una còpia necessita com a mínim que se seleccione un element geomètric no extern</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1909"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2006"/>
       <source>Delete All Geometry</source>
       <translation>Suprimeix totes les figures geomètriques</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1910"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2007"/>
       <source>Are you really sure you want to delete all geometry and constraints?</source>
       <translation>Esteu realment segur que voleu esborrar tota la geometria i restriccions?</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1971"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2073"/>
       <source>Delete All Constraints</source>
       <translation>Suprimeix totes les restriccions</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1972"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2074"/>
       <source>Are you really sure you want to delete all the constraints?</source>
       <translation>Estàs realment segur que voleu suprimir totes les Restriccions?</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2096"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2202"/>
       <source>Removal of axes alignment requires at least one selected non-external geometric element</source>
       <translation>L'eliminació de l'alineació dels eixos requereix almenys un element geomètric no extern seleccionat</translation>
     </message>
@@ -5235,8 +5235,8 @@ El solucionador no ha pogut convergir</translation>
   <context>
     <name>Sketcher_Clone</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1543"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1544"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1611"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1614"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
       <translation>Crea un clon de la geometria prenent com a referència l'últim punt seleccionat</translation>
     </message>
@@ -5244,17 +5244,17 @@ El solucionador no ha pogut convergir</translation>
   <context>
     <name>Sketcher_CompCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1542"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1610"/>
       <source>Clone</source>
       <translation>Clona</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1546"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1618"/>
       <source>Copy</source>
       <translation>Copia</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1550"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1626"/>
       <source>Move</source>
       <translation>Mou</translation>
     </message>
@@ -5296,8 +5296,8 @@ El solucionador no ha pogut convergir</translation>
   <context>
     <name>Sketcher_Copy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1547"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1548"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1619"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1622"/>
       <source>Creates a simple copy of the geometry taking as reference the last selected point</source>
       <translation>Crea una còpia simple de la geometria prenent com a referència l'últim punt seleccionat</translation>
     </message>
@@ -5583,8 +5583,8 @@ Trieu un mètode per unir aquest croquis als objectes seleccionats.</translation
   <context>
     <name>Sketcher_Move</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1551"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1552"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1627"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1629"/>
       <source>Moves the geometry taking as reference the last selected point</source>
       <translation>Mou la geometria prenent com a referència l'últim punt seleccionat</translation>
     </message>

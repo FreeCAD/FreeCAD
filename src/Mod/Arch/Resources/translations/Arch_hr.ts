@@ -1824,7 +1824,7 @@ jedinice s kojom treba raditi prilikom otvaranja datoteke.
     <message>
       <location filename="../../ArchStructure.py" line="444"/>
       <location filename="../../ArchProfile.py" line="150"/>
-      <location filename="../../ArchCommands.py" line="1615"/>
+      <location filename="../../ArchCommands.py" line="1626"/>
       <source>Category</source>
       <translation>Kategorija</translation>
     </message>
@@ -1837,22 +1837,22 @@ jedinice s kojom treba raditi prilikom otvaranja datoteke.
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="460"/>
-      <location filename="../../ArchPrecast.py" line="1396"/>
+      <location filename="../../ArchPrecast.py" line="1411"/>
       <location filename="../../ArchWall.py" line="508"/>
-      <location filename="../../ArchCommands.py" line="1000"/>
+      <location filename="../../ArchCommands.py" line="1011"/>
       <source>Length</source>
       <translation>Dužina</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="470"/>
-      <location filename="../../ArchPrecast.py" line="1397"/>
+      <location filename="../../ArchPrecast.py" line="1412"/>
       <location filename="../../ArchWall.py" line="514"/>
       <source>Width</source>
       <translation>Širina</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="477"/>
-      <location filename="../../ArchPrecast.py" line="1398"/>
+      <location filename="../../ArchPrecast.py" line="1413"/>
       <location filename="../../ArchWall.py" line="520"/>
       <source>Height</source>
       <translation>Visina</translation>
@@ -2523,7 +2523,7 @@ Ako je Run = 0, tada se proračun izračunava tako da je visina jednaka relativn
     <message>
       <location filename="../../ArchWindow.py" line="1789"/>
       <location filename="../../ArchComponent.py" line="1991"/>
-      <location filename="../../ArchCommands.py" line="1617"/>
+      <location filename="../../ArchCommands.py" line="1628"/>
       <source>Type</source>
       <translation>Tip</translation>
     </message>
@@ -2536,7 +2536,7 @@ Ako je Run = 0, tada se proračun izračunava tako da je visina jednaka relativn
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1792"/>
-      <location filename="../../ArchPrecast.py" line="1402"/>
+      <location filename="../../ArchPrecast.py" line="1417"/>
       <source>Offset</source>
       <translation>Pomak</translation>
     </message>
@@ -2812,132 +2812,132 @@ Ako je Run = 0, tada se proračun izračunava tako da je visina jednaka relativn
       <translation>Stupci</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="989"/>
+      <location filename="../../ArchPrecast.py" line="1004"/>
       <source>Precast elements</source>
       <translation>Montažni elementi</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="990"/>
+      <location filename="../../ArchPrecast.py" line="1005"/>
       <source>Slab type</source>
       <translation>Vrsta Ploče</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="991"/>
+      <location filename="../../ArchPrecast.py" line="1006"/>
       <source>Chamfer</source>
       <translation>Zarubljenje</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="992"/>
+      <location filename="../../ArchPrecast.py" line="1007"/>
       <source>Dent length</source>
       <translation>Dužina udubljenja</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="993"/>
+      <location filename="../../ArchPrecast.py" line="1008"/>
       <source>Dent width</source>
       <translation>Širina udubljenja</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="994"/>
+      <location filename="../../ArchPrecast.py" line="1009"/>
       <source>Dent height</source>
       <translation>Visina udubljenja</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="995"/>
+      <location filename="../../ArchPrecast.py" line="1010"/>
       <source>Slab base</source>
       <translation>Osnova Ploče</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="996"/>
+      <location filename="../../ArchPrecast.py" line="1011"/>
       <source>Number of holes</source>
       <translation>Broj rupa</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="997"/>
+      <location filename="../../ArchPrecast.py" line="1012"/>
       <source>Major diameter of holes</source>
       <translation>Veliki promjer rupa</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="998"/>
+      <location filename="../../ArchPrecast.py" line="1013"/>
       <source>Minor diameter of holes</source>
       <translation>Manji promjer rupe</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="999"/>
+      <location filename="../../ArchPrecast.py" line="1014"/>
       <source>Spacing between holes</source>
       <translation>Razmak između rupa</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1000"/>
+      <location filename="../../ArchPrecast.py" line="1015"/>
       <source>Number of grooves</source>
       <translation>Broj utora</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1001"/>
+      <location filename="../../ArchPrecast.py" line="1016"/>
       <source>Depth of grooves</source>
       <translation>Dubina utora</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1002"/>
+      <location filename="../../ArchPrecast.py" line="1017"/>
       <source>Height of grooves</source>
       <translation>Visina utora</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1003"/>
+      <location filename="../../ArchPrecast.py" line="1018"/>
       <source>Spacing between grooves</source>
       <translation>Razmak među utorima</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1004"/>
+      <location filename="../../ArchPrecast.py" line="1019"/>
       <source>Number of risers</source>
       <translation>Broj uzvišenja</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1005"/>
+      <location filename="../../ArchPrecast.py" line="1020"/>
       <source>Length of down floor</source>
       <translation>Duljina doljnjeg poda</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1006"/>
+      <location filename="../../ArchPrecast.py" line="1021"/>
       <source>Height of risers</source>
       <translation>Visina uzvišenja</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1007"/>
+      <location filename="../../ArchPrecast.py" line="1022"/>
       <source>Depth of treads</source>
       <translation>Dubina stepenica</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1392"/>
+      <location filename="../../ArchPrecast.py" line="1407"/>
       <source>Precast options</source>
       <translation>Montažne opcije</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1393"/>
+      <location filename="../../ArchPrecast.py" line="1408"/>
       <source>Dents list</source>
       <translation>Lista udubljenja</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1394"/>
+      <location filename="../../ArchPrecast.py" line="1409"/>
       <source>Add dent</source>
       <translation>Dodaj udubljenje</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1395"/>
+      <location filename="../../ArchPrecast.py" line="1410"/>
       <source>Remove dent</source>
       <translation>Ukloni udubljenje</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1399"/>
+      <location filename="../../ArchPrecast.py" line="1414"/>
       <source>Slant</source>
       <translation>Kosina</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1400"/>
+      <location filename="../../ArchPrecast.py" line="1415"/>
       <source>Level</source>
       <translation>Razina</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1401"/>
+      <location filename="../../ArchPrecast.py" line="1416"/>
       <source>Rotation</source>
       <translation>Rotacija</translation>
     </message>
@@ -3099,7 +3099,7 @@ Ako je Run = 0, tada se proračun izračunava tako da je visina jednaka relativn
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="544"/>
-      <location filename="../../ArchCommands.py" line="1088"/>
+      <location filename="../../ArchCommands.py" line="1099"/>
       <source>Export CSV File</source>
       <translation>Izvezi CSV datoteku</translation>
     </message>
@@ -3111,7 +3111,7 @@ Ako je Run = 0, tada se proračun izračunava tako da je visina jednaka relativn
     <message>
       <location filename="../../ArchSchedule.py" line="587"/>
       <location filename="../../ArchSchedule.py" line="605"/>
-      <location filename="../../ArchCommands.py" line="999"/>
+      <location filename="../../ArchCommands.py" line="1010"/>
       <source>Description</source>
       <translation>Opis</translation>
     </message>
@@ -3119,14 +3119,14 @@ Ako je Run = 0, tada se proračun izračunava tako da je visina jednaka relativn
       <location filename="../../ArchSchedule.py" line="587"/>
       <location filename="../../ArchSchedule.py" line="605"/>
       <location filename="../../ArchComponent.py" line="1992"/>
-      <location filename="../../ArchCommands.py" line="1618"/>
+      <location filename="../../ArchCommands.py" line="1629"/>
       <source>Value</source>
       <translation>Vrijednost</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="587"/>
       <location filename="../../ArchSchedule.py" line="605"/>
-      <location filename="../../ArchCommands.py" line="1619"/>
+      <location filename="../../ArchCommands.py" line="1630"/>
       <source>Unit</source>
       <translation>Jedinica</translation>
     </message>
@@ -3223,6 +3223,12 @@ Stvaranje etaže prekinuto.</translation>
       <translation>ima jedan neispravan oblik</translation>
     </message>
     <message>
+      <location filename="../../ArchPrecast.py" line="128"/>
+      <location filename="../../ArchPrecast.py" line="244"/>
+      <location filename="../../ArchPrecast.py" line="322"/>
+      <location filename="../../ArchPrecast.py" line="454"/>
+      <location filename="../../ArchPrecast.py" line="582"/>
+      <location filename="../../ArchPrecast.py" line="679"/>
       <location filename="../../ArchComponent.py" line="945"/>
       <source>has a null shape</source>
       <translation>ima jedan ništavni oblik</translation>
@@ -3595,114 +3601,114 @@ Stvaranje zgrade prekinuto.</translation>
       <translation>sadrži lica koja nisu dio nikakvog čvrstog tijela</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="993"/>
+      <location filename="../../ArchCommands.py" line="1004"/>
       <source>Survey</source>
       <translation>Istraživanje</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="994"/>
+      <location filename="../../ArchCommands.py" line="1005"/>
       <source>Set description</source>
       <translation>Postavi opis</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="995"/>
+      <location filename="../../ArchCommands.py" line="1006"/>
       <source>Clear</source>
       <translation>Brisanje</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="996"/>
+      <location filename="../../ArchCommands.py" line="1007"/>
       <source>Copy Length</source>
       <translation>Kopira dužinu</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="997"/>
+      <location filename="../../ArchCommands.py" line="1008"/>
       <source>Copy Area</source>
       <translation>Kopira područje</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="998"/>
+      <location filename="../../ArchCommands.py" line="1009"/>
       <source>Export CSV</source>
       <translation>Izvoz CSV</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1001"/>
+      <location filename="../../ArchCommands.py" line="1012"/>
       <source>Area</source>
       <translation>Područje</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1046"/>
+      <location filename="../../ArchCommands.py" line="1057"/>
       <source>Total</source>
       <translation>Ukupno</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1126"/>
+      <location filename="../../ArchCommands.py" line="1137"/>
       <source>Object doesn't have settable IFCData</source>
       <translation type="unfinished">Object doesn't have settable IFCData</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1132"/>
+      <location filename="../../ArchCommands.py" line="1143"/>
       <source>Disabling Brep force flag of object</source>
       <translation>Onemogućiti Brep oznaku sile objekta</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1135"/>
-      <location filename="../../ArchCommands.py" line="1138"/>
+      <location filename="../../ArchCommands.py" line="1146"/>
+      <location filename="../../ArchCommands.py" line="1149"/>
       <source>Enabling Brep force flag of object</source>
       <translation>Omogućiti Brep oznaku sile objekta</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1330"/>
+      <location filename="../../ArchCommands.py" line="1341"/>
       <source>Add space boundary</source>
       <translation>Dodavanje granice prostora</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1334"/>
+      <location filename="../../ArchCommands.py" line="1345"/>
       <source>Grouping</source>
       <translation>Grupiranje</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1362"/>
+      <location filename="../../ArchCommands.py" line="1373"/>
       <source>Remove space boundary</source>
       <translation>Uklanjanje granice prostora</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1366"/>
+      <location filename="../../ArchCommands.py" line="1377"/>
       <source>Ungrouping</source>
       <translation>Razgrupiranje</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1397"/>
+      <location filename="../../ArchCommands.py" line="1408"/>
       <source>Split Mesh</source>
       <translation>Podjeli Mrežu</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1437"/>
+      <location filename="../../ArchCommands.py" line="1448"/>
       <source>Mesh to Shape</source>
       <translation>Mreža u Oblik</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1518"/>
+      <location filename="../../ArchCommands.py" line="1529"/>
       <source>All good! No problems found</source>
       <translation>Sve u redu! Nema problema</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1570"/>
-      <location filename="../../ArchCommands.py" line="1595"/>
+      <location filename="../../ArchCommands.py" line="1581"/>
+      <location filename="../../ArchCommands.py" line="1606"/>
       <source>Create Component</source>
       <translation>Izradi Komponentu</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1616"/>
+      <location filename="../../ArchCommands.py" line="1627"/>
       <source>Key</source>
       <translation>Ključ</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1626"/>
+      <location filename="../../ArchCommands.py" line="1637"/>
       <source>The object doesn't have an IfcProperties attribute. Cancel spreadsheet creation for object:</source>
       <translation>Objekt nema atribut IfcProperties. Prekinuto stvaranje proračunske tablice za objekt:</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1644"/>
+      <location filename="../../ArchCommands.py" line="1655"/>
       <source>Create IFC properties spreadsheet</source>
       <translation>Izradi IFC tablice svojstva</translation>
     </message>
@@ -4928,8 +4934,8 @@ Stvaranje zgrade prekinuto.</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="96"/>
-      <location filename="../../ArchPrecast.py" line="278"/>
-      <location filename="../../ArchPrecast.py" line="416"/>
+      <location filename="../../ArchPrecast.py" line="284"/>
+      <location filename="../../ArchPrecast.py" line="425"/>
       <source>The size of the chamfer of this element</source>
       <translation>Veličina skošenja ovog elementa</translation>
     </message>
@@ -4940,98 +4946,98 @@ Stvaranje zgrade prekinuto.</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="100"/>
-      <location filename="../../ArchPrecast.py" line="420"/>
+      <location filename="../../ArchPrecast.py" line="429"/>
       <source>The dent height of this element</source>
       <translation>Visina ulupljenja ovog elementa</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="102"/>
-      <location filename="../../ArchPrecast.py" line="288"/>
+      <location filename="../../ArchPrecast.py" line="294"/>
       <source>The dents of this element</source>
       <translation>Ulupljenja ovog elementa</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="215"/>
+      <location filename="../../ArchPrecast.py" line="218"/>
       <source>The chamfer length of this element</source>
       <translation>Dužina žlijeba ulupljenja ovog elementa</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="217"/>
+      <location filename="../../ArchPrecast.py" line="220"/>
       <source>The base length of this element</source>
       <translation>Dužina baze ovog elementa</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="280"/>
+      <location filename="../../ArchPrecast.py" line="286"/>
       <source>The groove depth of this element</source>
       <translation>Dubina utora ovog elementa</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="282"/>
+      <location filename="../../ArchPrecast.py" line="288"/>
       <source>The groove height of this element</source>
       <translation>Visina utora ovog elementa</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="284"/>
+      <location filename="../../ArchPrecast.py" line="290"/>
       <source>The spacing between the grooves of this element</source>
       <translation>Razmak među utorima ovog elementa</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="286"/>
+      <location filename="../../ArchPrecast.py" line="292"/>
       <source>The number of grooves of this element</source>
       <translation>Broj utora ovog elementa</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="418"/>
+      <location filename="../../ArchPrecast.py" line="427"/>
       <source>The dent width of this element</source>
       <translation>Širina ulupljenja ovog elementa</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="524"/>
+      <location filename="../../ArchPrecast.py" line="536"/>
       <source>The type of this slab</source>
       <translation>Vrsta ove ploče</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="527"/>
+      <location filename="../../ArchPrecast.py" line="539"/>
       <source>The size of the base of this element</source>
       <translation>Veličina baze ovog elementa</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="529"/>
+      <location filename="../../ArchPrecast.py" line="541"/>
       <source>The number of holes in this element</source>
       <translation>Broj rupa u ovom elementu</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="531"/>
+      <location filename="../../ArchPrecast.py" line="543"/>
       <source>The major radius of the holes of this element</source>
       <translation>Glavni radijus rupa ovog elementa</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="533"/>
+      <location filename="../../ArchPrecast.py" line="545"/>
       <source>The minor radius of the holes of this element</source>
       <translation>Sporedni radijus rupa ovog elementa</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="535"/>
+      <location filename="../../ArchPrecast.py" line="547"/>
       <source>The spacing between the holes of this element</source>
       <translation>Razmak između rupa ovog elementa</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="633"/>
+      <location filename="../../ArchPrecast.py" line="647"/>
       <source>The length of the down floor of this element</source>
       <translation>Duljina donjeg poda ovog elementa</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="635"/>
+      <location filename="../../ArchPrecast.py" line="649"/>
       <source>The number of risers in this element</source>
       <translation>Broj uspona u ovom elementu</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="637"/>
+      <location filename="../../ArchPrecast.py" line="651"/>
       <source>The riser height of this element</source>
       <translation>Visina uspona ovoga elementa</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="639"/>
+      <location filename="../../ArchPrecast.py" line="653"/>
       <source>The tread depth of this element</source>
       <translation>Dubina profila ovoga elementa</translation>
     </message>
@@ -6659,12 +6665,12 @@ Stvaranje zgrade prekinuto.</translation>
   <context>
     <name>Arch_Add</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1321"/>
+      <location filename="../../ArchCommands.py" line="1332"/>
       <source>Add component</source>
       <translation>Dodaj komponentu</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1324"/>
+      <location filename="../../ArchCommands.py" line="1335"/>
       <source>Adds the selected components to the active object</source>
       <translation>Dodaje odabrane komponente aktivnom objektu</translation>
     </message>
@@ -6672,12 +6678,12 @@ Stvaranje zgrade prekinuto.</translation>
   <context>
     <name>Arch_Remove</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1353"/>
+      <location filename="../../ArchCommands.py" line="1364"/>
       <source>Remove component</source>
       <translation>Ukloni komponentu</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1356"/>
+      <location filename="../../ArchCommands.py" line="1367"/>
       <source>Remove the selected components from their parents, or create a hole in a component</source>
       <translation>Uklonite odabrane komponente od njihovih roditelja ili napravite rupu u komponenti</translation>
     </message>
@@ -6685,12 +6691,12 @@ Stvaranje zgrade prekinuto.</translation>
   <context>
     <name>Arch_SplitMesh</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1388"/>
+      <location filename="../../ArchCommands.py" line="1399"/>
       <source>Split Mesh</source>
       <translation>Podjeli Mrežu</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1391"/>
+      <location filename="../../ArchCommands.py" line="1402"/>
       <source>Splits selected meshes into independent components</source>
       <translation>Dijeli odabrane mreže na neovisne komponente</translation>
     </message>
@@ -6698,12 +6704,12 @@ Stvaranje zgrade prekinuto.</translation>
   <context>
     <name>Arch_MeshToShape</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1413"/>
+      <location filename="../../ArchCommands.py" line="1424"/>
       <source>Mesh to Shape</source>
       <translation>Mreža u Oblik</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1416"/>
+      <location filename="../../ArchCommands.py" line="1427"/>
       <source>Turns selected meshes into Part Shape objects</source>
       <translation>Pretvara odabrane mreže u objekte oblika dijela</translation>
     </message>
@@ -6711,12 +6717,12 @@ Stvaranje zgrade prekinuto.</translation>
   <context>
     <name>Arch_SelectNonSolidMeshes</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1448"/>
+      <location filename="../../ArchCommands.py" line="1459"/>
       <source>Select non-manifold meshes</source>
       <translation>Odaberite nerazdjelne mreže</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1451"/>
+      <location filename="../../ArchCommands.py" line="1462"/>
       <source>Selects all non-manifold meshes from the document or from the selected groups</source>
       <translation>Odabire sve nerazdjelne mreže iz dokumenta ili iz odabranih grupa</translation>
     </message>
@@ -6724,12 +6730,12 @@ Stvaranje zgrade prekinuto.</translation>
   <context>
     <name>Arch_RemoveShape</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1477"/>
+      <location filename="../../ArchCommands.py" line="1488"/>
       <source>Remove Shape from Arch</source>
       <translation>Ukloni oblik iz Arhitekta</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1480"/>
+      <location filename="../../ArchCommands.py" line="1491"/>
       <source>Removes cubic shapes from Arch components</source>
       <translation>Uklanja prostorne oblike iz komponenti Arhitekt</translation>
     </message>
@@ -6737,12 +6743,12 @@ Stvaranje zgrade prekinuto.</translation>
   <context>
     <name>Arch_CloseHoles</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1492"/>
+      <location filename="../../ArchCommands.py" line="1503"/>
       <source>Close holes</source>
       <translation>Zatvorite rupe</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1495"/>
+      <location filename="../../ArchCommands.py" line="1506"/>
       <source>Closes holes in open shapes, turning them solids</source>
       <translation>Zatvara rupe u otvorenim oblicima, pretvarajući ih u čvrsta tijela</translation>
     </message>
@@ -6750,12 +6756,12 @@ Stvaranje zgrade prekinuto.</translation>
   <context>
     <name>Arch_Check</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1509"/>
+      <location filename="../../ArchCommands.py" line="1520"/>
       <source>Check</source>
       <translation>Provjeri</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1512"/>
+      <location filename="../../ArchCommands.py" line="1523"/>
       <source>Checks the selected objects for problems</source>
       <translation>Provjerava probleme u odabranim objektima</translation>
     </message>
@@ -6763,12 +6769,12 @@ Stvaranje zgrade prekinuto.</translation>
   <context>
     <name>Arch_Survey</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1530"/>
+      <location filename="../../ArchCommands.py" line="1541"/>
       <source>Survey</source>
       <translation>Istraživanje</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1533"/>
+      <location filename="../../ArchCommands.py" line="1544"/>
       <source>Starts survey</source>
       <translation>Počinje istraživanje</translation>
     </message>
@@ -6776,12 +6782,12 @@ Stvaranje zgrade prekinuto.</translation>
   <context>
     <name>Arch_ToggleIfcBrepFlag</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1545"/>
+      <location filename="../../ArchCommands.py" line="1556"/>
       <source>Toggle IFC Brep flag</source>
       <translation>Uklj/isklj  IFC Brep oznaku</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1548"/>
+      <location filename="../../ArchCommands.py" line="1559"/>
       <source>Force an object to be exported as Brep or not</source>
       <translation>Nametni da li će objekt biti izvežen kao Brep ili neće</translation>
     </message>
@@ -6789,12 +6795,12 @@ Stvaranje zgrade prekinuto.</translation>
   <context>
     <name>Arch_Component</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1560"/>
+      <location filename="../../ArchCommands.py" line="1571"/>
       <source>Component</source>
       <translation>Komponenta</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1564"/>
+      <location filename="../../ArchCommands.py" line="1575"/>
       <source>Creates an undefined architectural component</source>
       <translation>Stvara nedefiniranu arhitektonsku komponentu</translation>
     </message>
@@ -6802,12 +6808,12 @@ Stvaranje zgrade prekinuto.</translation>
   <context>
     <name>Arch_CloneComponent</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1585"/>
+      <location filename="../../ArchCommands.py" line="1596"/>
       <source>Clone component</source>
       <translation>Kloniraj komponentu</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1589"/>
+      <location filename="../../ArchCommands.py" line="1600"/>
       <source>Clones an object as an undefined architectural component</source>
       <translation>Klonira objekt kao nedefiniranu arhitektonsku komponentu</translation>
     </message>
@@ -6815,12 +6821,12 @@ Stvaranje zgrade prekinuto.</translation>
   <context>
     <name>Arch_IfcSpreadsheet</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1635"/>
+      <location filename="../../ArchCommands.py" line="1646"/>
       <source>Create IFC spreadsheet...</source>
       <translation>Stvaranje IFC proračunske tablice...</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1639"/>
+      <location filename="../../ArchCommands.py" line="1650"/>
       <source>Creates a spreadsheet to store IFC properties of an object.</source>
       <translation>Stvara proračunsku tablicu za spremanje IFC svojstava objekta.</translation>
     </message>
@@ -6828,12 +6834,12 @@ Stvaranje zgrade prekinuto.</translation>
   <context>
     <name>Arch_ToggleSubs</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1661"/>
+      <location filename="../../ArchCommands.py" line="1672"/>
       <source>Toggle subcomponents</source>
       <translation>Uključivanje/isključivanje podsastavnice</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1664"/>
+      <location filename="../../ArchCommands.py" line="1675"/>
       <source>Shows or hides the subcomponents of this object</source>
       <translation>Prikazuje ili skriva podsastavnice ovoga objekta</translation>
     </message>

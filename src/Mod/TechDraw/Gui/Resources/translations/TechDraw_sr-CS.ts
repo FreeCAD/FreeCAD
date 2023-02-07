@@ -2086,7 +2086,7 @@
       <translation>Napravi aktivni pogled</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="294"/>
+      <location filename="../../TaskCenterLine.cpp" line="298"/>
       <source>Create CenterLine</source>
       <translation>Napravi osnu liniju</translation>
     </message>
@@ -2136,12 +2136,12 @@
       <translation>Napravi pun presek</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="560"/>
+      <location filename="../../TaskComplexSection.cpp" line="559"/>
       <source>Create ComplexSection</source>
       <translation>Napravi presek sa više ravni</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="643"/>
+      <location filename="../../TaskComplexSection.cpp" line="642"/>
       <location filename="../../TaskSectionView.cpp" line="561"/>
       <source>Edit SectionView</source>
       <translation>Uredi pun presek</translation>
@@ -2575,27 +2575,27 @@
       <translation>Uredi Html kod dokumenta</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="263"/>
+      <location filename="../../mrichtextedit.cpp" line="269"/>
       <source>Document source</source>
       <translation>Html kod dokumenta</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="366"/>
+      <location filename="../../mrichtextedit.cpp" line="372"/>
       <source>Create a link</source>
       <translation>Napravi vezu</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="367"/>
+      <location filename="../../mrichtextedit.cpp" line="373"/>
       <source>Link URL:</source>
       <translation>URL adresa veze:</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="696"/>
+      <location filename="../../mrichtextedit.cpp" line="702"/>
       <source>Select an image</source>
       <translation>Izaberi sliku</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="698"/>
+      <location filename="../../mrichtextedit.cpp" line="704"/>
       <source>JPEG (*.jpg);; GIF (*.gif);; PNG (*.png);; BMP (*.bmp);; All (*)</source>
       <translation>JPEG (*.jpg);; GIF (*.gif);; PNG (*.png);; BMP (*.bmp);; All (*)</translation>
     </message>
@@ -3394,12 +3394,12 @@
       <translation>Ne mogu da pronađem 3D prikazivač</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="163"/>
+      <location filename="../../TaskCenterLine.cpp" line="167"/>
       <source>Create Center Line</source>
       <translation>Napravi osnu liniju</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="193"/>
+      <location filename="../../TaskCenterLine.cpp" line="197"/>
       <source>Edit Center Line</source>
       <translation>Uredi osnu liniju</translation>
     </message>
@@ -3436,7 +3436,7 @@
       <translation>Pravac pogleda u koordinatama baznog pogleda</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="691"/>
+      <location filename="../../TaskComplexSection.cpp" line="690"/>
       <location filename="../../TaskSectionView.cpp" line="608"/>
       <source>Operation Failed</source>
       <translation>Operacija nije izvršena</translation>
@@ -3827,7 +3827,7 @@ it has a tile weld that would become broken.</translation>
   <context>
     <name>TaskPojGroup</name>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="488"/>
+      <location filename="../../TaskComplexSection.cpp" line="487"/>
       <location filename="../../TaskSectionView.cpp" line="428"/>
       <source> updates pending</source>
       <translation> ažuriranja na čekanju</translation>
@@ -5117,12 +5117,12 @@ Brzo, ali rezultat je skup kratkih pravih linija.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="83"/>
       <source>Visible</source>
-      <translation>Vidljivo</translation>
+      <translation>Vidljive</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="103"/>
       <source>Hidden</source>
-      <translation>Sakriveno</translation>
+      <translation>Zaklonjene</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="140"/>
@@ -5601,7 +5601,7 @@ Da li želiš da nastaviš?</translation>
     <message>
       <location filename="../../TaskCenterLine.ui" line="92"/>
       <source>Vertical</source>
-      <translation>Uspravno</translation>
+      <translation>Vertikalnost</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="108"/>
@@ -5611,7 +5611,7 @@ Da li želiš da nastaviš?</translation>
     <message>
       <location filename="../../TaskCenterLine.ui" line="111"/>
       <source>Horizontal</source>
-      <translation>Vodoravno</translation>
+      <translation>Horizontalnost</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="124"/>
@@ -5865,7 +5865,7 @@ Da li želiš da nastaviš?</translation>
       <translation>Ažuriraj sad</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="690"/>
+      <location filename="../../TaskComplexSection.cpp" line="689"/>
       <source>Can not continue. Object * %1 or %2 not found.</source>
       <translation>Ne mogu da nastavim. Objekat * %1 ili %2 nije pronađen.</translation>
     </message>
@@ -7033,7 +7033,7 @@ Možeš odabrati dodatne tačke da bi dobio segmente linija.</translation>
     <message>
       <location filename="../../TaskLineDecor.ui" line="171"/>
       <source>Visible</source>
-      <translation>Vidljivo</translation>
+      <translation>Vidljive</translation>
     </message>
     <message>
       <location filename="../../TaskLineDecor.ui" line="191"/>
@@ -7656,7 +7656,7 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="44"/>
       <source>Solid</source>
-      <translation>Puna</translation>
+      <translation>Puno telo</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="57"/>
@@ -8274,6 +8274,27 @@ using the given X/Y Spacing</source>
       <location filename="../../TaskDimRepair.cpp" line="82"/>
       <source>SubElement</source>
       <translation>Podelement</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDraw_AxoLengthDimension</name>
+    <message>
+      <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="50"/>
+      <source>Axonometric length dimension</source>
+      <translation type="unfinished">Axonometric length dimension</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="57"/>
+      <source>Create an axonometric length dimension&lt;br&gt;
+                - select first edge to define direction and length of the dimension line&lt;br&gt;
+                - select second edge to define the direction of the extension lines&lt;br&gt;
+                - optional: select two more vertexes which define the measurement instead of the length&lt;br&gt;
+                  of the first selected edge</source>
+      <translation type="unfinished">Create an axonometric length dimension&lt;br&gt;
+                - select first edge to define direction and length of the dimension line&lt;br&gt;
+                - select second edge to define the direction of the extension lines&lt;br&gt;
+                - optional: select two more vertexes which define the measurement instead of the length&lt;br&gt;
+                  of the first selected edge</translation>
     </message>
   </context>
 </TS>

@@ -710,7 +710,7 @@ Do you want to continue?</source>
       <location filename="../../Command.cpp" line="584"/>
       <location filename="../../Command.cpp" line="765"/>
       <source>Create a page first.</source>
-      <translation>Créez d'abord une page.</translation>
+      <translation>Créer d'abord une page.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="401"/>

@@ -523,12 +523,12 @@ Gehigarrien kudeatzaileak automatikoki instalatu ditzan nahi al duzu? Aukeratu &
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="14"/>
       <source>Supported FreeCAD Versions</source>
-      <translation type="unfinished">Supported FreeCAD Versions</translation>
+      <translation>Onartutako FreeCAD bertsioak</translation>
     </message>
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="20"/>
       <source>Minimum FreeCAD Version Supported</source>
-      <translation type="unfinished">Minimum FreeCAD Version Supported</translation>
+      <translation>Onartutako FreeCAD bertsio zaharrena</translation>
     </message>
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="27"/>
@@ -539,12 +539,12 @@ Gehigarrien kudeatzaileak automatikoki instalatu ditzan nahi al duzu? Aukeratu &
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="34"/>
       <source>Maximum FreeCAD Version Supported</source>
-      <translation type="unfinished">Maximum FreeCAD Version Supported</translation>
+      <translation>Onartutako FreeCAD bertsio berriena</translation>
     </message>
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="48"/>
       <source>Advanced version mapping...</source>
-      <translation type="unfinished">Advanced version mapping...</translation>
+      <translation>Bertsioen mapatze aurreratua...</translation>
     </message>
   </context>
   <context>
@@ -566,7 +566,7 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
     <message>
       <location filename="../../AddonManagerOptions.ui" line="25"/>
       <source>Automatically check for updates at start (requires git)</source>
-      <translation type="unfinished">Automatically check for updates at start (requires git)</translation>
+      <translation>Automatikoki egiaztatu abioan eguneraketarik dagoen (git behar du)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="41"/>
@@ -646,12 +646,12 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
     <message>
       <location filename="../../AddonManagerOptions.ui" line="308"/>
       <source>git executable (optional):</source>
-      <translation type="unfinished">git executable (optional):</translation>
+      <translation>git exekutagarria (aukerakoa):</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="327"/>
       <source>The path to the git executable. Autodetected if needed and not specified.</source>
-      <translation type="unfinished">The path to the git executable. Autodetected if needed and not specified.</translation>
+      <translation>git exekutagarriaren bide-izena. Automatikoki detektatuko da ezer zehazten ez bada.</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="348"/>
@@ -661,12 +661,12 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
     <message>
       <location filename="../../AddonManagerOptions.ui" line="354"/>
       <source>Show option to change branches (requires git)</source>
-      <translation type="unfinished">Show option to change branches (requires git)</translation>
+      <translation>Erakutsi adarrez aldatzeko aukerak (git behar du)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="367"/>
       <source>Disable git (fall back to ZIP downloads only)</source>
-      <translation type="unfinished">Disable git (fall back to ZIP downloads only)</translation>
+      <translation>Desgaitu git (erabili ZIP deskargak soilik)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="380"/>
@@ -722,7 +722,7 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="14"/>
       <source>Manage Python Dependencies</source>
-      <translation type="unfinished">Manage Python Dependencies</translation>
+      <translation>Kudeatu Python mendekotasunak</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="20"/>
@@ -1169,18 +1169,18 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
     <message>
       <location filename="../../AddonManager.py" line="278"/>
       <source>Loading addon information</source>
-      <translation type="unfinished">Loading addon information</translation>
+      <translation>Gehigarriaren informazioa kargatzen</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="304"/>
       <source>Worker process {} is taking a long time to stop...</source>
-      <translation type="unfinished">Worker process {} is taking a long time to stop...</translation>
+      <translation>{} langile-prozesuari kostatzen ari zaio gelditzea...</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="362"/>
       <source>Previous cache process was interrupted, restarting...
 </source>
-      <translation type="unfinished">Previous cache process was interrupted, restarting...
+      <translation>Aurreko cache-prozesua eten egin da, berrabiarazten...
 </translation>
     </message>
     <message>
@@ -1285,7 +1285,7 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
     <message>
       <location filename="../../manage_python_dependencies.py" line="201"/>
       <source>Processing, please wait...</source>
-      <translation type="unfinished">Processing, please wait...</translation>
+      <translation>Prozesatzen, itxaron...</translation>
     </message>
     <message>
       <location filename="../../manage_python_dependencies.py" line="252"/>
@@ -1296,7 +1296,7 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
     <message>
       <location filename="../../manage_python_dependencies.py" line="354"/>
       <source>Updating...</source>
-      <translation type="unfinished">Updating...</translation>
+      <translation>Eguneratzen...</translation>
     </message>
     <message>
       <location filename="../../NetworkManager.py" line="95"/>
@@ -1311,58 +1311,58 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
     <message>
       <location filename="../../NetworkManager.py" line="251"/>
       <source>Parameter error: mutually exclusive proxy options set. Resetting to default.</source>
-      <translation type="unfinished">Parameter error: mutually exclusive proxy options set. Resetting to default.</translation>
+      <translation>Parametro-errorea: elkar ukatzen duten proxy-aukerak ezarri dira. Balio lehenetsiak ezarriko dira.</translation>
     </message>
     <message>
       <location filename="../../NetworkManager.py" line="266"/>
       <source>Parameter error: user proxy indicated, but no proxy provided. Resetting to default.</source>
-      <translation type="unfinished">Parameter error: user proxy indicated, but no proxy provided. Resetting to default.</translation>
+      <translation>Parametro-errorea: erabiltzaile-proxya adierazi da, baina ez da proxyrik eman. Balio lehenetsiak ezarriko dira.</translation>
     </message>
     <message>
       <location filename="../../NetworkManager.py" line="405"/>
       <source>Addon Manager: Unexpected {} response from server</source>
-      <translation type="unfinished">Addon Manager: Unexpected {} response from server</translation>
+      <translation>Gehigarrien kudeatzailea: espero ez zen {} erantzuna zerbitzaritik</translation>
     </message>
     <message>
       <location filename="../../NetworkManager.py" line="505"/>
       <source>Error with encrypted connection</source>
-      <translation type="unfinished">Error with encrypted connection</translation>
+      <translation>Errorea zifratutako konexioan</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="83"/>
       <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="60"/>
       <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="74"/>
       <source>Confirm remove</source>
-      <translation type="unfinished">Confirm remove</translation>
+      <translation>Baieztatu kentzea</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="86"/>
       <source>Are you sure you want to uninstall {}?</source>
-      <translation type="unfinished">Are you sure you want to uninstall {}?</translation>
+      <translation>Ziur al zaude {} desinstalatu nahi duzula?</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="94"/>
       <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="90"/>
       <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="107"/>
       <source>Removing Addon</source>
-      <translation type="unfinished">Removing Addon</translation>
+      <translation>Gehigarria kentzen</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="95"/>
       <source>Removing {}</source>
-      <translation type="unfinished">Removing {}</translation>
+      <translation>{} kentzen</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="120"/>
       <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="128"/>
       <source>Uninstall complete</source>
-      <translation type="unfinished">Uninstall complete</translation>
+      <translation>Desinstalazioa osatu da</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="134"/>
       <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="141"/>
       <source>Uninstall failed</source>
-      <translation type="unfinished">Uninstall failed</translation>
+      <translation>Desinstalazioak huts egin du</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="65"/>
@@ -1372,17 +1372,17 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
     <message>
       <location filename="../../package_details.py" line="190"/>
       <source>Version {version} installed on {date}</source>
-      <translation type="unfinished">Version {version} installed on {date}</translation>
+      <translation>{version} bertsioa instalatu da {date} egunean</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="195"/>
       <source>Version {version} installed</source>
-      <translation type="unfinished">Version {version} installed</translation>
+      <translation>{version} bertsioa instalatu da</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="199"/>
       <source>Installed on {date}</source>
-      <translation type="unfinished">Installed on {date}</translation>
+      <translation>Instalazio-data: {date}</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="203"/>
@@ -1390,115 +1390,115 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
       <location filename="../../package_list.py" line="496"/>
       <location filename="../../package_list.py" line="797"/>
       <source>Installed</source>
-      <translation type="unfinished">Installed</translation>
+      <translation>Instalatuta</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="213"/>
       <source>On branch {}, update available to version</source>
-      <translation type="unfinished">On branch {}, update available to version</translation>
+      <translation>{} adarrean, eguneratu bertsio erabilgarria</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="222"/>
       <source>Update available to version</source>
-      <translation type="unfinished">Update available to version</translation>
+      <translation>Eskuragarri honako bertsioaren eguneraketa:</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="233"/>
       <source>An update is available</source>
-      <translation type="unfinished">An update is available</translation>
+      <translation>Eguneraketa bat eskuragarri dago</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="251"/>
       <source>Git tag &apos;{}&apos; checked out, no updates possible</source>
-      <translation type="unfinished">Git tag &apos;{}&apos; checked out, no updates possible</translation>
+      <translation>&apos;{}&apos; git etiketa egiaztatu da, ezin da eguneratu</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="259"/>
       <source>This is the latest version available for branch {}</source>
-      <translation type="unfinished">This is the latest version available for branch {}</translation>
+      <translation>Hau da eskuragarri dagoen azken bertsioa {} adarrerako</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="267"/>
       <source>Updated, please restart FreeCAD to use</source>
-      <translation type="unfinished">Updated, please restart FreeCAD to use</translation>
+      <translation>Eguneratuta, berrabiarazi FreeCAD bertsio berria erabiltzeko</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="275"/>
       <source>Update check in progress</source>
-      <translation type="unfinished">Update check in progress</translation>
+      <translation>Eguneratzearen egiaztatzea abian</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="280"/>
       <source>Automatic update checks disabled</source>
-      <translation type="unfinished">Automatic update checks disabled</translation>
+      <translation>Eguneratze automatikoen egiaztatzeak desgaituta</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="302"/>
       <source>Installation location</source>
-      <translation type="unfinished">Installation location</translation>
+      <translation>Instalazioaren kokapena</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="349"/>
       <source>WARNING: This addon is obsolete</source>
-      <translation type="unfinished">WARNING: This addon is obsolete</translation>
+      <translation>ABISUA: Gehigarri hau zaharkituta dago</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="359"/>
       <source>WARNING: This addon is Python 2 Only</source>
-      <translation type="unfinished">WARNING: This addon is Python 2 Only</translation>
+      <translation>ABISUA: Gehigarri hau Python 2 bertsiokoa da</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="369"/>
       <source>WARNING: This addon requires FreeCAD </source>
-      <translation type="unfinished">WARNING: This addon requires FreeCAD </translation>
+      <translation>ABISUA: Gehigarri honek honakoa behar du: FreeCAD </translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="383"/>
       <source>WARNING: This addon is currently installed, but disabled. Use the &apos;enable&apos; button to re-enable.</source>
-      <translation type="unfinished">WARNING: This addon is currently installed, but disabled. Use the &apos;enable&apos; button to re-enable.</translation>
+      <translation>ABISUA: Gehigarri hau instalatuta dago, baina desgaituta dago. Erabili &apos;gaitu&apos; botoia berriro gaitzeko.</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="521"/>
       <location filename="../../package_details.py" line="534"/>
       <source>No URL or wiki page provided by this macro</source>
-      <translation type="unfinished">No URL or wiki page provided by this macro</translation>
+      <translation>Makro honek ez du URLrik edo wiki-orririk</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="637"/>
       <source>Could not load README data from URL {}</source>
-      <translation type="unfinished">Could not load README data from URL {}</translation>
+      <translation>Ezin dira README datuak irakurri {} URLtik</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="662"/>
       <source>This Addon will be enabled next time you restart FreeCAD.</source>
-      <translation type="unfinished">This Addon will be enabled next time you restart FreeCAD.</translation>
+      <translation>Gehigarri hau FreeCAD berrabiarazten den hurrengoan gaituko da.</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="679"/>
       <source>This Addon will be disabled next time you restart FreeCAD.</source>
-      <translation type="unfinished">This Addon will be disabled next time you restart FreeCAD.</translation>
+      <translation>Gehigarri hau FreeCAD berrabiarazten den hurrengoan desgaituko da.</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="689"/>
       <location filename="../../addonmanager_installer_gui.py" line="484"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="54"/>
       <source>Success</source>
-      <translation type="unfinished">Success</translation>
+      <translation>Eginda</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="693"/>
       <source>Branch change succeeded, please restart to use the new version.</source>
-      <translation type="unfinished">Branch change succeeded, please restart to use the new version.</translation>
+      <translation>Adar-aldaketa ongi gauzatu da, berrabiarazi bertsio berria erabiltzeko.</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="712"/>
       <source>Changed to git ref &apos;{}&apos; -- please restart to use Addon.</source>
-      <translation type="unfinished">Changed to git ref &apos;{}&apos; -- please restart to use Addon.</translation>
+      <translation>'{}' git ref-ra aldatu da -- mesedez berrabiarazi gehigarria erabiltzeko.</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="752"/>
       <source>Page JavaScript reported</source>
-      <translation type="unfinished">Page JavaScript reported</translation>
+      <translation>JavaScript orriaren berri eman da</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="899"/>
@@ -1513,7 +1513,7 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
     <message>
       <location filename="../../package_details.py" line="908"/>
       <source>Check for Update</source>
-      <translation type="unfinished">Check for Update</translation>
+      <translation>Begiratu eguneraketarik dagoen</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="911"/>
@@ -1538,42 +1538,42 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
     <message>
       <location filename="../../package_details.py" line="925"/>
       <source>Return to package list</source>
-      <translation type="unfinished">Return to package list</translation>
+      <translation>Itzuli pakete-zerrendara</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="934"/>
       <source>QtWebEngine Python bindings not installed -- using fallback README display. See Report View for details and installation instructions.</source>
-      <translation type="unfinished">QtWebEngine Python bindings not installed -- using fallback README display. See Report View for details and installation instructions.</translation>
+      <translation>QtWebEngine Python loturak ez daude instalatuta -- IRAKURRI pantailaren ordezko pantaila erabiltzen. Ikusi txosten-ikuspegia xehetasunak eta instalazio-argibideak lortzeko.</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="942"/>
       <source>The page is taking a long time to load... showing the data we have so far...</source>
-      <translation type="unfinished">The page is taking a long time to load... showing the data we have so far...</translation>
+      <translation>Orri honek denbora gehiago behar du kargatzeko... orain arte eskuratu diren datuak erakutsiko dira...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_connection_checker.py" line="67"/>
       <source>Checking connection</source>
-      <translation type="unfinished">Checking connection</translation>
+      <translation>Konexioa egiaztatzen</translation>
     </message>
     <message>
       <location filename="../../addonmanager_connection_checker.py" line="68"/>
       <source>Checking for connection to GitHub...</source>
-      <translation type="unfinished">Checking for connection to GitHub...</translation>
+      <translation>GitHub-erako konexioa egiaztatzen...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_connection_checker.py" line="94"/>
       <source>Connection failed</source>
-      <translation type="unfinished">Connection failed</translation>
+      <translation>Konexioak huts egin du</translation>
     </message>
     <message>
       <location filename="../../addonmanager_connection_checker.py" line="100"/>
       <source>Missing dependency</source>
-      <translation type="unfinished">Missing dependency</translation>
+      <translation>Mendekotasuna falta da</translation>
     </message>
     <message>
       <location filename="../../addonmanager_connection_checker.py" line="104"/>
       <source>Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</source>
-      <translation type="unfinished">Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</translation>
+      <translation>Ezin izan da QtNetwork inportatu -- ikusi txosten-ikuspegia xehetasunetarako. Gehigarrien kudeatzailea ez dago erabilgarri.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_license_selector.py" line="111"/>
@@ -1661,12 +1661,12 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="521"/>
       <source>External Addon</source>
-      <translation type="unfinished">External Addon</translation>
+      <translation>Kanpoko gehigarria</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="524"/>
       <source>Python Package</source>
-      <translation type="unfinished">Python Package</translation>
+      <translation>Python paketea</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="593"/>
@@ -1677,12 +1677,12 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="149"/>
       <source>This addon requires Python packages that are not installed, and cannot be installed automatically. To use this workbench you must install the following Python packages manually:</source>
-      <translation type="unfinished">This addon requires Python packages that are not installed, and cannot be installed automatically. To use this workbench you must install the following Python packages manually:</translation>
+      <translation>Gehigarri honek instalatuta ez dauden Python paketeak behar ditu, eta ezin dira automatikoki instalatu. Lan-mahai hau erabili ahal izateko, honako Python paketeak instalatu behar dira eskuz:</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="158"/>
       <source>Too many to list</source>
-      <translation type="unfinished">Too many to list</translation>
+      <translation>Gehiegi zerrendatzeko</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="164"/>
@@ -1692,28 +1692,28 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="178"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="193"/>
       <source>Missing Requirement</source>
-      <translation type="unfinished">Missing Requirement</translation>
+      <translation>Falta den eskakizuna</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="184"/>
       <source>Addon &apos;{}&apos; requires &apos;{}&apos;, which is not available in your copy of FreeCAD.</source>
-      <translation type="unfinished">Addon &apos;{}&apos; requires &apos;{}&apos;, which is not available in your copy of FreeCAD.</translation>
+      <translation>&apos;{}&apos; gehigarriak &apos;{}&apos; behar du, baina ez dago erabilgarri zure FreeCAD kopian.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="192"/>
       <source>Addon &apos;{}&apos; requires the following workbenches, which are not available in your copy of FreeCAD:</source>
-      <translation type="unfinished">Addon &apos;{}&apos; requires the following workbenches, which are not available in your copy of FreeCAD:</translation>
+      <translation>&apos;{}&apos; gehigarriak zure FreeCAD kopian ez dauden honako lan-mahaiak behar ditu:</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="199"/>
       <source>Press OK to install anyway.</source>
-      <translation type="unfinished">Press OK to install anyway.</translation>
+      <translation>Sakatu 'Ados' instalatzeko.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="245"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="231"/>
       <source>Incompatible Python version</source>
-      <translation type="unfinished">Incompatible Python version</translation>
+      <translation>Python-en bertsio bateraezina</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="249"/>
@@ -1729,56 +1729,56 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
       <location filename="../../addonmanager_installer_gui.py" line="318"/>
       <location filename="../../addonmanager_installer_gui.py" line="319"/>
       <source>Installing dependencies</source>
-      <translation type="unfinished">Installing dependencies</translation>
+      <translation>Mendekotasunak instalatzen</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="344"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="84"/>
       <source>Cannot execute Python</source>
-      <translation type="unfinished">Cannot execute Python</translation>
+      <translation>Ezin da Python exekutatu</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="349"/>
       <source>Failed to automatically locate your Python executable, or the path is set incorrectly. Please check the Addon Manager preferences setting for the path to Python.</source>
-      <translation type="unfinished">Failed to automatically locate your Python executable, or the path is set incorrectly. Please check the Addon Manager preferences setting for the path to Python.</translation>
+      <translation>Huts egin du Python exekutagarria automatikoki aurkitzeak, edo bide-izena gaizki ezarri da. Begiratu gehigarrien kudeatzailearen hobespenetako ezarpena Python-en bide-izenerako.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="353"/>
       <source>Dependencies could not be installed. Continue with installation of {} anyway?</source>
-      <translation type="unfinished">Dependencies could not be installed. Continue with installation of {} anyway?</translation>
+      <translation>Mendekotasunak ezin izan dira instalatu. Jarraitu {} instalatzen?</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="368"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="98"/>
       <source>Cannot execute pip</source>
-      <translation type="unfinished">Cannot execute pip</translation>
+      <translation>Ezin da pip exekutatu</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="373"/>
       <source>Failed to execute pip, which may be missing from your Python installation. Please ensure your system has pip installed and try again. The failed command was: </source>
-      <translation type="unfinished">Failed to execute pip, which may be missing from your Python installation. Please ensure your system has pip installed and try again. The failed command was: </translation>
+      <translation>Huts egin du pip exekutatzeak, agian ez dago zure python instalazioan. Ziurtatu sistemak pip instalatuta duela eta saiatu berriro. Huts egin duen komandoa: </translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="377"/>
       <location filename="../../addonmanager_installer_gui.py" line="404"/>
       <source>Continue with installation of {} anyway?</source>
-      <translation type="unfinished">Continue with installation of {} anyway?</translation>
+      <translation>{} instalatzen jarraitu nahi duzu?</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="396"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="112"/>
       <source>Package installation failed</source>
-      <translation type="unfinished">Package installation failed</translation>
+      <translation>Paketearen instalazioak huts egin du</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="400"/>
       <source>See Report View for detailed failure log.</source>
-      <translation type="unfinished">See Report View for detailed failure log.</translation>
+      <translation>Ikusi txostena huts egitearen erregistro xehea kontsultatzeko.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="441"/>
       <source>Installing Addon</source>
-      <translation type="unfinished">Installing Addon</translation>
+      <translation>Gehigarria instalatzen</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="442"/>
@@ -1788,7 +1788,7 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="456"/>
       <source>Cancelling</source>
-      <translation type="unfinished">Cancelling</translation>
+      <translation>Bertan behera uzten</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="457"/>
@@ -1804,7 +1804,7 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
       <location filename="../../addonmanager_installer_gui.py" line="497"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="68"/>
       <source>Installation Failed</source>
-      <translation type="unfinished">Installation Failed</translation>
+      <translation>Instalazioak huts egin du</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="498"/>
@@ -1815,13 +1815,13 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
       <location filename="../../addonmanager_installer_gui.py" line="623"/>
       <location filename="../../install_to_toolbar.py" line="101"/>
       <source>Create new toolbar</source>
-      <translation type="unfinished">Create new toolbar</translation>
+      <translation>Sortu tresna-barra berria</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="753"/>
       <location filename="../../install_to_toolbar.py" line="244"/>
       <source>A macro installed with the FreeCAD Addon Manager</source>
-      <translation type="unfinished">A macro installed with the FreeCAD Addon Manager</translation>
+      <translation>FreeCADen gehigarri-kudeatzailearekin instalatutako makroa</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="755"/>
@@ -1833,7 +1833,7 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
     <message>
       <location filename="../../addonmanager_workers_utility.py" line="60"/>
       <source>Unable to read data from GitHub: check your internet connection and proxy settings and try again.</source>
-      <translation type="unfinished">Unable to read data from GitHub: check your internet connection and proxy settings and try again.</translation>
+      <translation>Ezin dira datuak GitHub-etik irakurri: egiaztatu zure interneteko konexioa eta proxy-ezarpenak eta saiatu berriro.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="197"/>
@@ -1884,7 +1884,7 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
       <location filename="../../addonmanager_devmode.py" line="593"/>
       <source>No Vermin, cancelling operation.</source>
       <comment>NOTE: Vermin is a Python package and proper noun - do not translate</comment>
-      <translation type="unfinished">No Vermin, cancelling operation.</translation>
+      <translation>Ez dago Vermin, eragiketa bertan behera uzten.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="600"/>
@@ -1904,7 +1904,7 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
     <message>
       <location filename="../../addonmanager_devmode.py" line="648"/>
       <source>Install Vermin?</source>
-      <translation type="unfinished">Install Vermin?</translation>
+      <translation>Vermin instalatu?</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="652"/>
@@ -1920,7 +1920,7 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
       <location filename="../../addonmanager_devmode.py" line="686"/>
       <location filename="../../addonmanager_devmode.py" line="701"/>
       <source>Installation failed</source>
-      <translation type="unfinished">Installation failed</translation>
+      <translation>Instalazioak huts egin du</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="691"/>
@@ -1942,32 +1942,32 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
     <message>
       <location filename="../../package_list.py" line="161"/>
       <source>Filter is valid</source>
-      <translation type="unfinished">Filter is valid</translation>
+      <translation>Iragazkia baliozkoa da</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="167"/>
       <source>Filter regular expression is invalid</source>
-      <translation type="unfinished">Filter regular expression is invalid</translation>
+      <translation>Iragazkiaren adierazpen erregularra baliogabea da</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="224"/>
       <source>Click for details about package {}</source>
-      <translation type="unfinished">Click for details about package {}</translation>
+      <translation>Egin klik {} paketearen xehetasunak eskuratzeko</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="228"/>
       <source>Click for details about workbench {}</source>
-      <translation type="unfinished">Click for details about workbench {}</translation>
+      <translation>Egin klik {} lan-mahaiaren xehetasunak eskuratzeko</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="232"/>
       <source>Click for details about macro {}</source>
-      <translation type="unfinished">Click for details about macro {}</translation>
+      <translation>Egin klik {} makroaren xehetasunak eskuratzeko</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="396"/>
       <source>Maintainers:</source>
-      <translation type="unfinished">Maintainers:</translation>
+      <translation>Mantentzaileak:</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="401"/>
@@ -1977,32 +1977,32 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
     <message>
       <location filename="../../package_list.py" line="421"/>
       <source>updated</source>
-      <translation type="unfinished">updated</translation>
+      <translation>eguneratuta</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="442"/>
       <location filename="../../package_list.py" line="500"/>
       <source>Up-to-date</source>
-      <translation type="unfinished">Up-to-date</translation>
+      <translation>Eguneratuta</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="444"/>
       <location filename="../../package_list.py" line="504"/>
       <location filename="../../package_list.py" line="805"/>
       <source>Update available</source>
-      <translation type="unfinished">Update available</translation>
+      <translation>Eguneraketa eskuragarri</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="447"/>
       <location filename="../../package_list.py" line="510"/>
       <source>Pending restart</source>
-      <translation type="unfinished">Pending restart</translation>
+      <translation>Berrabioaren zain</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="454"/>
       <location filename="../../package_list.py" line="517"/>
       <source>DISABLED</source>
-      <translation type="unfinished">DISABLED</translation>
+      <translation>DESGAITUTA</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="468"/>
@@ -2012,12 +2012,12 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
     <message>
       <location filename="../../package_list.py" line="476"/>
       <source>Unknown version</source>
-      <translation type="unfinished">Unknown version</translation>
+      <translation>Bertsio ezezaguna</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="479"/>
       <source>Installed on</source>
-      <translation type="unfinished">Installed on</translation>
+      <translation>Hemen instalatua:</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="490"/>
@@ -2027,7 +2027,7 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
     <message>
       <location filename="../../package_list.py" line="776"/>
       <source>Show Addons containing:</source>
-      <translation type="unfinished">Show Addons containing:</translation>
+      <translation>Erakutsi honakoa duten gehigarriak:</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="779"/>
@@ -2047,7 +2047,7 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
     <message>
       <location filename="../../package_list.py" line="788"/>
       <source>Preference Packs</source>
-      <translation type="unfinished">Preference Packs</translation>
+      <translation>Hobespen-paketeak</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="791"/>
@@ -2062,7 +2062,7 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
     <message>
       <location filename="../../package_list.py" line="801"/>
       <source>Not installed</source>
-      <translation type="unfinished">Not installed</translation>
+      <translation>Instalatu gabea</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="809"/>
@@ -2077,22 +2077,22 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
     <message>
       <location filename="../../change_branch.py" line="101"/>
       <source>DANGER: Developer feature</source>
-      <translation type="unfinished">DANGER: Developer feature</translation>
+      <translation>ARRISKUA: Garatzaile-eginbidea</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="105"/>
       <source>DANGER: Switching branches is intended for developers and beta testers, and may result in broken, non-backwards compatible documents, instability, crashes, and/or the premature heat death of the universe. Are you sure you want to continue?</source>
-      <translation type="unfinished">DANGER: Switching branches is intended for developers and beta testers, and may result in broken, non-backwards compatible documents, instability, crashes, and/or the premature heat death of the universe. Are you sure you want to continue?</translation>
+      <translation>ARRISKUA: Adarrez aldatzea garatzaileentzako eta beta bertsioen probatzaileentzako dago pentsatuta. Dokumentu ez bateragarriak, desegonkortasuna, kraskadurak eta unibertsoaren heriotz goiztiarra eragin ditzake. Jarraitu nahi al duzu?</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="114"/>
       <source>There are local changes</source>
-      <translation type="unfinished">There are local changes</translation>
+      <translation>Aldaketa lokalak daude</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="118"/>
       <source>WARNING: This repo has uncommitted local changes. Are you sure you want to change branches (bringing the changes with you)?</source>
-      <translation type="unfinished">WARNING: This repo has uncommitted local changes. Are you sure you want to change branches (bringing the changes with you)?</translation>
+      <translation>AVBISUA: Biltegi honek egikaritu gabeko aldaketa lokalak ditu. Ziur zaude adarrez aldatu nahi duzula (aldaketak zurekin ekartzeko)?</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="170"/>
@@ -2118,7 +2118,7 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
       <location filename="../../change_branch.py" line="265"/>
       <source>Local name</source>
       <comment>Table header for git ref name</comment>
-      <translation type="unfinished">Local name</translation>
+      <translation>Izen lokala</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="271"/>
@@ -2130,18 +2130,18 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
       <location filename="../../change_branch.py" line="277"/>
       <source>Local updated</source>
       <comment>Table header for git update time of local branch</comment>
-      <translation type="unfinished">Local updated</translation>
+      <translation>Lokalean eguneratua</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="283"/>
       <source>Remote updated</source>
       <comment>Table header for git update time of remote branch</comment>
-      <translation type="unfinished">Remote updated</translation>
+      <translation>Urrunean eguneratua</translation>
     </message>
     <message>
       <location filename="../../addonmanager_dependency_installer.py" line="126"/>
       <source>Installation of Python package {} failed</source>
-      <translation type="unfinished">Installation of Python package {} failed</translation>
+      <translation>{} Python paketearen instalazioak huts egin du</translation>
     </message>
     <message>
       <location filename="../../addonmanager_dependency_installer.py" line="153"/>
@@ -2242,17 +2242,17 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
     <message>
       <location filename="../../addonmanager_uninstaller.py" line="105"/>
       <source>An unknown error occurred</source>
-      <translation type="unfinished">An unknown error occurred</translation>
+      <translation>Errore ezezaguna gertatu da</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller.py" line="123"/>
       <source>Could not find addon {} to remove it.</source>
-      <translation type="unfinished">Could not find addon {} to remove it.</translation>
+      <translation>Ez da aurkitu {} gehigarria hura kendu ahal izateko.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller.py" line="146"/>
       <source>Execution of Addon&apos;s uninstall.py script failed. Proceeding with uninstall...</source>
-      <translation type="unfinished">Execution of Addon&apos;s uninstall.py script failed. Proceeding with uninstall...</translation>
+      <translation>Huts egin du gehigarriaren 'uninstall.py' script-aren exekuzioak. Desinstalatzen jarraitzen...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller.py" line="169"/>
@@ -2262,17 +2262,17 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
     <message>
       <location filename="../../addonmanager_uninstaller.py" line="181"/>
       <source>Error while trying to remove extra installed file {}</source>
-      <translation type="unfinished">Error while trying to remove extra installed file {}</translation>
+      <translation>Errorea instalatutako {} fitxategi gehigarria kentzean</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller.py" line="242"/>
       <source>Error while trying to remove macro file {}: </source>
-      <translation type="unfinished">Error while trying to remove macro file {}: </translation>
+      <translation>Errorea instalatutako {} makro fitxategia kentzean: </translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="119"/>
       <source>Failed to connect to GitHub. Check your connection and proxy settings.</source>
-      <translation type="unfinished">Failed to connect to GitHub. Check your connection and proxy settings.</translation>
+      <translation>Huts egin du GitHub gunearekin konektatzeak. Egiaztatu konexioa eta proxy-ezarpenak.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="181"/>
@@ -2282,116 +2282,115 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="254"/>
       <source>Workbenches list was updated.</source>
-      <translation type="unfinished">Workbenches list was updated.</translation>
+      <translation>Lan-mahaien zerrenda eguneratu da.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="270"/>
       <source>Git is disabled, skipping git macros</source>
-      <translation type="unfinished">Git is disabled, skipping git macros</translation>
+      <translation>Git desgaituta dago, git makroak salatzen</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="318"/>
       <source>Attempting to change non-git Macro setup to use git
 </source>
-      <translation type="unfinished">Attempting to change non-git Macro setup to use git
+      <translation>Git ez diren makroen konfigurazioa aldatzen git erabili dezaten
 </translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="335"/>
       <source>An error occurred updating macros from GitHub, trying clean checkout...</source>
-      <translation type="unfinished">An error occurred updating macros from GitHub, trying clean checkout...</translation>
+      <translation>Errorea gertatu da makroak GitHub gunetik eguneratzean, deskarga garbia saiatzen...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="340"/>
       <source>Attempting to do a clean checkout...</source>
-      <translation type="unfinished">Attempting to do a clean checkout...</translation>
+      <translation>Deskarga garbia saiatzen...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="352"/>
       <source>Clean checkout succeeded</source>
-      <translation type="unfinished">Clean checkout succeeded</translation>
+      <translation>Deskarga garbia ongi gauzatu da</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="362"/>
       <source>Failed to update macros from GitHub -- try clearing the Addon Manager&apos;s cache.</source>
-      <translation type="unfinished">Failed to update macros from GitHub -- try clearing the Addon Manager&apos;s cache.</translation>
+      <translation>Huts egin du GitHub guneko makroak egunerateak -- saiatu gehigarrien kudeatzailearen cachea garbitzen.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="385"/>
       <source>Error connecting to the Wiki, FreeCAD cannot retrieve the Wiki macro list at this time</source>
-      <translation type="unfinished">Error connecting to the Wiki, FreeCAD cannot retrieve the Wiki macro list at this time</translation>
+      <translation>Errorea wikiarekin konektatzean, FreeCADek ezin du wikiko makro-zerrenda eskuratu momentu honetan</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="600"/>
       <source>Unable to fetch git updates for workbench {}</source>
-      <translation type="unfinished">Unable to fetch git updates for workbench {}</translation>
+      <translation>Ezin izan dira {} lan-mahairako git eguneraketak atzitu</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="615"/>
       <source>git status failed for {}</source>
-      <translation type="unfinished">git status failed for {}</translation>
+      <translation>git status eragiketak huts egin du {} kasuan</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="660"/>
       <source>Failed to read metadata from {name}</source>
-      <translation type="unfinished">Failed to read metadata from {name}</translation>
+      <translation>Huts egin du {name}(e)ko metadatuen irakurketak</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="685"/>
       <source>Failed to fetch code for macro &apos;{name}&apos;</source>
-      <translation type="unfinished">Failed to fetch code for macro &apos;{name}&apos;</translation>
+      <translation>Huts egin du &apos;{name}&apos; makroaren kodea eskuratzeak</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="740"/>
       <source>Caching macro code...</source>
-      <translation type="unfinished">Caching macro code...</translation>
+      <translation>Makro-kodea cachean gordetzen...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="763"/>
       <source>Addon Manager: a worker process failed to complete while fetching {name}</source>
-      <translation type="unfinished">Addon Manager: a worker process failed to complete while fetching {name}</translation>
+      <translation>Gehigarrien kudeatzailea: langile-prozesu bat osatzeak huts egin du {name} atzitzean</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="778"/>
       <source>Out of {num_macros} macros, {num_failed} timed out while processing</source>
-      <translation type="unfinished">Out of {num_macros} macros, {num_failed} timed out while processing</translation>
+      <translation>{num_macros} makrotatik, {num_failed} denboraz iraungi dira prozesatzean</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="800"/>
       <source>Addon Manager: a worker process failed to halt ({name})</source>
-      <translation type="unfinished">Addon Manager: a worker process failed to halt ({name})</translation>
+      <translation>Gehigarrien kudeatzailea: langile-prozesu bat gelditzeak huts egin du ({name})</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="841"/>
       <source>Getting metadata from macro {}</source>
-      <translation type="unfinished">Getting metadata from macro {}</translation>
+      <translation>Metadatuak eskuratzen {} makrotik</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="855"/>
       <source>Timeout while fetching metadata for macro {}</source>
-      <translation type="unfinished">Timeout while fetching metadata for macro {}</translation>
+      <translation>Denbora iraungi da {} makroaren metadatuak atzitzean</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="866"/>
       <source>Failed to kill process for macro {}!
 </source>
-      <translation type="unfinished">Failed to kill process for macro {}!
-</translation>
+      <translation>Huts egin du {} makroaren prozesua hiltzeak.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="889"/>
       <source>Retrieving macro description...</source>
-      <translation type="unfinished">Retrieving macro description...</translation>
+      <translation>Makroen deskribapena atzitzen...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="893"/>
       <source>Retrieving info from git</source>
-      <translation type="unfinished">Retrieving info from git</translation>
+      <translation>Informazioa atzitzen git biltegitik</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="898"/>
       <source>Retrieving info from wiki</source>
-      <translation type="unfinished">Retrieving info from wiki</translation>
+      <translation>Informazioa atzitzen wikitik</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.py" line="273"/>
@@ -2403,7 +2402,7 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
       <location filename="../../AddonManagerOptions.py" line="279"/>
       <source>Branch name</source>
       <comment>Preferences header for custom repositories</comment>
-      <translation type="unfinished">Branch name</translation>
+      <translation>Adarraren izena</translation>
     </message>
     <message>
       <location filename="../../addonmanager_git.py" line="116"/>
@@ -2438,7 +2437,7 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="199"/>
       <source>Update was cancelled</source>
-      <translation type="unfinished">Update was cancelled</translation>
+      <translation>Eguneraketa bertan behera geratu da</translation>
     </message>
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="200"/>
@@ -2451,12 +2450,12 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
     <message>
       <location filename="../../AddonManager.py" line="149"/>
       <source>&amp;Addon manager</source>
-      <translation type="unfinished">&amp;Addon manager</translation>
+      <translation>&amp;Gehigarrien kudeatzailea</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="153"/>
       <source>Manage external workbenches, macros, and preference packs</source>
-      <translation type="unfinished">Manage external workbenches, macros, and preference packs</translation>
+      <translation>Kudeatu kanpoko lan-mahaiak, makroak eta hobespen-paketeak</translation>
     </message>
   </context>
   <context>
@@ -2464,12 +2463,12 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="121"/>
       <source>Finished removing {}</source>
-      <translation type="unfinished">Finished removing {}</translation>
+      <translation>{} kentzea amaitu da</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="136"/>
       <source>Failed to remove some files</source>
-      <translation type="unfinished">Failed to remove some files</translation>
+      <translation>Huts egin du zenbait fitxategi kentzeak</translation>
     </message>
   </context>
   <context>
@@ -2477,7 +2476,7 @@ denean gehigarrien eguneraketarik dagoen begiratuko da
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="194"/>
       <source>Finished updating the following addons</source>
-      <translation type="unfinished">Finished updating the following addons</translation>
+      <translation>Honako gehigarrien eguneraketa amaitu da:</translation>
     </message>
   </context>
 </TS>

@@ -1579,7 +1579,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskChamferParameters.cpp" line="225"/>
       <source>Selection error</source>
-      <translation type="unfinished">Selection error</translation>
+      <translation>Памылка выбару</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.cpp" line="225"/>
@@ -1698,7 +1698,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskDraftParameters.cpp" line="241"/>
       <source>Selection error</source>
-      <translation type="unfinished">Selection error</translation>
+      <translation>Памылка выбару</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.cpp" line="241"/>
@@ -1917,7 +1917,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskFilletParameters.cpp" line="179"/>
       <source>Selection error</source>
-      <translation type="unfinished">Selection error</translation>
+      <translation>Памылка выбару</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.cpp" line="179"/>
@@ -2188,7 +2188,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskLinearPatternParameters.cpp" line="336"/>
       <source>Error</source>
-      <translation type="unfinished">Error</translation>
+      <translation>Памылка</translation>
     </message>
   </context>
   <context>
@@ -2206,7 +2206,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="27"/>
       <source>Closed</source>
-      <translation type="unfinished">Closed</translation>
+      <translation>Зачынены</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="34"/>
@@ -2294,7 +2294,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskMirroredParameters.cpp" line="245"/>
       <source>Error</source>
-      <translation type="unfinished">Error</translation>
+      <translation>Памылка</translation>
     </message>
   </context>
   <context>
@@ -2400,7 +2400,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="72"/>
       <source>Dimension</source>
-      <translation type="unfinished">Dimension</translation>
+      <translation>Вымярэнне</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="73"/>
@@ -2438,7 +2438,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="30"/>
       <source>Dimension</source>
-      <translation type="unfinished">Dimension</translation>
+      <translation>Вымярэнне</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="38"/>
@@ -2748,7 +2748,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="425"/>
       <source>No active body</source>
-      <translation>Няма бягучага цела</translation>
+      <translation>Без бягучага цела</translation>
     </message>
   </context>
   <context>
@@ -2819,7 +2819,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="73"/>
       <source>Dimension</source>
-      <translation type="unfinished">Dimension</translation>
+      <translation>Вымярэнне</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="74"/>
@@ -2902,7 +2902,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPolarPatternParameters.cpp" line="335"/>
       <source>Error</source>
-      <translation type="unfinished">Error</translation>
+      <translation>Памылка</translation>
     </message>
   </context>
   <context>
@@ -3159,7 +3159,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskThicknessParameters.cpp" line="181"/>
       <source>Selection error</source>
-      <translation type="unfinished">Selection error</translation>
+      <translation>Памылка выбару</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.cpp" line="181"/>
@@ -3475,19 +3475,19 @@ click again to end selection</source>
     <message>
       <location filename="../../Command.cpp" line="139"/>
       <source>There are no attachment modes that fit selected objects. Select something else.</source>
-      <translation>Няма рэжыму мацавання, якія б адпавядалі абраным аб'ектам. Абярыце што-небудзь іншае.</translation>
+      <translation>Адсутнічаюць рэжымы мацавання, якія б адпавядалі абраным аб'ектам. Абярыце што-небудзь іншае.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="145"/>
       <location filename="../../Command.cpp" line="148"/>
       <location filename="../../Command.cpp" line="150"/>
       <source>Error</source>
-      <translation type="unfinished">Error</translation>
+      <translation>Памылка</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="145"/>
       <source>There is no active body. Please make a body active before inserting a datum entity.</source>
-      <translation>Бягучага цела няма. Калі ласка, зрабіце цела бягучым перад устаўкай апорнага аб'екта.</translation>
+      <translation>Бягучага цела адсутнічае. Калі ласка, зрабіце цела бягучым перад устаўкай апорнага аб'екта.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="409"/>
@@ -3527,7 +3527,7 @@ click again to end selection</source>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="663"/>
       <source>No valid planes in this document</source>
-      <translation>У гэтым дакуменце няма дапушчальных плоскасцяў</translation>
+      <translation>У гэтым дакуменце дапушчальныя плоскасці адсутнічаюць</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="664"/>
@@ -3563,7 +3563,7 @@ click again to end selection</source>
     <message>
       <location filename="../../Command.cpp" line="775"/>
       <source>Cannot use this command as there is no solid to subtract from.</source>
-      <translation>Немагчыма ўжыць гэтую каманду, так як няма суцэльнага цела для адымання.</translation>
+      <translation>Немагчыма ўжыць гэтую каманду, так як адсутнічае суцэльнае цела для адымання.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="776"/>
@@ -3583,7 +3583,7 @@ click again to end selection</source>
     <message>
       <location filename="../../Command.cpp" line="820"/>
       <source>No sketch to work on</source>
-      <translation>Няма эскізу для працы</translation>
+      <translation>Без эскізу для працы</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="821"/>
@@ -3752,7 +3752,7 @@ This may lead to unexpected results.</source>
       <location filename="../../CommandBody.cpp" line="853"/>
       <location filename="../../CommandBody.cpp" line="860"/>
       <source>Selection error</source>
-      <translation type="unfinished">Selection error</translation>
+      <translation>Памылка выбару</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="552"/>
@@ -3789,7 +3789,7 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="717"/>
       <source>There are no other bodies to move to</source>
-      <translation>Няма іншых цел да руху ў</translation>
+      <translation>Адсутнічаюць іншыя целы для руху ў</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="854"/>
@@ -4245,7 +4245,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../SprocketFeature.ui" line="292"/>
       <source>Thickness:</source>
-      <translation type="unfinished">Thickness:</translation>
+      <translation>Таўшчыня:</translation>
     </message>
   </context>
   <context>
@@ -4321,14 +4321,14 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="218"/>
       <source>Tolerance</source>
-      <translation type="unfinished">Tolerance</translation>
+      <translation>Дакладнасць</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="249"/>
       <location filename="../../../FeatureHole/TaskHole.ui" line="368"/>
       <location filename="../../../FeatureHole/TaskHole.ui" line="474"/>
       <source>Diameter</source>
-      <translation type="unfinished">Diameter</translation>
+      <translation>Дыяметр</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="280"/>
@@ -4354,7 +4354,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="466"/>
       <source>Data</source>
-      <translation type="unfinished">Data</translation>
+      <translation>Дадзеныя</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="510"/>
@@ -4507,7 +4507,7 @@ Only available for holes without thread</source>
       <location filename="../../TaskHoleParameters.ui" line="301"/>
       <location filename="../../TaskHoleParameters.ui" line="488"/>
       <source>Diameter</source>
-      <translation type="unfinished">Diameter</translation>
+      <translation>Дыяметр</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="314"/>
@@ -4524,7 +4524,7 @@ Only available for holes without thread</source>
       <location filename="../../TaskHoleParameters.ui" line="350"/>
       <location filename="../../TaskHoleParameters.ui" line="404"/>
       <source>Dimension</source>
-      <translation type="unfinished">Dimension</translation>
+      <translation>Вымярэнне</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="355"/>
@@ -4656,7 +4656,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../TaskTransformedMessages.ui" line="25"/>
       <source>No message</source>
-      <translation>Паведамленняў няма</translation>
+      <translation>Без паведамленняў</translation>
     </message>
   </context>
   <context>

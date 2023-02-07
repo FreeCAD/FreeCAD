@@ -1534,8 +1534,8 @@ na njihove X, Y ,Z komponente.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="686"/>
-      <source>Shape splitting tools. Compsolid creation tools. OCC 6.9.0 or later is required.</source>
-      <translation>Alat podjele oblika. Compsolid alati za stvaranje. OCC 6.9.0 ili kasnije je potrebno.</translation>
+      <source>Shape splitting and Compsolid creation tools.</source>
+      <translation type="unfinished">Shape splitting and Compsolid creation tools.</translation>
     </message>
   </context>
   <context>

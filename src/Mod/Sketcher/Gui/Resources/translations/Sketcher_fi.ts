@@ -82,12 +82,12 @@
   <context>
     <name>CmdSketcherClone</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1392"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1454"/>
       <source>Clone</source>
       <translation>Kloonaa</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1393"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1456"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
       <translation>Luo kloonin geometriasta käyttäen viimeistä valittua pistettä viittauksena</translation>
     </message>
@@ -156,12 +156,12 @@
   <context>
     <name>CmdSketcherCompCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1469"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1536"/>
       <source>Clone</source>
       <translation>Kloonaa</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1470"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1538"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
       <translation>Luo kloonin geometriasta käyttäen viimeistä valittua pistettä viittauksena</translation>
     </message>
@@ -666,12 +666,12 @@ käyttäen jakajana viivaa tai kolmatta pistettä</translation>
   <context>
     <name>CmdSketcherCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1346"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1403"/>
       <source>Copy</source>
       <translation>Kopio</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1347"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1404"/>
       <source>Creates a simple copy of the geometry taking as reference the last selected point</source>
       <translation>Luo yksinkertaisen kopion geometriasta käyttäen viimeistä valittua pistettä viittauksena</translation>
     </message>
@@ -1056,12 +1056,12 @@ käyttäen jakajana viivaa tai kolmatta pistettä</translation>
   <context>
     <name>CmdSketcherDeleteAllConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1958"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2058"/>
       <source>Delete all constraints</source>
       <translation>Poista kaikki rajoitteet</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1959"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2059"/>
       <source>Delete all constraints in the sketch</source>
       <translation>Poistaa kaikki rajoitteet luonnoksesta</translation>
     </message>
@@ -1069,12 +1069,12 @@ käyttäen jakajana viivaa tai kolmatta pistettä</translation>
   <context>
     <name>CmdSketcherDeleteAllGeometry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1895"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1990"/>
       <source>Delete all geometry</source>
       <translation>Poista kaikki geometria</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1896"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1991"/>
       <source>Delete all geometry and constraints in the current sketch, with the exception of external geometry</source>
       <translation>Poista kaikki geometria ja rajoitteet nykyisestä luonnoksesta, lukuun ottamatta ulkoista geometriaa</translation>
     </message>
@@ -1247,7 +1247,7 @@ X- tai Y-akselia tai origoa.</translation>
     <message>
       <location filename="../../Command.cpp" line="771"/>
       <source>Wrong selection</source>
-      <translation>Virheellinen valinta</translation>
+      <translation>Väärä valinta</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="772"/>
@@ -1258,12 +1258,12 @@ X- tai Y-akselia tai origoa.</translation>
   <context>
     <name>CmdSketcherMove</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1435"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1502"/>
       <source>Move</source>
       <translation>Siirrä</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1436"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1503"/>
       <source>Moves the geometry taking as reference the last selected point</source>
       <translation>Siirtää geometriaa käyttäen viimeistä valittua pistettä viittauksena</translation>
     </message>
@@ -1284,12 +1284,12 @@ X- tai Y-akselia tai origoa.</translation>
   <context>
     <name>CmdSketcherRectangularArray</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1755"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1841"/>
       <source>Rectangular array</source>
       <translation>Suorakaideruudukko</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1756"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1842"/>
       <source>Creates a rectangular array pattern of the geometry taking as reference the last selected point</source>
       <translation>Luo geometriasta suorakaideruudukon käyttäen viimeistä valittua pistettä referenssipisteenä</translation>
     </message>
@@ -1297,12 +1297,12 @@ X- tai Y-akselia tai origoa.</translation>
   <context>
     <name>CmdSketcherRemoveAxesAlignment</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2022"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2126"/>
       <source>Remove axes alignment</source>
       <translation type="unfinished">Remove axes alignment</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2023"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2127"/>
       <source>Modifies constraints to remove axes alignment while trying to preserve the constraint relationship of the selection</source>
       <translation type="unfinished">Modifies constraints to remove axes alignment while trying to preserve the constraint relationship of the selection</translation>
     </message>
@@ -1325,12 +1325,12 @@ Tämä tyhjentää 'Tukipiste'-ominaisuuden, jos sellainen on.</translation>
   <context>
     <name>CmdSketcherRestoreInternalAlignmentGeometry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="713"/>
+      <location filename="../../CommandSketcherTools.cpp" line="746"/>
       <source>Show/hide internal geometry</source>
       <translation>Näytä/Piilota sisäinen geometria</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="714"/>
+      <location filename="../../CommandSketcherTools.cpp" line="747"/>
       <source>Show all internal geometry or hide unused internal geometry</source>
       <translation>Näytä kaikki sisäinen geometria tai piilota käyttämätön sisäinen geometria</translation>
     </message>
@@ -1338,8 +1338,8 @@ Tämä tyhjentää 'Tukipiste'-ominaisuuden, jos sellainen on.</translation>
   <context>
     <name>CmdSketcherSelectConflictingConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="446"/>
-      <location filename="../../CommandSketcherTools.cpp" line="447"/>
+      <location filename="../../CommandSketcherTools.cpp" line="468"/>
+      <location filename="../../CommandSketcherTools.cpp" line="469"/>
       <source>Select conflicting constraints</source>
       <translation>Valitse ristiriitaiset rajoitteet</translation>
     </message>
@@ -1352,7 +1352,7 @@ Tämä tyhjentää 'Tukipiste'-ominaisuuden, jos sellainen on.</translation>
       <translation>Valitse liittyvät rajoitteet</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="68"/>
+      <location filename="../../CommandSketcherTools.cpp" line="69"/>
       <source>Select the constraints associated with the selected geometrical elements</source>
       <translation>Valitse valittuihin geometrisiin elementteihin liittyvät rajoitteet</translation>
     </message>
@@ -1360,12 +1360,12 @@ Tämä tyhjentää 'Tukipiste'-ominaisuuden, jos sellainen on.</translation>
   <context>
     <name>CmdSketcherSelectElementsAssociatedWithConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="501"/>
+      <location filename="../../CommandSketcherTools.cpp" line="529"/>
       <source>Select associated geometry</source>
       <translation>Valitse liittyvä geometria</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="502"/>
+      <location filename="../../CommandSketcherTools.cpp" line="531"/>
       <source>Select the geometrical elements associated with the selected constraints</source>
       <translation>Valitsee geometriset elementit, jotka liittyvät valittuihin rajoitteisiin</translation>
     </message>
@@ -1373,12 +1373,12 @@ Tämä tyhjentää 'Tukipiste'-ominaisuuden, jos sellainen on.</translation>
   <context>
     <name>CmdSketcherSelectElementsWithDoFs</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="622"/>
+      <location filename="../../CommandSketcherTools.cpp" line="653"/>
       <source>Select unconstrained DoF</source>
       <translation>Valitse vapaat geometriaelementit</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="623"/>
+      <location filename="../../CommandSketcherTools.cpp" line="654"/>
       <source>Select geometrical elements where the solver still detects unconstrained degrees of freedom.</source>
       <translation>Valitse geometriset elementit, joissa ratkaisualgoritmi havaitsee yhä rajoittamattomia vapausasteita.</translation>
     </message>
@@ -1386,12 +1386,12 @@ Tämä tyhjentää 'Tukipiste'-ominaisuuden, jos sellainen on.</translation>
   <context>
     <name>CmdSketcherSelectHorizontalAxis</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="234"/>
+      <location filename="../../CommandSketcherTools.cpp" line="239"/>
       <source>Select horizontal axis</source>
       <translation>Valitse vaaka-akseli</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="235"/>
+      <location filename="../../CommandSketcherTools.cpp" line="240"/>
       <source>Select the local horizontal axis of the sketch</source>
       <translation>Valitse luonnoksen paikallinen vaakasuora akseli</translation>
     </message>
@@ -1399,8 +1399,8 @@ Tämä tyhjentää 'Tukipiste'-ominaisuuden, jos sellainen on.</translation>
   <context>
     <name>CmdSketcherSelectMalformedConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="334"/>
-      <location filename="../../CommandSketcherTools.cpp" line="335"/>
+      <location filename="../../CommandSketcherTools.cpp" line="345"/>
+      <location filename="../../CommandSketcherTools.cpp" line="346"/>
       <source>Select malformed constraints</source>
       <translation>Valitse virheelliset rajoitteet</translation>
     </message>
@@ -1408,12 +1408,12 @@ Tämä tyhjentää 'Tukipiste'-ominaisuuden, jos sellainen on.</translation>
   <context>
     <name>CmdSketcherSelectOrigin</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="144"/>
+      <location filename="../../CommandSketcherTools.cpp" line="147"/>
       <source>Select origin</source>
       <translation>Valitse origo</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="145"/>
+      <location filename="../../CommandSketcherTools.cpp" line="148"/>
       <source>Select the local origin point of the sketch</source>
       <translation>Valitse luonnoksen paikallinen origo</translation>
     </message>
@@ -1421,8 +1421,8 @@ Tämä tyhjentää 'Tukipiste'-ominaisuuden, jos sellainen on.</translation>
   <context>
     <name>CmdSketcherSelectPartiallyRedundantConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="390"/>
-      <location filename="../../CommandSketcherTools.cpp" line="391"/>
+      <location filename="../../CommandSketcherTools.cpp" line="406"/>
+      <location filename="../../CommandSketcherTools.cpp" line="407"/>
       <source>Select partially redundant constraints</source>
       <translation>Valitse osittain ylimääräiset rajoitteet</translation>
     </message>
@@ -1430,8 +1430,8 @@ Tämä tyhjentää 'Tukipiste'-ominaisuuden, jos sellainen on.</translation>
   <context>
     <name>CmdSketcherSelectRedundantConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="277"/>
-      <location filename="../../CommandSketcherTools.cpp" line="278"/>
+      <location filename="../../CommandSketcherTools.cpp" line="283"/>
+      <location filename="../../CommandSketcherTools.cpp" line="284"/>
       <source>Select redundant constraints</source>
       <translation>Valitse tarpeettomat rajoitteet</translation>
     </message>
@@ -1439,12 +1439,12 @@ Tämä tyhjentää 'Tukipiste'-ominaisuuden, jos sellainen on.</translation>
   <context>
     <name>CmdSketcherSelectVerticalAxis</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="190"/>
+      <location filename="../../CommandSketcherTools.cpp" line="194"/>
       <source>Select vertical axis</source>
       <translation>Valitse pystyakseli</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="191"/>
+      <location filename="../../CommandSketcherTools.cpp" line="195"/>
       <source>Select the local vertical axis of the sketch</source>
       <translation>Valitse luonnoksen paikallinen pystyakseli</translation>
     </message>
@@ -1491,12 +1491,12 @@ Tämä tyhjentää 'Tukipiste'-ominaisuuden, jos sellainen on.</translation>
   <context>
     <name>CmdSketcherSymmetry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="826"/>
+      <location filename="../../CommandSketcherTools.cpp" line="859"/>
       <source>Symmetry</source>
       <translation>Symmetria</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="827"/>
+      <location filename="../../CommandSketcherTools.cpp" line="861"/>
       <source>Creates symmetric geometry with respect to the last selected line or point</source>
       <translation>Peilaa geometriaa suhteessa viimeisenä valittuun viivaan tai pisteeseen</translation>
     </message>
@@ -2043,37 +2043,37 @@ virheellisiä rajoitteita, rappeutunutta geometriaa jne.</translation>
       <translation type="unfinished">Join Curves</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="789"/>
+      <location filename="../../CommandSketcherTools.cpp" line="822"/>
       <source>Exposing Internal Geometry</source>
       <translation>Sisäisen Geometrian näyttäminen</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="999"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1038"/>
       <source>Create symmetric geometry</source>
       <translation>Luo symmetrinen geometria</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1153"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1195"/>
       <source>Copy/clone/move geometry</source>
       <translation>Kopioi/kloonaa/siirrä geometriaa</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1692"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1770"/>
       <source>Create copy of geometry</source>
       <translation>Tee kopio geometriasta</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1921"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2020"/>
       <source>Delete all geometry</source>
       <translation>Poista kaikki geometria</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1983"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2087"/>
       <source>Delete All Constraints</source>
       <translation>Poista kaikki rajoitteet</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2108"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2215"/>
       <source>Remove Axes Alignment</source>
       <translation type="unfinished">Remove Axes Alignment</translation>
     </message>
@@ -2448,21 +2448,21 @@ virheellisiä rajoitteita, rappeutunutta geometriaa jne.</translation>
       <location filename="../../CommandConstraints.cpp" line="7530"/>
       <location filename="../../CommandConstraints.cpp" line="7603"/>
       <location filename="../../CommandConstraints.cpp" line="7614"/>
-      <location filename="../../CommandSketcherTools.cpp" line="90"/>
-      <location filename="../../CommandSketcherTools.cpp" line="737"/>
-      <location filename="../../CommandSketcherTools.cpp" line="849"/>
-      <location filename="../../CommandSketcherTools.cpp" line="857"/>
-      <location filename="../../CommandSketcherTools.cpp" line="962"/>
-      <location filename="../../CommandSketcherTools.cpp" line="971"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1215"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1224"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1283"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1774"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1783"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1845"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2041"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2050"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2095"/>
+      <location filename="../../CommandSketcherTools.cpp" line="92"/>
+      <location filename="../../CommandSketcherTools.cpp" line="770"/>
+      <location filename="../../CommandSketcherTools.cpp" line="884"/>
+      <location filename="../../CommandSketcherTools.cpp" line="893"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1000"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1010"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1266"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1275"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1336"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1861"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1870"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1934"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2146"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2155"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2201"/>
       <source>Wrong selection</source>
       <translation>Virheellinen valinta</translation>
     </message>
@@ -3220,67 +3220,67 @@ Hyväksytyt yhdistelmät: kaksi käyrää; päätepiste ja käyrä; kaksi päät
       <translation type="unfinished">Two end points, or coincident point should be selected.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="91"/>
-      <location filename="../../CommandSketcherTools.cpp" line="738"/>
-      <location filename="../../CommandSketcherTools.cpp" line="850"/>
-      <location filename="../../CommandSketcherTools.cpp" line="858"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1216"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1225"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1775"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1784"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2042"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2051"/>
+      <location filename="../../CommandSketcherTools.cpp" line="93"/>
+      <location filename="../../CommandSketcherTools.cpp" line="771"/>
+      <location filename="../../CommandSketcherTools.cpp" line="885"/>
+      <location filename="../../CommandSketcherTools.cpp" line="894"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1267"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1276"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1862"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1871"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2147"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2156"/>
       <source>Select elements from a single sketch.</source>
       <translation>Valitse osat yhdestä luonnkoksesta.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="599"/>
+      <location filename="../../CommandSketcherTools.cpp" line="631"/>
       <source>No constraint selected</source>
       <translation>Ei rajoitetta valittuna</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="600"/>
+      <location filename="../../CommandSketcherTools.cpp" line="632"/>
       <source>At least one constraint must be selected</source>
       <translation>Vähintään yksi rajoite on valittava</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="963"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1001"/>
       <source>A symmetric construction requires at least two geometric elements, the last geometric element being the reference for the symmetry construction.</source>
       <translation>Symmetrinen rakenne edellyttää vähintään kahta geometristä elementtiä, joista viimeinen geometrinen elementti on symmetrisen rakenteen viite.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="972"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1011"/>
       <source>The last element must be a point or a line serving as reference for the symmetry construction.</source>
       <translation>Viimeisen elementin on oltava symmetrisen rakenteen vertailukohtana käytettävä piste tai linja.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1284"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1846"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1337"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1935"/>
       <source>A copy requires at least one selected non-external geometric element</source>
       <translation>Kopio vaatii vähintään yhden valitun ei-ulkoisen geometrisen elementin</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1909"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2006"/>
       <source>Delete All Geometry</source>
       <translation>Poista kaikki geometria</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1910"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2007"/>
       <source>Are you really sure you want to delete all geometry and constraints?</source>
       <translation>Oletko varma, että haluat poistaa kaiken geometrian ja rajoitteet?</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1971"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2073"/>
       <source>Delete All Constraints</source>
       <translation>Poista kaikki rajoitteet</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1972"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2074"/>
       <source>Are you really sure you want to delete all the constraints?</source>
       <translation>Oletko varma, että haluat poistaa kaikki rajoitteet?</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2096"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2202"/>
       <source>Removal of axes alignment requires at least one selected non-external geometric element</source>
       <translation type="unfinished">Removal of axes alignment requires at least one selected non-external geometric element</translation>
     </message>
@@ -5254,8 +5254,8 @@ This is done by analyzing the sketch geometries and constraints.</translation>
   <context>
     <name>Sketcher_Clone</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1543"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1544"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1611"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1614"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
       <translation>Luo kloonin geometriasta käyttäen viimeistä valittua pistettä viittauksena</translation>
     </message>
@@ -5263,17 +5263,17 @@ This is done by analyzing the sketch geometries and constraints.</translation>
   <context>
     <name>Sketcher_CompCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1542"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1610"/>
       <source>Clone</source>
       <translation>Kloonaa</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1546"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1618"/>
       <source>Copy</source>
       <translation>Kopio</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1550"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1626"/>
       <source>Move</source>
       <translation>Siirrä</translation>
     </message>
@@ -5315,8 +5315,8 @@ This is done by analyzing the sketch geometries and constraints.</translation>
   <context>
     <name>Sketcher_Copy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1547"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1548"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1619"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1622"/>
       <source>Creates a simple copy of the geometry taking as reference the last selected point</source>
       <translation>Luo yksinkertaisen kopion geometriasta käyttäen viimeistä valittua pistettä viittauksena</translation>
     </message>
@@ -5602,8 +5602,8 @@ Valitse uusi tapa liittää tämä luonnos valittuihin objekteihin.</translation
   <context>
     <name>Sketcher_Move</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1551"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1552"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1627"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1629"/>
       <source>Moves the geometry taking as reference the last selected point</source>
       <translation>Siirtää geometriaa käyttäen viimeistä valittua pistettä viittauksena</translation>
     </message>

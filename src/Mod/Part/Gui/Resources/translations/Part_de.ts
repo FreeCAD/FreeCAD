@@ -1533,8 +1533,8 @@ X-, Y- und Z-Komponenten zerlegt wird.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="686"/>
-      <source>Shape splitting tools. Compsolid creation tools. OCC 6.9.0 or later is required.</source>
-      <translation>Formteilungs-Werkzeug. Zusammengesetzte Festkörper-Werkzeuge. OCC 6.9.0 oder neuer wird benötigt.</translation>
+      <source>Shape splitting and Compsolid creation tools.</source>
+      <translation type="unfinished">Shape splitting and Compsolid creation tools.</translation>
     </message>
   </context>
   <context>
@@ -1654,7 +1654,7 @@ X-, Y- und Z-Komponenten zerlegt wird.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="284"/>
       <source>Part</source>
-      <translation>Formteil</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="285"/>
@@ -1672,7 +1672,7 @@ X-, Y- und Z-Komponenten zerlegt wird.</translation>
     <message>
       <location filename="../../Command.cpp" line="1077"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Formteil</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1078"/>

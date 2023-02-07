@@ -6,7 +6,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="67"/>
       <source>Select</source>
-      <translation type="unfinished">Select</translation>
+      <translation>Абраць</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="68"/>

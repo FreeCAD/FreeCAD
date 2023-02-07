@@ -623,7 +623,7 @@
     <message>
       <location filename="../../Command.cpp" line="1830"/>
       <source>Split selected mesh into its components</source>
-      <translation>Éclater le maillage sélectionné en composants</translation>
+      <translation>Éclater le maillage sélectionné en ses composants</translation>
     </message>
   </context>
   <context>
@@ -1771,7 +1771,7 @@ Avec l'ombrage à plat les normales de surface ne sont pas définies par un somm
     <message>
       <location filename="../../RemeshGmsh.ui" line="14"/>
       <source>Remesh by Gmsh</source>
-      <translation>Remaillage(remesh) par Gmsh</translation>
+      <translation>Remaillage par Gmsh</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="26"/>
@@ -1781,17 +1781,17 @@ Avec l'ombrage à plat les normales de surface ne sont pas définies par un somm
     <message>
       <location filename="../../RemeshGmsh.ui" line="32"/>
       <source>Meshing:</source>
-      <translation>Maillage:</translation>
+      <translation>Maillage :</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="42"/>
       <source>Max element size (0.0 = Auto):</source>
-      <translation>Taille maximale de l'élément (0.0 = Auto):</translation>
+      <translation>Taille maximale de l'élément (0.0 = Auto) :</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="68"/>
       <source>Min element size (0.0 = Auto):</source>
-      <translation>Taille minimale de l'élément (0.0 = Auto):</translation>
+      <translation>Taille minimale de l'élément (0.0 = Auto) :</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="94"/>
@@ -1806,7 +1806,7 @@ Avec l'ombrage à plat les normales de surface ne sont pas définies par un somm
     <message>
       <location filename="../../RemeshGmsh.ui" line="134"/>
       <source>Path</source>
-      <translation>Trajectoire</translation>
+      <translation>Parcours</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="154"/>

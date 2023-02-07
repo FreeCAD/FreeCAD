@@ -115,7 +115,7 @@
       <location filename="../../AttacherTexts.cpp" line="335"/>
       <source>Solid</source>
       <comment>Attacher reference type</comment>
-      <translation>Пуна</translation>
+      <translation>Пуно тело</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="336"/>
@@ -1371,7 +1371,7 @@ into its X, Y, and Z components.</source>
     <message>
       <location filename="../../CommandParametric.cpp" line="108"/>
       <source>Create a cube solid</source>
-      <translation>Направи коцкасто тело</translation>
+      <translation>Направи коцкасто пуно тело</translation>
     </message>
   </context>
   <context>
@@ -1389,7 +1389,7 @@ into its X, Y, and Z components.</source>
     <message>
       <location filename="../../Command.cpp" line="132"/>
       <source>Create a box solid without dialog</source>
-      <translation>Направи кутијасто тело без дијалога</translation>
+      <translation>Направи кутијасто пуно тело без дијалога</translation>
     </message>
   </context>
   <context>
@@ -1407,7 +1407,7 @@ into its X, Y, and Z components.</source>
     <message>
       <location filename="../../Command.cpp" line="173"/>
       <source>Create a box solid without dialog</source>
-      <translation>Направи кутијасто тело без дијалога</translation>
+      <translation>Направи кутијасто пуно тело без дијалога</translation>
     </message>
   </context>
   <context>
@@ -1532,8 +1532,8 @@ into its X, Y, and Z components.</source>
     </message>
     <message>
       <location filename="../../Command.cpp" line="686"/>
-      <source>Shape splitting tools. Compsolid creation tools. OCC 6.9.0 or later is required.</source>
-      <translation>Алати за поделу облика. Алати за прављење Комбинованог тела. Потребан је OCC верзије 6.9.0 или новији.</translation>
+      <source>Shape splitting and Compsolid creation tools.</source>
+      <translation type="unfinished">Shape splitting and Compsolid creation tools.</translation>
     </message>
   </context>
   <context>
@@ -1571,7 +1571,7 @@ into its X, Y, and Z components.</source>
     <message>
       <location filename="../../CommandParametric.cpp" line="192"/>
       <source>Create a cone solid</source>
-      <translation>Направи конично тело</translation>
+      <translation>Направи конично пуно тело</translation>
     </message>
   </context>
   <context>
@@ -1820,12 +1820,12 @@ into its X, Y, and Z components.</source>
     <message>
       <location filename="../../Command.cpp" line="1174"/>
       <source>Convert to solid</source>
-      <translation>Претвори у тело</translation>
+      <translation>Претвори у пуно тело</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1175"/>
       <source>Create solid from a shell or compound</source>
-      <translation>Направи тело од љуске или састављеног објекта</translation>
+      <translation>Направи пуно тело од љуске или састављеног објекта</translation>
     </message>
   </context>
   <context>
@@ -2134,7 +2134,7 @@ of projection.</source>
     <message>
       <location filename="../../CommandParametric.cpp" line="150"/>
       <source>Create a sphere solid</source>
-      <translation>Направи сферично тело</translation>
+      <translation>Направи сферично пуно тело</translation>
     </message>
   </context>
   <context>
@@ -2180,7 +2180,7 @@ of projection.</source>
     <message>
       <location filename="../../Command.cpp" line="1931"/>
       <source>Selected shape is not a solid</source>
-      <translation>Изабрани облик није тело</translation>
+      <translation>Изабрани облик није пуно тело</translation>
     </message>
   </context>
   <context>
@@ -2200,7 +2200,7 @@ of projection.</source>
     <message>
       <location filename="../../CommandParametric.cpp" line="234"/>
       <source>Create a torus solid</source>
-      <translation>Направи торусно тело</translation>
+      <translation>Направи торусно пуно тело</translation>
     </message>
   </context>
   <context>
@@ -2358,7 +2358,7 @@ of projection.</source>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="521"/>
       <source>Solid</source>
-      <translation>Пуна</translation>
+      <translation>Пуно тело</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="367"/>
@@ -2571,7 +2571,7 @@ Note: The placement is expressed in local space of object being attached.</sourc
       <location filename="../../DlgBooleanOperation.ui" line="81"/>
       <location filename="../../DlgBooleanOperation.ui" line="119"/>
       <source>Solids</source>
-      <translation>Тела</translation>
+      <translation>Пуна тела</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="86"/>
@@ -2629,17 +2629,17 @@ Note: The placement is expressed in local space of object being attached.</sourc
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="419"/>
       <source>Performing union on non-solids is not possible</source>
-      <translation>Није могуће извођење уније на објектима која нису тела</translation>
+      <translation>Није могуће извођење уније на објектима која нису пуна тела</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="428"/>
       <source>Performing intersection on non-solids is not possible</source>
-      <translation>Није могуће извођење пресека на објектима која нису тела</translation>
+      <translation>Није могуће извођење пресека на објектима која нису пуна тела</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="437"/>
       <source>Performing difference on non-solids is not possible</source>
-      <translation>Није могуће извођење разлике на објектима која нису тела</translation>
+      <translation>Није могуће извођење разлике на објектима која нису пуна тела</translation>
     </message>
   </context>
   <context>
@@ -2903,12 +2903,12 @@ If both lengths are zero, magnitude of direction is used.</source>
     <message>
       <location filename="../../DlgExtrusion.ui" line="337"/>
       <source>If checked, extruding closed wires will give solids, not shells.</source>
-      <translation>Ако се чекира, извлачење затворене жичане скице ће дати тела, а не љуске.</translation>
+      <translation>Ако се чекира, извлачење затворене жичане скице ће дати пуна тела, а не љуске.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="340"/>
       <source>Create solid</source>
-      <translation>Направи тело</translation>
+      <translation>Направи пуно тело</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="360"/>
@@ -3195,12 +3195,12 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="65"/>
       <source>Write solids and shells as</source>
-      <translation>Уписивати тела и љуске као</translation>
+      <translation>Уписивати пуна тела и љуске као</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="71"/>
       <source>Solids and shells will be exported as trimmed surface</source>
-      <translation>Тела и љуске ће се извозити као опсечена површина</translation>
+      <translation>Пуна тела и љуске ће се извозити као опсечена површина</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="74"/>
@@ -3210,12 +3210,12 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="84"/>
       <source>Solids will be exported as manifold solid B-Rep object, shells as shell</source>
-      <translation>Тела ће бити извезена као вишеструка Б-Реп пуна тела, љуске као љуске</translation>
+      <translation>Пуна тела ће бити извезена као вишеструка Б-Реп пуна тела, љуске као љуске</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="87"/>
       <source>Solids (type 186) and Shells (type 514) / B-REP mode</source>
-      <translation>Тела (тип 186) и љуске (тип 514) / B-REP режим</translation>
+      <translation>Пуна тела (тип 186) и љуске (тип 514) / B-REP режим</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="100"/>
@@ -3323,7 +3323,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgImportStep.ui" line="91"/>
       <source>Expand compound shape with multiple solids</source>
-      <translation>Увези састављени објекат као да се састоји од више тела т.ј. може се проширити у Стаблу документа</translation>
+      <translation>Увези састављени објекат као да се састоји од више пуних тела т. ј. може се проширити у Стаблу документа</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="94"/>
@@ -4059,12 +4059,12 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="325"/>
       <source>If checked, revolving wires will produce solids. If not, revolving a wire yields a shell.</source>
-      <translation>Ако се чекира, ротиране затворене жичане скице ће дати тела, а не љуске.</translation>
+      <translation>Ако се чекира, ротиране затворене жичане скице ће дати пуна тела, а не љуске.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="328"/>
       <source>Create Solid</source>
-      <translation>Направи тело</translation>
+      <translation>Направи пуно тело</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="168"/>
@@ -5354,7 +5354,7 @@ by dragging a selection rectangle in the 3D view</source>
     <message>
       <location filename="../../TaskLoft.ui" line="23"/>
       <source>Create solid</source>
-      <translation>Направи тело</translation>
+      <translation>Направи пуно тело</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.ui" line="30"/>
@@ -5473,7 +5473,7 @@ by dragging a selection rectangle in the 3D view</source>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="61"/>
       <source>Solid from shell</source>
-      <translation>Тело помоћу љуcке</translation>
+      <translation>Пуно тело помоћу љуcке</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="75"/>
@@ -5516,7 +5516,7 @@ by dragging a selection rectangle in the 3D view</source>
     <message>
       <location filename="../../TaskSweep.ui" line="53"/>
       <source>Create solid</source>
-      <translation>Направи тело</translation>
+      <translation>Направи пуно тело</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.ui" line="60"/>
@@ -5676,7 +5676,7 @@ in the 3D view for the sweep path.</source>
       <location filename="../../Command.cpp" line="423"/>
       <location filename="../../Command.cpp" line="523"/>
       <source>Non-solids selected</source>
-      <translation>Изабран је објекат који није тело</translation>
+      <translation>Изабран је објекат који није пуно тело</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="324"/>
@@ -5684,7 +5684,7 @@ in the 3D view for the sweep path.</source>
       <location filename="../../Command.cpp" line="524"/>
       <source>The use of non-solids for boolean operations may lead to unexpected results.
 Do you want to continue?</source>
-      <translation>Употреба објеката која нису тела за Булове операције може довести до неочекиваних резултата.
+      <translation>Употреба објеката која нису пуна тела за Булове операције може довести до неочекиваних резултата.
 Да ли желиш да наставиш?</translation>
     </message>
     <message>
@@ -5749,12 +5749,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="78"/>
       <source>Compound Solid</source>
-      <translation>Састављено тело</translation>
+      <translation>Састављено пуно тело</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="79"/>
       <source>Solid</source>
-      <translation>Пуна</translation>
+      <translation>Пуно тело</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="80"/>
@@ -6120,7 +6120,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Workbench.cpp" line="36"/>
       <source>Solids</source>
-      <translation>Тела</translation>
+      <translation>Пуна тела</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="37"/>
@@ -6326,7 +6326,7 @@ A 'Compound Filter' can be used to extract the individual slices.</source>
 The resulting pieces will be stored in a compound.
 A 'Compound Filter' can be used to extract the individual slices.</source>
       <translation>Исеци изабрани објекат користећи друге објекте као алате за сечење.
-Као резултат добија се састављени објекат од ових тела.
+Као резултат добија се састављени објекат.
 'Филтер састављања' се може користити за издвајање појединачних резова.</translation>
     </message>
     <message>
@@ -6344,8 +6344,8 @@ A 'Compound Filter' can be used to extract the individual slices.</source>
       <location filename="../../../BOPTools/SplitFeatures.py" line="375"/>
       <source>Slice a selected object by other objects, and split it apart.
 It will create a 'Compound Filter' for each slice.</source>
-      <translation>Исеци изабрани објекат са другим објектима. Као резултат добијају се тела.
-Направиће се 'Филтер састављања' за свако исечено тело.</translation>
+      <translation>Исеци изабрани објекат са другим објектима и раздвоји га. Као резултат се добијају пуна тела.
+Направиће се 'Филтер састављања' за свако исечено пуно тело.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="517"/>

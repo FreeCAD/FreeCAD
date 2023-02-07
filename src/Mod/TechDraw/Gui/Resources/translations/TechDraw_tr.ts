@@ -2086,7 +2086,7 @@
       <translation>AktifGörüntü Oluşturun</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="294"/>
+      <location filename="../../TaskCenterLine.cpp" line="298"/>
       <source>Create CenterLine</source>
       <translation>MerkezÇizgisi Oluştur</translation>
     </message>
@@ -2136,12 +2136,12 @@
       <translation>KesitGörünüm Oluştur</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="560"/>
+      <location filename="../../TaskComplexSection.cpp" line="559"/>
       <source>Create ComplexSection</source>
       <translation type="unfinished">Create ComplexSection</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="643"/>
+      <location filename="../../TaskComplexSection.cpp" line="642"/>
       <location filename="../../TaskSectionView.cpp" line="561"/>
       <source>Edit SectionView</source>
       <translation>Kesit Görünümünü Düzenle</translation>
@@ -2575,27 +2575,27 @@
       <translation>Belge kaynağını düzenle</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="263"/>
+      <location filename="../../mrichtextedit.cpp" line="269"/>
       <source>Document source</source>
       <translation>Belge kaynağı</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="366"/>
+      <location filename="../../mrichtextedit.cpp" line="372"/>
       <source>Create a link</source>
       <translation>Bir bağlantı oluştur</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="367"/>
+      <location filename="../../mrichtextedit.cpp" line="373"/>
       <source>Link URL:</source>
       <translation>Bağlantı URL'si:</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="696"/>
+      <location filename="../../mrichtextedit.cpp" line="702"/>
       <source>Select an image</source>
       <translation>Bir resim seç</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="698"/>
+      <location filename="../../mrichtextedit.cpp" line="704"/>
       <source>JPEG (*.jpg);; GIF (*.gif);; PNG (*.png);; BMP (*.bmp);; All (*)</source>
       <translation>JPEG (*.jpg);; GIF (*.gif);; PNG (*.png);; BMP (*.bmp);; Tümü (*)</translation>
     </message>
@@ -3394,12 +3394,12 @@
       <translation>3D görüntüleyici bulunamıyor</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="163"/>
+      <location filename="../../TaskCenterLine.cpp" line="167"/>
       <source>Create Center Line</source>
       <translation>Merkez Çizgisi Oluştur</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="193"/>
+      <location filename="../../TaskCenterLine.cpp" line="197"/>
       <source>Edit Center Line</source>
       <translation>Merkez Çizgisini Düzenle</translation>
     </message>
@@ -3436,7 +3436,7 @@
       <translation type="unfinished">The view direction in BaseView coordinates</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="691"/>
+      <location filename="../../TaskComplexSection.cpp" line="690"/>
       <location filename="../../TaskSectionView.cpp" line="608"/>
       <source>Operation Failed</source>
       <translation>İşlem başarısız oldu</translation>
@@ -3824,7 +3824,7 @@ kırılır hale gelecek bir karo kaynağına sahiptir.</translation>
   <context>
     <name>TaskPojGroup</name>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="488"/>
+      <location filename="../../TaskComplexSection.cpp" line="487"/>
       <location filename="../../TaskSectionView.cpp" line="428"/>
       <source> updates pending</source>
       <translation type="unfinished"> updates pending</translation>
@@ -5861,7 +5861,7 @@ Devam etmek istiyor musun?</translation>
       <translation type="unfinished">Update Now</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="690"/>
+      <location filename="../../TaskComplexSection.cpp" line="689"/>
       <source>Can not continue. Object * %1 or %2 not found.</source>
       <translation type="unfinished">Can not continue. Object * %1 or %2 not found.</translation>
     </message>
@@ -8271,6 +8271,27 @@ gösterimleri otomatik dağıtır</translation>
       <location filename="../../TaskDimRepair.cpp" line="82"/>
       <source>SubElement</source>
       <translation type="unfinished">SubElement</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDraw_AxoLengthDimension</name>
+    <message>
+      <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="50"/>
+      <source>Axonometric length dimension</source>
+      <translation type="unfinished">Axonometric length dimension</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="57"/>
+      <source>Create an axonometric length dimension&lt;br&gt;
+                - select first edge to define direction and length of the dimension line&lt;br&gt;
+                - select second edge to define the direction of the extension lines&lt;br&gt;
+                - optional: select two more vertexes which define the measurement instead of the length&lt;br&gt;
+                  of the first selected edge</source>
+      <translation type="unfinished">Create an axonometric length dimension&lt;br&gt;
+                - select first edge to define direction and length of the dimension line&lt;br&gt;
+                - select second edge to define the direction of the extension lines&lt;br&gt;
+                - optional: select two more vertexes which define the measurement instead of the length&lt;br&gt;
+                  of the first selected edge</translation>
     </message>
   </context>
 </TS>

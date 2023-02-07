@@ -1533,8 +1533,8 @@ into its X, Y, and Z components.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="686"/>
-      <source>Shape splitting tools. Compsolid creation tools. OCC 6.9.0 or later is required.</source>
-      <translation>Инструменты разделения фигур. Инструменты создания Compsolid. Требуется OpenCASCADE версии не менее 6.9.0.</translation>
+      <source>Shape splitting and Compsolid creation tools.</source>
+      <translation type="unfinished">Shape splitting and Compsolid creation tools.</translation>
     </message>
   </context>
   <context>
@@ -6107,7 +6107,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Workbench.cpp" line="33"/>
       <source>&amp;Part</source>
-      <translation>Деталь</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="34"/>

@@ -704,7 +704,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="1796"/>
       <source>Make a thick solid</source>
-      <translation>Направи танкозидно тело</translation>
+      <translation>Направи танкозидно пуно тело</translation>
     </message>
   </context>
   <context>
@@ -3563,7 +3563,7 @@ click again to end selection</source>
     <message>
       <location filename="../../Command.cpp" line="775"/>
       <source>Cannot use this command as there is no solid to subtract from.</source>
-      <translation>Не може се користити ова наредба јер нема тела од ког можемо одузети.</translation>
+      <translation>Не може се користити ова наредба јер нема пуно тело од ког можемо одузети.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="776"/>
@@ -3691,7 +3691,7 @@ click again to end selection</source>
       <location filename="../../CommandBody.cpp" line="158"/>
       <source>The selected shape consists of multiple solids.
 This may lead to unexpected results.</source>
-      <translation>Изабрани облик се састоји од више тела.
+      <translation>Изабрани облик се састоји од више пуних тела.
 Ово може довести до неочекиваних резултата.</translation>
     </message>
     <message>
@@ -3712,7 +3712,7 @@ This may lead to unexpected results.</source>
       <location filename="../../CommandBody.cpp" line="170"/>
       <source>The selected shape consists of multiple solids or shells.
 This may lead to unexpected results.</source>
-      <translation>Изабрани облик се састоји од више тела и љуски тела.
+      <translation>Изабрани облик се састоји од више пуних тела и љуски пуних тела.
 Ово може довести до неочекиваних резултата.</translation>
     </message>
     <message>

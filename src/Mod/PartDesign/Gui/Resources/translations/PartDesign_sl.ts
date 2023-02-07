@@ -4795,12 +4795,12 @@ nad 90: v spodnjem delu večji premer luknje</translation>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="49"/>
       <source>End edge type</source>
-      <translation type="unfinished">End edge type</translation>
+      <translation>Vrsta končnega roba</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="53"/>
       <source>End edge size</source>
-      <translation type="unfinished">End edge size</translation>
+      <translation>Velikost končnega roba</translation>
     </message>
   </context>
   <context>
@@ -4809,13 +4809,13 @@ nad 90: v spodnjem delu večji premer luknje</translation>
       <location filename="../../../WizardShaft/WizardShaft.py" line="186"/>
       <location filename="../../../WizardShaft/WizardShaft.py" line="211"/>
       <source>Shaft design wizard...</source>
-      <translation type="unfinished">Shaft design wizard...</translation>
+      <translation>Čarovnik za snovanje gredi ...</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="187"/>
       <location filename="../../../WizardShaft/WizardShaft.py" line="212"/>
       <source>Start the shaft design wizard</source>
-      <translation type="unfinished">Start the shaft design wizard</translation>
+      <translation>Zaženi čarovnik za snovanje gredi</translation>
     </message>
   </context>
 </TS>

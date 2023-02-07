@@ -1801,7 +1801,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="134"/>
       <source>Path</source>
-      <translation>Траектория</translation>
+      <translation>Path</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="154"/>

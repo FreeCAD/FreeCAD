@@ -205,7 +205,7 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="655"/>
       <source>No point was picked</source>
-      <translation type="unfinished">No point was picked</translation>
+      <translation>Не абрана ніводнай кропкі</translation>
     </message>
   </context>
   <context>
@@ -488,13 +488,13 @@ A value in the range of 0.2-10.</source>
     <message>
       <location filename="../../Tessellation.cpp" line="61"/>
       <source>Gmsh</source>
-      <translation type="unfinished">Gmsh</translation>
+      <translation>Gmsh</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="212"/>
       <location filename="../../Tessellation.cpp" line="218"/>
       <source>No active document</source>
-      <translation>Няма бягучага дакумента</translation>
+      <translation>Без бягучага дакумента</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="246"/>

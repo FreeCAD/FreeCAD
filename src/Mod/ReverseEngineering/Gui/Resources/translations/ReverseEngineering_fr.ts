@@ -83,12 +83,12 @@
     <message>
       <location filename="../../Command.cpp" line="69"/>
       <source>Approximate B-spline surface...</source>
-      <translation>Approximation de la surface de la courbe B-spline...</translation>
+      <translation>Approximer la surface de la B-spline...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="70"/>
       <source>Approximate a B-spline surface</source>
-      <translation>Approximer la surface d’une courbe B-spline</translation>
+      <translation>Approximer la surface d’une B-spline</translation>
     </message>
   </context>
   <context>
@@ -191,13 +191,13 @@
     <message>
       <location filename="../../Command.cpp" line="585"/>
       <source>Structured point clouds</source>
-      <translation>Nuages de points structurés</translation>
+      <translation>Nuages structurés de points</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="586"/>
       <location filename="../../Command.cpp" line="587"/>
       <source>Triangulation of structured point clouds</source>
-      <translation>Triangulation de nuages de points structurés</translation>
+      <translation>Triangulation des nuages structurés de points</translation>
     </message>
   </context>
   <context>
@@ -235,7 +235,7 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="220"/>
       <source>Fit B-Spline</source>
-      <translation>Ajuster la courbe B-spline</translation>
+      <translation>Ajuster la B-spline</translation>
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="91"/>
@@ -253,12 +253,12 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="14"/>
       <source>Fit B-spline surface</source>
-      <translation>Adapter la surface de la courbe B-spline</translation>
+      <translation>Ajuster la surface de la B-spline</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="20"/>
       <source>u-Direction</source>
-      <translation>direction U</translation>
+      <translation>direction u</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="26"/>
@@ -275,7 +275,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="87"/>
       <source>v-Direction</source>
-      <translation>v-Direction</translation>
+      <translation>direction v</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="154"/>
