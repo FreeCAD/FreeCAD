@@ -50,6 +50,7 @@
 #include "SketchOrientationDialog.h"
 #include "TaskSketcherValidation.h"
 #include "ViewProviderSketch.h"
+#include "Utils.h"
 
 
 using namespace std;
@@ -130,14 +131,6 @@ namespace SketcherGui {
     }
 } //namespace SketcherGui
 
-bool isSketchInEdit(Gui::Document* doc) {
-    if (doc) {
-        // checks if a Sketch Viewprovider is in Edit and is in no special mode
-        auto* vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-        return (vp != nullptr);
-    }
-    return false;
-}
 
 /* Sketch commands =======================================================*/
 DEF_STD_CMD_A(CmdSketcherNewSketch)
@@ -363,13 +356,7 @@ void CmdSketcherStopOperation::activated(int iMsg)
 
 bool CmdSketcherStopOperation::isActive()
 {
-    Gui::Document *doc = getActiveGuiDocument();
-    if (doc) {
-        SketcherGui::ViewProviderSketch* vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-        if (vp)
-            return true;
-    }
-    return false;
+    return isSketchInEdit(getActiveGuiDocument());
 }
 
 DEF_STD_CMD_A(CmdSketcherReorientSketch)
