@@ -257,6 +257,7 @@ SET(FemSolverElmerEquations_SRCS
     femsolver/elmer/equations/electrostatic_writer.py
     femsolver/elmer/equations/equation.py
     femsolver/elmer/equations/flow.py
+    femsolver/elmer/equations/flow_writer.py
     femsolver/elmer/equations/flux.py
     femsolver/elmer/equations/flux_writer.py
     femsolver/elmer/equations/heat.py
