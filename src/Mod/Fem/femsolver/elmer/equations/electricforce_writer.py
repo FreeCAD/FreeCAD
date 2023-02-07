@@ -1,5 +1,6 @@
 # ***************************************************************************
-# *   Copyright (c) 2023 Uwe Stöhr <uwestoehr@lyx.org>                      *
+# *   Copyright (c) 2020 Markus Hovorka <m.hovorka@live.de>                 *
+# *   Copyright (c) 2022 Uwe Stöhr <uwestoehr@lyx.org>                      *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -22,7 +23,7 @@
 # ***************************************************************************
 
 __title__ = "FreeCAD FEM Electricforce Elmer writer"
-__author__ = "Uwe Stöhr"
+__author__ = "Markus Hovorka, Uwe Stöhr"
 __url__ = "https://www.freecad.org"
 
 ## \addtogroup FEM
