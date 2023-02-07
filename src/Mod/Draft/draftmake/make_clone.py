@@ -126,10 +126,15 @@ def make_clone(obj, delta=None, forcedraft=False):
             cl.ViewObject.Proxy.resetColors(cl.ViewObject)
         # Workaround to trigger update of DiffuseColor:
         # Note: only works if obj contains 1 object.
-        ToDo.delay(lambda col: setattr(cl.ViewObject, "DiffuseColor", col),
-                   cl.ViewObject.DiffuseColor)
+        ToDo.delay(reapply_DiffuseColor, cl.ViewObject)
         gui_utils.select(cl)
     return cl
+
+def reapply_DiffuseColor(vobj):
+    try:
+        vobj.DiffuseColor = vobj.DiffuseColor
+    except:
+        pass
 
 
 clone = make_clone

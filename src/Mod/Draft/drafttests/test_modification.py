@@ -568,27 +568,6 @@ class DraftModification(unittest.TestCase):
         _msg("  object: '{0}' ({1})".format(box.Shape.ShapeType, box.TypeId))
 
         obj = Draft.make_clone(box)
-
-        # Code below by Chris Hennes.
-        # https://forum.freecadweb.org/viewtopic.php?p=656362#p656362
-        # This code is required because of the DiffuseColor workaround which
-        # reapplies the DiffuseColor with a delay. Without the code below the
-        # active document may get deleted beforehand resulting in an error.
-        if App.GuiUp:
-            from PySide import QtCore
-            class DelayEnder:
-                def __init__(self):
-                    self.delay_is_done = False
-                def stop(self):
-                    self.delay_is_done = True
-            ender = DelayEnder()
-            timer = QtCore.QTimer()
-            timer.timeout.connect(ender.stop)
-            timer.setSingleShot(True)
-            timer.start(100) # 100ms timer guarantees the loop below runs at least that long
-            while not ender.delay_is_done:
-                QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents)
-
         _msg("  clone: '{0}' ({1})".format(obj.Proxy.Type, obj.TypeId))
         self.assertTrue(obj, "'{}' failed".format(operation))
         self.assertTrue(obj.hasExtension("Part::AttachExtension"),
