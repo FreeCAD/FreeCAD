@@ -919,17 +919,17 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../DlgSettings.ui" line="26"/>
       <source>Display Settings</source>
-      <translation type="unfinished">Display Settings</translation>
+      <translation>Настройки экрана</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="32"/>
       <source>If checked, use the custom presentation to display cell string.</source>
-      <translation type="unfinished">If checked, use the custom presentation to display cell string.</translation>
+      <translation>Если выбрано, используются пользовательские настройки для отображения ячеек.</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="35"/>
       <source>Show alias in cell with format</source>
-      <translation type="unfinished">Show alias in cell with format</translation>
+      <translation>Показывать имя ячейки</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="64"/>
@@ -938,11 +938,11 @@ Defaults to: %V = %A
 
 %A - alias name
 %V - cell value</source>
-      <translation type="unfinished">The format of the custom cell string presentation.
-Defaults to: %V = %A
+      <translation>Пользовательский формат представления ячейки.
+По умолчанию: %V = %A
 
-%A - alias name
-%V - cell value</translation>
+%A - имя ячейки
+%V - значение ячейки</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="84"/>

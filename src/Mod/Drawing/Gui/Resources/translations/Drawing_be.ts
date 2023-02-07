@@ -285,7 +285,7 @@
     <message>
       <location filename="../../DrawingView.cpp" line="462"/>
       <source>Export PDF</source>
-      <translation type="unfinished">Export PDF</translation>
+      <translation>Экспартаваць у PDF</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="463"/>
@@ -614,22 +614,22 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDialog.cpp" line="88"/>
       <source>No active document</source>
-      <translation>Няма бягучага дакумента</translation>
+      <translation>Без бягучага дакумента</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="89"/>
       <source>There is currently no active document to complete the operation</source>
-      <translation>У бягучы час няма бягучага дакумента для завяршэння аперацыі</translation>
+      <translation>У бягучы час адсутнічае бягучы дакумент для завяршэння аперацыі</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="94"/>
       <source>No active view</source>
-      <translation>Няма бягучага выгляду</translation>
+      <translation>Без бягучага выгляду</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="95"/>
       <source>There is currently no active view to complete the operation</source>
-      <translation>У бягучы час няма бягучага выгляд для завяршэння аперацыі</translation>
+      <translation>У бягучы час адсутнічае бягучы выгляд для завяршэння аперацыі</translation>
     </message>
   </context>
   <context>

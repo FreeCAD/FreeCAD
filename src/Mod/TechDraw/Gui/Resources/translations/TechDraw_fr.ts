@@ -328,7 +328,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="103"/>
       <source>Insert Dimension</source>
-      <translation>Insérer une cote angulaire</translation>
+      <translation>Insérer une cote</translation>
     </message>
   </context>
   <context>
@@ -588,7 +588,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1419"/>
       <source>Create a sequence of aligned horizontal dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</source>
-      <translation>Créez une séquence de cotes horizontales alignées :&lt;br&gt;- Sélectionnez trois sommets ou plus&lt;br&gt;- Cliquez sur cet outil</translation>
+      <translation>Créer une séquence de cotes horizontales alignées :&lt;br&gt;- Sélectionner trois sommets ou plus&lt;br&gt;- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -606,7 +606,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1775"/>
       <source>Create multiple evenly spaced horizontal dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</source>
-      <translation>Créez plusieurs cotes horizontales uniformément espacées à partir de la même ligne de base :&lt;br&gt;- Spécifiez l'espacement en cascade (facultatif)&lt;br&gt;- Sélectionnez trois sommets ou plus&lt;br&gt;- L'ordre de sélection des deux premiers sommets détermine la position de la ligne de base&lt;br&gt;- Cliquez sur cet outil</translation>
+      <translation>Créer plusieurs cotes horizontales uniformément espacées à partir de la même ligne de base :&lt;br&gt;- Spécifier l'espacement en cascade (facultatif)&lt;br&gt;- Sélectionner trois sommets ou plus&lt;br&gt;- L'ordre de sélection des deux premiers sommets détermine la position de la ligne de base&lt;br&gt;- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -626,7 +626,7 @@
       <location filename="../../CommandExtensionDims.cpp" line="1230"/>
       <location filename="../../CommandExtensionDims.cpp" line="1493"/>
       <source>Create a sequence of aligned horizontal dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</source>
-      <translation>Créez une séquence de cotes horizontales alignées :&lt;br&gt;- Sélectionnez trois sommets ou plus&lt;br&gt;- Cliquez sur cet outil</translation>
+      <translation>Créer une séquence de cotes horizontales alignées :&lt;br&gt;- Sélectionner trois sommets ou plus&lt;br&gt;- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -666,7 +666,7 @@
       <location filename="../../CommandExtensionDims.cpp" line="1570"/>
       <location filename="../../CommandExtensionDims.cpp" line="1851"/>
       <source>Create multiple evenly spaced horizontal dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</source>
-      <translation>Créez plusieurs cotes horizontales uniformément espacées à partir de la même ligne de base :&lt;br&gt;- Spécifiez l'espacement en cascade (facultatif)&lt;br&gt;- Sélectionnez trois sommets ou plus&lt;br&gt;- L'ordre de sélection des deux premiers sommets détermine la position de la ligne de base&lt;br&gt;- Cliquez sur cet outil</translation>
+      <translation>Créer plusieurs cotes horizontales uniformément espacées à partir de la même ligne de base :&lt;br&gt;- Spécifier l'espacement en cascade (facultatif)&lt;br&gt;- Sélectionner trois sommets ou plus&lt;br&gt;- L'ordre de sélection des deux premiers sommets détermine la position de la ligne de base&lt;br&gt;- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -679,12 +679,12 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2131"/>
       <source>Create Arc Length Dimension</source>
-      <translation>Longueur d'arc</translation>
+      <translation>Créer la cote de la longueur de l'arc</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2132"/>
       <source>Create an arc length dimension:&lt;br&gt;- Select a single arc&lt;br&gt;- Click this tool</source>
-      <translation>Créez une cote de longueur d'arc :&lt;br&gt;- Sélectionnez un seul arc&lt;br&gt;- Cliquez sur cet outil</translation>
+      <translation>Créer une cote de la longueur de l'arc :&lt;br&gt;- Sélectionner un seul arc&lt;br&gt;- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -704,7 +704,7 @@
       <location filename="../../CommandExtensionDims.cpp" line="1385"/>
       <location filename="../../CommandExtensionDims.cpp" line="1507"/>
       <source>Create a sequence of aligned oblique dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The first two vertexes define the direction&lt;br&gt;- Click this tool</source>
-      <translation>Créez une séquence de cotes obliques alignées :&lt;br&gt;- Sélectionnez trois sommets ou plus&lt;br&gt;- Les deux premiers sommets définissent la direction&lt;br&gt;- Cliquez sur cet outil</translation>
+      <translation>Créer une séquence de cotes obliques alignées :&lt;br&gt;- Sélectionner trois sommets ou plus&lt;br&gt;- Les deux premiers sommets définissent la direction&lt;br&gt;- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -724,7 +724,7 @@
       <location filename="../../CommandExtensionDims.cpp" line="1739"/>
       <location filename="../../CommandExtensionDims.cpp" line="1869"/>
       <source>Create multiple evenly spaced oblique dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- The first two vertexes also define the direction&lt;br&gt;- Click this tool</source>
-      <translation>Créez plusieurs cotes obliques uniformément espacées à partir de la même ligne de base :&lt;br&gt;- Spécifiez l'espacement en cascade (facultatif)&lt;br&gt;- Sélectionnez trois ou plus de sommets&lt;br&gt;- L'ordre de sélection des deux premiers sommets détermine la position de la ligne de base&lt;br&gt;- Les deux premiers sommets définissent également la direction&lt;br&gt;- Cliquez sur cet outil</translation>
+      <translation>Créer plusieurs cotes obliques uniformément espacées à partir de la même ligne de base :&lt;br&gt;- Spécifier l'espacement en cascade (facultatif)&lt;br&gt;- Sélectionner trois ou plus de sommets&lt;br&gt;- L'ordre de sélection des deux premiers sommets détermine la position de la ligne de base&lt;br&gt;- Les deux premiers sommets définissent également la direction&lt;br&gt;- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -744,7 +744,7 @@
       <location filename="../../CommandExtensionDims.cpp" line="1295"/>
       <location filename="../../CommandExtensionDims.cpp" line="1500"/>
       <source>Create a sequence of aligned vertical dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</source>
-      <translation>Créez une séquence de cotes verticales alignées :&lt;br&gt;- Sélectionnez trois sommets ou plus&lt;br&gt;- Cliquez sur cet outil</translation>
+      <translation>Créer une séquence de cotes verticales alignées :&lt;br&gt;- Sélectionner trois sommets ou plus&lt;br&gt;- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -784,7 +784,7 @@
       <location filename="../../CommandExtensionDims.cpp" line="1642"/>
       <location filename="../../CommandExtensionDims.cpp" line="1860"/>
       <source>Create multiple evenly spaced vertical dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</source>
-      <translation>Créez plusieurs cotes verticales uniformément espacées à partir de la même ligne de base :&lt;br&gt;- Spécifiez l'espacement en cascade (facultatif)&lt;br&gt;- Sélectionnez trois sommets ou plus&lt;br&gt;- L'ordre de sélection des deux premiers sommets détermine la position de la ligne de base&lt;br&gt;- Cliquez sur cet outil</translation>
+      <translation>Créer plusieurs cotes verticales uniformément espacées à partir de la même ligne de base :&lt;br&gt;- Spécifier l'espacement en cascade (facultatif)&lt;br&gt;- Sélectionner trois sommets ou plus&lt;br&gt;- L'ordre de sélection des deux premiers sommets détermine la position de la ligne de base&lt;br&gt;- Cliquer sur cet outil</translation>
     </message>
   </context>
   <context>
@@ -1397,7 +1397,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="953"/>
       <source>Insert Extent Dimension</source>
-      <translation>Insérer une dimension d'extension</translation>
+      <translation>Insérer une cote d'extension</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1021"/>
@@ -2073,7 +2073,7 @@
     <message>
       <location filename="../../QGIViewDimension.cpp" line="691"/>
       <source>Drag Dimension</source>
-      <translation>Glisser la dimension</translation>
+      <translation>Faire glisser la cote</translation>
     </message>
     <message>
       <location filename="../../QGSPage.cpp" line="528"/>
@@ -2086,7 +2086,7 @@
       <translation>Créer une vue active</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="294"/>
+      <location filename="../../TaskCenterLine.cpp" line="298"/>
       <source>Create CenterLine</source>
       <translation>Créer une trait d'axe</translation>
     </message>
@@ -2136,12 +2136,12 @@
       <translation>Créer une vue de coupe</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="560"/>
+      <location filename="../../TaskComplexSection.cpp" line="559"/>
       <source>Create ComplexSection</source>
       <translation>Créer une vue en coupe complexe</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="643"/>
+      <location filename="../../TaskComplexSection.cpp" line="642"/>
       <location filename="../../TaskSectionView.cpp" line="561"/>
       <source>Edit SectionView</source>
       <translation>Éditer la vue en coupe</translation>
@@ -2575,27 +2575,27 @@
       <translation>Éditer la source du document</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="263"/>
+      <location filename="../../mrichtextedit.cpp" line="269"/>
       <source>Document source</source>
       <translation>Source du document</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="366"/>
+      <location filename="../../mrichtextedit.cpp" line="372"/>
       <source>Create a link</source>
       <translation>Créer un lien</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="367"/>
+      <location filename="../../mrichtextedit.cpp" line="373"/>
       <source>Link URL:</source>
       <translation>URL du lien :</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="696"/>
+      <location filename="../../mrichtextedit.cpp" line="702"/>
       <source>Select an image</source>
       <translation>Sélectionner une image</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="698"/>
+      <location filename="../../mrichtextedit.cpp" line="704"/>
       <source>JPEG (*.jpg);; GIF (*.gif);; PNG (*.png);; BMP (*.bmp);; All (*)</source>
       <translation>JPEG (*.jpg);; GIF (*.gif);; PNG (*.png);; BMP (*.bmp);; Tous (*)</translation>
     </message>
@@ -2698,7 +2698,7 @@
       <location filename="../../CommandCreateDims.cpp" line="1455"/>
       <location filename="../../Command.cpp" line="967"/>
       <source>Create a page first.</source>
-      <translation>Créez d'abord une page.</translation>
+      <translation>Créer d'abord une page.</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="167"/>
@@ -2869,7 +2869,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="235"/>
       <source>Selected edge is a BSpline and a radius can not be calculated.</source>
-      <translation>L'arête sélectionnée est une BSpline, un rayon ne peut pas être calculé.</translation>
+      <translation>L'arête sélectionnée est une B-spline et un rayon ne peut pas être calculé.</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="314"/>
@@ -2889,12 +2889,12 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="350"/>
       <source>Selected edge is a BSpline.  Diameter will be approximate. Continue?</source>
-      <translation>Le bord sélectionné est un BSpline. Le Diamètre sera approximatif. Continuer ?</translation>
+      <translation>L'arête sélectionnée est une B-spline. Le diamètre sera approximatif. Continuer ?</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="361"/>
       <source>Selected edge is a BSpline and a diameter can not be calculated.</source>
-      <translation>L'arête sélectionnée est une BSpline, un diamètre ne peut pas être calculé.</translation>
+      <translation>L'arête sélectionnée est une B-spline et un diamètre ne peut pas être calculé.</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="441"/>
@@ -3395,12 +3395,12 @@
       <translation>Impossible de trouver une visionneuse 3D</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="163"/>
+      <location filename="../../TaskCenterLine.cpp" line="167"/>
       <source>Create Center Line</source>
       <translation>Créer une ligne centrale</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="193"/>
+      <location filename="../../TaskCenterLine.cpp" line="197"/>
       <source>Edit Center Line</source>
       <translation>Modifier la ligne centrale</translation>
     </message>
@@ -3437,7 +3437,7 @@
       <translation>Direction de la vue dans les coordonnées de la vue de base</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="691"/>
+      <location filename="../../TaskComplexSection.cpp" line="690"/>
       <location filename="../../TaskSectionView.cpp" line="608"/>
       <source>Operation Failed</source>
       <translation>L'opération a échoué</translation>
@@ -3828,7 +3828,7 @@ it has a tile weld that would become broken.</source>
   <context>
     <name>TaskPojGroup</name>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="488"/>
+      <location filename="../../TaskComplexSection.cpp" line="487"/>
       <location filename="../../TaskSectionView.cpp" line="428"/>
       <source> updates pending</source>
       <translation> mises à jour en attente</translation>
@@ -4560,7 +4560,7 @@ when hatching a face with a PAT pattern</source>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="105"/>
       <source>Color of dimension lines and text.</source>
-      <translation>Couleur des lignes et du texte de cote.</translation>
+      <translation>Couleur des lignes de la cote et du texte.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="324"/>
@@ -4679,12 +4679,12 @@ when hatching a face with a PAT pattern</source>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="226"/>
       <source>Standard and Style</source>
-      <translation>Standard et Style</translation>
+      <translation>Standard et style</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="142"/>
       <source>Standard to be used for dimensional values</source>
-      <translation>Standard à utiliser pour les valeurs dimensionnelles</translation>
+      <translation>Standard à utiliser pour les valeurs des cotes</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="152"/>
@@ -4699,7 +4699,7 @@ when hatching a face with a PAT pattern</source>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="162"/>
       <source>ASME Inlined</source>
-      <translation>ASME Inline</translation>
+      <translation>En ligne ASME</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="167"/>
@@ -4744,7 +4744,7 @@ when hatching a face with a PAT pattern</source>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="486"/>
       <source>Controls the size of gap between dimension point and start of extension line for ISO dimensions.</source>
-      <translation>Contrôle la taille de l'écart entre le point de dimension et le début de la ligne d'extension pour les dimensions ISO.</translation>
+      <translation>Contrôle la taille de l'écart entre le point de la cote et le début de la ligne d'extension pour les cotes ISO.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="489"/>
@@ -4781,7 +4781,7 @@ Multiplicateur de la "Taille de la police"</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="123"/>
       <source>Diameter Symbol</source>
-      <translation>Symbole de diamètre</translation>
+      <translation>Symbole du diamètre</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="407"/>
@@ -4791,12 +4791,12 @@ Multiplicateur de la "Taille de la police"</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="281"/>
       <source>Arrow Style</source>
-      <translation>Style de flèches</translation>
+      <translation>Style des flèches</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="107"/>
       <source>Arrowhead style</source>
-      <translation>Style des flèches</translation>
+      <translation>Style des têtes des flèches</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="269"/>
@@ -4806,12 +4806,12 @@ Multiplicateur de la "Taille de la police"</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="64"/>
       <source>Arrowhead size</source>
-      <translation>Taille des flèches</translation>
+      <translation>Taille des têtes des flèches</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="517"/>
       <source>Controls the size of gap between dimension point and start of extension line for ASME dimensions.</source>
-      <translation>Contrôle la taille de l'écart entre le point de dimension et le début de la ligne d'extension pour les dimensions ASME.</translation>
+      <translation>Contrôle la taille de l'écart entre le point de la cote et le début de la ligne d'extension pour les cotes ASME.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="520"/>
@@ -4902,7 +4902,7 @@ pour les ProjectionGroups</translation>
       <source>* this font is also used for dimensions
    Changes have no effect on existing dimensions.</source>
       <translation>* cette police est également utilisée pour les cotes
-   Les modifications n'ont pas d'effet sur les dimensions existantes.</translation>
+   Les modifications n'ont pas d'effet sur les cotes existantes.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="221"/>
@@ -5857,7 +5857,7 @@ Do you want to continue?</source>
       <translation>Mettre à jour maintenant</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="690"/>
+      <location filename="../../TaskComplexSection.cpp" line="689"/>
       <source>Can not continue. Object * %1 or %2 not found.</source>
       <translation>Impossible de continuer. Objet * %1 ou %2 non trouvé.</translation>
     </message>
@@ -6528,7 +6528,7 @@ sera utilisé à la place de la valeur de la tolérance</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="202"/>
       <source>Flip Arrowheads</source>
-      <translation>Inverser les flèches</translation>
+      <translation>Inverser les têtes des flèches</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="209"/>
@@ -6553,7 +6553,7 @@ sera utilisé à la place de la valeur de la tolérance</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="271"/>
       <source>Drawing Style:</source>
-      <translation>Style de représentation:</translation>
+      <translation>Style de représentation :</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="278"/>
@@ -6573,7 +6573,7 @@ sera utilisé à la place de la valeur de la tolérance</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="292"/>
       <source>ASME Inlined</source>
-      <translation>ASME Inline</translation>
+      <translation>En ligne ASME</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="297"/>
@@ -6588,8 +6588,8 @@ sera utilisé à la place de la valeur de la tolérance</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="318"/>
       <source>Use override angles if checked. Use default angles if unchecked.</source>
-      <translation>Utilise les angles prioritaires si la case est cochée.
-Utilise les angles par défaut si cette case n'est pas cochée.</translation>
+      <translation>Utilise les angles définis par l'utilisateur si la case est cochée.
+Utilise des angles standard si cette case n'est pas cochée.</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="321"/>
@@ -6790,7 +6790,7 @@ Utilise les angles par défaut si cette case n'est pas cochée.</translation>
     <message>
       <location filename="../../TaskHatch.ui" line="159"/>
       <source>Svg Pattern Scale</source>
-      <translation>Échelle du motif Svg</translation>
+      <translation>Échelle du motif SVG</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="107"/>
@@ -6818,7 +6818,7 @@ Utilise les angles par défaut si cette case n'est pas cochée.</translation>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="93"/>
       <source>Discard Changes</source>
-      <translation>Annuler les Modifications</translation>
+      <translation>Abandonner les modifications</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="113"/>
@@ -8047,7 +8047,7 @@ en utilisant l'espacement X/Y donné</translation>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>TechDraw Dimensions</source>
-      <translation>Cotations TechDraw</translation>
+      <translation>Cotes TechDraw</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
@@ -8268,6 +8268,27 @@ en utilisant l'espacement X/Y donné</translation>
       <location filename="../../TaskDimRepair.cpp" line="82"/>
       <source>SubElement</source>
       <translation>Sous-élément</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDraw_AxoLengthDimension</name>
+    <message>
+      <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="50"/>
+      <source>Axonometric length dimension</source>
+      <translation type="unfinished">Axonometric length dimension</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="57"/>
+      <source>Create an axonometric length dimension&lt;br&gt;
+                - select first edge to define direction and length of the dimension line&lt;br&gt;
+                - select second edge to define the direction of the extension lines&lt;br&gt;
+                - optional: select two more vertexes which define the measurement instead of the length&lt;br&gt;
+                  of the first selected edge</source>
+      <translation type="unfinished">Create an axonometric length dimension&lt;br&gt;
+                - select first edge to define direction and length of the dimension line&lt;br&gt;
+                - select second edge to define the direction of the extension lines&lt;br&gt;
+                - optional: select two more vertexes which define the measurement instead of the length&lt;br&gt;
+                  of the first selected edge</translation>
     </message>
   </context>
 </TS>

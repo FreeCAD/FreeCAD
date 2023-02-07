@@ -119,12 +119,12 @@
     <message>
       <location filename="../../Command.cpp" line="545"/>
       <source>Vertically center-align</source>
-      <translation>Uspravno poravnaj po sredini</translation>
+      <translation>Vertikalno poravnaj po sredini</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="546"/>
       <source>Vertically center-align contents of selected cells</source>
-      <translation>Poravnaj uspravno po sredini sadržaj odabranih ćelija</translation>
+      <translation>Poravnaj vertikalno po sredini sadržaj odabranih ćelija</translation>
     </message>
   </context>
   <context>
@@ -319,7 +319,7 @@
     <message>
       <location filename="../../Command.cpp" line="566"/>
       <source>Vertically center cells</source>
-      <translation>Uspravno centriraj ćelije</translation>
+      <translation>Vertikalno centriraj ćelije</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="635"/>
@@ -603,7 +603,7 @@ switch the design configuration. The property will be created if not exist.</tra
     <message>
       <location filename="../../PropertiesDialog.ui" line="88"/>
       <source>Horizontal</source>
-      <translation>Vodoravno</translation>
+      <translation>Horizontalnost</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="95"/>
@@ -624,7 +624,7 @@ switch the design configuration. The property will be created if not exist.</tra
     <message>
       <location filename="../../PropertiesDialog.ui" line="141"/>
       <source>Vertical</source>
-      <translation>Uspravno</translation>
+      <translation>Vertikalnost</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="148"/>

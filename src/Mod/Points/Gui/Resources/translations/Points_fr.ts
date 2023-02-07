@@ -68,7 +68,7 @@
     <message>
       <location filename="../../Command.cpp" line="309"/>
       <source>Merge point clouds</source>
-      <translation>Fusionner les nuages de points</translation>
+      <translation>Fusionner des nuages de points</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="310"/>
@@ -106,13 +106,13 @@
     <message>
       <location filename="../../Command.cpp" line="352"/>
       <source>Structured point cloud</source>
-      <translation>Nuage de points structurés</translation>
+      <translation>Nuage structuré de points</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="353"/>
       <location filename="../../Command.cpp" line="355"/>
       <source>Convert points to structured point cloud</source>
-      <translation>Convertir les points en nuage de points structurés</translation>
+      <translation>Convertir les points en nuage structuré de points</translation>
     </message>
   </context>
   <context>

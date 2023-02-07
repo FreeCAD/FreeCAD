@@ -247,7 +247,7 @@ Cette commande ne fonctionne qu'avec un objet "Mesh", pas avec une face ou une s
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="87"/>
       <source>Spline Approximation</source>
-      <translation>Approximation de Spline</translation>
+      <translation>Approximation d'une spline</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="96"/>
@@ -473,12 +473,12 @@ Une valeur dans la plage de 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="393"/>
       <source>Whether meshes will be arranged preferably using quadrilateral faces</source>
-      <translation>Si les maillages seront arrangés de préférence en utilisant des faces quadrilatères</translation>
+      <translation>Si les maillages seront arrangés de préférence en utilisant des faces de quadrilatères</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="396"/>
       <source>Quad dominated</source>
-      <translation>Dominé par quadrilatères</translation>
+      <translation>Principalement des quadrilatères</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="422"/>

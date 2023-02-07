@@ -39,12 +39,12 @@
     <message>
       <location filename="../../Command.cpp" line="808"/>
       <source>No template</source>
-      <translation>Няма шаблону</translation>
+      <translation>Без шаблону</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="809"/>
       <source>No template available</source>
-      <translation>Няма даступнага шаблону</translation>
+      <translation>Без даступнага шаблону</translation>
     </message>
   </context>
   <context>
@@ -85,12 +85,12 @@
     <message>
       <location filename="../../Command.cpp" line="362"/>
       <source>No template</source>
-      <translation>Няма шаблону</translation>
+      <translation>Без шаблону</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="363"/>
       <source>No template available</source>
-      <translation>Няма даступнага шаблону</translation>
+      <translation>Без даступнага шаблону</translation>
     </message>
   </context>
   <context>
@@ -173,7 +173,7 @@
       <location filename="../../Command.cpp" line="324"/>
       <location filename="../../Command.cpp" line="770"/>
       <source>No perspective camera</source>
-      <translation>Няма перспектыўнага здымка камеры</translation>
+      <translation>Без перспектыўнага здымка камеры</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="88"/>
@@ -203,7 +203,7 @@ Do you want to continue?</source>
       <location filename="../../Command.cpp" line="339"/>
       <location filename="../../Command.cpp" line="785"/>
       <source>No template</source>
-      <translation>Няма шаблону</translation>
+      <translation>Без шаблону</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="340"/>
@@ -263,7 +263,7 @@ Do you want to continue?</source>
       <location filename="../../Command.cpp" line="448"/>
       <location filename="../../Command.cpp" line="460"/>
       <source>No Raytracing project to insert</source>
-      <translation>Няма праекта Трасіроўкі прамянёў для ўстаўкі</translation>
+      <translation>Без праекта Трасіроўкі прамянёў для ўстаўкі</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="449"/>
@@ -454,7 +454,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="278"/>
       <source>Max mesh deviation:</source>
-      <translation>Найбольшая адхіленне паліганальнай сеткі:</translation>
+      <translation>Найбольшае адхіленне паліганальнай сеткі:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="306"/>

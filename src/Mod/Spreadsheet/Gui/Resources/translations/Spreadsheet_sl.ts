@@ -918,17 +918,17 @@ Ali želite nadaljevati?</translation>
     <message>
       <location filename="../../DlgSettings.ui" line="26"/>
       <source>Display Settings</source>
-      <translation type="unfinished">Display Settings</translation>
+      <translation>Nastavitve prikaza</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="32"/>
       <source>If checked, use the custom presentation to display cell string.</source>
-      <translation type="unfinished">If checked, use the custom presentation to display cell string.</translation>
+      <translation>Če je označeno, uporabi za prikazovanje nizov polj predstavitev po meri.</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="35"/>
       <source>Show alias in cell with format</source>
-      <translation type="unfinished">Show alias in cell with format</translation>
+      <translation>Prikaži vzdevek v polju z oblikovanjem</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="64"/>
@@ -937,11 +937,11 @@ Defaults to: %V = %A
 
 %A - alias name
 %V - cell value</source>
-      <translation type="unfinished">The format of the custom cell string presentation.
-Defaults to: %V = %A
+      <translation>Oblika prikazovanja niza polja po meri.
+Privzeto: %V = %A
 
-%A - alias name
-%V - cell value</translation>
+%A - vzdevek
+%V - vrednost polja</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="84"/>

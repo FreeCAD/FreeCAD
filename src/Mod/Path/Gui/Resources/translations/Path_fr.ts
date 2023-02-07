@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="46"/>
       <source>Path</source>
-      <translation>Trajectoire</translation>
+      <translation>Parcours</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="47"/>
@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="128"/>
       <source>Path</source>
-      <translation>Trajectoire</translation>
+      <translation>Parcours</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="129"/>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../../Command.cpp" line="218"/>
       <source>Path</source>
-      <translation>Trajectoire</translation>
+      <translation>Parcours</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="219"/>
@@ -60,7 +60,7 @@
     <message>
       <location filename="../../Command.cpp" line="270"/>
       <source>Path</source>
-      <translation>Trajectoire</translation>
+      <translation>Parcours</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="271"/>
@@ -78,12 +78,12 @@
     <message>
       <location filename="../../Command.cpp" line="97"/>
       <source>Create Path Area View</source>
-      <translation>Créer une vue de la zone de la trajectoire</translation>
+      <translation>Créer une vue de la surface</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="106"/>
       <source>Create Path Area</source>
-      <translation>Créer une zone de la trajectoire</translation>
+      <translation>Créer une surface</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="194"/>
@@ -346,7 +346,7 @@
     <message>
       <location filename="../panels/DlgToolEdit.ui" line="14"/>
       <source>Tool Editor</source>
-      <translation>Éditeur d'outil</translation>
+      <translation>Éditeur d'outils</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="14"/>
@@ -2274,7 +2274,7 @@
     <message>
       <location filename="../preferences/PathJob.ui" line="44"/>
       <source>Path</source>
-      <translation>Trajectoire</translation>
+      <translation>Parcours</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="51"/>
@@ -2755,7 +2755,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="106"/>
       <source>Extend In:</source>
-      <translation>Étendre dans :</translation>
+      <translation>Plage d'entrée :</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="127"/>
@@ -2775,7 +2775,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="186"/>
       <source>Extend Out:</source>
-      <translation>Étendre :</translation>
+      <translation>Plage de sortie :</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="207"/>
@@ -3144,7 +3144,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="87"/>
       <source>Update the path with the removed and reordered items.</source>
-      <translation>Mettre à jour la trajectoire avec les éléments supprimés et réorganisés.</translation>
+      <translation>Mettre à jour le parcours avec les éléments supprimés et réorganisés.</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="90"/>
@@ -3258,7 +3258,7 @@ p, li { white-space: pre-wrap; }
       <location filename="../panels/TaskPathCamoticsSim.ui" line="14"/>
       <location filename="../panels/TaskPathSimulator.ui" line="14"/>
       <source>Path Simulator</source>
-      <translation>Simulateur de trajectoire</translation>
+      <translation>Simulateur de parcours</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="35"/>
@@ -3396,7 +3396,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="99"/>
       <source>path</source>
-      <translation>trajectoire</translation>
+      <translation>parcours</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="106"/>

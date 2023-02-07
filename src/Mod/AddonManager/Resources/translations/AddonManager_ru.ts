@@ -262,7 +262,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../AddonManager.ui" line="71"/>
       <source>Pause cache update</source>
-      <translation>Приостановить обновление кэша</translation>
+      <translation>Остановить обновление кэша</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="103"/>
@@ -1336,7 +1336,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="86"/>
       <source>Are you sure you want to uninstall {}?</source>
-      <translation type="unfinished">Are you sure you want to uninstall {}?</translation>
+      <translation>Вы уверены, что хотите удалить {}?</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="94"/>

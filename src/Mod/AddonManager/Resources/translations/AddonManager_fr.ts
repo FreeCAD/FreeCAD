@@ -1972,7 +1972,7 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
     <message>
       <location filename="../../package_list.py" line="401"/>
       <source>Tags</source>
-      <translation>Mots-Clés</translation>
+      <translation>Étiquettes</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="421"/>
@@ -2052,7 +2052,7 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
     <message>
       <location filename="../../package_list.py" line="791"/>
       <source>Status:</source>
-      <translation>État:</translation>
+      <translation>État :</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="794"/>

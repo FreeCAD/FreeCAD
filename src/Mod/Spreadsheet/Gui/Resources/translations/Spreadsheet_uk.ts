@@ -919,7 +919,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../DlgSettings.ui" line="26"/>
       <source>Display Settings</source>
-      <translation type="unfinished">Display Settings</translation>
+      <translation>Налаштування відображення</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="32"/>

@@ -285,7 +285,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="91"/>
       <source>If this is checked, the latest posts from the FreeCAD forum will be displayed on the Activity tab</source>
-      <translation>Калі птушка ўключана, апошнія паведамленні з форума FreeCAD будуць адлюстраваныя на ўкладцы Актыўнасць</translation>
+      <translation>Калі птушка, апошнія паведамленні з форума FreeCAD будуць адлюстраваныя на ўкладцы Актыўнасць</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="110"/>
@@ -362,7 +362,7 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="319"/>
       <source>If this is checked and a style sheet is specified in General preferences, it will be used and override the colors below</source>
-      <translation>Калі птушка ўключана, і ў агульных перавагах паказана табліца стыляў, яна будзе ўжыта і колеры будуць пераназначаныя, названыя ніжэй</translation>
+      <translation>Калі птушка, і ў агульных перавагах паказана табліца стыляў, яна будзе ўжыта і колеры будуць пераназначаныя, названыя ніжэй</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="338"/>
@@ -427,7 +427,7 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="523"/>
       <source>Font family</source>
-      <translation type="unfinished">Font family</translation>
+      <translation>Сямейства шрыфтоў</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="532"/>
@@ -457,7 +457,7 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="579"/>
       <source>If this is selected, the 'New File' icon shows a gradient icon instead of the normal icon</source>
-      <translation>Калі птушка ўключана, на гузіку 'Новы файл' будзе адлюстраваны гузік градыенту замест звычайнага гузіка</translation>
+      <translation>Калі птушка, на гузіку 'Новы файл' будзе адлюстраваны гузік градыенту замест звычайнага гузіка</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="601"/>
@@ -472,7 +472,7 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="614"/>
       <source>If checked, will automatically close the Start page when FreeCAD launches</source>
-      <translation>Калі птушка ўключана, пачатковая старонка будзе аўтаматычна зачынена пры запуску FreeCAD</translation>
+      <translation>Калі птушка, пачатковая старонка будзе аўтаматычна зачынена пры запуску FreeCAD</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="633"/>

@@ -119,12 +119,12 @@
     <message>
       <location filename="../../Command.cpp" line="545"/>
       <source>Vertically center-align</source>
-      <translation>Усправно поравнај по средини</translation>
+      <translation>Вертикално поравнај по средини</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="546"/>
       <source>Vertically center-align contents of selected cells</source>
-      <translation>Поравнај усправно по средини cадржај одабраних ћелија</translation>
+      <translation>Поравнај вертикално по средини cадржај одабраних ћелија</translation>
     </message>
   </context>
   <context>
@@ -319,7 +319,7 @@
     <message>
       <location filename="../../Command.cpp" line="566"/>
       <source>Vertically center cells</source>
-      <translation>Усправно центрирај ћелије</translation>
+      <translation>Вертикално центрирај ћелије</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="635"/>
@@ -603,7 +603,7 @@ switch the design configuration. The property will be created if not exist.</tra
     <message>
       <location filename="../../PropertiesDialog.ui" line="88"/>
       <source>Horizontal</source>
-      <translation>Водоравно</translation>
+      <translation>Хоризонталност</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="95"/>
@@ -624,7 +624,7 @@ switch the design configuration. The property will be created if not exist.</tra
     <message>
       <location filename="../../PropertiesDialog.ui" line="141"/>
       <source>Vertical</source>
-      <translation>Усправно</translation>
+      <translation>Вертикалност</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="148"/>

@@ -131,7 +131,7 @@
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="24"/>
       <source>Solids</source>
-      <translation>Тела</translation>
+      <translation>Пуна тела</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="34"/>
@@ -579,7 +579,7 @@
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="60"/>
       <source>Use Existing Solid</source>
-      <translation>Користи постојеће тело</translation>
+      <translation>Користи постојеће пуно тело</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="87"/>
@@ -1967,7 +1967,7 @@
     <message>
       <location filename="../panels/SetupGlobal.ui" line="178"/>
       <source>Horizontal</source>
-      <translation>Водоравно</translation>
+      <translation>Хоризонталност</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="191"/>
@@ -1977,7 +1977,7 @@
     <message>
       <location filename="../panels/SetupGlobal.ui" line="198"/>
       <source>Vertical</source>
-      <translation>Усправно</translation>
+      <translation>Вертикалност</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="211"/>
@@ -3614,7 +3614,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="456"/>
       <source>Use Existing Solid</source>
-      <translation>Користи постојеће тело</translation>
+      <translation>Користи постојеће пуно тело</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="464"/>
@@ -3888,7 +3888,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1283"/>
       <source>Horizontal</source>
-      <translation>Водоравно</translation>
+      <translation>Хоризонталност</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1296"/>
@@ -3898,7 +3898,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1303"/>
       <source>Vertical</source>
-      <translation>Усправно</translation>
+      <translation>Вертикалност</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1316"/>

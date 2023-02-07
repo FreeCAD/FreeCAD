@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="46"/>
       <source>Path</source>
-      <translation>Траектория</translation>
+      <translation>Path</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="47"/>
@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="128"/>
       <source>Path</source>
-      <translation>Траектория</translation>
+      <translation>Path</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="129"/>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../../Command.cpp" line="218"/>
       <source>Path</source>
-      <translation>Траектория</translation>
+      <translation>Path</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="219"/>
@@ -60,7 +60,7 @@
     <message>
       <location filename="../../Command.cpp" line="270"/>
       <source>Path</source>
-      <translation>Траектория</translation>
+      <translation>Path</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="271"/>
@@ -2274,7 +2274,7 @@
     <message>
       <location filename="../preferences/PathJob.ui" line="44"/>
       <source>Path</source>
-      <translation>Траектория</translation>
+      <translation>Path</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="51"/>

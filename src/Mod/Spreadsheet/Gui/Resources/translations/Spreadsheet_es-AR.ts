@@ -922,17 +922,17 @@ Do you want to continue?</source>
     <message>
       <location filename="../../DlgSettings.ui" line="26"/>
       <source>Display Settings</source>
-      <translation type="unfinished">Display Settings</translation>
+      <translation>Mostrar Ajustes</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="32"/>
       <source>If checked, use the custom presentation to display cell string.</source>
-      <translation type="unfinished">If checked, use the custom presentation to display cell string.</translation>
+      <translation>Si está marcado, utilice la presentación personalizada para mostrar la cadena de celda.</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="35"/>
       <source>Show alias in cell with format</source>
-      <translation type="unfinished">Show alias in cell with format</translation>
+      <translation>Mostrar alias en celda con formato</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="64"/>
@@ -941,11 +941,11 @@ Defaults to: %V = %A
 
 %A - alias name
 %V - cell value</source>
-      <translation type="unfinished">The format of the custom cell string presentation.
-Defaults to: %V = %A
+      <translation>El formato de la presentación de la cadena de celda personalizada.
+Por defecto: %V = %A
 
-%A - alias name
-%V - cell value</translation>
+%A - nombre del alias
+%V - valor de celda</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="84"/>
@@ -1185,7 +1185,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../../App/Spreadsheet_legacy.py" line="753"/>
       <source>Apply the changes to the current cell</source>
-      <translation type="unfinished">Apply the changes to the current cell</translation>
+      <translation>Aplica los cambios a la celda actual</translation>
     </message>
     <message>
       <location filename="../../../App/Spreadsheet_legacy.py" line="755"/>
@@ -1195,7 +1195,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../../App/Spreadsheet_legacy.py" line="757"/>
       <source>Deletes the contents of the current cell</source>
-      <translation type="unfinished">Deletes the contents of the current cell</translation>
+      <translation>Elimina el contenido de la celda actual</translation>
     </message>
     <message>
       <location filename="../../../App/Spreadsheet_legacy.py" line="759"/>
@@ -1205,7 +1205,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../../App/Spreadsheet_legacy.py" line="761"/>
       <source>Updates the values handled by controllers</source>
-      <translation type="unfinished">Updates the values handled by controllers</translation>
+      <translation>Actualiza los valores manejados por los controladores</translation>
     </message>
     <message>
       <location filename="../../../App/Spreadsheet_legacy.py" line="907"/>
@@ -1215,13 +1215,13 @@ Defaults to: %V = %A
     <message>
       <location filename="../../../App/Spreadsheet_legacy.py" line="933"/>
       <source>Add controller</source>
-      <translation type="unfinished">Add controller</translation>
+      <translation>Añadir controlador</translation>
     </message>
     <message>
       <location filename="../../../App/Spreadsheet_legacy.py" line="959"/>
       <location filename="../../../App/Spreadsheet_legacy.py" line="973"/>
       <source>Add property controller</source>
-      <translation type="unfinished">Add property controller</translation>
+      <translation>Añadir controlador de propiedad</translation>
     </message>
   </context>
   <context>
@@ -1234,7 +1234,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../../App/Spreadsheet_legacy.py" line="905"/>
       <source>Adds a spreadsheet object to the active document</source>
-      <translation type="unfinished">Adds a spreadsheet object to the active document</translation>
+      <translation>Añade un objeto de hoja de cálculo al documento activo</translation>
     </message>
   </context>
   <context>
@@ -1242,12 +1242,12 @@ Defaults to: %V = %A
     <message>
       <location filename="../../../App/Spreadsheet_legacy.py" line="919"/>
       <source>Add controller</source>
-      <translation type="unfinished">Add controller</translation>
+      <translation>Añadir controlador</translation>
     </message>
     <message>
       <location filename="../../../App/Spreadsheet_legacy.py" line="922"/>
       <source>Adds a cell controller to a selected spreadsheet</source>
-      <translation type="unfinished">Adds a cell controller to a selected spreadsheet</translation>
+      <translation>Añade un controlador de celda a la hoja de cálculo seleccionada</translation>
     </message>
   </context>
   <context>
@@ -1255,12 +1255,12 @@ Defaults to: %V = %A
     <message>
       <location filename="../../../App/Spreadsheet_legacy.py" line="944"/>
       <source>Add property controller</source>
-      <translation type="unfinished">Add property controller</translation>
+      <translation>Añadir controlador de propiedad</translation>
     </message>
     <message>
       <location filename="../../../App/Spreadsheet_legacy.py" line="947"/>
       <source>Adds a property controller to a selected spreadsheet</source>
-      <translation type="unfinished">Adds a property controller to a selected spreadsheet</translation>
+      <translation>Añade un controlador de propiedad a la hoja de cálculo seleccionada</translation>
     </message>
   </context>
   <context>

@@ -917,7 +917,7 @@ Möchten Sie fortfahren?</translation>
     <message>
       <location filename="../../DlgSettings.ui" line="26"/>
       <source>Display Settings</source>
-      <translation type="unfinished">Display Settings</translation>
+      <translation>Anzeigeeinstellungen</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="32"/>
@@ -927,7 +927,7 @@ Möchten Sie fortfahren?</translation>
     <message>
       <location filename="../../DlgSettings.ui" line="35"/>
       <source>Show alias in cell with format</source>
-      <translation type="unfinished">Show alias in cell with format</translation>
+      <translation>Alias in Zelle mit Format anzeigen</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="64"/>

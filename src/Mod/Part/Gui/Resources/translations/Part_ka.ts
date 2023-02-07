@@ -1534,8 +1534,8 @@ into its X, Y, and Z components.</source>
     </message>
     <message>
       <location filename="../../Command.cpp" line="686"/>
-      <source>Shape splitting tools. Compsolid creation tools. OCC 6.9.0 or later is required.</source>
-      <translation>მოხაზულობის დაყოფის ხელსაწყოები. Compsolid-ის შექმნის ხელსაწყოები. საჭიროა OCC-ის ვერსია 6.9.0 ან უფრო ახალი.</translation>
+      <source>Shape splitting and Compsolid creation tools.</source>
+      <translation type="unfinished">Shape splitting and Compsolid creation tools.</translation>
     </message>
   </context>
   <context>

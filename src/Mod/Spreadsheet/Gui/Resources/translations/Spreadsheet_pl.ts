@@ -919,17 +919,17 @@ Czy chcesz kontynuować?</translation>
     <message>
       <location filename="../../DlgSettings.ui" line="26"/>
       <source>Display Settings</source>
-      <translation type="unfinished">Display Settings</translation>
+      <translation>Ustawienia wyświetlania</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="32"/>
       <source>If checked, use the custom presentation to display cell string.</source>
-      <translation type="unfinished">If checked, use the custom presentation to display cell string.</translation>
+      <translation>Jeśli opcja jest zaznaczona, do wyświetlania ciągu komórek użyj swoich ustawień prezentacji.</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="35"/>
       <source>Show alias in cell with format</source>
-      <translation type="unfinished">Show alias in cell with format</translation>
+      <translation>Pokaż alias w komórce sformatowanej</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="64"/>
@@ -938,11 +938,11 @@ Defaults to: %V = %A
 
 %A - alias name
 %V - cell value</source>
-      <translation type="unfinished">The format of the custom cell string presentation.
-Defaults to: %V = %A
+      <translation>Format ustawień ciągów komórek dla prezentacji użytkownika.
+Domyślnie %V = %A
 
-%A - alias name
-%V - cell value</translation>
+%A - nazwa aliasu
+%V - wartość komórki</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="84"/>

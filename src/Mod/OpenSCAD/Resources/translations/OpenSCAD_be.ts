@@ -6,7 +6,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="14"/>
       <source>General settings</source>
-      <translation type="unfinished">General settings</translation>
+      <translation>Агульныя налады</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="35"/>
@@ -36,7 +36,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="99"/>
       <source>If this is checked, Features will claim their children in the tree view</source>
-      <translation>Калі птушка ўключана, Аб'екты будуць паказваць іх дачынныя аб'екты ў дрэве прагляду</translation>
+      <translation>Калі птушка, Аб'екты будуць паказваць іх дачынныя аб'екты ў дрэве прагляду</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="102"/>
@@ -46,7 +46,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="119"/>
       <source>If this is checked, Multmatrix Object will be Parametric</source>
-      <translation>Калі птушка ўключана, аб'ект Multmatrix будзе Параметрычным</translation>
+      <translation>Калі птушка, аб'ект Multmatrix будзе Параметрычным</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="122"/>

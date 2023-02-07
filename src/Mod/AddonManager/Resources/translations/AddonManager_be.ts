@@ -1242,7 +1242,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManager.py" line="774"/>
       <source>No updates available</source>
-      <translation>Няма даступных абнаўленняў</translation>
+      <translation>Даступныя абнаўленні адсутнічаюць</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="911"/>
@@ -1884,7 +1884,7 @@ installed addons will be checked for available updates
       <location filename="../../addonmanager_devmode.py" line="593"/>
       <source>No Vermin, cancelling operation.</source>
       <comment>NOTE: Vermin is a Python package and proper noun - do not translate</comment>
-      <translation>Няма Vermin, скасаванне аперацыі.</translation>
+      <translation>Vermin адсутнічае, скасаванне аперацыі.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="600"/>
@@ -2037,7 +2037,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_list.py" line="782"/>
       <source>Workbenches</source>
-      <translation type="unfinished">Workbenches</translation>
+      <translation>Варштаты</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="785"/>
@@ -2413,7 +2413,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_git.py" line="124"/>
       <source>Backing up the original directory and re-cloning</source>
-      <translation>Рэзервовае капіяванне зыходнага каталога і паўторнае кланаванне</translation>
+      <translation>Рэзервовае капіраванне зыходнага каталога і паўторнае кланаванне</translation>
     </message>
     <message>
       <location filename="../../addonmanager_git.py" line="233"/>

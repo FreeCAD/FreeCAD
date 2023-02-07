@@ -49,13 +49,13 @@
     <message>
       <location filename="../../Command.cpp" line="1602"/>
       <source>Regular solid...</source>
-      <translation>Правилно тело...</translation>
+      <translation>Правилно пуно тело...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1603"/>
       <location filename="../../Command.cpp" line="1605"/>
       <source>Builds a regular solid</source>
-      <translation>Прави правилно тело</translation>
+      <translation>Прави правилно пуно тело</translation>
     </message>
   </context>
   <context>
@@ -152,13 +152,13 @@
     <message>
       <location filename="../../Command.cpp" line="1360"/>
       <source>Check solid mesh</source>
-      <translation>Провери мрежу тела</translation>
+      <translation>Провери мрежу пуног тела</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1361"/>
       <location filename="../../Command.cpp" line="1363"/>
       <source>Checks whether the mesh is a solid</source>
-      <translation>Проверава да ли је мрежа тело</translation>
+      <translation>Проверава да ли је мрежа пуно тело</translation>
     </message>
   </context>
   <context>
@@ -1273,12 +1273,12 @@ Please run the command to repair folds first</source>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="14"/>
       <source>Regular Solid</source>
-      <translation>Правилно тело</translation>
+      <translation>Правилно пуно тело</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="29"/>
       <source>Solid:</source>
-      <translation>Тело:</translation>
+      <translation>Пуно тело:</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="42"/>
@@ -2329,17 +2329,17 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Command.cpp" line="1374"/>
       <source>The mesh '%1' is not a solid.</source>
-      <translation>Мрежа '%1' није тело.</translation>
+      <translation>Мрежа '%1' није пуно тело.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1377"/>
       <source>The mesh '%1' is a solid.</source>
-      <translation>Мрежа '%1' је тело.</translation>
+      <translation>Мрежа '%1' је пуно тело.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1379"/>
       <source>Solid Mesh</source>
-      <translation>Мрежа тела</translation>
+      <translation>Мрежа пуног тела</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1582"/>
