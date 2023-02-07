@@ -51,7 +51,7 @@ from femtools import membertools
 from .equations import elasticity
 from .equations import electricforce
 from .equations import electrostatic_writer as ES_writer
-from .equations import flow
+from .equations import flow_writer
 from .equations import flux_writer
 from .equations import heat_writer
 
@@ -416,7 +416,7 @@ class Writer(object):
                     activeIn = self.getAllBodies()
                 solverSection = self._getElasticitySolver(equation)
                 for body in activeIn:
-                    if not self._isBodyMaterialFluid(body):
+                    if not self.isBodyMaterialFluid(body):
                         self._addSolver(body, solverSection)
                         self._handleElasticityEquation(activeIn, equation)
         if activeIn:
@@ -479,9 +479,9 @@ class Writer(object):
     def _handleElasticityEquation(self, bodies, equation):
         for b in bodies:
             # not for bodies with fluid material
-            if not self._isBodyMaterialFluid(b):
+            if not self.isBodyMaterialFluid(b):
                 if equation.PlaneStress:
-                    self._equation(b, "Plane Stress", equation.PlaneStress)
+                    self.equation(b, "Plane Stress", equation.PlaneStress)
 
     def _updateElasticitySolver(self, equation):
         # updates older Elasticity equations
@@ -793,7 +793,7 @@ class Writer(object):
             )
             for name in (n for n in refs if n in bodies):
                 # don't evaluate fluid material
-                if self._isBodyMaterialFluid(name):
+                if self.isBodyMaterialFluid(name):
                     break
                 if "YoungsModulus" not in m:
                     Console.PrintMessage("m: {}\n".format(m))
@@ -895,6 +895,7 @@ class Writer(object):
     # Flow
 
     def _handleFlow(self):
+        FlowW = flow_writer.Flowwriter(self, self.solver)
         activeIn = []
         for equation in self.solver.Group:
             if femutils.is_of_type(equation, "Fem::EquationElmerFlow"):
@@ -906,240 +907,17 @@ class Writer(object):
                     activeIn = equation.References[0][1]
                 else:
                     activeIn = self.getAllBodies()
-                solverSection = self._getFlowSolver(equation)
+                solverSection = FlowW.getFlowSolver(equation)
                 for body in activeIn:
-                    if self._isBodyMaterialFluid(body):
+                    if self.isBodyMaterialFluid(body):
                         self._addSolver(body, solverSection)
-                        self._handleFlowEquation(activeIn, equation)
+                        FlowW.handleFlowEquation(activeIn, equation)
         if activeIn:
-            self._handleFlowConstants()
-            self._handleFlowBndConditions()
-            self._handleFlowInitialPressure(activeIn)
-            self._handleFlowInitialVelocity(activeIn)
-            self._handleFlowMaterial(activeIn)
-
-    def _getFlowSolver(self, equation):
-        # check if we need to update the equation
-        self._updateFlowSolver(equation)
-        # output the equation parameters
-        s = self.createNonlinearSolver(equation)
-        s["Equation"] = "Navier-Stokes"
-        s["Procedure"] = sifio.FileAttr("FlowSolve/FlowSolver")
-        if equation.DivDiscretization is True:
-            s["Div Discretization"] = equation.DivDiscretization
-        s["Exec Solver"] = "Always"
-        if equation.FlowModel != "Full":
-            s["Flow Model"] = equation.FlowModel
-        if equation.GradpDiscretization is True:
-            s["Gradp Discretization"] = equation.GradpDiscretization
-        s["Stabilize"] = equation.Stabilize
-        s["Optimize Bandwidth"] = True
-        if equation.Variable != "Flow Solution[Velocity:3 Pressure:1]":
-            s["Variable"] = equation.Variable
-        return s
-
-    def _handleFlowConstants(self):
-        gravity = self.convert(self.constsdef["Gravity"], "L/T^2")
-        self.constant("Gravity", (0.0, -1.0, 0.0, gravity))
-
-    def _updateFlowSolver(self, equation):
-        # updates older Flow equations
-        if not hasattr(equation, "Convection"):
-            equation.addProperty(
-                "App::PropertyEnumeration",
-                "Convection",
-                "Equation",
-                "Type of convection to be used"
-            )
-            equation.Convection = flow.CONVECTION_TYPE
-            equation.Convection = "Computed"
-        if not hasattr(equation, "DivDiscretization"):
-            equation.addProperty(
-                "App::PropertyBool",
-                "DivDiscretization",
-                "Flow",
-                (
-                    "Set to true for incompressible flow for more stable\n"
-                    "discretization when Reynolds number increases"
-                )
-            )
-        if not hasattr(equation, "FlowModel"):
-            equation.addProperty(
-                "App::PropertyEnumeration",
-                "FlowModel",
-                "Flow",
-                "Flow model to be used"
-            )
-            equation.FlowModel = flow.FLOW_MODEL
-            equation.FlowModel = "Full"
-        if not hasattr(equation, "GradpDiscretization"):
-            equation.addProperty(
-                "App::PropertyBool",
-                "GradpDiscretization",
-                "Flow",
-                (
-                    "If true pressure Dirichlet boundary conditions can be used.\n"
-                    "Also mass flux is available as a natural boundary condition."
-                )
-            )
-        if not hasattr(equation, "MagneticInduction"):
-            equation.addProperty(
-                "App::PropertyBool",
-                "MagneticInduction",
-                "Equation",
-                (
-                    "Magnetic induction equation will be solved\n"
-                    "along with the Navier-Stokes equations"
-                )
-            )
-        if not hasattr(equation, "Variable"):
-            equation.addProperty(
-                "App::PropertyString",
-                "Variable",
-                "Flow",
-                "Only for a 2D model change the '3' to '2'"
-            )
-            equation.Variable = "Flow Solution[Velocity:3 Pressure:1]"
-
-    def _handleFlowMaterial(self, bodies):
-        tempObj = self.getSingleMember("Fem::ConstraintInitialTemperature")
-        if tempObj is not None:
-            refTemp = self.getFromUi(tempObj.initialTemperature, "K", "O")
-            for name in bodies:
-                self.material(name, "Reference Temperature", refTemp)
-        for obj in self.getMember("App::MaterialObject"):
-            m = obj.Material
-            refs = (
-                obj.References[0][1]
-                if obj.References
-                else self.getAllBodies())
-            for name in (n for n in refs if n in bodies):
-                self.material(name, "Name", m["Name"])
-                if "Density" in m:
-                    self.material(
-                        name, "Density",
-                        self.getDensity(m)
-                    )
-                if "ThermalConductivity" in m:
-                    self.material(
-                        name, "Heat Conductivity",
-                        self.convert(m["ThermalConductivity"], "M*L/(T^3*O)")
-                    )
-                if "KinematicViscosity" in m:
-                    density = self.getDensity(m)
-                    kViscosity = self.convert(m["KinematicViscosity"], "L^2/T")
-                    self.material(
-                        name, "Viscosity", kViscosity * density)
-                if "ThermalExpansionCoefficient" in m:
-                    value = self.convert(m["ThermalExpansionCoefficient"], "O^-1")
-                    if value > 0:
-                        self.material(
-                            name, "Heat expansion Coefficient", value)
-                if "ReferencePressure" in m:
-                    pressure = self.convert(m["ReferencePressure"], "M/(L*T^2)")
-                    self.material(name, "Reference Pressure", pressure)
-                if "SpecificHeatRatio" in m:
-                    self.material(
-                        name, "Specific Heat Ratio",
-                        float(m["SpecificHeatRatio"])
-                    )
-                if "CompressibilityModel" in m:
-                    self.material(
-                        name, "Compressibility Model",
-                        m["CompressibilityModel"])
-
-    def _outputInitialPressure(self, obj, name):
-        # initial pressure only makes sense for fluid material
-        if self._isBodyMaterialFluid(name):
-            pressure = float(obj.Pressure.getValueAs("Pa"))
-            self.initial(name, "Pressure", pressure)
-
-    def _handleFlowInitialPressure(self, bodies):
-        initialPressures = self.getMember("Fem::ConstraintInitialPressure")
-        for obj in initialPressures:
-            if obj.References:
-                for name in obj.References[0][1]:
-                    self._outputInitialPressure(obj, name)
-                self.handled(obj)
-            else:
-                # if there is only one initial pressure without a reference
-                # add it to all fluid bodies
-                if len(initialPressures) == 1:
-                    for name in bodies:
-                        self._outputInitialPressure(obj, name)
-                else:
-                    raise WriteError(
-                        "Several initial pressures found without reference to a body.\n"
-                        "Please set a body for each initial pressure."
-                    )
-            self.handled(obj)
-
-    def _outputInitialVelocity(self, obj, name):
-        # flow only makes sense for fluid material
-        if self._isBodyMaterialFluid(name):
-            if obj.VelocityXEnabled:
-                velocity = self.getFromUi(obj.VelocityX, "m/s", "L/T")
-                self.initial(name, "Velocity 1", velocity)
-            if obj.VelocityYEnabled:
-                velocity = self.getFromUi(obj.VelocityY, "m/s", "L/T")
-                self.initial(name, "Velocity 2", velocity)
-            if obj.VelocityZEnabled:
-                velocity = self.getFromUi(obj.VelocityZ, "m/s", "L/T")
-                self.initial(name, "Velocity 3", velocity)
-
-    def _handleFlowInitialVelocity(self, bodies):
-        initialVelocities = self.getMember("Fem::ConstraintInitialFlowVelocity")
-        for obj in initialVelocities:
-            if obj.References:
-                for name in obj.References[0][1]:
-                    self._outputInitialVelocity(obj, name)
-                self.handled(obj)
-            else:
-                # if there is only one initial velocity without a reference
-                # add it to all fluid bodies
-                if len(initialVelocities) == 1:
-                    for name in bodies:
-                        self._outputInitialVelocity(obj, name)
-                else:
-                    raise WriteError(
-                        "Several initial velocities found without reference to a body.\n"
-                        "Please set a body for each initial velocity."
-                    )
-            self.handled(obj)
-
-    def _handleFlowBndConditions(self):
-        for obj in self.getMember("Fem::ConstraintFlowVelocity"):
-            if obj.References:
-                for name in obj.References[0][1]:
-                    if obj.VelocityXEnabled:
-                        velocity = self.getFromUi(obj.VelocityX, "m/s", "L/T")
-                        self.boundary(name, "Velocity 1", velocity)
-                    if obj.VelocityYEnabled:
-                        velocity = self.getFromUi(obj.VelocityY, "m/s", "L/T")
-                        self.boundary(name, "Velocity 2", velocity)
-                    if obj.VelocityZEnabled:
-                        velocity = self.getFromUi(obj.VelocityZ, "m/s", "L/T")
-                        self.boundary(name, "Velocity 3", velocity)
-                    if obj.NormalToBoundary:
-                        self.boundary(name, "Normal-Tangential Velocity", True)
-                self.handled(obj)
-        for obj in self.getMember("Fem::ConstraintPressure"):
-            if obj.References:
-                for name in obj.References[0][1]:
-                    pressure = self.getFromUi(obj.Pressure, "MPa", "M/(L*T^2)")
-                    if obj.Reversed:
-                        pressure *= -1
-                    self.boundary(name, "External Pressure", pressure)
-                self.handled(obj)
-
-    def _handleFlowEquation(self, bodies, equation):
-        for b in bodies:
-            # not for bodies with solid material
-            if self._isBodyMaterialFluid(b):
-                if equation.Convection != "None":
-                    self._equation(b, "Convection", equation.Convection)
-                if equation.MagneticInduction is True:
-                    self._equation(b, "Magnetic Induction", equation.MagneticInduction)
+            FlowW.handleFlowConstants()
+            FlowW.handleFlowBndConditions()
+            FlowW.handleFlowInitialPressure(activeIn)
+            FlowW.handleFlowInitialVelocity(activeIn)
+            FlowW.handleFlowMaterial(activeIn)
 
     #-------------------------------------------------------------------------------------------
     # Flux
@@ -1294,7 +1072,7 @@ class Writer(object):
                 return True
         return False
 
-    def _isBodyMaterialFluid(self, body):
+    def isBodyMaterialFluid(self, body):
         # we can have the case that a body has no assigned material
         # then assume it is a solid
         if self._getBodyMaterial(body) is not None:
@@ -1390,7 +1168,7 @@ class Writer(object):
     def material(self, body, key, attr):
         self._builder.material(body, key, attr)
 
-    def _equation(self, body, key, attr):
+    def equation(self, body, key, attr):
         self._builder.equation(body, key, attr)
 
     def _bodyForce(self, body, key, attr):
