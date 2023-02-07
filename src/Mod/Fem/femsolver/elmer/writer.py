@@ -24,7 +24,7 @@
 # ***************************************************************************
 
 __title__ = "FreeCAD FEM solver Elmer writer"
-__author__ = "Markus Hovorka, Uwe Stöhr"
+__author__ = "Markus Hovorka, Bernd Hahnebach, Uwe Stöhr"
 __url__ = "https://www.freecadweb.org"
 
 ## \addtogroup FEM
