@@ -1527,7 +1527,7 @@ into its X, Y, and Z components.</source>
     </message>
     <message>
         <location filename="../../Command.cpp" line="686"/>
-        <source>Shape splitting tools. Compsolid creation tools. OCC 6.9.0 or later is required.</source>
+        <source>Shape splitting and Compsolid creation tools.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

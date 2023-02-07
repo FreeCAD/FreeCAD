@@ -4,17 +4,17 @@
 <context>
     <name>CmdFemConstraintBearing</name>
     <message>
-        <location filename="../../Command.cpp" line="289"/>
+        <location filename="../../Command.cpp" line="291"/>
         <source>Fem</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="290"/>
+        <location filename="../../Command.cpp" line="292"/>
         <source>Constraint bearing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="291"/>
+        <location filename="../../Command.cpp" line="293"/>
         <source>Creates a FEM constraint for a bearing</source>
         <translation type="unfinished"></translation>
     </message>
@@ -22,17 +22,17 @@
 <context>
     <name>CmdFemConstraintContact</name>
     <message>
-        <location filename="../../Command.cpp" line="330"/>
+        <location filename="../../Command.cpp" line="336"/>
         <source>Fem</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="331"/>
+        <location filename="../../Command.cpp" line="337"/>
         <source>Constraint contact</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="332"/>
+        <location filename="../../Command.cpp" line="338"/>
         <source>Creates a FEM constraint for contact between faces</source>
         <translation type="unfinished"></translation>
     </message>
@@ -40,17 +40,17 @@
 <context>
     <name>CmdFemConstraintDisplacement</name>
     <message>
-        <location filename="../../Command.cpp" line="375"/>
+        <location filename="../../Command.cpp" line="389"/>
         <source>Fem</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="376"/>
+        <location filename="../../Command.cpp" line="390"/>
         <source>Constraint displacement</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="377"/>
+        <location filename="../../Command.cpp" line="392"/>
         <source>Creates a FEM constraint for a displacement acting on a geometric entity</source>
         <translation type="unfinished"></translation>
     </message>
@@ -58,17 +58,17 @@
 <context>
     <name>CmdFemConstraintFixed</name>
     <message>
-        <location filename="../../Command.cpp" line="418"/>
+        <location filename="../../Command.cpp" line="438"/>
         <source>Fem</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="419"/>
+        <location filename="../../Command.cpp" line="439"/>
         <source>Constraint fixed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="420"/>
+        <location filename="../../Command.cpp" line="440"/>
         <source>Creates a FEM constraint for a fixed geometric entity</source>
         <translation type="unfinished"></translation>
     </message>
@@ -76,17 +76,17 @@
 <context>
     <name>CmdFemConstraintFluidBoundary</name>
     <message>
-        <location filename="../../Command.cpp" line="460"/>
+        <location filename="../../Command.cpp" line="485"/>
         <source>Fem</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="461"/>
+        <location filename="../../Command.cpp" line="486"/>
         <source>Fluid boundary condition</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="462"/>
+        <location filename="../../Command.cpp" line="488"/>
         <source>Create fluid boundary condition on face entity for Computional Fluid Dynamics</source>
         <translation type="unfinished"></translation>
     </message>
@@ -94,17 +94,17 @@
 <context>
     <name>CmdFemConstraintForce</name>
     <message>
-        <location filename="../../Command.cpp" line="503"/>
+        <location filename="../../Command.cpp" line="534"/>
         <source>Fem</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="504"/>
+        <location filename="../../Command.cpp" line="535"/>
         <source>Constraint force</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="505"/>
+        <location filename="../../Command.cpp" line="536"/>
         <source>Creates a FEM constraint for a force acting on a geometric entity</source>
         <translation type="unfinished"></translation>
     </message>
@@ -112,17 +112,17 @@
 <context>
     <name>CmdFemConstraintGear</name>
     <message>
-        <location filename="../../Command.cpp" line="547"/>
+        <location filename="../../Command.cpp" line="587"/>
         <source>Fem</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="548"/>
+        <location filename="../../Command.cpp" line="588"/>
         <source>Constraint gear</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="549"/>
+        <location filename="../../Command.cpp" line="589"/>
         <source>Creates a FEM constraint for a gear</source>
         <translation type="unfinished"></translation>
     </message>
@@ -130,17 +130,17 @@
 <context>
     <name>CmdFemConstraintHeatflux</name>
     <message>
-        <location filename="../../Command.cpp" line="588"/>
+        <location filename="../../Command.cpp" line="632"/>
         <source>Fem</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="589"/>
+        <location filename="../../Command.cpp" line="633"/>
         <source>Constraint heatflux</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="590"/>
+        <location filename="../../Command.cpp" line="634"/>
         <source>Creates a FEM constraint for a heatflux acting on a face</source>
         <translation type="unfinished"></translation>
     </message>
@@ -148,17 +148,17 @@
 <context>
     <name>CmdFemConstraintInitialTemperature</name>
     <message>
-        <location filename="../../Command.cpp" line="633"/>
+        <location filename="../../Command.cpp" line="686"/>
         <source>Fem</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="634"/>
+        <location filename="../../Command.cpp" line="687"/>
         <source>Constraint initial temperature</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="635"/>
+        <location filename="../../Command.cpp" line="688"/>
         <source>Creates a FEM constraint for initial temperature acting on a body</source>
         <translation type="unfinished"></translation>
     </message>
@@ -166,17 +166,17 @@
 <context>
     <name>CmdFemConstraintPlaneRotation</name>
     <message>
-        <location filename="../../Command.cpp" line="676"/>
+        <location filename="../../Command.cpp" line="734"/>
         <source>Fem</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="677"/>
+        <location filename="../../Command.cpp" line="735"/>
         <source>Constraint plane rotation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="678"/>
+        <location filename="../../Command.cpp" line="736"/>
         <source>Creates a FEM constraint for plane rotation face</source>
         <translation type="unfinished"></translation>
     </message>
@@ -184,17 +184,17 @@
 <context>
     <name>CmdFemConstraintPressure</name>
     <message>
-        <location filename="../../Command.cpp" line="718"/>
+        <location filename="../../Command.cpp" line="782"/>
         <source>Fem</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="719"/>
+        <location filename="../../Command.cpp" line="783"/>
         <source>Constraint pressure</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="720"/>
+        <location filename="../../Command.cpp" line="784"/>
         <source>Creates a FEM constraint for a pressure acting on a face</source>
         <translation type="unfinished"></translation>
     </message>
@@ -202,17 +202,17 @@
 <context>
     <name>CmdFemConstraintPulley</name>
     <message>
-        <location filename="../../Command.cpp" line="808"/>
+        <location filename="../../Command.cpp" line="889"/>
         <source>Fem</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="809"/>
+        <location filename="../../Command.cpp" line="890"/>
         <source>Constraint pulley</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="810"/>
+        <location filename="../../Command.cpp" line="891"/>
         <source>Creates a FEM constraint for a pulley</source>
         <translation type="unfinished"></translation>
     </message>
@@ -220,17 +220,17 @@
 <context>
     <name>CmdFemConstraintSpring</name>
     <message>
-        <location filename="../../Command.cpp" line="763"/>
+        <location filename="../../Command.cpp" line="836"/>
         <source>Fem</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="764"/>
+        <location filename="../../Command.cpp" line="837"/>
         <source>Constraint spring</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="765"/>
+        <location filename="../../Command.cpp" line="838"/>
         <source>Creates a FEM constraint for a spring acting on a face</source>
         <translation type="unfinished"></translation>
     </message>
@@ -238,17 +238,17 @@
 <context>
     <name>CmdFemConstraintTemperature</name>
     <message>
-        <location filename="../../Command.cpp" line="854"/>
+        <location filename="../../Command.cpp" line="939"/>
         <source>Fem</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="855"/>
+        <location filename="../../Command.cpp" line="940"/>
         <source>Constraint temperature</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="856"/>
+        <location filename="../../Command.cpp" line="941"/>
         <source>Creates a FEM constraint for a temperature/concentrated heat flux acting on a face</source>
         <translation type="unfinished"></translation>
     </message>
@@ -256,17 +256,17 @@
 <context>
     <name>CmdFemConstraintTransform</name>
     <message>
-        <location filename="../../Command.cpp" line="897"/>
+        <location filename="../../Command.cpp" line="988"/>
         <source>Fem</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="898"/>
+        <location filename="../../Command.cpp" line="989"/>
         <source>Constraint transform</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="899"/>
+        <location filename="../../Command.cpp" line="990"/>
         <source>Create FEM constraint for transforming a face</source>
         <translation type="unfinished"></translation>
     </message>
@@ -274,27 +274,27 @@
 <context>
     <name>CmdFemCreateNodesSet</name>
     <message>
-        <location filename="../../Command.cpp" line="1089"/>
+        <location filename="../../Command.cpp" line="1192"/>
         <source>Fem</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1090"/>
+        <location filename="../../Command.cpp" line="1193"/>
         <source>Nodes set</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1091"/>
+        <location filename="../../Command.cpp" line="1194"/>
         <source>Creates a FEM mesh nodes set</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1119"/>
+        <location filename="../../Command.cpp" line="1228"/>
         <source>Wrong selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1120"/>
+        <location filename="../../Command.cpp" line="1229"/>
         <source>Select a single FEM mesh or nodes set, please.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -302,18 +302,18 @@
 <context>
     <name>CmdFemDefineNodesSet</name>
     <message>
-        <location filename="../../Command.cpp" line="1033"/>
+        <location filename="../../Command.cpp" line="1134"/>
         <source>Fem</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1034"/>
+        <location filename="../../Command.cpp" line="1135"/>
         <source>Node set by poly</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1035"/>
-        <location filename="../../Command.cpp" line="1037"/>
+        <location filename="../../Command.cpp" line="1136"/>
+        <location filename="../../Command.cpp" line="1138"/>
         <source>Create node set by Poly</source>
         <translation type="unfinished"></translation>
     </message>
@@ -321,17 +321,17 @@
 <context>
     <name>CmdFemPostApllyChanges</name>
     <message>
-        <location filename="../../Command.cpp" line="1759"/>
+        <location filename="../../Command.cpp" line="2170"/>
         <source>Fem</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1760"/>
+        <location filename="../../Command.cpp" line="2171"/>
         <source>Apply changes to pipeline</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1761"/>
+        <location filename="../../Command.cpp" line="2172"/>
         <source>Apply changes to parameters directly and not on recompute only...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -339,27 +339,27 @@
 <context>
     <name>CmdFemPostClipFilter</name>
     <message>
-        <location filename="../../Command.cpp" line="1301"/>
+        <location filename="../../Command.cpp" line="1673"/>
         <source>Fem</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1302"/>
+        <location filename="../../Command.cpp" line="1674"/>
         <source>Region clip filter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1303"/>
+        <location filename="../../Command.cpp" line="1676"/>
         <source>Define/create a clip filter which uses functions to define the cliped region</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1687"/>
+        <location filename="../../Command.cpp" line="2096"/>
         <source>Wrong selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1688"/>
+        <location filename="../../Command.cpp" line="2097"/>
         <source>Select a pipeline, please.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -367,17 +367,17 @@
 <context>
     <name>CmdFemPostCutFilter</name>
     <message>
-        <location filename="../../Command.cpp" line="1344"/>
+        <location filename="../../Command.cpp" line="1718"/>
         <source>Fem</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1345"/>
+        <location filename="../../Command.cpp" line="1719"/>
         <source>Function cut filter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1346"/>
+        <location filename="../../Command.cpp" line="1720"/>
         <source>Cut the data along an implicit function</source>
         <translation type="unfinished"></translation>
     </message>
@@ -385,17 +385,17 @@
 <context>
     <name>CmdFemPostDataAlongLineFilter</name>
     <message>
-        <location filename="../../Command.cpp" line="1387"/>
+        <location filename="../../Command.cpp" line="1762"/>
         <source>Fem</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1388"/>
+        <location filename="../../Command.cpp" line="1763"/>
         <source>Line clip filter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1389"/>
+        <location filename="../../Command.cpp" line="1764"/>
         <source>Define/create a clip filter which clips a field along a line</source>
         <translation type="unfinished"></translation>
     </message>
@@ -403,17 +403,17 @@
 <context>
     <name>CmdFemPostDataAtPointFilter</name>
     <message>
-        <location filename="../../Command.cpp" line="1428"/>
+        <location filename="../../Command.cpp" line="1803"/>
         <source>Fem</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1429"/>
+        <location filename="../../Command.cpp" line="1804"/>
         <source>Data at point clip filter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1430"/>
+        <location filename="../../Command.cpp" line="1805"/>
         <source>Define/create a clip filter which clips a field data at point</source>
         <translation type="unfinished"></translation>
     </message>
@@ -421,27 +421,27 @@
 <context>
     <name>CmdFemPostFunctions</name>
     <message>
-        <location filename="../../Command.cpp" line="1619"/>
+        <location filename="../../Command.cpp" line="2005"/>
         <source>Fem</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1620"/>
+        <location filename="../../Command.cpp" line="2006"/>
         <source>Filter functions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1621"/>
+        <location filename="../../Command.cpp" line="2007"/>
         <source>Functions for use in postprocessing filter...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1732"/>
+        <location filename="../../Command.cpp" line="2141"/>
         <source>Plane</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1737"/>
+        <location filename="../../Command.cpp" line="2147"/>
         <source>Sphere</source>
         <translation type="unfinished"></translation>
     </message>
@@ -449,65 +449,65 @@
 <context>
     <name>CmdFemPostLinearizedStressesFilter</name>
     <message>
-        <location filename="../../Command.cpp" line="1224"/>
+        <location filename="../../Command.cpp" line="1575"/>
         <source>Thickness [mm]</source>
         <comment>Plot X-Axis Label</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1225"/>
+        <location filename="../../Command.cpp" line="1579"/>
         <source>Stress [MPa]</source>
         <comment>Plot Y-Axis Label</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1226"/>
+        <location filename="../../Command.cpp" line="1582"/>
         <source>Linearized Stresses</source>
         <comment>Plot title</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1227"/>
+        <location filename="../../Command.cpp" line="1585"/>
         <source>Membrane</source>
         <comment>Plot legend item label</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1228"/>
+        <location filename="../../Command.cpp" line="1589"/>
         <source>Membrane and Bending</source>
         <comment>Plot legend item label</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1229"/>
+        <location filename="../../Command.cpp" line="1593"/>
         <source>Total</source>
         <comment>Plot legend item label</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1473"/>
+        <location filename="../../Command.cpp" line="1849"/>
         <source>Fem</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1474"/>
+        <location filename="../../Command.cpp" line="1850"/>
         <source>Stress linearization plot</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1475"/>
+        <location filename="../../Command.cpp" line="1851"/>
         <source>Define/create stress linearization plots</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1507"/>
-        <location filename="../../Command.cpp" line="1513"/>
+        <location filename="../../Command.cpp" line="1887"/>
+        <location filename="../../Command.cpp" line="1896"/>
         <source>Wrong selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1508"/>
-        <location filename="../../Command.cpp" line="1514"/>
+        <location filename="../../Command.cpp" line="1888"/>
+        <location filename="../../Command.cpp" line="1897"/>
         <source>Select a Clip filter which clips a STRESS field along a line, please.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -515,27 +515,27 @@
 <context>
     <name>CmdFemPostPipelineFromResult</name>
     <message>
-        <location filename="../../Command.cpp" line="1798"/>
+        <location filename="../../Command.cpp" line="2209"/>
         <source>Fem</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1799"/>
+        <location filename="../../Command.cpp" line="2210"/>
         <source>Post pipeline from result</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1800"/>
+        <location filename="../../Command.cpp" line="2211"/>
         <source>Creates a post processing pipeline from a result object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1867"/>
+        <location filename="../../Command.cpp" line="2286"/>
         <source>Wrong selection type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1868"/>
+        <location filename="../../Command.cpp" line="2287"/>
         <source>Select a result object, please.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -543,17 +543,17 @@
 <context>
     <name>CmdFemPostScalarClipFilter</name>
     <message>
-        <location filename="../../Command.cpp" line="1537"/>
+        <location filename="../../Command.cpp" line="1922"/>
         <source>Fem</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1538"/>
+        <location filename="../../Command.cpp" line="1923"/>
         <source>Scalar clip filter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1539"/>
+        <location filename="../../Command.cpp" line="1925"/>
         <source>Define/create a clip filter which clips a field with a scalar value</source>
         <translation type="unfinished"></translation>
     </message>
@@ -561,17 +561,17 @@
 <context>
     <name>CmdFemPostWarpVectorFilter</name>
     <message>
-        <location filename="../../Command.cpp" line="1578"/>
+        <location filename="../../Command.cpp" line="1964"/>
         <source>Fem</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1579"/>
+        <location filename="../../Command.cpp" line="1965"/>
         <source>Warp filter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1580"/>
+        <location filename="../../Command.cpp" line="1966"/>
         <source>Warp the geometry along a vector field by a certain factor</source>
         <translation type="unfinished"></translation>
     </message>
@@ -579,107 +579,107 @@
 <context>
     <name>Command</name>
     <message>
-        <location filename="../../Command.cpp" line="306"/>
+        <location filename="../../Command.cpp" line="308"/>
         <source>Make FEM constraint for bearing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="347"/>
+        <location filename="../../Command.cpp" line="353"/>
         <source>Make FEM constraint contact on face</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="392"/>
+        <location filename="../../Command.cpp" line="407"/>
         <source>Make FEM constraint displacement on face</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="435"/>
+        <location filename="../../Command.cpp" line="455"/>
         <source>Make FEM constraint fixed geometry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="477"/>
+        <location filename="../../Command.cpp" line="503"/>
         <source>Create fluid boundary condition</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="520"/>
+        <location filename="../../Command.cpp" line="551"/>
         <source>Make FEM constraint force on geometry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="563"/>
+        <location filename="../../Command.cpp" line="603"/>
         <source>Make FEM constraint for gear</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="605"/>
+        <location filename="../../Command.cpp" line="649"/>
         <source>Make FEM constraint heatflux on face</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="650"/>
+        <location filename="../../Command.cpp" line="703"/>
         <source>Make FEM constraint initial temperature on body</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="693"/>
+        <location filename="../../Command.cpp" line="751"/>
         <source>Make FEM constraint Plane Rotation face</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="735"/>
+        <location filename="../../Command.cpp" line="799"/>
         <source>Make FEM constraint pressure on face</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="780"/>
+        <location filename="../../Command.cpp" line="853"/>
         <source>Make FEM constraint spring on face</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="825"/>
+        <location filename="../../Command.cpp" line="906"/>
         <source>Make FEM constraint for pulley</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="871"/>
+        <location filename="../../Command.cpp" line="957"/>
         <source>Make FEM constraint temperature on face</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="914"/>
+        <location filename="../../Command.cpp" line="1005"/>
         <source>Make FEM constraint transform on face</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1003"/>
+        <location filename="../../Command.cpp" line="1100"/>
         <source>Place robot</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1104"/>
+        <location filename="../../Command.cpp" line="1208"/>
         <source>Edit nodes set</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1112"/>
+        <location filename="../../Command.cpp" line="1217"/>
         <source>Create nodes set</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1195"/>
+        <location filename="../../Command.cpp" line="1546"/>
         <source>Create filter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1643"/>
+        <location filename="../../Command.cpp" line="2030"/>
         <source>Create function</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1846"/>
+        <location filename="../../Command.cpp" line="2262"/>
         <source>Create pipeline from result</source>
         <translation type="unfinished"></translation>
     </message>
@@ -765,12 +765,12 @@
 <context>
     <name>FEM_PostCreateFunctions</name>
     <message>
-        <location filename="../../Command.cpp" line="1733"/>
+        <location filename="../../Command.cpp" line="2142"/>
         <source>Create a plane function, defined by its origin and normal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1738"/>
+        <location filename="../../Command.cpp" line="2148"/>
         <source>Create a sphere function, defined by its center and radius</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1746,7 +1746,7 @@ Specify another file please.</source>
 <context>
     <name>FemGui::TaskDlgPost</name>
     <message>
-        <location filename="../../TaskPostBoxes.cpp" line="292"/>
+        <location filename="../../TaskPostBoxes.cpp" line="313"/>
         <source>Input error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2390,7 +2390,7 @@ Specify another file please.</source>
 <context>
     <name>FemGui::TaskPostClip</name>
     <message>
-        <location filename="../../TaskPostBoxes.cpp" line="467"/>
+        <location filename="../../TaskPostBoxes.cpp" line="494"/>
         <source>Clip region, choose implicit function</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2398,7 +2398,7 @@ Specify another file please.</source>
 <context>
     <name>FemGui::TaskPostCut</name>
     <message>
-        <location filename="../../TaskPostBoxes.cpp" line="1469"/>
+        <location filename="../../TaskPostBoxes.cpp" line="1541"/>
         <source>Function cut, choose implicit function</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2406,12 +2406,12 @@ Specify another file please.</source>
 <context>
     <name>FemGui::TaskPostDataAlongLine</name>
     <message>
-        <location filename="../../TaskPostBoxes.cpp" line="609"/>
+        <location filename="../../TaskPostBoxes.cpp" line="642"/>
         <source>Data along a line options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskPostBoxes.cpp" line="892"/>
+        <location filename="../../TaskPostBoxes.cpp" line="933"/>
         <source>Length</source>
         <comment>X-Axis plot label</comment>
         <translation type="unfinished"></translation>
@@ -2420,12 +2420,12 @@ Specify another file please.</source>
 <context>
     <name>FemGui::TaskPostDataAtPoint</name>
     <message>
-        <location filename="../../TaskPostBoxes.cpp" line="916"/>
+        <location filename="../../TaskPostBoxes.cpp" line="958"/>
         <source>Data at point options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskPostBoxes.cpp" line="1194"/>
+        <location filename="../../TaskPostBoxes.cpp" line="1242"/>
         <source>%1 at (%2; %3; %4) is: %5 %6</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2433,7 +2433,7 @@ Specify another file please.</source>
 <context>
     <name>FemGui::TaskPostDisplay</name>
     <message>
-        <location filename="../../TaskPostBoxes.cpp" line="376"/>
+        <location filename="../../TaskPostBoxes.cpp" line="398"/>
         <source>Result display options</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2441,7 +2441,7 @@ Specify another file please.</source>
 <context>
     <name>FemGui::TaskPostFunction</name>
     <message>
-        <location filename="../../TaskPostBoxes.cpp" line="442"/>
+        <location filename="../../TaskPostBoxes.cpp" line="466"/>
         <source>Implicit function</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2449,7 +2449,7 @@ Specify another file please.</source>
 <context>
     <name>FemGui::TaskPostScalarClip</name>
     <message>
-        <location filename="../../TaskPostBoxes.cpp" line="1216"/>
+        <location filename="../../TaskPostBoxes.cpp" line="1266"/>
         <source>Scalar clip options</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2457,7 +2457,7 @@ Specify another file please.</source>
 <context>
     <name>FemGui::TaskPostWarpVector</name>
     <message>
-        <location filename="../../TaskPostBoxes.cpp" line="1326"/>
+        <location filename="../../TaskPostBoxes.cpp" line="1386"/>
         <source>Warp options</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2939,6 +2939,7 @@ Specify another file please.</source>
         <location filename="../ui/ElectrostaticPotential.ui" line="14"/>
         <location filename="../ui/FlowVelocity.ui" line="14"/>
         <location filename="../ui/BodyHeatSource.ui" line="14"/>
+        <location filename="../ui/CurrentDensity.ui" line="14"/>
         <source>Constraint Properties</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3155,6 +3156,11 @@ Specify another file please.</source>
         <source>Pressure:</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../ui/CurrentDensity.ui" line="20"/>
+        <source>Current density:</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>GmshMesh</name>
@@ -3246,12 +3252,12 @@ Specify another file please.</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../Command.cpp" line="73"/>
+        <location filename="../../Command.cpp" line="76"/>
         <source>No active Analysis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="74"/>
+        <location filename="../../Command.cpp" line="77"/>
         <source>You need to create or activate a Analysis</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3277,7 +3283,7 @@ Specify another file please.</source>
         <location filename="../../ViewProviderFemConstraintPulley.cpp" line="70"/>
         <location filename="../../ViewProviderFemConstraintGear.cpp" line="73"/>
         <location filename="../../ViewProviderFemConstraintForce.cpp" line="72"/>
-        <location filename="../../ViewProviderFemPostObject.cpp" line="681"/>
+        <location filename="../../ViewProviderFemPostObject.cpp" line="699"/>
         <location filename="../../ViewProviderFemConstraintBearing.cpp" line="71"/>
         <source>A dialog is already open in the task panel</source>
         <translation type="unfinished"></translation>
@@ -3289,7 +3295,7 @@ Specify another file please.</source>
         <location filename="../../ViewProviderFemConstraintPulley.cpp" line="71"/>
         <location filename="../../ViewProviderFemConstraintGear.cpp" line="74"/>
         <location filename="../../ViewProviderFemConstraintForce.cpp" line="73"/>
-        <location filename="../../ViewProviderFemPostObject.cpp" line="682"/>
+        <location filename="../../ViewProviderFemPostObject.cpp" line="700"/>
         <location filename="../../ViewProviderFemConstraintBearing.cpp" line="72"/>
         <source>Do you want to close this dialog?</source>
         <translation type="unfinished"></translation>
@@ -3382,7 +3388,7 @@ Specify another file please.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskPostBoxes.cpp" line="274"/>
+        <location filename="../../TaskPostBoxes.cpp" line="295"/>
         <source>Edit post processing object</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3425,7 +3431,7 @@ Specify another file please.</source>
         <location filename="../../ViewProviderSolver.cpp" line="71"/>
         <location filename="../../ViewProviderFemPostFunction.cpp" line="144"/>
         <location filename="../../ViewProviderAnalysis.cpp" line="263"/>
-        <location filename="../../ViewProviderFemPostObject.cpp" line="791"/>
+        <location filename="../../ViewProviderFemPostObject.cpp" line="810"/>
         <source>Are you sure you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3774,7 +3780,7 @@ following referencing objects might be lost:</source>
         <location filename="../../ViewProviderSolver.cpp" line="74"/>
         <location filename="../../ViewProviderFemPostFunction.cpp" line="147"/>
         <location filename="../../ViewProviderAnalysis.cpp" line="266"/>
-        <location filename="../../ViewProviderFemPostObject.cpp" line="794"/>
+        <location filename="../../ViewProviderFemPostObject.cpp" line="813"/>
         <source>Object dependencies</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3785,7 +3791,7 @@ following referencing objects might be lost:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ViewProviderFemPostObject.cpp" line="786"/>
+        <location filename="../../ViewProviderFemPostObject.cpp" line="804"/>
         <source>The pipeline is not empty, therefore the
 following referencing objects might be lost:</source>
         <translation type="unfinished"></translation>
@@ -5142,20 +5148,20 @@ normal vector of the face is used as direction</source>
 <context>
     <name>setupFilter</name>
     <message>
-        <location filename="../../Command.cpp" line="1146"/>
+        <location filename="../../Command.cpp" line="1495"/>
         <source>Error: A filter can only be applied to a single object.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1147"/>
-        <location filename="../../Command.cpp" line="1163"/>
-        <location filename="../../Command.cpp" line="1190"/>
+        <location filename="../../Command.cpp" line="1497"/>
+        <location filename="../../Command.cpp" line="1513"/>
+        <location filename="../../Command.cpp" line="1541"/>
         <source>The filter could not be set up.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="1162"/>
-        <location filename="../../Command.cpp" line="1189"/>
+        <location filename="../../Command.cpp" line="1512"/>
+        <location filename="../../Command.cpp" line="1540"/>
         <source>Error: no post processing object selected.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5237,12 +5243,12 @@ normal vector of the face is used as direction</source>
 <context>
     <name>FEM_ConstraintElectrostaticPotential</name>
     <message>
-        <location filename="../../../femcommands/commands.py" line="222"/>
+        <location filename="../../../femcommands/commands.py" line="239"/>
         <source>Constraint electrostatic potential</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femcommands/commands.py" line="226"/>
+        <location filename="../../../femcommands/commands.py" line="243"/>
         <source>Creates a FEM constraint electrostatic potential</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5250,12 +5256,12 @@ normal vector of the face is used as direction</source>
 <context>
     <name>FEM_ConstraintFlowVelocity</name>
     <message>
-        <location filename="../../../femcommands/commands.py" line="239"/>
+        <location filename="../../../femcommands/commands.py" line="256"/>
         <source>Constraint flow velocity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femcommands/commands.py" line="243"/>
+        <location filename="../../../femcommands/commands.py" line="260"/>
         <source>Creates a FEM constraint flow velocity</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5263,12 +5269,12 @@ normal vector of the face is used as direction</source>
 <context>
     <name>FEM_ConstraintInitialFlowVelocity</name>
     <message>
-        <location filename="../../../femcommands/commands.py" line="256"/>
+        <location filename="../../../femcommands/commands.py" line="273"/>
         <source>Constraint initial flow velocity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femcommands/commands.py" line="260"/>
+        <location filename="../../../femcommands/commands.py" line="277"/>
         <source>Creates a FEM constraint initial flow velocity</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5276,12 +5282,12 @@ normal vector of the face is used as direction</source>
 <context>
     <name>FEM_ConstraintInitialPressure</name>
     <message>
-        <location filename="../../../femcommands/commands.py" line="273"/>
+        <location filename="../../../femcommands/commands.py" line="290"/>
         <source>Constraint initial pressure</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femcommands/commands.py" line="277"/>
+        <location filename="../../../femcommands/commands.py" line="294"/>
         <source>Creates a FEM constraint initial pressure</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5289,12 +5295,12 @@ normal vector of the face is used as direction</source>
 <context>
     <name>FEM_ConstraintSectionPrint</name>
     <message>
-        <location filename="../../../femcommands/commands.py" line="290"/>
+        <location filename="../../../femcommands/commands.py" line="307"/>
         <source>Constraint sectionprint</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femcommands/commands.py" line="294"/>
+        <location filename="../../../femcommands/commands.py" line="311"/>
         <source>Creates a FEM constraint sectionprint</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5302,12 +5308,12 @@ normal vector of the face is used as direction</source>
 <context>
     <name>FEM_ConstraintSelfWeight</name>
     <message>
-        <location filename="../../../femcommands/commands.py" line="307"/>
+        <location filename="../../../femcommands/commands.py" line="324"/>
         <source>Constraint self weight</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femcommands/commands.py" line="311"/>
+        <location filename="../../../femcommands/commands.py" line="328"/>
         <source>Creates a FEM constraint self weight</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5315,12 +5321,12 @@ normal vector of the face is used as direction</source>
 <context>
     <name>FEM_ConstraintTie</name>
     <message>
-        <location filename="../../../femcommands/commands.py" line="324"/>
+        <location filename="../../../femcommands/commands.py" line="341"/>
         <source>Constraint tie</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femcommands/commands.py" line="328"/>
+        <location filename="../../../femcommands/commands.py" line="345"/>
         <source>Creates a FEM constraint tie</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5328,12 +5334,12 @@ normal vector of the face is used as direction</source>
 <context>
     <name>FEM_ElementFluid1D</name>
     <message>
-        <location filename="../../../femcommands/commands.py" line="341"/>
+        <location filename="../../../femcommands/commands.py" line="358"/>
         <source>Fluid section for 1D flow</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femcommands/commands.py" line="345"/>
+        <location filename="../../../femcommands/commands.py" line="362"/>
         <source>Creates a FEM fluid section for 1D flow</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5341,12 +5347,12 @@ normal vector of the face is used as direction</source>
 <context>
     <name>FEM_ElementGeometry1D</name>
     <message>
-        <location filename="../../../femcommands/commands.py" line="358"/>
+        <location filename="../../../femcommands/commands.py" line="375"/>
         <source>Beam cross section</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femcommands/commands.py" line="362"/>
+        <location filename="../../../femcommands/commands.py" line="379"/>
         <source>Creates a FEM beam cross section</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5354,12 +5360,12 @@ normal vector of the face is used as direction</source>
 <context>
     <name>FEM_ElementGeometry2D</name>
     <message>
-        <location filename="../../../femcommands/commands.py" line="375"/>
+        <location filename="../../../femcommands/commands.py" line="392"/>
         <source>Shell plate thickness</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femcommands/commands.py" line="379"/>
+        <location filename="../../../femcommands/commands.py" line="396"/>
         <source>Creates a FEM shell plate thickness</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5367,12 +5373,12 @@ normal vector of the face is used as direction</source>
 <context>
     <name>FEM_ElementRotation1D</name>
     <message>
-        <location filename="../../../femcommands/commands.py" line="392"/>
+        <location filename="../../../femcommands/commands.py" line="409"/>
         <source>Beam rotation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femcommands/commands.py" line="396"/>
+        <location filename="../../../femcommands/commands.py" line="413"/>
         <source>Creates a FEM beam rotation</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5380,12 +5386,12 @@ normal vector of the face is used as direction</source>
 <context>
     <name>FEM_EquationElectrostatic</name>
     <message>
-        <location filename="../../../femcommands/commands.py" line="409"/>
+        <location filename="../../../femcommands/commands.py" line="460"/>
         <source>Electrostatic equation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femcommands/commands.py" line="413"/>
+        <location filename="../../../femcommands/commands.py" line="464"/>
         <source>Creates a FEM equation for electrostatic</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5406,12 +5412,12 @@ normal vector of the face is used as direction</source>
 <context>
     <name>FEM_EquationFlow</name>
     <message>
-        <location filename="../../../femcommands/commands.py" line="443"/>
+        <location filename="../../../femcommands/commands.py" line="477"/>
         <source>Flow equation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femcommands/commands.py" line="447"/>
+        <location filename="../../../femcommands/commands.py" line="481"/>
         <source>Creates a FEM equation for flow</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5419,12 +5425,12 @@ normal vector of the face is used as direction</source>
 <context>
     <name>FEM_EquationFlux</name>
     <message>
-        <location filename="../../../femcommands/commands.py" line="460"/>
+        <location filename="../../../femcommands/commands.py" line="494"/>
         <source>Flux equation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femcommands/commands.py" line="464"/>
+        <location filename="../../../femcommands/commands.py" line="498"/>
         <source>Creates a FEM equation for flux</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5432,12 +5438,12 @@ normal vector of the face is used as direction</source>
 <context>
     <name>FEM_EquationElectricforce</name>
     <message>
-        <location filename="../../../femcommands/commands.py" line="477"/>
+        <location filename="../../../femcommands/commands.py" line="443"/>
         <source>Electricforce equation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femcommands/commands.py" line="481"/>
+        <location filename="../../../femcommands/commands.py" line="447"/>
         <source>Creates a FEM equation for electric forces</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5445,12 +5451,12 @@ normal vector of the face is used as direction</source>
 <context>
     <name>FEM_EquationHeat</name>
     <message>
-        <location filename="../../../femcommands/commands.py" line="494"/>
+        <location filename="../../../femcommands/commands.py" line="511"/>
         <source>Heat equation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femcommands/commands.py" line="498"/>
+        <location filename="../../../femcommands/commands.py" line="515"/>
         <source>Creates a FEM equation for heat</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5458,8 +5464,8 @@ normal vector of the face is used as direction</source>
 <context>
     <name>FEM_Examples</name>
     <message>
-        <location filename="../../../femcommands/commands.py" line="512"/>
-        <location filename="../../../femcommands/commands.py" line="516"/>
+        <location filename="../../../femcommands/commands.py" line="546"/>
+        <location filename="../../../femcommands/commands.py" line="550"/>
         <source>Open FEM examples</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5467,12 +5473,12 @@ normal vector of the face is used as direction</source>
 <context>
     <name>FEM_MaterialEditor</name>
     <message>
-        <location filename="../../../femcommands/commands.py" line="533"/>
+        <location filename="../../../femcommands/commands.py" line="567"/>
         <source>Material editor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femcommands/commands.py" line="537"/>
+        <location filename="../../../femcommands/commands.py" line="571"/>
         <source>Opens the FreeCAD material editor</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5480,12 +5486,12 @@ normal vector of the face is used as direction</source>
 <context>
     <name>FEM_MaterialFluid</name>
     <message>
-        <location filename="../../../femcommands/commands.py" line="553"/>
+        <location filename="../../../femcommands/commands.py" line="587"/>
         <source>Material for fluid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femcommands/commands.py" line="557"/>
+        <location filename="../../../femcommands/commands.py" line="591"/>
         <source>Creates a FEM material for fluid</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5493,12 +5499,12 @@ normal vector of the face is used as direction</source>
 <context>
     <name>FEM_MaterialMechanicalNonlinear</name>
     <message>
-        <location filename="../../../femcommands/commands.py" line="570"/>
+        <location filename="../../../femcommands/commands.py" line="604"/>
         <source>Nonlinear mechanical material</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femcommands/commands.py" line="574"/>
+        <location filename="../../../femcommands/commands.py" line="608"/>
         <source>Creates a nonlinear mechanical material</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5506,12 +5512,12 @@ normal vector of the face is used as direction</source>
 <context>
     <name>FEM_MaterialReinforced</name>
     <message>
-        <location filename="../../../femcommands/commands.py" line="640"/>
+        <location filename="../../../femcommands/commands.py" line="674"/>
         <source>Reinforced material (concrete)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femcommands/commands.py" line="644"/>
+        <location filename="../../../femcommands/commands.py" line="678"/>
         <source>Creates a material for reinforced matrix material such as concrete</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5519,12 +5525,12 @@ normal vector of the face is used as direction</source>
 <context>
     <name>FEM_MaterialSolid</name>
     <message>
-        <location filename="../../../femcommands/commands.py" line="657"/>
+        <location filename="../../../femcommands/commands.py" line="691"/>
         <source>Material for solid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femcommands/commands.py" line="662"/>
+        <location filename="../../../femcommands/commands.py" line="696"/>
         <source>Creates a FEM material for solid</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5532,12 +5538,12 @@ normal vector of the face is used as direction</source>
 <context>
     <name>FEM_FEMMesh2Mesh</name>
     <message>
-        <location filename="../../../femcommands/commands.py" line="675"/>
+        <location filename="../../../femcommands/commands.py" line="709"/>
         <source>FEM mesh to mesh</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femcommands/commands.py" line="679"/>
+        <location filename="../../../femcommands/commands.py" line="713"/>
         <source>Convert the surface of a FEM mesh to a mesh</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5545,12 +5551,12 @@ normal vector of the face is used as direction</source>
 <context>
     <name>FEM_MeshBoundaryLayer</name>
     <message>
-        <location filename="../../../femcommands/commands.py" line="722"/>
+        <location filename="../../../femcommands/commands.py" line="756"/>
         <source>FEM mesh boundary layer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femcommands/commands.py" line="726"/>
+        <location filename="../../../femcommands/commands.py" line="760"/>
         <source>Creates a FEM mesh boundary layer</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5558,12 +5564,12 @@ normal vector of the face is used as direction</source>
 <context>
     <name>FEM_MeshClear</name>
     <message>
-        <location filename="../../../femcommands/commands.py" line="739"/>
+        <location filename="../../../femcommands/commands.py" line="773"/>
         <source>Clear FEM mesh</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femcommands/commands.py" line="743"/>
+        <location filename="../../../femcommands/commands.py" line="777"/>
         <source>Clear the Mesh of a FEM mesh object</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5571,8 +5577,8 @@ normal vector of the face is used as direction</source>
 <context>
     <name>FEM_MeshDisplayInfo</name>
     <message>
-        <location filename="../../../femcommands/commands.py" line="764"/>
-        <location filename="../../../femcommands/commands.py" line="768"/>
+        <location filename="../../../femcommands/commands.py" line="798"/>
+        <location filename="../../../femcommands/commands.py" line="802"/>
         <source>Display FEM mesh info</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5580,12 +5586,12 @@ normal vector of the face is used as direction</source>
 <context>
     <name>FEM_MeshGmshFromShape</name>
     <message>
-        <location filename="../../../femcommands/commands.py" line="793"/>
+        <location filename="../../../femcommands/commands.py" line="827"/>
         <source>FEM mesh from shape by Gmsh</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femcommands/commands.py" line="797"/>
+        <location filename="../../../femcommands/commands.py" line="831"/>
         <source>Create a FEM mesh from a shape by Gmsh mesher</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5593,12 +5599,12 @@ normal vector of the face is used as direction</source>
 <context>
     <name>FEM_MeshGroup</name>
     <message>
-        <location filename="../../../femcommands/commands.py" line="838"/>
+        <location filename="../../../femcommands/commands.py" line="872"/>
         <source>FEM mesh group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femcommands/commands.py" line="842"/>
+        <location filename="../../../femcommands/commands.py" line="876"/>
         <source>Creates a FEM mesh group</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5606,12 +5612,12 @@ normal vector of the face is used as direction</source>
 <context>
     <name>FEM_MeshNetgenFromShape</name>
     <message>
-        <location filename="../../../femcommands/commands.py" line="855"/>
+        <location filename="../../../femcommands/commands.py" line="889"/>
         <source>FEM mesh from shape by Netgen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femcommands/commands.py" line="859"/>
+        <location filename="../../../femcommands/commands.py" line="893"/>
         <source>Create a FEM mesh from a solid or face shape by Netgen internal mesher</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5619,12 +5625,12 @@ normal vector of the face is used as direction</source>
 <context>
     <name>FEM_MeshRegion</name>
     <message>
-        <location filename="../../../femcommands/commands.py" line="900"/>
+        <location filename="../../../femcommands/commands.py" line="934"/>
         <source>FEM mesh region</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femcommands/commands.py" line="904"/>
+        <location filename="../../../femcommands/commands.py" line="938"/>
         <source>Creates a FEM mesh region</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5632,12 +5638,12 @@ normal vector of the face is used as direction</source>
 <context>
     <name>FEM_ResultShow</name>
     <message>
-        <location filename="../../../femcommands/commands.py" line="917"/>
+        <location filename="../../../femcommands/commands.py" line="951"/>
         <source>Show result</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femcommands/commands.py" line="922"/>
+        <location filename="../../../femcommands/commands.py" line="956"/>
         <source>Shows and visualizes selected result data</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5645,12 +5651,12 @@ normal vector of the face is used as direction</source>
 <context>
     <name>FEM_ResultsPurge</name>
     <message>
-        <location filename="../../../femcommands/commands.py" line="937"/>
+        <location filename="../../../femcommands/commands.py" line="971"/>
         <source>Purge results</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femcommands/commands.py" line="942"/>
+        <location filename="../../../femcommands/commands.py" line="976"/>
         <source>Purges all results from active analysis</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5658,12 +5664,12 @@ normal vector of the face is used as direction</source>
 <context>
     <name>FEM_SolverCalculixCxxtools</name>
     <message>
-        <location filename="../../../femcommands/commands.py" line="959"/>
+        <location filename="../../../femcommands/commands.py" line="993"/>
         <source>Solver CalculiX Standard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femcommands/commands.py" line="964"/>
+        <location filename="../../../femcommands/commands.py" line="998"/>
         <source>Creates a standard FEM solver CalculiX with ccx tools</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5671,12 +5677,12 @@ normal vector of the face is used as direction</source>
 <context>
     <name>FEM_SolverCalculix</name>
     <message>
-        <location filename="../../../femcommands/commands.py" line="1000"/>
+        <location filename="../../../femcommands/commands.py" line="1034"/>
         <source>Solver CalculiX (new framework)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femcommands/commands.py" line="1005"/>
+        <location filename="../../../femcommands/commands.py" line="1039"/>
         <source>Creates a FEM solver CalculiX new framework (less result error handling)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5684,12 +5690,12 @@ normal vector of the face is used as direction</source>
 <context>
     <name>FEM_SolverControl</name>
     <message>
-        <location filename="../../../femcommands/commands.py" line="1019"/>
+        <location filename="../../../femcommands/commands.py" line="1053"/>
         <source>Solver job control</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femcommands/commands.py" line="1024"/>
+        <location filename="../../../femcommands/commands.py" line="1058"/>
         <source>Changes solver attributes and runs the calculations for the selected solver</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5697,12 +5703,12 @@ normal vector of the face is used as direction</source>
 <context>
     <name>FEM_SolverElmer</name>
     <message>
-        <location filename="../../../femcommands/commands.py" line="1036"/>
+        <location filename="../../../femcommands/commands.py" line="1070"/>
         <source>Solver Elmer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femcommands/commands.py" line="1041"/>
+        <location filename="../../../femcommands/commands.py" line="1075"/>
         <source>Creates a FEM solver Elmer</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5710,12 +5716,12 @@ normal vector of the face is used as direction</source>
 <context>
     <name>FEM_SolverMystran</name>
     <message>
-        <location filename="../../../femcommands/commands.py" line="1052"/>
+        <location filename="../../../femcommands/commands.py" line="1086"/>
         <source>Solver Mystran</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femcommands/commands.py" line="1054"/>
+        <location filename="../../../femcommands/commands.py" line="1088"/>
         <source>Creates a FEM solver Mystran</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5723,12 +5729,12 @@ normal vector of the face is used as direction</source>
 <context>
     <name>FEM_SolverRun</name>
     <message>
-        <location filename="../../../femcommands/commands.py" line="1064"/>
+        <location filename="../../../femcommands/commands.py" line="1098"/>
         <source>Run solver calculations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femcommands/commands.py" line="1069"/>
+        <location filename="../../../femcommands/commands.py" line="1103"/>
         <source>Runs the calculations for the selected solver</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5736,12 +5742,12 @@ normal vector of the face is used as direction</source>
 <context>
     <name>FEM_SolverZ88</name>
     <message>
-        <location filename="../../../femcommands/commands.py" line="1084"/>
+        <location filename="../../../femcommands/commands.py" line="1118"/>
         <source>Solver Z88</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../femcommands/commands.py" line="1086"/>
+        <location filename="../../../femcommands/commands.py" line="1120"/>
         <source>Creates a FEM solver Z88</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5964,6 +5970,69 @@ Please select a result type first.</source>
         <location filename="../../../femtaskpanels/task_result_mechanical.py" line="718"/>
         <location filename="../../../femtaskpanels/task_result_mechanical.py" line="730"/>
         <source>No result object</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FEM_ConstraintCurrentDensity</name>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="222"/>
+        <source>Constraint current density</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="226"/>
+        <source>Creates a FEM constraint current density</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FEM_EquationMagnetodynamic2D</name>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="528"/>
+        <source>Magnetodynamic2D equation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="532"/>
+        <source>Creates a FEM equation for
+2D magentodynamic forces</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdFemCompEmConstraints</name>
+    <message>
+        <location filename="../../Command.cpp" line="1250"/>
+        <source>Fem</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Command.cpp" line="1251"/>
+        <source>Electromagnetic constraints...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Command.cpp" line="1252"/>
+        <source>Electromagnetic constraints</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdFEMCompEmEquations</name>
+    <message>
+        <location filename="../../Command.cpp" line="1357"/>
+        <source>Fem</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Command.cpp" line="1358"/>
+        <source>Electromagnetic equations...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Command.cpp" line="1359"/>
+        <source>Electromagnetic equations for the Elmer solver</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
