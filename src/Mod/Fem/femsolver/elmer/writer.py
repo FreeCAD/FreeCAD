@@ -48,7 +48,7 @@ from femmesh import gmshtools
 from femtools import constants
 from femtools import femutils
 from femtools import membertools
-from .equations import elasticity
+from .equations import elasticity_writer as EL_writer
 from .equations import electricforce_writer as EF_writer
 from .equations import electrostatic_writer as ES_writer
 from .equations import flow_writer
@@ -403,6 +403,7 @@ class Writer(object):
     # Elasticity
 
     def _handleElasticity(self):
+        ELW = EL_writer.Elasticitywriter(self, self.solver)
         activeIn = []
         for equation in self.solver.Group:
             if femutils.is_of_type(equation, "Fem::EquationElmerElasticity"):
@@ -414,421 +415,17 @@ class Writer(object):
                     activeIn = equation.References[0][1]
                 else:
                     activeIn = self.getAllBodies()
-                solverSection = self._getElasticitySolver(equation)
+                solverSection = ELW.getElasticitySolver(equation)
                 for body in activeIn:
                     if not self.isBodyMaterialFluid(body):
                         self._addSolver(body, solverSection)
-                        self._handleElasticityEquation(activeIn, equation)
+                        ELW.handleElasticityEquation(activeIn, equation)
         if activeIn:
-            self._handleElasticityConstants()
-            self._handleElasticityBndConditions()
-            self._handleElasticityInitial(activeIn)
-            self._handleElasticityBodyForces(activeIn)
-            self._handleElasticityMaterial(activeIn)
-
-    def _getElasticitySolver(self, equation):
-        s = self.createLinearSolver(equation)
-        # check if we need to update the equation
-        self._updateElasticitySolver(equation)
-        # output the equation parameters
-        s["Equation"] = "Stress Solver"  # equation.Name
-        s["Procedure"] = sifio.FileAttr("StressSolve/StressSolver")
-        if equation.CalculateStrains is True:
-            s["Calculate Strains"] = equation.CalculateStrains
-        if equation.CalculateStresses is True:
-            s["Calculate Stresses"] = equation.CalculateStresses
-        if equation.CalculatePrincipal is True:
-            s["Calculate Principal"] = equation.CalculatePrincipal
-        if equation.CalculatePangle is True:
-            s["Calculate Pangle"] = equation.CalculatePangle
-        if equation.ConstantBulkSystem is True:
-            s["Constant Bulk System"] = equation.ConstantBulkSystem
-        s["Displace mesh"] = equation.DisplaceMesh
-        s["Eigen Analysis"] = equation.EigenAnalysis
-        if equation.EigenAnalysis is True:
-            s["Eigen System Convergence Tolerance"] = \
-                equation.EigenSystemTolerance
-            s["Eigen System Complex"] = equation.EigenSystemComplex
-            if equation.EigenSystemComputeResiduals is True:
-                s["Eigen System Compute Residuals"] = equation.EigenSystemComputeResiduals
-            s["Eigen System Damped"] = equation.EigenSystemDamped
-            s["Eigen System Max Iterations"] = equation.EigenSystemMaxIterations
-            s["Eigen System Select"] = equation.EigenSystemSelect
-            s["Eigen System Values"] = equation.EigenSystemValues
-        if equation.FixDisplacement is True:
-            s["Fix Displacement"] = equation.FixDisplacement
-        s["Geometric Stiffness"] = equation.GeometricStiffness
-        if equation.Incompressible is True:
-            s["Incompressible"] = equation.Incompressible
-        if equation.MaxwellMaterial is True:
-            s["Maxwell Material"] = equation.MaxwellMaterial
-        if equation.ModelLumping is True:
-            s["Model Lumping"] = equation.ModelLumping
-        if equation.ModelLumping is True:
-            s["Model Lumping Filename"] = equation.ModelLumpingFilename
-        s["Optimize Bandwidth"] = True
-        if equation.StabilityAnalysis is True:
-            s["Stability Analysis"] = equation.StabilityAnalysis
-        s["Stabilize"] = equation.Stabilize
-        if equation.UpdateTransientSystem is True:
-            s["Update Transient System"] = equation.UpdateTransientSystem
-        s["Variable"] = equation.Variable
-        s["Variable DOFs"] = 3
-        return s
-
-    def _handleElasticityEquation(self, bodies, equation):
-        for b in bodies:
-            # not for bodies with fluid material
-            if not self.isBodyMaterialFluid(b):
-                if equation.PlaneStress:
-                    self.equation(b, "Plane Stress", equation.PlaneStress)
-
-    def _updateElasticitySolver(self, equation):
-        # updates older Elasticity equations
-        if not hasattr(equation, "Variable"):
-            equation.addProperty(
-                "App::PropertyString",
-                "Variable",
-                "Elasticity",
-                (
-                    "Only change this if 'Incompressible' is set to true\n"
-                    "according to the Elmer manual."
-                )
-            )
-            equation.Variable = "Displacement"
-        if hasattr(equation, "Bubbles"):
-            # Bubbles was removed because it is unused by Elmer for the stress solver
-            equation.removeProperty("Bubbles")
-        if not hasattr(equation, "ConstantBulkSystem"):
-            equation.addProperty(
-                "App::PropertyBool",
-                "ConstantBulkSystem",
-                "Elasticity",
-                "See Elmer manual for info"
-            )
-        if not hasattr(equation, "DisplaceMesh"):
-            equation.addProperty(
-                "App::PropertyBool",
-                "DisplaceMesh",
-                "Elasticity",
-                (
-                    "If mesh is deformed by displacement field.\n"
-                    "Set to False for 'Eigen Analysis'."
-                )
-            )
-            # DisplaceMesh is true except if DoFrequencyAnalysis is true
-            equation.DisplaceMesh = True
-            if hasattr(equation, "DoFrequencyAnalysis"):
-                if equation.DoFrequencyAnalysis is True:
-                    equation.DisplaceMesh = False
-        if not hasattr(equation, "EigenAnalysis"):
-            # DoFrequencyAnalysis was renamed to EigenAnalysis
-            # to follow the Elmer manual
-            equation.addProperty(
-                "App::PropertyBool",
-                "EigenAnalysis",
-                "Eigen Values",
-                "If true, modal analysis"
-            )
-            if hasattr(equation, "DoFrequencyAnalysis"):
-                equation.EigenAnalysis = equation.DoFrequencyAnalysis
-                equation.removeProperty("DoFrequencyAnalysis")
-        if not hasattr(equation, "EigenSystemComplex"):
-            equation.addProperty(
-                "App::PropertyBool",
-                "EigenSystemComplex",
-                "Eigen Values",
-                (
-                    "Should be true if eigen system is complex\n"
-                    "Must be false for a damped eigen value analysis."
-                )
-            )
-            equation.EigenSystemComplex = True
-        if not hasattr(equation, "EigenSystemComputeResiduals"):
-            equation.addProperty(
-                "App::PropertyBool",
-                "EigenSystemComputeResiduals",
-                "Eigen Values",
-                "Computes residuals of eigen value system"
-            )
-        if not hasattr(equation, "EigenSystemDamped"):
-            equation.addProperty(
-                "App::PropertyBool",
-                "EigenSystemDamped",
-                "Eigen Values",
-                (
-                    "Set a damped eigen analysis. Can only be\n"
-                    "used if 'Linear Solver Type' is 'Iterative'."
-                )
-            )
-        if not hasattr(equation, "EigenSystemMaxIterations"):
-            equation.addProperty(
-                "App::PropertyIntegerConstraint",
-                "EigenSystemMaxIterations",
-                "Eigen Values",
-                "Max iterations for iterative eigensystem solver"
-            )
-            equation.EigenSystemMaxIterations = (300, 1, int(1e8), 1)
-        if not hasattr(equation, "EigenSystemSelect"):
-            equation.addProperty(
-                "App::PropertyEnumeration",
-                "EigenSystemSelect",
-                "Eigen Values",
-                "Which eigenvalues are computed"
-            )
-            equation.EigenSystemSelect = elasticity.EIGEN_SYSTEM_SELECT
-            equation.EigenSystemSelect = "Smallest Magnitude"
-        if not hasattr(equation, "EigenSystemTolerance"):
-            equation.addProperty(
-                "App::PropertyFloat",
-                "EigenSystemTolerance",
-                "Eigen Values",
-                (
-                    "Convergence tolerance for iterative eigensystem solve\n"
-                    "Default is 100 times the 'Linear Tolerance'"
-                )
-            )
-            equation.setExpression("EigenSystemTolerance", str(100 * equation.LinearTolerance))
-        if not hasattr(equation, "EigenSystemValues"):
-            # EigenmodesCount was renamed to EigenSystemValues
-            # to follow the Elmer manual
-            equation.addProperty(
-                "App::PropertyInteger",
-                "EigenSystemValues",
-                "Eigen Values",
-                "Number of lowest eigen modes"
-            )
-            if hasattr(equation, "EigenmodesCount"):
-                equation.EigenSystemValues = equation.EigenmodesCount
-                equation.removeProperty("EigenmodesCount")
-        if not hasattr(equation, "FixDisplacement"):
-            equation.addProperty(
-                "App::PropertyBool",
-                "FixDisplacement",
-                "Elasticity",
-                "If displacements or forces are set,\nthereby model lumping is used"
-            )
-        if not hasattr(equation, "GeometricStiffness"):
-            equation.addProperty(
-                "App::PropertyBool",
-                "GeometricStiffness",
-                "Elasticity",
-                "Consider geometric stiffness"
-            )
-        if not hasattr(equation, "Incompressible"):
-            equation.addProperty(
-                "App::PropertyBool",
-                "Incompressible",
-                "Elasticity",
-                (
-                    "Computation of incompressible material in connection\n"
-                    "with viscoelastic Maxwell material and a custom 'Variable'"
-                )
-            )
-        if not hasattr(equation, "MaxwellMaterial"):
-            equation.addProperty(
-                "App::PropertyBool",
-                "MaxwellMaterial",
-                "Elasticity",
-                "Compute viscoelastic material model"
-            )
-        if not hasattr(equation, "ModelLumping"):
-            equation.addProperty(
-                "App::PropertyBool",
-                "ModelLumping",
-                "Elasticity",
-                "Use model lumping"
-            )
-        if not hasattr(equation, "ModelLumpingFilename"):
-            equation.addProperty(
-                "App::PropertyFile",
-                "ModelLumpingFilename",
-                "Elasticity",
-                "File to save results from model lumping to"
-            )
-        if not hasattr(equation, "PlaneStress"):
-            equation.addProperty(
-                "App::PropertyBool",
-                "PlaneStress",
-                "Equation",
-                (
-                    "Computes solution according to plane\nstress situation.\n"
-                    "Applies only for 2D geometry."
-                )
-            )
-        if not hasattr(equation, "StabilityAnalysis"):
-            equation.addProperty(
-                "App::PropertyBool",
-                "StabilityAnalysis",
-                "Elasticity",
-                (
-                    "If true, 'Eigen Analysis' is stability analysis.\n"
-                    "Otherwise modal analysis is performed."
-                )
-            )
-        if not hasattr(equation, "UpdateTransientSystem"):
-            equation.addProperty(
-                "App::PropertyBool",
-                "UpdateTransientSystem",
-                "Elasticity",
-                "See Elmer manual for info"
-            )
-
-    def _handleElasticityConstants(self):
-        pass
-
-    def _handleElasticityBndConditions(self):
-        for obj in self.getMember("Fem::ConstraintPressure"):
-            if obj.References:
-                for name in obj.References[0][1]:
-                    pressure = self.getFromUi(obj.Pressure, "MPa", "M/(L*T^2)")
-                    if not obj.Reversed:
-                        pressure *= -1
-                    self.boundary(name, "Normal Force", pressure)
-                self.handled(obj)
-        for obj in self.getMember("Fem::ConstraintFixed"):
-            if obj.References:
-                for name in obj.References[0][1]:
-                    self.boundary(name, "Displacement 1", 0.0)
-                    self.boundary(name, "Displacement 2", 0.0)
-                    self.boundary(name, "Displacement 3", 0.0)
-                self.handled(obj)
-        for obj in self.getMember("Fem::ConstraintForce"):
-            if obj.References:
-                for name in obj.References[0][1]:
-                    force = self.getFromUi(obj.Force, "N", "M*L*T^-2")
-                    self.boundary(name, "Force 1", obj.DirectionVector.x * force)
-                    self.boundary(name, "Force 2", obj.DirectionVector.y * force)
-                    self.boundary(name, "Force 3", obj.DirectionVector.z * force)
-                    self.boundary(name, "Force 1 Normalize by Area", True)
-                    self.boundary(name, "Force 2 Normalize by Area", True)
-                    self.boundary(name, "Force 3 Normalize by Area", True)
-                self.handled(obj)
-        for obj in self.getMember("Fem::ConstraintDisplacement"):
-            if obj.References:
-                for name in obj.References[0][1]:
-                    if not obj.xFree:
-                        self.boundary(
-                            name, "Displacement 1", obj.xDisplacement * 0.001)
-                    elif obj.xFix:
-                        self.boundary(name, "Displacement 1", 0.0)
-                    if not obj.yFree:
-                        self.boundary(
-                            name, "Displacement 2", obj.yDisplacement * 0.001)
-                    elif obj.yFix:
-                        self.boundary(name, "Displacement 2", 0.0)
-                    if not obj.zFree:
-                        self.boundary(
-                            name, "Displacement 3", obj.zDisplacement * 0.001)
-                    elif obj.zFix:
-                        self.boundary(name, "Displacement 3", 0.0)
-                self.handled(obj)
-
-    def _handleElasticityInitial(self, bodies):
-        pass
-
-    def _handleElasticityBodyForces(self, bodies):
-        obj = self.getSingleMember("Fem::ConstraintSelfWeight")
-        if obj is not None:
-            for name in bodies:
-                gravity = self.convert(self.constsdef["Gravity"], "L/T^2")
-                if self._getBodyMaterial(name) is None:
-                    raise WriteError(
-                        "The body {} is not referenced in any material.\n\n".format(name)
-                    )
-                m = self._getBodyMaterial(name).Material
-
-                densityQuantity = Units.Quantity(m["Density"])
-                dimension = "M/L^3"
-                if name.startswith("Edge"):
-                    # not tested, bernd
-                    # TODO: test
-                    densityQuantity.Unit = Units.Unit(-2, 1)
-                    dimension = "M/L^2"
-                density = self.convert(densityQuantity, dimension)
-
-                force1 = gravity * obj.Gravity_x * density
-                force2 = gravity * obj.Gravity_y * density
-                force3 = gravity * obj.Gravity_z * density
-                self._bodyForce(name, "Stress Bodyforce 1", force1)
-                self._bodyForce(name, "Stress Bodyforce 2", force2)
-                self._bodyForce(name, "Stress Bodyforce 3", force3)
-            self.handled(obj)
-
-    def _getBodyMaterial(self, name):
-        for obj in self.getMember("App::MaterialObject"):
-            # we can have e.g. the case there are 2 bodies and 2 materials
-            # body 2 has material 2 as reference while material 1 has no reference
-            # therefore we must not return a material when it is not referenced
-            if obj.References and (name in obj.References[0][1]):
-                return obj
-        # 'name' was not in the reference of any material
-        return None
-
-    def _handleElasticityMaterial(self, bodies):
-        # density
-        # is needed for self weight constraints and frequency analysis
-        density_needed = False
-        for equation in self.solver.Group:
-            if femutils.is_of_type(equation, "Fem::EquationElmerElasticity"):
-                if equation.EigenAnalysis is True:
-                    density_needed = True
-                    break  # there could be a second equation without frequency
-        gravObj = self.getSingleMember("Fem::ConstraintSelfWeight")
-        if gravObj is not None:
-            density_needed = True
-        # temperature
-        tempObj = self.getSingleMember("Fem::ConstraintInitialTemperature")
-        if tempObj is not None:
-            refTemp = self.getFromUi(tempObj.initialTemperature, "K", "O")
-            for name in bodies:
-                self.material(name, "Reference Temperature", refTemp)
-        # get the material data for all bodies
-        for obj in self.getMember("App::MaterialObject"):
-            m = obj.Material
-            refs = (
-                obj.References[0][1]
-                if obj.References
-                else self.getAllBodies()
-            )
-            for name in (n for n in refs if n in bodies):
-                # don't evaluate fluid material
-                if self.isBodyMaterialFluid(name):
-                    break
-                if "YoungsModulus" not in m:
-                    Console.PrintMessage("m: {}\n".format(m))
-                    # it is no fluid but also no solid
-                    # -> user set no material reference at all
-                    # that now material is known
-                    raise WriteError(
-                        "There are two or more materials with empty references.\n\n"
-                        "Set for the materials to what solid they belong to.\n"
-                    )
-                self.material(name, "Name", m["Name"])
-                if density_needed is True:
-                    self.material(
-                        name, "Density",
-                        self.getDensity(m)
-                    )
-                self.material(
-                    name, "Youngs Modulus",
-                    self._getYoungsModulus(m)
-                )
-                self.material(
-                    name, "Poisson ratio",
-                    float(m["PoissonRatio"])
-                )
-                if tempObj:
-                    self.material(
-                        name, "Heat expansion Coefficient",
-                        self.convert(m["ThermalExpansionCoefficient"], "O^-1")
-                    )
-
-    def _getYoungsModulus(self, m):
-        youngsModulus = self.convert(m["YoungsModulus"], "M/(L*T^2)")
-        if self._getMeshDimension() == 2:
-            youngsModulus *= 1e3
-        return youngsModulus
+            ELW.handleElasticityConstants()
+            ELW.handleElasticityBndConditions()
+            ELW.handleElasticityInitial(activeIn)
+            ELW.handleElasticityBodyForces(activeIn)
+            ELW.handleElasticityMaterial(activeIn)
 
     #-------------------------------------------------------------------------------------------
     # Electrostatic
@@ -1050,14 +647,24 @@ class Writer(object):
     def isBodyMaterialFluid(self, body):
         # we can have the case that a body has no assigned material
         # then assume it is a solid
-        if self._getBodyMaterial(body) is not None:
-            m = self._getBodyMaterial(body).Material
+        if self.getBodyMaterial(body) is not None:
+            m = self.getBodyMaterial(body).Material
             return "KinematicViscosity" in m
         return False
 
+    def getBodyMaterial(self, name):
+        for obj in self.getMember("App::MaterialObject"):
+            # we can have e.g. the case there are 2 bodies and 2 materials
+            # body 2 has material 2 as reference while material 1 has no reference
+            # therefore we must not return a material when it is not referenced
+            if obj.References and (name in obj.References[0][1]):
+                return obj
+        # 'name' was not in the reference of any material
+        return None
+
     def getDensity(self, m):
         density = self.convert(m["Density"], "M/L^3")
-        if self._getMeshDimension() == 2:
+        if self.getMeshDimension() == 2:
             density *= 1e3
         return density
 
@@ -1092,7 +699,7 @@ class Writer(object):
             bodyCount = len(obj.Part.Shape.Edges)
         return [prefix + str(i + 1) for i in range(bodyCount)]
 
-    def _getMeshDimension(self):
+    def getMeshDimension(self):
         obj = self.getSingleMember("Fem::FemMeshObject")
         if obj.Part.Shape.Solids:
             return 3
