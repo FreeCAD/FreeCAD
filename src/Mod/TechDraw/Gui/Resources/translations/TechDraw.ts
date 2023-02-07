@@ -2086,7 +2086,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCenterLine.cpp" line="294"/>
+        <location filename="../../TaskCenterLine.cpp" line="298"/>
         <source>Create CenterLine</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2136,12 +2136,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskComplexSection.cpp" line="560"/>
+        <location filename="../../TaskComplexSection.cpp" line="559"/>
         <source>Create ComplexSection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskComplexSection.cpp" line="643"/>
+        <location filename="../../TaskComplexSection.cpp" line="642"/>
         <location filename="../../TaskSectionView.cpp" line="561"/>
         <source>Edit SectionView</source>
         <translation type="unfinished"></translation>
@@ -2575,27 +2575,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mrichtextedit.cpp" line="263"/>
+        <location filename="../../mrichtextedit.cpp" line="269"/>
         <source>Document source</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mrichtextedit.cpp" line="366"/>
+        <location filename="../../mrichtextedit.cpp" line="372"/>
         <source>Create a link</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mrichtextedit.cpp" line="367"/>
+        <location filename="../../mrichtextedit.cpp" line="373"/>
         <source>Link URL:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mrichtextedit.cpp" line="696"/>
+        <location filename="../../mrichtextedit.cpp" line="702"/>
         <source>Select an image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mrichtextedit.cpp" line="698"/>
+        <location filename="../../mrichtextedit.cpp" line="704"/>
         <source>JPEG (*.jpg);; GIF (*.gif);; PNG (*.png);; BMP (*.bmp);; All (*)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3394,12 +3394,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCenterLine.cpp" line="163"/>
+        <location filename="../../TaskCenterLine.cpp" line="167"/>
         <source>Create Center Line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCenterLine.cpp" line="193"/>
+        <location filename="../../TaskCenterLine.cpp" line="197"/>
         <source>Edit Center Line</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3436,7 +3436,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskComplexSection.cpp" line="691"/>
+        <location filename="../../TaskComplexSection.cpp" line="690"/>
         <location filename="../../TaskSectionView.cpp" line="608"/>
         <source>Operation Failed</source>
         <translation type="unfinished"></translation>
@@ -3819,7 +3819,7 @@ it has a tile weld that would become broken.</source>
 <context>
     <name>TaskPojGroup</name>
     <message>
-        <location filename="../../TaskComplexSection.cpp" line="488"/>
+        <location filename="../../TaskComplexSection.cpp" line="487"/>
         <location filename="../../TaskSectionView.cpp" line="428"/>
         <source> updates pending</source>
         <translation type="unfinished"></translation>
@@ -5829,7 +5829,7 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskComplexSection.cpp" line="690"/>
+        <location filename="../../TaskComplexSection.cpp" line="689"/>
         <source>Can not continue. Object * %1 or %2 not found.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8227,6 +8227,23 @@ using the given X/Y Spacing</source>
     <message>
         <location filename="../../TaskDimRepair.cpp" line="82"/>
         <source>SubElement</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TechDraw_AxoLengthDimension</name>
+    <message>
+        <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="50"/>
+        <source>Axonometric length dimension</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="57"/>
+        <source>Create an axonometric length dimension&lt;br&gt;
+                - select first edge to define direction and length of the dimension line&lt;br&gt;
+                - select second edge to define the direction of the extension lines&lt;br&gt;
+                - optional: select two more vertexes which define the measurement instead of the length&lt;br&gt;
+                  of the first selected edge</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
