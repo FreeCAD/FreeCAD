@@ -117,6 +117,10 @@ double GetPointAngle (const Base::Vector2d &p1, const Base::Vector2d &p2);
 
 void ActivateHandler(Gui::Document *doc, DrawSketchHandler *handler);
 
+/// Returns if a sketch is in edit mode
+bool isSketchInEdit(Gui::Document* doc);
+
+/// Returns whether an edit mode command should be activated or not. It is only activated if the sketcher is no special state or a sketchHandler is active.
 bool isCommandActive(Gui::Document *doc, bool actsOnSelection = false);
 
 SketcherGui::ViewProviderSketch* getSketchViewprovider(Gui::Document *doc);
