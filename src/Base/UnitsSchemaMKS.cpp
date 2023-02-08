@@ -307,6 +307,10 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, Q
         unitString = QString::fromLatin1("Wb");
         factor = 1e6;
     }
+    else if (unit == Unit::Magnetization) {
+        unitString = QString::fromLatin1("A/m");
+        factor = 1e-3;
+    } 
     else if (unit == Unit::ElectricalConductance) {
         if (UnitValue < 1e-9) {
             unitString = QString::fromUtf8("\xC2\xB5S");

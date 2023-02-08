@@ -237,6 +237,19 @@ public:
     ~PropertyLength() override = default;
 };
 
+ /** Magnetization property
+ * This is a property for representing magnetizations. It is basically a float
+ * property. On the Gui it has a quantity like A/m.
+ */
+    class AppExport PropertyMagnetization: public PropertyQuantityConstraint
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyMagnetization();
+    ~PropertyMagnetization() override = default;
+};
+
 /** Pressure property
  * This is a property for representing acceleration. It is basically a float
  * property. On the Gui it has a quantity like m/s^2.
