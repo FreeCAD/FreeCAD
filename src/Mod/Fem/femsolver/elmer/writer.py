@@ -554,7 +554,7 @@ class Writer(object):
                         "The possible settings are:\n'Cartesian 2D',\n"
                         "'Cartesian 3D',\nor 'Axi Symmetric'".format(self.solver.CoordinateSystem)
                     )
-                    
+
                 solverSection = MgDyn2D.getMagnetodynamic2DSolver(equation)
                 solverPostSection = MgDyn2D.getMagnetodynamic2DSolverPost(equation)
                 for body in activeIn:

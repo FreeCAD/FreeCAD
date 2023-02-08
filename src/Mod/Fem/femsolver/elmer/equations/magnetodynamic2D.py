@@ -133,7 +133,7 @@ class Proxy(nonlinear.Proxy, equationbase.Magnetodynamic2DProxy):
         obj.CalculateNodalFields = True
         obj.CalculateNodalForces = False
         obj.CalculateNodalHeating = False
-        
+
 
 class ViewProxy(nonlinear.ViewProxy, equationbase.Magnetodynamic2DViewProxy):
     pass
