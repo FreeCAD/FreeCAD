@@ -309,6 +309,17 @@ PropertyLength::PropertyLength()
     setConstraints(&LengthStandard);
 }
 
+//**************************************************************************
+//**************************************************************************
+// PropertyMagnetization
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyMagnetization, App::PropertyQuantity)
+
+PropertyMagnetization::PropertyMagnetization()
+{
+    setUnit(Base::Unit::Magnetization);
+}
 
 //**************************************************************************
 //**************************************************************************

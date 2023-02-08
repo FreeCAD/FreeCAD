@@ -1916,6 +1916,7 @@ void Application::initTypes()
     App::PropertyPressure           ::init();
     App::PropertyCurrentDensity     ::init();
     App::PropertyElectricPotential  ::init();
+    App::PropertyMagnetization      ::init();
     App::PropertyVacuumPermittivity ::init();
     App::PropertyInteger            ::init();
     App::PropertyIntegerConstraint  ::init();

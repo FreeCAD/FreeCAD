@@ -114,6 +114,7 @@ public:
     static Unit MagneticFieldStrength;
     static Unit MagneticFlux;
     static Unit MagneticFluxDensity;
+    static Unit Magnetization;
     static Unit ElectricalCapacitance;
     static Unit ElectricalInductance;
     static Unit ElectricalConductance;
