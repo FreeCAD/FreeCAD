@@ -377,7 +377,9 @@ Quantity Quantity::Gauss            (1e-4          ,Unit(0,1,-2,-1)); // 1 G = 1
 
 Quantity Quantity::Weber            (1e6           ,Unit(2,1,-2,-1)); // Weber (kg*m^2/s^2/A)
 
-Quantity Quantity::Oersted          (0.07957747    ,Unit(-1,0,0,1)); // Oersted (A/m)
+// disable Oersted because people need to input e.g. a field strength of
+// 1 ampere per meter -> 1 A/m and not get the recalculation to Oersted
+//Quantity Quantity::Oersted(0.07957747, Unit(-1, 0, 0, 1));// Oersted (A/m)
 
 Quantity Quantity::PicoFarad        (1e-18         ,Unit(-2,-1,4,2));
 Quantity Quantity::NanoFarad        (1e-15         ,Unit(-2,-1,4,2));

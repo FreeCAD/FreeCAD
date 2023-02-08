@@ -352,8 +352,8 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
         }
     }
     else if (unit == Unit::MagneticFieldStrength) {
-        unitString = QString::fromLatin1("Oe");
-        factor = 0.07957747;
+        unitString = QString::fromLatin1("A/m");
+        factor = 1e-3;
     }
     else if (unit == Unit::MagneticFlux) {
         unitString = QString::fromLatin1("Wb");

@@ -299,8 +299,6 @@ EXPO     [eE][-+]?[0-9]+
 
 "Wb"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Weber;               yylval.quantity.unitStr = yytext; return UNIT; // Weber (kg*m^2/s^2/A)
 
-"Oe"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Oersted;             yylval.quantity.unitStr = yytext; return UNIT; // Oersted (A/m)
-
 "F"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Farad;               yylval.quantity.unitStr = yytext; return UNIT; // Farad (s^4*A^2/m^2/kg)
 "mF"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliFarad;          yylval.quantity.unitStr = yytext; return UNIT; // milli Farad
 "\xC2\xB5F"                  COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroFarad;          yylval.quantity.unitStr = yytext; return UNIT; // micro Farad

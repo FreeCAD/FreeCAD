@@ -806,7 +806,9 @@ App.Units.Gauss         = App.Units.Quantity('G')
 
 App.Units.Weber         = App.Units.Quantity('Wb')
 
-App.Units.Oersted       = App.Units.Quantity('Oe')
+# disable Oersted because people need to input e.g. a field strength of
+# 1 ampere per meter -> 1 A/m and not get the recalculation to Oersted
+# App.Units.Oersted       = App.Units.Quantity('Oe')
 
 App.Units.PicoFarad     = App.Units.Quantity('pF')
 App.Units.NanoFarad     = App.Units.Quantity('nF')

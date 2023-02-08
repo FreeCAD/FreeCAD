@@ -292,7 +292,7 @@ public:
 
     static Quantity Weber;
 
-    static Quantity Oersted;
+    //static Quantity Oersted;
 
     static Quantity Farad;
     static Quantity MilliFarad;
