@@ -166,12 +166,13 @@ class TestInvoluteGear(unittest.TestCase):
         created_with = f"created with {self.Doc.getProgramVersion()}"
         gear = self.Doc.InvoluteGear # from fixture
         fixture_length = 187.752 # from fixture, rounded to micrometer
-        length_delta = 0.001
         self.assertClosedWire(gear.Shape) # no recompute yet, i.e. check original
-        self.assertAlmostEqual(fixture_length, gear.Shape.Length, delta=length_delta,
+        self.assertAlmostEqual(fixture_length, gear.Shape.Length, places=3,
             msg=f"Total wire length does not match fixture for gear {created_with}")
         gear.enforceRecompute()
         self.assertSuccessfulRecompute(gear, msg=f"Cannot recompute gear {created_with}")
+        relative_tolerance_per_tooth = 1e-3 # wild guess: changes of <0.1%/tooth are ok
+        length_delta = fixture_length * relative_tolerance_per_tooth * gear.NumberOfTeeth
         self.assertAlmostEqual(fixture_length, gear.Shape.Length, delta=length_delta,
             msg=f"Total wire length changed after recomputing gear {created_with}")
 
@@ -181,12 +182,13 @@ class TestInvoluteGear(unittest.TestCase):
         created_with = f"created with {self.Doc.getProgramVersion()}"
         gear = self.Doc.InvoluteGear # from fixture
         fixture_length = 165.408 # from fixture, rounded to micrometer
-        length_delta = 0.001
         self.assertClosedWire(gear.Shape) # no recompute yet, i.e. check original
-        self.assertAlmostEqual(fixture_length, gear.Shape.Length, delta=length_delta,
+        self.assertAlmostEqual(fixture_length, gear.Shape.Length, places=3,
             msg=f"Total wire length does not match fixture for gear {created_with}")
         gear.enforceRecompute()
         self.assertSuccessfulRecompute(gear, msg=f"Cannot recompute gear {created_with}")
+        relative_tolerance_per_tooth = 1e-3 # wild guess: changes of <0.1%/tooth are ok
+        length_delta = fixture_length * relative_tolerance_per_tooth * gear.NumberOfTeeth
         self.assertAlmostEqual(fixture_length, gear.Shape.Length, delta=length_delta,
             msg=f"Total wire length changed after recomputing gear {created_with}")
 

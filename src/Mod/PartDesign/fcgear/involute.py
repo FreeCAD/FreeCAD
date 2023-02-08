@@ -1,4 +1,5 @@
 # (c) 2014 David Douard <david.douard@gmail.com>
+# (c) 2023 Jonas Bähr <jonas.baehr@web.de>
 # Based on https://github.com/attoparsec/inkscape-extensions.git
 # Based on gearUtils-03.js by Dr A.R.Collins
 #          http://www.arc.id.au/gearDrawing.html
@@ -22,7 +23,7 @@
 #   License along with FCGear; if not, write to the Free Software
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
 
-from math import cos, sin, pi, acos, atan, sqrt
+from math import cos, sin, pi, acos, asin, atan, sqrt
 
 xrange = range
 
@@ -58,23 +59,64 @@ def CreateExternalGear(w, m, Z, phi,
     Ra = Rpitch + addendum    # tip (addendum) circle radius
     Rroot = Rpitch - dedendum # root circle radius
     fRad = filletCoeff * m  # fillet radius, max 1.5*clearance
-    Rf = sqrt((Rroot + fRad)**2 - fRad**2) # radius at top of fillet
-    if (Rb < Rf):
-        Rf = Rroot + fRad/1.5 # fRad/1.5=clerance, with crearance=0.25*m
+    Rc = Rroot + fRad # radius at the center of the fillet circle
+    Rf = Rc  # radius at top of fillet, assuming fillet below involute
+    filletWithinInvolute = Rf > Rb # above the base circle we have the involute,
+                                   # below we have a straight line towards the center.
+    if (filletWithinInvolute):
+        # In this case we need tangency of the involute and the fillet circle.
+        # It has to be somewhere between max(Rb,Rroot) and Rc.
+        # So we need the radius r from the origin depending on the tangent angle, for both:
+        # - the involute: ri(t) = Rb * sqrt(1 + t**2), rationale: see below.
+        # - the fillet circle: a bit more complex, see below.
+        # and then find the r where both tangents are equal.
+        # As the tangent angle of the involute equals the parameter t, we can just take the
+        # parametric polar representation of the involute as our first equation.
+        # For a circle in parameter form, the tangent angle is pi/2 - t (for the first quadrant,
+        # i.e. 0 <= t <= pi/2, and more than one quadrant is not of interest for us). Unfortunately,
+        # the fillet circle is offset from the origin by (Rc,phi), so things becomes more messy:
+        # rc(t) = sqrt((Rc*cos(phi) + fRad*cos(t))**2 + (Rc*sin(phi) + fRad*sin(t))**2)
+        # To get rid of the sin(t) part we assume phi "very small", i.e. sin(phi) becomes 0.
+        # This is justyfied because Rc is much larger than fRad and the parallax error is
+        # neglectable. Next we substitute the parameter t by pi/2-q-pi. For one to account for the
+        # tangent angle definitions (see above), and then to turn our cicle by 180° as for the
+        # root fillet we need the third quadrant of the circle (NB: we are looking at the upper
+        # half of the right most tooth, i.e. the involute grows downwards!). This results in
+        # sqrt(2*fRad*Rc*cos(-1/2*pi - q) + fRad**2 + Rc**2) which simplifies to
+        # rc(q) = sqrt(-2*fRad*Rc*sin(q) + fRad**2 + Rc**2)
+        # which is the polar r for a given tangent angle q (with the simplification of phi being 0)
+        # This can now be inverted to give the tangent angle at a given r:
+        # qc(r) = asin((-r**2 + fRad**2 + Rc**2)/(2*fRad*Rc))
+        # For the involute we have ri(q) = Rb * sqrt(1 + q**2), thus
+        # qi(r) = +- sqrt(r**2 - Rb**2)/Rb
+        # Now to find the r where the tangents match, our Rf, we set qc=qi and solve for r.
+        # This doesn't seem to have an analytical solution, though, so let's apply
+        # Newton's Method to find the root of q := qi-qc over Rb...Rc, or for larger number of
+        # teeth, Rroot...Rc as in this case the base circle is below the root circle.
+        # The graph of q is strictly monotnonous and very steep, no surprises to expect.
+        # To simplify the above equations and to find the derivative, SageMath was used.
+        q = lambda r: (sqrt(r**2 - Rb**2) / Rb
+            - asin((-r**2 + fRad**2 + Rc**2) / (2 * fRad * Rc)))
+        q_prime = lambda r: (r / (sqrt(-Rb**2 + r**2) * Rb)
+            + r / (fRad * Rc * sqrt(1 - 1/4 * (r**2 - fRad**2 - Rc**2)**2 / (fRad**2 * Rc**2))))
+
+        Rf = findRootNewton(q, q_prime, x_min=max(Rb, Rroot), x_max=Rc)
+
 
     # ****** calculate angles (all in radians)
     pitchAngle = 2 * pi / Z  # angle subtended by whole tooth (rads)
     baseToPitchAngle = genInvolutePolar(Rb, Rpitch)
     pitchToFilletAngle = baseToPitchAngle  # profile starts at base circle
-    if (Rf > Rb):         # start profile at top of fillet (if its greater)
+    if (filletWithinInvolute): # start profile at top of fillet
         pitchToFilletAngle -= genInvolutePolar(Rb, Rf)
 
-    filletAngle = atan(fRad / (fRad + Rroot))  # radians
+    filletWidth = sqrt(fRad**2 - (Rc - Rf)**2)
+    filletAngle = atan(filletWidth / Rf)
 
     # ****** generate Higuchi involute approximation
     fe = 1       # fraction of profile length at end of approx
     fs = 0.01    # fraction of length offset from base to avoid singularity
-    if (Rf > Rb):
+    if (filletWithinInvolute):
         fs = (Rf**2 - Rb**2) / (Ra**2 - Rb**2)  # offset start to top of fillet
 
     if split:
@@ -111,7 +153,7 @@ def CreateExternalGear(w, m, Z, phi,
 
     for theta in thetas:
         w.theta = theta
-        if (Rf < Rb):
+        if (not filletWithinInvolute):
             w.line(inv[0]) # line from fillet up to base circle
 
         if split:
@@ -125,7 +167,7 @@ def CreateExternalGear(w, m, Z, phi,
             w.arc(invR[-1], Ra, 1) # arc across addendum circle
             w.curve(*invR[-2::-1])
 
-        if (Rf < Rb):
+        if (not filletWithinInvolute):
             w.line(filletR) # line down to topof fillet
 
         if (rootNext[1] > rootR[1]):    # is there a section of root circle between fillets?
@@ -174,28 +216,54 @@ def CreateInternalGear(w, m, Z, phi,
     Ra = Rpitch - addendum          # tip (addendum) circle radius
     Rroot = Rpitch + dedendum       # root circle radius
     fRad = filletCoeff * m          # fillet radius, max 1.5*clearance
-    Rf = Rroot - fRad/1.5  # radius at top of fillet (end of profile)
-                           # No idea where this formula for Rf comes from.
-                           # Just kept it to generate identical curves as the v0.20
+    Rc = Rroot - fRad      # radius at the center of the fillet circle
+
+    tipWithinInvolute = Ra > Rb     # above the base circle we have the involute,
+                                    # below we have a straight line towards the center.
+
+    # Calculate Rf: The radius where the involute ends and the fillet begins.
+    # For a detailed explanation see the external gear.
+    # Here, however, we substitute t with pi/2-q, i.e. we omit the extra -pi, as we are now
+    # interested in the first quadrant: Again, our involute grows downwards but now the fillet
+    # circle needs to approach the involute "from inside the tooth" and at the far end of the
+    # involute. The fillet is now
+    # rc(q) = sqrt(2*fRad*Rc*sin(q) + fRad**2 + Rc**2)
+    # which can be inversed to
+    # qc(r) = asin((r**2 - fRad**2 - Rc**2)/(2*fRad*Rc))
+    # The involute does not change in regard to the external gear.
+    # However, the simplification of assuming phi=0 is more questionable here as phi doesn't have
+    # an upper bound from fRad any more but gets larger as the involute angle grows. Having a
+    # non-zero phi in the original rc(q) makes solving impossible, so lets apply another trick:
+    # If we cannot apply a polar angle to the position of the circle, we could do it for the
+    # involute. Such a rotation doesn't have any influence on ri, so not on qi, but changes the
+    # interpretation of it: The tangent angle of the involute experiences the same rotation as the
+    # involute itself. So its is just a simple offset: Our q(r) becomes qi(r) - qc(i) - phi_corr,
+    # where phi_corr is the amount we (virtually) turn our involute around the origin.
+    phi_corr = genInvolutePolar(Rb, Rroot) + atan(fRad / Rroot)
+    q = lambda r: (sqrt(r**2 - Rb**2) / Rb
+        - asin((r**2 - fRad**2 - Rc**2) / (2 * fRad * Rc))
+        - phi_corr)
+    q_prime = lambda r: (r / (sqrt(-Rb**2 + r**2) * Rb)
+        - r / (fRad * Rc * sqrt(1 - 1/4 * (r**2 - fRad**2 - Rc**2)**2 / (fRad**2 * Rc**2))))
+
+    Rf = findRootNewton(q, q_prime, x_min=max(Rb, Rc), x_max=Rroot)
+
 
     # ****** calculate angles (all in radians)
     pitchAngle = 2 * pi / Z  # angle subtended by whole tooth (rads)
     baseToPitchAngle = genInvolutePolar(Rb, Rpitch)
     tipToPitchAngle = baseToPitchAngle
-    if (Ra > Rb):         # start profile at top of fillet (if its greater)
+    if (tipWithinInvolute):  # start profile at tip, not base
         tipToPitchAngle -= genInvolutePolar(Rb, Ra)
     pitchToFilletAngle = genInvolutePolar(Rb, Rf) - baseToPitchAngle;
-    filletAngle = 1.414*(fRad/1.5)/Rf  # to make fillet tangential to root
-                                       # TODO: This and/or the Rf calculation doesn't seem quite
-                                       # correct. Keep it for compat, though. In the future, may
-                                       # use the special filletCoeff of 0.375 as marker to switch
-                                       # between "compat" or "correct/truly tangential"
+    filletWidth = sqrt(fRad**2 - (Rf - Rc)**2)
+    filletAngle = atan(filletWidth / Rf)
 
     # ****** generate Higuchi involute approximation
     fe = 1       # fraction of profile length at end of approx
     fs = 0.01    # fraction of length offset from base to avoid singularity
-    if (Ra > Rb):
-        fs = (Ra**2 - Rb**2) / (Rf**2 - Rb**2)  # offset start to top of fillet
+    if (tipWithinInvolute):
+        fs = (Ra**2 - Rb**2) / (Rf**2 - Rb**2)  # offset start to tip
 
     if split:
         # approximate in 2 sections, split 25% along the involute
@@ -241,8 +309,8 @@ def CreateInternalGear(w, m, Z, phi,
         else:
             w.curve(*inv[-2::-1])
 
-        if (Ra < Rb):
-            w.line(tip) # line from fillet up to base circle
+        if (not tipWithinInvolute):
+            w.line(tip) # line from tip down to base circle
 
         if split:
             w.arc(tipR, Ra, 0) # arc across addendum circle
@@ -250,8 +318,8 @@ def CreateInternalGear(w, m, Z, phi,
             #w.arc(tipR[-1], Ra, 0) # arc across addendum circle
             w.arc(tipR, Ra, 0)
 
-        if (Ra < Rb):
-            w.line(invR[0]) # line down to topof fillet
+        if (not tipWithinInvolute):
+            w.line(invR[0]) # line up to the base circle
 
         if split:
             w.curve(invR[1], invR[2], invR[3])
@@ -290,6 +358,26 @@ def toCartesian(radius, angle):
     "convert polar coords to cartesian"
     return [radius * cos(angle), radius * sin(angle)]
 
+def findRootNewton(f, f_prime, x_min, x_max):
+    """Appy Newton's Method to find the root of f within x_min and x_max
+    We assume that there is a root in that range and that f is strictly monotonic,
+    i.e. we don't take precautions for overshooting beyond the input range.
+    """
+    # As initial guess let's take the middle of our input range
+    x = (x_min + x_max) / 2
+
+    # FreeCAD.Base.Precision.intersection() is 1e-9, but file doesn't depend on FreeCAD,
+    # a property very handy when testing in isolation, so let's keep it.
+    PRECISION_INTERSECTION = 1e-9
+
+    # Experience has shown that usually 2-3 iterations are enough, but better save than sorry
+    for i in range(6):
+        f_x = f(x)
+        if abs(f_x) < PRECISION_INTERSECTION:
+            return x
+        x = x - f_x/f_prime(x)
+
+    raise RuntimeError(f"No convergence after {i+1} iterations.")
 
 def chebyExpnCoeffs(j, func):
     N = 50      # a suitably large number  N>>p
