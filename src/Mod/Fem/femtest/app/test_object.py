@@ -226,6 +226,10 @@ class TestObjectType(unittest.TestCase):
             type_of_obj(ObjectsFem.makeConstraintInitialTemperature(doc))
         )
         self.assertEqual(
+            "Fem::ConstraintMagnetization",
+            type_of_obj(ObjectsFem.makeConstraintMagnetization(doc))
+        )
+        self.assertEqual(
             "Fem::ConstraintPlaneRotation",
             type_of_obj(ObjectsFem.makeConstraintPlaneRotation(doc))
         )
@@ -429,6 +433,10 @@ class TestObjectType(unittest.TestCase):
         self.assertTrue(is_of_type(
             ObjectsFem.makeConstraintFluidBoundary(doc),
             "Fem::ConstraintFluidBoundary"
+        ))
+        self.assertTrue(is_of_type(
+            ObjectsFem.makeConstraintMagnetization(doc),
+            "Fem::ConstraintMagnetization"
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeConstraintSpring(doc),
@@ -782,6 +790,21 @@ class TestObjectType(unittest.TestCase):
         self.assertTrue(is_derived_from(
             constraint_fluid_boundary,
             "Fem::ConstraintFluidBoundary"
+        ))
+
+        # ConstraintMagnetization
+        constraint_magnetization = ObjectsFem.makeConstraintMagnetization(doc)
+        self.assertTrue(is_derived_from(
+            constraint_magnetization,
+            "App::DocumentObject"
+        ))
+        self.assertTrue(is_derived_from(
+            constraint_magnetization,
+            "Fem::ConstraintPython"
+        ))
+        self.assertTrue(is_derived_from(
+            constraint_magnetization,
+            "Fem::ConstraintMagnetization"
         ))
 
         # ConstraintSpring
@@ -1514,6 +1537,11 @@ class TestObjectType(unittest.TestCase):
             ).isDerivedFrom("Fem::ConstraintFluidBoundary")
         )
         self.assertTrue(
+            ObjectsFem.makeConstraintMagnetization(
+                doc
+            ).isDerivedFrom("Fem::ConstraintPython")
+        )
+        self.assertTrue(
             ObjectsFem.makeConstraintSpring(
                 doc
             ).isDerivedFrom("Fem::ConstraintSpring")
@@ -1767,6 +1795,7 @@ def create_all_fem_objects_doc(
     analysis.addObject(ObjectsFem.makeConstraintInitialFlowVelocity(doc))
     analysis.addObject(ObjectsFem.makeConstraintInitialPressure(doc))
     analysis.addObject(ObjectsFem.makeConstraintInitialTemperature(doc))
+    analysis.addObject(ObjectsFem.makeConstraintMagnetization(doc))
     analysis.addObject(ObjectsFem.makeConstraintPlaneRotation(doc))
     analysis.addObject(ObjectsFem.makeConstraintPressure(doc))
     analysis.addObject(ObjectsFem.makeConstraintPulley(doc))

@@ -25,6 +25,7 @@
         <file>icons/FEM_ConstraintInitialFlowVelocity.svg</file>
         <file>icons/FEM_ConstraintInitialPressure.svg</file>
         <file>icons/FEM_ConstraintInitialTemperature.svg</file>
+        <file>icons/FEM_ConstraintMagnetization.svg</file>
         <file>icons/FEM_ConstraintPlaneRotation.svg</file>
         <file>icons/FEM_ConstraintPressure.svg</file>
         <file>icons/FEM_ConstraintPulley.svg</file>
@@ -169,6 +170,7 @@
         <file>ui/FlowVelocity.ui</file>
         <file>ui/InitialFlowVelocity.ui</file>
         <file>ui/InitialPressure.ui</file>
+        <file>ui/Magnetization.ui</file>
         <file>ui/Material.ui</file>
         <file>ui/MaterialReinforcement.ui</file>
         <file>ui/MeshBoundaryLayer.ui</file>

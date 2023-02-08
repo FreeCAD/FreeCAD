@@ -96,6 +96,7 @@ DlgUnitsCalculator::DlgUnitsCalculator( QWidget* parent, Qt::WindowFlags fl )
           << Base::Unit::MagneticFieldStrength
           << Base::Unit::MagneticFlux
           << Base::Unit::MagneticFluxDensity
+          << Base::Unit::Magnetization
           << Base::Unit::Pressure
           << Base::Unit::Power
           << Base::Unit::SpecificHeat

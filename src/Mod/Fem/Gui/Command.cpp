@@ -1261,6 +1261,8 @@ void CmdFemCompEmConstraints::activated(int iMsg)
         rcCmdMgr.runCommandByName("FEM_ConstraintElectrostaticPotential");
     else if (iMsg == 1)
         rcCmdMgr.runCommandByName("FEM_ConstraintCurrentDensity");
+    else if (iMsg == 2)
+        rcCmdMgr.runCommandByName("FEM_ConstraintMagnetization");
     else
         return;
 
@@ -1283,6 +1285,8 @@ Gui::Action* CmdFemCompEmConstraints::createAction()
     cmd0->setIcon(Gui::BitmapFactory().iconFromTheme("FEM_ConstraintElectrostaticPotential"));
     QAction* cmd1 = pcAction->addAction(QString());
     cmd1->setIcon(Gui::BitmapFactory().iconFromTheme("FEM_ConstraintCurrentDensity"));
+    QAction* cmd2 = pcAction->addAction(QString());
+    cmd2->setIcon(Gui::BitmapFactory().iconFromTheme("FEM_ConstraintMagnetization"));
 
     _pcAction = pcAction;
     languageChange();
@@ -1328,6 +1332,18 @@ void CmdFemCompEmConstraints::languageChange()
                                                  ConstraintCurrentDensity->getToolTipText()));
         cmd1->setStatusTip(QApplication::translate("FEM_ConstraintCurrentDensity",
                                                    ConstraintCurrentDensity->getStatusTip()));
+    }
+
+    Gui::Command* ConstraintMagnetization =
+        rcCmdMgr.getCommandByName("FEM_ConstraintMagnetization");
+    if (ConstraintMagnetization) {
+        QAction* cmd2 = a[2];
+        cmd2->setText(QApplication::translate("FEM_ConstraintMagnetization",
+                                              ConstraintMagnetization->getMenuText()));
+        cmd2->setToolTip(QApplication::translate("FEM_ConstraintMagnetization",
+                                                 ConstraintMagnetization->getToolTipText()));
+        cmd2->setStatusTip(QApplication::translate("FEM_ConstraintMagnetization",
+                                                   ConstraintMagnetization->getStatusTip()));
     }
 }
 

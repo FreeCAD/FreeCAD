@@ -184,6 +184,11 @@ class TestObjectOpen(unittest.TestCase):
             doc.ConstraintInitialFlowVelocity.ViewObject.Proxy.__class__
         )
 
+        self.assertEqual(
+            "Fem::ConstraintMagnetization",
+            type_of_obj(ObjectsFem.makeConstraintMagnetization(doc))
+        )
+
         from femviewprovider.view_constraint_selfweight import VPConstraintSelfWeight
         self.assertEqual(
             VPConstraintSelfWeight,

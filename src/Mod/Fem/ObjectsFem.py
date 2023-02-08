@@ -268,6 +268,21 @@ def makeConstraintInitialTemperature(
     return obj
 
 
+def makeConstraintMagnetization(
+    doc,
+    name="ConstraintMagnetization"
+):
+    """makeConstraintMagnetization(document, [name]):
+    makes a Fem Magnetization object"""
+    obj = doc.addObject("Fem::ConstraintPython", name)
+    from femobjects import constraint_magnetization
+    constraint_magnetization.ConstraintMagnetization(obj)
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_constraint_magnetization
+        view_constraint_magnetization.VPConstraintMagnetization(obj.ViewObject)
+    return obj
+
+
 def makeConstraintPlaneRotation(
     doc,
     name="ConstraintPlaneRotation"
