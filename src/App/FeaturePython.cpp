@@ -232,6 +232,28 @@ void FeaturePythonImp::onDocumentRestored()
     }
 }
 
+void FeaturePythonImp::unsetupObject()
+{
+    _FC_PY_CALL_CHECK(unsetupObject, return);
+
+    // Run the execute method of the proxy object.
+    Base::PyGILStateLocker lock;
+    try {
+        if (has__object__) {
+            Base::pyCall(py_unsetupObject.ptr());
+        }
+        else {
+            Py::Tuple args(1);
+            args.setItem(0, Py::Object(object->getPyObject(), true));
+            Base::pyCall(py_unsetupObject.ptr(), args.ptr());
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+}
+
 bool FeaturePythonImp::getSubObject(DocumentObject *&ret, const char *subname,
     PyObject **pyObj, Base::Matrix4D *_mat, bool transform, int depth) const
 {
