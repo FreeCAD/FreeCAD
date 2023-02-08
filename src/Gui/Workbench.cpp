@@ -178,7 +178,7 @@ using namespace Gui;
  * One of the key concepts of the workbench framework is to load a module at runtime when the user needs some function that it
  * provides. So, if the user doesn't need a module it never gets loaded into RAM. This speeds up the startup procedure of
  * FreeCAD and saves memory.
- * 
+ *
  * At startup FreeCAD scans all module directories and invokes InitGui.py. So an item for a workbench gets created. If the user
  * clicks on such an item the matching module gets loaded, the C++ workbench gets registered and activated.
  *
