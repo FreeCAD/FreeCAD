@@ -27,7 +27,7 @@ __url__ = "https://www.freecadweb.org"
 
 ## @package constraint_currentdensity
 #  \ingroup FEM
-#  \brief constraint body heat source object
+#  \brief constraint current density object
 
 from . import base_fempythonobject
 
