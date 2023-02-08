@@ -246,7 +246,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     elec->setCommand("&Electromagnetic Constraints");
     *elec
         << "FEM_ConstraintElectrostaticPotential"
-        << "FEM_ConstraintCurrentDensity";
+        << "FEM_ConstraintCurrentDensity"
+        << "FEM_ConstraintMagnetization";
 
     Gui::MenuItem* fluid = new Gui::MenuItem;
     fluid->setCommand("&Fluid Constraints");
