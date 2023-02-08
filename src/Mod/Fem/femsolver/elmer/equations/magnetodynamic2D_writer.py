@@ -105,6 +105,12 @@ class MgDyn2Dwriter:
         self.write.constant("Permittivity Of Vacuum", permittivity)
 
     def handleMagnetodynamic2DMaterial(self, bodies):
+        # check that all bodies have a set material
+        for name in bodies:
+            if self.write.getBodyMaterial(name) == None:
+                raise general_writer.WriteError(
+                    "The body {} is not referenced in any material.\n\n".format(name)
+                )
         for obj in self.write.getMember("App::MaterialObject"):
             m = obj.Material
             refs = (
@@ -156,12 +162,6 @@ class MgDyn2Dwriter:
             raise general_writer.WriteError(
                 "The Magnetodynamic2D equation needs at least one CurrentDensity constraint."
             )
-        # check that all bodies have a set material
-        for name in bodies:
-            if self.write.getBodyMaterial(name) == None:
-                raise general_writer.WriteError(
-                    "The body {} is not referenced in any material.\n\n".format(name)
-                )
         for obj in currentDensities:
             if obj.References:
                 for name in obj.References[0][1]:
