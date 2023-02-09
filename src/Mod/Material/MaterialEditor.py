@@ -598,7 +598,6 @@ class MaterialsDelegate(QtGui.QStyledItemDelegate):
             matproperty = PP.text().replace(" ", "")  # remove spaces
 
             TT = group.child(row, 2)
-
             if TT:
                 Type = TT.text()
             else:
@@ -675,10 +674,10 @@ def matProperWidget(parent=None, matproperty=None, Type="String", Value=None,
             lineEdit = widget.children()[1]
             lineEdit.setText(Value)
 
-    elif Type == "Quantity" or Type == "Float":
-        # the Gui::InputField is used for Floats too, because of the digits
+    elif Type == "Quantity":
         widget = ui.createWidget("Gui::InputField")
 
+        # set quantity if possible
         # for properties with an underscored number (vectorial values),
         # we must strip the part after the first underscore to obtain the bound unit
         # since in cardutils.py in def get_material_template
@@ -701,11 +700,15 @@ def matProperWidget(parent=None, matproperty=None, Type="String", Value=None,
     elif Type == "Integer":
         widget = ui.createWidget("Gui::UIntSpinBox")
 
-    # elif Type == "Float":
-    #     widget = ui.createWidget("Gui::PrefDoubleSpinBox")
-    # has only 2 digit precision, but for example RelativePermittivity needs much more
-    # see material card for Air, thus Workaround
-    # a "Gui::InputField" without unit is used
+    elif Type == "Float":
+        widget = ui.createWidget("Gui::PrefDoubleSpinBox")
+        # the magnetic permeability is the parameter for which many decimals matter
+        # the most however, even for this, 6 digits are sufficient
+        widget.setDecimals(6)
+        if minimum is None:
+            widget.setProperty("minimum", -1e12)
+        if maximum is None:
+            widget.setProperty("maximum", 1e12)
 
     elif Type == "Enumerator":
         widget = ui.createWidget("Gui::PrefComboBox")
