@@ -51,7 +51,7 @@ class _TaskPanel(object):
         # magnetization is always a body force for 3D, therefore only allow solid
         self._selectionWidget = selection_widgets.GeometryElementsSelection(
             obj.References,
-            ["Solid"],
+            ["Solid", "Face"],
             True,
             False
         )
@@ -128,17 +128,17 @@ class _TaskPanel(object):
             self._paramWidget.imagZQSB).bind(self._obj, "Magnetization_im_3")
 
         self._paramWidget.reXunspecBox.setChecked(
-            self._obj.Magnetization_re_1)
+            self._obj.Magnetization_re_1_Disabled)
         self._paramWidget.reYunspecBox.setChecked(
-            self._obj.Magnetization_re_2)
+            self._obj.Magnetization_re_2_Disabled)
         self._paramWidget.reZunspecBox.setChecked(
-            self._obj.Magnetization_re_3)
+            self._obj.Magnetization_re_3_Disabled)
         self._paramWidget.imXunspecBox.setChecked(
-            self._obj.Magnetization_im_1)
+            self._obj.Magnetization_im_1_Disabled)
         self._paramWidget.imYunspecBox.setChecked(
-            self._obj.Magnetization_im_2)
+            self._obj.Magnetization_im_2_Disabled)
         self._paramWidget.imZunspecBox.setChecked(
-            self._obj.Magnetization_im_3)
+            self._obj.Magnetization_im_3_Disabled)
 
     def _applyMagnetizationChanges(self, enabledBox, magnetizationQSB):
         enabled = enabledBox.isChecked()

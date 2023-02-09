@@ -104,7 +104,7 @@ class MgDyn2Dwriter:
         permittivity = round(permittivity, 20) # to get rid of numerical artifacts
         self.write.constant("Permittivity Of Vacuum", permittivity)
 
-    def handleMagnetodynamic2DMaterial(self, bodies, equation):
+    def handleMagnetodynamic2DMaterial(self, bodies):
         # check that all bodies have a set material
         for name in bodies:
             if self.write.getBodyMaterial(name) == None:
@@ -142,52 +142,82 @@ class MgDyn2Dwriter:
                         name, "Relative Permittivity",
                         float(m["RelativePermittivity"])
                     )
-                if "Magnetization1" in m:
-                    magnetization = self.write.convert(m["Magnetization1"], "I/L")
+
+    def _outputMagnetodynamic2DBodyForce(self, obj, name, equation):
+        if hasattr(obj, "CurrentDensity"):
+            currentDensity = self.write.getFromUi(
+                obj.CurrentDensity.getValueAs("A/m^2"), "A/m^2", "I/L^2"
+            )
+            currentDensity = round(currentDensity, 10) # to get rid of numerical artifacts
+            if currentDensity == 0.0:
+                # a zero density would break Elmer
+                raise general_writer.WriteError("The current density must not be zero!")
+            self.write.bodyForce(name, "Current Density", currentDensity)
+
+        if hasattr(obj, "Magnetization_im_1"):
+            # output only if magnetization is enabled and needed
+            if not obj.Magnetization_re_1_Disabled:
+                if hasattr(obj, "Magnetization_re_1"):
+                    magnetization = float(obj.Magnetization_re_1.getValueAs("A/m"))
                     self.write.material(name, "Magnetization 1", magnetization)
-                if "Magnetization2" in m:
-                    magnetization = self.write.convert(m["Magnetization_2"], "I/L")
+            if not obj.Magnetization_re_2_Disabled:
+                if hasattr(obj, "Magnetization_re_2"):
+                    magnetization = float(obj.Magnetization_re_2.getValueAs("A/m"))
                     self.write.material(name, "Magnetization 2", magnetization)
-                if "Magnetization3" in m:
-                    magnetization = self.write.convert(m["Magnetization3"], "I/L")
+            if not obj.Magnetization_re_3_Disabled:
+                if hasattr(obj, "Magnetization_re_3"):
+                    magnetization = float(obj.Magnetization_re_3.getValueAs("A/m"))
                     self.write.material(name, "Magnetization 3", magnetization)
-                if equation.IsHarmonic:
-                    if "MagnetizationIm1" in m:
-                        magnetization = self.write.convert(m["MagnetizationIm1"], "I/L")
+            # imaginaries are only needed for harmonic equation
+            if equation.IsHarmonic:
+                if not obj.Magnetization_im_1_Disabled:
+                    if hasattr(obj, "Magnetization_im_1"):
+                        magnetization = float(obj.Magnetization_im_1.getValueAs("A/m"))
                         self.write.material(name, "Magnetization Im 1", magnetization)
-                    if "MagnetizationIm2" in m:
-                        magnetization = self.write.convert(m["MagnetizationIm2"], "I/L")
+                if not obj.Magnetization_im_2_Disabled:
+                    if hasattr(obj, "Magnetization_im_2"):
+                        magnetization = float(obj.Magnetization_im_2.getValueAs("A/m"))
                         self.write.material(name, "Magnetization Im 2", magnetization)
-                    if "MagnetizationIm3" in m:
-                        magnetization = self.write.convert(m["MagnetizationIm3"], "I/L")
+                if not obj.Magnetization_im_3_Disabled:
+                    if hasattr(obj, "Magnetization_im_3"):
+                        magnetization = float(obj.Magnetization_im_3.getValueAs("A/m"))
                         self.write.material(name, "Magnetization Im 3", magnetization)
 
-    def _outputMagnetodynamic2DBodyForce(self, obj, name):
-        currentDensity = self.write.getFromUi(
-            obj.CurrentDensity.getValueAs("A/m^2"), "A/m^2", "I/L^2"
-        )
-        currentDensity = round(currentDensity, 10) # to get rid of numerical artifacts
-        if currentDensity == 0.0:
-            # a zero density would break Elmer
-            raise general_writer.WriteError("The current density must not be zero!")
-        self.write.bodyForce(name, "Current Density", currentDensity)
-
-    def handleMagnetodynamic2DBodyForces(self, bodies):
+    def handleMagnetodynamic2DBodyForces(self, bodies, equation):
         currentDensities = self.write.getMember("Fem::ConstraintCurrentDensity")
         for obj in currentDensities:
             if obj.References:
                 for name in obj.References[0][1]:
-                    self._outputMagnetodynamic2DBodyForce(obj, name)
+                    self._outputMagnetodynamic2DBodyForce(obj, name, equation)
                 self.write.handled(obj)
             else:
                 # if there is only one current density without a reference,
                 # add it to all bodies
                 if len(currentDensities) == 1:
                     for name in bodies:
-                        self._outputMagnetodynamic2DBodyForce(obj, name)
+                        self._outputMagnetodynamic2DBodyForce(obj, name, equation)
                 else:
                     raise general_writer.WriteError(
                         "Several current density constraints found without reference to a body.\n"
+                        "Please set a body for each current density constraint."
+                    )
+            self.write.handled(obj)
+
+        magnetizations = self.write.getMember("Fem::ConstraintMagnetization")
+        for obj in magnetizations:
+            if obj.References:
+                for name in obj.References[0][1]:
+                    self._outputMagnetodynamic2DBodyForce(obj, name, equation)
+                self.write.handled(obj)
+            else:
+                # if there is only one magnetization without a reference,
+                # add it to all bodies
+                if len(magnetizations) == 1:
+                    for name in bodies:
+                        self._outputMagnetodynamic2DBodyForce(obj, name, equation)
+                else:
+                    raise general_writer.WriteError(
+                        "Several magnetization constraints found without reference to a body.\n"
                         "Please set a body for each current density constraint."
                     )
             self.write.handled(obj)

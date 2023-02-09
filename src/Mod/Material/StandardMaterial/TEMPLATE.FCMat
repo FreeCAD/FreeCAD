@@ -123,15 +123,6 @@ ElectricalConductivity =
 ; https://en.wikipedia.org/wiki/Permeability_(electromagnetism)
 RelativePermeability =
 
-; The magnetization in [FreeCAD Magnetization unit]"
-; https://en.wikipedia.org/wiki/Magnetization
-Magnetization_1 =
-Magnetization_2 =
-Magnetization_3 =
-Magnetization_Im_1 =
-Magnetization_Im_2 =
-Magnetization_Im_3 =
-
 [Architectural]
 ; Description to be updated
 Color =
