@@ -104,7 +104,7 @@ class MgDyn2Dwriter:
         permittivity = round(permittivity, 20) # to get rid of numerical artifacts
         self.write.constant("Permittivity Of Vacuum", permittivity)
 
-    def handleMagnetodynamic2DMaterial(self, bodies):
+    def handleMagnetodynamic2DMaterial(self, bodies, equation):
         # check that all bodies have a set material
         for name in bodies:
             if self.write.getBodyMaterial(name) == None:
@@ -131,10 +131,7 @@ class MgDyn2Dwriter:
                 self.write.material(name, "Name", m["Name"])
                 conductivity = self.write.convert(m["ElectricalConductivity"], "T^3*I^2/(L^3*M)")
                 conductivity = round(conductivity, 10) # to get rid of numerical artifacts
-                self.write.material(
-                    name, "Electric Conductivity",
-                    conductivity
-                )
+                self.write.material(name, "Electric Conductivity", conductivity)
                 self.write.material(
                     name, "Relative Permeability",
                     float(m["RelativePermeability"])
@@ -145,6 +142,25 @@ class MgDyn2Dwriter:
                         name, "Relative Permittivity",
                         float(m["RelativePermittivity"])
                     )
+                if "Magnetization1" in m:
+                    magnetization = self.write.convert(m["Magnetization1"], "I/L")
+                    self.write.material(name, "Magnetization 1", magnetization)
+                if "Magnetization2" in m:
+                    magnetization = self.write.convert(m["Magnetization_2"], "I/L")
+                    self.write.material(name, "Magnetization 2", magnetization)
+                if "Magnetization3" in m:
+                    magnetization = self.write.convert(m["Magnetization3"], "I/L")
+                    self.write.material(name, "Magnetization 3", magnetization)
+                if equation.IsHarmonic:
+                    if "MagnetizationIm1" in m:
+                        magnetization = self.write.convert(m["MagnetizationIm1"], "I/L")
+                        self.write.material(name, "Magnetization Im 1", magnetization)
+                    if "MagnetizationIm2" in m:
+                        magnetization = self.write.convert(m["MagnetizationIm2"], "I/L")
+                        self.write.material(name, "Magnetization Im 2", magnetization)
+                    if "MagnetizationIm3" in m:
+                        magnetization = self.write.convert(m["MagnetizationIm3"], "I/L")
+                        self.write.material(name, "Magnetization Im 3", magnetization)
 
     def _outputMagnetodynamic2DBodyForce(self, obj, name):
         currentDensity = self.write.getFromUi(
@@ -158,10 +174,6 @@ class MgDyn2Dwriter:
 
     def handleMagnetodynamic2DBodyForces(self, bodies):
         currentDensities = self.write.getMember("Fem::ConstraintCurrentDensity")
-        if len(currentDensities) == 0:
-            raise general_writer.WriteError(
-                "The Magnetodynamic2D equation needs at least one CurrentDensity constraint."
-            )
         for obj in currentDensities:
             if obj.References:
                 for name in obj.References[0][1]:
@@ -202,7 +214,8 @@ class MgDyn2Dwriter:
                     "The angular frequency must not be zero.\n\n"
                 )
             self.write.equation(b, "Name", equation.Name)
-            frequency = Units.Quantity(equation.AngularFrequency).Value
-            self.write.equation(b, "Angular Frequency", float(frequency))
+            if equation.IsHarmonic:
+                frequency = Units.Quantity(equation.AngularFrequency).Value
+                self.write.equation(b, "Angular Frequency", float(frequency))
 
 ##  @}
