@@ -344,14 +344,20 @@ bool SketcherGui::isCommandActive(Gui::Document* doc, bool actsOnSelection)
     return false;
 }
 
-SketcherGui::ViewProviderSketch* SketcherGui::getSketchViewprovider(Gui::Document* doc)
+SketcherGui::ViewProviderSketch* SketcherGui::getInactiveHandlerEditModeSketchViewProvider(Gui::Document* doc)
 {
-    if (doc) {
-        if (doc->getInEdit()
-            && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId()))
-            return dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+    if(doc) {
+        return dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
     }
+
     return nullptr;
+}
+
+SketcherGui::ViewProviderSketch* SketcherGui::getInactiveHandlerEditModeSketchViewProvider()
+{
+    Gui::Document *doc = Gui::Application::Instance->activeDocument();
+
+    return getInactiveHandlerEditModeSketchViewProvider(doc);
 }
 
 void SketcherGui::removeRedundantHorizontalVertical(Sketcher::SketchObject* psketch,
