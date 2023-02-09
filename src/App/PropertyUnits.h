@@ -241,7 +241,7 @@ public:
  * This is a property for representing magnetizations. It is basically a float
  * property. On the Gui it has a quantity like A/m.
  */
-    class AppExport PropertyMagnetization: public PropertyQuantityConstraint
+    class AppExport PropertyMagnetization: public PropertyQuantity
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
