@@ -102,22 +102,86 @@ class _TaskPanel(object):
                 self._part.ViewObject.hide()
 
     def _initParamWidget(self):
-        self._paramWidget.currentDensityQSB.setProperty(
-            'value', self._obj.CurrentDensity)
+        self._paramWidget.realXQSB.setProperty(
+            'value', self._obj.CurrentDensity_re_1)
         FreeCADGui.ExpressionBinding(
-            self._paramWidget.currentDensityQSB).bind(self._obj, "CurrentDensity")
-        self._paramWidget.currentDensityQSB.setProperty(
-            'value', self._obj.CurrentDensity)
+            self._paramWidget.realXQSB).bind(self._obj, "CurrentDensity_re_1")
+        self._paramWidget.realYQSB.setProperty(
+            'value', self._obj.CurrentDensity_re_2)
+        FreeCADGui.ExpressionBinding(
+            self._paramWidget.realYQSB).bind(self._obj, "CurrentDensity_re_2")
+        self._paramWidget.realZQSB.setProperty(
+            'value', self._obj.CurrentDensity_re_3)
+        FreeCADGui.ExpressionBinding(
+            self._paramWidget.realZQSB).bind(self._obj, "CurrentDensity_re_3")
+        self._paramWidget.imagXQSB.setProperty(
+            'value', self._obj.CurrentDensity_im_1)
+        FreeCADGui.ExpressionBinding(
+            self._paramWidget.imagXQSB).bind(self._obj, "CurrentDensity_im_1")
+        self._paramWidget.imagYQSB.setProperty(
+            'value', self._obj.CurrentDensity_im_2)
+        FreeCADGui.ExpressionBinding(
+            self._paramWidget.imagYQSB).bind(self._obj, "CurrentDensity_im_2")
+        self._paramWidget.imagZQSB.setProperty(
+            'value', self._obj.CurrentDensity_im_3)
+        FreeCADGui.ExpressionBinding(
+            self._paramWidget.imagZQSB).bind(self._obj, "CurrentDensity_im_3")
 
-    def _applyWidgetChanges(self):
+        self._paramWidget.reXunspecBox.setChecked(
+            self._obj.CurrentDensity_re_1_Disabled)
+        self._paramWidget.reYunspecBox.setChecked(
+            self._obj.CurrentDensity_re_2_Disabled)
+        self._paramWidget.reZunspecBox.setChecked(
+            self._obj.CurrentDensity_re_3_Disabled)
+        self._paramWidget.imXunspecBox.setChecked(
+            self._obj.CurrentDensity_im_1_Disabled)
+        self._paramWidget.imYunspecBox.setChecked(
+            self._obj.CurrentDensity_im_2_Disabled)
+        self._paramWidget.imZunspecBox.setChecked(
+            self._obj.CurrentDensity_im_3_Disabled)
+
+    def _applyCurrentDensityChanges(self, enabledBox, currentDensityQSB):
+        enabled = enabledBox.isChecked()
         currentdensity = None
         try:
-            currentdensity = self._paramWidget.currentDensityQSB.property('value')
+            currentdensity = currentDensityQSB.property('value')
         except ValueError:
             FreeCAD.Console.PrintMessage(
                 "Wrong input. Not recognised input: '{}' "
-                "Current density has not been set.\n"
-                .format(self._paramWidget.currentDensityQSB.text())
+                "Current density has not been set.\n".format(currentDensityQSB.text())
             )
-        if currentdensity is not None:
-            self._obj.CurrentDensity = currentdensity
+            currentdensity = '0.0 A/m^2'
+        return enabled, currentdensity
+
+    def _applyWidgetChanges(self):
+        # apply the current densities and their enabled state
+        self._obj.CurrentDensity_re_1_Disabled, self._obj.CurrentDensity_re_1 = \
+            self._applyCurrentDensityChanges(
+                self._paramWidget.reXunspecBox,
+                self._paramWidget.realXQSB
+            )
+        self._obj.CurrentDensity_re_2_Disabled, self._obj.CurrentDensity_re_2 = \
+            self._applyCurrentDensityChanges(
+                self._paramWidget.reYunspecBox,
+                self._paramWidget.realYQSB
+            )
+        self._obj.CurrentDensity_re_3_Disabled, self._obj.CurrentDensity_re_3 = \
+            self._applyCurrentDensityChanges(
+                self._paramWidget.reZunspecBox,
+                self._paramWidget.realZQSB
+            )
+        self._obj.CurrentDensity_im_1_Disabled, self._obj.CurrentDensity_im_1 = \
+            self._applyCurrentDensityChanges(
+                self._paramWidget.imXunspecBox,
+                self._paramWidget.imagXQSB
+            )
+        self._obj.CurrentDensity_im_2_Disabled, self._obj.CurrentDensity_im_2 = \
+            self._applyCurrentDensityChanges(
+                self._paramWidget.imYunspecBox,
+                self._paramWidget.imagYQSB
+            )
+        self._obj.CurrentDensity_im_3_Disabled, self._obj.CurrentDensity_im_3 = \
+            self._applyCurrentDensityChanges(
+                self._paramWidget.imZunspecBox,
+                self._paramWidget.imagZQSB
+            )
