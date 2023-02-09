@@ -24,6 +24,8 @@
 #ifndef _PreComp_
 # include <QApplication>
 # include <QInputDialog>
+# include <QLabel>
+# include <QMenu>
 # include <QMessageBox>
 # include <QHBoxLayout>
 # include <QWidgetAction>
@@ -968,198 +970,212 @@ public:
     GridSpaceAction(QObject* parent) : QWidgetAction(parent) {
     }
 
+    void updateWidget() {
+
+        auto* sketchView = getView();
+
+        if(sketchView) {
+
+            auto updateCheckBox = [this](QCheckBox * checkbox, App::PropertyBool & property) {
+                auto checked = checkbox->checkState() == Qt::Checked;
+                auto propvalue = property.getValue();
+
+                if( propvalue != checked ) {
+                    checkbox->blockSignals(true);
+                    checkbox->setChecked(propvalue);
+                    checkbox->blockSignals(false);
+                }
+            };
+
+            updateCheckBox(gridSnap, sketchView->GridSnap);
+            updateCheckBox(gridAutoSpacing, sketchView->GridAuto);
+
+            auto autospacing = gridAutoSpacing->checkState() == Qt::Checked;
+
+            gridSizeBox->setEnabled(!autospacing);
+
+            gridSizeBox->setValue(sketchView->GridSize.getValue());
+        }
+    }
+
 protected:
     QWidget* createWidget(QWidget* parent) override
     {
-        auto* sizeLabel = new QLabel(QApplication::translate("Sketcher_GridSize", "Spacing"));
-        auto* gridSizeBox = new Gui::QuantitySpinBox();
+        gridSnap = new QCheckBox(QApplication::translate("GridSpaceAction", "Grid Snap"));
+        gridSnap->setToolTip(QApplication::translate("CmdSketcherCompGrid", "New points will snap to the nearest grid line.\nPoints must be set closer than a fifth of the grid spacing to a grid line to snap."));
+        gridSnap->setStatusTip(gridSnap->toolTip());
+
+        gridAutoSpacing = new QCheckBox(QApplication::translate("GridSpaceAction", "Grid Auto Spacing"));
+        gridAutoSpacing->setToolTip(QApplication::translate("CmdSketcherCompGrid", "Resize grid automatically depending on zoom."));
+        gridAutoSpacing->setStatusTip(gridAutoSpacing->toolTip());
+
+        auto* sizeLabel = new QLabel(QApplication::translate("GridSpaceAction", "Spacing"));
+        gridSizeBox = new Gui::QuantitySpinBox();
         gridSizeBox->setProperty("unit", QVariant(QStringLiteral("mm")));
         gridSizeBox->setObjectName(QStringLiteral("gridSize"));
-        gridSizeBox->setToolTip(QApplication::translate("Sketcher_GridSize", "Distance between two subsequent grid lines"));
-        //Is General/GridSize correct? From taskSketcherGeneral it seems yes.
-        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General/GridSize");
-        gridSizeBox->setValue(hGrp->GetFloat("GridSize", 10.0));
+        gridSizeBox->setToolTip(QApplication::translate("GridSpaceAction", "Distance between two subsequent grid lines"));
         gridSizeBox->setMaximum(99999999.0);
         gridSizeBox->setMinimum(0.001);
 
-        QObject::connect(gridSizeBox, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            [=](double val) {
-            Gui::Document* doc = Gui::Application::Instance->activeDocument();
-            assert(doc);
-            auto* sketchView = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-            assert(sketchView);
+        QWidget* gridSizeW = new QWidget(parent);
+        auto* layout = new QGridLayout(gridSizeW);
+        layout->addWidget(gridSnap, 0, 0);
+        layout->addWidget(gridAutoSpacing, 1, 0);
+        layout->addWidget(sizeLabel, 2, 0);
+        layout->addWidget(gridSizeBox, 2, 1);
 
-            sketchView->GridSize.setValue(val);
+        QObject::connect(gridSnap,&QCheckBox::stateChanged, [this](int state) {
+            auto* sketchView = getView();
+            if(sketchView) {
+                sketchView->GridSnap.setValue(state == Qt::Checked);
+            }
         });
 
-        QWidget* gridSizeW = new QWidget(parent);
-        QHBoxLayout* layout = new QHBoxLayout(gridSizeW);
-        layout->addWidget(sizeLabel);
-        layout->addWidget(gridSizeBox);
-        gridSizeW->installEventFilter(this);
+        QObject::connect(gridAutoSpacing,&QCheckBox::stateChanged, [this](int state) {
+            auto* sketchView = getView();
+
+            if(sketchView) {
+                auto enable = (state == Qt::Checked);
+                sketchView->GridAuto.setValue(enable);
+
+                gridSizeBox->setEnabled(!enable);
+            }
+        });
+
+        QObject::connect(gridSizeBox, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), [this](double val) {
+            auto* sketchView = getView();
+            if(sketchView) {
+                sketchView->GridSize.setValue(val);
+            }
+        });
+
         return gridSizeW;
     }
 
-    bool eventFilter(QObject* obj, QEvent* event) override
-    {
-        if (event->type() == QEvent::Show) {
-            Gui::Document* doc = Gui::Application::Instance->activeDocument();
-            if (doc) {
-                auto* sketchView = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-                if (sketchView && sketchView->GridSize.getValue() > 0) {
-                    double gridSize = sketchView->GridSize.getValue();
+private:
+    ViewProviderSketch * getView() {
+        Gui::Document* doc = Gui::Application::Instance->activeDocument();
 
-                    QList<QWidget*> widgets = createdWidgets();
-                    for (auto it : widgets) {
-                        if (auto* gridSizeBox = it->findChild<Gui::QuantitySpinBox*>(QStringLiteral("gridSize"))) {
-                            QSignalBlocker sigblk(gridSizeBox);
-                            gridSizeBox->setValue(gridSize);
-                        }
-                    }
-                }
-            }
+        if(doc) {
+            return dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
         }
 
-        return QWidgetAction::eventFilter(obj, event);
+        return nullptr;
     }
+
+private:
+    QCheckBox * gridSnap;
+    QCheckBox * gridAutoSpacing;
+    Gui::QuantitySpinBox * gridSizeBox;
 };
 
-DEF_STD_CMD_ACL(CmdSketcherCompGrid)
+class CmdSketcherGrid : public Gui::Command
+{
+public:
+    CmdSketcherGrid();
+    virtual ~CmdSketcherGrid(){}
+    virtual const char* className() const
+    { return "CmdSketcherGrid"; }
+protected:
+    virtual void activated(int iMsg);
+    virtual bool isActive(void);
+    virtual Gui::Action * createAction(void);
+private:
+    void updateIcon(bool value);
+    void updateInactiveHandlerIcon();
 
-CmdSketcherCompGrid::CmdSketcherCompGrid()
-    : Command("Sketcher_CompGrid")
+    CmdSketcherGrid(const CmdSketcherGrid&) = delete;
+    CmdSketcherGrid(CmdSketcherGrid&&) = delete;
+    CmdSketcherGrid& operator= (const CmdSketcherGrid&) = delete;
+    CmdSketcherGrid& operator= (CmdSketcherGrid&&) = delete;
+};
+
+CmdSketcherGrid::CmdSketcherGrid()
+    : Command("Sketcher_Grid")
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Activate Grid");
-    sToolTipText = QT_TR_NOOP("Activate grid and further settings");
-    sWhatsThis = "Sketcher_CompGrid";
+    sToolTipText = QT_TR_NOOP("Activate grid and grid settings");
+    sWhatsThis = "Sketcher_Grid";
     sStatusTip = sToolTipText;
     eType = 0;
 }
 
-void CmdSketcherCompGrid::activated(int iMsg)
+void CmdSketcherGrid::updateIcon(bool value)
 {
-    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
-    assert(pcAction);
-    QList<QAction*> a = pcAction->actions();
+    static QIcon active = Gui::BitmapFactory().iconFromTheme("Sketcher_GridToggle");
+    static QIcon inactive = Gui::BitmapFactory().iconFromTheme("Sketcher_GridToggle_Deactivated");
+
+    auto * pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
+    pcAction->setIcon(value ? active : inactive);
+}
+
+void CmdSketcherGrid::updateInactiveHandlerIcon()
+{
+    auto * vp = getInactiveHandlerEditModeSketchViewProvider();
+
+    if(vp) {
+        auto value = vp->ShowGrid.getValue();
+
+        updateIcon(value);
+    }
+
+}
+
+void CmdSketcherGrid::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
 
     Gui::Document* doc = getActiveGuiDocument();
     assert(doc);
     auto* sketchView = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
     assert(sketchView);
 
-    if (iMsg == 0) {
-        bool newState = !a[0]->isChecked();
-        a[0]->setChecked(newState);
-        sketchView->ShowGrid.setValue(newState);
+    auto value = sketchView->ShowGrid.getValue();
+    sketchView->ShowGrid.setValue(!value);
 
-        //activate/deactivate others
-        a[1]->setEnabled(newState);
-        a[2]->setEnabled(newState);
-    }
-    else if (iMsg == 1) {
-        bool newState = !a[1]->isChecked();
-        a[0]->setChecked(newState);
-        sketchView->GridSnap.setValue(newState);
-
-        pcAction->setProperty("defaultAction", QVariant(0));
-    }
-    else if (iMsg == 2){
-        bool newState = !a[2]->isChecked();
-        a[2]->setChecked(newState);
-        sketchView->GridAuto.setValue(newState);
-
-        a[3]->setEnabled(!newState);
-        if (!newState)
-            sketchView->GridSize.setValue(sketchView->GridSize.getValue()); //redraw grid.
-
-        pcAction->setProperty("defaultAction", QVariant(0));
-    }
-    else if (iMsg == 3) {
-        //nothing but don't return either.
-    }
-    else
-        return;
-
-    pcAction->setIcon(Gui::BitmapFactory().iconFromTheme(a[0]->isChecked() ? "Sketcher_GridToggle" : "Sketcher_GridToggle_Deactivated"));
+    updateIcon(!value);
 }
 
-Gui::Action* CmdSketcherCompGrid::createAction()
+Gui::Action* CmdSketcherGrid::createAction()
 {
-    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
+    auto * pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(true);
     pcAction->setExclusive(false);
     applyCommandData(this->className(), pcAction);
 
-    QAction* a0 = pcAction->addAction(QString());
-    QAction* a1 = pcAction->addAction(QString());
-    QAction* a2 = pcAction->addAction(QString());
-
-    GridSpaceAction* a3 = new GridSpaceAction(pcAction);
-    pcAction->addAction(a3);
-
-    a0->setCheckable(true);
-    a1->setCheckable(true);
-    a2->setCheckable(true);
+    GridSpaceAction* gsa = new GridSpaceAction(pcAction);
+    pcAction->addAction(gsa);
 
     _pcAction = pcAction;
+
+    QObject::connect(pcAction, &Gui::ActionGroup::aboutToShow, [gsa](QMenu * menu) {
+        Q_UNUSED(menu)
+        gsa->updateWidget();
+    });
+
     languageChange();
+
+    // set the right pixmap
+    updateInactiveHandlerIcon();
 
     return pcAction;
 }
 
-void CmdSketcherCompGrid::languageChange()
+bool CmdSketcherGrid::isActive()
 {
-    Command::languageChange();
+    auto * vp = getInactiveHandlerEditModeSketchViewProvider();
 
-    if (!_pcAction)
-        return;
-    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
-    QList<QAction*> a = pcAction->actions();
+    if (vp) {
+        auto value = vp->ShowGrid.getValue();
 
-    QAction* a0 = a[0];
-    a0->setText(QApplication::translate("CmdSketcherCompGrid", "Activate Grid"));
-    a0->setToolTip(QApplication::translate("CmdSketcherCompGrid", "Activate Grid"));
-    a0->setStatusTip(a0->toolTip());
-    QAction* a1 = a[1];
-    a1->setText(QApplication::translate("CmdSketcherCompGrid", "Grid Snap"));
-    a1->setToolTip(QApplication::translate("CmdSketcherCompGrid", "New points will snap to the nearest grid line.\nPoints must be set closer than a fifth of the grid spacing to a grid line to snap."));
-    a1->setStatusTip(a1->toolTip());
-    QAction* a2 = a[2];
-    a2->setText(QApplication::translate("CmdSketcherCompGrid", "Grid Auto Spacing"));
-    a2->setToolTip(QApplication::translate("CmdSketcherCompGrid", "Resize grid automatically depending on zoom."));
-    a2->setStatusTip(a2->toolTip());
-}
+        updateIcon(value);
 
-bool CmdSketcherCompGrid::isActive()
-{
-    //Initialisation of the commands to the sketch specific settings
-    Gui::Document* doc = getActiveGuiDocument();
-    if (doc && isSketchInEdit(doc)) {
-        auto* sketchView = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-        Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
-        if (sketchView && pcAction) {
-            QList<QAction*> a = pcAction->actions();
-
-            bool showGrid = sketchView->ShowGrid.getValue();
-            bool gridSnap = sketchView->GridSnap.getValue();
-            bool gridAuto = sketchView->GridAuto.getValue();
-
-            a[0]->setChecked(showGrid);
-            a[1]->setChecked(gridSnap);
-            a[2]->setChecked(gridAuto);
-
-            //activate/deactivate others
-            a[1]->setEnabled(showGrid);
-            a[2]->setEnabled(showGrid);
-            a[3]->setEnabled(showGrid && !gridAuto);
-
-            pcAction->setIcon(Gui::BitmapFactory().iconFromTheme(showGrid ? "Sketcher_GridToggle" : "Sketcher_GridToggle_Deactivated"));
-        }
+        return true;
     }
 
-    return isSketchInEdit(getActiveGuiDocument());
+    return false;
 }
 
 
@@ -1178,5 +1194,5 @@ void CreateSketcherCommands()
     rcCmdMgr.addCommand(new CmdSketcherMirrorSketch());
     rcCmdMgr.addCommand(new CmdSketcherMergeSketches());
     rcCmdMgr.addCommand(new CmdSketcherViewSection());
-    rcCmdMgr.addCommand(new CmdSketcherCompGrid());
+    rcCmdMgr.addCommand(new CmdSketcherGrid());
 }

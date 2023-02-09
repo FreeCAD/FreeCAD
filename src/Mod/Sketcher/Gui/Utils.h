@@ -123,8 +123,9 @@ bool isSketchInEdit(Gui::Document* doc);
 /// Returns whether an edit mode command should be activated or not. It is only activated if the sketcher is no special state or a sketchHandler is active.
 bool isCommandActive(Gui::Document *doc, bool actsOnSelection = false);
 
-SketcherGui::ViewProviderSketch* getSketchViewprovider(Gui::Document *doc);
+SketcherGui::ViewProviderSketch* getInactiveHandlerEditModeSketchViewProvider(Gui::Document *doc);
 
+SketcherGui::ViewProviderSketch* getInactiveHandlerEditModeSketchViewProvider();
 
 void removeRedundantHorizontalVertical(Sketcher::SketchObject* psketch,
                                        std::vector<AutoConstraint> &sug1,
