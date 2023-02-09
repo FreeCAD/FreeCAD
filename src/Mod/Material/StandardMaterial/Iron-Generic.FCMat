@@ -1,0 +1,26 @@
+; Iron Generic
+; Uwe Stöhr
+; information about the content of such cards can be found on the wiki:
+; https://www.freecad.org/wiki/Material
+
+[General]
+Name = Iron Generic
+Father = Metal
+KindOfMaterial = Iron
+
+[Mechanical]
+Density = 7874 kg/m^3
+PoissonRatio = 0.29
+ShearModulus = 82.0 GPa
+UltimateTensileStrength = 497 MPa
+YieldStrength = 428 MPa
+YoungsModulus = 211 GPa
+
+[Thermal]
+SpecificHeat = 460.5 J/kg/K
+ThermalConductivity = 80.4 W/m/K
+ThermalExpansionCoefficient = 11.8 µm/m/K
+
+[Electromagnetic]
+ElectricalConductivity = 10.3 MS/m
+RelativePermeability = 5000.0
