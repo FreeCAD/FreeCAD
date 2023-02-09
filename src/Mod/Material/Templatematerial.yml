@@ -168,30 +168,6 @@
       Type: 'Float'
       URL: 'https://en.wikipedia.org/wiki/Permeability_(electromagnetism)'
       Description: "The ratio to the permeability of the vacuum"
-    Magnetization_1:
-      Type: 'Quantity'
-      URL: 'https://en.wikipedia.org/wiki/Magnetization'
-      Description: "Magnetization in x-direction in [FreeCAD Magnetization unit]"
-    Magnetization_2:
-      Type: 'Quantity'
-      URL: 'https://en.wikipedia.org/wiki/Magnetization'
-      Description: "Magnetization in y-direction in [FreeCAD Magnetization unit]"
-    Magnetization_3:
-      Type: 'Quantity'
-      URL: 'https://en.wikipedia.org/wiki/Magnetization'
-      Description: "Magnetization in z-direction in [FreeCAD Magnetization unit]"
-    Magnetization_Im_1:
-      Type: 'Quantity'
-      URL: 'https://en.wikipedia.org/wiki/Magnetization'
-      Description: "Magnetization, imagaginary part, in x-direction in [FreeCAD Magnetization unit]"
-    Magnetization_Im_2:
-      Type: 'Quantity'
-      URL: 'https://en.wikipedia.org/wiki/Magnetization'
-      Description: "Magnetization, imagaginary part, in y-direction in [FreeCAD Magnetization unit]"
-    Magnetization_Im_3:
-      Type: 'Quantity'
-      URL: 'https://en.wikipedia.org/wiki/Magnetization'
-      Description: "Magnetization, imagaginary part, in z-direction in [FreeCAD Magnetization unit]"
 - Architectural:
     Color:
       Type:  'String'

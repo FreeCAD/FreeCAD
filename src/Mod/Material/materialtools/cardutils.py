@@ -239,9 +239,6 @@ def get_material_template(withSpaces=False):
                 new_proper = re.sub(r"(\w)([A-Z]+)", r"\1 \2", proper)
                 # strip underscores of vectorial properties
                 new_proper = new_proper.replace("_", " ")
-                # this can lead to double spaces for imaginary properties
-                # e.g. "_Im_1", therefore remove one
-                new_proper = new_proper.replace("  ", " ")
                 new_group[gg][new_proper] = group[gg][proper]
             new_template.append(new_group)
         template_data = new_template

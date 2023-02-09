@@ -682,15 +682,12 @@ def matProperWidget(parent=None, matproperty=None, Type="String", Value=None,
         # for properties with an underscored number (vectorial values),
         # we must strip the part after the first underscore to obtain the bound unit
         # since in cardutils.py in def get_material_template
-        # the underscores were removed, we must first check for numbers
-        # and then for "Im" (denotes an imaginery value)
+        # the underscores were removed, we must check for numbers
         import re
         if re.search(r'\d', matproperty):
             matpropertyNum = matproperty.rstrip('0123456789')
             matproperty = matpropertyNum
-        if matproperty.find("Im") != -1:
-            matproperty = matproperty.split("Im")[0]
-            
+
         if hasattr(FreeCAD.Units, matproperty):
             unit = getattr(FreeCAD.Units, matproperty)
             quantity = FreeCAD.Units.Quantity(1, unit)
