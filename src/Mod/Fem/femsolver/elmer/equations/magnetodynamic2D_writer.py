@@ -144,44 +144,33 @@ class MgDyn2Dwriter:
                     )
 
     def _outputMagnetodynamic2DBodyForce(self, obj, name, equation):
-        if hasattr(obj, "CurrentDensity"):
-            currentDensity = self.write.getFromUi(
-                obj.CurrentDensity.getValueAs("A/m^2"), "A/m^2", "I/L^2"
-            )
-            currentDensity = round(currentDensity, 10) # to get rid of numerical artifacts
-            if currentDensity == 0.0:
-                # a zero density would break Elmer
-                raise general_writer.WriteError("The current density must not be zero!")
-            self.write.bodyForce(name, "Current Density", currentDensity)
-
-        if hasattr(obj, "Magnetization_im_1"):
+        if hasattr(obj, "CurrentDensity_re_1"):
+            # output only if current density is enabled and needed
+            if not obj.CurrentDensity_re_1_Disabled:
+                currentDensity = float(obj.CurrentDensity_re_1.getValueAs("A/m^2"))
+                self.write.bodyForce(name, "Current Density", currentDensity)
+            # imaginaries are only needed for harmonic equation
+            if equation.IsHarmonic:
+                if not obj.CurrentDensity_im_1_Disabled:
+                    currentDensity = float(obj.CurrentDensity_im_1.getValueAs("A/m^2"))
+                    self.write.bodyForce(name, "Current Density Im", currentDensity)
+ 
+        if hasattr(obj, "Magnetization_re_1"):
             # output only if magnetization is enabled and needed
             if not obj.Magnetization_re_1_Disabled:
-                if hasattr(obj, "Magnetization_re_1"):
-                    magnetization = float(obj.Magnetization_re_1.getValueAs("A/m"))
-                    self.write.material(name, "Magnetization 1", magnetization)
+                magnetization = float(obj.Magnetization_re_1.getValueAs("A/m"))
+                self.write.material(name, "Magnetization 1", magnetization)
             if not obj.Magnetization_re_2_Disabled:
-                if hasattr(obj, "Magnetization_re_2"):
-                    magnetization = float(obj.Magnetization_re_2.getValueAs("A/m"))
-                    self.write.material(name, "Magnetization 2", magnetization)
-            if not obj.Magnetization_re_3_Disabled:
-                if hasattr(obj, "Magnetization_re_3"):
-                    magnetization = float(obj.Magnetization_re_3.getValueAs("A/m"))
-                    self.write.material(name, "Magnetization 3", magnetization)
+                magnetization = float(obj.Magnetization_re_2.getValueAs("A/m"))
+                self.write.material(name, "Magnetization 2", magnetization)
             # imaginaries are only needed for harmonic equation
             if equation.IsHarmonic:
                 if not obj.Magnetization_im_1_Disabled:
-                    if hasattr(obj, "Magnetization_im_1"):
-                        magnetization = float(obj.Magnetization_im_1.getValueAs("A/m"))
-                        self.write.material(name, "Magnetization Im 1", magnetization)
+                    magnetization = float(obj.Magnetization_im_1.getValueAs("A/m"))
+                    self.write.material(name, "Magnetization Im 1", magnetization)
                 if not obj.Magnetization_im_2_Disabled:
-                    if hasattr(obj, "Magnetization_im_2"):
-                        magnetization = float(obj.Magnetization_im_2.getValueAs("A/m"))
-                        self.write.material(name, "Magnetization Im 2", magnetization)
-                if not obj.Magnetization_im_3_Disabled:
-                    if hasattr(obj, "Magnetization_im_3"):
-                        magnetization = float(obj.Magnetization_im_3.getValueAs("A/m"))
-                        self.write.material(name, "Magnetization Im 3", magnetization)
+                    magnetization = float(obj.Magnetization_im_2.getValueAs("A/m"))
+                    self.write.material(name, "Magnetization Im 2", magnetization)
 
     def handleMagnetodynamic2DBodyForces(self, bodies, equation):
         currentDensities = self.write.getMember("Fem::ConstraintCurrentDensity")
