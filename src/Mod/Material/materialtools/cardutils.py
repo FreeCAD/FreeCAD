@@ -237,6 +237,11 @@ def get_material_template(withSpaces=False):
             new_group[gg] = {}
             for proper in list(group[gg].keys()):
                 new_proper = re.sub(r"(\w)([A-Z]+)", r"\1 \2", proper)
+                # strip underscores of vectorial properties
+                new_proper = new_proper.replace("_", " ")
+                # this can lead to double spaces for imaginary properties
+                # e.g. "_Im_1", therefore remove one
+                new_proper = new_proper.replace("  ", " ")
                 new_group[gg][new_proper] = group[gg][proper]
             new_template.append(new_group)
         template_data = new_template
@@ -439,8 +444,11 @@ def write_cards_to_path(cards_path, cards_data, write_group_section=True, write_
 # ***** material parameter units *********************************************
 def check_parm_unit(param):
     # check if this parameter is known to FreeCAD unit system
+    # for properties with underscores (vectorial values), we must
+    # strip the part after the first underscore to obtain the bound unit
     from FreeCAD import Units
-    # FreeCAD.Console.PrintMessage('{}\n'.format(param))
+    if param.find("_") != -1:
+        param = param.split("_")[0]
     if hasattr(Units, param):
         return True
     else:
