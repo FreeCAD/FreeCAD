@@ -90,7 +90,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
       <item row="3" column="0">
        <widget class="QLabel" name="label_gridSize">
         <property name="text">
-         <string>Grid spacing (if auto disabled)</string>
+         <string>Grid spacing</string>
         </property>
         <property name="buddy">
          <cstring>gridSize</cstring>
