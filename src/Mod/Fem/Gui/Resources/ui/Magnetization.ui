@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>313</width>
+    <width>300</width>
     <height>133</height>
    </rect>
   </property>
@@ -15,7 +15,7 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0" colspan="2">
-    <widget class="QLabel" name="pressureLbl">
+    <widget class="QLabel" name="magnetizationLbl">
      <property name="text">
       <string>Magnetization</string>
      </property>
