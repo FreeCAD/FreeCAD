@@ -23,11 +23,12 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QApplication>
+# include <QCheckBox>
+# include <QGridLayout>
 # include <QInputDialog>
 # include <QLabel>
 # include <QMenu>
 # include <QMessageBox>
-# include <QHBoxLayout>
 # include <QWidgetAction>
 #endif
 
@@ -40,7 +41,7 @@
 #include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
-#include <Gui/PrefWidgets.h>
+#include <Gui/QuantitySpinBox.h>
 #include <Gui/SelectionFilter.h>
 #include <Gui/SelectionObject.h>
 #include <Mod/Sketcher/App/Constraint.h>
