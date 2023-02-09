@@ -161,7 +161,9 @@
       </size>
      </property>
      <property name="toolTip">
-      <string>Real part of potential y-component</string>
+      <string>Real part of potential y-component
+Note: for 2D only setting for x is possible,
+          setting for y will be ignored</string>
      </property>
      <property name="keyboardTracking">
       <bool>true</bool>
@@ -205,7 +207,9 @@
       </size>
      </property>
      <property name="toolTip">
-      <string>Imaginary part of potential y-component</string>
+      <string>Imaginary part of potential y-component
+Note: for 2D only setting for x is possible,
+          setting for y will be ignored</string>
      </property>
      <property name="keyboardTracking">
       <bool>true</bool>
