@@ -34,13 +34,18 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 template<typename VALUE, class PtrSMDSIterator, class EqualVALUE = std::equal_to<VALUE> >
-class SMDS_StdIterator : public std::iterator< std::input_iterator_tag, VALUE >
+class SMDS_StdIterator
 {
   VALUE           _value;
   PtrSMDSIterator _piterator;
   EqualVALUE      _EqualVALUE;
 
 public:
+  using iterator_category = std::input_iterator_tag;
+  using value_type = VALUE;
+  using difference_type = std::ptrdiff_t;
+  using pointer = value_type*;
+  using reference = value_type&;
   typedef SMDS_StdIterator<VALUE, PtrSMDSIterator> _Self;
 
   // constructor to use as return from begin()
