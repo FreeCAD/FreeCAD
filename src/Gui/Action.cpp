@@ -221,7 +221,7 @@ void Action::setToolTip(const QString & text, const QString & title)
     _tooltip = text;
     _title = title;
     _action->setToolTip(createToolTip(text,
-                title.isEmpty() ? _action->text() : title, 
+                title.isEmpty() ? _action->text() : title,
                 _action->font(),
                 _action->shortcut().toString(QKeySequence::NativeText),
                 command()));
@@ -461,6 +461,14 @@ void ActionGroup::addTo(QWidget *widget)
             item->setMenuRole(action()->menuRole());
             menu->setTitle(action()->text());
             menu->addActions(groupAction()->actions());
+
+            QObject::connect(menu, &QMenu::aboutToShow, [this, menu]() {
+                Q_EMIT aboutToShow(menu);
+            });
+
+            QObject::connect(menu, &QMenu::aboutToHide, [this, menu]() {
+                Q_EMIT aboutToHide(menu);
+            });
         }
         else if (widget->inherits("QToolBar")) {
             widget->addAction(action());
@@ -471,6 +479,14 @@ void ActionGroup::addTo(QWidget *widget)
             auto menu = new QMenu(tb);
             menu->addActions(acts);
             tb->setMenu(menu);
+
+            QObject::connect(menu, &QMenu::aboutToShow, [this, menu]() {
+                Q_EMIT aboutToShow(menu);
+            });
+
+            QObject::connect(menu, &QMenu::aboutToHide, [this, menu]() {
+                Q_EMIT aboutToHide(menu);
+            });
         }
         else {
             widget->addActions(groupAction()->actions()); // no drop-down
