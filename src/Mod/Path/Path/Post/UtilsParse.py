@@ -35,83 +35,90 @@ from FreeCAD import Units
 import Path
 import Path.Post.Utils as PostUtils
 
-def add_parameters(values, outstring, command, params, currLocation):
-    """Add the parameters (sometimes called "words") to the outstring."""
-    for param in values["PARAMETER_ORDER"]:
-        if param not in params:
-            continue
-        p_p = params[param]
-        if param == "F":
-            if currLocation[param] == p_p and not values["OUTPUT_DOUBLES"]:
-                continue
-            # Many posts don't use rapid speeds, but eventually
-            # there will be refactored posts that do, so this
-            # "if statement" is being kept separate to make it
-            # more obvious where to put that check.
-            if command in values["RAPID_MOVES"]:
-                continue
-            feed = Units.Quantity(p_p, Units.Velocity)
-            if feed.getValueAs(values["UNIT_SPEED_FORMAT"]) <= 0.0:
-                continue
-            param_num = format_for_feed(values, feed)
-        elif param in ("H", "L", "T"):
-            param_num = str(int(p_p))
-        elif param == "D":
-            if command in ("G41", "G42"):
-                param_num = str(int(p_p))
-            elif command in ("G41.1", "G42.1"):
-                pos = Units.Quantity(p_p, Units.Length)
-                param_num = format_for_axis(values, pos)
-            elif command in ("G96", "G97"):
-                param_num = format_for_spindle(values, p_p)
-            else:  # anything else that is supported
-                param_num = str(float(p_p))
-        elif param == "P":
-            if command in (
-                "G2",
-                "G02",
-                "G3",
-                "G03",
-                "G5.2",
-                "G5.3",
-                "G10",
-                "G54.1",
-                "G59",
-            ):
-                param_num = str(int(p_p))
-            elif command in ("G4", "G04", "G76", "G82", "G86", "G89"):
-                param_num = str(float(p_p))
-            elif command in ("G5", "G05", "G64"):
-                pos = Units.Quantity(p_p, Units.Length)
-                param_num = format_for_axis(values, pos)
-            else:  # anything else that is supported
-                param_num = str(p_p)
-        elif param == "Q":
-            if command == "G10":
-                param_num = str(int(p_p))
-            elif command in ("G64", "G73", "G83"):
-                pos = Units.Quantity(p_p, Units.Length)
-                param_num = format_for_axis(values, pos)
-        elif param == "S":
-            param_num = format_for_spindle(values, p_p)
-        else:
-            if (
-                not values["OUTPUT_DOUBLES"]
-                and param in currLocation
-                and currLocation[param] == p_p
-            ):
-                continue
-            pos = Units.Quantity(p_p, Units.Length)
-            param_num = format_for_axis(values, pos)
-        outstring.append(f"{param}{param_num}")
-
-
 def create_comment(values, comment_string):
     """Create a comment from a string using the correct comment symbol."""
     if values["COMMENT_SYMBOL"] == "(":
         return f"({comment_string})"
     else:
         return values["COMMENT_SYMBOL"] + comment_string
+
+
+def default_axis_parameter(values, command, param, param_value, currLocation):
+    """Process an axis parameter."""
+    if (
+        not values["OUTPUT_DOUBLES"]
+        and param in currLocation
+        and currLocation[param] == param_value
+    ):
+        return None
+    return format_for_axis(values, Units.Quantity(param_value, Units.Length))
+
+
+def default_D_parameter(values, command, param, param_value, currLocation):
+    """Process the D parameter."""
+    if command in ("G41", "G42"):
+        return str(int(param_value))
+    if command in ("G41.1", "G42.1"):
+        return format_for_axis(values, Units.Quantity(param_value, Units.Length))
+    if command in ("G96", "G97"):
+        return format_for_spindle(values, param_value)
+    # anything else that is supported
+    return str(float(param_value))
+
+
+def default_F_parameter(values, command, param, param_value, currLocation):
+    """Process the F parameter."""
+    if (
+        not values["OUTPUT_DOUBLES"]
+        and param in currLocation
+        and currLocation[param] == param_value
+    ):
+        return None
+    # Many posts don't use rapid speeds, but eventually
+    # there will be refactored posts that do, so this
+    # "if statement" is being kept separate to make it
+    # more obvious where to put that check.
+    if command in values["RAPID_MOVES"]:
+        return None
+    feed = Units.Quantity(param_value, Units.Velocity)
+    if feed.getValueAs(values["UNIT_SPEED_FORMAT"]) <= 0.0:
+        return None
+    return format_for_feed(values, feed)
+
+
+def default_int_parameter(values, command, param, param_value, currLocation):
+    """Process a parameter that is treated like an integer."""
+    return str(int(param_value))
+
+
+def default_length_parameter(values, command, param, param_value, currLocation):
+    """Process a parameter that is treated like a length."""
+    return format_for_axis(values, Units.Quantity(param_value, Units.Length))
+
+
+def default_P_parameter(values, command, param, param_value, currLocation):
+    """Process the P parameter."""
+    if command in ("G2", "G02", "G3", "G03", "G5.2", "G5.3", "G10", "G54.1", "G59"):
+        return str(int(param_value))
+    if command in ("G4", "G04", "G76", "G82", "G86", "G89"):
+        return str(float(param_value))
+    if command in ("G5", "G05", "G64"):
+        return format_for_axis(values, Units.Quantity(param_value, Units.Length))
+    # anything else that is supported
+    return str(param_value)
+
+
+def default_Q_parameter(values, command, param, param_value, currLocation):
+    """Process the Q parameter."""
+    if command == "G10":
+        return str(int(param_value))
+    if command in ("G64", "G73", "G83"):
+        return format_for_axis(values, Units.Quantity(param_value, Units.Length))
+
+
+def default_S_parameter(values, command, param, param_value, currLocation):
+    """Process the S parameter."""
+    return format_for_spindle(values, param_value)
 
 
 def drill_translate(values, cmd, params):
@@ -259,6 +266,41 @@ def linenumber(values, space=None):
     return ""
 
 
+#
+# These functions are called in the parse_a_path function
+# to return the appropriate parameter value.
+#
+parameter_functions = {
+    "A": default_axis_parameter,
+    "B": default_axis_parameter,
+    "C": default_axis_parameter,
+    "D": default_D_parameter,
+    "E": default_length_parameter,
+    "F": default_F_parameter,
+    # "G" is reserved for G-code commands
+    "H": default_int_parameter,
+    "I": default_length_parameter,
+    "J": default_length_parameter,
+    "K": default_length_parameter,
+    "L": default_int_parameter,
+    # "M" is reserved for M-code commands
+    # "N" is reserved for the beginning of line numbers
+    # "O" is reserved for the beginning of line numbers for subroutines
+    "P": default_P_parameter,
+    "Q": default_Q_parameter,
+    "R": default_length_parameter,
+    "S": default_S_parameter,
+    "T": default_int_parameter,
+    "U": default_axis_parameter,
+    "V": default_axis_parameter,
+    "W": default_axis_parameter,
+    "X": default_axis_parameter,
+    "Y": default_axis_parameter,
+    "Z": default_axis_parameter,
+    # "$" is used by LinuxCNC (and others?) to designate which spindle
+}
+
+
 def parse_a_group(values, pathobj):
     """Parse a Group (compound, project, or simple path)."""
     nl = "\n"
@@ -340,7 +382,13 @@ def parse_a_path(values, pathobj):
             outstring.pop(0)
 
         # Now add the remaining parameters in order
-        add_parameters(values, outstring, command, c.Parameters, currLocation)
+        for parameter in values["PARAMETER_ORDER"]:
+            if parameter in c.Parameters:
+                parameter_value = parameter_functions[parameter](
+                    values, command, parameter, c.Parameters[parameter], currLocation
+                )
+                if parameter_value:
+                    outstring.append(f"{parameter}{parameter_value}")
 
         if (
             values["OUTPUT_ADAPTIVE"]
