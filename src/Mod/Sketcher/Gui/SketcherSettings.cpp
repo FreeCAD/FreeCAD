@@ -112,8 +112,7 @@ SketcherSettingsGrid::SketcherSettingsGrid(QWidget* parent)
     styles << qMakePair(Qt::SolidLine, 0xffff)
         << qMakePair(Qt::DashLine, 0x0f0f)
         << qMakePair(Qt::DotLine, 0xaaaa);
-    //           << qMakePair(Qt::DashDotLine, 0x????)
-    //           << qMakePair(Qt::DashDotDotLine, 0x????);
+
     ui->gridLinePattern->setIconSize(QSize(80, 12));
     ui->gridDivLinePattern->setIconSize(QSize(80, 12));
     for (QList < QPair<Qt::PenStyle, int> >::iterator it = styles.begin(); it != styles.end(); ++it) {
@@ -133,6 +132,12 @@ SketcherSettingsGrid::SketcherSettingsGrid(QWidget* parent)
         ui->gridLinePattern->addItem(QIcon(px), QString(), QVariant(it->second));
         ui->gridDivLinePattern->addItem(QIcon(px), QString(), QVariant(it->second));
     }
+
+    ui->gridSize->setEnabled(!ui->checkBoxGridAuto->isChecked());
+
+    QObject::connect(ui->checkBoxGridAuto,&Gui::PrefCheckBox::stateChanged, [this](int state) {
+        ui->gridSize->setEnabled(state != Qt::Checked);
+    });
 }
 
 SketcherSettingsGrid::~SketcherSettingsGrid()
