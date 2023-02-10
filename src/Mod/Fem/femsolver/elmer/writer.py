@@ -61,8 +61,8 @@ _STARTINFO_NAME = "ELMERSOLVER_STARTINFO"
 _SIF_NAME = "case.sif"
 _ELMERGRID_IFORMAT = "8"
 _ELMERGRID_OFORMAT = "2"
-_NON_CARTESIAN_CS = ["Polar 2D", "Polar 3D",
-                     "Cylindric", "Cylindric Symmetric"]
+_COORDS_NON_MAGNETO_2D = ["Polar 2D", "Polar 3D", "Cartesian 3D",
+                          "Cylindric", "Cylindric Symmetric"]
 
 
 def _getAllSubObjects(obj):
@@ -547,12 +547,12 @@ class Writer(object):
                 else:
                     activeIn = self.getAllBodies()
                 # Magnetodynamic2D cannot handle all coordinate sysytems
-                if self.solver.CoordinateSystem in _NON_CARTESIAN_CS:
+                if self.solver.CoordinateSystem in _COORDS_NON_MAGNETO_2D :
                     raise WriteError(
                         "The coordinate setting '{}'\n is not "
                         "supported by the equation 'Magnetodynamic2D'.\n\n"
-                        "The possible settings are:\n'Cartesian 2D',\n"
-                        "'Cartesian 3D',\nor 'Axi Symmetric'".format(self.solver.CoordinateSystem)
+                        "Possible is:\n'Cartesian 2D' or 'Axi Symmetric'"
+                        .format(self.solver.CoordinateSystem)
                     )
 
                 solverSection = MgDyn2D.getMagnetodynamic2DSolver(equation)
