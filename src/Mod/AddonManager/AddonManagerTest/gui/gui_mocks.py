@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2022 FreeCAD Project Association                        *
+# *   Copyright (c) 2022-2023 FreeCAD Project Association                   *
 # *                                                                         *
 # *   This file is part of FreeCAD.                                         *
 # *                                                                         *
@@ -22,10 +22,12 @@
 
 from PySide import QtCore, QtWidgets
 
+from AddonManagerTest.app.mocks import SignalCatcher
+
 
 class DialogInteractor(QtCore.QObject):
-    """Takes the title of the dialog, a button string, and a callable. The callable is passed
-    the widget we found and can do whatever it wants to it. Whatever it does should eventually
+    """Takes the title of the dialog and a callable. The callable is passed the widget
+    we found and can do whatever it wants to it. Whatever it does should eventually
     close the dialog, however."""
 
     def __init__(self, dialog_to_watch_for, interaction):
@@ -53,21 +55,6 @@ class DialogInteractor(QtCore.QObject):
             self.dialog_found = True
             self.timer.stop()
 
-        if self.execution_counter > 25 and not self.dialog_found:
-            # OK, it wasn't the active modal widget... was it some other window, and never became
-            # active? That's an error, but we should get it closed anyway.
-            windows = QtWidgets.QApplication.topLevelWidgets()
-            for widget in windows:
-                if (
-                        hasattr(widget, "windowTitle")
-                        and callable(widget.windowTitle)
-                        and widget.windowTitle() == self.dialog_to_watch_for
-                ):
-                    if self.interaction is not None and callable(self.interaction):
-                        self.interaction(widget)
-                    self.timer.stop()
-                    print("Found a window with the expected title, but it was not the active modal dialog.")
-
         self.has_run = True
         self.execution_counter += 1
         if self.execution_counter > 100:
@@ -93,6 +80,7 @@ class DialogWatcher(DialogInteractor):
     a one-shot QTimer to allow the dialog time to open up. If the specified dialog is found, but
     it does not contain the expected button, button_found will be false, and the dialog will be
     closed with a reject() slot."""
+
     def __init__(self, dialog_to_watch_for, button=QtWidgets.QDialogButtonBox.NoButton):
         super().__init__(dialog_to_watch_for, self.click_button)
         if button != QtWidgets.QDialogButtonBox.NoButton:
@@ -132,3 +120,25 @@ class MockThread:
 
     def isRunning(self):
         return False
+
+
+class AsynchronousMonitor:
+    """Watch for a signal to be emitted for at most some given number of milliseconds"""
+
+    def __init__(self, signal):
+        self.signal = signal
+        self.signal_catcher = SignalCatcher()
+        self.signal.connect(self.signal_catcher.catch_signal)
+        self.kill_timer = QtCore.QTimer()
+        self.kill_timer.setSingleShot(True)
+        self.kill_timer.timeout.connect(self.signal_catcher.die)
+
+    def wait_for_at_most(self, max_wait_millis) -> None:
+        self.kill_timer.setInterval(max_wait_millis)
+        self.kill_timer.start()
+        while not self.signal_catcher.caught and not self.signal_catcher.killed:
+            QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents, 10)
+        self.kill_timer.stop()
+
+    def good(self) -> bool:
+        return self.signal_catcher.caught and not self.signal_catcher.killed
