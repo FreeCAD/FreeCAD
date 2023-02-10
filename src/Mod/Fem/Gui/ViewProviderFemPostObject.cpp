@@ -171,8 +171,8 @@ ViewProviderFemPostObject::ViewProviderFemPostObject() : m_blockPropertyChanges(
     m_drawStyle->ref();
     m_drawStyle->lineWidth.setValue(2);
     m_drawStyle->pointSize.setValue(3);
-    m_seperator = new SoSeparator();
-    m_seperator->ref();
+    m_separator = new SoSeparator();
+    m_separator->ref();
 
     // simple color bar
     m_colorRoot = new SoSeparator();
@@ -217,7 +217,7 @@ ViewProviderFemPostObject::~ViewProviderFemPostObject()
     m_triangleStrips->unref();
     m_markers->unref();
     m_lines->unref();
-    m_seperator->unref();
+    m_separator->unref();
     m_material->unref();
     m_colorBar->Detach(this);
     m_colorBar->unref();
@@ -230,14 +230,14 @@ void ViewProviderFemPostObject::attach(App::DocumentObject* pcObj)
     ViewProviderDocumentObject::attach(pcObj);
 
     // face nodes
-    m_seperator->addChild(m_shapeHints);
-    m_seperator->addChild(m_drawStyle);
-    m_seperator->addChild(m_materialBinding);
-    m_seperator->addChild(m_material);
-    m_seperator->addChild(m_coordinates);
-    m_seperator->addChild(m_markers);
-    m_seperator->addChild(m_lines);
-    m_seperator->addChild(m_faces);
+    m_separator->addChild(m_shapeHints);
+    m_separator->addChild(m_drawStyle);
+    m_separator->addChild(m_materialBinding);
+    m_separator->addChild(m_material);
+    m_separator->addChild(m_coordinates);
+    m_separator->addChild(m_markers);
+    m_separator->addChild(m_lines);
+    m_separator->addChild(m_faces);
 
     // Check for an already existing color bar
     Gui::SoFCColorBar* pcBar =
@@ -259,7 +259,7 @@ void ViewProviderFemPostObject::attach(App::DocumentObject* pcObj)
     m_colorRoot->addChild(m_colorBar);
 
     //all
-    addDisplayMaskMode(m_seperator, "Default");
+    addDisplayMaskMode(m_separator, "Default");
     setDisplayMaskMode("Default");
 
     (void)setupPipeline();
@@ -269,7 +269,6 @@ SoSeparator* ViewProviderFemPostObject::getFrontRoot() const {
 
     return m_colorRoot;
 }
-
 
 void ViewProviderFemPostObject::setDisplayMode(const char* ModeName)
 {
@@ -298,7 +297,7 @@ std::vector<std::string> ViewProviderFemPostObject::getDisplayModes() const
     std::vector<std::string> StrList;
     StrList.emplace_back("Outline");
     StrList.emplace_back("Nodes");
-    //StrList.push_back("Nodes (surface only)"); somehow this filter does not work
+    //StrList.emplace_back("Nodes (surface only)"); somehow this filter does not work
     StrList.emplace_back("Surface");
     StrList.emplace_back("Surface with Edges");
     StrList.emplace_back("Wireframe");

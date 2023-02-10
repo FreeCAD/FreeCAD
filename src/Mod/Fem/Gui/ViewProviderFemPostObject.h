@@ -137,7 +137,7 @@ protected:
     SoNormalBinding*            m_normalBinding;
     SoNormal*                   m_normals;
     SoDrawStyle*                m_drawStyle;
-    SoSeparator*                m_seperator;
+    SoSeparator*                m_separator;
     Gui::SoFCColorBar*          m_colorBar;
     SoSeparator*                m_colorRoot;
     SoDrawStyle*                m_colorStyle;
