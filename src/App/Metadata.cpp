@@ -126,7 +126,9 @@ App::Metadata::Metadata(const std::string& rawData)
     : _dom(nullptr)
 {
     MemBufInputSource buffer(
-        reinterpret_cast<const XMLByte*>(rawData.c_str()), rawData.size(), "raw data (in memory)");
+        reinterpret_cast<const XMLByte* const>(rawData.c_str()),
+        rawData.size(),
+        "raw data (in memory)");
     loadFromInputSource(buffer);
 }
 
@@ -957,6 +959,9 @@ Meta::Contact::Contact(std::string name, std::string email)
 
 Meta::Contact::Contact(const XERCES_CPP_NAMESPACE::DOMElement* elem)
 {
+    if (!elem){
+        return;
+    }
     auto emailAttribute = elem->getAttribute(XUTF8Str("email").unicodeForm());
     name = StrXUTF8(elem->getTextContent()).str;
     email = StrXUTF8(emailAttribute).str;
@@ -976,6 +981,9 @@ Meta::License::License(std::string name, fs::path file)
 
 Meta::License::License(const XERCES_CPP_NAMESPACE::DOMElement* elem)
 {
+    if (!elem){
+        return;
+    }
     auto fileAttribute = elem->getAttribute(XUTF8Str("file").unicodeForm());
     if (XMLString::stringLen(fileAttribute) > 0) {
         file = fs::path(StrXUTF8(fileAttribute).str);
@@ -1002,6 +1010,9 @@ Meta::Url::Url(std::string location, UrlType type)
 
 Meta::Url::Url(const XERCES_CPP_NAMESPACE::DOMElement* elem)
 {
+    if (!elem) {
+        return;
+    }
     auto typeAttribute = StrXUTF8(elem->getAttribute(XUTF8Str("type").unicodeForm())).str;
     if (typeAttribute.empty() || typeAttribute == "website") {
         type = UrlType::website;
