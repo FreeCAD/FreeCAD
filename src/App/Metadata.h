@@ -206,6 +206,11 @@ public:
          */
     Metadata(const XERCES_CPP_NAMESPACE::DOMNode *domNode, int format);
 
+    /**
+     * Treat the incoming rawData as metadata to be parsed.
+     */
+    explicit Metadata(const std::string& rawData);
+
     ~Metadata();
 
 
@@ -369,6 +374,7 @@ private:
     XERCES_CPP_NAMESPACE::DOMElement *_dom;
     std::shared_ptr<XERCES_CPP_NAMESPACE::XercesDOMParser> _parser;
 
+    void loadFromInputSource(const XERCES_CPP_NAMESPACE::InputSource& source);
     void parseVersion1(const XERCES_CPP_NAMESPACE::DOMNode *startNode);
     void parseContentNodeVersion1(const XERCES_CPP_NAMESPACE::DOMElement *contentNode);
 
