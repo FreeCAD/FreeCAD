@@ -38,20 +38,22 @@
 namespace SpreadsheetGui {
 
     SheetTableViewAccessibleInterface::SheetTableViewAccessibleInterface(
-    SpreadsheetGui::SheetTableView* w)
-    : QAccessibleWidget(w)
+    SpreadsheetGui::SheetTableView* view)
+    : QAccessibleWidget(view)
     {
     }
 
-    QString SheetTableViewAccessibleInterface::text(QAccessible::Text t) const
+    QString SheetTableViewAccessibleInterface::text(QAccessible::Text txt) const
     {
-        if (t == QAccessible::Help)
+        if (txt == QAccessible::Help)
             return QString::fromLatin1("Implement me");
-        return QAccessibleWidget::text(t);
+        return QAccessibleWidget::text(txt);
     }
 
     QAccessibleInterface* SheetTableViewAccessibleInterface::childAt(int x, int y) const
     {
+        Q_UNUSED(x)
+        Q_UNUSED(y)
         return (QAccessibleInterface*)this;
     }
 
@@ -72,14 +74,15 @@ namespace SpreadsheetGui {
 
     QAccessibleInterface* SheetTableViewAccessibleInterface::child(int index) const
     {
+        Q_UNUSED(index)
         return (QAccessibleInterface*)this;
     }
 
-    QAccessibleInterface* SheetTableViewAccessibleInterface::ifactory(const QString& key, QObject* o)
+    QAccessibleInterface* SheetTableViewAccessibleInterface::ifactory(const QString& key, QObject* obj)
     {
         if (key == QString::fromUtf8("SpreadsheetGui::SheetTableView"))
             return new SheetTableViewAccessibleInterface(
-                static_cast<SpreadsheetGui::SheetTableView*>(o));
-        return 0;
+                static_cast<SpreadsheetGui::SheetTableView*>(obj));
+        return nullptr;
     }
 }
