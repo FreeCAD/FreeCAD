@@ -30,7 +30,10 @@
 
 #include "Metadata.h"
 
+#include <utility>
 #include <xercesc/framework/LocalFileFormatTarget.hpp>
+#include <xercesc/framework/LocalFileInputSource.hpp>
+#include <xercesc/framework/MemBufInputSource.hpp>
 #include <xercesc/sax/HandlerBase.hpp>
 
 #include "App/Application.h"
@@ -89,37 +92,13 @@ class XMLErrorHandler: public HandlerBase
 
 Metadata::Metadata(const fs::path &metadataFile)
 {
-    // Any exception thrown by the XML code propagates out and prevents object creation
-    XMLPlatformUtils::Initialize();
-
-    _parser = std::make_shared<XercesDOMParser>();
-    _parser->setValidationScheme(XercesDOMParser::Val_Never);
-    _parser->setDoNamespaces(true);
-
-    auto errHandler = std::make_unique<MetadataInternal::XMLErrorHandler>();
-    _parser->setErrorHandler(errHandler.get());
-
 #if defined(FC_OS_WIN32)
-    _parser->parse(reinterpret_cast<const XMLCh *>(metadataFile.wstring().c_str()));
+    auto source =
+        LocalFileInputSource(reinterpret_cast<const XMLCh*>(metadataFile.wstring().c_str()));
 #else
-    _parser->parse(metadataFile.string().c_str());
+    auto source = LocalFileInputSource(XUTF8Str(metadataFile.string().c_str()).unicodeForm());
 #endif
-
-    auto doc = _parser->getDocument();
-    _dom = doc->getDocumentElement();
-
-    auto rootTagName = StrXUTF8(_dom->getTagName()).str;
-    if (rootTagName != "package") {
-        throw Base::XMLBaseException(
-            "Malformed package.xml document: Root <package> group not found");
-    }
-    auto formatVersion = XMLString::parseInt(_dom->getAttribute(XUTF8Str("format").unicodeForm()));
-    switch (formatVersion) {
-        case 1: parseVersion1(_dom); break;
-        default:
-            throw Base::XMLBaseException(
-                "package.xml format version is not supported by this version of FreeCAD");
-    }
+    loadFromInputSource(source);
 }
 
 Metadata::Metadata() : _dom(nullptr) {}
@@ -134,6 +113,47 @@ Metadata::Metadata(const DOMNode *domNode, int format) : _dom(nullptr)
                 throw Base::XMLBaseException(
                     "package.xml format version is not supported by this version of FreeCAD");
         }
+    }
+}
+
+App::Metadata::Metadata(const std::string& rawData)
+    : _dom(nullptr)
+{
+    MemBufInputSource buffer(
+        reinterpret_cast<const XMLByte*>(rawData.c_str()), rawData.size(), "raw data (in memory)");
+    loadFromInputSource(buffer);
+}
+
+void Metadata::loadFromInputSource(const InputSource& source)
+{
+    // Any exception thrown by the XML code propagates out and prevents object creation
+    XMLPlatformUtils::Initialize();
+
+    _parser = std::make_shared<XercesDOMParser>();
+    _parser->setValidationScheme(XercesDOMParser::Val_Never);
+    _parser->setDoNamespaces(true);
+
+    auto errHandler = std::make_unique<MetadataInternal::XMLErrorHandler>();
+    _parser->setErrorHandler(errHandler.get());
+
+    _parser->parse(source);
+
+    auto doc = _parser->getDocument();
+    _dom = doc->getDocumentElement();
+
+    auto rootTagName = StrXUTF8(_dom->getTagName()).str;
+    if (rootTagName != "package") {
+        throw Base::XMLBaseException(
+            "Malformed package.xml document: Root <package> group not found");
+    }
+    auto formatVersion = XMLString::parseInt(_dom->getAttribute(XUTF8Str("format").unicodeForm()));
+    switch (formatVersion) {
+        case 1:
+            parseVersion1(_dom);
+            break;
+        default:
+            throw Base::XMLBaseException(
+                "package.xml format version is not supported by this version of FreeCAD");
     }
 }
 
