@@ -64,7 +64,7 @@ struct AppExport Contact {
         */
 struct AppExport License {
     License() = default;
-    License(std::string  name, boost::filesystem::path file);
+    License(std::string name, boost::filesystem::path file);
     explicit License(const XERCES_CPP_NAMESPACE::DOMElement* elem);
     std::string name;//< Short name of license, e.g. "LGPL2", "MIT", "Mozilla Public License", etc.
     boost::filesystem::path
@@ -88,7 +88,7 @@ enum class UrlType
         */
 struct AppExport Url {
     Url();
-    Url(std::string  location, UrlType type);
+    Url(std::string location, UrlType type);
     explicit Url(const XERCES_CPP_NAMESPACE::DOMElement* elem);
     std::string location;//< The actual URL, including protocol
     UrlType type;        //< What kind of URL this is
