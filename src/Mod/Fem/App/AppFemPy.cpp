@@ -193,12 +193,12 @@ private:
                 App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
                 if (obj->getTypeId().isDerivedFrom(meshId)) {
                     static_cast<FemMeshObject*>(obj)->FemMesh.getValue().write(EncodedName.c_str());
-                    break;
+                    return Py::None();
                 }
             }
         }
 
-        return Py::None();
+        throw Py::RuntimeError("No FEM mesh for export selected");
     }
     Py::Object read(const Py::Tuple& args)
     {
