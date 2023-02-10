@@ -173,7 +173,6 @@ class PackageDetails(QWidget):
         self.set_change_branch_button_state()
         self.set_disable_button_state()
         if status != Addon.Status.NOT_INSTALLED:
-
             version = repo.installed_version
             date = ""
             installed_version_string = "<h3>"
@@ -267,7 +266,6 @@ class PackageDetails(QWidget):
                     + "."
                 )
             elif status == Addon.Status.UNCHECKED:
-
                 pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
                 autocheck = pref.GetBool("AutoCheck", False)
                 if autocheck:
@@ -726,21 +724,26 @@ if HAS_QTWEBENGINE:
         def __init__(self, parent):
             super().__init__(parent)
             self.settings().setAttribute(QWebEngineSettings.ErrorPageEnabled, False)
+            self.stored_url = None
 
-        def acceptNavigationRequest(self, url, _type, isMainFrame):
+        def acceptNavigationRequest(self, requested_url, _type, isMainFrame):
             """A callback for navigation requests: this widget will only display navigation requests to the
-            FreeCAD Wiki (for translation purposes) -- anything else will open in a new window."""
+            FreeCAD Wiki (for translation purposes) -- anything else will open in a new window.
+            """
             if _type == QWebEnginePage.NavigationTypeLinkClicked:
-
                 # See if the link is to a FreeCAD Wiki page -- if so, follow it, otherwise ask the OS to open it
                 if (
-                    url.host() == "wiki.freecad.org"
-                    or url.host() == "wiki.freecadweb.org"
+                    requested_url.host() == "wiki.freecad.org"
+                    or requested_url.host() == "wiki.freecadweb.org"
                 ):
-                    return super().acceptNavigationRequest(url, _type, isMainFrame)
-                QDesktopServices.openUrl(url)
+                    return super().acceptNavigationRequest(
+                        requested_url, _type, isMainFrame
+                    )
+                QDesktopServices.openUrl(requested_url)
+                self.stored_url = self.url()
+                QTimer.singleShot(0, self._reload_stored_url)
                 return False
-            return super().acceptNavigationRequest(url, _type, isMainFrame)
+            return super().acceptNavigationRequest(requested_url, _type, isMainFrame)
 
         def javaScriptConsoleMessage(self, level, message, lineNumber, _):
             """Handle JavaScript console messages by optionally outputting them to the FreeCAD Console. This
@@ -755,6 +758,10 @@ if HAS_QTWEBENGINE:
                     FreeCAD.Console.PrintWarning(f"{tag} {lineNumber}: {message}\n")
                 elif level == QWebEnginePage.ErrorMessageLevel:
                     FreeCAD.Console.PrintError(f"{tag} {lineNumber}: {message}\n")
+
+        def _reload_stored_url(self):
+            if self.stored_url:
+                self.load(self.stored_url)
 
 
 class Ui_PackageDetails(object):
