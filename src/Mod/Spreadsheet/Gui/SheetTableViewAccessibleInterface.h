@@ -29,29 +29,29 @@
 
 namespace SpreadsheetGui {
 
-    // Currently SheetTableViewAccessibleInterface below deactivates the  
-    // built-in QAccessibleTable interface, and all the accessibility 
+    // Currently SheetTableViewAccessibleInterface below deactivates the
+    // built-in QAccessibleTable interface, and all the accessibility
     // features.
-    // 
+    //
     // For a proper implementation, start by extending that
     // and ensure you're not queue-ing empty cells, or counting empty cells
-    // 
+    //
     // Otherwise it will hang - https://github.com/FreeCAD/FreeCAD/issues/8265
 
     class SheetTableViewAccessibleInterface : public QAccessibleWidget
     {
     public:
-        SheetTableViewAccessibleInterface(SpreadsheetGui::SheetTableView* w);
+        explicit SheetTableViewAccessibleInterface(SpreadsheetGui::SheetTableView* view);
 
-        QString text(QAccessible::Text t) const override;
-       
+        QString text(QAccessible::Text txt) const override;
+
         QAccessibleInterface* childAt(int x, int y) const override;
         int indexOfChild(const QAccessibleInterface*) const override;
         int childCount() const override;
         QAccessibleInterface* focusChild() const override;
         QAccessibleInterface* child(int index) const override;
 
-        static QAccessibleInterface* ifactory(const QString& key, QObject* o);
+        static QAccessibleInterface* ifactory(const QString& key, QObject* obj);
     };
 }
 
