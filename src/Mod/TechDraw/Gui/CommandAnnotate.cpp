@@ -1080,7 +1080,7 @@ void execLine2Points(Gui::Command* cmd)
             int idx = DrawUtil::getIndexFromName(v2d);
             TechDraw::VertexPtr v = baseFeat->getProjVertexByIndex(idx);
             if (v) {
-                Base::Vector3d p = DrawUtil::invertY(v->pnt);
+                Base::Vector3d p = DrawUtil::invertY(v->point());
                 points.push_back(p / scale);
                 is3d.push_back(false);
             }
@@ -1182,7 +1182,7 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
             std::string geomType = TechDraw::DrawUtil::getGeomTypeFromName(s);
             if (geomType == "Edge") {
                 TechDraw::BaseGeomPtr bg = objFeat->getGeomByIndex(idx);
-                if (bg && bg->cosmetic) {
+                if (bg && bg->getCosmetic()) {
                     int source = bg->source();
                     std::string tag = bg->getCosmeticTag();
                     if (source == COSMETICEDGE) {
@@ -1199,7 +1199,7 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
                 if (!tdv)
                     Base::Console().Message("CMD::eraser - geom: %d not found!\n", idx);
 
-                std::string delTag = tdv->cosmeticTag;
+                std::string delTag = tdv->getCosmeticTag();
                 if (delTag.empty())
                     Base::Console().Warning("Vertex%d is not cosmetic! Can not erase.\n", idx);
                 cv2Delete.push_back(delTag);

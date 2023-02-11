@@ -229,7 +229,7 @@ void CosmeticEdgePy::setEnd(Py::Vector arg)
 
 Py::Float CosmeticEdgePy::getRadius() const
 {
-    TechDraw::GeomType gt = getCosmeticEdgePtr()->m_geometry->geomType;
+    TechDraw::GeomType gt = getCosmeticEdgePtr()->m_geometry->getGeomType();
     if ( (gt != TechDraw::GeomType::CIRCLE) &&
          (gt != TechDraw::GeomType::ARCOFCIRCLE) ) {
         throw Py::TypeError("Not a circle. Can not get radius");
@@ -240,7 +240,7 @@ Py::Float CosmeticEdgePy::getRadius() const
 
 void CosmeticEdgePy::setRadius(Py::Float arg)
 {
-    TechDraw::GeomType gt = getCosmeticEdgePtr()->m_geometry->geomType;
+    TechDraw::GeomType gt = getCosmeticEdgePtr()->m_geometry->getGeomType();
     if ( (gt != TechDraw::GeomType::CIRCLE) &&
          (gt != TechDraw::GeomType::ARCOFCIRCLE) ) {
         throw Py::TypeError("Not a circle. Can not set radius");
@@ -256,7 +256,7 @@ void CosmeticEdgePy::setRadius(Py::Float arg)
 
 Py::Vector CosmeticEdgePy::getCenter() const
 {
-    TechDraw::GeomType gt = getCosmeticEdgePtr()->m_geometry->geomType;
+    TechDraw::GeomType gt = getCosmeticEdgePtr()->m_geometry->getGeomType();
     if ( (gt != TechDraw::GeomType::CIRCLE) &&
          (gt != TechDraw::GeomType::ARCOFCIRCLE) ) {
         throw Py::TypeError("Not a circle. Can not get center");
@@ -268,7 +268,7 @@ Py::Vector CosmeticEdgePy::getCenter() const
 
 void CosmeticEdgePy::setCenter(Py::Vector arg)
 {
-    TechDraw::GeomType gt = getCosmeticEdgePtr()->m_geometry->geomType;
+    TechDraw::GeomType gt = getCosmeticEdgePtr()->m_geometry->getGeomType();
 //    PyObject* p = arg.ptr();
     if ( (gt != TechDraw::GeomType::CIRCLE) &&
          (gt != TechDraw::GeomType::ARCOFCIRCLE) ) {

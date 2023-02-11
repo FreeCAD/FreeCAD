@@ -69,8 +69,8 @@ PyObject* DrawViewPartPy::getVisibleEdges(PyObject *args)
     Py::List pEdgeList;
     std::vector<TechDraw::BaseGeomPtr> geoms = dvp->getEdgeGeometry();
     for (auto& g: geoms) {
-        if (g->hlrVisible) {
-            PyObject* pEdge = new Part::TopoShapeEdgePy(new Part::TopoShape(g->occEdge));
+        if (g->getHlrVisible()) {
+            PyObject* pEdge = new Part::TopoShapeEdgePy(new Part::TopoShape(g->getOCCEdge()));
             pEdgeList.append(Py::asObject(pEdge));
         }
     }
@@ -88,8 +88,8 @@ PyObject* DrawViewPartPy::getHiddenEdges(PyObject *args)
     Py::List pEdgeList;
     std::vector<TechDraw::BaseGeomPtr> geoms = dvp->getEdgeGeometry();
     for (auto& g: geoms) {
-        if (!g->hlrVisible) {
-            PyObject* pEdge = new Part::TopoShapeEdgePy(new Part::TopoShape(g->occEdge));
+        if (!g->getHlrVisible()) {
+            PyObject* pEdge = new Part::TopoShapeEdgePy(new Part::TopoShape(g->getOCCEdge()));
             pEdgeList.append(Py::asObject(pEdge));
         }
     }
@@ -657,7 +657,7 @@ PyObject* DrawViewPartPy::getEdgeByIndex(PyObject *args)
         return nullptr;
     }
 
-    TopoDS_Shape temp = TechDraw::mirrorShapeVec(geom->occEdge,
+    TopoDS_Shape temp = TechDraw::mirrorShapeVec(geom->getOCCEdge(),
                                       Base::Vector3d(0.0, 0.0, 0.0),
                                       1.0 / dvp->getScale());
 
@@ -711,7 +711,7 @@ PyObject* DrawViewPartPy::getEdgeBySelection(PyObject *args)
         return nullptr;
     }
 
-    TopoDS_Shape temp = TechDraw::mirrorShapeVec(geom->occEdge,
+    TopoDS_Shape temp = TechDraw::mirrorShapeVec(geom->getOCCEdge(),
                                       Base::Vector3d(0.0, 0.0, 0.0),
                                       1.0 / dvp->getScale());
 
