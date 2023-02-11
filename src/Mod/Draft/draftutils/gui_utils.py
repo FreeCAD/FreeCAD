@@ -345,7 +345,7 @@ def get_diffuse_color(objs):
     If all tuples in the result are identical a list with a single tuple is
     returned. In theory all faces of an object can be set to the same diffuse
     color that is different from its shape color, but that seems rare. The
-    function does not take that into acount.
+    function does not take that into account.
 
     Parameters
     ----------
