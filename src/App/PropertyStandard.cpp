@@ -2304,52 +2304,58 @@ PyObject *PropertyColor::getPyObject()
 void PropertyColor::setPyObject(PyObject *value)
 {
     App::Color cCol;
-    if (PyTuple_Check(value) && PyTuple_Size(value) == 3) {
+    if (PyTuple_Check(value) && (PyTuple_Size(value) == 3 || PyTuple_Size(value) == 4) ) {
         PyObject* item;
         item = PyTuple_GetItem(value,0);
-        if (PyFloat_Check(item))
+        if (PyFloat_Check(item)) {
             cCol.r = (float)PyFloat_AsDouble(item);
-        else
-            throw Base::TypeError("Type in tuple must be float");
-        item = PyTuple_GetItem(value,1);
-        if (PyFloat_Check(item))
-            cCol.g = (float)PyFloat_AsDouble(item);
-        else
-            throw Base::TypeError("Type in tuple must be float");
-        item = PyTuple_GetItem(value,2);
-        if (PyFloat_Check(item))
-            cCol.b = (float)PyFloat_AsDouble(item);
-        else
-            throw Base::TypeError("Type in tuple must be float");
-    }
-    else if (PyTuple_Check(value) && PyTuple_Size(value) == 4) {
-        PyObject* item;
-        item = PyTuple_GetItem(value,0);
-        if (PyFloat_Check(item))
-            cCol.r = (float)PyFloat_AsDouble(item);
-        else
-            throw Base::TypeError("Type in tuple must be float");
-        item = PyTuple_GetItem(value,1);
-        if (PyFloat_Check(item))
-            cCol.g = (float)PyFloat_AsDouble(item);
-        else
-            throw Base::TypeError("Type in tuple must be float");
-        item = PyTuple_GetItem(value,2);
-        if (PyFloat_Check(item))
-            cCol.b = (float)PyFloat_AsDouble(item);
-        else
-            throw Base::TypeError("Type in tuple must be float");
-        item = PyTuple_GetItem(value,3);
-        if (PyFloat_Check(item))
-            cCol.a = (float)PyFloat_AsDouble(item);
-        else
-            throw Base::TypeError("Type in tuple must be float");
+            item = PyTuple_GetItem(value,1);
+            if (PyFloat_Check(item))
+                cCol.g = (float)PyFloat_AsDouble(item);
+            else
+                throw Base::TypeError("Type in tuple must be consistent (float)");
+            item = PyTuple_GetItem(value,2);
+            if (PyFloat_Check(item))
+                cCol.b = (float)PyFloat_AsDouble(item);
+            else
+                throw Base::TypeError("Type in tuple must be consistent (float)");
+            if (PyTuple_Size(value) == 4) {
+                item = PyTuple_GetItem(value,3);
+                if (PyFloat_Check(item))
+                    cCol.a = (float)PyFloat_AsDouble(item);
+                else
+                    throw Base::TypeError("Type in tuple must be consistent (float)");
+            }
+        }
+        else if (PyLong_Check(item)) {
+            cCol.r = PyLong_AsLong(item)/255.0;
+            item = PyTuple_GetItem(value,1);
+            if (PyLong_Check(item))
+                cCol.g = PyLong_AsLong(item)/255.0;
+            else
+                throw Base::TypeError("Type in tuple must be consistent (integer)");
+            item = PyTuple_GetItem(value,2);
+            if (PyLong_Check(item))
+                cCol.b = PyLong_AsLong(item)/255.0;
+            else
+                throw Base::TypeError("Type in tuple must be consistent (integer)");
+            if (PyTuple_Size(value) == 4) {
+                item = PyTuple_GetItem(value,3);
+                if (PyLong_Check(item))
+                    cCol.a = PyLong_AsLong(item)/255.0;
+                else
+                    throw Base::TypeError("Type in tuple must be consistent (integer)");
+            }
+        }
+        else {
+            throw Base::TypeError("Type in tuple must be float or integer");
+        }
     }
     else if (PyLong_Check(value)) {
         cCol.setPackedValue(PyLong_AsUnsignedLong(value));
     }
     else {
-        std::string error = std::string("type must be int or tuple of float, not ");
+        std::string error = std::string("type must be integer or tuple of float or tuple integer, not ");
         error += value->ob_type->tp_name;
         throw Base::TypeError(error);
     }

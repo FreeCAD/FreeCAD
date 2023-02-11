@@ -3260,12 +3260,11 @@ void PropertyColorItem::setValue(const QVariant& value)
 {
     if (hasExpression() || !value.canConvert<QColor>())
         return;
-    QColor col = value.value<QColor>();
-    App::Color val; val.setValue<QColor>(col);
+    auto col = value.value<QColor>();
     QString data = QString::fromLatin1("(%1,%2,%3)")
-                    .arg(val.r,0,'f',decimals())
-                    .arg(val.g,0,'f',decimals())
-                    .arg(val.b,0,'f',decimals());
+                       .arg(col.red())
+                       .arg(col.green())
+                       .arg(col.blue());
     setPropertyValue(data);
 }
 
