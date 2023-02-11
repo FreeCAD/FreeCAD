@@ -93,6 +93,7 @@ if(BUILD_FEM_VTK)
         ${FemGui_UIC_SRCS}
         TaskPostDisplay.ui
         TaskPostClip.ui
+        TaskPostContours.ui
         TaskPostDataAlongLine.ui
         TaskPostDataAtPoint.ui
         TaskPostScalarClip.ui
@@ -271,6 +272,7 @@ if(BUILD_FEM_VTK)
         PlaneWidget.ui
         SphereWidget.ui
         TaskPostClip.ui
+        TaskPostContours.ui
         TaskPostDataAlongLine.ui
         TaskPostDataAtPoint.ui
         TaskPostScalarClip.ui

@@ -34,6 +34,7 @@
 class QComboBox;
 class Ui_TaskPostDisplay;
 class Ui_TaskPostClip;
+class Ui_TaskPostContours;
 class Ui_TaskPostDataAlongLine;
 class Ui_TaskPostDataAtPoint;
 class Ui_TaskPostScalarClip;
@@ -413,6 +414,30 @@ private:
     QWidget* proxy;
     std::unique_ptr<Ui_TaskPostCut> ui;
     FunctionWidget* fwidget;
+};
+
+
+class TaskPostContours: public TaskPostBox
+{
+    Q_OBJECT
+
+public:
+    explicit TaskPostContours(Gui::ViewProviderDocumentObject* view, QWidget* parent = nullptr);
+    ~TaskPostContours() override;
+
+    void applyPythonCode() override;
+
+private Q_SLOTS:
+    void onFieldsChanged(int idx);
+    void onVectorModeChanged(int idx);
+    void onNumberOfContoursChanged(int number);
+    void onNoColorChanged(bool state);
+
+private:
+    QWidget* proxy;
+    std::unique_ptr<Ui_TaskPostContours> ui;
+    bool blockVectorUpdate = false;
+    void updateFields(int idx);
 };
 
 } //namespace FemGui

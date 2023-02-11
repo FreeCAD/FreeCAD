@@ -24,6 +24,7 @@
 
 #ifndef _PreComp_
 # include <Python.h>
+# include <vtkDoubleArray.h>
 # include <vtkPointData.h>
 #endif
 
@@ -68,23 +69,22 @@ DocumentObjectExecReturn* FemPostFilter::execute() {
 
     if (!m_pipelines.empty() && !m_activePipeline.empty()) {
         FemPostFilter::FilterPipeline& pipe = m_pipelines[m_activePipeline];
-        if (m_activePipeline.length() >= 11) {
-            std::string LineClip = m_activePipeline.substr(0, 13);
-            std::string PointClip = m_activePipeline.substr(0, 11);
-            if ((LineClip == "DataAlongLine") || (PointClip == "DataAtPoint")) {
+        vtkSmartPointer<vtkDataObject> data = getInputData();
+        if (!data || !data->IsA("vtkDataSet"))
+            return StdReturn;
+
+        if ((m_activePipeline == "DataAlongLine") || (m_activePipeline == "DataAtPoint")) {
                 pipe.filterSource->SetSourceData(getInputData());
                 pipe.filterTarget->Update();
-
                 Data.setValue(pipe.filterTarget->GetOutputDataObject(0));
-            }
         }
         else {
-            pipe.source->SetInputDataObject(getInputData());
+            pipe.source->SetInputDataObject(data);
             pipe.target->Update();
             Data.setValue(pipe.target->GetOutputDataObject(0));
         }
-
     }
+
     return StdReturn;
 }
 
@@ -129,7 +129,7 @@ FemPostClipFilter::FemPostClipFilter() : FemPostFilter() {
         (false),
         "Clip",
         App::Prop_None,
-        "Decides if cells are cuttet and interpolated or if the cells are kept as a whole");
+        "Decides if cells are cut and interpolated or if the cells are kept as a whole");
 
     FilterPipeline clip;
     m_clipper  = vtkSmartPointer<vtkTableBasedClipDataSet>::New();
@@ -187,7 +187,8 @@ short int FemPostClipFilter::mustExecute() const {
 
         return 1;
     }
-    else return App::DocumentObject::mustExecute();
+    else
+        return App::DocumentObject::mustExecute();
 }
 
 DocumentObjectExecReturn* FemPostClipFilter::execute() {
@@ -710,4 +711,261 @@ DocumentObjectExecReturn* FemPostCutFilter::execute()
         return StdReturn;
 
     return Fem::FemPostFilter::execute();
+}
+
+// ***************************************************************************
+// contours filter
+PROPERTY_SOURCE(Fem::FemPostContoursFilter, Fem::FemPostFilter)
+
+FemPostContoursFilter::FemPostContoursFilter()
+    : FemPostFilter()
+{
+    ADD_PROPERTY_TYPE(NumberOfContours, (10), "Contours",
+        App::Prop_None, "The number of contours");
+    ADD_PROPERTY_TYPE(Field, (long(0)), "Clip",
+        App::Prop_None, "The field used to clip");
+    ADD_PROPERTY_TYPE(VectorMode, ((long)0), "Contours",
+        App::Prop_None, "Select what vector field");
+    ADD_PROPERTY_TYPE(NoColor, (false), "Contours",
+        App::Prop_None, "Don't color the contours");
+
+    m_contourConstraints.LowerBound = 1;
+    m_contourConstraints.UpperBound = 1000;
+    m_contourConstraints.StepSize = 1;
+    NumberOfContours.setConstraints(&m_contourConstraints);
+
+    FilterPipeline contours;
+    m_contours = vtkSmartPointer<vtkContourFilter>::New();
+    m_contours->ComputeScalarsOn();
+    contours.source = m_contours;
+    contours.target = m_contours;
+    addFilterPipeline(contours, "contours");
+    setActiveFilterPipeline("contours");
+}
+
+FemPostContoursFilter::~FemPostContoursFilter()
+{
+}
+
+DocumentObjectExecReturn* FemPostContoursFilter::execute()
+{
+    // update list of available fields and their vectors
+    if (!m_blockPropertyChanges) {
+        refreshFields();
+        refreshVectors();
+    }
+
+    // recalculate the filter
+    auto returnObject = Fem::FemPostFilter::execute();
+
+    // delete contour field
+    vtkSmartPointer<vtkDataObject> data = getInputData();
+    vtkDataSet* dset = vtkDataSet::SafeDownCast(data);
+    vtkPointData* pd = dset->GetPointData();
+    dset->GetPointData()->RemoveArray(contourFieldName.c_str());
+    // refresh fields to reflect the deletion
+    if (!m_blockPropertyChanges)
+        refreshFields();
+
+    return returnObject;
+}
+
+void FemPostContoursFilter::onChanged(const Property* prop)
+{
+    if (m_blockPropertyChanges)
+        return;
+
+    if (prop == &Field && (Field.getValue() >= 0))
+        refreshVectors();
+
+    // note that we need to calculate also in case of a Data change
+    // otherwise the contours output would be empty and the ViewProviderFemPostObject
+    // would not get any data
+    if ((prop == &Field || prop == &VectorMode || prop == &NumberOfContours || prop == &Data)
+        && (Field.getValue() >= 0)) {
+        double p[2];
+
+        // get the field and its data
+        vtkSmartPointer<vtkDataObject> data = getInputData();
+        if (!data || !data->IsA("vtkDataSet"))
+            return;
+        vtkDataSet* dset = vtkDataSet::SafeDownCast(data);
+        vtkDataArray* pdata = dset->GetPointData()->GetArray(Field.getValueAsString());
+
+        if (!pdata)
+            return;
+        if (pdata->GetNumberOfComponents() == 1) {
+            // if we have a scalar, we can directly use the array
+            m_contours->SetInputArrayToProcess(
+                0, 0, 0, vtkDataObject::FIELD_ASSOCIATION_POINTS, Field.getValueAsString());
+            pdata->GetRange(p);
+            recalculateContours(p[0], p[1]);
+        }
+        else {
+            // The contour filter handles vectors by taking always its first component.
+            // There is no other solution than to make the desired vectorn component a
+            // scalar array and append this temporarily to the data. (vtkExtractVectorComponents
+            // does not work because our data is an unstructured data set.)
+            int component = -1;
+            if (VectorMode.getValue() == 1)
+                component = 0;
+            else if (VectorMode.getValue() == 2)
+                component = 1;
+            else if (VectorMode.getValue() == 3)
+                component = 2;
+            // extract the component to a new array
+            vtkSmartPointer<vtkDoubleArray> componentArray = vtkSmartPointer<vtkDoubleArray>::New();
+            componentArray->SetNumberOfComponents(1);
+            vtkIdType numTuples = pdata->GetNumberOfTuples();
+            componentArray->SetNumberOfTuples(numTuples);
+
+            if (component >= 0) {
+                for (vtkIdType tupleIdx = 0; tupleIdx < numTuples; ++tupleIdx) {
+                    componentArray->SetComponent(
+                        tupleIdx, 0, pdata->GetComponent(tupleIdx, component));
+                }
+            }
+            else {
+                for (vtkIdType tupleIdx = 0; tupleIdx < numTuples; ++tupleIdx) {
+                    componentArray->SetComponent(tupleIdx, 0,
+                        std::sqrt(pdata->GetComponent(tupleIdx, 0) *
+                            pdata->GetComponent(tupleIdx, 0) +
+                            pdata->GetComponent(tupleIdx, 1) *
+                            pdata->GetComponent(tupleIdx, 1) +
+                            pdata->GetComponent(tupleIdx, 2) *
+                            pdata->GetComponent(tupleIdx, 2) ) );
+                }
+            }
+            // name the array
+            contourFieldName =
+                std::string(Field.getValueAsString()) + "_contour";
+            componentArray->SetName(contourFieldName.c_str());
+
+            // add the array as new field and use it for the contour filter
+            dset->GetPointData()->AddArray(componentArray);
+            m_contours->SetInputArrayToProcess(0, 0, 0,
+                vtkDataObject::FIELD_ASSOCIATION_POINTS, contourFieldName.c_str());
+            componentArray->GetRange(p);
+            recalculateContours(p[0], p[1]);
+            if (prop == &Data) {
+                // we must recalculate to pass the new created contours field
+                // to ViewProviderFemPostObject
+                m_blockPropertyChanges = true;
+                execute();
+                m_blockPropertyChanges = false;
+            }
+        }
+    }
+
+    Fem::FemPostFilter::onChanged(prop);
+}
+
+short int FemPostContoursFilter::mustExecute() const
+{
+    if (Field.isTouched() || VectorMode.isTouched() || NumberOfContours.isTouched()
+        || Data.isTouched())
+        return 1;
+    else
+        return App::DocumentObject::mustExecute();
+}
+
+void FemPostContoursFilter::recalculateContours(double min, double max)
+{
+    // As the min and max contours are not visible, an input of "3" leads
+    // to 1 visible contour. To not confuse the user, take the visible contours
+    // for NumberOfContours
+    int visibleNum = NumberOfContours.getValue() + 2;
+    m_contours->GenerateValues(visibleNum, min, max);
+}
+
+void FemPostContoursFilter::refreshFields()
+{
+    m_blockPropertyChanges = true;
+
+    std::string fieldName;
+    if (Field.getValue() >= 0)
+        fieldName = Field.getValueAsString();
+
+    std::vector<std::string> FieldsArray;
+
+    vtkSmartPointer<vtkDataObject> data = getInputData();
+    if (!data || !data->IsA("vtkDataSet")) {
+        m_blockPropertyChanges = false;
+        return;
+    }
+    vtkDataSet* dset = vtkDataSet::SafeDownCast(data);
+    vtkPointData* pd = dset->GetPointData();
+
+    // get all fields
+    for (int i = 0; i < pd->GetNumberOfArrays(); ++i) {
+        FieldsArray.emplace_back(pd->GetArrayName(i));
+    }
+
+    App::Enumeration empty;
+    Field.setValue(empty);
+    m_fields.setEnums(FieldsArray);
+    Field.setValue(m_fields);
+
+    // search if the current field is in the available ones and set it
+    std::vector<std::string>::iterator it =
+        std::find(FieldsArray.begin(), FieldsArray.end(), fieldName);
+    if (!fieldName.empty() && it != FieldsArray.end()) {
+        Field.setValue(fieldName.c_str());
+    }
+    else {
+        m_blockPropertyChanges = false;
+        // select the first field
+        Field.setValue(long(0));
+        fieldName = Field.getValueAsString();
+    }
+
+    m_blockPropertyChanges = false;
+}
+
+void FemPostContoursFilter::refreshVectors()
+{
+    // refreshes the list of available vectors for the current Field
+    m_blockPropertyChanges = true;
+
+    vtkSmartPointer<vtkDataObject> data = getInputData();
+    if (!data || !data->IsA("vtkDataSet")) {
+        m_blockPropertyChanges = false;
+        return;
+    }
+    vtkDataSet* dset = vtkDataSet::SafeDownCast(data);
+    vtkDataArray* fieldArray = dset->GetPointData()->GetArray(Field.getValueAsString());
+    if (!fieldArray) {
+        m_blockPropertyChanges = false;
+        return;
+    }
+
+    // store name if already set
+    std::string vectorName;
+    if (VectorMode.hasEnums() && VectorMode.getValue() >= 0)
+        vectorName = VectorMode.getValueAsString();
+
+    std::vector<std::string> vectorArray;
+    if (fieldArray->GetNumberOfComponents() == 1)
+        vectorArray.emplace_back("Not a vector");
+    else {
+        vectorArray.emplace_back("Magnitude");
+        if (fieldArray->GetNumberOfComponents() >= 2) {
+            vectorArray.emplace_back("X");
+            vectorArray.emplace_back("Y");
+        }
+        if (fieldArray->GetNumberOfComponents() >= 3) {
+            vectorArray.emplace_back("Z");
+        }
+    }
+    App::Enumeration empty;
+    VectorMode.setValue(empty);
+    m_vectors.setEnums(vectorArray);
+    VectorMode.setValue(m_vectors);
+
+    // apply stored name
+    auto it = std::find(vectorArray.begin(), vectorArray.end(), vectorName);
+    if (!vectorName.empty() && it != vectorArray.end())
+        VectorMode.setValue(vectorName.c_str());
+    
+    m_blockPropertyChanges = false;
 }

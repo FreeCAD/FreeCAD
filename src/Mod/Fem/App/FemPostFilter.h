@@ -23,9 +23,12 @@
 #ifndef Fem_FemPostFilter_H
 #define Fem_FemPostFilter_H
 
+#include <vtkContourFilter.h>
 #include <vtkCutter.h>
 #include <vtkExtractGeometry.h>
+#include <vtkExtractVectorComponents.h>
 #include <vtkLineSource.h>
+#include <vtkVectorNorm.h>
 #include <vtkPointSource.h>
 #include <vtkProbeFilter.h>
 #include <vtkSmartPointer.h>
@@ -237,6 +240,44 @@ protected:
 
 private:
     vtkSmartPointer<vtkCutter>   m_cutter;
+};
+
+class FemExport FemPostContoursFilter: public FemPostFilter
+{
+
+    PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostContoursFilter);
+
+public:
+    FemPostContoursFilter();
+    ~FemPostContoursFilter() override;
+
+    App::PropertyEnumeration Field;
+    App::PropertyIntegerConstraint NumberOfContours;
+    App::PropertyEnumeration VectorMode;
+    App::PropertyBool NoColor;
+
+    const char* getViewProviderName() const override
+    {
+        return "FemGui::ViewProviderFemPostContours";
+    }
+    short int mustExecute() const override;
+
+protected:
+    App::DocumentObjectExecReturn* execute() override;
+    void onChanged(const App::Property* prop) override;
+    void recalculateContours(double min, double max);
+    void refreshFields();
+    void refreshVectors();
+    bool m_blockPropertyChanges = false;
+    std::string contourFieldName;
+
+private:
+    vtkSmartPointer<vtkContourFilter> m_contours;
+    vtkSmartPointer<vtkExtractVectorComponents> m_extractor;
+    vtkSmartPointer<vtkVectorNorm> m_norm;
+    App::Enumeration m_fields;
+    App::Enumeration m_vectors;
+    App::PropertyIntegerConstraint::Constraints m_contourConstraints;
 };
 
 } //namespace Fem
