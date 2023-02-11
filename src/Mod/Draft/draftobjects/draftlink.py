@@ -186,12 +186,14 @@ class DraftLink(DraftObject):
 
     def buildShape(self, obj, pl, pls):
         """Build the shape of the link object."""
+        if obj.Count != len(pls):
+            obj.Count = len(pls)
+
         if self.use_link:
-            if not getattr(obj, 'ExpandArray', False) or obj.Count != len(pls):
+            if not getattr(obj, 'ExpandArray', False):
                 obj.setPropertyStatus('PlacementList', '-Immutable')
                 obj.PlacementList = pls
                 obj.setPropertyStatus('PlacementList', 'Immutable')
-                obj.Count = len(pls)
             if getattr(obj, 'ExpandArray', False) \
                     and getattr(obj, 'AlwaysSyncPlacement', False):
                 for pla,child in zip(pls,obj.ElementList):
