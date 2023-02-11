@@ -22,17 +22,20 @@
 
 """Mock objects for use when testing the addon manager non-GUI code."""
 
+# pylint: disable=too-few-public-methods,too-many-instance-attributes,missing-function-docstring
+
 import os
 from typing import Union, List
 import xml.etree.ElementTree as ElemTree
 
 
-class GitFailed (RuntimeError):
+class GitFailed(RuntimeError):
     pass
 
 
 class MockConsole:
     """Mock for the FreeCAD.Console -- does NOT print anything out, just logs it."""
+
     def __init__(self):
         self.log = []
         self.messages = []
@@ -71,6 +74,8 @@ class MockConsole:
 
 
 class MockMetadata:
+    """Minimal implementation of a Metadata-like object."""
+
     def __init__(self):
         self.Name = "MockMetadata"
         self.Urls = {"repository": {"location": "file://localhost/", "branch": "main"}}
@@ -83,6 +88,8 @@ class MockMetadata:
         """Don't use the real metadata class, but try to read in the parameters we care about
         from the given metadata file (or file-like object, as the case probably is). This
         allows us to test whether the data is being passed around correctly."""
+
+        # pylint: disable=too-many-branches
         xml = None
         root = None
         try:
@@ -120,12 +127,14 @@ class MockMetadata:
 class MockAddon:
     """Minimal Addon class"""
 
+    # pylint: disable=too-many-instance-attributes
+
     def __init__(
-            self,
-            name: str = None,
-            url: str = None,
-            status: object = None,
-            branch: str = "main",
+        self,
+        name: str = None,
+        url: str = None,
+        status: object = None,
+        branch: str = "main",
     ):
         test_dir = os.path.join(os.path.dirname(__file__), "..", "data")
         if name:
@@ -188,12 +197,13 @@ class MockMacro:
     def install(self, location: os.PathLike):
         """Installer function for the mock macro object: creates a file with the src_filename
         attribute, and optionally an icon, xpm, and other_files. The data contained in these files
-        is not usable and serves only as a placeholder for the existence of the files."""
+        is not usable and serves only as a placeholder for the existence of the files.
+        """
 
         with open(
-                os.path.join(location, self.filename),
-                "w",
-                encoding="utf-8",
+            os.path.join(location, self.filename),
+            "w",
+            encoding="utf-8",
         ) as f:
             f.write("Test file for macro installation unit tests")
         if self.icon:
@@ -201,7 +211,7 @@ class MockMacro:
                 f.write(b"Fake icon data - nothing to see here\n")
         if self.xpm:
             with open(
-                    os.path.join(location, "MockMacro_icon.xpm"), "w", encoding="utf-8"
+                os.path.join(location, "MockMacro_icon.xpm"), "w", encoding="utf-8"
             ) as f:
                 f.write(self.xpm)
         for name in self.other_files:
@@ -224,6 +234,15 @@ class MockMacro:
 
 
 class SignalCatcher:
+    """Object to track signals that it has caught.
+
+    Usage:
+    catcher = SignalCatcher()
+    my_signal.connect(catcher.catch_signal)
+    do_things_that_emit_the_signal()
+    self.assertTrue(catcher.caught)
+    """
+
     def __init__(self):
         self.caught = False
         self.killed = False
@@ -238,6 +257,8 @@ class SignalCatcher:
 
 
 class AddonSignalCatcher:
+    """Signal catcher specifically designed for catching emitted addons."""
+
     def __init__(self):
         self.addons = []
 
@@ -246,6 +267,10 @@ class AddonSignalCatcher:
 
 
 class CallCatcher:
+    """Generic call monitor -- use to override functions that are not themselves under
+    test so that you can detect when the function has been called, and how many times.
+    """
+
     def __init__(self):
         self.called = False
         self.call_count = 0
@@ -260,7 +285,8 @@ class CallCatcher:
 class MockGitManager:
     """A mock git manager: does NOT require a git installation. Takes no actions, only records
     which functions are called for instrumentation purposes. Can be forced to appear to fail as
-    needed. Various member variables can be set to emulate necessary return responses."""
+    needed. Various member variables can be set to emulate necessary return responses.
+    """
 
     def __init__(self):
         self.called_methods = []
@@ -288,7 +314,9 @@ class MockGitManager:
         self.called_methods.append("clone")
         self._check_for_failure()
 
-    def async_clone(self, _remote, _local_path, _progress_monitor, _args: List[str] = None):
+    def async_clone(
+        self, _remote, _local_path, _progress_monitor, _args: List[str] = None
+    ):
         self.called_methods.append("async_clone")
         self._check_for_failure()
 
@@ -380,7 +408,7 @@ class MockSignal:
 
 class MockNetworkManager:
     """Instrumented mock for the NetworkManager. Does no network access, is not asynchronous, and
-   does not require a running event loop. No submitted requests ever complete."""
+    does not require a running event loop. No submitted requests ever complete."""
 
     def __init__(self):
         self.urls = []
@@ -418,8 +446,28 @@ class MockNetworkManager:
 
 
 class MockByteArray:
+    """Mock for QByteArray. Only provides the data() access member."""
+
     def __init__(self, data_to_wrap="data".encode("utf-8")):
         self.wrapped = data_to_wrap
 
     def data(self) -> bytes:
         return self.wrapped
+
+
+class MockThread:
+    """Mock for QThread for use when threading is not being used, but interruption
+    needs to be tested. Set interrupt_after_n_calls to the call number to stop at."""
+
+    def __init__(self):
+        self.interrupt_after_n_calls = 0
+        self.interrupt_check_counter = 0
+
+    def isInterruptionRequested(self):
+        self.interrupt_check_counter += 1
+        if (
+            self.interrupt_after_n_calls
+            and self.interrupt_check_counter >= self.interrupt_after_n_calls
+        ):
+            return True
+        return False
