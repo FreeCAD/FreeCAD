@@ -33,9 +33,8 @@ from typing import Dict, Tuple, List, Union, Optional
 
 import FreeCAD
 import NetworkManager
-from PySide import QtCore
 
-from addonmanager_utilities import is_float
+from addonmanager_macro_parser import MacroParser
 
 translate = FreeCAD.Qt.translate
 
@@ -109,7 +108,8 @@ class Macro:
     def is_installed(self):
         """Returns True if this macro is currently installed (that is, if it exists in the
         user macro directory), or False if it is not. Both the exact filename, as well as
-        the filename prefixed with "Macro", are considered an installation of this macro."""
+        the filename prefixed with "Macro", are considered an installation of this macro.
+        """
         if self.on_git and not self.src_filename:
             return False
         return os.path.exists(
@@ -125,143 +125,11 @@ class Macro:
             self.fill_details_from_code(self.code)
 
     def fill_details_from_code(self, code: str) -> None:
-        """Reads in the macro code from the given string and parses it for its metadata."""
-        # Number of parsed fields of metadata. Overrides anything set previously (the code is
-        # considered authoritative).
-        # For now:
-        # __Comment__
-        # __Web__
-        # __Wiki__
-        # __Version__
-        # __Files__
-        # __Author__
-        # __Date__
-        # __Icon__
-        max_lines_to_search = 200
-        line_counter = 0
-
-        string_search_mapping = {
-            "__comment__": "comment",
-            "__web__": "url",
-            "__wiki__": "wiki",
-            "__version__": "version",
-            "__files__": "other_files",
-            "__author__": "author",
-            "__date__": "date",
-            "__icon__": "icon",
-            "__xpm__": "xpm",
-        }
-
-        string_search_regex = re.compile(r"\s*(['\"])(.*)\1")
-        f = io.StringIO(code)
-        while f and line_counter < max_lines_to_search:
-            line = f.readline()
-            if not line:
-                break
-            if QtCore.QThread.currentThread().isInterruptionRequested():
-                return
-            line_counter += 1
-            if not line.startswith("__"):
-                # Speed things up a bit... this comparison is very cheap
-                continue
-
-            lowercase_line = line.lower()
-            for key, value in string_search_mapping.items():
-                if lowercase_line.startswith(key):
-                    _, _, after_equals = line.partition("=")
-                    match = re.match(string_search_regex, after_equals)
-
-                    # We do NOT support triple-quoted strings, except for the icon XPM data
-                    # Most cases should be caught by this code
-                    if match and '"""' not in after_equals:
-                        self._standard_extraction(value, match.group(2))
-                        string_search_mapping.pop(key)
-                        break
-
-                    # For cases where either there is no match, or we found a triple quote,
-                    # more processing is needed
-
-                    # Macro authors are supposed to be providing strings here, but in some
-                    # cases they are not doing so. If this is the "__version__" tag, try
-                    # to apply some special handling to accepts numbers, and "__date__"
-                    if key == "__version__":
-                        self._process_noncompliant_version(after_equals)
-                        string_search_mapping.pop(key)
-                        break
-
-                    # Icon data can be actual embedded XPM data, inside a triple-quoted string
-                    if key in ("__icon__", "__xpm__"):
-                        self._process_icon(f, key, after_equals)
-                        string_search_mapping.pop(key)
-                        break
-
-                    FreeCAD.Console.PrintError(
-                        translate(
-                            "AddonsInstaller",
-                            "Syntax error while reading {} from macro {}",
-                        ).format(key, self.name)
-                        + "\n"
-                    )
-                    FreeCAD.Console.PrintError(line + "\n")
-
-        # Do some cleanup of the values:
-        if self.comment:
-            self.comment = re.sub("<.*?>", "", self.comment)  # Strip any HTML tags
-
-        # Truncate long comments to speed up searches, and clean up display
-        if len(self.comment) > 512:
-            self.comment = self.comment[:511] + "…"
-
-        # Make sure the icon is not an absolute path, etc.
-        self.clean_icon()
-
+        parser = MacroParser(self.name, code)
+        for key, value in parser.parse_results.items():
+            if value:
+                self.__dict__[key] = value
         self.parsed = True
-
-    def _standard_extraction(self, value: str, match_group):
-        """For most macro metadata values, this extracts the required data"""
-        if isinstance(self.__dict__[value], str):
-            self.__dict__[value] = match_group
-        elif isinstance(self.__dict__[value], list):
-            self.__dict__[value] = [of.strip() for of in match_group.split(",")]
-        else:
-            FreeCAD.Console.PrintError(
-                "Internal Error: bad type in addonmanager_macro class.\n"
-            )
-
-    def _process_noncompliant_version(self, after_equals):
-        if "__date__" in after_equals.lower():
-            self.version = self.date
-        elif is_float(after_equals):
-            self.version = str(after_equals).strip()
-        else:
-            FreeCAD.Console.PrintLog(
-                f"Unrecognized value for __version__ in macro {self.name}"
-            )
-            self.version = "(Unknown)"
-
-    def _process_icon(self, f, key, after_equals):
-        # If this is an icon, it's possible that the icon was actually directly
-        # specified in the file as XPM data. This data **must** be between
-        # triple double quotes in order for the Addon Manager to recognize it.
-        if '"""' in after_equals:
-            _, _, xpm_data = after_equals.partition('"""')
-            while True:
-                line = f.readline()
-                if not line:
-                    FreeCAD.Console.PrintError(
-                        translate(
-                            "AddonsInstaller",
-                            "Syntax error while reading {} from macro {}",
-                        ).format(key, self.name)
-                        + "\n"
-                    )
-                    break
-                if '"""' in line:
-                    last_line, _, _ = line.partition('"""')
-                    xpm_data += last_line
-                    break
-                xpm_data += line
-            self.xpm = xpm_data
 
     def fill_details_from_wiki(self, url):
         """For a given URL, download its data and attempt to get the macro's metadata out of
